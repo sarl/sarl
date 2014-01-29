@@ -1,0 +1,197 @@
+/*
+ * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ 
+package io.sarl.core
+
+import io.sarl.lang.core.Behavior
+import io.sarl.lang.core.Event
+import io.sarl.lang.core.Agent
+import io.sarl.lang.core.Address
+import io.sarl.lang.core.AgentContext
+import io.sarl.lang.core.EventSpace
+import io.sarl.lang.core.Scope
+import io.sarl.core.AgentTask
+import java.util.UUID
+
+/**
+* Initialization event for an Agent.
+* The source of this event is the agent itself.
+* This event is only received by the agent's native behavior.
+*/
+event Initialize {
+	var Object[] parameters
+}
+
+/**
+* Notifies the Destruction of the agent.
+* The source of this event is the agent itself.
+* This event is fired after the agent has called the killMe action.
+*/
+event Destroy {}
+
+/**
+* Informs the creation of a new agent in a given context.
+* The context Id can be retrieved via ev.getSource().getSpaceID().getContextID()
+*/
+event AgentSpawned {
+	var UUID agentID
+}
+
+/**
+* Informs an agent has been killed
+* The context Id can be retrieved via ev.getSource().getSpaceID().getContextID()
+*/
+event AgentKilled {
+	var UUID agentID
+}
+
+/**
+* Agent behaviors management.
+*/
+capacity Behaviors {
+	/**
+	 * Register a Behavior for the owner agent.
+	 * The new Behavior will react to all declared events received by the agent.
+	 */
+	def registerBehavior(Behavior attitude) : Behavior
+	/**
+	 * Unregisters a behavior for the owner agent
+	 */
+	def unregisterBehavior(Behavior attitude) : Behavior
+	/**
+	 * Wake the agent's behaviors reacting to the Event evt.
+	 */
+	def wake(Event evt)
+}
+
+/**
+* Lifecycle related actions.
+*/
+capacity Lifecycle {
+	/**
+	* Spawns a new Agent inside the default context of this agent.
+	* This action must automatically register the newly created agent
+	* within the default space of the context.
+	* @fires AgentSpawned in DefaultSpace
+	*/
+	def spawn(Class<? extends Agent> aAgent, Object[] params) : UUID fires AgentSpawned
+	
+    /**
+	* Kills this agent. 
+	* This action must automatically unregister this agent from the default context 
+	* and therefore all its spaces including the DefaultSpace.
+	* If this is a composable agent, it must not have any members before calling this action. 
+	* Otherwise a RuntimeException will be thrown.  
+	* @fires AgentKilled in DefaultSpace of the DefaultContext
+	* @fires Destroy inside the agent
+	* @throws RuntimeException when the agent has members
+	*/
+	def killMe fires AgentKilled, Destroy
+}
+
+/**
+* Gives access to the DefaultContext of the agent and common actions on its default space.
+* Defines a set of commonly accessed action performed on the Default Space 
+* of the Default Context of the agent.
+*
+*/
+capacity DefaultContextInteractions {
+	
+	/**
+	* Returns the Default context fo the agent
+	*/
+	def getDefaultContext : AgentContext
+	
+	/**
+	* Returns the Default Space of the Default Context.
+	* Equivalent to defaultContext.defaultSpace
+	*/
+	def getDefaultSpace : EventSpace
+	
+	/**
+	* Return the Address of the agent in the Default Space of the Default Context.
+	* Equivalent to defaultContext.defaultSpace.address(this.id)
+	*/
+	def getDefaultAddress : Address
+
+	/**
+	* Emits a given event with the provided scope in the DefaultSpace of the DefaultContext.
+	* Equivalent to defaultContext.defaultSpace.emit(e,scope)
+	*/
+	def emit(Event e, Scope<Address> scope)
+	
+	/**
+	* Emits a given event with no scope (all registered agent) in the DefaultSpace of the DefaultContext.
+	* Equivalent to defaultContext.defaultSpace.emit(e)
+	*/
+	def emit(Event e)
+	
+	/**
+	* Inverse signature of send. Useful to send events using the agent's UUID.
+	* Example:
+	*  If you need to send an event to a newly created agent you should usually do :
+	* <code>
+	* ...
+	* const mySpawnArgs = ...
+	* const myAgentAddr = MyAgent.spawn(mySpawnArgs)
+	* defaultSpace.emit(new StartWorkingEvent, AddressScope::scope(myAgentAddr)
+	* </code> 
+	*  The equivalent using receive could be written:
+	* <code>
+	* ...
+	* MyAgent.spawn(mySpawnArgs).receive(new StartWorkingEvent)
+	* </code>
+	*/
+	def receive(UUID receiver, Event e)
+	 
+}
+
+
+/**
+* Schedules actions in time.
+*/
+capacity Schedules {
+	/**
+	* Creates an anonymous task to execute the procedure that will be triggered after the specified delay.
+	* @param delay time in milliseconds to delay the procedure execution
+	* @param procedure the closure to execute.
+	* @return the generated task
+	*/	
+	def in(long delay,(Agent) => void procedure) : AgentTask
+
+	/**
+	 * Schedule a given task to be executed after the specified delay.
+	 */
+	def in(AgentTask task, long delay,(Agent) => void procedure) : AgentTask
+
+	/**
+	 * Create a named task that can be retrieved and schedule later.
+	 */
+	def task(String name) : AgentTask
+
+	/**
+	 * Create an anonymous task and schedules a periodic execution of its behavior.
+	 */
+	def every(long period,(Agent) => void procedure) : AgentTask
+
+	/**
+	 * Schedule a periodic execution of the given task.
+	 */
+	def every(AgentTask task, long period,(Agent) => void procedure) : AgentTask
+
+}
+
+

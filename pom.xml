@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>io.sarl</groupId>
+	<artifactId>io.sarl</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+
+	<name>SARL Agent Oriented Programming Language</name>
+	<url>http://www.sarl.io/</url>
+	<inceptionYear>2014</inceptionYear>
+
+	<packaging>pom</packaging>
+
+	<description>SARL is a general-purpose agent-oriented language.
+
+SARL aims at providing the fundamental abstractions for dealing with concurrency, distribution, interaction, decentralization, reactivity, autonomy and dynamic reconfiguration. These high-level features are now considered as the major requirements for an easy and practical implementation of modern complex software applications. We are convinced that the agent-oriented paradigm holds the keys to effectively meet this challenge.</description>
+
+	<!-- ======================================= -->
+	<!-- ==== Main properties === -->
+	<!-- ======================================= -->
+
+	<properties>
+		<year>2014</year>
+		<copyrighters>Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND</copyrighters>
+		<tycho-version>0.19.0</tycho-version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<xtext.version>2.5.0</xtext.version>
+	</properties>
+
+	<!-- ======================================= -->
+	<!-- ==== Modules' configuration === -->
+	<!-- ======================================= -->
+
+	<modules>
+		<!-- SARL Language compiler and IDE -->
+		<module>lang</module>
+		<!-- SARL Language Core Libraries -->
+		<module>core</module>
+	</modules>
+
+	<!-- ======================================= -->
+	<!-- ==== Organization and License details === -->
+	<!-- ======================================= -->
+
+	<organization>
+		<name>SARL Consortium</name>
+		<url>http://www.sarl.io/</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>ttp://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+
+
+	<!-- ======================================= -->
+	<!-- ==== Dependency Management === -->
+	<!-- ======================================= -->
+
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.11</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtend</groupId>
+				<artifactId>org.eclipse.xtend.lib</artifactId>
+				<version>${xtext.version}</version>
+			</dependency>
+			<!-- SARL Modules -->
+			<dependency>
+				<groupId>io.sarl.lang</groupId>
+				<artifactId>io.sarl.lang.core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+
+	<!-- ======================================= -->
+	<!-- ==== Plugins Dependency Management === -->
+	<!-- ======================================= -->
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.jasig.maven</groupId>
+					<artifactId>maven-notice-plugin</artifactId>
+					<version>1.0.4</version>
+				</plugin>
+
+
+				<!-- xtend-maven-plugin is in pluginManagement instead of in plugins 
+					so that it doesn't run before the exec-maven-plugin's *.mwe2 gen; this way 
+					we can list it after. -->
+				<plugin>
+					<groupId>org.eclipse.xtend</groupId>
+					<artifactId>xtend-maven-plugin</artifactId>
+					<version>${xtext.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>compile</goal>
+								<goal>xtend-install-debug-info</goal>
+								<goal>testCompile</goal>
+								<goal>xtend-test-install-debug-info</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<outputDirectory>xtend-gen</outputDirectory>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>license-maven-plugin</artifactId>
+					<version>1.6</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.1</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<configuration>
+						<docencoding>UTF-8</docencoding>
+						<encoding>UTF-8</encoding>
+						<charset>UTF-8</charset>
+						<show>protected</show>
+						<detectLinks>true</detectLinks>
+						<detectJavaApiLink>true</detectJavaApiLink>
+						<links>
+							<link>http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.5/</link>
+						</links>
+						<docfilessubdirs>true</docfilessubdirs>
+						<excludePackageNames></excludePackageNames>
+						<breakiterator>true</breakiterator>
+						<version>true</version>
+						<author>true</author>
+						<keywords>true</keywords>
+						<useStandardDocletOptions>true</useStandardDocletOptions>
+						<excludePackageNames></excludePackageNames>
+						<bottom>&lt;small&gt;Copyright &amp;copy;
+							${project.inceptionYear}-${year} ${copyrighters}.
+						</bottom>
+						<tags>
+							<tag>
+								<name>mavengroupid</name>
+								<placement>pt</placement>
+								<head>Maven Group Id:</head>
+							</tag>
+							<tag>
+								<name>mavenartifactid</name>
+								<placement>pt</placement>
+								<head>Maven Artifact Id:</head>
+							</tag>
+							<tag>
+								<name>fires</name>
+								<placement>m</placement>
+								<head>Fired Events:</head>
+							</tag>
+						</tags>
+					</configuration>
+				</plugin>
+
+
+
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>license-maven-plugin</artifactId>
+										<versionRange>[1.2,)</versionRange>
+										<goals>
+											<goal>check-file-header</goal>
+											<goal>update-project-license</goal>
+											<goal>update-file-header</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-dependency-plugin</artifactId>
+										<versionRange>[2.4,)</versionRange>
+										<goals>
+											<goal>properties</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-changes-plugin</artifactId>
+										<versionRange>[2.7,)</versionRange>
+										<goals>
+											<goal>announcement-generate</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-assembly-plugin</artifactId>
+										<versionRange>[2.2.1,)</versionRange>
+										<goals>
+											<goal>single</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/classes/META-INF</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>**/NOTICE</include>
+										<include>**/LICENSE</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jasig.maven</groupId>
+				<artifactId>maven-notice-plugin</artifactId>
+				<configuration>
+					<generateChildNotices>true</generateChildNotices>
+					<noticeTemplate>licenses/NOTICE.template</noticeTemplate>
+					<licenseMapping>
+						<param>licenses/license-mappings-sarl.xml</param>
+						<param>licenses/license-mappings.xml</param>
+					</licenseMapping>
+					<!-- <outputDir>src/main/resources/META-INF/</outputDir> -->
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<configuration>
+					<verbose>false</verbose>
+					<addSvnKeyWords>false</addSvnKeyWords>
+					<copyrightOwners>${copyrighters}</copyrightOwners>
+				</configuration>
+				<executions>
+					<execution>
+						<id>first</id>
+						<goals>
+							<goal>update-file-header</goal>
+						</goals>
+						<phase>process-sources</phase>
+						<configuration>
+							<licenseName>apache_v2</licenseName>
+							<includes>
+								<include>*.java</include>
+								<include>*.xml</include>
+							</includes>
+							<excludes>
+								<exclude>*.png</exclude>
+								<exclude>*.txt</exclude>
+								<exclude>NOTICE</exclude>
+								<exclude>**/NOTICE.expected</exclude>
+								<exclude>**/NOTICE.template</exclude>
+								<exclude>LICENSE</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+
+	<!-- ======================================= -->
+	<!-- ==== Organization Information === -->
+	<!-- ======================================= -->
+
+	<developers>
+		<developer>
+			<id>srodriguez</id>
+			<name>Sebastian Rodriguez</name>
+			<email>srodriguez@citat.org.ar</email>
+			<url>http://citat.org.ar/members/sebastian-rodriguez/</url>
+			<organization>
+				Grupo de Investigaci&amp;oacute;n en Tecnolog&amp;iacute;as Inform&amp;aacute;ticas Avanzadas de Tucum&amp;aacute;n
+			</organization>
+			<organizationUrl>http://citat.org.ar/</organizationUrl>
+			<roles>
+				<role>Co-founder</role>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>ngaud</id>
+			<name>Nicolas Gaud</name>
+			<email>nicolas.gaud@utbm.fr</email>
+			<url>http://www.multiagent.fr/People:Gaud_nicolas</url>
+			<organization>
+				IRTES-SET -
+				Universit&amp;eacute; de
+				Technologie de
+				Belfort-Montba&amp;eacute;liard
+			</organization>
+			<organizationUrl>http://www.multiagent.fr</organizationUrl>
+			<roles>
+				<role>Co-founder</role>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>sgalland</id>
+			<name>St&amp;eacute;phane Galland</name>
+			<email>stephane.galland@utbm.fr</email>
+			<url>http://www.multiagent.fr/People:Galland_stephane</url>
+			<organization>
+				IRTES-SET -
+				Universit&amp;eacute; de
+				Technologie de
+				Belfort-Montba&amp;eacute;liard
+			</organization>
+			<organizationUrl>http://www.multiagent.fr</organizationUrl>
+			<roles>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+</project>

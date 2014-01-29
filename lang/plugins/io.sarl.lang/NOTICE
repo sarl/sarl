@@ -1,0 +1,71 @@
+Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+
+This project uses:
+  p2.eclipse-plugin:com.google.guava under Apache License, Version 2.0
+  p2.eclipse-plugin:com.google.inject under Apache License, Version 2.0
+  p2.eclipse-plugin:com.ibm.icu under IBM ICU License
+  p2.eclipse-plugin:javax.inject under Apache License, Version 2.0
+  p2.eclipse-plugin:org.antlr.runtime under ANTLR 4 License
+  p2.eclipse-plugin:org.apache.ant under Apache License, Version 2.0
+  p2.eclipse-plugin:org.apache.commons.cli under Apache License, Version 2.0
+  p2.eclipse-plugin:org.apache.commons.lang under Apache License, Version 2.0
+  p2.eclipse-plugin:org.apache.commons.logging under Apache License, Version 2.0
+  p2.eclipse-plugin:org.apache.log4j under Apache License, Version 2.0
+  p2.eclipse-plugin:org.eclipse.core.commands under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.core.contenttype under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.core.expressions under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.core.filesystem under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.core.jobs under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.core.resources under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.core.runtime under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.core.variables under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.debug.core under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.emf.codegen under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.emf.codegen.ecore under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.emf.common under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.emf.ecore under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.emf.ecore.xmi under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.emf.mwe.core under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.emf.mwe.utils under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.emf.mwe2.language under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.emf.mwe2.launch under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.emf.mwe2.lib under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.emf.mwe2.runtime under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.equinox.app under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.equinox.common under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.equinox.preferences under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.equinox.registry under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.jdt.annotation under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.jdt.core under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.jdt.debug under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.jdt.launching under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.osgi under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.text under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.xpand under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.xtend under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.xtend.lib under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.xtend.typesystem.emf under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.xtext under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.xtext.common.types under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.xtext.ecore under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.xtext.generator under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.xtext.smap under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.xtext.util under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.xtext.xbase under Eclipse Public License
+  p2.eclipse-plugin:org.eclipse.xtext.xbase.lib under Eclipse Public License
+  SARL Lang Core (Foundation Classes) under Apache License, Version 2.0
+  SARL Lang Definition under Apache License, Version 2.0
+

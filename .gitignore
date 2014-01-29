@@ -1,0 +1,31 @@
+# NetBean / Eclipse
+bin
+*.java._trace
+*.java_trace
+*.smap
+.project
+.classpath
+.settings
+
+# Subversion and CVS
+.svn
+.cvs
+
+# Maven
+target
+
+# Compiled files
+*.class
+*.o
+*.obj
+*.a
+*.lib
+*.dll
+*.exe
+
+# Temp files
+*.bak
+*~
+
+#Others
+.DS_Store

@@ -1,0 +1,995 @@
+<?xml version="1.0" encoding="utf-8"?>
+<license-lookup
+	xmlns="https://source.jasig.org/schemas/maven-notice-plugin/license-lookup"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://source.jasig.org/schemas/maven-notice-plugin/license-lookup https://source.jasig.org/schemas/maven-notice-plugin/license-lookup/license-lookup-v1.0.xsd">
+
+	<artifact>
+		<groupId>io.sarl</groupId>
+		<artifactId>io.sarl</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>io.sarl</groupId>
+		<artifactId>io.sarl.core</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>io.sarl</groupId>
+		<artifactId>io.sarl.corelibs</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>io.sarl</groupId>
+		<artifactId>io.sarl.sdk</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>io.sarl</groupId>
+		<artifactId>io.sarl.util</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>io.sarl.lang</groupId>
+		<artifactId>io.sarl.lang.core</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>io.sarl.lang</groupId>
+		<artifactId>io.sarl.lang</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>io.sarl.lang</groupId>
+		<artifactId>io.sarl.lang.features.parent</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>io.sarl.lang</groupId>
+		<artifactId>io.sarl.lang.parent</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>io.sarl.lang</groupId>
+		<artifactId>io.sarl.lang.plugins.parent</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>io.sarl.lang</groupId>
+		<artifactId>io.sarl.lang.releng</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>io.sarl.lang</groupId>
+		<artifactId>io.sarl.lang.sdk</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>io.sarl.lang</groupId>
+		<artifactId>io.sarl.lang.targetplatform</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>io.sarl.lang</groupId>
+		<artifactId>io.sarl.lang.tests</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>io.sarl.lang</groupId>
+		<artifactId>io.sarl.lang.tests.parent</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>io.sarl.lang</groupId>
+		<artifactId>io.sarl.lang.ui</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>io.sarl.lang</groupId>
+		<artifactId>io.sarl.lang.updatesite</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	
+	
+	
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>com.google.guava</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>com.google.inject</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>com.ibm.icu</artifactId>
+		<license>IBM ICU License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.apache.ant</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>javax.annotation</artifactId>
+		<license>Common Development and Distribution License (CDDL) Version 1.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>javax.inject</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>javax.xml</artifactId>
+		<license>Common Development and Distribution License (CDDL) Version 1.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.antlr.runtime</artifactId>
+		<license>ANTLR 4 License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.apache.batik.css</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.apache.batik.util</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.apache.batik.util.gui</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.apache.commons.cli</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.apache.commons.lang</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.apache.commons.logging</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.apache.log4j</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.hamcrest.core</artifactId>
+		<license>BSD 2-Clause License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.junit</artifactId>
+		<license>Apache License, Version 2.0</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.w3c.css.sac</artifactId>
+		<license>The W3C Software License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.w3c.dom.events</artifactId>
+		<license>The W3C Software License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.w3c.dom.smil</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.w3c.dom.svg</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	
+	
+	
+	
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.compare</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.compare.core</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.core.commands</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.core.contenttype</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.core.databinding</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.core.databinding.observable</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.core.databinding.property</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.core.expressions</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.core.filebuffers</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.core.filesystem</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.core.jobs</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.core.resources</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.core.runtime</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.core.variables</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.debug.core</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.debug.ui</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.core.commands</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.core.contexts</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.core.di</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.core.di.extensions</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.core.services</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.ui.bindings</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.ui.css.core</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.ui.css.swt</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.ui.css.swt.theme</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.ui.di</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.ui.model.workbench</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.ui.services</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.ui.widgets</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.ui.workbench</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.ui.workbench.addons.swt</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.ui.workbench.renderers.swt</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.ui.workbench.swt</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.e4.ui.workbench3</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.emf.codegen</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.emf.codegen.ecore</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.emf.common</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.emf.common.ui</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.emf.ecore</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.emf.ecore.change</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.emf.ecore.edit</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.emf.ecore.editor</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.emf.edit</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.emf.edit.ui</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.emf.mwe.core</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.emf.mwe.utils</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.emf.mwe2.language</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.emf.mwe2.launch</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.emf.mwe2.lib</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.emf.mwe2.runtime</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.equinox.app</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.equinox.bidi</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.equinox.common</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.equinox.ds</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.equinox.event</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.equinox.p2.core</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.equinox.p2.engine</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.equinox.p2.metadata</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.equinox.p2.metadata.repository</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.equinox.p2.repository</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.equinox.preferences</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.equinox.registry</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.equinox.security</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.equinox.util</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.help</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.jdt.annotation</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.jdt.core</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.jdt.core.manipulation</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.jdt.debug</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.jdt.debug</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.jdt.debug.ui</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.jdt.launching</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.jdt.ui</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.jface</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.jface.databinding</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.jface.text</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.ltk.core.refactoring</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.ltk.ui.refactoring</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.osgi</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.osgi.services</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.search</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.swt</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.swt.cocoa.macosx</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.swt.win32.win32.x86</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.team.core</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.team.ui</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.text</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.ui</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.ui.console</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.ui.editors</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.ui.forms</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.ui.ide</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.ui.navigator</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.ui.navigator.resources</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.ui.views</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.ui.views.properties.tabbed</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.ui.workbench</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.ui.workbench.texteditor</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xpand</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtend</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtend.lib</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtend.typesystem.emf</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext.builder</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext.common.types</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext.common.types.edit</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext.common.types.ui</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext.ecore</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext.generator</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext.junit4</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext.smap</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext.ui</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext.ui.codetemplates</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext.ui.codetemplates.ui</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext.ui.shared</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext.util</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext.xbase</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext.xbase.junit</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+	<artifact>
+		<groupId>p2.eclipse-plugin</groupId>
+		<artifactId>org.eclipse.xtext.xbase.ui</artifactId>
+		<license>Eclipse Public License</license>
+	</artifact>
+
+</license-lookup>		
+		
+		
