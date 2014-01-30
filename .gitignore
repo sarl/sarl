@@ -6,6 +6,7 @@ bin
 .project
 .classpath
 .settings
+.metadata
 
 # Subversion and CVS
 .svn
@@ -13,6 +14,7 @@ bin
 
 # Maven
 target
+generated-sources
 
 # Compiled files
 *.class
