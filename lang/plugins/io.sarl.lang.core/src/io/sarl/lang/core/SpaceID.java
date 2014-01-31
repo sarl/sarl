@@ -15,6 +15,7 @@
  */
 package io.sarl.lang.core;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -28,8 +29,13 @@ import java.util.UUID;
  * @mavenartifactid $ArtifactId$
  */
 
-public class SpaceID {
+public class SpaceID implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8764568066583474825L;
+	
 	private final UUID id;
 	private final UUID contextID;
 	private final transient Class<? extends SpaceSpecification> spaceSpec;
