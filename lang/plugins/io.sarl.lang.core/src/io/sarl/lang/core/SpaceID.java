@@ -29,7 +29,7 @@ import java.util.UUID;
  * @mavenartifactid $ArtifactId$
  */
 
-public class SpaceID implements Serializable{
+public class SpaceID implements Serializable, Comparable<SpaceID>{
 
 	/**
 	 * 
@@ -121,6 +121,11 @@ public class SpaceID implements Serializable{
 	@Override
 	public String toString() {
 		return "SpaceID [id=" + this.id + ", contextID=" + this.contextID + ", spaceSpec=" + this.spaceSpec + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	}
+
+	@Override
+	public int compareTo(SpaceID o) {
+		return this.id.compareTo(o.getID());
 	}
 
 }
