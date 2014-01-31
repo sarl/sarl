@@ -36,9 +36,6 @@ public class Agent implements Identifiable {
 
 	private final UUID id = UUID.randomUUID();
 
-	@Inject
-	private Logger log;
-
 	private Map<Class<? extends Capacity>, Capacity> capacities = new ConcurrentHashMap<>();
 
 	/**
@@ -111,11 +108,9 @@ public class Agent implements Identifiable {
 	}
 
 	@Inject
-	void setPlatform(BuiltinCapacitiesProvider platform) {
-		log.finer("Setting platform");
-		for (Class<? extends Capacity> capCls : platform.getBuiltinCapacities()) {
-			log.finer("Adding Builtin Capacity : " + capCls);
-			capacities.put(capCls, platform.getBuiltinCapacity(capCls, this));
+	void setBuiltinCapacitiesProvider(BuiltinCapacitiesProvider provider) {
+		for (Class<? extends Capacity> capCls : provider.getBuiltinCapacities()) {
+			capacities.put(capCls, provider.getBuiltinCapacity(capCls, this));
 		}
 	}
 
