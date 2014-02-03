@@ -36,8 +36,7 @@ public class AgentTask {
 	private String name;
 	private Functions.Function1<Agent, Boolean> guard;
 	private Procedures.Procedure1<Agent> procedure;
-
-	private TimerTask timerTask = null;
+	
 	public AgentTask() {
 
 	}
@@ -69,11 +68,6 @@ public class AgentTask {
 		this.name = name;
 	}
 
-	public AgentTask cancel() {
-		this.timerTask.cancel();
-		return this;
-	}
-
 	public AgentTask unless(Functions.Function1<Agent, Boolean> predicate) {
 		this.guard = new NegateFunction(predicate);
 		return this;
@@ -82,35 +76,6 @@ public class AgentTask {
 	public AgentTask ifTrue(Functions.Function1<Agent, Boolean> predicate) {
 		this.guard = predicate;
 		return this;
-	}
-
-	public TimerTask getTimerTask(Agent agent) {
-		this.timerTask =new AgentTimerTask(this, agent);
-		return this.timerTask;
-	}
-
-	private class AgentTimerTask extends TimerTask {
-		private WeakReference<AgentTask> agentTaskRef;
-		private WeakReference<Agent> agentRef;
-
-		public AgentTimerTask(AgentTask task, Agent agent) {
-			this.agentTaskRef = new WeakReference<AgentTask>(task);
-			this.agentRef = new WeakReference<Agent>(agent);
-		}
-
-		@Override
-		public void run() {
-			if (agentTaskRef.get() == null) {
-				System.out.println("Agent Task is null");
-			} else {
-				AgentTask task = agentTaskRef.get();
-				if (task.guard.apply(this.agentRef.get())) {					
-					task.procedure.apply(this.agentRef.get());
-				} 
-			}
-
-		}
-
 	}
 
 	private class NegateFunction implements Function1<Agent, Boolean> {
