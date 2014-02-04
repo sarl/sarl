@@ -33,7 +33,7 @@ public interface Identifiable {
 	 * 
 	 * @return entity's Identifier
 	 */
-	public UUID getId();
+	public UUID getID();
 
 
 }

@@ -25,6 +25,8 @@ import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope
 import io.sarl.core.AgentTask
 import java.util.UUID
+import java.util.Set
+import java.util.Collection
 
 /**
 * Initialization event for an Agent.
@@ -58,6 +60,78 @@ event AgentKilled {
 	var UUID agentID
 }
 
+
+/**  Notifies other members the member with agentID has effectively integrated the holon context.*/
+event MemberJoined {
+	var UUID parentContextID
+	var UUID agentID
+}
+
+/** Notifies other members the member with agentID was excluded (forced to leave) the holon context parentContextID */
+event MemberExcluded {
+	var UUID parentContextID
+	var UUID excludeMemberID
+}
+
+/** Notifies other members the member with agentID has left the holon context */
+event MemberLeft {
+	var UUID agentID
+}
+
+/**
+ * Notifies behaviors the agent has joined a new superholon
+ */
+event ContextJoined {
+	var UUID holonContextID
+	var UUID defaultSpaceID
+}
+
+/**
+ * Notifies behaviors the agent has left a superholon
+ */
+event ContextLeft {
+	var UUID holonContextID
+}
+
+capacity ExternalContextAccess {
+	/**
+	 * Replies all contexts this agent is a member of, including the default context
+	 */	 
+	def getAllContexts : Collection<AgentContext>
+
+	/**
+	 * Replies the AgentContext for the given ID.
+	 * The agent must have joined the context before calling this action or use its parentContextID
+	 * @see{Agent#getParentID}
+	 * @see{#join}
+	 * 
+	 * @throws UnknownContextException if the context specified context is not known by the agent.
+	 * @param contextID the ID of the context to get.
+	 */
+	def getContext(UUID contextID): AgentContext
+
+    /**
+	 * Joins a new parent context (a new super holon).
+	 * This actions registers the agent in the default Space of the parent Context.
+	 * . 
+	 * @fires ContextJoined in its inner Context default space (Behaviors#wake).
+	 * @fires MemberJoined in its parent Context default Space 
+	 */
+	def join(UUID futureContext, UUID futureContextDefaultSpaceID) fires ContextJoined, MemberJoined
+
+	/**
+	 * Leaves the parent's context. 
+	 * @fires ContextLeft in its inner Context default space (Behaviors#wake).
+	 * @fires MemberLeft in its parent Context default Space 
+	 */
+	def leave(UUID contextID) fires ContextLeft, MemberLeft
+
+}
+
+capacity InnerContextAccess {
+	def getInnerContext : AgentContext
+}
+
 /**
 * Agent behaviors management.
 */
@@ -81,13 +155,13 @@ capacity Behaviors {
 * Lifecycle related actions.
 */
 capacity Lifecycle {
+
+	
 	/**
-	* Spawns a new Agent inside the default context of this agent.
-	* This action must automatically register the newly created agent
-	* within the default space of the context.
-	* @fires AgentSpawned in DefaultSpace
-	*/
-	def spawn(Class<? extends Agent> aAgent, Object[] params) : UUID fires AgentSpawned
+	 * Spawns a new member agent in the parent's context (parentID)
+	 * @fires AgentSpawned inside the default context of the parent. The source of the event is this agent.
+	 */
+	def spawnInContext(Class <? extends Agent> agentClass, AgentContext context, Object[] params) : UUID fires AgentSpawned
 	
     /**
 	* Kills this agent. 
@@ -102,6 +176,46 @@ capacity Lifecycle {
 	def killMe fires AgentKilled, Destroy
 }
 
+
+
+
+/**
+* Schedules actions in time.
+*/
+capacity Schedules {
+	/**
+	* Creates an anonymous task to execute the procedure that will be triggered after the specified delay.
+	* @param delay time in milliseconds to delay the procedure execution
+	* @param procedure the closure to execute.
+	* @return the generated task
+	*/	
+	def in(long delay,(Agent) => void procedure) : AgentTask
+
+	/**
+	 * Schedule a given task to be executed after the specified delay.
+	 */
+	def in(AgentTask task, long delay,(Agent) => void procedure) : AgentTask
+
+	/**
+	 * Create a named task that can be retrieved and schedule later.
+	 */
+	def task(String name) : AgentTask
+
+	/**
+	 * Create an anonymous task and schedules a periodic execution of its behavior.
+	 */
+	def every(long period,(Agent) => void procedure) : AgentTask
+
+	/**
+	 * Schedule a periodic execution of the given task.
+	 */
+	def every(AgentTask task, long period,(Agent) => void procedure) : AgentTask
+
+}
+
+
+//Utility Capacities
+
 /**
 * Gives access to the DefaultContext of the agent and common actions on its default space.
 * Defines a set of commonly accessed action performed on the Default Space 
@@ -109,6 +223,8 @@ capacity Lifecycle {
 *
 */
 capacity DefaultContextInteractions {
+	
+	//Communications
 	
 	/**
 	* Returns the Default context fo the agent
@@ -156,42 +272,13 @@ capacity DefaultContextInteractions {
 	* </code>
 	*/
 	def receive(UUID receiver, Event e)
-	 
+	
+	//Agent Creation
+	/**
+	* Spawns a new Agent inside the default context of this agent.
+	* This action must automatically register the newly created agent
+	* within the default space of the context.
+	* @fires AgentSpawned in DefaultSpace
+	*/
+	def spawn(Class<? extends Agent> aAgent, Object[] params) : UUID fires AgentSpawned
 }
-
-
-/**
-* Schedules actions in time.
-*/
-capacity Schedules {
-	/**
-	* Creates an anonymous task to execute the procedure that will be triggered after the specified delay.
-	* @param delay time in milliseconds to delay the procedure execution
-	* @param procedure the closure to execute.
-	* @return the generated task
-	*/	
-	def in(long delay,(Agent) => void procedure) : AgentTask
-
-	/**
-	 * Schedule a given task to be executed after the specified delay.
-	 */
-	def in(AgentTask task, long delay,(Agent) => void procedure) : AgentTask
-
-	/**
-	 * Create a named task that can be retrieved and schedule later.
-	 */
-	def task(String name) : AgentTask
-
-	/**
-	 * Create an anonymous task and schedules a periodic execution of its behavior.
-	 */
-	def every(long period,(Agent) => void procedure) : AgentTask
-
-	/**
-	 * Schedule a periodic execution of the given task.
-	 */
-	def every(AgentTask task, long period,(Agent) => void procedure) : AgentTask
-
-}
-
-

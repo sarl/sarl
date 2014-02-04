@@ -34,7 +34,7 @@ public interface Space {
 	 * 
 	 * @return the space's id
 	 */
-	public SpaceID getId();
+	public SpaceID getID();
 
 	/**
 	 * Returns the IDs of all agents interacting in this space all over the

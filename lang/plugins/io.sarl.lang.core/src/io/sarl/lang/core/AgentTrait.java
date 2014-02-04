@@ -38,11 +38,11 @@ abstract class AgentTrait {
 		return this.agentRef.get();
 	}
 
-	protected <C extends Capacity> C getSkill(Class<C> capacity) {
+	protected <S extends Capacity> S getSkill(Class<S> capacity) {
 		return getOwner().getSkill(capacity);
 	}
 	
-	protected <C extends Capacity> void operator_mappedTo(Class<C> capacity, C skill) {
+	protected <S extends Skill & Capacity> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
 		getOwner().setSkill(capacity, skill);
 	}
 

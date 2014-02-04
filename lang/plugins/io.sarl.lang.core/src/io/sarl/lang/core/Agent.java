@@ -34,15 +34,33 @@ import javax.inject.Inject;
  */
 public class Agent implements Identifiable {
 
+	
 	private final UUID id = UUID.randomUUID();
 
-	private Map<Class<? extends Capacity>, Capacity> capacities = new ConcurrentHashMap<>();
+	private Map<Class<? extends Capacity>, Skill> capacities = new ConcurrentHashMap<>();
 
+	private final UUID parentID;
+	
+	/**
+	 * Creates a new agent by parent <code>parentID</code>
+	 * @param parentID the agent's spawner.
+	 */
+	public Agent(UUID parentID){
+		this.parentID = parentID;
+	}
+	
+	/**
+	 * Replies the agent's spanwer's ID
+	 * @return
+	 */
+	public UUID getParentID(){
+		return this.parentID;
+	}
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public UUID getId() {
+	public UUID getID() {
 		return this.id;
 	}
 
@@ -55,10 +73,15 @@ public class Agent implements Identifiable {
 	 *            implementaion of <code>capacity</code>
 	 * @return the skill that was set
 	 */
-	protected <C extends Capacity> C setSkill(Class<? extends Capacity> capacity, C skill) {
+	protected <S extends Skill & Capacity> S setSkill(Class<? extends Capacity> capacity, S skill) {
 		assert capacity != null;
 		assert skill != null;
-		return (C) this.capacities.put(capacity, skill);
+		if(hasSkill(capacity)){
+			clearSkill(capacity);
+		}
+		skill.install();
+		this.capacities.put(capacity, skill);
+		return skill; 
 	}
 
 	/**
@@ -67,9 +90,11 @@ public class Agent implements Identifiable {
 	 * @param capacity
 	 * @return the skill that was removed
 	 */
-	protected <C extends Capacity> C clearSkill(Class<C> capacity) {
+	protected <S extends Skill & Capacity> S clearSkill(Class<? extends Capacity> capacity) {
 		assert capacity != null;
-		return (C) this.capacities.remove(capacity);
+		Skill s =this.capacities.remove(capacity);
+		s.uninstall();
+		return (S) s;
 	}
 
 	/**
@@ -80,11 +105,11 @@ public class Agent implements Identifiable {
 	 * @param capacity
 	 * @return the skill
 	 */
-	protected <C extends Capacity> C getSkill(Class<C> capacity) {
+	protected <S extends Capacity> S getSkill(Class<S> capacity) {
 		assert capacity != null;
-		C skill = (C) this.capacities.get(capacity);
+		S skill = (S) this.capacities.get(capacity);
 		if(skill == null){
-			throw new UnimplementedCapacityException(capacity, this.getId());
+			throw new UnimplementedCapacityException(capacity, this.getID());
 		}
 		return skill;
 	}
@@ -103,15 +128,13 @@ public class Agent implements Identifiable {
 		return this.capacities.containsKey(capacity);
 	}
 
-	protected <C extends Capacity> void operator_mappedTo(Class<C> capacity, C skill) {
+	protected <S extends Skill & Capacity> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
 		setSkill(capacity, skill);
 	}
 
 	@Inject
 	void setBuiltinCapacitiesProvider(BuiltinCapacitiesProvider provider) {
-		for (Class<? extends Capacity> capCls : provider.getBuiltinCapacities()) {
-			capacities.put(capCls, provider.getBuiltinCapacity(capCls, this));
-		}
+		this.capacities.putAll(provider.getBuiltinCapacities(this));
 	}
 
 }

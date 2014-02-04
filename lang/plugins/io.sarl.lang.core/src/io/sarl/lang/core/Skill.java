@@ -16,20 +16,44 @@
 package io.sarl.lang.core;
 
 /**
- * A possible implementation of a capacity fulfilling all the constraints of this specification.
+ * A possible implementation of a capacity fulfilling all the constraints of
+ * this specification. Require Capacities should be accessed via the
+ * {@link #getSkill(Class)} inside the {@link #install()} The Skill should
+ * release all resources in the {@link #uninstall()}.
  * 
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Skill extends AgentTrait {
+public abstract class Skill extends AgentTrait {
 
 	/**
+	 * Creates a new Skill.
+	 * 
 	 * @param agent
 	 */
 	public Skill(Agent agent) {
 		super(agent);
+	}
+
+	/**
+	 * This method is called just after the installation of this skill into its
+	 * owner agent. In this method you should get all information that depends
+	 * on other Capacities.
+	 * 
+	 */
+	protected void install() {
+		//
+	}
+
+	/**
+	 * This method is called just before uninstalling the skill from its owner
+	 * agent. The Skill should release all resources here.
+	 * 
+	 */
+	protected void uninstall() {
+		//
 	}
 
 }

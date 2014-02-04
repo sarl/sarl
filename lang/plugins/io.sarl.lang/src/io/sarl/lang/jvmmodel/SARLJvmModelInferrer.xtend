@@ -41,6 +41,7 @@ import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
 import io.sarl.lang.core.Percept
+import java.util.UUID
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -224,6 +225,14 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		acceptor.accept(agent.toClass(agent.fullyQualifiedName)).initializeLater [
 			documentation = agent.documentation
 			superTypes += newTypeRef(agent, typeof(io.sarl.lang.core.Agent))
+			members+= agent.toConstructor[
+				documentation = '''Creates a new Agent of type «agent.name»'''
+				parameters+= agent.toParameter('parentID', newTypeRef(UUID))
+				body= '''
+					super(parentID);
+				'''
+			]
+			
 			var int counter = 0
 			for (feature : agent.features) {
 				switch feature {

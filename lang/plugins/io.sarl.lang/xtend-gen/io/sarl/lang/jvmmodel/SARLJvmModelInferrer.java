@@ -36,10 +36,12 @@ import io.sarl.lang.sarl.RequiredCapacity;
 import io.sarl.lang.sarl.Skill;
 import io.sarl.lang.sarl.SkillFeature;
 import java.util.Arrays;
+import java.util.UUID;
 import java.util.logging.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmField;
@@ -400,6 +402,30 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
         EList<JvmTypeReference> _superTypes = it.getSuperTypes();
         JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(agent, io.sarl.lang.core.Agent.class);
         SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _newTypeRef);
+        EList<JvmMember> _members = it.getMembers();
+        final Procedure1<JvmConstructor> _function = new Procedure1<JvmConstructor>() {
+          public void apply(final JvmConstructor it) {
+            StringConcatenation _builder = new StringConcatenation();
+            _builder.append("Creates a new Agent of type ");
+            String _name = agent.getName();
+            _builder.append(_name, "");
+            SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _builder.toString());
+            EList<JvmFormalParameter> _parameters = it.getParameters();
+            JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(it, UUID.class);
+            JvmFormalParameter _parameter = SARLJvmModelInferrer.this._jvmTypesBuilder.toParameter(agent, "parentID", _newTypeRef);
+            SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
+            StringConcatenationClient _client = new StringConcatenationClient() {
+              @Override
+              protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                _builder.append("super(parentID);");
+                _builder.newLine();
+              }
+            };
+            SARLJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
+          }
+        };
+        JvmConstructor _constructor = SARLJvmModelInferrer.this._jvmTypesBuilder.toConstructor(agent, _function);
+        SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmConstructor>operator_add(_members, _constructor);
         int counter = 0;
         EList<AgentFeature> _features = agent.getFeatures();
         for (final AgentFeature feature : _features) {
@@ -409,8 +435,8 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
               _matched=true;
               counter = (counter + 1);
               final JvmOperation bMethod = SARLJvmModelInferrer.this.generateBehaviorUnit(it, ((BehaviorUnit) feature), counter);
-              EList<JvmMember> _members = it.getMembers();
-              SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members, bMethod);
+              EList<JvmMember> _members_1 = it.getMembers();
+              SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_1, bMethod);
             }
           }
           if (!_matched) {
@@ -424,10 +450,10 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           if (!_matched) {
             if (feature instanceof Attribute) {
               _matched=true;
-              EList<JvmMember> _members = it.getMembers();
+              EList<JvmMember> _members_1 = it.getMembers();
               String _name = ((Attribute)feature).getName();
               JvmTypeReference _type = ((Attribute)feature).getType();
-              final Procedure1<JvmField> _function = new Procedure1<JvmField>() {
+              final Procedure1<JvmField> _function_1 = new Procedure1<JvmField>() {
                 public void apply(final JvmField it) {
                   String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(feature);
                   SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
@@ -438,8 +464,8 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
                   it.setFinal(_not);
                 }
               };
-              JvmField _field = SARLJvmModelInferrer.this._jvmTypesBuilder.toField(feature, _name, _type, _function);
-              SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members, _field);
+              JvmField _field = SARLJvmModelInferrer.this._jvmTypesBuilder.toField(feature, _name, _type, _function_1);
+              SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members_1, _field);
             }
           }
           if (!_matched) {

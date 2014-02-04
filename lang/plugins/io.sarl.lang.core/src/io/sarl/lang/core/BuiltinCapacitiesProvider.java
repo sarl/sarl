@@ -15,6 +15,7 @@
  */
 package io.sarl.lang.core;
 
+import java.util.Map;
 import java.util.Set;
 
 
@@ -26,8 +27,5 @@ import java.util.Set;
  * @mavenartifactid $ArtifactId$
  */
 public interface BuiltinCapacitiesProvider {
-	
-	public <C extends Capacity> C getBuiltinCapacity(Class<C> capacity, Agent agent);
-	
-	public Set<Class<? extends Capacity>> getBuiltinCapacities();
+	public Map<Class<? extends Capacity>, Skill> getBuiltinCapacities(Agent agent);
 }
