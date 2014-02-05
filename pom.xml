@@ -153,6 +153,10 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 						<detectJavaApiLink>true</detectJavaApiLink>
 						<links>
 							<link>http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.5/</link>
+							<link>http://hazelcast.org/docs/latest/javadoc/</link>
+							<link>http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/</link>
+							<link>http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/</link>
+							<link>http://google-guice.googlecode.com/svn/trunk/javadoc/</link>
 						</links>
 						<docfilessubdirs>true</docfilessubdirs>
 						<excludePackageNames></excludePackageNames>
