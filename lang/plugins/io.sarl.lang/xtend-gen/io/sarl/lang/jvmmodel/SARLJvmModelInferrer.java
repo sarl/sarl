@@ -16,6 +16,7 @@
 package io.sarl.lang.jvmmodel;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import io.sarl.lang.core.Percept;
 import io.sarl.lang.sarl.AbstractElement;
@@ -136,8 +137,8 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
         EList<JvmTypeReference> _superTypes = it.getSuperTypes();
         JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(element, io.sarl.lang.core.Event.class);
         SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _newTypeRef);
-        EList<EventFeature> _feutures = element.getFeutures();
-        for (final EventFeature feature : _feutures) {
+        EList<EventFeature> _features = element.getFeatures();
+        for (final EventFeature feature : _features) {
           boolean _matched = false;
           if (!_matched) {
             if (feature instanceof Action) {
@@ -195,6 +196,50 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
             }
           }
         }
+        EList<JvmMember> _members = it.getMembers();
+        JvmTypeReference _newTypeRef_1 = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(it, String.class);
+        final Procedure1<JvmOperation> _function = new Procedure1<JvmOperation>() {
+          public void apply(final JvmOperation it) {
+            StringConcatenation _builder = new StringConcatenation();
+            _builder.append("Returns a String representation of the Event ");
+            String _name = element.getName();
+            _builder.append(_name, "");
+            SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _builder.toString());
+            final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
+              public void apply(final ITreeAppendable it) {
+                StringConcatenation _builder = new StringConcatenation();
+                _builder.append("StringBuilder result = new StringBuilder();");
+                _builder.newLine();
+                _builder.append("result.append(\"");
+                String _name = element.getName();
+                _builder.append(_name, "");
+                _builder.append("[\");");
+                _builder.newLineIfNotEmpty();
+                {
+                  EList<EventFeature> _features = element.getFeatures();
+                  Iterable<Attribute> _filter = Iterables.<Attribute>filter(_features, Attribute.class);
+                  for(final Attribute attr : _filter) {
+                    _builder.append("result.append(\"");
+                    String _name_1 = attr.getName();
+                    _builder.append(_name_1, "");
+                    _builder.append("  = \").append(this.");
+                    String _name_2 = attr.getName();
+                    _builder.append(_name_2, "");
+                    _builder.append(");");
+                    _builder.newLineIfNotEmpty();
+                  }
+                }
+                _builder.append("result.append(\"]\");");
+                _builder.newLine();
+                _builder.append("return result.toString();");
+                it.append(_builder);
+              }
+            };
+            SARLJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _function);
+          }
+        };
+        JvmOperation _method = SARLJvmModelInferrer.this._jvmTypesBuilder.toMethod(element, "toString", _newTypeRef_1, _function);
+        SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members, _method);
       }
     };
     _accept.initializeLater(_function);

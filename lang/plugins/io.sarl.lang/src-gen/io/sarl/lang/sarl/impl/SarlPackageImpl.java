@@ -322,7 +322,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getEvent_Feutures()
+  public EReference getEvent_Features()
   {
     return (EReference)eventEClass.getEStructuralFeatures().get(1);
   }
@@ -767,7 +767,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
     eventEClass = createEClass(EVENT);
     createEReference(eventEClass, EVENT__SUPER_TYPE);
-    createEReference(eventEClass, EVENT__FEUTURES);
+    createEReference(eventEClass, EVENT__FEATURES);
 
     capacityEClass = createEClass(CAPACITY);
     createEReference(capacityEClass, CAPACITY__SUPER_TYPE);
@@ -894,7 +894,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
     initEClass(eventEClass, Event.class, "Event", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getEvent_SuperType(), this.getEvent(), null, "superType", null, 0, 1, Event.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getEvent_Feutures(), this.getEventFeature(), null, "feutures", null, 0, -1, Event.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getEvent_Features(), this.getEventFeature(), null, "features", null, 0, -1, Event.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(capacityEClass, Capacity.class, "Capacity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getCapacity_SuperType(), this.getCapacity(), null, "superType", null, 0, 1, Capacity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

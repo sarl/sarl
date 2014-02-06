@@ -59,4 +59,51 @@ class AgentCompilerTest {
 			}
 		''')
 		}
+		
+		@Test
+		def eventCompile(){
+			'''event Factorial {
+				var Integer number
+				var Integer value
+			}'''.assertCompilesTo(
+				'''
+import io.sarl.lang.core.Event;
+
+@SuppressWarnings("all")
+public class Factorial extends Event {
+  private Integer number;
+  
+  public Integer getNumber() {
+    return this.number;
+  }
+  
+  public void setNumber(final Integer number) {
+    this.number = number;
+  }
+  
+  private Integer value;
+  
+  public Integer getValue() {
+    return this.value;
+  }
+  
+  public void setValue(final Integer value) {
+    this.value = value;
+  }
+  
+  /**
+   * Returns a String representation of the Event Factorial
+   */
+  public String toString() {
+    StringBuilder result = new StringBuilder();
+    result.append("Factorial[");
+    result.append("number  = ").append(this.number);
+    result.append("value  = ").append(this.value);
+    result.append("]");
+    return result.toString();
+  }
+}
+'''
+			)
+		}
 }

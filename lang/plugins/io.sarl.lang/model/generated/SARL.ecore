@@ -13,7 +13,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Event" eSuperTypes="#//AbstractElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="superType" eType="#//Event"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="feutures" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="features" upperBound="-1"
         eType="#//EventFeature" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Capacity" eSuperTypes="#//AbstractElement">

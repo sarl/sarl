@@ -267,7 +267,7 @@ public class SARLParser extends AbstractContentAssistParser {
 					put(grammarAccess.getModelAccess().getElementsAssignment_2(), "rule__Model__ElementsAssignment_2");
 					put(grammarAccess.getEventAccess().getNameAssignment_1(), "rule__Event__NameAssignment_1");
 					put(grammarAccess.getEventAccess().getSuperTypeAssignment_2_1(), "rule__Event__SuperTypeAssignment_2_1");
-					put(grammarAccess.getEventAccess().getFeuturesAssignment_4(), "rule__Event__FeuturesAssignment_4");
+					put(grammarAccess.getEventAccess().getFeaturesAssignment_4(), "rule__Event__FeaturesAssignment_4");
 					put(grammarAccess.getCapacityAccess().getNameAssignment_1(), "rule__Capacity__NameAssignment_1");
 					put(grammarAccess.getCapacityAccess().getSuperTypeAssignment_2_1(), "rule__Capacity__SuperTypeAssignment_2_1");
 					put(grammarAccess.getCapacityAccess().getActionsAssignment_4(), "rule__Capacity__ActionsAssignment_4");

@@ -111,15 +111,15 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final CrossReference cSuperTypeEventCrossReference_2_1_0 = (CrossReference)cSuperTypeAssignment_2_1.eContents().get(0);
 		private final RuleCall cSuperTypeEventIDTerminalRuleCall_2_1_0_1 = (RuleCall)cSuperTypeEventCrossReference_2_1_0.eContents().get(1);
 		private final Keyword cLeftCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
-		private final Assignment cFeuturesAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final RuleCall cFeuturesEventFeatureParserRuleCall_4_0 = (RuleCall)cFeuturesAssignment_4.eContents().get(0);
+		private final Assignment cFeaturesAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cFeaturesEventFeatureParserRuleCall_4_0 = (RuleCall)cFeaturesAssignment_4.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
 		
 		//Event:
-		//	"event" name=ValidID ("extends" superType=[Event])? "{" feutures+=EventFeature* "}";
+		//	"event" name=ValidID ("extends" superType=[Event])? "{" features+=EventFeature* "}";
 		public ParserRule getRule() { return rule; }
 
-		//"event" name=ValidID ("extends" superType=[Event])? "{" feutures+=EventFeature* "}"
+		//"event" name=ValidID ("extends" superType=[Event])? "{" features+=EventFeature* "}"
 		public Group getGroup() { return cGroup; }
 
 		//"event"
@@ -149,11 +149,11 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_3() { return cLeftCurlyBracketKeyword_3; }
 
-		//feutures+=EventFeature*
-		public Assignment getFeuturesAssignment_4() { return cFeuturesAssignment_4; }
+		//features+=EventFeature*
+		public Assignment getFeaturesAssignment_4() { return cFeaturesAssignment_4; }
 
 		//EventFeature
-		public RuleCall getFeuturesEventFeatureParserRuleCall_4_0() { return cFeuturesEventFeatureParserRuleCall_4_0; }
+		public RuleCall getFeaturesEventFeatureParserRuleCall_4_0() { return cFeaturesEventFeatureParserRuleCall_4_0; }
 
 		//"}"
 		public Keyword getRightCurlyBracketKeyword_5() { return cRightCurlyBracketKeyword_5; }
@@ -1125,7 +1125,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Event:
-	//	"event" name=ValidID ("extends" superType=[Event])? "{" feutures+=EventFeature* "}";
+	//	"event" name=ValidID ("extends" superType=[Event])? "{" features+=EventFeature* "}";
 	public EventElements getEventAccess() {
 		return (pEvent != null) ? pEvent : (pEvent = new EventElements());
 	}

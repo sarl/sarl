@@ -1219,7 +1219,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID superType=[Event|ID]? feutures+=EventFeature*)
+	 *     (name=ValidID superType=[Event|ID]? features+=EventFeature*)
 	 */
 	protected void sequence_Event(EObject context, Event semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

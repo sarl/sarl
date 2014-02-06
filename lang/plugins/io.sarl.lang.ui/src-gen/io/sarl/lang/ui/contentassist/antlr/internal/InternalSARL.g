@@ -4169,9 +4169,9 @@ rule__Event__Group__4__Impl
     }
 :
 (
-{ before(grammarAccess.getEventAccess().getFeuturesAssignment_4()); }
-(rule__Event__FeuturesAssignment_4)*
-{ after(grammarAccess.getEventAccess().getFeuturesAssignment_4()); }
+{ before(grammarAccess.getEventAccess().getFeaturesAssignment_4()); }
+(rule__Event__FeaturesAssignment_4)*
+{ after(grammarAccess.getEventAccess().getFeaturesAssignment_4()); }
 )
 
 ;
@@ -18671,14 +18671,14 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Event__FeuturesAssignment_4
+rule__Event__FeaturesAssignment_4
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getEventAccess().getFeuturesEventFeatureParserRuleCall_4_0()); }
-	ruleEventFeature{ after(grammarAccess.getEventAccess().getFeuturesEventFeatureParserRuleCall_4_0()); }
+{ before(grammarAccess.getEventAccess().getFeaturesEventFeatureParserRuleCall_4_0()); }
+	ruleEventFeature{ after(grammarAccess.getEventAccess().getFeaturesEventFeatureParserRuleCall_4_0()); }
 )
 
 ;

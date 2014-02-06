@@ -13,7 +13,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.Event#getSuperType <em>Super Type</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.Event#getFeutures <em>Feutures</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.Event#getFeatures <em>Features</em>}</li>
  * </ul>
  * </p>
  *
@@ -50,19 +50,19 @@ public interface Event extends AbstractElement
   void setSuperType(Event value);
 
   /**
-   * Returns the value of the '<em><b>Feutures</b></em>' containment reference list.
+   * Returns the value of the '<em><b>Features</b></em>' containment reference list.
    * The list contents are of type {@link io.sarl.lang.sarl.EventFeature}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Feutures</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Features</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Feutures</em>' containment reference list.
-   * @see io.sarl.lang.sarl.SarlPackage#getEvent_Feutures()
+   * @return the value of the '<em>Features</em>' containment reference list.
+   * @see io.sarl.lang.sarl.SarlPackage#getEvent_Features()
    * @model containment="true"
    * @generated
    */
-  EList<EventFeature> getFeutures();
+  EList<EventFeature> getFeatures();
 
 } // Event

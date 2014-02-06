@@ -28,7 +28,7 @@ AbstractElement:
 
 Event:
 	'event' name=ValidID ('extends' superType=[Event])? '{'
-	feutures+=EventFeature*
+	features+=EventFeature*
 	'}';
 
 Capacity:

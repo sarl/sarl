@@ -159,13 +159,13 @@ public interface SarlPackage extends EPackage
   int EVENT__SUPER_TYPE = ABSTRACT_ELEMENT_FEATURE_COUNT + 0;
 
   /**
-   * The feature id for the '<em><b>Feutures</b></em>' containment reference list.
+   * The feature id for the '<em><b>Features</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int EVENT__FEUTURES = ABSTRACT_ELEMENT_FEATURE_COUNT + 1;
+  int EVENT__FEATURES = ABSTRACT_ELEMENT_FEATURE_COUNT + 1;
 
   /**
    * The number of structural features of the '<em>Event</em>' class.
@@ -809,15 +809,15 @@ public interface SarlPackage extends EPackage
   EReference getEvent_SuperType();
 
   /**
-   * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.Event#getFeutures <em>Feutures</em>}'.
+   * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.Event#getFeatures <em>Features</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Feutures</em>'.
-   * @see io.sarl.lang.sarl.Event#getFeutures()
+   * @return the meta object for the containment reference list '<em>Features</em>'.
+   * @see io.sarl.lang.sarl.Event#getFeatures()
    * @see #getEvent()
    * @generated
    */
-  EReference getEvent_Feutures();
+  EReference getEvent_Features();
 
   /**
    * Returns the meta object for class '{@link io.sarl.lang.sarl.Capacity <em>Capacity</em>}'.
@@ -1338,12 +1338,12 @@ public interface SarlPackage extends EPackage
     EReference EVENT__SUPER_TYPE = eINSTANCE.getEvent_SuperType();
 
     /**
-     * The meta object literal for the '<em><b>Feutures</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Features</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference EVENT__FEUTURES = eINSTANCE.getEvent_Feutures();
+    EReference EVENT__FEATURES = eINSTANCE.getEvent_Features();
 
     /**
      * The meta object literal for the '{@link io.sarl.lang.sarl.impl.CapacityImpl <em>Capacity</em>}' class.

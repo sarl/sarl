@@ -18,7 +18,6 @@
 				<groupId>org.eclipse.xtend</groupId>
 				<artifactId>xtend-maven-plugin</artifactId>
 			</plugin>
-
 		</plugins>
 
 		<pluginManagement>

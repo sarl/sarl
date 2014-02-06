@@ -99,7 +99,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			[
 				documentation = element.documentation
 				superTypes += newTypeRef(element, typeof(io.sarl.lang.core.Event))
-				for (feature : element.feutures) {
+				for (feature : element.features) {
 					switch feature {
 						Action: {
 							generateAction(feature.signature, feature.body)
@@ -126,6 +126,26 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					}
 
 				}
+				//String result = "Factorial [";
+				//result = result + "number  = " + this.number;
+				//result = result + "value  = " + this.value;
+				//result = result + "]";
+				//return result;
+				
+				members += element.toMethod('toString', newTypeRef(String)) [
+					documentation = '''Returns a String representation of the Event «element.name»'''
+					body = [
+						append('''
+						StringBuilder result = new StringBuilder();
+						result.append("«element.name»[");
+						«FOR attr: element.features.filter(Attribute)»
+						result.append("«attr.name»  = ").append(this.«attr.name»);
+						«ENDFOR»
+						result.append("]");
+						return result.toString();''')
+					]
+				]
+				
 			])
 	}
 
@@ -157,6 +177,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					if (cap.fullyQualifiedName != null) {
 						superTypes += element.newTypeRef(cap.fullyQualifiedName.toString)
 					} else {
+
 						//log.fine("Null FQN for Capacity:" + cap.name)
 						println("Null FQN for Capacity:" + cap.name)
 					}
@@ -225,14 +246,13 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		acceptor.accept(agent.toClass(agent.fullyQualifiedName)).initializeLater [
 			documentation = agent.documentation
 			superTypes += newTypeRef(agent, typeof(io.sarl.lang.core.Agent))
-			members+= agent.toConstructor[
+			members += agent.toConstructor [
 				documentation = '''Creates a new Agent of type «agent.name»'''
-				parameters+= agent.toParameter('parentID', newTypeRef(UUID))
-				body= '''
+				parameters += agent.toParameter('parentID', newTypeRef(UUID))
+				body = '''
 					super(parentID);
 				'''
 			]
-			
 			var int counter = 0
 			for (feature : agent.features) {
 				switch feature {

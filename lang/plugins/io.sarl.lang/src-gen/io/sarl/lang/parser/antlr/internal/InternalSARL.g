@@ -276,16 +276,16 @@ ruleEvent returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getEventAccess().getFeuturesEventFeatureParserRuleCall_4_0()); 
+	        newCompositeNode(grammarAccess.getEventAccess().getFeaturesEventFeatureParserRuleCall_4_0()); 
 	    }
-		lv_feutures_5_0=ruleEventFeature		{
+		lv_features_5_0=ruleEventFeature		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getEventRule());
 	        }
        		add(
        			$current, 
-       			"feutures",
-        		lv_feutures_5_0, 
+       			"features",
+        		lv_features_5_0, 
         		"EventFeature");
 	        afterParserOrEnumRuleCall();
 	    }

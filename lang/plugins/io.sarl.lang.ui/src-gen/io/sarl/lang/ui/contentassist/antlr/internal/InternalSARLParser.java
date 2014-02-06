@@ -13849,22 +13849,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Event__Group__4__Impl"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:4166:1: rule__Event__Group__4__Impl : ( ( rule__Event__FeuturesAssignment_4 )* ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:4166:1: rule__Event__Group__4__Impl : ( ( rule__Event__FeaturesAssignment_4 )* ) ;
     public final void rule__Event__Group__4__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:4170:1: ( ( ( rule__Event__FeuturesAssignment_4 )* ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:4171:1: ( ( rule__Event__FeuturesAssignment_4 )* )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:4170:1: ( ( ( rule__Event__FeaturesAssignment_4 )* ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:4171:1: ( ( rule__Event__FeaturesAssignment_4 )* )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:4171:1: ( ( rule__Event__FeuturesAssignment_4 )* )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:4172:1: ( rule__Event__FeuturesAssignment_4 )*
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:4171:1: ( ( rule__Event__FeaturesAssignment_4 )* )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:4172:1: ( rule__Event__FeaturesAssignment_4 )*
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getEventAccess().getFeuturesAssignment_4()); 
+               before(grammarAccess.getEventAccess().getFeaturesAssignment_4()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:4173:1: ( rule__Event__FeuturesAssignment_4 )*
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:4173:1: ( rule__Event__FeaturesAssignment_4 )*
             loop49:
             do {
                 int alt49=2;
@@ -13877,10 +13877,10 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
                 switch (alt49) {
             	case 1 :
-            	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:4173:2: rule__Event__FeuturesAssignment_4
+            	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:4173:2: rule__Event__FeaturesAssignment_4
             	    {
-            	    pushFollow(FOLLOW_rule__Event__FeuturesAssignment_4_in_rule__Event__Group__4__Impl9083);
-            	    rule__Event__FeuturesAssignment_4();
+            	    pushFollow(FOLLOW_rule__Event__FeaturesAssignment_4_in_rule__Event__Group__4__Impl9083);
+            	    rule__Event__FeaturesAssignment_4();
 
             	    state._fsp--;
             	    if (state.failed) return ;
@@ -13894,7 +13894,7 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
             } while (true);
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getEventAccess().getFeuturesAssignment_4()); 
+               after(grammarAccess.getEventAccess().getFeaturesAssignment_4()); 
             }
 
             }
@@ -53623,9 +53623,9 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
     // $ANTLR end "rule__Event__SuperTypeAssignment_2_1"
 
 
-    // $ANTLR start "rule__Event__FeuturesAssignment_4"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:18674:1: rule__Event__FeuturesAssignment_4 : ( ruleEventFeature ) ;
-    public final void rule__Event__FeuturesAssignment_4() throws RecognitionException {
+    // $ANTLR start "rule__Event__FeaturesAssignment_4"
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:18674:1: rule__Event__FeaturesAssignment_4 : ( ruleEventFeature ) ;
+    public final void rule__Event__FeaturesAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
@@ -53637,15 +53637,15 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
             // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:18680:1: ruleEventFeature
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getEventAccess().getFeuturesEventFeatureParserRuleCall_4_0()); 
+               before(grammarAccess.getEventAccess().getFeaturesEventFeatureParserRuleCall_4_0()); 
             }
-            pushFollow(FOLLOW_ruleEventFeature_in_rule__Event__FeuturesAssignment_437603);
+            pushFollow(FOLLOW_ruleEventFeature_in_rule__Event__FeaturesAssignment_437603);
             ruleEventFeature();
 
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getEventAccess().getFeuturesEventFeatureParserRuleCall_4_0()); 
+               after(grammarAccess.getEventAccess().getFeaturesEventFeatureParserRuleCall_4_0()); 
             }
 
             }
@@ -53665,7 +53665,7 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__Event__FeuturesAssignment_4"
+    // $ANTLR end "rule__Event__FeaturesAssignment_4"
 
 
     // $ANTLR start "rule__Capacity__NameAssignment_1"
@@ -65255,7 +65255,7 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
     public static final BitSet FOLLOW_51_in_rule__Event__Group__3__Impl9022 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule__Event__Group__4__Impl_in_rule__Event__Group__49053 = new BitSet(new long[]{0x0010000000010000L,0x0000000004000020L});
     public static final BitSet FOLLOW_rule__Event__Group__5_in_rule__Event__Group__49056 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Event__FeuturesAssignment_4_in_rule__Event__Group__4__Impl9083 = new BitSet(new long[]{0x0000000000010002L,0x0000000004000020L});
+    public static final BitSet FOLLOW_rule__Event__FeaturesAssignment_4_in_rule__Event__Group__4__Impl9083 = new BitSet(new long[]{0x0000000000010002L,0x0000000004000020L});
     public static final BitSet FOLLOW_rule__Event__Group__5__Impl_in_rule__Event__Group__59114 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_52_in_rule__Event__Group__5__Impl9142 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule__Event__Group_2__0__Impl_in_rule__Event__Group_2__09185 = new BitSet(new long[]{0x0000000000000010L});
@@ -66421,7 +66421,7 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
     public static final BitSet FOLLOW_ruleAbstractElement_in_rule__Model__ElementsAssignment_237502 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleValidID_in_rule__Event__NameAssignment_137533 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_RULE_ID_in_rule__Event__SuperTypeAssignment_2_137568 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleEventFeature_in_rule__Event__FeuturesAssignment_437603 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleEventFeature_in_rule__Event__FeaturesAssignment_437603 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleValidID_in_rule__Capacity__NameAssignment_137634 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_RULE_ID_in_rule__Capacity__SuperTypeAssignment_2_137669 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleActionSignature_in_rule__Capacity__ActionsAssignment_437704 = new BitSet(new long[]{0x0000000000000002L});

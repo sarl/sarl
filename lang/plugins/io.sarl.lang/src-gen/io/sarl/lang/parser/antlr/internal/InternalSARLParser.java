@@ -692,7 +692,7 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleEvent"
-    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:229:1: ruleEvent returns [EObject current=null] : (otherlv_0= 'event' ( (lv_name_1_0= ruleValidID ) ) (otherlv_2= 'extends' ( (otherlv_3= RULE_ID ) ) )? otherlv_4= '{' ( (lv_feutures_5_0= ruleEventFeature ) )* otherlv_6= '}' ) ;
+    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:229:1: ruleEvent returns [EObject current=null] : (otherlv_0= 'event' ( (lv_name_1_0= ruleValidID ) ) (otherlv_2= 'extends' ( (otherlv_3= RULE_ID ) ) )? otherlv_4= '{' ( (lv_features_5_0= ruleEventFeature ) )* otherlv_6= '}' ) ;
     public final EObject ruleEvent() throws RecognitionException {
         EObject current = null;
 
@@ -703,17 +703,17 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
         Token otherlv_6=null;
         AntlrDatatypeRuleToken lv_name_1_0 = null;
 
-        EObject lv_feutures_5_0 = null;
+        EObject lv_features_5_0 = null;
 
 
          enterRule(); 
             
         try {
-            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:232:28: ( (otherlv_0= 'event' ( (lv_name_1_0= ruleValidID ) ) (otherlv_2= 'extends' ( (otherlv_3= RULE_ID ) ) )? otherlv_4= '{' ( (lv_feutures_5_0= ruleEventFeature ) )* otherlv_6= '}' ) )
-            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:233:1: (otherlv_0= 'event' ( (lv_name_1_0= ruleValidID ) ) (otherlv_2= 'extends' ( (otherlv_3= RULE_ID ) ) )? otherlv_4= '{' ( (lv_feutures_5_0= ruleEventFeature ) )* otherlv_6= '}' )
+            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:232:28: ( (otherlv_0= 'event' ( (lv_name_1_0= ruleValidID ) ) (otherlv_2= 'extends' ( (otherlv_3= RULE_ID ) ) )? otherlv_4= '{' ( (lv_features_5_0= ruleEventFeature ) )* otherlv_6= '}' ) )
+            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:233:1: (otherlv_0= 'event' ( (lv_name_1_0= ruleValidID ) ) (otherlv_2= 'extends' ( (otherlv_3= RULE_ID ) ) )? otherlv_4= '{' ( (lv_features_5_0= ruleEventFeature ) )* otherlv_6= '}' )
             {
-            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:233:1: (otherlv_0= 'event' ( (lv_name_1_0= ruleValidID ) ) (otherlv_2= 'extends' ( (otherlv_3= RULE_ID ) ) )? otherlv_4= '{' ( (lv_feutures_5_0= ruleEventFeature ) )* otherlv_6= '}' )
-            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:233:3: otherlv_0= 'event' ( (lv_name_1_0= ruleValidID ) ) (otherlv_2= 'extends' ( (otherlv_3= RULE_ID ) ) )? otherlv_4= '{' ( (lv_feutures_5_0= ruleEventFeature ) )* otherlv_6= '}'
+            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:233:1: (otherlv_0= 'event' ( (lv_name_1_0= ruleValidID ) ) (otherlv_2= 'extends' ( (otherlv_3= RULE_ID ) ) )? otherlv_4= '{' ( (lv_features_5_0= ruleEventFeature ) )* otherlv_6= '}' )
+            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:233:3: otherlv_0= 'event' ( (lv_name_1_0= ruleValidID ) ) (otherlv_2= 'extends' ( (otherlv_3= RULE_ID ) ) )? otherlv_4= '{' ( (lv_features_5_0= ruleEventFeature ) )* otherlv_6= '}'
             {
             otherlv_0=(Token)match(input,15,FOLLOW_15_in_ruleEvent488); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -810,7 +810,7 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
                   	newLeafNode(otherlv_4, grammarAccess.getEventAccess().getLeftCurlyBracketKeyword_3());
                   
             }
-            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:276:1: ( (lv_feutures_5_0= ruleEventFeature ) )*
+            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:276:1: ( (lv_features_5_0= ruleEventFeature ) )*
             loop7:
             do {
                 int alt7=2;
@@ -823,18 +823,18 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
 
                 switch (alt7) {
             	case 1 :
-            	    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:277:1: (lv_feutures_5_0= ruleEventFeature )
+            	    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:277:1: (lv_features_5_0= ruleEventFeature )
             	    {
-            	    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:277:1: (lv_feutures_5_0= ruleEventFeature )
-            	    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:278:3: lv_feutures_5_0= ruleEventFeature
+            	    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:277:1: (lv_features_5_0= ruleEventFeature )
+            	    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:278:3: lv_features_5_0= ruleEventFeature
             	    {
             	    if ( state.backtracking==0 ) {
             	       
-            	      	        newCompositeNode(grammarAccess.getEventAccess().getFeuturesEventFeatureParserRuleCall_4_0()); 
+            	      	        newCompositeNode(grammarAccess.getEventAccess().getFeaturesEventFeatureParserRuleCall_4_0()); 
             	      	    
             	    }
             	    pushFollow(FOLLOW_ruleEventFeature_in_ruleEvent577);
-            	    lv_feutures_5_0=ruleEventFeature();
+            	    lv_features_5_0=ruleEventFeature();
 
             	    state._fsp--;
             	    if (state.failed) return current;
@@ -845,8 +845,8 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
             	      	        }
             	             		add(
             	             			current, 
-            	             			"feutures",
-            	              		lv_feutures_5_0, 
+            	             			"features",
+            	              		lv_features_5_0, 
             	              		"EventFeature");
             	      	        afterParserOrEnumRuleCall();
             	      	    

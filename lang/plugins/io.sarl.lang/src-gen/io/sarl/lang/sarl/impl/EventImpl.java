@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.impl.EventImpl#getSuperType <em>Super Type</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.impl.EventImpl#getFeutures <em>Feutures</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.EventImpl#getFeatures <em>Features</em>}</li>
  * </ul>
  * </p>
  *
@@ -48,14 +48,14 @@ public class EventImpl extends AbstractElementImpl implements Event
   protected Event superType;
 
   /**
-   * The cached value of the '{@link #getFeutures() <em>Feutures</em>}' containment reference list.
+   * The cached value of the '{@link #getFeatures() <em>Features</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getFeutures()
+   * @see #getFeatures()
    * @generated
    * @ordered
    */
-  protected EList<EventFeature> feutures;
+  protected EList<EventFeature> features;
 
   /**
    * <!-- begin-user-doc -->
@@ -126,13 +126,13 @@ public class EventImpl extends AbstractElementImpl implements Event
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<EventFeature> getFeutures()
+  public EList<EventFeature> getFeatures()
   {
-    if (feutures == null)
+    if (features == null)
     {
-      feutures = new EObjectContainmentEList<EventFeature>(EventFeature.class, this, SarlPackage.EVENT__FEUTURES);
+      features = new EObjectContainmentEList<EventFeature>(EventFeature.class, this, SarlPackage.EVENT__FEATURES);
     }
-    return feutures;
+    return features;
   }
 
   /**
@@ -145,8 +145,8 @@ public class EventImpl extends AbstractElementImpl implements Event
   {
     switch (featureID)
     {
-      case SarlPackage.EVENT__FEUTURES:
-        return ((InternalEList<?>)getFeutures()).basicRemove(otherEnd, msgs);
+      case SarlPackage.EVENT__FEATURES:
+        return ((InternalEList<?>)getFeatures()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -164,8 +164,8 @@ public class EventImpl extends AbstractElementImpl implements Event
       case SarlPackage.EVENT__SUPER_TYPE:
         if (resolve) return getSuperType();
         return basicGetSuperType();
-      case SarlPackage.EVENT__FEUTURES:
-        return getFeutures();
+      case SarlPackage.EVENT__FEATURES:
+        return getFeatures();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -184,9 +184,9 @@ public class EventImpl extends AbstractElementImpl implements Event
       case SarlPackage.EVENT__SUPER_TYPE:
         setSuperType((Event)newValue);
         return;
-      case SarlPackage.EVENT__FEUTURES:
-        getFeutures().clear();
-        getFeutures().addAll((Collection<? extends EventFeature>)newValue);
+      case SarlPackage.EVENT__FEATURES:
+        getFeatures().clear();
+        getFeatures().addAll((Collection<? extends EventFeature>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -205,8 +205,8 @@ public class EventImpl extends AbstractElementImpl implements Event
       case SarlPackage.EVENT__SUPER_TYPE:
         setSuperType((Event)null);
         return;
-      case SarlPackage.EVENT__FEUTURES:
-        getFeutures().clear();
+      case SarlPackage.EVENT__FEATURES:
+        getFeatures().clear();
         return;
     }
     super.eUnset(featureID);
@@ -224,8 +224,8 @@ public class EventImpl extends AbstractElementImpl implements Event
     {
       case SarlPackage.EVENT__SUPER_TYPE:
         return superType != null;
-      case SarlPackage.EVENT__FEUTURES:
-        return feutures != null && !feutures.isEmpty();
+      case SarlPackage.EVENT__FEATURES:
+        return features != null && !features.isEmpty();
     }
     return super.eIsSet(featureID);
   }
