@@ -1,0 +1,63 @@
+/*
+ * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.docs.utils;
+
+
+import io.sarl.lang.SARLInjectorProvider;
+
+import org.eclipse.xtext.junit4.IInjectorProvider;
+import org.eclipse.xtext.junit4.IRegistryConfigurator;
+import org.jnario.lib.AbstractSpecCreator;
+
+import com.google.inject.Injector;
+/**
+ * @author $Author: srodriguez$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+public class SARLSpecCreator extends AbstractSpecCreator {
+	protected Injector injector;
+
+	protected SARLInjectorProvider injectorProvider = new SARLInjectorProvider();
+
+	@Override
+	protected <T> T create(Class<T> klass) {
+		if (this.injector == null) {
+			beforeSpecRun();
+		}
+		return this.injector.getInstance(klass);
+	}
+
+	@Override
+	public void beforeSpecRun() {
+		this.injector = getInjectorProvider().getInjector();
+		if (getInjectorProvider() instanceof IRegistryConfigurator) {
+			((IRegistryConfigurator) getInjectorProvider()).setupRegistry();
+		}
+	}
+
+	public void afterSpecRun() {
+		if (getInjectorProvider() instanceof IRegistryConfigurator) {
+			((IRegistryConfigurator) getInjectorProvider()).restoreRegistry();
+		}
+	}
+
+	protected IInjectorProvider getInjectorProvider() {
+		return this.injectorProvider;
+	}
+
+}

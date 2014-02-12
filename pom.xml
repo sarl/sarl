@@ -28,6 +28,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 		<tycho-version>0.19.0</tycho-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<xtext.version>2.5.0</xtext.version>
+		<jnario.version>0.7.1</jnario.version>
 	</properties>
 
 	<!-- ======================================= -->
@@ -39,6 +40,8 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 		<module>lang</module>
 		<!-- SARL Language Core Libraries -->
 		<module>core</module>
+		<!-- SARL Language Documentation -->
+		<module>docs</module>
 	</modules>
 
 	<!-- ======================================= -->
