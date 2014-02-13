@@ -22,7 +22,7 @@ import java.util.HashMap;
 @SuppressWarnings("all")
 public class InternalSARLParser extends AbstractInternalAntlrParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_STRING", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'package'", "';'", "'event'", "'extends'", "'{'", "'}'", "'capacity'", "'agent'", "'behavior'", "'var'", "'const'", "'='", "'uses'", "','", "'on'", "'['", "']'", "'def'", "'('", "')'", "':'", "'fires'", "'requires'", "'skill'", "'implements'", "'new'", "'+='", "'-='", "'||'", "'&&'", "'=='", "'!='", "'==='", "'!=='", "'instanceof'", "'>='", "'<='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'<=>'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'as'", "'.'", "'::'", "'?.'", "'#'", "'|'", "'if'", "'else'", "'switch'", "'default'", "'case'", "'for'", "'while'", "'do'", "'static'", "'import'", "'extension'", "'super'", "'false'", "'true'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'catch'", "'?'", "'&'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_STRING", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'package'", "';'", "'event'", "'extends'", "'{'", "'}'", "'capacity'", "'agent'", "'behavior'", "'var'", "'val'", "'='", "'uses'", "','", "'on'", "'['", "']'", "'def'", "'('", "')'", "':'", "'fires'", "'requires'", "'skill'", "'implements'", "'new'", "'+='", "'-='", "'||'", "'&&'", "'=='", "'!='", "'==='", "'!=='", "'instanceof'", "'>='", "'<='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'<=>'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'as'", "'.'", "'::'", "'?.'", "'#'", "'|'", "'if'", "'else'", "'switch'", "'default'", "'case'", "'for'", "'while'", "'do'", "'static'", "'import'", "'extension'", "'super'", "'false'", "'true'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'catch'", "'?'", "'&'"
     };
     public static final int RULE_ID=4;
     public static final int T__29=29;
@@ -2285,7 +2285,7 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleAttribute"
-    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:763:1: ruleAttribute returns [EObject current=null] : ( ( ( (lv_writeable_0_0= 'var' ) ) | otherlv_1= 'const' ) ( (lv_type_2_0= ruleJvmTypeReference ) ) ( (lv_name_3_0= ruleValidID ) ) (otherlv_4= '=' ( (lv_initialValue_5_0= ruleXExpression ) ) )? (otherlv_6= ';' )? ) ;
+    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:763:1: ruleAttribute returns [EObject current=null] : ( ( ( (lv_writeable_0_0= 'var' ) ) | otherlv_1= 'val' ) ( (lv_type_2_0= ruleJvmTypeReference ) ) ( (lv_name_3_0= ruleValidID ) ) (otherlv_4= '=' ( (lv_initialValue_5_0= ruleXExpression ) ) )? (otherlv_6= ';' )? ) ;
     public final EObject ruleAttribute() throws RecognitionException {
         EObject current = null;
 
@@ -2303,13 +2303,13 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:766:28: ( ( ( ( (lv_writeable_0_0= 'var' ) ) | otherlv_1= 'const' ) ( (lv_type_2_0= ruleJvmTypeReference ) ) ( (lv_name_3_0= ruleValidID ) ) (otherlv_4= '=' ( (lv_initialValue_5_0= ruleXExpression ) ) )? (otherlv_6= ';' )? ) )
-            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:767:1: ( ( ( (lv_writeable_0_0= 'var' ) ) | otherlv_1= 'const' ) ( (lv_type_2_0= ruleJvmTypeReference ) ) ( (lv_name_3_0= ruleValidID ) ) (otherlv_4= '=' ( (lv_initialValue_5_0= ruleXExpression ) ) )? (otherlv_6= ';' )? )
+            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:766:28: ( ( ( ( (lv_writeable_0_0= 'var' ) ) | otherlv_1= 'val' ) ( (lv_type_2_0= ruleJvmTypeReference ) ) ( (lv_name_3_0= ruleValidID ) ) (otherlv_4= '=' ( (lv_initialValue_5_0= ruleXExpression ) ) )? (otherlv_6= ';' )? ) )
+            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:767:1: ( ( ( (lv_writeable_0_0= 'var' ) ) | otherlv_1= 'val' ) ( (lv_type_2_0= ruleJvmTypeReference ) ) ( (lv_name_3_0= ruleValidID ) ) (otherlv_4= '=' ( (lv_initialValue_5_0= ruleXExpression ) ) )? (otherlv_6= ';' )? )
             {
-            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:767:1: ( ( ( (lv_writeable_0_0= 'var' ) ) | otherlv_1= 'const' ) ( (lv_type_2_0= ruleJvmTypeReference ) ) ( (lv_name_3_0= ruleValidID ) ) (otherlv_4= '=' ( (lv_initialValue_5_0= ruleXExpression ) ) )? (otherlv_6= ';' )? )
-            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:767:2: ( ( (lv_writeable_0_0= 'var' ) ) | otherlv_1= 'const' ) ( (lv_type_2_0= ruleJvmTypeReference ) ) ( (lv_name_3_0= ruleValidID ) ) (otherlv_4= '=' ( (lv_initialValue_5_0= ruleXExpression ) ) )? (otherlv_6= ';' )?
+            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:767:1: ( ( ( (lv_writeable_0_0= 'var' ) ) | otherlv_1= 'val' ) ( (lv_type_2_0= ruleJvmTypeReference ) ) ( (lv_name_3_0= ruleValidID ) ) (otherlv_4= '=' ( (lv_initialValue_5_0= ruleXExpression ) ) )? (otherlv_6= ';' )? )
+            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:767:2: ( ( (lv_writeable_0_0= 'var' ) ) | otherlv_1= 'val' ) ( (lv_type_2_0= ruleJvmTypeReference ) ) ( (lv_name_3_0= ruleValidID ) ) (otherlv_4= '=' ( (lv_initialValue_5_0= ruleXExpression ) ) )? (otherlv_6= ';' )?
             {
-            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:767:2: ( ( (lv_writeable_0_0= 'var' ) ) | otherlv_1= 'const' )
+            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:767:2: ( ( (lv_writeable_0_0= 'var' ) ) | otherlv_1= 'val' )
             int alt17=2;
             int LA17_0 = input.LA(1);
 
@@ -2360,12 +2360,12 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:783:7: otherlv_1= 'const'
+                    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:783:7: otherlv_1= 'val'
                     {
                     otherlv_1=(Token)match(input,23,FOLLOW_23_in_ruleAttribute1812); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
-                          	newLeafNode(otherlv_1, grammarAccess.getAttributeAccess().getConstKeyword_0_1());
+                          	newLeafNode(otherlv_1, grammarAccess.getAttributeAccess().getValKeyword_0_1());
                           
                     }
 
@@ -4482,7 +4482,7 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXVariableDeclaration"
-    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1526:1: ruleXVariableDeclaration returns [EObject current=null] : ( () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'const' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )? ) ;
+    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1526:1: ruleXVariableDeclaration returns [EObject current=null] : ( () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )? ) ;
     public final EObject ruleXVariableDeclaration() throws RecognitionException {
         EObject current = null;
 
@@ -4501,11 +4501,11 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1529:28: ( ( () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'const' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )? ) )
-            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1530:1: ( () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'const' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )? )
+            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1529:28: ( ( () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )? ) )
+            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1530:1: ( () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )? )
             {
-            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1530:1: ( () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'const' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )? )
-            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1530:2: () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'const' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )?
+            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1530:1: ( () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )? )
+            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1530:2: () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )?
             {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1530:2: ()
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1531:5: 
@@ -4520,7 +4520,7 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
 
             }
 
-            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1536:2: ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'const' )
+            // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1536:2: ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' )
             int alt33=2;
             int LA33_0 = input.LA(1);
 
@@ -4571,12 +4571,12 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1552:7: otherlv_2= 'const'
+                    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1552:7: otherlv_2= 'val'
                     {
                     otherlv_2=(Token)match(input,23,FOLLOW_23_in_ruleXVariableDeclaration3496); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
-                          	newLeafNode(otherlv_2, grammarAccess.getXVariableDeclarationAccess().getConstKeyword_1_1());
+                          	newLeafNode(otherlv_2, grammarAccess.getXVariableDeclarationAccess().getValKeyword_1_1());
                           
                     }
 

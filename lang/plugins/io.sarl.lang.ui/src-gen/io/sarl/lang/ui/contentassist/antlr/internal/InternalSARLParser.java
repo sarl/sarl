@@ -23,7 +23,7 @@ import java.util.HashMap;
 @SuppressWarnings("all")
 public class InternalSARLParser extends AbstractInternalContentAssistParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_STRING", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'const'", "'+='", "'-='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'<='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'<=>'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'.'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "'false'", "'package'", "';'", "'event'", "'{'", "'}'", "'capacity'", "'agent'", "'behavior'", "'uses'", "','", "'on'", "'['", "']'", "'def'", "'('", "')'", "':'", "'fires'", "'requires'", "'skill'", "'implements'", "'new'", "'instanceof'", "'as'", "'#'", "'if'", "'else'", "'switch'", "'default'", "'case'", "'for'", "'while'", "'do'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'catch'", "'?'", "'&'", "'var'", "'::'", "'?.'", "'|'", "'true'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_STRING", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'val'", "'+='", "'-='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'<='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'<=>'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'.'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "'false'", "'package'", "';'", "'event'", "'{'", "'}'", "'capacity'", "'agent'", "'behavior'", "'uses'", "','", "'on'", "'['", "']'", "'def'", "'('", "')'", "':'", "'fires'", "'requires'", "'skill'", "'implements'", "'new'", "'instanceof'", "'as'", "'#'", "'if'", "'else'", "'switch'", "'default'", "'case'", "'for'", "'while'", "'do'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'catch'", "'?'", "'&'", "'var'", "'::'", "'?.'", "'|'", "'true'"
     };
     public static final int RULE_ID=4;
     public static final int T__29=29;
@@ -8291,13 +8291,13 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Attribute__Alternatives_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2698:1: rule__Attribute__Alternatives_0 : ( ( ( rule__Attribute__WriteableAssignment_0_0 ) ) | ( 'const' ) );
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2698:1: rule__Attribute__Alternatives_0 : ( ( ( rule__Attribute__WriteableAssignment_0_0 ) ) | ( 'val' ) );
     public final void rule__Attribute__Alternatives_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2702:1: ( ( ( rule__Attribute__WriteableAssignment_0_0 ) ) | ( 'const' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2702:1: ( ( ( rule__Attribute__WriteableAssignment_0_0 ) ) | ( 'val' ) )
             int alt6=2;
             int LA6_0 = input.LA(1);
 
@@ -8345,17 +8345,17 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                     }
                     break;
                 case 2 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2709:6: ( 'const' )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2709:6: ( 'val' )
                     {
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2709:6: ( 'const' )
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2710:1: 'const'
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2709:6: ( 'val' )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2710:1: 'val'
                     {
                     if ( state.backtracking==0 ) {
-                       before(grammarAccess.getAttributeAccess().getConstKeyword_0_1()); 
+                       before(grammarAccess.getAttributeAccess().getValKeyword_0_1()); 
                     }
                     match(input,16,FOLLOW_16_in_rule__Attribute__Alternatives_05775); if (state.failed) return ;
                     if ( state.backtracking==0 ) {
-                       after(grammarAccess.getAttributeAccess().getConstKeyword_0_1()); 
+                       after(grammarAccess.getAttributeAccess().getValKeyword_0_1()); 
                     }
 
                     }
@@ -8558,13 +8558,13 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XVariableDeclaration__Alternatives_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2762:1: rule__XVariableDeclaration__Alternatives_1 : ( ( ( rule__XVariableDeclaration__WriteableAssignment_1_0 ) ) | ( 'const' ) );
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2762:1: rule__XVariableDeclaration__Alternatives_1 : ( ( ( rule__XVariableDeclaration__WriteableAssignment_1_0 ) ) | ( 'val' ) );
     public final void rule__XVariableDeclaration__Alternatives_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2766:1: ( ( ( rule__XVariableDeclaration__WriteableAssignment_1_0 ) ) | ( 'const' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2766:1: ( ( ( rule__XVariableDeclaration__WriteableAssignment_1_0 ) ) | ( 'val' ) )
             int alt8=2;
             int LA8_0 = input.LA(1);
 
@@ -8612,17 +8612,17 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                     }
                     break;
                 case 2 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2773:6: ( 'const' )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2773:6: ( 'val' )
                     {
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2773:6: ( 'const' )
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2774:1: 'const'
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2773:6: ( 'val' )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:2774:1: 'val'
                     {
                     if ( state.backtracking==0 ) {
-                       before(grammarAccess.getXVariableDeclarationAccess().getConstKeyword_1_1()); 
+                       before(grammarAccess.getXVariableDeclarationAccess().getValKeyword_1_1()); 
                     }
                     match(input,16,FOLLOW_16_in_rule__XVariableDeclaration__Alternatives_15928); if (state.failed) return ;
                     if ( state.backtracking==0 ) {
-                       after(grammarAccess.getXVariableDeclarationAccess().getConstKeyword_1_1()); 
+                       after(grammarAccess.getXVariableDeclarationAccess().getValKeyword_1_1()); 
                     }
 
                     }

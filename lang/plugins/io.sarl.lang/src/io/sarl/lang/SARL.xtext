@@ -58,7 +58,7 @@ BehaviorFeature:
 	Attribute | BehaviorUnit | Action | CapacityUses | RequiredCapacity | Constructor;
 
 Attribute:
-	(writeable?='var' | 'const') type=JvmTypeReference name=ValidID ('=' initialValue=XExpression)? ';'?;
+	(writeable?='var' | 'val') type=JvmTypeReference name=ValidID ('=' initialValue=XExpression)? ';'?;
 	
 CapacityUses:
 	'uses' capacitiesUsed+=[Capacity] (',' capacitiesUsed+=[Capacity])*;
@@ -89,5 +89,5 @@ Constructor:
 
 XVariableDeclaration returns XExpression:
 	{XVariableDeclaration}
-	(writeable?='var'|'const') (=>(type=JvmTypeReference name=ValidID) | name=ValidID) ('=' right=XExpression)?;
+	(writeable?='var'|'val') (=>(type=JvmTypeReference name=ValidID) | name=ValidID) ('=' right=XExpression)?;
 

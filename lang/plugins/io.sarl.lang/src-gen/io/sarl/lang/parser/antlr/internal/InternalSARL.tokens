@@ -143,8 +143,8 @@ RULE_WS=11
 '|'=71
 '..<'=53
 'new'=38
+'val'=23
 'null'=86
-'const'=23
 'typeof'=87
 'requires'=35
 '='=24

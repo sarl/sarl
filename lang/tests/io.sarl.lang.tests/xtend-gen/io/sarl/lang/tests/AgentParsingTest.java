@@ -150,7 +150,7 @@ public class AgentParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("const String name = \"Hello\"");
+      _builder.append("val String name = \"Hello\"");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("var Integer number");
@@ -194,10 +194,10 @@ public class AgentParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("const String name = \"Hello\"");
+      _builder.append("val String name = \"Hello\"");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("const Integer number");
+      _builder.append("val Integer number");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();

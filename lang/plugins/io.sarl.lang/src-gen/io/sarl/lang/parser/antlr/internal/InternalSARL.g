@@ -780,9 +780,9 @@ ruleAttribute returns [EObject current=null]
 
 )
 )
-    |	otherlv_1='const' 
+    |	otherlv_1='val' 
     {
-    	newLeafNode(otherlv_1, grammarAccess.getAttributeAccess().getConstKeyword_0_1());
+    	newLeafNode(otherlv_1, grammarAccess.getAttributeAccess().getValKeyword_0_1());
     }
 )(
 (
@@ -1549,9 +1549,9 @@ ruleXVariableDeclaration returns [EObject current=null]
 
 )
 )
-    |	otherlv_2='const' 
+    |	otherlv_2='val' 
     {
-    	newLeafNode(otherlv_2, grammarAccess.getXVariableDeclarationAccess().getConstKeyword_1_1());
+    	newLeafNode(otherlv_2, grammarAccess.getXVariableDeclarationAccess().getValKeyword_1_1());
     }
 )(((((
 (

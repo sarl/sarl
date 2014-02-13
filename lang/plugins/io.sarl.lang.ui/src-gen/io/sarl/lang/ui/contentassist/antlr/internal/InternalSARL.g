@@ -2707,11 +2707,11 @@ rule__Attribute__Alternatives_0
 )
 
     |(
-{ before(grammarAccess.getAttributeAccess().getConstKeyword_0_1()); }
+{ before(grammarAccess.getAttributeAccess().getValKeyword_0_1()); }
 
-	'const' 
+	'val' 
 
-{ after(grammarAccess.getAttributeAccess().getConstKeyword_0_1()); }
+{ after(grammarAccess.getAttributeAccess().getValKeyword_0_1()); }
 )
 
 ;
@@ -2771,11 +2771,11 @@ rule__XVariableDeclaration__Alternatives_1
 )
 
     |(
-{ before(grammarAccess.getXVariableDeclarationAccess().getConstKeyword_1_1()); }
+{ before(grammarAccess.getXVariableDeclarationAccess().getValKeyword_1_1()); }
 
-	'const' 
+	'val' 
 
-{ after(grammarAccess.getXVariableDeclarationAccess().getConstKeyword_1_1()); }
+{ after(grammarAccess.getXVariableDeclarationAccess().getValKeyword_1_1()); }
 )
 
 ;

@@ -61,7 +61,7 @@ describe "Event Reference"{
 			val Model model = '''
 			package myapp.demo
 			event MyEvent {
-				const Integer number
+				val Integer number
 			}
 			'''.parsesSuccessfully
 			val evt = model.elements.filter(Event).head

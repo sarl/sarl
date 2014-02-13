@@ -433,7 +433,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Alternatives cAlternatives_0 = (Alternatives)cGroup.eContents().get(0);
 		private final Assignment cWriteableAssignment_0_0 = (Assignment)cAlternatives_0.eContents().get(0);
 		private final Keyword cWriteableVarKeyword_0_0_0 = (Keyword)cWriteableAssignment_0_0.eContents().get(0);
-		private final Keyword cConstKeyword_0_1 = (Keyword)cAlternatives_0.eContents().get(1);
+		private final Keyword cValKeyword_0_1 = (Keyword)cAlternatives_0.eContents().get(1);
 		private final Assignment cTypeAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cTypeJvmTypeReferenceParserRuleCall_1_0 = (RuleCall)cTypeAssignment_1.eContents().get(0);
 		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
@@ -445,13 +445,13 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cSemicolonKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		//Attribute:
-		//	(writeable?="var" | "const") type=JvmTypeReference name=ValidID ("=" initialValue=XExpression)? ";"?;
+		//	(writeable?="var" | "val") type=JvmTypeReference name=ValidID ("=" initialValue=XExpression)? ";"?;
 		public ParserRule getRule() { return rule; }
 
-		//(writeable?="var" | "const") type=JvmTypeReference name=ValidID ("=" initialValue=XExpression)? ";"?
+		//(writeable?="var" | "val") type=JvmTypeReference name=ValidID ("=" initialValue=XExpression)? ";"?
 		public Group getGroup() { return cGroup; }
 
-		//writeable?="var" | "const"
+		//writeable?="var" | "val"
 		public Alternatives getAlternatives_0() { return cAlternatives_0; }
 
 		//writeable?="var"
@@ -460,8 +460,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//"var"
 		public Keyword getWriteableVarKeyword_0_0_0() { return cWriteableVarKeyword_0_0_0; }
 
-		//"const"
-		public Keyword getConstKeyword_0_1() { return cConstKeyword_0_1; }
+		//"val"
+		public Keyword getValKeyword_0_1() { return cValKeyword_0_1; }
 
 		//type=JvmTypeReference
 		public Assignment getTypeAssignment_1() { return cTypeAssignment_1; }
@@ -966,7 +966,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
 		private final Assignment cWriteableAssignment_1_0 = (Assignment)cAlternatives_1.eContents().get(0);
 		private final Keyword cWriteableVarKeyword_1_0_0 = (Keyword)cWriteableAssignment_1_0.eContents().get(0);
-		private final Keyword cConstKeyword_1_1 = (Keyword)cAlternatives_1.eContents().get(1);
+		private final Keyword cValKeyword_1_1 = (Keyword)cAlternatives_1.eContents().get(1);
 		private final Alternatives cAlternatives_2 = (Alternatives)cGroup.eContents().get(2);
 		private final Group cGroup_2_0 = (Group)cAlternatives_2.eContents().get(0);
 		private final Group cGroup_2_0_0 = (Group)cGroup_2_0.eContents().get(0);
@@ -982,18 +982,18 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cRightXExpressionParserRuleCall_3_1_0 = (RuleCall)cRightAssignment_3_1.eContents().get(0);
 		
 		//XVariableDeclaration returns XExpression:
-		//	{XVariableDeclaration} (writeable?="var" | "const") (=> (type=JvmTypeReference name=ValidID) | name=ValidID) ("="
+		//	{XVariableDeclaration} (writeable?="var" | "val") (=> (type=JvmTypeReference name=ValidID) | name=ValidID) ("="
 		//	right=XExpression)?;
 		public ParserRule getRule() { return rule; }
 
-		//{XVariableDeclaration} (writeable?="var" | "const") (=> (type=JvmTypeReference name=ValidID) | name=ValidID) ("="
+		//{XVariableDeclaration} (writeable?="var" | "val") (=> (type=JvmTypeReference name=ValidID) | name=ValidID) ("="
 		//right=XExpression)?
 		public Group getGroup() { return cGroup; }
 
 		//{XVariableDeclaration}
 		public Action getXVariableDeclarationAction_0() { return cXVariableDeclarationAction_0; }
 
-		//writeable?="var" | "const"
+		//writeable?="var" | "val"
 		public Alternatives getAlternatives_1() { return cAlternatives_1; }
 
 		//writeable?="var"
@@ -1002,8 +1002,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//"var"
 		public Keyword getWriteableVarKeyword_1_0_0() { return cWriteableVarKeyword_1_0_0; }
 
-		//"const"
-		public Keyword getConstKeyword_1_1() { return cConstKeyword_1_1; }
+		//"val"
+		public Keyword getValKeyword_1_1() { return cValKeyword_1_1; }
 
 		//=> (type=JvmTypeReference name=ValidID) | name=ValidID
 		public Alternatives getAlternatives_2() { return cAlternatives_2; }
@@ -1195,7 +1195,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Attribute:
-	//	(writeable?="var" | "const") type=JvmTypeReference name=ValidID ("=" initialValue=XExpression)? ";"?;
+	//	(writeable?="var" | "val") type=JvmTypeReference name=ValidID ("=" initialValue=XExpression)? ";"?;
 	public AttributeElements getAttributeAccess() {
 		return (pAttribute != null) ? pAttribute : (pAttribute = new AttributeElements());
 	}
@@ -1287,7 +1287,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//XVariableDeclaration returns XExpression:
-	//	{XVariableDeclaration} (writeable?="var" | "const") (=> (type=JvmTypeReference name=ValidID) | name=ValidID) ("="
+	//	{XVariableDeclaration} (writeable?="var" | "val") (=> (type=JvmTypeReference name=ValidID) | name=ValidID) ("="
 	//	right=XExpression)?;
 	public XVariableDeclarationElements getXVariableDeclarationAccess() {
 		return (pXVariableDeclaration != null) ? pXVariableDeclaration : (pXVariableDeclaration = new XVariableDeclarationElements());

@@ -95,7 +95,7 @@ class AgentParsingTest {
 		val mas = '''
 			
 			agent A1 {
-				const String name = "Hello"
+				val String name = "Hello"
 				var Integer number
 			}
 		'''.parse
@@ -119,8 +119,8 @@ class AgentParsingTest {
 		val mas = '''
 			
 			agent A1 {
-				const String name = "Hello"
-				const Integer number
+				val String name = "Hello"
+				val Integer number
 			}
 		'''.parse
 		mas.assertError(
