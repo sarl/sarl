@@ -110,7 +110,7 @@ public class AgentParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("on E [ e.source != null] {}");
+      _builder.append("on E [ occurrence.source != null] {}");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();

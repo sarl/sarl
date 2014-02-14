@@ -308,7 +308,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			documentation = unit.documentation
 			//TODO: Change subscribe annotations to decouple from guava
 			annotations += unit.toAnnotation(typeof(Percept))
-			parameters += unit.event.toParameter("e", newTypeRef(unit.event, unit.event.fullyQualifiedName.toString))
+			parameters += unit.event.toParameter("occurrence", newTypeRef(unit.event, unit.event.fullyQualifiedName.toString))
 		]
 
 		if (unit.guard == null) {
@@ -319,7 +319,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			val guardMethod = guard.toMethod(guardMethodName, guard.newTypeRef(Boolean::TYPE)) [
 				documentation = "Ensures that the behavior " + behName + " is called only when the guard " +
 					guard.toString + " is valid"
-				parameters += unit.event.toParameter("e",
+				parameters += unit.event.toParameter("occurrence",
 					newTypeRef(unit.event, unit.event.fullyQualifiedName.toString))
 			]
 
@@ -327,7 +327,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			jvmModelAssociator.associateLogicalContainer(unit.body, behaviorMethod)
 
 			behaviorMethod.body = [
-				it.append('''if ( «guardMethodName»(e)) { ''')
+				it.append('''if ( «guardMethodName»(occurrence)) { ''')
 				xbaseCompiler.compile(unit.body, it, behaviorMethod.newTypeRef(Void::TYPE))
 				it.append('}')
 			]

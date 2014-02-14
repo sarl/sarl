@@ -75,7 +75,7 @@ class AgentParsingTest {
 		val mas = '''
 			event E {}
 			agent A1 {
-				on E [ e.source != null] {}
+				on E [ occurrence.source != null] {}
 			}
 		'''.parse
 		mas.assertNoErrors

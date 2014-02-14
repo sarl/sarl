@@ -595,7 +595,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_event_2);
           String _string = _fullyQualifiedName.toString();
           JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(_event_1, _string);
-          JvmFormalParameter _parameter = SARLJvmModelInferrer.this._jvmTypesBuilder.toParameter(_event, "e", _newTypeRef);
+          JvmFormalParameter _parameter = SARLJvmModelInferrer.this._jvmTypesBuilder.toParameter(_event, "occurrence", _newTypeRef);
           SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
         }
       };
@@ -622,7 +622,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
             QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_event_2);
             String _string_1 = _fullyQualifiedName.toString();
             JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(_event_1, _string_1);
-            JvmFormalParameter _parameter = SARLJvmModelInferrer.this._jvmTypesBuilder.toParameter(_event, "e", _newTypeRef);
+            JvmFormalParameter _parameter = SARLJvmModelInferrer.this._jvmTypesBuilder.toParameter(_event, "occurrence", _newTypeRef);
             SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
           }
         };
@@ -635,7 +635,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
             StringConcatenation _builder = new StringConcatenation();
             _builder.append("if ( ");
             _builder.append(guardMethodName, "");
-            _builder.append("(e)) { ");
+            _builder.append("(occurrence)) { ");
             it.append(_builder);
             XExpression _body = unit.getBody();
             JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(behaviorMethod, Void.TYPE);

@@ -161,7 +161,40 @@ describe "Agent Definition Introduction" {
 				}
 			'''.parsesSuccessfully
 		}
+		
+		/*
+		 * Inside a behavior declaration you may need to access the event
+		 * instance the agent is reacting to.
+		 * 
+		 * This instance is called an `occurrence`.
+		 * 
+		 * In the case of an Initialize events you can access the parameters 
+		 * for the agent spawn using `occurrence.parameters`
+		 * 
+		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 */
+		fact "Accessing the event's occurrence" {
+			val model = '''
+				package myapp.demo
+				
+				import io.sarl.core.Initialize
+				import io.sarl.core.Destroy
+				
+				agent MyAgent {
+					
+					on Initialize {
+						System.out.println("MyAgent spawned")
+						System.out.println("My Parameters are :" + occurrence.parameters.toString)
+					}
+					
+					on Destroy {
+						System.out.println("MyAgent destroyed")
+					}
+				}
+			'''.parsesSuccessfully
+		}
 	}
+	
 	
 	/*
 	 * In the next section we will learn how to start a SARL agent.
