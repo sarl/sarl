@@ -57,8 +57,8 @@ AgentFeature:
 BehaviorFeature:
 	Attribute | BehaviorUnit | Action | CapacityUses | RequiredCapacity | Constructor;
 
-Attribute:
-	(writeable?='var' | 'val') type=JvmTypeReference name=ValidID ('=' initialValue=XExpression)? ';'?;
+Attribute:		
+	(writeable?='var' | 'val') (=>(name=ValidID ':' type=JvmTypeReference) | name=ValidID)  ('=' initialValue=XExpression)?;
 	
 CapacityUses:
 	'uses' capacitiesUsed+=[Capacity] (',' capacitiesUsed+=[Capacity])*;
@@ -70,8 +70,12 @@ Action:
 	signature=ActionSignature body=XBlockExpression;
 
 ActionSignature:
-	'def' name=ValidID ('(' params+=FullJvmFormalParameter (',' params+=FullJvmFormalParameter)* ')')?
+	'def' name=ValidID ('(' params+=Parameter (',' params+=Parameter)* ')')?
 	(':' type=JvmTypeReference)? ('fires' firedEvents+=[Event] (',' firedEvents+=[Event])*)?;
+	
+Parameter:
+	 name=ValidID ':' parameterType=JvmTypeReference;
+
 
 RequiredCapacity:
 	'requires' requiredCapacities+=[Capacity] (',' requiredCapacities+=[Capacity])*;
@@ -89,5 +93,5 @@ Constructor:
 
 XVariableDeclaration returns XExpression:
 	{XVariableDeclaration}
-	(writeable?='var'|'val') (=>(type=JvmTypeReference name=ValidID) | name=ValidID) ('=' right=XExpression)?;
+	(writeable?='var'|'val') (=>(name=ValidID ':' type=JvmTypeReference) | name=ValidID) ('=' right=XExpression)?;
 

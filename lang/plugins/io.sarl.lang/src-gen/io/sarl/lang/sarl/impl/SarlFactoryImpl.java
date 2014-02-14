@@ -78,6 +78,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
       case SarlPackage.BEHAVIOR_UNIT: return createBehaviorUnit();
       case SarlPackage.ACTION: return createAction();
       case SarlPackage.ACTION_SIGNATURE: return createActionSignature();
+      case SarlPackage.PARAMETER: return createParameter();
       case SarlPackage.REQUIRED_CAPACITY: return createRequiredCapacity();
       case SarlPackage.SKILL: return createSkill();
       case SarlPackage.SKILL_FEATURE: return createSkillFeature();
@@ -239,6 +240,17 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
   {
     ActionSignatureImpl actionSignature = new ActionSignatureImpl();
     return actionSignature;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Parameter createParameter()
+  {
+    ParameterImpl parameter = new ParameterImpl();
+    return parameter;
   }
 
   /**

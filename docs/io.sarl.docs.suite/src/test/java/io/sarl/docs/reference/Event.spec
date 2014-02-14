@@ -26,7 +26,7 @@ describe "Event Reference"{
 			val Model model = '''
 			package events
 			event MyEvent {
-				var Integer number
+				var number : Integer
 			}
 			'''.parsesSuccessfully
 			val evt = model.elements.filter(Event).head
@@ -42,7 +42,7 @@ describe "Event Reference"{
 			val Model model = '''
 			package myapp.demo
 			event MyEvent {
-				var Integer number
+				var number : Integer
 			}
 			'''.parsesSuccessfully
 			val evt = model.elements.filter(Event).head
@@ -61,7 +61,7 @@ describe "Event Reference"{
 			val Model model = '''
 			package myapp.demo
 			event MyEvent {
-				val Integer number
+				val number : Integer
 			}
 			'''.parsesSuccessfully
 			val evt = model.elements.filter(Event).head

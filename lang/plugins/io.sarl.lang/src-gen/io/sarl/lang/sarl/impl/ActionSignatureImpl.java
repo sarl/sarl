@@ -4,6 +4,7 @@ package io.sarl.lang.sarl.impl;
 
 import io.sarl.lang.sarl.ActionSignature;
 import io.sarl.lang.sarl.Event;
+import io.sarl.lang.sarl.Parameter;
 import io.sarl.lang.sarl.SarlPackage;
 
 import java.util.Collection;
@@ -23,7 +24,6 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 
 /**
@@ -72,7 +72,7 @@ public class ActionSignatureImpl extends MinimalEObjectImpl.Container implements
    * @generated
    * @ordered
    */
-  protected EList<JvmFormalParameter> params;
+  protected EList<Parameter> params;
 
   /**
    * The cached value of the '{@link #getType() <em>Type</em>}' containment reference.
@@ -143,11 +143,11 @@ public class ActionSignatureImpl extends MinimalEObjectImpl.Container implements
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<JvmFormalParameter> getParams()
+  public EList<Parameter> getParams()
   {
     if (params == null)
     {
-      params = new EObjectContainmentEList<JvmFormalParameter>(JvmFormalParameter.class, this, SarlPackage.ACTION_SIGNATURE__PARAMS);
+      params = new EObjectContainmentEList<Parameter>(Parameter.class, this, SarlPackage.ACTION_SIGNATURE__PARAMS);
     }
     return params;
   }
@@ -270,7 +270,7 @@ public class ActionSignatureImpl extends MinimalEObjectImpl.Container implements
         return;
       case SarlPackage.ACTION_SIGNATURE__PARAMS:
         getParams().clear();
-        getParams().addAll((Collection<? extends JvmFormalParameter>)newValue);
+        getParams().addAll((Collection<? extends Parameter>)newValue);
         return;
       case SarlPackage.ACTION_SIGNATURE__TYPE:
         setType((JvmTypeReference)newValue);

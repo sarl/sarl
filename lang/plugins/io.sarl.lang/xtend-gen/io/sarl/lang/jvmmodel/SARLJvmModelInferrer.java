@@ -33,6 +33,7 @@ import io.sarl.lang.sarl.CapacityUses;
 import io.sarl.lang.sarl.Constructor;
 import io.sarl.lang.sarl.Event;
 import io.sarl.lang.sarl.EventFeature;
+import io.sarl.lang.sarl.Parameter;
 import io.sarl.lang.sarl.RequiredCapacity;
 import io.sarl.lang.sarl.Skill;
 import io.sarl.lang.sarl.SkillFeature;
@@ -555,14 +556,14 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           _builder_2.append(_name, "");
           _builder_2.append("(");
           it.append(_builder_2);
-          EList<JvmFormalParameter> _params = signature.getParams();
-          final Function1<JvmFormalParameter,String> _function = new Function1<JvmFormalParameter,String>() {
-            public String apply(final JvmFormalParameter it) {
+          EList<Parameter> _params = signature.getParams();
+          final Function1<Parameter,String> _function = new Function1<Parameter,String>() {
+            public String apply(final Parameter it) {
               String _name = it.getName();
               return _name;
             }
           };
-          String _join = IterableExtensions.<JvmFormalParameter>join(_params, ", ", _function);
+          String _join = IterableExtensions.<Parameter>join(_params, ", ", _function);
           it.append(_join);
           it.append(");");
         }
@@ -663,8 +664,8 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
       public void apply(final JvmOperation it) {
         String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(signature);
         SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
-        EList<JvmFormalParameter> _params = signature.getParams();
-        for (final JvmFormalParameter p : _params) {
+        EList<Parameter> _params = signature.getParams();
+        for (final Parameter p : _params) {
           EList<JvmFormalParameter> _parameters = it.getParameters();
           String _name = p.getName();
           JvmTypeReference _parameterType = p.getParameterType();

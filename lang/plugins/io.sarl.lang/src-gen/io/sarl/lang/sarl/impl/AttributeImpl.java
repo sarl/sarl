@@ -25,8 +25,8 @@ import org.eclipse.xtext.xbase.XExpression;
  * The following features are implemented:
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.impl.AttributeImpl#isWriteable <em>Writeable</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.impl.AttributeImpl#getType <em>Type</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.impl.AttributeImpl#getName <em>Name</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.AttributeImpl#getType <em>Type</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.impl.AttributeImpl#getInitialValue <em>Initial Value</em>}</li>
  * </ul>
  * </p>
@@ -56,16 +56,6 @@ public class AttributeImpl extends EventFeatureImpl implements Attribute
   protected boolean writeable = WRITEABLE_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getType() <em>Type</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getType()
-   * @generated
-   * @ordered
-   */
-  protected JvmTypeReference type;
-
-  /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -84,6 +74,16 @@ public class AttributeImpl extends EventFeatureImpl implements Attribute
    * @ordered
    */
   protected String name = NAME_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getType() <em>Type</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getType()
+   * @generated
+   * @ordered
+   */
+  protected JvmTypeReference type;
 
   /**
    * The cached value of the '{@link #getInitialValue() <em>Initial Value</em>}' containment reference.
@@ -144,6 +144,29 @@ public class AttributeImpl extends EventFeatureImpl implements Attribute
    * <!-- end-user-doc -->
    * @generated
    */
+  public String getName()
+  {
+    return name;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setName(String newName)
+  {
+    String oldName = name;
+    name = newName;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.ATTRIBUTE__NAME, oldName, name));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public JvmTypeReference getType()
   {
     return type;
@@ -185,29 +208,6 @@ public class AttributeImpl extends EventFeatureImpl implements Attribute
     }
     else if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.ATTRIBUTE__TYPE, newType, newType));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public String getName()
-  {
-    return name;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setName(String newName)
-  {
-    String oldName = name;
-    name = newName;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.ATTRIBUTE__NAME, oldName, name));
   }
 
   /**
@@ -288,10 +288,10 @@ public class AttributeImpl extends EventFeatureImpl implements Attribute
     {
       case SarlPackage.ATTRIBUTE__WRITEABLE:
         return isWriteable();
-      case SarlPackage.ATTRIBUTE__TYPE:
-        return getType();
       case SarlPackage.ATTRIBUTE__NAME:
         return getName();
+      case SarlPackage.ATTRIBUTE__TYPE:
+        return getType();
       case SarlPackage.ATTRIBUTE__INITIAL_VALUE:
         return getInitialValue();
     }
@@ -311,11 +311,11 @@ public class AttributeImpl extends EventFeatureImpl implements Attribute
       case SarlPackage.ATTRIBUTE__WRITEABLE:
         setWriteable((Boolean)newValue);
         return;
-      case SarlPackage.ATTRIBUTE__TYPE:
-        setType((JvmTypeReference)newValue);
-        return;
       case SarlPackage.ATTRIBUTE__NAME:
         setName((String)newValue);
+        return;
+      case SarlPackage.ATTRIBUTE__TYPE:
+        setType((JvmTypeReference)newValue);
         return;
       case SarlPackage.ATTRIBUTE__INITIAL_VALUE:
         setInitialValue((XExpression)newValue);
@@ -337,11 +337,11 @@ public class AttributeImpl extends EventFeatureImpl implements Attribute
       case SarlPackage.ATTRIBUTE__WRITEABLE:
         setWriteable(WRITEABLE_EDEFAULT);
         return;
-      case SarlPackage.ATTRIBUTE__TYPE:
-        setType((JvmTypeReference)null);
-        return;
       case SarlPackage.ATTRIBUTE__NAME:
         setName(NAME_EDEFAULT);
+        return;
+      case SarlPackage.ATTRIBUTE__TYPE:
+        setType((JvmTypeReference)null);
         return;
       case SarlPackage.ATTRIBUTE__INITIAL_VALUE:
         setInitialValue((XExpression)null);
@@ -362,10 +362,10 @@ public class AttributeImpl extends EventFeatureImpl implements Attribute
     {
       case SarlPackage.ATTRIBUTE__WRITEABLE:
         return writeable != WRITEABLE_EDEFAULT;
-      case SarlPackage.ATTRIBUTE__TYPE:
-        return type != null;
       case SarlPackage.ATTRIBUTE__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      case SarlPackage.ATTRIBUTE__TYPE:
+        return type != null;
       case SarlPackage.ATTRIBUTE__INITIAL_VALUE:
         return initialValue != null;
     }

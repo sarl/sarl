@@ -96,10 +96,10 @@ public class AgentCompilerTest {
       _builder.append("event Factorial {");
       _builder.newLine();
       _builder.append("\t\t\t\t");
-      _builder.append("var Integer number");
+      _builder.append("var number : Integer");
       _builder.newLine();
       _builder.append("\t\t\t\t");
-      _builder.append("var Integer value");
+      _builder.append("var value : Integer");
       _builder.newLine();
       _builder.append("\t\t\t");
       _builder.append("}");

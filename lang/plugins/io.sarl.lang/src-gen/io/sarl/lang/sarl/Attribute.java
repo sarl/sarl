@@ -15,8 +15,8 @@ import org.eclipse.xtext.xbase.XExpression;
  * The following features are supported:
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.Attribute#isWriteable <em>Writeable</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.Attribute#getType <em>Type</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.Attribute#getName <em>Name</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.Attribute#getType <em>Type</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.Attribute#getInitialValue <em>Initial Value</em>}</li>
  * </ul>
  * </p>
@@ -54,32 +54,6 @@ public interface Attribute extends EventFeature, AgentFeature, BehaviorFeature, 
   void setWriteable(boolean value);
 
   /**
-   * Returns the value of the '<em><b>Type</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Type</em>' containment reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Type</em>' containment reference.
-   * @see #setType(JvmTypeReference)
-   * @see io.sarl.lang.sarl.SarlPackage#getAttribute_Type()
-   * @model containment="true"
-   * @generated
-   */
-  JvmTypeReference getType();
-
-  /**
-   * Sets the value of the '{@link io.sarl.lang.sarl.Attribute#getType <em>Type</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Type</em>' containment reference.
-   * @see #getType()
-   * @generated
-   */
-  void setType(JvmTypeReference value);
-
-  /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
@@ -104,6 +78,32 @@ public interface Attribute extends EventFeature, AgentFeature, BehaviorFeature, 
    * @generated
    */
   void setName(String value);
+
+  /**
+   * Returns the value of the '<em><b>Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Type</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Type</em>' containment reference.
+   * @see #setType(JvmTypeReference)
+   * @see io.sarl.lang.sarl.SarlPackage#getAttribute_Type()
+   * @model containment="true"
+   * @generated
+   */
+  JvmTypeReference getType();
+
+  /**
+   * Sets the value of the '{@link io.sarl.lang.sarl.Attribute#getType <em>Type</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Type</em>' containment reference.
+   * @see #getType()
+   * @generated
+   */
+  void setType(JvmTypeReference value);
 
   /**
    * Returns the value of the '<em><b>Initial Value</b></em>' containment reference.

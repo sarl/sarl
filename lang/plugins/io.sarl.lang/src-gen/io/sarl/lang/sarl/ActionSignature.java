@@ -6,7 +6,6 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
 
-import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 
 /**
@@ -58,7 +57,7 @@ public interface ActionSignature extends EObject
 
   /**
    * Returns the value of the '<em><b>Params</b></em>' containment reference list.
-   * The list contents are of type {@link org.eclipse.xtext.common.types.JvmFormalParameter}.
+   * The list contents are of type {@link io.sarl.lang.sarl.Parameter}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Params</em>' containment reference list isn't clear,
@@ -70,7 +69,7 @@ public interface ActionSignature extends EObject
    * @model containment="true"
    * @generated
    */
-  EList<JvmFormalParameter> getParams();
+  EList<Parameter> getParams();
 
   /**
    * Returns the value of the '<em><b>Type</b></em>' containment reference.

@@ -145,6 +145,11 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
         return createActionSignatureAdapter();
       }
       @Override
+      public Adapter caseParameter(Parameter object)
+      {
+        return createParameterAdapter();
+      }
+      @Override
       public Adapter caseRequiredCapacity(RequiredCapacity object)
       {
         return createRequiredCapacityAdapter();
@@ -392,6 +397,21 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createActionSignatureAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.Parameter <em>Parameter</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.Parameter
+   * @generated
+   */
+  public Adapter createParameterAdapter()
   {
     return null;
   }

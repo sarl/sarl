@@ -42,6 +42,7 @@ public class SARLParser extends AbstractContentAssistParser {
 					put(grammarAccess.getAgentFeatureAccess().getAlternatives(), "rule__AgentFeature__Alternatives");
 					put(grammarAccess.getBehaviorFeatureAccess().getAlternatives(), "rule__BehaviorFeature__Alternatives");
 					put(grammarAccess.getAttributeAccess().getAlternatives_0(), "rule__Attribute__Alternatives_0");
+					put(grammarAccess.getAttributeAccess().getAlternatives_1(), "rule__Attribute__Alternatives_1");
 					put(grammarAccess.getSkillFeatureAccess().getAlternatives(), "rule__SkillFeature__Alternatives");
 					put(grammarAccess.getXVariableDeclarationAccess().getAlternatives_1(), "rule__XVariableDeclaration__Alternatives_1");
 					put(grammarAccess.getXVariableDeclarationAccess().getAlternatives_2(), "rule__XVariableDeclaration__Alternatives_2");
@@ -90,7 +91,9 @@ public class SARLParser extends AbstractContentAssistParser {
 					put(grammarAccess.getBehaviorAccess().getGroup(), "rule__Behavior__Group__0");
 					put(grammarAccess.getBehaviorAccess().getGroup_2(), "rule__Behavior__Group_2__0");
 					put(grammarAccess.getAttributeAccess().getGroup(), "rule__Attribute__Group__0");
-					put(grammarAccess.getAttributeAccess().getGroup_3(), "rule__Attribute__Group_3__0");
+					put(grammarAccess.getAttributeAccess().getGroup_1_0(), "rule__Attribute__Group_1_0__0");
+					put(grammarAccess.getAttributeAccess().getGroup_1_0_0(), "rule__Attribute__Group_1_0_0__0");
+					put(grammarAccess.getAttributeAccess().getGroup_2(), "rule__Attribute__Group_2__0");
 					put(grammarAccess.getCapacityUsesAccess().getGroup(), "rule__CapacityUses__Group__0");
 					put(grammarAccess.getCapacityUsesAccess().getGroup_2(), "rule__CapacityUses__Group_2__0");
 					put(grammarAccess.getBehaviorUnitAccess().getGroup(), "rule__BehaviorUnit__Group__0");
@@ -102,6 +105,7 @@ public class SARLParser extends AbstractContentAssistParser {
 					put(grammarAccess.getActionSignatureAccess().getGroup_3(), "rule__ActionSignature__Group_3__0");
 					put(grammarAccess.getActionSignatureAccess().getGroup_4(), "rule__ActionSignature__Group_4__0");
 					put(grammarAccess.getActionSignatureAccess().getGroup_4_2(), "rule__ActionSignature__Group_4_2__0");
+					put(grammarAccess.getParameterAccess().getGroup(), "rule__Parameter__Group__0");
 					put(grammarAccess.getRequiredCapacityAccess().getGroup(), "rule__RequiredCapacity__Group__0");
 					put(grammarAccess.getRequiredCapacityAccess().getGroup_2(), "rule__RequiredCapacity__Group_2__0");
 					put(grammarAccess.getSkillAccess().getGroup(), "rule__Skill__Group__0");
@@ -278,9 +282,10 @@ public class SARLParser extends AbstractContentAssistParser {
 					put(grammarAccess.getBehaviorAccess().getSuperTypeAssignment_2_1(), "rule__Behavior__SuperTypeAssignment_2_1");
 					put(grammarAccess.getBehaviorAccess().getFeaturesAssignment_4(), "rule__Behavior__FeaturesAssignment_4");
 					put(grammarAccess.getAttributeAccess().getWriteableAssignment_0_0(), "rule__Attribute__WriteableAssignment_0_0");
-					put(grammarAccess.getAttributeAccess().getTypeAssignment_1(), "rule__Attribute__TypeAssignment_1");
-					put(grammarAccess.getAttributeAccess().getNameAssignment_2(), "rule__Attribute__NameAssignment_2");
-					put(grammarAccess.getAttributeAccess().getInitialValueAssignment_3_1(), "rule__Attribute__InitialValueAssignment_3_1");
+					put(grammarAccess.getAttributeAccess().getNameAssignment_1_0_0_0(), "rule__Attribute__NameAssignment_1_0_0_0");
+					put(grammarAccess.getAttributeAccess().getTypeAssignment_1_0_0_2(), "rule__Attribute__TypeAssignment_1_0_0_2");
+					put(grammarAccess.getAttributeAccess().getNameAssignment_1_1(), "rule__Attribute__NameAssignment_1_1");
+					put(grammarAccess.getAttributeAccess().getInitialValueAssignment_2_1(), "rule__Attribute__InitialValueAssignment_2_1");
 					put(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedAssignment_1(), "rule__CapacityUses__CapacitiesUsedAssignment_1");
 					put(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedAssignment_2_1(), "rule__CapacityUses__CapacitiesUsedAssignment_2_1");
 					put(grammarAccess.getBehaviorUnitAccess().getEventAssignment_1(), "rule__BehaviorUnit__EventAssignment_1");
@@ -294,6 +299,9 @@ public class SARLParser extends AbstractContentAssistParser {
 					put(grammarAccess.getActionSignatureAccess().getTypeAssignment_3_1(), "rule__ActionSignature__TypeAssignment_3_1");
 					put(grammarAccess.getActionSignatureAccess().getFiredEventsAssignment_4_1(), "rule__ActionSignature__FiredEventsAssignment_4_1");
 					put(grammarAccess.getActionSignatureAccess().getFiredEventsAssignment_4_2_1(), "rule__ActionSignature__FiredEventsAssignment_4_2_1");
+					put(grammarAccess.getParameterAccess().getNameAssignment_0(), "rule__Parameter__NameAssignment_0");
+					put(grammarAccess.getParameterAccess().getParameterTypeAssignment_2(), "rule__Parameter__ParameterTypeAssignment_2");
+					put(grammarAccess.getParameterAccess().getVarArgAssignment_3(), "rule__Parameter__VarArgAssignment_3");
 					put(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesAssignment_1(), "rule__RequiredCapacity__RequiredCapacitiesAssignment_1");
 					put(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesAssignment_2_1(), "rule__RequiredCapacity__RequiredCapacitiesAssignment_2_1");
 					put(grammarAccess.getSkillAccess().getNameAssignment_1(), "rule__Skill__NameAssignment_1");
@@ -304,8 +312,8 @@ public class SARLParser extends AbstractContentAssistParser {
 					put(grammarAccess.getConstructorAccess().getParamsAssignment_1_2_1(), "rule__Constructor__ParamsAssignment_1_2_1");
 					put(grammarAccess.getConstructorAccess().getBodyAssignment_2(), "rule__Constructor__BodyAssignment_2");
 					put(grammarAccess.getXVariableDeclarationAccess().getWriteableAssignment_1_0(), "rule__XVariableDeclaration__WriteableAssignment_1_0");
-					put(grammarAccess.getXVariableDeclarationAccess().getTypeAssignment_2_0_0_0(), "rule__XVariableDeclaration__TypeAssignment_2_0_0_0");
-					put(grammarAccess.getXVariableDeclarationAccess().getNameAssignment_2_0_0_1(), "rule__XVariableDeclaration__NameAssignment_2_0_0_1");
+					put(grammarAccess.getXVariableDeclarationAccess().getNameAssignment_2_0_0_0(), "rule__XVariableDeclaration__NameAssignment_2_0_0_0");
+					put(grammarAccess.getXVariableDeclarationAccess().getTypeAssignment_2_0_0_2(), "rule__XVariableDeclaration__TypeAssignment_2_0_0_2");
 					put(grammarAccess.getXVariableDeclarationAccess().getNameAssignment_2_1(), "rule__XVariableDeclaration__NameAssignment_2_1");
 					put(grammarAccess.getXVariableDeclarationAccess().getRightAssignment_3_1(), "rule__XVariableDeclaration__RightAssignment_3_1");
 					put(grammarAccess.getXAssignmentAccess().getFeatureAssignment_0_1(), "rule__XAssignment__FeatureAssignment_0_1");

@@ -13,6 +13,7 @@ import io.sarl.lang.sarl.CapacityUses;
 import io.sarl.lang.sarl.Constructor;
 import io.sarl.lang.sarl.Event;
 import io.sarl.lang.sarl.Model;
+import io.sarl.lang.sarl.Parameter;
 import io.sarl.lang.sarl.RequiredCapacity;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.Skill;
@@ -160,6 +161,12 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 			case SarlPackage.MODEL:
 				if(context == grammarAccess.getModelRule()) {
 					sequence_Model(context, (Model) semanticObject); 
+					return; 
+				}
+				else break;
+			case SarlPackage.PARAMETER:
+				if(context == grammarAccess.getParameterRule()) {
+					sequence_Parameter(context, (Parameter) semanticObject); 
 					return; 
 				}
 				else break;
@@ -1123,12 +1130,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (
-	 *         name=ValidID 
-	 *         (params+=FullJvmFormalParameter params+=FullJvmFormalParameter*)? 
-	 *         type=JvmTypeReference? 
-	 *         (firedEvents+=[Event|ID] firedEvents+=[Event|ID]*)?
-	 *     )
+	 *     (name=ValidID (params+=Parameter params+=Parameter*)? type=JvmTypeReference? (firedEvents+=[Event|ID] firedEvents+=[Event|ID]*)?)
 	 */
 	protected void sequence_ActionSignature(EObject context, ActionSignature semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1165,7 +1167,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (writeable?='var'? type=JvmTypeReference name=ValidID initialValue=XExpression?)
+	 *     (writeable?='var'? ((name=ValidID type=JvmTypeReference) | name=ValidID) initialValue=XExpression?)
 	 */
 	protected void sequence_Attribute(EObject context, Attribute semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1237,6 +1239,15 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
+	 *     (name=ValidID parameterType=JvmTypeReference varArg?='...'?)
+	 */
+	protected void sequence_Parameter(EObject context, Parameter semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
 	 *     (requiredCapacities+=[Capacity|ID] requiredCapacities+=[Capacity|ID]*)
 	 */
 	protected void sequence_RequiredCapacity(EObject context, RequiredCapacity semanticObject) {
@@ -1255,7 +1266,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (writeable?='var'? ((type=JvmTypeReference name=ValidID) | name=ValidID) right=XExpression?)
+	 *     (writeable?='var'? ((name=ValidID type=JvmTypeReference) | name=ValidID) right=XExpression?)
 	 */
 	protected void sequence_XVariableDeclaration(EObject context, XVariableDeclaration semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

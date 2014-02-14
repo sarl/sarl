@@ -84,8 +84,8 @@ class AgentParsingTest {
 	@Test def parseAgentWithAttributes() {
 		val mas = '''
 			agent A1 {
-				var String name = "Hello"
-				var Integer number				
+				var name : String = "Hello"
+				var number : Integer
 			}
 		'''.parse
 		mas.assertNoErrors
@@ -95,8 +95,8 @@ class AgentParsingTest {
 		val mas = '''
 			
 			agent A1 {
-				val String name = "Hello"
-				var Integer number
+				val name : String = "Hello"
+				var number : Integer
 			}
 		'''.parse
 		mas.assertNoErrors
@@ -119,8 +119,8 @@ class AgentParsingTest {
 		val mas = '''
 			
 			agent A1 {
-				val String name = "Hello"
-				val Integer number
+				val name : String = "Hello"
+				val number : Integer
 			}
 		'''.parse
 		mas.assertError(

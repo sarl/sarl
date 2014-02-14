@@ -128,10 +128,10 @@ public class AgentParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("var String name = \"Hello\"");
+      _builder.append("var name : String = \"Hello\"");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("var Integer number\t\t\t\t");
+      _builder.append("var number : Integer");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -150,10 +150,10 @@ public class AgentParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("val String name = \"Hello\"");
+      _builder.append("val name : String = \"Hello\"");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("var Integer number");
+      _builder.append("var number : Integer");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -194,10 +194,10 @@ public class AgentParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("val String name = \"Hello\"");
+      _builder.append("val name : String = \"Hello\"");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("val Integer number");
+      _builder.append("val number : Integer");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();

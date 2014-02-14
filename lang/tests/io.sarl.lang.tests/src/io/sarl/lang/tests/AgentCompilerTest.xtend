@@ -63,8 +63,8 @@ class AgentCompilerTest {
 		@Test
 		def eventCompile(){
 			'''event Factorial {
-				var Integer number
-				var Integer value
+				var number : Integer
+				var value : Integer
 			}'''.assertCompilesTo(
 				'''
 import io.sarl.lang.core.Event;
