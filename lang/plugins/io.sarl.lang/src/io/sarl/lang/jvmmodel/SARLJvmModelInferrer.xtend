@@ -51,6 +51,8 @@ import java.util.UUID
  */
 class SARLJvmModelInferrer extends AbstractModelInferrer {
 
+	public static final String KEYWORD_OCCURRENCE = "occurrence";
+
 	/**
      * convenience API to build and initialize JVM types and their members.
      */
@@ -131,21 +133,20 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				//result = result + "value  = " + this.value;
 				//result = result + "]";
 				//return result;
-				
 				members += element.toMethod('toString', newTypeRef(String)) [
 					documentation = '''Returns a String representation of the Event «element.name»'''
 					body = [
-						append('''
-						StringBuilder result = new StringBuilder();
-						result.append("«element.name»[");
-						«FOR attr: element.features.filter(Attribute)»
-						result.append("«attr.name»  = ").append(this.«attr.name»);
-						«ENDFOR»
-						result.append("]");
-						return result.toString();''')
+						append(
+							'''
+							StringBuilder result = new StringBuilder();
+							result.append("«element.name»[");
+							«FOR attr : element.features.filter(Attribute)»
+								result.append("«attr.name»  = ").append(this.«attr.name»);
+							«ENDFOR»
+							result.append("]");
+							return result.toString();''')
 					]
 				]
-				
 			])
 	}
 
@@ -308,7 +309,8 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			documentation = unit.documentation
 			//TODO: Change subscribe annotations to decouple from guava
 			annotations += unit.toAnnotation(typeof(Percept))
-			parameters += unit.event.toParameter("occurrence", newTypeRef(unit.event, unit.event.fullyQualifiedName.toString))
+			parameters +=
+				unit.event.toParameter(KEYWORD_OCCURRENCE, newTypeRef(unit.event, unit.event.fullyQualifiedName.toString))
 		]
 
 		if (unit.guard == null) {
@@ -319,7 +321,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			val guardMethod = guard.toMethod(guardMethodName, guard.newTypeRef(Boolean::TYPE)) [
 				documentation = "Ensures that the behavior " + behName + " is called only when the guard " +
 					guard.toString + " is valid"
-				parameters += unit.event.toParameter("occurrence",
+				parameters += unit.event.toParameter(KEYWORD_OCCURRENCE,
 					newTypeRef(unit.event, unit.event.fullyQualifiedName.toString))
 			]
 
@@ -327,7 +329,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			jvmModelAssociator.associateLogicalContainer(unit.body, behaviorMethod)
 
 			behaviorMethod.body = [
-				it.append('''if ( «guardMethodName»(occurrence)) { ''')
+				it.append('''if ( «guardMethodName»(«KEYWORD_OCCURRENCE»)) { ''')
 				xbaseCompiler.compile(unit.body, it, behaviorMethod.newTypeRef(Void::TYPE))
 				it.append('}')
 			]
