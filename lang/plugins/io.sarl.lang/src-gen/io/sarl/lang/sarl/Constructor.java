@@ -4,8 +4,6 @@ package io.sarl.lang.sarl;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.eclipse.xtext.common.types.JvmFormalParameter;
-
 import org.eclipse.xtext.xbase.XExpression;
 
 /**
@@ -29,7 +27,7 @@ public interface Constructor extends EventFeature, BehaviorFeature, SkillFeature
 {
   /**
    * Returns the value of the '<em><b>Params</b></em>' containment reference list.
-   * The list contents are of type {@link org.eclipse.xtext.common.types.JvmFormalParameter}.
+   * The list contents are of type {@link io.sarl.lang.sarl.Parameter}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Params</em>' containment reference list isn't clear,
@@ -41,7 +39,7 @@ public interface Constructor extends EventFeature, BehaviorFeature, SkillFeature
    * @model containment="true"
    * @generated
    */
-  EList<JvmFormalParameter> getParams();
+  EList<Parameter> getParams();
 
   /**
    * Returns the value of the '<em><b>Body</b></em>' containment reference.

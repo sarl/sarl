@@ -1212,7 +1212,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     ((params+=FullJvmFormalParameter params+=FullJvmFormalParameter*)? body=XBlockExpression)
+	 *     ((params+=Parameter params+=Parameter*)? body=XBlockExpression)
 	 */
 	protected void sequence_Constructor(EObject context, Constructor semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1239,10 +1239,20 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID parameterType=JvmTypeReference varArg?='...'?)
+	 *     (name=ValidID parameterType=JvmTypeReference)
 	 */
 	protected void sequence_Parameter(EObject context, Parameter semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, SarlPackage.Literals.PARAMETER__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SarlPackage.Literals.PARAMETER__NAME));
+			if(transientValues.isValueTransient(semanticObject, SarlPackage.Literals.PARAMETER__PARAMETER_TYPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SarlPackage.Literals.PARAMETER__PARAMETER_TYPE));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getParameterAccess().getNameValidIDParserRuleCall_0_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getParameterAccess().getParameterTypeJvmTypeReferenceParserRuleCall_2_0(), semanticObject.getParameterType());
+		feeder.finish();
 	}
 	
 	

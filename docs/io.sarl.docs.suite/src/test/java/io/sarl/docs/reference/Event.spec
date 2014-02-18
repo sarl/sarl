@@ -53,19 +53,24 @@ describe "Event Reference"{
 		}
 		
 		/**
-		 * Events in SARL can carry information
+		 * Events in SARL can carry information that is unmodifiable using `val` d
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Declare event with value attributes"{
 			val Model model = '''
 			package myapp.demo
+			import io.sarl.lang.core.Agent
 			event MyEvent {
 				val number : Integer
+				
+				new(nb:Integer){
+					number = nb
+				}
 			}
 			'''.parsesSuccessfully
 			val evt = model.elements.filter(Event).head
-			assertEquals(1,evt.features.size)
+			assertEquals(2,evt.features.size)//attribute and constructor
 			val att = evt.features.filter(Attribute).head
 			assertEquals("number",att.name)
 			assertEquals("java.lang.Integer", att.type.identifier)

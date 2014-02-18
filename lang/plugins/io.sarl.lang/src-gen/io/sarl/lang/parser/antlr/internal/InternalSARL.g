@@ -1276,22 +1276,7 @@ ruleParameter returns [EObject current=null]
 	    }
 
 )
-)(
-(
-		lv_varArg_3_0=	'...' 
-    {
-        newLeafNode(lv_varArg_3_0, grammarAccess.getParameterAccess().getVarArgFullStopFullStopFullStopKeyword_3_0());
-    }
- 
-	    {
-	        if ($current==null) {
-	            $current = createModelElement(grammarAccess.getParameterRule());
-	        }
-       		setWithLastConsumed($current, "varArg", true, "...");
-	    }
-
-)
-)?)
+))
 ;
 
 
@@ -1551,9 +1536,9 @@ ruleConstructor returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getConstructorAccess().getParamsFullJvmFormalParameterParserRuleCall_1_1_0()); 
+	        newCompositeNode(grammarAccess.getConstructorAccess().getParamsParameterParserRuleCall_1_1_0()); 
 	    }
-		lv_params_2_0=ruleFullJvmFormalParameter		{
+		lv_params_2_0=ruleParameter		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getConstructorRule());
 	        }
@@ -1561,7 +1546,7 @@ ruleConstructor returns [EObject current=null]
        			$current, 
        			"params",
         		lv_params_2_0, 
-        		"FullJvmFormalParameter");
+        		"Parameter");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -1573,9 +1558,9 @@ ruleConstructor returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getConstructorAccess().getParamsFullJvmFormalParameterParserRuleCall_1_2_1_0()); 
+	        newCompositeNode(grammarAccess.getConstructorAccess().getParamsParameterParserRuleCall_1_2_1_0()); 
 	    }
-		lv_params_4_0=ruleFullJvmFormalParameter		{
+		lv_params_4_0=ruleParameter		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getConstructorRule());
 	        }
@@ -1583,7 +1568,7 @@ ruleConstructor returns [EObject current=null]
        			$current, 
        			"params",
         		lv_params_4_0, 
-        		"FullJvmFormalParameter");
+        		"Parameter");
 	        afterParserOrEnumRuleCall();
 	    }
 

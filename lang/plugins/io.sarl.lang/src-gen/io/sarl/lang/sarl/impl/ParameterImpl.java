@@ -25,7 +25,6 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.impl.ParameterImpl#getName <em>Name</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.impl.ParameterImpl#getParameterType <em>Parameter Type</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.impl.ParameterImpl#isVarArg <em>Var Arg</em>}</li>
  * </ul>
  * </p>
  *
@@ -62,26 +61,6 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
    * @ordered
    */
   protected JvmTypeReference parameterType;
-
-  /**
-   * The default value of the '{@link #isVarArg() <em>Var Arg</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #isVarArg()
-   * @generated
-   * @ordered
-   */
-  protected static final boolean VAR_ARG_EDEFAULT = false;
-
-  /**
-   * The cached value of the '{@link #isVarArg() <em>Var Arg</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #isVarArg()
-   * @generated
-   * @ordered
-   */
-  protected boolean varArg = VAR_ARG_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -180,29 +159,6 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean isVarArg()
-  {
-    return varArg;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setVarArg(boolean newVarArg)
-  {
-    boolean oldVarArg = varArg;
-    varArg = newVarArg;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.PARAMETER__VAR_ARG, oldVarArg, varArg));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
@@ -228,8 +184,6 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
         return getName();
       case SarlPackage.PARAMETER__PARAMETER_TYPE:
         return getParameterType();
-      case SarlPackage.PARAMETER__VAR_ARG:
-        return isVarArg();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -249,9 +203,6 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
         return;
       case SarlPackage.PARAMETER__PARAMETER_TYPE:
         setParameterType((JvmTypeReference)newValue);
-        return;
-      case SarlPackage.PARAMETER__VAR_ARG:
-        setVarArg((Boolean)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -273,9 +224,6 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
       case SarlPackage.PARAMETER__PARAMETER_TYPE:
         setParameterType((JvmTypeReference)null);
         return;
-      case SarlPackage.PARAMETER__VAR_ARG:
-        setVarArg(VAR_ARG_EDEFAULT);
-        return;
     }
     super.eUnset(featureID);
   }
@@ -294,8 +242,6 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case SarlPackage.PARAMETER__PARAMETER_TYPE:
         return parameterType != null;
-      case SarlPackage.PARAMETER__VAR_ARG:
-        return varArg != VAR_ARG_EDEFAULT;
     }
     return super.eIsSet(featureID);
   }
@@ -313,8 +259,6 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (name: ");
     result.append(name);
-    result.append(", varArg: ");
-    result.append(varArg);
     result.append(')');
     return result.toString();
   }

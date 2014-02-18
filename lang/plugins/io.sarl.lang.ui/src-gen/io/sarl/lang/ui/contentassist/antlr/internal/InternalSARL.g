@@ -6447,7 +6447,6 @@ rule__Parameter__Group__2
     }
 :
 	rule__Parameter__Group__2__Impl
-	rule__Parameter__Group__3
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -6468,36 +6467,6 @@ rule__Parameter__Group__2__Impl
 finally {
 	restoreStackSize(stackSize);
 }
-
-
-rule__Parameter__Group__3
-    @init {
-		int stackSize = keepStackSize();
-    }
-:
-	rule__Parameter__Group__3__Impl
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__Parameter__Group__3__Impl
-    @init {
-		int stackSize = keepStackSize();
-    }
-:
-(
-{ before(grammarAccess.getParameterAccess().getVarArgAssignment_3()); }
-(rule__Parameter__VarArgAssignment_3)?
-{ after(grammarAccess.getParameterAccess().getVarArgAssignment_3()); }
-)
-
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-
 
 
 
@@ -19429,29 +19398,6 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Parameter__VarArgAssignment_3
-    @init {
-		int stackSize = keepStackSize();
-    }
-:
-(
-{ before(grammarAccess.getParameterAccess().getVarArgFullStopFullStopFullStopKeyword_3_0()); }
-(
-{ before(grammarAccess.getParameterAccess().getVarArgFullStopFullStopFullStopKeyword_3_0()); }
-
-	'...' 
-
-{ after(grammarAccess.getParameterAccess().getVarArgFullStopFullStopFullStopKeyword_3_0()); }
-)
-
-{ after(grammarAccess.getParameterAccess().getVarArgFullStopFullStopFullStopKeyword_3_0()); }
-)
-
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
 rule__RequiredCapacity__RequiredCapacitiesAssignment_1
     @init {
 		int stackSize = keepStackSize();
@@ -19564,8 +19510,8 @@ rule__Constructor__ParamsAssignment_1_1
     }
 :
 (
-{ before(grammarAccess.getConstructorAccess().getParamsFullJvmFormalParameterParserRuleCall_1_1_0()); }
-	ruleFullJvmFormalParameter{ after(grammarAccess.getConstructorAccess().getParamsFullJvmFormalParameterParserRuleCall_1_1_0()); }
+{ before(grammarAccess.getConstructorAccess().getParamsParameterParserRuleCall_1_1_0()); }
+	ruleParameter{ after(grammarAccess.getConstructorAccess().getParamsParameterParserRuleCall_1_1_0()); }
 )
 
 ;
@@ -19579,8 +19525,8 @@ rule__Constructor__ParamsAssignment_1_2_1
     }
 :
 (
-{ before(grammarAccess.getConstructorAccess().getParamsFullJvmFormalParameterParserRuleCall_1_2_1_0()); }
-	ruleFullJvmFormalParameter{ after(grammarAccess.getConstructorAccess().getParamsFullJvmFormalParameterParserRuleCall_1_2_1_0()); }
+{ before(grammarAccess.getConstructorAccess().getParamsParameterParserRuleCall_1_2_1_0()); }
+	ruleParameter{ after(grammarAccess.getConstructorAccess().getParamsParameterParserRuleCall_1_2_1_0()); }
 )
 
 ;

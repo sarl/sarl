@@ -691,8 +691,8 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
       public void apply(final JvmConstructor it) {
         String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(constructor);
         SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
-        EList<JvmFormalParameter> _params = constructor.getParams();
-        for (final JvmFormalParameter p : _params) {
+        EList<Parameter> _params = constructor.getParams();
+        for (final Parameter p : _params) {
           EList<JvmFormalParameter> _parameters = it.getParameters();
           String _name = p.getName();
           JvmTypeReference _parameterType = p.getParameterType();

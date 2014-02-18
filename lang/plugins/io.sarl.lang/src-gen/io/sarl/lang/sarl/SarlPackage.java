@@ -621,22 +621,13 @@ public interface SarlPackage extends EPackage
   int PARAMETER__PARAMETER_TYPE = 1;
 
   /**
-   * The feature id for the '<em><b>Var Arg</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PARAMETER__VAR_ARG = 2;
-
-  /**
    * The number of structural features of the '<em>Parameter</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int PARAMETER_FEATURE_COUNT = 3;
+  int PARAMETER_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link io.sarl.lang.sarl.impl.RequiredCapacityImpl <em>Required Capacity</em>}' class.
@@ -1228,17 +1219,6 @@ public interface SarlPackage extends EPackage
   EReference getParameter_ParameterType();
 
   /**
-   * Returns the meta object for the attribute '{@link io.sarl.lang.sarl.Parameter#isVarArg <em>Var Arg</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Var Arg</em>'.
-   * @see io.sarl.lang.sarl.Parameter#isVarArg()
-   * @see #getParameter()
-   * @generated
-   */
-  EAttribute getParameter_VarArg();
-
-  /**
    * Returns the meta object for class '{@link io.sarl.lang.sarl.RequiredCapacity <em>Required Capacity</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1729,14 +1709,6 @@ public interface SarlPackage extends EPackage
      * @generated
      */
     EReference PARAMETER__PARAMETER_TYPE = eINSTANCE.getParameter_ParameterType();
-
-    /**
-     * The meta object literal for the '<em><b>Var Arg</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute PARAMETER__VAR_ARG = eINSTANCE.getParameter_VarArg();
 
     /**
      * The meta object literal for the '{@link io.sarl.lang.sarl.impl.RequiredCapacityImpl <em>Required Capacity</em>}' class.

@@ -3,6 +3,7 @@
 package io.sarl.lang.sarl.impl;
 
 import io.sarl.lang.sarl.Constructor;
+import io.sarl.lang.sarl.Parameter;
 import io.sarl.lang.sarl.SarlPackage;
 
 import java.util.Collection;
@@ -19,8 +20,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-
-import org.eclipse.xtext.common.types.JvmFormalParameter;
 
 import org.eclipse.xtext.xbase.XExpression;
 
@@ -48,7 +47,7 @@ public class ConstructorImpl extends EventFeatureImpl implements Constructor
    * @generated
    * @ordered
    */
-  protected EList<JvmFormalParameter> params;
+  protected EList<Parameter> params;
 
   /**
    * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
@@ -86,11 +85,11 @@ public class ConstructorImpl extends EventFeatureImpl implements Constructor
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<JvmFormalParameter> getParams()
+  public EList<Parameter> getParams()
   {
     if (params == null)
     {
-      params = new EObjectContainmentEList<JvmFormalParameter>(JvmFormalParameter.class, this, SarlPackage.CONSTRUCTOR__PARAMS);
+      params = new EObjectContainmentEList<Parameter>(Parameter.class, this, SarlPackage.CONSTRUCTOR__PARAMS);
     }
     return params;
   }
@@ -192,7 +191,7 @@ public class ConstructorImpl extends EventFeatureImpl implements Constructor
     {
       case SarlPackage.CONSTRUCTOR__PARAMS:
         getParams().clear();
-        getParams().addAll((Collection<? extends JvmFormalParameter>)newValue);
+        getParams().addAll((Collection<? extends Parameter>)newValue);
         return;
       case SarlPackage.CONSTRUCTOR__BODY:
         setBody((XExpression)newValue);

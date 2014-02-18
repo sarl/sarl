@@ -16,7 +16,6 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.Parameter#getName <em>Name</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.Parameter#getParameterType <em>Parameter Type</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.Parameter#isVarArg <em>Var Arg</em>}</li>
  * </ul>
  * </p>
  *
@@ -77,31 +76,5 @@ public interface Parameter extends EObject
    * @generated
    */
   void setParameterType(JvmTypeReference value);
-
-  /**
-   * Returns the value of the '<em><b>Var Arg</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Var Arg</em>' attribute isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Var Arg</em>' attribute.
-   * @see #setVarArg(boolean)
-   * @see io.sarl.lang.sarl.SarlPackage#getParameter_VarArg()
-   * @model
-   * @generated
-   */
-  boolean isVarArg();
-
-  /**
-   * Sets the value of the '{@link io.sarl.lang.sarl.Parameter#isVarArg <em>Var Arg</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Var Arg</em>' attribute.
-   * @see #isVarArg()
-   * @generated
-   */
-  void setVarArg(boolean value);
 
 } // Parameter
