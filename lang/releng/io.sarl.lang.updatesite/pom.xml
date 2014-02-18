@@ -9,4 +9,43 @@
 	<artifactId>io.sarl.lang.updatesite</artifactId>
 	<packaging>eclipse-repository</packaging>
 	<name>SARL Lang Update Site</name>
+
+	<profiles>
+		<!-- This profile is used to upload the repo -->
+		<profile>
+			<id>uploadRepo</id>
+			<properties>
+				<!-- Properties relative to the distant host where to upload the repo -->
+				<upload.url>file:///var/www/sarl-p2-repository</upload.url>
+				<upload.toDir>/${project.version}</upload.toDir>
+				<!-- Relative path to the repo being uploaded -->
+				<repo.path>${project.build.directory}/repository/</repo.path>
+			</properties>
+
+			<build>
+				<plugins>
+					<!-- Upload the repo to the server -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>wagon-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>upload-repo</id>
+								<phase>install</phase>
+								<goals>
+									<goal>upload</goal>
+								</goals>
+								<configuration>
+									<fromDir>${repo.path}</fromDir>
+									<includes>**</includes>
+									<toDir>${upload.toDir}</toDir>
+									<url>${upload.url}</url>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

@@ -108,6 +108,11 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 					<version>1.0.4</version>
 				</plugin>
 
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>wagon-maven-plugin</artifactId>
+					<version>1.0-beta-4</version>
+				</plugin>
 
 				<!-- xtend-maven-plugin is in pluginManagement instead of in plugins 
 					so that it doesn't run before the exec-maven-plugin's *.mwe2 gen; this way 
@@ -417,5 +422,20 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 			</roles>
 		</developer>
 	</developers>
+
+	<!-- =================== -->
+	<!-- ==== Deployment === -->
+	<!-- =================== -->
+
+	<distributionManagement>
+		<repository>
+			<id>local-release-repository</id>
+			<url>file:///var/www/sarl-maven-repository/</url>
+		</repository>
+		<snapshotRepository>
+			<id>local-snapshot-repository</id>
+			<url>file:///var/www/sarl-maven-repository/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 </project>
