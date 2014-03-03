@@ -15,6 +15,8 @@
  */
 package io.sarl.util;
 
+import java.io.Serializable;
+
 import io.sarl.lang.core.Scope;
 
 /**
@@ -36,7 +38,7 @@ public final class Scopes {
 		return AlwaysTrueScope.get();
 	}
 
-	private static class AlwaysTrueScope<T> implements Scope<T> {
+	private static class AlwaysTrueScope<T> implements Scope<T>, Serializable {
 
 		public static final <TT> Scope<TT> get(){
 			return new AlwaysTrueScope<TT>();

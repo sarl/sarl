@@ -18,6 +18,7 @@ package io.sarl.util;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Scope;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class AddressScope implements Scope<Address> {
+public class AddressScope implements Scope<Address>, Serializable {
 
 	private final String SCOPE_ID = "aid://";
 
