@@ -424,6 +424,19 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 	</developers>
 
 	<!-- =================== -->
+	<!-- ==== Repositories === -->
+	<!-- =================== -->
+
+	<repositories>
+		<repository>
+			<id>io.sarl.maven</id>
+			<name>SARL Repository</name>
+			<url>http://maven.sarl.io/</url>
+		</repository>
+	</repositories>
+
+
+	<!-- =================== -->
 	<!-- ==== Deployment === -->
 	<!-- =================== -->
 
