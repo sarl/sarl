@@ -12,7 +12,7 @@ import static org.junit.Assert.*
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 
 /**
- * This document defines who to declare events in SARL.
+ * This document defines how to declare events in SARL.
  */
 @CreateWith(SARLSpecCreator)
 describe "Event Reference"{
