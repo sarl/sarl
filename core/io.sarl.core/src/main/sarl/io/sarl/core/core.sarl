@@ -27,6 +27,7 @@ import io.sarl.core.AgentTask
 import java.util.UUID
 import java.util.Set
 import java.util.Collection
+import io.sarl.lang.core.EventListener
 
 /**
 * Initialization event for an Agent.
@@ -149,6 +150,11 @@ capacity Behaviors {
 	 * Wake the agent's behaviors reacting to the Event evt.
 	 */
 	def wake(evt : Event)
+	
+	/**
+	 * Replies the interface to dispatch an event to agent's Behaviors
+	 */
+	def asEventListener : EventListener
 }
 
 /**
