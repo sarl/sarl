@@ -15,11 +15,11 @@
  */
 package io.sarl.lang.core;
 
-
 /**
- * Elementary interaction unit inside an {@link EventSpace}
- * An event is the specification of some occurrence in a Space that may potentially trigger effects by a listener.
- * Within a Space, the notion of {@link Scope} enables to precisely control/filter the potential recipients of an event.
+ * Elementary interaction unit inside an {@link EventSpace} An event is the
+ * specification of some occurrence in a Space that may potentially trigger
+ * effects by a listener. Within a Space, the notion of {@link Scope} enables to
+ * precisely control/filter the potential recipients of an event.
  * 
  * @author $Author: srodriguez$
  * @version $FullVersion$
@@ -46,5 +46,15 @@ public abstract class Event {
 	 */
 	public void setSource(Address source) {
 		this.source = source;
+	}
+
+	/**
+	 * Returns a String representation of the Event E1 attributes only.
+	 */
+	protected String attributesToString() {
+		StringBuilder result = new StringBuilder();
+		result.append("source = ");
+		result.append(this.source.toString());
+		return result.toString();
 	}
 }

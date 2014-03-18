@@ -42,6 +42,7 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
 import io.sarl.lang.core.Percept
 import java.util.UUID
+import org.eclipse.xtext.common.types.JvmVisibility
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -100,7 +101,12 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		acceptor.accept(element.toClass(element.fullyQualifiedName)).initializeLater(
 			[
 				documentation = element.documentation
-				superTypes += newTypeRef(element, typeof(io.sarl.lang.core.Event))
+				
+				if(element.superType != null){
+					superTypes += newTypeRef(element.superType.fullyQualifiedName.toString)
+				}else{
+					superTypes += newTypeRef(element, typeof(io.sarl.lang.core.Event))
+				}
 				for (feature : element.features) {
 					switch feature {
 						Action: {
@@ -128,21 +134,28 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					}
 
 				}
-				//String result = "Factorial [";
-				//result = result + "number  = " + this.number;
-				//result = result + "value  = " + this.value;
-				//result = result + "]";
-				//return result;
+				members += element.toMethod("attributesToString", newTypeRef(String))[
+					visibility = JvmVisibility::PROTECTED
+					documentation = '''Returns a String representation of the Event «element.name» attributes only.'''
+					body = [
+						append(
+							'''
+							StringBuilder result = new StringBuilder();
+							result.append(super.attributesToString());
+							«FOR attr : element.features.filter(Attribute)»
+								result.append("«attr.name»  = ").append(this.«attr.name»);
+							«ENDFOR»
+							return result.toString();''')
+					]
+				]
 				members += element.toMethod('toString', newTypeRef(String)) [
-					documentation = '''Returns a String representation of the Event «element.name»'''
+					documentation = '''Returns a String representation of the Event «element.name».'''
 					body = [
 						append(
 							'''
 							StringBuilder result = new StringBuilder();
 							result.append("«element.name»[");
-							«FOR attr : element.features.filter(Attribute)»
-								result.append("«attr.name»  = ").append(this.«attr.name»);
-							«ENDFOR»
+							result.append(this.attributesToString());
 							result.append("]");
 							return result.toString();''')
 					]

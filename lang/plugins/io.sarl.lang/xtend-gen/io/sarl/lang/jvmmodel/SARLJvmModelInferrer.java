@@ -53,6 +53,7 @@ import org.eclipse.xtext.common.types.JvmMember;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
@@ -137,9 +138,20 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
       public void apply(final JvmGenericType it) {
         String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(element);
         SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
-        EList<JvmTypeReference> _superTypes = it.getSuperTypes();
-        JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(element, io.sarl.lang.core.Event.class);
-        SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _newTypeRef);
+        Event _superType = element.getSuperType();
+        boolean _notEquals = (!Objects.equal(_superType, null));
+        if (_notEquals) {
+          EList<JvmTypeReference> _superTypes = it.getSuperTypes();
+          Event _superType_1 = element.getSuperType();
+          QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_superType_1);
+          String _string = _fullyQualifiedName.toString();
+          JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(it, _string);
+          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _newTypeRef);
+        } else {
+          EList<JvmTypeReference> _superTypes_1 = it.getSuperTypes();
+          JvmTypeReference _newTypeRef_1 = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(element, io.sarl.lang.core.Event.class);
+          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes_1, _newTypeRef_1);
+        }
         EList<EventFeature> _features = element.getFeatures();
         for (final EventFeature feature : _features) {
           boolean _matched = false;
@@ -200,13 +212,55 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           }
         }
         EList<JvmMember> _members = it.getMembers();
-        JvmTypeReference _newTypeRef_1 = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(it, String.class);
+        JvmTypeReference _newTypeRef_2 = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(it, String.class);
         final Procedure1<JvmOperation> _function = new Procedure1<JvmOperation>() {
+          public void apply(final JvmOperation it) {
+            it.setVisibility(JvmVisibility.PROTECTED);
+            StringConcatenation _builder = new StringConcatenation();
+            _builder.append("Returns a String representation of the Event ");
+            String _name = element.getName();
+            _builder.append(_name, "");
+            _builder.append(" attributes only.");
+            SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _builder.toString());
+            final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
+              public void apply(final ITreeAppendable it) {
+                StringConcatenation _builder = new StringConcatenation();
+                _builder.append("StringBuilder result = new StringBuilder();");
+                _builder.newLine();
+                _builder.append("result.append(super.attributesToString());");
+                _builder.newLine();
+                {
+                  EList<EventFeature> _features = element.getFeatures();
+                  Iterable<Attribute> _filter = Iterables.<Attribute>filter(_features, Attribute.class);
+                  for(final Attribute attr : _filter) {
+                    _builder.append("result.append(\"");
+                    String _name = attr.getName();
+                    _builder.append(_name, "");
+                    _builder.append("  = \").append(this.");
+                    String _name_1 = attr.getName();
+                    _builder.append(_name_1, "");
+                    _builder.append(");");
+                    _builder.newLineIfNotEmpty();
+                  }
+                }
+                _builder.append("return result.toString();");
+                it.append(_builder);
+              }
+            };
+            SARLJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _function);
+          }
+        };
+        JvmOperation _method = SARLJvmModelInferrer.this._jvmTypesBuilder.toMethod(element, "attributesToString", _newTypeRef_2, _function);
+        SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members, _method);
+        EList<JvmMember> _members_1 = it.getMembers();
+        JvmTypeReference _newTypeRef_3 = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(it, String.class);
+        final Procedure1<JvmOperation> _function_1 = new Procedure1<JvmOperation>() {
           public void apply(final JvmOperation it) {
             StringConcatenation _builder = new StringConcatenation();
             _builder.append("Returns a String representation of the Event ");
             String _name = element.getName();
             _builder.append(_name, "");
+            _builder.append(".");
             SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _builder.toString());
             final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
               public void apply(final ITreeAppendable it) {
@@ -218,20 +272,8 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
                 _builder.append(_name, "");
                 _builder.append("[\");");
                 _builder.newLineIfNotEmpty();
-                {
-                  EList<EventFeature> _features = element.getFeatures();
-                  Iterable<Attribute> _filter = Iterables.<Attribute>filter(_features, Attribute.class);
-                  for(final Attribute attr : _filter) {
-                    _builder.append("result.append(\"");
-                    String _name_1 = attr.getName();
-                    _builder.append(_name_1, "");
-                    _builder.append("  = \").append(this.");
-                    String _name_2 = attr.getName();
-                    _builder.append(_name_2, "");
-                    _builder.append(");");
-                    _builder.newLineIfNotEmpty();
-                  }
-                }
+                _builder.append("result.append(this.attributesToString());");
+                _builder.newLine();
                 _builder.append("result.append(\"]\");");
                 _builder.newLine();
                 _builder.append("return result.toString();");
@@ -241,8 +283,8 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
             SARLJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _function);
           }
         };
-        JvmOperation _method = SARLJvmModelInferrer.this._jvmTypesBuilder.toMethod(element, "toString", _newTypeRef_1, _function);
-        SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members, _method);
+        JvmOperation _method_1 = SARLJvmModelInferrer.this._jvmTypesBuilder.toMethod(element, "toString", _newTypeRef_3, _function_1);
+        SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_1, _method_1);
       }
     };
     _accept.initializeLater(_function);
