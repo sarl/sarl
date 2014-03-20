@@ -50,7 +50,8 @@ event Destroy {}
 * The context Id can be retrieved via ev.getSource().getSpaceID().getContextID()
 */
 event AgentSpawned {
-	var agentID :UUID
+	var agentID : UUID
+	var agentType : Class<? extends Agent>
 }
 
 /**
