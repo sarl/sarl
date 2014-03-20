@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="SARL Eclipse IDE" uid="io.sarl.lang.product" id="org.eclipse.sdk.ide" version="0.1.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="SARL Eclipse IDE" uid="io.sarl.lang.product" id="org.eclipse.platform.ide" application="org.eclipse.ui.ide.workbench" version="0.1.0.qualifier" useFeatures="true" includeLaunchers="true">
+
+   <aboutInfo>
+      <image path="eclipse_lg.gif"/>
+      <text>
+         SARL
+      </text>
+   </aboutInfo>
 
 
    <configIni use="default">
@@ -254,5 +261,19 @@
       <feature id="org.eclipse.m2e.feature" version="1.4.0.20130601-0317"/>
    </features>
 
+
+<configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
+
+      <!-- Disable update manager. It seems as if this could be achieved by the first line, but in 
+           fact the second line sets reconcile to false (see org.eclipse.equinox.p2.publisher.eclipse.ConfigCUsAction#publishBundleCUs) 
+      <property name="org.eclipse.update.reconcile" value="false" />
+      <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="4"/>-->
+                                              
+   </configurations>
 
 </product>
