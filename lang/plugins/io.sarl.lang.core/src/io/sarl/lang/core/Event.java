@@ -15,6 +15,8 @@
  */
 package io.sarl.lang.core;
 
+import java.io.Serializable;
+
 /**
  * Elementary interaction unit inside an {@link EventSpace} An event is the
  * specification of some occurrence in a Space that may potentially trigger
@@ -26,8 +28,10 @@ package io.sarl.lang.core;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+public abstract class Event implements Serializable {
 
-public abstract class Event {
+	private static final long serialVersionUID = -9077741474332211244L;
+
 	private Address source = null;
 
 	/**

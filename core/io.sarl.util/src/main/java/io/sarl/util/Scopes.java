@@ -38,7 +38,7 @@ public final class Scopes {
 		return AlwaysTrueScope.get();
 	}
 
-	private static class AlwaysTrueScope<T> implements Scope<T>, Serializable {
+	private static class AlwaysTrueScope<T> implements Scope<T> {
 
 		private static final long serialVersionUID = -3193147362292037L;
 

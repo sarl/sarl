@@ -15,6 +15,8 @@
  */
 package io.sarl.lang.core;
 
+import java.io.Serializable;
+
 /**
  * Defines the scope of an Event. Scopes are specialized based on the addressing
  * mechanism internally used by a {@link Space}.
@@ -27,10 +29,8 @@ package io.sarl.lang.core;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Scope<T> {
+public interface Scope<T> extends Serializable {
 	
-
-    
 	/**
 	 * Checks whether the element is included in this scope.
 	 * 

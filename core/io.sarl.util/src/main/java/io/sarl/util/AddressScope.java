@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class AddressScope implements Scope<Address>, Serializable {
+public class AddressScope implements Scope<Address> {
 
 	private static final long serialVersionUID = -1176306257753661102L;
 
