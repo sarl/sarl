@@ -384,6 +384,14 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 						</tag>
 					</tags>
 				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
