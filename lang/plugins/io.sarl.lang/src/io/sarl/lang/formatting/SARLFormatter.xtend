@@ -17,10 +17,25 @@ package io.sarl.lang.formatting
 
 import com.google.inject.Inject
 import io.sarl.lang.services.SARLGrammarAccess
-import org.eclipse.xtext.Keyword
-import org.eclipse.xtext.formatting.impl.AbstractDeclarativeFormatter
+import io.sarl.lang.services.SARLGrammarAccess.ActionSignatureElements
+import io.sarl.lang.services.SARLGrammarAccess.AgentElements
+import io.sarl.lang.services.SARLGrammarAccess.AttributeElements
+import io.sarl.lang.services.SARLGrammarAccess.BehaviorElements
+import io.sarl.lang.services.SARLGrammarAccess.BehaviorUnitElements
+import io.sarl.lang.services.SARLGrammarAccess.CapacityElements
+import io.sarl.lang.services.SARLGrammarAccess.CapacityUsesElements
+import io.sarl.lang.services.SARLGrammarAccess.ConstructorElements
+import io.sarl.lang.services.SARLGrammarAccess.EventElements
+import io.sarl.lang.services.SARLGrammarAccess.RequiredCapacityElements
+import io.sarl.lang.services.SARLGrammarAccess.SkillElements
+import io.sarl.lang.services.SARLGrammarAccess.XVariableDeclarationElements
 import org.eclipse.xtext.formatting.impl.FormattingConfig
-import org.eclipse.xtext.xbase.lib.Pair
+import org.eclipse.xtext.xbase.formatting.XbaseFormatter
+import org.eclipse.xtext.xbase.services.XbaseGrammarAccess.XAssignmentElements
+import org.eclipse.xtext.xbase.services.XbaseGrammarAccess.XForLoopExpressionElements
+import org.eclipse.xtext.xbase.services.XbaseGrammarAccess.XIfExpressionElements
+import org.eclipse.xtext.xbase.services.XbaseGrammarAccess.XMemberFeatureCallElements
+import org.eclipse.xtext.xbase.services.XtypeGrammarAccess.XImportDeclarationElements
 
 /**
  * This class contains custom formatting description.
@@ -30,98 +45,148 @@ import org.eclipse.xtext.xbase.lib.Pair
  * 
  * Also see {@link org.eclipse.xtext.xtext.XtextFormattingTokenSerializer} as an example
  */
-class SARLFormatter extends AbstractDeclarativeFormatter {
+class SARLFormatter extends XbaseFormatter {
 
 	@Inject extension SARLGrammarAccess f
 
 	override protected void configureFormatting(FormattingConfig c) {
 
-		c.setAutoLinewrap(120)
-		for (pair : f.findKeywordPairs("{", "}")) {
-			c.setIndentation(pair.getFirst(), pair.getSecond());
-			//c.setLinewrap(1).before(pair.getFirst());
-			
-			c.setLinewrap(1).after(pair.getFirst());
-			c.setLinewrap(1).before(pair.getSecond());
-			c.setLinewrap(1).after(pair.getSecond());
-		}
+		c.setAutoLinewrap(400)
+		c.configureXImportDeclaration(XImportDeclarationAccess)
+		c.configureAgent(agentAccess)
 
-		// find common keywords an specify formatting for them
-		for (pair : f.findKeywordPairs("(", ")")) {
-			c.setNoSpace().before(pair.first);
-			c.setNoSpace().after(pair.first);
-			c.setNoSpace().before(pair.second);
-		}
+		c.configureAttributes(attributeAccess)
+		c.configureEvents(eventAccess)
+		c.configureUses(capacityUsesAccess)
+		c.configureBehaviorUnit(behaviorUnitAccess)
 
-		for (Keyword comma : f.findKeywords(",")) {
-			c.setNoSpace().before(comma);
-		}
-
-		for (Keyword dot : f.findKeywords(".")) {
-			c.setNoSpace().around(dot);
-		}
-		for (pair : f.findKeywordPairs("<", ">")) {
-			c.setNoSpace().after(pair.getFirst());
-			c.setNoSpace().before(pair.getSecond());
-		}
-
-		c.setLinewrap(0, 1, 2).before(XImportSectionRule);
-		c.setLinewrap(0, 0, 1).before(XImportDeclarationRule);
-
-		c.setLinewrap(0, 1, 2).before(agentRule);
-		c.setLinewrap(0, 1, 2).before(behaviorRule);
-		c.setLinewrap(0, 1, 2).before(eventRule);
-		c.setLinewrap(0, 1, 2).before(capacityRule);
-		c.setLinewrap(0, 1, 2).before(skillRule);
+		c.configureXVariableDeclaration(XVariableDeclarationAccess)
+		c.configureXAssignmentElements(XAssignmentAccess)
+		c.configureActionSignatures(actionSignatureAccess)
+		c.configureCapacities(capacityAccess)
+		c.configureBehaviors(behaviorAccess)
+		c.configureRequires(requiredCapacityAccess)
+		c.configureSkill(skillAccess)
+		c.configureConstructor(constructorAccess)
 		
-
-		c.setLinewrap(0, 1, 2).before(attributeRule);
-		c.setLinewrap(0, 1, 2).before(behaviorUnitRule);
-		c.setLinewrap(0, 1, 2).before(actionSignatureRule);
-		c.setLinewrap(0, 1, 2).before(requiredCapacityRule);
-
-//		//CurlyBracket wraps
-//		c.setLinewrap(0, 1, 2).before(agentAccess.rightCurlyBracketKeyword_4);
-//		c.setLinewrap(0, 1, 2).before(skillAccess.rightCurlyBracketKeyword_7);
-//		c.setLinewrap(0, 1, 2).before(capacityAccess.rightCurlyBracketKeyword_5);
-//		c.setLinewrap(0, 1, 2).before(behaviorAccess.rightCurlyBracketKeyword_5);
-//		c.setLinewrap(0, 1, 2).before(eventAccess.rightCurlyBracketKeyword_4);
-//		c.setLinewrap(0, 1, 2).before(MASAccess.rightCurlyBracketKeyword_4);
-//
-//		c.setLinewrap(0, 1, 2).before(XBlockExpressionAccess.rightCurlyBracketKeyword_3);
-//		c.setLinewrap(0, 1, 2).after(XBlockExpressionAccess.leftCurlyBracketKeyword_1);
-
-//		// formatting for grammar rule Agent Indentation
-//		c.setIndentationIncrement.after(agentAccess.leftCurlyBracketKeyword_2);
-//		c.setIndentationDecrement.before(agentAccess.rightCurlyBracketKeyword_4);
-//
-//		// formatting for grammar rule CAPACITY Indentation
-//		c.setIndentationIncrement.after(capacityAccess.leftCurlyBracketKeyword_3);
-//		c.setIndentationDecrement.before(capacityAccess.rightCurlyBracketKeyword_5);
-//
-//		// formatting for grammar rule SKILL Indentation
-//		c.setIndentationIncrement.after(skillAccess.leftCurlyBracketKeyword_5);
-//		c.setIndentationDecrement.before(skillAccess.rightCurlyBracketKeyword_7);
-//
-//		// formatting for grammar rule BEHAVIOR Indentation
-//		c.setIndentationIncrement.after(behaviorAccess.leftCurlyBracketKeyword_3);
-//		c.setIndentationDecrement.before(behaviorAccess.rightCurlyBracketKeyword_5);
-//
-//		// formatting for grammar rule EVENT Indentation
-//		c.setIndentationIncrement.after(eventAccess.leftCurlyBracketKeyword_2);
-//		c.setIndentationDecrement.before(eventAccess.rightCurlyBracketKeyword_4);
-//
-//		// formatting for grammar rule MAS Indentation
-//		c.setIndentationIncrement.after(MASAccess.leftCurlyBracketKeyword_2);
-//		c.setIndentationDecrement.before(MASAccess.rightCurlyBracketKeyword_4);
-//
-//		// formatting for grammar rule XBlockExpression Indentation
-//		c.setIndentationIncrement.after(XBlockExpressionAccess.leftCurlyBracketKeyword_1);
-//		c.setIndentationDecrement.before(XBlockExpressionAccess.rightCurlyBracketKeyword_3);
+		//package
+		c.setLinewrap(2).after(modelAccess.group_0)
+		
+		super.configure(c, xbaseGrammarAccess);
 
 		// formatting for Comments 
 		c.setLinewrap(0, 1, 2).before(getSL_COMMENTRule());
 		c.setLinewrap(0, 1, 2).before(getML_COMMENTRule());
 		c.setLinewrap(0, 1, 1).after(getML_COMMENTRule());
 	}
+
+	def configureConstructor(FormattingConfig c, ConstructorElements ele) {
+		c.setLinewrap(2).before(ele.group)
+		c.setNoSpace.around(ele.leftParenthesisKeyword_1_0)
+		c.setNoSpace.before(ele.rightParenthesisKeyword_1_3)
+		c.setNoSpace.before(ele.commaKeyword_1_2_0)
+
+	}
+
+	def configureSkill(FormattingConfig c, SkillElements ele) {
+		c.setLinewrap(1, 1, 2).before(ele.group)
+		c.setIndentation(ele.leftCurlyBracketKeyword_5, ele.rightCurlyBracketKeyword_7)
+		c.setLinewrap.around(ele.rightCurlyBracketKeyword_7)
+	}
+
+	def configureRequires(FormattingConfig c, RequiredCapacityElements ele) {
+		c.setLinewrap.around(ele.group)
+		c.setNoSpace.before(ele.commaKeyword_2_0)
+	}
+
+	def configureBehaviors(FormattingConfig c, BehaviorElements ele) {
+		c.setLinewrap(2).before(ele.group)
+		c.setIndentation(ele.leftCurlyBracketKeyword_3, ele.rightCurlyBracketKeyword_5)
+		c.setLinewrap.around(ele.rightCurlyBracketKeyword_5)
+	}
+
+	def configureCapacities(FormattingConfig c, CapacityElements ele) {
+		c.setLinewrap(1, 1, 2).before(ele.group)
+		c.setIndentation(ele.leftCurlyBracketKeyword_3, ele.rightCurlyBracketKeyword_5)
+		c.setLinewrap.around(ele.rightCurlyBracketKeyword_5)
+	}
+
+	def configureActionSignatures(FormattingConfig c, ActionSignatureElements ele) {
+		c.setLinewrap(2).before(ele.group)
+		c.setNoSpace.around(ele.leftParenthesisKeyword_2_0)
+		c.setNoSpace.before(ele.rightParenthesisKeyword_2_3)
+		c.setNoSpace.before(ele.commaKeyword_2_2_0)
+		c.setNoSpace.before(ele.commaKeyword_4_2_0)
+	}
+
+	def void configureXImportDeclaration(FormattingConfig c, XImportDeclarationElements ele) {
+		c.setLinewrap(1, 1, 2).after(ele.group)
+		c.setNoSpace.around(ele.fullStopKeyword_1_0_3)
+	}
+
+	def void configureAttributes(FormattingConfig c, AttributeElements ele) {
+		c.setLinewrap.around(ele.group)
+	}
+
+	def void configureAgent(FormattingConfig c, AgentElements ele) {
+		c.setLinewrap(2).after(ele.group);
+		c.setLinewrap.before(ele.rightCurlyBracketKeyword_5);
+		c.setIndentation(ele.leftCurlyBracketKeyword_3, ele.rightCurlyBracketKeyword_5)
+	}
+
+	def void configureEvents(FormattingConfig c, EventElements ele) {
+		c.setLinewrap(2).after(ele.group);
+		c.setLinewrap.before(ele.rightCurlyBracketKeyword_5);
+		c.setIndentation(ele.leftCurlyBracketKeyword_3, ele.rightCurlyBracketKeyword_5)
+	}
+
+	def void configureUses(FormattingConfig c, CapacityUsesElements ele) {
+		c.setLinewrap.around(ele.group);
+		c.setNoSpace.before(ele.commaKeyword_2_0)
+	}
+
+	def void configureBehaviorUnit(FormattingConfig c, BehaviorUnitElements ele) {
+		c.setLinewrap(2).before(ele.group);
+		c.setLinewrap.after(ele.group);
+
+		c.setNoSpace.after(ele.leftSquareBracketKeyword_2_0)
+		c.setNoSpace.before(ele.rightSquareBracketKeyword_2_2)
+
+	}
+
+	override void configureXIfExpression(FormattingConfig c, XIfExpressionElements ele) {
+		c.setNoSpace().around(ele.getLeftParenthesisKeyword_2());
+		c.setNoSpace().before(ele.getRightParenthesisKeyword_4());
+
+		c.setLinewrap(1, 1, 2).before(ele.group)
+
+		c.setLinewrap(0, 1, 2).after(ele.thenAssignment_5)
+
+	}
+
+	def void configureXVariableDeclaration(FormattingConfig c, XVariableDeclarationElements ele) {
+		c.setLinewrap(0, 1, 2).around(ele.group)
+	}
+
+	def configureXAssignmentElements(FormattingConfig c, XAssignmentElements ele) {
+		c.setLinewrap(0, 1, 2).around(ele.group_0)
+	}
+
+	override configureXForLoopExpression(FormattingConfig c, XForLoopExpressionElements ele) {
+		c.setNoSpace().around(ele.getLeftParenthesisKeyword_2());
+		c.setNoSpace().around(ele.getColonKeyword_4());
+		c.setNoSpace().around(ele.getRightParenthesisKeyword_6());
+
+		//		c.setIndentationIncrement().before(ele.getEachExpressionAssignment_7());
+		c.setLinewrap().around(ele.getEachExpressionAssignment_7());
+
+		//		c.setIndentationDecrement().after(ele.getEachExpressionAssignment_7());
+		c.setLinewrap(2).before(ele.group)
+	}
+
+	override configureXMemberFeatureCall(FormattingConfig c, XMemberFeatureCallElements ele) {
+		super.configureXMemberFeatureCall(c, ele)
+		c.setLinewrap(0, 1, 2).around(ele.group)
+	}
+
 }
