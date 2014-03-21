@@ -50,7 +50,7 @@ public class Agent implements Identifiable {
 	}
 	
 	/**
-	 * Replies the agent's spanwer's ID
+	 * Replies the agent's spawner's ID
 	 * @return
 	 */
 	public UUID getParentID(){
