@@ -35,19 +35,51 @@
 		</plugins>
 	</build>
 	<profiles>
-		<!-- This profile is used to upload the repo -->
+		<!-- This profile is used to upload the P2 repo -->
 		<profile>
-			<id>uploadRepo</id>
+			<id>uploadP2Repo</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+
 			<properties>
 				<!-- Properties relative to the distant host where to upload the repo -->
-				<upload.url>file:///var/www/sarl-p2-repository</upload.url>
-				<upload.toDir>/${project.version}</upload.toDir>
+				<p2UploadFolder>file:///var/www/sarl-p2-repository</p2UploadFolder>
 				<!-- Relative path to the repo being uploaded -->
-				<repo.path>${project.build.directory}/repository/</repo.path>
+				<p2RepoPath>${project.build.directory}/repository/</p2RepoPath>
 			</properties>
 
 			<build>
 				<plugins>
+					<!-- Compute the target folder -->
+					<plugin>
+						<groupId>org.codehaus.gmaven</groupId>
+						<artifactId>groovy-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>add-dynamic-properties</id>
+								<phase>initialize</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<source>
+										snapshotTag = "-SNAPSHOT"
+										if (project.version.endsWith(snapshotTag)) {
+											len = project.version.size() - snapshotTag.size()
+											version = project.version.substring(0,len)
+											formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss");
+											releaseNumber = "R"+formatter.format(new Date());
+											project.properties.p2UploadToDir = "/snapshots/"+version+"/"+releaseNumber
+										}
+										else {
+											project.properties.p2UploadToDir = "/releases/"+project.version
+										}
+									</source>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 					<!-- Upload the repo to the server -->
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
@@ -55,15 +87,15 @@
 						<executions>
 							<execution>
 								<id>upload-repo</id>
-								<phase>install</phase>
+								<phase>deploy</phase>
 								<goals>
 									<goal>upload</goal>
 								</goals>
 								<configuration>
-									<fromDir>${repo.path}</fromDir>
+									<fromDir>${p2RepoPath}</fromDir>
 									<includes>**</includes>
-									<toDir>${upload.toDir}</toDir>
-									<url>${upload.url}</url>
+									<toDir>${p2UploadToDir}</toDir>
+									<url>${p2UploadFolder}</url>
 								</configuration>
 							</execution>
 						</executions>
