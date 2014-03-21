@@ -12,6 +12,10 @@ import org.eclipse.xtext.ui.editor.syntaxcoloring.ISemanticHighlightingCalculato
  * Use this class to register components to be used within the IDE.
  */
 public class SARLUiModule extends io.sarl.lang.ui.AbstractSARLUiModule {
+
+	/**
+	 * @param plugin
+	 */
 	public SARLUiModule(AbstractUIPlugin plugin) {
 		super(plugin);
 	}

@@ -20,8 +20,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/** 
+ * @author $Author: srodriguez$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
 @Retention(value=RetentionPolicy.RUNTIME)
 @Target(value=ElementType.METHOD)
 public @interface Percept {
-
+	//
 }

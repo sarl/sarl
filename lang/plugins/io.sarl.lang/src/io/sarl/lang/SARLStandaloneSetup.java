@@ -21,8 +21,11 @@ package io.sarl.lang;
  */
 public class SARLStandaloneSetup extends SARLStandaloneSetupGenerated{
 
+	/**
+	 */
 	public static void doSetup() {
 		new SARLStandaloneSetup().createInjectorAndDoEMFRegistration();
 	}
 }
+
 

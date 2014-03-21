@@ -46,6 +46,7 @@ class CapacityUtilsTest {
 	
 	var Model mas
 	var Iterable<Capacity> knownCapacities
+	
 	@Inject extension IQualifiedNameProvider
 
 	@Before

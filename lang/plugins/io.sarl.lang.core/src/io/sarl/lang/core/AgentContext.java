@@ -29,17 +29,57 @@ import java.util.UUID;
  */
 public interface AgentContext {
 	
+	/** Replies the identifier of the context.
+	 * 
+	 * @return the identifier of the context.
+	 */
 	public UUID getID();
 
+	/** Replies the default space of the context.
+	 * The default space is assumed to be always an {@link EventSpace event-based space}.
+	 * 
+	 * @return the default space.
+	 */
 	public EventSpace getDefaultSpace();
 
+	/** Replies all the spaces defined in this context.
+	 * 
+	 * @return the spaces.
+	 */
 	public Collection<Space> getSpaces();
 
+	/** Create an instance of space following the given specification.
+	 * This function always creates a new instance of space.
+	 * If you want to find an existing space prior to the creation of
+	 * a new one, you should use {@link #getOrCreateSpace(Class, UUID, Object...)}.
+	 * 
+	 * @param spec - specification of the space to create.
+	 * @param spaceUUID - identifier of the new space.
+	 * @param creationParams - parameters to pass to the space constructor.
+	 * @return the new space.
+	 * @see #getOrCreateSpace(Class, UUID, Object...)
+	 */
 	public <S extends Space> S createSpace(Class<? extends SpaceSpecification> spec, UUID spaceUUID,
 			Object... creationParams);
 
+	/** Replies all the spaces that are implementing the given specification.
+	 * 
+	 * @param spec
+	 * @return the spaces associated to the given space specification.
+	 */
 	public <S extends Space> Collection<S> getSpaces(Class<? extends SpaceSpecification> spec);
 
+	/** Retreive or create an instance of space following the given specification.
+	 * This function tries to find a space that fits the given specification.
+	 * If none wis found, this function create a new space in the same way as
+	 * {@link #createSpace(Class, UUID, Object...)}.
+	 * 
+	 * @param spec - specification of the space to create.
+	 * @param spaceUUID - identifier of the new space.
+	 * @param creationParams - parameters to pass to the space constructor.
+	 * @return the new space.
+	 * @see #createSpace(Class, UUID, Object...)
+	 */
 	public <S extends Space> S getOrCreateSpace(Class<? extends SpaceSpecification> spec, UUID spaceUUID,
 			Object... creationParams);
 

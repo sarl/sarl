@@ -22,5 +22,5 @@ package io.sarl.lang.core;
  * @mavenartifactid $ArtifactId$
  */
 public interface Capacity {
-
+	//
 }

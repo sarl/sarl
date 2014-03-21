@@ -20,23 +20,20 @@
  */
 package io.sarl.lang.tests
 
-import org.eclipse.xtext.junit4.XtextRunner
-import org.junit.runner.RunWith
-import org.eclipse.xtext.junit4.InjectWith
 import com.google.inject.Inject
-import org.junit.Test
+import io.sarl.lang.SARLInjectorProvider
+import io.sarl.lang.sarl.Model
+import io.sarl.lang.sarl.SarlPackage
+import org.eclipse.xtext.diagnostics.Diagnostic
+import org.eclipse.xtext.junit4.InjectWith
+import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
+import org.junit.Ignore
+import org.junit.Test
+import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
-import io.sarl.lang.sarl.Model
-import org.eclipse.xtext.junit4.IInjectorProvider
-import io.sarl.lang.SARLInjectorProvider
-import io.sarl.lang.sarl.Agent
-import org.eclipse.xtext.xbase.XbasePackage
-import org.eclipse.xtext.diagnostics.Diagnostic
-import io.sarl.lang.sarl.SarlPackage
-import org.junit.Ignore
 
 /**
  * @author $Author: Sebastian Rodriguez$

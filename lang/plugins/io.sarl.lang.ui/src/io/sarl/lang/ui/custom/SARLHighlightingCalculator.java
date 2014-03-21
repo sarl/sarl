@@ -19,7 +19,6 @@ import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 
 import java.util.Map;
 
-import org.eclipse.xtext.common.types.util.Primitives;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.DefaultHighlightingConfiguration;
 import org.eclipse.xtext.xbase.ui.highlighting.XbaseHighlightingCalculator;
 

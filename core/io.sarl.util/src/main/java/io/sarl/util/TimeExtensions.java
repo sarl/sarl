@@ -29,27 +29,56 @@ public class TimeExtensions {
 	private static final long MILLIS_IN_DAY = 24 * MILLIS_IN_HOUR;
 	private static final long MILLIS_IN_WEEK = 7 * MILLIS_IN_DAY;
 
-	
+	/** Convert milliseconds to milliseconds.
+	 * 
+	 * @param milis
+	 * @return the number of milliseconds in <var>milis</var>
+	 */
 	public static long milliseconds(Integer milis) {
 		return milis;
 	}	
 	
+	/** Convert seconds to milliseconds.
+	 * 
+	 * @param secs
+	 * @return the number of milliseconds in <var>secs</var>
+	 */
 	public static long seconds(Integer secs) {
 		return secs * MILLIS_IN_SECOND;
 	}
 	
+	/** Convert minutes to milliseconds.
+	 * 
+	 * @param mins
+	 * @return the number of milliseconds in <var>mins</var>
+	 */
 	public static long minutes(Integer mins) {
 		return mins * MILLIS_IN_MINUTE;
 	}
 	
+	/** Convert hours to milliseconds.
+	 * 
+	 * @param hours
+	 * @return the number of milliseconds in <var>hours</var>
+	 */
 	public static long hours(Integer hours) {
 		return hours * MILLIS_IN_HOUR;
 	}
 	
+	/** Convert days to milliseconds.
+	 * 
+	 * @param days
+	 * @return the number of days in <var>days</var>
+	 */
 	public static long days(Integer days) {
 		return days * MILLIS_IN_DAY;
 	}
 	
+	/** Convert weeks to milliseconds.
+	 * 
+	 * @param weeks
+	 * @return the number of milliseconds in <var>weeks</var>
+	 */
 	public static long weeks(Integer weeks) {
 		return weeks * MILLIS_IN_WEEK;
 	}

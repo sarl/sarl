@@ -42,6 +42,7 @@ public class Address implements Serializable, Comparable<Address> {
 	/**
 	 * Create an address based on the specified identifier
 	 * 
+	 * @param spaceId is the identifier of the space related to this address.
 	 * @param agentId
 	 *            is the identifier of the address.
 	 */
@@ -57,7 +58,9 @@ public class Address implements Serializable, Comparable<Address> {
 	 */
 	@Override
 	public String toString() {
-		return "Address [agentId=" + agentId + ", spaceId=" + spaceId + "]";
+		return "Address [agentId=" + this.agentId //$NON-NLS-1$
+				+ ", spaceId=" + this.spaceId //$NON-NLS-1$
+				+ "]"; //$NON-NLS-1$
 	}
 	
 	/**
@@ -75,8 +78,8 @@ public class Address implements Serializable, Comparable<Address> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((agentId == null) ? 0 : agentId.hashCode());
-		result = prime * result + ((spaceId == null) ? 0 : spaceId.hashCode());
+		result = prime * result + ((this.agentId == null) ? 0 : this.agentId.hashCode());
+		result = prime * result + ((this.spaceId == null) ? 0 : this.spaceId.hashCode());
 		return result;
 	}
 
@@ -147,6 +150,7 @@ public class Address implements Serializable, Comparable<Address> {
 	 *             if the specified object's type prevents it from being
 	 *             compared to this object.
 	 */
+	@Override
 	public int compareTo(Address address) {
 		if (address == null)
 			return 1;
@@ -157,6 +161,6 @@ public class Address implements Serializable, Comparable<Address> {
 	 * @return the spaceId
 	 */
 	public SpaceID getSpaceId() {
-		return spaceId;
+		return this.spaceId;
 	}
 }

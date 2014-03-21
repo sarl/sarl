@@ -15,8 +15,6 @@
  */
 package io.sarl.util;
 
-import java.io.Serializable;
-
 import io.sarl.lang.core.Scope;
 
 /**
@@ -31,26 +29,29 @@ import io.sarl.lang.core.Scope;
 public final class Scopes {
 
 	/**
-	 * Scope matching all agents in a {@link Space}
-	 * @return
+	 * Scope matching all agents in a <var>Space</var>
+	 * @return the scope that corresponds to all.
 	 */
 	public static final <T> Scope<T> allParticipants() {
-		return AlwaysTrueScope.get();
+		return new AlwaysTrueScope<>();
 	}
 
 	private static class AlwaysTrueScope<T> implements Scope<T> {
 
 		private static final long serialVersionUID = -3193147362292037L;
 
-		public static final <TT> Scope<TT> get(){
-			return new AlwaysTrueScope<TT>();
+		/**
+		 */
+		public AlwaysTrueScope() {
+			//
+		}
+		
+		@Override
+		public String toString() {
+			return "AlwaysTRUE"; //$NON-NLS-1$
 		}
 
 		@Override
-		public String toString() {
-			return "AlwaysTRUE";
-		}
-
 		public boolean matches(T element) {
 			return true;
 		}

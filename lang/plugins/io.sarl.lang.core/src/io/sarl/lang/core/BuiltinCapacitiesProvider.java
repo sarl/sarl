@@ -19,12 +19,22 @@ import java.util.Map;
 
 
 
-/**
+/** This interface represents a provider of built-in capacities.
+ * The built-in capacities are assumed to be provided by
+ * the runtime platform.
+ * 
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public interface BuiltinCapacitiesProvider {
+	
+	/** Replies the built-in capacities for the given agent.
+	 * 
+	 * @param agent
+	 * @return the built-in capacities for the given agent.
+	 */
 	public Map<Class<? extends Capacity>, Skill> getBuiltinCapacities(Agent agent);
+	
 }

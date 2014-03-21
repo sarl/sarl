@@ -34,14 +34,28 @@ abstract class AgentTrait {
 		this.agentRef = new WeakReference<>(agent);
 	}
 
+	/** Replies the agent that has this trait.
+	 * 
+	 * @return the owner.
+	 */
 	protected Agent getOwner() {
 		return this.agentRef.get();
 	}
 
+	/** Replies the skill corresponding to the given capacity.
+	 * 
+	 * @param capacity
+	 * @return the skill.
+	 */
 	protected <S extends Capacity> S getSkill(Class<S> capacity) {
 		return getOwner().getSkill(capacity);
 	}
 	
+	/** Defines the implementation of the "capacity maps-to skill" operator. 
+	 * 
+	 * @param capacity
+	 * @param skill
+	 */
 	protected <S extends Skill & Capacity> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
 		getOwner().setSkill(capacity, skill);
 	}

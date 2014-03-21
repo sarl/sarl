@@ -18,13 +18,12 @@ package io.sarl.util;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Scope;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Scope using {@link Address} for {@link EventSpace}'s
+ * Scope using {@link Address} for <var>EventSpace</var>'s
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -34,29 +33,33 @@ public class AddressScope implements Scope<Address> {
 
 	private static final long serialVersionUID = -1176306257753661102L;
 
-	private final String SCOPE_ID = "aid://";
+	private static final String SCOPE_ID = "aid://"; //$NON-NLS-1$
 
 	private Collection<Address> addresses = null;
 
+	/**
+	 * @param addrs
+	 */
 	AddressScope(Address... addrs) {
 		this.addresses  = Collections.newSetFromMap(new ConcurrentHashMap<Address,Boolean>());
 		Collections.addAll(this.addresses , addrs);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public String getRepresentation() {
-		return SCOPE_ID + addresses.toString();
+	@Override
+	public String toString() {
+		return SCOPE_ID + this.addresses.toString();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public boolean matches(Address address) {
 		return this.addresses.contains(address);
 	}
-	
+
+	/** Create an scope restricted to the given addresses.
+	 * 
+	 * @param addresses
+	 * @return the scope restricted to the given addresses.
+	 */
 	public final static AddressScope getScope(Address... addresses){
 		return new AddressScope(addresses);
 	}

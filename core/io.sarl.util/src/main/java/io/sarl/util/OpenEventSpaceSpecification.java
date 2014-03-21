@@ -28,6 +28,9 @@ import io.sarl.lang.core.SpaceSpecification;
  * @mavenartifactid $ArtifactId$
  */
 public interface OpenEventSpaceSpecification extends SpaceSpecification {
+	
 	@SuppressWarnings("unchecked")
+	@Override
 	public OpenEventSpace create(SpaceID id, Object... params);
+	
 }

@@ -54,11 +54,17 @@ public abstract class Event implements Serializable {
 
 	/**
 	 * Returns a String representation of the Event E1 attributes only.
+	 * @return the string representation of the attributes of this Event.
 	 */
 	protected String attributesToString() {
 		StringBuilder result = new StringBuilder();
-		result.append("source = ");
+		result.append("source = "); //$NON-NLS-1$
 		result.append(this.source.toString());
 		return result.toString();
+	}
+	
+	@Override
+	public String toString() {
+		return attributesToString();
 	}
 }

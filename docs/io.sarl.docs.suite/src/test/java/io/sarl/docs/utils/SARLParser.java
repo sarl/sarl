@@ -41,10 +41,21 @@ public class SARLParser {
 	
 	@Inject private ValidationTestHelper validationTestHelper;
 
+	/**
+	 * @param text
+	 * @return the model.
+	 * @throws Exception
+	 */
 	public Model parse(CharSequence text) throws Exception {
 		return this.parser.parse(text, getResourceSetWithDeafaultModels());
 	}
 	
+	/**
+	 * 
+	 * @param text
+	 * @return the model.
+	 * @throws Exception
+	 */
 	public Model parsesSuccessfully(CharSequence text) throws Exception{
 		Model model = parse(text);
 		this.validationTestHelper.assertNoErrors(model);
@@ -56,7 +67,7 @@ public class SARLParser {
 		this.xtextResourceSet.setClasspathURIContext(getClass());
 		this.xtextResourceSet.setClasspathUriResolver(new ClassloaderClasspathUriResolver());
 		this.xtextResourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE);
-		this.xtextResourceSet.createResource(URI.createURI("classpath:/io/sarl/core/core.sarl"));
+		this.xtextResourceSet.createResource(URI.createURI("classpath:/io/sarl/core/core.sarl")); //$NON-NLS-1$
 		return this.xtextResourceSet;
 	}
 }

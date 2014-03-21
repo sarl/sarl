@@ -50,7 +50,7 @@ public class Agent implements Identifiable {
 	
 	/**
 	 * Replies the agent's spawner's ID
-	 * @return
+	 * @return the identifier of the agent's spawner.
 	 */
 	public UUID getParentID(){
 		return this.parentID;
@@ -128,10 +128,19 @@ public class Agent implements Identifiable {
 		return this.capacities.containsKey(capacity);
 	}
 
+	/** Implementation of the operator "capacity maps-to skill".
+	 * 
+	 * @param capacity
+	 * @param skill
+	 */
 	protected <S extends Skill & Capacity> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
 		setSkill(capacity, skill);
 	}
 
+	/** Set the provider of the built-in capacities.
+	 * 
+	 * @param provider
+	 */
 	@Inject
 	void setBuiltinCapacitiesProvider(BuiltinCapacitiesProvider provider) {
 		this.capacities.putAll(provider.getBuiltinCapacities(this));

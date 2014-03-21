@@ -30,9 +30,9 @@ import com.google.inject.Injector;
  * @mavenartifactid $ArtifactId$
  */
 public class SARLSpecCreator extends AbstractSpecCreator {
-	protected Injector injector;
+	private Injector injector;
 
-	protected SARLInjectorProvider injectorProvider = new SARLInjectorProvider();
+	private SARLInjectorProvider injectorProvider = new SARLInjectorProvider();
 
 	@Override
 	protected <T> T create(Class<T> klass) {
@@ -50,12 +50,17 @@ public class SARLSpecCreator extends AbstractSpecCreator {
 		}
 	}
 
+	@Override
 	public void afterSpecRun() {
 		if (getInjectorProvider() instanceof IRegistryConfigurator) {
 			((IRegistryConfigurator) getInjectorProvider()).restoreRegistry();
 		}
 	}
 
+	/** Replies the injector provider.
+	 * 
+	 * @return the injector provider.
+	 */
 	protected IInjectorProvider getInjectorProvider() {
 		return this.injectorProvider;
 	}

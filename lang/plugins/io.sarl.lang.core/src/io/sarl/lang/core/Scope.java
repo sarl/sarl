@@ -20,10 +20,11 @@ import java.io.Serializable;
 /**
  * Defines the scope of an Event. Scopes are specialized based on the addressing
  * mechanism internally used by a {@link Space}.
- * 
+ * <p>
  * A scope is a predicate used to filter the potentially called listeners for a given event.
  * The most basic Scope is represented by a collection of Addresses (Agent, Role, etc.
  * 
+ * @param <T> is the type of objects that should be matched by this scope.
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

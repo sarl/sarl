@@ -26,6 +26,11 @@ package io.sarl.lang.core;
  */
 public abstract class Behavior extends AgentTrait {
 
+	/**
+	 * Construct a behavior for the given agent.
+	 * 
+	 * @param agent
+	 */
 	public Behavior(Agent agent) {
 		super(agent);
 	}

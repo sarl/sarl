@@ -21,10 +21,9 @@ import io.sarl.lang.SARLInjectorProvider
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper
-import org.junit.runner.RunWith
-import org.junit.Test
-import org.eclipse.xtext.util.IAcceptor
 import org.junit.Assert
+import org.junit.Test
+import org.junit.runner.RunWith
 
 /**
  * @author $Author: srodriguez$

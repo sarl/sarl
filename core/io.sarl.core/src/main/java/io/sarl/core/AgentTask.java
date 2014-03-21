@@ -34,47 +34,90 @@ public class AgentTask {
 	private Functions.Function1<Agent, Boolean> guard;
 	private Procedures.Procedure1<Agent> procedure;
 	
+	/**
+	 */
 	public AgentTask() {
-
+		//
 	}
 
-
+	/** Replies the procedure that is associated to this task.
+	 * 
+	 * @return the procedure to run.
+	 */
 	public Procedures.Procedure1<Agent> getProcedure() {
-		return procedure;
+		return this.procedure;
 	}
 
-
+	/** Change the procedure associated to this task.
+	 * 
+	 * @param procedure
+	 */
 	public void setProcedure(Procedures.Procedure1<Agent> procedure) {
 		this.procedure = procedure;
 	}
 
-
+	/** Replies the guard of this task.
+	 * 
+	 * @return the guard.
+	 */
 	public Functions.Function1<Agent, Boolean> getGuard() {
-		return guard;
+		return this.guard;
 	}
 
+	/** Change the guard of this task.
+	 * 
+	 * @param guard
+	 * @see #unless(Function1)
+	 * @see #ifTrue(Function1)
+	 */
 	public void setGuard(Functions.Function1<Agent, Boolean> guard) {
 		this.guard = guard;
 	}
 
+	/** Replies the name of this task.
+	 * 
+	 * @return the name.
+	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
+	/** Change the name of this task.
+	 * 
+	 * @param name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/** Change the gard of this that with the negation of the given predicate.
+	 * 
+	 * @param predicate
+	 * @return <code>this</code>.
+	 * @see #setGuard(Function1)
+	 */
 	public AgentTask unless(Functions.Function1<Agent, Boolean> predicate) {
 		this.guard = new NegateFunction(predicate);
 		return this;
 	}
 
+	/** Change the gard to the given predicate.
+	 * 
+	 * @param predicate
+	 * @return <code>this</code>.
+	 * @see #setGuard(Function1)
+	 */
 	public AgentTask ifTrue(Functions.Function1<Agent, Boolean> predicate) {
 		this.guard = predicate;
 		return this;
 	}
 
+	/**
+	 * @author $Author: srodriguez$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
 	private class NegateFunction implements Function1<Agent, Boolean> {
 
 		private Function1<Agent, Boolean> unlessPredicate;
@@ -83,6 +126,7 @@ public class AgentTask {
 			this.unlessPredicate = predicate;
 		}
 
+		@Override
 		public Boolean apply(Agent p) {
 			return !this.unlessPredicate.apply(p);
 		}

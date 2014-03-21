@@ -20,7 +20,7 @@ import java.util.UUID;
 /**
  * Thrown when an {@link Agent} tries to access a skill associated to a Capacity
  * and no implementation has been mapped. To define the skill use
- * {@link Agent#setSkill(Class, Capacity)}
+ * {@link Agent#setSkill}
  * 
  * @author $Author: srodriguez$
  * @version $FullVersion$
