@@ -176,7 +176,7 @@ capacity Lifecycle {
 	* and therefore all its spaces including the DefaultSpace.
 	* If this is a composable agent, it must not have any members before calling this action. 
 	* Otherwise a RuntimeException will be thrown.  
-	* @fires AgentKilled in DefaultSpace of the DefaultContext
+	* @fires AgentKilled in DefaultSpace of all Contexts to which this agent belongs
 	* @fires Destroy inside the agent
 	* @throws RuntimeException when the agent has members
 	*/
