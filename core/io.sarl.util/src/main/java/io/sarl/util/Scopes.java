@@ -40,6 +40,8 @@ public final class Scopes {
 
 	private static class AlwaysTrueScope<T> implements Scope<T>, Serializable {
 
+		private static final long serialVersionUID = -3193147362292037L;
+
 		public static final <TT> Scope<TT> get(){
 			return new AlwaysTrueScope<TT>();
 		}
@@ -47,13 +49,6 @@ public final class Scopes {
 		@Override
 		public String toString() {
 			return "AlwaysTRUE";
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public String getRepresentation() {
-			return "AlwaysTrueScope";
 		}
 
 		public boolean matches(T element) {

@@ -18,7 +18,6 @@ package io.sarl.lang.core;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
@@ -90,6 +89,7 @@ public class Agent implements Identifiable {
 	 * @param capacity
 	 * @return the skill that was removed
 	 */
+	@SuppressWarnings("unchecked")
 	protected <S extends Skill & Capacity> S clearSkill(Class<? extends Capacity> capacity) {
 		assert capacity != null;
 		Skill s =this.capacities.remove(capacity);
@@ -107,7 +107,7 @@ public class Agent implements Identifiable {
 	 */
 	protected <S extends Capacity> S getSkill(Class<S> capacity) {
 		assert capacity != null;
-		S skill = (S) this.capacities.get(capacity);
+		S skill = capacity.cast(this.capacities.get(capacity));
 		if(skill == null){
 			throw new UnimplementedCapacityException(capacity, this.getID());
 		}

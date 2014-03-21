@@ -308,7 +308,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           Capacity _superType_1 = capacity.getSuperType();
           QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_superType_1);
           boolean _notEquals_1 = (!Objects.equal(_fullyQualifiedName, null));
-          _and = (_notEquals && _notEquals_1);
+          _and = _notEquals_1;
         }
         if (_and) {
           EList<JvmTypeReference> _superTypes = it.getSuperTypes();
@@ -603,8 +603,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           EList<Parameter> _params = signature.getParams();
           final Function1<Parameter,String> _function = new Function1<Parameter,String>() {
             public String apply(final Parameter it) {
-              String _name = it.getName();
-              return _name;
+              return it.getName();
             }
           };
           String _join = IterableExtensions.<Parameter>join(_params, ", ", _function);
@@ -693,7 +692,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
         EList<JvmMember> _members = owner.getMembers();
         this._jvmTypesBuilder.<JvmOperation>operator_add(_members, guardMethod);
       }
-      _xblockexpression = (behaviorMethod);
+      _xblockexpression = behaviorMethod;
     }
     return _xblockexpression;
   }

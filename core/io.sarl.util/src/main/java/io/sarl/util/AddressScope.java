@@ -32,6 +32,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class AddressScope implements Scope<Address>, Serializable {
 
+	private static final long serialVersionUID = -1176306257753661102L;
+
 	private final String SCOPE_ID = "aid://";
 
 	private Collection<Address> addresses = null;

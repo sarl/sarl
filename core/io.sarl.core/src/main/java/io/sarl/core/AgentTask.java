@@ -17,9 +17,6 @@ package io.sarl.core;
 
 import io.sarl.lang.core.Agent;
 
-import java.lang.ref.WeakReference;
-import java.util.TimerTask;
-
 import org.eclipse.xtext.xbase.lib.Functions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Procedures;
