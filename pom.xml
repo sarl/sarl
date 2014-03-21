@@ -158,51 +158,13 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>2.9.1</version>
-					<configuration>
-						<docencoding>UTF-8</docencoding>
-						<encoding>UTF-8</encoding>
-						<charset>UTF-8</charset>
-						<show>protected</show>
-						<detectLinks>true</detectLinks>
-						<detectJavaApiLink>true</detectJavaApiLink>
-						<links>
-							<link>http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.5/</link>
-							<link>http://hazelcast.org/docs/latest/javadoc/</link>
-							<link>http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/</link>
-							<link>http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/</link>
-							<link>http://google-guice.googlecode.com/svn/trunk/javadoc/</link>
-						</links>
-						<docfilessubdirs>true</docfilessubdirs>
-						<excludePackageNames></excludePackageNames>
-						<breakiterator>true</breakiterator>
-						<version>true</version>
-						<author>true</author>
-						<keywords>true</keywords>
-						<useStandardDocletOptions>true</useStandardDocletOptions>
-						<excludePackageNames></excludePackageNames>
-						<bottom>&lt;small&gt;Copyright &amp;copy;
-							${project.inceptionYear}-${year} ${copyrighters}.
-						</bottom>
-						<tags>
-							<tag>
-								<name>mavengroupid</name>
-								<placement>pt</placement>
-								<head>Maven Group Id:</head>
-							</tag>
-							<tag>
-								<name>mavenartifactid</name>
-								<placement>pt</placement>
-								<head>Maven Artifact Id:</head>
-							</tag>
-							<tag>
-								<name>fires</name>
-								<placement>m</placement>
-								<head>Fired Events:</head>
-							</tag>
-						</tags>
-					</configuration>
 				</plugin>
 
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.2.1</version>
+				</plugin>
 
 
 				<!--This plugin's configuration is used to store Eclipse m2e settings 
@@ -336,6 +298,19 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 			</plugin>
 
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>license-maven-plugin</artifactId>
 				<configuration>
@@ -367,6 +342,54 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<docencoding>UTF-8</docencoding>
+					<encoding>UTF-8</encoding>
+					<charset>UTF-8</charset>
+					<show>protected</show>
+					<detectLinks>true</detectLinks>
+					<detectJavaApiLink>true</detectJavaApiLink>
+					<links>
+						<link>http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.5/</link>
+						<link>http://hazelcast.org/docs/latest/javadoc/</link>
+						<link>http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/</link>
+						<link>http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/</link>
+						<link>http://google-guice.googlecode.com/svn/trunk/javadoc/</link>
+					</links>
+					<docfilessubdirs>true</docfilessubdirs>
+					<excludePackageNames></excludePackageNames>
+					<breakiterator>true</breakiterator>
+					<version>true</version>
+					<author>true</author>
+					<keywords>true</keywords>
+					<useStandardDocletOptions>true</useStandardDocletOptions>
+					<excludePackageNames></excludePackageNames>
+					<bottom>&lt;small&gt;Copyright &amp;copy;
+						${project.inceptionYear}-${year} ${copyrighters}.
+					</bottom>
+					<tags>
+						<tag>
+							<name>mavengroupid</name>
+							<placement>pt</placement>
+							<head>Maven Group Id:</head>
+						</tag>
+						<tag>
+							<name>mavenartifactid</name>
+							<placement>pt</placement>
+							<head>Maven Artifact Id:</head>
+						</tag>
+						<tag>
+							<name>fires</name>
+							<placement>m</placement>
+							<head>Fired Events:</head>
+						</tag>
+					</tags>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
