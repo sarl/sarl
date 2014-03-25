@@ -15,6 +15,7 @@
  */
 package io.sarl.lang.core;
 
+import java.security.InvalidParameterException;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -71,13 +72,19 @@ public class Agent implements Identifiable {
 	 * @param skill
 	 *            implementaion of <code>capacity</code>
 	 * @return the skill that was set
+	 * @throws InvalidParameterException if the given skill does not implement the given capacity.
 	 */
-	protected <S extends Skill & Capacity> S setSkill(Class<? extends Capacity> capacity, S skill) {
-		assert capacity != null;
-		assert skill != null;
+	protected <S extends Skill> S setSkill(Class<? extends Capacity> capacity, S skill) {
+		assert capacity != null : "the capacity parameter must not be null"; //$NON-NLS-1$
+		assert capacity.isInterface() : "the capacity parameter must be an interface"; //$NON-NLS-1$
+		assert skill != null : "the skill parameter must not be null"; //$NON-NLS-1$
+		if (!capacity.isInstance(skill)) {
+			throw new InvalidParameterException("the skill must implement the given capacity "+capacity.getName()); //$NON-NLS-1$
+		}
 		if(hasSkill(capacity)){
 			clearSkill(capacity);
 		}
+		skill.setOwner(this);
 		skill.install();
 		this.capacities.put(capacity, skill);
 		return skill; 
