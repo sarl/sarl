@@ -30,11 +30,25 @@ public abstract class Skill extends AgentTrait {
 
 	/**
 	 * Creates a new Skill.
+	 * <p>
+	 * This constructor is provided for built-in skills, mainly.
 	 * 
 	 * @param agent
+	 * @see #Skill() for the standard constructor.
 	 */
 	public Skill(Agent agent) {
 		super(agent);
+	}
+
+	/**
+	 * Creates a new Skill.
+	 * <p>
+	 * This constructor is provided for skills written in SARL, mainly.
+	 * 
+	 * @see #Skill(Agent) for the built-in skill's constructor.
+	 */
+	public Skill() {
+		super();
 	}
 
 	/**

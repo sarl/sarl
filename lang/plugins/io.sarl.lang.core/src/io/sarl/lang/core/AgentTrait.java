@@ -17,7 +17,8 @@ package io.sarl.lang.core;
 
 import java.lang.ref.WeakReference;
 
-/**
+/** This class represents a part of trait of an agent.
+ * 
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -31,6 +32,20 @@ abstract class AgentTrait {
 	 * @param agent
 	 */
 	public AgentTrait(Agent agent) {
+		this.agentRef = new WeakReference<>(agent);
+	}
+	
+	/**
+	 */
+	public AgentTrait() {
+		this.agentRef = new WeakReference<>(null);
+	}
+
+	/** Set the agent that has this trait.
+	 * 
+	 * @param agent
+	 */
+	void setOwner(Agent agent) {
 		this.agentRef = new WeakReference<>(agent);
 	}
 
