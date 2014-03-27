@@ -256,6 +256,18 @@ public class SARLFormatter extends XbaseFormatter {
     _setLinewrap.around(_group_0);
   }
   
+  public void configureXTryCatchFinallyExpression(final FormattingConfig c, final XbaseGrammarAccess.XTryCatchFinallyExpressionElements ele) {
+    FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap();
+    Assignment _expressionAssignment_2 = ele.getExpressionAssignment_2();
+    _setLinewrap.around(_expressionAssignment_2);
+    FormattingConfig.LinewrapLocator _setLinewrap_1 = c.setLinewrap();
+    Assignment _finallyExpressionAssignment_3_0_1_1 = ele.getFinallyExpressionAssignment_3_0_1_1();
+    _setLinewrap_1.around(_finallyExpressionAssignment_3_0_1_1);
+    FormattingConfig.LinewrapLocator _setLinewrap_2 = c.setLinewrap();
+    Assignment _finallyExpressionAssignment_3_1_1 = ele.getFinallyExpressionAssignment_3_1_1();
+    _setLinewrap_2.around(_finallyExpressionAssignment_3_1_1);
+  }
+  
   public void configureXForLoopExpression(final FormattingConfig c, final XbaseGrammarAccess.XForLoopExpressionElements ele) {
     FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
     Keyword _leftParenthesisKeyword_2 = ele.getLeftParenthesisKeyword_2();
@@ -279,5 +291,24 @@ public class SARLFormatter extends XbaseFormatter {
     FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap(0, 1, 2);
     Group _group = ele.getGroup();
     _setLinewrap.around(_group);
+  }
+  
+  public void configureXBlockExpression(final FormattingConfig c, final XbaseGrammarAccess.XBlockExpressionElements ele) {
+    super.configureXBlockExpression(c, ele);
+    FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap(0, 1, 2);
+    Keyword _rightCurlyBracketKeyword_3 = ele.getRightCurlyBracketKeyword_3();
+    _setLinewrap.after(_rightCurlyBracketKeyword_3);
+  }
+  
+  public void configureXCatchClause(final FormattingConfig c, final XbaseGrammarAccess.XCatchClauseElements ele) {
+    FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
+    Keyword _leftParenthesisKeyword_1 = ele.getLeftParenthesisKeyword_1();
+    _setNoSpace.around(_leftParenthesisKeyword_1);
+    FormattingConfig.NoSpaceLocator _setNoSpace_1 = c.setNoSpace();
+    Keyword _rightParenthesisKeyword_3 = ele.getRightParenthesisKeyword_3();
+    _setNoSpace_1.before(_rightParenthesisKeyword_3);
+    FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap();
+    Assignment _expressionAssignment_4 = ele.getExpressionAssignment_4();
+    _setLinewrap.around(_expressionAssignment_4);
   }
 }

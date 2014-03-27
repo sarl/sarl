@@ -36,6 +36,9 @@ import org.eclipse.xtext.xbase.services.XbaseGrammarAccess.XForLoopExpressionEle
 import org.eclipse.xtext.xbase.services.XbaseGrammarAccess.XIfExpressionElements
 import org.eclipse.xtext.xbase.services.XbaseGrammarAccess.XMemberFeatureCallElements
 import org.eclipse.xtext.xbase.services.XtypeGrammarAccess.XImportDeclarationElements
+import org.eclipse.xtext.xbase.services.XbaseGrammarAccess.XBlockExpressionElements
+import org.eclipse.xtext.xbase.services.XbaseGrammarAccess.XCatchClauseElements
+import org.eclipse.xtext.xbase.services.XbaseGrammarAccess.XTryCatchFinallyExpressionElements
 
 /**
  * This class contains custom formatting description.
@@ -68,10 +71,10 @@ class SARLFormatter extends XbaseFormatter {
 		c.configureRequires(requiredCapacityAccess)
 		c.configureSkill(skillAccess)
 		c.configureConstructor(constructorAccess)
-		
+
 		//package
 		c.setLinewrap(2).after(modelAccess.group_0)
-		
+
 		super.configure(c, xbaseGrammarAccess);
 
 		// formatting for Comments 
@@ -172,6 +175,18 @@ class SARLFormatter extends XbaseFormatter {
 		c.setLinewrap(0, 1, 2).around(ele.group_0)
 	}
 
+	override void configureXTryCatchFinallyExpression(FormattingConfig c, XTryCatchFinallyExpressionElements ele) {
+//		c.setIndentationIncrement().before(ele.getExpressionAssignment_2());
+		c.setLinewrap().around(ele.getExpressionAssignment_2());
+//		c.setIndentationDecrement().after(ele.getExpressionAssignment_2());
+//		c.setIndentationIncrement().before(ele.getFinallyExpressionAssignment_3_0_1_1());
+		c.setLinewrap().around(ele.getFinallyExpressionAssignment_3_0_1_1());
+//		c.setIndentationDecrement().after(ele.getFinallyExpressionAssignment_3_0_1_1());
+//		c.setIndentationIncrement().before(ele.getFinallyExpressionAssignment_3_1_1());
+		c.setLinewrap().around(ele.getFinallyExpressionAssignment_3_1_1());
+//		c.setIndentationDecrement().after(ele.getFinallyExpressionAssignment_3_1_1());
+	}
+
 	override configureXForLoopExpression(FormattingConfig c, XForLoopExpressionElements ele) {
 		c.setNoSpace().around(ele.getLeftParenthesisKeyword_2());
 		c.setNoSpace().around(ele.getColonKeyword_4());
@@ -187,6 +202,19 @@ class SARLFormatter extends XbaseFormatter {
 	override configureXMemberFeatureCall(FormattingConfig c, XMemberFeatureCallElements ele) {
 		super.configureXMemberFeatureCall(c, ele)
 		c.setLinewrap(0, 1, 2).around(ele.group)
+	}
+
+	override configureXBlockExpression(FormattingConfig c, XBlockExpressionElements ele) {
+		super.configureXBlockExpression(c, ele)
+		c.setLinewrap(0, 1, 2).after(ele.getRightCurlyBracketKeyword_3());
+	}
+
+	override void configureXCatchClause(FormattingConfig c, XCatchClauseElements ele) {
+		c.setNoSpace().around(ele.getLeftParenthesisKeyword_1());
+		c.setNoSpace().before(ele.getRightParenthesisKeyword_3());
+
+		c.setLinewrap().around(ele.getExpressionAssignment_4());
+
 	}
 
 }

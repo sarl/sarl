@@ -362,6 +362,7 @@ class SARLFormatterTest {
 						prinln("cool!")
 					} else {
 					}
+			
 				}
 			}'''
 		)
@@ -423,6 +424,44 @@ class SARLFormatterTest {
 			import io.sarl.core.Event
 			
 			agent A {
+			}'''
+		)
+	}
+
+	@Test
+	def void testTryCatch() {
+		'''agent A{
+			def asInteger(s : String) : Integer {
+		var res : Integer = null
+		
+		try			{
+				res = Integer.parseInt(s)
+			}		catch(NumberFormatException nfe){
+			} 
+			
+			return res
+		}
+	
+	}
+	'''.
+		assertFormattedAs(
+			'''
+			agent A {
+			
+				def asInteger(s : String) : Integer {
+					var res : Integer = null
+
+					try
+					{
+						res = Integer.parseInt(s)
+					}
+					catch(NumberFormatException nfe)
+					{
+					}
+			
+					return res
+				}
+			
 			}'''
 		)
 	}
@@ -605,18 +644,18 @@ capacity ExternalContextAccess {
 				event E {}
 		'''.assertFormattedAs(
 			'''
-				package test
-				
-				import io.sarl.core.Agent
-				import io.sarl.core.Event
-				
-				import io.sarl.core.Agent
-				import io.sarl.core.Event
-				
-				import static java.lang.String.*
-				
-				event E {
-				}'''
+			package test
+			
+			import io.sarl.core.Agent
+			import io.sarl.core.Event
+			
+			import io.sarl.core.Agent
+			import io.sarl.core.Event
+			
+			import static java.lang.String.*
+			
+			event E {
+			}'''
 		)
 
 	}
