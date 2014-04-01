@@ -259,7 +259,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 
 		acceptor.accept(agent.toClass(agent.fullyQualifiedName)).initializeLater [
 			documentation = agent.documentation
-			superTypes += newTypeRef(agent, typeof(io.sarl.lang.core.Agent))
+			if (agent.superType != null && agent.superType.fullyQualifiedName != null) {
+				superTypes += newTypeRef(agent.superType.fullyQualifiedName.toString)
+			} else {
+				superTypes += newTypeRef(agent, typeof(io.sarl.lang.core.Agent))
+			}
 			members += agent.toConstructor [
 				documentation = '''Creates a new Agent of type «agent.name»'''
 				parameters += agent.toParameter('parentID', newTypeRef(UUID))

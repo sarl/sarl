@@ -489,9 +489,29 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
       public void apply(final JvmGenericType it) {
         String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(agent);
         SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
-        EList<JvmTypeReference> _superTypes = it.getSuperTypes();
-        JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(agent, io.sarl.lang.core.Agent.class);
-        SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _newTypeRef);
+        boolean _and = false;
+        Agent _superType = agent.getSuperType();
+        boolean _notEquals = (!Objects.equal(_superType, null));
+        if (!_notEquals) {
+          _and = false;
+        } else {
+          Agent _superType_1 = agent.getSuperType();
+          QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_superType_1);
+          boolean _notEquals_1 = (!Objects.equal(_fullyQualifiedName, null));
+          _and = (_notEquals && _notEquals_1);
+        }
+        if (_and) {
+          EList<JvmTypeReference> _superTypes = it.getSuperTypes();
+          Agent _superType_2 = agent.getSuperType();
+          QualifiedName _fullyQualifiedName_1 = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_superType_2);
+          String _string = _fullyQualifiedName_1.toString();
+          JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(it, _string);
+          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _newTypeRef);
+        } else {
+          EList<JvmTypeReference> _superTypes_1 = it.getSuperTypes();
+          JvmTypeReference _newTypeRef_1 = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(agent, io.sarl.lang.core.Agent.class);
+          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes_1, _newTypeRef_1);
+        }
         EList<JvmMember> _members = it.getMembers();
         final Procedure1<JvmConstructor> _function = new Procedure1<JvmConstructor>() {
           public void apply(final JvmConstructor it) {
