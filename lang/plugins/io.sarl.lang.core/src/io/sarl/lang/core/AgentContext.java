@@ -58,6 +58,7 @@ public interface AgentContext {
 	 * @param creationParams - parameters to pass to the space constructor.
 	 * @return the new space.
 	 * @see #getOrCreateSpace(Class, UUID, Object...)
+	 * @see #getSpace(UUID)
 	 */
 	public <S extends Space> S createSpace(Class<? extends SpaceSpecification> spec, UUID spaceUUID,
 			Object... creationParams);
@@ -79,8 +80,20 @@ public interface AgentContext {
 	 * @param creationParams - parameters to pass to the space constructor.
 	 * @return the new space.
 	 * @see #createSpace(Class, UUID, Object...)
+	 * @see #getSpace(UUID)
 	 */
 	public <S extends Space> S getOrCreateSpace(Class<? extends SpaceSpecification> spec, UUID spaceUUID,
 			Object... creationParams);
+
+	/** Retreive, but do not create, an instance of space following the given ID.
+	 * This function tries to find a space that fits the given specification.
+	 * If none was found, this function replies <code>null</code>.
+	 * 
+	 * @param spaceUUID - identifier of the space.
+	 * @return the space, or <code>null</code> if there is no space found.
+	 * @see #createSpace(Class, UUID, Object...)
+	 * @see #getOrCreateSpace(Class, UUID, Object...)
+	 */
+	public <S extends Space> S getSpace(UUID spaceUUID);
 
 }
