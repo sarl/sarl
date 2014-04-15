@@ -42,6 +42,7 @@ event Initialize {
 * Notifies the Destruction of the agent.
 * The source of this event is the agent itself.
 * This event is fired after the agent has called the killMe action.
+* This event is only received by the agent's internal behaviors, not the member since to call killMe action it must remain any member.
 */
 event Destroy {}
 
