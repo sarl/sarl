@@ -35,7 +35,7 @@ public interface Scope<T> extends Serializable {
 	/**
 	 * Checks whether the element is included in this scope.
 	 * 
-	 * @param element
+	 * @param element - must NOT BE NULL
 	 * @return true if the element is inside the scope, false otherwise
 	 */
 	public boolean matches(T element);

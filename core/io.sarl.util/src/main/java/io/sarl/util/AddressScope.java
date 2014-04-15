@@ -18,9 +18,8 @@ package io.sarl.util;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Scope;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Scope using {@link Address} for <var>EventSpace</var>'s
@@ -35,14 +34,18 @@ public class AddressScope implements Scope<Address> {
 
 	private static final String SCOPE_ID = "aid://"; //$NON-NLS-1$
 
-	private Collection<Address> addresses = null;
+	private Set<Address> addresses = null;
 
 	/**
 	 * @param addrs
 	 */
-	AddressScope(Address... addrs) {
-		this.addresses  = Collections.newSetFromMap(new ConcurrentHashMap<Address,Boolean>());
-		Collections.addAll(this.addresses , addrs);
+	AddressScope(Address... addrs) {		
+	    this.addresses = new TreeSet<Address>();
+	    for(Address adr : addrs) {
+	        if (adr!=null) {
+	        	this.addresses.add(adr);
+	        }
+	    }
 	}
 
 	@Override
@@ -52,6 +55,7 @@ public class AddressScope implements Scope<Address> {
 
 	@Override
 	public boolean matches(Address address) {
+		assert(address != null);
 		return this.addresses.contains(address);
 	}
 
