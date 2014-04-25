@@ -15,7 +15,6 @@
  */
 package io.sarl.util;
 
-import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.core.SpaceSpecification;
 
 /**
@@ -23,14 +22,11 @@ import io.sarl.lang.core.SpaceSpecification;
  * No restrictions are enforced on the type of event.
  * 
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface OpenEventSpaceSpecification extends SpaceSpecification {
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public OpenEventSpace create(SpaceID id, Object... params);
-	
+public interface OpenEventSpaceSpecification extends SpaceSpecification<OpenEventSpace> {
+	//	
 }

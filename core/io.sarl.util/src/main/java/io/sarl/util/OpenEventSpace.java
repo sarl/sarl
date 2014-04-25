@@ -34,7 +34,7 @@ public interface OpenEventSpace extends EventSpace {
 
 	/**
 	 * Registers the entity inside this space.
-	 * After registering a new agent, the Space should emit a ParticipantRegistered
+	 * After registering a new agent, the Space should emit a MemberJoined
 	 * event where the source is the address of the newly registered agent.
 	 * 
 	 * If the agent is already registered the address is return, but the listener is not replaced.
@@ -47,7 +47,7 @@ public interface OpenEventSpace extends EventSpace {
 
 	/**
 	 * Unregisters the entity inside this space.
-	 * Before unregistering an agent, the Space should emit a ParticipantUnregistered
+	 * Before unregistering an agent, the Space should emit a MemberLeft
 	 * event where the source is the address of the unregistered agent.
 	 * 
 	 * @param entity

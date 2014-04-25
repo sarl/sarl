@@ -23,12 +23,14 @@ package io.sarl.lang.core;
  * perception) for interacting within a given set of Spaces respecting this
  * specification.
  * 
+ * @param <S> type of the spaces that may be created by this specification.
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface SpaceSpecification {
+public interface SpaceSpecification<S extends Space> {
 
 	/**
 	 * Creates a {@link Space} that respects this specification
@@ -39,6 +41,6 @@ public interface SpaceSpecification {
 	 *            initialization parameters for the {@link Space}
 	 * @return an instance of {@link Space}
 	 */
-	public <S extends Space> S create(SpaceID id, Object... params);
+	public S create(SpaceID id, Object... params);
 
 }

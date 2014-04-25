@@ -38,14 +38,14 @@ public class SpaceID implements Serializable, Comparable<SpaceID>{
 	
 	private final UUID id;
 	private final UUID contextID;
-	private final transient Class<? extends SpaceSpecification> spaceSpec;
+	private final transient Class<? extends SpaceSpecification<?>> spaceSpec;
 
 	/**
 	 * @param contextID
 	 * @param id
 	 * @param spaceSpec
 	 */
-	public SpaceID(UUID contextID, UUID id, Class<? extends SpaceSpecification> spaceSpec) {
+	public SpaceID(UUID contextID, UUID id, Class<? extends SpaceSpecification<?>> spaceSpec) {
 		this.id = id;
 		this.contextID = contextID;
 		this.spaceSpec = spaceSpec;
@@ -74,7 +74,7 @@ public class SpaceID implements Serializable, Comparable<SpaceID>{
 	 * 
 	 * @return The {@link SpaceSpecification} of this space
 	 */
-	public Class<? extends SpaceSpecification> getSpaceSpecification() {
+	public Class<? extends SpaceSpecification<?>> getSpaceSpecification() {
 		return this.spaceSpec;
 	}
 

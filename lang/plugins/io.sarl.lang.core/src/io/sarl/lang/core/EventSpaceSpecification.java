@@ -21,14 +21,11 @@ package io.sarl.lang.core;
  * The specification for an {@link EventSpace}.
  * 
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface EventSpaceSpecification extends SpaceSpecification{
-	
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public EventSpace create(SpaceID id, Object... params);
+public interface EventSpaceSpecification extends SpaceSpecification<EventSpace> {
+	//
 }

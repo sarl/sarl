@@ -60,7 +60,7 @@ public interface AgentContext {
 	 * @see #getOrCreateSpace(Class, UUID, Object...)
 	 * @see #getSpace(UUID)
 	 */
-	public <S extends Space> S createSpace(Class<? extends SpaceSpecification> spec, UUID spaceUUID,
+	public <S extends Space> S createSpace(Class<? extends SpaceSpecification<S>> spec, UUID spaceUUID,
 			Object... creationParams);
 
 	/** Replies all the spaces that are implementing the given specification.
@@ -68,7 +68,7 @@ public interface AgentContext {
 	 * @param spec
 	 * @return the spaces associated to the given space specification.
 	 */
-	public <S extends Space> Collection<S> getSpaces(Class<? extends SpaceSpecification> spec);
+	public <S extends Space> Collection<S> getSpaces(Class<? extends SpaceSpecification<S>> spec);
 
 	/** Retreive or create an instance of space following the given specification.
 	 * This function tries to find a space that fits the given specification.
@@ -82,7 +82,7 @@ public interface AgentContext {
 	 * @see #createSpace(Class, UUID, Object...)
 	 * @see #getSpace(UUID)
 	 */
-	public <S extends Space> S getOrCreateSpace(Class<? extends SpaceSpecification> spec, UUID spaceUUID,
+	public <S extends Space> S getOrCreateSpace(Class<? extends SpaceSpecification<S>> spec, UUID spaceUUID,
 			Object... creationParams);
 
 	/** Retreive, but do not create, an instance of space following the given ID.
