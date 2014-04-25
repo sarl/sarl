@@ -32,7 +32,7 @@ public class AgentTask {
 
 	private String name;
 	private Functions.Function1<Agent, Boolean> guard;
-	private Procedures.Procedure1<Agent> procedure;
+	private Procedures.Procedure1<? super Agent> procedure;
 	
 	/**
 	 */
@@ -44,7 +44,7 @@ public class AgentTask {
 	 * 
 	 * @return the procedure to run.
 	 */
-	public Procedures.Procedure1<Agent> getProcedure() {
+	public Procedures.Procedure1<? super Agent> getProcedure() {
 		return this.procedure;
 	}
 
@@ -52,7 +52,7 @@ public class AgentTask {
 	 * 
 	 * @param procedure
 	 */
-	public void setProcedure(Procedures.Procedure1<Agent> procedure) {
+	public void setProcedure(Procedures.Procedure1<? super Agent> procedure) {
 		this.procedure = procedure;
 	}
 
