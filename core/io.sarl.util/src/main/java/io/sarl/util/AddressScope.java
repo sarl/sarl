@@ -40,7 +40,7 @@ public class AddressScope implements Scope<Address> {
 	 * @param addrs
 	 */
 	AddressScope(Address... addrs) {		
-	    this.addresses = new TreeSet<Address>();
+	    this.addresses = new TreeSet<>();
 	    for(Address adr : addrs) {
 	        if (adr!=null) {
 	        	this.addresses.add(adr);
