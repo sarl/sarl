@@ -35,5 +35,4 @@ public abstract class Behavior extends AgentTrait {
 		super(agent);
 	}
 
-
 }

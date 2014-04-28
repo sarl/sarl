@@ -59,12 +59,12 @@ public abstract class Event implements Serializable {
 	protected String attributesToString() {
 		StringBuilder result = new StringBuilder();
 		result.append("source = "); //$NON-NLS-1$
-		result.append(this.source.toString());
+		result.append(this.source);
 		return result.toString();
 	}
 	
 	@Override
 	public String toString() {
-		return attributesToString();
+		return getClass().getSimpleName()+" ["+attributesToString()+"]"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

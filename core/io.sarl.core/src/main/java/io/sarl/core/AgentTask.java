@@ -111,6 +111,13 @@ public class AgentTask {
 		this.guard = predicate;
 		return this;
 	}
+	
+	/** {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "AgentTask: "+this.name; //$NON-NLS-1$
+	}
 
 	/**
 	 * @author $Author: srodriguez$

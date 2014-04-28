@@ -50,6 +50,26 @@ public class Agent implements Identifiable {
 	}
 	
 	/**
+	 * Returns a String representation of the Event E1 attributes only.
+	 * @return the string representation of the attributes of this Event.
+	 */
+	protected String attributesToString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("id = "); //$NON-NLS-1$
+		builder.append(this.id);
+		builder.append(", parentID="); //$NON-NLS-1$
+		builder.append(this.parentID);
+		return builder.toString();
+	}
+	
+	/** {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return getClass().getSimpleName()+" ["+attributesToString()+"]"; //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	
+	/**
 	 * Replies the agent's spawner's ID
 	 * @return the identifier of the agent's spawner.
 	 */

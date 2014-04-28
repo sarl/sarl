@@ -69,5 +69,5 @@ public abstract class Skill extends AgentTrait {
 	protected void uninstall() {
 		//
 	}
-
+		
 }

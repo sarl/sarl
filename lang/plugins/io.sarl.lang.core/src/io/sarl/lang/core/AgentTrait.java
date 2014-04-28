@@ -40,6 +40,24 @@ abstract class AgentTrait {
 	public AgentTrait() {
 		this.agentRef = new WeakReference<>(null);
 	}
+	
+	/**
+	 * Returns a String representation of the Event E1 attributes only.
+	 * @return the string representation of the attributes of this Event.
+	 */
+	protected String attributesToString() {
+		StringBuilder result = new StringBuilder();
+		result.append("owner = "); //$NON-NLS-1$
+		result.append(getOwner());
+		return result.toString();
+	}
+	
+	/** {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return getClass().getSimpleName()+" ["+attributesToString()+"]";  //$NON-NLS-1$//$NON-NLS-2$
+	}
 
 	/** Set the agent that has this trait.
 	 * 
