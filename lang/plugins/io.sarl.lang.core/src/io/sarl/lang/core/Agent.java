@@ -101,12 +101,12 @@ public class Agent implements Identifiable {
 		if (!capacity.isInstance(skill)) {
 			throw new InvalidParameterException("the skill must implement the given capacity "+capacity.getName()); //$NON-NLS-1$
 		}
-		if(hasSkill(capacity)){
-			clearSkill(capacity);
-		}
 		skill.setOwner(this);
+		Skill oldS = this.capacities.put(capacity, skill);
+		if (oldS!=null) {
+			oldS.uninstall();
+		}
 		skill.install();
-		this.capacities.put(capacity, skill);
 		return skill; 
 	}
 
@@ -119,7 +119,7 @@ public class Agent implements Identifiable {
 	@SuppressWarnings("unchecked")
 	protected <S extends Skill & Capacity> S clearSkill(Class<? extends Capacity> capacity) {
 		assert capacity != null;
-		Skill s =this.capacities.remove(capacity);
+		Skill s = this.capacities.remove(capacity);
 		s.uninstall();
 		return (S) s;
 	}
