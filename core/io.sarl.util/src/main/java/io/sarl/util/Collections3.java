@@ -62,6 +62,21 @@ public class Collections3 {
             this.c = c;
             this.mutex = mutex;
         }
+        
+        /** {@inheritDoc}
+         */
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            synchronized (this.mutex) {return this.c.equals(obj);}
+        }
+        
+        /** {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            synchronized (this.mutex) {return this.c.hashCode();}
+        }
 
         @Override
         public int size() {
@@ -149,16 +164,6 @@ public class Collections3 {
         }
         SynchronizedSet(Set<E> s, Object mutex) {
             super(s, mutex);
-        }
-        @Override
-        public boolean equals(Object o) {
-            if (this == o)
-                return true;
-            synchronized (this.mutex) {return this.c.equals(o);}
-        }
-        @Override
-        public int hashCode() {
-            synchronized (this.mutex) {return this.c.hashCode();}
         }
     }
 
