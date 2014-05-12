@@ -46,7 +46,7 @@ public interface AgentContext {
 	 * 
 	 * @return the spaces.
 	 */
-	public Collection<Space> getSpaces();
+	public Collection<? extends Space> getSpaces();
 
 	/** Create an instance of space following the given specification.
 	 * This function always creates a new instance of space.
