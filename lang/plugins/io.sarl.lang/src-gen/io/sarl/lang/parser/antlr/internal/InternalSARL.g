@@ -269,14 +269,14 @@ ruleEvent returns [EObject current=null]
 	}
 
 )
-))?	otherlv_4='{' 
+))?(	otherlv_4='{' 
     {
-    	newLeafNode(otherlv_4, grammarAccess.getEventAccess().getLeftCurlyBracketKeyword_3());
+    	newLeafNode(otherlv_4, grammarAccess.getEventAccess().getLeftCurlyBracketKeyword_3_0());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getEventAccess().getFeaturesEventFeatureParserRuleCall_4_0()); 
+	        newCompositeNode(grammarAccess.getEventAccess().getFeaturesEventFeatureParserRuleCall_3_1_0()); 
 	    }
 		lv_features_5_0=ruleEventFeature		{
 	        if ($current==null) {
@@ -293,9 +293,9 @@ ruleEvent returns [EObject current=null]
 )
 )*	otherlv_6='}' 
     {
-    	newLeafNode(otherlv_6, grammarAccess.getEventAccess().getRightCurlyBracketKeyword_5());
+    	newLeafNode(otherlv_6, grammarAccess.getEventAccess().getRightCurlyBracketKeyword_3_2());
     }
-)
+)?)
 ;
 
 

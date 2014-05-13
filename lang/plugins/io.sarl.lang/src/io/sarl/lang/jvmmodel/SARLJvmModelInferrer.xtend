@@ -107,32 +107,26 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				}else{
 					superTypes += newTypeRef(element, typeof(io.sarl.lang.core.Event))
 				}
-				for (feature : element.features) {
-					switch feature {
-						Action: {
-							generateAction(feature.signature, feature.body)
-						}
-						Attribute: {
-							members += feature.toField(feature.name, feature.type) [
-								final = !feature.writeable
-								initializer = feature.initialValue
-							]
-							members += feature.toGetter(feature.name, feature.type)
-							if (feature.writeable) {
-								members += feature.toSetter(feature.name, feature.type)
+				if (element.features!=null) {
+					for (feature : element.features) {
+						switch feature {
+							Attribute: {
+								members += feature.toField(feature.name, feature.type) [
+									final = !feature.writeable
+									initializer = feature.initialValue
+								]
+								members += feature.toGetter(feature.name, feature.type)
+								if (feature.writeable) {
+									members += feature.toSetter(feature.name, feature.type)
+								}
+	
 							}
-
-						}
-						CapacityUses: {
-							for (used : feature.capacitiesUsed) {
-								generateCapactyDelegatorMethods(element, used)
+							Constructor: {
+								generateContructor(element, feature)
 							}
 						}
-						Constructor: {
-							generateContructor(element, feature)
-						}
+	
 					}
-
 				}
 				members += element.toMethod("attributesToString", newTypeRef(String))[
 					visibility = JvmVisibility::PROTECTED

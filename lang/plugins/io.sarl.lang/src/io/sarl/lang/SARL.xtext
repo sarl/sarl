@@ -27,9 +27,8 @@ AbstractElement:
 	Event | Capacity | Agent | Behavior | Skill;
 
 Event:
-	'event' name=ValidID ('extends' superType=[Event])? '{'
-	features+=EventFeature*
-	'}';
+	'event' name=ValidID ('extends' superType=[Event])? 
+	('{' features+=EventFeature* '}')?;
 
 Capacity:
 	'capacity' name=ValidID ('extends' superType=[Capacity])? '{'

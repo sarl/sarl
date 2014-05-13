@@ -139,8 +139,8 @@ class SARLFormatter extends XbaseFormatter {
 
 	def void configureEvents(FormattingConfig c, EventElements ele) {
 		c.setLinewrap(2).after(ele.group);
-		c.setLinewrap.before(ele.rightCurlyBracketKeyword_5);
-		c.setIndentation(ele.leftCurlyBracketKeyword_3, ele.rightCurlyBracketKeyword_5)
+		c.setLinewrap.before(ele.rightCurlyBracketKeyword_3_2);
+		c.setIndentation(ele.leftCurlyBracketKeyword_3_0, ele.rightCurlyBracketKeyword_3_2)
 	}
 
 	def void configureUses(FormattingConfig c, CapacityUsesElements ele) {
