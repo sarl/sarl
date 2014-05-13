@@ -17,6 +17,7 @@
 package io.sarl.core
 
 import java.util.UUID
+import io.sarl.lang.core.SpaceID
 
 /**
 * Initialization event for an Agent.
@@ -33,7 +34,7 @@ event Initialize {
 * This event is fired after the agent has called the killMe action.
 * This event is only received by the agent's internal behaviors, not the member since to call killMe action it must remain any member.
 */
-event Destroy {}
+event Destroy
 
 /**
 * Informs the creation of a new agent in a given context.
@@ -52,6 +53,19 @@ event AgentKilled {
 	var agentID : UUID
 }
 
+/**
+* Informs the creation of a new space in a given context.
+*/
+event SpaceCreated {
+	var spaceID : SpaceID
+}
+
+/**
+* Informs the destruction of a space in a given context.
+*/
+event SpaceDestroyed {
+	var spaceID : SpaceID
+}
 
 /**  Notifies other members the member with agentID has effectively integrated the holon context.*/
 event MemberJoined {
