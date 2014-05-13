@@ -47,7 +47,7 @@ Behavior:
 	'}';
 
 EventFeature:
-	Attribute | Constructor
+	Attribute | Constructor | Action
 ;
 	
 AgentFeature:

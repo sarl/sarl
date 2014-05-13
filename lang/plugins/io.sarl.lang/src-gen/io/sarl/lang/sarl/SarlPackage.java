@@ -517,7 +517,7 @@ public interface SarlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ACTION__SIGNATURE = AGENT_FEATURE_FEATURE_COUNT + 0;
+  int ACTION__SIGNATURE = EVENT_FEATURE_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -526,7 +526,7 @@ public interface SarlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ACTION__BODY = AGENT_FEATURE_FEATURE_COUNT + 1;
+  int ACTION__BODY = EVENT_FEATURE_FEATURE_COUNT + 1;
 
   /**
    * The number of structural features of the '<em>Action</em>' class.
@@ -535,7 +535,7 @@ public interface SarlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ACTION_FEATURE_COUNT = AGENT_FEATURE_FEATURE_COUNT + 2;
+  int ACTION_FEATURE_COUNT = EVENT_FEATURE_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link io.sarl.lang.sarl.impl.ActionSignatureImpl <em>Action Signature</em>}' class.

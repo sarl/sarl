@@ -51,6 +51,9 @@ event Destroy {}
 event AgentSpawned {
 	var agentID : UUID
 	var agentType : Class<? extends Agent>
+	
+	def toto {
+	}
 }
 
 /**

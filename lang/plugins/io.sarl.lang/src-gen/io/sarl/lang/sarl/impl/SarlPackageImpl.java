@@ -914,6 +914,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
     capacityUsesEClass.getESuperTypes().add(this.getSkillFeature());
     behaviorUnitEClass.getESuperTypes().add(this.getAgentFeature());
     behaviorUnitEClass.getESuperTypes().add(this.getBehaviorFeature());
+    actionEClass.getESuperTypes().add(this.getEventFeature());
     actionEClass.getESuperTypes().add(this.getAgentFeature());
     actionEClass.getESuperTypes().add(this.getBehaviorFeature());
     actionEClass.getESuperTypes().add(this.getSkillFeature());

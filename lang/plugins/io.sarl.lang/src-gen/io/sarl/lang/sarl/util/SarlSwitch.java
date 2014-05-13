@@ -173,6 +173,7 @@ public class SarlSwitch<T> extends Switch<T>
       {
         Action action = (Action)theEObject;
         T result = caseAction(action);
+        if (result == null) result = caseEventFeature(action);
         if (result == null) result = caseAgentFeature(action);
         if (result == null) result = caseBehaviorFeature(action);
         if (result == null) result = caseSkillFeature(action);

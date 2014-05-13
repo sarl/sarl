@@ -593,6 +593,16 @@ ruleEventFeature returns [EObject current=null]
         $current = $this_Constructor_1.current; 
         afterParserOrEnumRuleCall();
     }
+
+    |
+    { 
+        newCompositeNode(grammarAccess.getEventFeatureAccess().getActionParserRuleCall_2()); 
+    }
+    this_Action_2=ruleAction
+    { 
+        $current = $this_Action_2.current; 
+        afterParserOrEnumRuleCall();
+    }
 )
 ;
 
