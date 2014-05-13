@@ -19,7 +19,7 @@
  */
 package io.sarl.util;
 
-import io.sarl.core.SynchronizedCollection;
+import io.sarl.lang.util.SynchronizedCollection;
 
 import java.util.ArrayList;
 import java.util.Collection;
