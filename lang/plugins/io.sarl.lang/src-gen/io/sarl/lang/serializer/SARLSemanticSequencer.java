@@ -83,7 +83,6 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				if(context == grammarAccess.getActionRule() ||
 				   context == grammarAccess.getAgentFeatureRule() ||
 				   context == grammarAccess.getBehaviorFeatureRule() ||
-				   context == grammarAccess.getEventFeatureRule() ||
 				   context == grammarAccess.getSkillFeatureRule()) {
 					sequence_Action(context, (Action) semanticObject); 
 					return; 

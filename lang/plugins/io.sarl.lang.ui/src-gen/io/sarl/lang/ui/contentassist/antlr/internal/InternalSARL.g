@@ -2632,12 +2632,6 @@ rule__EventFeature__Alternatives
 { after(grammarAccess.getEventFeatureAccess().getConstructorParserRuleCall_1()); }
 )
 
-    |(
-{ before(grammarAccess.getEventFeatureAccess().getActionParserRuleCall_2()); }
-	ruleAction
-{ after(grammarAccess.getEventFeatureAccess().getActionParserRuleCall_2()); }
-)
-
 ;
 finally {
 	restoreStackSize(stackSize);

@@ -21,7 +21,7 @@ import org.eclipse.xtext.xbase.XExpression;
  * @model
  * @generated
  */
-public interface Action extends EventFeature, AgentFeature, BehaviorFeature, SkillFeature
+public interface Action extends AgentFeature, BehaviorFeature, SkillFeature
 {
   /**
    * Returns the value of the '<em><b>Signature</b></em>' containment reference.

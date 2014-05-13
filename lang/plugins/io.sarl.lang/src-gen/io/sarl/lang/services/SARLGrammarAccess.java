@@ -344,13 +344,12 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cAttributeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cConstructorParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		private final RuleCall cActionParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		
 		//EventFeature:
-		//	Attribute | Constructor | Action;
+		//	Attribute | Constructor;
 		public ParserRule getRule() { return rule; }
 
-		//Attribute | Constructor | Action
+		//Attribute | Constructor
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//Attribute
@@ -358,9 +357,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 
 		//Constructor
 		public RuleCall getConstructorParserRuleCall_1() { return cConstructorParserRuleCall_1; }
-
-		//Action
-		public RuleCall getActionParserRuleCall_2() { return cActionParserRuleCall_2; }
 	}
 
 	public class AgentFeatureElements extends AbstractParserRuleElementFinder {
@@ -1227,7 +1223,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//EventFeature:
-	//	Attribute | Constructor | Action;
+	//	Attribute | Constructor;
 	public EventFeatureElements getEventFeatureAccess() {
 		return (pEventFeature != null) ? pEventFeature : (pEventFeature = new EventFeatureElements());
 	}

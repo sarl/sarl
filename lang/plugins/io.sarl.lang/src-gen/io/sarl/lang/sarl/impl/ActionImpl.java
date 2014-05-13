@@ -30,7 +30,7 @@ import org.eclipse.xtext.xbase.XExpression;
  *
  * @generated
  */
-public class ActionImpl extends EventFeatureImpl implements Action
+public class ActionImpl extends AgentFeatureImpl implements Action
 {
   /**
    * The cached value of the '{@link #getSignature() <em>Signature</em>}' containment reference.
