@@ -16,83 +16,18 @@
  
 package io.sarl.core
 
+import io.sarl.core.AgentTask
+import io.sarl.lang.core.EventSpace
+import io.sarl.lang.core.Address
+import io.sarl.lang.core.Agent
+import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.Event
-import io.sarl.lang.core.Agent
-import io.sarl.lang.core.Address
-import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.EventListener
-import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope
-import io.sarl.core.AgentTask
+import io.sarl.lang.util.SynchronizedCollection
+import io.sarl.lang.util.SynchronizedSet
 import java.util.UUID
-
-/**
-* Initialization event for an Agent.
-* The source of this event is the agent itself.
-* This event is only received by the agent's native behavior.
-*/
-event Initialize {
-	var parameters : Object[]
-}
-
-/**
-* Notifies the Destruction of the agent.
-* The source of this event is the agent itself.
-* This event is fired after the agent has called the killMe action.
-* This event is only received by the agent's internal behaviors, not the member since to call killMe action it must remain any member.
-*/
-event Destroy {}
-
-/**
-* Informs the creation of a new agent in a given context.
-* The context Id can be retrieved via ev.getSource().getSpaceID().getContextID()
-*/
-event AgentSpawned {
-	var agentID : UUID
-	var agentType : String
-}
-
-/**
-* Informs an agent has been killed
-* The context Id can be retrieved via ev.getSource().getSpaceID().getContextID()
-*/
-event AgentKilled {
-	var agentID : UUID
-}
-
-
-/**  Notifies other members the member with agentID has effectively integrated the holon context.*/
-event MemberJoined {
-	var parentContextID : UUID
-	var agentID : UUID
-}
-
-/** Notifies other members the member with agentID was excluded (forced to leave) the holon context parentContextID */
-event MemberExcluded {
-	var parentContextID : UUID
-	var excludeMemberID : UUID
-}
-
-/** Notifies other members the member with agentID has left the holon context */
-event MemberLeft {
-	var agentID : UUID
-}
-
-/**
- * Notifies behaviors the agent has joined a new superholon
- */
-event ContextJoined {
-	var holonContextID : UUID
-	var defaultSpaceID : UUID
-}
-
-/**
- * Notifies behaviors the agent has left a superholon
- */
-event ContextLeft {
-	var holonContextID : UUID
-}
 
 capacity ExternalContextAccess {
 	/**
@@ -130,7 +65,33 @@ capacity ExternalContextAccess {
 }
 
 capacity InnerContextAccess {
+	/** Replies the inner context.
+	 */
 	def getInnerContext : AgentContext
+	
+	/** Replies if the calling agent has other agents
+	 * as members of its inner context.
+	 * A member agent is an agent which is not the
+	 * calling agent, and is a member of at least
+	 * one space of the inner context. 
+	 */
+	def hasMemberAgent : boolean
+	
+	/** Replies the number of agents that are members
+	 * of the inner context of the calling agent.
+	 * A member agent is an agent which is not the
+	 * calling agent, and is a member of at least
+	 * one space of the inner context. 
+	 */
+	def getMemberAgentCount : int
+
+	/**
+	 * Replies all the member agents in the inner context.
+	 * A member agent is an agent which is not the
+	 * calling agent, and is a member of at least
+	 * one space of the inner context. 
+	 */	 
+	def getMemberAgents : SynchronizedSet<UUID>
 }
 
 /**
@@ -142,10 +103,12 @@ capacity Behaviors {
 	 * The new Behavior will react to all declared events received by the agent.
 	 */
 	def registerBehavior(attitude : Behavior) : Behavior
+	
 	/**
 	 * Unregisters a behavior for the owner agent
 	 */
 	def unregisterBehavior(attitude : Behavior) : Behavior
+	
 	/**
 	 * Wake the agent's behaviors reacting to the Event evt.
 	 */
@@ -161,8 +124,6 @@ capacity Behaviors {
 * Lifecycle related actions.
 */
 capacity Lifecycle {
-
-	
 	/**
 	 * Spawns a new member agent in the parent's context (parentID)
 	 * @fires AgentSpawned inside the default context of the parent. The source of the event is this agent.

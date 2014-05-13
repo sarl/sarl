@@ -15,7 +15,8 @@
  */
 package io.sarl.lang.core;
 
-import java.util.Set;
+import io.sarl.lang.util.SynchronizedSet;
+
 import java.util.UUID;
 
 /**
@@ -42,5 +43,5 @@ public interface Space {
 	 * 
 	 * @return participants IDs
 	 */
-	public Set<UUID> getParticipants();
+	public SynchronizedSet<UUID> getParticipants();
 }

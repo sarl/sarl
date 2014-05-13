@@ -15,7 +15,8 @@
  */
 package io.sarl.lang.core;
 
-import java.util.Collection;
+import io.sarl.lang.util.SynchronizedCollection;
+
 import java.util.UUID;
 
 /**
@@ -46,7 +47,7 @@ public interface AgentContext {
 	 * 
 	 * @return the spaces.
 	 */
-	public Collection<? extends Space> getSpaces();
+	public SynchronizedCollection<? extends Space> getSpaces();
 
 	/** Create an instance of space following the given specification.
 	 * This function always creates a new instance of space.
@@ -68,7 +69,7 @@ public interface AgentContext {
 	 * @param spec
 	 * @return the spaces associated to the given space specification.
 	 */
-	public <S extends Space> Collection<S> getSpaces(Class<? extends SpaceSpecification<S>> spec);
+	public <S extends Space> SynchronizedCollection<S> getSpaces(Class<? extends SpaceSpecification<S>> spec);
 
 	/** Retreive or create an instance of space following the given specification.
 	 * This function tries to find a space that fits the given specification.

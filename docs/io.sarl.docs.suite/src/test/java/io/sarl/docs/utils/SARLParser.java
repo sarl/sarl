@@ -67,7 +67,8 @@ public class SARLParser {
 		this.xtextResourceSet.setClasspathURIContext(getClass());
 		this.xtextResourceSet.setClasspathUriResolver(new ClassloaderClasspathUriResolver());
 		this.xtextResourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE);
-		this.xtextResourceSet.createResource(URI.createURI("classpath:/io/sarl/core/core.sarl")); //$NON-NLS-1$
+		this.xtextResourceSet.createResource(URI.createURI("classpath:/io/sarl/core/events.sarl")); //$NON-NLS-1$
+		this.xtextResourceSet.createResource(URI.createURI("classpath:/io/sarl/core/bic.sarl")); //$NON-NLS-1$
 		return this.xtextResourceSet;
 	}
 }

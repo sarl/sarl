@@ -20,6 +20,8 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
+import static org.junit.Assert.*
+
 /*
  * This document describes the general syntax of the SARL Language.
  * While we will use the agent definition, it is also valid for other concepts.
@@ -69,6 +71,6 @@ describe "General Syntax Reference"{
 	/*
 	 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 	 */
-	fact "Action definition"
+	fact "Action definition"{assertTrue(true)}
 	
 }
