@@ -41,7 +41,6 @@ public interface OpenEventSpace extends EventSpace {
 	 * 
 	 * @param entity
 	 * @return the entity's address in this space
-	 * @fires ParticipantRegistered
 	 */
 	public Address register(EventListener entity);
 
@@ -52,7 +51,6 @@ public interface OpenEventSpace extends EventSpace {
 	 * 
 	 * @param entity
 	 * @return the former entity's address
-	 * @fires ParticipantUnregistered
 	 */
 	public Address unregister(EventListener entity);
 }

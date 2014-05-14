@@ -87,7 +87,8 @@ event SpaceDestroyed {
 	}
 }
 
-/**  Notifies other members the member with agentID has effectively integrated the holon context.*/
+/**  Notifies other members the member with agentID has effectively 
+ * integrated the holon context.*/
 event MemberJoined {
 	val parentContextID : UUID
 	val agentID : UUID
@@ -100,7 +101,9 @@ event MemberJoined {
 	}
 }
 
-/** Notifies other members the member with agentID was excluded (forced to leave) the holon context parentContextID */
+/** Notifies other members the member with agentID was 
+ * excluded (forced to leave) the holon context
+ * parentContextID */
 event MemberExcluded {
 	val parentContextID : UUID
 	val agentID : UUID
