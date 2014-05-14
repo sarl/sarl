@@ -16,6 +16,7 @@
 package io.sarl.lang.jvmmodel
 
 import com.google.inject.Inject
+import io.sarl.lang.core.Percept
 import io.sarl.lang.sarl.AbstractElement
 import io.sarl.lang.sarl.Action
 import io.sarl.lang.sarl.ActionSignature
@@ -29,9 +30,11 @@ import io.sarl.lang.sarl.Constructor
 import io.sarl.lang.sarl.Event
 import io.sarl.lang.sarl.RequiredCapacity
 import io.sarl.lang.sarl.Skill
+import java.util.UUID
 import java.util.logging.Logger
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmOperation
+import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.common.types.TypesFactory
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.xbase.XExpression
@@ -40,9 +43,9 @@ import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
-import io.sarl.lang.core.Percept
-import java.util.UUID
-import org.eclipse.xtext.common.types.JvmVisibility
+import org.eclipse.xtext.common.types.JvmField
+import java.util.ArrayList
+import java.util.List
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -81,7 +84,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 *            types} from.
 	 * @param acceptor
 	 *            each created
-	 *            {@link org.eclipse.xtext.common.types.JvmDeclaredType type}
+	 *            {@link JvmDeclaredType type}
 	 *            without a container should be passed to the acceptor in order
 	 *            get attached to the current resource. The acceptor's
 	 *            {@link IJvmDeclaredTypeAcceptor#accept(org.eclipse.xtext.common.types.JvmDeclaredType)
@@ -97,7 +100,6 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 *            <code>true</code>.
 	 */
 	def dispatch void infer(Event element, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-
 		acceptor.accept(element.toClass(element.fullyQualifiedName)).initializeLater(
 			[
 				documentation = element.documentation
@@ -107,41 +109,56 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				}else{
 					superTypes += newTypeRef(element, typeof(io.sarl.lang.core.Event))
 				}
-				if (element.features!=null) {
-					for (feature : element.features) {
-						switch feature {
-							Attribute: {
-								members += feature.toField(feature.name, feature.type) [
-									final = !feature.writeable
-									initializer = feature.initialValue
-								]
-								members += feature.toGetter(feature.name, feature.type)
-								if (feature.writeable) {
-									members += feature.toSetter(feature.name, feature.type)
-								}
-	
+				
+				var JvmField jvmField
+				var List<JvmField> jvmFields = new ArrayList()
+
+				for (feature : element.features) {
+					switch feature {
+						Attribute: {
+							jvmField = feature.toField(feature.name, feature.type) [
+								final = !feature.writeable
+								initializer = feature.initialValue
+							]
+							jvmFields.add(jvmField)
+							members += jvmField
+							members += feature.toGetter(feature.name, feature.type)
+							if (feature.writeable) {
+								members += feature.toSetter(feature.name, feature.type)
 							}
-							Constructor: {
-								generateContructor(element, feature)
-							}
+
 						}
-	
+						Constructor: {
+							generateConstructor(element, feature)
+						}
 					}
+
 				}
-				members += element.toMethod("attributesToString", newTypeRef(String))[
-					visibility = JvmVisibility::PROTECTED
-					documentation = '''Returns a String representation of the Event «element.name» attributes only.'''
-					body = [
-						append(
-							'''
-							StringBuilder result = new StringBuilder();
-							result.append(super.attributesToString());
-							«FOR attr : element.features.filter(Attribute)»
-								result.append("«attr.name»  = ").append(this.«attr.name»);
-							«ENDFOR»
-							return result.toString();''')
+								
+				if (!jvmFields.isEmpty) {
+
+					var JvmField[] tab = jvmFields // single translation to the array
+
+					members += element.toEqualsMethod(element.toClass(element.fullyQualifiedName), true, tab)
+					
+					members += element.toHashCodeMethod(true, tab)
+					
+					members += element.toMethod("attributesToString", newTypeRef(String))[
+						visibility = JvmVisibility::PROTECTED
+						documentation = '''Returns a String representation of the Event «element.name» attributes only.'''
+						body = [
+							append(
+								'''
+								StringBuilder result = new StringBuilder(super.attributesToString());
+								«FOR attr : element.features.filter(Attribute)»
+									result.append("«attr.name»  = ").append(this.«attr.name»);
+								«ENDFOR»
+								return result.toString();''')
+						]
 					]
-				]
+					
+				}
+
 				members += element.toMethod('toString', newTypeRef(String)) [
 					documentation = '''Returns a String representation of the Event «element.name».'''
 					body = [
@@ -149,11 +166,12 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							'''
 							StringBuilder result = new StringBuilder();
 							result.append("«element.name»[");
-							result.append(this.attributesToString());
+							result.append(attributesToString());
 							result.append("]");
 							return result.toString();''')
 					]
 				]
+
 			])
 	}
 
@@ -208,7 +226,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							}
 						}
 						Constructor: {
-							generateContructor(element, feature)
+							generateConstructor(element, feature)
 						}
 					}
 				}
@@ -227,7 +245,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							//TODO 
 						}
 						BehaviorUnit: {
-							members += generateBehaviorUnit(feature as BehaviorUnit, counter)
+							members += generateBehaviorUnit(feature, counter)
 						}
 						CapacityUses: {
 							for (used : feature.capacitiesUsed) {
@@ -235,7 +253,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							}
 						}
 						Constructor: {
-							generateContructor(element, feature)
+							generateConstructor(element, feature)
 						}
 						Attribute: {
 							members += feature.toField(feature.name, feature.type) [
@@ -271,7 +289,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					BehaviorUnit: {
 						counter = counter + 1
 
-						val bMethod = generateBehaviorUnit(feature as BehaviorUnit, counter)
+						val bMethod = generateBehaviorUnit(feature, counter)
 
 						members += bMethod
 					}
@@ -367,7 +385,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		return op
 	}
 
-	def void generateContructor(JvmGenericType owner, AbstractElement context, Constructor constructor) {
+	def void generateConstructor(JvmGenericType owner, AbstractElement context, Constructor constructor) {
 		owner.members += context.toConstructor [
 			documentation = constructor.documentation
 			for (p : constructor.params) {
@@ -377,5 +395,5 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		]
 
 	}
-
+	
 }

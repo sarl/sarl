@@ -68,12 +68,38 @@ class Bug23 {
 		    this.titi = titi;
 		  }
 		  
+		  @Override
+		  public boolean equals(final Object obj) {
+		    if (this == obj)
+		      return true;
+		    if (obj == null)
+		      return false;
+		    if (getClass() != obj.getClass())
+		      return false;
+		    if (!super.equals(obj))
+		      return false;
+		    MyAgentSpawned other = (MyAgentSpawned) obj;
+		    if (titi == null) {
+		      if (other.titi != null)
+		        return false;
+		    } else if (!titi.equals(other.titi))
+		      return false;
+		    return true;
+		  }
+		  
+		  @Override
+		  public int hashCode() {
+		    final int prime = 31;
+		    int result = super.hashCode();
+		    result = prime * result + ((titi== null) ? 0 : titi.hashCode());
+		    return result;
+		  }
+		  
 		  /**
 		   * Returns a String representation of the Event MyAgentSpawned attributes only.
 		   */
 		  protected String attributesToString() {
-		    StringBuilder result = new StringBuilder();
-		    result.append(super.attributesToString());
+		    StringBuilder result = new StringBuilder(super.attributesToString());
 		    result.append("titi  = ").append(this.titi);
 		    return result.toString();
 		  }
@@ -84,7 +110,7 @@ class Bug23 {
 		  public String toString() {
 		    StringBuilder result = new StringBuilder();
 		    result.append("MyAgentSpawned[");
-		    result.append(this.attributesToString());
+		    result.append(attributesToString());
 		    result.append("]");
 		    return result.toString();
 		  }

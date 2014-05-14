@@ -48,21 +48,12 @@ class EventCompilerTest {
 			@SuppressWarnings("all")
 			public class E1 extends Event {
 			  /**
-			   * Returns a String representation of the Event E1 attributes only.
-			   */
-			  protected String attributesToString() {
-			    StringBuilder result = new StringBuilder();
-			    result.append(super.attributesToString());
-			    return result.toString();
-			  }
-			  
-			  /**
 			   * Returns a String representation of the Event E1.
 			   */
 			  public String toString() {
 			    StringBuilder result = new StringBuilder();
 			    result.append("E1[");
-			    result.append(this.attributesToString());
+			    result.append(attributesToString());
 			    result.append("]");
 			    return result.toString();
 			  }
@@ -91,12 +82,38 @@ class EventCompilerTest {
 		    this.name = name;
 		  }
 		  
+		  @Override
+		  public boolean equals(final Object obj) {
+		    if (this == obj)
+		      return true;
+		    if (obj == null)
+		      return false;
+		    if (getClass() != obj.getClass())
+		      return false;
+		    if (!super.equals(obj))
+		      return false;
+		    E1 other = (E1) obj;
+		    if (name == null) {
+		      if (other.name != null)
+		        return false;
+		    } else if (!name.equals(other.name))
+		      return false;
+		    return true;
+		  }
+		  
+		  @Override
+		  public int hashCode() {
+		    final int prime = 31;
+		    int result = super.hashCode();
+		    result = prime * result + ((name== null) ? 0 : name.hashCode());
+		    return result;
+		  }
+		  
 		  /**
 		   * Returns a String representation of the Event E1 attributes only.
 		   */
 		  protected String attributesToString() {
-		    StringBuilder result = new StringBuilder();
-		    result.append(super.attributesToString());
+		    StringBuilder result = new StringBuilder(super.attributesToString());
 		    result.append("name  = ").append(this.name);
 		    return result.toString();
 		  }
@@ -107,7 +124,7 @@ class EventCompilerTest {
 		  public String toString() {
 		    StringBuilder result = new StringBuilder();
 		    result.append("E1[");
-		    result.append(this.attributesToString());
+		    result.append(attributesToString());
 		    result.append("]");
 		    return result.toString();
 		  }
@@ -121,21 +138,12 @@ class EventCompilerTest {
 		@SuppressWarnings("all")
 		public class E2 extends E1 {
 		  /**
-		   * Returns a String representation of the Event E2 attributes only.
-		   */
-		  protected String attributesToString() {
-		    StringBuilder result = new StringBuilder();
-		    result.append(super.attributesToString());
-		    return result.toString();
-		  }
-		  
-		  /**
 		   * Returns a String representation of the Event E2.
 		   */
 		  public String toString() {
 		    StringBuilder result = new StringBuilder();
 		    result.append("E2[");
-		    result.append(this.attributesToString());
+		    result.append(attributesToString());
 		    result.append("]");
 		    return result.toString();
 		  }
