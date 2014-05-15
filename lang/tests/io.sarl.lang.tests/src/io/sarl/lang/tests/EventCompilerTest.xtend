@@ -27,6 +27,7 @@ import org.junit.runner.RunWith
 
 /**
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -93,10 +94,10 @@ class EventCompilerTest {
 		    if (!super.equals(obj))
 		      return false;
 		    E1 other = (E1) obj;
-		    if (name == null) {
+		    if (this.name == null) {
 		      if (other.name != null)
 		        return false;
-		    } else if (!name.equals(other.name))
+		    } else if (!this.name.equals(other.name))
 		      return false;
 		    return true;
 		  }
@@ -105,7 +106,7 @@ class EventCompilerTest {
 		  public int hashCode() {
 		    final int prime = 31;
 		    int result = super.hashCode();
-		    result = prime * result + ((name== null) ? 0 : name.hashCode());
+		    result = prime * result + ((this.name== null) ? 0 : this.name.hashCode());
 		    return result;
 		  }
 		  

@@ -162,7 +162,7 @@ public class Bug23 {
       _builder.append("MyAgentSpawned other = (MyAgentSpawned) obj;");
       _builder.newLine();
       _builder.append("    ");
-      _builder.append("if (titi == null) {");
+      _builder.append("if (this.titi == null) {");
       _builder.newLine();
       _builder.append("      ");
       _builder.append("if (other.titi != null)");
@@ -171,7 +171,7 @@ public class Bug23 {
       _builder.append("return false;");
       _builder.newLine();
       _builder.append("    ");
-      _builder.append("} else if (!titi.equals(other.titi))");
+      _builder.append("} else if (!this.titi.equals(other.titi))");
       _builder.newLine();
       _builder.append("      ");
       _builder.append("return false;");
@@ -197,7 +197,7 @@ public class Bug23 {
       _builder.append("int result = super.hashCode();");
       _builder.newLine();
       _builder.append("    ");
-      _builder.append("result = prime * result + ((titi== null) ? 0 : titi.hashCode());");
+      _builder.append("result = prime * result + ((this.titi== null) ? 0 : this.titi.hashCode());");
       _builder.newLine();
       _builder.append("    ");
       _builder.append("return result;");

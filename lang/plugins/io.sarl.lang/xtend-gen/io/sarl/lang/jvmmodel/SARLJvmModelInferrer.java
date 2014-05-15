@@ -48,6 +48,7 @@ import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmConstructor;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
@@ -156,8 +157,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes_1, _newTypeRef_1);
         }
         JvmField jvmField = null;
-        ArrayList<JvmField> _arrayList = new ArrayList<JvmField>();
-        List<JvmField> jvmFields = _arrayList;
+        List<JvmField> jvmFields = new ArrayList<JvmField>();
         EList<EventFeature> _features = element.getFeatures();
         for (final EventFeature feature : _features) {
           boolean _matched = false;
@@ -208,12 +208,12 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           JvmField[] tab = ((JvmField[])Conversions.unwrapArray(jvmFields, JvmField.class));
           EList<JvmMember> _members = it.getMembers();
           QualifiedName _fullyQualifiedName_1 = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(element);
-          JvmGenericType _class = SARLJvmModelInferrer.this._jvmTypesBuilder.toClass(element, _fullyQualifiedName_1);
-          JvmOperation _equalsMethod = SARLJvmModelInferrer.this._jvmTypesBuilder.toEqualsMethod(element, _class, true, tab);
-          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members, _equalsMethod);
+          JvmGenericType _class = SARLJvmModelInferrer.this._jvmTypesBuilder.toClass(it, _fullyQualifiedName_1);
+          JvmOperation _equalsMethod_Bug434912 = SARLJvmModelInferrer.this.toEqualsMethod_Bug434912(it, element, _class, true, tab);
+          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members, _equalsMethod_Bug434912);
           EList<JvmMember> _members_1 = it.getMembers();
-          JvmOperation _hashCodeMethod = SARLJvmModelInferrer.this._jvmTypesBuilder.toHashCodeMethod(element, true, tab);
-          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_1, _hashCodeMethod);
+          JvmOperation _hashCodeMethod_Bug392440 = SARLJvmModelInferrer.this.toHashCodeMethod_Bug392440(it, element, true, tab);
+          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_1, _hashCodeMethod_Bug392440);
           EList<JvmMember> _members_2 = it.getMembers();
           JvmTypeReference _newTypeRef_2 = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(it, String.class);
           final Procedure1<JvmOperation> _function = new Procedure1<JvmOperation>() {
@@ -310,7 +310,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           Capacity _superType_1 = capacity.getSuperType();
           QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_superType_1);
           boolean _notEquals_1 = (!Objects.equal(_fullyQualifiedName, null));
-          _and = (_notEquals && _notEquals_1);
+          _and = _notEquals_1;
         }
         if (_and) {
           EList<JvmTypeReference> _superTypes = it.getSuperTypes();
@@ -500,7 +500,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           Agent _superType_1 = agent.getSuperType();
           QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_superType_1);
           boolean _notEquals_1 = (!Objects.equal(_fullyQualifiedName, null));
-          _and = (_notEquals && _notEquals_1);
+          _and = _notEquals_1;
         }
         if (_and) {
           EList<JvmTypeReference> _superTypes = it.getSuperTypes();
@@ -625,8 +625,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           EList<Parameter> _params = signature.getParams();
           final Function1<Parameter,String> _function = new Function1<Parameter,String>() {
             public String apply(final Parameter it) {
-              String _name = it.getName();
-              return _name;
+              return it.getName();
             }
           };
           String _join = IterableExtensions.<Parameter>join(_params, ", ", _function);
@@ -715,7 +714,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
         EList<JvmMember> _members = owner.getMembers();
         this._jvmTypesBuilder.<JvmOperation>operator_add(_members, guardMethod);
       }
-      _xblockexpression = (behaviorMethod);
+      _xblockexpression = behaviorMethod;
     }
     return _xblockexpression;
   }
@@ -769,6 +768,349 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
     };
     JvmConstructor _constructor = this._jvmTypesBuilder.toConstructor(context, _function);
     this._jvmTypesBuilder.<JvmConstructor>operator_add(_members, _constructor);
+  }
+  
+  /**
+   * FIXME: Remove this function if it is fixed in Xtext: https://bugs.eclipse.org/bugs/show_bug.cgi?id=392440
+   * 
+   * Copied/pasted from {@link JvmTypesBuilder#toHashCodeMethod(EObject, boolean, JvmField...)}.
+   * Updated for fixing the issue {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=392440"}
+   * 
+   * @param owner
+   * @param sourceElement
+   * @param extendsSomethingWithProperHashCode
+   * @param jvmFields
+   * @return the operation.
+   */
+  public JvmOperation toHashCodeMethod_Bug392440(final JvmGenericType owner, final EObject sourceElement, final boolean extendsSomethingWithProperHashCode, final JvmField... jvmFields) {
+    boolean _tripleEquals = (sourceElement == null);
+    if (_tripleEquals) {
+      return null;
+    }
+    JvmTypeReference _newTypeRef = this._jvmTypesBuilder.newTypeRef(sourceElement, Integer.TYPE);
+    JvmOperation result = this._jvmTypesBuilder.toMethod(sourceElement, "hashCode", _newTypeRef, null);
+    boolean _tripleEquals_1 = (result == null);
+    if (_tripleEquals_1) {
+      return null;
+    }
+    EList<JvmAnnotationReference> _annotations = result.getAnnotations();
+    JvmAnnotationReference _annotation = this._jvmTypesBuilder.toAnnotation(sourceElement, Override.class);
+    _annotations.add(_annotation);
+    final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
+      public void apply(final ITreeAppendable it) {
+        it.append("final int prime = 31;");
+        if (extendsSomethingWithProperHashCode) {
+          ITreeAppendable _newLine = it.newLine();
+          _newLine.append("int result = super.hashCode();");
+        } else {
+          ITreeAppendable _newLine_1 = it.newLine();
+          _newLine_1.append("int result = 1;");
+        }
+        for (final JvmField field : jvmFields) {
+          {
+            JvmTypeReference _type = field.getType();
+            String typeName = _type.getIdentifier();
+            String _name = Boolean.TYPE.getName();
+            boolean _equals = Objects.equal(_name, typeName);
+            if (_equals) {
+              ITreeAppendable _newLine_2 = it.newLine();
+              String _simpleName = field.getSimpleName();
+              String _plus = ("result = prime * result + (this." + _simpleName);
+              String _plus_1 = (_plus + " ? 1231 : 1237);");
+              _newLine_2.append(_plus_1);
+            } else {
+              boolean _or = false;
+              boolean _or_1 = false;
+              boolean _or_2 = false;
+              String _name_1 = Integer.TYPE.getName();
+              boolean _equals_1 = Objects.equal(_name_1, typeName);
+              if (_equals_1) {
+                _or_2 = true;
+              } else {
+                String _name_2 = Character.TYPE.getName();
+                boolean _equals_2 = Objects.equal(_name_2, typeName);
+                _or_2 = _equals_2;
+              }
+              if (_or_2) {
+                _or_1 = true;
+              } else {
+                String _name_3 = Byte.TYPE.getName();
+                boolean _equals_3 = Objects.equal(_name_3, typeName);
+                _or_1 = _equals_3;
+              }
+              if (_or_1) {
+                _or = true;
+              } else {
+                String _name_4 = Short.TYPE.getName();
+                boolean _equals_4 = Objects.equal(_name_4, typeName);
+                _or = _equals_4;
+              }
+              if (_or) {
+                ITreeAppendable _newLine_3 = it.newLine();
+                String _simpleName_1 = field.getSimpleName();
+                String _plus_2 = ("result = prime * result + this." + _simpleName_1);
+                String _plus_3 = (_plus_2 + ";");
+                _newLine_3.append(_plus_3);
+              } else {
+                String _name_5 = Long.TYPE.getName();
+                boolean _equals_5 = Objects.equal(_name_5, typeName);
+                if (_equals_5) {
+                  ITreeAppendable _newLine_4 = it.newLine();
+                  String _simpleName_2 = field.getSimpleName();
+                  String _plus_4 = ("result = prime * result + (int) (this." + _simpleName_2);
+                  String _plus_5 = (_plus_4 + " ^ (this.");
+                  String _simpleName_3 = field.getSimpleName();
+                  String _plus_6 = (_plus_5 + _simpleName_3);
+                  String _plus_7 = (_plus_6 + " >>> 32));");
+                  _newLine_4.append(_plus_7);
+                } else {
+                  String _name_6 = Float.TYPE.getName();
+                  boolean _equals_6 = Objects.equal(_name_6, typeName);
+                  if (_equals_6) {
+                    ITreeAppendable _newLine_5 = it.newLine();
+                    String _simpleName_4 = field.getSimpleName();
+                    String _plus_8 = ("result = prime * result + Float.floatToIntBits(this." + _simpleName_4);
+                    String _plus_9 = (_plus_8 + ");");
+                    _newLine_5.append(_plus_9);
+                  } else {
+                    String _name_7 = Double.TYPE.getName();
+                    boolean _equals_7 = Objects.equal(_name_7, typeName);
+                    if (_equals_7) {
+                      ITreeAppendable _newLine_6 = it.newLine();
+                      String _simpleName_5 = field.getSimpleName();
+                      String _plus_10 = ("result = prime * result + (int) (Double.doubleToLongBits(this." + _simpleName_5);
+                      String _plus_11 = (_plus_10 + ") ^ (Double.doubleToLongBits(this.");
+                      String _simpleName_6 = field.getSimpleName();
+                      String _plus_12 = (_plus_11 + _simpleName_6);
+                      String _plus_13 = (_plus_12 + ") >>> 32));");
+                      _newLine_6.append(_plus_13);
+                    } else {
+                      ITreeAppendable _newLine_7 = it.newLine();
+                      String _simpleName_7 = field.getSimpleName();
+                      String _plus_14 = ("result = prime * result + ((this." + _simpleName_7);
+                      String _plus_15 = (_plus_14 + "== null) ? 0 : this.");
+                      String _simpleName_8 = field.getSimpleName();
+                      String _plus_16 = (_plus_15 + _simpleName_8);
+                      String _plus_17 = (_plus_16 + ".hashCode());");
+                      _newLine_7.append(_plus_17);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        ITreeAppendable _newLine_2 = it.newLine();
+        _newLine_2.append("return result;");
+      }
+    };
+    this._jvmTypesBuilder.setBody(result, _function);
+    return result;
+  }
+  
+  /**
+   * FIXME: Remove this function if it is fixed in Xtext: https://bugs.eclipse.org/bugs/show_bug.cgi?id=434912
+   * 
+   * Copied/pasted from {@link JvmTypesBuilder#toEquals}.
+   * Updated for fixing the issue {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=434912"}
+   * 
+   * @param owner
+   * @param sourceElement
+   * @param declaredType
+   * @param isDelegateToSuperEquals
+   * @param jvmFields
+   * @return the operation.
+   */
+  public JvmOperation toEqualsMethod_Bug434912(final JvmGenericType owner, final EObject sourceElement, final JvmDeclaredType declaredType, final boolean isDelegateToSuperEquals, final JvmField... jvmFields) {
+    boolean _or = false;
+    boolean _tripleEquals = (sourceElement == null);
+    if (_tripleEquals) {
+      _or = true;
+    } else {
+      boolean _tripleEquals_1 = (declaredType == null);
+      _or = _tripleEquals_1;
+    }
+    if (_or) {
+      return null;
+    }
+    JvmTypeReference _newTypeRef = this._jvmTypesBuilder.newTypeRef(sourceElement, Boolean.TYPE);
+    JvmOperation result = this._jvmTypesBuilder.toMethod(sourceElement, "equals", _newTypeRef, null);
+    boolean _tripleEquals_2 = (result == null);
+    if (_tripleEquals_2) {
+      return null;
+    }
+    EList<JvmAnnotationReference> _annotations = result.getAnnotations();
+    JvmAnnotationReference _annotation = this._jvmTypesBuilder.toAnnotation(sourceElement, Override.class);
+    _annotations.add(_annotation);
+    EList<JvmFormalParameter> _parameters = result.getParameters();
+    JvmTypeReference _newTypeRef_1 = this._jvmTypesBuilder.newTypeRef(sourceElement, Object.class);
+    JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(sourceElement, "obj", _newTypeRef_1);
+    _parameters.add(_parameter);
+    final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
+      public void apply(final ITreeAppendable it) {
+        ITreeAppendable _append = it.append("if (this == obj)");
+        _append.increaseIndentation();
+        ITreeAppendable _newLine = it.newLine();
+        ITreeAppendable _append_1 = _newLine.append("return true;");
+        _append_1.decreaseIndentation();
+        ITreeAppendable _newLine_1 = it.newLine();
+        ITreeAppendable _append_2 = _newLine_1.append("if (obj == null)");
+        _append_2.increaseIndentation();
+        ITreeAppendable _newLine_2 = it.newLine();
+        ITreeAppendable _append_3 = _newLine_2.append("return false;");
+        _append_3.decreaseIndentation();
+        ITreeAppendable _newLine_3 = it.newLine();
+        ITreeAppendable _append_4 = _newLine_3.append("if (getClass() != obj.getClass())");
+        _append_4.increaseIndentation();
+        ITreeAppendable _newLine_4 = it.newLine();
+        ITreeAppendable _append_5 = _newLine_4.append("return false;");
+        _append_5.decreaseIndentation();
+        if (isDelegateToSuperEquals) {
+          ITreeAppendable _newLine_5 = it.newLine();
+          ITreeAppendable _append_6 = _newLine_5.append("if (!super.equals(obj))");
+          _append_6.increaseIndentation();
+          ITreeAppendable _newLine_6 = it.newLine();
+          ITreeAppendable _append_7 = _newLine_6.append("return false;");
+          _append_7.decreaseIndentation();
+        }
+        ITreeAppendable _newLine_7 = it.newLine();
+        String _simpleName = declaredType.getSimpleName();
+        String _plus = (_simpleName + " other = (");
+        String _simpleName_1 = declaredType.getSimpleName();
+        String _plus_1 = (_plus + _simpleName_1);
+        String _plus_2 = (_plus_1 + ") obj;");
+        _newLine_7.append(_plus_2);
+        for (final JvmField field : jvmFields) {
+          {
+            JvmTypeReference _type = field.getType();
+            String typeName = _type.getIdentifier();
+            boolean _or = false;
+            boolean _or_1 = false;
+            boolean _or_2 = false;
+            boolean _or_3 = false;
+            boolean _or_4 = false;
+            String _name = Boolean.TYPE.getName();
+            boolean _equals = Objects.equal(_name, typeName);
+            if (_equals) {
+              _or_4 = true;
+            } else {
+              String _name_1 = Integer.TYPE.getName();
+              boolean _equals_1 = Objects.equal(_name_1, typeName);
+              _or_4 = _equals_1;
+            }
+            if (_or_4) {
+              _or_3 = true;
+            } else {
+              String _name_2 = Long.TYPE.getName();
+              boolean _equals_2 = Objects.equal(_name_2, typeName);
+              _or_3 = _equals_2;
+            }
+            if (_or_3) {
+              _or_2 = true;
+            } else {
+              String _name_3 = Character.TYPE.getName();
+              boolean _equals_3 = Objects.equal(_name_3, typeName);
+              _or_2 = _equals_3;
+            }
+            if (_or_2) {
+              _or_1 = true;
+            } else {
+              String _name_4 = Byte.TYPE.getName();
+              boolean _equals_4 = Objects.equal(_name_4, typeName);
+              _or_1 = _equals_4;
+            }
+            if (_or_1) {
+              _or = true;
+            } else {
+              String _name_5 = Short.TYPE.getName();
+              boolean _equals_5 = Objects.equal(_name_5, typeName);
+              _or = _equals_5;
+            }
+            if (_or) {
+              ITreeAppendable _newLine_8 = it.newLine();
+              String _simpleName_2 = field.getSimpleName();
+              String _plus_3 = ("if (other." + _simpleName_2);
+              String _plus_4 = (_plus_3 + " != this.");
+              String _simpleName_3 = field.getSimpleName();
+              String _plus_5 = (_plus_4 + _simpleName_3);
+              String _plus_6 = (_plus_5 + ")");
+              ITreeAppendable _append_8 = _newLine_8.append(_plus_6);
+              _append_8.increaseIndentation();
+              ITreeAppendable _newLine_9 = it.newLine();
+              ITreeAppendable _append_9 = _newLine_9.append("return false;");
+              _append_9.decreaseIndentation();
+            } else {
+              String _name_6 = Double.TYPE.getName();
+              boolean _equals_6 = Objects.equal(_name_6, typeName);
+              if (_equals_6) {
+                ITreeAppendable _newLine_10 = it.newLine();
+                String _simpleName_4 = field.getSimpleName();
+                String _plus_7 = ("if (Double.doubleToLongBits(other." + _simpleName_4);
+                String _plus_8 = (_plus_7 + ") != Double.doubleToLongBits(this.");
+                String _simpleName_5 = field.getSimpleName();
+                String _plus_9 = (_plus_8 + _simpleName_5);
+                String _plus_10 = (_plus_9 + "))");
+                ITreeAppendable _append_10 = _newLine_10.append(_plus_10);
+                _append_10.increaseIndentation();
+                ITreeAppendable _newLine_11 = it.newLine();
+                ITreeAppendable _append_11 = _newLine_11.append("return false;");
+                _append_11.decreaseIndentation();
+              } else {
+                String _name_7 = Float.TYPE.getName();
+                boolean _equals_7 = Objects.equal(_name_7, typeName);
+                if (_equals_7) {
+                  ITreeAppendable _newLine_12 = it.newLine();
+                  String _simpleName_6 = field.getSimpleName();
+                  String _plus_11 = ("if (Float.floatToIntBits(other." + _simpleName_6);
+                  String _plus_12 = (_plus_11 + ") != Float.floatToIntBits(this.");
+                  String _simpleName_7 = field.getSimpleName();
+                  String _plus_13 = (_plus_12 + _simpleName_7);
+                  String _plus_14 = (_plus_13 + "))");
+                  ITreeAppendable _append_12 = _newLine_12.append(_plus_14);
+                  _append_12.increaseIndentation();
+                  ITreeAppendable _newLine_13 = it.newLine();
+                  ITreeAppendable _append_13 = _newLine_13.append("return false;");
+                  _append_13.decreaseIndentation();
+                } else {
+                  ITreeAppendable _newLine_14 = it.newLine();
+                  String _simpleName_8 = field.getSimpleName();
+                  String _plus_15 = ("if (this." + _simpleName_8);
+                  String _plus_16 = (_plus_15 + " == null) {");
+                  ITreeAppendable _append_14 = _newLine_14.append(_plus_16);
+                  _append_14.increaseIndentation();
+                  ITreeAppendable _newLine_15 = it.newLine();
+                  String _simpleName_9 = field.getSimpleName();
+                  String _plus_17 = ("if (other." + _simpleName_9);
+                  String _plus_18 = (_plus_17 + " != null)");
+                  ITreeAppendable _append_15 = _newLine_15.append(_plus_18);
+                  _append_15.increaseIndentation();
+                  ITreeAppendable _newLine_16 = it.newLine();
+                  ITreeAppendable _append_16 = _newLine_16.append("return false;");
+                  _append_16.decreaseIndentation();
+                  it.decreaseIndentation();
+                  ITreeAppendable _newLine_17 = it.newLine();
+                  String _simpleName_10 = field.getSimpleName();
+                  String _plus_19 = ("} else if (!this." + _simpleName_10);
+                  String _plus_20 = (_plus_19 + ".equals(other.");
+                  String _simpleName_11 = field.getSimpleName();
+                  String _plus_21 = (_plus_20 + _simpleName_11);
+                  String _plus_22 = (_plus_21 + "))");
+                  ITreeAppendable _append_17 = _newLine_17.append(_plus_22);
+                  _append_17.increaseIndentation();
+                  ITreeAppendable _newLine_18 = it.newLine();
+                  ITreeAppendable _append_18 = _newLine_18.append("return false;");
+                  _append_18.decreaseIndentation();
+                }
+              }
+            }
+          }
+        }
+        ITreeAppendable _newLine_8 = it.newLine();
+        _newLine_8.append("return true;");
+      }
+    };
+    this._jvmTypesBuilder.setBody(result, _function);
+    return result;
   }
   
   public void infer(final EObject agent, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {

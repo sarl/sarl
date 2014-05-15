@@ -79,10 +79,10 @@ class Bug23 {
 		    if (!super.equals(obj))
 		      return false;
 		    MyAgentSpawned other = (MyAgentSpawned) obj;
-		    if (titi == null) {
+		    if (this.titi == null) {
 		      if (other.titi != null)
 		        return false;
-		    } else if (!titi.equals(other.titi))
+		    } else if (!this.titi.equals(other.titi))
 		      return false;
 		    return true;
 		  }
@@ -91,7 +91,7 @@ class Bug23 {
 		  public int hashCode() {
 		    final int prime = 31;
 		    int result = super.hashCode();
-		    result = prime * result + ((titi== null) ? 0 : titi.hashCode());
+		    result = prime * result + ((this.titi== null) ? 0 : this.titi.hashCode());
 		    return result;
 		  }
 		  

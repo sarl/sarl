@@ -30,6 +30,7 @@ import org.junit.runner.RunWith;
 
 /**
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -178,7 +179,7 @@ public class EventCompilerTest {
       _builder_1.append("E1 other = (E1) obj;");
       _builder_1.newLine();
       _builder_1.append("    ");
-      _builder_1.append("if (name == null) {");
+      _builder_1.append("if (this.name == null) {");
       _builder_1.newLine();
       _builder_1.append("      ");
       _builder_1.append("if (other.name != null)");
@@ -187,7 +188,7 @@ public class EventCompilerTest {
       _builder_1.append("return false;");
       _builder_1.newLine();
       _builder_1.append("    ");
-      _builder_1.append("} else if (!name.equals(other.name))");
+      _builder_1.append("} else if (!this.name.equals(other.name))");
       _builder_1.newLine();
       _builder_1.append("      ");
       _builder_1.append("return false;");
@@ -213,7 +214,7 @@ public class EventCompilerTest {
       _builder_1.append("int result = super.hashCode();");
       _builder_1.newLine();
       _builder_1.append("    ");
-      _builder_1.append("result = prime * result + ((name== null) ? 0 : name.hashCode());");
+      _builder_1.append("result = prime * result + ((this.name== null) ? 0 : this.name.hashCode());");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("return result;");

@@ -30,8 +30,13 @@ import io.sarl.lang.sarl.Constructor
 import io.sarl.lang.sarl.Event
 import io.sarl.lang.sarl.RequiredCapacity
 import io.sarl.lang.sarl.Skill
+import java.util.ArrayList
+import java.util.List
 import java.util.UUID
 import java.util.logging.Logger
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.common.types.JvmDeclaredType
+import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmVisibility
@@ -43,9 +48,6 @@ import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
-import org.eclipse.xtext.common.types.JvmField
-import java.util.ArrayList
-import java.util.List
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -139,9 +141,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 
 					var JvmField[] tab = jvmFields // single translation to the array
 
-					members += element.toEqualsMethod(element.toClass(element.fullyQualifiedName), true, tab)
+					members += toEqualsMethod_Bug434912(element, toClass(element.fullyQualifiedName), true, tab)
 					
-					members += element.toHashCodeMethod(true, tab)
+					members += toHashCodeMethod_Bug392440(element, true, tab)
 					
 					members += element.toMethod("attributesToString", newTypeRef(String))[
 						visibility = JvmVisibility::PROTECTED
@@ -395,5 +397,115 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		]
 
 	}
-	
+
+	/** 
+	 * FIXME: Remove this function if it is fixed in Xtext: https://bugs.eclipse.org/bugs/show_bug.cgi?id=392440
+	 * 
+	 * Copied/pasted from {@link JvmTypesBuilder#toHashCodeMethod(EObject, boolean, JvmField...)}.
+	 * Updated for fixing the issue {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=392440"}
+	 *
+	 * @param owner 
+	 * @param sourceElement
+	 * @param extendsSomethingWithProperHashCode
+	 * @param jvmFields
+	 * @return the operation.
+	 */
+	def JvmOperation toHashCodeMethod_Bug392440(JvmGenericType owner, EObject sourceElement, boolean extendsSomethingWithProperHashCode, JvmField ...jvmFields) {
+		if (sourceElement === null) return null
+		var JvmOperation result = toMethod(sourceElement, "hashCode", newTypeRef(sourceElement, Integer.TYPE), null)
+		if (result === null) return null
+		result.annotations.add(toAnnotation(sourceElement, Override))
+		result.body = [
+				append("final int prime = 31;")
+				if (extendsSomethingWithProperHashCode) {
+					newLine().append("int result = super.hashCode();")
+				} else {
+					newLine().append("int result = 1;")
+				}
+				for (JvmField field : jvmFields) {
+					var String typeName = field.type.identifier
+					if (Boolean.TYPE.name == typeName) {
+						newLine().append("result = prime * result + (this." + field.getSimpleName() +" ? 1231 : 1237);")
+					} else if (Integer.TYPE.name == typeName
+							|| Character.TYPE.name == typeName
+							|| Byte.TYPE.name == typeName
+							|| Short.TYPE.name == typeName) {
+						newLine().append("result = prime * result + this." + field.getSimpleName() +";")
+					} else if (Long.TYPE.name == typeName) {
+						newLine().append("result = prime * result + (int) (this." + field.getSimpleName() +" ^ (this." + field.getSimpleName() + " >>> 32));")
+					} else if (Float.TYPE.name == typeName) {
+						newLine().append("result = prime * result + Float.floatToIntBits(this." + field.getSimpleName() +");")
+					} else if (Double.TYPE.name == typeName) {
+						newLine().append("result = prime * result + (int) (Double.doubleToLongBits(this." + field.getSimpleName() +") ^ (Double.doubleToLongBits(this." + field.getSimpleName() + ") >>> 32));");
+					} else {
+						newLine().append("result = prime * result + ((this." + field.getSimpleName() +"== null) ? 0 : this."+field.getSimpleName()+".hashCode());");
+					}
+				}
+				newLine().append("return result;");
+		]
+		return result
+	}
+
+	/** 
+	 * FIXME: Remove this function if it is fixed in Xtext: https://bugs.eclipse.org/bugs/show_bug.cgi?id=434912
+	 * 
+	 * Copied/pasted from {@link JvmTypesBuilder#toEquals}.
+	 * Updated for fixing the issue {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=434912"}
+	 *
+	 * @param owner 
+	 * @param sourceElement
+	 * @param declaredType
+	 * @param isDelegateToSuperEquals
+	 * @param jvmFields
+	 * @return the operation.
+	 */
+	def JvmOperation toEqualsMethod_Bug434912(JvmGenericType owner, EObject sourceElement, JvmDeclaredType declaredType, boolean isDelegateToSuperEquals, JvmField... jvmFields) {
+		if (sourceElement === null || declaredType === null) return null
+		var JvmOperation result = toMethod(sourceElement, "equals", newTypeRef(sourceElement, Boolean.TYPE), null)
+		if (result === null) return null
+		result.annotations.add(toAnnotation(sourceElement, Override))
+		result.parameters.add( toParameter(sourceElement, "obj", newTypeRef(sourceElement, Object)))
+		result.body = [
+					append("if (this == obj)").increaseIndentation()
+					newLine().append("return true;").decreaseIndentation()
+					newLine().append("if (obj == null)").increaseIndentation()
+					newLine().append("return false;").decreaseIndentation()
+					newLine().append("if (getClass() != obj.getClass())").increaseIndentation()
+					newLine().append("return false;").decreaseIndentation()
+					if (isDelegateToSuperEquals) {
+						newLine().append("if (!super.equals(obj))").increaseIndentation()
+						newLine().append("return false;").decreaseIndentation()
+					}
+					newLine().append(declaredType.getSimpleName()+" other = (" + declaredType.getSimpleName() + ") obj;")
+					for (JvmField field : jvmFields) {
+						var String typeName = field.type.identifier
+						if (Boolean.TYPE.name == typeName 
+								|| Integer.TYPE.name == typeName
+								|| Long.TYPE.name == typeName
+								|| Character.TYPE.name == typeName
+								|| Byte.TYPE.name == typeName
+								|| Short.TYPE.name == typeName) {
+							newLine().append("if (other." + field.getSimpleName() +" != this." + field.getSimpleName() + ")").increaseIndentation()
+							newLine().append("return false;").decreaseIndentation()
+							
+						} else if (Double.TYPE.name == typeName) {
+							newLine().append("if (Double.doubleToLongBits(other." + field.getSimpleName() +") != Double.doubleToLongBits(this." + field.getSimpleName() + "))").increaseIndentation()
+							newLine().append("return false;").decreaseIndentation()
+						} else if (Float.TYPE.name == typeName) {
+							newLine().append("if (Float.floatToIntBits(other." + field.getSimpleName() +") != Float.floatToIntBits(this." + field.getSimpleName() + "))").increaseIndentation()
+							newLine().append("return false;").decreaseIndentation()
+						} else {
+							newLine().append("if (this." + field.getSimpleName() +" == null) {").increaseIndentation()
+							newLine().append("if (other." + field.getSimpleName() +" != null)").increaseIndentation()
+							newLine().append("return false;").decreaseIndentation()
+							decreaseIndentation();
+							newLine().append("} else if (!this."+ field.getSimpleName() +".equals(other."+ field.getSimpleName() +"))").increaseIndentation()
+							newLine().append("return false;").decreaseIndentation()
+						}
+					}
+					newLine().append("return true;")
+			]
+		return result
+	}
+
 }
