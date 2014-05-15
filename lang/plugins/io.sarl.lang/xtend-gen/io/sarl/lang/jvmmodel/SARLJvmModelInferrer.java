@@ -18,6 +18,7 @@ package io.sarl.lang.jvmmodel;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
+import io.sarl.lang.SARLKeywords;
 import io.sarl.lang.core.Percept;
 import io.sarl.lang.sarl.AbstractElement;
 import io.sarl.lang.sarl.Action;
@@ -82,8 +83,6 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
  */
 @SuppressWarnings("all")
 public class SARLJvmModelInferrer extends AbstractModelInferrer {
-  public final static String KEYWORD_OCCURRENCE = "occurrence";
-  
   /**
    * convenience API to build and initialize JVM types and their members.
    */
@@ -157,7 +156,8 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes_1, _newTypeRef_1);
         }
         JvmField jvmField = null;
-        List<JvmField> jvmFields = new ArrayList<JvmField>();
+        ArrayList<JvmField> _arrayList = new ArrayList<JvmField>();
+        List<JvmField> jvmFields = _arrayList;
         EList<EventFeature> _features = element.getFeatures();
         for (final EventFeature feature : _features) {
           boolean _matched = false;
@@ -205,11 +205,11 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
         boolean _isEmpty = jvmFields.isEmpty();
         boolean _not = (!_isEmpty);
         if (_not) {
-          JvmField[] tab = ((JvmField[])Conversions.unwrapArray(jvmFields, JvmField.class));
-          EList<JvmMember> _members = it.getMembers();
+          final JvmField[] tab = ((JvmField[])Conversions.unwrapArray(jvmFields, JvmField.class));
           QualifiedName _fullyQualifiedName_1 = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(element);
-          JvmGenericType _class = SARLJvmModelInferrer.this._jvmTypesBuilder.toClass(it, _fullyQualifiedName_1);
-          JvmOperation _equalsMethod_Bug434912 = SARLJvmModelInferrer.this.toEqualsMethod_Bug434912(it, element, _class, true, tab);
+          JvmGenericType elementType = SARLJvmModelInferrer.this._jvmTypesBuilder.toClass(element, _fullyQualifiedName_1);
+          EList<JvmMember> _members = it.getMembers();
+          JvmOperation _equalsMethod_Bug434912 = SARLJvmModelInferrer.this.toEqualsMethod_Bug434912(it, element, elementType, true, tab);
           SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members, _equalsMethod_Bug434912);
           EList<JvmMember> _members_1 = it.getMembers();
           JvmOperation _hashCodeMethod_Bug392440 = SARLJvmModelInferrer.this.toHashCodeMethod_Bug392440(it, element, true, tab);
@@ -310,7 +310,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           Capacity _superType_1 = capacity.getSuperType();
           QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_superType_1);
           boolean _notEquals_1 = (!Objects.equal(_fullyQualifiedName, null));
-          _and = _notEquals_1;
+          _and = (_notEquals && _notEquals_1);
         }
         if (_and) {
           EList<JvmTypeReference> _superTypes = it.getSuperTypes();
@@ -397,7 +397,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
               _matched=true;
               EList<Capacity> _capacitiesUsed = ((CapacityUses)feature).getCapacitiesUsed();
               for (final Capacity used : _capacitiesUsed) {
-                SARLJvmModelInferrer.this.generateCapactyDelegatorMethods(it, element, used);
+                SARLJvmModelInferrer.this.generateCapacityDelegatorMethods(it, element, used);
               }
             }
           }
@@ -446,7 +446,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
               _matched=true;
               EList<Capacity> _capacitiesUsed = ((CapacityUses)feature).getCapacitiesUsed();
               for (final Capacity used : _capacitiesUsed) {
-                SARLJvmModelInferrer.this.generateCapactyDelegatorMethods(it, element, used);
+                SARLJvmModelInferrer.this.generateCapacityDelegatorMethods(it, element, used);
               }
             }
           }
@@ -500,7 +500,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           Agent _superType_1 = agent.getSuperType();
           QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_superType_1);
           boolean _notEquals_1 = (!Objects.equal(_fullyQualifiedName, null));
-          _and = _notEquals_1;
+          _and = (_notEquals && _notEquals_1);
         }
         if (_and) {
           EList<JvmTypeReference> _superTypes = it.getSuperTypes();
@@ -585,7 +585,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
               _matched=true;
               EList<Capacity> _capacitiesUsed = ((CapacityUses)feature).getCapacitiesUsed();
               for (final Capacity used : _capacitiesUsed) {
-                SARLJvmModelInferrer.this.generateCapactyDelegatorMethods(it, agent, used);
+                SARLJvmModelInferrer.this.generateCapacityDelegatorMethods(it, agent, used);
               }
             }
           }
@@ -595,7 +595,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
     _accept.initializeLater(_function);
   }
   
-  public void generateCapactyDelegatorMethods(final JvmGenericType owner, final AbstractElement context, final Capacity capacity) {
+  public void generateCapacityDelegatorMethods(final JvmGenericType owner, final AbstractElement context, final Capacity capacity) {
     EList<ActionSignature> _actions = capacity.getActions();
     for (final ActionSignature signature : _actions) {
       JvmOperation _generateAction = this.generateAction(owner, signature, null);
@@ -625,7 +625,8 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           EList<Parameter> _params = signature.getParams();
           final Function1<Parameter,String> _function = new Function1<Parameter,String>() {
             public String apply(final Parameter it) {
-              return it.getName();
+              String _name = it.getName();
+              return _name;
             }
           };
           String _join = IterableExtensions.<Parameter>join(_params, ", ", _function);
@@ -660,7 +661,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_event_2);
           String _string = _fullyQualifiedName.toString();
           JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(_event_1, _string);
-          JvmFormalParameter _parameter = SARLJvmModelInferrer.this._jvmTypesBuilder.toParameter(_event, SARLJvmModelInferrer.KEYWORD_OCCURRENCE, _newTypeRef);
+          JvmFormalParameter _parameter = SARLJvmModelInferrer.this._jvmTypesBuilder.toParameter(_event, SARLKeywords.KEYWORD_OCCURRENCE, _newTypeRef);
           SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
         }
       };
@@ -687,7 +688,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
             QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_event_2);
             String _string_1 = _fullyQualifiedName.toString();
             JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(_event_1, _string_1);
-            JvmFormalParameter _parameter = SARLJvmModelInferrer.this._jvmTypesBuilder.toParameter(_event, SARLJvmModelInferrer.KEYWORD_OCCURRENCE, _newTypeRef);
+            JvmFormalParameter _parameter = SARLJvmModelInferrer.this._jvmTypesBuilder.toParameter(_event, SARLKeywords.KEYWORD_OCCURRENCE, _newTypeRef);
             SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
           }
         };
@@ -701,7 +702,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
             _builder.append("if ( ");
             _builder.append(guardMethodName, "");
             _builder.append("(");
-            _builder.append(SARLJvmModelInferrer.KEYWORD_OCCURRENCE, "");
+            _builder.append(SARLKeywords.KEYWORD_OCCURRENCE, "");
             _builder.append(")) { ");
             it.append(_builder);
             XExpression _body = unit.getBody();
@@ -714,7 +715,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
         EList<JvmMember> _members = owner.getMembers();
         this._jvmTypesBuilder.<JvmOperation>operator_add(_members, guardMethod);
       }
-      _xblockexpression = behaviorMethod;
+      _xblockexpression = (behaviorMethod);
     }
     return _xblockexpression;
   }
@@ -829,21 +830,21 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
               } else {
                 String _name_2 = Character.TYPE.getName();
                 boolean _equals_2 = Objects.equal(_name_2, typeName);
-                _or_2 = _equals_2;
+                _or_2 = (_equals_1 || _equals_2);
               }
               if (_or_2) {
                 _or_1 = true;
               } else {
                 String _name_3 = Byte.TYPE.getName();
                 boolean _equals_3 = Objects.equal(_name_3, typeName);
-                _or_1 = _equals_3;
+                _or_1 = (_or_2 || _equals_3);
               }
               if (_or_1) {
                 _or = true;
               } else {
                 String _name_4 = Short.TYPE.getName();
                 boolean _equals_4 = Objects.equal(_name_4, typeName);
-                _or = _equals_4;
+                _or = (_or_1 || _equals_4);
               }
               if (_or) {
                 ITreeAppendable _newLine_3 = it.newLine();
@@ -922,23 +923,8 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
    * @return the operation.
    */
   public JvmOperation toEqualsMethod_Bug434912(final JvmGenericType owner, final EObject sourceElement, final JvmDeclaredType declaredType, final boolean isDelegateToSuperEquals, final JvmField... jvmFields) {
-    boolean _or = false;
-    boolean _tripleEquals = (sourceElement == null);
-    if (_tripleEquals) {
-      _or = true;
-    } else {
-      boolean _tripleEquals_1 = (declaredType == null);
-      _or = _tripleEquals_1;
-    }
-    if (_or) {
-      return null;
-    }
     JvmTypeReference _newTypeRef = this._jvmTypesBuilder.newTypeRef(sourceElement, Boolean.TYPE);
     JvmOperation result = this._jvmTypesBuilder.toMethod(sourceElement, "equals", _newTypeRef, null);
-    boolean _tripleEquals_2 = (result == null);
-    if (_tripleEquals_2) {
-      return null;
-    }
     EList<JvmAnnotationReference> _annotations = result.getAnnotations();
     JvmAnnotationReference _annotation = this._jvmTypesBuilder.toAnnotation(sourceElement, Override.class);
     _annotations.add(_annotation);
@@ -984,6 +970,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           {
             JvmTypeReference _type = field.getType();
             String typeName = _type.getIdentifier();
+            System.out.println(("****DEBUG: type=" + typeName));
             boolean _or = false;
             boolean _or_1 = false;
             boolean _or_2 = false;
@@ -996,35 +983,35 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
             } else {
               String _name_1 = Integer.TYPE.getName();
               boolean _equals_1 = Objects.equal(_name_1, typeName);
-              _or_4 = _equals_1;
+              _or_4 = (_equals || _equals_1);
             }
             if (_or_4) {
               _or_3 = true;
             } else {
               String _name_2 = Long.TYPE.getName();
               boolean _equals_2 = Objects.equal(_name_2, typeName);
-              _or_3 = _equals_2;
+              _or_3 = (_or_4 || _equals_2);
             }
             if (_or_3) {
               _or_2 = true;
             } else {
               String _name_3 = Character.TYPE.getName();
               boolean _equals_3 = Objects.equal(_name_3, typeName);
-              _or_2 = _equals_3;
+              _or_2 = (_or_3 || _equals_3);
             }
             if (_or_2) {
               _or_1 = true;
             } else {
               String _name_4 = Byte.TYPE.getName();
               boolean _equals_4 = Objects.equal(_name_4, typeName);
-              _or_1 = _equals_4;
+              _or_1 = (_or_2 || _equals_4);
             }
             if (_or_1) {
               _or = true;
             } else {
               String _name_5 = Short.TYPE.getName();
               boolean _equals_5 = Objects.equal(_name_5, typeName);
-              _or = _equals_5;
+              _or = (_or_1 || _equals_5);
             }
             if (_or) {
               ITreeAppendable _newLine_8 = it.newLine();

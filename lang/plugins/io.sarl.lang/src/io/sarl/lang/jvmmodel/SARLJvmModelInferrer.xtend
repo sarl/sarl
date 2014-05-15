@@ -48,6 +48,7 @@ import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
+import io.sarl.lang.SARLKeywords
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -57,15 +58,13 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
  */
 class SARLJvmModelInferrer extends AbstractModelInferrer {
 
-	public static final String KEYWORD_OCCURRENCE = "occurrence";
-
 	/**
      * convenience API to build and initialize JVM types and their members.
      */
 	@Inject extension JvmTypesBuilder
 
 	@Inject extension IQualifiedNameProvider
-
+	
 	@Inject protected XbaseCompiler xbaseCompiler
 
 	@Inject protected JvmModelAssociator jvmModelAssociator
@@ -139,9 +138,10 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 								
 				if (!jvmFields.isEmpty) {
 
-					var JvmField[] tab = jvmFields // single translation to the array
-
-					members += toEqualsMethod_Bug434912(element, toClass(element.fullyQualifiedName), true, tab)
+					val JvmField[] tab = jvmFields // single translation to the array
+ 					var elementType = element.toClass(element.fullyQualifiedName)
+ 					
+ 					members += toEqualsMethod_Bug434912(element, elementType, true, tab)
 					
 					members += toHashCodeMethod_Bug392440(element, true, tab)
 					
@@ -224,7 +224,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						}
 						CapacityUses: {
 							for (used : feature.capacitiesUsed) {
-								generateCapactyDelegatorMethods(element, used)
+								generateCapacityDelegatorMethods(element, used)
 							}
 						}
 						Constructor: {
@@ -251,7 +251,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						}
 						CapacityUses: {
 							for (used : feature.capacitiesUsed) {
-								generateCapactyDelegatorMethods(element, used)
+								generateCapacityDelegatorMethods(element, used)
 							}
 						}
 						Constructor: {
@@ -263,6 +263,10 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 								final = !feature.writeable
 								initializer = feature.initialValue
 							]
+							/*members += feature.toGetter(feature.name, feature.type)
+							if (feature.writeable) {
+								members += feature.toSetter(feature.name, feature.type)
+							}*/
 						}
 					}
 				}
@@ -305,10 +309,14 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							initializer = feature.initialValue
 							final = !feature.writeable
 						]
+						/*members += feature.toGetter(feature.name, feature.type)
+						if (feature.writeable) {
+							members += feature.toSetter(feature.name, feature.type)
+						}*/
 					}
 					CapacityUses: {
 						for (used : feature.capacitiesUsed) {
-							generateCapactyDelegatorMethods(agent, used)
+							generateCapacityDelegatorMethods(agent, used)
 						}
 					}
 				}
@@ -317,7 +325,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 
 	}
 
-	def void generateCapactyDelegatorMethods(JvmGenericType owner, AbstractElement context, Capacity capacity) {
+	def void generateCapacityDelegatorMethods(JvmGenericType owner, AbstractElement context, Capacity capacity) {
 		for (signature : capacity.actions) {
 			owner.generateAction(signature, null).setBody [
 				if (signature.type != null) {
@@ -338,10 +346,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 
 		val behaviorMethod = unit.toMethod(behName, unit.newTypeRef(Void::TYPE)) [
 			documentation = unit.documentation
-			//TODO: Change subscribe annotations to decouple from guava
 			annotations += unit.toAnnotation(typeof(Percept))
 			parameters +=
-				unit.event.toParameter(KEYWORD_OCCURRENCE, newTypeRef(unit.event, unit.event.fullyQualifiedName.toString))
+				unit.event.toParameter(SARLKeywords.KEYWORD_OCCURRENCE, newTypeRef(unit.event, unit.event.fullyQualifiedName.toString))
 		]
 
 		if (unit.guard == null) {
@@ -352,7 +359,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			val guardMethod = guard.toMethod(guardMethodName, guard.newTypeRef(Boolean::TYPE)) [
 				documentation = "Ensures that the behavior " + behName + " is called only when the guard " +
 					guard.toString + " is valid"
-				parameters += unit.event.toParameter(KEYWORD_OCCURRENCE,
+				parameters += unit.event.toParameter(SARLKeywords.KEYWORD_OCCURRENCE,
 					newTypeRef(unit.event, unit.event.fullyQualifiedName.toString))
 			]
 
@@ -360,7 +367,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			jvmModelAssociator.associateLogicalContainer(unit.body, behaviorMethod)
 
 			behaviorMethod.body = [
-				it.append('''if ( «guardMethodName»(«KEYWORD_OCCURRENCE»)) { ''')
+				it.append('''if ( «guardMethodName»(«SARLKeywords.KEYWORD_OCCURRENCE»)) { ''')
 				xbaseCompiler.compile(unit.body, it, behaviorMethod.newTypeRef(Void::TYPE))
 				it.append('}')
 			]
@@ -397,7 +404,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		]
 
 	}
-
+	
 	/** 
 	 * FIXME: Remove this function if it is fixed in Xtext: https://bugs.eclipse.org/bugs/show_bug.cgi?id=392440
 	 * 
@@ -460,11 +467,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 * @return the operation.
 	 */
 	def JvmOperation toEqualsMethod_Bug434912(JvmGenericType owner, EObject sourceElement, JvmDeclaredType declaredType, boolean isDelegateToSuperEquals, JvmField... jvmFields) {
-		if (sourceElement === null || declaredType === null) return null
 		var JvmOperation result = toMethod(sourceElement, "equals", newTypeRef(sourceElement, Boolean.TYPE), null)
-		if (result === null) return null
-		result.annotations.add(toAnnotation(sourceElement, Override))
-		result.parameters.add( toParameter(sourceElement, "obj", newTypeRef(sourceElement, Object)))
+		result.annotations.add(sourceElement.toAnnotation(Override))
+		result.parameters.add( sourceElement.toParameter("obj", newTypeRef(sourceElement, Object)))
 		result.body = [
 					append("if (this == obj)").increaseIndentation()
 					newLine().append("return true;").decreaseIndentation()
@@ -479,6 +484,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					newLine().append(declaredType.getSimpleName()+" other = (" + declaredType.getSimpleName() + ") obj;")
 					for (JvmField field : jvmFields) {
 						var String typeName = field.type.identifier
+						System.out.println("****DEBUG: type="+typeName)
 						if (Boolean.TYPE.name == typeName 
 								|| Integer.TYPE.name == typeName
 								|| Long.TYPE.name == typeName
@@ -498,7 +504,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							newLine().append("if (this." + field.getSimpleName() +" == null) {").increaseIndentation()
 							newLine().append("if (other." + field.getSimpleName() +" != null)").increaseIndentation()
 							newLine().append("return false;").decreaseIndentation()
-							decreaseIndentation();
+							decreaseIndentation()
 							newLine().append("} else if (!this."+ field.getSimpleName() +".equals(other."+ field.getSimpleName() +"))").increaseIndentation()
 							newLine().append("return false;").decreaseIndentation()
 						}
