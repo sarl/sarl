@@ -50,6 +50,7 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
 import io.sarl.lang.SARLKeywords
 import org.eclipse.xtext.common.types.JvmTypeReference
+import org.eclipse.xtext.common.types.JvmFormalParameter
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -398,8 +399,14 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		}
 		val op = owner.toMethod(signature.name, returnType) [
 			documentation = signature.documentation
+			varArgs = signature.varargs
+			var JvmFormalParameter lastParam = null
 			for (p : signature.params) {
-				parameters += p.toParameter(p.name, p.parameterType)
+				lastParam = p.toParameter(p.name, p.parameterType)
+				parameters += lastParam
+			}
+			if (signature.varargs && lastParam !== null) {
+				lastParam.parameterType = lastParam.parameterType.addArrayTypeDimension
 			}
 			body = operationBody
 		]
@@ -411,8 +418,14 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	def void generateConstructor(JvmGenericType owner, AbstractElement context, Constructor constructor) {
 		owner.members += context.toConstructor [
 			documentation = constructor.documentation
+			varArgs = constructor.varargs
+			var JvmFormalParameter lastParam = null
 			for (p : constructor.params) {
-				parameters += p.toParameter(p.name, p.parameterType)
+				lastParam = p.toParameter(p.name, p.parameterType)
+				parameters += lastParam
+			}
+			if (constructor.varargs && lastParam !== null) {
+				lastParam.parameterType = lastParam.parameterType.addArrayTypeDimension
 			}
 			body = constructor.body
 		]

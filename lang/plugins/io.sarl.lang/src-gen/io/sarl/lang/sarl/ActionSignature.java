@@ -18,6 +18,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.ActionSignature#getName <em>Name</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.ActionSignature#getParams <em>Params</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.ActionSignature#isVarargs <em>Varargs</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.ActionSignature#getType <em>Type</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.ActionSignature#getFiredEvents <em>Fired Events</em>}</li>
  * </ul>
@@ -70,6 +71,32 @@ public interface ActionSignature extends EObject
    * @generated
    */
   EList<Parameter> getParams();
+
+  /**
+   * Returns the value of the '<em><b>Varargs</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Varargs</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Varargs</em>' attribute.
+   * @see #setVarargs(boolean)
+   * @see io.sarl.lang.sarl.SarlPackage#getActionSignature_Varargs()
+   * @model
+   * @generated
+   */
+  boolean isVarargs();
+
+  /**
+   * Sets the value of the '{@link io.sarl.lang.sarl.ActionSignature#isVarargs <em>Varargs</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Varargs</em>' attribute.
+   * @see #isVarargs()
+   * @generated
+   */
+  void setVarargs(boolean value);
 
   /**
    * Returns the value of the '<em><b>Type</b></em>' containment reference.

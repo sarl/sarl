@@ -69,7 +69,7 @@ Action:
 	signature=ActionSignature body=XBlockExpression;
 
 ActionSignature:
-	'def' name=ValidID ('(' params+=Parameter (',' params+=Parameter)* ')')?
+	'def' name=ValidID ('(' params+=Parameter (',' params+=Parameter)* (varargs?='...')? ')')?
 	(':' type=JvmTypeReference)? ('fires' firedEvents+=[Event] (',' firedEvents+=[Event])*)?;
 	
 Parameter:
@@ -87,7 +87,7 @@ SkillFeature:
 	Attribute | Action | RequiredCapacity | Constructor | CapacityUses;
 	
 Constructor:
-	'new' ('(' params+=Parameter (',' params+=Parameter)* ')')? body=XBlockExpression
+	'new' ('(' params+=Parameter (',' params+=Parameter)* (varargs?='...')? ')')? body=XBlockExpression
 ;
 
 XVariableDeclaration returns XExpression:

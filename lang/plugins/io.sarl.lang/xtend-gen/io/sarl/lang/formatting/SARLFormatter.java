@@ -96,8 +96,8 @@ public class SARLFormatter extends XbaseFormatter {
     Keyword _leftParenthesisKeyword_1_0 = ele.getLeftParenthesisKeyword_1_0();
     _setNoSpace.around(_leftParenthesisKeyword_1_0);
     FormattingConfig.NoSpaceLocator _setNoSpace_1 = c.setNoSpace();
-    Keyword _rightParenthesisKeyword_1_3 = ele.getRightParenthesisKeyword_1_3();
-    _setNoSpace_1.before(_rightParenthesisKeyword_1_3);
+    Keyword _rightParenthesisKeyword_1_4 = ele.getRightParenthesisKeyword_1_4();
+    _setNoSpace_1.before(_rightParenthesisKeyword_1_4);
     FormattingConfig.NoSpaceLocator _setNoSpace_2 = c.setNoSpace();
     Keyword _commaKeyword_1_2_0 = ele.getCommaKeyword_1_2_0();
     _setNoSpace_2.before(_commaKeyword_1_2_0);
@@ -156,8 +156,8 @@ public class SARLFormatter extends XbaseFormatter {
     Keyword _leftParenthesisKeyword_2_0 = ele.getLeftParenthesisKeyword_2_0();
     _setNoSpace.around(_leftParenthesisKeyword_2_0);
     FormattingConfig.NoSpaceLocator _setNoSpace_1 = c.setNoSpace();
-    Keyword _rightParenthesisKeyword_2_3 = ele.getRightParenthesisKeyword_2_3();
-    _setNoSpace_1.before(_rightParenthesisKeyword_2_3);
+    Keyword _rightParenthesisKeyword_2_4 = ele.getRightParenthesisKeyword_2_4();
+    _setNoSpace_1.before(_rightParenthesisKeyword_2_4);
     FormattingConfig.NoSpaceLocator _setNoSpace_2 = c.setNoSpace();
     Keyword _commaKeyword_2_2_0 = ele.getCommaKeyword_2_2_0();
     _setNoSpace_2.before(_commaKeyword_2_2_0);

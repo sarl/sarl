@@ -566,13 +566,22 @@ public interface SarlPackage extends EPackage
   int ACTION_SIGNATURE__PARAMS = 1;
 
   /**
+   * The feature id for the '<em><b>Varargs</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ACTION_SIGNATURE__VARARGS = 2;
+
+  /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ACTION_SIGNATURE__TYPE = 2;
+  int ACTION_SIGNATURE__TYPE = 3;
 
   /**
    * The feature id for the '<em><b>Fired Events</b></em>' reference list.
@@ -581,7 +590,7 @@ public interface SarlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ACTION_SIGNATURE__FIRED_EVENTS = 3;
+  int ACTION_SIGNATURE__FIRED_EVENTS = 4;
 
   /**
    * The number of structural features of the '<em>Action Signature</em>' class.
@@ -590,7 +599,7 @@ public interface SarlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ACTION_SIGNATURE_FEATURE_COUNT = 4;
+  int ACTION_SIGNATURE_FEATURE_COUNT = 5;
 
   /**
    * The meta object id for the '{@link io.sarl.lang.sarl.impl.ParameterImpl <em>Parameter</em>}' class.
@@ -742,13 +751,22 @@ public interface SarlPackage extends EPackage
   int CONSTRUCTOR__PARAMS = EVENT_FEATURE_FEATURE_COUNT + 0;
 
   /**
+   * The feature id for the '<em><b>Varargs</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONSTRUCTOR__VARARGS = EVENT_FEATURE_FEATURE_COUNT + 1;
+
+  /**
    * The feature id for the '<em><b>Body</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CONSTRUCTOR__BODY = EVENT_FEATURE_FEATURE_COUNT + 1;
+  int CONSTRUCTOR__BODY = EVENT_FEATURE_FEATURE_COUNT + 2;
 
   /**
    * The number of structural features of the '<em>Constructor</em>' class.
@@ -757,7 +775,7 @@ public interface SarlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONSTRUCTOR_FEATURE_COUNT = EVENT_FEATURE_FEATURE_COUNT + 2;
+  int CONSTRUCTOR_FEATURE_COUNT = EVENT_FEATURE_FEATURE_COUNT + 3;
 
 
   /**
@@ -1165,6 +1183,17 @@ public interface SarlPackage extends EPackage
   EReference getActionSignature_Params();
 
   /**
+   * Returns the meta object for the attribute '{@link io.sarl.lang.sarl.ActionSignature#isVarargs <em>Varargs</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Varargs</em>'.
+   * @see io.sarl.lang.sarl.ActionSignature#isVarargs()
+   * @see #getActionSignature()
+   * @generated
+   */
+  EAttribute getActionSignature_Varargs();
+
+  /**
    * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.ActionSignature#getType <em>Type</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1301,6 +1330,17 @@ public interface SarlPackage extends EPackage
    * @generated
    */
   EReference getConstructor_Params();
+
+  /**
+   * Returns the meta object for the attribute '{@link io.sarl.lang.sarl.Constructor#isVarargs <em>Varargs</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Varargs</em>'.
+   * @see io.sarl.lang.sarl.Constructor#isVarargs()
+   * @see #getConstructor()
+   * @generated
+   */
+  EAttribute getConstructor_Varargs();
 
   /**
    * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.Constructor#getBody <em>Body</em>}'.
@@ -1669,6 +1709,14 @@ public interface SarlPackage extends EPackage
     EReference ACTION_SIGNATURE__PARAMS = eINSTANCE.getActionSignature_Params();
 
     /**
+     * The meta object literal for the '<em><b>Varargs</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute ACTION_SIGNATURE__VARARGS = eINSTANCE.getActionSignature_Varargs();
+
+    /**
      * The meta object literal for the '<em><b>Type</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1781,6 +1829,14 @@ public interface SarlPackage extends EPackage
      * @generated
      */
     EReference CONSTRUCTOR__PARAMS = eINSTANCE.getConstructor_Params();
+
+    /**
+     * The meta object literal for the '<em><b>Varargs</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute CONSTRUCTOR__VARARGS = eINSTANCE.getConstructor_Varargs();
 
     /**
      * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.

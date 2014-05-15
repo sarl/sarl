@@ -1155,35 +1155,50 @@ ruleActionSignature returns [EObject current=null]
 	    }
 
 )
-))*	otherlv_6=')' 
+))*(
+(
+		lv_varargs_6_0=	'...' 
     {
-    	newLeafNode(otherlv_6, grammarAccess.getActionSignatureAccess().getRightParenthesisKeyword_2_3());
+        newLeafNode(lv_varargs_6_0, grammarAccess.getActionSignatureAccess().getVarargsFullStopFullStopFullStopKeyword_2_3_0());
     }
-)?(	otherlv_7=':' 
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getActionSignatureRule());
+	        }
+       		setWithLastConsumed($current, "varargs", true, "...");
+	    }
+
+)
+)?	otherlv_7=')' 
     {
-    	newLeafNode(otherlv_7, grammarAccess.getActionSignatureAccess().getColonKeyword_3_0());
+    	newLeafNode(otherlv_7, grammarAccess.getActionSignatureAccess().getRightParenthesisKeyword_2_4());
+    }
+)?(	otherlv_8=':' 
+    {
+    	newLeafNode(otherlv_8, grammarAccess.getActionSignatureAccess().getColonKeyword_3_0());
     }
 (
 (
 		{ 
 	        newCompositeNode(grammarAccess.getActionSignatureAccess().getTypeJvmTypeReferenceParserRuleCall_3_1_0()); 
 	    }
-		lv_type_8_0=ruleJvmTypeReference		{
+		lv_type_9_0=ruleJvmTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getActionSignatureRule());
 	        }
        		set(
        			$current, 
        			"type",
-        		lv_type_8_0, 
+        		lv_type_9_0, 
         		"JvmTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))?(	otherlv_9='fires' 
+))?(	otherlv_10='fires' 
     {
-    	newLeafNode(otherlv_9, grammarAccess.getActionSignatureAccess().getFiresKeyword_4_0());
+    	newLeafNode(otherlv_10, grammarAccess.getActionSignatureAccess().getFiresKeyword_4_0());
     }
 (
 (
@@ -1192,15 +1207,15 @@ ruleActionSignature returns [EObject current=null]
 	            $current = createModelElement(grammarAccess.getActionSignatureRule());
 	        }
         }
-	otherlv_10=RULE_ID
+	otherlv_11=RULE_ID
 	{
-		newLeafNode(otherlv_10, grammarAccess.getActionSignatureAccess().getFiredEventsEventCrossReference_4_1_0()); 
+		newLeafNode(otherlv_11, grammarAccess.getActionSignatureAccess().getFiredEventsEventCrossReference_4_1_0()); 
 	}
 
 )
-)(	otherlv_11=',' 
+)(	otherlv_12=',' 
     {
-    	newLeafNode(otherlv_11, grammarAccess.getActionSignatureAccess().getCommaKeyword_4_2_0());
+    	newLeafNode(otherlv_12, grammarAccess.getActionSignatureAccess().getCommaKeyword_4_2_0());
     }
 (
 (
@@ -1209,9 +1224,9 @@ ruleActionSignature returns [EObject current=null]
 	            $current = createModelElement(grammarAccess.getActionSignatureRule());
 	        }
         }
-	otherlv_12=RULE_ID
+	otherlv_13=RULE_ID
 	{
-		newLeafNode(otherlv_12, grammarAccess.getActionSignatureAccess().getFiredEventsEventCrossReference_4_2_1_0()); 
+		newLeafNode(otherlv_13, grammarAccess.getActionSignatureAccess().getFiredEventsEventCrossReference_4_2_1_0()); 
 	}
 
 )
@@ -1573,23 +1588,38 @@ ruleConstructor returns [EObject current=null]
 	    }
 
 )
-))*	otherlv_5=')' 
+))*(
+(
+		lv_varargs_5_0=	'...' 
     {
-    	newLeafNode(otherlv_5, grammarAccess.getConstructorAccess().getRightParenthesisKeyword_1_3());
+        newLeafNode(lv_varargs_5_0, grammarAccess.getConstructorAccess().getVarargsFullStopFullStopFullStopKeyword_1_3_0());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getConstructorRule());
+	        }
+       		setWithLastConsumed($current, "varargs", true, "...");
+	    }
+
+)
+)?	otherlv_6=')' 
+    {
+    	newLeafNode(otherlv_6, grammarAccess.getConstructorAccess().getRightParenthesisKeyword_1_4());
     }
 )?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getConstructorAccess().getBodyXBlockExpressionParserRuleCall_2_0()); 
 	    }
-		lv_body_6_0=ruleXBlockExpression		{
+		lv_body_7_0=ruleXBlockExpression		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getConstructorRule());
 	        }
        		set(
        			$current, 
        			"body",
-        		lv_body_6_0, 
+        		lv_body_7_0, 
         		"XBlockExpression");
 	        afterParserOrEnumRuleCall();
 	    }

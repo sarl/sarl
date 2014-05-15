@@ -1130,7 +1130,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID (params+=Parameter params+=Parameter*)? type=JvmTypeReference? (firedEvents+=[Event|ID] firedEvents+=[Event|ID]*)?)
+	 *     (name=ValidID (params+=Parameter params+=Parameter* varargs?='...'?)? type=JvmTypeReference? (firedEvents+=[Event|ID] firedEvents+=[Event|ID]*)?)
 	 */
 	protected void sequence_ActionSignature(EObject context, ActionSignature semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1212,7 +1212,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     ((params+=Parameter params+=Parameter*)? body=XBlockExpression)
+	 *     ((params+=Parameter params+=Parameter* varargs?='...'?)? body=XBlockExpression)
 	 */
 	protected void sequence_Constructor(EObject context, Constructor semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

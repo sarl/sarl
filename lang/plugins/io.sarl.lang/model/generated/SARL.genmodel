@@ -55,6 +55,7 @@
     <genClasses ecoreClass="SARL.ecore#//ActionSignature">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//ActionSignature/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//ActionSignature/params"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//ActionSignature/varargs"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//ActionSignature/type"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SARL.ecore#//ActionSignature/firedEvents"/>
     </genClasses>
@@ -72,6 +73,7 @@
     <genClasses ecoreClass="SARL.ecore#//SkillFeature"/>
     <genClasses ecoreClass="SARL.ecore#//Constructor">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//Constructor/params"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//Constructor/varargs"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//Constructor/body"/>
     </genClasses>
   </genPackages>

@@ -172,7 +172,8 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
         EList<JvmTypeReference> _superTypes = it.getSuperTypes();
         SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, parentType);
         JvmField jvmField = null;
-        List<JvmField> jvmFields = new ArrayList<JvmField>();
+        ArrayList<JvmField> _arrayList = new ArrayList<JvmField>();
+        List<JvmField> jvmFields = _arrayList;
         EList<EventFeature> _features = element.getFeatures();
         for (final EventFeature feature : _features) {
           boolean _matched = false;
@@ -342,7 +343,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           Capacity _superType_1 = capacity.getSuperType();
           QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_superType_1);
           boolean _notEquals_1 = (!Objects.equal(_fullyQualifiedName, null));
-          _and = _notEquals_1;
+          _and = (_notEquals && _notEquals_1);
         }
         if (_and) {
           EList<JvmTypeReference> _superTypes = it.getSuperTypes();
@@ -534,7 +535,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           Agent _superType_1 = agent.getSuperType();
           QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_superType_1);
           boolean _notEquals_1 = (!Objects.equal(_fullyQualifiedName, null));
-          _and = _notEquals_1;
+          _and = (_notEquals && _notEquals_1);
         }
         if (_and) {
           EList<JvmTypeReference> _superTypes = it.getSuperTypes();
@@ -660,7 +661,8 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           EList<Parameter> _params = signature.getParams();
           final Function1<Parameter,String> _function = new Function1<Parameter,String>() {
             public String apply(final Parameter it) {
-              return it.getName();
+              String _name = it.getName();
+              return _name;
             }
           };
           String _join = IterableExtensions.<Parameter>join(_params, ", ", _function);
@@ -749,7 +751,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
         EList<JvmMember> _members = owner.getMembers();
         this._jvmTypesBuilder.<JvmOperation>operator_add(_members, guardMethod);
       }
-      _xblockexpression = behaviorMethod;
+      _xblockexpression = (behaviorMethod);
     }
     return _xblockexpression;
   }
@@ -766,13 +768,32 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
       public void apply(final JvmOperation it) {
         String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(signature);
         SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
+        boolean _isVarargs = signature.isVarargs();
+        it.setVarArgs(_isVarargs);
+        JvmFormalParameter lastParam = null;
         EList<Parameter> _params = signature.getParams();
         for (final Parameter p : _params) {
-          EList<JvmFormalParameter> _parameters = it.getParameters();
-          String _name = p.getName();
-          JvmTypeReference _parameterType = p.getParameterType();
-          JvmFormalParameter _parameter = SARLJvmModelInferrer.this._jvmTypesBuilder.toParameter(p, _name, _parameterType);
-          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
+          {
+            String _name = p.getName();
+            JvmTypeReference _parameterType = p.getParameterType();
+            JvmFormalParameter _parameter = SARLJvmModelInferrer.this._jvmTypesBuilder.toParameter(p, _name, _parameterType);
+            lastParam = _parameter;
+            EList<JvmFormalParameter> _parameters = it.getParameters();
+            SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, lastParam);
+          }
+        }
+        boolean _and = false;
+        boolean _isVarargs_1 = signature.isVarargs();
+        if (!_isVarargs_1) {
+          _and = false;
+        } else {
+          boolean _tripleNotEquals = (lastParam != null);
+          _and = (_isVarargs_1 && _tripleNotEquals);
+        }
+        if (_and) {
+          JvmTypeReference _parameterType = lastParam.getParameterType();
+          JvmTypeReference _addArrayTypeDimension = SARLJvmModelInferrer.this._jvmTypesBuilder.addArrayTypeDimension(_parameterType);
+          lastParam.setParameterType(_addArrayTypeDimension);
         }
         SARLJvmModelInferrer.this._jvmTypesBuilder.setBody(it, operationBody);
       }
@@ -789,13 +810,32 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
       public void apply(final JvmConstructor it) {
         String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(constructor);
         SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
+        boolean _isVarargs = constructor.isVarargs();
+        it.setVarArgs(_isVarargs);
+        JvmFormalParameter lastParam = null;
         EList<Parameter> _params = constructor.getParams();
         for (final Parameter p : _params) {
-          EList<JvmFormalParameter> _parameters = it.getParameters();
-          String _name = p.getName();
-          JvmTypeReference _parameterType = p.getParameterType();
-          JvmFormalParameter _parameter = SARLJvmModelInferrer.this._jvmTypesBuilder.toParameter(p, _name, _parameterType);
-          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
+          {
+            String _name = p.getName();
+            JvmTypeReference _parameterType = p.getParameterType();
+            JvmFormalParameter _parameter = SARLJvmModelInferrer.this._jvmTypesBuilder.toParameter(p, _name, _parameterType);
+            lastParam = _parameter;
+            EList<JvmFormalParameter> _parameters = it.getParameters();
+            SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, lastParam);
+          }
+        }
+        boolean _and = false;
+        boolean _isVarargs_1 = constructor.isVarargs();
+        if (!_isVarargs_1) {
+          _and = false;
+        } else {
+          boolean _tripleNotEquals = (lastParam != null);
+          _and = (_isVarargs_1 && _tripleNotEquals);
+        }
+        if (_and) {
+          JvmTypeReference _parameterType = lastParam.getParameterType();
+          JvmTypeReference _addArrayTypeDimension = SARLJvmModelInferrer.this._jvmTypesBuilder.addArrayTypeDimension(_parameterType);
+          lastParam.setParameterType(_addArrayTypeDimension);
         }
         XExpression _body = constructor.getBody();
         SARLJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _body);
@@ -864,21 +904,21 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
               } else {
                 String _name_2 = Character.TYPE.getName();
                 boolean _equals_2 = Objects.equal(_name_2, typeName);
-                _or_2 = _equals_2;
+                _or_2 = (_equals_1 || _equals_2);
               }
               if (_or_2) {
                 _or_1 = true;
               } else {
                 String _name_3 = Byte.TYPE.getName();
                 boolean _equals_3 = Objects.equal(_name_3, typeName);
-                _or_1 = _equals_3;
+                _or_1 = (_or_2 || _equals_3);
               }
               if (_or_1) {
                 _or = true;
               } else {
                 String _name_4 = Short.TYPE.getName();
                 boolean _equals_4 = Objects.equal(_name_4, typeName);
-                _or = _equals_4;
+                _or = (_or_1 || _equals_4);
               }
               if (_or) {
                 ITreeAppendable _newLine_3 = it.newLine();
@@ -1016,35 +1056,35 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
             } else {
               String _name_1 = Integer.TYPE.getName();
               boolean _equals_1 = Objects.equal(_name_1, typeName);
-              _or_4 = _equals_1;
+              _or_4 = (_equals || _equals_1);
             }
             if (_or_4) {
               _or_3 = true;
             } else {
               String _name_2 = Long.TYPE.getName();
               boolean _equals_2 = Objects.equal(_name_2, typeName);
-              _or_3 = _equals_2;
+              _or_3 = (_or_4 || _equals_2);
             }
             if (_or_3) {
               _or_2 = true;
             } else {
               String _name_3 = Character.TYPE.getName();
               boolean _equals_3 = Objects.equal(_name_3, typeName);
-              _or_2 = _equals_3;
+              _or_2 = (_or_3 || _equals_3);
             }
             if (_or_2) {
               _or_1 = true;
             } else {
               String _name_4 = Byte.TYPE.getName();
               boolean _equals_4 = Objects.equal(_name_4, typeName);
-              _or_1 = _equals_4;
+              _or_1 = (_or_2 || _equals_4);
             }
             if (_or_1) {
               _or = true;
             } else {
               String _name_5 = Short.TYPE.getName();
               boolean _equals_5 = Objects.equal(_name_5, typeName);
-              _or = _equals_5;
+              _or = (_or_1 || _equals_5);
             }
             if (_or) {
               ITreeAppendable _newLine_8 = it.newLine();
