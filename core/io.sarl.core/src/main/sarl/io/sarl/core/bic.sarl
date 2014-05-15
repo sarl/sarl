@@ -48,12 +48,23 @@ capacity ExternalContextAccess {
 
     /**
 	 * Joins a new parent context (a new super holon).
-	 * This actions registers the agent in the default Space of the parent Context.
+	 * <p>
+	 * The agent will be involved in the context with the ID given by <var>contextID</var>.
+	 * The parameter <var>expectedDefaultSpaceID</var> is only used to check if
+	 * the caller of this function knows the ID of the default space in the context to
+	 * be involved in. Note that the context must already exists, and the default space
+	 * inside this context must have the sams ID as <var>expectedDefaultSpaceID</var>.
+	 * If the given <var>expectedDefaultSpaceID</var> does not match the ID of the
+	 * default space in the context <var>contextID</var>, then the access to the context
+	 * is forbidden.
+	 * <p>
+	 * This actions registers the agent in the default Space of the context with the
+	 * ID <var>contextID</var>.
 	 * . 
 	 * @fires ContextJoined in its inner Context default space (Behaviors#wake).
 	 * @fires MemberJoined in its parent Context default Space 
 	 */
-	def join(futureContext : UUID, futureContextDefaultSpaceID : UUID) fires ContextJoined, MemberJoined
+	def join(contextID : UUID, expectedDefaultSpaceID : UUID) fires ContextJoined, MemberJoined
 
 	/**
 	 * Leaves the parent's context. 
