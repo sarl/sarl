@@ -12,7 +12,7 @@
             extensions="sarl"
             id="io.sarl.lang.SARL"
             matchingStrategy="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.editor.JavaEditorInputMatcher"
-            name="SARL Editor">
+            name="%editor.name">
         </editor>
     </extension>
     <extension
@@ -83,21 +83,21 @@
         <page
             class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
             id="io.sarl.lang.SARL"
-            name="SARL">
+            name="%page.name">
             <keywordReference id="io.sarl.lang.ui.keyword_SARL"/>
         </page>
         <page
             category="io.sarl.lang.SARL"
             class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
             id="io.sarl.lang.SARL.coloring"
-            name="Syntax Coloring">
+            name="%page.name.0">
             <keywordReference id="io.sarl.lang.ui.keyword_SARL"/>
         </page>
         <page
             category="io.sarl.lang.SARL"
             class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage"
             id="io.sarl.lang.SARL.templates"
-            name="Templates">
+            name="%page.name.1">
             <keywordReference id="io.sarl.lang.ui.keyword_SARL"/>
         </page>
     </extension>
@@ -106,7 +106,7 @@
         <page
             class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
             id="io.sarl.lang.SARL"
-            name="SARL">
+            name="%page.name.2">
             <keywordReference id="io.sarl.lang.ui.keyword_SARL"/>
             <enabledWhen>
 	            <adapt type="org.eclipse.core.resources.IProject"/>
@@ -118,27 +118,27 @@
         point="org.eclipse.ui.keywords">
         <keyword
             id="io.sarl.lang.ui.keyword_SARL"
-            label="SARL"/>
+            label="%keyword.label"/>
     </extension>
     <extension
          point="org.eclipse.ui.commands">
       <command
-            description="Trigger expensive validation"
+            description="%command.description"
             id="io.sarl.lang.SARL.validate"
-            name="Validate">
+            name="%command.name">
       </command>
       <!-- copy qualified name -->
       <command
             id="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
             categoryId="org.eclipse.ui.category.edit"
-            description="Copy the qualified name for the selected element"
-            name="Copy Qualified Name">
+            description="%command.description.0"
+            name="%command.name.0">
       </command>
       <command
             id="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName"
             categoryId="org.eclipse.ui.category.edit"
-            description="Copy the qualified name for the selected element"
-            name="Copy Qualified Name">
+            description="%command.description.1"
+            name="%command.name.1">
       </command>
     </extension>
     <extension point="org.eclipse.ui.menus">
@@ -147,7 +147,7 @@
              <command
                  commandId="io.sarl.lang.SARL.validate"
                  style="push"
-                 tooltip="Trigger expensive validation">
+                 tooltip="%command.tooltip">
             <visibleWhen checkEnabled="false">
                 <reference
                     definitionId="io.sarl.lang.SARL.Editor.opened">
@@ -158,7 +158,7 @@
          <!-- copy qualified name -->
          <menuContribution locationURI="popup:#TextEditorContext?after=copy">
          	<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName" 
-         		style="push" tooltip="Copy Qualified Name">
+         		style="push" tooltip="%command.tooltip.0">
             	<visibleWhen checkEnabled="false">
                 	<reference definitionId="io.sarl.lang.SARL.Editor.opened" />
             	</visibleWhen>
@@ -166,7 +166,7 @@
          </menuContribution>
          <menuContribution locationURI="menu:edit?after=copy">
          	<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
-            	style="push" tooltip="Copy Qualified Name">
+            	style="push" tooltip="%command.tooltip.1">
             	<visibleWhen checkEnabled="false">
                 	<reference definitionId="io.sarl.lang.SARL.Editor.opened" />
             	</visibleWhen>
@@ -174,7 +174,7 @@
          </menuContribution>
          <menuContribution locationURI="popup:org.eclipse.xtext.ui.outline?after=additions">
 			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName" 
-				style="push" tooltip="Copy Qualified Name">
+				style="push" tooltip="%command.tooltip.2">
          		<visibleWhen checkEnabled="false">
 	            	<and>
 	            		<reference definitionId="io.sarl.lang.SARL.XtextEditor.opened" />
@@ -228,21 +228,21 @@
 	<!-- marker definitions for io.sarl.lang.SARL -->
 	<extension
 	        id="sarl.check.fast"
-	        name="SARL Problem"
+	        name="%extension.name"
 	        point="org.eclipse.core.resources.markers">
 	    <super type="org.eclipse.xtext.ui.check.fast"/>
 	    <persistent value="true"/>
 	</extension>
 	<extension
 	        id="sarl.check.normal"
-	        name="SARL Problem"
+	        name="%extension.name.0"
 	        point="org.eclipse.core.resources.markers">
 	    <super type="org.eclipse.xtext.ui.check.normal"/>
 	    <persistent value="true"/>
 	</extension>
 	<extension
 	        id="sarl.check.expensive"
-	        name="SARL Problem"
+	        name="%extension.name.1"
 	        point="org.eclipse.core.resources.markers">
 	    <super type="org.eclipse.xtext.ui.check.expensive"/>
 	    <persistent value="true"/>
@@ -260,7 +260,7 @@
             category="io.sarl.lang.SARL"
             class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
             id="io.sarl.lang.SARL.compiler.preferencePage"
-            name="Compiler">
+            name="%page.name.3">
             <keywordReference id="io.sarl.lang.ui.keyword_SARL"/>
         </page>
     </extension>
@@ -270,7 +270,7 @@
             category="io.sarl.lang.SARL"
             class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
             id="io.sarl.lang.SARL.compiler.propertyPage"
-            name="Compiler">
+            name="%page.name.4">
             <keywordReference id="io.sarl.lang.ui.keyword_SARL"/>
             <enabledWhen>
 	            <adapt type="org.eclipse.core.resources.IProject"/>
@@ -295,9 +295,9 @@
 	<extension
 		point="org.eclipse.ui.commands">
 		<command
-			description="Open the quick outline."
+			description="%command.description.2"
 			id="org.eclipse.xtext.ui.editor.outline.QuickOutline"
-			name="Quick Outline">
+			name="%command.name.2">
 		</command>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
@@ -305,7 +305,7 @@
 			locationURI="popup:#TextEditorContext?after=group.open">
 			<command commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline"
 				style="push"
-				tooltip="Open Quick Outline">
+				tooltip="%command.tooltip.3">
 				<visibleWhen checkEnabled="false">
 					<reference definitionId="io.sarl.lang.SARL.Editor.opened"/>
 				</visibleWhen>
@@ -370,7 +370,7 @@
 	        category="io.sarl.lang.SARL"
 	        class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
 	        id="io.sarl.lang.SARL.refactoring"
-	        name="Refactoring">
+	        name="%page.name.5">
 	        <keywordReference id="io.sarl.lang.ui.keyword_SARL"/>
 	    </page>
 	</extension>
@@ -412,7 +412,7 @@
              <command
                  commandId="org.eclipse.xtext.xbase.ui.organizeImports"
                  style="push"
-                 tooltip="Organize Imports">
+                 tooltip="%command.tooltip.4">
                 <visibleWhen checkEnabled="false">
                     <reference
                         definitionId="io.sarl.lang.SARL.Editor.opened">
@@ -424,7 +424,7 @@
 			locationURI="popup:#TextEditorContext?after=group.open">
 			<command commandId="org.eclipse.xtext.xbase.ui.hierarchy.OpenTypeHierarchy"
 				style="push"
-				tooltip="Open Type Hierarchy">
+				tooltip="%command.tooltip.5">
 				<visibleWhen checkEnabled="false">
 					<reference definitionId="io.sarl.lang.SARL.Editor.opened"/>
 				</visibleWhen>
@@ -434,7 +434,7 @@
 			locationURI="popup:#TextEditorContext?after=group.open">
 			<command commandId="org.eclipse.jdt.ui.edit.text.java.open.hierarchy"
 				style="push"
-				tooltip="Quick Type Hierarchy">
+				tooltip="%command.tooltip.6">
 				<visibleWhen checkEnabled="false">
 					<reference definitionId="io.sarl.lang.SARL.Editor.opened"/>
 				</visibleWhen>
@@ -460,7 +460,7 @@
 			locationURI="popup:#TextEditorContext?after=group.open">
 			<command commandId="org.eclipse.xtext.xbase.ui.hierarchy.OpenCallHierarchy"
 				style="push"
-				tooltip="Open Call Hierarchy">
+				tooltip="%command.tooltip.7">
 				<visibleWhen checkEnabled="false">
 					<reference definitionId="io.sarl.lang.SARL.Editor.opened"/>
 				</visibleWhen>
@@ -478,7 +478,7 @@
       <editorContribution targetID="io.sarl.lang.SARL" 
                           id="io.sarl.lang.SARL.ide.rulerActions">
 	     <action
-	             label="Not Used"
+	             label="%action.label"
 	             class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
 	             style="push"
 	             actionID="RulerDoubleClick"
@@ -490,7 +490,7 @@
          targetID="example.rulerContextMenuId"
          id="io.sarl.lang.SARL.ide.RulerPopupActions">
          <action
-            label="Toggle Breakpoint"
+            label="%action.label.0"
             class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
             menubarPath="additions"
             id="io.sarl.lang.SARL.ide.rulerContextMenu.toggleBreakpointAction">
@@ -533,7 +533,7 @@
   <extension point="org.eclipse.compare.contentMergeViewers">
     <viewer id="io.sarl.lang.SARL.compare.contentMergeViewers"
             class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
-            extensions="sarl" label="SARL Compare">
+            extensions="sarl" label="%viewer.label">
      </viewer>
   </extension>
   <extension point="org.eclipse.ui.editors.documentProviders">
