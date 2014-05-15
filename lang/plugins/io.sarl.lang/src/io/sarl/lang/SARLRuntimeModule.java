@@ -17,6 +17,11 @@ package io.sarl.lang;
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
+ * 
+ * @author $Author: srodriguez$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	//

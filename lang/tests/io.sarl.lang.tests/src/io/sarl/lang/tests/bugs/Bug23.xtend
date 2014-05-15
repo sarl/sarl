@@ -58,15 +58,7 @@ class Bug23 {
 
 		@SuppressWarnings("all")
 		public class MyAgentSpawned extends AgentSpawned {
-		  private UUID titi;
-		  
-		  public UUID getTiti() {
-		    return this.titi;
-		  }
-		  
-		  public void setTiti(final UUID titi) {
-		    this.titi = titi;
-		  }
+		  public UUID titi;
 		  
 		  @Override
 		  public boolean equals(final Object obj) {
@@ -114,6 +106,8 @@ class Bug23 {
 		    result.append("]");
 		    return result.toString();
 		  }
+		  
+		  private final static long serialVersionUID = 591742169L;
 		}
 		'''
 		

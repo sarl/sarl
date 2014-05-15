@@ -49,12 +49,20 @@ import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
 import io.sarl.lang.SARLKeywords
+import org.eclipse.xtext.common.types.JvmTypeReference
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
  *
  * <p>The JVM model should contain all elements that would appear in the Java code 
- * which is generated from the source model. Other models link against the JVM model rather than the source model.</p>     
+ * which is generated from the source model. Other models link against 
+ * the JVM model rather than the source model.</p>
+ * 
+ * @author $Author: srodriguez$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 class SARLJvmModelInferrer extends AbstractModelInferrer {
 
@@ -69,11 +77,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 
 	@Inject protected JvmModelAssociator jvmModelAssociator
 
-	@Inject TypesFactory typesFactory
+	@Inject private TypesFactory typesFactory
 
-	@Inject Logger log
-
-	private Iterable<Capacity> kCapacities = null
+	@Inject private Logger log
 
 	/**
 	 * The dispatch method {@code infer} is called for each instance of the
@@ -105,12 +111,18 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			[
 				documentation = element.documentation
 				
+				var long serial = 1L
+
+				var JvmTypeReference parentType
 				if(element.superType != null){
-					superTypes += newTypeRef(element.superType.fullyQualifiedName.toString)
-				}else{
-					superTypes += newTypeRef(element, typeof(io.sarl.lang.core.Event))
+					parentType = newTypeRef(element.superType.fullyQualifiedName.toString)
+					serial = serial + element.superType.fullyQualifiedName.toString.hashCode
+				} else {
+					parentType = newTypeRef(element, typeof(io.sarl.lang.core.Event))
+					serial = serial + "io.sarl.lang.core.Event".hashCode
 				}
-				
+				superTypes += parentType
+
 				var JvmField jvmField
 				var List<JvmField> jvmFields = new ArrayList()
 
@@ -118,19 +130,18 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					switch feature {
 						Attribute: {
 							jvmField = feature.toField(feature.name, feature.type) [
+								visibility = JvmVisibility::PUBLIC
+								documentation = feature.documentation
 								final = !feature.writeable
 								initializer = feature.initialValue
 							]
 							jvmFields.add(jvmField)
 							members += jvmField
-							members += feature.toGetter(feature.name, feature.type)
-							if (feature.writeable) {
-								members += feature.toSetter(feature.name, feature.type)
-							}
-
+							serial = serial + feature.name.hashCode
 						}
 						Constructor: {
 							generateConstructor(element, feature)
+							serial = serial + element.fullyQualifiedName.hashCode
 						}
 					}
 
@@ -172,6 +183,14 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							result.append("]");
 							return result.toString();''')
 					]
+				]
+
+				val serialValue = serial
+				members += element.toField("serialVersionUID", newTypeRef(long)) [
+					visibility = JvmVisibility::PRIVATE
+					final = true
+					static = true
+					initializer = [append(serialValue+"L")]
 				]
 
 			])
@@ -217,6 +236,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						}
 						Attribute: {
 							members += feature.toField(feature.name, feature.type) [
+								visibility = JvmVisibility::PROTECTED
 								documentation = feature.documentation
 								final = !feature.writeable
 								initializer = feature.initialValue
@@ -259,14 +279,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						}
 						Attribute: {
 							members += feature.toField(feature.name, feature.type) [
+								visibility = JvmVisibility::PROTECTED
 								documentation = feature.documentation
 								final = !feature.writeable
 								initializer = feature.initialValue
 							]
-							/*members += feature.toGetter(feature.name, feature.type)
-							if (feature.writeable) {
-								members += feature.toSetter(feature.name, feature.type)
-							}*/
 						}
 					}
 				}
@@ -304,15 +321,12 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 
 					}
 					Attribute: {
-						members += feature.toField(feature.name, feature.type) [
-							documentation = feature.documentation
-							initializer = feature.initialValue
-							final = !feature.writeable
-						]
-						/*members += feature.toGetter(feature.name, feature.type)
-						if (feature.writeable) {
-							members += feature.toSetter(feature.name, feature.type)
-						}*/
+							members += feature.toField(feature.name, feature.type) [
+								visibility = JvmVisibility::PROTECTED
+								documentation = feature.documentation
+								final = !feature.writeable
+								initializer = feature.initialValue
+							]
 					}
 					CapacityUses: {
 						for (used : feature.capacitiesUsed) {
@@ -484,7 +498,6 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					newLine().append(declaredType.getSimpleName()+" other = (" + declaredType.getSimpleName() + ") obj;")
 					for (JvmField field : jvmFields) {
 						var String typeName = field.type.identifier
-						System.out.println("****DEBUG: type="+typeName)
 						if (Boolean.TYPE.name == typeName 
 								|| Integer.TYPE.name == typeName
 								|| Long.TYPE.name == typeName

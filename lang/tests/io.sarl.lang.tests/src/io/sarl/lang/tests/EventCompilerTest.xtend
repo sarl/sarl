@@ -58,6 +58,8 @@ class EventCompilerTest {
 			    result.append("]");
 			    return result.toString();
 			  }
+			  
+			  private final static long serialVersionUID = 588368462L;
 			}
 		''')
 	}
@@ -73,15 +75,7 @@ class EventCompilerTest {
 
 		@SuppressWarnings("all")
 		public class E1 extends Event {
-		  private String name;
-		  
-		  public String getName() {
-		    return this.name;
-		  }
-		  
-		  public void setName(final String name) {
-		    this.name = name;
-		  }
+		  public String name;
 		  
 		  @Override
 		  public boolean equals(final Object obj) {
@@ -129,6 +123,8 @@ class EventCompilerTest {
 		    result.append("]");
 		    return result.toString();
 		  }
+		  
+		  private final static long serialVersionUID = 591742169L;
 		}
 		''')
 	}
@@ -148,6 +144,8 @@ class EventCompilerTest {
 		    result.append("]");
 		    return result.toString();
 		  }
+		  
+		  private final static long serialVersionUID = 2189L;
 		}
 		'''
 		
