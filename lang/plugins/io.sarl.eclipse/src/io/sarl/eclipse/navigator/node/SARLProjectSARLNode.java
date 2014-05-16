@@ -27,7 +27,7 @@ public class SARLProjectSARLNode implements ISARLProjectElement {
 	private Image image;
 
 	public SARLProjectSARLNode(ISARLProjectElement iparent) {
-		parent = iparent;
+		this.parent = iparent;
 	}
 
 	/*
@@ -37,10 +37,10 @@ public class SARLProjectSARLNode implements ISARLProjectElement {
 	 */
 	@Override
 	public Image getImage() {
-		if (image == null) {
-			image = EclipseSARLActivator.getImage("icons/sarl-project-schema-16.png"); //$NON-NLS-1$
+		if (this.image == null) {
+			this.image = EclipseSARLActivator.getImage("icons/sarl-project-schema-16.png"); //$NON-NLS-1$
 		}
-		return image;
+		return this.image;
 	}
 
 	/*
@@ -96,7 +96,7 @@ public class SARLProjectSARLNode implements ISARLProjectElement {
 	 */
 	@Override
 	public IProject getProject() {
-		return parent.getProject();
+		return this.parent.getProject();
 	}
 
 	/*
@@ -106,7 +106,7 @@ public class SARLProjectSARLNode implements ISARLProjectElement {
 	 */
 	@Override
 	public Object getParent() {
-		return parent;
+		return this.parent;
 	}
 
 }

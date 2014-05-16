@@ -27,7 +27,7 @@ public class SARLProjectJAVANode implements ISARLProjectElement {
 	private ISARLProjectElement[] children;
 
 	public SARLProjectJAVANode(ISARLProjectElement iparent) {
-		parent = iparent;
+		this.parent = iparent;
 	}
 
 	/*
