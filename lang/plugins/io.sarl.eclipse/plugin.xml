@@ -7,7 +7,17 @@
 			id="io.sarl.eclipse.category.wizards"
 			name="%category.name">
 		</category>
-		
+		<wizard
+        category="io.sarl.eclipse.category.wizards"
+        class="io.sarl.eclipse.wizards.SARLProjectNewWizard"
+        finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
+        icon="icons/sarl-project-logo-16.png"
+        id="io.sarl.eclipse.wizard.new.sarl"
+        name="%wizard.name"
+        preferredPerspectives="org.eclipse.jdt.ui.JavaPerspective"
+        project="false">
+		</wizard>
+		<!--
 		<wizard
         category="io.sarl.eclipse.category.wizards"
         class="io.sarl.eclipse.wizards.SARLProjectNewWizard"
@@ -17,7 +27,16 @@
         name="%wizard.name"
         preferredPerspectives="io.sarl.eclipse.perspective, org.eclipse.jdt.ui.JavaPerspective"
         project="false">
-		</wizard>
+		</wizard>-->
+  <wizard
+        category="io.sarl.eclipse.category.wizards"
+        class="io.sarl.eclipse.wizards.SARLFileNewWizard"
+        descriptionImage="icons/sarl-file-logo-32.png"
+        finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
+        icon="icons/sarl-file-logo-16.png"
+        id="io.sarl.eclipse.wizard.file.sarl"
+        name="SARL File">
+  </wizard>
 	</extension>
 	
 	<extension
@@ -38,7 +57,7 @@
            natureId="io.sarl.eclipse.SARLProjectNature">
      </image>
   </extension>
-
+<!--
 	<extension point="org.eclipse.ui.views">
 		<view
         category="io.sarl.eclipse.category.navigator"
@@ -106,6 +125,7 @@
 					ratio="0.25"/>	
 		</perspectiveExtension> 
  	</extension>
+ 	-->
   <extension
         id="io.sarl.eclipse.contenttype"
         point="org.eclipse.core.contenttype.contentTypes">

@@ -22,6 +22,5 @@ Export-Package: io.sarl.eclipse.internal,
  io.sarl.eclipse.navigator,
  io.sarl.eclipse.navigator.node,
  io.sarl.eclipse.perspectives,
- io.sarl.eclipse.projects,
  io.sarl.eclipse.wizards
 
