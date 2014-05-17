@@ -27,7 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * @author $Author: sgalland$
+ * @author $Author: Sebastian Rodriguez$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -41,19 +41,12 @@ public class AgentCompilerTest {
   private CompilationTestHelper _compilationTestHelper;
   
   @Test
-  public void basicInActionNoPredecessor() {
+  public void basicAgentCompile() {
     try {
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg : int...) {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("System.out.println(arg)");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -79,17 +72,6 @@ public class AgentCompilerTest {
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("super(parentID);");
-      _builder_1.newLine();
-      _builder_1.append("  ");
-      _builder_1.append("}");
-      _builder_1.newLine();
-      _builder_1.append("  ");
-      _builder_1.newLine();
-      _builder_1.append("  ");
-      _builder_1.append("public void myaction(final int... arg) {");
-      _builder_1.newLine();
-      _builder_1.append("    ");
-      _builder_1.append("System.out.println(arg);");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("}");

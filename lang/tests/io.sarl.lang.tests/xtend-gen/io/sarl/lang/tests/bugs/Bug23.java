@@ -66,10 +66,10 @@ public class Bug23 {
       _builder.append("on MyAgentSpawned {");
       _builder.newLine();
       _builder.append("\t\t");
-      _builder.append("occurrence.titi");
+      _builder.append("System.out.println(occurrence.titi)");
       _builder.newLine();
       _builder.append("\t\t");
-      _builder.append("occurrence.agentID");
+      _builder.append("System.out.println(occurrence.agentID)");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("}");
@@ -244,7 +244,7 @@ public class Bug23 {
       _builder.append("  ");
       _builder.newLine();
       _builder.append("  ");
-      _builder.append("private final static long serialVersionUID = 591742169L;");
+      _builder.append("private final static long serialVersionUID = -267285920L;");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();

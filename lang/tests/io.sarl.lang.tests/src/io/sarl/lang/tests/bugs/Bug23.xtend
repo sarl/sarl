@@ -38,8 +38,8 @@ class Bug23 {
 		
 		agent MyAgent {
 			on MyAgentSpawned {
-				occurrence.titi
-				occurrence.agentID
+				System.out.println(occurrence.titi)
+				System.out.println(occurrence.agentID)
 			}
 		}
 	'''
@@ -107,7 +107,7 @@ class Bug23 {
 		    return result.toString();
 		  }
 		  
-		  private final static long serialVersionUID = 591742169L;
+		  private final static long serialVersionUID = -267285920L;
 		}
 		'''
 		

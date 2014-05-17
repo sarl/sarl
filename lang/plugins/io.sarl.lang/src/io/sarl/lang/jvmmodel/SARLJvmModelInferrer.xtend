@@ -222,12 +222,14 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				documentation = element.documentation
 				superTypes += newTypeRef(element, typeof(io.sarl.lang.core.Skill))
 				for (cap : element.implementedCapacities) {
-					if (cap.fullyQualifiedName != null) {
-						superTypes += element.newTypeRef(cap.fullyQualifiedName.toString)
+					if (cap.name!=null) {
+						if (cap.fullyQualifiedName != null) {
+							superTypes += element.newTypeRef(cap.fullyQualifiedName.toString)
+						} else {
+							log.fine("Unable to resolve the fully qualified name of the implemented capacity '"+cap.name+"' for the skill:" + element.name)
+						}
 					} else {
-
-						//log.fine("Null FQN for Capacity:" + cap.name)
-						println("Null FQN for Capacity:" + cap.name)
+						log.fine("Unable to resolve an implemented capacity name for the skill:" + element.name)
 					}
 				}
 				for (feature : element.features) {
@@ -260,7 +262,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		acceptor.accept(element.toClass(element.fullyQualifiedName)).initializeLater(
 			[
 				documentation = element.documentation
-				var int counter = 0
+				var int counter = 1
 				superTypes += newTypeRef(element, typeof(io.sarl.lang.core.Behavior))
 				for (feature : element.features) {
 					switch feature {
@@ -268,7 +270,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							//TODO 
 						}
 						BehaviorUnit: {
-							members += generateBehaviorUnit(feature, counter)
+							val bMethod = generateBehaviorUnit(feature, counter)
+							if (bMethod !== null) {
+								counter = counter + 1						
+								members += bMethod
+							}
 						}
 						CapacityUses: {
 							for (used : feature.capacitiesUsed) {
@@ -307,15 +313,15 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					super(parentID);
 				'''
 			]
-			var int counter = 0
+			var int counter = 1
 			for (feature : agent.features) {
 				switch feature {
 					BehaviorUnit: {
-						counter = counter + 1
-
 						val bMethod = generateBehaviorUnit(feature, counter)
-
-						members += bMethod
+						if (bMethod !== null) {
+							counter = counter + 1						
+							members += bMethod
+						}
 					}
 					Action: {
 						generateAction(feature.signature, feature.body)
@@ -357,39 +363,44 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	}
 
 	def JvmOperation generateBehaviorUnit(JvmGenericType owner, BehaviorUnit unit, int index) {
-		val behName = "_handle_" + unit.event.name + "_" + index
-
-		val behaviorMethod = unit.toMethod(behName, unit.newTypeRef(Void::TYPE)) [
-			documentation = unit.documentation
-			annotations += unit.toAnnotation(typeof(Percept))
-			parameters +=
-				unit.event.toParameter(SARLKeywords.KEYWORD_OCCURRENCE, newTypeRef(unit.event, unit.event.fullyQualifiedName.toString))
-		]
-
-		if (unit.guard == null) {
-			behaviorMethod.body = unit.body
-		} else {
-			val guard = unit.guard
-			val guardMethodName = behName + "_Guard"
-			val guardMethod = guard.toMethod(guardMethodName, guard.newTypeRef(Boolean::TYPE)) [
-				documentation = "Ensures that the behavior " + behName + " is called only when the guard " +
-					guard.toString + " is valid"
-				parameters += unit.event.toParameter(SARLKeywords.KEYWORD_OCCURRENCE,
-					newTypeRef(unit.event, unit.event.fullyQualifiedName.toString))
+		val eventName = unit.event.name
+		if (eventName!==null && !eventName.empty) {
+			val behName = "_handle_" + unit.event.name + "_" + index
+	
+			val behaviorMethod = unit.toMethod(behName, unit.newTypeRef(Void::TYPE)) [
+				documentation = unit.documentation
+				annotations += unit.toAnnotation(typeof(Percept))
+				parameters +=
+					unit.event.toParameter(SARLKeywords.KEYWORD_OCCURRENCE, newTypeRef(unit.event, unit.event.fullyQualifiedName.toString))
 			]
-
-			guardMethod.body = guard
-			jvmModelAssociator.associateLogicalContainer(unit.body, behaviorMethod)
-
-			behaviorMethod.body = [
-				it.append('''if ( «guardMethodName»(«SARLKeywords.KEYWORD_OCCURRENCE»)) { ''')
-				xbaseCompiler.compile(unit.body, it, behaviorMethod.newTypeRef(Void::TYPE))
-				it.append('}')
-			]
-
-			owner.members += guardMethod
+	
+			if (unit.guard == null) {
+				behaviorMethod.body = unit.body
+			} else {
+				val guard = unit.guard
+				val guardMethodName = behName + "_Guard"
+				val guardMethod = guard.toMethod(guardMethodName, guard.newTypeRef(Boolean::TYPE)) [
+					documentation = "Ensures that the behavior " + behName + " is called only when the guard " +
+						guard.toString + " is valid"
+					parameters += unit.event.toParameter(SARLKeywords.KEYWORD_OCCURRENCE,
+						newTypeRef(unit.event, unit.event.fullyQualifiedName.toString))
+				]
+	
+				guardMethod.body = guard
+				jvmModelAssociator.associateLogicalContainer(unit.body, behaviorMethod)
+	
+				behaviorMethod.body = [
+					it.append('''if ( «guardMethodName»(«SARLKeywords.KEYWORD_OCCURRENCE»)) { ''')
+					xbaseCompiler.compile(unit.body, it, behaviorMethod.newTypeRef(Void::TYPE))
+					it.append('}')
+				]
+	
+				owner.members += guardMethod
+			}
+			return behaviorMethod
 		}
-		behaviorMethod
+		log.fine("Unable to resolve the event for a behavior unit")
+		return null
 	}
 
 	def JvmOperation generateAction(JvmGenericType owner, ActionSignature signature, XExpression operationBody) {
