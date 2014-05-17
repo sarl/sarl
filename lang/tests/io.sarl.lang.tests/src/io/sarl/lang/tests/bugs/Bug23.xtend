@@ -96,17 +96,6 @@ class Bug23 {
 		    return result.toString();
 		  }
 		  
-		  /**
-		   * Returns a String representation of the Event MyAgentSpawned.
-		   */
-		  public String toString() {
-		    StringBuilder result = new StringBuilder();
-		    result.append("MyAgentSpawned[");
-		    result.append(attributesToString());
-		    result.append("]");
-		    return result.toString();
-		  }
-		  
 		  private final static long serialVersionUID = -267285920L;
 		}
 		'''

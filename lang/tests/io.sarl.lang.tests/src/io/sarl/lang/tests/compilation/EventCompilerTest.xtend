@@ -48,17 +48,6 @@ class EventCompilerTest {
 
 			@SuppressWarnings("all")
 			public class E1 extends Event {
-			  /**
-			   * Returns a String representation of the Event E1.
-			   */
-			  public String toString() {
-			    StringBuilder result = new StringBuilder();
-			    result.append("E1[");
-			    result.append(attributesToString());
-			    result.append("]");
-			    return result.toString();
-			  }
-			  
 			  private final static long serialVersionUID = 588368462L;
 			}
 		''')
@@ -113,17 +102,6 @@ class EventCompilerTest {
 		    return result.toString();
 		  }
 		  
-		  /**
-		   * Returns a String representation of the Event E1.
-		   */
-		  public String toString() {
-		    StringBuilder result = new StringBuilder();
-		    result.append("E1[");
-		    result.append(attributesToString());
-		    result.append("]");
-		    return result.toString();
-		  }
-		  
 		  private final static long serialVersionUID = 591742169L;
 		}
 		''')
@@ -134,17 +112,6 @@ class EventCompilerTest {
 		val expectedE2 = '''
 		@SuppressWarnings("all")
 		public class E2 extends E1 {
-		  /**
-		   * Returns a String representation of the Event E2.
-		   */
-		  public String toString() {
-		    StringBuilder result = new StringBuilder();
-		    result.append("E2[");
-		    result.append(attributesToString());
-		    result.append("]");
-		    return result.toString();
-		  }
-		  
 		  private final static long serialVersionUID = 2189L;
 		}
 		'''

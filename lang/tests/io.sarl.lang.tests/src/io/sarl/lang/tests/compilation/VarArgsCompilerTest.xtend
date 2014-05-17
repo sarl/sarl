@@ -35,7 +35,7 @@ class VarArgsCompilerTest {
 	@Inject extension CompilationTestHelper
 
 	@Test
-	def inAgentActionNoPredecessor() {
+	def inAgentAction_singleParam() {
 		'''
 			agent A1 {
 				def myaction(arg : int...) {
@@ -85,6 +85,299 @@ class VarArgsCompilerTest {
 			    System.out.println(arg3);
 			  }
 			}
+		''')
+	}
+
+	@Test
+	def inBehaviorAction_singleParam() {
+		'''
+			behavior B1 {
+				def myaction(arg : int...) {
+					System.out.println(arg)
+				}
+			}
+		'''.assertCompilesTo('''
+			import io.sarl.lang.core.Behavior;
+			
+			@SuppressWarnings("all")
+			public class B1 extends Behavior {
+			  public void myaction(final int... arg) {
+			    System.out.println(arg);
+			  }
+			}
+		''')
+	}
+		
+	@Test
+	def inBehaviorAction() {
+		'''
+			behavior B1 {
+				def myaction(arg1 : char, arg2 : boolean, arg3 : int...) {
+					System.out.println(arg3)
+				}
+			}
+		'''.assertCompilesTo('''
+			import io.sarl.lang.core.Behavior;
+			
+			@SuppressWarnings("all")
+			public class B1 extends Behavior {
+			  public void myaction(final char arg1, final boolean arg2, final int... arg3) {
+			    System.out.println(arg3);
+			  }
+			}
+		''')
+	}
+
+	@Test
+	def inBehaviorConstructor_singleParam() {
+		'''
+			behavior B1 {
+				new(arg : int...) {
+					System.out.println(arg)
+				}
+			}
+		'''.assertCompilesTo('''
+			import io.sarl.lang.core.Behavior;
+			
+			@SuppressWarnings("all")
+			public class B1 extends Behavior {
+			  public B1(final int... arg) {
+			    System.out.println(arg);
+			  }
+			}
+		''')
+	}
+		
+	@Test
+	def inBehaviorConstructor() {
+		'''
+			behavior B1 {
+				new(arg1 : char, arg2 : boolean, arg3 : int...) {
+					System.out.println(arg3)
+				}
+			}
+		'''.assertCompilesTo('''
+			import io.sarl.lang.core.Behavior;
+			
+			@SuppressWarnings("all")
+			public class B1 extends Behavior {
+			  public B1(final char arg1, final boolean arg2, final int... arg3) {
+			    System.out.println(arg3);
+			  }
+			}
+		''')
+	}
+
+	@Test
+	def inCapacityAction_singleParam() {
+		'''
+			capacity C1 {
+				def myaction(arg : int...)
+			}
+		'''.assertCompilesTo('''
+			import io.sarl.lang.core.Capacity;
+			
+			@SuppressWarnings("all")
+			public interface C1 extends Capacity {
+			  public void myaction(final int... arg);
+			}
+		''')
+	}
+		
+	@Test
+	def inCapacityAction() {
+		'''
+			capacity C1 {
+				def myaction(arg1 : char, arg2 : boolean, arg3 : int...)
+			}
+		'''.assertCompilesTo('''
+			import io.sarl.lang.core.Capacity;
+			
+			@SuppressWarnings("all")
+			public interface C1 extends Capacity {
+			  public void myaction(final char arg1, final boolean arg2, final int... arg3);
+			}
+		''')
+	}
+
+	@Test
+	def inEventAction_singleParam() {
+		'''
+			event E1 {
+				new(arg : int...) {
+					System.out.println(arg)
+				}
+			}
+		'''.assertCompilesTo('''
+			import io.sarl.lang.core.Event;
+			
+			@SuppressWarnings("all")
+			public class E1 extends Event {
+			  public E1(final int... arg) {
+			    System.out.println(arg);
+			  }
+			  
+			  private final static long serialVersionUID = 588370681L;
+			}
+		''')
+	}
+		
+	@Test
+	def inEventConstructor() {
+		'''
+			event E1 {
+				new(arg1 : char, arg2 : boolean, arg3 : int...) {
+					System.out.println(arg3)
+				}
+			}
+		'''.assertCompilesTo('''
+			import io.sarl.lang.core.Event;
+			
+			@SuppressWarnings("all")
+			public class E1 extends Event {
+			  public E1(final char arg1, final boolean arg2, final int... arg3) {
+			    System.out.println(arg3);
+			  }
+			  
+			  private final static long serialVersionUID = 588370681L;
+			}
+		''')
+	}
+
+
+	@Test
+	def inSkillAction_singleParam() {
+		'''
+			capacity C1 {}
+			skill S1 implements C1 {
+				def myaction(arg : int...) {
+					System.out.println(arg)
+				}
+			}
+		'''.assertCompilesTo('''
+			MULTIPLE FILES WERE GENERATED
+			
+			File 1 : C1.java
+			
+			import io.sarl.lang.core.Capacity;
+			
+			@SuppressWarnings("all")
+			public interface C1 extends Capacity {
+			}
+			
+			File 2 : S1.java
+			
+			import io.sarl.lang.core.Skill;
+			
+			@SuppressWarnings("all")
+			public class S1 extends Skill implements C1 {
+			  public void myaction(final int... arg) {
+			    System.out.println(arg);
+			  }
+			}
+			
+		''')
+	}
+		
+	@Test
+	def inSkillAction() {
+		'''
+			capacity C1 {}
+			skill S1 implements C1 {
+				def myaction(arg1 : char, arg2 : boolean, arg3 : int...) {
+					System.out.println(arg3)
+				}
+			}
+		'''.assertCompilesTo('''
+			MULTIPLE FILES WERE GENERATED
+			
+			File 1 : C1.java
+			
+			import io.sarl.lang.core.Capacity;
+			
+			@SuppressWarnings("all")
+			public interface C1 extends Capacity {
+			}
+			
+			File 2 : S1.java
+			
+			import io.sarl.lang.core.Skill;
+			
+			@SuppressWarnings("all")
+			public class S1 extends Skill implements C1 {
+			  public void myaction(final char arg1, final boolean arg2, final int... arg3) {
+			    System.out.println(arg3);
+			  }
+			}
+			
+		''')
+	}
+
+	@Test
+	def inSkillConstructor_singleParam() {
+		'''
+			capacity C1 {}
+			skill S1 implements C1 {
+				new(arg : int...) {
+					System.out.println(arg)
+				}
+			}
+		'''.assertCompilesTo('''
+			MULTIPLE FILES WERE GENERATED
+			
+			File 1 : C1.java
+			
+			import io.sarl.lang.core.Capacity;
+			
+			@SuppressWarnings("all")
+			public interface C1 extends Capacity {
+			}
+			
+			File 2 : S1.java
+			
+			import io.sarl.lang.core.Skill;
+			
+			@SuppressWarnings("all")
+			public class S1 extends Skill implements C1 {
+			  public S1(final int... arg) {
+			    System.out.println(arg);
+			  }
+			}
+			
+		''')
+	}
+		
+	@Test
+	def inSkillConstructor() {
+		'''
+			capacity C1 {}
+			skill S1 implements C1 {
+				new(arg1 : char, arg2 : boolean, arg3 : int...) {
+					System.out.println(arg3)
+				}
+			}
+		'''.assertCompilesTo('''
+			MULTIPLE FILES WERE GENERATED
+			
+			File 1 : C1.java
+			
+			import io.sarl.lang.core.Capacity;
+			
+			@SuppressWarnings("all")
+			public interface C1 extends Capacity {
+			}
+			
+			File 2 : S1.java
+			
+			import io.sarl.lang.core.Skill;
+			
+			@SuppressWarnings("all")
+			public class S1 extends Skill implements C1 {
+			  public S1(final char arg1, final boolean arg2, final int... arg3) {
+			    System.out.println(arg3);
+			  }
+			}
+			
 		''')
 	}
 

@@ -41,7 +41,7 @@ public class VarArgsCompilerTest {
   private CompilationTestHelper _compilationTestHelper;
   
   @Test
-  public void inAgentActionNoPredecessor() {
+  public void inAgentAction_singleParam() {
     try {
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("agent A1 {");
@@ -157,6 +157,584 @@ public class VarArgsCompilerTest {
       _builder_1.append("}");
       _builder_1.newLine();
       _builder_1.append("}");
+      _builder_1.newLine();
+      this._compilationTestHelper.assertCompilesTo(_builder, _builder_1);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void inBehaviorAction_singleParam() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("behavior B1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(arg : int...) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(arg)");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.core.Behavior;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("@SuppressWarnings(\"all\")");
+      _builder_1.newLine();
+      _builder_1.append("public class B1 extends Behavior {");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("public void myaction(final int... arg) {");
+      _builder_1.newLine();
+      _builder_1.append("    ");
+      _builder_1.append("System.out.println(arg);");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      this._compilationTestHelper.assertCompilesTo(_builder, _builder_1);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void inBehaviorAction() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("behavior B1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int...) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(arg3)");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.core.Behavior;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("@SuppressWarnings(\"all\")");
+      _builder_1.newLine();
+      _builder_1.append("public class B1 extends Behavior {");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("public void myaction(final char arg1, final boolean arg2, final int... arg3) {");
+      _builder_1.newLine();
+      _builder_1.append("    ");
+      _builder_1.append("System.out.println(arg3);");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      this._compilationTestHelper.assertCompilesTo(_builder, _builder_1);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void inBehaviorConstructor_singleParam() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("behavior B1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("new(arg : int...) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(arg)");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.core.Behavior;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("@SuppressWarnings(\"all\")");
+      _builder_1.newLine();
+      _builder_1.append("public class B1 extends Behavior {");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("public B1(final int... arg) {");
+      _builder_1.newLine();
+      _builder_1.append("    ");
+      _builder_1.append("System.out.println(arg);");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      this._compilationTestHelper.assertCompilesTo(_builder, _builder_1);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void inBehaviorConstructor() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("behavior B1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("new(arg1 : char, arg2 : boolean, arg3 : int...) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(arg3)");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.core.Behavior;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("@SuppressWarnings(\"all\")");
+      _builder_1.newLine();
+      _builder_1.append("public class B1 extends Behavior {");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("public B1(final char arg1, final boolean arg2, final int... arg3) {");
+      _builder_1.newLine();
+      _builder_1.append("    ");
+      _builder_1.append("System.out.println(arg3);");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      this._compilationTestHelper.assertCompilesTo(_builder, _builder_1);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void inCapacityAction_singleParam() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(arg : int...)");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.core.Capacity;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("@SuppressWarnings(\"all\")");
+      _builder_1.newLine();
+      _builder_1.append("public interface C1 extends Capacity {");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("public void myaction(final int... arg);");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      this._compilationTestHelper.assertCompilesTo(_builder, _builder_1);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void inCapacityAction() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int...)");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.core.Capacity;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("@SuppressWarnings(\"all\")");
+      _builder_1.newLine();
+      _builder_1.append("public interface C1 extends Capacity {");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("public void myaction(final char arg1, final boolean arg2, final int... arg3);");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      this._compilationTestHelper.assertCompilesTo(_builder, _builder_1);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void inEventAction_singleParam() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("event E1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("new(arg : int...) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(arg)");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.core.Event;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("@SuppressWarnings(\"all\")");
+      _builder_1.newLine();
+      _builder_1.append("public class E1 extends Event {");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("public E1(final int... arg) {");
+      _builder_1.newLine();
+      _builder_1.append("    ");
+      _builder_1.append("System.out.println(arg);");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("private final static long serialVersionUID = 588370681L;");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      this._compilationTestHelper.assertCompilesTo(_builder, _builder_1);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void inEventConstructor() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("event E1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("new(arg1 : char, arg2 : boolean, arg3 : int...) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(arg3)");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.core.Event;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("@SuppressWarnings(\"all\")");
+      _builder_1.newLine();
+      _builder_1.append("public class E1 extends Event {");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("public E1(final char arg1, final boolean arg2, final int... arg3) {");
+      _builder_1.newLine();
+      _builder_1.append("    ");
+      _builder_1.append("System.out.println(arg3);");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("private final static long serialVersionUID = 588370681L;");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      this._compilationTestHelper.assertCompilesTo(_builder, _builder_1);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void inSkillAction_singleParam() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {}");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(arg : int...) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(arg)");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("MULTIPLE FILES WERE GENERATED");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("File 1 : C1.java");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("import io.sarl.lang.core.Capacity;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("@SuppressWarnings(\"all\")");
+      _builder_1.newLine();
+      _builder_1.append("public interface C1 extends Capacity {");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("File 2 : S1.java");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("import io.sarl.lang.core.Skill;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("@SuppressWarnings(\"all\")");
+      _builder_1.newLine();
+      _builder_1.append("public class S1 extends Skill implements C1 {");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("public void myaction(final int... arg) {");
+      _builder_1.newLine();
+      _builder_1.append("    ");
+      _builder_1.append("System.out.println(arg);");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      this._compilationTestHelper.assertCompilesTo(_builder, _builder_1);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void inSkillAction() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {}");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int...) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(arg3)");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("MULTIPLE FILES WERE GENERATED");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("File 1 : C1.java");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("import io.sarl.lang.core.Capacity;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("@SuppressWarnings(\"all\")");
+      _builder_1.newLine();
+      _builder_1.append("public interface C1 extends Capacity {");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("File 2 : S1.java");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("import io.sarl.lang.core.Skill;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("@SuppressWarnings(\"all\")");
+      _builder_1.newLine();
+      _builder_1.append("public class S1 extends Skill implements C1 {");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("public void myaction(final char arg1, final boolean arg2, final int... arg3) {");
+      _builder_1.newLine();
+      _builder_1.append("    ");
+      _builder_1.append("System.out.println(arg3);");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      this._compilationTestHelper.assertCompilesTo(_builder, _builder_1);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void inSkillConstructor_singleParam() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {}");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("new(arg : int...) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(arg)");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("MULTIPLE FILES WERE GENERATED");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("File 1 : C1.java");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("import io.sarl.lang.core.Capacity;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("@SuppressWarnings(\"all\")");
+      _builder_1.newLine();
+      _builder_1.append("public interface C1 extends Capacity {");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("File 2 : S1.java");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("import io.sarl.lang.core.Skill;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("@SuppressWarnings(\"all\")");
+      _builder_1.newLine();
+      _builder_1.append("public class S1 extends Skill implements C1 {");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("public S1(final int... arg) {");
+      _builder_1.newLine();
+      _builder_1.append("    ");
+      _builder_1.append("System.out.println(arg);");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      this._compilationTestHelper.assertCompilesTo(_builder, _builder_1);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void inSkillConstructor() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {}");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("new(arg1 : char, arg2 : boolean, arg3 : int...) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(arg3)");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("MULTIPLE FILES WERE GENERATED");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("File 1 : C1.java");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("import io.sarl.lang.core.Capacity;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("@SuppressWarnings(\"all\")");
+      _builder_1.newLine();
+      _builder_1.append("public interface C1 extends Capacity {");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("File 2 : S1.java");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("import io.sarl.lang.core.Skill;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("@SuppressWarnings(\"all\")");
+      _builder_1.newLine();
+      _builder_1.append("public class S1 extends Skill implements C1 {");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("public S1(final char arg1, final boolean arg2, final int... arg3) {");
+      _builder_1.newLine();
+      _builder_1.append("    ");
+      _builder_1.append("System.out.println(arg3);");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
       _builder_1.newLine();
       this._compilationTestHelper.assertCompilesTo(_builder, _builder_1);
     } catch (Throwable _e) {
