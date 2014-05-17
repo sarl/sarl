@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-package io.sarl.lang.tests
+package io.sarl.lang.tests.compilation
 
 import com.google.inject.Inject
 import io.sarl.lang.SARLInjectorProvider

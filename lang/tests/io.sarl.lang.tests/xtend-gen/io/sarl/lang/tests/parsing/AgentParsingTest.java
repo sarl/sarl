@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
  */
-package io.sarl.lang.tests;
+package io.sarl.lang.tests.parsing;
 
 import com.google.inject.Inject;
 import io.sarl.lang.SARLInjectorProvider;
@@ -41,7 +41,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * @author $Author: Sebastian Rodriguez$
+ * @author $Author: srodriguez$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

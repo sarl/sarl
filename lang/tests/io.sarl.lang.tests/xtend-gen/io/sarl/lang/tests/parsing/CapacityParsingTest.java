@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.tests;
+package io.sarl.lang.tests.parsing;
 
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
@@ -46,7 +46,7 @@ import org.junit.runner.RunWith;
 @RunWith(XtextRunner.class)
 @InjectWith(SARLInjectorProvider.class)
 @SuppressWarnings("all")
-public class CapacityUtilsTest {
+public class CapacityParsingTest {
   @Inject
   @Extension
   private ParseHelper<Model> _parseHelper;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.tests;
+package io.sarl.lang.tests.compilation;
 
 import com.google.inject.Inject;
 import io.sarl.lang.SARLInjectorProvider;
