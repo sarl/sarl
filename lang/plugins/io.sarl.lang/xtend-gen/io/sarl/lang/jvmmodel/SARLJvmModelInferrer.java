@@ -465,9 +465,29 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
         String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(element);
         SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
         int counter = 1;
-        EList<JvmTypeReference> _superTypes = it.getSuperTypes();
-        JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(element, io.sarl.lang.core.Behavior.class);
-        SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _newTypeRef);
+        boolean _and = false;
+        Behavior _superType = element.getSuperType();
+        boolean _notEquals = (!Objects.equal(_superType, null));
+        if (!_notEquals) {
+          _and = false;
+        } else {
+          Behavior _superType_1 = element.getSuperType();
+          QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_superType_1);
+          boolean _notEquals_1 = (!Objects.equal(_fullyQualifiedName, null));
+          _and = _notEquals_1;
+        }
+        if (_and) {
+          EList<JvmTypeReference> _superTypes = it.getSuperTypes();
+          Behavior _superType_2 = element.getSuperType();
+          QualifiedName _fullyQualifiedName_1 = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_superType_2);
+          String _string = _fullyQualifiedName_1.toString();
+          JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(it, _string);
+          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _newTypeRef);
+        } else {
+          EList<JvmTypeReference> _superTypes_1 = it.getSuperTypes();
+          JvmTypeReference _newTypeRef_1 = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(element, io.sarl.lang.core.Behavior.class);
+          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes_1, _newTypeRef_1);
+        }
         EList<BehaviorFeature> _features = element.getFeatures();
         for (final BehaviorFeature feature : _features) {
           boolean _matched = false;

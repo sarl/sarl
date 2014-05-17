@@ -263,7 +263,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			[
 				documentation = element.documentation
 				var int counter = 1
-				superTypes += newTypeRef(element, typeof(io.sarl.lang.core.Behavior))
+				if (element.superType != null && element.superType.fullyQualifiedName != null) {
+					superTypes += newTypeRef(element.superType.fullyQualifiedName.toString)
+				} else {
+					superTypes += newTypeRef(element, typeof(io.sarl.lang.core.Behavior))
+				}
 				for (feature : element.features) {
 					switch feature {
 						RequiredCapacity: {
