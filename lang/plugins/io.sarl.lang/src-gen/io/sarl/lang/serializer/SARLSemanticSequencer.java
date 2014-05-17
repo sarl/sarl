@@ -1130,7 +1130,12 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID (params+=Parameter params+=Parameter* varargs?='...'?)? type=JvmTypeReference? (firedEvents+=[Event|ID] firedEvents+=[Event|ID]*)?)
+	 *     (
+	 *         name=ValidID 
+	 *         (params+=Parameter params+=Parameter* varargs?='...'?)? 
+	 *         type=JvmTypeReference? 
+	 *         (firedEvents+=[Event|QualifiedName] firedEvents+=[Event|QualifiedName]*)?
+	 *     )
 	 */
 	protected void sequence_ActionSignature(EObject context, ActionSignature semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1158,7 +1163,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID superType=[Agent|ID]? features+=AgentFeature*)
+	 *     (name=ValidID superType=[Agent|QualifiedName]? features+=AgentFeature*)
 	 */
 	protected void sequence_Agent(EObject context, Agent semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1176,7 +1181,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (event=[Event|ID] guard=XExpression? body=XBlockExpression)
+	 *     (event=[Event|QualifiedName] guard=XExpression? body=XBlockExpression)
 	 */
 	protected void sequence_BehaviorUnit(EObject context, BehaviorUnit semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1185,7 +1190,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID superType=[Behavior|ID]? features+=BehaviorFeature*)
+	 *     (name=ValidID superType=[Behavior|QualifiedName]? features+=BehaviorFeature*)
 	 */
 	protected void sequence_Behavior(EObject context, Behavior semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1194,7 +1199,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (capacitiesUsed+=[Capacity|ID] capacitiesUsed+=[Capacity|ID]*)
+	 *     (capacitiesUsed+=[Capacity|QualifiedName] capacitiesUsed+=[Capacity|QualifiedName]*)
 	 */
 	protected void sequence_CapacityUses(EObject context, CapacityUses semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1203,7 +1208,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID superType=[Capacity|ID]? actions+=ActionSignature*)
+	 *     (name=ValidID superType=[Capacity|QualifiedName]? actions+=ActionSignature*)
 	 */
 	protected void sequence_Capacity(EObject context, Capacity semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1221,7 +1226,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID superType=[Event|ID]? features+=EventFeature*)
+	 *     (name=ValidID superType=[Event|QualifiedName]? features+=EventFeature*)
 	 */
 	protected void sequence_Event(EObject context, Event semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1258,7 +1263,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (requiredCapacities+=[Capacity|ID] requiredCapacities+=[Capacity|ID]*)
+	 *     (requiredCapacities+=[Capacity|QualifiedName] requiredCapacities+=[Capacity|QualifiedName]*)
 	 */
 	protected void sequence_RequiredCapacity(EObject context, RequiredCapacity semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1267,7 +1272,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID implementedCapacities+=[Capacity|ID] implementedCapacities+=[Capacity|ID]* features+=SkillFeature*)
+	 *     (name=ValidID implementedCapacities+=[Capacity|QualifiedName] implementedCapacities+=[Capacity|QualifiedName]* features+=SkillFeature*)
 	 */
 	protected void sequence_Skill(EObject context, Skill semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

@@ -18989,8 +18989,8 @@ rule__Event__SuperTypeAssignment_2_1
 (
 { before(grammarAccess.getEventAccess().getSuperTypeEventCrossReference_2_1_0()); }
 (
-{ before(grammarAccess.getEventAccess().getSuperTypeEventIDTerminalRuleCall_2_1_0_1()); }
-	RULE_ID{ after(grammarAccess.getEventAccess().getSuperTypeEventIDTerminalRuleCall_2_1_0_1()); }
+{ before(grammarAccess.getEventAccess().getSuperTypeEventQualifiedNameParserRuleCall_2_1_0_1()); }
+	ruleQualifiedName{ after(grammarAccess.getEventAccess().getSuperTypeEventQualifiedNameParserRuleCall_2_1_0_1()); }
 )
 { after(grammarAccess.getEventAccess().getSuperTypeEventCrossReference_2_1_0()); }
 )
@@ -19038,8 +19038,8 @@ rule__Capacity__SuperTypeAssignment_2_1
 (
 { before(grammarAccess.getCapacityAccess().getSuperTypeCapacityCrossReference_2_1_0()); }
 (
-{ before(grammarAccess.getCapacityAccess().getSuperTypeCapacityIDTerminalRuleCall_2_1_0_1()); }
-	RULE_ID{ after(grammarAccess.getCapacityAccess().getSuperTypeCapacityIDTerminalRuleCall_2_1_0_1()); }
+{ before(grammarAccess.getCapacityAccess().getSuperTypeCapacityQualifiedNameParserRuleCall_2_1_0_1()); }
+	ruleQualifiedName{ after(grammarAccess.getCapacityAccess().getSuperTypeCapacityQualifiedNameParserRuleCall_2_1_0_1()); }
 )
 { after(grammarAccess.getCapacityAccess().getSuperTypeCapacityCrossReference_2_1_0()); }
 )
@@ -19087,8 +19087,8 @@ rule__Agent__SuperTypeAssignment_2_1
 (
 { before(grammarAccess.getAgentAccess().getSuperTypeAgentCrossReference_2_1_0()); }
 (
-{ before(grammarAccess.getAgentAccess().getSuperTypeAgentIDTerminalRuleCall_2_1_0_1()); }
-	RULE_ID{ after(grammarAccess.getAgentAccess().getSuperTypeAgentIDTerminalRuleCall_2_1_0_1()); }
+{ before(grammarAccess.getAgentAccess().getSuperTypeAgentQualifiedNameParserRuleCall_2_1_0_1()); }
+	ruleQualifiedName{ after(grammarAccess.getAgentAccess().getSuperTypeAgentQualifiedNameParserRuleCall_2_1_0_1()); }
 )
 { after(grammarAccess.getAgentAccess().getSuperTypeAgentCrossReference_2_1_0()); }
 )
@@ -19136,8 +19136,8 @@ rule__Behavior__SuperTypeAssignment_2_1
 (
 { before(grammarAccess.getBehaviorAccess().getSuperTypeBehaviorCrossReference_2_1_0()); }
 (
-{ before(grammarAccess.getBehaviorAccess().getSuperTypeBehaviorIDTerminalRuleCall_2_1_0_1()); }
-	RULE_ID{ after(grammarAccess.getBehaviorAccess().getSuperTypeBehaviorIDTerminalRuleCall_2_1_0_1()); }
+{ before(grammarAccess.getBehaviorAccess().getSuperTypeBehaviorQualifiedNameParserRuleCall_2_1_0_1()); }
+	ruleQualifiedName{ after(grammarAccess.getBehaviorAccess().getSuperTypeBehaviorQualifiedNameParserRuleCall_2_1_0_1()); }
 )
 { after(grammarAccess.getBehaviorAccess().getSuperTypeBehaviorCrossReference_2_1_0()); }
 )
@@ -19253,8 +19253,8 @@ rule__CapacityUses__CapacitiesUsedAssignment_1
 (
 { before(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityCrossReference_1_0()); }
 (
-{ before(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityIDTerminalRuleCall_1_0_1()); }
-	RULE_ID{ after(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityIDTerminalRuleCall_1_0_1()); }
+{ before(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityQualifiedNameParserRuleCall_1_0_1()); }
+	ruleQualifiedName{ after(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityQualifiedNameParserRuleCall_1_0_1()); }
 )
 { after(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityCrossReference_1_0()); }
 )
@@ -19272,8 +19272,8 @@ rule__CapacityUses__CapacitiesUsedAssignment_2_1
 (
 { before(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityCrossReference_2_1_0()); }
 (
-{ before(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityIDTerminalRuleCall_2_1_0_1()); }
-	RULE_ID{ after(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityIDTerminalRuleCall_2_1_0_1()); }
+{ before(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityQualifiedNameParserRuleCall_2_1_0_1()); }
+	ruleQualifiedName{ after(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityQualifiedNameParserRuleCall_2_1_0_1()); }
 )
 { after(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityCrossReference_2_1_0()); }
 )
@@ -19291,8 +19291,8 @@ rule__BehaviorUnit__EventAssignment_1
 (
 { before(grammarAccess.getBehaviorUnitAccess().getEventEventCrossReference_1_0()); }
 (
-{ before(grammarAccess.getBehaviorUnitAccess().getEventEventIDTerminalRuleCall_1_0_1()); }
-	RULE_ID{ after(grammarAccess.getBehaviorUnitAccess().getEventEventIDTerminalRuleCall_1_0_1()); }
+{ before(grammarAccess.getBehaviorUnitAccess().getEventEventQualifiedNameParserRuleCall_1_0_1()); }
+	ruleQualifiedName{ after(grammarAccess.getBehaviorUnitAccess().getEventEventQualifiedNameParserRuleCall_1_0_1()); }
 )
 { after(grammarAccess.getBehaviorUnitAccess().getEventEventCrossReference_1_0()); }
 )
@@ -19453,8 +19453,8 @@ rule__ActionSignature__FiredEventsAssignment_4_1
 (
 { before(grammarAccess.getActionSignatureAccess().getFiredEventsEventCrossReference_4_1_0()); }
 (
-{ before(grammarAccess.getActionSignatureAccess().getFiredEventsEventIDTerminalRuleCall_4_1_0_1()); }
-	RULE_ID{ after(grammarAccess.getActionSignatureAccess().getFiredEventsEventIDTerminalRuleCall_4_1_0_1()); }
+{ before(grammarAccess.getActionSignatureAccess().getFiredEventsEventQualifiedNameParserRuleCall_4_1_0_1()); }
+	ruleQualifiedName{ after(grammarAccess.getActionSignatureAccess().getFiredEventsEventQualifiedNameParserRuleCall_4_1_0_1()); }
 )
 { after(grammarAccess.getActionSignatureAccess().getFiredEventsEventCrossReference_4_1_0()); }
 )
@@ -19472,8 +19472,8 @@ rule__ActionSignature__FiredEventsAssignment_4_2_1
 (
 { before(grammarAccess.getActionSignatureAccess().getFiredEventsEventCrossReference_4_2_1_0()); }
 (
-{ before(grammarAccess.getActionSignatureAccess().getFiredEventsEventIDTerminalRuleCall_4_2_1_0_1()); }
-	RULE_ID{ after(grammarAccess.getActionSignatureAccess().getFiredEventsEventIDTerminalRuleCall_4_2_1_0_1()); }
+{ before(grammarAccess.getActionSignatureAccess().getFiredEventsEventQualifiedNameParserRuleCall_4_2_1_0_1()); }
+	ruleQualifiedName{ after(grammarAccess.getActionSignatureAccess().getFiredEventsEventQualifiedNameParserRuleCall_4_2_1_0_1()); }
 )
 { after(grammarAccess.getActionSignatureAccess().getFiredEventsEventCrossReference_4_2_1_0()); }
 )
@@ -19521,8 +19521,8 @@ rule__RequiredCapacity__RequiredCapacitiesAssignment_1
 (
 { before(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityCrossReference_1_0()); }
 (
-{ before(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityIDTerminalRuleCall_1_0_1()); }
-	RULE_ID{ after(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityIDTerminalRuleCall_1_0_1()); }
+{ before(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityQualifiedNameParserRuleCall_1_0_1()); }
+	ruleQualifiedName{ after(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityQualifiedNameParserRuleCall_1_0_1()); }
 )
 { after(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityCrossReference_1_0()); }
 )
@@ -19540,8 +19540,8 @@ rule__RequiredCapacity__RequiredCapacitiesAssignment_2_1
 (
 { before(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityCrossReference_2_1_0()); }
 (
-{ before(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityIDTerminalRuleCall_2_1_0_1()); }
-	RULE_ID{ after(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityIDTerminalRuleCall_2_1_0_1()); }
+{ before(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityQualifiedNameParserRuleCall_2_1_0_1()); }
+	ruleQualifiedName{ after(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityQualifiedNameParserRuleCall_2_1_0_1()); }
 )
 { after(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityCrossReference_2_1_0()); }
 )
@@ -19574,8 +19574,8 @@ rule__Skill__ImplementedCapacitiesAssignment_3
 (
 { before(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityCrossReference_3_0()); }
 (
-{ before(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityIDTerminalRuleCall_3_0_1()); }
-	RULE_ID{ after(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityIDTerminalRuleCall_3_0_1()); }
+{ before(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityQualifiedNameParserRuleCall_3_0_1()); }
+	ruleQualifiedName{ after(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityQualifiedNameParserRuleCall_3_0_1()); }
 )
 { after(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityCrossReference_3_0()); }
 )
@@ -19593,8 +19593,8 @@ rule__Skill__ImplementedCapacitiesAssignment_4_1
 (
 { before(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityCrossReference_4_1_0()); }
 (
-{ before(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityIDTerminalRuleCall_4_1_0_1()); }
-	RULE_ID{ after(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityIDTerminalRuleCall_4_1_0_1()); }
+{ before(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityQualifiedNameParserRuleCall_4_1_0_1()); }
+	ruleQualifiedName{ after(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityQualifiedNameParserRuleCall_4_1_0_1()); }
 )
 { after(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityCrossReference_4_1_0()); }
 )

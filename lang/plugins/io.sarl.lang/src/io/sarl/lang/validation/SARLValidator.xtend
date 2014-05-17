@@ -33,4 +33,5 @@ class SARLValidator extends AbstractSARLValidator {
 //					INVALID_NAME)
 //		}
 //	}
+// TODO : skill should implements a subclass of Capacity
 }

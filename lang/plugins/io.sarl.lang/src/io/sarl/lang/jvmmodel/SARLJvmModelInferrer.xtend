@@ -173,19 +173,6 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					
 				}
 
-				members += element.toMethod('toString', newTypeRef(String)) [
-					documentation = '''Returns a String representation of the Event «element.name».'''
-					body = [
-						append(
-							'''
-							StringBuilder result = new StringBuilder();
-							result.append("«element.name»[");
-							result.append(attributesToString());
-							result.append("]");
-							return result.toString();''')
-					]
-				]
-
 				val serialValue = serial
 				members += element.toField("serialVersionUID", newTypeRef(long)) [
 					visibility = JvmVisibility::PRIVATE
@@ -280,6 +267,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 								members += bMethod
 							}
 						}
+						Action: {
+							generateAction(feature.signature, feature.body)
+						}
 						CapacityUses: {
 							for (used : feature.capacitiesUsed) {
 								generateCapacityDelegatorMethods(element, used)
@@ -329,7 +319,6 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					}
 					Action: {
 						generateAction(feature.signature, feature.body)
-
 					}
 					Attribute: {
 							members += feature.toField(feature.name, feature.type) [

@@ -21,29 +21,35 @@ import "http://www.eclipse.org/xtext/xbase/Xbase"
 Model:
 	('package' name=QualifiedName ';'?)?
 	importSection=XImportSection?
-	elements+=AbstractElement*;
+	elements+=AbstractElement*
+;
 
 AbstractElement:
-	Event | Capacity | Agent | Behavior | Skill;
+	Event | Capacity | Agent | Behavior | Skill
+;
 
 Event:
-	'event' name=ValidID ('extends' superType=[Event])? 
-	('{' features+=EventFeature* '}')?;
+	'event' name=ValidID ('extends' superType=[Event|QualifiedName])? 
+	('{' features+=EventFeature* '}')?
+;
 
 Capacity:
-	'capacity' name=ValidID ('extends' superType=[Capacity])? '{'
+	'capacity' name=ValidID ('extends' superType=[Capacity|QualifiedName])? '{'
 	actions+=ActionSignature*
-	'}';
+	'}'
+;
 
 Agent:
-	'agent' name=ValidID ('extends' superType=[Agent])? '{'
+	'agent' name=ValidID ('extends' superType=[Agent|QualifiedName])? '{'
 	features+=AgentFeature*
-	'}';
+	'}'
+;
 
 Behavior:
-	'behavior' name=ValidID ('extends' superType=[Behavior])? '{'
+	'behavior' name=ValidID ('extends' superType=[Behavior|QualifiedName])? '{'
 	features+=BehaviorFeature*
-	'}';
+	'}'
+;
 
 EventFeature:
 	Attribute | Constructor
@@ -54,43 +60,68 @@ AgentFeature:
 ;
 
 BehaviorFeature:
-	Attribute | BehaviorUnit | Action | CapacityUses | RequiredCapacity | Constructor;
+	Attribute | BehaviorUnit | Action | CapacityUses | RequiredCapacity | Constructor
+;
 
 Attribute:		
-	(writeable?='var' | 'val') (=>(name=ValidID ':' type=JvmTypeReference) | name=ValidID)  ('=' initialValue=XExpression)?;
+	(writeable?='var' | 'val') (=>(name=ValidID ':' type=JvmTypeReference) | name=ValidID) 
+	('=' initialValue=XExpression)?
+;
 	
 CapacityUses:
-	'uses' capacitiesUsed+=[Capacity] (',' capacitiesUsed+=[Capacity])*;
+	'uses' capacitiesUsed+=[Capacity|QualifiedName]
+	(',' capacitiesUsed+=[Capacity|QualifiedName])*
+;
 
 BehaviorUnit:
-	'on' event=[Event] ('[' guard=XExpression ']')? body=XBlockExpression;
+	'on' event=[Event|QualifiedName] ('[' guard=XExpression ']')? body=XBlockExpression
+;
 
 Action:
-	signature=ActionSignature body=XBlockExpression;
+	signature=ActionSignature body=XBlockExpression
+;
 
 ActionSignature:
-	'def' name=ValidID ('(' params+=Parameter (',' params+=Parameter)* (varargs?='...')? ')')?
-	(':' type=JvmTypeReference)? ('fires' firedEvents+=[Event] (',' firedEvents+=[Event])*)?;
+	'def' name=ValidID 
+	(	'(' params+=Parameter
+		(',' params+=Parameter)* (varargs?='...')? ')'
+	)?
+	(':' type=JvmTypeReference)?
+	('fires' firedEvents+=[Event|QualifiedName] (',' firedEvents+=[Event|QualifiedName])*)?
+;
 	
 Parameter:
-	 name=ValidID ':' parameterType=JvmTypeReference;
+	 name=ValidID ':' parameterType=JvmTypeReference
+;
 
 
 RequiredCapacity:
-	'requires' requiredCapacities+=[Capacity] (',' requiredCapacities+=[Capacity])*;
+	'requires' requiredCapacities+=[Capacity|QualifiedName]
+	(',' requiredCapacities+=[Capacity|QualifiedName])*
+;
 
 Skill:
-	'skill' name=ValidID 'implements' implementedCapacities+=[Capacity] (',' implementedCapacities+=[Capacity])*
-	'{' features+=SkillFeature* '}';
+	'skill' name=ValidID 'implements' 
+	implementedCapacities+=[Capacity|QualifiedName]
+	(',' implementedCapacities+=[Capacity|QualifiedName])*
+	'{' features+=SkillFeature* '}'
+;
 
 SkillFeature:
-	Attribute | Action | RequiredCapacity | Constructor | CapacityUses;
+	Attribute | Action | RequiredCapacity | Constructor | CapacityUses
+;
 	
 Constructor:
-	'new' ('(' params+=Parameter (',' params+=Parameter)* (varargs?='...')? ')')? body=XBlockExpression
+	'new'
+	(	'(' params+=Parameter (',' params+=Parameter)* 
+		(varargs?='...')? ')'
+	)? body=XBlockExpression
 ;
 
 XVariableDeclaration returns XExpression:
 	{XVariableDeclaration}
-	(writeable?='var'|'val') (=>(name=ValidID ':' type=JvmTypeReference) | name=ValidID) ('=' right=XExpression)?;
+	(writeable?='var'|'val')
+	(=>(name=ValidID ':' type=JvmTypeReference) | name=ValidID)
+	('=' right=XExpression)?
+;
 

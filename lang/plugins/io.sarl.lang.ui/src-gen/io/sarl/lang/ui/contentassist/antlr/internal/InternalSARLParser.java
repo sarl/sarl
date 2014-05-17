@@ -8480,11 +8480,11 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
             if ( (LA7_0==RULE_ID) ) {
                 int LA7_1 = input.LA(2);
 
-                if ( (LA7_1==56) ) {
-                    alt7=1;
-                }
-                else if ( (LA7_1==EOF||LA7_1==13||LA7_1==16||LA7_1==52||LA7_1==57||LA7_1==59||LA7_1==62||LA7_1==66||LA7_1==69||LA7_1==90) ) {
+                if ( (LA7_1==EOF||LA7_1==13||LA7_1==16||LA7_1==52||LA7_1==57||LA7_1==59||LA7_1==62||LA7_1==66||LA7_1==69||LA7_1==90) ) {
                     alt7=2;
+                }
+                else if ( (LA7_1==56) ) {
+                    alt7=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -8858,11 +8858,11 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
             if ( (LA10_0==RULE_ID) ) {
                 int LA10_1 = input.LA(2);
 
-                if ( (LA10_1==56) ) {
-                    alt10=1;
-                }
-                else if ( (LA10_1==EOF||(LA10_1>=RULE_ID && LA10_1<=RULE_STRING)||LA10_1==13||LA10_1==16||LA10_1==26||(LA10_1>=34 && LA10_1<=35)||LA10_1==40||(LA10_1>=42 && LA10_1<=47)||LA10_1==49||(LA10_1>=51 && LA10_1<=52)||(LA10_1>=60 && LA10_1<=61)||LA10_1==63||LA10_1==69||(LA10_1>=72 && LA10_1<=73)||LA10_1==75||(LA10_1>=78 && LA10_1<=85)||LA10_1==90||LA10_1==95) ) {
+                if ( (LA10_1==EOF||(LA10_1>=RULE_ID && LA10_1<=RULE_STRING)||LA10_1==13||LA10_1==16||LA10_1==26||(LA10_1>=34 && LA10_1<=35)||LA10_1==40||(LA10_1>=42 && LA10_1<=47)||LA10_1==49||(LA10_1>=51 && LA10_1<=52)||(LA10_1>=60 && LA10_1<=61)||LA10_1==63||LA10_1==69||(LA10_1>=72 && LA10_1<=73)||LA10_1==75||(LA10_1>=78 && LA10_1<=85)||LA10_1==90||LA10_1==95) ) {
                     alt10=2;
+                }
+                else if ( (LA10_1==56) ) {
+                    alt10=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -8969,11 +8969,11 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                 {
                 int LA11_1 = input.LA(2);
 
-                if ( (LA11_1==EOF||(LA11_1>=RULE_ID && LA11_1<=RULE_STRING)||(LA11_1>=14 && LA11_1<=47)||LA11_1==49||(LA11_1>=51 && LA11_1<=52)||(LA11_1>=56 && LA11_1<=64)||LA11_1==66||(LA11_1>=69 && LA11_1<=87)||LA11_1==90||(LA11_1>=92 && LA11_1<=93)||LA11_1==95) ) {
-                    alt11=2;
-                }
-                else if ( (LA11_1==13) ) {
+                if ( (LA11_1==13) ) {
                     alt11=1;
+                }
+                else if ( (LA11_1==EOF||(LA11_1>=RULE_ID && LA11_1<=RULE_STRING)||(LA11_1>=14 && LA11_1<=47)||LA11_1==49||(LA11_1>=51 && LA11_1<=52)||(LA11_1>=56 && LA11_1<=64)||LA11_1==66||(LA11_1>=69 && LA11_1<=87)||LA11_1==90||(LA11_1>=92 && LA11_1<=93)||LA11_1==95) ) {
+                    alt11=2;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -8988,11 +8988,11 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                 {
                 int LA11_2 = input.LA(2);
 
-                if ( (LA11_2==13) ) {
-                    alt11=1;
-                }
-                else if ( (LA11_2==EOF||(LA11_2>=RULE_ID && LA11_2<=RULE_STRING)||(LA11_2>=14 && LA11_2<=47)||LA11_2==49||(LA11_2>=51 && LA11_2<=52)||(LA11_2>=56 && LA11_2<=64)||LA11_2==66||(LA11_2>=69 && LA11_2<=87)||LA11_2==90||(LA11_2>=92 && LA11_2<=93)||LA11_2==95) ) {
+                if ( (LA11_2==EOF||(LA11_2>=RULE_ID && LA11_2<=RULE_STRING)||(LA11_2>=14 && LA11_2<=47)||LA11_2==49||(LA11_2>=51 && LA11_2<=52)||(LA11_2>=56 && LA11_2<=64)||LA11_2==66||(LA11_2>=69 && LA11_2<=87)||LA11_2==90||(LA11_2>=92 && LA11_2<=93)||LA11_2==95) ) {
                     alt11=2;
+                }
+                else if ( (LA11_2==13) ) {
+                    alt11=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -54542,30 +54542,34 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Event__SuperTypeAssignment_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:18984:1: rule__Event__SuperTypeAssignment_2_1 : ( ( RULE_ID ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:18984:1: rule__Event__SuperTypeAssignment_2_1 : ( ( ruleQualifiedName ) ) ;
     public final void rule__Event__SuperTypeAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:18988:1: ( ( ( RULE_ID ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:18989:1: ( ( RULE_ID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:18988:1: ( ( ( ruleQualifiedName ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:18989:1: ( ( ruleQualifiedName ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:18989:1: ( ( RULE_ID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:18990:1: ( RULE_ID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:18989:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:18990:1: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getEventAccess().getSuperTypeEventCrossReference_2_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:18991:1: ( RULE_ID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:18992:1: RULE_ID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:18991:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:18992:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getEventAccess().getSuperTypeEventIDTerminalRuleCall_2_1_0_1()); 
+               before(grammarAccess.getEventAccess().getSuperTypeEventQualifiedNameParserRuleCall_2_1_0_1()); 
             }
-            match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__Event__SuperTypeAssignment_2_138229); if (state.failed) return ;
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__Event__SuperTypeAssignment_2_138229);
+            ruleQualifiedName();
+
+            state._fsp--;
+            if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getEventAccess().getSuperTypeEventIDTerminalRuleCall_2_1_0_1()); 
+               after(grammarAccess.getEventAccess().getSuperTypeEventQualifiedNameParserRuleCall_2_1_0_1()); 
             }
 
             }
@@ -54685,30 +54689,34 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Capacity__SuperTypeAssignment_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19033:1: rule__Capacity__SuperTypeAssignment_2_1 : ( ( RULE_ID ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19033:1: rule__Capacity__SuperTypeAssignment_2_1 : ( ( ruleQualifiedName ) ) ;
     public final void rule__Capacity__SuperTypeAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19037:1: ( ( ( RULE_ID ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19038:1: ( ( RULE_ID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19037:1: ( ( ( ruleQualifiedName ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19038:1: ( ( ruleQualifiedName ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19038:1: ( ( RULE_ID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19039:1: ( RULE_ID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19038:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19039:1: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getCapacityAccess().getSuperTypeCapacityCrossReference_2_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19040:1: ( RULE_ID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19041:1: RULE_ID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19040:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19041:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getCapacityAccess().getSuperTypeCapacityIDTerminalRuleCall_2_1_0_1()); 
+               before(grammarAccess.getCapacityAccess().getSuperTypeCapacityQualifiedNameParserRuleCall_2_1_0_1()); 
             }
-            match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__Capacity__SuperTypeAssignment_2_138330); if (state.failed) return ;
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__Capacity__SuperTypeAssignment_2_138330);
+            ruleQualifiedName();
+
+            state._fsp--;
+            if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getCapacityAccess().getSuperTypeCapacityIDTerminalRuleCall_2_1_0_1()); 
+               after(grammarAccess.getCapacityAccess().getSuperTypeCapacityQualifiedNameParserRuleCall_2_1_0_1()); 
             }
 
             }
@@ -54828,30 +54836,34 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Agent__SuperTypeAssignment_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19082:1: rule__Agent__SuperTypeAssignment_2_1 : ( ( RULE_ID ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19082:1: rule__Agent__SuperTypeAssignment_2_1 : ( ( ruleQualifiedName ) ) ;
     public final void rule__Agent__SuperTypeAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19086:1: ( ( ( RULE_ID ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19087:1: ( ( RULE_ID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19086:1: ( ( ( ruleQualifiedName ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19087:1: ( ( ruleQualifiedName ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19087:1: ( ( RULE_ID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19088:1: ( RULE_ID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19087:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19088:1: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getAgentAccess().getSuperTypeAgentCrossReference_2_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19089:1: ( RULE_ID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19090:1: RULE_ID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19089:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19090:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getAgentAccess().getSuperTypeAgentIDTerminalRuleCall_2_1_0_1()); 
+               before(grammarAccess.getAgentAccess().getSuperTypeAgentQualifiedNameParserRuleCall_2_1_0_1()); 
             }
-            match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__Agent__SuperTypeAssignment_2_138431); if (state.failed) return ;
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__Agent__SuperTypeAssignment_2_138431);
+            ruleQualifiedName();
+
+            state._fsp--;
+            if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getAgentAccess().getSuperTypeAgentIDTerminalRuleCall_2_1_0_1()); 
+               after(grammarAccess.getAgentAccess().getSuperTypeAgentQualifiedNameParserRuleCall_2_1_0_1()); 
             }
 
             }
@@ -54971,30 +54983,34 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Behavior__SuperTypeAssignment_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19131:1: rule__Behavior__SuperTypeAssignment_2_1 : ( ( RULE_ID ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19131:1: rule__Behavior__SuperTypeAssignment_2_1 : ( ( ruleQualifiedName ) ) ;
     public final void rule__Behavior__SuperTypeAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19135:1: ( ( ( RULE_ID ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19136:1: ( ( RULE_ID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19135:1: ( ( ( ruleQualifiedName ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19136:1: ( ( ruleQualifiedName ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19136:1: ( ( RULE_ID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19137:1: ( RULE_ID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19136:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19137:1: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getBehaviorAccess().getSuperTypeBehaviorCrossReference_2_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19138:1: ( RULE_ID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19139:1: RULE_ID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19138:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19139:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBehaviorAccess().getSuperTypeBehaviorIDTerminalRuleCall_2_1_0_1()); 
+               before(grammarAccess.getBehaviorAccess().getSuperTypeBehaviorQualifiedNameParserRuleCall_2_1_0_1()); 
             }
-            match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__Behavior__SuperTypeAssignment_2_138532); if (state.failed) return ;
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__Behavior__SuperTypeAssignment_2_138532);
+            ruleQualifiedName();
+
+            state._fsp--;
+            if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBehaviorAccess().getSuperTypeBehaviorIDTerminalRuleCall_2_1_0_1()); 
+               after(grammarAccess.getBehaviorAccess().getSuperTypeBehaviorQualifiedNameParserRuleCall_2_1_0_1()); 
             }
 
             }
@@ -55302,30 +55318,34 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__CapacityUses__CapacitiesUsedAssignment_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19248:1: rule__CapacityUses__CapacitiesUsedAssignment_1 : ( ( RULE_ID ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19248:1: rule__CapacityUses__CapacitiesUsedAssignment_1 : ( ( ruleQualifiedName ) ) ;
     public final void rule__CapacityUses__CapacitiesUsedAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19252:1: ( ( ( RULE_ID ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19253:1: ( ( RULE_ID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19252:1: ( ( ( ruleQualifiedName ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19253:1: ( ( ruleQualifiedName ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19253:1: ( ( RULE_ID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19254:1: ( RULE_ID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19253:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19254:1: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityCrossReference_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19255:1: ( RULE_ID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19256:1: RULE_ID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19255:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19256:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityIDTerminalRuleCall_1_0_1()); 
+               before(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityQualifiedNameParserRuleCall_1_0_1()); 
             }
-            match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__CapacityUses__CapacitiesUsedAssignment_138770); if (state.failed) return ;
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__CapacityUses__CapacitiesUsedAssignment_138770);
+            ruleQualifiedName();
+
+            state._fsp--;
+            if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityIDTerminalRuleCall_1_0_1()); 
+               after(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityQualifiedNameParserRuleCall_1_0_1()); 
             }
 
             }
@@ -55355,30 +55375,34 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__CapacityUses__CapacitiesUsedAssignment_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19267:1: rule__CapacityUses__CapacitiesUsedAssignment_2_1 : ( ( RULE_ID ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19267:1: rule__CapacityUses__CapacitiesUsedAssignment_2_1 : ( ( ruleQualifiedName ) ) ;
     public final void rule__CapacityUses__CapacitiesUsedAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19271:1: ( ( ( RULE_ID ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19272:1: ( ( RULE_ID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19271:1: ( ( ( ruleQualifiedName ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19272:1: ( ( ruleQualifiedName ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19272:1: ( ( RULE_ID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19273:1: ( RULE_ID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19272:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19273:1: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityCrossReference_2_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19274:1: ( RULE_ID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19275:1: RULE_ID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19274:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19275:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityIDTerminalRuleCall_2_1_0_1()); 
+               before(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityQualifiedNameParserRuleCall_2_1_0_1()); 
             }
-            match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__CapacityUses__CapacitiesUsedAssignment_2_138809); if (state.failed) return ;
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__CapacityUses__CapacitiesUsedAssignment_2_138809);
+            ruleQualifiedName();
+
+            state._fsp--;
+            if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityIDTerminalRuleCall_2_1_0_1()); 
+               after(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedCapacityQualifiedNameParserRuleCall_2_1_0_1()); 
             }
 
             }
@@ -55408,30 +55432,34 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__BehaviorUnit__EventAssignment_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19286:1: rule__BehaviorUnit__EventAssignment_1 : ( ( RULE_ID ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19286:1: rule__BehaviorUnit__EventAssignment_1 : ( ( ruleQualifiedName ) ) ;
     public final void rule__BehaviorUnit__EventAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19290:1: ( ( ( RULE_ID ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19291:1: ( ( RULE_ID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19290:1: ( ( ( ruleQualifiedName ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19291:1: ( ( ruleQualifiedName ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19291:1: ( ( RULE_ID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19292:1: ( RULE_ID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19291:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19292:1: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getBehaviorUnitAccess().getEventEventCrossReference_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19293:1: ( RULE_ID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19294:1: RULE_ID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19293:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19294:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBehaviorUnitAccess().getEventEventIDTerminalRuleCall_1_0_1()); 
+               before(grammarAccess.getBehaviorUnitAccess().getEventEventQualifiedNameParserRuleCall_1_0_1()); 
             }
-            match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__BehaviorUnit__EventAssignment_138848); if (state.failed) return ;
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__BehaviorUnit__EventAssignment_138848);
+            ruleQualifiedName();
+
+            state._fsp--;
+            if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBehaviorUnitAccess().getEventEventIDTerminalRuleCall_1_0_1()); 
+               after(grammarAccess.getBehaviorUnitAccess().getEventEventQualifiedNameParserRuleCall_1_0_1()); 
             }
 
             }
@@ -55874,30 +55902,34 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__ActionSignature__FiredEventsAssignment_4_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19448:1: rule__ActionSignature__FiredEventsAssignment_4_1 : ( ( RULE_ID ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19448:1: rule__ActionSignature__FiredEventsAssignment_4_1 : ( ( ruleQualifiedName ) ) ;
     public final void rule__ActionSignature__FiredEventsAssignment_4_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19452:1: ( ( ( RULE_ID ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19453:1: ( ( RULE_ID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19452:1: ( ( ( ruleQualifiedName ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19453:1: ( ( ruleQualifiedName ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19453:1: ( ( RULE_ID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19454:1: ( RULE_ID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19453:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19454:1: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getActionSignatureAccess().getFiredEventsEventCrossReference_4_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19455:1: ( RULE_ID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19456:1: RULE_ID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19455:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19456:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getActionSignatureAccess().getFiredEventsEventIDTerminalRuleCall_4_1_0_1()); 
+               before(grammarAccess.getActionSignatureAccess().getFiredEventsEventQualifiedNameParserRuleCall_4_1_0_1()); 
             }
-            match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__ActionSignature__FiredEventsAssignment_4_139179); if (state.failed) return ;
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__ActionSignature__FiredEventsAssignment_4_139179);
+            ruleQualifiedName();
+
+            state._fsp--;
+            if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getActionSignatureAccess().getFiredEventsEventIDTerminalRuleCall_4_1_0_1()); 
+               after(grammarAccess.getActionSignatureAccess().getFiredEventsEventQualifiedNameParserRuleCall_4_1_0_1()); 
             }
 
             }
@@ -55927,30 +55959,34 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__ActionSignature__FiredEventsAssignment_4_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19467:1: rule__ActionSignature__FiredEventsAssignment_4_2_1 : ( ( RULE_ID ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19467:1: rule__ActionSignature__FiredEventsAssignment_4_2_1 : ( ( ruleQualifiedName ) ) ;
     public final void rule__ActionSignature__FiredEventsAssignment_4_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19471:1: ( ( ( RULE_ID ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19472:1: ( ( RULE_ID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19471:1: ( ( ( ruleQualifiedName ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19472:1: ( ( ruleQualifiedName ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19472:1: ( ( RULE_ID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19473:1: ( RULE_ID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19472:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19473:1: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getActionSignatureAccess().getFiredEventsEventCrossReference_4_2_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19474:1: ( RULE_ID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19475:1: RULE_ID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19474:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19475:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getActionSignatureAccess().getFiredEventsEventIDTerminalRuleCall_4_2_1_0_1()); 
+               before(grammarAccess.getActionSignatureAccess().getFiredEventsEventQualifiedNameParserRuleCall_4_2_1_0_1()); 
             }
-            match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__ActionSignature__FiredEventsAssignment_4_2_139218); if (state.failed) return ;
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__ActionSignature__FiredEventsAssignment_4_2_139218);
+            ruleQualifiedName();
+
+            state._fsp--;
+            if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getActionSignatureAccess().getFiredEventsEventIDTerminalRuleCall_4_2_1_0_1()); 
+               after(grammarAccess.getActionSignatureAccess().getFiredEventsEventQualifiedNameParserRuleCall_4_2_1_0_1()); 
             }
 
             }
@@ -56070,30 +56106,34 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__RequiredCapacity__RequiredCapacitiesAssignment_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19516:1: rule__RequiredCapacity__RequiredCapacitiesAssignment_1 : ( ( RULE_ID ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19516:1: rule__RequiredCapacity__RequiredCapacitiesAssignment_1 : ( ( ruleQualifiedName ) ) ;
     public final void rule__RequiredCapacity__RequiredCapacitiesAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19520:1: ( ( ( RULE_ID ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19521:1: ( ( RULE_ID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19520:1: ( ( ( ruleQualifiedName ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19521:1: ( ( ruleQualifiedName ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19521:1: ( ( RULE_ID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19522:1: ( RULE_ID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19521:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19522:1: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityCrossReference_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19523:1: ( RULE_ID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19524:1: RULE_ID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19523:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19524:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityIDTerminalRuleCall_1_0_1()); 
+               before(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityQualifiedNameParserRuleCall_1_0_1()); 
             }
-            match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__RequiredCapacity__RequiredCapacitiesAssignment_139319); if (state.failed) return ;
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__RequiredCapacity__RequiredCapacitiesAssignment_139319);
+            ruleQualifiedName();
+
+            state._fsp--;
+            if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityIDTerminalRuleCall_1_0_1()); 
+               after(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityQualifiedNameParserRuleCall_1_0_1()); 
             }
 
             }
@@ -56123,30 +56163,34 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__RequiredCapacity__RequiredCapacitiesAssignment_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19535:1: rule__RequiredCapacity__RequiredCapacitiesAssignment_2_1 : ( ( RULE_ID ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19535:1: rule__RequiredCapacity__RequiredCapacitiesAssignment_2_1 : ( ( ruleQualifiedName ) ) ;
     public final void rule__RequiredCapacity__RequiredCapacitiesAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19539:1: ( ( ( RULE_ID ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19540:1: ( ( RULE_ID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19539:1: ( ( ( ruleQualifiedName ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19540:1: ( ( ruleQualifiedName ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19540:1: ( ( RULE_ID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19541:1: ( RULE_ID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19540:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19541:1: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityCrossReference_2_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19542:1: ( RULE_ID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19543:1: RULE_ID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19542:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19543:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityIDTerminalRuleCall_2_1_0_1()); 
+               before(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityQualifiedNameParserRuleCall_2_1_0_1()); 
             }
-            match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__RequiredCapacity__RequiredCapacitiesAssignment_2_139358); if (state.failed) return ;
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__RequiredCapacity__RequiredCapacitiesAssignment_2_139358);
+            ruleQualifiedName();
+
+            state._fsp--;
+            if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityIDTerminalRuleCall_2_1_0_1()); 
+               after(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesCapacityQualifiedNameParserRuleCall_2_1_0_1()); 
             }
 
             }
@@ -56221,30 +56265,34 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Skill__ImplementedCapacitiesAssignment_3"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19569:1: rule__Skill__ImplementedCapacitiesAssignment_3 : ( ( RULE_ID ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19569:1: rule__Skill__ImplementedCapacitiesAssignment_3 : ( ( ruleQualifiedName ) ) ;
     public final void rule__Skill__ImplementedCapacitiesAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19573:1: ( ( ( RULE_ID ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19574:1: ( ( RULE_ID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19573:1: ( ( ( ruleQualifiedName ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19574:1: ( ( ruleQualifiedName ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19574:1: ( ( RULE_ID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19575:1: ( RULE_ID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19574:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19575:1: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityCrossReference_3_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19576:1: ( RULE_ID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19577:1: RULE_ID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19576:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19577:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityIDTerminalRuleCall_3_0_1()); 
+               before(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityQualifiedNameParserRuleCall_3_0_1()); 
             }
-            match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__Skill__ImplementedCapacitiesAssignment_339428); if (state.failed) return ;
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__Skill__ImplementedCapacitiesAssignment_339428);
+            ruleQualifiedName();
+
+            state._fsp--;
+            if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityIDTerminalRuleCall_3_0_1()); 
+               after(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityQualifiedNameParserRuleCall_3_0_1()); 
             }
 
             }
@@ -56274,30 +56322,34 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Skill__ImplementedCapacitiesAssignment_4_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19588:1: rule__Skill__ImplementedCapacitiesAssignment_4_1 : ( ( RULE_ID ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19588:1: rule__Skill__ImplementedCapacitiesAssignment_4_1 : ( ( ruleQualifiedName ) ) ;
     public final void rule__Skill__ImplementedCapacitiesAssignment_4_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19592:1: ( ( ( RULE_ID ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19593:1: ( ( RULE_ID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19592:1: ( ( ( ruleQualifiedName ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19593:1: ( ( ruleQualifiedName ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19593:1: ( ( RULE_ID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19594:1: ( RULE_ID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19593:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19594:1: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityCrossReference_4_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19595:1: ( RULE_ID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19596:1: RULE_ID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19595:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:19596:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityIDTerminalRuleCall_4_1_0_1()); 
+               before(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityQualifiedNameParserRuleCall_4_1_0_1()); 
             }
-            match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__Skill__ImplementedCapacitiesAssignment_4_139467); if (state.failed) return ;
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__Skill__ImplementedCapacitiesAssignment_4_139467);
+            ruleQualifiedName();
+
+            state._fsp--;
+            if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityIDTerminalRuleCall_4_1_0_1()); 
+               after(grammarAccess.getSkillAccess().getImplementedCapacitiesCapacityQualifiedNameParserRuleCall_4_1_0_1()); 
             }
 
             }
@@ -63839,7 +63891,7 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
     static final String DFA79_acceptS =
         "\1\uffff\1\2\11\uffff\1\1";
     static final String DFA79_specialS =
-        "\2\uffff\1\2\1\5\1\10\1\4\1\1\1\0\1\6\1\3\1\7\1\uffff}>";
+        "\2\uffff\1\6\1\1\1\2\1\7\1\5\1\4\1\10\1\0\1\3\1\uffff}>";
     static final String[] DFA79_transitionS = {
             "\5\1\5\uffff\13\1\1\2\1\3\1\4\1\5\1\6\1\7\1\10\1\11\1\12\16"+
             "\1\1\uffff\1\1\1\uffff\2\1\3\uffff\11\1\1\uffff\1\1\2\uffff"+
@@ -63894,51 +63946,6 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
         	int _s = s;
             switch ( s ) {
                     case 0 : 
-                        int LA79_7 = input.LA(1);
-
-                         
-                        int index79_7 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred128_InternalSARL()) ) {s = 11;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index79_7);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 1 : 
-                        int LA79_6 = input.LA(1);
-
-                         
-                        int index79_6 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred128_InternalSARL()) ) {s = 11;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index79_6);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 2 : 
-                        int LA79_2 = input.LA(1);
-
-                         
-                        int index79_2 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred128_InternalSARL()) ) {s = 11;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index79_2);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 3 : 
                         int LA79_9 = input.LA(1);
 
                          
@@ -63953,22 +63960,7 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                         input.seek(index79_9);
                         if ( s>=0 ) return s;
                         break;
-                    case 4 : 
-                        int LA79_5 = input.LA(1);
-
-                         
-                        int index79_5 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred128_InternalSARL()) ) {s = 11;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index79_5);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 5 : 
+                    case 1 : 
                         int LA79_3 = input.LA(1);
 
                          
@@ -63983,11 +63975,11 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                         input.seek(index79_3);
                         if ( s>=0 ) return s;
                         break;
-                    case 6 : 
-                        int LA79_8 = input.LA(1);
+                    case 2 : 
+                        int LA79_4 = input.LA(1);
 
                          
-                        int index79_8 = input.index();
+                        int index79_4 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred128_InternalSARL()) ) {s = 11;}
@@ -63995,10 +63987,10 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                         else if ( (true) ) {s = 1;}
 
                          
-                        input.seek(index79_8);
+                        input.seek(index79_4);
                         if ( s>=0 ) return s;
                         break;
-                    case 7 : 
+                    case 3 : 
                         int LA79_10 = input.LA(1);
 
                          
@@ -64013,11 +64005,11 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                         input.seek(index79_10);
                         if ( s>=0 ) return s;
                         break;
-                    case 8 : 
-                        int LA79_4 = input.LA(1);
+                    case 4 : 
+                        int LA79_7 = input.LA(1);
 
                          
-                        int index79_4 = input.index();
+                        int index79_7 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred128_InternalSARL()) ) {s = 11;}
@@ -64025,7 +64017,67 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                         else if ( (true) ) {s = 1;}
 
                          
-                        input.seek(index79_4);
+                        input.seek(index79_7);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 5 : 
+                        int LA79_6 = input.LA(1);
+
+                         
+                        int index79_6 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred128_InternalSARL()) ) {s = 11;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index79_6);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 6 : 
+                        int LA79_2 = input.LA(1);
+
+                         
+                        int index79_2 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred128_InternalSARL()) ) {s = 11;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index79_2);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 7 : 
+                        int LA79_5 = input.LA(1);
+
+                         
+                        int index79_5 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred128_InternalSARL()) ) {s = 11;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index79_5);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 8 : 
+                        int LA79_8 = input.LA(1);
+
+                         
+                        int index79_8 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred128_InternalSARL()) ) {s = 11;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index79_8);
                         if ( s>=0 ) return s;
                         break;
             }
@@ -67630,25 +67682,25 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
     public static final BitSet FOLLOW_ruleXImportSection_in_rule__Model__ImportSectionAssignment_138132 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleAbstractElement_in_rule__Model__ElementsAssignment_238163 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleValidID_in_rule__Event__NameAssignment_138194 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_ID_in_rule__Event__SuperTypeAssignment_2_138229 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__Event__SuperTypeAssignment_2_138229 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleEventFeature_in_rule__Event__FeaturesAssignment_3_138264 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleValidID_in_rule__Capacity__NameAssignment_138295 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_ID_in_rule__Capacity__SuperTypeAssignment_2_138330 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__Capacity__SuperTypeAssignment_2_138330 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleActionSignature_in_rule__Capacity__ActionsAssignment_438365 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleValidID_in_rule__Agent__NameAssignment_138396 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_ID_in_rule__Agent__SuperTypeAssignment_2_138431 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__Agent__SuperTypeAssignment_2_138431 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleAgentFeature_in_rule__Agent__FeaturesAssignment_438466 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleValidID_in_rule__Behavior__NameAssignment_138497 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_ID_in_rule__Behavior__SuperTypeAssignment_2_138532 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__Behavior__SuperTypeAssignment_2_138532 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleBehaviorFeature_in_rule__Behavior__FeaturesAssignment_438567 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_90_in_rule__Attribute__WriteableAssignment_0_038603 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleValidID_in_rule__Attribute__NameAssignment_1_0_0_038642 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__Attribute__TypeAssignment_1_0_0_238673 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleValidID_in_rule__Attribute__NameAssignment_1_138704 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleXExpression_in_rule__Attribute__InitialValueAssignment_2_138735 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_ID_in_rule__CapacityUses__CapacitiesUsedAssignment_138770 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_ID_in_rule__CapacityUses__CapacitiesUsedAssignment_2_138809 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_ID_in_rule__BehaviorUnit__EventAssignment_138848 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__CapacityUses__CapacitiesUsedAssignment_138770 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__CapacityUses__CapacitiesUsedAssignment_2_138809 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__BehaviorUnit__EventAssignment_138848 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleXExpression_in_rule__BehaviorUnit__GuardAssignment_2_138883 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleXBlockExpression_in_rule__BehaviorUnit__BodyAssignment_338914 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleActionSignature_in_rule__Action__SignatureAssignment_038945 = new BitSet(new long[]{0x0000000000000002L});
@@ -67658,15 +67710,15 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
     public static final BitSet FOLLOW_ruleParameter_in_rule__ActionSignature__ParamsAssignment_2_2_139069 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_91_in_rule__ActionSignature__VarargsAssignment_2_339105 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__ActionSignature__TypeAssignment_3_139144 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_ID_in_rule__ActionSignature__FiredEventsAssignment_4_139179 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_ID_in_rule__ActionSignature__FiredEventsAssignment_4_2_139218 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__ActionSignature__FiredEventsAssignment_4_139179 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__ActionSignature__FiredEventsAssignment_4_2_139218 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleValidID_in_rule__Parameter__NameAssignment_039253 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__Parameter__ParameterTypeAssignment_239284 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_ID_in_rule__RequiredCapacity__RequiredCapacitiesAssignment_139319 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_ID_in_rule__RequiredCapacity__RequiredCapacitiesAssignment_2_139358 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__RequiredCapacity__RequiredCapacitiesAssignment_139319 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__RequiredCapacity__RequiredCapacitiesAssignment_2_139358 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleValidID_in_rule__Skill__NameAssignment_139393 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_ID_in_rule__Skill__ImplementedCapacitiesAssignment_339428 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_ID_in_rule__Skill__ImplementedCapacitiesAssignment_4_139467 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__Skill__ImplementedCapacitiesAssignment_339428 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__Skill__ImplementedCapacitiesAssignment_4_139467 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleSkillFeature_in_rule__Skill__FeaturesAssignment_639502 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleParameter_in_rule__Constructor__ParamsAssignment_1_139533 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleParameter_in_rule__Constructor__ParamsAssignment_1_2_139564 = new BitSet(new long[]{0x0000000000000002L});
