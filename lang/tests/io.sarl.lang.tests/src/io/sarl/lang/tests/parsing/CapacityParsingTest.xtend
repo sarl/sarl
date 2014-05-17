@@ -24,7 +24,6 @@ import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
-import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -47,8 +46,6 @@ class CapacityParsingTest {
 	var Model mas
 	var Iterable<Capacity> knownCapacities
 	
-	@Inject extension IQualifiedNameProvider
-
 	@Before
 	def void setUp() {
 		mas = '''

@@ -630,13 +630,22 @@ public interface SarlPackage extends EPackage
   int PARAMETER__PARAMETER_TYPE = 1;
 
   /**
+   * The feature id for the '<em><b>Default Value</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PARAMETER__DEFAULT_VALUE = 2;
+
+  /**
    * The number of structural features of the '<em>Parameter</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int PARAMETER_FEATURE_COUNT = 2;
+  int PARAMETER_FEATURE_COUNT = 3;
 
   /**
    * The meta object id for the '{@link io.sarl.lang.sarl.impl.RequiredCapacityImpl <em>Required Capacity</em>}' class.
@@ -1248,6 +1257,17 @@ public interface SarlPackage extends EPackage
   EReference getParameter_ParameterType();
 
   /**
+   * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.Parameter#getDefaultValue <em>Default Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Default Value</em>'.
+   * @see io.sarl.lang.sarl.Parameter#getDefaultValue()
+   * @see #getParameter()
+   * @generated
+   */
+  EReference getParameter_DefaultValue();
+
+  /**
    * Returns the meta object for class '{@link io.sarl.lang.sarl.RequiredCapacity <em>Required Capacity</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1757,6 +1777,14 @@ public interface SarlPackage extends EPackage
      * @generated
      */
     EReference PARAMETER__PARAMETER_TYPE = eINSTANCE.getParameter_ParameterType();
+
+    /**
+     * The meta object literal for the '<em><b>Default Value</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PARAMETER__DEFAULT_VALUE = eINSTANCE.getParameter_DefaultValue();
 
     /**
      * The meta object literal for the '{@link io.sarl.lang.sarl.impl.RequiredCapacityImpl <em>Required Capacity</em>}' class.

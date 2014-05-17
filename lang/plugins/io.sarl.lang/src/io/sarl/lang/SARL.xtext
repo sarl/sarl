@@ -91,7 +91,8 @@ ActionSignature:
 ;
 	
 Parameter:
-	 name=ValidID ':' parameterType=JvmTypeReference
+	 name=ValidID ':' parameterType=JvmTypeReference 
+	 ('=' defaultValue=XLiteral)?
 ;
 
 

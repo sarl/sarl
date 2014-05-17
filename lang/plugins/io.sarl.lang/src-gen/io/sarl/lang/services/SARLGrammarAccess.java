@@ -782,12 +782,16 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cColonKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cParameterTypeAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cParameterTypeJvmTypeReferenceParserRuleCall_2_0 = (RuleCall)cParameterTypeAssignment_2.eContents().get(0);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Keyword cEqualsSignKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Assignment cDefaultValueAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
+		private final RuleCall cDefaultValueXLiteralParserRuleCall_3_1_0 = (RuleCall)cDefaultValueAssignment_3_1.eContents().get(0);
 		
 		//Parameter:
-		//	name=ValidID ":" parameterType=JvmTypeReference;
+		//	name=ValidID ":" parameterType=JvmTypeReference ("=" defaultValue=XLiteral)?;
 		public ParserRule getRule() { return rule; }
 
-		//name=ValidID ":" parameterType=JvmTypeReference
+		//name=ValidID ":" parameterType=JvmTypeReference ("=" defaultValue=XLiteral)?
 		public Group getGroup() { return cGroup; }
 
 		//name=ValidID
@@ -804,6 +808,18 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 
 		//JvmTypeReference
 		public RuleCall getParameterTypeJvmTypeReferenceParserRuleCall_2_0() { return cParameterTypeJvmTypeReferenceParserRuleCall_2_0; }
+
+		//("=" defaultValue=XLiteral)?
+		public Group getGroup_3() { return cGroup_3; }
+
+		//"="
+		public Keyword getEqualsSignKeyword_3_0() { return cEqualsSignKeyword_3_0; }
+
+		//defaultValue=XLiteral
+		public Assignment getDefaultValueAssignment_3_1() { return cDefaultValueAssignment_3_1; }
+
+		//XLiteral
+		public RuleCall getDefaultValueXLiteralParserRuleCall_3_1_0() { return cDefaultValueXLiteralParserRuleCall_3_1_0; }
 	}
 
 	public class RequiredCapacityElements extends AbstractParserRuleElementFinder {
@@ -1325,7 +1341,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Parameter:
-	//	name=ValidID ":" parameterType=JvmTypeReference;
+	//	name=ValidID ":" parameterType=JvmTypeReference ("=" defaultValue=XLiteral)?;
 	public ParameterElements getParameterAccess() {
 		return (pParameter != null) ? pParameter : (pParameter = new ParameterElements());
 	}

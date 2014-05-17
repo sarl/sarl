@@ -1309,7 +1309,29 @@ ruleParameter returns [EObject current=null]
 	    }
 
 )
-))
+)(	otherlv_3='=' 
+    {
+    	newLeafNode(otherlv_3, grammarAccess.getParameterAccess().getEqualsSignKeyword_3_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getParameterAccess().getDefaultValueXLiteralParserRuleCall_3_1_0()); 
+	    }
+		lv_defaultValue_4_0=ruleXLiteral		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getParameterRule());
+	        }
+       		set(
+       			$current, 
+       			"defaultValue",
+        		lv_defaultValue_4_0, 
+        		"XLiteral");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?)
 ;
 
 

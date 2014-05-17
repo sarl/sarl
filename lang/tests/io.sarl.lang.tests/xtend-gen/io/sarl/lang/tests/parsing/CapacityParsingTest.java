@@ -28,7 +28,6 @@ import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
-import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
@@ -58,10 +57,6 @@ public class CapacityParsingTest {
   private Model mas;
   
   private Iterable<Capacity> knownCapacities;
-  
-  @Inject
-  @Extension
-  private IQualifiedNameProvider _iQualifiedNameProvider;
   
   @Before
   public void setUp() {
