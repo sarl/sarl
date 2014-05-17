@@ -52,13 +52,13 @@ import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.xbase.XExpression
+import org.eclipse.xtext.xbase.XStringLiteral
 import org.eclipse.xtext.xbase.compiler.XbaseCompiler
 import org.eclipse.xtext.xbase.compiler.output.FakeTreeAppendable
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
-import org.eclipse.xtext.xbase.XStringLiteral
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -136,12 +136,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				for (feature : element.features) {
 					switch feature {
 						Attribute: {
-							jvmField = feature.toField(feature.name, feature.type) [
-								visibility = JvmVisibility::PUBLIC
-								documentation = feature.documentation
-								final = !feature.writeable
-								initializer = feature.initialValue
-							]
+							jvmField = generateAttribute(feature, JvmVisibility::PUBLIC)
 							jvmFields.add(jvmField)
 							members += jvmField
 							serial = serial + feature.name.hashCode
@@ -231,12 +226,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							generateAction(feature.signature, feature.body)
 						}
 						Attribute: {
-							members += feature.toField(feature.name, feature.type) [
-								visibility = JvmVisibility::PROTECTED
-								documentation = feature.documentation
-								final = !feature.writeable
-								initializer = feature.initialValue
-							]
+							generateAttribute(feature, JvmVisibility::PROTECTED)
 						}
 						CapacityUses: {
 							for (used : feature.capacitiesUsed) {
@@ -285,12 +275,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							generateConstructor(element, feature)
 						}
 						Attribute: {
-							members += feature.toField(feature.name, feature.type) [
-								visibility = JvmVisibility::PROTECTED
-								documentation = feature.documentation
-								final = !feature.writeable
-								initializer = feature.initialValue
-							]
+							generateAttribute(feature, JvmVisibility::PROTECTED)
 						}
 					}
 				}
@@ -327,12 +312,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						generateAction(feature.signature, feature.body)
 					}
 					Attribute: {
-							members += feature.toField(feature.name, feature.type) [
-								visibility = JvmVisibility::PROTECTED
-								documentation = feature.documentation
-								final = !feature.writeable
-								initializer = feature.initialValue
-							]
+						generateAttribute(feature, JvmVisibility::PROTECTED)
 					}
 					CapacityUses: {
 						for (used : feature.capacitiesUsed) {
@@ -345,14 +325,17 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 
 	}
 
-	/*protected def void generateAttribute(JvmGenericType owner, AbstractElement context) {
-		members += feature.toField(feature.name, feature.type) [
-			visibility = JvmVisibility::PROTECTED
-			documentation = feature.documentation
-			final = !feature.writeable
-			initializer = feature.initialValue
+	protected def JvmField generateAttribute(JvmGenericType owner, Attribute attr, JvmVisibility attrVisibility) {
+		var field = attr.toField(attr.name, attr.type) [
+			visibility = attrVisibility
+			documentation = attr.documentation
+			final = (!attr.writeable)
+			static = (!attr.writeable) && (attr.initialValue!==null)
+			initializer = attr.initialValue
 		]
-	}*/
+		owner.members += field
+		return field
+	}
 
 	private def void generateCapacityDelegatorMethods(JvmGenericType owner, AbstractElement context, Capacity capacity) {
 		for (signature : capacity.actions) {

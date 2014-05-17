@@ -128,4 +128,69 @@ class EventCompilerTest {
 			Assert.assertEquals(expectedE2,r.getGeneratedCode("E2"))
 		]);
 	}
+	
+	@Test
+	def staticField() {
+			'''
+			event E1 {
+				val titi : int = 4
+				val toto : int
+				new(a : int) {
+					this.toto = a
+				}
+			}
+		'''.assertCompilesTo('''
+			import io.sarl.lang.core.Event;
+
+			@SuppressWarnings("all")
+			public class E1 extends Event {
+			  public final static int titi = 4;
+			  
+			  public final int toto;
+			  
+			  public E1(final int a) {
+			    this.toto = a;
+			  }
+			  
+			  @Override
+			  public boolean equals(final Object obj) {
+			    if (this == obj)
+			      return true;
+			    if (obj == null)
+			      return false;
+			    if (getClass() != obj.getClass())
+			      return false;
+			    if (!super.equals(obj))
+			      return false;
+			    E1 other = (E1) obj;
+			    if (other.titi != this.titi)
+			      return false;
+			    if (other.toto != this.toto)
+			      return false;
+			    return true;
+			  }
+			  
+			  @Override
+			  public int hashCode() {
+			    final int prime = 31;
+			    int result = super.hashCode();
+			    result = prime * result + this.titi;
+			    result = prime * result + this.toto;
+			    return result;
+			  }
+			  
+			  /**
+			   * Returns a String representation of the Event E1 attributes only.
+			   */
+			  protected String attributesToString() {
+			    StringBuilder result = new StringBuilder(super.attributesToString());
+			    result.append("titi  = ").append(this.titi);
+			    result.append("toto  = ").append(this.toto);
+			    return result.toString();
+			  }
+			  
+			  private final static long serialVersionUID = 595497177L;
+			}
+		''')
+	}
 }

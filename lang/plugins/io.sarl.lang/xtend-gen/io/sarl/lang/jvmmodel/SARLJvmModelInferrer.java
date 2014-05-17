@@ -185,27 +185,13 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           if (!_matched) {
             if (feature instanceof Attribute) {
               _matched=true;
-              String _name = ((Attribute)feature).getName();
-              JvmTypeReference _type = ((Attribute)feature).getType();
-              final Procedure1<JvmField> _function = new Procedure1<JvmField>() {
-                public void apply(final JvmField it) {
-                  it.setVisibility(JvmVisibility.PUBLIC);
-                  String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(feature);
-                  SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
-                  boolean _isWriteable = ((Attribute)feature).isWriteable();
-                  boolean _not = (!_isWriteable);
-                  it.setFinal(_not);
-                  XExpression _initialValue = ((Attribute)feature).getInitialValue();
-                  SARLJvmModelInferrer.this._jvmTypesBuilder.setInitializer(it, _initialValue);
-                }
-              };
-              JvmField _field = SARLJvmModelInferrer.this._jvmTypesBuilder.toField(feature, _name, _type, _function);
-              jvmField = _field;
+              JvmField _generateAttribute = SARLJvmModelInferrer.this.generateAttribute(it, ((Attribute)feature), JvmVisibility.PUBLIC);
+              jvmField = _generateAttribute;
               jvmFields.add(jvmField);
               EList<JvmMember> _members = it.getMembers();
               SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members, jvmField);
-              String _name_1 = ((Attribute)feature).getName();
-              int _hashCode_2 = _name_1.hashCode();
+              String _name = ((Attribute)feature).getName();
+              int _hashCode_2 = _name.hashCode();
               long _plus_2 = (serial + _hashCode_2);
               serial = _plus_2;
             }
@@ -390,23 +376,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           if (!_matched) {
             if (feature instanceof Attribute) {
               _matched=true;
-              EList<JvmMember> _members = it.getMembers();
-              String _name_4 = ((Attribute)feature).getName();
-              JvmTypeReference _type = ((Attribute)feature).getType();
-              final Procedure1<JvmField> _function = new Procedure1<JvmField>() {
-                public void apply(final JvmField it) {
-                  it.setVisibility(JvmVisibility.PROTECTED);
-                  String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(feature);
-                  SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
-                  boolean _isWriteable = ((Attribute)feature).isWriteable();
-                  boolean _not = (!_isWriteable);
-                  it.setFinal(_not);
-                  XExpression _initialValue = ((Attribute)feature).getInitialValue();
-                  SARLJvmModelInferrer.this._jvmTypesBuilder.setInitializer(it, _initialValue);
-                }
-              };
-              JvmField _field = SARLJvmModelInferrer.this._jvmTypesBuilder.toField(feature, _name_4, _type, _function);
-              SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members, _field);
+              SARLJvmModelInferrer.this.generateAttribute(it, ((Attribute)feature), JvmVisibility.PROTECTED);
             }
           }
           if (!_matched) {
@@ -508,23 +478,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           if (!_matched) {
             if (feature instanceof Attribute) {
               _matched=true;
-              EList<JvmMember> _members = it.getMembers();
-              String _name = ((Attribute)feature).getName();
-              JvmTypeReference _type = ((Attribute)feature).getType();
-              final Procedure1<JvmField> _function = new Procedure1<JvmField>() {
-                public void apply(final JvmField it) {
-                  it.setVisibility(JvmVisibility.PROTECTED);
-                  String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(feature);
-                  SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
-                  boolean _isWriteable = ((Attribute)feature).isWriteable();
-                  boolean _not = (!_isWriteable);
-                  it.setFinal(_not);
-                  XExpression _initialValue = ((Attribute)feature).getInitialValue();
-                  SARLJvmModelInferrer.this._jvmTypesBuilder.setInitializer(it, _initialValue);
-                }
-              };
-              JvmField _field = SARLJvmModelInferrer.this._jvmTypesBuilder.toField(feature, _name, _type, _function);
-              SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members, _field);
+              SARLJvmModelInferrer.this.generateAttribute(it, ((Attribute)feature), JvmVisibility.PROTECTED);
             }
           }
         }
@@ -615,23 +569,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           if (!_matched) {
             if (feature instanceof Attribute) {
               _matched=true;
-              EList<JvmMember> _members_1 = it.getMembers();
-              String _name = ((Attribute)feature).getName();
-              JvmTypeReference _type = ((Attribute)feature).getType();
-              final Procedure1<JvmField> _function_1 = new Procedure1<JvmField>() {
-                public void apply(final JvmField it) {
-                  it.setVisibility(JvmVisibility.PROTECTED);
-                  String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(feature);
-                  SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
-                  boolean _isWriteable = ((Attribute)feature).isWriteable();
-                  boolean _not = (!_isWriteable);
-                  it.setFinal(_not);
-                  XExpression _initialValue = ((Attribute)feature).getInitialValue();
-                  SARLJvmModelInferrer.this._jvmTypesBuilder.setInitializer(it, _initialValue);
-                }
-              };
-              JvmField _field = SARLJvmModelInferrer.this._jvmTypesBuilder.toField(feature, _name, _type, _function_1);
-              SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members_1, _field);
+              SARLJvmModelInferrer.this.generateAttribute(it, ((Attribute)feature), JvmVisibility.PROTECTED);
             }
           }
           if (!_matched) {
@@ -649,16 +587,38 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
     _accept.initializeLater(_function);
   }
   
-  /**
-   * protected def void generateAttribute(JvmGenericType owner, AbstractElement context) {
-   * members += feature.toField(feature.name, feature.type) [
-   * visibility = JvmVisibility::PROTECTED
-   * documentation = feature.documentation
-   * final = !feature.writeable
-   * initializer = feature.initialValue
-   * ]
-   * }
-   */
+  protected JvmField generateAttribute(final JvmGenericType owner, final Attribute attr, final JvmVisibility attrVisibility) {
+    String _name = attr.getName();
+    JvmTypeReference _type = attr.getType();
+    final Procedure1<JvmField> _function = new Procedure1<JvmField>() {
+      public void apply(final JvmField it) {
+        it.setVisibility(attrVisibility);
+        String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(attr);
+        SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
+        boolean _isWriteable = attr.isWriteable();
+        boolean _not = (!_isWriteable);
+        it.setFinal(_not);
+        boolean _and = false;
+        boolean _isWriteable_1 = attr.isWriteable();
+        boolean _not_1 = (!_isWriteable_1);
+        if (!_not_1) {
+          _and = false;
+        } else {
+          XExpression _initialValue = attr.getInitialValue();
+          boolean _tripleNotEquals = (_initialValue != null);
+          _and = (_not_1 && _tripleNotEquals);
+        }
+        it.setStatic(_and);
+        XExpression _initialValue_1 = attr.getInitialValue();
+        SARLJvmModelInferrer.this._jvmTypesBuilder.setInitializer(it, _initialValue_1);
+      }
+    };
+    JvmField field = this._jvmTypesBuilder.toField(attr, _name, _type, _function);
+    EList<JvmMember> _members = owner.getMembers();
+    this._jvmTypesBuilder.<JvmField>operator_add(_members, field);
+    return field;
+  }
+  
   private void generateCapacityDelegatorMethods(final JvmGenericType owner, final AbstractElement context, final Capacity capacity) {
     EList<ActionSignature> _actions = capacity.getActions();
     for (final ActionSignature signature : _actions) {
