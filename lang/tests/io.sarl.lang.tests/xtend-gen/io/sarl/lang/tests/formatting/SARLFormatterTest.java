@@ -615,7 +615,7 @@ public class SARLFormatterTest {
     _builder_1.newLine();
     _builder_1.newLine();
     _builder_1.append("\t\t");
-    _builder_1.append("for(f:dir.listFiles()){");
+    _builder_1.append("for ( f : dir.listFiles() ) {");
     _builder_1.newLine();
     _builder_1.append("\t\t\t");
     _builder_1.append("if(f.directory) {");

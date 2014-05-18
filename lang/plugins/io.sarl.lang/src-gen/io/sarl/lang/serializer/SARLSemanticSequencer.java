@@ -189,7 +189,11 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 			}
 		else if(semanticObject.eClass().getEPackage() == TypesPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
 			case TypesPackage.JVM_FORMAL_PARAMETER:
-				if(context == grammarAccess.getFullJvmFormalParameterRule()) {
+				if(context == grammarAccess.getForLoopFormalParameterRule()) {
+					sequence_ForLoopFormalParameter(context, (JvmFormalParameter) semanticObject); 
+					return; 
+				}
+				else if(context == grammarAccess.getFullJvmFormalParameterRule()) {
 					sequence_FullJvmFormalParameter(context, (JvmFormalParameter) semanticObject); 
 					return; 
 				}
@@ -1235,6 +1239,33 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
+	 *     (name=ValidID parameterType=JvmTypeReference?)
+	 */
+	protected void sequence_ForLoopFormalParameter(EObject context, JvmFormalParameter semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (name=ValidID parameterType=JvmTypeReference)
+	 */
+	protected void sequence_FullJvmFormalParameter(EObject context, JvmFormalParameter semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (name=ValidID parameterType=JvmTypeReference?)
+	 */
+	protected void sequence_JvmFormalParameter(EObject context, JvmFormalParameter semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
 	 *     (name=QualifiedName? importSection=XImportSection? elements+=AbstractElement*)
 	 */
 	protected void sequence_Model(EObject context, Model semanticObject) {
@@ -1266,6 +1297,28 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	 */
 	protected void sequence_Skill(EObject context, Skill semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (declaredParam=ForLoopFormalParameter forExpression=XExpression eachExpression=XExpression)
+	 */
+	protected void sequence_XForLoopExpression(EObject context, XForLoopExpression semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, XbasePackage.Literals.XFOR_LOOP_EXPRESSION__FOR_EXPRESSION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XbasePackage.Literals.XFOR_LOOP_EXPRESSION__FOR_EXPRESSION));
+			if(transientValues.isValueTransient(semanticObject, XbasePackage.Literals.XFOR_LOOP_EXPRESSION__EACH_EXPRESSION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XbasePackage.Literals.XFOR_LOOP_EXPRESSION__EACH_EXPRESSION));
+			if(transientValues.isValueTransient(semanticObject, XbasePackage.Literals.XFOR_LOOP_EXPRESSION__DECLARED_PARAM) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XbasePackage.Literals.XFOR_LOOP_EXPRESSION__DECLARED_PARAM));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getXForLoopExpressionAccess().getDeclaredParamForLoopFormalParameterParserRuleCall_3_0(), semanticObject.getDeclaredParam());
+		feeder.accept(grammarAccess.getXForLoopExpressionAccess().getForExpressionXExpressionParserRuleCall_5_0(), semanticObject.getForExpression());
+		feeder.accept(grammarAccess.getXForLoopExpressionAccess().getEachExpressionXExpressionParserRuleCall_7_0(), semanticObject.getEachExpression());
+		feeder.finish();
 	}
 	
 	

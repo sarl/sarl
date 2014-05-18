@@ -346,7 +346,7 @@ class SARLFormatterTest {
 						throw new IllegalArgumentException("Path [" + myPath + "] is not a Directory")
 					}
 			
-					for(f:dir.listFiles()){
+					for ( f : dir.listFiles() ) {
 						if(f.directory) {
 							if(!f.name.equals(".") && !f.name.equals("..")) {
 								val targetID = FileSearchAgent.spawnInContext(innerContext, # [ f.absolutePath , false.toString ]);

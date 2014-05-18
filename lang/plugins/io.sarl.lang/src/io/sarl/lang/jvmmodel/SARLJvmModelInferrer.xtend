@@ -283,7 +283,6 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	}
 
 	def dispatch void infer(Agent agent, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-
 		acceptor.accept(agent.toClass(agent.fullyQualifiedName)).initializeLater [
 			documentation = agent.documentation
 			if (agent.superType != null && agent.superType.fullyQualifiedName != null) {
@@ -322,9 +321,8 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				}
 			}
 		]
-
 	}
-
+	
 	protected def JvmField generateAttribute(JvmGenericType owner, Attribute attr, JvmVisibility attrVisibility) {
 		var field = attr.toField(attr.name, attr.type) [
 			visibility = attrVisibility
@@ -682,10 +680,12 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 package class SARLDefaultValuedParameter {
 	public val XExpression expr
 	public val JvmTypeReference type
+	
 	new(XExpression e, JvmTypeReference type) {
 		this.expr = e
 		this.type = type
 	}
+	
 	public override String toString() {
 		if (this.expr==null) return null;
 		return this.expr.toString

@@ -33,7 +33,7 @@ import org.eclipse.xtext.xbase.services.XtypeGrammarAccess;
  * see : http://www.eclipse.org/Xtext/documentation.html#formatting
  * on how and when to use it
  * 
- * Also see {@link org.eclipse.xtext.xtext.XtextFormattingTokenSerializer} as an example
+ * Also see {@code org.eclipse.xtext.xtext.XtextFormattingTokenSerializer} as an example
  */
 @SuppressWarnings("all")
 public class SARLFormatter extends XbaseFormatter {
