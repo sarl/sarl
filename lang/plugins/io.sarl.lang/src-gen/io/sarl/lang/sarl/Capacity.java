@@ -12,7 +12,7 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link io.sarl.lang.sarl.Capacity#getSuperType <em>Super Type</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.Capacity#getSuperTypes <em>Super Types</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.Capacity#getActions <em>Actions</em>}</li>
  * </ul>
  * </p>
@@ -24,30 +24,20 @@ import org.eclipse.emf.common.util.EList;
 public interface Capacity extends AbstractElement
 {
   /**
-   * Returns the value of the '<em><b>Super Type</b></em>' reference.
+   * Returns the value of the '<em><b>Super Types</b></em>' reference list.
+   * The list contents are of type {@link io.sarl.lang.sarl.Capacity}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Super Type</em>' reference isn't clear,
+   * If the meaning of the '<em>Super Types</em>' reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Super Type</em>' reference.
-   * @see #setSuperType(Capacity)
-   * @see io.sarl.lang.sarl.SarlPackage#getCapacity_SuperType()
+   * @return the value of the '<em>Super Types</em>' reference list.
+   * @see io.sarl.lang.sarl.SarlPackage#getCapacity_SuperTypes()
    * @model
    * @generated
    */
-  Capacity getSuperType();
-
-  /**
-   * Sets the value of the '{@link io.sarl.lang.sarl.Capacity#getSuperType <em>Super Type</em>}' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Super Type</em>' reference.
-   * @see #getSuperType()
-   * @generated
-   */
-  void setSuperType(Capacity value);
+  EList<Capacity> getSuperTypes();
 
   /**
    * Returns the value of the '<em><b>Actions</b></em>' containment reference list.

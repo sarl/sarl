@@ -191,8 +191,12 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		acceptor.accept(capacity.toInterface(capacity.fullyQualifiedName.toString, null)).initializeLater(
 			[
 				documentation = capacity.documentation
-				if (capacity.superType != null && capacity.superType.fullyQualifiedName != null) {
-					superTypes += newTypeRef(capacity.superType.fullyQualifiedName.toString)
+				if (capacity.superTypes!==null && !capacity.superTypes.empty) {
+					for(Capacity superCap : capacity.superTypes) {
+						if (superCap.fullyQualifiedName != null) {
+							superTypes += newTypeRef(superCap.fullyQualifiedName.toString)						
+						}
+					}
 				} else {
 					superTypes += newTypeRef(capacity, typeof(io.sarl.lang.core.Capacity))
 				}
@@ -442,15 +446,18 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		return signatures.values
 	}
 	
-	private def generateFormalParametersWithoutDefaultValue(JvmExecutable owner, boolean varargs, List<Parameter> params) {
+	private def List<String> generateFormalParametersWithoutDefaultValue(JvmExecutable owner, boolean varargs, List<Parameter> params) {
+		var parameterTypes = new ArrayList
 		var JvmFormalParameter lastParam = null
 		for (param : params) {
 			lastParam = param.toParameter(param.name, param.parameterType)
 			owner.parameters += lastParam
+			parameterTypes.add(param.parameterType.identifier)
 		}
 		if (varargs && lastParam !== null) {
 			lastParam.parameterType = lastParam.parameterType.addArrayTypeDimension
 		}
+		return parameterTypes
 	}
 
 	private def List<String> generateFormalParametersWithDefaultValue(JvmExecutable owner, boolean varargs, List<Parameter> params, List<Object> signature) {

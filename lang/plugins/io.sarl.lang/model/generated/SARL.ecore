@@ -17,7 +17,8 @@
         eType="#//EventFeature" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Capacity" eSuperTypes="#//AbstractElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="superType" eType="#//Capacity"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="superTypes" unique="false"
+        upperBound="-1" eType="#//Capacity"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="actions" upperBound="-1"
         eType="#//ActionSignature" containment="true"/>
   </eClassifiers>

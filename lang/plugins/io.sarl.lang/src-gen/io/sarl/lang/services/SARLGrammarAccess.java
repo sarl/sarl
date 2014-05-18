@@ -171,19 +171,26 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cNameValidIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
 		private final Keyword cExtendsKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
-		private final Assignment cSuperTypeAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
-		private final CrossReference cSuperTypeCapacityCrossReference_2_1_0 = (CrossReference)cSuperTypeAssignment_2_1.eContents().get(0);
-		private final RuleCall cSuperTypeCapacityQualifiedNameParserRuleCall_2_1_0_1 = (RuleCall)cSuperTypeCapacityCrossReference_2_1_0.eContents().get(1);
+		private final Assignment cSuperTypesAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final CrossReference cSuperTypesCapacityCrossReference_2_1_0 = (CrossReference)cSuperTypesAssignment_2_1.eContents().get(0);
+		private final RuleCall cSuperTypesCapacityQualifiedNameParserRuleCall_2_1_0_1 = (RuleCall)cSuperTypesCapacityCrossReference_2_1_0.eContents().get(1);
+		private final Group cGroup_2_2 = (Group)cGroup_2.eContents().get(2);
+		private final Keyword cCommaKeyword_2_2_0 = (Keyword)cGroup_2_2.eContents().get(0);
+		private final Assignment cSuperTypesAssignment_2_2_1 = (Assignment)cGroup_2_2.eContents().get(1);
+		private final CrossReference cSuperTypesCapacityCrossReference_2_2_1_0 = (CrossReference)cSuperTypesAssignment_2_2_1.eContents().get(0);
+		private final RuleCall cSuperTypesCapacityQualifiedNameParserRuleCall_2_2_1_0_1 = (RuleCall)cSuperTypesCapacityCrossReference_2_2_1_0.eContents().get(1);
 		private final Keyword cLeftCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		private final Assignment cActionsAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cActionsActionSignatureParserRuleCall_4_0 = (RuleCall)cActionsAssignment_4.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
 		
 		//Capacity:
-		//	"capacity" name=ValidID ("extends" superType=[Capacity|QualifiedName])? "{" actions+=ActionSignature* "}";
+		//	"capacity" name=ValidID ("extends" superTypes+=[Capacity|QualifiedName] ("," superTypes+=[Capacity|QualifiedName])*)?
+		//	"{" actions+=ActionSignature* "}";
 		public ParserRule getRule() { return rule; }
 
-		//"capacity" name=ValidID ("extends" superType=[Capacity|QualifiedName])? "{" actions+=ActionSignature* "}"
+		//"capacity" name=ValidID ("extends" superTypes+=[Capacity|QualifiedName] ("," superTypes+=[Capacity|QualifiedName])*)?
+		//"{" actions+=ActionSignature* "}"
 		public Group getGroup() { return cGroup; }
 
 		//"capacity"
@@ -195,20 +202,35 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_1_0() { return cNameValidIDParserRuleCall_1_0; }
 
-		//("extends" superType=[Capacity|QualifiedName])?
+		//("extends" superTypes+=[Capacity|QualifiedName] ("," superTypes+=[Capacity|QualifiedName])*)?
 		public Group getGroup_2() { return cGroup_2; }
 
 		//"extends"
 		public Keyword getExtendsKeyword_2_0() { return cExtendsKeyword_2_0; }
 
-		//superType=[Capacity|QualifiedName]
-		public Assignment getSuperTypeAssignment_2_1() { return cSuperTypeAssignment_2_1; }
+		//superTypes+=[Capacity|QualifiedName]
+		public Assignment getSuperTypesAssignment_2_1() { return cSuperTypesAssignment_2_1; }
 
 		//[Capacity|QualifiedName]
-		public CrossReference getSuperTypeCapacityCrossReference_2_1_0() { return cSuperTypeCapacityCrossReference_2_1_0; }
+		public CrossReference getSuperTypesCapacityCrossReference_2_1_0() { return cSuperTypesCapacityCrossReference_2_1_0; }
 
 		//QualifiedName
-		public RuleCall getSuperTypeCapacityQualifiedNameParserRuleCall_2_1_0_1() { return cSuperTypeCapacityQualifiedNameParserRuleCall_2_1_0_1; }
+		public RuleCall getSuperTypesCapacityQualifiedNameParserRuleCall_2_1_0_1() { return cSuperTypesCapacityQualifiedNameParserRuleCall_2_1_0_1; }
+
+		//("," superTypes+=[Capacity|QualifiedName])*
+		public Group getGroup_2_2() { return cGroup_2_2; }
+
+		//","
+		public Keyword getCommaKeyword_2_2_0() { return cCommaKeyword_2_2_0; }
+
+		//superTypes+=[Capacity|QualifiedName]
+		public Assignment getSuperTypesAssignment_2_2_1() { return cSuperTypesAssignment_2_2_1; }
+
+		//[Capacity|QualifiedName]
+		public CrossReference getSuperTypesCapacityCrossReference_2_2_1_0() { return cSuperTypesCapacityCrossReference_2_2_1_0; }
+
+		//QualifiedName
+		public RuleCall getSuperTypesCapacityQualifiedNameParserRuleCall_2_2_1_0_1() { return cSuperTypesCapacityQualifiedNameParserRuleCall_2_2_1_0_1; }
 
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_3() { return cLeftCurlyBracketKeyword_3; }
@@ -1407,7 +1429,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Capacity:
-	//	"capacity" name=ValidID ("extends" superType=[Capacity|QualifiedName])? "{" actions+=ActionSignature* "}";
+	//	"capacity" name=ValidID ("extends" superTypes+=[Capacity|QualifiedName] ("," superTypes+=[Capacity|QualifiedName])*)?
+	//	"{" actions+=ActionSignature* "}";
 	public CapacityElements getCapacityAccess() {
 		return (pCapacity != null) ? pCapacity : (pCapacity = new CapacityElements());
 	}

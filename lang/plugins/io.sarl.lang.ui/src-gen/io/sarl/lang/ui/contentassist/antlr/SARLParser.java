@@ -87,6 +87,7 @@ public class SARLParser extends AbstractContentAssistParser {
 					put(grammarAccess.getEventAccess().getGroup_3(), "rule__Event__Group_3__0");
 					put(grammarAccess.getCapacityAccess().getGroup(), "rule__Capacity__Group__0");
 					put(grammarAccess.getCapacityAccess().getGroup_2(), "rule__Capacity__Group_2__0");
+					put(grammarAccess.getCapacityAccess().getGroup_2_2(), "rule__Capacity__Group_2_2__0");
 					put(grammarAccess.getAgentAccess().getGroup(), "rule__Agent__Group__0");
 					put(grammarAccess.getAgentAccess().getGroup_2(), "rule__Agent__Group_2__0");
 					put(grammarAccess.getBehaviorAccess().getGroup(), "rule__Behavior__Group__0");
@@ -278,7 +279,8 @@ public class SARLParser extends AbstractContentAssistParser {
 					put(grammarAccess.getEventAccess().getSuperTypeAssignment_2_1(), "rule__Event__SuperTypeAssignment_2_1");
 					put(grammarAccess.getEventAccess().getFeaturesAssignment_3_1(), "rule__Event__FeaturesAssignment_3_1");
 					put(grammarAccess.getCapacityAccess().getNameAssignment_1(), "rule__Capacity__NameAssignment_1");
-					put(grammarAccess.getCapacityAccess().getSuperTypeAssignment_2_1(), "rule__Capacity__SuperTypeAssignment_2_1");
+					put(grammarAccess.getCapacityAccess().getSuperTypesAssignment_2_1(), "rule__Capacity__SuperTypesAssignment_2_1");
+					put(grammarAccess.getCapacityAccess().getSuperTypesAssignment_2_2_1(), "rule__Capacity__SuperTypesAssignment_2_2_1");
 					put(grammarAccess.getCapacityAccess().getActionsAssignment_4(), "rule__Capacity__ActionsAssignment_4");
 					put(grammarAccess.getAgentAccess().getNameAssignment_1(), "rule__Agent__NameAssignment_1");
 					put(grammarAccess.getAgentAccess().getSuperTypeAssignment_2_1(), "rule__Agent__SuperTypeAssignment_2_1");

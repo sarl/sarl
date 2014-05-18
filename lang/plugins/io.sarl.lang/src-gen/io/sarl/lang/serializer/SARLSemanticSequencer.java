@@ -1212,7 +1212,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID superType=[Capacity|QualifiedName]? actions+=ActionSignature*)
+	 *     (name=ValidID (superTypes+=[Capacity|QualifiedName] superTypes+=[Capacity|QualifiedName]*)? actions+=ActionSignature*)
 	 */
 	protected void sequence_Capacity(EObject context, Capacity semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

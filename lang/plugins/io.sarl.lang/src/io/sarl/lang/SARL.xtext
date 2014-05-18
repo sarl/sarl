@@ -35,9 +35,9 @@ Event:
 ;
 
 Capacity:
-	'capacity' name=ValidID ('extends' superType=[Capacity|QualifiedName])? '{'
-	actions+=ActionSignature*
-	'}'
+	'capacity' name=ValidID ('extends' superTypes+=[Capacity|QualifiedName]
+		( ',' superTypes+=[Capacity|QualifiedName] )* )? 
+	'{' actions+=ActionSignature* '}'
 ;
 
 Agent:

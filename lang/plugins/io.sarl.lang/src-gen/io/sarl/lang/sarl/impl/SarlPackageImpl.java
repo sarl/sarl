@@ -350,7 +350,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getCapacity_SuperType()
+  public EReference getCapacity_SuperTypes()
   {
     return (EReference)capacityEClass.getEStructuralFeatures().get(0);
   }
@@ -838,7 +838,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
     createEReference(eventEClass, EVENT__FEATURES);
 
     capacityEClass = createEClass(CAPACITY);
-    createEReference(capacityEClass, CAPACITY__SUPER_TYPE);
+    createEReference(capacityEClass, CAPACITY__SUPER_TYPES);
     createEReference(capacityEClass, CAPACITY__ACTIONS);
 
     agentEClass = createEClass(AGENT);
@@ -972,7 +972,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
     initEReference(getEvent_Features(), this.getEventFeature(), null, "features", null, 0, -1, Event.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(capacityEClass, Capacity.class, "Capacity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getCapacity_SuperType(), this.getCapacity(), null, "superType", null, 0, 1, Capacity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getCapacity_SuperTypes(), this.getCapacity(), null, "superTypes", null, 0, -1, Capacity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getCapacity_Actions(), this.getActionSignature(), null, "actions", null, 0, -1, Capacity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(agentEClass, Agent.class, "Agent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

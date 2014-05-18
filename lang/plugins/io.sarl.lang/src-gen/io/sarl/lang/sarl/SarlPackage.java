@@ -196,13 +196,13 @@ public interface SarlPackage extends EPackage
   int CAPACITY__NAME = ABSTRACT_ELEMENT__NAME;
 
   /**
-   * The feature id for the '<em><b>Super Type</b></em>' reference.
+   * The feature id for the '<em><b>Super Types</b></em>' reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CAPACITY__SUPER_TYPE = ABSTRACT_ELEMENT_FEATURE_COUNT + 0;
+  int CAPACITY__SUPER_TYPES = ABSTRACT_ELEMENT_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Actions</b></em>' containment reference list.
@@ -894,15 +894,15 @@ public interface SarlPackage extends EPackage
   EClass getCapacity();
 
   /**
-   * Returns the meta object for the reference '{@link io.sarl.lang.sarl.Capacity#getSuperType <em>Super Type</em>}'.
+   * Returns the meta object for the reference list '{@link io.sarl.lang.sarl.Capacity#getSuperTypes <em>Super Types</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Super Type</em>'.
-   * @see io.sarl.lang.sarl.Capacity#getSuperType()
+   * @return the meta object for the reference list '<em>Super Types</em>'.
+   * @see io.sarl.lang.sarl.Capacity#getSuperTypes()
    * @see #getCapacity()
    * @generated
    */
-  EReference getCapacity_SuperType();
+  EReference getCapacity_SuperTypes();
 
   /**
    * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.Capacity#getActions <em>Actions</em>}'.
@@ -1485,12 +1485,12 @@ public interface SarlPackage extends EPackage
     EClass CAPACITY = eINSTANCE.getCapacity();
 
     /**
-     * The meta object literal for the '<em><b>Super Type</b></em>' reference feature.
+     * The meta object literal for the '<em><b>Super Types</b></em>' reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference CAPACITY__SUPER_TYPE = eINSTANCE.getCapacity_SuperType();
+    EReference CAPACITY__SUPER_TYPES = eINSTANCE.getCapacity_SuperTypes();
 
     /**
      * The meta object literal for the '<em><b>Actions</b></em>' containment reference list feature.

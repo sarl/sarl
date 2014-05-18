@@ -8,7 +8,6 @@ import io.sarl.lang.sarl.SarlPackage;
 
 import java.util.Collection;
 
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -16,9 +15,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
@@ -28,7 +26,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link io.sarl.lang.sarl.impl.CapacityImpl#getSuperType <em>Super Type</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.CapacityImpl#getSuperTypes <em>Super Types</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.impl.CapacityImpl#getActions <em>Actions</em>}</li>
  * </ul>
  * </p>
@@ -38,14 +36,14 @@ import org.eclipse.emf.ecore.util.InternalEList;
 public class CapacityImpl extends AbstractElementImpl implements Capacity
 {
   /**
-   * The cached value of the '{@link #getSuperType() <em>Super Type</em>}' reference.
+   * The cached value of the '{@link #getSuperTypes() <em>Super Types</em>}' reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getSuperType()
+   * @see #getSuperTypes()
    * @generated
    * @ordered
    */
-  protected Capacity superType;
+  protected EList<Capacity> superTypes;
 
   /**
    * The cached value of the '{@link #getActions() <em>Actions</em>}' containment reference list.
@@ -83,42 +81,13 @@ public class CapacityImpl extends AbstractElementImpl implements Capacity
    * <!-- end-user-doc -->
    * @generated
    */
-  public Capacity getSuperType()
+  public EList<Capacity> getSuperTypes()
   {
-    if (superType != null && superType.eIsProxy())
+    if (superTypes == null)
     {
-      InternalEObject oldSuperType = (InternalEObject)superType;
-      superType = (Capacity)eResolveProxy(oldSuperType);
-      if (superType != oldSuperType)
-      {
-        if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, SarlPackage.CAPACITY__SUPER_TYPE, oldSuperType, superType));
-      }
+      superTypes = new EObjectResolvingEList<Capacity>(Capacity.class, this, SarlPackage.CAPACITY__SUPER_TYPES);
     }
-    return superType;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Capacity basicGetSuperType()
-  {
-    return superType;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setSuperType(Capacity newSuperType)
-  {
-    Capacity oldSuperType = superType;
-    superType = newSuperType;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.CAPACITY__SUPER_TYPE, oldSuperType, superType));
+    return superTypes;
   }
 
   /**
@@ -161,9 +130,8 @@ public class CapacityImpl extends AbstractElementImpl implements Capacity
   {
     switch (featureID)
     {
-      case SarlPackage.CAPACITY__SUPER_TYPE:
-        if (resolve) return getSuperType();
-        return basicGetSuperType();
+      case SarlPackage.CAPACITY__SUPER_TYPES:
+        return getSuperTypes();
       case SarlPackage.CAPACITY__ACTIONS:
         return getActions();
     }
@@ -181,8 +149,9 @@ public class CapacityImpl extends AbstractElementImpl implements Capacity
   {
     switch (featureID)
     {
-      case SarlPackage.CAPACITY__SUPER_TYPE:
-        setSuperType((Capacity)newValue);
+      case SarlPackage.CAPACITY__SUPER_TYPES:
+        getSuperTypes().clear();
+        getSuperTypes().addAll((Collection<? extends Capacity>)newValue);
         return;
       case SarlPackage.CAPACITY__ACTIONS:
         getActions().clear();
@@ -202,8 +171,8 @@ public class CapacityImpl extends AbstractElementImpl implements Capacity
   {
     switch (featureID)
     {
-      case SarlPackage.CAPACITY__SUPER_TYPE:
-        setSuperType((Capacity)null);
+      case SarlPackage.CAPACITY__SUPER_TYPES:
+        getSuperTypes().clear();
         return;
       case SarlPackage.CAPACITY__ACTIONS:
         getActions().clear();
@@ -222,8 +191,8 @@ public class CapacityImpl extends AbstractElementImpl implements Capacity
   {
     switch (featureID)
     {
-      case SarlPackage.CAPACITY__SUPER_TYPE:
-        return superType != null;
+      case SarlPackage.CAPACITY__SUPER_TYPES:
+        return superTypes != null && !superTypes.isEmpty();
       case SarlPackage.CAPACITY__ACTIONS:
         return actions != null && !actions.isEmpty();
     }
