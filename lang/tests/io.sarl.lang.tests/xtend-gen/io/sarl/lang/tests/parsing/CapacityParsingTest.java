@@ -13,22 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.tests;
+package io.sarl.lang.tests.parsing;
 
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.AbstractElement;
 import io.sarl.lang.sarl.Agent;
 import io.sarl.lang.sarl.Capacity;
-import io.sarl.lang.sarl.Model;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.TopElement;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
-import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
@@ -46,22 +45,18 @@ import org.junit.runner.RunWith;
 @RunWith(XtextRunner.class)
 @InjectWith(SARLInjectorProvider.class)
 @SuppressWarnings("all")
-public class CapacityUtilsTest {
+public class CapacityParsingTest {
   @Inject
   @Extension
-  private ParseHelper<Model> _parseHelper;
+  private ParseHelper<SarlScript> _parseHelper;
   
   @Inject
   @Extension
   private ValidationTestHelper _validationTestHelper;
   
-  private Model mas;
+  private SarlScript mas;
   
   private Iterable<Capacity> knownCapacities;
-  
-  @Inject
-  @Extension
-  private IQualifiedNameProvider _iQualifiedNameProvider;
   
   @Before
   public void setUp() {
@@ -198,9 +193,9 @@ public class CapacityUtilsTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      Model _parse = this._parseHelper.parse(_builder);
+      SarlScript _parse = this._parseHelper.parse(_builder);
       this.mas = _parse;
-      EList<AbstractElement> _elements = this.mas.getElements();
+      EList<TopElement> _elements = this.mas.getElements();
       Iterable<Capacity> _filter = Iterables.<Capacity>filter(_elements, Capacity.class);
       this.knownCapacities = _filter;
     } catch (Throwable _e) {
@@ -210,7 +205,7 @@ public class CapacityUtilsTest {
   
   @Test
   public void testParsedElements() {
-    EList<AbstractElement> _elements = this.mas.getElements();
+    EList<TopElement> _elements = this.mas.getElements();
     int _size = _elements.size();
     Assert.assertEquals(9, _size);
   }
@@ -221,7 +216,7 @@ public class CapacityUtilsTest {
   
   @Test
   public void testAgentFind() {
-    EList<AbstractElement> _elements = this.mas.getElements();
+    EList<TopElement> _elements = this.mas.getElements();
     final Iterable<Agent> agents = Iterables.<Agent>filter(_elements, Agent.class);
     int _size = IterableExtensions.size(agents);
     Assert.assertEquals(2, _size);
@@ -232,7 +227,7 @@ public class CapacityUtilsTest {
   
   @Test
   public void testFindCapacityReferences() {
-    EList<AbstractElement> _elements = this.mas.getElements();
+    EList<TopElement> _elements = this.mas.getElements();
     final Iterable<Agent> agents = Iterables.<Agent>filter(_elements, Agent.class);
     int _size = IterableExtensions.size(agents);
     Assert.assertEquals(2, _size);

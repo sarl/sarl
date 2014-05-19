@@ -16,43 +16,69 @@
 package io.sarl.lang.jvmmodel
 
 import com.google.inject.Inject
-import io.sarl.lang.sarl.AbstractElement
-import io.sarl.lang.sarl.Action
-import io.sarl.lang.sarl.ActionSignature
-import io.sarl.lang.sarl.Agent
-import io.sarl.lang.sarl.Attribute
-import io.sarl.lang.sarl.Behavior
-import io.sarl.lang.sarl.BehaviorUnit
-import io.sarl.lang.sarl.Capacity
-import io.sarl.lang.sarl.CapacityUses
-import io.sarl.lang.sarl.Constructor
-import io.sarl.lang.sarl.Event
-import io.sarl.lang.sarl.RequiredCapacity
-import io.sarl.lang.sarl.Skill
+import io.sarl.lang.SARLKeywords
+import io.sarl.lang.core.Percept
+import java.util.ArrayList
+import java.util.Collection
+import java.util.Comparator
+import java.util.Iterator
+import java.util.LinkedList
+import java.util.List
+import java.util.Map
+import java.util.Set
+import java.util.TreeMap
+import java.util.TreeSet
+import java.util.UUID
 import java.util.logging.Logger
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.common.types.JvmDeclaredType
+import org.eclipse.xtext.common.types.JvmExecutable
+import org.eclipse.xtext.common.types.JvmField
+import org.eclipse.xtext.common.types.JvmFormalParameter
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmOperation
-import org.eclipse.xtext.common.types.TypesFactory
+import org.eclipse.xtext.common.types.JvmTypeReference
+import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.xbase.XExpression
+import org.eclipse.xtext.xbase.XStringLiteral
 import org.eclipse.xtext.xbase.compiler.XbaseCompiler
+import org.eclipse.xtext.xbase.compiler.output.FakeTreeAppendable
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
-import io.sarl.lang.core.Percept
-import java.util.UUID
-import org.eclipse.xtext.common.types.JvmVisibility
+import io.sarl.lang.sarl.Event
+import io.sarl.lang.sarl.Attribute
+import io.sarl.lang.sarl.Constructor
+import io.sarl.lang.sarl.Capacity
+import io.sarl.lang.sarl.ActionSignature
+import io.sarl.lang.sarl.Skill
+import io.sarl.lang.sarl.CapacityUses
+import io.sarl.lang.sarl.Behavior
+import io.sarl.lang.sarl.RequiredCapacity
+import io.sarl.lang.sarl.BehaviorUnit
+import io.sarl.lang.sarl.TopElement
+import io.sarl.lang.sarl.FormalParameter
+import io.sarl.lang.sarl.Action
+import io.sarl.lang.sarl.Agent
+import io.sarl.lang.sarl.InheritingElement
+import io.sarl.lang.sarl.NamedElement
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
  *
  * <p>The JVM model should contain all elements that would appear in the Java code 
- * which is generated from the source model. Other models link against the JVM model rather than the source model.</p>     
+ * which is generated from the source model. Other models link against 
+ * the JVM model rather than the source model.</p>
+ * 
+ * @author $Author: srodriguez$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 class SARLJvmModelInferrer extends AbstractModelInferrer {
-
-	public static final String KEYWORD_OCCURRENCE = "occurrence";
 
 	/**
      * convenience API to build and initialize JVM types and their members.
@@ -60,16 +86,12 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	@Inject extension JvmTypesBuilder
 
 	@Inject extension IQualifiedNameProvider
-
+	
 	@Inject protected XbaseCompiler xbaseCompiler
 
 	@Inject protected JvmModelAssociator jvmModelAssociator
 
-	@Inject TypesFactory typesFactory
-
-	@Inject Logger log
-
-	private Iterable<Capacity> kCapacities = null
+	@Inject private Logger log
 
 	/**
 	 * The dispatch method {@code infer} is called for each instance of the
@@ -81,7 +103,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 *            types} from.
 	 * @param acceptor
 	 *            each created
-	 *            {@link org.eclipse.xtext.common.types.JvmDeclaredType type}
+	 *            {@code type}
 	 *            without a container should be passed to the acceptor in order
 	 *            get attached to the current resource. The acceptor's
 	 *            {@link IJvmDeclaredTypeAcceptor#accept(org.eclipse.xtext.common.types.JvmDeclaredType)
@@ -97,81 +119,74 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 *            <code>true</code>.
 	 */
 	def dispatch void infer(Event element, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-
 		acceptor.accept(element.toClass(element.fullyQualifiedName)).initializeLater(
 			[
 				documentation = element.documentation
 				
-				if(element.superType != null){
-					superTypes += newTypeRef(element.superType.fullyQualifiedName.toString)
-				}else{
-					superTypes += newTypeRef(element, typeof(io.sarl.lang.core.Event))
-				}
-				if (element.features!=null) {
-					for (feature : element.features) {
-						switch feature {
-							Attribute: {
-								members += feature.toField(feature.name, feature.type) [
-									final = !feature.writeable
-									initializer = feature.initialValue
-								]
-								members += feature.toGetter(feature.name, feature.type)
-								if (feature.writeable) {
-									members += feature.toSetter(feature.name, feature.type)
-								}
-	
-							}
-							Constructor: {
-								generateContructor(element, feature)
-							}
+				var long serial = 1L
+				serial = serial + generateSuperTypes(element, typeof(io.sarl.lang.core.Event))
+				var JvmField jvmField
+				var List<JvmField> jvmFields = new ArrayList()
+
+				for (feature : element.features) {
+					switch feature {
+						Attribute: {
+							jvmField = generateAttribute(feature, JvmVisibility::PUBLIC)
+							jvmFields.add(jvmField)
+							members += jvmField
+							serial = serial + feature.name.hashCode
 						}
-	
+						Constructor: {
+							generateConstructor(element, feature)
+							serial = serial + element.fullyQualifiedName.hashCode
+						}
 					}
+
 				}
-				members += element.toMethod("attributesToString", newTypeRef(String))[
-					visibility = JvmVisibility::PROTECTED
-					documentation = '''Returns a String representation of the Event «element.name» attributes only.'''
-					body = [
-						append(
-							'''
-							StringBuilder result = new StringBuilder();
-							result.append(super.attributesToString());
-							«FOR attr : element.features.filter(Attribute)»
-								result.append("«attr.name»  = ").append(this.«attr.name»);
-							«ENDFOR»
-							return result.toString();''')
+								
+				if (!jvmFields.isEmpty) {
+
+					val JvmField[] tab = jvmFields // single translation to the array
+ 					var elementType = element.toClass(element.fullyQualifiedName)
+ 					
+ 					members += toEqualsMethod_Bug434912(element, elementType, true, tab)
+					
+					members += toHashCodeMethod_Bug392440(element, true, tab)
+					
+					members += element.toMethod("attributesToString", newTypeRef(String))[
+						visibility = JvmVisibility::PROTECTED
+						documentation = '''Returns a String representation of the Event «element.name» attributes only.'''
+						body = [
+							append(
+								'''
+								StringBuilder result = new StringBuilder(super.attributesToString());
+								«FOR attr : element.features.filter(Attribute)»
+									result.append("«attr.name»  = ").append(this.«attr.name»);
+								«ENDFOR»
+								return result.toString();''')
+						]
 					]
+					
+				}
+
+				val serialValue = serial
+				members += element.toField("serialVersionUID", newTypeRef(long)) [
+					visibility = JvmVisibility::PRIVATE
+					final = true
+					static = true
+					initializer = [append(serialValue+"L")]
 				]
-				members += element.toMethod('toString', newTypeRef(String)) [
-					documentation = '''Returns a String representation of the Event «element.name».'''
-					body = [
-						append(
-							'''
-							StringBuilder result = new StringBuilder();
-							result.append("«element.name»[");
-							result.append(this.attributesToString());
-							result.append("]");
-							return result.toString();''')
-					]
-				]
+
 			])
 	}
 
 	def dispatch void infer(Capacity capacity, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-
-		//capacity.generateAccessor(acceptor)
 		acceptor.accept(capacity.toInterface(capacity.fullyQualifiedName.toString, null)).initializeLater(
 			[
 				documentation = capacity.documentation
-				if (capacity.superType != null && capacity.superType.fullyQualifiedName != null) {
-					superTypes += newTypeRef(capacity.superType.fullyQualifiedName.toString)
-				} else {
-					superTypes += newTypeRef(capacity, typeof(io.sarl.lang.core.Capacity))
-				}
+				generateSuperTypes(capacity, typeof(io.sarl.lang.core.Capacity))
 				for (feature : capacity.actions) {
-
-					generateAction(feature, null)
-
+					generateAction(feature as ActionSignature, null)
 				}
 			])
 	}
@@ -181,34 +196,32 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			[
 				documentation = element.documentation
 				superTypes += newTypeRef(element, typeof(io.sarl.lang.core.Skill))
-				for (cap : element.implementedCapacities) {
-					if (cap.fullyQualifiedName != null) {
-						superTypes += element.newTypeRef(cap.fullyQualifiedName.toString)
+				for (cap : element.implementedTypes) {
+					if (cap.name!=null) {
+						if (cap.fullyQualifiedName != null) {
+							superTypes += element.newTypeRef(cap.fullyQualifiedName.toString)
+						} else {
+							log.fine("Unable to resolve the fully qualified name of the implemented capacity '"+cap.name+"' for the skill:" + element.name)
+						}
 					} else {
-
-						//log.fine("Null FQN for Capacity:" + cap.name)
-						println("Null FQN for Capacity:" + cap.name)
+						log.fine("Unable to resolve an implemented capacity name for the skill:" + element.name)
 					}
 				}
 				for (feature : element.features) {
 					switch feature {
 						Action: {
-							generateAction(feature.signature, feature.body)
+							generateAction(feature.signature as ActionSignature, feature.body)
 						}
 						Attribute: {
-							members += feature.toField(feature.name, feature.type) [
-								documentation = feature.documentation
-								final = !feature.writeable
-								initializer = feature.initialValue
-							]
+							generateAttribute(feature, JvmVisibility::PROTECTED)
 						}
 						CapacityUses: {
 							for (used : feature.capacitiesUsed) {
-								generateCapactyDelegatorMethods(element, used)
+								generateCapacityDelegatorMethods(element, used)
 							}
 						}
 						Constructor: {
-							generateContructor(element, feature)
+							generateConstructor(element, feature)
 						}
 					}
 				}
@@ -219,30 +232,33 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		acceptor.accept(element.toClass(element.fullyQualifiedName)).initializeLater(
 			[
 				documentation = element.documentation
-				var int counter = 0
-				superTypes += newTypeRef(element, typeof(io.sarl.lang.core.Behavior))
+				generateSuperTypes(element, typeof(io.sarl.lang.core.Behavior))
+				var int counter = 1
 				for (feature : element.features) {
 					switch feature {
 						RequiredCapacity: {
 							//TODO 
 						}
 						BehaviorUnit: {
-							members += generateBehaviorUnit(feature as BehaviorUnit, counter)
+							val bMethod = generateBehaviorUnit(feature, counter)
+							if (bMethod !== null) {
+								counter = counter + 1						
+								members += bMethod
+							}
+						}
+						Action: {
+							generateAction(feature.signature as ActionSignature, feature.body)
 						}
 						CapacityUses: {
 							for (used : feature.capacitiesUsed) {
-								generateCapactyDelegatorMethods(element, used)
+								generateCapacityDelegatorMethods(element, used)
 							}
 						}
 						Constructor: {
-							generateContructor(element, feature)
+							generateConstructor(element, feature)
 						}
 						Attribute: {
-							members += feature.toField(feature.name, feature.type) [
-								documentation = feature.documentation
-								final = !feature.writeable
-								initializer = feature.initialValue
-							]
+							generateAttribute(feature, JvmVisibility::PROTECTED)
 						}
 					}
 				}
@@ -250,14 +266,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	}
 
 	def dispatch void infer(Agent agent, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-
 		acceptor.accept(agent.toClass(agent.fullyQualifiedName)).initializeLater [
 			documentation = agent.documentation
-			if (agent.superType != null && agent.superType.fullyQualifiedName != null) {
-				superTypes += newTypeRef(agent.superType.fullyQualifiedName.toString)
-			} else {
-				superTypes += newTypeRef(agent, typeof(io.sarl.lang.core.Agent))
-			}
+			generateSuperTypes(agent, typeof(io.sarl.lang.core.Agent))
 			members += agent.toConstructor [
 				documentation = '''Creates a new Agent of type «agent.name»'''
 				parameters += agent.toParameter('parentID', newTypeRef(UUID))
@@ -265,117 +276,536 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					super(parentID);
 				'''
 			]
-			var int counter = 0
+			var int counter = 1
 			for (feature : agent.features) {
 				switch feature {
 					BehaviorUnit: {
-						counter = counter + 1
-
-						val bMethod = generateBehaviorUnit(feature as BehaviorUnit, counter)
-
-						members += bMethod
+						val bMethod = generateBehaviorUnit(feature, counter)
+						if (bMethod !== null) {
+							counter = counter + 1						
+							members += bMethod
+						}
 					}
 					Action: {
-						generateAction(feature.signature, feature.body)
-
+						generateAction(feature.signature as ActionSignature, feature.body)
 					}
 					Attribute: {
-						members += feature.toField(feature.name, feature.type) [
-							documentation = feature.documentation
-							initializer = feature.initialValue
-							final = !feature.writeable
-						]
+						generateAttribute(feature, JvmVisibility::PROTECTED)
 					}
 					CapacityUses: {
 						for (used : feature.capacitiesUsed) {
-							generateCapactyDelegatorMethods(agent, used)
+							generateCapacityDelegatorMethods(agent, used)
 						}
 					}
 				}
 			}
 		]
-
 	}
 
-	def void generateCapactyDelegatorMethods(JvmGenericType owner, AbstractElement context, Capacity capacity) {
-		for (signature : capacity.actions) {
+	protected def long generateSuperTypes(JvmGenericType owner, InheritingElement element, Class<?> defaultType) {
+		var serial = 0L
+		if (!element.superTypes.empty) {
+			for(InheritingElement superType : element.superTypes) {
+				if (superType!==null && superType.fullyQualifiedName != null) {
+					var type = element.newTypeRef(superType.fullyQualifiedName.toString)						
+					owner.superTypes += type
+					serial = serial + type.identifier.hashCode
+				}
+			}
+		} else {
+			var type = element.newTypeRef(defaultType)
+			owner.superTypes += type
+			serial = serial + type.identifier.hashCode
+		}
+		return serial
+	}
+	
+	protected def JvmField generateAttribute(JvmGenericType owner, Attribute attr, JvmVisibility attrVisibility) {
+		var field = attr.toField(attr.name, attr.type) [
+			visibility = attrVisibility
+			documentation = attr.documentation
+			final = (!attr.writeable)
+			static = (!attr.writeable) && (attr.initialValue!==null)
+			initializer = attr.initialValue
+		]
+		owner.members += field
+		return field
+	}
+	
+	protected def void iterateOnActions(Capacity capacity, (Capacity, Collection<ActionSignature>)=>void func) {
+		val caps = new LinkedList<InheritingElement>()
+		caps.add(capacity)
+		while (!caps.empty) {
+			var cap = caps.removeFirst
+			if (cap instanceof Capacity) {
+				caps.addAll(cap.superTypes)
+				var list = new ArrayList<ActionSignature>
+				for(sig : cap.actions) {
+					list.add(sig as ActionSignature)
+				}
+				func.apply(cap, list)
+			}
+		}
+	}
+	
+	private def String secureTypeName(NamedElement o) {
+		var name = o.fullyQualifiedName
+		if (name!==null) return name.toString
+		var sname = o.name
+		if (sname!==null) return sname
+		log.finer("Cannot determine the fully qualified name of: "+o)
+		return o.toString
+	}
+
+	protected def void extractCapacityActions(Capacity capacity, Set<ActionSignature> functions, Map<String,Collection<? extends ActionSignature>> functionsPerCapacity) {
+		capacity.iterateOnActions [ c, l |
+			if (functions!==null) functions.addAll(l)
+			if (functionsPerCapacity!==null)
+				functionsPerCapacity.put(c.secureTypeName,l)
+		]
+	}
+	
+	protected def void generateCapacityDelegatorMethods(JvmGenericType owner, InheritingElement context, Capacity capacity) {
+		// Detect the needed actions by iterating on the capacity hierarchy
+		val functions = new TreeSet(new SARLActionSignatureComparator)
+		val functionsPerCapacity = new TreeMap<String,Collection<? extends ActionSignature>>
+		capacity.extractCapacityActions(functions, functionsPerCapacity)
+		// Go through inherited classes, and remove the functions that are provided by the super classes
+		val classes = new LinkedList(context.superTypes)
+		while (!classes.empty) {
+			val superClass = classes.removeFirst
+			classes.addAll(superClass.superTypes)
+			for( feature : superClass.features) {
+				if (feature instanceof ActionSignature) {
+					functions.remove(feature)
+				}
+				else if (feature instanceof CapacityUses) {
+					val caps = new LinkedList<Capacity>
+					caps.addAll(feature.capacitiesUsed)
+					while(!caps.empty) {
+						val cap = caps.removeFirst
+						for(s : cap.superTypes) {
+							if (s instanceof Capacity) caps.add(s)
+						}
+						var list = functionsPerCapacity.get(cap.secureTypeName)
+						if (list===null) {
+							cap.iterateOnActions [ c, l |
+								functionsPerCapacity.put(c.secureTypeName, l)
+								functions.removeAll(l)
+							]
+						}
+						else {
+								functions.removeAll(list)
+						}
+					}
+				}
+			}
+		}
+		// Generate the missed actions
+		for (signature : functions) {
 			owner.generateAction(signature, null).setBody [
 				if (signature.type != null) {
 					append('''return ''')
 				}
-				append('''this.getSkill(''')
+				append('''getSkill(''')
 				append(context.newTypeRef(capacity.fullyQualifiedName.toString).type)
 				append('''.class).«signature.name»(''')
 				append(signature.params.join(', ')[name])
 				append(');')
 			]
 		}
-
 	}
 
-	def JvmOperation generateBehaviorUnit(JvmGenericType owner, BehaviorUnit unit, int index) {
-		val behName = "_handle_" + unit.event.name + "_" + index
-
-		val behaviorMethod = unit.toMethod(behName, unit.newTypeRef(Void::TYPE)) [
-			documentation = unit.documentation
-			//TODO: Change subscribe annotations to decouple from guava
-			annotations += unit.toAnnotation(typeof(Percept))
-			parameters +=
-				unit.event.toParameter(KEYWORD_OCCURRENCE, newTypeRef(unit.event, unit.event.fullyQualifiedName.toString))
-		]
-
-		if (unit.guard == null) {
-			behaviorMethod.body = unit.body
-		} else {
-			val guard = unit.guard
-			val guardMethodName = behName + "_Guard"
-			val guardMethod = guard.toMethod(guardMethodName, guard.newTypeRef(Boolean::TYPE)) [
-				documentation = "Ensures that the behavior " + behName + " is called only when the guard " +
-					guard.toString + " is valid"
-				parameters += unit.event.toParameter(KEYWORD_OCCURRENCE,
-					newTypeRef(unit.event, unit.event.fullyQualifiedName.toString))
+	protected def JvmOperation generateBehaviorUnit(JvmGenericType owner, BehaviorUnit unit, int index) {
+		val eventName = unit.event.name
+		if (eventName!==null && !eventName.empty) {
+			val behName = "_handle_" + unit.event.name + "_" + index
+	
+			val behaviorMethod = unit.toMethod(behName, unit.newTypeRef(Void::TYPE)) [
+				documentation = unit.documentation
+				annotations += unit.toAnnotation(typeof(Percept))
+				parameters +=
+					unit.event.toParameter(SARLKeywords.KEYWORD_OCCURRENCE, newTypeRef(unit.event, unit.event.fullyQualifiedName.toString))
 			]
-
-			guardMethod.body = guard
-			jvmModelAssociator.associateLogicalContainer(unit.body, behaviorMethod)
-
-			behaviorMethod.body = [
-				it.append('''if ( «guardMethodName»(«KEYWORD_OCCURRENCE»)) { ''')
-				xbaseCompiler.compile(unit.body, it, behaviorMethod.newTypeRef(Void::TYPE))
-				it.append('}')
-			]
-
-			owner.members += guardMethod
+	
+			if (unit.guard == null) {
+				behaviorMethod.body = unit.body
+			} else {
+				val guard = unit.guard
+				val guardMethodName = behName + "_Guard"
+				val guardMethod = guard.toMethod(guardMethodName, guard.newTypeRef(Boolean::TYPE)) [
+					documentation = "Ensures that the behavior " + behName + " is called only when the guard " +
+						guard.toString + " is valid"
+					parameters += unit.event.toParameter(SARLKeywords.KEYWORD_OCCURRENCE,
+						newTypeRef(unit.event, unit.event.fullyQualifiedName.toString))
+				]
+	
+				guardMethod.body = guard
+				jvmModelAssociator.associateLogicalContainer(unit.body, behaviorMethod)
+	
+				behaviorMethod.body = [
+					it.append('''if ( «guardMethodName»(«SARLKeywords.KEYWORD_OCCURRENCE»)) { ''')
+					xbaseCompiler.compile(unit.body, it, behaviorMethod.newTypeRef(Void::TYPE))
+					it.append('}')
+				]
+	
+				owner.members += guardMethod
+			}
+			return behaviorMethod
 		}
-		behaviorMethod
+		log.fine("Unable to resolve the event for a behavior unit")
+		return null
+	}
+	
+	private def Collection<List<Object>> buildSignaturesForArgDefaultValues(boolean varargs, List<FormalParameter> params) {
+		val comparator = new SARLAdditionalSignatureComparator
+		var Map<List<String>,List<Object>> signatures = new TreeMap(comparator)
+		if (!params.empty) {
+			var Map<List<String>,List<Object>> tmpSignatures
+			var completeSig = new ArrayList
+			val lastParamIndex = params.size()-1
+			for(i : 0..lastParamIndex) {
+				val param = params.get(i)
+				val isOptional = (param.defaultValue!==null && ((i<lastParamIndex) || (!varargs)))
+				val type = param.parameterType.identifier
+				completeSig.add(type)
+				tmpSignatures = new TreeMap(comparator)
+				if (signatures.empty) {
+					// First parameter
+					if (isOptional) {
+						var key = new ArrayList
+						var value = new ArrayList
+						value.add(new SARLDefaultValuedParameter(param.defaultValue, param.parameterType))
+						tmpSignatures.put(key, value)				
+					}
+					var key = new ArrayList
+					key.add(type)
+					var value = new ArrayList
+					value.add(i)
+					tmpSignatures.put(key, value)				
+				}
+				else {
+					// Other parameters
+					for(entry : signatures.entrySet) {
+						if (isOptional) {
+							val sig = entry.key
+							var key = new ArrayList(sig)
+							var value = new ArrayList(entry.value)
+							value.add(new SARLDefaultValuedParameter(param.defaultValue, param.parameterType))
+							tmpSignatures.put(key, value)
+						}
+						var key = new ArrayList(entry.key)
+						key.add(type)
+						entry.value.add(i)
+						tmpSignatures.put(key, entry.value)
+					}
+				}
+				signatures = tmpSignatures
+			}
+			signatures.remove(completeSig)
+		}
+		return signatures.values
+	}
+	
+	protected def List<String> generateFormalParametersWithoutDefaultValue(JvmExecutable owner, boolean varargs, List<FormalParameter> params) {
+		var parameterTypes = new ArrayList
+		var JvmFormalParameter lastParam = null
+		for (param : params) {
+			lastParam = param.toParameter(param.name, param.parameterType)
+			owner.parameters += lastParam
+			parameterTypes.add(param.parameterType.identifier)
+		}
+		if (varargs && lastParam !== null) {
+			lastParam.parameterType = lastParam.parameterType.addArrayTypeDimension
+		}
+		return parameterTypes
 	}
 
-	def JvmOperation generateAction(JvmGenericType owner, ActionSignature signature, XExpression operationBody) {
+	protected def List<String> generateFormalParametersWithDefaultValue(JvmExecutable owner, boolean varargs, List<FormalParameter> params, List<Object> signature) {
+		var JvmFormalParameter lastParam = null
+		val arguments = new ArrayList
+		for(parameterSpec : signature) {
+			if (parameterSpec instanceof SARLDefaultValuedParameter) {
+				// Special case: convert a String literal to a char
+				var boolean treated = false;
+				var expr = parameterSpec.expr
+				if (expr instanceof XStringLiteral) {
+					val id = parameterSpec.type.identifier
+					if (id=='char' || id=='java.lang.Character') {
+						treated = true
+						var str = expr.value
+						if (str.length>0)
+							arguments.add("'"+str.charAt(0)+"'")
+						else
+							arguments.add("\\0")
+					}
+				}
+				if (!treated){
+					val jExpr = new FakeTreeAppendable
+					xbaseCompiler.compileAsJavaExpression(
+						parameterSpec.expr, jExpr, parameterSpec.type
+					)
+					arguments.add(jExpr.content)
+				}
+			}
+			else {
+				val param = params.get((parameterSpec as Number).intValue)
+				lastParam = param.toParameter(param.name, param.parameterType)
+				owner.parameters += lastParam
+				arguments.add(param.name)
+			}
+		}
+		if (varargs && lastParam !== null) {
+			lastParam.parameterType = lastParam.parameterType.addArrayTypeDimension
+		}
+		return arguments
+	}
+
+	protected def JvmOperation generateAction(JvmGenericType owner, ActionSignature signature, XExpression operationBody) {
 		var returnType = signature.type
 		if (returnType == null) {
 			returnType = signature.newTypeRef(Void::TYPE)
 		}
-		val op = owner.toMethod(signature.name, returnType) [
+				
+		var op = owner.toMethod(signature.name, returnType) [
 			documentation = signature.documentation
-			for (p : signature.params) {
-				parameters += p.toParameter(p.name, p.parameterType)
-			}
+			varArgs = signature.varargs
+			generateFormalParametersWithoutDefaultValue(signature.varargs, signature.params)
 			body = operationBody
 		]
-
 		owner.members += op
+
+		val otherSignatures = buildSignaturesForArgDefaultValues(
+			signature.varargs, signature.params
+		)
+		
+		for(otherSignature : otherSignatures) {
+			op = owner.toMethod(signature.name, returnType) [
+				documentation = signature.documentation
+				varArgs = signature.varargs
+				val args = generateFormalParametersWithDefaultValue(
+					signature.varargs, signature.params, otherSignature
+				)
+				body = [
+					append(signature.name)
+					append("(")
+					append(args.join(", "))
+					append(");")
+				]
+			]
+			owner.members += op
+		}
+
 		return op
 	}
 
-	def void generateContructor(JvmGenericType owner, AbstractElement context, Constructor constructor) {
+	protected def void generateConstructor(JvmGenericType owner, TopElement context, Constructor constructor) {
 		owner.members += context.toConstructor [
 			documentation = constructor.documentation
-			for (p : constructor.params) {
-				parameters += p.toParameter(p.name, p.parameterType)
-			}
+			varArgs = constructor.varargs
+			generateFormalParametersWithoutDefaultValue(constructor.varargs, constructor.params)
 			body = constructor.body
 		]
 
+		val otherSignatures = buildSignaturesForArgDefaultValues(
+			constructor.varargs, constructor.params
+		)
+		
+		for(otherSignature : otherSignatures) {
+			owner.members += owner.toConstructor [
+				documentation = constructor.documentation
+				varArgs = constructor.varargs
+				val args = generateFormalParametersWithDefaultValue(
+					constructor.varargs, constructor.params, otherSignature
+				)
+				body = [
+					append("this(")
+					append(args.join(", "))
+					append(");")
+				]
+			]
+		}
+	}
+	
+	/** 
+	 * FIXME: Remove this function if it is fixed in Xtext: https://bugs.eclipse.org/bugs/show_bug.cgi?id=392440
+	 * 
+	 * Copied/pasted from {@link JvmTypesBuilder#toHashCodeMethod(EObject, boolean, JvmField...)}.
+	 * Updated for fixing the issue {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=392440"}
+	 *
+	 * @param owner 
+	 * @param sourceElement
+	 * @param extendsSomethingWithProperHashCode
+	 * @param jvmFields
+	 * @return the operation.
+	 */
+	protected def JvmOperation toHashCodeMethod_Bug392440(JvmGenericType owner, EObject sourceElement, boolean extendsSomethingWithProperHashCode, JvmField ...jvmFields) {
+		if (sourceElement === null) return null
+		var JvmOperation result = toMethod(sourceElement, "hashCode", newTypeRef(sourceElement, Integer.TYPE), null)
+		if (result === null) return null
+		result.annotations.add(toAnnotation(sourceElement, Override))
+		result.body = [
+				append("final int prime = 31;")
+				if (extendsSomethingWithProperHashCode) {
+					newLine().append("int result = super.hashCode();")
+				} else {
+					newLine().append("int result = 1;")
+				}
+				for (JvmField field : jvmFields) {
+					var String typeName = field.type.identifier
+					if (Boolean.TYPE.name == typeName) {
+						newLine().append("result = prime * result + (this." + field.getSimpleName() +" ? 1231 : 1237);")
+					} else if (Integer.TYPE.name == typeName
+							|| Character.TYPE.name == typeName
+							|| Byte.TYPE.name == typeName
+							|| Short.TYPE.name == typeName) {
+						newLine().append("result = prime * result + this." + field.getSimpleName() +";")
+					} else if (Long.TYPE.name == typeName) {
+						newLine().append("result = prime * result + (int) (this." + field.getSimpleName() +" ^ (this." + field.getSimpleName() + " >>> 32));")
+					} else if (Float.TYPE.name == typeName) {
+						newLine().append("result = prime * result + Float.floatToIntBits(this." + field.getSimpleName() +");")
+					} else if (Double.TYPE.name == typeName) {
+						newLine().append("result = prime * result + (int) (Double.doubleToLongBits(this." + field.getSimpleName() +") ^ (Double.doubleToLongBits(this." + field.getSimpleName() + ") >>> 32));");
+					} else {
+						newLine().append("result = prime * result + ((this." + field.getSimpleName() +"== null) ? 0 : this."+field.getSimpleName()+".hashCode());");
+					}
+				}
+				newLine().append("return result;");
+		]
+		return result
 	}
 
+	/** 
+	 * FIXME: Remove this function if it is fixed in Xtext: https://bugs.eclipse.org/bugs/show_bug.cgi?id=434912
+	 * 
+	 * Copied/pasted from {@link JvmTypesBuilder#toEquals}.
+	 * Updated for fixing the issue {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=434912"}
+	 *
+	 * @param owner 
+	 * @param sourceElement
+	 * @param declaredType
+	 * @param isDelegateToSuperEquals
+	 * @param jvmFields
+	 * @return the operation.
+	 */
+	protected def JvmOperation toEqualsMethod_Bug434912(JvmGenericType owner, EObject sourceElement, JvmDeclaredType declaredType, boolean isDelegateToSuperEquals, JvmField... jvmFields) {
+		var JvmOperation result = toMethod(sourceElement, "equals", newTypeRef(sourceElement, Boolean.TYPE), null)
+		result.annotations.add(sourceElement.toAnnotation(Override))
+		result.parameters.add( sourceElement.toParameter("obj", newTypeRef(sourceElement, Object)))
+		result.body = [
+					append("if (this == obj)").increaseIndentation()
+					newLine().append("return true;").decreaseIndentation()
+					newLine().append("if (obj == null)").increaseIndentation()
+					newLine().append("return false;").decreaseIndentation()
+					newLine().append("if (getClass() != obj.getClass())").increaseIndentation()
+					newLine().append("return false;").decreaseIndentation()
+					if (isDelegateToSuperEquals) {
+						newLine().append("if (!super.equals(obj))").increaseIndentation()
+						newLine().append("return false;").decreaseIndentation()
+					}
+					newLine().append(declaredType.getSimpleName()+" other = (" + declaredType.getSimpleName() + ") obj;")
+					for (JvmField field : jvmFields) {
+						var String typeName = field.type.identifier
+						if (Boolean.TYPE.name == typeName 
+								|| Integer.TYPE.name == typeName
+								|| Long.TYPE.name == typeName
+								|| Character.TYPE.name == typeName
+								|| Byte.TYPE.name == typeName
+								|| Short.TYPE.name == typeName) {
+							newLine().append("if (other." + field.getSimpleName() +" != this." + field.getSimpleName() + ")").increaseIndentation()
+							newLine().append("return false;").decreaseIndentation()
+							
+						} else if (Double.TYPE.name == typeName) {
+							newLine().append("if (Double.doubleToLongBits(other." + field.getSimpleName() +") != Double.doubleToLongBits(this." + field.getSimpleName() + "))").increaseIndentation()
+							newLine().append("return false;").decreaseIndentation()
+						} else if (Float.TYPE.name == typeName) {
+							newLine().append("if (Float.floatToIntBits(other." + field.getSimpleName() +") != Float.floatToIntBits(this." + field.getSimpleName() + "))").increaseIndentation()
+							newLine().append("return false;").decreaseIndentation()
+						} else {
+							newLine().append("if (this." + field.getSimpleName() +" == null) {").increaseIndentation()
+							newLine().append("if (other." + field.getSimpleName() +" != null)").increaseIndentation()
+							newLine().append("return false;").decreaseIndentation()
+							decreaseIndentation()
+							newLine().append("} else if (!this."+ field.getSimpleName() +".equals(other."+ field.getSimpleName() +"))").increaseIndentation()
+							newLine().append("return false;").decreaseIndentation()
+						}
+					}
+					newLine().append("return true;")
+			]
+		return result
+	}
+
+}
+
+/**
+ * This class permits to wrap a default value when building the function signatures.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+package class SARLDefaultValuedParameter {
+	public val XExpression expr
+	public val JvmTypeReference type
+	
+	new(XExpression e, JvmTypeReference type) {
+		this.expr = e
+		this.type = type
+	}
+	
+	public override String toString() {
+		if (this.expr==null) return null;
+		return this.expr.toString
+	}
+}
+
+/**
+ * This class permits to compare the signatures when
+ * building the additional signatures. 
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+package class SARLAdditionalSignatureComparator implements Comparator<List<String>> {
+	override int compare(List<String> a, List<String> b) {
+		var int cmp = (a.size <=> b.size)
+		if (cmp!=0) return cmp
+		val Iterator<String> i1 = a.iterator
+		val Iterator<String> i2 = b.iterator
+		while (i1.hasNext && i2.hasNext) {
+			cmp = i1.next.compareTo(i2.next)
+			if (cmp!=0) return cmp
+		}
+		return 0
+	}
+}
+
+/**
+ * This class permits to compare the action signatures. 
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+package class SARLActionSignatureComparator implements Comparator<ActionSignature> {
+	override int compare(ActionSignature a, ActionSignature b) {
+		var cmp = a.name.compareTo(b.name)
+		if (cmp!=0) return cmp
+		return compare(a.params, b.params)
+	}
+	def int compare(List<FormalParameter> a, List<FormalParameter> b) {
+		var int cmp = (a.size <=> b.size)
+		if (cmp!=0) return cmp
+		val Iterator<FormalParameter> i1 = a.iterator
+		val Iterator<FormalParameter> i2 = b.iterator
+		while (i1.hasNext && i2.hasNext) {
+			cmp = i1.next.parameterType.identifier.compareTo(i2.next.parameterType.identifier)
+			if (cmp!=0) return cmp
+		}
+		return 0
+	}
 }

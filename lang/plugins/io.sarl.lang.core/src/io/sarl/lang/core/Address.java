@@ -76,10 +76,9 @@ public class Address implements Serializable, Comparable<Address> {
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.agentId == null) ? 0 : this.agentId.hashCode());
-		result = prime * result + ((this.spaceId == null) ? 0 : this.spaceId.hashCode());
+		result = 31 * result + ((this.agentId == null) ? 0 : this.agentId.hashCode());
+		result = 31 * result + ((this.spaceId == null) ? 0 : this.spaceId.hashCode());
 		return result;
 	}
 

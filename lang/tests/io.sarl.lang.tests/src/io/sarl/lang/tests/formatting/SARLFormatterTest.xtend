@@ -17,7 +17,7 @@ package io.sarl.lang.tests.formatting
 
 import com.google.inject.Inject
 import io.sarl.lang.SARLInjectorProvider
-import io.sarl.lang.sarl.Model
+import io.sarl.lang.sarl.SarlScript
 import org.eclipse.xtext.formatting.INodeModelFormatter
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
@@ -37,7 +37,7 @@ import static extension org.junit.Assert.*
 @RunWith(XtextRunner)
 @InjectWith(SARLInjectorProvider)
 class SARLFormatterTest {
-	@Inject extension ParseHelper<Model>
+	@Inject extension ParseHelper<SarlScript>
 	@Inject extension INodeModelFormatter
 
 	@Test
@@ -58,8 +58,6 @@ class SARLFormatterTest {
 		'''behavior B1 { } behavior B2 {}
 			'''.assertFormattedAs(
 			'''
-			
-			
 			behavior B1 {
 			}
 			
@@ -87,8 +85,6 @@ class SARLFormatterTest {
 				 behavior B2 {}
 		'''.assertFormattedAs(
 			'''
-			
-			
 			behavior B1 {
 				requires Cap1, Cap2
 				uses Cap1
@@ -187,7 +183,6 @@ class SARLFormatterTest {
 			}
 		'''.assertFormattedAs(
 			'''
-			
 			skill S implements C {
 			
 				new(ag : Agent) {
@@ -346,7 +341,7 @@ class SARLFormatterTest {
 						throw new IllegalArgumentException("Path [" + myPath + "] is not a Directory")
 					}
 			
-					for(f:dir.listFiles()){
+					for ( f : dir.listFiles() ) {
 						if(f.directory) {
 							if(!f.name.equals(".") && !f.name.equals("..")) {
 								val targetID = FileSearchAgent.spawnInContext(innerContext, # [ f.absolutePath , false.toString ]);
@@ -592,7 +587,6 @@ capacity ExternalContextAccess {
 		'''.
 		assertFormattedAs(
 			'''
-			
 			capacity ExternalContextAccess {
 			/**
 				 * Replies all contexts this agent is a member of, including the default context

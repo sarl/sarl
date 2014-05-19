@@ -30,10 +30,47 @@ import java.io.Serializable;
  */
 public abstract class Event implements Serializable {
 
-	private static final long serialVersionUID = -9077741474332211244L;
+	private static final long serialVersionUID = -4314428111329600890L;
+	
+	private Address source;
 
-	private Address source = null;
-
+	/**
+	 */
+	public Event() {
+		//
+	}
+	
+	/**
+	 * @param source - source of the event.
+	 */
+	public Event(Address source) {
+		this.source = source;
+	}
+	
+	/** {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this==obj) return true;
+		if (obj!=null && getClass().equals(obj.getClass())) {
+			Event e = (Event)obj;
+			return (this.source==null && e.source==null)
+					||(this.source!=null && this.source.equals(e.source));
+		}
+		return false;
+	}
+	
+	/** {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		int h = 31 + getClass().hashCode();
+		if (this.source!=null) {
+			h = h * 31 + this.source.hashCode();
+		}
+		return h;
+	}
+	
 	/**
 	 * The source of the event.
 	 * 

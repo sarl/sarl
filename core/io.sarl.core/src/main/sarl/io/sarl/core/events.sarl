@@ -18,6 +18,7 @@ package io.sarl.core
 
 import java.util.UUID
 import io.sarl.lang.core.SpaceID
+import io.sarl.lang.core.Address
 
 /**
 * Initialization event for an Agent.
@@ -41,8 +42,13 @@ event Destroy
 * The context Id can be retrieved via ev.getSource().getSpaceID().getContextID()
 */
 event AgentSpawned {
-	var agentID : UUID
-	var agentType : String
+	val agentID : UUID
+	val agentType : String
+	new (src : Address, aid : UUID, at : String) {
+		setSource(src)
+		this.agentID = aid
+		this.agentType = at
+	}
 }
 
 /**
@@ -50,51 +56,95 @@ event AgentSpawned {
 * The context Id can be retrieved via ev.getSource().getSpaceID().getContextID()
 */
 event AgentKilled {
-	var agentID : UUID
+	val agentID : UUID
+	val agentType : String
+	new (src : Address, aid : UUID, at : String) {
+		setSource(src)
+		this.agentID = aid
+		this.agentType = at
+	}
 }
 
 /**
 * Informs the creation of a new space in a given context.
 */
 event SpaceCreated {
-	var spaceID : SpaceID
+	val spaceID : SpaceID
+	new (src : Address, sid : SpaceID) {
+		setSource(src)
+		this.spaceID = sid
+	}
 }
 
 /**
 * Informs the destruction of a space in a given context.
 */
 event SpaceDestroyed {
-	var spaceID : SpaceID
+	val spaceID : SpaceID
+	new (src : Address, sid : SpaceID) {
+		setSource(src)
+		this.spaceID = sid
+	}
 }
 
-/**  Notifies other members the member with agentID has effectively integrated the holon context.*/
+/**  Notifies other members the member with agentID has effectively 
+ * integrated the holon context.*/
 event MemberJoined {
-	var parentContextID : UUID
-	var agentID : UUID
+	val parentContextID : UUID
+	val agentID : UUID
+	val agentType : String
+	new (src : Address, pid : UUID, aid : UUID, at : String) {
+		setSource(src)
+		this.parentContextID = pid
+		this.agentID = aid
+		this.agentType = at
+	}
 }
 
-/** Notifies other members the member with agentID was excluded (forced to leave) the holon context parentContextID */
+/** Notifies other members the member with agentID was 
+ * excluded (forced to leave) the holon context
+ * parentContextID */
 event MemberExcluded {
-	var parentContextID : UUID
-	var excludeMemberID : UUID
+	val parentContextID : UUID
+	val agentID : UUID
+	val agentType : String
+	new (src : Address, pid : UUID, aid : UUID, at : String) {
+		setSource(src)
+		this.parentContextID = pid
+		this.agentID = aid
+		this.agentType = at
+	}
 }
 
 /** Notifies other members the member with agentID has left the holon context */
 event MemberLeft {
-	var agentID : UUID
+	val agentID : UUID
+	val agentType : String
+	new (src : Address, aid : UUID, at : String) {
+		setSource(src)
+		this.agentID = aid
+		this.agentType = at
+	}
 }
 
 /**
  * Notifies behaviors the agent has joined a new superholon
  */
 event ContextJoined {
-	var holonContextID : UUID
-	var defaultSpaceID : UUID
+	val holonContextID : UUID
+	val defaultSpaceID : UUID
+	new (pid : UUID, sid : UUID) {
+		this.holonContextID = pid
+		this.defaultSpaceID = sid
+	}
 }
 
 /**
  * Notifies behaviors the agent has left a superholon
  */
 event ContextLeft {
-	var holonContextID : UUID
+	val holonContextID : UUID
+	new (pid : UUID) {
+		this.holonContextID = pid
+	}
 }

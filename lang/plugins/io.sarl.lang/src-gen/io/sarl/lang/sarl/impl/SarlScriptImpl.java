@@ -2,11 +2,16 @@
  */
 package io.sarl.lang.sarl.impl;
 
-import io.sarl.lang.sarl.Parameter;
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.TopElement;
+
+import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -14,23 +19,27 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+
+import org.eclipse.xtext.xtype.XImportSection;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Parameter</b></em>'.
+ * An implementation of the model object '<em><b>Script</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link io.sarl.lang.sarl.impl.ParameterImpl#getName <em>Name</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.impl.ParameterImpl#getParameterType <em>Parameter Type</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.SarlScriptImpl#getName <em>Name</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.SarlScriptImpl#getImportSection <em>Import Section</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.SarlScriptImpl#getElements <em>Elements</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class ParameterImpl extends MinimalEObjectImpl.Container implements Parameter
+public class SarlScriptImpl extends MinimalEObjectImpl.Container implements SarlScript
 {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -53,21 +62,31 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
   protected String name = NAME_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getParameterType() <em>Parameter Type</em>}' containment reference.
+   * The cached value of the '{@link #getImportSection() <em>Import Section</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getParameterType()
+   * @see #getImportSection()
    * @generated
    * @ordered
    */
-  protected JvmTypeReference parameterType;
+  protected XImportSection importSection;
+
+  /**
+   * The cached value of the '{@link #getElements() <em>Elements</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getElements()
+   * @generated
+   * @ordered
+   */
+  protected EList<TopElement> elements;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected ParameterImpl()
+  protected SarlScriptImpl()
   {
     super();
   }
@@ -80,7 +99,7 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
   @Override
   protected EClass eStaticClass()
   {
-    return SarlPackage.Literals.PARAMETER;
+    return SarlPackage.Literals.SARL_SCRIPT;
   }
 
   /**
@@ -103,7 +122,7 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
     String oldName = name;
     name = newName;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.PARAMETER__NAME, oldName, name));
+      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.SARL_SCRIPT__NAME, oldName, name));
   }
 
   /**
@@ -111,9 +130,9 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
    * <!-- end-user-doc -->
    * @generated
    */
-  public JvmTypeReference getParameterType()
+  public XImportSection getImportSection()
   {
-    return parameterType;
+    return importSection;
   }
 
   /**
@@ -121,13 +140,13 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetParameterType(JvmTypeReference newParameterType, NotificationChain msgs)
+  public NotificationChain basicSetImportSection(XImportSection newImportSection, NotificationChain msgs)
   {
-    JvmTypeReference oldParameterType = parameterType;
-    parameterType = newParameterType;
+    XImportSection oldImportSection = importSection;
+    importSection = newImportSection;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SarlPackage.PARAMETER__PARAMETER_TYPE, oldParameterType, newParameterType);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SarlPackage.SARL_SCRIPT__IMPORT_SECTION, oldImportSection, newImportSection);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -138,20 +157,34 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setParameterType(JvmTypeReference newParameterType)
+  public void setImportSection(XImportSection newImportSection)
   {
-    if (newParameterType != parameterType)
+    if (newImportSection != importSection)
     {
       NotificationChain msgs = null;
-      if (parameterType != null)
-        msgs = ((InternalEObject)parameterType).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SarlPackage.PARAMETER__PARAMETER_TYPE, null, msgs);
-      if (newParameterType != null)
-        msgs = ((InternalEObject)newParameterType).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SarlPackage.PARAMETER__PARAMETER_TYPE, null, msgs);
-      msgs = basicSetParameterType(newParameterType, msgs);
+      if (importSection != null)
+        msgs = ((InternalEObject)importSection).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SarlPackage.SARL_SCRIPT__IMPORT_SECTION, null, msgs);
+      if (newImportSection != null)
+        msgs = ((InternalEObject)newImportSection).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SarlPackage.SARL_SCRIPT__IMPORT_SECTION, null, msgs);
+      msgs = basicSetImportSection(newImportSection, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.PARAMETER__PARAMETER_TYPE, newParameterType, newParameterType));
+      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.SARL_SCRIPT__IMPORT_SECTION, newImportSection, newImportSection));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EList<TopElement> getElements()
+  {
+    if (elements == null)
+    {
+      elements = new EObjectContainmentEList<TopElement>(TopElement.class, this, SarlPackage.SARL_SCRIPT__ELEMENTS);
+    }
+    return elements;
   }
 
   /**
@@ -164,8 +197,10 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
   {
     switch (featureID)
     {
-      case SarlPackage.PARAMETER__PARAMETER_TYPE:
-        return basicSetParameterType(null, msgs);
+      case SarlPackage.SARL_SCRIPT__IMPORT_SECTION:
+        return basicSetImportSection(null, msgs);
+      case SarlPackage.SARL_SCRIPT__ELEMENTS:
+        return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -180,10 +215,12 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
   {
     switch (featureID)
     {
-      case SarlPackage.PARAMETER__NAME:
+      case SarlPackage.SARL_SCRIPT__NAME:
         return getName();
-      case SarlPackage.PARAMETER__PARAMETER_TYPE:
-        return getParameterType();
+      case SarlPackage.SARL_SCRIPT__IMPORT_SECTION:
+        return getImportSection();
+      case SarlPackage.SARL_SCRIPT__ELEMENTS:
+        return getElements();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -193,16 +230,21 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case SarlPackage.PARAMETER__NAME:
+      case SarlPackage.SARL_SCRIPT__NAME:
         setName((String)newValue);
         return;
-      case SarlPackage.PARAMETER__PARAMETER_TYPE:
-        setParameterType((JvmTypeReference)newValue);
+      case SarlPackage.SARL_SCRIPT__IMPORT_SECTION:
+        setImportSection((XImportSection)newValue);
+        return;
+      case SarlPackage.SARL_SCRIPT__ELEMENTS:
+        getElements().clear();
+        getElements().addAll((Collection<? extends TopElement>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -218,11 +260,14 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
   {
     switch (featureID)
     {
-      case SarlPackage.PARAMETER__NAME:
+      case SarlPackage.SARL_SCRIPT__NAME:
         setName(NAME_EDEFAULT);
         return;
-      case SarlPackage.PARAMETER__PARAMETER_TYPE:
-        setParameterType((JvmTypeReference)null);
+      case SarlPackage.SARL_SCRIPT__IMPORT_SECTION:
+        setImportSection((XImportSection)null);
+        return;
+      case SarlPackage.SARL_SCRIPT__ELEMENTS:
+        getElements().clear();
         return;
     }
     super.eUnset(featureID);
@@ -238,10 +283,12 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
   {
     switch (featureID)
     {
-      case SarlPackage.PARAMETER__NAME:
+      case SarlPackage.SARL_SCRIPT__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-      case SarlPackage.PARAMETER__PARAMETER_TYPE:
-        return parameterType != null;
+      case SarlPackage.SARL_SCRIPT__IMPORT_SECTION:
+        return importSection != null;
+      case SarlPackage.SARL_SCRIPT__ELEMENTS:
+        return elements != null && !elements.isEmpty();
     }
     return super.eIsSet(featureID);
   }
@@ -263,4 +310,4 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
     return result.toString();
   }
 
-} //ParameterImpl
+} //SarlScriptImpl

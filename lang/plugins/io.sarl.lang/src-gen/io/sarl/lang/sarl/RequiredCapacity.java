@@ -20,7 +20,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface RequiredCapacity extends AgentFeature, BehaviorFeature, SkillFeature
+public interface RequiredCapacity extends Feature
 {
   /**
    * Returns the value of the '<em><b>Required Capacities</b></em>' reference list.

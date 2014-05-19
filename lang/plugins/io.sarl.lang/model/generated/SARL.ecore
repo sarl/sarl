@@ -1,40 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="sarl" nsURI="http://www.sarl.io/lang/SARL" nsPrefix="sarl">
-  <eClassifiers xsi:type="ecore:EClass" name="Model">
+  <eClassifiers xsi:type="ecore:EClass" name="SarlScript">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="importSection" eType="ecore:EClass ../../../org.eclipse.xtext.xbase/model/Xtype.ecore#//XImportSection"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
-        eType="#//AbstractElement" containment="true"/>
+        eType="#//TopElement" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AbstractElement">
+  <eClassifiers xsi:type="ecore:EClass" name="TopElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Event" eSuperTypes="#//AbstractElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="superType" eType="#//Event"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Feature" eSuperTypes="#//EventFeature #//AgentFeature #//BehaviorFeature #//SkillFeature"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureContainer" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="features" upperBound="-1"
-        eType="#//EventFeature" containment="true"/>
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Capacity" eSuperTypes="#//AbstractElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="superType" eType="#//Capacity"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="actions" upperBound="-1"
-        eType="#//ActionSignature" containment="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InheritingElement" eSuperTypes="#//TopElement #//FeatureContainer">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="superTypes" unique="false"
+        upperBound="-1" eType="#//InheritingElement"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Agent" eSuperTypes="#//AbstractElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="superType" eType="#//Agent"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="features" upperBound="-1"
-        eType="#//AgentFeature" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Behavior" eSuperTypes="#//AbstractElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="superType" eType="#//Behavior"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="features" upperBound="-1"
-        eType="#//BehaviorFeature" containment="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ImplementingElement" eSuperTypes="#//TopElement #//InheritingElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="implementedTypes" unique="false"
+        upperBound="-1" eType="#//InheritingElement"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EventFeature"/>
   <eClassifiers xsi:type="ecore:EClass" name="AgentFeature"/>
   <eClassifiers xsi:type="ecore:EClass" name="BehaviorFeature"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="#//EventFeature #//AgentFeature #//BehaviorFeature #//SkillFeature">
+  <eClassifiers xsi:type="ecore:EClass" name="SkillFeature"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FormalParameter">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameterType" eType="ecore:EClass ../../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="ecore:EClass ../../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Event" eSuperTypes="#//InheritingElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Capacity" eSuperTypes="#//InheritingElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="actions" upperBound="-1"
+        eType="#//Feature" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Agent" eSuperTypes="#//InheritingElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Behavior" eSuperTypes="#//InheritingElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Skill" eSuperTypes="#//ImplementingElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="#//Feature">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="writeable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass ../../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
@@ -42,52 +52,42 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="initialValue" eType="ecore:EClass ../../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="CapacityUses" eSuperTypes="#//AgentFeature #//BehaviorFeature #//SkillFeature">
+  <eClassifiers xsi:type="ecore:EClass" name="CapacityUses" eSuperTypes="#//Feature">
     <eStructuralFeatures xsi:type="ecore:EReference" name="capacitiesUsed" unique="false"
         upperBound="-1" eType="#//Capacity"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BehaviorUnit" eSuperTypes="#//AgentFeature #//BehaviorFeature">
+  <eClassifiers xsi:type="ecore:EClass" name="BehaviorUnit" eSuperTypes="#//Feature">
     <eStructuralFeatures xsi:type="ecore:EReference" name="event" eType="#//Event"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="guard" eType="ecore:EClass ../../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="ecore:EClass ../../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Action" eSuperTypes="#//AgentFeature #//BehaviorFeature #//SkillFeature">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="signature" eType="#//ActionSignature"
+  <eClassifiers xsi:type="ecore:EClass" name="RequiredCapacity" eSuperTypes="#//Feature">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="requiredCapacities" unique="false"
+        upperBound="-1" eType="#//Capacity"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Constructor" eSuperTypes="#//Feature">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
+        eType="#//FormalParameter" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="varargs" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="ecore:EClass ../../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Action" eSuperTypes="#//Feature">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="signature" eType="#//Feature"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="ecore:EClass ../../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ActionSignature">
+  <eClassifiers xsi:type="ecore:EClass" name="ActionSignature" eSuperTypes="#//Feature">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
-        eType="#//Parameter" containment="true"/>
+        eType="#//FormalParameter" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="varargs" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass ../../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="firedEvents" unique="false"
         upperBound="-1" eType="#//Event"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Parameter">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parameterType" eType="ecore:EClass ../../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RequiredCapacity" eSuperTypes="#//AgentFeature #//BehaviorFeature #//SkillFeature">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="requiredCapacities" unique="false"
-        upperBound="-1" eType="#//Capacity"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Skill" eSuperTypes="#//AbstractElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="implementedCapacities"
-        unique="false" upperBound="-1" eType="#//Capacity"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="features" upperBound="-1"
-        eType="#//SkillFeature" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SkillFeature"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Constructor" eSuperTypes="#//EventFeature #//BehaviorFeature #//SkillFeature">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
-        eType="#//Parameter" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="ecore:EClass ../../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
-        containment="true"/>
   </eClassifiers>
 </ecore:EPackage>

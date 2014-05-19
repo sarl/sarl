@@ -15,7 +15,7 @@
  */
 package io.sarl.lang.ui.custom;
 
-import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
+import io.sarl.lang.SARLKeywords;
 
 import java.util.Map;
 
@@ -45,7 +45,7 @@ public class SARLHighlightingCalculator extends XbaseHighlightingCalculator {
 	@Override
 	protected Map<String, String> initializeHighlightedIdentifiers() {
 		Map<String, String> result = super.initializeHighlightedIdentifiers();
-		result.put(SARLJvmModelInferrer.KEYWORD_OCCURRENCE, DefaultHighlightingConfiguration.KEYWORD_ID);
+		result.put(SARLKeywords.KEYWORD_OCCURRENCE, DefaultHighlightingConfiguration.KEYWORD_ID);
 		return result;
 	}
 }

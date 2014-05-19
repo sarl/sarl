@@ -20,7 +20,6 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import io.sarl.lang.sarl.Attribute
 import io.sarl.lang.sarl.Event
-import io.sarl.lang.sarl.Model
 import org.jnario.runner.CreateWith
 
 import static org.junit.Assert.*
@@ -38,7 +37,7 @@ describe "Event Reference"{
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Define an event"{
-			val Model model = '''
+			val model = '''
 			package events
 			event MyEvent {
 			}
@@ -53,7 +52,7 @@ describe "Event Reference"{
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Declare event with attributes"{
-			val Model model = '''
+			val model = '''
 			package myapp.demo
 			event MyEvent {
 				var number : Integer
@@ -72,7 +71,7 @@ describe "Event Reference"{
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Declare event with value attributes"{
-			val Model model = '''
+			val model = '''
 			package myapp.demo
 			import io.sarl.lang.core.Agent
 			event MyEvent {

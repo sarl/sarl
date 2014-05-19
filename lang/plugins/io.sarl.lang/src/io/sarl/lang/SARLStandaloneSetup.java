@@ -18,6 +18,11 @@ package io.sarl.lang;
 /**
  * Initialization support for running Xtext languages 
  * without equinox extension registry
+ * 
+ * @author $Author: srodriguez$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 public class SARLStandaloneSetup extends SARLStandaloneSetupGenerated{
 

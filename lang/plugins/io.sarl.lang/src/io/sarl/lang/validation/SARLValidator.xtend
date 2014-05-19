@@ -33,4 +33,10 @@ class SARLValidator extends AbstractSARLValidator {
 //					INVALID_NAME)
 //		}
 //	}
+// TODO : skill should implements a subclass of Capacity
+// TODO : vararg cannot have a default value
+// TODO : the default value must have a compatible type
+// TODO : skill cannot override with default parameter
+// TODO : check that the catched types are exceptions
+// TODO : ensure that catch type is correctly defined
 }

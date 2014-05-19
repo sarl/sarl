@@ -31,7 +31,7 @@ import org.eclipse.xtext.xbase.XExpression;
  *
  * @generated
  */
-public class BehaviorUnitImpl extends AgentFeatureImpl implements BehaviorUnit
+public class BehaviorUnitImpl extends FeatureImpl implements BehaviorUnit
 {
   /**
    * The cached value of the '{@link #getEvent() <em>Event</em>}' reference.

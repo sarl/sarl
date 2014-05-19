@@ -22,7 +22,7 @@ import org.eclipse.xtext.xbase.XExpression;
  * @model
  * @generated
  */
-public interface BehaviorUnit extends AgentFeature, BehaviorFeature
+public interface BehaviorUnit extends Feature
 {
   /**
    * Returns the value of the '<em><b>Event</b></em>' reference.

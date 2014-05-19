@@ -25,7 +25,7 @@ import org.eclipse.xtext.xbase.XExpression;
  * @model
  * @generated
  */
-public interface Attribute extends EventFeature, AgentFeature, BehaviorFeature, SkillFeature
+public interface Attribute extends Feature
 {
   /**
    * Returns the value of the '<em><b>Writeable</b></em>' attribute.

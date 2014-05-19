@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.tests
+package io.sarl.lang.tests.compilation
 
 import com.google.inject.Inject
 import org.eclipse.xtext.junit4.XtextRunner
@@ -24,7 +24,7 @@ import org.junit.Test
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper
 
 /**
- * @author $Author: Sebastian Rodriguez$
+ * @author $Author: srodriguez$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

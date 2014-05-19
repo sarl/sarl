@@ -64,25 +64,30 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
   {
     switch (eClass.getClassifierID())
     {
-      case SarlPackage.MODEL: return createModel();
-      case SarlPackage.ABSTRACT_ELEMENT: return createAbstractElement();
+      case SarlPackage.SARL_SCRIPT: return createSarlScript();
+      case SarlPackage.TOP_ELEMENT: return createTopElement();
+      case SarlPackage.NAMED_ELEMENT: return createNamedElement();
+      case SarlPackage.FEATURE: return createFeature();
+      case SarlPackage.FEATURE_CONTAINER: return createFeatureContainer();
+      case SarlPackage.INHERITING_ELEMENT: return createInheritingElement();
+      case SarlPackage.IMPLEMENTING_ELEMENT: return createImplementingElement();
+      case SarlPackage.EVENT_FEATURE: return createEventFeature();
+      case SarlPackage.AGENT_FEATURE: return createAgentFeature();
+      case SarlPackage.BEHAVIOR_FEATURE: return createBehaviorFeature();
+      case SarlPackage.SKILL_FEATURE: return createSkillFeature();
+      case SarlPackage.FORMAL_PARAMETER: return createFormalParameter();
       case SarlPackage.EVENT: return createEvent();
       case SarlPackage.CAPACITY: return createCapacity();
       case SarlPackage.AGENT: return createAgent();
       case SarlPackage.BEHAVIOR: return createBehavior();
-      case SarlPackage.EVENT_FEATURE: return createEventFeature();
-      case SarlPackage.AGENT_FEATURE: return createAgentFeature();
-      case SarlPackage.BEHAVIOR_FEATURE: return createBehaviorFeature();
+      case SarlPackage.SKILL: return createSkill();
       case SarlPackage.ATTRIBUTE: return createAttribute();
       case SarlPackage.CAPACITY_USES: return createCapacityUses();
       case SarlPackage.BEHAVIOR_UNIT: return createBehaviorUnit();
+      case SarlPackage.REQUIRED_CAPACITY: return createRequiredCapacity();
+      case SarlPackage.CONSTRUCTOR: return createConstructor();
       case SarlPackage.ACTION: return createAction();
       case SarlPackage.ACTION_SIGNATURE: return createActionSignature();
-      case SarlPackage.PARAMETER: return createParameter();
-      case SarlPackage.REQUIRED_CAPACITY: return createRequiredCapacity();
-      case SarlPackage.SKILL: return createSkill();
-      case SarlPackage.SKILL_FEATURE: return createSkillFeature();
-      case SarlPackage.CONSTRUCTOR: return createConstructor();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -93,10 +98,10 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public Model createModel()
+  public SarlScript createSarlScript()
   {
-    ModelImpl model = new ModelImpl();
-    return model;
+    SarlScriptImpl sarlScript = new SarlScriptImpl();
+    return sarlScript;
   }
 
   /**
@@ -104,10 +109,120 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public AbstractElement createAbstractElement()
+  public TopElement createTopElement()
   {
-    AbstractElementImpl abstractElement = new AbstractElementImpl();
-    return abstractElement;
+    TopElementImpl topElement = new TopElementImpl();
+    return topElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NamedElement createNamedElement()
+  {
+    NamedElementImpl namedElement = new NamedElementImpl();
+    return namedElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Feature createFeature()
+  {
+    FeatureImpl feature = new FeatureImpl();
+    return feature;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public FeatureContainer createFeatureContainer()
+  {
+    FeatureContainerImpl featureContainer = new FeatureContainerImpl();
+    return featureContainer;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public InheritingElement createInheritingElement()
+  {
+    InheritingElementImpl inheritingElement = new InheritingElementImpl();
+    return inheritingElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ImplementingElement createImplementingElement()
+  {
+    ImplementingElementImpl implementingElement = new ImplementingElementImpl();
+    return implementingElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EventFeature createEventFeature()
+  {
+    EventFeatureImpl eventFeature = new EventFeatureImpl();
+    return eventFeature;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public AgentFeature createAgentFeature()
+  {
+    AgentFeatureImpl agentFeature = new AgentFeatureImpl();
+    return agentFeature;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public BehaviorFeature createBehaviorFeature()
+  {
+    BehaviorFeatureImpl behaviorFeature = new BehaviorFeatureImpl();
+    return behaviorFeature;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public SkillFeature createSkillFeature()
+  {
+    SkillFeatureImpl skillFeature = new SkillFeatureImpl();
+    return skillFeature;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public FormalParameter createFormalParameter()
+  {
+    FormalParameterImpl formalParameter = new FormalParameterImpl();
+    return formalParameter;
   }
 
   /**
@@ -159,32 +274,10 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public EventFeature createEventFeature()
+  public Skill createSkill()
   {
-    EventFeatureImpl eventFeature = new EventFeatureImpl();
-    return eventFeature;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public AgentFeature createAgentFeature()
-  {
-    AgentFeatureImpl agentFeature = new AgentFeatureImpl();
-    return agentFeature;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public BehaviorFeature createBehaviorFeature()
-  {
-    BehaviorFeatureImpl behaviorFeature = new BehaviorFeatureImpl();
-    return behaviorFeature;
+    SkillImpl skill = new SkillImpl();
+    return skill;
   }
 
   /**
@@ -225,6 +318,28 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public RequiredCapacity createRequiredCapacity()
+  {
+    RequiredCapacityImpl requiredCapacity = new RequiredCapacityImpl();
+    return requiredCapacity;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Constructor createConstructor()
+  {
+    ConstructorImpl constructor = new ConstructorImpl();
+    return constructor;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public Action createAction()
   {
     ActionImpl action = new ActionImpl();
@@ -240,61 +355,6 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
   {
     ActionSignatureImpl actionSignature = new ActionSignatureImpl();
     return actionSignature;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Parameter createParameter()
-  {
-    ParameterImpl parameter = new ParameterImpl();
-    return parameter;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public RequiredCapacity createRequiredCapacity()
-  {
-    RequiredCapacityImpl requiredCapacity = new RequiredCapacityImpl();
-    return requiredCapacity;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Skill createSkill()
-  {
-    SkillImpl skill = new SkillImpl();
-    return skill;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public SkillFeature createSkillFeature()
-  {
-    SkillFeatureImpl skillFeature = new SkillFeatureImpl();
-    return skillFeature;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Constructor createConstructor()
-  {
-    ConstructorImpl constructor = new ConstructorImpl();
-    return constructor;
   }
 
   /**

@@ -1,8 +1,23 @@
+/**
+ * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.sarl.lang.tests.bugs;
 
 import com.google.inject.Inject;
 import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.Model;
+import io.sarl.lang.sarl.SarlScript;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
@@ -29,7 +44,7 @@ import org.junit.runner.RunWith;
 public class Bug23 {
   @Inject
   @Extension
-  private ParseHelper<Model> _parseHelper;
+  private ParseHelper<SarlScript> _parseHelper;
   
   @Inject
   @Extension
@@ -66,10 +81,10 @@ public class Bug23 {
       _builder.append("on MyAgentSpawned {");
       _builder.newLine();
       _builder.append("\t\t");
-      _builder.append("occurrence.titi");
+      _builder.append("System.out.println(occurrence.titi)");
       _builder.newLine();
       _builder.append("\t\t");
-      _builder.append("occurrence.agentID");
+      _builder.append("System.out.println(occurrence.agentID)");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("}");
@@ -83,7 +98,7 @@ public class Bug23 {
   @Test
   public void bug23() {
     try {
-      Model mas = this._parseHelper.parse(this.snippet);
+      SarlScript mas = this._parseHelper.parse(this.snippet);
       this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -102,15 +117,60 @@ public class Bug23 {
       _builder.append("public class MyAgentSpawned extends AgentSpawned {");
       _builder.newLine();
       _builder.append("  ");
-      _builder.append("private UUID titi;");
+      _builder.append("public UUID titi;");
       _builder.newLine();
       _builder.append("  ");
       _builder.newLine();
       _builder.append("  ");
-      _builder.append("public UUID getTiti() {");
+      _builder.append("@Override");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("public boolean equals(final Object obj) {");
       _builder.newLine();
       _builder.append("    ");
-      _builder.append("return this.titi;");
+      _builder.append("if (this == obj)");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("return true;");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("if (obj == null)");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("return false;");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("if (getClass() != obj.getClass())");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("return false;");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("if (!super.equals(obj))");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("return false;");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("MyAgentSpawned other = (MyAgentSpawned) obj;");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("if (this.titi == null) {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("if (other.titi != null)");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("return false;");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("} else if (!this.titi.equals(other.titi))");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("return false;");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("return true;");
       _builder.newLine();
       _builder.append("  ");
       _builder.append("}");
@@ -118,10 +178,22 @@ public class Bug23 {
       _builder.append("  ");
       _builder.newLine();
       _builder.append("  ");
-      _builder.append("public void setTiti(final UUID titi) {");
+      _builder.append("@Override");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("public int hashCode() {");
       _builder.newLine();
       _builder.append("    ");
-      _builder.append("this.titi = titi;");
+      _builder.append("final int prime = 31;");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("int result = super.hashCode();");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("result = prime * result + ((this.titi== null) ? 0 : this.titi.hashCode());");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("return result;");
       _builder.newLine();
       _builder.append("  ");
       _builder.append("}");
@@ -141,10 +213,7 @@ public class Bug23 {
       _builder.append("protected String attributesToString() {");
       _builder.newLine();
       _builder.append("    ");
-      _builder.append("StringBuilder result = new StringBuilder();");
-      _builder.newLine();
-      _builder.append("    ");
-      _builder.append("result.append(super.attributesToString());");
+      _builder.append("StringBuilder result = new StringBuilder(super.attributesToString());");
       _builder.newLine();
       _builder.append("    ");
       _builder.append("result.append(\"titi  = \").append(this.titi);");
@@ -158,34 +227,7 @@ public class Bug23 {
       _builder.append("  ");
       _builder.newLine();
       _builder.append("  ");
-      _builder.append("/**");
-      _builder.newLine();
-      _builder.append("   ");
-      _builder.append("* Returns a String representation of the Event MyAgentSpawned.");
-      _builder.newLine();
-      _builder.append("   ");
-      _builder.append("*/");
-      _builder.newLine();
-      _builder.append("  ");
-      _builder.append("public String toString() {");
-      _builder.newLine();
-      _builder.append("    ");
-      _builder.append("StringBuilder result = new StringBuilder();");
-      _builder.newLine();
-      _builder.append("    ");
-      _builder.append("result.append(\"MyAgentSpawned[\");");
-      _builder.newLine();
-      _builder.append("    ");
-      _builder.append("result.append(this.attributesToString());");
-      _builder.newLine();
-      _builder.append("    ");
-      _builder.append("result.append(\"]\");");
-      _builder.newLine();
-      _builder.append("    ");
-      _builder.append("return result.toString();");
-      _builder.newLine();
-      _builder.append("  ");
-      _builder.append("}");
+      _builder.append("private final static long serialVersionUID = -267285920L;");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();

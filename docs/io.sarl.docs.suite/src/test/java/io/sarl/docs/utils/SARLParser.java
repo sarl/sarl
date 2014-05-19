@@ -15,7 +15,7 @@
  */
 package io.sarl.docs.utils;
 
-import io.sarl.lang.sarl.Model;
+import io.sarl.lang.sarl.SarlScript;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -35,7 +35,7 @@ import com.google.inject.Inject;
  */
 public class SARLParser {
 	@Inject
-	private ParseHelper<Model> parser;
+	private ParseHelper<SarlScript> parser;
 	@Inject
 	private XtextResourceSet xtextResourceSet;
 	
@@ -46,7 +46,7 @@ public class SARLParser {
 	 * @return the model.
 	 * @throws Exception
 	 */
-	public Model parse(CharSequence text) throws Exception {
+	public SarlScript parse(CharSequence text) throws Exception {
 		return this.parser.parse(text, getResourceSetWithDeafaultModels());
 	}
 	
@@ -56,8 +56,8 @@ public class SARLParser {
 	 * @return the model.
 	 * @throws Exception
 	 */
-	public Model parsesSuccessfully(CharSequence text) throws Exception{
-		Model model = parse(text);
+	public SarlScript parsesSuccessfully(CharSequence text) throws Exception{
+		SarlScript model = parse(text);
 		this.validationTestHelper.assertNoErrors(model);
 		return model;
 	}

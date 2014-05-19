@@ -1,30 +1,25 @@
 /**
- * $Id$
+ * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  * 
- * SARL is an open-source multiagent language.
- * More details on &lt;http://www.sarl.io&gt;
- * Copyright (C) 2013 SARL Core Developers
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-package io.sarl.lang.tests;
+package io.sarl.lang.tests.parsing;
 
 import com.google.inject.Inject;
 import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.AbstractElement;
-import io.sarl.lang.sarl.Model;
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.TopElement;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -41,7 +36,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * @author $Author: Sebastian Rodriguez$
+ * @author $Author: srodriguez$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -52,7 +47,7 @@ import org.junit.runner.RunWith;
 public class AgentParsingTest {
   @Inject
   @Extension
-  private ParseHelper<Model> _parseHelper;
+  private ParseHelper<SarlScript> _parseHelper;
   
   @Inject
   @Extension
@@ -68,9 +63,9 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("agent A2 {}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       this._validationTestHelper.assertNoErrors(mas);
-      EList<AbstractElement> _elements = mas.getElements();
+      EList<TopElement> _elements = mas.getElements();
       int _size = _elements.size();
       Assert.assertEquals(2, _size);
     } catch (Throwable _e) {
@@ -91,9 +86,9 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       this._validationTestHelper.assertNoErrors(mas);
-      EList<AbstractElement> _elements = mas.getElements();
+      EList<TopElement> _elements = mas.getElements();
       int _size = _elements.size();
       Assert.assertEquals(2, _size);
     } catch (Throwable _e) {
@@ -114,7 +109,7 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -135,7 +130,7 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -157,7 +152,7 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -176,9 +171,10 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _behaviorUnit = SarlPackage.eINSTANCE.getBehaviorUnit();
-      this._validationTestHelper.assertError(mas, _behaviorUnit, Diagnostic.LINKING_DIAGNOSTIC, 
+      this._validationTestHelper.assertError(mas, _behaviorUnit, 
+        Diagnostic.LINKING_DIAGNOSTIC, 
         "Couldn\'t resolve reference to Event \'E\'.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -201,7 +197,7 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
         Diagnostic.SYNTAX_DIAGNOSTIC, 
@@ -222,7 +218,7 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _capacityUses = SarlPackage.eINSTANCE.getCapacityUses();
       this._validationTestHelper.assertError(mas, _capacityUses, 
         Diagnostic.LINKING_DIAGNOSTIC, 
@@ -251,7 +247,7 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);

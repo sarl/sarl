@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.tests
+package io.sarl.lang.tests.parsing
 
 import com.google.inject.Inject
 import io.sarl.lang.SARLInjectorProvider
 import io.sarl.lang.sarl.Agent
 import io.sarl.lang.sarl.Capacity
-import io.sarl.lang.sarl.Model
+import io.sarl.lang.sarl.SarlScript
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
-import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -39,16 +38,14 @@ import static org.junit.Assert.*
  */
 @RunWith(XtextRunner)
 @InjectWith(SARLInjectorProvider)
-class CapacityUtilsTest {
-	@Inject extension ParseHelper<Model>
+class CapacityParsingTest {
+	@Inject extension ParseHelper<SarlScript>
 
 	@Inject extension ValidationTestHelper
 	
-	var Model mas
+	var SarlScript mas
 	var Iterable<Capacity> knownCapacities
 	
-	@Inject extension IQualifiedNameProvider
-
 	@Before
 	def void setUp() {
 		mas = '''

@@ -20,7 +20,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface CapacityUses extends AgentFeature, BehaviorFeature, SkillFeature
+public interface CapacityUses extends Feature
 {
   /**
    * Returns the value of the '<em><b>Capacities Used</b></em>' reference list.

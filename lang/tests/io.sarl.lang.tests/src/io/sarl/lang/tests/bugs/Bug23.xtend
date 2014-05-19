@@ -1,16 +1,31 @@
+/*
+ * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.sarl.lang.tests.bugs
 
-import org.eclipse.xtext.junit4.XtextRunner
-import org.junit.runner.RunWith
-import org.eclipse.xtext.junit4.InjectWith
-import io.sarl.lang.SARLInjectorProvider
 import com.google.inject.Inject
+import io.sarl.lang.SARLInjectorProvider
+import io.sarl.lang.sarl.SarlScript
+import org.eclipse.xtext.junit4.InjectWith
+import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
-import io.sarl.lang.sarl.Model
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
-import org.junit.Test
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper
 import org.junit.Assert
+import org.junit.Test
+import org.junit.runner.RunWith
 
 /**
  * @author $Author: srodriguez$
@@ -22,7 +37,7 @@ import org.junit.Assert
 @InjectWith(SARLInjectorProvider)
 class Bug23 {
 	
-	@Inject extension ParseHelper<Model>
+	@Inject extension ParseHelper<SarlScript>
 	@Inject extension ValidationTestHelper
     @Inject extension CompilationTestHelper
 	
@@ -38,8 +53,8 @@ class Bug23 {
 		
 		agent MyAgent {
 			on MyAgentSpawned {
-				occurrence.titi
-				occurrence.agentID
+				System.out.println(occurrence.titi)
+				System.out.println(occurrence.agentID)
 			}
 		}
 	'''
@@ -58,36 +73,45 @@ class Bug23 {
 
 		@SuppressWarnings("all")
 		public class MyAgentSpawned extends AgentSpawned {
-		  private UUID titi;
+		  public UUID titi;
 		  
-		  public UUID getTiti() {
-		    return this.titi;
+		  @Override
+		  public boolean equals(final Object obj) {
+		    if (this == obj)
+		      return true;
+		    if (obj == null)
+		      return false;
+		    if (getClass() != obj.getClass())
+		      return false;
+		    if (!super.equals(obj))
+		      return false;
+		    MyAgentSpawned other = (MyAgentSpawned) obj;
+		    if (this.titi == null) {
+		      if (other.titi != null)
+		        return false;
+		    } else if (!this.titi.equals(other.titi))
+		      return false;
+		    return true;
 		  }
 		  
-		  public void setTiti(final UUID titi) {
-		    this.titi = titi;
+		  @Override
+		  public int hashCode() {
+		    final int prime = 31;
+		    int result = super.hashCode();
+		    result = prime * result + ((this.titi== null) ? 0 : this.titi.hashCode());
+		    return result;
 		  }
 		  
 		  /**
 		   * Returns a String representation of the Event MyAgentSpawned attributes only.
 		   */
 		  protected String attributesToString() {
-		    StringBuilder result = new StringBuilder();
-		    result.append(super.attributesToString());
+		    StringBuilder result = new StringBuilder(super.attributesToString());
 		    result.append("titi  = ").append(this.titi);
 		    return result.toString();
 		  }
 		  
-		  /**
-		   * Returns a String representation of the Event MyAgentSpawned.
-		   */
-		  public String toString() {
-		    StringBuilder result = new StringBuilder();
-		    result.append("MyAgentSpawned[");
-		    result.append(this.attributesToString());
-		    result.append("]");
-		    return result.toString();
-		  }
+		  private final static long serialVersionUID = -267285920L;
 		}
 		'''
 		

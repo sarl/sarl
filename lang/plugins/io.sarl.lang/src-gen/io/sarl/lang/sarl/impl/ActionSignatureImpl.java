@@ -4,7 +4,7 @@ package io.sarl.lang.sarl.impl;
 
 import io.sarl.lang.sarl.ActionSignature;
 import io.sarl.lang.sarl.Event;
-import io.sarl.lang.sarl.Parameter;
+import io.sarl.lang.sarl.FormalParameter;
 import io.sarl.lang.sarl.SarlPackage;
 
 import java.util.Collection;
@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
@@ -35,6 +34,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.impl.ActionSignatureImpl#getName <em>Name</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.impl.ActionSignatureImpl#getParams <em>Params</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.ActionSignatureImpl#isVarargs <em>Varargs</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.impl.ActionSignatureImpl#getType <em>Type</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.impl.ActionSignatureImpl#getFiredEvents <em>Fired Events</em>}</li>
  * </ul>
@@ -42,7 +42,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  *
  * @generated
  */
-public class ActionSignatureImpl extends MinimalEObjectImpl.Container implements ActionSignature
+public class ActionSignatureImpl extends FeatureImpl implements ActionSignature
 {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -72,7 +72,27 @@ public class ActionSignatureImpl extends MinimalEObjectImpl.Container implements
    * @generated
    * @ordered
    */
-  protected EList<Parameter> params;
+  protected EList<FormalParameter> params;
+
+  /**
+   * The default value of the '{@link #isVarargs() <em>Varargs</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isVarargs()
+   * @generated
+   * @ordered
+   */
+  protected static final boolean VARARGS_EDEFAULT = false;
+
+  /**
+   * The cached value of the '{@link #isVarargs() <em>Varargs</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isVarargs()
+   * @generated
+   * @ordered
+   */
+  protected boolean varargs = VARARGS_EDEFAULT;
 
   /**
    * The cached value of the '{@link #getType() <em>Type</em>}' containment reference.
@@ -143,13 +163,36 @@ public class ActionSignatureImpl extends MinimalEObjectImpl.Container implements
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<Parameter> getParams()
+  public EList<FormalParameter> getParams()
   {
     if (params == null)
     {
-      params = new EObjectContainmentEList<Parameter>(Parameter.class, this, SarlPackage.ACTION_SIGNATURE__PARAMS);
+      params = new EObjectContainmentEList<FormalParameter>(FormalParameter.class, this, SarlPackage.ACTION_SIGNATURE__PARAMS);
     }
     return params;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public boolean isVarargs()
+  {
+    return varargs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setVarargs(boolean newVarargs)
+  {
+    boolean oldVarargs = varargs;
+    varargs = newVarargs;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.ACTION_SIGNATURE__VARARGS, oldVarargs, varargs));
   }
 
   /**
@@ -246,6 +289,8 @@ public class ActionSignatureImpl extends MinimalEObjectImpl.Container implements
         return getName();
       case SarlPackage.ACTION_SIGNATURE__PARAMS:
         return getParams();
+      case SarlPackage.ACTION_SIGNATURE__VARARGS:
+        return isVarargs();
       case SarlPackage.ACTION_SIGNATURE__TYPE:
         return getType();
       case SarlPackage.ACTION_SIGNATURE__FIRED_EVENTS:
@@ -270,7 +315,10 @@ public class ActionSignatureImpl extends MinimalEObjectImpl.Container implements
         return;
       case SarlPackage.ACTION_SIGNATURE__PARAMS:
         getParams().clear();
-        getParams().addAll((Collection<? extends Parameter>)newValue);
+        getParams().addAll((Collection<? extends FormalParameter>)newValue);
+        return;
+      case SarlPackage.ACTION_SIGNATURE__VARARGS:
+        setVarargs((Boolean)newValue);
         return;
       case SarlPackage.ACTION_SIGNATURE__TYPE:
         setType((JvmTypeReference)newValue);
@@ -299,6 +347,9 @@ public class ActionSignatureImpl extends MinimalEObjectImpl.Container implements
       case SarlPackage.ACTION_SIGNATURE__PARAMS:
         getParams().clear();
         return;
+      case SarlPackage.ACTION_SIGNATURE__VARARGS:
+        setVarargs(VARARGS_EDEFAULT);
+        return;
       case SarlPackage.ACTION_SIGNATURE__TYPE:
         setType((JvmTypeReference)null);
         return;
@@ -323,6 +374,8 @@ public class ActionSignatureImpl extends MinimalEObjectImpl.Container implements
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case SarlPackage.ACTION_SIGNATURE__PARAMS:
         return params != null && !params.isEmpty();
+      case SarlPackage.ACTION_SIGNATURE__VARARGS:
+        return varargs != VARARGS_EDEFAULT;
       case SarlPackage.ACTION_SIGNATURE__TYPE:
         return type != null;
       case SarlPackage.ACTION_SIGNATURE__FIRED_EVENTS:
@@ -344,6 +397,8 @@ public class ActionSignatureImpl extends MinimalEObjectImpl.Container implements
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (name: ");
     result.append(name);
+    result.append(", varargs: ");
+    result.append(varargs);
     result.append(')');
     return result.toString();
   }

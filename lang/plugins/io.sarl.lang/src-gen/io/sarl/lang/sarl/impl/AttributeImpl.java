@@ -33,7 +33,7 @@ import org.eclipse.xtext.xbase.XExpression;
  *
  * @generated
  */
-public class AttributeImpl extends EventFeatureImpl implements Attribute
+public class AttributeImpl extends FeatureImpl implements Attribute
 {
   /**
    * The default value of the '{@link #isWriteable() <em>Writeable</em>}' attribute.

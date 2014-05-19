@@ -21,7 +21,7 @@ import io.sarl.docs.utils.SARLSpecCreator
 import io.sarl.lang.sarl.Agent
 import io.sarl.lang.sarl.BehaviorUnit
 import io.sarl.lang.sarl.Event
-import io.sarl.lang.sarl.Model
+import io.sarl.lang.sarl.SarlScript
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.jnario.runner.CreateWith
 
@@ -110,7 +110,7 @@ describe "Agent Definition Introduction" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Define an agent Perceptions"{
-			val Model model = '''
+			val SarlScript model = '''
 			package myapp.demo
 			
 			event MyEvent {	}
