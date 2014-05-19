@@ -3,7 +3,7 @@
 package io.sarl.lang.sarl.impl;
 
 import io.sarl.lang.sarl.Constructor;
-import io.sarl.lang.sarl.Parameter;
+import io.sarl.lang.sarl.FormalParameter;
 import io.sarl.lang.sarl.SarlPackage;
 
 import java.util.Collection;
@@ -38,7 +38,7 @@ import org.eclipse.xtext.xbase.XExpression;
  *
  * @generated
  */
-public class ConstructorImpl extends EventFeatureImpl implements Constructor
+public class ConstructorImpl extends FeatureImpl implements Constructor
 {
   /**
    * The cached value of the '{@link #getParams() <em>Params</em>}' containment reference list.
@@ -48,7 +48,7 @@ public class ConstructorImpl extends EventFeatureImpl implements Constructor
    * @generated
    * @ordered
    */
-  protected EList<Parameter> params;
+  protected EList<FormalParameter> params;
 
   /**
    * The default value of the '{@link #isVarargs() <em>Varargs</em>}' attribute.
@@ -106,11 +106,11 @@ public class ConstructorImpl extends EventFeatureImpl implements Constructor
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<Parameter> getParams()
+  public EList<FormalParameter> getParams()
   {
     if (params == null)
     {
-      params = new EObjectContainmentEList<Parameter>(Parameter.class, this, SarlPackage.CONSTRUCTOR__PARAMS);
+      params = new EObjectContainmentEList<FormalParameter>(FormalParameter.class, this, SarlPackage.CONSTRUCTOR__PARAMS);
     }
     return params;
   }
@@ -237,7 +237,7 @@ public class ConstructorImpl extends EventFeatureImpl implements Constructor
     {
       case SarlPackage.CONSTRUCTOR__PARAMS:
         getParams().clear();
-        getParams().addAll((Collection<? extends Parameter>)newValue);
+        getParams().addAll((Collection<? extends FormalParameter>)newValue);
         return;
       case SarlPackage.CONSTRUCTOR__VARARGS:
         setVarargs((Boolean)newValue);

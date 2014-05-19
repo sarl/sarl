@@ -23,22 +23,112 @@ public interface SarlFactory extends EFactory
   SarlFactory eINSTANCE = io.sarl.lang.sarl.impl.SarlFactoryImpl.init();
 
   /**
-   * Returns a new object of class '<em>Model</em>'.
+   * Returns a new object of class '<em>Script</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Model</em>'.
+   * @return a new object of class '<em>Script</em>'.
    * @generated
    */
-  Model createModel();
+  SarlScript createSarlScript();
 
   /**
-   * Returns a new object of class '<em>Abstract Element</em>'.
+   * Returns a new object of class '<em>Top Element</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Abstract Element</em>'.
+   * @return a new object of class '<em>Top Element</em>'.
    * @generated
    */
-  AbstractElement createAbstractElement();
+  TopElement createTopElement();
+
+  /**
+   * Returns a new object of class '<em>Named Element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Named Element</em>'.
+   * @generated
+   */
+  NamedElement createNamedElement();
+
+  /**
+   * Returns a new object of class '<em>Feature</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Feature</em>'.
+   * @generated
+   */
+  Feature createFeature();
+
+  /**
+   * Returns a new object of class '<em>Feature Container</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Feature Container</em>'.
+   * @generated
+   */
+  FeatureContainer createFeatureContainer();
+
+  /**
+   * Returns a new object of class '<em>Inheriting Element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Inheriting Element</em>'.
+   * @generated
+   */
+  InheritingElement createInheritingElement();
+
+  /**
+   * Returns a new object of class '<em>Implementing Element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Implementing Element</em>'.
+   * @generated
+   */
+  ImplementingElement createImplementingElement();
+
+  /**
+   * Returns a new object of class '<em>Event Feature</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Event Feature</em>'.
+   * @generated
+   */
+  EventFeature createEventFeature();
+
+  /**
+   * Returns a new object of class '<em>Agent Feature</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Agent Feature</em>'.
+   * @generated
+   */
+  AgentFeature createAgentFeature();
+
+  /**
+   * Returns a new object of class '<em>Behavior Feature</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Behavior Feature</em>'.
+   * @generated
+   */
+  BehaviorFeature createBehaviorFeature();
+
+  /**
+   * Returns a new object of class '<em>Skill Feature</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Skill Feature</em>'.
+   * @generated
+   */
+  SkillFeature createSkillFeature();
+
+  /**
+   * Returns a new object of class '<em>Formal Parameter</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Formal Parameter</em>'.
+   * @generated
+   */
+  FormalParameter createFormalParameter();
 
   /**
    * Returns a new object of class '<em>Event</em>'.
@@ -77,31 +167,13 @@ public interface SarlFactory extends EFactory
   Behavior createBehavior();
 
   /**
-   * Returns a new object of class '<em>Event Feature</em>'.
+   * Returns a new object of class '<em>Skill</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Event Feature</em>'.
+   * @return a new object of class '<em>Skill</em>'.
    * @generated
    */
-  EventFeature createEventFeature();
-
-  /**
-   * Returns a new object of class '<em>Agent Feature</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Agent Feature</em>'.
-   * @generated
-   */
-  AgentFeature createAgentFeature();
-
-  /**
-   * Returns a new object of class '<em>Behavior Feature</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Behavior Feature</em>'.
-   * @generated
-   */
-  BehaviorFeature createBehaviorFeature();
+  Skill createSkill();
 
   /**
    * Returns a new object of class '<em>Attribute</em>'.
@@ -131,6 +203,24 @@ public interface SarlFactory extends EFactory
   BehaviorUnit createBehaviorUnit();
 
   /**
+   * Returns a new object of class '<em>Required Capacity</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Required Capacity</em>'.
+   * @generated
+   */
+  RequiredCapacity createRequiredCapacity();
+
+  /**
+   * Returns a new object of class '<em>Constructor</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Constructor</em>'.
+   * @generated
+   */
+  Constructor createConstructor();
+
+  /**
    * Returns a new object of class '<em>Action</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -147,51 +237,6 @@ public interface SarlFactory extends EFactory
    * @generated
    */
   ActionSignature createActionSignature();
-
-  /**
-   * Returns a new object of class '<em>Parameter</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Parameter</em>'.
-   * @generated
-   */
-  Parameter createParameter();
-
-  /**
-   * Returns a new object of class '<em>Required Capacity</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Required Capacity</em>'.
-   * @generated
-   */
-  RequiredCapacity createRequiredCapacity();
-
-  /**
-   * Returns a new object of class '<em>Skill</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Skill</em>'.
-   * @generated
-   */
-  Skill createSkill();
-
-  /**
-   * Returns a new object of class '<em>Skill Feature</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Skill Feature</em>'.
-   * @generated
-   */
-  SkillFeature createSkillFeature();
-
-  /**
-   * Returns a new object of class '<em>Constructor</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Constructor</em>'.
-   * @generated
-   */
-  Constructor createConstructor();
 
   /**
    * Returns the package supported by this factory.

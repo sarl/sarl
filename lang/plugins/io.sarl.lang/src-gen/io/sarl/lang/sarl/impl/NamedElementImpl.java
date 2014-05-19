@@ -2,7 +2,7 @@
  */
 package io.sarl.lang.sarl.impl;
 
-import io.sarl.lang.sarl.AbstractElement;
+import io.sarl.lang.sarl.NamedElement;
 import io.sarl.lang.sarl.SarlPackage;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -14,18 +14,18 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Abstract Element</b></em>'.
+ * An implementation of the model object '<em><b>Named Element</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link io.sarl.lang.sarl.impl.AbstractElementImpl#getName <em>Name</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.NamedElementImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class AbstractElementImpl extends MinimalEObjectImpl.Container implements AbstractElement
+public class NamedElementImpl extends MinimalEObjectImpl.Container implements NamedElement
 {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -52,7 +52,7 @@ public class AbstractElementImpl extends MinimalEObjectImpl.Container implements
    * <!-- end-user-doc -->
    * @generated
    */
-  protected AbstractElementImpl()
+  protected NamedElementImpl()
   {
     super();
   }
@@ -65,7 +65,7 @@ public class AbstractElementImpl extends MinimalEObjectImpl.Container implements
   @Override
   protected EClass eStaticClass()
   {
-    return SarlPackage.Literals.ABSTRACT_ELEMENT;
+    return SarlPackage.Literals.NAMED_ELEMENT;
   }
 
   /**
@@ -88,7 +88,7 @@ public class AbstractElementImpl extends MinimalEObjectImpl.Container implements
     String oldName = name;
     name = newName;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.ABSTRACT_ELEMENT__NAME, oldName, name));
+      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.NAMED_ELEMENT__NAME, oldName, name));
   }
 
   /**
@@ -101,7 +101,7 @@ public class AbstractElementImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case SarlPackage.ABSTRACT_ELEMENT__NAME:
+      case SarlPackage.NAMED_ELEMENT__NAME:
         return getName();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -117,7 +117,7 @@ public class AbstractElementImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case SarlPackage.ABSTRACT_ELEMENT__NAME:
+      case SarlPackage.NAMED_ELEMENT__NAME:
         setName((String)newValue);
         return;
     }
@@ -134,7 +134,7 @@ public class AbstractElementImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case SarlPackage.ABSTRACT_ELEMENT__NAME:
+      case SarlPackage.NAMED_ELEMENT__NAME:
         setName(NAME_EDEFAULT);
         return;
     }
@@ -151,7 +151,7 @@ public class AbstractElementImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case SarlPackage.ABSTRACT_ELEMENT__NAME:
+      case SarlPackage.NAMED_ELEMENT__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
     }
     return super.eIsSet(featureID);
@@ -174,4 +174,4 @@ public class AbstractElementImpl extends MinimalEObjectImpl.Container implements
     return result.toString();
   }
 
-} //AbstractElementImpl
+} //NamedElementImpl

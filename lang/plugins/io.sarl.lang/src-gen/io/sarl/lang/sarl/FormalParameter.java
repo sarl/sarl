@@ -10,23 +10,23 @@ import org.eclipse.xtext.xbase.XExpression;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Parameter</b></em>'.
+ * A representation of the model object '<em><b>Formal Parameter</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link io.sarl.lang.sarl.Parameter#getName <em>Name</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.Parameter#getParameterType <em>Parameter Type</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.Parameter#getDefaultValue <em>Default Value</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.FormalParameter#getName <em>Name</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.FormalParameter#getParameterType <em>Parameter Type</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.FormalParameter#getDefaultValue <em>Default Value</em>}</li>
  * </ul>
  * </p>
  *
- * @see io.sarl.lang.sarl.SarlPackage#getParameter()
+ * @see io.sarl.lang.sarl.SarlPackage#getFormalParameter()
  * @model
  * @generated
  */
-public interface Parameter extends EObject
+public interface FormalParameter extends EObject
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
@@ -38,14 +38,14 @@ public interface Parameter extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
-   * @see io.sarl.lang.sarl.SarlPackage#getParameter_Name()
+   * @see io.sarl.lang.sarl.SarlPackage#getFormalParameter_Name()
    * @model
    * @generated
    */
   String getName();
 
   /**
-   * Sets the value of the '{@link io.sarl.lang.sarl.Parameter#getName <em>Name</em>}' attribute.
+   * Sets the value of the '{@link io.sarl.lang.sarl.FormalParameter#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
@@ -64,14 +64,14 @@ public interface Parameter extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Parameter Type</em>' containment reference.
    * @see #setParameterType(JvmTypeReference)
-   * @see io.sarl.lang.sarl.SarlPackage#getParameter_ParameterType()
+   * @see io.sarl.lang.sarl.SarlPackage#getFormalParameter_ParameterType()
    * @model containment="true"
    * @generated
    */
   JvmTypeReference getParameterType();
 
   /**
-   * Sets the value of the '{@link io.sarl.lang.sarl.Parameter#getParameterType <em>Parameter Type</em>}' containment reference.
+   * Sets the value of the '{@link io.sarl.lang.sarl.FormalParameter#getParameterType <em>Parameter Type</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Parameter Type</em>' containment reference.
@@ -90,14 +90,14 @@ public interface Parameter extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Default Value</em>' containment reference.
    * @see #setDefaultValue(XExpression)
-   * @see io.sarl.lang.sarl.SarlPackage#getParameter_DefaultValue()
+   * @see io.sarl.lang.sarl.SarlPackage#getFormalParameter_DefaultValue()
    * @model containment="true"
    * @generated
    */
   XExpression getDefaultValue();
 
   /**
-   * Sets the value of the '{@link io.sarl.lang.sarl.Parameter#getDefaultValue <em>Default Value</em>}' containment reference.
+   * Sets the value of the '{@link io.sarl.lang.sarl.FormalParameter#getDefaultValue <em>Default Value</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Default Value</em>' containment reference.
@@ -106,4 +106,4 @@ public interface Parameter extends EObject
    */
   void setDefaultValue(XExpression value);
 
-} // Parameter
+} // FormalParameter

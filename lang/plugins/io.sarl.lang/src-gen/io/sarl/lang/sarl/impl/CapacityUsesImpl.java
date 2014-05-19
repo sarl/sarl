@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *
  * @generated
  */
-public class CapacityUsesImpl extends AgentFeatureImpl implements CapacityUses
+public class CapacityUsesImpl extends FeatureImpl implements CapacityUses
 {
   /**
    * The cached value of the '{@link #getCapacitiesUsed() <em>Capacities Used</em>}' reference list.

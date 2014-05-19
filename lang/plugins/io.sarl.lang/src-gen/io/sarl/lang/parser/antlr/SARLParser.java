@@ -25,7 +25,7 @@ public class SARLParser extends org.eclipse.xtext.parser.antlr.AbstractAntlrPars
 	
 	@Override 
 	protected String getDefaultRuleName() {
-		return "Model";
+		return "SarlScript";
 	}
 	
 	public SARLGrammarAccess getGrammarAccess() {

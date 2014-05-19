@@ -2,9 +2,9 @@
  */
 package io.sarl.lang.sarl.impl;
 
-import io.sarl.lang.sarl.AbstractElement;
-import io.sarl.lang.sarl.Model;
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.TopElement;
 
 import java.util.Collection;
 
@@ -26,20 +26,20 @@ import org.eclipse.xtext.xtype.XImportSection;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Model</b></em>'.
+ * An implementation of the model object '<em><b>Script</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link io.sarl.lang.sarl.impl.ModelImpl#getName <em>Name</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.impl.ModelImpl#getImportSection <em>Import Section</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.impl.ModelImpl#getElements <em>Elements</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.SarlScriptImpl#getName <em>Name</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.SarlScriptImpl#getImportSection <em>Import Section</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.SarlScriptImpl#getElements <em>Elements</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class ModelImpl extends MinimalEObjectImpl.Container implements Model
+public class SarlScriptImpl extends MinimalEObjectImpl.Container implements SarlScript
 {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -79,14 +79,14 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
    * @generated
    * @ordered
    */
-  protected EList<AbstractElement> elements;
+  protected EList<TopElement> elements;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected ModelImpl()
+  protected SarlScriptImpl()
   {
     super();
   }
@@ -99,7 +99,7 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
   @Override
   protected EClass eStaticClass()
   {
-    return SarlPackage.Literals.MODEL;
+    return SarlPackage.Literals.SARL_SCRIPT;
   }
 
   /**
@@ -122,7 +122,7 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
     String oldName = name;
     name = newName;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.MODEL__NAME, oldName, name));
+      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.SARL_SCRIPT__NAME, oldName, name));
   }
 
   /**
@@ -146,7 +146,7 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
     importSection = newImportSection;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SarlPackage.MODEL__IMPORT_SECTION, oldImportSection, newImportSection);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SarlPackage.SARL_SCRIPT__IMPORT_SECTION, oldImportSection, newImportSection);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -163,14 +163,14 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
     {
       NotificationChain msgs = null;
       if (importSection != null)
-        msgs = ((InternalEObject)importSection).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SarlPackage.MODEL__IMPORT_SECTION, null, msgs);
+        msgs = ((InternalEObject)importSection).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SarlPackage.SARL_SCRIPT__IMPORT_SECTION, null, msgs);
       if (newImportSection != null)
-        msgs = ((InternalEObject)newImportSection).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SarlPackage.MODEL__IMPORT_SECTION, null, msgs);
+        msgs = ((InternalEObject)newImportSection).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SarlPackage.SARL_SCRIPT__IMPORT_SECTION, null, msgs);
       msgs = basicSetImportSection(newImportSection, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.MODEL__IMPORT_SECTION, newImportSection, newImportSection));
+      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.SARL_SCRIPT__IMPORT_SECTION, newImportSection, newImportSection));
   }
 
   /**
@@ -178,11 +178,11 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<AbstractElement> getElements()
+  public EList<TopElement> getElements()
   {
     if (elements == null)
     {
-      elements = new EObjectContainmentEList<AbstractElement>(AbstractElement.class, this, SarlPackage.MODEL__ELEMENTS);
+      elements = new EObjectContainmentEList<TopElement>(TopElement.class, this, SarlPackage.SARL_SCRIPT__ELEMENTS);
     }
     return elements;
   }
@@ -197,9 +197,9 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
   {
     switch (featureID)
     {
-      case SarlPackage.MODEL__IMPORT_SECTION:
+      case SarlPackage.SARL_SCRIPT__IMPORT_SECTION:
         return basicSetImportSection(null, msgs);
-      case SarlPackage.MODEL__ELEMENTS:
+      case SarlPackage.SARL_SCRIPT__ELEMENTS:
         return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -215,11 +215,11 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
   {
     switch (featureID)
     {
-      case SarlPackage.MODEL__NAME:
+      case SarlPackage.SARL_SCRIPT__NAME:
         return getName();
-      case SarlPackage.MODEL__IMPORT_SECTION:
+      case SarlPackage.SARL_SCRIPT__IMPORT_SECTION:
         return getImportSection();
-      case SarlPackage.MODEL__ELEMENTS:
+      case SarlPackage.SARL_SCRIPT__ELEMENTS:
         return getElements();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -236,15 +236,15 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
   {
     switch (featureID)
     {
-      case SarlPackage.MODEL__NAME:
+      case SarlPackage.SARL_SCRIPT__NAME:
         setName((String)newValue);
         return;
-      case SarlPackage.MODEL__IMPORT_SECTION:
+      case SarlPackage.SARL_SCRIPT__IMPORT_SECTION:
         setImportSection((XImportSection)newValue);
         return;
-      case SarlPackage.MODEL__ELEMENTS:
+      case SarlPackage.SARL_SCRIPT__ELEMENTS:
         getElements().clear();
-        getElements().addAll((Collection<? extends AbstractElement>)newValue);
+        getElements().addAll((Collection<? extends TopElement>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -260,13 +260,13 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
   {
     switch (featureID)
     {
-      case SarlPackage.MODEL__NAME:
+      case SarlPackage.SARL_SCRIPT__NAME:
         setName(NAME_EDEFAULT);
         return;
-      case SarlPackage.MODEL__IMPORT_SECTION:
+      case SarlPackage.SARL_SCRIPT__IMPORT_SECTION:
         setImportSection((XImportSection)null);
         return;
-      case SarlPackage.MODEL__ELEMENTS:
+      case SarlPackage.SARL_SCRIPT__ELEMENTS:
         getElements().clear();
         return;
     }
@@ -283,11 +283,11 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
   {
     switch (featureID)
     {
-      case SarlPackage.MODEL__NAME:
+      case SarlPackage.SARL_SCRIPT__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-      case SarlPackage.MODEL__IMPORT_SECTION:
+      case SarlPackage.SARL_SCRIPT__IMPORT_SECTION:
         return importSection != null;
-      case SarlPackage.MODEL__ELEMENTS:
+      case SarlPackage.SARL_SCRIPT__ELEMENTS:
         return elements != null && !elements.isEmpty();
     }
     return super.eIsSet(featureID);
@@ -310,4 +310,4 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
     return result.toString();
   }
 
-} //ModelImpl
+} //SarlScriptImpl

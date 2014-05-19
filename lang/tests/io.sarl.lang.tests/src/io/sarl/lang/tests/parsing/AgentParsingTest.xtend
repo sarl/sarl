@@ -17,7 +17,7 @@ package io.sarl.lang.tests.parsing
 
 import com.google.inject.Inject
 import io.sarl.lang.SARLInjectorProvider
-import io.sarl.lang.sarl.Model
+import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.sarl.SarlPackage
 import org.eclipse.xtext.diagnostics.Diagnostic
 import org.eclipse.xtext.junit4.InjectWith
@@ -39,7 +39,7 @@ import static org.junit.Assert.*
 @RunWith(XtextRunner)
 @InjectWith(SARLInjectorProvider)
 class AgentParsingTest {
-	@Inject extension ParseHelper<Model>
+	@Inject extension ParseHelper<SarlScript>
 	@Inject extension ValidationTestHelper
 
 	@Test def void testParse() {
@@ -102,7 +102,9 @@ class AgentParsingTest {
 			}
 		'''.parse
 
-		mas.assertError(SarlPackage::eINSTANCE.behaviorUnit, Diagnostic::LINKING_DIAGNOSTIC,
+		mas.assertError(
+			SarlPackage::eINSTANCE.behaviorUnit,
+			Diagnostic::LINKING_DIAGNOSTIC,
 			"Couldn't resolve reference to Event 'E'.")
 	}
 

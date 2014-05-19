@@ -15,13 +15,16 @@
  */
 package io.sarl.lang.jvmmodel;
 
+import io.sarl.lang.sarl.ActionSignature;
+import io.sarl.lang.sarl.FormalParameter;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 
 /**
- * This class permits to compare the signatures when
- * building the additional signatures.
+ * This class permits to compare the action signatures.
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -29,16 +32,28 @@ import java.util.List;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-class SARLAdditionalSignatureComparator implements Comparator<List<String>> {
-  public int compare(final List<String> a, final List<String> b) {
+class SARLActionSignatureComparator implements Comparator<ActionSignature> {
+  public int compare(final ActionSignature a, final ActionSignature b) {
+    String _name = a.getName();
+    String _name_1 = b.getName();
+    int cmp = _name.compareTo(_name_1);
+    if ((cmp != 0)) {
+      return cmp;
+    }
+    EList<FormalParameter> _params = a.getParams();
+    EList<FormalParameter> _params_1 = b.getParams();
+    return this.compare(_params, _params_1);
+  }
+  
+  public int compare(final List<FormalParameter> a, final List<FormalParameter> b) {
     int _size = a.size();
     int _size_1 = b.size();
     int cmp = (Integer.valueOf(_size).compareTo(Integer.valueOf(_size_1)));
     if ((cmp != 0)) {
       return cmp;
     }
-    final Iterator<String> i1 = a.iterator();
-    final Iterator<String> i2 = b.iterator();
+    final Iterator<FormalParameter> i1 = a.iterator();
+    final Iterator<FormalParameter> i2 = b.iterator();
     boolean _and = false;
     boolean _hasNext = i1.hasNext();
     if (!_hasNext) {
@@ -50,9 +65,13 @@ class SARLAdditionalSignatureComparator implements Comparator<List<String>> {
     boolean _while = _and;
     while (_while) {
       {
-        String _next = i1.next();
-        String _next_1 = i2.next();
-        int _compareTo = _next.compareTo(_next_1);
+        FormalParameter _next = i1.next();
+        JvmTypeReference _parameterType = _next.getParameterType();
+        String _identifier = _parameterType.getIdentifier();
+        FormalParameter _next_1 = i2.next();
+        JvmTypeReference _parameterType_1 = _next_1.getParameterType();
+        String _identifier_1 = _parameterType_1.getIdentifier();
+        int _compareTo = _identifier.compareTo(_identifier_1);
         cmp = _compareTo;
         if ((cmp != 0)) {
           return cmp;

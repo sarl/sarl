@@ -6,21 +6,21 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Abstract Element</b></em>'.
+ * A representation of the model object '<em><b>Named Element</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link io.sarl.lang.sarl.AbstractElement#getName <em>Name</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.NamedElement#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
- * @see io.sarl.lang.sarl.SarlPackage#getAbstractElement()
+ * @see io.sarl.lang.sarl.SarlPackage#getNamedElement()
  * @model
  * @generated
  */
-public interface AbstractElement extends EObject
+public interface NamedElement extends EObject
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
@@ -32,14 +32,14 @@ public interface AbstractElement extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
-   * @see io.sarl.lang.sarl.SarlPackage#getAbstractElement_Name()
+   * @see io.sarl.lang.sarl.SarlPackage#getNamedElement_Name()
    * @model
    * @generated
    */
   String getName();
 
   /**
-   * Sets the value of the '{@link io.sarl.lang.sarl.AbstractElement#getName <em>Name</em>}' attribute.
+   * Sets the value of the '{@link io.sarl.lang.sarl.NamedElement#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
@@ -48,4 +48,4 @@ public interface AbstractElement extends EObject
    */
   void setName(String value);
 
-} // AbstractElement
+} // NamedElement

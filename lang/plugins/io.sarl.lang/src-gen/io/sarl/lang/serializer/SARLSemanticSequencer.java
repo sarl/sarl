@@ -12,10 +12,15 @@ import io.sarl.lang.sarl.Capacity;
 import io.sarl.lang.sarl.CapacityUses;
 import io.sarl.lang.sarl.Constructor;
 import io.sarl.lang.sarl.Event;
-import io.sarl.lang.sarl.Model;
-import io.sarl.lang.sarl.Parameter;
+import io.sarl.lang.sarl.Feature;
+import io.sarl.lang.sarl.FeatureContainer;
+import io.sarl.lang.sarl.FormalParameter;
+import io.sarl.lang.sarl.ImplementingElement;
+import io.sarl.lang.sarl.InheritingElement;
+import io.sarl.lang.sarl.NamedElement;
 import io.sarl.lang.sarl.RequiredCapacity;
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.Skill;
 import io.sarl.lang.services.SARLGrammarAccess;
 import org.eclipse.emf.ecore.EObject;
@@ -95,8 +100,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				}
 				else break;
 			case SarlPackage.AGENT:
-				if(context == grammarAccess.getAbstractElementRule() ||
-				   context == grammarAccess.getAgentRule()) {
+				if(context == grammarAccess.getAgentRule() ||
+				   context == grammarAccess.getTopElementRule()) {
 					sequence_Agent(context, (Agent) semanticObject); 
 					return; 
 				}
@@ -112,8 +117,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				}
 				else break;
 			case SarlPackage.BEHAVIOR:
-				if(context == grammarAccess.getAbstractElementRule() ||
-				   context == grammarAccess.getBehaviorRule()) {
+				if(context == grammarAccess.getBehaviorRule() ||
+				   context == grammarAccess.getTopElementRule()) {
 					sequence_Behavior(context, (Behavior) semanticObject); 
 					return; 
 				}
@@ -127,8 +132,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				}
 				else break;
 			case SarlPackage.CAPACITY:
-				if(context == grammarAccess.getAbstractElementRule() ||
-				   context == grammarAccess.getCapacityRule()) {
+				if(context == grammarAccess.getCapacityRule() ||
+				   context == grammarAccess.getTopElementRule()) {
 					sequence_Capacity(context, (Capacity) semanticObject); 
 					return; 
 				}
@@ -152,21 +157,45 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				}
 				else break;
 			case SarlPackage.EVENT:
-				if(context == grammarAccess.getAbstractElementRule() ||
-				   context == grammarAccess.getEventRule()) {
+				if(context == grammarAccess.getEventRule() ||
+				   context == grammarAccess.getTopElementRule()) {
 					sequence_Event(context, (Event) semanticObject); 
 					return; 
 				}
 				else break;
-			case SarlPackage.MODEL:
-				if(context == grammarAccess.getModelRule()) {
-					sequence_Model(context, (Model) semanticObject); 
+			case SarlPackage.FEATURE:
+				if(context == grammarAccess.getFeatureRule()) {
+					sequence_Feature(context, (Feature) semanticObject); 
 					return; 
 				}
 				else break;
-			case SarlPackage.PARAMETER:
-				if(context == grammarAccess.getParameterRule()) {
-					sequence_Parameter(context, (Parameter) semanticObject); 
+			case SarlPackage.FEATURE_CONTAINER:
+				if(context == grammarAccess.getFeatureContainerRule()) {
+					sequence_FeatureContainer(context, (FeatureContainer) semanticObject); 
+					return; 
+				}
+				else break;
+			case SarlPackage.FORMAL_PARAMETER:
+				if(context == grammarAccess.getFormalParameterRule()) {
+					sequence_FormalParameter(context, (FormalParameter) semanticObject); 
+					return; 
+				}
+				else break;
+			case SarlPackage.IMPLEMENTING_ELEMENT:
+				if(context == grammarAccess.getImplementingElementRule()) {
+					sequence_ImplementingElement(context, (ImplementingElement) semanticObject); 
+					return; 
+				}
+				else break;
+			case SarlPackage.INHERITING_ELEMENT:
+				if(context == grammarAccess.getInheritingElementRule()) {
+					sequence_InheritingElement(context, (InheritingElement) semanticObject); 
+					return; 
+				}
+				else break;
+			case SarlPackage.NAMED_ELEMENT:
+				if(context == grammarAccess.getNamedElementRule()) {
+					sequence_NamedElement(context, (NamedElement) semanticObject); 
 					return; 
 				}
 				else break;
@@ -179,9 +208,15 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 					return; 
 				}
 				else break;
+			case SarlPackage.SARL_SCRIPT:
+				if(context == grammarAccess.getSarlScriptRule()) {
+					sequence_SarlScript(context, (SarlScript) semanticObject); 
+					return; 
+				}
+				else break;
 			case SarlPackage.SKILL:
-				if(context == grammarAccess.getAbstractElementRule() ||
-				   context == grammarAccess.getSkillRule()) {
+				if(context == grammarAccess.getSkillRule() ||
+				   context == grammarAccess.getTopElementRule()) {
 					sequence_Skill(context, (Skill) semanticObject); 
 					return; 
 				}
@@ -189,16 +224,16 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 			}
 		else if(semanticObject.eClass().getEPackage() == TypesPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
 			case TypesPackage.JVM_FORMAL_PARAMETER:
-				if(context == grammarAccess.getForLoopFormalParameterRule()) {
-					sequence_ForLoopFormalParameter(context, (JvmFormalParameter) semanticObject); 
-					return; 
-				}
-				else if(context == grammarAccess.getFullJvmFormalParameterRule()) {
+				if(context == grammarAccess.getFullJvmFormalParameterRule()) {
 					sequence_FullJvmFormalParameter(context, (JvmFormalParameter) semanticObject); 
 					return; 
 				}
 				else if(context == grammarAccess.getJvmFormalParameterRule()) {
 					sequence_JvmFormalParameter(context, (JvmFormalParameter) semanticObject); 
+					return; 
+				}
+				else if(context == grammarAccess.getLoopFormalParameterRule()) {
+					sequence_LoopFormalParameter(context, (JvmFormalParameter) semanticObject); 
 					return; 
 				}
 				else break;
@@ -1136,7 +1171,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	 * Constraint:
 	 *     (
 	 *         name=ValidID 
-	 *         (params+=Parameter params+=Parameter* varargs?='...'?)? 
+	 *         (params+=FormalParameter params+=FormalParameter* varargs?='...'?)? 
 	 *         type=JvmTypeReference? 
 	 *         (firedEvents+=[Event|QualifiedName] firedEvents+=[Event|QualifiedName]*)?
 	 *     )
@@ -1159,15 +1194,15 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 		}
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getActionAccess().getSignatureActionSignatureParserRuleCall_0_0(), semanticObject.getSignature());
-		feeder.accept(grammarAccess.getActionAccess().getBodyXBlockExpressionParserRuleCall_1_0(), semanticObject.getBody());
+		feeder.accept(grammarAccess.getActionAccess().getSignatureActionSignatureParserRuleCall_1_0(), semanticObject.getSignature());
+		feeder.accept(grammarAccess.getActionAccess().getBodyXBlockExpressionParserRuleCall_2_0(), semanticObject.getBody());
 		feeder.finish();
 	}
 	
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID superType=[Agent|QualifiedName]? features+=AgentFeature*)
+	 *     (name=ValidID superTypes+=[Agent|QualifiedName]? features+=AgentFeature*)
 	 */
 	protected void sequence_Agent(EObject context, Agent semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1194,7 +1229,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID superType=[Behavior|QualifiedName]? features+=BehaviorFeature*)
+	 *     (name=ValidID superTypes+=[Behavior|QualifiedName]? features+=BehaviorFeature*)
 	 */
 	protected void sequence_Behavior(EObject context, Behavior semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1221,7 +1256,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     ((params+=Parameter params+=Parameter* varargs?='...'?)? body=XBlockExpression)
+	 *     ((params+=FormalParameter params+=FormalParameter* varargs?='...'?)? body=XBlockExpression)
 	 */
 	protected void sequence_Constructor(EObject context, Constructor semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1230,7 +1265,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID superType=[Event|QualifiedName]? features+=EventFeature*)
+	 *     (name=ValidID superTypes+=[Event|QualifiedName]? features+=EventFeature*)
 	 */
 	protected void sequence_Event(EObject context, Event semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1239,9 +1274,27 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID parameterType=JvmTypeReference?)
+	 *     features+=Feature
 	 */
-	protected void sequence_ForLoopFormalParameter(EObject context, JvmFormalParameter semanticObject) {
+	protected void sequence_FeatureContainer(EObject context, FeatureContainer semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     {Feature}
+	 */
+	protected void sequence_Feature(EObject context, Feature semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (name=ValidID parameterType=JvmTypeReference defaultValue=XLiteral?)
+	 */
+	protected void sequence_FormalParameter(EObject context, FormalParameter semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -1257,6 +1310,24 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
+	 *     implementedTypes+=[InheritingElement|ID]
+	 */
+	protected void sequence_ImplementingElement(EObject context, ImplementingElement semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     superTypes+=[InheritingElement|ID]
+	 */
+	protected void sequence_InheritingElement(EObject context, InheritingElement semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
 	 *     (name=ValidID parameterType=JvmTypeReference?)
 	 */
 	protected void sequence_JvmFormalParameter(EObject context, JvmFormalParameter semanticObject) {
@@ -1266,19 +1337,26 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=QualifiedName? importSection=XImportSection? elements+=AbstractElement*)
+	 *     (name=ValidID parameterType=JvmTypeReference?)
 	 */
-	protected void sequence_Model(EObject context, Model semanticObject) {
+	protected void sequence_LoopFormalParameter(EObject context, JvmFormalParameter semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID parameterType=JvmTypeReference defaultValue=XLiteral?)
+	 *     name=ValidID
 	 */
-	protected void sequence_Parameter(EObject context, Parameter semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
+	protected void sequence_NamedElement(EObject context, NamedElement semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, SarlPackage.Literals.NAMED_ELEMENT__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SarlPackage.Literals.NAMED_ELEMENT__NAME));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getNamedElementAccess().getNameValidIDParserRuleCall_0(), semanticObject.getName());
+		feeder.finish();
 	}
 	
 	
@@ -1293,7 +1371,22 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID implementedCapacities+=[Capacity|QualifiedName] implementedCapacities+=[Capacity|QualifiedName]* features+=SkillFeature*)
+	 *     (name=QualifiedName? importSection=XImportSection? elements+=TopElement*)
+	 */
+	protected void sequence_SarlScript(EObject context, SarlScript semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (
+	 *         name=ValidID 
+	 *         superTypes+=[Skill|QualifiedName]? 
+	 *         implementedTypes+=[Capacity|QualifiedName] 
+	 *         implementedTypes+=[Capacity|QualifiedName]* 
+	 *         features+=SkillFeature*
+	 *     )
 	 */
 	protected void sequence_Skill(EObject context, Skill semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1302,7 +1395,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (declaredParam=ForLoopFormalParameter forExpression=XExpression eachExpression=XExpression)
+	 *     (declaredParam=LoopFormalParameter forExpression=XExpression eachExpression=XExpression)
 	 */
 	protected void sequence_XForLoopExpression(EObject context, XForLoopExpression semanticObject) {
 		if(errorAcceptor != null) {
@@ -1315,7 +1408,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 		}
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getXForLoopExpressionAccess().getDeclaredParamForLoopFormalParameterParserRuleCall_3_0(), semanticObject.getDeclaredParam());
+		feeder.accept(grammarAccess.getXForLoopExpressionAccess().getDeclaredParamLoopFormalParameterParserRuleCall_3_0(), semanticObject.getDeclaredParam());
 		feeder.accept(grammarAccess.getXForLoopExpressionAccess().getForExpressionXExpressionParserRuleCall_5_0(), semanticObject.getForExpression());
 		feeder.accept(grammarAccess.getXForLoopExpressionAccess().getEachExpressionXExpressionParserRuleCall_7_0(), semanticObject.getEachExpression());
 		feeder.finish();

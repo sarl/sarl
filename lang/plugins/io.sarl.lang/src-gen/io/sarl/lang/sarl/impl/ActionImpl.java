@@ -3,7 +3,7 @@
 package io.sarl.lang.sarl.impl;
 
 import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.ActionSignature;
+import io.sarl.lang.sarl.Feature;
 import io.sarl.lang.sarl.SarlPackage;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -30,7 +30,7 @@ import org.eclipse.xtext.xbase.XExpression;
  *
  * @generated
  */
-public class ActionImpl extends AgentFeatureImpl implements Action
+public class ActionImpl extends FeatureImpl implements Action
 {
   /**
    * The cached value of the '{@link #getSignature() <em>Signature</em>}' containment reference.
@@ -40,7 +40,7 @@ public class ActionImpl extends AgentFeatureImpl implements Action
    * @generated
    * @ordered
    */
-  protected ActionSignature signature;
+  protected Feature signature;
 
   /**
    * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
@@ -78,7 +78,7 @@ public class ActionImpl extends AgentFeatureImpl implements Action
    * <!-- end-user-doc -->
    * @generated
    */
-  public ActionSignature getSignature()
+  public Feature getSignature()
   {
     return signature;
   }
@@ -88,9 +88,9 @@ public class ActionImpl extends AgentFeatureImpl implements Action
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetSignature(ActionSignature newSignature, NotificationChain msgs)
+  public NotificationChain basicSetSignature(Feature newSignature, NotificationChain msgs)
   {
-    ActionSignature oldSignature = signature;
+    Feature oldSignature = signature;
     signature = newSignature;
     if (eNotificationRequired())
     {
@@ -105,7 +105,7 @@ public class ActionImpl extends AgentFeatureImpl implements Action
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setSignature(ActionSignature newSignature)
+  public void setSignature(Feature newSignature)
   {
     if (newSignature != signature)
     {
@@ -216,7 +216,7 @@ public class ActionImpl extends AgentFeatureImpl implements Action
     switch (featureID)
     {
       case SarlPackage.ACTION__SIGNATURE:
-        setSignature((ActionSignature)newValue);
+        setSignature((Feature)newValue);
         return;
       case SarlPackage.ACTION__BODY:
         setBody((XExpression)newValue);
@@ -236,7 +236,7 @@ public class ActionImpl extends AgentFeatureImpl implements Action
     switch (featureID)
     {
       case SarlPackage.ACTION__SIGNATURE:
-        setSignature((ActionSignature)null);
+        setSignature((Feature)null);
         return;
       case SarlPackage.ACTION__BODY:
         setBody((XExpression)null);

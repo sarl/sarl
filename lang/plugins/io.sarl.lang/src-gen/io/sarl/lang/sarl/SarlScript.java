@@ -10,23 +10,23 @@ import org.eclipse.xtext.xtype.XImportSection;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Model</b></em>'.
+ * A representation of the model object '<em><b>Script</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link io.sarl.lang.sarl.Model#getName <em>Name</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.Model#getImportSection <em>Import Section</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.Model#getElements <em>Elements</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.SarlScript#getName <em>Name</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.SarlScript#getImportSection <em>Import Section</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.SarlScript#getElements <em>Elements</em>}</li>
  * </ul>
  * </p>
  *
- * @see io.sarl.lang.sarl.SarlPackage#getModel()
+ * @see io.sarl.lang.sarl.SarlPackage#getSarlScript()
  * @model
  * @generated
  */
-public interface Model extends EObject
+public interface SarlScript extends EObject
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
@@ -38,14 +38,14 @@ public interface Model extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
-   * @see io.sarl.lang.sarl.SarlPackage#getModel_Name()
+   * @see io.sarl.lang.sarl.SarlPackage#getSarlScript_Name()
    * @model
    * @generated
    */
   String getName();
 
   /**
-   * Sets the value of the '{@link io.sarl.lang.sarl.Model#getName <em>Name</em>}' attribute.
+   * Sets the value of the '{@link io.sarl.lang.sarl.SarlScript#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
@@ -64,14 +64,14 @@ public interface Model extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Import Section</em>' containment reference.
    * @see #setImportSection(XImportSection)
-   * @see io.sarl.lang.sarl.SarlPackage#getModel_ImportSection()
+   * @see io.sarl.lang.sarl.SarlPackage#getSarlScript_ImportSection()
    * @model containment="true"
    * @generated
    */
   XImportSection getImportSection();
 
   /**
-   * Sets the value of the '{@link io.sarl.lang.sarl.Model#getImportSection <em>Import Section</em>}' containment reference.
+   * Sets the value of the '{@link io.sarl.lang.sarl.SarlScript#getImportSection <em>Import Section</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Import Section</em>' containment reference.
@@ -82,7 +82,7 @@ public interface Model extends EObject
 
   /**
    * Returns the value of the '<em><b>Elements</b></em>' containment reference list.
-   * The list contents are of type {@link io.sarl.lang.sarl.AbstractElement}.
+   * The list contents are of type {@link io.sarl.lang.sarl.TopElement}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Elements</em>' containment reference list isn't clear,
@@ -90,10 +90,10 @@ public interface Model extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Elements</em>' containment reference list.
-   * @see io.sarl.lang.sarl.SarlPackage#getModel_Elements()
+   * @see io.sarl.lang.sarl.SarlPackage#getSarlScript_Elements()
    * @model containment="true"
    * @generated
    */
-  EList<AbstractElement> getElements();
+  EList<TopElement> getElements();
 
-} // Model
+} // SarlScript

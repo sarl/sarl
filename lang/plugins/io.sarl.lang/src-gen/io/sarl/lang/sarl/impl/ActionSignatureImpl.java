@@ -4,7 +4,7 @@ package io.sarl.lang.sarl.impl;
 
 import io.sarl.lang.sarl.ActionSignature;
 import io.sarl.lang.sarl.Event;
-import io.sarl.lang.sarl.Parameter;
+import io.sarl.lang.sarl.FormalParameter;
 import io.sarl.lang.sarl.SarlPackage;
 
 import java.util.Collection;
@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
@@ -43,7 +42,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  *
  * @generated
  */
-public class ActionSignatureImpl extends MinimalEObjectImpl.Container implements ActionSignature
+public class ActionSignatureImpl extends FeatureImpl implements ActionSignature
 {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -73,7 +72,7 @@ public class ActionSignatureImpl extends MinimalEObjectImpl.Container implements
    * @generated
    * @ordered
    */
-  protected EList<Parameter> params;
+  protected EList<FormalParameter> params;
 
   /**
    * The default value of the '{@link #isVarargs() <em>Varargs</em>}' attribute.
@@ -164,11 +163,11 @@ public class ActionSignatureImpl extends MinimalEObjectImpl.Container implements
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<Parameter> getParams()
+  public EList<FormalParameter> getParams()
   {
     if (params == null)
     {
-      params = new EObjectContainmentEList<Parameter>(Parameter.class, this, SarlPackage.ACTION_SIGNATURE__PARAMS);
+      params = new EObjectContainmentEList<FormalParameter>(FormalParameter.class, this, SarlPackage.ACTION_SIGNATURE__PARAMS);
     }
     return params;
   }
@@ -316,7 +315,7 @@ public class ActionSignatureImpl extends MinimalEObjectImpl.Container implements
         return;
       case SarlPackage.ACTION_SIGNATURE__PARAMS:
         getParams().clear();
-        getParams().addAll((Collection<? extends Parameter>)newValue);
+        getParams().addAll((Collection<? extends FormalParameter>)newValue);
         return;
       case SarlPackage.ACTION_SIGNATURE__VARARGS:
         setVarargs((Boolean)newValue);

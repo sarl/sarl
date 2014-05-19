@@ -24,11 +24,11 @@ import org.eclipse.xtext.xbase.XExpression;
  * @model
  * @generated
  */
-public interface Constructor extends EventFeature, BehaviorFeature, SkillFeature
+public interface Constructor extends Feature
 {
   /**
    * Returns the value of the '<em><b>Params</b></em>' containment reference list.
-   * The list contents are of type {@link io.sarl.lang.sarl.Parameter}.
+   * The list contents are of type {@link io.sarl.lang.sarl.FormalParameter}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Params</em>' containment reference list isn't clear,
@@ -40,7 +40,7 @@ public interface Constructor extends EventFeature, BehaviorFeature, SkillFeature
    * @model containment="true"
    * @generated
    */
-  EList<Parameter> getParams();
+  EList<FormalParameter> getParams();
 
   /**
    * Returns the value of the '<em><b>Varargs</b></em>' attribute.

@@ -17,7 +17,7 @@ package io.sarl.lang.tests.bugs;
 
 import com.google.inject.Inject;
 import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.Model;
+import io.sarl.lang.sarl.SarlScript;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
@@ -44,7 +44,7 @@ import org.junit.runner.RunWith;
 public class Bug23 {
   @Inject
   @Extension
-  private ParseHelper<Model> _parseHelper;
+  private ParseHelper<SarlScript> _parseHelper;
   
   @Inject
   @Extension
@@ -98,7 +98,7 @@ public class Bug23 {
   @Test
   public void bug23() {
     try {
-      Model mas = this._parseHelper.parse(this.snippet);
+      SarlScript mas = this._parseHelper.parse(this.snippet);
       this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);

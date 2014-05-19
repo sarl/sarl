@@ -21,7 +21,7 @@ import org.eclipse.xtext.xbase.XExpression;
  * @model
  * @generated
  */
-public interface Action extends AgentFeature, BehaviorFeature, SkillFeature
+public interface Action extends Feature
 {
   /**
    * Returns the value of the '<em><b>Signature</b></em>' containment reference.
@@ -32,12 +32,12 @@ public interface Action extends AgentFeature, BehaviorFeature, SkillFeature
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Signature</em>' containment reference.
-   * @see #setSignature(ActionSignature)
+   * @see #setSignature(Feature)
    * @see io.sarl.lang.sarl.SarlPackage#getAction_Signature()
    * @model containment="true"
    * @generated
    */
-  ActionSignature getSignature();
+  Feature getSignature();
 
   /**
    * Sets the value of the '{@link io.sarl.lang.sarl.Action#getSignature <em>Signature</em>}' containment reference.
@@ -47,7 +47,7 @@ public interface Action extends AgentFeature, BehaviorFeature, SkillFeature
    * @see #getSignature()
    * @generated
    */
-  void setSignature(ActionSignature value);
+  void setSignature(Feature value);
 
   /**
    * Returns the value of the '<em><b>Body</b></em>' containment reference.

@@ -17,7 +17,7 @@ package io.sarl.lang.tests.parsing
 
 import com.google.inject.Inject
 import io.sarl.lang.SARLInjectorProvider
-import io.sarl.lang.sarl.Model
+import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.sarl.SarlPackage
 import org.eclipse.xtext.diagnostics.Diagnostic
 import org.eclipse.xtext.junit4.InjectWith
@@ -38,7 +38,7 @@ import static org.junit.Assert.*
 @RunWith(XtextRunner)
 @InjectWith(SARLInjectorProvider)
 class VarArgsParsingTest {
-	@Inject extension ParseHelper<Model>
+	@Inject extension ParseHelper<SarlScript>
 	@Inject extension ValidationTestHelper
 
 	@Test

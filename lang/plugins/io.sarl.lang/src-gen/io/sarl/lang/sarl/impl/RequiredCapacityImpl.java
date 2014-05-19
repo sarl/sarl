@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *
  * @generated
  */
-public class RequiredCapacityImpl extends AgentFeatureImpl implements RequiredCapacity
+public class RequiredCapacityImpl extends FeatureImpl implements RequiredCapacity
 {
   /**
    * The cached value of the '{@link #getRequiredCapacities() <em>Required Capacities</em>}' reference list.

@@ -18,27 +18,16 @@ package io.sarl.lang.jvmmodel
 import com.google.inject.Inject
 import io.sarl.lang.SARLKeywords
 import io.sarl.lang.core.Percept
-import io.sarl.lang.sarl.AbstractElement
-import io.sarl.lang.sarl.Action
-import io.sarl.lang.sarl.ActionSignature
-import io.sarl.lang.sarl.Agent
-import io.sarl.lang.sarl.Attribute
-import io.sarl.lang.sarl.Behavior
-import io.sarl.lang.sarl.BehaviorUnit
-import io.sarl.lang.sarl.Capacity
-import io.sarl.lang.sarl.CapacityUses
-import io.sarl.lang.sarl.Constructor
-import io.sarl.lang.sarl.Event
-import io.sarl.lang.sarl.Parameter
-import io.sarl.lang.sarl.RequiredCapacity
-import io.sarl.lang.sarl.Skill
 import java.util.ArrayList
 import java.util.Collection
 import java.util.Comparator
 import java.util.Iterator
+import java.util.LinkedList
 import java.util.List
 import java.util.Map
+import java.util.Set
 import java.util.TreeMap
+import java.util.TreeSet
 import java.util.UUID
 import java.util.logging.Logger
 import org.eclipse.emf.ecore.EObject
@@ -59,6 +48,22 @@ import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
+import io.sarl.lang.sarl.Event
+import io.sarl.lang.sarl.Attribute
+import io.sarl.lang.sarl.Constructor
+import io.sarl.lang.sarl.Capacity
+import io.sarl.lang.sarl.ActionSignature
+import io.sarl.lang.sarl.Skill
+import io.sarl.lang.sarl.CapacityUses
+import io.sarl.lang.sarl.Behavior
+import io.sarl.lang.sarl.RequiredCapacity
+import io.sarl.lang.sarl.BehaviorUnit
+import io.sarl.lang.sarl.TopElement
+import io.sarl.lang.sarl.FormalParameter
+import io.sarl.lang.sarl.Action
+import io.sarl.lang.sarl.Agent
+import io.sarl.lang.sarl.InheritingElement
+import io.sarl.lang.sarl.NamedElement
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -119,17 +124,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				documentation = element.documentation
 				
 				var long serial = 1L
-
-				var JvmTypeReference parentType
-				if(element.superType != null){
-					parentType = newTypeRef(element.superType.fullyQualifiedName.toString)
-					serial = serial + element.superType.fullyQualifiedName.toString.hashCode
-				} else {
-					parentType = newTypeRef(element, typeof(io.sarl.lang.core.Event))
-					serial = serial + "io.sarl.lang.core.Event".hashCode
-				}
-				superTypes += parentType
-
+				serial = serial + generateSuperTypes(element, typeof(io.sarl.lang.core.Event))
 				var JvmField jvmField
 				var List<JvmField> jvmFields = new ArrayList()
 
@@ -186,24 +181,12 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	}
 
 	def dispatch void infer(Capacity capacity, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-
-		//capacity.generateAccessor(acceptor)
 		acceptor.accept(capacity.toInterface(capacity.fullyQualifiedName.toString, null)).initializeLater(
 			[
 				documentation = capacity.documentation
-				if (capacity.superTypes!==null && !capacity.superTypes.empty) {
-					for(Capacity superCap : capacity.superTypes) {
-						if (superCap.fullyQualifiedName != null) {
-							superTypes += newTypeRef(superCap.fullyQualifiedName.toString)						
-						}
-					}
-				} else {
-					superTypes += newTypeRef(capacity, typeof(io.sarl.lang.core.Capacity))
-				}
+				generateSuperTypes(capacity, typeof(io.sarl.lang.core.Capacity))
 				for (feature : capacity.actions) {
-
-					generateAction(feature, null)
-
+					generateAction(feature as ActionSignature, null)
 				}
 			])
 	}
@@ -213,7 +196,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			[
 				documentation = element.documentation
 				superTypes += newTypeRef(element, typeof(io.sarl.lang.core.Skill))
-				for (cap : element.implementedCapacities) {
+				for (cap : element.implementedTypes) {
 					if (cap.name!=null) {
 						if (cap.fullyQualifiedName != null) {
 							superTypes += element.newTypeRef(cap.fullyQualifiedName.toString)
@@ -227,7 +210,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				for (feature : element.features) {
 					switch feature {
 						Action: {
-							generateAction(feature.signature, feature.body)
+							generateAction(feature.signature as ActionSignature, feature.body)
 						}
 						Attribute: {
 							generateAttribute(feature, JvmVisibility::PROTECTED)
@@ -249,12 +232,8 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		acceptor.accept(element.toClass(element.fullyQualifiedName)).initializeLater(
 			[
 				documentation = element.documentation
+				generateSuperTypes(element, typeof(io.sarl.lang.core.Behavior))
 				var int counter = 1
-				if (element.superType != null && element.superType.fullyQualifiedName != null) {
-					superTypes += newTypeRef(element.superType.fullyQualifiedName.toString)
-				} else {
-					superTypes += newTypeRef(element, typeof(io.sarl.lang.core.Behavior))
-				}
 				for (feature : element.features) {
 					switch feature {
 						RequiredCapacity: {
@@ -268,7 +247,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							}
 						}
 						Action: {
-							generateAction(feature.signature, feature.body)
+							generateAction(feature.signature as ActionSignature, feature.body)
 						}
 						CapacityUses: {
 							for (used : feature.capacitiesUsed) {
@@ -289,11 +268,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	def dispatch void infer(Agent agent, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		acceptor.accept(agent.toClass(agent.fullyQualifiedName)).initializeLater [
 			documentation = agent.documentation
-			if (agent.superType != null && agent.superType.fullyQualifiedName != null) {
-				superTypes += newTypeRef(agent.superType.fullyQualifiedName.toString)
-			} else {
-				superTypes += newTypeRef(agent, typeof(io.sarl.lang.core.Agent))
-			}
+			generateSuperTypes(agent, typeof(io.sarl.lang.core.Agent))
 			members += agent.toConstructor [
 				documentation = '''Creates a new Agent of type «agent.name»'''
 				parameters += agent.toParameter('parentID', newTypeRef(UUID))
@@ -312,7 +287,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						}
 					}
 					Action: {
-						generateAction(feature.signature, feature.body)
+						generateAction(feature.signature as ActionSignature, feature.body)
 					}
 					Attribute: {
 						generateAttribute(feature, JvmVisibility::PROTECTED)
@@ -326,6 +301,24 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			}
 		]
 	}
+
+	protected def long generateSuperTypes(JvmGenericType owner, InheritingElement element, Class<?> defaultType) {
+		var serial = 0L
+		if (!element.superTypes.empty) {
+			for(InheritingElement superType : element.superTypes) {
+				if (superType!==null && superType.fullyQualifiedName != null) {
+					var type = element.newTypeRef(superType.fullyQualifiedName.toString)						
+					owner.superTypes += type
+					serial = serial + type.identifier.hashCode
+				}
+			}
+		} else {
+			var type = element.newTypeRef(defaultType)
+			owner.superTypes += type
+			serial = serial + type.identifier.hashCode
+		}
+		return serial
+	}
 	
 	protected def JvmField generateAttribute(JvmGenericType owner, Attribute attr, JvmVisibility attrVisibility) {
 		var field = attr.toField(attr.name, attr.type) [
@@ -338,21 +331,89 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		owner.members += field
 		return field
 	}
+	
+	protected def void iterateOnActions(Capacity capacity, (Capacity, Collection<ActionSignature>)=>void func) {
+		val caps = new LinkedList<InheritingElement>()
+		caps.add(capacity)
+		while (!caps.empty) {
+			var cap = caps.removeFirst
+			if (cap instanceof Capacity) {
+				caps.addAll(cap.superTypes)
+				var list = new ArrayList<ActionSignature>
+				for(sig : cap.actions) {
+					list.add(sig as ActionSignature)
+				}
+				func.apply(cap, list)
+			}
+		}
+	}
+	
+	private def String secureTypeName(NamedElement o) {
+		var name = o.fullyQualifiedName
+		if (name!==null) return name.toString
+		var sname = o.name
+		if (sname!==null) return sname
+		log.finer("Cannot determine the fully qualified name of: "+o)
+		return o.toString
+	}
 
-	private def void generateCapacityDelegatorMethods(JvmGenericType owner, AbstractElement context, Capacity capacity) {
-		for (signature : capacity.actions) {
+	protected def void extractCapacityActions(Capacity capacity, Set<ActionSignature> functions, Map<String,Collection<? extends ActionSignature>> functionsPerCapacity) {
+		capacity.iterateOnActions [ c, l |
+			if (functions!==null) functions.addAll(l)
+			if (functionsPerCapacity!==null)
+				functionsPerCapacity.put(c.secureTypeName,l)
+		]
+	}
+	
+	protected def void generateCapacityDelegatorMethods(JvmGenericType owner, InheritingElement context, Capacity capacity) {
+		// Detect the needed actions by iterating on the capacity hierarchy
+		val functions = new TreeSet(new SARLActionSignatureComparator)
+		val functionsPerCapacity = new TreeMap<String,Collection<? extends ActionSignature>>
+		capacity.extractCapacityActions(functions, functionsPerCapacity)
+		// Go through inherited classes, and remove the functions that are provided by the super classes
+		val classes = new LinkedList(context.superTypes)
+		while (!classes.empty) {
+			val superClass = classes.removeFirst
+			classes.addAll(superClass.superTypes)
+			for( feature : superClass.features) {
+				if (feature instanceof ActionSignature) {
+					functions.remove(feature)
+				}
+				else if (feature instanceof CapacityUses) {
+					val caps = new LinkedList<Capacity>
+					caps.addAll(feature.capacitiesUsed)
+					while(!caps.empty) {
+						val cap = caps.removeFirst
+						for(s : cap.superTypes) {
+							if (s instanceof Capacity) caps.add(s)
+						}
+						var list = functionsPerCapacity.get(cap.secureTypeName)
+						if (list===null) {
+							cap.iterateOnActions [ c, l |
+								functionsPerCapacity.put(c.secureTypeName, l)
+								functions.removeAll(l)
+							]
+						}
+						else {
+								functions.removeAll(list)
+						}
+					}
+				}
+			}
+		}
+		// Generate the missed actions
+		for (signature : functions) {
 			owner.generateAction(signature, null).setBody [
 				if (signature.type != null) {
 					append('''return ''')
 				}
-				append('''this.getSkill(''')
+				append('''getSkill(''')
 				append(context.newTypeRef(capacity.fullyQualifiedName.toString).type)
 				append('''.class).«signature.name»(''')
 				append(signature.params.join(', ')[name])
 				append(');')
 			]
 		}
-
 	}
 
 	protected def JvmOperation generateBehaviorUnit(JvmGenericType owner, BehaviorUnit unit, int index) {
@@ -396,7 +457,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		return null
 	}
 	
-	private def Collection<List<Object>> buildSignaturesForArgDefaultValues(boolean varargs, List<Parameter> params) {
+	private def Collection<List<Object>> buildSignaturesForArgDefaultValues(boolean varargs, List<FormalParameter> params) {
 		val comparator = new SARLAdditionalSignatureComparator
 		var Map<List<String>,List<Object>> signatures = new TreeMap(comparator)
 		if (!params.empty) {
@@ -446,7 +507,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		return signatures.values
 	}
 	
-	private def List<String> generateFormalParametersWithoutDefaultValue(JvmExecutable owner, boolean varargs, List<Parameter> params) {
+	protected def List<String> generateFormalParametersWithoutDefaultValue(JvmExecutable owner, boolean varargs, List<FormalParameter> params) {
 		var parameterTypes = new ArrayList
 		var JvmFormalParameter lastParam = null
 		for (param : params) {
@@ -460,7 +521,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		return parameterTypes
 	}
 
-	private def List<String> generateFormalParametersWithDefaultValue(JvmExecutable owner, boolean varargs, List<Parameter> params, List<Object> signature) {
+	protected def List<String> generateFormalParametersWithDefaultValue(JvmExecutable owner, boolean varargs, List<FormalParameter> params, List<Object> signature) {
 		var JvmFormalParameter lastParam = null
 		val arguments = new ArrayList
 		for(parameterSpec : signature) {
@@ -538,7 +599,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		return op
 	}
 
-	protected def void generateConstructor(JvmGenericType owner, AbstractElement context, Constructor constructor) {
+	protected def void generateConstructor(JvmGenericType owner, TopElement context, Constructor constructor) {
 		owner.members += context.toConstructor [
 			documentation = constructor.documentation
 			varArgs = constructor.varargs
@@ -716,6 +777,33 @@ package class SARLAdditionalSignatureComparator implements Comparator<List<Strin
 		val Iterator<String> i2 = b.iterator
 		while (i1.hasNext && i2.hasNext) {
 			cmp = i1.next.compareTo(i2.next)
+			if (cmp!=0) return cmp
+		}
+		return 0
+	}
+}
+
+/**
+ * This class permits to compare the action signatures. 
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+package class SARLActionSignatureComparator implements Comparator<ActionSignature> {
+	override int compare(ActionSignature a, ActionSignature b) {
+		var cmp = a.name.compareTo(b.name)
+		if (cmp!=0) return cmp
+		return compare(a.params, b.params)
+	}
+	def int compare(List<FormalParameter> a, List<FormalParameter> b) {
+		var int cmp = (a.size <=> b.size)
+		if (cmp!=0) return cmp
+		val Iterator<FormalParameter> i1 = a.iterator
+		val Iterator<FormalParameter> i2 = b.iterator
+		while (i1.hasNext && i2.hasNext) {
+			cmp = i1.next.parameterType.identifier.compareTo(i2.next.parameterType.identifier)
 			if (cmp!=0) return cmp
 		}
 		return 0

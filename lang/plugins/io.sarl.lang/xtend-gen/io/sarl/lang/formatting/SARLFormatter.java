@@ -72,8 +72,8 @@ public class SARLFormatter extends XbaseFormatter {
     SARLGrammarAccess.ConstructorElements _constructorAccess = this.f.getConstructorAccess();
     this.configureConstructor(c, _constructorAccess);
     FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap(2);
-    SARLGrammarAccess.ModelElements _modelAccess = this.f.getModelAccess();
-    Group _group_0 = _modelAccess.getGroup_0();
+    SARLGrammarAccess.SarlScriptElements _sarlScriptAccess = this.f.getSarlScriptAccess();
+    Group _group_0 = _sarlScriptAccess.getGroup_0();
     _setLinewrap.after(_group_0);
     XbaseGrammarAccess _xbaseGrammarAccess = this.f.getXbaseGrammarAccess();
     super.configure(c, _xbaseGrammarAccess);
@@ -93,66 +93,6 @@ public class SARLFormatter extends XbaseFormatter {
     Group _group = ele.getGroup();
     _setLinewrap.before(_group);
     FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
-    Keyword _leftParenthesisKeyword_1_0 = ele.getLeftParenthesisKeyword_1_0();
-    _setNoSpace.around(_leftParenthesisKeyword_1_0);
-    FormattingConfig.NoSpaceLocator _setNoSpace_1 = c.setNoSpace();
-    Keyword _rightParenthesisKeyword_1_4 = ele.getRightParenthesisKeyword_1_4();
-    _setNoSpace_1.before(_rightParenthesisKeyword_1_4);
-    FormattingConfig.NoSpaceLocator _setNoSpace_2 = c.setNoSpace();
-    Keyword _commaKeyword_1_2_0 = ele.getCommaKeyword_1_2_0();
-    _setNoSpace_2.before(_commaKeyword_1_2_0);
-  }
-  
-  public void configureSkill(final FormattingConfig c, final SARLGrammarAccess.SkillElements ele) {
-    FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap(1, 1, 2);
-    Group _group = ele.getGroup();
-    _setLinewrap.before(_group);
-    Keyword _leftCurlyBracketKeyword_5 = ele.getLeftCurlyBracketKeyword_5();
-    Keyword _rightCurlyBracketKeyword_7 = ele.getRightCurlyBracketKeyword_7();
-    c.setIndentation(_leftCurlyBracketKeyword_5, _rightCurlyBracketKeyword_7);
-    FormattingConfig.LinewrapLocator _setLinewrap_1 = c.setLinewrap();
-    Keyword _rightCurlyBracketKeyword_7_1 = ele.getRightCurlyBracketKeyword_7();
-    _setLinewrap_1.around(_rightCurlyBracketKeyword_7_1);
-  }
-  
-  public void configureRequires(final FormattingConfig c, final SARLGrammarAccess.RequiredCapacityElements ele) {
-    FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap();
-    Group _group = ele.getGroup();
-    _setLinewrap.around(_group);
-    FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
-    Keyword _commaKeyword_2_0 = ele.getCommaKeyword_2_0();
-    _setNoSpace.before(_commaKeyword_2_0);
-  }
-  
-  public void configureBehaviors(final FormattingConfig c, final SARLGrammarAccess.BehaviorElements ele) {
-    FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap(2);
-    Group _group = ele.getGroup();
-    _setLinewrap.before(_group);
-    Keyword _leftCurlyBracketKeyword_3 = ele.getLeftCurlyBracketKeyword_3();
-    Keyword _rightCurlyBracketKeyword_5 = ele.getRightCurlyBracketKeyword_5();
-    c.setIndentation(_leftCurlyBracketKeyword_3, _rightCurlyBracketKeyword_5);
-    FormattingConfig.LinewrapLocator _setLinewrap_1 = c.setLinewrap();
-    Keyword _rightCurlyBracketKeyword_5_1 = ele.getRightCurlyBracketKeyword_5();
-    _setLinewrap_1.around(_rightCurlyBracketKeyword_5_1);
-  }
-  
-  public void configureCapacities(final FormattingConfig c, final SARLGrammarAccess.CapacityElements ele) {
-    FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap(1, 1, 2);
-    Group _group = ele.getGroup();
-    _setLinewrap.before(_group);
-    Keyword _leftCurlyBracketKeyword_3 = ele.getLeftCurlyBracketKeyword_3();
-    Keyword _rightCurlyBracketKeyword_5 = ele.getRightCurlyBracketKeyword_5();
-    c.setIndentation(_leftCurlyBracketKeyword_3, _rightCurlyBracketKeyword_5);
-    FormattingConfig.LinewrapLocator _setLinewrap_1 = c.setLinewrap();
-    Keyword _rightCurlyBracketKeyword_5_1 = ele.getRightCurlyBracketKeyword_5();
-    _setLinewrap_1.around(_rightCurlyBracketKeyword_5_1);
-  }
-  
-  public void configureActionSignatures(final FormattingConfig c, final SARLGrammarAccess.ActionSignatureElements ele) {
-    FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap(2);
-    Group _group = ele.getGroup();
-    _setLinewrap.before(_group);
-    FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
     Keyword _leftParenthesisKeyword_2_0 = ele.getLeftParenthesisKeyword_2_0();
     _setNoSpace.around(_leftParenthesisKeyword_2_0);
     FormattingConfig.NoSpaceLocator _setNoSpace_1 = c.setNoSpace();
@@ -161,9 +101,69 @@ public class SARLFormatter extends XbaseFormatter {
     FormattingConfig.NoSpaceLocator _setNoSpace_2 = c.setNoSpace();
     Keyword _commaKeyword_2_2_0 = ele.getCommaKeyword_2_2_0();
     _setNoSpace_2.before(_commaKeyword_2_2_0);
+  }
+  
+  public void configureSkill(final FormattingConfig c, final SARLGrammarAccess.SkillElements ele) {
+    FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap(1, 1, 2);
+    Group _group = ele.getGroup();
+    _setLinewrap.before(_group);
+    Keyword _leftCurlyBracketKeyword_7 = ele.getLeftCurlyBracketKeyword_7();
+    Keyword _rightCurlyBracketKeyword_9 = ele.getRightCurlyBracketKeyword_9();
+    c.setIndentation(_leftCurlyBracketKeyword_7, _rightCurlyBracketKeyword_9);
+    FormattingConfig.LinewrapLocator _setLinewrap_1 = c.setLinewrap();
+    Keyword _rightCurlyBracketKeyword_9_1 = ele.getRightCurlyBracketKeyword_9();
+    _setLinewrap_1.around(_rightCurlyBracketKeyword_9_1);
+  }
+  
+  public void configureRequires(final FormattingConfig c, final SARLGrammarAccess.RequiredCapacityElements ele) {
+    FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap();
+    Group _group = ele.getGroup();
+    _setLinewrap.around(_group);
+    FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
+    Keyword _commaKeyword_3_0 = ele.getCommaKeyword_3_0();
+    _setNoSpace.before(_commaKeyword_3_0);
+  }
+  
+  public void configureBehaviors(final FormattingConfig c, final SARLGrammarAccess.BehaviorElements ele) {
+    FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap(2);
+    Group _group = ele.getGroup();
+    _setLinewrap.before(_group);
+    Keyword _leftCurlyBracketKeyword_4 = ele.getLeftCurlyBracketKeyword_4();
+    Keyword _rightCurlyBracketKeyword_6 = ele.getRightCurlyBracketKeyword_6();
+    c.setIndentation(_leftCurlyBracketKeyword_4, _rightCurlyBracketKeyword_6);
+    FormattingConfig.LinewrapLocator _setLinewrap_1 = c.setLinewrap();
+    Keyword _rightCurlyBracketKeyword_6_1 = ele.getRightCurlyBracketKeyword_6();
+    _setLinewrap_1.around(_rightCurlyBracketKeyword_6_1);
+  }
+  
+  public void configureCapacities(final FormattingConfig c, final SARLGrammarAccess.CapacityElements ele) {
+    FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap(1, 1, 2);
+    Group _group = ele.getGroup();
+    _setLinewrap.before(_group);
+    Keyword _leftCurlyBracketKeyword_4 = ele.getLeftCurlyBracketKeyword_4();
+    Keyword _rightCurlyBracketKeyword_6 = ele.getRightCurlyBracketKeyword_6();
+    c.setIndentation(_leftCurlyBracketKeyword_4, _rightCurlyBracketKeyword_6);
+    FormattingConfig.LinewrapLocator _setLinewrap_1 = c.setLinewrap();
+    Keyword _rightCurlyBracketKeyword_6_1 = ele.getRightCurlyBracketKeyword_6();
+    _setLinewrap_1.around(_rightCurlyBracketKeyword_6_1);
+  }
+  
+  public void configureActionSignatures(final FormattingConfig c, final SARLGrammarAccess.ActionSignatureElements ele) {
+    FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap(2);
+    Group _group = ele.getGroup();
+    _setLinewrap.before(_group);
+    FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
+    Keyword _leftParenthesisKeyword_3_0 = ele.getLeftParenthesisKeyword_3_0();
+    _setNoSpace.around(_leftParenthesisKeyword_3_0);
+    FormattingConfig.NoSpaceLocator _setNoSpace_1 = c.setNoSpace();
+    Keyword _rightParenthesisKeyword_3_4 = ele.getRightParenthesisKeyword_3_4();
+    _setNoSpace_1.before(_rightParenthesisKeyword_3_4);
+    FormattingConfig.NoSpaceLocator _setNoSpace_2 = c.setNoSpace();
+    Keyword _commaKeyword_3_2_0 = ele.getCommaKeyword_3_2_0();
+    _setNoSpace_2.before(_commaKeyword_3_2_0);
     FormattingConfig.NoSpaceLocator _setNoSpace_3 = c.setNoSpace();
-    Keyword _commaKeyword_4_2_0 = ele.getCommaKeyword_4_2_0();
-    _setNoSpace_3.before(_commaKeyword_4_2_0);
+    Keyword _commaKeyword_5_2_0 = ele.getCommaKeyword_5_2_0();
+    _setNoSpace_3.before(_commaKeyword_5_2_0);
   }
   
   public void configureXImportDeclaration(final FormattingConfig c, final XtypeGrammarAccess.XImportDeclarationElements ele) {
@@ -186,11 +186,11 @@ public class SARLFormatter extends XbaseFormatter {
     Group _group = ele.getGroup();
     _setLinewrap.after(_group);
     FormattingConfig.LinewrapLocator _setLinewrap_1 = c.setLinewrap();
-    Keyword _rightCurlyBracketKeyword_5 = ele.getRightCurlyBracketKeyword_5();
-    _setLinewrap_1.before(_rightCurlyBracketKeyword_5);
-    Keyword _leftCurlyBracketKeyword_3 = ele.getLeftCurlyBracketKeyword_3();
-    Keyword _rightCurlyBracketKeyword_5_1 = ele.getRightCurlyBracketKeyword_5();
-    c.setIndentation(_leftCurlyBracketKeyword_3, _rightCurlyBracketKeyword_5_1);
+    Keyword _rightCurlyBracketKeyword_6 = ele.getRightCurlyBracketKeyword_6();
+    _setLinewrap_1.before(_rightCurlyBracketKeyword_6);
+    Keyword _leftCurlyBracketKeyword_4 = ele.getLeftCurlyBracketKeyword_4();
+    Keyword _rightCurlyBracketKeyword_6_1 = ele.getRightCurlyBracketKeyword_6();
+    c.setIndentation(_leftCurlyBracketKeyword_4, _rightCurlyBracketKeyword_6_1);
   }
   
   public void configureEvents(final FormattingConfig c, final SARLGrammarAccess.EventElements ele) {
@@ -198,11 +198,11 @@ public class SARLFormatter extends XbaseFormatter {
     Group _group = ele.getGroup();
     _setLinewrap.after(_group);
     FormattingConfig.LinewrapLocator _setLinewrap_1 = c.setLinewrap();
-    Keyword _rightCurlyBracketKeyword_3_2 = ele.getRightCurlyBracketKeyword_3_2();
-    _setLinewrap_1.before(_rightCurlyBracketKeyword_3_2);
-    Keyword _leftCurlyBracketKeyword_3_0 = ele.getLeftCurlyBracketKeyword_3_0();
-    Keyword _rightCurlyBracketKeyword_3_2_1 = ele.getRightCurlyBracketKeyword_3_2();
-    c.setIndentation(_leftCurlyBracketKeyword_3_0, _rightCurlyBracketKeyword_3_2_1);
+    Keyword _rightCurlyBracketKeyword_4_2 = ele.getRightCurlyBracketKeyword_4_2();
+    _setLinewrap_1.before(_rightCurlyBracketKeyword_4_2);
+    Keyword _leftCurlyBracketKeyword_4_0 = ele.getLeftCurlyBracketKeyword_4_0();
+    Keyword _rightCurlyBracketKeyword_4_2_1 = ele.getRightCurlyBracketKeyword_4_2();
+    c.setIndentation(_leftCurlyBracketKeyword_4_0, _rightCurlyBracketKeyword_4_2_1);
   }
   
   public void configureUses(final FormattingConfig c, final SARLGrammarAccess.CapacityUsesElements ele) {
@@ -210,8 +210,8 @@ public class SARLFormatter extends XbaseFormatter {
     Group _group = ele.getGroup();
     _setLinewrap.around(_group);
     FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
-    Keyword _commaKeyword_2_0 = ele.getCommaKeyword_2_0();
-    _setNoSpace.before(_commaKeyword_2_0);
+    Keyword _commaKeyword_3_0 = ele.getCommaKeyword_3_0();
+    _setNoSpace.before(_commaKeyword_3_0);
   }
   
   public void configureBehaviorUnit(final FormattingConfig c, final SARLGrammarAccess.BehaviorUnitElements ele) {
@@ -222,11 +222,11 @@ public class SARLFormatter extends XbaseFormatter {
     Group _group_1 = ele.getGroup();
     _setLinewrap_1.after(_group_1);
     FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
-    Keyword _leftSquareBracketKeyword_2_0 = ele.getLeftSquareBracketKeyword_2_0();
-    _setNoSpace.after(_leftSquareBracketKeyword_2_0);
+    Keyword _leftSquareBracketKeyword_3_0 = ele.getLeftSquareBracketKeyword_3_0();
+    _setNoSpace.after(_leftSquareBracketKeyword_3_0);
     FormattingConfig.NoSpaceLocator _setNoSpace_1 = c.setNoSpace();
-    Keyword _rightSquareBracketKeyword_2_2 = ele.getRightSquareBracketKeyword_2_2();
-    _setNoSpace_1.before(_rightSquareBracketKeyword_2_2);
+    Keyword _rightSquareBracketKeyword_3_2 = ele.getRightSquareBracketKeyword_3_2();
+    _setNoSpace_1.before(_rightSquareBracketKeyword_3_2);
   }
   
   public void configureXIfExpression(final FormattingConfig c, final XbaseGrammarAccess.XIfExpressionElements ele) {

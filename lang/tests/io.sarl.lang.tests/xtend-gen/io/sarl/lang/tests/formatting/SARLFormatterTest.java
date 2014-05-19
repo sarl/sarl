@@ -17,7 +17,7 @@ package io.sarl.lang.tests.formatting;
 
 import com.google.inject.Inject;
 import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.Model;
+import io.sarl.lang.sarl.SarlScript;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.formatting.INodeModelFormatter;
@@ -45,7 +45,7 @@ import org.junit.runner.RunWith;
 public class SARLFormatterTest {
   @Inject
   @Extension
-  private ParseHelper<Model> _parseHelper;
+  private ParseHelper<SarlScript> _parseHelper;
   
   @Inject
   @Extension
@@ -74,8 +74,6 @@ public class SARLFormatterTest {
     _builder.append("behavior B1 { } behavior B2 {}");
     _builder.newLine();
     StringConcatenation _builder_1 = new StringConcatenation();
-    _builder_1.newLine();
-    _builder_1.newLine();
     _builder_1.append("behavior B1 {");
     _builder_1.newLine();
     _builder_1.append("}");
@@ -130,8 +128,6 @@ public class SARLFormatterTest {
     _builder.append("behavior B2 {}");
     _builder.newLine();
     StringConcatenation _builder_1 = new StringConcatenation();
-    _builder_1.newLine();
-    _builder_1.newLine();
     _builder_1.append("behavior B1 {");
     _builder_1.newLine();
     _builder_1.append("\t");
@@ -314,7 +310,6 @@ public class SARLFormatterTest {
     _builder.append("}");
     _builder.newLine();
     StringConcatenation _builder_1 = new StringConcatenation();
-    _builder_1.newLine();
     _builder_1.append("skill S implements C {");
     _builder_1.newLine();
     _builder_1.newLine();
@@ -1071,7 +1066,6 @@ public class SARLFormatterTest {
     _builder.newLine();
     _builder.newLine();
     StringConcatenation _builder_1 = new StringConcatenation();
-    _builder_1.newLine();
     _builder_1.append("capacity ExternalContextAccess {");
     _builder_1.newLine();
     _builder_1.append("/**");
@@ -1216,7 +1210,7 @@ public class SARLFormatterTest {
   public void assertFormattedAs(final CharSequence input, final CharSequence expected) {
     try {
       String _string = expected.toString();
-      Model _parse = this._parseHelper.parse(input);
+      SarlScript _parse = this._parseHelper.parse(input);
       Resource _eResource = _parse.eResource();
       IParseResult _parseResult = ((XtextResource) _eResource).getParseResult();
       ICompositeNode _rootNode = _parseResult.getRootNode();

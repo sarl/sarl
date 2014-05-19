@@ -17,7 +17,7 @@ package io.sarl.lang.tests.parsing
 
 import com.google.inject.Inject
 import io.sarl.lang.SARLInjectorProvider
-import io.sarl.lang.sarl.Model
+import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.sarl.SarlPackage
 import org.eclipse.xtext.common.types.TypesPackage
 import org.eclipse.xtext.diagnostics.Diagnostic
@@ -40,7 +40,7 @@ import static org.junit.Assert.*
 @RunWith(XtextRunner)
 @InjectWith(SARLInjectorProvider)
 class VarDeclarationParsingTest {
-	@Inject extension ParseHelper<Model>
+	@Inject extension ParseHelper<SarlScript>
 	@Inject extension ValidationTestHelper
 
 	@Test
@@ -135,11 +135,11 @@ class VarDeclarationParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.agent,
+			SarlPackage::eINSTANCE.attribute,
 			Diagnostic::SYNTAX_DIAGNOSTIC,
 			"no viable alternative at input 'List'")
 		mas.assertError(
-			SarlPackage::eINSTANCE.agent,
+			SarlPackage::eINSTANCE.attribute,
 			Diagnostic::SYNTAX_DIAGNOSTIC,
 			"no viable alternative at input 'double'")
 	}

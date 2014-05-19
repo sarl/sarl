@@ -15,17 +15,17 @@
  */
 package io.sarl.lang.tests.bugs
 
-import org.eclipse.xtext.junit4.XtextRunner
-import org.junit.runner.RunWith
-import org.eclipse.xtext.junit4.InjectWith
-import io.sarl.lang.SARLInjectorProvider
 import com.google.inject.Inject
+import io.sarl.lang.SARLInjectorProvider
+import io.sarl.lang.sarl.SarlScript
+import org.eclipse.xtext.junit4.InjectWith
+import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
-import io.sarl.lang.sarl.Model
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
-import org.junit.Test
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper
 import org.junit.Assert
+import org.junit.Test
+import org.junit.runner.RunWith
 
 /**
  * @author $Author: srodriguez$
@@ -37,7 +37,7 @@ import org.junit.Assert
 @InjectWith(SARLInjectorProvider)
 class Bug23 {
 	
-	@Inject extension ParseHelper<Model>
+	@Inject extension ParseHelper<SarlScript>
 	@Inject extension ValidationTestHelper
     @Inject extension CompilationTestHelper
 	

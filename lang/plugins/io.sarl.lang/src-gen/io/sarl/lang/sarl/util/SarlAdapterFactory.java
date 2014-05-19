@@ -75,14 +75,64 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
     new SarlSwitch<Adapter>()
     {
       @Override
-      public Adapter caseModel(Model object)
+      public Adapter caseSarlScript(SarlScript object)
       {
-        return createModelAdapter();
+        return createSarlScriptAdapter();
       }
       @Override
-      public Adapter caseAbstractElement(AbstractElement object)
+      public Adapter caseTopElement(TopElement object)
       {
-        return createAbstractElementAdapter();
+        return createTopElementAdapter();
+      }
+      @Override
+      public Adapter caseNamedElement(NamedElement object)
+      {
+        return createNamedElementAdapter();
+      }
+      @Override
+      public Adapter caseFeature(Feature object)
+      {
+        return createFeatureAdapter();
+      }
+      @Override
+      public Adapter caseFeatureContainer(FeatureContainer object)
+      {
+        return createFeatureContainerAdapter();
+      }
+      @Override
+      public Adapter caseInheritingElement(InheritingElement object)
+      {
+        return createInheritingElementAdapter();
+      }
+      @Override
+      public Adapter caseImplementingElement(ImplementingElement object)
+      {
+        return createImplementingElementAdapter();
+      }
+      @Override
+      public Adapter caseEventFeature(EventFeature object)
+      {
+        return createEventFeatureAdapter();
+      }
+      @Override
+      public Adapter caseAgentFeature(AgentFeature object)
+      {
+        return createAgentFeatureAdapter();
+      }
+      @Override
+      public Adapter caseBehaviorFeature(BehaviorFeature object)
+      {
+        return createBehaviorFeatureAdapter();
+      }
+      @Override
+      public Adapter caseSkillFeature(SkillFeature object)
+      {
+        return createSkillFeatureAdapter();
+      }
+      @Override
+      public Adapter caseFormalParameter(FormalParameter object)
+      {
+        return createFormalParameterAdapter();
       }
       @Override
       public Adapter caseEvent(Event object)
@@ -105,19 +155,9 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
         return createBehaviorAdapter();
       }
       @Override
-      public Adapter caseEventFeature(EventFeature object)
+      public Adapter caseSkill(Skill object)
       {
-        return createEventFeatureAdapter();
-      }
-      @Override
-      public Adapter caseAgentFeature(AgentFeature object)
-      {
-        return createAgentFeatureAdapter();
-      }
-      @Override
-      public Adapter caseBehaviorFeature(BehaviorFeature object)
-      {
-        return createBehaviorFeatureAdapter();
+        return createSkillAdapter();
       }
       @Override
       public Adapter caseAttribute(Attribute object)
@@ -135,6 +175,16 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
         return createBehaviorUnitAdapter();
       }
       @Override
+      public Adapter caseRequiredCapacity(RequiredCapacity object)
+      {
+        return createRequiredCapacityAdapter();
+      }
+      @Override
+      public Adapter caseConstructor(Constructor object)
+      {
+        return createConstructorAdapter();
+      }
+      @Override
       public Adapter caseAction(Action object)
       {
         return createActionAdapter();
@@ -143,31 +193,6 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
       public Adapter caseActionSignature(ActionSignature object)
       {
         return createActionSignatureAdapter();
-      }
-      @Override
-      public Adapter caseParameter(Parameter object)
-      {
-        return createParameterAdapter();
-      }
-      @Override
-      public Adapter caseRequiredCapacity(RequiredCapacity object)
-      {
-        return createRequiredCapacityAdapter();
-      }
-      @Override
-      public Adapter caseSkill(Skill object)
-      {
-        return createSkillAdapter();
-      }
-      @Override
-      public Adapter caseSkillFeature(SkillFeature object)
-      {
-        return createSkillFeatureAdapter();
-      }
-      @Override
-      public Adapter caseConstructor(Constructor object)
-      {
-        return createConstructorAdapter();
       }
       @Override
       public Adapter defaultCase(EObject object)
@@ -192,31 +217,181 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 
 
   /**
-   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.Model <em>Model</em>}'.
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlScript <em>Script</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see io.sarl.lang.sarl.Model
+   * @see io.sarl.lang.sarl.SarlScript
    * @generated
    */
-  public Adapter createModelAdapter()
+  public Adapter createSarlScriptAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.AbstractElement <em>Abstract Element</em>}'.
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.TopElement <em>Top Element</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see io.sarl.lang.sarl.AbstractElement
+   * @see io.sarl.lang.sarl.TopElement
    * @generated
    */
-  public Adapter createAbstractElementAdapter()
+  public Adapter createTopElementAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.NamedElement <em>Named Element</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.NamedElement
+   * @generated
+   */
+  public Adapter createNamedElementAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.Feature <em>Feature</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.Feature
+   * @generated
+   */
+  public Adapter createFeatureAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.FeatureContainer <em>Feature Container</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.FeatureContainer
+   * @generated
+   */
+  public Adapter createFeatureContainerAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.InheritingElement <em>Inheriting Element</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.InheritingElement
+   * @generated
+   */
+  public Adapter createInheritingElementAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.ImplementingElement <em>Implementing Element</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.ImplementingElement
+   * @generated
+   */
+  public Adapter createImplementingElementAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.EventFeature <em>Event Feature</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.EventFeature
+   * @generated
+   */
+  public Adapter createEventFeatureAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.AgentFeature <em>Agent Feature</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.AgentFeature
+   * @generated
+   */
+  public Adapter createAgentFeatureAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.BehaviorFeature <em>Behavior Feature</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.BehaviorFeature
+   * @generated
+   */
+  public Adapter createBehaviorFeatureAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SkillFeature <em>Skill Feature</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.SkillFeature
+   * @generated
+   */
+  public Adapter createSkillFeatureAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.FormalParameter <em>Formal Parameter</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.FormalParameter
+   * @generated
+   */
+  public Adapter createFormalParameterAdapter()
   {
     return null;
   }
@@ -282,46 +457,16 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.EventFeature <em>Event Feature</em>}'.
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.Skill <em>Skill</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see io.sarl.lang.sarl.EventFeature
+   * @see io.sarl.lang.sarl.Skill
    * @generated
    */
-  public Adapter createEventFeatureAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.AgentFeature <em>Agent Feature</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see io.sarl.lang.sarl.AgentFeature
-   * @generated
-   */
-  public Adapter createAgentFeatureAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.BehaviorFeature <em>Behavior Feature</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see io.sarl.lang.sarl.BehaviorFeature
-   * @generated
-   */
-  public Adapter createBehaviorFeatureAdapter()
+  public Adapter createSkillAdapter()
   {
     return null;
   }
@@ -372,6 +517,36 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.RequiredCapacity <em>Required Capacity</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.RequiredCapacity
+   * @generated
+   */
+  public Adapter createRequiredCapacityAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.Constructor <em>Constructor</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.Constructor
+   * @generated
+   */
+  public Adapter createConstructorAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.Action <em>Action</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -397,81 +572,6 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createActionSignatureAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.Parameter <em>Parameter</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see io.sarl.lang.sarl.Parameter
-   * @generated
-   */
-  public Adapter createParameterAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.RequiredCapacity <em>Required Capacity</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see io.sarl.lang.sarl.RequiredCapacity
-   * @generated
-   */
-  public Adapter createRequiredCapacityAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.Skill <em>Skill</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see io.sarl.lang.sarl.Skill
-   * @generated
-   */
-  public Adapter createSkillAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SkillFeature <em>Skill Feature</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see io.sarl.lang.sarl.SkillFeature
-   * @generated
-   */
-  public Adapter createSkillFeatureAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.Constructor <em>Constructor</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see io.sarl.lang.sarl.Constructor
-   * @generated
-   */
-  public Adapter createConstructorAdapter()
   {
     return null;
   }

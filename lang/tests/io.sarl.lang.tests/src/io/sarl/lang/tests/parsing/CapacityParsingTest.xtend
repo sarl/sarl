@@ -19,7 +19,7 @@ import com.google.inject.Inject
 import io.sarl.lang.SARLInjectorProvider
 import io.sarl.lang.sarl.Agent
 import io.sarl.lang.sarl.Capacity
-import io.sarl.lang.sarl.Model
+import io.sarl.lang.sarl.SarlScript
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
@@ -39,11 +39,11 @@ import static org.junit.Assert.*
 @RunWith(XtextRunner)
 @InjectWith(SARLInjectorProvider)
 class CapacityParsingTest {
-	@Inject extension ParseHelper<Model>
+	@Inject extension ParseHelper<SarlScript>
 
 	@Inject extension ValidationTestHelper
 	
-	var Model mas
+	var SarlScript mas
 	var Iterable<Capacity> knownCapacities
 	
 	@Before

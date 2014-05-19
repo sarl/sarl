@@ -17,9 +17,9 @@ package io.sarl.lang.tests.parsing;
 
 import com.google.inject.Inject;
 import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.AbstractElement;
-import io.sarl.lang.sarl.Model;
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.TopElement;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -47,7 +47,7 @@ import org.junit.runner.RunWith;
 public class AgentParsingTest {
   @Inject
   @Extension
-  private ParseHelper<Model> _parseHelper;
+  private ParseHelper<SarlScript> _parseHelper;
   
   @Inject
   @Extension
@@ -63,9 +63,9 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("agent A2 {}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       this._validationTestHelper.assertNoErrors(mas);
-      EList<AbstractElement> _elements = mas.getElements();
+      EList<TopElement> _elements = mas.getElements();
       int _size = _elements.size();
       Assert.assertEquals(2, _size);
     } catch (Throwable _e) {
@@ -86,9 +86,9 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       this._validationTestHelper.assertNoErrors(mas);
-      EList<AbstractElement> _elements = mas.getElements();
+      EList<TopElement> _elements = mas.getElements();
       int _size = _elements.size();
       Assert.assertEquals(2, _size);
     } catch (Throwable _e) {
@@ -109,7 +109,7 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -130,7 +130,7 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -152,7 +152,7 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -171,9 +171,10 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _behaviorUnit = SarlPackage.eINSTANCE.getBehaviorUnit();
-      this._validationTestHelper.assertError(mas, _behaviorUnit, Diagnostic.LINKING_DIAGNOSTIC, 
+      this._validationTestHelper.assertError(mas, _behaviorUnit, 
+        Diagnostic.LINKING_DIAGNOSTIC, 
         "Couldn\'t resolve reference to Event \'E\'.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -196,7 +197,7 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
         Diagnostic.SYNTAX_DIAGNOSTIC, 
@@ -217,7 +218,7 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _capacityUses = SarlPackage.eINSTANCE.getCapacityUses();
       this._validationTestHelper.assertError(mas, _capacityUses, 
         Diagnostic.LINKING_DIAGNOSTIC, 
@@ -246,7 +247,7 @@ public class AgentParsingTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      final Model mas = this._parseHelper.parse(_builder);
+      final SarlScript mas = this._parseHelper.parse(_builder);
       this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);

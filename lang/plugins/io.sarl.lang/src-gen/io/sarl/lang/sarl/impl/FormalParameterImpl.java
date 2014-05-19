@@ -2,7 +2,7 @@
  */
 package io.sarl.lang.sarl.impl;
 
-import io.sarl.lang.sarl.Parameter;
+import io.sarl.lang.sarl.FormalParameter;
 import io.sarl.lang.sarl.SarlPackage;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -20,20 +20,20 @@ import org.eclipse.xtext.xbase.XExpression;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Parameter</b></em>'.
+ * An implementation of the model object '<em><b>Formal Parameter</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link io.sarl.lang.sarl.impl.ParameterImpl#getName <em>Name</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.impl.ParameterImpl#getParameterType <em>Parameter Type</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.impl.ParameterImpl#getDefaultValue <em>Default Value</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.FormalParameterImpl#getName <em>Name</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.FormalParameterImpl#getParameterType <em>Parameter Type</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.FormalParameterImpl#getDefaultValue <em>Default Value</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class ParameterImpl extends MinimalEObjectImpl.Container implements Parameter
+public class FormalParameterImpl extends MinimalEObjectImpl.Container implements FormalParameter
 {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -80,7 +80,7 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
    * <!-- end-user-doc -->
    * @generated
    */
-  protected ParameterImpl()
+  protected FormalParameterImpl()
   {
     super();
   }
@@ -93,7 +93,7 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
   @Override
   protected EClass eStaticClass()
   {
-    return SarlPackage.Literals.PARAMETER;
+    return SarlPackage.Literals.FORMAL_PARAMETER;
   }
 
   /**
@@ -116,7 +116,7 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
     String oldName = name;
     name = newName;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.PARAMETER__NAME, oldName, name));
+      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.FORMAL_PARAMETER__NAME, oldName, name));
   }
 
   /**
@@ -140,7 +140,7 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
     parameterType = newParameterType;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SarlPackage.PARAMETER__PARAMETER_TYPE, oldParameterType, newParameterType);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SarlPackage.FORMAL_PARAMETER__PARAMETER_TYPE, oldParameterType, newParameterType);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -157,14 +157,14 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
     {
       NotificationChain msgs = null;
       if (parameterType != null)
-        msgs = ((InternalEObject)parameterType).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SarlPackage.PARAMETER__PARAMETER_TYPE, null, msgs);
+        msgs = ((InternalEObject)parameterType).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SarlPackage.FORMAL_PARAMETER__PARAMETER_TYPE, null, msgs);
       if (newParameterType != null)
-        msgs = ((InternalEObject)newParameterType).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SarlPackage.PARAMETER__PARAMETER_TYPE, null, msgs);
+        msgs = ((InternalEObject)newParameterType).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SarlPackage.FORMAL_PARAMETER__PARAMETER_TYPE, null, msgs);
       msgs = basicSetParameterType(newParameterType, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.PARAMETER__PARAMETER_TYPE, newParameterType, newParameterType));
+      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.FORMAL_PARAMETER__PARAMETER_TYPE, newParameterType, newParameterType));
   }
 
   /**
@@ -188,7 +188,7 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
     defaultValue = newDefaultValue;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SarlPackage.PARAMETER__DEFAULT_VALUE, oldDefaultValue, newDefaultValue);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SarlPackage.FORMAL_PARAMETER__DEFAULT_VALUE, oldDefaultValue, newDefaultValue);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -205,14 +205,14 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
     {
       NotificationChain msgs = null;
       if (defaultValue != null)
-        msgs = ((InternalEObject)defaultValue).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SarlPackage.PARAMETER__DEFAULT_VALUE, null, msgs);
+        msgs = ((InternalEObject)defaultValue).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SarlPackage.FORMAL_PARAMETER__DEFAULT_VALUE, null, msgs);
       if (newDefaultValue != null)
-        msgs = ((InternalEObject)newDefaultValue).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SarlPackage.PARAMETER__DEFAULT_VALUE, null, msgs);
+        msgs = ((InternalEObject)newDefaultValue).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SarlPackage.FORMAL_PARAMETER__DEFAULT_VALUE, null, msgs);
       msgs = basicSetDefaultValue(newDefaultValue, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.PARAMETER__DEFAULT_VALUE, newDefaultValue, newDefaultValue));
+      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.FORMAL_PARAMETER__DEFAULT_VALUE, newDefaultValue, newDefaultValue));
   }
 
   /**
@@ -225,9 +225,9 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
   {
     switch (featureID)
     {
-      case SarlPackage.PARAMETER__PARAMETER_TYPE:
+      case SarlPackage.FORMAL_PARAMETER__PARAMETER_TYPE:
         return basicSetParameterType(null, msgs);
-      case SarlPackage.PARAMETER__DEFAULT_VALUE:
+      case SarlPackage.FORMAL_PARAMETER__DEFAULT_VALUE:
         return basicSetDefaultValue(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -243,11 +243,11 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
   {
     switch (featureID)
     {
-      case SarlPackage.PARAMETER__NAME:
+      case SarlPackage.FORMAL_PARAMETER__NAME:
         return getName();
-      case SarlPackage.PARAMETER__PARAMETER_TYPE:
+      case SarlPackage.FORMAL_PARAMETER__PARAMETER_TYPE:
         return getParameterType();
-      case SarlPackage.PARAMETER__DEFAULT_VALUE:
+      case SarlPackage.FORMAL_PARAMETER__DEFAULT_VALUE:
         return getDefaultValue();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -263,13 +263,13 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
   {
     switch (featureID)
     {
-      case SarlPackage.PARAMETER__NAME:
+      case SarlPackage.FORMAL_PARAMETER__NAME:
         setName((String)newValue);
         return;
-      case SarlPackage.PARAMETER__PARAMETER_TYPE:
+      case SarlPackage.FORMAL_PARAMETER__PARAMETER_TYPE:
         setParameterType((JvmTypeReference)newValue);
         return;
-      case SarlPackage.PARAMETER__DEFAULT_VALUE:
+      case SarlPackage.FORMAL_PARAMETER__DEFAULT_VALUE:
         setDefaultValue((XExpression)newValue);
         return;
     }
@@ -286,13 +286,13 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
   {
     switch (featureID)
     {
-      case SarlPackage.PARAMETER__NAME:
+      case SarlPackage.FORMAL_PARAMETER__NAME:
         setName(NAME_EDEFAULT);
         return;
-      case SarlPackage.PARAMETER__PARAMETER_TYPE:
+      case SarlPackage.FORMAL_PARAMETER__PARAMETER_TYPE:
         setParameterType((JvmTypeReference)null);
         return;
-      case SarlPackage.PARAMETER__DEFAULT_VALUE:
+      case SarlPackage.FORMAL_PARAMETER__DEFAULT_VALUE:
         setDefaultValue((XExpression)null);
         return;
     }
@@ -309,11 +309,11 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
   {
     switch (featureID)
     {
-      case SarlPackage.PARAMETER__NAME:
+      case SarlPackage.FORMAL_PARAMETER__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-      case SarlPackage.PARAMETER__PARAMETER_TYPE:
+      case SarlPackage.FORMAL_PARAMETER__PARAMETER_TYPE:
         return parameterType != null;
-      case SarlPackage.PARAMETER__DEFAULT_VALUE:
+      case SarlPackage.FORMAL_PARAMETER__DEFAULT_VALUE:
         return defaultValue != null;
     }
     return super.eIsSet(featureID);
@@ -336,4 +336,4 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
     return result.toString();
   }
 
-} //ParameterImpl
+} //FormalParameterImpl
