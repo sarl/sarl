@@ -23,11 +23,12 @@ public class SARLProjectNature implements IProjectNature {
 	 */
 	public static final String NATURE_ID = "io.sarl.eclipse.SARLProjectNature"; //$NON-NLS-1$
 	
+	private IProject project;
+	
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.resources.IProjectNature#configure()
 	 */
-	@Override
 	public void configure() throws CoreException {
 		// TODO Auto-generated method stub
 		
@@ -36,7 +37,6 @@ public class SARLProjectNature implements IProjectNature {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.resources.IProjectNature#deconfigure()
 	 */
-	@Override
 	public void deconfigure() throws CoreException {
 		// TODO Auto-generated method stub
 		
@@ -45,19 +45,15 @@ public class SARLProjectNature implements IProjectNature {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.resources.IProjectNature#getProject()
 	 */
-	@Override
-	public IProject getProject() {
-		// TODO Auto-generated method stub
-		return null;
+	public IProject getProject() {		
+		return this.project;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.resources.IProjectNature#setProject(org.eclipse.core.resources.IProject)
 	 */
-	@Override
-	public void setProject(IProject arg0) {
-		// TODO Auto-generated method stub
-		
+	public void setProject(IProject iproject) {		
+		this.project = iproject;
 	}
 
 }
