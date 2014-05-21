@@ -45,7 +45,7 @@ class SARLAdditionalSignatureComparator implements Comparator<List<String>> {
       _and = false;
     } else {
       boolean _hasNext_1 = i2.hasNext();
-      _and = (_hasNext && _hasNext_1);
+      _and = _hasNext_1;
     }
     boolean _while = _and;
     while (_while) {
@@ -64,7 +64,7 @@ class SARLAdditionalSignatureComparator implements Comparator<List<String>> {
         _and_1 = false;
       } else {
         boolean _hasNext_3 = i2.hasNext();
-        _and_1 = (_hasNext_2 && _hasNext_3);
+        _and_1 = _hasNext_3;
       }
       _while = _and_1;
     }

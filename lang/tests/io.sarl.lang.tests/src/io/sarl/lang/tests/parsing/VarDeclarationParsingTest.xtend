@@ -374,5 +374,5 @@ class VarDeclarationParsingTest {
 		mas.assertNoErrors
 		assertEquals(1, mas.elements.size)
 	}
-
+	
 }
