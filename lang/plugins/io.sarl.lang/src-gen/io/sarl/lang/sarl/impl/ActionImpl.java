@@ -3,7 +3,7 @@
 package io.sarl.lang.sarl.impl;
 
 import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.Feature;
+import io.sarl.lang.sarl.ParameterizedFeature;
 import io.sarl.lang.sarl.SarlPackage;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -40,7 +40,7 @@ public class ActionImpl extends FeatureImpl implements Action
    * @generated
    * @ordered
    */
-  protected Feature signature;
+  protected ParameterizedFeature signature;
 
   /**
    * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
@@ -78,7 +78,7 @@ public class ActionImpl extends FeatureImpl implements Action
    * <!-- end-user-doc -->
    * @generated
    */
-  public Feature getSignature()
+  public ParameterizedFeature getSignature()
   {
     return signature;
   }
@@ -88,9 +88,9 @@ public class ActionImpl extends FeatureImpl implements Action
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetSignature(Feature newSignature, NotificationChain msgs)
+  public NotificationChain basicSetSignature(ParameterizedFeature newSignature, NotificationChain msgs)
   {
-    Feature oldSignature = signature;
+    ParameterizedFeature oldSignature = signature;
     signature = newSignature;
     if (eNotificationRequired())
     {
@@ -105,7 +105,7 @@ public class ActionImpl extends FeatureImpl implements Action
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setSignature(Feature newSignature)
+  public void setSignature(ParameterizedFeature newSignature)
   {
     if (newSignature != signature)
     {
@@ -216,7 +216,7 @@ public class ActionImpl extends FeatureImpl implements Action
     switch (featureID)
     {
       case SarlPackage.ACTION__SIGNATURE:
-        setSignature((Feature)newValue);
+        setSignature((ParameterizedFeature)newValue);
         return;
       case SarlPackage.ACTION__BODY:
         setBody((XExpression)newValue);
@@ -236,7 +236,7 @@ public class ActionImpl extends FeatureImpl implements Action
     switch (featureID)
     {
       case SarlPackage.ACTION__SIGNATURE:
-        setSignature((Feature)null);
+        setSignature((ParameterizedFeature)null);
         return;
       case SarlPackage.ACTION__BODY:
         setBody((XExpression)null);

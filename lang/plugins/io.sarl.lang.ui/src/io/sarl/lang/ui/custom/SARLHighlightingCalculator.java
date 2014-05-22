@@ -45,7 +45,7 @@ public class SARLHighlightingCalculator extends XbaseHighlightingCalculator {
 	@Override
 	protected Map<String, String> initializeHighlightedIdentifiers() {
 		Map<String, String> result = super.initializeHighlightedIdentifiers();
-		result.put(SARLKeywords.KEYWORD_OCCURRENCE, DefaultHighlightingConfiguration.KEYWORD_ID);
+		result.put(SARLKeywords.OCCURRENCE, DefaultHighlightingConfiguration.KEYWORD_ID);
 		return result;
 	}
 }

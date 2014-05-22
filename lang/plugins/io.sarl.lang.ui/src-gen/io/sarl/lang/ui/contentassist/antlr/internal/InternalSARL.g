@@ -151,6 +151,8 @@ finally {
 
 
 
+
+
 // Entry rule entryRuleEvent
 entryRuleEvent 
 :
@@ -4150,6 +4152,7 @@ finally {
 
 
 
+
 rule__Event__Group__0
     @init {
 		int stackSize = keepStackSize();
@@ -4636,9 +4639,9 @@ rule__Capacity__Group__5__Impl
     }
 :
 (
-{ before(grammarAccess.getCapacityAccess().getActionsAssignment_5()); }
-(rule__Capacity__ActionsAssignment_5)*
-{ after(grammarAccess.getCapacityAccess().getActionsAssignment_5()); }
+{ before(grammarAccess.getCapacityAccess().getFeaturesAssignment_5()); }
+(rule__Capacity__FeaturesAssignment_5)*
+{ after(grammarAccess.getCapacityAccess().getFeaturesAssignment_5()); }
 )
 
 ;
@@ -20036,6 +20039,8 @@ finally {
 
 
 
+
+
 rule__Event__NameAssignment_2
     @init {
 		int stackSize = keepStackSize();
@@ -20138,14 +20143,14 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Capacity__ActionsAssignment_5
+rule__Capacity__FeaturesAssignment_5
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getCapacityAccess().getActionsActionSignatureParserRuleCall_5_0()); }
-	ruleActionSignature{ after(grammarAccess.getCapacityAccess().getActionsActionSignatureParserRuleCall_5_0()); }
+{ before(grammarAccess.getCapacityAccess().getFeaturesActionSignatureParserRuleCall_5_0()); }
+	ruleActionSignature{ after(grammarAccess.getCapacityAccess().getFeaturesActionSignatureParserRuleCall_5_0()); }
 )
 
 ;

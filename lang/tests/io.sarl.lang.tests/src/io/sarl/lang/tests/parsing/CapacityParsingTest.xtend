@@ -19,7 +19,9 @@ import com.google.inject.Inject
 import io.sarl.lang.SARLInjectorProvider
 import io.sarl.lang.sarl.Agent
 import io.sarl.lang.sarl.Capacity
+import io.sarl.lang.sarl.SarlPackage
 import io.sarl.lang.sarl.SarlScript
+import org.eclipse.xtext.diagnostics.Diagnostic
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
@@ -29,9 +31,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
+import io.sarl.lang.validation.IssueCodes
 
 /**
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -131,5 +135,48 @@ class CapacityParsingTest {
 
 	}
 
+	@Test
+	def void testCapacityDirectImplementation() {
+		val mas = '''
+			import io.sarl.lang.sarl.Capacity
+			skill S1 implements Capacity {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.skill,
+			Diagnostic::LINKING_DIAGNOSTIC,
+			"Couldn't resolve reference to InheritingElement 'Capacity'")
+	}
+
+	@Test
+	def void multipleActionDefinitionInCapacity() {
+		val mas = '''
+			capacity C1 {
+				def myaction(a : int, b : int)
+				def myaction(a : int)
+				def myaction(a : int)
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.actionSignature,
+			IssueCodes::ACTION_COLLISION,
+			"Cannot define many times the same feature in 'C1': myaction(a : int)")
+	}
+
+	@Test
+	def void multipleActionDefinitionInSkill() {
+		val mas = '''
+			capacity C1 { }
+			skill S1 implements C1 {
+				def myaction(a : int, b : int) { }
+				def myaction(a : int) { }
+				def myaction(a : int) { }
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.action,
+			IssueCodes::ACTION_COLLISION,
+			"Cannot define many times the same feature in 'S1': myaction(a : int)")
+	}
 
 }

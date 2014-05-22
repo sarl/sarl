@@ -30,7 +30,7 @@ import org.junit.runner.RunWith
 import static org.junit.Assert.*
 
 /**
- * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -326,6 +326,54 @@ class VarArgsParsingTest {
 			SarlPackage::eINSTANCE.constructor,
 			Diagnostic::SYNTAX_DIAGNOSTIC,
 			"mismatched input ',' expecting ')'")
+	}
+
+	@Test
+	def void multipleActionDefinitionsInBehavior_0() {
+		val mas = '''
+			behavior B1 {
+				def myaction(arg0 : int, arg1 : int...) {
+					System.out.println("invalid")
+				}
+				def myaction {
+					System.out.println("invalid")
+				}
+			}
+		'''.parse
+		mas.assertNoErrors
+	}
+
+	@Test
+	def void multipleActionDefinitionsInBehavior_1() {
+		val mas = '''
+			behavior B1 {
+				def myaction(arg0 : int, arg1 : int...) {
+					System.out.println("invalid")
+				}
+				def myaction(arg0 : int) {
+					System.out.println("invalid")
+				}
+			}
+		'''.parse
+		mas.assertNoErrors
+	}
+
+	@Test
+	def void multipleActionDefinitionsInBehavior_2() {
+		val mas = '''
+			behavior B1 {
+				def myaction(arg0 : int, arg1 : int...) {
+					System.out.println("invalid")
+				}
+				def myaction(arg0 : int, arg1 : int) {
+					System.out.println("invalid")
+				}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.action,
+			io.sarl.lang.validation.IssueCodes::ACTION_COLLISION,
+			"Cannot define many times the same feature in 'B1': myaction(arg0 : int, arg1 : int)")
 	}
 
 }

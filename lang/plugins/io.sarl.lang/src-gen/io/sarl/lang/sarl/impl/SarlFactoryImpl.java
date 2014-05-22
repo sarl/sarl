@@ -75,6 +75,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
       case SarlPackage.AGENT_FEATURE: return createAgentFeature();
       case SarlPackage.BEHAVIOR_FEATURE: return createBehaviorFeature();
       case SarlPackage.SKILL_FEATURE: return createSkillFeature();
+      case SarlPackage.PARAMETERIZED_FEATURE: return createParameterizedFeature();
       case SarlPackage.FORMAL_PARAMETER: return createFormalParameter();
       case SarlPackage.EVENT: return createEvent();
       case SarlPackage.CAPACITY: return createCapacity();
@@ -212,6 +213,17 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
   {
     SkillFeatureImpl skillFeature = new SkillFeatureImpl();
     return skillFeature;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ParameterizedFeature createParameterizedFeature()
+  {
+    ParameterizedFeatureImpl parameterizedFeature = new ParameterizedFeatureImpl();
+    return parameterizedFeature;
   }
 
   /**

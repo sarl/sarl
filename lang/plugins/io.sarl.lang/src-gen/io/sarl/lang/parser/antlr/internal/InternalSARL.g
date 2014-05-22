@@ -251,6 +251,8 @@ ruleFeature returns [EObject current=null]
 
 
 
+
+
 // Entry rule entryRuleEvent
 entryRuleEvent returns [EObject current=null] 
 	:
@@ -432,16 +434,16 @@ ruleCapacity returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getCapacityAccess().getActionsActionSignatureParserRuleCall_5_0()); 
+	        newCompositeNode(grammarAccess.getCapacityAccess().getFeaturesActionSignatureParserRuleCall_5_0()); 
 	    }
-		lv_actions_8_0=ruleActionSignature		{
+		lv_features_8_0=ruleActionSignature		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getCapacityRule());
 	        }
        		add(
        			$current, 
-       			"actions",
-        		lv_actions_8_0, 
+       			"features",
+        		lv_features_8_0, 
         		"ActionSignature");
 	        afterParserOrEnumRuleCall();
 	    }

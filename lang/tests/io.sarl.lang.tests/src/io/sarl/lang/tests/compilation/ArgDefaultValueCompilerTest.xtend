@@ -58,7 +58,7 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg);
 			  }
 			  
-			  public void myaction() {
+			  public final void myaction() {
 			    myaction(4);
 			  }
 			}
@@ -89,7 +89,7 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg);
 			  }
 			  
-			  public void myaction() {
+			  public final void myaction() {
 			    myaction(4.5);
 			  }
 			}
@@ -120,7 +120,7 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg);
 			  }
 			  
-			  public void myaction() {
+			  public final void myaction() {
 			    myaction(true);
 			  }
 			}
@@ -151,7 +151,7 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg);
 			  }
 			  
-			  public void myaction() {
+			  public final void myaction() {
 			    myaction(54);
 			  }
 			}
@@ -182,7 +182,7 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg);
 			  }
 			  
-			  public void myaction() {
+			  public final void myaction() {
 			    myaction(4.5);
 			  }
 			}
@@ -213,7 +213,7 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg);
 			  }
 			  
-			  public void myaction() {
+			  public final void myaction() {
 			    myaction(450);
 			  }
 			}
@@ -244,7 +244,7 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(((int) arg));
 			  }
 			  
-			  public void myaction() {
+			  public final void myaction() {
 			    myaction(450);
 			  }
 			}
@@ -275,7 +275,7 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg);
 			  }
 			  
-			  public void myaction() {
+			  public final void myaction() {
 			    myaction("abcd");
 			  }
 			}
@@ -306,7 +306,7 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg);
 			  }
 			  
-			  public void myaction() {
+			  public final void myaction() {
 			    myaction('d');
 			  }
 			}
@@ -337,7 +337,7 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg0);
 			  }
 			  
-			  public void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {
+			  public final void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {
 			    myaction(4, arg1, arg2, arg3, arg4);
 			  }
 			}
@@ -368,7 +368,7 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg0);
 			  }
 			  
-			  public void myaction(final int arg0, final int arg2, final int arg3, final String arg4) {
+			  public final void myaction(final int arg0, final int arg2, final int arg3, final String arg4) {
 			    myaction(arg0, "abc", arg2, arg3, arg4);
 			  }
 			}
@@ -399,7 +399,7 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg0);
 			  }
 			  
-			  public void myaction(final int arg0, final String arg1, final int arg3, final String arg4) {
+			  public final void myaction(final int arg0, final String arg1, final int arg3, final String arg4) {
 			    myaction(arg0, arg1, 18, arg3, arg4);
 			  }
 			}
@@ -430,7 +430,7 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg0);
 			  }
 			  
-			  public void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {
+			  public final void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {
 			    myaction(arg0, arg1, arg2, 34, arg4);
 			  }
 			}
@@ -461,7 +461,7 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg0);
 			  }
 			  
-			  public void myaction(final int arg0, final String arg1, final int arg2, final int arg3) {
+			  public final void myaction(final int arg0, final String arg1, final int arg2, final int arg3) {
 			    myaction(arg0, arg1, arg2, arg3, "xyz");
 			  }
 			}
@@ -492,15 +492,15 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg0);
 			  }
 			  
-			  public void myaction(final String arg1, final int arg2, final String arg4) {
+			  public final void myaction(final String arg1, final int arg2, final String arg4) {
 			    myaction(4, arg1, arg2, 56, arg4);
 			  }
 			  
-			  public void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {
+			  public final void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {
 			    myaction(arg0, arg1, arg2, 56, arg4);
 			  }
 			  
-			  public void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {
+			  public final void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {
 			    myaction(4, arg1, arg2, arg3, arg4);
 			  }
 			}
@@ -531,7 +531,7 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg0);
 			  }
 			  
-			  public void myaction(final int arg0, final int... arg2) {
+			  public final void myaction(final int arg0, final int... arg2) {
 			    myaction(arg0, 45, arg2);
 			  }
 			}
@@ -562,7 +562,7 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg0);
 			  }
 			  
-			  public void myaction(final int arg1, final int... arg2) {
+			  public final void myaction(final int arg1, final int... arg2) {
 			    myaction(45, arg1, arg2);
 			  }
 			}
@@ -593,11 +593,11 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg0);
 			  }
 			  
-			  public void myaction(final int... arg2) {
+			  public final void myaction(final int... arg2) {
 			    myaction(45, 56, arg2);
 			  }
 			  
-			  public void myaction(final int arg0, final int... arg2) {
+			  public final void myaction(final int arg0, final int... arg2) {
 			    myaction(arg0, 56, arg2);
 			  }
 			}
@@ -628,19 +628,19 @@ class ArgDefaultValueCompilerTest {
 			    System.out.println(arg0);
 			  }
 			  
-			  public void myaction() {
+			  public final void myaction() {
 			    myaction(45, 56, 78, 14);
 			  }
 			  
-			  public void myaction(final int arg0) {
+			  public final void myaction(final int arg0) {
 			    myaction(arg0, 56, 78, 14);
 			  }
 			  
-			  public void myaction(final int arg0, final int arg1) {
+			  public final void myaction(final int arg0, final int arg1) {
 			    myaction(arg0, arg1, 78, 14);
 			  }
 			  
-			  public void myaction(final int arg0, final int arg1, final int arg2) {
+			  public final void myaction(final int arg0, final int arg1, final int arg2) {
 			    myaction(arg0, arg1, arg2, 14);
 			  }
 			}

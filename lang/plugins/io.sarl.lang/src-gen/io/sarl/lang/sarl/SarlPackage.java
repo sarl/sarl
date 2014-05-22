@@ -383,6 +383,43 @@ public interface SarlPackage extends EPackage
   int SKILL_FEATURE_FEATURE_COUNT = 0;
 
   /**
+   * The meta object id for the '{@link io.sarl.lang.sarl.impl.ParameterizedFeatureImpl <em>Parameterized Feature</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see io.sarl.lang.sarl.impl.ParameterizedFeatureImpl
+   * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getParameterizedFeature()
+   * @generated
+   */
+  int PARAMETERIZED_FEATURE = 11;
+
+  /**
+   * The feature id for the '<em><b>Params</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PARAMETERIZED_FEATURE__PARAMS = FEATURE_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Varargs</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PARAMETERIZED_FEATURE__VARARGS = FEATURE_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Parameterized Feature</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PARAMETERIZED_FEATURE_FEATURE_COUNT = FEATURE_FEATURE_COUNT + 2;
+
+  /**
    * The meta object id for the '{@link io.sarl.lang.sarl.impl.FormalParameterImpl <em>Formal Parameter</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -390,7 +427,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getFormalParameter()
    * @generated
    */
-  int FORMAL_PARAMETER = 11;
+  int FORMAL_PARAMETER = 12;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -436,7 +473,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getEvent()
    * @generated
    */
-  int EVENT = 12;
+  int EVENT = 13;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -482,7 +519,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getCapacity()
    * @generated
    */
-  int CAPACITY = 13;
+  int CAPACITY = 14;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -512,22 +549,13 @@ public interface SarlPackage extends EPackage
   int CAPACITY__SUPER_TYPES = INHERITING_ELEMENT__SUPER_TYPES;
 
   /**
-   * The feature id for the '<em><b>Actions</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CAPACITY__ACTIONS = INHERITING_ELEMENT_FEATURE_COUNT + 0;
-
-  /**
    * The number of structural features of the '<em>Capacity</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CAPACITY_FEATURE_COUNT = INHERITING_ELEMENT_FEATURE_COUNT + 1;
+  int CAPACITY_FEATURE_COUNT = INHERITING_ELEMENT_FEATURE_COUNT + 0;
 
   /**
    * The meta object id for the '{@link io.sarl.lang.sarl.impl.AgentImpl <em>Agent</em>}' class.
@@ -537,7 +565,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getAgent()
    * @generated
    */
-  int AGENT = 14;
+  int AGENT = 15;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -583,7 +611,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getBehavior()
    * @generated
    */
-  int BEHAVIOR = 15;
+  int BEHAVIOR = 16;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -629,7 +657,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSkill()
    * @generated
    */
-  int SKILL = 16;
+  int SKILL = 17;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -684,7 +712,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getAttribute()
    * @generated
    */
-  int ATTRIBUTE = 17;
+  int ATTRIBUTE = 18;
 
   /**
    * The feature id for the '<em><b>Writeable</b></em>' attribute.
@@ -739,7 +767,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getCapacityUses()
    * @generated
    */
-  int CAPACITY_USES = 18;
+  int CAPACITY_USES = 19;
 
   /**
    * The feature id for the '<em><b>Capacities Used</b></em>' reference list.
@@ -767,7 +795,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getBehaviorUnit()
    * @generated
    */
-  int BEHAVIOR_UNIT = 19;
+  int BEHAVIOR_UNIT = 20;
 
   /**
    * The feature id for the '<em><b>Event</b></em>' reference.
@@ -813,7 +841,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getRequiredCapacity()
    * @generated
    */
-  int REQUIRED_CAPACITY = 20;
+  int REQUIRED_CAPACITY = 21;
 
   /**
    * The feature id for the '<em><b>Required Capacities</b></em>' reference list.
@@ -841,7 +869,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getConstructor()
    * @generated
    */
-  int CONSTRUCTOR = 21;
+  int CONSTRUCTOR = 22;
 
   /**
    * The feature id for the '<em><b>Params</b></em>' containment reference list.
@@ -850,7 +878,7 @@ public interface SarlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONSTRUCTOR__PARAMS = FEATURE_FEATURE_COUNT + 0;
+  int CONSTRUCTOR__PARAMS = PARAMETERIZED_FEATURE__PARAMS;
 
   /**
    * The feature id for the '<em><b>Varargs</b></em>' attribute.
@@ -859,7 +887,7 @@ public interface SarlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONSTRUCTOR__VARARGS = FEATURE_FEATURE_COUNT + 1;
+  int CONSTRUCTOR__VARARGS = PARAMETERIZED_FEATURE__VARARGS;
 
   /**
    * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -868,7 +896,7 @@ public interface SarlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONSTRUCTOR__BODY = FEATURE_FEATURE_COUNT + 2;
+  int CONSTRUCTOR__BODY = PARAMETERIZED_FEATURE_FEATURE_COUNT + 0;
 
   /**
    * The number of structural features of the '<em>Constructor</em>' class.
@@ -877,7 +905,7 @@ public interface SarlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONSTRUCTOR_FEATURE_COUNT = FEATURE_FEATURE_COUNT + 3;
+  int CONSTRUCTOR_FEATURE_COUNT = PARAMETERIZED_FEATURE_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link io.sarl.lang.sarl.impl.ActionImpl <em>Action</em>}' class.
@@ -887,7 +915,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getAction()
    * @generated
    */
-  int ACTION = 22;
+  int ACTION = 23;
 
   /**
    * The feature id for the '<em><b>Signature</b></em>' containment reference.
@@ -924,16 +952,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getActionSignature()
    * @generated
    */
-  int ACTION_SIGNATURE = 23;
-
-  /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ACTION_SIGNATURE__NAME = FEATURE_FEATURE_COUNT + 0;
+  int ACTION_SIGNATURE = 24;
 
   /**
    * The feature id for the '<em><b>Params</b></em>' containment reference list.
@@ -942,7 +961,7 @@ public interface SarlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ACTION_SIGNATURE__PARAMS = FEATURE_FEATURE_COUNT + 1;
+  int ACTION_SIGNATURE__PARAMS = PARAMETERIZED_FEATURE__PARAMS;
 
   /**
    * The feature id for the '<em><b>Varargs</b></em>' attribute.
@@ -951,7 +970,16 @@ public interface SarlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ACTION_SIGNATURE__VARARGS = FEATURE_FEATURE_COUNT + 2;
+  int ACTION_SIGNATURE__VARARGS = PARAMETERIZED_FEATURE__VARARGS;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ACTION_SIGNATURE__NAME = PARAMETERIZED_FEATURE_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -960,7 +988,7 @@ public interface SarlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ACTION_SIGNATURE__TYPE = FEATURE_FEATURE_COUNT + 3;
+  int ACTION_SIGNATURE__TYPE = PARAMETERIZED_FEATURE_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Fired Events</b></em>' reference list.
@@ -969,7 +997,7 @@ public interface SarlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ACTION_SIGNATURE__FIRED_EVENTS = FEATURE_FEATURE_COUNT + 4;
+  int ACTION_SIGNATURE__FIRED_EVENTS = PARAMETERIZED_FEATURE_FEATURE_COUNT + 2;
 
   /**
    * The number of structural features of the '<em>Action Signature</em>' class.
@@ -978,7 +1006,7 @@ public interface SarlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ACTION_SIGNATURE_FEATURE_COUNT = FEATURE_FEATURE_COUNT + 5;
+  int ACTION_SIGNATURE_FEATURE_COUNT = PARAMETERIZED_FEATURE_FEATURE_COUNT + 3;
 
 
   /**
@@ -1169,6 +1197,38 @@ public interface SarlPackage extends EPackage
   EClass getSkillFeature();
 
   /**
+   * Returns the meta object for class '{@link io.sarl.lang.sarl.ParameterizedFeature <em>Parameterized Feature</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Parameterized Feature</em>'.
+   * @see io.sarl.lang.sarl.ParameterizedFeature
+   * @generated
+   */
+  EClass getParameterizedFeature();
+
+  /**
+   * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.ParameterizedFeature#getParams <em>Params</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Params</em>'.
+   * @see io.sarl.lang.sarl.ParameterizedFeature#getParams()
+   * @see #getParameterizedFeature()
+   * @generated
+   */
+  EReference getParameterizedFeature_Params();
+
+  /**
+   * Returns the meta object for the attribute '{@link io.sarl.lang.sarl.ParameterizedFeature#isVarargs <em>Varargs</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Varargs</em>'.
+   * @see io.sarl.lang.sarl.ParameterizedFeature#isVarargs()
+   * @see #getParameterizedFeature()
+   * @generated
+   */
+  EAttribute getParameterizedFeature_Varargs();
+
+  /**
    * Returns the meta object for class '{@link io.sarl.lang.sarl.FormalParameter <em>Formal Parameter</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1230,17 +1290,6 @@ public interface SarlPackage extends EPackage
    * @generated
    */
   EClass getCapacity();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.Capacity#getActions <em>Actions</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Actions</em>'.
-   * @see io.sarl.lang.sarl.Capacity#getActions()
-   * @see #getCapacity()
-   * @generated
-   */
-  EReference getCapacity_Actions();
 
   /**
    * Returns the meta object for class '{@link io.sarl.lang.sarl.Agent <em>Agent</em>}'.
@@ -1422,28 +1471,6 @@ public interface SarlPackage extends EPackage
   EClass getConstructor();
 
   /**
-   * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.Constructor#getParams <em>Params</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Params</em>'.
-   * @see io.sarl.lang.sarl.Constructor#getParams()
-   * @see #getConstructor()
-   * @generated
-   */
-  EReference getConstructor_Params();
-
-  /**
-   * Returns the meta object for the attribute '{@link io.sarl.lang.sarl.Constructor#isVarargs <em>Varargs</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Varargs</em>'.
-   * @see io.sarl.lang.sarl.Constructor#isVarargs()
-   * @see #getConstructor()
-   * @generated
-   */
-  EAttribute getConstructor_Varargs();
-
-  /**
    * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.Constructor#getBody <em>Body</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1506,28 +1533,6 @@ public interface SarlPackage extends EPackage
    * @generated
    */
   EAttribute getActionSignature_Name();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.ActionSignature#getParams <em>Params</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Params</em>'.
-   * @see io.sarl.lang.sarl.ActionSignature#getParams()
-   * @see #getActionSignature()
-   * @generated
-   */
-  EReference getActionSignature_Params();
-
-  /**
-   * Returns the meta object for the attribute '{@link io.sarl.lang.sarl.ActionSignature#isVarargs <em>Varargs</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Varargs</em>'.
-   * @see io.sarl.lang.sarl.ActionSignature#isVarargs()
-   * @see #getActionSignature()
-   * @generated
-   */
-  EAttribute getActionSignature_Varargs();
 
   /**
    * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.ActionSignature#getType <em>Type</em>}'.
@@ -1741,6 +1746,32 @@ public interface SarlPackage extends EPackage
     EClass SKILL_FEATURE = eINSTANCE.getSkillFeature();
 
     /**
+     * The meta object literal for the '{@link io.sarl.lang.sarl.impl.ParameterizedFeatureImpl <em>Parameterized Feature</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see io.sarl.lang.sarl.impl.ParameterizedFeatureImpl
+     * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getParameterizedFeature()
+     * @generated
+     */
+    EClass PARAMETERIZED_FEATURE = eINSTANCE.getParameterizedFeature();
+
+    /**
+     * The meta object literal for the '<em><b>Params</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PARAMETERIZED_FEATURE__PARAMS = eINSTANCE.getParameterizedFeature_Params();
+
+    /**
+     * The meta object literal for the '<em><b>Varargs</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute PARAMETERIZED_FEATURE__VARARGS = eINSTANCE.getParameterizedFeature_Varargs();
+
+    /**
      * The meta object literal for the '{@link io.sarl.lang.sarl.impl.FormalParameterImpl <em>Formal Parameter</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1793,14 +1824,6 @@ public interface SarlPackage extends EPackage
      * @generated
      */
     EClass CAPACITY = eINSTANCE.getCapacity();
-
-    /**
-     * The meta object literal for the '<em><b>Actions</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference CAPACITY__ACTIONS = eINSTANCE.getCapacity_Actions();
 
     /**
      * The meta object literal for the '{@link io.sarl.lang.sarl.impl.AgentImpl <em>Agent</em>}' class.
@@ -1955,22 +1978,6 @@ public interface SarlPackage extends EPackage
     EClass CONSTRUCTOR = eINSTANCE.getConstructor();
 
     /**
-     * The meta object literal for the '<em><b>Params</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference CONSTRUCTOR__PARAMS = eINSTANCE.getConstructor_Params();
-
-    /**
-     * The meta object literal for the '<em><b>Varargs</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute CONSTRUCTOR__VARARGS = eINSTANCE.getConstructor_Varargs();
-
-    /**
      * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2021,22 +2028,6 @@ public interface SarlPackage extends EPackage
      * @generated
      */
     EAttribute ACTION_SIGNATURE__NAME = eINSTANCE.getActionSignature_Name();
-
-    /**
-     * The meta object literal for the '<em><b>Params</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference ACTION_SIGNATURE__PARAMS = eINSTANCE.getActionSignature_Params();
-
-    /**
-     * The meta object literal for the '<em><b>Varargs</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute ACTION_SIGNATURE__VARARGS = eINSTANCE.getActionSignature_Varargs();
 
     /**
      * The meta object literal for the '<em><b>Type</b></em>' containment reference feature.

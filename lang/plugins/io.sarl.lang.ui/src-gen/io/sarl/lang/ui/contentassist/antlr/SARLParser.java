@@ -83,6 +83,7 @@ public class SARLParser extends AbstractContentAssistParser {
 					put(grammarAccess.getSarlScriptAccess().getGroup(), "rule__SarlScript__Group__0");
 					put(grammarAccess.getSarlScriptAccess().getGroup_0(), "rule__SarlScript__Group_0__0");
 					put(grammarAccess.getFeatureContainerAccess().getGroup(), "rule__FeatureContainer__Group__0");
+					put(grammarAccess.getParameterizedFeatureAccess().getGroup(), "rule__ParameterizedFeature__Group__0");
 					put(grammarAccess.getInheritingElementAccess().getGroup(), "rule__InheritingElement__Group__0");
 					put(grammarAccess.getImplementingElementAccess().getGroup(), "rule__ImplementingElement__Group__0");
 					put(grammarAccess.getEventAccess().getGroup(), "rule__Event__Group__0");
@@ -281,6 +282,8 @@ public class SARLParser extends AbstractContentAssistParser {
 					put(grammarAccess.getSarlScriptAccess().getElementsAssignment_2(), "rule__SarlScript__ElementsAssignment_2");
 					put(grammarAccess.getNamedElementAccess().getNameAssignment(), "rule__NamedElement__NameAssignment");
 					put(grammarAccess.getFeatureContainerAccess().getFeaturesAssignment_1(), "rule__FeatureContainer__FeaturesAssignment_1");
+					put(grammarAccess.getParameterizedFeatureAccess().getParamsAssignment_1(), "rule__ParameterizedFeature__ParamsAssignment_1");
+					put(grammarAccess.getParameterizedFeatureAccess().getVarargsAssignment_2(), "rule__ParameterizedFeature__VarargsAssignment_2");
 					put(grammarAccess.getInheritingElementAccess().getSuperTypesAssignment_1(), "rule__InheritingElement__SuperTypesAssignment_1");
 					put(grammarAccess.getImplementingElementAccess().getImplementedTypesAssignment_1(), "rule__ImplementingElement__ImplementedTypesAssignment_1");
 					put(grammarAccess.getEventAccess().getNameAssignment_2(), "rule__Event__NameAssignment_2");
@@ -289,7 +292,7 @@ public class SARLParser extends AbstractContentAssistParser {
 					put(grammarAccess.getCapacityAccess().getNameAssignment_2(), "rule__Capacity__NameAssignment_2");
 					put(grammarAccess.getCapacityAccess().getSuperTypesAssignment_3_1(), "rule__Capacity__SuperTypesAssignment_3_1");
 					put(grammarAccess.getCapacityAccess().getSuperTypesAssignment_3_2_1(), "rule__Capacity__SuperTypesAssignment_3_2_1");
-					put(grammarAccess.getCapacityAccess().getActionsAssignment_5(), "rule__Capacity__ActionsAssignment_5");
+					put(grammarAccess.getCapacityAccess().getFeaturesAssignment_5(), "rule__Capacity__FeaturesAssignment_5");
 					put(grammarAccess.getAgentAccess().getNameAssignment_2(), "rule__Agent__NameAssignment_2");
 					put(grammarAccess.getAgentAccess().getSuperTypesAssignment_3_1(), "rule__Agent__SuperTypesAssignment_3_1");
 					put(grammarAccess.getAgentAccess().getFeaturesAssignment_5(), "rule__Agent__FeaturesAssignment_5");

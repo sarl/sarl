@@ -163,6 +163,42 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		public Action getFeatureAction() { return cFeatureAction; }
 	}
 
+	public class ParameterizedFeatureElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ParameterizedFeature");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cParameterizedFeatureAction_0 = (Action)cGroup.eContents().get(0);
+		private final Assignment cParamsAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cParamsFormalParameterParserRuleCall_1_0 = (RuleCall)cParamsAssignment_1.eContents().get(0);
+		private final Assignment cVarargsAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cVarargsIDTerminalRuleCall_2_0 = (RuleCall)cVarargsAssignment_2.eContents().get(0);
+		
+		//// Define an interface that is a feature with parameters.
+		//// This rule is declared only for generated the Java interface
+		//// with the expected features.
+		//// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
+		//ParameterizedFeature returns Feature:
+		//	{ParameterizedFeature} params+=FormalParameter varargs?=ID;
+		public ParserRule getRule() { return rule; }
+
+		//{ParameterizedFeature} params+=FormalParameter varargs?=ID
+		public Group getGroup() { return cGroup; }
+
+		//{ParameterizedFeature}
+		public Action getParameterizedFeatureAction_0() { return cParameterizedFeatureAction_0; }
+
+		//params+=FormalParameter
+		public Assignment getParamsAssignment_1() { return cParamsAssignment_1; }
+
+		//FormalParameter
+		public RuleCall getParamsFormalParameterParserRuleCall_1_0() { return cParamsFormalParameterParserRuleCall_1_0; }
+
+		//varargs?=ID
+		public Assignment getVarargsAssignment_2() { return cVarargsAssignment_2; }
+
+		//ID
+		public RuleCall getVarargsIDTerminalRuleCall_2_0() { return cVarargsIDTerminalRuleCall_2_0; }
+	}
+
 	public class InheritingElementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "InheritingElement");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -313,17 +349,17 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final CrossReference cSuperTypesCapacityCrossReference_3_2_1_0 = (CrossReference)cSuperTypesAssignment_3_2_1.eContents().get(0);
 		private final RuleCall cSuperTypesCapacityQualifiedNameParserRuleCall_3_2_1_0_1 = (RuleCall)cSuperTypesCapacityCrossReference_3_2_1_0.eContents().get(1);
 		private final Keyword cLeftCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
-		private final Assignment cActionsAssignment_5 = (Assignment)cGroup.eContents().get(5);
-		private final RuleCall cActionsActionSignatureParserRuleCall_5_0 = (RuleCall)cActionsAssignment_5.eContents().get(0);
+		private final Assignment cFeaturesAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cFeaturesActionSignatureParserRuleCall_5_0 = (RuleCall)cFeaturesAssignment_5.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		//Capacity returns InheritingElement:
 		//	{Capacity} "capacity" name=ValidID ("extends" superTypes+=[Capacity|QualifiedName] (","
-		//	superTypes+=[Capacity|QualifiedName])*)? "{" actions+=ActionSignature* "}";
+		//	superTypes+=[Capacity|QualifiedName])*)? "{" features+=ActionSignature* "}";
 		public ParserRule getRule() { return rule; }
 
 		//{Capacity} "capacity" name=ValidID ("extends" superTypes+=[Capacity|QualifiedName] (","
-		//superTypes+=[Capacity|QualifiedName])*)? "{" actions+=ActionSignature* "}"
+		//superTypes+=[Capacity|QualifiedName])*)? "{" features+=ActionSignature* "}"
 		public Group getGroup() { return cGroup; }
 
 		//{Capacity}
@@ -371,11 +407,11 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
 
-		//actions+=ActionSignature*
-		public Assignment getActionsAssignment_5() { return cActionsAssignment_5; }
+		//features+=ActionSignature*
+		public Assignment getFeaturesAssignment_5() { return cFeaturesAssignment_5; }
 
 		//ActionSignature
-		public RuleCall getActionsActionSignatureParserRuleCall_5_0() { return cActionsActionSignatureParserRuleCall_5_0; }
+		public RuleCall getFeaturesActionSignatureParserRuleCall_5_0() { return cFeaturesActionSignatureParserRuleCall_5_0; }
 
 		//"}"
 		public Keyword getRightCurlyBracketKeyword_6() { return cRightCurlyBracketKeyword_6; }
@@ -1009,7 +1045,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cBodyAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cBodyXBlockExpressionParserRuleCall_3_0 = (RuleCall)cBodyAssignment_3.eContents().get(0);
 		
-		//Constructor returns Feature:
+		//Constructor returns ParameterizedFeature:
 		//	{Constructor} "new" ("(" params+=FormalParameter ("," params+=FormalParameter)* varargs?="..."? ")")?
 		//	body=XBlockExpression;
 		public ParserRule getRule() { return rule; }
@@ -1129,7 +1165,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final CrossReference cFiredEventsEventCrossReference_5_2_1_0 = (CrossReference)cFiredEventsAssignment_5_2_1.eContents().get(0);
 		private final RuleCall cFiredEventsEventQualifiedNameParserRuleCall_5_2_1_0_1 = (RuleCall)cFiredEventsEventCrossReference_5_2_1_0.eContents().get(1);
 		
-		//ActionSignature returns Feature:
+		//ActionSignature returns ParameterizedFeature:
 		//	{ActionSignature} "def" name=ValidID ("(" params+=FormalParameter ("," params+=FormalParameter)* varargs?="..."? ")")?
 		//	(":" type=JvmTypeReference)? ("fires" firedEvents+=[Event|QualifiedName] ("," firedEvents+=[Event|QualifiedName])*)?;
 		public ParserRule getRule() { return rule; }
@@ -1544,6 +1580,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	private NamedElementElements pNamedElement;
 	private FeatureContainerElements pFeatureContainer;
 	private FeatureElements pFeature;
+	private ParameterizedFeatureElements pParameterizedFeature;
 	private InheritingElementElements pInheritingElement;
 	private ImplementingElementElements pImplementingElement;
 	private EventElements pEvent;
@@ -1669,6 +1706,20 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getFeatureAccess().getRule();
 	}
 
+	//// Define an interface that is a feature with parameters.
+	//// This rule is declared only for generated the Java interface
+	//// with the expected features.
+	//// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
+	//ParameterizedFeature returns Feature:
+	//	{ParameterizedFeature} params+=FormalParameter varargs?=ID;
+	public ParameterizedFeatureElements getParameterizedFeatureAccess() {
+		return (pParameterizedFeature != null) ? pParameterizedFeature : (pParameterizedFeature = new ParameterizedFeatureElements());
+	}
+	
+	public ParserRule getParameterizedFeatureRule() {
+		return getParameterizedFeatureAccess().getRule();
+	}
+
 	//// Define an interface that is providing the 'superTypes' feature.
 	//// This rule is declared only for generated the Java interface
 	//// with the expected features.
@@ -1709,7 +1760,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 
 	//Capacity returns InheritingElement:
 	//	{Capacity} "capacity" name=ValidID ("extends" superTypes+=[Capacity|QualifiedName] (","
-	//	superTypes+=[Capacity|QualifiedName])*)? "{" actions+=ActionSignature* "}";
+	//	superTypes+=[Capacity|QualifiedName])*)? "{" features+=ActionSignature* "}";
 	public CapacityElements getCapacityAccess() {
 		return (pCapacity != null) ? pCapacity : (pCapacity = new CapacityElements());
 	}
@@ -1833,7 +1884,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getRequiredCapacityAccess().getRule();
 	}
 
-	//Constructor returns Feature:
+	//Constructor returns ParameterizedFeature:
 	//	{Constructor} "new" ("(" params+=FormalParameter ("," params+=FormalParameter)* varargs?="..."? ")")?
 	//	body=XBlockExpression;
 	public ConstructorElements getConstructorAccess() {
@@ -1854,7 +1905,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getActionAccess().getRule();
 	}
 
-	//ActionSignature returns Feature:
+	//ActionSignature returns ParameterizedFeature:
 	//	{ActionSignature} "def" name=ValidID ("(" params+=FormalParameter ("," params+=FormalParameter)* varargs?="..."? ")")?
 	//	(":" type=JvmTypeReference)? ("fires" firedEvents+=[Event|QualifiedName] ("," firedEvents+=[Event|QualifiedName])*)?;
 	public ActionSignatureElements getActionSignatureAccess() {

@@ -55,6 +55,16 @@ Feature:
 	{Feature}
 ;
 
+// Define an interface that is a feature with parameters.
+// This rule is declared only for generated the Java interface
+// with the expected features.
+// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
+ParameterizedFeature returns Feature:
+	{ParameterizedFeature}
+	params+=FormalParameter
+	varargs?=ID
+;
+
 // Define an interface that is providing the 'superTypes' feature.
 // This rule is declared only for generated the Java interface
 // with the expected features.
@@ -83,7 +93,7 @@ Capacity returns InheritingElement:
 	{Capacity}
 	'capacity' name=ValidID ('extends' superTypes+=[Capacity|QualifiedName]
 		( ',' superTypes+=[Capacity|QualifiedName] )* )? 
-	'{' actions+=ActionSignature* '}'
+	'{' features+=ActionSignature* '}'
 ;
 
 Agent returns InheritingElement:
@@ -148,7 +158,7 @@ RequiredCapacity returns Feature:
 	(',' requiredCapacities+=[Capacity|QualifiedName])*
 ;
 	
-Constructor returns Feature:
+Constructor returns ParameterizedFeature:
 	{Constructor}
 	'new'
 	(	'(' params+=FormalParameter (',' params+=FormalParameter)* 
@@ -161,7 +171,7 @@ Action returns Feature:
 	signature=ActionSignature body=XBlockExpression
 ;
 
-ActionSignature returns Feature:
+ActionSignature returns ParameterizedFeature:
 	{ActionSignature}
 	'def' name=ValidID 
 	(	'(' params+=FormalParameter

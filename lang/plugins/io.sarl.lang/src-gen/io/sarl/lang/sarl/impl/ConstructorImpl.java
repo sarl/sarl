@@ -3,23 +3,15 @@
 package io.sarl.lang.sarl.impl;
 
 import io.sarl.lang.sarl.Constructor;
-import io.sarl.lang.sarl.FormalParameter;
 import io.sarl.lang.sarl.SarlPackage;
-
-import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.eclipse.xtext.xbase.XExpression;
 
@@ -30,46 +22,14 @@ import org.eclipse.xtext.xbase.XExpression;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link io.sarl.lang.sarl.impl.ConstructorImpl#getParams <em>Params</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.impl.ConstructorImpl#isVarargs <em>Varargs</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.impl.ConstructorImpl#getBody <em>Body</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class ConstructorImpl extends FeatureImpl implements Constructor
+public class ConstructorImpl extends ParameterizedFeatureImpl implements Constructor
 {
-  /**
-   * The cached value of the '{@link #getParams() <em>Params</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getParams()
-   * @generated
-   * @ordered
-   */
-  protected EList<FormalParameter> params;
-
-  /**
-   * The default value of the '{@link #isVarargs() <em>Varargs</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #isVarargs()
-   * @generated
-   * @ordered
-   */
-  protected static final boolean VARARGS_EDEFAULT = false;
-
-  /**
-   * The cached value of the '{@link #isVarargs() <em>Varargs</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #isVarargs()
-   * @generated
-   * @ordered
-   */
-  protected boolean varargs = VARARGS_EDEFAULT;
-
   /**
    * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
    * <!-- begin-user-doc -->
@@ -99,43 +59,6 @@ public class ConstructorImpl extends FeatureImpl implements Constructor
   protected EClass eStaticClass()
   {
     return SarlPackage.Literals.CONSTRUCTOR;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EList<FormalParameter> getParams()
-  {
-    if (params == null)
-    {
-      params = new EObjectContainmentEList<FormalParameter>(FormalParameter.class, this, SarlPackage.CONSTRUCTOR__PARAMS);
-    }
-    return params;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public boolean isVarargs()
-  {
-    return varargs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setVarargs(boolean newVarargs)
-  {
-    boolean oldVarargs = varargs;
-    varargs = newVarargs;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.CONSTRUCTOR__VARARGS, oldVarargs, varargs));
   }
 
   /**
@@ -196,8 +119,6 @@ public class ConstructorImpl extends FeatureImpl implements Constructor
   {
     switch (featureID)
     {
-      case SarlPackage.CONSTRUCTOR__PARAMS:
-        return ((InternalEList<?>)getParams()).basicRemove(otherEnd, msgs);
       case SarlPackage.CONSTRUCTOR__BODY:
         return basicSetBody(null, msgs);
     }
@@ -214,10 +135,6 @@ public class ConstructorImpl extends FeatureImpl implements Constructor
   {
     switch (featureID)
     {
-      case SarlPackage.CONSTRUCTOR__PARAMS:
-        return getParams();
-      case SarlPackage.CONSTRUCTOR__VARARGS:
-        return isVarargs();
       case SarlPackage.CONSTRUCTOR__BODY:
         return getBody();
     }
@@ -229,19 +146,11 @@ public class ConstructorImpl extends FeatureImpl implements Constructor
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case SarlPackage.CONSTRUCTOR__PARAMS:
-        getParams().clear();
-        getParams().addAll((Collection<? extends FormalParameter>)newValue);
-        return;
-      case SarlPackage.CONSTRUCTOR__VARARGS:
-        setVarargs((Boolean)newValue);
-        return;
       case SarlPackage.CONSTRUCTOR__BODY:
         setBody((XExpression)newValue);
         return;
@@ -259,12 +168,6 @@ public class ConstructorImpl extends FeatureImpl implements Constructor
   {
     switch (featureID)
     {
-      case SarlPackage.CONSTRUCTOR__PARAMS:
-        getParams().clear();
-        return;
-      case SarlPackage.CONSTRUCTOR__VARARGS:
-        setVarargs(VARARGS_EDEFAULT);
-        return;
       case SarlPackage.CONSTRUCTOR__BODY:
         setBody((XExpression)null);
         return;
@@ -282,31 +185,10 @@ public class ConstructorImpl extends FeatureImpl implements Constructor
   {
     switch (featureID)
     {
-      case SarlPackage.CONSTRUCTOR__PARAMS:
-        return params != null && !params.isEmpty();
-      case SarlPackage.CONSTRUCTOR__VARARGS:
-        return varargs != VARARGS_EDEFAULT;
       case SarlPackage.CONSTRUCTOR__BODY:
         return body != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (varargs: ");
-    result.append(varargs);
-    result.append(')');
-    return result.toString();
   }
 
 } //ConstructorImpl

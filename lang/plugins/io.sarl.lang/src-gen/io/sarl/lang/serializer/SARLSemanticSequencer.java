@@ -18,6 +18,7 @@ import io.sarl.lang.sarl.FormalParameter;
 import io.sarl.lang.sarl.ImplementingElement;
 import io.sarl.lang.sarl.InheritingElement;
 import io.sarl.lang.sarl.NamedElement;
+import io.sarl.lang.sarl.ParameterizedFeature;
 import io.sarl.lang.sarl.RequiredCapacity;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
@@ -196,6 +197,12 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 			case SarlPackage.NAMED_ELEMENT:
 				if(context == grammarAccess.getNamedElementRule()) {
 					sequence_NamedElement(context, (NamedElement) semanticObject); 
+					return; 
+				}
+				else break;
+			case SarlPackage.PARAMETERIZED_FEATURE:
+				if(context == grammarAccess.getParameterizedFeatureRule()) {
+					sequence_ParameterizedFeature(context, (ParameterizedFeature) semanticObject); 
 					return; 
 				}
 				else break;
@@ -1247,7 +1254,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID (superTypes+=[Capacity|QualifiedName] superTypes+=[Capacity|QualifiedName]*)? actions+=ActionSignature*)
+	 *     (name=ValidID (superTypes+=[Capacity|QualifiedName] superTypes+=[Capacity|QualifiedName]*)? features+=ActionSignature*)
 	 */
 	protected void sequence_Capacity(EObject context, Capacity semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1357,6 +1364,15 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
 		feeder.accept(grammarAccess.getNamedElementAccess().getNameValidIDParserRuleCall_0(), semanticObject.getName());
 		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (params+=FormalParameter varargs?=ID)
+	 */
+	protected void sequence_ParameterizedFeature(EObject context, ParameterizedFeature semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

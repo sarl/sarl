@@ -17,13 +17,14 @@ package io.sarl.lang.tests.parsing
 
 import com.google.inject.Inject
 import io.sarl.lang.SARLInjectorProvider
-import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.sarl.SarlPackage
+import io.sarl.lang.sarl.SarlScript
 import org.eclipse.xtext.diagnostics.Diagnostic
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
+import org.eclipse.xtext.xbase.validation.IssueCodes
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -63,8 +64,10 @@ class ArgDefaultValueParsingTest {
 				}
 			}
 		'''.parse
-		mas.assertNoErrors
-		assertEquals(1, mas.elements.size)
+		mas.assertError(
+			SarlPackage::eINSTANCE.formalParameter,
+			io.sarl.lang.validation.IssueCodes.DEFAULT_VALUE_FOR_VARIADIC_PARAMETER,
+			"A default value cannot be declared for the variadic formal parameter")
 	}
 
 	@Test
@@ -221,8 +224,10 @@ class ArgDefaultValueParsingTest {
 				}
 			}
 		'''.parse
-		mas.assertNoErrors
-		assertEquals(1, mas.elements.size)
+		mas.assertError(
+			SarlPackage::eINSTANCE.formalParameter,
+			io.sarl.lang.validation.IssueCodes.DEFAULT_VALUE_FOR_VARIADIC_PARAMETER,
+			"A default value cannot be declared for the variadic formal parameter")
 	}
 
 	@Test
@@ -285,9 +290,11 @@ class ArgDefaultValueParsingTest {
 					System.out.println(arg)
 				}
 			}
-		'''.parse
-		mas.assertNoErrors
-		assertEquals(1, mas.elements.size)
+		'''.parse 
+		mas.assertError(
+			SarlPackage::eINSTANCE.formalParameter,
+			io.sarl.lang.validation.IssueCodes.DEFAULT_VALUE_FOR_VARIADIC_PARAMETER,
+			"A default value cannot be declared for the variadic formal parameter")
 	}
 
 	@Test
@@ -444,8 +451,10 @@ class ArgDefaultValueParsingTest {
 				}
 			}
 		'''.parse
-		mas.assertNoErrors
-		assertEquals(1, mas.elements.size)
+		mas.assertError(
+			SarlPackage::eINSTANCE.formalParameter,
+			io.sarl.lang.validation.IssueCodes.DEFAULT_VALUE_FOR_VARIADIC_PARAMETER,
+			"A default value cannot be declared for the variadic formal parameter")
 	}
 
 	@Test
@@ -485,6 +494,690 @@ class ArgDefaultValueParsingTest {
 		'''.parse
 		mas.assertNoErrors
 		assertEquals(1, mas.elements.size)
+	}
+
+	@Test
+	def void inCapacity_1p() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg : int=4)
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(1, mas.elements.size)
+	}
+
+	@Test
+	def void inCapacity_1p_invalid1() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg : int=4...)
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.formalParameter,
+			io.sarl.lang.validation.IssueCodes.DEFAULT_VALUE_FOR_VARIADIC_PARAMETER,
+			"A default value cannot be declared for the variadic formal parameter")
+	}
+
+	@Test
+	def void inCapacity_1p_invalid2() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg : int...=4)
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.actionSignature,
+			Diagnostic::SYNTAX_DIAGNOSTIC,
+			"mismatched input '=' expecting ')'")
+	}
+
+	@Test
+	def void inCapacity_5p_0() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String)
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(1, mas.elements.size)
+	}
+
+	@Test
+	def void inCapacity_5p_1() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int, arg1 : String="abc", arg2 : int, arg3 : int, arg4 : String)
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(1, mas.elements.size)
+	}
+
+	@Test
+	def void inCapacity_5p_2() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String)
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(1, mas.elements.size)
+	}
+
+	@Test
+	def void inCapacity_5p_3() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int = 34, arg4 : String)
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(1, mas.elements.size)
+	}
+
+	@Test
+	def void inCapacity_5p_4() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int, arg4 : String="xyz")
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(1, mas.elements.size)
+	}
+
+	@Test
+	def void inCapacity_5p_0_3() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String)
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(1, mas.elements.size)
+	}
+
+	@Test
+	def void inCapacity_5p_0_3_4() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String="def")
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(1, mas.elements.size)
+	}
+
+	@Test
+	def void inCapacity_5p_0_2_4() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int=4, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String="def")
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(1, mas.elements.size)
+	}
+
+	@Test
+	def void inCapacity_5p_0_1_2_3() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int=4, arg1 : String="ghj", arg2 : int=18, arg3 : int=98, arg4 : String)
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(1, mas.elements.size)
+	}
+
+	@Test
+	def void inCapacity_5p_0_1_2_3_4() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int=4, arg1 : String="ghj", arg2 : int=18, arg3 : int=98, arg4 : String="klm")
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(1, mas.elements.size)
+	}
+
+	@Test
+	def void inCapacity_3p_vararg_2() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int, arg1 : int, arg2 : int=45...)
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.formalParameter,
+			io.sarl.lang.validation.IssueCodes.DEFAULT_VALUE_FOR_VARIADIC_PARAMETER,
+			"A default value cannot be declared for the variadic formal parameter")
+	}
+
+	@Test
+	def void inCapacity_3p_vararg_1() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int, arg1 : int=45, arg2 : int...)
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(1, mas.elements.size)
+	}
+
+	@Test
+	def void inCapacity_3p_vararg_0() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int=45, arg1 : int, arg2 : int...)
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(1, mas.elements.size)
+	}
+
+	@Test
+	def void inCapacity_3p_vararg_0_1() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...)
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(1, mas.elements.size)
+	}
+
+	@Test
+	def void inSkill_1p() {
+		val mas = '''
+			capacity C1 {
+				def capAction
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg : int=4) {}
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(2, mas.elements.size)
+	}
+
+	@Test
+	def void inSkill_1p_invalid1() {
+		val mas = '''
+			capacity C1 {
+				def capAction
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg : int=4...) {}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.formalParameter,
+			io.sarl.lang.validation.IssueCodes.DEFAULT_VALUE_FOR_VARIADIC_PARAMETER,
+			"A default value cannot be declared for the variadic formal parameter")
+	}
+
+	@Test
+	def void inSkill_1p_invalid2() {
+		val mas = '''
+			capacity C1 {
+				def capAction
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg : int...=4) {}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.actionSignature,
+			Diagnostic::SYNTAX_DIAGNOSTIC,
+			"mismatched input '=' expecting ')'")
+	}
+
+	@Test
+	def void inSkill_5p_0() {
+		val mas = '''
+			capacity C1 {
+				def capAction
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String) {}
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(2, mas.elements.size)
+	}
+
+	@Test
+	def void inSkill_5p_1() {
+		val mas = '''
+			capacity C1 {
+				def capAction
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int, arg1 : String="abc", arg2 : int, arg3 : int, arg4 : String) {}
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(2, mas.elements.size)
+	}
+
+	@Test
+	def void inSkill_5p_2() {
+		val mas = '''
+			capacity C1 {
+				def capAction
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String) {}
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(2, mas.elements.size)
+	}
+
+	@Test
+	def void inSkill_5p_3() {
+		val mas = '''
+			capacity C1 {
+				def capAction
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int = 34, arg4 : String) {}
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(2, mas.elements.size)
+	}
+
+	@Test
+	def void inSkill_5p_4() {
+		val mas = '''
+			capacity C1 {
+				def capAction
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int, arg4 : String="xyz") {}
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(2, mas.elements.size)
+	}
+
+	@Test
+	def void inSkill_5p_0_3() {
+		val mas = '''
+			capacity C1 {
+				def capAction
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String) {}
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(2, mas.elements.size)
+	}
+
+	@Test
+	def void inSkill_5p_0_3_4() {
+		val mas = '''
+			capacity C1 {
+				def capAction
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String="def") {}
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(2, mas.elements.size)
+	}
+
+	@Test
+	def void inSkill_5p_0_2_4() {
+		val mas = '''
+			capacity C1 {
+				def capAction
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int=4, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String="def") {}
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(2, mas.elements.size)
+	}
+
+	@Test
+	def void inSkill_5p_0_1_2_3() {
+		val mas = '''
+			capacity C1 {
+				def capAction
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int=4, arg1 : String="ghj", arg2 : int=18, arg3 : int=98, arg4 : String) {}
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(2, mas.elements.size)
+	}
+
+	@Test
+	def void inSkill_5p_0_1_2_3_4() {
+		val mas = '''
+			capacity C1 {
+				def capAction
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int=4, arg1 : String="ghj", arg2 : int=18, arg3 : int=98, arg4 : String="klm") {}
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(2, mas.elements.size)
+	}
+
+	@Test
+	def void inSkill_3p_vararg_2() {
+		val mas = '''
+			capacity C1 {
+				def capAction
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int, arg1 : int, arg2 : int=45...) {}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.formalParameter,
+			io.sarl.lang.validation.IssueCodes.DEFAULT_VALUE_FOR_VARIADIC_PARAMETER,
+			"A default value cannot be declared for the variadic formal parameter")
+	}
+
+	@Test
+	def void inSkill_3p_vararg_1() {
+		val mas = '''
+			capacity C1 {
+				def capAction
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int, arg1 : int=45, arg2 : int...) {}
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(2, mas.elements.size)
+	}
+
+	@Test
+	def void inSkill_3p_vararg_0() {
+		val mas = '''
+			capacity C1 {
+				def capAction
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int=45, arg1 : int, arg2 : int...) {}
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(2, mas.elements.size)
+	}
+
+	@Test
+	def void inSkill_3p_vararg_0_1() {
+		val mas = '''
+			capacity C1 {
+				def capAction
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...) {}
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(2, mas.elements.size)
+	}
+
+	@Test
+	def void constructorCast_String2int() {
+		val mas = '''
+			package io.sarl.test
+			behavior B1 {
+				new(arg0 : int=45, arg1 : int="S", arg2 : int) {
+					System.out.println(arg0)
+				}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.formalParameter,
+			IssueCodes::INVALID_CAST,
+			"Cannot cast from String to int")
+	}
+
+	@Test
+	def void actionCast_String2int() {
+		val mas = '''
+			behavior B1 {
+				def myaction(arg0 : int=45, arg1 : int="S", arg2 : int) {
+					System.out.println(arg0)
+				}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.formalParameter,
+			IssueCodes::INVALID_CAST,
+			"Cannot cast from String to int")
+	}
+
+	@Test
+	def void constructorCast_int2double() {
+		val mas = '''
+			behavior B1 {
+				new(arg0 : int=45, arg1 : double=18, arg2 : int) {
+					System.out.println(arg0)
+				}
+			}
+		'''.parse
+		mas.assertNoErrors
+	}
+
+	@Test
+	def void actionCast_int2double() {
+		val mas = '''
+			behavior B1 {
+				def myaction(arg0 : int=45, arg1 : double=18, arg2 : int) {
+					System.out.println(arg0)
+				}
+			}
+		'''.parse
+		mas.assertNoErrors
+	}
+
+	@Test
+	def void constructorCast_double2int() {
+		val mas = '''
+			behavior B1 {
+				new(arg0 : int=45, arg1 : int=18.0, arg2 : int) {
+					System.out.println(arg0)
+				}
+			}
+		'''.parse
+		mas.assertNoErrors
+	}
+
+	@Test
+	def void actionCast_double2int() {
+		val mas = '''
+			behavior B1 {
+				def myaction(arg0 : int=45, arg1 : int=18.0, arg2 : int) {
+					System.out.println(arg0)
+				}
+			}
+		'''.parse
+		mas.assertNoErrors
+	}
+
+	@Test
+	def void overridingCapacitySkill_invalid_defArgs() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...)
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...) {}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.action,
+			io.sarl.lang.validation.IssueCodes::ACTION_COLLISION,
+			"invalid declaration")
+	}
+
+	@Test
+	def void overridingCapacitySkill() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...)
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int, arg1 : int, arg2 : int...) {}
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(2, mas.elements.size)
+	}
+
+	@Test
+	def void overridingCapacitySkill_invalid_override() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...)
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int, arg1 : int, arg2 : int...) {}
+				def myaction(arg1 : int, arg2 : int...) {
+					System.out.println("Invalid")
+				}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.action,
+			io.sarl.lang.validation.IssueCodes::ACTION_COLLISION,
+			"Cannot define many times the same feature in 'S1': myaction(arg0 : int, arg1 : int)")
+	}
+
+	@Test
+	def void overridingSkillSkill_invalid() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...)
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...) {}
+			}
+			skill S2 extends S1 implements C1 {
+				def myaction(arg1 : int=56, arg2 : int...) {
+					System.out.println("invalid")
+				}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.formalParameter,
+			IssueCodes::INVALID_CAST,
+			"function redefinition")
+	}
+
+	@Test
+	def void overridingSkillSkill() {
+		val mas = '''
+			capacity C1 {
+				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...)
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int, arg1 : int, arg2 : int...) {}
+			}
+			skill S2 extends S1 implements C1 {
+				def myaction(arg1 : int, arg2 : int...) {
+					System.out.println("invalid")
+				}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.formalParameter,
+			IssueCodes::INVALID_CAST,
+			"cannot override final action")
+	}
+
+	@Test
+	def void multipleActionDefinitionsInBehavior() {
+		val mas = '''
+			behavior B1 {
+				def myaction(arg0 : int, arg1 : int=42, arg2 : int...) {
+					System.out.println("valid")
+				}
+				def myaction(arg0 : int, arg1 : int...) {
+					System.out.println("invalid")
+				}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.action,
+			io.sarl.lang.validation.IssueCodes::ACTION_COLLISION,
+			"Cannot define many times the same feature in 'B1': myaction(arg0 : int, arg1 : int)")
+	}
+
+	@Test
+	def void multipleActionDefinitionsInAgent() {
+		val mas = '''
+			agent A1 {
+				def myaction(arg0 : int, arg1 : int=42, arg2 : int...) {
+					System.out.println("valid")
+				}
+				def myaction(arg0 : int, arg1 : int...) {
+					System.out.println("invalid")
+				}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.action,
+			io.sarl.lang.validation.IssueCodes::ACTION_COLLISION,
+			"Cannot define many times the same feature in 'A1': myaction(arg0 : int, arg1 : int)")
+	}
+
+	@Test
+	def void multipleActionDefinitionsInSkill() {
+		val mas = '''
+			capacity C1 {}
+			skill S1 implements C1 {
+				def myaction(arg0 : int, arg1 : int=42, arg2 : int...) {
+					System.out.println("valid")
+				}
+				def myaction(arg0 : int, arg1 : int...) {
+					System.out.println("invalid")
+				}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.action,
+			io.sarl.lang.validation.IssueCodes::ACTION_COLLISION,
+			"Cannot define many times the same feature in 'S1': myaction(arg0 : int, arg1 : int)")
 	}
 
 }

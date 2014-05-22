@@ -122,6 +122,15 @@ public interface SarlFactory extends EFactory
   SkillFeature createSkillFeature();
 
   /**
+   * Returns a new object of class '<em>Parameterized Feature</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Parameterized Feature</em>'.
+   * @generated
+   */
+  ParameterizedFeature createParameterizedFeature();
+
+  /**
    * Returns a new object of class '<em>Formal Parameter</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

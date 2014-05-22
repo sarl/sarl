@@ -15,8 +15,6 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * The following features are supported:
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.ActionSignature#getName <em>Name</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.ActionSignature#getParams <em>Params</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.ActionSignature#isVarargs <em>Varargs</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.ActionSignature#getType <em>Type</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.ActionSignature#getFiredEvents <em>Fired Events</em>}</li>
  * </ul>
@@ -26,7 +24,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * @model
  * @generated
  */
-public interface ActionSignature extends Feature
+public interface ActionSignature extends ParameterizedFeature
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
@@ -53,48 +51,6 @@ public interface ActionSignature extends Feature
    * @generated
    */
   void setName(String value);
-
-  /**
-   * Returns the value of the '<em><b>Params</b></em>' containment reference list.
-   * The list contents are of type {@link io.sarl.lang.sarl.FormalParameter}.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Params</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Params</em>' containment reference list.
-   * @see io.sarl.lang.sarl.SarlPackage#getActionSignature_Params()
-   * @model containment="true"
-   * @generated
-   */
-  EList<FormalParameter> getParams();
-
-  /**
-   * Returns the value of the '<em><b>Varargs</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Varargs</em>' attribute isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Varargs</em>' attribute.
-   * @see #setVarargs(boolean)
-   * @see io.sarl.lang.sarl.SarlPackage#getActionSignature_Varargs()
-   * @model
-   * @generated
-   */
-  boolean isVarargs();
-
-  /**
-   * Sets the value of the '{@link io.sarl.lang.sarl.ActionSignature#isVarargs <em>Varargs</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Varargs</em>' attribute.
-   * @see #isVarargs()
-   * @generated
-   */
-  void setVarargs(boolean value);
 
   /**
    * Returns the value of the '<em><b>Type</b></em>' containment reference.
