@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1400865989603
+Build-Jdk: 1.7.0_51
+Built-By: ngaud
+Bundle-ClassPath: io.sarl.sdk-0.1.0-SNAPSHOT.pom
+Bundle-Description: SARL SDK provides all necessary dependencies to deve
+ lop a MAS using SARL in terms of a BND bundle.
+Bundle-DocURL: http://www.sarl.io/
+Bundle-License: ttp://www.apache.org/licenses/LICENSE-2.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SARL SDK Bundle
+Bundle-SymbolicName: io.sarl.sdkbundle
+Bundle-Vendor: SARL.io
+Bundle-Version: 0.1.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Embed-Dependency: *;scope=compile|runtime
+Embed-Transitive: false
+Embedded-Artifacts: io.sarl.sdk-0.1.0-SNAPSHOT.pom;g="io.sarl";a="io.sar
+ l.sdk";v="0.1.0-SNAPSHOT"
+Tool: Bnd-1.50.0

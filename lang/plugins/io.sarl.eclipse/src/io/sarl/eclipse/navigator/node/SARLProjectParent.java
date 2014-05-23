@@ -56,7 +56,6 @@ public class SARLProjectParent implements ISARLProjectElement {
 	/* (non-Javadoc)
 	 * @see io.sarl.eclipse.navigator.ISARLProjectElement#getChildren()
 	 */
-	@Override
 	public ISARLProjectElement[] getChildren() {
         if (this.children == null) {
         	this.children = initializeChildren(this.project);
@@ -73,7 +72,6 @@ public class SARLProjectParent implements ISARLProjectElement {
 	/* (non-Javadoc)
 	 * @see io.sarl.eclipse.navigator.ISARLProjectElement#getText()
 	 */
-	@Override
 	public String getText() {
 		return this.project.getName();
 	}
@@ -81,7 +79,6 @@ public class SARLProjectParent implements ISARLProjectElement {
 	/* (non-Javadoc)
 	 * @see io.sarl.eclipse.navigator.ISARLProjectElement#hasChildren()
 	 */
-	@Override
 	public boolean hasChildren() {
         if (this.children == null) {
             this.children = initializeChildren(this.project);
@@ -93,7 +90,6 @@ public class SARLProjectParent implements ISARLProjectElement {
 	/* (non-Javadoc)
 	 * @see io.sarl.eclipse.navigator.ISARLProjectElement#getProject()
 	 */
-	@Override
 	public IProject getProject() {		
 		return this.project;
 	}
@@ -101,7 +97,6 @@ public class SARLProjectParent implements ISARLProjectElement {
 	/* (non-Javadoc)
 	 * @see io.sarl.eclipse.navigator.ISARLProjectElement#getParent()
 	 */
-	@Override
 	public Object getParent() {
 		return null;
 	}

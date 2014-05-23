@@ -134,7 +134,6 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 			selectAndReveal(this.fSecondPage.getJavaProject().getProject());
 
 			Display.getDefault().asyncExec(new Runnable() {
-				@Override
 				public void run() {
 					IWorkbenchPart activePart = getActivePart();
 					if (activePart instanceof IPackagesViewPart) {
@@ -168,7 +167,6 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 	/*
 	 * Stores the configuration element for the wizard. The config element will be used in <code>performFinish</code> to set the result perspective.
 	 */
-	@Override
 	public void setInitializationData(IConfigurationElement cfig, String propertyName, Object data) {
 		this.fConfigElement = cfig;
 	}
@@ -206,7 +204,7 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 
 	private static void addNatures(IProject project) throws CoreException {
 		final IProjectDescription description = project.getDescription();
-		final List<String> natures = new ArrayList<>(Arrays.asList(description.getNatureIds()));
+		final List<String> natures = new ArrayList<String>(Arrays.asList(description.getNatureIds()));
 		natures.add(0, io.sarl.eclipse.natures.SARLProjectNature.NATURE_ID);
 		natures.add(1, XTEXT_NATURE_ID);
 		// natures.add(2, JavaCore.NATURE_ID); not necessary since the project is already a java project

@@ -35,7 +35,6 @@ public class SARLProjectJAVANode implements ISARLProjectElement {
 	 * 
 	 * @see io.sarl.eclipse.navigator.ISARLProjectElement#getImage()
 	 */
-	@Override
 	public Image getImage() {
 		if (this.image == null) {
 			this.image = EclipseSARLActivator.getImage("icons/sarl-project-stored-procedures-16.png"); //$NON-NLS-1$
@@ -49,7 +48,6 @@ public class SARLProjectJAVANode implements ISARLProjectElement {
 	 * 
 	 * @see io.sarl.eclipse.navigator.ISARLProjectElement#getChildren()
 	 */
-	@Override
 	public ISARLProjectElement[] getChildren() {
 		if (this.children == null) {
 			this.children = initializeChildren(getProject());
@@ -64,7 +62,6 @@ public class SARLProjectJAVANode implements ISARLProjectElement {
 	 * 
 	 * @see io.sarl.eclipse.navigator.ISARLProjectElement#getText()
 	 */
-	@Override
 	public String getText() {
 		return NAME;
 	}
@@ -74,7 +71,6 @@ public class SARLProjectJAVANode implements ISARLProjectElement {
 	 * 
 	 * @see io.sarl.eclipse.navigator.ISARLProjectElement#hasChildren()
 	 */
-	@Override
 	public boolean hasChildren() {
 		if (this.children == null) {
 			this.children = initializeChildren(getProject());
@@ -95,7 +91,6 @@ public class SARLProjectJAVANode implements ISARLProjectElement {
 	 * 
 	 * @see io.sarl.eclipse.navigator.ISARLProjectElement#getProject()
 	 */
-	@Override
 	public IProject getProject() {
 		return this.parent.getProject();
 	}
@@ -105,7 +100,6 @@ public class SARLProjectJAVANode implements ISARLProjectElement {
 	 * 
 	 * @see io.sarl.eclipse.navigator.ISARLProjectElement#getParent()
 	 */
-	@Override
 	public Object getParent() {
 		return this.parent;
 	}

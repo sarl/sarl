@@ -13,7 +13,7 @@
 		<module>io.sarl.core</module>
 		<module>io.sarl.util</module>
 		<module>io.sarl.sdk</module>
-		<module>io.sarl.bundle</module>
+		<module>io.sarl.sdkbundle</module>
 	</modules>
 
 	<dependencyManagement>

@@ -10,15 +10,11 @@
 		<artifactId>io.sarl.lang.plugins.parent</artifactId>
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
-
-	<build>
-
-	</build>
 	
 	<dependencies>
 		<dependency>
 			<groupId>io.sarl</groupId>
-			<artifactId>io.sarl.bundle</artifactId>
+			<artifactId>sdkbundle</artifactId>
 		</dependency>
 	</dependencies>
 

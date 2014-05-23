@@ -10,7 +10,6 @@
       </text>
    </aboutInfo>
 
-
    <configIni use="default">
    </configIni>
 
@@ -244,8 +243,8 @@
 
    <features>
       <feature id="io.sarl.lang.sdk" version="0.1.0.qualifier"/>
-      <feature id="org.eclipse.xtend.sdk" version="2.5.0.v201312110906"/>
-      <feature id="org.eclipse.jdt" version="3.9.1.v20130911-1000"/>
+      <feature id="org.eclipse.xtend.sdk" version="2.6.0.v201405210727"/>
+      <feature id="org.eclipse.jdt" version="3.9.2.v20140221-1700"/>
       <feature id="org.eclipse.equinox.p2.core.feature"/>
       <feature id="org.eclipse.platform"/>
       <feature id="org.eclipse.xtext.ui"/>
@@ -258,22 +257,15 @@
       <feature id="org.eclipse.xtext.runtime"/>
       <feature id="org.eclipse.equinox.p2.user.ui"/>
       <feature id="org.eclipse.equinox.p2.extras.feature"/>
-      <feature id="org.eclipse.m2e.feature" version="1.4.0.20130601-0317"/>
+      <feature id="org.eclipse.m2e.feature" version="1.4.1.20140328-1905"/>
    </features>
 
-
-<configurations>
+   <configurations>
       <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
-
-      <!-- Disable update manager. It seems as if this could be achieved by the first line, but in 
-           fact the second line sets reconcile to false (see org.eclipse.equinox.p2.publisher.eclipse.ConfigCUsAction#publishBundleCUs) 
-      <property name="org.eclipse.update.reconcile" value="false" />
-      <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="4"/>-->
-                                              
    </configurations>
 
 </product>

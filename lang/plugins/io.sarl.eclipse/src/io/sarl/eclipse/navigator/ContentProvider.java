@@ -34,7 +34,6 @@ public class ContentProvider implements ITreeContentProvider {
      * org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.
      * Object)
      */
-    @Override
     public Object[] getChildren(Object parentElement) {
         Object[] children = null;
         if (SARLProjectWorkbenchRoot.class.isInstance(parentElement)) {
@@ -58,7 +57,6 @@ public class ContentProvider implements ITreeContentProvider {
      * org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object
      * )
      */
-    @Override
     public Object getParent(Object element) {
         System.out.println("ContentProvider.getParent: " + element.getClass().getName()); //$NON-NLS-1$
         Object parent = null;
@@ -74,7 +72,6 @@ public class ContentProvider implements ITreeContentProvider {
      * org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.
      * Object)
      */
-    @Override
     public boolean hasChildren(Object element) {
         boolean hasChildren = false;
 
@@ -94,7 +91,6 @@ public class ContentProvider implements ITreeContentProvider {
      * org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java
      * .lang.Object)
      */
-    @Override
     public Object[] getElements(Object inputElement) {
         // This is the same as getChildren() so we will call that instead
         return getChildren(inputElement);
@@ -104,7 +100,6 @@ public class ContentProvider implements ITreeContentProvider {
      * (non-Javadoc)
      * @see org.eclipse.jface.viewers.IContentProvider#dispose()
      */
-    @Override
     public void dispose() {
         System.out.println("ContentProvider.dispose"); //$NON-NLS-1$
         // TODO Auto-generated method stub
@@ -117,7 +112,6 @@ public class ContentProvider implements ITreeContentProvider {
      * org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface
      * .viewers.Viewer, java.lang.Object, java.lang.Object)
      */
-    @Override
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
         if (oldInput != null && newInput != null){
         	System.out.println("ContentProvider.inputChanged: old: " + oldInput.getClass().getName() + " new: " + newInput.getClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$
@@ -131,7 +125,7 @@ public class ContentProvider implements ITreeContentProvider {
     private ISARLProjectElement[] initializeParent(Object parentElement) {
         IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 
-        List<SARLProjectParent> list = new Vector<>();
+        List<SARLProjectParent> list = new Vector<SARLProjectParent>();
         for (int i = 0; i < projects.length; i++) {
             try {
                 if (projects[i].getNature(io.sarl.eclipse.natures.SARLProjectNature.NATURE_ID) != null) {

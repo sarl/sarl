@@ -314,7 +314,7 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 	}
 
 	private void rememberExisitingFolders(URI projectLocation) {
-		this.fOrginalFolders = new HashSet<>();
+		this.fOrginalFolders = new HashSet<IFileStore>();
 
 		try {
 			IFileStore[] children = EFS.getStore(projectLocation).childStores(EFS.NONE, null);
@@ -331,7 +331,7 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 	}
 
 	private void restoreExistingFolders(URI projectLocation) {
-		HashSet<IFileStore> foldersToKeep = new HashSet<>(this.fOrginalFolders);
+		HashSet<IFileStore> foldersToKeep = new HashSet<IFileStore>(this.fOrginalFolders);
 		// workaround for bug 319054: Eclipse deletes all files when I cancel a project creation (symlink in project location path)
 		for (IFileStore originalFileStore : this.fOrginalFolders) {
 			try {
