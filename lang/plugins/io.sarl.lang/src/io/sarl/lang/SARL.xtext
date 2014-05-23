@@ -190,11 +190,7 @@ FormalParameter:
 ;
 
 DefaultParameterValue returns xbase::XExpression:
-	XBooleanLiteral |
-	XNumberLiteral |
-	XNullLiteral |
-	XStringLiteral |
-	XTypeLiteral
+	XLiteral
 ;
 
 //-----------------------------------------------

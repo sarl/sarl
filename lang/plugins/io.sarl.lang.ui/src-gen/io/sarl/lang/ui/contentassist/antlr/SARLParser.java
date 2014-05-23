@@ -44,7 +44,6 @@ public class SARLParser extends AbstractContentAssistParser {
 					put(grammarAccess.getSkillFeatureAccess().getAlternatives(), "rule__SkillFeature__Alternatives");
 					put(grammarAccess.getAttributeAccess().getAlternatives_1(), "rule__Attribute__Alternatives_1");
 					put(grammarAccess.getAttributeAccess().getAlternatives_2(), "rule__Attribute__Alternatives_2");
-					put(grammarAccess.getDefaultParameterValueAccess().getAlternatives(), "rule__DefaultParameterValue__Alternatives");
 					put(grammarAccess.getXVariableDeclarationAccess().getAlternatives_1(), "rule__XVariableDeclaration__Alternatives_1");
 					put(grammarAccess.getXVariableDeclarationAccess().getAlternatives_2(), "rule__XVariableDeclaration__Alternatives_2");
 					put(grammarAccess.getXAssignmentAccess().getAlternatives(), "rule__XAssignment__Alternatives");

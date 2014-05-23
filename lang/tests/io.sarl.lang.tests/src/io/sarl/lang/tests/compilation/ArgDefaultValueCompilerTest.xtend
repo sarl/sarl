@@ -54,12 +54,17 @@ class ArgDefaultValueCompilerTest {
 			    super(parentID);
 			  }
 			  
+			  /**
+			   * Default value for the parameter arg
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
+			  
 			  public void myaction(final int arg) {
 			    System.out.println(arg);
 			  }
 			  
 			  public final void myaction() {
-			    myaction(4);
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -69,7 +74,7 @@ class ArgDefaultValueCompilerTest {
 	def void inAgentAction_1p_float() {
 		'''
 			agent A1 {
-				def myaction(arg : float=4.5) {
+				def myaction(arg : float=4.5f) {
 					System.out.println(arg)
 				}
 			}
@@ -85,12 +90,17 @@ class ArgDefaultValueCompilerTest {
 			    super(parentID);
 			  }
 			  
+			  /**
+			   * Default value for the parameter arg
+			   */
+			  private final static float ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4.5f;
+			  
 			  public void myaction(final float arg) {
 			    System.out.println(arg);
 			  }
 			  
 			  public final void myaction() {
-			    myaction(4.5);
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -116,43 +126,17 @@ class ArgDefaultValueCompilerTest {
 			    super(parentID);
 			  }
 			  
+			  /**
+			   * Default value for the parameter arg
+			   */
+			  private final static boolean ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = true;
+			  
 			  public void myaction(final boolean arg) {
 			    System.out.println(arg);
 			  }
 			  
 			  public final void myaction() {
-			    myaction(true);
-			  }
-			}
-		''')
-	}
-
-	@Test
-	def void inAgentAction_1p_byte() {
-		'''
-			agent A1 {
-				def myaction(arg : byte=54) {
-					System.out.println(arg)
-				}
-			}
-		'''.assertCompilesTo('''
-			import io.sarl.lang.core.Agent;
-			
-			@SuppressWarnings("all")
-			public class A1 extends Agent {
-			  /**
-			   * Creates a new Agent of type A1
-			   */
-			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
-			  }
-			  
-			  public void myaction(final byte arg) {
-			    System.out.println(arg);
-			  }
-			  
-			  public final void myaction() {
-			    myaction(54);
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -178,12 +162,17 @@ class ArgDefaultValueCompilerTest {
 			    super(parentID);
 			  }
 			  
+			  /**
+			   * Default value for the parameter arg
+			   */
+			  private final static double ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4.5;
+			  
 			  public void myaction(final double arg) {
 			    System.out.println(arg);
 			  }
 			  
 			  public final void myaction() {
-			    myaction(4.5);
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -209,43 +198,17 @@ class ArgDefaultValueCompilerTest {
 			    super(parentID);
 			  }
 			  
+			  /**
+			   * Default value for the parameter arg
+			   */
+			  private final static long ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 450;
+			  
 			  public void myaction(final long arg) {
 			    System.out.println(arg);
 			  }
 			  
 			  public final void myaction() {
-			    myaction(450);
-			  }
-			}
-		''')
-	}
-
-	@Test
-	def void inAgentAction_1p_short() {
-		'''
-			agent A1 {
-				def myaction(arg : short=450) {
-					System.out.println(arg as int)
-				}
-			}
-		'''.assertCompilesTo('''
-			import io.sarl.lang.core.Agent;
-			
-			@SuppressWarnings("all")
-			public class A1 extends Agent {
-			  /**
-			   * Creates a new Agent of type A1
-			   */
-			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
-			  }
-			  
-			  public void myaction(final short arg) {
-			    System.out.println(((int) arg));
-			  }
-			  
-			  public final void myaction() {
-			    myaction(450);
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -271,12 +234,17 @@ class ArgDefaultValueCompilerTest {
 			    super(parentID);
 			  }
 			  
+			  /**
+			   * Default value for the parameter arg
+			   */
+			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = "abcd";
+			  
 			  public void myaction(final String arg) {
 			    System.out.println(arg);
 			  }
 			  
 			  public final void myaction() {
-			    myaction("abcd");
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -302,12 +270,17 @@ class ArgDefaultValueCompilerTest {
 			    super(parentID);
 			  }
 			  
+			  /**
+			   * Default value for the parameter arg
+			   */
+			  private final static char ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 'd';
+			  
 			  public void myaction(final char arg) {
 			    System.out.println(arg);
 			  }
 			  
 			  public final void myaction() {
-			    myaction('d');
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -333,12 +306,17 @@ class ArgDefaultValueCompilerTest {
 			    super(parentID);
 			  }
 			  
+			  /**
+			   * Default value for the parameter arg0
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
+			  
 			  public void myaction(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public final void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {
-			    myaction(4, arg1, arg2, arg3, arg4);
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, arg3, arg4);
 			  }
 			}
 		''')
@@ -364,12 +342,17 @@ class ArgDefaultValueCompilerTest {
 			    super(parentID);
 			  }
 			  
+			  /**
+			   * Default value for the parameter arg1
+			   */
+			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = "abc";
+			  
 			  public void myaction(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public final void myaction(final int arg0, final int arg2, final int arg3, final String arg4) {
-			    myaction(arg0, "abc", arg2, arg3, arg4);
+			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2, arg3, arg4);
 			  }
 			}
 		''')
@@ -395,12 +378,17 @@ class ArgDefaultValueCompilerTest {
 			    super(parentID);
 			  }
 			  
+			  /**
+			   * Default value for the parameter arg2
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2 = 18;
+			  
 			  public void myaction(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public final void myaction(final int arg0, final String arg1, final int arg3, final String arg4) {
-			    myaction(arg0, arg1, 18, arg3, arg4);
+			    myaction(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, arg3, arg4);
 			  }
 			}
 		''')
@@ -426,12 +414,17 @@ class ArgDefaultValueCompilerTest {
 			    super(parentID);
 			  }
 			  
+			  /**
+			   * Default value for the parameter arg3
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 34;
+			  
 			  public void myaction(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public final void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {
-			    myaction(arg0, arg1, arg2, 34, arg4);
+			    myaction(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
 			  }
 			}
 		''')
@@ -457,12 +450,17 @@ class ArgDefaultValueCompilerTest {
 			    super(parentID);
 			  }
 			  
+			  /**
+			   * Default value for the parameter arg4
+			   */
+			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_4 = "xyz";
+			  
 			  public void myaction(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public final void myaction(final int arg0, final String arg1, final int arg2, final int arg3) {
-			    myaction(arg0, arg1, arg2, arg3, "xyz");
+			    myaction(arg0, arg1, arg2, arg3, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_4);
 			  }
 			}
 		''')
@@ -488,20 +486,30 @@ class ArgDefaultValueCompilerTest {
 			    super(parentID);
 			  }
 			  
+			  /**
+			   * Default value for the parameter arg0
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
+			  
+			  /**
+			   * Default value for the parameter arg3
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 56;
+			  
 			  public void myaction(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public final void myaction(final String arg1, final int arg2, final String arg4) {
-			    myaction(4, arg1, arg2, 56, arg4);
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
 			  }
 			  
 			  public final void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {
-			    myaction(arg0, arg1, arg2, 56, arg4);
+			    myaction(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
 			  }
 			  
 			  public final void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {
-			    myaction(4, arg1, arg2, arg3, arg4);
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, arg3, arg4);
 			  }
 			}
 		''')
@@ -527,12 +535,17 @@ class ArgDefaultValueCompilerTest {
 			    super(parentID);
 			  }
 			  
+			  /**
+			   * Default value for the parameter arg1
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 45;
+			  
 			  public void myaction(final int arg0, final int arg1, final int... arg2) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public final void myaction(final int arg0, final int... arg2) {
-			    myaction(arg0, 45, arg2);
+			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
 			  }
 			}
 		''')
@@ -558,12 +571,17 @@ class ArgDefaultValueCompilerTest {
 			    super(parentID);
 			  }
 			  
+			  /**
+			   * Default value for the parameter arg0
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
+			  
 			  public void myaction(final int arg0, final int arg1, final int... arg2) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public final void myaction(final int arg1, final int... arg2) {
-			    myaction(45, arg1, arg2);
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2);
 			  }
 			}
 		''')
@@ -589,16 +607,26 @@ class ArgDefaultValueCompilerTest {
 			    super(parentID);
 			  }
 			  
+			  /**
+			   * Default value for the parameter arg0
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
+			  
+			  /**
+			   * Default value for the parameter arg1
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 56;
+			  
 			  public void myaction(final int arg0, final int arg1, final int... arg2) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public final void myaction(final int... arg2) {
-			    myaction(45, 56, arg2);
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
 			  }
 			  
 			  public final void myaction(final int arg0, final int... arg2) {
-			    myaction(arg0, 56, arg2);
+			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
 			  }
 			}
 		''')
@@ -624,24 +652,44 @@ class ArgDefaultValueCompilerTest {
 			    super(parentID);
 			  }
 			  
+			  /**
+			   * Default value for the parameter arg0
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
+			  
+			  /**
+			   * Default value for the parameter arg1
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 56;
+			  
+			  /**
+			   * Default value for the parameter arg2
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2 = 78;
+			  
+			  /**
+			   * Default value for the parameter arg3
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 14;
+			  
 			  public void myaction(final int arg0, final int arg1, final int arg2, final int arg3) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public final void myaction() {
-			    myaction(45, 56, 78, 14);
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
 			  }
 			  
 			  public final void myaction(final int arg0) {
-			    myaction(arg0, 56, 78, 14);
+			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
 			  }
 			  
 			  public final void myaction(final int arg0, final int arg1) {
-			    myaction(arg0, arg1, 78, 14);
+			    myaction(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
 			  }
 			  
 			  public final void myaction(final int arg0, final int arg1, final int arg2) {
-			    myaction(arg0, arg1, arg2, 14);
+			    myaction(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
 			  }
 			}
 		''')
@@ -660,12 +708,17 @@ class ArgDefaultValueCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
+			  /**
+			   * Default value for the parameter arg
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
+			  
 			  public B1(final int arg) {
 			    System.out.println(arg);
 			  }
 			  
 			  public B1() {
-			    this(4);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -675,7 +728,7 @@ class ArgDefaultValueCompilerTest {
 	def void inBehaviorConstructor_1p_float() {
 		'''
 			behavior B1 {
-				new(arg : float=4.5) {
+				new(arg : float=4.5f) {
 					System.out.println(arg)
 				}
 			}
@@ -684,12 +737,17 @@ class ArgDefaultValueCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
+			  /**
+			   * Default value for the parameter arg
+			   */
+			  private final static float ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4.5f;
+			  
 			  public B1(final float arg) {
 			    System.out.println(arg);
 			  }
 			  
 			  public B1() {
-			    this(4.5);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -708,36 +766,17 @@ class ArgDefaultValueCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
+			  /**
+			   * Default value for the parameter arg
+			   */
+			  private final static boolean ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = true;
+			  
 			  public B1(final boolean arg) {
 			    System.out.println(arg);
 			  }
 			  
 			  public B1() {
-			    this(true);
-			  }
-			}
-		''')
-	}
-
-	@Test
-	def void inBehaviorConstructor_1p_byte() {
-		'''
-			behavior B1 {
-				new(arg : byte=54) {
-					System.out.println(arg)
-				}
-			}
-		'''.assertCompilesTo('''
-			import io.sarl.lang.core.Behavior;
-			
-			@SuppressWarnings("all")
-			public class B1 extends Behavior {
-			  public B1(final byte arg) {
-			    System.out.println(arg);
-			  }
-			  
-			  public B1() {
-			    this(54);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -756,12 +795,17 @@ class ArgDefaultValueCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
+			  /**
+			   * Default value for the parameter arg
+			   */
+			  private final static double ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4.5;
+			  
 			  public B1(final double arg) {
 			    System.out.println(arg);
 			  }
 			  
 			  public B1() {
-			    this(4.5);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -780,36 +824,17 @@ class ArgDefaultValueCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
+			  /**
+			   * Default value for the parameter arg
+			   */
+			  private final static long ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 450;
+			  
 			  public B1(final long arg) {
 			    System.out.println(arg);
 			  }
 			  
 			  public B1() {
-			    this(450);
-			  }
-			}
-		''')
-	}
-
-	@Test
-	def void inBehaviorConstructor_1p_short() {
-		'''
-			behavior B1 {
-				new(arg : short=450) {
-					System.out.println(arg as int)
-				}
-			}
-		'''.assertCompilesTo('''
-			import io.sarl.lang.core.Behavior;
-			
-			@SuppressWarnings("all")
-			public class B1 extends Behavior {
-			  public B1(final short arg) {
-			    System.out.println(((int) arg));
-			  }
-			  
-			  public B1() {
-			    this(450);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -828,12 +853,17 @@ class ArgDefaultValueCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
+			  /**
+			   * Default value for the parameter arg
+			   */
+			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = "abcd";
+			  
 			  public B1(final String arg) {
 			    System.out.println(arg);
 			  }
 			  
 			  public B1() {
-			    this("abcd");
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -852,12 +882,17 @@ class ArgDefaultValueCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
+			  /**
+			   * Default value for the parameter arg
+			   */
+			  private final static char ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 'd';
+			  
 			  public B1(final char arg) {
 			    System.out.println(arg);
 			  }
 			  
 			  public B1() {
-			    this('d');
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -876,12 +911,17 @@ class ArgDefaultValueCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
+			  /**
+			   * Default value for the parameter arg0
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
+			  
 			  public B1(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public B1(final String arg1, final int arg2, final int arg3, final String arg4) {
-			    this(4, arg1, arg2, arg3, arg4);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, arg3, arg4);
 			  }
 			}
 		''')
@@ -900,12 +940,17 @@ class ArgDefaultValueCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
+			  /**
+			   * Default value for the parameter arg1
+			   */
+			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = "abc";
+			  
 			  public B1(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public B1(final int arg0, final int arg2, final int arg3, final String arg4) {
-			    this(arg0, "abc", arg2, arg3, arg4);
+			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2, arg3, arg4);
 			  }
 			}
 		''')
@@ -924,12 +969,17 @@ class ArgDefaultValueCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
+			  /**
+			   * Default value for the parameter arg2
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2 = 18;
+			  
 			  public B1(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public B1(final int arg0, final String arg1, final int arg3, final String arg4) {
-			    this(arg0, arg1, 18, arg3, arg4);
+			    this(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, arg3, arg4);
 			  }
 			}
 		''')
@@ -948,12 +998,17 @@ class ArgDefaultValueCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
+			  /**
+			   * Default value for the parameter arg3
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 34;
+			  
 			  public B1(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public B1(final int arg0, final String arg1, final int arg2, final String arg4) {
-			    this(arg0, arg1, arg2, 34, arg4);
+			    this(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
 			  }
 			}
 		''')
@@ -972,12 +1027,17 @@ class ArgDefaultValueCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
+			  /**
+			   * Default value for the parameter arg4
+			   */
+			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_4 = "xyz";
+			  
 			  public B1(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public B1(final int arg0, final String arg1, final int arg2, final int arg3) {
-			    this(arg0, arg1, arg2, arg3, "xyz");
+			    this(arg0, arg1, arg2, arg3, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_4);
 			  }
 			}
 		''')
@@ -996,20 +1056,30 @@ class ArgDefaultValueCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
+			  /**
+			   * Default value for the parameter arg0
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
+			  
+			  /**
+			   * Default value for the parameter arg3
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 56;
+			  
 			  public B1(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public B1(final String arg1, final int arg2, final String arg4) {
-			    this(4, arg1, arg2, 56, arg4);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
 			  }
 			  
 			  public B1(final int arg0, final String arg1, final int arg2, final String arg4) {
-			    this(arg0, arg1, arg2, 56, arg4);
+			    this(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
 			  }
 			  
 			  public B1(final String arg1, final int arg2, final int arg3, final String arg4) {
-			    this(4, arg1, arg2, arg3, arg4);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, arg3, arg4);
 			  }
 			}
 		''')
@@ -1028,12 +1098,17 @@ class ArgDefaultValueCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
+			  /**
+			   * Default value for the parameter arg1
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 45;
+			  
 			  public B1(final int arg0, final int arg1, final int... arg2) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public B1(final int arg0, final int... arg2) {
-			    this(arg0, 45, arg2);
+			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
 			  }
 			}
 		''')
@@ -1052,12 +1127,17 @@ class ArgDefaultValueCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
+			  /**
+			   * Default value for the parameter arg0
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
+			  
 			  public B1(final int arg0, final int arg1, final int... arg2) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public B1(final int arg1, final int... arg2) {
-			    this(45, arg1, arg2);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2);
 			  }
 			}
 		''')
@@ -1076,16 +1156,26 @@ class ArgDefaultValueCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
+			  /**
+			   * Default value for the parameter arg0
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
+			  
+			  /**
+			   * Default value for the parameter arg1
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 56;
+			  
 			  public B1(final int arg0, final int arg1, final int... arg2) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public B1(final int... arg2) {
-			    this(45, 56, arg2);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
 			  }
 			  
 			  public B1(final int arg0, final int... arg2) {
-			    this(arg0, 56, arg2);
+			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
 			  }
 			}
 		''')
@@ -1104,24 +1194,44 @@ class ArgDefaultValueCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
+			  /**
+			   * Default value for the parameter arg0
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
+			  
+			  /**
+			   * Default value for the parameter arg1
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 56;
+			  
+			  /**
+			   * Default value for the parameter arg2
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2 = 78;
+			  
+			  /**
+			   * Default value for the parameter arg3
+			   */
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 14;
+			  
 			  public B1(final int arg0, final int arg1, final int arg2, final int arg3) {
 			    System.out.println(arg0);
 			  }
 			  
 			  public B1() {
-			    this(45, 56, 78, 14);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
 			  }
 			  
 			  public B1(final int arg0) {
-			    this(arg0, 56, 78, 14);
+			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
 			  }
 			  
 			  public B1(final int arg0, final int arg1) {
-			    this(arg0, arg1, 78, 14);
+			    this(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
 			  }
 			  
 			  public B1(final int arg0, final int arg1, final int arg2) {
-			    this(arg0, arg1, arg2, 14);
+			    this(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
 			  }
 			}
 		''')

@@ -29,6 +29,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
+import org.eclipse.xtext.xbase.XbasePackage
 
 /**
  * @author $Author: sgalland$
@@ -1014,7 +1015,10 @@ class ArgDefaultValueParsingTest {
 				}
 			}
 		'''.parse
-		mas.assertNoErrors
+		mas.assertError(
+			XbasePackage::eINSTANCE.XNumberLiteral,
+			IssueCodes::INCOMPATIBLE_TYPES,
+			"Type mismatch: cannot convert from double to int")
 	}
 
 	@Test
@@ -1026,7 +1030,10 @@ class ArgDefaultValueParsingTest {
 				}
 			}
 		'''.parse
-		mas.assertNoErrors
+		mas.assertError(
+			XbasePackage::eINSTANCE.XNumberLiteral,
+			IssueCodes::INCOMPATIBLE_TYPES,
+			"Type mismatch: cannot convert from double to int")
 	}
 
 	@Test

@@ -29,6 +29,7 @@ import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
+import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.junit.Assert;
@@ -1977,7 +1978,10 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      this._validationTestHelper.assertNoErrors(mas);
+      EClass _xNumberLiteral = XbasePackage.eINSTANCE.getXNumberLiteral();
+      this._validationTestHelper.assertError(mas, _xNumberLiteral, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES, 
+        "Type mismatch: cannot convert from double to int");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -2001,7 +2005,10 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      this._validationTestHelper.assertNoErrors(mas);
+      EClass _xNumberLiteral = XbasePackage.eINSTANCE.getXNumberLiteral();
+      this._validationTestHelper.assertError(mas, _xNumberLiteral, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES, 
+        "Type mismatch: cannot convert from double to int");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

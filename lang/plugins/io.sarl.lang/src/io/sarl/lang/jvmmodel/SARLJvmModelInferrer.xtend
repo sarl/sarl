@@ -59,15 +59,12 @@ import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.xbase.XExpression
-import org.eclipse.xtext.xbase.XStringLiteral
 import org.eclipse.xtext.xbase.compiler.XbaseCompiler
-import org.eclipse.xtext.xbase.compiler.output.FakeTreeAppendable
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor.IPostIndexingInitializing
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
-import org.eclipse.xtext.xbase.typesystem.IBatchTypeResolver
 import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 import org.eclipse.xtext.xbase.typesystem.references.OwnedConverter
@@ -140,6 +137,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				serial = serial + generateSuperTypes(element, typeof(io.sarl.lang.core.Event))
 				var JvmField jvmField
 				var List<JvmField> jvmFields = new ArrayList()
+				var actionIndex = 0
 
 				for (feature : element.features) {
 					switch feature {
@@ -150,8 +148,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							serial = serial + feature.name.hashCode
 						}
 						Constructor: {
-							generateConstructor(element, feature)
+							generateConstructor(element, feature, actionIndex)
 							serial = serial + element.fullyQualifiedName.hashCode
+							actionIndex++
 						}
 					}
 
@@ -201,8 +200,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 
 				documentation = capacity.documentation
 				generateSuperTypes(capacity, typeof(io.sarl.lang.core.Capacity))
+				
+				var actionIndex = 0
 				for (feature : capacity.features) {
-					generateAction(feature as ActionSignature, null)
+					generateAction(feature as ActionSignature, null, actionIndex)
+					actionIndex++
 				}
 			])
 	}
@@ -226,21 +228,26 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						log.fine("Unable to resolve an implemented capacity name for the skill:" + element.name)
 					}
 				}
+				
+				var actionIndex = 0
+				
 				for (feature : element.features) {
 					switch feature {
 						Action: {
-							generateAction(feature.signature as ActionSignature, feature.body)
+							generateAction(feature.signature as ActionSignature, feature.body, actionIndex)
+							actionIndex++
 						}
 						Attribute: {
 							generateAttribute(feature, JvmVisibility::PROTECTED)
 						}
 						CapacityUses: {
 							for (used : feature.capacitiesUsed) {
-								generateCapacityDelegatorMethods(element, used)
+								actionIndex = generateCapacityDelegatorMethods(element, used, actionIndex)
 							}
 						}
 						Constructor: {
-							generateConstructor(element, feature)
+							generateConstructor(element, feature, actionIndex)
+							actionIndex++
 						}
 					}
 				}
@@ -255,29 +262,34 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 
 				documentation = element.documentation
 				generateSuperTypes(element, typeof(io.sarl.lang.core.Behavior))
-				var int counter = 1
+				
+				var behaviorUnitIndex = 1
+				var actionIndex = 1
+				
 				for (feature : element.features) {
 					switch feature {
 						RequiredCapacity: {
 							//TODO 
 						}
 						BehaviorUnit: {
-							val bMethod = generateBehaviorUnit(feature, counter)
+							val bMethod = generateBehaviorUnit(feature, behaviorUnitIndex)
 							if (bMethod !== null) {
-								counter = counter + 1						
+								behaviorUnitIndex++						
 								members += bMethod
 							}
 						}
 						Action: {
-							generateAction(feature.signature as ActionSignature, feature.body)
+							generateAction(feature.signature as ActionSignature, feature.body, actionIndex)
+							actionIndex++
 						}
 						CapacityUses: {
 							for (used : feature.capacitiesUsed) {
-								generateCapacityDelegatorMethods(element, used)
+								actionIndex = generateCapacityDelegatorMethods(element, used, actionIndex)
 							}
 						}
 						Constructor: {
-							generateConstructor(element, feature)
+							generateConstructor(element, feature, actionIndex)
+							actionIndex++
 						}
 						Attribute: {
 							generateAttribute(feature, JvmVisibility::PROTECTED)
@@ -301,25 +313,29 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					super(parentID);
 				'''
 			]
-			var int counter = 1
+			
+			var behaviorUnitIndex = 1
+			var actionIndex = 1
+			
 			for (feature : agent.features) {
 				switch feature {
 					BehaviorUnit: {
-						val bMethod = generateBehaviorUnit(feature, counter)
+						val bMethod = generateBehaviorUnit(feature, behaviorUnitIndex)
 						if (bMethod !== null) {
-							counter = counter + 1						
+							behaviorUnitIndex++
 							members += bMethod
 						}
 					}
 					Action: {
-						generateAction(feature.signature as ActionSignature, feature.body)
+						generateAction(feature.signature as ActionSignature, feature.body, actionIndex)
+						actionIndex++
 					}
 					Attribute: {
 						generateAttribute(feature, JvmVisibility::PROTECTED)
 					}
 					CapacityUses: {
 						for (used : feature.capacitiesUsed) {
-							generateCapacityDelegatorMethods(agent, used)
+							actionIndex = generateCapacityDelegatorMethods(agent, used, actionIndex)
 						}
 					}
 				}
@@ -390,7 +406,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 	
-	protected def void generateCapacityDelegatorMethods(JvmGenericType owner, InheritingElement context, Capacity capacity) {
+	protected def int generateCapacityDelegatorMethods(JvmGenericType owner, InheritingElement context, Capacity capacity, int index) {
 		// Detect the needed actions by iterating on the capacity hierarchy
 		val functions = new TreeSet(new ActionSignatureComparator)
 		val functionsPerCapacity = new TreeMap<String,Collection<? extends ActionSignature>>
@@ -427,8 +443,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			}
 		}
 		// Generate the missed actions
+		var actionIndex = index
 		for (signature : functions) {
-			owner.generateAction(signature, null).setBody [
+			owner.generateAction(signature, null, actionIndex).setBody [
 				if (signature.type != null) {
 					append('''return ''')
 				}
@@ -438,7 +455,10 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				append(signature.params.join(', ')[name])
 				append(');')
 			]
+			actionIndex++
 		}
+		
+		return actionIndex
 	}
 
 	protected def JvmOperation generateBehaviorUnit(JvmGenericType owner, BehaviorUnit unit, int index) {
@@ -484,13 +504,29 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		return null
 	}
 	
-	protected def List<String> generateFormalParametersWithoutDefaultValue(JvmExecutable owner, boolean varargs, List<FormalParameter> params) {
+	protected def List<String> generateFormalParametersAndDefaultValueFields(JvmExecutable owner, JvmGenericType actionContainer, boolean varargs, List<FormalParameter> params, int actionIndex) {
 		var parameterTypes = new ArrayList
 		var JvmFormalParameter lastParam = null
+		var paramIndex = 0
 		for (param : params) {
+			
+			if (param.defaultValue!==null) {
+				var name = "___FORMAL_PARAMETER_DEFAULT_VALUE_"+actionIndex+"_"+paramIndex
+				var field = param.defaultValue.toField(name, param.parameterType) [
+					documentation = "Default value for the parameter "+param.name
+					static = true
+					final = true
+					visibility = JvmVisibility::PRIVATE
+					initializer = param.defaultValue
+				]
+				actionContainer.members += field
+			}
+			
 			lastParam = param.toParameter(param.name, param.parameterType)
 			owner.parameters += lastParam
 			parameterTypes.add(param.parameterType.identifier)
+			
+			paramIndex++
 		}
 		if (varargs && lastParam !== null) {
 			lastParam.parameterType = lastParam.parameterType.addArrayTypeDimension
@@ -498,12 +534,13 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		return parameterTypes
 	}
 
-	protected def List<String> generateFormalParametersWithDefaultValue(JvmExecutable owner, boolean varargs, List<InferredStandardParameter> signature) {
+	protected def List<String> generateFormalParametersWithDefaultValue(JvmExecutable owner, JvmGenericType actionContainer, boolean varargs, List<InferredStandardParameter> signature, int actionIndex) {
 		var JvmFormalParameter lastParam = null
 		val arguments = new ArrayList
+		var paramIndex = 0
 		for(parameterSpec : signature) {
 			if (parameterSpec instanceof InferredValuedParameter) {
-				associate(parameterSpec.expr, owner)
+				/*associate(parameterSpec.expr, owner)
 				// Special case: convert a String literal to a char
 				var boolean treated = false;
 				var expr = parameterSpec.expr
@@ -522,7 +559,8 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				xbaseCompiler.toJavaExpression(parameterSpec.expr, jExpr)
 				if (!treated){
 					arguments.add(jExpr.content)
-				}
+				}*/
+				arguments.add("___FORMAL_PARAMETER_DEFAULT_VALUE_"+actionIndex+"_"+paramIndex)
 			}
 			else {
 				val param = parameterSpec.parameter
@@ -530,6 +568,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				owner.parameters += lastParam
 				arguments.add(param.name)
 			}
+			paramIndex++
 		}
 		if (varargs && lastParam !== null) {
 			lastParam.parameterType = lastParam.parameterType.addArrayTypeDimension
@@ -537,22 +576,26 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		return arguments
 	}
 
-	protected def JvmOperation generateAction(JvmGenericType owner, ActionSignature signature, XExpression operationBody) {
+	protected def JvmOperation generateAction(JvmGenericType owner, ActionSignature signature, XExpression operationBody, int index) {
 		var returnType = signature.type
 		if (returnType == null) {
 			returnType = signature.newTypeRef(Void::TYPE)
 		}
+		
+		val actionKey = sarlSignatureProvider.createFunctionID(owner, signature.name)
 				
 		var op = owner.toMethod(signature.name, returnType) [
 			documentation = signature.documentation
 			varArgs = signature.varargs
-			generateFormalParametersWithoutDefaultValue(signature.varargs, signature.params)
+			generateFormalParametersAndDefaultValueFields(
+				owner, signature.varargs, signature.params, index
+			)
 			body = operationBody
 		]
 		owner.members += op
 
 		val otherSignatures = sarlSignatureProvider.createSignature(
-			sarlSignatureProvider.createFunctionID(owner, signature.name),
+			actionKey,
 			signature.varargs, signature.params
 		)
 		
@@ -562,7 +605,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				varArgs = signature.varargs
 				final = true
 				val args = generateFormalParametersWithDefaultValue(
-					signature.varargs, otherSignature
+					owner, signature.varargs, otherSignature, index
 				)
 				body = [
 					append(signature.name)
@@ -577,16 +620,20 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		return op
 	}
 
-	protected def void generateConstructor(JvmGenericType owner, TopElement context, Constructor constructor) {
+	protected def void generateConstructor(JvmGenericType owner, TopElement context, Constructor constructor, int index) {
+		val actionKey = sarlSignatureProvider.createConstructorID(owner)
+		
 		owner.members += context.toConstructor [
 			documentation = constructor.documentation
 			varArgs = constructor.varargs
-			generateFormalParametersWithoutDefaultValue(constructor.varargs, constructor.params)
+			generateFormalParametersAndDefaultValueFields(
+				owner, constructor.varargs, constructor.params, index
+			)
 			body = constructor.body
 		]
 
 		val otherSignatures = sarlSignatureProvider.createSignature(
-			sarlSignatureProvider.createConstructorID(owner),
+			actionKey,
 			constructor.varargs, constructor.params
 		)
 		
@@ -595,7 +642,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				documentation = constructor.documentation
 				varArgs = constructor.varargs
 				val args = generateFormalParametersWithDefaultValue(
-					constructor.varargs, otherSignature
+					owner, constructor.varargs, otherSignature, index
 				)
 				body = [
 					append("this(")

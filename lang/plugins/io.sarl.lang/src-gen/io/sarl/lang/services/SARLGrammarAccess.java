@@ -1326,34 +1326,14 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class DefaultParameterValueElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "DefaultParameterValue");
-		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final RuleCall cXBooleanLiteralParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cXNumberLiteralParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		private final RuleCall cXNullLiteralParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
-		private final RuleCall cXStringLiteralParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
-		private final RuleCall cXTypeLiteralParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
+		private final RuleCall cXLiteralParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
 		//DefaultParameterValue returns xbase::XExpression:
-		//	XBooleanLiteral | XNumberLiteral | XNullLiteral | XStringLiteral | XTypeLiteral;
+		//	XLiteral;
 		public ParserRule getRule() { return rule; }
 
-		//XBooleanLiteral | XNumberLiteral | XNullLiteral | XStringLiteral | XTypeLiteral
-		public Alternatives getAlternatives() { return cAlternatives; }
-
-		//XBooleanLiteral
-		public RuleCall getXBooleanLiteralParserRuleCall_0() { return cXBooleanLiteralParserRuleCall_0; }
-
-		//XNumberLiteral
-		public RuleCall getXNumberLiteralParserRuleCall_1() { return cXNumberLiteralParserRuleCall_1; }
-
-		//XNullLiteral
-		public RuleCall getXNullLiteralParserRuleCall_2() { return cXNullLiteralParserRuleCall_2; }
-
-		//XStringLiteral
-		public RuleCall getXStringLiteralParserRuleCall_3() { return cXStringLiteralParserRuleCall_3; }
-
-		//XTypeLiteral
-		public RuleCall getXTypeLiteralParserRuleCall_4() { return cXTypeLiteralParserRuleCall_4; }
+		//XLiteral
+		public RuleCall getXLiteralParserRuleCall() { return cXLiteralParserRuleCall; }
 	}
 
 	public class XVariableDeclarationElements extends AbstractParserRuleElementFinder {
@@ -1998,7 +1978,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//DefaultParameterValue returns xbase::XExpression:
-	//	XBooleanLiteral | XNumberLiteral | XNullLiteral | XStringLiteral | XTypeLiteral;
+	//	XLiteral;
 	public DefaultParameterValueElements getDefaultParameterValueAccess() {
 		return (pDefaultParameterValue != null) ? pDefaultParameterValue : (pDefaultParameterValue = new DefaultParameterValueElements());
 	}

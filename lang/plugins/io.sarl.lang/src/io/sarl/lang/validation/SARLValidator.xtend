@@ -19,25 +19,18 @@ import com.google.inject.Inject
 import io.sarl.lang.SARLKeywords
 import io.sarl.lang.sarl.Action
 import io.sarl.lang.sarl.ActionSignature
-import io.sarl.lang.sarl.Capacity
+import io.sarl.lang.sarl.Attribute
 import io.sarl.lang.sarl.Constructor
 import io.sarl.lang.sarl.FeatureContainer
 import io.sarl.lang.sarl.FormalParameter
-import io.sarl.lang.sarl.InheritingElement
 import io.sarl.lang.sarl.ParameterizedFeature
 import io.sarl.lang.sarl.Skill
 import io.sarl.lang.signature.ActionKey
 import io.sarl.lang.signature.ActionNameKey
 import io.sarl.lang.signature.ActionSignatureProvider
-import io.sarl.lang.signature.InferredActionSignature
 import io.sarl.lang.signature.SignatureKey
-import java.util.LinkedList
-import java.util.List
-import java.util.Map
 import java.util.Set
-import java.util.TreeMap
 import java.util.TreeSet
-import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmGenericType
@@ -252,7 +245,7 @@ class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 	
-	/*private def Map<ActionNameKey,EList<InferredActionSignature>> getCapacityActionsFromHierarchy(EList<InheritingElement> sources) {
+	/*TODO private def Map<ActionNameKey,EList<InferredActionSignature>> getCapacityActionsFromHierarchy(EList<InheritingElement> sources) {
 		var Map<ActionNameKey,EList<InferredActionSignature>> actions = new TreeMap
 		var Set<String> encounteredCapacities = new TreeSet
 		var List<Capacity> capacities = new LinkedList
@@ -288,7 +281,7 @@ class SARLValidator extends AbstractSARLValidator {
 	
 	@Check
 	def checkSkillActionImplementationPrototype(Skill skill) {
-		/*var Set<ActionKey> actions = getCapacityActionsFromHierarchy(skill.implementedTypes)
+		/*TODO var Set<ActionKey> actions = getCapacityActionsFromHierarchy(skill.implementedTypes)
 		var JvmIdentifiableElement container = null
 		for(feature : skill.features) {
 			if (feature instanceof Action) {
@@ -302,4 +295,32 @@ class SARLValidator extends AbstractSARLValidator {
 		}*/
 	}
 	
+	@Check
+	def checkActionName(ActionSignature action) {
+		if (action.name.startsWith("_handle_")) {
+				error(
+					String.format(
+						"Invalid action name '%s'. You must not give to an action a name that is starting with '_handle_'. This prefix is reserved by the SARL compiler.",
+						action.name
+					), 
+					action,
+					null,
+					io.sarl.lang.validation.IssueCodes::INVALID_ACTION_NAME)
+		}
+	}
+	
+	@Check
+	def checkAttributeName(Attribute attribute) {
+		if (attribute.name.startsWith("___FORMAL_PARAMETER_DEFAULT_VALUE_")) {
+				error(
+					String.format(
+						"Invalid attribute name '%s'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.",
+						attribute.name
+					), 
+					attribute,
+					null,
+					io.sarl.lang.validation.IssueCodes::INVALID_ATTRIBUTE_NAME)
+		}
+	}
+
 }

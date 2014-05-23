@@ -70,4 +70,31 @@ public class IssueCodes {
 	 */
 	public static final String INVALID_CAPACITY_ACTION_IMPLENTATION = ISSUE_CODE_PREFIX+"invalid_capacity_action_implementation"; //$NON-NLS-1$
 
+	/**
+	 * Some names for actions are prohibited, eg. the action names starting with
+	 * "_handle_" are restricted to the event handlers that are generated.
+	 * <p>
+	 * The following code is avoid:<pre><code>
+	 * behavior B1 {
+	 *    def _handle_myaction(a : int, b : int=4, c : int)
+	 * }
+	 * </code></pre>
+	 * </code></pre>
+	 */
+	public static final String INVALID_ACTION_NAME = ISSUE_CODE_PREFIX+"invalid_action_name"; //$NON-NLS-1$
+
+	/**
+	 * Some names for attributes are prohibited, eg. the attribute names starting with
+	 * "___FORMAL_PARAMETER_DEFAULT_VALUE_" are restricted to the default values for
+	 * the formal parameters of the actions.
+	 * <p>
+	 * The following code is avoid:<pre><code>
+	 * behavior B1 {
+	 *    var ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = 3
+	 * }
+	 * </code></pre>
+	 * </code></pre>
+	 */
+	public static final String INVALID_ATTRIBUTE_NAME = ISSUE_CODE_PREFIX+"invalid_attribute_name"; //$NON-NLS-1$
+
 }
