@@ -276,4 +276,24 @@ class CapacityParsingTest {
 		mas.assertNoErrors
 	}
 
+	@Test
+	def void fieldNameShadowingInSkill() {
+		val mas = '''
+			capacity C1 { }
+			capacity C2 { }
+			skill S1 implements C1 {
+				val field1 : int = 5
+				def myaction(a : int) { }
+			}
+			skill S2 extends S1 implements C2 {
+				val field1 : int = 5
+				def myaction(a : int) { }
+			}
+		'''.parse
+		mas.assertWarning(
+			TypesPackage::eINSTANCE.jvmField,
+			IssueCodes::FIELD_NAME_SHADOWING,
+			"The field 'field1' in 'S2' is hidding the inherited field 'S1.field1'.")
+	}
+
 }

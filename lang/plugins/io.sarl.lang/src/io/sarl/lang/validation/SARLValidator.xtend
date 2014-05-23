@@ -26,56 +26,57 @@ import io.sarl.lang.sarl.Constructor
 import io.sarl.lang.sarl.Event
 import io.sarl.lang.sarl.FeatureContainer
 import io.sarl.lang.sarl.FormalParameter
+import io.sarl.lang.sarl.InheritingElement
 import io.sarl.lang.sarl.ParameterizedFeature
 import io.sarl.lang.sarl.Skill
 import io.sarl.lang.signature.ActionKey
 import io.sarl.lang.signature.ActionNameKey
 import io.sarl.lang.signature.ActionSignatureProvider
 import io.sarl.lang.signature.SignatureKey
+import java.util.Map
 import java.util.Set
+import java.util.TreeMap
 import java.util.TreeSet
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
-import org.eclipse.xtext.common.types.JvmTypeReference
-import org.eclipse.xtext.common.types.util.TypeReferences
+import org.eclipse.xtext.common.types.JvmMember
+import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.ValidationMessageAcceptor
-import org.eclipse.xtext.xbase.XBooleanLiteral
-import org.eclipse.xtext.xbase.XExpression
-import org.eclipse.xtext.xbase.XNullLiteral
-import org.eclipse.xtext.xbase.XNumberLiteral
-import org.eclipse.xtext.xbase.XStringLiteral
-import org.eclipse.xtext.xbase.XTypeLiteral
-import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
-import org.eclipse.xtext.xbase.typesystem.computation.NumberLiterals
-import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
-import org.eclipse.xtext.xbase.typesystem.references.OwnedConverter
 import org.eclipse.xtext.xbase.validation.IssueCodes
 
+import static org.eclipse.xtext.common.types.JvmVisibility.*
+
+// 
 /**
- * Custom validation rules. 
- *
- * see http://www.eclipse.org/Xtext/documentation.html#validation
+ * Validator for the SARL elements.
+ * <p>
+ * The following issues are not yet supported:<ul>
+ * <li>Redundant capacity implementation - WARNING</li>
+ * <li>Override of final method - ERROR</li>
+ * <li>Missed function implementation - ERROR</li>
+ * <li>Skill implementation cannot have default value - ERROR</li>
+ * <li>Invalid super constructor call - ERROR</li>
+ * <li>Missed super call - ERROR</li>
+ * <li>Invalid return type for an action against the inherited type</li>
+ * <li>Incompatible modifiers for a function</li>
+ * </ul>
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private ILogicalContainerProvider logicalContainerProvider;
 
-	@Inject
-	private var TypeReferences typeReferences
-	
-	@Inject
-	private NumberLiterals numberLiterals
-	
-	@Inject
-	private IJvmModelAssociations associations;
-	
 	@Inject
 	private ActionSignatureProvider sarlSignatureProvider
 
@@ -96,11 +97,7 @@ class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 		
-	private def boolean isInterface(LightweightTypeReference typeRef) {
-		return typeRef.type.interface
-	}
-	
-	private def boolean isClass(LightweightTypeReference typeRef) {
+	protected def boolean isClass(LightweightTypeReference typeRef) {
 		var t = typeRef.type
 		if (t instanceof JvmGenericType) {
 			return !t.interface
@@ -108,45 +105,9 @@ class SARLValidator extends AbstractSARLValidator {
 		return false
 	}	
 	
-	private def LightweightTypeReference actualType(XExpression expr, EObject context, LightweightTypeReference targetType) {
-		var type = expr.actualType
-		if (type!==null) return type
-		if (expr instanceof XNullLiteral) {
-		}
-		var JvmTypeReference jvmType = null
-		if (expr instanceof XBooleanLiteral) {
-			jvmType = typeReferences.getTypeForName(Boolean::TYPE, context);
-		}
-		else if (expr instanceof XStringLiteral) {
-			if ((targetType.isType(Character::TYPE) || targetType.isType(Character))
-				&& (expr.value!=null && expr.value.length<=1)) {
-				jvmType = typeReferences.getTypeForName(Character::TYPE, context);
-			}
-			else {
-				jvmType = typeReferences.getTypeForName(String, context);
-			}
-		}
-		else if (expr instanceof XNumberLiteral) {
-			var jType = numberLiterals.getJavaType(expr)
-			jvmType = typeReferences.getTypeForName(jType, expr);
-			
-		}
-		else if (expr instanceof XTypeLiteral) {
-			jvmType = typeReferences.createTypeRef(expr.type)
-		}
-		if (jvmType!==null) {
-			val OwnedConverter converter = new OwnedConverter(
-				new StandardTypeReferenceOwner(getServices(), context),
-				true
-			)
-			return converter.toLightweightReference(jvmType)
-		}
-		return null;
-	}
-	
 	private def checkDefaultValueTypeCompatibleWithParameterType(FormalParameter param) {
 		var toType = toLightweightTypeReference(param.parameterType, true)
-		var fromType = param.defaultValue.actualType(param, toType)
+		var fromType = param.defaultValue.actualType
 		if (fromType===null) {
 			error(
 				String.format(
@@ -158,29 +119,29 @@ class SARLValidator extends AbstractSARLValidator {
 				IssueCodes::INVALID_TYPE_PARAMETER_BOUNDS)
 		}
 		
-		if ((fromType.getType() instanceof JvmDeclaredType || fromType.isPrimitive())
+		if ((fromType.type instanceof JvmDeclaredType || fromType.isPrimitive)
 			&&
-			(!isInterface(fromType) || isFinal(toType)) // if one of the types is an interface and the other is a non final class (or interface) there always can be a subtype
+			(!fromType.type.isInterface || toType.isFinal) // if one of the types is an interface and the other is a non final class (or interface) there always can be a subtype
 			&&
-			(!isInterface(toType) || isFinal(fromType))
+			(!fromType.type.isInterface || fromType.isFinal)
 			&&
 			(!toType.isAssignableFrom(fromType))
 			&&
-			(   isFinal(fromType) || isFinal(toType)
-				|| isClass(fromType) && isClass(toType))
+			(   fromType.isFinal || toType.isFinal
+				|| fromType.isClass && toType.isClass)
 			&&
 			(!fromType.isAssignableFrom(toType)) // no upcast
 		) { 
 			error(String.format("Cannot cast from %s to %s",
-					getNameOfTypes(fromType), canonicalName(toType)),
+					fromType.getNameOfTypes, toType.canonicalName),
 				param,
 				null,
 				ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 				IssueCodes::INVALID_CAST);
 		}
-		else if(toType.isPrimitive() && !(fromType.isPrimitive() || fromType.isWrapper())) {
+		else if(toType.primitive && !(fromType.primitive || fromType.wrapper)) {
 				error(String.format("Cannot cast from %s to %s",
-					getNameOfTypes(fromType), canonicalName(toType)
+					fromType.getNameOfTypes, toType.canonicalName
 					),
 					param,
 					null, 
@@ -216,17 +177,17 @@ class SARLValidator extends AbstractSARLValidator {
 				var s = feature.signature as ActionSignature
 				name = s.name
 				actionID = sarlSignatureProvider.createFunctionID(container, name)
-				signatureID = sarlSignatureProvider.createSignatureID(s.params)
+				signatureID = sarlSignatureProvider.createSignatureIDFromSarlModel(s.params)
 			}
 			else if (feature instanceof ActionSignature) {
 				name = feature.name
 				actionID = sarlSignatureProvider.createFunctionID(container, name)
-				signatureID = sarlSignatureProvider.createSignatureID(feature.params)
+				signatureID = sarlSignatureProvider.createSignatureIDFromSarlModel(feature.params)
 			}
 			else if (feature instanceof Constructor) {
 				name = SARLKeywords.CONSTRUCTOR
 				actionID = sarlSignatureProvider.createConstructorID(container)
-				signatureID = sarlSignatureProvider.createSignatureID(feature.params)
+				signatureID = sarlSignatureProvider.createSignatureIDFromSarlModel(feature.params)
 			}
 			else {
 				name = null
@@ -267,71 +228,80 @@ class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 		
+	protected def boolean isHiddenAction(String name) {
+		return name.startsWith("_handle_")
+	}
+
 	@Check
 	def checkActionName(ActionSignature action) {
-		if (action.name.startsWith("_handle_")) {
-				error(
-					String.format(
-						"Invalid action name '%s'. You must not give to an action a name that is starting with '_handle_'. This prefix is reserved by the SARL compiler.",
-						action.name
-					), 
-					action,
-					null,
-					io.sarl.lang.validation.IssueCodes::INVALID_ACTION_NAME)
+		if (isHiddenAction(action.name)) {
+			error(
+				String.format(
+					"Invalid action name '%s'. You must not give to an action a name that is starting with '_handle_'. This prefix is reserved by the SARL compiler.",
+					action.name
+				), 
+				action,
+				null,
+				io.sarl.lang.validation.IssueCodes::INVALID_ACTION_NAME)
 		}
+	}
+	
+	protected def boolean isHiddenAttribute(String name) {
+		return name.startsWith("___FORMAL_PARAMETER_DEFAULT_VALUE_")
 	}
 	
 	@Check
 	def checkAttributeName(Attribute attribute) {
-		if (attribute.name.startsWith("___FORMAL_PARAMETER_DEFAULT_VALUE_")) {
-				error(
-					String.format(
-						"Invalid attribute name '%s'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.",
-						attribute.name
-					), 
-					attribute,
-					null,
-					io.sarl.lang.validation.IssueCodes::INVALID_ATTRIBUTE_NAME)
+		if (attribute.name.isHiddenAttribute) {
+			error(
+				String.format(
+					"Invalid attribute name '%s'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.",
+					attribute.name
+				), 
+				attribute,
+				null,
+				io.sarl.lang.validation.IssueCodes::INVALID_ATTRIBUTE_NAME)
+		}
+	}
+	
+	protected def JvmGenericType getJvmGeneric(EObject element) {
+		for(obj : services.jvmModelAssociations.getJvmElements(element)) {
+			if (obj instanceof JvmGenericType) {
+				return obj
+			}
+		}
+		return null
+	}
+	
+	@Check
+	def dispatch checkFinalFieldInitialization(Event event) {
+		var JvmGenericType type = event.jvmGeneric
+		if (type!==null) {
+			type.checkFinalFieldInitialization
 		}
 	}
 	
 	@Check
-	def checkEventFinalFieldInitialization(Event event) {
-		for(obj : associations.getJvmElements(event)) {
-			if (obj instanceof JvmGenericType) {
-				obj.checkFinalFieldInitialization
-				return // Are we sure that returning at the first occurence of JvmGenericType is correct?
-			}
-		}
-	}
-	
-	@Check
-	def checkAgentFinalFieldInitialization(Agent agent) {
-		for(obj : associations.getJvmElements(agent)) {
-			if (obj instanceof JvmGenericType) {
-				obj.checkFinalFieldInitialization
-				return // Are we sure that returning at the first occurence of JvmGenericType is correct?
-			}
+	def dispatch checkFinalFieldInitialization(Agent agent) {
+		var JvmGenericType type = agent.jvmGeneric
+		if (type!==null) {
+			type.checkFinalFieldInitialization
 		}
 	}
 
 	@Check
-	def checkBehaviorFinalFieldInitialization(Behavior behavior) {
-		for(obj : associations.getJvmElements(behavior)) {
-			if (obj instanceof JvmGenericType) {
-				obj.checkFinalFieldInitialization
-				return // Are we sure that returning at the first occurence of JvmGenericType is correct?
-			}
+	def dispatch checkFinalFieldInitialization(Behavior behavior) {
+		var JvmGenericType type = behavior.jvmGeneric
+		if (type!==null) {
+			type.checkFinalFieldInitialization
 		}
 	}
 
 	@Check
-	def checkSkillFinalFieldInitialization(Skill skill) {
-		for(obj : associations.getJvmElements(skill)) {
-			if (obj instanceof JvmGenericType) {
-				obj.checkFinalFieldInitialization
-				return // Are we sure that returning at the first occurence of JvmGenericType is correct?
-			}
+	def dispatch checkFinalFieldInitialization(Skill skill) {
+		var JvmGenericType type = skill.jvmGeneric
+		if (type!==null) {
+			type.checkFinalFieldInitialization
 		}
 	}
 
@@ -347,56 +317,105 @@ class SARLValidator extends AbstractSARLValidator {
 			IssueCodes::MISSING_INITIALIZATION)
 	}
 	
-	//TODO Multiple definition of the same field
+	protected def boolean isVisible(JvmDeclaredType fromType, JvmMember target) {
+		switch(target.visibility) {
+			case PRIVATE: {
+				return false
+			}
+			case DEFAULT: {
+				return target.declaringType.packageName == fromType.packageName
+			}
+			case PROTECTED: {
+				return true
+			}
+			case PUBLIC: {
+				return true
+			}
+		}
+		return false
+	}
 
-	/*TODO private def Map<ActionNameKey,EList<InferredActionSignature>> getCapacityActionsFromHierarchy(EList<InheritingElement> sources) {
-		var Map<ActionNameKey,EList<InferredActionSignature>> actions = new TreeMap
-		var Set<String> encounteredCapacities = new TreeSet
-		var List<Capacity> capacities = new LinkedList
-		for(p : sources) {
-			if (p instanceof Capacity) {
-				capacities.add(p)
-			}
-		}
-		while (!capacities.empty) {
-			var cap = capacities.remove(0);
-			if (encounteredCapacities.add("")) {
-				for(p : cap.superTypes) {
-					if (p instanceof Capacity) {
-						capacities.add(p)
-					}
-				}
-				var JvmIdentifiableElement container = null
-				for(feature : cap.features) {
-					if (feature instanceof ActionSignature) {
-						if (container===null) {
-							container = logicalContainerProvider.getNearestLogicalContainer(feature)
-						}
-						var ank = sarlSignatureProvider.createFunctionID(container, feature.name)
-						var sk = sarlSignatureProvider.createSignatureID(feature.params)
-						var is = sarlSignatureProvider.getSignatures(ank, sk)
-						actions.add(sk.toActionKey(feature.name))
+	protected def populateInheritanceContext(
+				JvmGenericType jvmElement,
+				Map<ActionKey,JvmOperation> finalOperations,
+				Map<ActionKey,JvmOperation> overridableOperations,
+				Map<String,JvmField> inheritedFields,
+				Map<ActionKey,JvmOperation> operationsToImplement) {
+
+		// Get the operations that must be implemented			
+		for(interfaceReference : jvmElement.extendedInterfaces) {
+			for(feature : (interfaceReference.type as JvmGenericType).allFeatures) {
+				if (feature.declaringType.qualifiedName!="java.lang.Object") {
+					if (feature instanceof JvmOperation) {
+						val sig = sarlSignatureProvider.createSignatureIDFromJvmModel(feature.parameters)
+						val actionKey = sarlSignatureProvider.createActionID(feature.simpleName, sig)
+						operationsToImplement.put(actionKey, feature);
 					}
 				}
 			}
 		}
-		return actions
-	}*/
-	
+
+		// Check on the implemented features, inherited from the super type			
+		if (jvmElement.extendedClass!==null) {
+			for(feature : (jvmElement.extendedClass.type as JvmGenericType).allFeatures) {
+				if (feature.declaringType.qualifiedName!="java.lang.Object"
+					&& isVisible(jvmElement, feature)
+					&& !isHiddenAction(feature.simpleName)) {
+					if (feature instanceof JvmOperation) {
+						if (!feature.static) {
+							val sig = sarlSignatureProvider.createSignatureIDFromJvmModel(feature.parameters)
+							val actionKey = sarlSignatureProvider.createActionID(feature.simpleName, sig)
+							if (feature.abstract) {
+								operationsToImplement.put(actionKey, feature)
+							}
+							else if (feature.final) {
+								finalOperations.put(actionKey, feature)
+								operationsToImplement.remove(actionKey)
+							}
+							else {
+								overridableOperations.put(actionKey, feature)
+								operationsToImplement.remove(actionKey)
+							}
+						} 
+					}
+					else if (feature instanceof JvmField) {
+						inheritedFields.put(feature.simpleName, feature);
+					}
+				}
+			}
+		}
+	}
+
 	@Check
-	def checkSkillActionImplementationPrototype(Skill skill) {
-		/*TODO var Set<ActionKey> actions = getCapacityActionsFromHierarchy(skill.implementedTypes)
-		var JvmIdentifiableElement container = null
-		for(feature : skill.features) {
-			if (feature instanceof Action) {
-				if (container===null) {
-					container = logicalContainerProvider.getNearestLogicalContainer(feature)
+	def checkInheritedFeatures(InheritingElement element) {
+		var jvmElement = element.jvmGeneric
+		if (jvmElement!==null) {
+			val Map<ActionKey,JvmOperation> finalOperations = new TreeMap
+			val Map<ActionKey,JvmOperation> overridableOperations = new TreeMap
+			val Map<String,JvmField> inheritedFields = new TreeMap
+			val Map<ActionKey,JvmOperation> operationsToImplement = new TreeMap
+
+			jvmElement.populateInheritanceContext(
+				finalOperations, overridableOperations,
+				inheritedFields, operationsToImplement
+			)
+						
+			if (!isIgnored(io.sarl.lang.validation.IssueCodes::FIELD_NAME_SHADOWING)) {
+				for(feature : jvmElement.declaredFields) {
+					val inheritedField = inheritedFields.get(feature.simpleName)
+					if (inheritedField!==null) {
+						warning(
+							String.format(
+								"The field '%s' in '%s' is hidding the inherited field '%s'.",
+								feature.simpleName, jvmElement.qualifiedName,
+								inheritedField.qualifiedName),
+							feature, //TODO
+							null,
+							io.sarl.lang.validation.IssueCodes::FIELD_NAME_SHADOWING)
+					}
 				}
-				var signature = feature.signature as ActionSignature
-				var sk = sarlSignatureProvider.createSignatureID(signature.params)
-				
 			}
-		}*/
+		}
 	}
 
 }

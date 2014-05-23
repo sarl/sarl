@@ -161,4 +161,22 @@ class BehaviorParsingTest {
 		mas.assertNoErrors
 	}
 
+	@Test
+	def void fieldNameShadowing() {
+		val mas = '''
+			behavior B1 {
+				val field1 : int = 5
+				def myaction(a : int) { }
+			}
+			behavior B2 extends B1 {
+				val field1 : int = 5
+				def myaction(a : int) { }
+			}
+		'''.parse
+		mas.assertWarning(
+			TypesPackage::eINSTANCE.jvmField,
+			IssueCodes::FIELD_NAME_SHADOWING,
+			"The field 'field1' in 'B2' is hidding the inherited field 'B1.field1'.")
+	}
+
 }

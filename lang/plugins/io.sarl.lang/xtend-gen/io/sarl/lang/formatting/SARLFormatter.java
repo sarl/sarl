@@ -108,12 +108,12 @@ public class SARLFormatter extends XbaseFormatter {
     FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap(1, 1, 2);
     Group _group = ele.getGroup();
     _setLinewrap.before(_group);
-    Keyword _leftCurlyBracketKeyword_7 = ele.getLeftCurlyBracketKeyword_7();
-    Keyword _rightCurlyBracketKeyword_9 = ele.getRightCurlyBracketKeyword_9();
-    c.setIndentation(_leftCurlyBracketKeyword_7, _rightCurlyBracketKeyword_9);
+    Keyword _leftCurlyBracketKeyword_4 = ele.getLeftCurlyBracketKeyword_4();
+    Keyword _rightCurlyBracketKeyword_6 = ele.getRightCurlyBracketKeyword_6();
+    c.setIndentation(_leftCurlyBracketKeyword_4, _rightCurlyBracketKeyword_6);
     FormattingConfig.LinewrapLocator _setLinewrap_1 = c.setLinewrap();
-    Keyword _rightCurlyBracketKeyword_9_1 = ele.getRightCurlyBracketKeyword_9();
-    _setLinewrap_1.around(_rightCurlyBracketKeyword_9_1);
+    Keyword _rightCurlyBracketKeyword_6_1 = ele.getRightCurlyBracketKeyword_6();
+    _setLinewrap_1.around(_rightCurlyBracketKeyword_6_1);
   }
   
   public void configureRequires(final FormattingConfig c, final SARLGrammarAccess.RequiredCapacityElements ele) {

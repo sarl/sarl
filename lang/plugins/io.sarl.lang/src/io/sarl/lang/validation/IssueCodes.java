@@ -109,4 +109,19 @@ public class IssueCodes {
 	 */
 	public static final String INVALID_ATTRIBUTE_NAME = ISSUE_CODE_PREFIX+"invalid_attribute_name"; //$NON-NLS-1$
 
+	/**
+	 * A field is hiding an inherited field.
+	 * <p>
+	 * The following code causes a warning:<pre><code>
+	 * behavior B1 {
+	 *    var myfield
+	 * }
+	 * behavior B2 extends B1 {
+	 *    var myfield
+	 * }
+	 * </code></pre>
+	 * </code></pre>
+	 */
+	public static final String FIELD_NAME_SHADOWING = ISSUE_CODE_PREFIX+"field_name_shadowing"; //$NON-NLS-1$
+
 }

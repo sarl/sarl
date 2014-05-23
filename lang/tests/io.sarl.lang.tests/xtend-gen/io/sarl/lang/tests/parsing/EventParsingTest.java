@@ -202,4 +202,35 @@ public class EventParsingTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
+  
+  @Test
+  public void fieldNameShadowing() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("event E0 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val field1 : int = 5");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val field2 : int = 6");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("event E1 extends E0 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val field1 : int = 5");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmField = TypesPackage.eINSTANCE.getJvmField();
+      this._validationTestHelper.assertWarning(mas, _jvmField, 
+        io.sarl.lang.validation.IssueCodes.FIELD_NAME_SHADOWING, 
+        "The field \'field1\' in \'E1\' is hidding the inherited field \'E0.field1\'.");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
 }

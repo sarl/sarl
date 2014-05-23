@@ -93,8 +93,8 @@ class SARLFormatter extends XbaseFormatter {
 
 	def configureSkill(FormattingConfig c, SkillElements ele) {
 		c.setLinewrap(1, 1, 2).before(ele.group)
-		c.setIndentation(ele.leftCurlyBracketKeyword_7, ele.rightCurlyBracketKeyword_9)
-		c.setLinewrap.around(ele.rightCurlyBracketKeyword_9)
+		c.setIndentation(ele.leftCurlyBracketKeyword_4, ele.rightCurlyBracketKeyword_6)
+		c.setLinewrap.around(ele.rightCurlyBracketKeyword_6)
 	}
 
 	def configureRequires(FormattingConfig c, RequiredCapacityElements ele) {

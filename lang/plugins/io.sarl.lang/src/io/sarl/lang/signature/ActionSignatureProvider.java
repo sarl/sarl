@@ -18,6 +18,7 @@ package io.sarl.lang.signature;
 import io.sarl.lang.sarl.FormalParameter;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 
 /**
@@ -52,7 +53,22 @@ public interface ActionSignatureProvider {
 	 * @param parameters
 	 * @return the id.
 	 */
-	public SignatureKey createSignatureID(EList<FormalParameter> parameters);
+	public SignatureKey createSignatureIDFromSarlModel(EList<FormalParameter> parameters);
+
+	/** Build an identifier for the given parameters.
+	 * 
+	 * @param parameters
+	 * @return the id.
+	 */
+	public SignatureKey createSignatureIDFromJvmModel(EList<JvmFormalParameter> parameters);
+
+	/** Build an identifier for the given function.
+	 * 
+	 * @param actionName
+	 * @param parameters
+	 * @return the id.
+	 */
+	public ActionKey createActionID(String actionName, SignatureKey parameters);
 
 	/** Reset all the signatures associated to the given container
 	 * 

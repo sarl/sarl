@@ -495,4 +495,42 @@ public class CapacityParsingTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
+  
+  @Test
+  public void fieldNameShadowingInSkill() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 { }");
+      _builder.newLine();
+      _builder.append("capacity C2 { }");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val field1 : int = 5");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) { }");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("skill S2 extends S1 implements C2 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val field1 : int = 5");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) { }");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmField = TypesPackage.eINSTANCE.getJvmField();
+      this._validationTestHelper.assertWarning(mas, _jvmField, 
+        IssueCodes.FIELD_NAME_SHADOWING, 
+        "The field \'field1\' in \'S2\' is hidding the inherited field \'S1.field1\'.");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
 }

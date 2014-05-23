@@ -27,6 +27,7 @@ import io.sarl.lang.sarl.Constructor;
 import io.sarl.lang.sarl.Event;
 import io.sarl.lang.sarl.FeatureContainer;
 import io.sarl.lang.sarl.FormalParameter;
+import io.sarl.lang.sarl.InheritingElement;
 import io.sarl.lang.sarl.ParameterizedFeature;
 import io.sarl.lang.sarl.Skill;
 import io.sarl.lang.signature.ActionKey;
@@ -36,53 +37,56 @@ import io.sarl.lang.signature.InferredActionSignature;
 import io.sarl.lang.signature.SignatureKey;
 import io.sarl.lang.validation.AbstractSARLValidator;
 import io.sarl.lang.validation.IssueCodes;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmFeature;
 import org.eclipse.xtext.common.types.JvmField;
+import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmMember;
+import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
-import org.eclipse.xtext.common.types.util.TypeReferences;
+import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
-import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.XNullLiteral;
-import org.eclipse.xtext.xbase.XNumberLiteral;
-import org.eclipse.xtext.xbase.XStringLiteral;
-import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations;
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.eclipse.xtext.xbase.typesystem.computation.NumberLiterals;
-import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
-import org.eclipse.xtext.xbase.typesystem.references.OwnedConverter;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 /**
- * Custom validation rules.
+ * Validator for the SARL elements.
+ * <p>
+ * The following issues are not yet supported:<ul>
+ * <li>Redundant capacity implementation - WARNING</li>
+ * <li>Override of final method - ERROR</li>
+ * <li>Missed function implementation - ERROR</li>
+ * <li>Skill implementation cannot have default value - ERROR</li>
+ * <li>Invalid super constructor call - ERROR</li>
+ * <li>Missed super call - ERROR</li>
+ * <li>Invalid return type for an action against the inherited type</li>
+ * <li>Incompatible modifiers for a function</li>
+ * </ul>
  * 
- * see http://www.eclipse.org/Xtext/documentation.html#validation
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
 public class SARLValidator extends AbstractSARLValidator {
   @Inject
   private ILogicalContainerProvider logicalContainerProvider;
-  
-  @Inject
-  private TypeReferences typeReferences;
-  
-  @Inject
-  private NumberLiterals numberLiterals;
-  
-  @Inject
-  private IJvmModelAssociations associations;
   
   @Inject
   private ActionSignatureProvider sarlSignatureProvider;
@@ -106,12 +110,7 @@ public class SARLValidator extends AbstractSARLValidator {
     }
   }
   
-  private boolean isInterface(final LightweightTypeReference typeRef) {
-    JvmType _type = typeRef.getType();
-    return this.isInterface(_type);
-  }
-  
-  private boolean isClass(final LightweightTypeReference typeRef) {
+  protected boolean isClass(final LightweightTypeReference typeRef) {
     JvmType t = typeRef.getType();
     if ((t instanceof JvmGenericType)) {
       boolean _isInterface = ((JvmGenericType)t).isInterface();
@@ -120,82 +119,11 @@ public class SARLValidator extends AbstractSARLValidator {
     return false;
   }
   
-  private LightweightTypeReference actualType(final XExpression expr, final EObject context, final LightweightTypeReference targetType) {
-    LightweightTypeReference type = this.getActualType(expr);
-    boolean _tripleNotEquals = (type != null);
-    if (_tripleNotEquals) {
-      return type;
-    }
-    if ((expr instanceof XNullLiteral)) {
-    }
-    JvmTypeReference jvmType = null;
-    if ((expr instanceof XBooleanLiteral)) {
-      JvmTypeReference _typeForName = this.typeReferences.getTypeForName(Boolean.TYPE, context);
-      jvmType = _typeForName;
-    } else {
-      if ((expr instanceof XStringLiteral)) {
-        boolean _and = false;
-        boolean _or = false;
-        boolean _isType = targetType.isType(Character.TYPE);
-        if (_isType) {
-          _or = true;
-        } else {
-          boolean _isType_1 = targetType.isType(Character.class);
-          _or = _isType_1;
-        }
-        if (!_or) {
-          _and = false;
-        } else {
-          boolean _and_1 = false;
-          String _value = ((XStringLiteral)expr).getValue();
-          boolean _notEquals = (!Objects.equal(_value, null));
-          if (!_notEquals) {
-            _and_1 = false;
-          } else {
-            String _value_1 = ((XStringLiteral)expr).getValue();
-            int _length = _value_1.length();
-            boolean _lessEqualsThan = (_length <= 1);
-            _and_1 = _lessEqualsThan;
-          }
-          _and = _and_1;
-        }
-        if (_and) {
-          JvmTypeReference _typeForName_1 = this.typeReferences.getTypeForName(Character.TYPE, context);
-          jvmType = _typeForName_1;
-        } else {
-          JvmTypeReference _typeForName_2 = this.typeReferences.getTypeForName(String.class, context);
-          jvmType = _typeForName_2;
-        }
-      } else {
-        if ((expr instanceof XNumberLiteral)) {
-          Class<? extends Number> jType = this.numberLiterals.getJavaType(((XNumberLiteral)expr));
-          JvmTypeReference _typeForName_3 = this.typeReferences.getTypeForName(jType, expr);
-          jvmType = _typeForName_3;
-        } else {
-          if ((expr instanceof XTypeLiteral)) {
-            JvmType _type = ((XTypeLiteral)expr).getType();
-            JvmParameterizedTypeReference _createTypeRef = this.typeReferences.createTypeRef(_type);
-            jvmType = _createTypeRef;
-          }
-        }
-      }
-    }
-    boolean _tripleNotEquals_1 = (jvmType != null);
-    if (_tripleNotEquals_1) {
-      CommonTypeComputationServices _services = this.getServices();
-      StandardTypeReferenceOwner _standardTypeReferenceOwner = new StandardTypeReferenceOwner(_services, context);
-      final OwnedConverter converter = new OwnedConverter(_standardTypeReferenceOwner, 
-        true);
-      return converter.toLightweightReference(jvmType);
-    }
-    return null;
-  }
-  
   private void checkDefaultValueTypeCompatibleWithParameterType(final FormalParameter param) {
     JvmTypeReference _parameterType = param.getParameterType();
     LightweightTypeReference toType = this.toLightweightTypeReference(_parameterType, true);
     XExpression _defaultValue = param.getDefaultValue();
-    LightweightTypeReference fromType = this.actualType(_defaultValue, param, toType);
+    LightweightTypeReference fromType = this.getActualType(_defaultValue);
     boolean _tripleEquals = (fromType == null);
     if (_tripleEquals) {
       String _name = param.getName();
@@ -222,7 +150,8 @@ public class SARLValidator extends AbstractSARLValidator {
       _and_4 = false;
     } else {
       boolean _or_1 = false;
-      boolean _isInterface = this.isInterface(fromType);
+      JvmType _type_1 = fromType.getType();
+      boolean _isInterface = this.isInterface(_type_1);
       boolean _not = (!_isInterface);
       if (_not) {
         _or_1 = true;
@@ -236,7 +165,8 @@ public class SARLValidator extends AbstractSARLValidator {
       _and_3 = false;
     } else {
       boolean _or_2 = false;
-      boolean _isInterface_1 = this.isInterface(toType);
+      JvmType _type_2 = fromType.getType();
+      boolean _isInterface_1 = this.isInterface(_type_2);
       boolean _not_1 = (!_isInterface_1);
       if (_not_1) {
         _or_2 = true;
@@ -360,8 +290,8 @@ public class SARLValidator extends AbstractSARLValidator {
           ActionNameKey _createFunctionID = this.sarlSignatureProvider.createFunctionID(container, name);
           actionID = _createFunctionID;
           EList<FormalParameter> _params = s.getParams();
-          SignatureKey _createSignatureID = this.sarlSignatureProvider.createSignatureID(_params);
-          signatureID = _createSignatureID;
+          SignatureKey _createSignatureIDFromSarlModel = this.sarlSignatureProvider.createSignatureIDFromSarlModel(_params);
+          signatureID = _createSignatureIDFromSarlModel;
         } else {
           if ((feature instanceof ActionSignature)) {
             String _name_1 = ((ActionSignature)feature).getName();
@@ -369,16 +299,16 @@ public class SARLValidator extends AbstractSARLValidator {
             ActionNameKey _createFunctionID_1 = this.sarlSignatureProvider.createFunctionID(container, name);
             actionID = _createFunctionID_1;
             EList<FormalParameter> _params_1 = ((ActionSignature)feature).getParams();
-            SignatureKey _createSignatureID_1 = this.sarlSignatureProvider.createSignatureID(_params_1);
-            signatureID = _createSignatureID_1;
+            SignatureKey _createSignatureIDFromSarlModel_1 = this.sarlSignatureProvider.createSignatureIDFromSarlModel(_params_1);
+            signatureID = _createSignatureIDFromSarlModel_1;
           } else {
             if ((feature instanceof Constructor)) {
               name = SARLKeywords.CONSTRUCTOR;
               ActionNameKey _createConstructorID = this.sarlSignatureProvider.createConstructorID(container);
               actionID = _createConstructorID;
               EList<FormalParameter> _params_2 = ((Constructor)feature).getParams();
-              SignatureKey _createSignatureID_2 = this.sarlSignatureProvider.createSignatureID(_params_2);
-              signatureID = _createSignatureID_2;
+              SignatureKey _createSignatureIDFromSarlModel_2 = this.sarlSignatureProvider.createSignatureIDFromSarlModel(_params_2);
+              signatureID = _createSignatureIDFromSarlModel_2;
             } else {
               name = null;
               actionID = null;
@@ -435,11 +365,15 @@ public class SARLValidator extends AbstractSARLValidator {
     }
   }
   
+  protected boolean isHiddenAction(final String name) {
+    return name.startsWith("_handle_");
+  }
+  
   @Check
   public void checkActionName(final ActionSignature action) {
     String _name = action.getName();
-    boolean _startsWith = _name.startsWith("_handle_");
-    if (_startsWith) {
+    boolean _isHiddenAction = this.isHiddenAction(_name);
+    if (_isHiddenAction) {
       String _name_1 = action.getName();
       String _format = String.format(
         "Invalid action name \'%s\'. You must not give to an action a name that is starting with \'_handle_\'. This prefix is reserved by the SARL compiler.", _name_1);
@@ -449,11 +383,15 @@ public class SARLValidator extends AbstractSARLValidator {
     }
   }
   
+  protected boolean isHiddenAttribute(final String name) {
+    return name.startsWith("___FORMAL_PARAMETER_DEFAULT_VALUE_");
+  }
+  
   @Check
   public void checkAttributeName(final Attribute attribute) {
     String _name = attribute.getName();
-    boolean _startsWith = _name.startsWith("___FORMAL_PARAMETER_DEFAULT_VALUE_");
-    if (_startsWith) {
+    boolean _isHiddenAttribute = this.isHiddenAttribute(_name);
+    if (_isHiddenAttribute) {
       String _name_1 = attribute.getName();
       String _format = String.format(
         "Invalid attribute name \'%s\'. You must not give to an attribute a name that is starting with \'___FORMAL_PARAMETER_DEFAULT_VALUE_\'. This prefix is reserved by the SARL compiler.", _name_1);
@@ -463,47 +401,51 @@ public class SARLValidator extends AbstractSARLValidator {
     }
   }
   
-  @Check
-  public void checkEventFinalFieldInitialization(final Event event) {
-    Set<EObject> _jvmElements = this.associations.getJvmElements(event);
+  protected JvmGenericType getJvmGeneric(final EObject element) {
+    CommonTypeComputationServices _services = this.getServices();
+    IJvmModelAssociations _jvmModelAssociations = _services.getJvmModelAssociations();
+    Set<EObject> _jvmElements = _jvmModelAssociations.getJvmElements(element);
     for (final EObject obj : _jvmElements) {
       if ((obj instanceof JvmGenericType)) {
-        this.checkFinalFieldInitialization(((JvmGenericType)obj));
-        return;
+        return ((JvmGenericType)obj);
       }
+    }
+    return null;
+  }
+  
+  @Check
+  protected void _checkFinalFieldInitialization(final Event event) {
+    JvmGenericType type = this.getJvmGeneric(event);
+    boolean _tripleNotEquals = (type != null);
+    if (_tripleNotEquals) {
+      this.checkFinalFieldInitialization(type);
     }
   }
   
   @Check
-  public void checkAgentFinalFieldInitialization(final Agent agent) {
-    Set<EObject> _jvmElements = this.associations.getJvmElements(agent);
-    for (final EObject obj : _jvmElements) {
-      if ((obj instanceof JvmGenericType)) {
-        this.checkFinalFieldInitialization(((JvmGenericType)obj));
-        return;
-      }
+  protected void _checkFinalFieldInitialization(final Agent agent) {
+    JvmGenericType type = this.getJvmGeneric(agent);
+    boolean _tripleNotEquals = (type != null);
+    if (_tripleNotEquals) {
+      this.checkFinalFieldInitialization(type);
     }
   }
   
   @Check
-  public void checkBehaviorFinalFieldInitialization(final Behavior behavior) {
-    Set<EObject> _jvmElements = this.associations.getJvmElements(behavior);
-    for (final EObject obj : _jvmElements) {
-      if ((obj instanceof JvmGenericType)) {
-        this.checkFinalFieldInitialization(((JvmGenericType)obj));
-        return;
-      }
+  protected void _checkFinalFieldInitialization(final Behavior behavior) {
+    JvmGenericType type = this.getJvmGeneric(behavior);
+    boolean _tripleNotEquals = (type != null);
+    if (_tripleNotEquals) {
+      this.checkFinalFieldInitialization(type);
     }
   }
   
   @Check
-  public void checkSkillFinalFieldInitialization(final Skill skill) {
-    Set<EObject> _jvmElements = this.associations.getJvmElements(skill);
-    for (final EObject obj : _jvmElements) {
-      if ((obj instanceof JvmGenericType)) {
-        this.checkFinalFieldInitialization(((JvmGenericType)obj));
-        return;
-      }
+  protected void _checkFinalFieldInitialization(final Skill skill) {
+    JvmGenericType type = this.getJvmGeneric(skill);
+    boolean _tripleNotEquals = (type != null);
+    if (_tripleNotEquals) {
+      this.checkFinalFieldInitialization(type);
     }
   }
   
@@ -516,43 +458,159 @@ public class SARLValidator extends AbstractSARLValidator {
       org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_INITIALIZATION);
   }
   
-  /**
-   * TODO private def Map<ActionNameKey,EList<InferredActionSignature>> getCapacityActionsFromHierarchy(EList<InheritingElement> sources) {
-   * var Map<ActionNameKey,EList<InferredActionSignature>> actions = new TreeMap
-   * var Set<String> encounteredCapacities = new TreeSet
-   * var List<Capacity> capacities = new LinkedList
-   * for(p : sources) {
-   * if (p instanceof Capacity) {
-   * capacities.add(p)
-   * }
-   * }
-   * while (!capacities.empty) {
-   * var cap = capacities.remove(0);
-   * if (encounteredCapacities.add("")) {
-   * for(p : cap.superTypes) {
-   * if (p instanceof Capacity) {
-   * capacities.add(p)
-   * }
-   * }
-   * var JvmIdentifiableElement container = null
-   * for(feature : cap.features) {
-   * if (feature instanceof ActionSignature) {
-   * if (container===null) {
-   * container = logicalContainerProvider.getNearestLogicalContainer(feature)
-   * }
-   * var ank = sarlSignatureProvider.createFunctionID(container, feature.name)
-   * var sk = sarlSignatureProvider.createSignatureID(feature.params)
-   * var is = sarlSignatureProvider.getSignatures(ank, sk)
-   * actions.add(sk.toActionKey(feature.name))
-   * }
-   * }
-   * }
-   * }
-   * return actions
-   * }
-   */
+  protected boolean isVisible(final JvmDeclaredType fromType, final JvmMember target) {
+    JvmVisibility _visibility = target.getVisibility();
+    if (_visibility != null) {
+      switch (_visibility) {
+        case PRIVATE:
+          return false;
+        case DEFAULT:
+          JvmDeclaredType _declaringType = target.getDeclaringType();
+          String _packageName = _declaringType.getPackageName();
+          String _packageName_1 = fromType.getPackageName();
+          return Objects.equal(_packageName, _packageName_1);
+        case PROTECTED:
+          return true;
+        case PUBLIC:
+          return true;
+        default:
+          break;
+      }
+    }
+    return false;
+  }
+  
+  protected void populateInheritanceContext(final JvmGenericType jvmElement, final Map<ActionKey, JvmOperation> finalOperations, final Map<ActionKey, JvmOperation> overridableOperations, final Map<String, JvmField> inheritedFields, final Map<ActionKey, JvmOperation> operationsToImplement) {
+    Iterable<JvmTypeReference> _extendedInterfaces = jvmElement.getExtendedInterfaces();
+    for (final JvmTypeReference interfaceReference : _extendedInterfaces) {
+      JvmType _type = interfaceReference.getType();
+      Iterable<JvmFeature> _allFeatures = ((JvmGenericType) _type).getAllFeatures();
+      for (final JvmFeature feature : _allFeatures) {
+        JvmDeclaredType _declaringType = feature.getDeclaringType();
+        String _qualifiedName = _declaringType.getQualifiedName();
+        boolean _notEquals = (!Objects.equal(_qualifiedName, "java.lang.Object"));
+        if (_notEquals) {
+          if ((feature instanceof JvmOperation)) {
+            EList<JvmFormalParameter> _parameters = ((JvmOperation)feature).getParameters();
+            final SignatureKey sig = this.sarlSignatureProvider.createSignatureIDFromJvmModel(_parameters);
+            String _simpleName = ((JvmOperation)feature).getSimpleName();
+            final ActionKey actionKey = this.sarlSignatureProvider.createActionID(_simpleName, sig);
+            operationsToImplement.put(actionKey, ((JvmOperation)feature));
+          }
+        }
+      }
+    }
+    JvmTypeReference _extendedClass = jvmElement.getExtendedClass();
+    boolean _tripleNotEquals = (_extendedClass != null);
+    if (_tripleNotEquals) {
+      JvmTypeReference _extendedClass_1 = jvmElement.getExtendedClass();
+      JvmType _type_1 = _extendedClass_1.getType();
+      Iterable<JvmFeature> _allFeatures_1 = ((JvmGenericType) _type_1).getAllFeatures();
+      for (final JvmFeature feature_1 : _allFeatures_1) {
+        boolean _and = false;
+        boolean _and_1 = false;
+        JvmDeclaredType _declaringType_1 = feature_1.getDeclaringType();
+        String _qualifiedName_1 = _declaringType_1.getQualifiedName();
+        boolean _notEquals_1 = (!Objects.equal(_qualifiedName_1, "java.lang.Object"));
+        if (!_notEquals_1) {
+          _and_1 = false;
+        } else {
+          boolean _isVisible = this.isVisible(jvmElement, feature_1);
+          _and_1 = _isVisible;
+        }
+        if (!_and_1) {
+          _and = false;
+        } else {
+          String _simpleName_1 = feature_1.getSimpleName();
+          boolean _isHiddenAction = this.isHiddenAction(_simpleName_1);
+          boolean _not = (!_isHiddenAction);
+          _and = _not;
+        }
+        if (_and) {
+          if ((feature_1 instanceof JvmOperation)) {
+            boolean _isStatic = ((JvmOperation)feature_1).isStatic();
+            boolean _not_1 = (!_isStatic);
+            if (_not_1) {
+              EList<JvmFormalParameter> _parameters_1 = ((JvmOperation)feature_1).getParameters();
+              final SignatureKey sig_1 = this.sarlSignatureProvider.createSignatureIDFromJvmModel(_parameters_1);
+              String _simpleName_2 = ((JvmOperation)feature_1).getSimpleName();
+              final ActionKey actionKey_1 = this.sarlSignatureProvider.createActionID(_simpleName_2, sig_1);
+              boolean _isAbstract = ((JvmOperation)feature_1).isAbstract();
+              if (_isAbstract) {
+                operationsToImplement.put(actionKey_1, ((JvmOperation)feature_1));
+              } else {
+                boolean _isFinal = ((JvmOperation)feature_1).isFinal();
+                if (_isFinal) {
+                  finalOperations.put(actionKey_1, ((JvmOperation)feature_1));
+                  operationsToImplement.remove(actionKey_1);
+                } else {
+                  overridableOperations.put(actionKey_1, ((JvmOperation)feature_1));
+                  operationsToImplement.remove(actionKey_1);
+                }
+              }
+            }
+          } else {
+            if ((feature_1 instanceof JvmField)) {
+              String _simpleName_3 = ((JvmField)feature_1).getSimpleName();
+              inheritedFields.put(_simpleName_3, ((JvmField)feature_1));
+            }
+          }
+        }
+      }
+    }
+  }
+  
   @Check
-  public Object checkSkillActionImplementationPrototype(final Skill skill) {
-    return null;
+  public void checkInheritedFeatures(final InheritingElement element) {
+    JvmGenericType jvmElement = this.getJvmGeneric(element);
+    boolean _tripleNotEquals = (jvmElement != null);
+    if (_tripleNotEquals) {
+      final Map<ActionKey, JvmOperation> finalOperations = new TreeMap<ActionKey, JvmOperation>();
+      final Map<ActionKey, JvmOperation> overridableOperations = new TreeMap<ActionKey, JvmOperation>();
+      final Map<String, JvmField> inheritedFields = new TreeMap<String, JvmField>();
+      final Map<ActionKey, JvmOperation> operationsToImplement = new TreeMap<ActionKey, JvmOperation>();
+      this.populateInheritanceContext(jvmElement, finalOperations, overridableOperations, inheritedFields, operationsToImplement);
+      boolean _isIgnored = this.isIgnored(IssueCodes.FIELD_NAME_SHADOWING);
+      boolean _not = (!_isIgnored);
+      if (_not) {
+        Iterable<JvmField> _declaredFields = jvmElement.getDeclaredFields();
+        for (final JvmField feature : _declaredFields) {
+          {
+            String _simpleName = feature.getSimpleName();
+            final JvmField inheritedField = inheritedFields.get(_simpleName);
+            boolean _tripleNotEquals_1 = (inheritedField != null);
+            if (_tripleNotEquals_1) {
+              String _simpleName_1 = feature.getSimpleName();
+              String _qualifiedName = jvmElement.getQualifiedName();
+              String _qualifiedName_1 = inheritedField.getQualifiedName();
+              String _format = String.format(
+                "The field \'%s\' in \'%s\' is hidding the inherited field \'%s\'.", _simpleName_1, _qualifiedName, _qualifiedName_1);
+              this.warning(_format, feature, 
+                null, 
+                IssueCodes.FIELD_NAME_SHADOWING);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  public void checkFinalFieldInitialization(final InheritingElement skill) {
+    if (skill instanceof Skill) {
+      _checkFinalFieldInitialization((Skill)skill);
+      return;
+    } else if (skill instanceof Agent) {
+      _checkFinalFieldInitialization((Agent)skill);
+      return;
+    } else if (skill instanceof Behavior) {
+      _checkFinalFieldInitialization((Behavior)skill);
+      return;
+    } else if (skill instanceof Event) {
+      _checkFinalFieldInitialization((Event)skill);
+      return;
+    } else {
+      throw new IllegalArgumentException("Unhandled parameter types: " +
+        Arrays.<Object>asList(skill).toString());
+    }
   }
 }

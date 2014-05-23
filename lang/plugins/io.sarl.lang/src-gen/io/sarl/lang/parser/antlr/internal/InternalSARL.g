@@ -690,9 +690,23 @@ ruleSkill returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_3='extends' 
+)(
+
+(
+	{ 
+	  getUnorderedGroupHelper().enter(grammarAccess.getSkillAccess().getUnorderedGroup_3());
+	}
+	(
+		(
+
+			( 
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 0)}?=>(
+					{ 
+	 				  getUnorderedGroupHelper().select(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 0);
+	 				}
+					({true}?=>(	otherlv_4='extends' 
     {
-    	newLeafNode(otherlv_3, grammarAccess.getSkillAccess().getExtendsKeyword_3_0());
+    	newLeafNode(otherlv_4, grammarAccess.getSkillAccess().getExtendsKeyword_3_0_0());
     }
 (
 (
@@ -702,16 +716,28 @@ ruleSkill returns [EObject current=null]
 	        }
         }
 		{ 
-	        newCompositeNode(grammarAccess.getSkillAccess().getSuperTypesSkillCrossReference_3_1_0()); 
+	        newCompositeNode(grammarAccess.getSkillAccess().getSuperTypesSkillCrossReference_3_0_1_0()); 
 	    }
 		ruleQualifiedName		{ 
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))?	otherlv_5='implements' 
+)))
+					{ 
+	 				  getUnorderedGroupHelper().returnFromSelection(grammarAccess.getSkillAccess().getUnorderedGroup_3());
+	 				}
+ 				)
+			)  |
+
+			( 
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 1)}?=>(
+					{ 
+	 				  getUnorderedGroupHelper().select(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 1);
+	 				}
+					({true}?=>(	otherlv_6='implements' 
     {
-    	newLeafNode(otherlv_5, grammarAccess.getSkillAccess().getImplementsKeyword_4());
+    	newLeafNode(otherlv_6, grammarAccess.getSkillAccess().getImplementsKeyword_3_1_0());
     }
 (
 (
@@ -721,16 +747,16 @@ ruleSkill returns [EObject current=null]
 	        }
         }
 		{ 
-	        newCompositeNode(grammarAccess.getSkillAccess().getImplementedTypesCapacityCrossReference_5_0()); 
+	        newCompositeNode(grammarAccess.getSkillAccess().getImplementedTypesCapacityCrossReference_3_1_1_0()); 
 	    }
 		ruleQualifiedName		{ 
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)(	otherlv_7=',' 
+)(	otherlv_8=',' 
     {
-    	newLeafNode(otherlv_7, grammarAccess.getSkillAccess().getCommaKeyword_6_0());
+    	newLeafNode(otherlv_8, grammarAccess.getSkillAccess().getCommaKeyword_3_1_2_0());
     }
 (
 (
@@ -740,38 +766,53 @@ ruleSkill returns [EObject current=null]
 	        }
         }
 		{ 
-	        newCompositeNode(grammarAccess.getSkillAccess().getImplementedTypesCapacityCrossReference_6_1_0()); 
+	        newCompositeNode(grammarAccess.getSkillAccess().getImplementedTypesCapacityCrossReference_3_1_2_1_0()); 
 	    }
 		ruleQualifiedName		{ 
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))*	otherlv_9='{' 
+))*))
+					{ 
+	 				  getUnorderedGroupHelper().returnFromSelection(grammarAccess.getSkillAccess().getUnorderedGroup_3());
+	 				}
+ 				)
+			)  
+
+		)+
+	  	{getUnorderedGroupHelper().canLeave(grammarAccess.getSkillAccess().getUnorderedGroup_3())}?	
+	)
+)
+	{ 
+	  getUnorderedGroupHelper().leave(grammarAccess.getSkillAccess().getUnorderedGroup_3());
+	}
+
+)	otherlv_10='{' 
     {
-    	newLeafNode(otherlv_9, grammarAccess.getSkillAccess().getLeftCurlyBracketKeyword_7());
+    	newLeafNode(otherlv_10, grammarAccess.getSkillAccess().getLeftCurlyBracketKeyword_4());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getSkillAccess().getFeaturesSkillFeatureParserRuleCall_8_0()); 
+	        newCompositeNode(grammarAccess.getSkillAccess().getFeaturesSkillFeatureParserRuleCall_5_0()); 
 	    }
-		lv_features_10_0=ruleSkillFeature		{
+		lv_features_11_0=ruleSkillFeature		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getSkillRule());
 	        }
        		add(
        			$current, 
        			"features",
-        		lv_features_10_0, 
+        		lv_features_11_0, 
         		"SkillFeature");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)*	otherlv_11='}' 
+)*	otherlv_12='}' 
     {
-    	newLeafNode(otherlv_11, grammarAccess.getSkillAccess().getRightCurlyBracketKeyword_9());
+    	newLeafNode(otherlv_12, grammarAccess.getSkillAccess().getRightCurlyBracketKeyword_6());
     }
 )
 ;

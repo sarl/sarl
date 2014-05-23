@@ -553,33 +553,35 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cSkillKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cNameValidIDParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
-		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
-		private final Keyword cExtendsKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
-		private final Assignment cSuperTypesAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final CrossReference cSuperTypesSkillCrossReference_3_1_0 = (CrossReference)cSuperTypesAssignment_3_1.eContents().get(0);
-		private final RuleCall cSuperTypesSkillQualifiedNameParserRuleCall_3_1_0_1 = (RuleCall)cSuperTypesSkillCrossReference_3_1_0.eContents().get(1);
-		private final Keyword cImplementsKeyword_4 = (Keyword)cGroup.eContents().get(4);
-		private final Assignment cImplementedTypesAssignment_5 = (Assignment)cGroup.eContents().get(5);
-		private final CrossReference cImplementedTypesCapacityCrossReference_5_0 = (CrossReference)cImplementedTypesAssignment_5.eContents().get(0);
-		private final RuleCall cImplementedTypesCapacityQualifiedNameParserRuleCall_5_0_1 = (RuleCall)cImplementedTypesCapacityCrossReference_5_0.eContents().get(1);
-		private final Group cGroup_6 = (Group)cGroup.eContents().get(6);
-		private final Keyword cCommaKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
-		private final Assignment cImplementedTypesAssignment_6_1 = (Assignment)cGroup_6.eContents().get(1);
-		private final CrossReference cImplementedTypesCapacityCrossReference_6_1_0 = (CrossReference)cImplementedTypesAssignment_6_1.eContents().get(0);
-		private final RuleCall cImplementedTypesCapacityQualifiedNameParserRuleCall_6_1_0_1 = (RuleCall)cImplementedTypesCapacityCrossReference_6_1_0.eContents().get(1);
-		private final Keyword cLeftCurlyBracketKeyword_7 = (Keyword)cGroup.eContents().get(7);
-		private final Assignment cFeaturesAssignment_8 = (Assignment)cGroup.eContents().get(8);
-		private final RuleCall cFeaturesSkillFeatureParserRuleCall_8_0 = (RuleCall)cFeaturesAssignment_8.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_9 = (Keyword)cGroup.eContents().get(9);
+		private final UnorderedGroup cUnorderedGroup_3 = (UnorderedGroup)cGroup.eContents().get(3);
+		private final Group cGroup_3_0 = (Group)cUnorderedGroup_3.eContents().get(0);
+		private final Keyword cExtendsKeyword_3_0_0 = (Keyword)cGroup_3_0.eContents().get(0);
+		private final Assignment cSuperTypesAssignment_3_0_1 = (Assignment)cGroup_3_0.eContents().get(1);
+		private final CrossReference cSuperTypesSkillCrossReference_3_0_1_0 = (CrossReference)cSuperTypesAssignment_3_0_1.eContents().get(0);
+		private final RuleCall cSuperTypesSkillQualifiedNameParserRuleCall_3_0_1_0_1 = (RuleCall)cSuperTypesSkillCrossReference_3_0_1_0.eContents().get(1);
+		private final Group cGroup_3_1 = (Group)cUnorderedGroup_3.eContents().get(1);
+		private final Keyword cImplementsKeyword_3_1_0 = (Keyword)cGroup_3_1.eContents().get(0);
+		private final Assignment cImplementedTypesAssignment_3_1_1 = (Assignment)cGroup_3_1.eContents().get(1);
+		private final CrossReference cImplementedTypesCapacityCrossReference_3_1_1_0 = (CrossReference)cImplementedTypesAssignment_3_1_1.eContents().get(0);
+		private final RuleCall cImplementedTypesCapacityQualifiedNameParserRuleCall_3_1_1_0_1 = (RuleCall)cImplementedTypesCapacityCrossReference_3_1_1_0.eContents().get(1);
+		private final Group cGroup_3_1_2 = (Group)cGroup_3_1.eContents().get(2);
+		private final Keyword cCommaKeyword_3_1_2_0 = (Keyword)cGroup_3_1_2.eContents().get(0);
+		private final Assignment cImplementedTypesAssignment_3_1_2_1 = (Assignment)cGroup_3_1_2.eContents().get(1);
+		private final CrossReference cImplementedTypesCapacityCrossReference_3_1_2_1_0 = (CrossReference)cImplementedTypesAssignment_3_1_2_1.eContents().get(0);
+		private final RuleCall cImplementedTypesCapacityQualifiedNameParserRuleCall_3_1_2_1_0_1 = (RuleCall)cImplementedTypesCapacityCrossReference_3_1_2_1_0.eContents().get(1);
+		private final Keyword cLeftCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cFeaturesAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cFeaturesSkillFeatureParserRuleCall_5_0 = (RuleCall)cFeaturesAssignment_5.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		//Skill returns ImplementingElement:
-		//	{Skill} "skill" name=ValidID ("extends" superTypes+=[Skill|QualifiedName])? "implements"
-		//	implementedTypes+=[Capacity|QualifiedName] ("," implementedTypes+=[Capacity|QualifiedName])* "{"
+		//	{Skill} "skill" name=ValidID (("extends" superTypes+=[Skill|QualifiedName])? & "implements"
+		//	implementedTypes+=[Capacity|QualifiedName] ("," implementedTypes+=[Capacity|QualifiedName])*) "{"
 		//	features+=SkillFeature* "}";
 		public ParserRule getRule() { return rule; }
 
-		//{Skill} "skill" name=ValidID ("extends" superTypes+=[Skill|QualifiedName])? "implements"
-		//implementedTypes+=[Capacity|QualifiedName] ("," implementedTypes+=[Capacity|QualifiedName])* "{"
+		//{Skill} "skill" name=ValidID (("extends" superTypes+=[Skill|QualifiedName])? & "implements"
+		//implementedTypes+=[Capacity|QualifiedName] ("," implementedTypes+=[Capacity|QualifiedName])*) "{"
 		//features+=SkillFeature* "}"
 		public Group getGroup() { return cGroup; }
 
@@ -595,59 +597,66 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_2_0() { return cNameValidIDParserRuleCall_2_0; }
 
+		//("extends" superTypes+=[Skill|QualifiedName])? & "implements" implementedTypes+=[Capacity|QualifiedName] (","
+		//implementedTypes+=[Capacity|QualifiedName])*
+		public UnorderedGroup getUnorderedGroup_3() { return cUnorderedGroup_3; }
+
 		//("extends" superTypes+=[Skill|QualifiedName])?
-		public Group getGroup_3() { return cGroup_3; }
+		public Group getGroup_3_0() { return cGroup_3_0; }
 
 		//"extends"
-		public Keyword getExtendsKeyword_3_0() { return cExtendsKeyword_3_0; }
+		public Keyword getExtendsKeyword_3_0_0() { return cExtendsKeyword_3_0_0; }
 
 		//superTypes+=[Skill|QualifiedName]
-		public Assignment getSuperTypesAssignment_3_1() { return cSuperTypesAssignment_3_1; }
+		public Assignment getSuperTypesAssignment_3_0_1() { return cSuperTypesAssignment_3_0_1; }
 
 		//[Skill|QualifiedName]
-		public CrossReference getSuperTypesSkillCrossReference_3_1_0() { return cSuperTypesSkillCrossReference_3_1_0; }
+		public CrossReference getSuperTypesSkillCrossReference_3_0_1_0() { return cSuperTypesSkillCrossReference_3_0_1_0; }
 
 		//QualifiedName
-		public RuleCall getSuperTypesSkillQualifiedNameParserRuleCall_3_1_0_1() { return cSuperTypesSkillQualifiedNameParserRuleCall_3_1_0_1; }
+		public RuleCall getSuperTypesSkillQualifiedNameParserRuleCall_3_0_1_0_1() { return cSuperTypesSkillQualifiedNameParserRuleCall_3_0_1_0_1; }
+
+		//"implements" implementedTypes+=[Capacity|QualifiedName] ("," implementedTypes+=[Capacity|QualifiedName])*
+		public Group getGroup_3_1() { return cGroup_3_1; }
 
 		//"implements"
-		public Keyword getImplementsKeyword_4() { return cImplementsKeyword_4; }
+		public Keyword getImplementsKeyword_3_1_0() { return cImplementsKeyword_3_1_0; }
 
 		//implementedTypes+=[Capacity|QualifiedName]
-		public Assignment getImplementedTypesAssignment_5() { return cImplementedTypesAssignment_5; }
+		public Assignment getImplementedTypesAssignment_3_1_1() { return cImplementedTypesAssignment_3_1_1; }
 
 		//[Capacity|QualifiedName]
-		public CrossReference getImplementedTypesCapacityCrossReference_5_0() { return cImplementedTypesCapacityCrossReference_5_0; }
+		public CrossReference getImplementedTypesCapacityCrossReference_3_1_1_0() { return cImplementedTypesCapacityCrossReference_3_1_1_0; }
 
 		//QualifiedName
-		public RuleCall getImplementedTypesCapacityQualifiedNameParserRuleCall_5_0_1() { return cImplementedTypesCapacityQualifiedNameParserRuleCall_5_0_1; }
+		public RuleCall getImplementedTypesCapacityQualifiedNameParserRuleCall_3_1_1_0_1() { return cImplementedTypesCapacityQualifiedNameParserRuleCall_3_1_1_0_1; }
 
 		//("," implementedTypes+=[Capacity|QualifiedName])*
-		public Group getGroup_6() { return cGroup_6; }
+		public Group getGroup_3_1_2() { return cGroup_3_1_2; }
 
 		//","
-		public Keyword getCommaKeyword_6_0() { return cCommaKeyword_6_0; }
+		public Keyword getCommaKeyword_3_1_2_0() { return cCommaKeyword_3_1_2_0; }
 
 		//implementedTypes+=[Capacity|QualifiedName]
-		public Assignment getImplementedTypesAssignment_6_1() { return cImplementedTypesAssignment_6_1; }
+		public Assignment getImplementedTypesAssignment_3_1_2_1() { return cImplementedTypesAssignment_3_1_2_1; }
 
 		//[Capacity|QualifiedName]
-		public CrossReference getImplementedTypesCapacityCrossReference_6_1_0() { return cImplementedTypesCapacityCrossReference_6_1_0; }
+		public CrossReference getImplementedTypesCapacityCrossReference_3_1_2_1_0() { return cImplementedTypesCapacityCrossReference_3_1_2_1_0; }
 
 		//QualifiedName
-		public RuleCall getImplementedTypesCapacityQualifiedNameParserRuleCall_6_1_0_1() { return cImplementedTypesCapacityQualifiedNameParserRuleCall_6_1_0_1; }
+		public RuleCall getImplementedTypesCapacityQualifiedNameParserRuleCall_3_1_2_1_0_1() { return cImplementedTypesCapacityQualifiedNameParserRuleCall_3_1_2_1_0_1; }
 
 		//"{"
-		public Keyword getLeftCurlyBracketKeyword_7() { return cLeftCurlyBracketKeyword_7; }
+		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
 
 		//features+=SkillFeature*
-		public Assignment getFeaturesAssignment_8() { return cFeaturesAssignment_8; }
+		public Assignment getFeaturesAssignment_5() { return cFeaturesAssignment_5; }
 
 		//SkillFeature
-		public RuleCall getFeaturesSkillFeatureParserRuleCall_8_0() { return cFeaturesSkillFeatureParserRuleCall_8_0; }
+		public RuleCall getFeaturesSkillFeatureParserRuleCall_5_0() { return cFeaturesSkillFeatureParserRuleCall_5_0; }
 
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_9() { return cRightCurlyBracketKeyword_9; }
+		public Keyword getRightCurlyBracketKeyword_6() { return cRightCurlyBracketKeyword_6; }
 	}
 
 	public class EventFeatureElements extends AbstractParserRuleElementFinder {
@@ -1831,8 +1840,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Skill returns ImplementingElement:
-	//	{Skill} "skill" name=ValidID ("extends" superTypes+=[Skill|QualifiedName])? "implements"
-	//	implementedTypes+=[Capacity|QualifiedName] ("," implementedTypes+=[Capacity|QualifiedName])* "{"
+	//	{Skill} "skill" name=ValidID (("extends" superTypes+=[Skill|QualifiedName])? & "implements"
+	//	implementedTypes+=[Capacity|QualifiedName] ("," implementedTypes+=[Capacity|QualifiedName])*) "{"
 	//	features+=SkillFeature* "}";
 	public SkillElements getSkillAccess() {
 		return (pSkill != null) ? pSkill : (pSkill = new SkillElements());

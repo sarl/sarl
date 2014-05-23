@@ -313,9 +313,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
         SARLJvmModelInferrer.this.sarlSignatureProvider.resetSignatures(it);
         String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(element);
         SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
-        EList<JvmTypeReference> _superTypes = it.getSuperTypes();
-        JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(element, io.sarl.lang.core.Skill.class);
-        SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _newTypeRef);
+        SARLJvmModelInferrer.this.generateSuperTypes(it, element, io.sarl.lang.core.Skill.class);
         EList<InheritingElement> _implementedTypes = element.getImplementedTypes();
         for (final InheritingElement cap : _implementedTypes) {
           String _name = cap.getName();
@@ -324,11 +322,11 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
             QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(cap);
             boolean _notEquals_1 = (!Objects.equal(_fullyQualifiedName, null));
             if (_notEquals_1) {
-              EList<JvmTypeReference> _superTypes_1 = it.getSuperTypes();
+              EList<JvmTypeReference> _superTypes = it.getSuperTypes();
               QualifiedName _fullyQualifiedName_1 = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(cap);
               String _string = _fullyQualifiedName_1.toString();
-              JvmTypeReference _newTypeRef_1 = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(element, _string);
-              SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes_1, _newTypeRef_1);
+              JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(element, _string);
+              SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _newTypeRef);
             } else {
               String _name_1 = cap.getName();
               String _plus = ("Unable to resolve the fully qualified name of the implemented capacity \'" + _name_1);

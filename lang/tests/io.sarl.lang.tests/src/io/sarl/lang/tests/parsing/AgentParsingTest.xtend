@@ -277,4 +277,22 @@ class AgentParsingTest {
 		mas.assertNoErrors
 	}
 
+	@Test
+	def void fieldNameShadowing() {
+		val mas = '''
+			agent A1 {
+				val field1 : int = 5
+				def myaction(a : int) { }
+			}
+			agent A2 extends A1 {
+				val field1 : int = 5
+				def myaction(a : int) { }
+			}
+		'''.parse
+		mas.assertWarning(
+			TypesPackage::eINSTANCE.jvmField,
+			IssueCodes::FIELD_NAME_SHADOWING,
+			"The field 'field1' in 'A2' is hidding the inherited field 'A1.field1'.")
+	}
+
 }

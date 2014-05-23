@@ -125,4 +125,21 @@ class EventParsingTest {
 			"Cannot define many times the same feature in 'E1': myfield")
 	}
 
+	@Test
+	def void fieldNameShadowing() {
+		val mas = '''
+			event E0 {
+				val field1 : int = 5
+				val field2 : int = 6
+			}
+			event E1 extends E0 {
+				val field1 : int = 5
+			}
+		'''.parse
+		mas.assertWarning(
+			TypesPackage::eINSTANCE.jvmField,
+			IssueCodes::FIELD_NAME_SHADOWING,
+			"The field 'field1' in 'E1' is hidding the inherited field 'E0.field1'.")
+	}
+
 }

@@ -481,4 +481,38 @@ public class AgentParsingTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
+  
+  @Test
+  public void fieldNameShadowing() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("agent A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val field1 : int = 5");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) { }");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("agent A2 extends A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val field1 : int = 5");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) { }");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmField = TypesPackage.eINSTANCE.getJvmField();
+      this._validationTestHelper.assertWarning(mas, _jvmField, 
+        IssueCodes.FIELD_NAME_SHADOWING, 
+        "The field \'field1\' in \'A2\' is hidding the inherited field \'A1.field1\'.");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
 }

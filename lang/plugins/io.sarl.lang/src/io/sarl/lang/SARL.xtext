@@ -112,9 +112,12 @@ Behavior returns InheritingElement:
 Skill returns ImplementingElement:
 	{Skill}
 	'skill' name=ValidID 
-	('extends' superTypes+=[Skill|QualifiedName])?
-	'implements' implementedTypes+=[Capacity|QualifiedName]
-	(',' implementedTypes+=[Capacity|QualifiedName])*
+	(	('extends' superTypes+=[Skill|QualifiedName])?
+		&
+		(	'implements' implementedTypes+=[Capacity|QualifiedName]
+			(',' implementedTypes+=[Capacity|QualifiedName])*
+		)
+	)
 	'{' features+=SkillFeature* '}'
 ;
 

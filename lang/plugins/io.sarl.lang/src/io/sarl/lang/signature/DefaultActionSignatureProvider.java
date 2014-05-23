@@ -24,6 +24,7 @@ import java.util.TreeMap;
 
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 
 import com.google.inject.Singleton;
@@ -176,12 +177,28 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 
 	/** {@inheritDoc}
 	 */
-	public SignatureKey createSignatureID(EList<FormalParameter> parameters) {
+	public SignatureKey createSignatureIDFromSarlModel(EList<FormalParameter> parameters) {
 		SignatureKey sig = new SignatureKey();
 		for(FormalParameter p : parameters) {
 			sig.add(p.getParameterType().getIdentifier());
 		}
 		return sig;
+	}
+
+	/** {@inheritDoc}
+	 */
+	public SignatureKey createSignatureIDFromJvmModel(EList<JvmFormalParameter> parameters) {
+		SignatureKey sig = new SignatureKey();
+		for(JvmFormalParameter p : parameters) {
+			sig.add(p.getParameterType().getIdentifier());
+		}
+		return sig;
+	}
+
+	/** {@inheritDoc}
+	 */
+	public ActionKey createActionID(String actionName, SignatureKey parameters) {
+		return new ActionKey(actionName, parameters);
 	}
 
 	/** {@inheritDoc}

@@ -15,8 +15,11 @@
  */
 package io.sarl.lang;
 
+import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
+
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.DefaultActionSignatureProvider;
+import io.sarl.lang.validation.SARLConfigurableIssueCodesProvider;
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -34,6 +37,13 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	@SuppressWarnings("static-method")
 	public Class<? extends ActionSignatureProvider> bindActionSignatureProvider() {
 		return DefaultActionSignatureProvider.class;
+	}
+	
+	/** {@inheritDoc}
+	 */
+	@Override
+	public Class<? extends ConfigurableIssueCodesProvider> bindConfigurableIssueCodesProvider() {
+		return SARLConfigurableIssueCodesProvider.class;
 	}
 	
 }

@@ -220,7 +220,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				sarlSignatureProvider.resetSignatures(it)
 
 				documentation = element.documentation
-				superTypes += newTypeRef(element, typeof(io.sarl.lang.core.Skill))
+				generateSuperTypes(element, typeof(io.sarl.lang.core.Skill))
 				for (cap : element.implementedTypes) {
 					if (cap.name!=null) {
 						if (cap.fullyQualifiedName != null) {
