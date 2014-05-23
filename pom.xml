@@ -67,7 +67,6 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 	<!-- ==== Dependency Management === -->
 	<!-- ======================================= -->
 
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -75,63 +74,10 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 				<artifactId>junit</artifactId>
 				<version>4.11</version>
 			</dependency>
-			<dependency>
-				<groupId>org.eclipse.xtend</groupId>
-				<artifactId>org.eclipse.xtend.lib</artifactId>
-				<version>${xtext.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.xtext</groupId>
-				<artifactId>org.eclipse.xtext</artifactId>
-				<version>${xtext.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.xtext</groupId>
-				<artifactId>org.eclipse.xtext.xbase</artifactId>
-				<version>${xtext.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.jnario</groupId>
-				<artifactId>org.jnario.lib.maven</artifactId>
-				<version>${jnario.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<!-- SARL Modules -->
-			<dependency>
-				<groupId>io.sarl.lang</groupId>
-				<artifactId>io.sarl.lang.core</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.sarl.lang</groupId>
-				<artifactId>io.sarl.lang</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.sarl.lang</groupId>
-				<artifactId>io.sarl.lang.tests</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.sarl</groupId>
-				<artifactId>io.sarl.core</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.sarl</groupId>
-				<artifactId>io.sarl.util</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.sarl</groupId>
-				<artifactId>io.sarl.sdk</artifactId>
-				<version>${project.version}</version>
-				<type>pom</type>
-			</dependency>
+			<!-- The other dependencies are inside the submodules for avoiding to 
+				propagate the dependency information outside a specific module -->
 		</dependencies>
 	</dependencyManagement>
-
 
 	<!-- ======================================= -->
 	<!-- ==== Plugins Dependency Management === -->
