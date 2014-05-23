@@ -160,7 +160,7 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.actionSignature,
-			IssueCodes::ACTION_COLLISION,
+			IssueCodes::ACTION_ALREADY_DEFINED,
 			"Cannot define many times the same feature in 'C1': myaction(a : int)")
 	}
 
@@ -176,10 +176,42 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.action,
-			IssueCodes::ACTION_COLLISION,
+			IssueCodes::ACTION_ALREADY_DEFINED,
 			"Cannot define many times the same feature in 'S1': myaction(a : int)")
 	}
 	
+	@Test
+	def void multipleVariableDefinitionInSkill() {
+		val mas = '''
+			capacity C1 { }
+			skill S1 implements C1 {
+				var myfield : int
+				var myfield1 : String
+				var myfield : double
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.attribute,
+			IssueCodes::FIELD_ALREADY_DEFINED,
+			"Cannot define many times the same feature in 'S1': myfield")
+	}
+
+	@Test
+	def void multipleValueDefinitionInSkill() {
+		val mas = '''
+			capacity C1 { }
+			skill S1 implements C1 {
+				val myfield : int = 4
+				val myfield1 : String = ""
+				val myfield : double = 5
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.attribute,
+			IssueCodes::FIELD_ALREADY_DEFINED,
+			"Cannot define many times the same feature in 'S1': myfield")
+	}
+
 	@Test
 	def invalidActionNameInCapacity() {
 		val mas = '''

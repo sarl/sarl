@@ -167,8 +167,38 @@ class AgentParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.action,
-			IssueCodes::ACTION_COLLISION,
+			IssueCodes::ACTION_ALREADY_DEFINED,
 			"Cannot define many times the same feature in 'A1': myaction(a : int)")
+	}
+
+	@Test
+	def void multipleVariableDefinition() {
+		val mas = '''
+			agent A1 {
+				var myfield : int
+				var myfield1 : String
+				var myfield : double
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.attribute,
+			IssueCodes::FIELD_ALREADY_DEFINED,
+			"Cannot define many times the same feature in 'A1': myfield")
+	}
+
+	@Test
+	def void multipleValueDefinition() {
+		val mas = '''
+			agent A1 {
+				val myfield : int = 4
+				val myfield1 : String = ""
+				val myfield : double = 5
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.attribute,
+			IssueCodes::FIELD_ALREADY_DEFINED,
+			"Cannot define many times the same feature in 'A1': myfield")
 	}
 
 	@Test

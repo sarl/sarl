@@ -48,7 +48,19 @@ public class IssueCodes {
 	 * }
 	 * </code></pre>
 	 */
-	public static final String ACTION_COLLISION = ISSUE_CODE_PREFIX + "action_collision"; //$NON-NLS-1$
+	public static final String ACTION_ALREADY_DEFINED = ISSUE_CODE_PREFIX + "action_already_defined"; //$NON-NLS-1$
+
+	/**
+	 * The definitions of two fields are conflicting.
+	 * <p>
+	 * The following code is avoid:<pre><code>
+	 * {
+	 *    val myfield
+	 *    val myfield
+	 * }
+	 * </code></pre>
+	 */
+	public static final String FIELD_ALREADY_DEFINED = ISSUE_CODE_PREFIX + "field_already_defined"; //$NON-NLS-1$
 
 	/**
 	 * In a skill, the functions inherited from the capacities must not have

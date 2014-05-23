@@ -279,7 +279,7 @@ public class CapacityParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
       this._validationTestHelper.assertError(mas, _actionSignature, 
-        IssueCodes.ACTION_COLLISION, 
+        IssueCodes.ACTION_ALREADY_DEFINED, 
         "Cannot define many times the same feature in \'C1\': myaction(a : int)");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -308,8 +308,66 @@ public class CapacityParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _action = SarlPackage.eINSTANCE.getAction();
       this._validationTestHelper.assertError(mas, _action, 
-        IssueCodes.ACTION_COLLISION, 
+        IssueCodes.ACTION_ALREADY_DEFINED, 
         "Cannot define many times the same feature in \'S1\': myaction(a : int)");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void multipleVariableDefinitionInSkill() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 { }");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var myfield : int");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var myfield1 : String");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var myfield : double");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
+      this._validationTestHelper.assertError(mas, _attribute, 
+        IssueCodes.FIELD_ALREADY_DEFINED, 
+        "Cannot define many times the same feature in \'S1\': myfield");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void multipleValueDefinitionInSkill() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 { }");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val myfield : int = 4");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val myfield1 : String = \"\"");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val myfield : double = 5");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
+      this._validationTestHelper.assertError(mas, _attribute, 
+        IssueCodes.FIELD_ALREADY_DEFINED, 
+        "Cannot define many times the same feature in \'S1\': myfield");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

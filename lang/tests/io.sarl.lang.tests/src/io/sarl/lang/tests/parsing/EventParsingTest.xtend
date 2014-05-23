@@ -95,4 +95,34 @@ class EventParsingTest {
 			"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.")
 	}
 
+	@Test
+	def void multipleVariableDefinition() {
+		val mas = '''
+			event E1 {
+				var myfield : int
+				var myfield1 : String
+				var myfield : double
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.attribute,
+			IssueCodes::FIELD_ALREADY_DEFINED,
+			"Cannot define many times the same feature in 'E1': myfield")
+	}
+
+	@Test
+	def void multipleValueDefinition() {
+		val mas = '''
+			event E1 {
+				val myfield : int = 4
+				val myfield1 : String = ""
+				val myfield : double = 5
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.attribute,
+			IssueCodes::FIELD_ALREADY_DEFINED,
+			"Cannot define many times the same feature in 'E1': myfield")
+	}
+
 }

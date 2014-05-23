@@ -148,4 +148,58 @@ public class EventParsingTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
+  
+  @Test
+  public void multipleVariableDefinition() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("event E1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var myfield : int");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var myfield1 : String");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var myfield : double");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
+      this._validationTestHelper.assertError(mas, _attribute, 
+        io.sarl.lang.validation.IssueCodes.FIELD_ALREADY_DEFINED, 
+        "Cannot define many times the same feature in \'E1\': myfield");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void multipleValueDefinition() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("event E1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val myfield : int = 4");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val myfield1 : String = \"\"");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val myfield : double = 5");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
+      this._validationTestHelper.assertError(mas, _attribute, 
+        io.sarl.lang.validation.IssueCodes.FIELD_ALREADY_DEFINED, 
+        "Cannot define many times the same feature in \'E1\': myfield");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
 }

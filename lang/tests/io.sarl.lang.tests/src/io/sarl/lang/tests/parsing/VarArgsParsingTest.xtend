@@ -372,7 +372,7 @@ class VarArgsParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.action,
-			io.sarl.lang.validation.IssueCodes::ACTION_COLLISION,
+			io.sarl.lang.validation.IssueCodes::ACTION_ALREADY_DEFINED,
 			"Cannot define many times the same feature in 'B1': myaction(arg0 : int, arg1 : int)")
 	}
 

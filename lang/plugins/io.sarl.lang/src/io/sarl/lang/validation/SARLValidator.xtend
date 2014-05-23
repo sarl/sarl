@@ -199,7 +199,8 @@ class SARLValidator extends AbstractSARLValidator {
 	}
 
 	@Check
-	def checkNoActionCollision(FeatureContainer featureContainer) {
+	def checkNoFeatureMultiDefinition(FeatureContainer featureContainer) {
+		var Set<String> localFields = new TreeSet
 		var Set<ActionKey> localFunctions = new TreeSet
 		var ActionNameKey actionID
 		var SignatureKey signatureID
@@ -228,8 +229,22 @@ class SARLValidator extends AbstractSARLValidator {
 				signatureID = sarlSignatureProvider.createSignatureID(feature.params)
 			}
 			else {
+				name = null
 				actionID = null
 				signatureID = null
+				if (feature instanceof Attribute) {
+					if (!localFields.add(feature.name)) {
+						error(
+							String.format(
+								"Cannot define many times the same feature in '%s': %s",
+								featureContainer.name,
+								feature.name
+							), 
+							feature,
+							null,
+							io.sarl.lang.validation.IssueCodes::FIELD_ALREADY_DEFINED)
+					}
+				}
 			}
 			if (actionID!==null && signatureID!==null) {
 				var sig = sarlSignatureProvider.getSignatures(actionID, signatureID)
@@ -244,65 +259,14 @@ class SARLValidator extends AbstractSARLValidator {
 								), 
 								feature,
 								null,
-								io.sarl.lang.validation.IssueCodes::ACTION_COLLISION)
-							return;
+								io.sarl.lang.validation.IssueCodes::ACTION_ALREADY_DEFINED)
 						}
 					}
 				}
 			}
 		}
 	}
-	
-	/*TODO private def Map<ActionNameKey,EList<InferredActionSignature>> getCapacityActionsFromHierarchy(EList<InheritingElement> sources) {
-		var Map<ActionNameKey,EList<InferredActionSignature>> actions = new TreeMap
-		var Set<String> encounteredCapacities = new TreeSet
-		var List<Capacity> capacities = new LinkedList
-		for(p : sources) {
-			if (p instanceof Capacity) {
-				capacities.add(p)
-			}
-		}
-		while (!capacities.empty) {
-			var cap = capacities.remove(0);
-			if (encounteredCapacities.add("")) {
-				for(p : cap.superTypes) {
-					if (p instanceof Capacity) {
-						capacities.add(p)
-					}
-				}
-				var JvmIdentifiableElement container = null
-				for(feature : cap.features) {
-					if (feature instanceof ActionSignature) {
-						if (container===null) {
-							container = logicalContainerProvider.getNearestLogicalContainer(feature)
-						}
-						var ank = sarlSignatureProvider.createFunctionID(container, feature.name)
-						var sk = sarlSignatureProvider.createSignatureID(feature.params)
-						var is = sarlSignatureProvider.getSignatures(ank, sk)
-						actions.add(sk.toActionKey(feature.name))
-					}
-				}
-			}
-		}
-		return actions
-	}*/
-	
-	@Check
-	def checkSkillActionImplementationPrototype(Skill skill) {
-		/*TODO var Set<ActionKey> actions = getCapacityActionsFromHierarchy(skill.implementedTypes)
-		var JvmIdentifiableElement container = null
-		for(feature : skill.features) {
-			if (feature instanceof Action) {
-				if (container===null) {
-					container = logicalContainerProvider.getNearestLogicalContainer(feature)
-				}
-				var signature = feature.signature as ActionSignature
-				var sk = sarlSignatureProvider.createSignatureID(signature.params)
-				
-			}
-		}*/
-	}
-	
+		
 	@Check
 	def checkActionName(ActionSignature action) {
 		if (action.name.startsWith("_handle_")) {
@@ -381,6 +345,58 @@ class SARLValidator extends AbstractSARLValidator {
 			field,
 			null,
 			IssueCodes::MISSING_INITIALIZATION)
+	}
+	
+	//TODO Multiple definition of the same field
+
+	/*TODO private def Map<ActionNameKey,EList<InferredActionSignature>> getCapacityActionsFromHierarchy(EList<InheritingElement> sources) {
+		var Map<ActionNameKey,EList<InferredActionSignature>> actions = new TreeMap
+		var Set<String> encounteredCapacities = new TreeSet
+		var List<Capacity> capacities = new LinkedList
+		for(p : sources) {
+			if (p instanceof Capacity) {
+				capacities.add(p)
+			}
+		}
+		while (!capacities.empty) {
+			var cap = capacities.remove(0);
+			if (encounteredCapacities.add("")) {
+				for(p : cap.superTypes) {
+					if (p instanceof Capacity) {
+						capacities.add(p)
+					}
+				}
+				var JvmIdentifiableElement container = null
+				for(feature : cap.features) {
+					if (feature instanceof ActionSignature) {
+						if (container===null) {
+							container = logicalContainerProvider.getNearestLogicalContainer(feature)
+						}
+						var ank = sarlSignatureProvider.createFunctionID(container, feature.name)
+						var sk = sarlSignatureProvider.createSignatureID(feature.params)
+						var is = sarlSignatureProvider.getSignatures(ank, sk)
+						actions.add(sk.toActionKey(feature.name))
+					}
+				}
+			}
+		}
+		return actions
+	}*/
+	
+	@Check
+	def checkSkillActionImplementationPrototype(Skill skill) {
+		/*TODO var Set<ActionKey> actions = getCapacityActionsFromHierarchy(skill.implementedTypes)
+		var JvmIdentifiableElement container = null
+		for(feature : skill.features) {
+			if (feature instanceof Action) {
+				if (container===null) {
+					container = logicalContainerProvider.getNearestLogicalContainer(feature)
+				}
+				var signature = feature.signature as ActionSignature
+				var sk = sarlSignatureProvider.createSignatureID(signature.params)
+				
+			}
+		}*/
 	}
 
 }

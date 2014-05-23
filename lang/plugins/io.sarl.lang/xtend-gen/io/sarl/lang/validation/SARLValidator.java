@@ -337,7 +337,8 @@ public class SARLValidator extends AbstractSARLValidator {
   }
   
   @Check
-  public void checkNoActionCollision(final FeatureContainer featureContainer) {
+  public void checkNoFeatureMultiDefinition(final FeatureContainer featureContainer) {
+    Set<String> localFields = new TreeSet<String>();
     Set<ActionKey> localFunctions = new TreeSet<ActionKey>();
     ActionNameKey actionID = null;
     SignatureKey signatureID = null;
@@ -379,8 +380,23 @@ public class SARLValidator extends AbstractSARLValidator {
               SignatureKey _createSignatureID_2 = this.sarlSignatureProvider.createSignatureID(_params_2);
               signatureID = _createSignatureID_2;
             } else {
+              name = null;
               actionID = null;
               signatureID = null;
+              if ((feature instanceof Attribute)) {
+                String _name_2 = ((Attribute)feature).getName();
+                boolean _add = localFields.add(_name_2);
+                boolean _not = (!_add);
+                if (_not) {
+                  String _name_3 = featureContainer.getName();
+                  String _name_4 = ((Attribute)feature).getName();
+                  String _format = String.format(
+                    "Cannot define many times the same feature in \'%s\': %s", _name_3, _name_4);
+                  this.error(_format, feature, 
+                    null, 
+                    IssueCodes.FIELD_ALREADY_DEFINED);
+                }
+              }
             }
           }
         }
@@ -399,65 +415,24 @@ public class SARLValidator extends AbstractSARLValidator {
             Iterable<SignatureKey> _signatureKeys = sig.signatureKeys();
             for (final SignatureKey key : _signatureKeys) {
               ActionKey _actionKey = key.toActionKey(name);
-              boolean _add = localFunctions.add(_actionKey);
-              boolean _not = (!_add);
-              if (_not) {
-                String _name_2 = featureContainer.getName();
+              boolean _add_1 = localFunctions.add(_actionKey);
+              boolean _not_1 = (!_add_1);
+              if (_not_1) {
+                String _name_5 = featureContainer.getName();
                 String _string = sig.toString();
                 String _plus = ((name + "(") + _string);
                 String _plus_1 = (_plus + ")");
-                String _format = String.format(
-                  "Cannot define many times the same feature in \'%s\': %s", _name_2, _plus_1);
-                this.error(_format, feature, 
+                String _format_1 = String.format(
+                  "Cannot define many times the same feature in \'%s\': %s", _name_5, _plus_1);
+                this.error(_format_1, feature, 
                   null, 
-                  IssueCodes.ACTION_COLLISION);
-                return;
+                  IssueCodes.ACTION_ALREADY_DEFINED);
               }
             }
           }
         }
       }
     }
-  }
-  
-  /**
-   * TODO private def Map<ActionNameKey,EList<InferredActionSignature>> getCapacityActionsFromHierarchy(EList<InheritingElement> sources) {
-   * var Map<ActionNameKey,EList<InferredActionSignature>> actions = new TreeMap
-   * var Set<String> encounteredCapacities = new TreeSet
-   * var List<Capacity> capacities = new LinkedList
-   * for(p : sources) {
-   * if (p instanceof Capacity) {
-   * capacities.add(p)
-   * }
-   * }
-   * while (!capacities.empty) {
-   * var cap = capacities.remove(0);
-   * if (encounteredCapacities.add("")) {
-   * for(p : cap.superTypes) {
-   * if (p instanceof Capacity) {
-   * capacities.add(p)
-   * }
-   * }
-   * var JvmIdentifiableElement container = null
-   * for(feature : cap.features) {
-   * if (feature instanceof ActionSignature) {
-   * if (container===null) {
-   * container = logicalContainerProvider.getNearestLogicalContainer(feature)
-   * }
-   * var ank = sarlSignatureProvider.createFunctionID(container, feature.name)
-   * var sk = sarlSignatureProvider.createSignatureID(feature.params)
-   * var is = sarlSignatureProvider.getSignatures(ank, sk)
-   * actions.add(sk.toActionKey(feature.name))
-   * }
-   * }
-   * }
-   * }
-   * return actions
-   * }
-   */
-  @Check
-  public Object checkSkillActionImplementationPrototype(final Skill skill) {
-    return null;
   }
   
   @Check
@@ -539,5 +514,45 @@ public class SARLValidator extends AbstractSARLValidator {
     this.error(_format, field, 
       null, 
       org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_INITIALIZATION);
+  }
+  
+  /**
+   * TODO private def Map<ActionNameKey,EList<InferredActionSignature>> getCapacityActionsFromHierarchy(EList<InheritingElement> sources) {
+   * var Map<ActionNameKey,EList<InferredActionSignature>> actions = new TreeMap
+   * var Set<String> encounteredCapacities = new TreeSet
+   * var List<Capacity> capacities = new LinkedList
+   * for(p : sources) {
+   * if (p instanceof Capacity) {
+   * capacities.add(p)
+   * }
+   * }
+   * while (!capacities.empty) {
+   * var cap = capacities.remove(0);
+   * if (encounteredCapacities.add("")) {
+   * for(p : cap.superTypes) {
+   * if (p instanceof Capacity) {
+   * capacities.add(p)
+   * }
+   * }
+   * var JvmIdentifiableElement container = null
+   * for(feature : cap.features) {
+   * if (feature instanceof ActionSignature) {
+   * if (container===null) {
+   * container = logicalContainerProvider.getNearestLogicalContainer(feature)
+   * }
+   * var ank = sarlSignatureProvider.createFunctionID(container, feature.name)
+   * var sk = sarlSignatureProvider.createSignatureID(feature.params)
+   * var is = sarlSignatureProvider.getSignatures(ank, sk)
+   * actions.add(sk.toActionKey(feature.name))
+   * }
+   * }
+   * }
+   * }
+   * return actions
+   * }
+   */
+  @Check
+  public Object checkSkillActionImplementationPrototype(final Skill skill) {
+    return null;
   }
 }

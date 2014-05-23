@@ -41,7 +41,7 @@ class BehaviorParsingTest {
 	@Inject extension ValidationTestHelper
 
 	@Test
-	def void multipleActionDefinitionInAgent() {
+	def void multipleActionDefinition() {
 		val mas = '''
 			behavior B1 {
 				def myaction(a : int, b : int) { }
@@ -51,8 +51,38 @@ class BehaviorParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.action,
-			IssueCodes::ACTION_COLLISION,
+			IssueCodes::ACTION_ALREADY_DEFINED,
 			"Cannot define many times the same feature in 'B1': myaction(a : int)")
+	}
+
+	@Test
+	def void multipleVariableDefinition() {
+		val mas = '''
+			behavior B1 {
+				var myfield : int
+				var myfield1 : String
+				var myfield : double
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.attribute,
+			IssueCodes::FIELD_ALREADY_DEFINED,
+			"Cannot define many times the same feature in 'B1': myfield")
+	}
+
+	@Test
+	def void multipleValueDefinition() {
+		val mas = '''
+			behavior B1 {
+				val myfield : int = 4
+				val myfield1 : String = ""
+				val myfield : double = 5
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.attribute,
+			IssueCodes::FIELD_ALREADY_DEFINED,
+			"Cannot define many times the same feature in 'B1': myfield")
 	}
 
 	@Test
