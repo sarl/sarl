@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  org.antlr.runtime,
  org.eclipse.xtext.common.types,
  org.eclipse.xtext.xbase.lib,
- io.sarl.lang.core
+ io.sarl.lang.core,
+ org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
@@ -32,7 +33,4 @@ Export-Package: io.sarl.lang,
  io.sarl.lang.parser.antlr.internal,
  io.sarl.lang.validation,
  io.sarl.lang.formatting,
- io.sarl.lang.jvmmodel,
- io.sarl.lang.sarl,
- io.sarl.lang.sarl.impl,
- io.sarl.lang.sarl.util
+ io.sarl.lang.jvmmodel

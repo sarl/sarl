@@ -124,7 +124,7 @@ class SARLFormatter extends XbaseFormatter {
 
 	def void configureXImportDeclaration(FormattingConfig c, XImportDeclarationElements ele) {
 		c.setLinewrap(1, 1, 2).after(ele.group)
-		c.setNoSpace.around(ele.fullStopKeyword_1_0_3)
+		c.setNoSpace.around(ele.alternatives_1_0_3)
 	}
 
 	def void configureAttributes(FormattingConfig c, AttributeElements ele) {
@@ -188,12 +188,12 @@ class SARLFormatter extends XbaseFormatter {
 	}
 
 	override configureXForLoopExpression(FormattingConfig c, XForLoopExpressionElements ele) {
-		c.setNoSpace().around(ele.getLeftParenthesisKeyword_2());
-		c.setNoSpace().around(ele.getColonKeyword_4());
-		c.setNoSpace().around(ele.getRightParenthesisKeyword_6());
+		c.setNoSpace().around(ele.leftParenthesisKeyword_0_0_2);
+		c.setNoSpace().around(ele.colonKeyword_0_0_4);
+		c.setNoSpace().around(ele.rightParenthesisKeyword_2);
 
 		//		c.setIndentationIncrement().before(ele.getEachExpressionAssignment_7());
-		c.setLinewrap().around(ele.getEachExpressionAssignment_7());
+		c.setLinewrap().around(ele.eachExpressionAssignment_3);
 
 		//		c.setIndentationDecrement().after(ele.getEachExpressionAssignment_7());
 		c.setLinewrap(2).before(ele.group)

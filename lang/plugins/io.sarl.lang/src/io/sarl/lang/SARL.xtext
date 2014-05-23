@@ -157,12 +157,16 @@ RequiredCapacity returns Feature:
 	'requires' requiredCapacities+=[Capacity|QualifiedName]
 	(',' requiredCapacities+=[Capacity|QualifiedName])*
 ;
+
+VarArgToken:
+	'*'
+;
 	
 Constructor returns ParameterizedFeature:
 	{Constructor}
 	'new'
 	(	'(' params+=FormalParameter (',' params+=FormalParameter)* 
-		(varargs?='...')? ')'
+		(varargs?=VarArgToken)? ')'
 	)? body=XBlockExpression
 ;
 
@@ -175,7 +179,7 @@ ActionSignature returns ParameterizedFeature:
 	{ActionSignature}
 	'def' name=ValidID 
 	(	'(' params+=FormalParameter
-		(',' params+=FormalParameter)* (varargs?='...')? ')'
+		(',' params+=FormalParameter)* (varargs?=VarArgToken)? ')'
 	)?
 	(':' type=JvmTypeReference)?
 	('fires' firedEvents+=[Event|QualifiedName] (',' firedEvents+=[Event|QualifiedName])*)?
@@ -183,7 +187,15 @@ ActionSignature returns ParameterizedFeature:
 	
 FormalParameter:
 	 name=ValidID ':' parameterType=JvmTypeReference 
-	 ('=' defaultValue=XLiteral)?
+	 ('=' defaultValue=DefaultParameterValue)?
+;
+
+DefaultParameterValue returns xbase::XExpression:
+	XBooleanLiteral |
+	XNumberLiteral |
+	XNullLiteral |
+	XStringLiteral |
+	XTypeLiteral
 ;
 
 XVariableDeclaration returns xbase::XExpression:
@@ -193,25 +205,25 @@ XVariableDeclaration returns xbase::XExpression:
 	('=' right=XExpression)?
 ;
 
-JvmFormalParameter returns jvm::JvmFormalParameter:
-	{jvm::JvmFormalParameter}
-	name=ValidID (=>':' parameterType=JvmTypeReference)? 
-;
-	
-FullJvmFormalParameter returns jvm::JvmFormalParameter:
-	{jvm::JvmFormalParameter}
-	name=ValidID ':' parameterType=JvmTypeReference
-;
-
-LoopFormalParameter returns jvm::JvmFormalParameter:
-	{jvm::JvmFormalParameter}
-	name=ValidID
-	( 'as' parameterType=JvmTypeReference )?
-;
-
-XForLoopExpression returns xbase::XExpression:
-	{xbase::XForLoopExpression}
-	'for' '(' declaredParam=LoopFormalParameter ':' forExpression=XExpression ')'
-		eachExpression=XExpression
-;
+//JvmFormalParameter returns jvm::JvmFormalParameter:
+//	{jvm::JvmFormalParameter}
+//	name=ValidID (=>':' parameterType=JvmTypeReference)? 
+//;
+//	
+//FullJvmFormalParameter returns jvm::JvmFormalParameter:
+//	{jvm::JvmFormalParameter}
+//	name=ValidID ':' parameterType=JvmTypeReference
+//;
+//
+//LoopFormalParameter returns jvm::JvmFormalParameter:
+//	{jvm::JvmFormalParameter}
+//	name=ValidID
+//	( 'as' parameterType=JvmTypeReference )?
+//;
+//
+//XForLoopExpression returns xbase::XExpression:
+//	{xbase::XForLoopExpression}
+//	'for' '(' declaredParam=LoopFormalParameter ':' forExpression=XExpression ')'
+//		eachExpression=XExpression
+//;
 

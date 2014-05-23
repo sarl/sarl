@@ -511,7 +511,7 @@ class ArgDefaultValueCompilerTest {
 	def void inAgentAction_3p_vararg_1() {
 		'''
 			agent A1 {
-				def myaction(arg0 : int, arg1 : int=45, arg2 : int...) {
+				def myaction(arg0 : int, arg1 : int=45, arg2 : int*) {
 					System.out.println(arg0)
 				}
 			}
@@ -542,7 +542,7 @@ class ArgDefaultValueCompilerTest {
 	def void inAgentAction_3p_vararg_0() {
 		'''
 			agent A1 {
-				def myaction(arg0 : int=45, arg1 : int, arg2 : int...) {
+				def myaction(arg0 : int=45, arg1 : int, arg2 : int*) {
 					System.out.println(arg0)
 				}
 			}
@@ -573,7 +573,7 @@ class ArgDefaultValueCompilerTest {
 	def void inAgentAction_3p_vararg_0_1() {
 		'''
 			agent A1 {
-				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...) {
+				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*) {
 					System.out.println(arg0)
 				}
 			}
@@ -1019,7 +1019,7 @@ class ArgDefaultValueCompilerTest {
 	def void inBehaviorConstructor_3p_vararg_1() {
 		'''
 			behavior B1 {
-				new(arg0 : int, arg1 : int=45, arg2 : int...) {
+				new(arg0 : int, arg1 : int=45, arg2 : int*) {
 					System.out.println(arg0)
 				}
 			}
@@ -1043,7 +1043,7 @@ class ArgDefaultValueCompilerTest {
 	def void inBehaviorConstructor_3p_vararg_0() {
 		'''
 			behavior B1 {
-				new(arg0 : int=45, arg1 : int, arg2 : int...) {
+				new(arg0 : int=45, arg1 : int, arg2 : int*) {
 					System.out.println(arg0)
 				}
 			}
@@ -1067,7 +1067,7 @@ class ArgDefaultValueCompilerTest {
 	def void inBehaviorConstructor_3p_vararg_0_1() {
 		'''
 			behavior B1 {
-				new(arg0 : int=45, arg1 : int=56, arg2 : int...) {
+				new(arg0 : int=45, arg1 : int=56, arg2 : int*) {
 					System.out.println(arg0)
 				}
 			}

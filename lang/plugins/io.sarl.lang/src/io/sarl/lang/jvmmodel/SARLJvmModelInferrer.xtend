@@ -55,6 +55,7 @@ import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmFormalParameter
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmOperation
+import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.xbase.XExpression
@@ -63,8 +64,13 @@ import org.eclipse.xtext.xbase.compiler.XbaseCompiler
 import org.eclipse.xtext.xbase.compiler.output.FakeTreeAppendable
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
+import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor.IPostIndexingInitializing
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
+import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner
+import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
+import org.eclipse.xtext.xbase.typesystem.references.OwnedConverter
+import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -93,13 +99,16 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 
 	@Inject private ActionSignatureProvider sarlSignatureProvider
 
+	@Inject
+	private CommonTypeComputationServices services;
+
 	/**
 	 * The dispatch method {@code infer} is called for each instance of the
 	 * given element's type that is contained in a resource.
 	 * 
 	 * @param element
 	 *            the model to create one or more
-	 *            {@link org.eclipse.xtext.common.types.JvmDeclaredType declared
+	 *            {@link JvmDeclaredType declared
 	 *            types} from.
 	 * @param acceptor
 	 *            each created
@@ -110,7 +119,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 *            accept(..)} method takes the constructed empty type for the
 	 *            pre-indexing phase. This one is further initialized in the
 	 *            indexing phase using the closure you pass to the returned
-	 *            {@link org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor.IPostIndexingInitializing#initializeLater(org.eclipse.xtext.xbase.lib.Procedures.Procedure1)
+	 *            {@link IPostIndexingInitializing#initializeLater(org.eclipse.xtext.xbase.lib.Procedures.Procedure1)
 	 *            initializeLater(..)}.
 	 * @param isPreIndexingPhase
 	 *            whether the method is called in a pre-indexing phase, i.e.
@@ -460,7 +469,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	
 				behaviorMethod.body = [
 					it.append('''if ( «guardMethodName»(«SARLKeywords::OCCURRENCE»)) { ''')
-					xbaseCompiler.compile(unit.body, it, behaviorMethod.newTypeRef(Void::TYPE))
+					xbaseCompiler.compile(unit.body, it, 
+						behaviorMethod.newTypeRef(Void::TYPE).toLightweightTypeReference
+					)
 					it.append('}')
 				]
 	
@@ -702,6 +713,16 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					newLine().append("return true;")
 			]
 		return result
+	}
+
+	protected def LightweightTypeReference toLightweightTypeReference(JvmTypeReference typeRef) {
+		return toLightweightTypeReference(typeRef, false);
+	}
+	
+	protected def LightweightTypeReference toLightweightTypeReference(JvmTypeReference typeRef, boolean keepUnboundWildcardInformation) {
+		var OwnedConverter converter = new OwnedConverter(new StandardTypeReferenceOwner(this.services, typeRef), keepUnboundWildcardInformation);
+		var LightweightTypeReference reference = converter.toLightweightReference(typeRef);
+		return reference;
 	}
 
 }

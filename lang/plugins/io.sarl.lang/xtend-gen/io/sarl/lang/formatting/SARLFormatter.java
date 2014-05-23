@@ -17,6 +17,7 @@ package io.sarl.lang.formatting;
 
 import com.google.inject.Inject;
 import io.sarl.lang.services.SARLGrammarAccess;
+import org.eclipse.xtext.Alternatives;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.Group;
 import org.eclipse.xtext.Keyword;
@@ -171,8 +172,8 @@ public class SARLFormatter extends XbaseFormatter {
     Group _group = ele.getGroup();
     _setLinewrap.after(_group);
     FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
-    Keyword _fullStopKeyword_1_0_3 = ele.getFullStopKeyword_1_0_3();
-    _setNoSpace.around(_fullStopKeyword_1_0_3);
+    Alternatives _alternatives_1_0_3 = ele.getAlternatives_1_0_3();
+    _setNoSpace.around(_alternatives_1_0_3);
   }
   
   public void configureAttributes(final FormattingConfig c, final SARLGrammarAccess.AttributeElements ele) {
@@ -270,17 +271,17 @@ public class SARLFormatter extends XbaseFormatter {
   
   public void configureXForLoopExpression(final FormattingConfig c, final XbaseGrammarAccess.XForLoopExpressionElements ele) {
     FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
-    Keyword _leftParenthesisKeyword_2 = ele.getLeftParenthesisKeyword_2();
-    _setNoSpace.around(_leftParenthesisKeyword_2);
+    Keyword _leftParenthesisKeyword_0_0_2 = ele.getLeftParenthesisKeyword_0_0_2();
+    _setNoSpace.around(_leftParenthesisKeyword_0_0_2);
     FormattingConfig.NoSpaceLocator _setNoSpace_1 = c.setNoSpace();
-    Keyword _colonKeyword_4 = ele.getColonKeyword_4();
-    _setNoSpace_1.around(_colonKeyword_4);
+    Keyword _colonKeyword_0_0_4 = ele.getColonKeyword_0_0_4();
+    _setNoSpace_1.around(_colonKeyword_0_0_4);
     FormattingConfig.NoSpaceLocator _setNoSpace_2 = c.setNoSpace();
-    Keyword _rightParenthesisKeyword_6 = ele.getRightParenthesisKeyword_6();
-    _setNoSpace_2.around(_rightParenthesisKeyword_6);
+    Keyword _rightParenthesisKeyword_2 = ele.getRightParenthesisKeyword_2();
+    _setNoSpace_2.around(_rightParenthesisKeyword_2);
     FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap();
-    Assignment _eachExpressionAssignment_7 = ele.getEachExpressionAssignment_7();
-    _setLinewrap.around(_eachExpressionAssignment_7);
+    Assignment _eachExpressionAssignment_3 = ele.getEachExpressionAssignment_3();
+    _setLinewrap.around(_eachExpressionAssignment_3);
     FormattingConfig.LinewrapLocator _setLinewrap_1 = c.setLinewrap(2);
     Group _group = ele.getGroup();
     _setLinewrap_1.before(_group);

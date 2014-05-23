@@ -87,7 +87,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg : int=4...) {");
+      _builder.append("def myaction(arg : int=4*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg)");
@@ -114,7 +114,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg : int...=4) {");
+      _builder.append("def myaction(arg : int*=4) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg)");
@@ -411,7 +411,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int, arg2 : int=45...) {");
+      _builder.append("def myaction(arg0 : int, arg1 : int, arg2 : int=45*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -438,7 +438,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int=45, arg2 : int...) {");
+      _builder.append("def myaction(arg0 : int, arg1 : int=45, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -465,7 +465,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int, arg2 : int...) {");
+      _builder.append("def myaction(arg0 : int=45, arg1 : int, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -492,7 +492,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...) {");
+      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -546,7 +546,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg : int=4...) {");
+      _builder.append("new(arg : int=4*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg)");
@@ -573,7 +573,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg : int...=4) {");
+      _builder.append("new(arg : int*=4) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg)");
@@ -870,7 +870,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg0 : int, arg1 : int, arg2 : int=45...) {");
+      _builder.append("new(arg0 : int, arg1 : int, arg2 : int=45*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -897,7 +897,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg0 : int, arg1 : int=45, arg2 : int...) {");
+      _builder.append("new(arg0 : int, arg1 : int=45, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -924,7 +924,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg0 : int=45, arg1 : int, arg2 : int...) {");
+      _builder.append("new(arg0 : int=45, arg1 : int, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -951,7 +951,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg0 : int=45, arg1 : int=56, arg2 : int...) {");
+      _builder.append("new(arg0 : int=45, arg1 : int=56, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -999,7 +999,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("capacity C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg : int=4...)");
+      _builder.append("def myaction(arg : int=4*)");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -1020,7 +1020,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("capacity C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg : int...=4)");
+      _builder.append("def myaction(arg : int*=4)");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -1251,7 +1251,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("capacity C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int, arg2 : int=45...)");
+      _builder.append("def myaction(arg0 : int, arg1 : int, arg2 : int=45*)");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -1272,7 +1272,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("capacity C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int=45, arg2 : int...)");
+      _builder.append("def myaction(arg0 : int, arg1 : int=45, arg2 : int*)");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -1293,7 +1293,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("capacity C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int, arg2 : int...)");
+      _builder.append("def myaction(arg0 : int=45, arg1 : int, arg2 : int*)");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -1314,7 +1314,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("capacity C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...)");
+      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*)");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -1376,7 +1376,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("def capAction {}");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg : int=4...) {}");
+      _builder.append("def myaction(arg : int=4*) {}");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -1407,7 +1407,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("def capAction {}");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg : int...=4) {}");
+      _builder.append("def myaction(arg : int*=4) {}");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -1748,7 +1748,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("def capAction {}");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int, arg2 : int=45...) {}");
+      _builder.append("def myaction(arg0 : int, arg1 : int, arg2 : int=45*) {}");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -1779,7 +1779,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("def capAction {}");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int=45, arg2 : int...) {}");
+      _builder.append("def myaction(arg0 : int, arg1 : int=45, arg2 : int*) {}");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -1810,7 +1810,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("def capAction {}");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int, arg2 : int...) {}");
+      _builder.append("def myaction(arg0 : int=45, arg1 : int, arg2 : int*) {}");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -1841,7 +1841,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("def capAction {}");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...) {}");
+      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*) {}");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -2014,7 +2014,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("capacity C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...)");
+      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*)");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -2024,15 +2024,11 @@ public class ArgDefaultValueParsingTest {
       _builder.append("def capAction {}");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...) {}");
+      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*) {}");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _action = SarlPackage.eINSTANCE.getAction();
-      this._validationTestHelper.assertError(mas, _action, 
-        IssueCodes.ACTION_COLLISION, 
-        "invalid declaration");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -2045,7 +2041,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("capacity C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...)");
+      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*)");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -2055,7 +2051,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("def capAction {}");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int, arg2 : int...) {}");
+      _builder.append("def myaction(arg0 : int, arg1 : int, arg2 : int*) {}");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -2076,7 +2072,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("capacity C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...)");
+      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*)");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -2086,10 +2082,10 @@ public class ArgDefaultValueParsingTest {
       _builder.append("def capAction {}");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int, arg2 : int...) {}");
+      _builder.append("def myaction(arg0 : int, arg1 : int, arg2 : int*) {}");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg1 : int, arg2 : int...) {");
+      _builder.append("def myaction(arg1 : int, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(\"Invalid\")");
@@ -2100,10 +2096,6 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _action = SarlPackage.eINSTANCE.getAction();
-      this._validationTestHelper.assertError(mas, _action, 
-        IssueCodes.ACTION_COLLISION, 
-        "Cannot define many times the same feature in \'S1\': myaction(arg0 : int, arg1 : int)");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -2116,7 +2108,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("capacity C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...)");
+      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*)");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -2126,14 +2118,14 @@ public class ArgDefaultValueParsingTest {
       _builder.append("def capAction {}");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...) {}");
+      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*) {}");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
       _builder.append("skill S2 extends S1 implements C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg1 : int=56, arg2 : int...) {");
+      _builder.append("def myaction(arg1 : int=56, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(\"invalid\")");
@@ -2144,10 +2136,6 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _formalParameter = SarlPackage.eINSTANCE.getFormalParameter();
-      this._validationTestHelper.assertError(mas, _formalParameter, 
-        org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST, 
-        "function redefinition");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -2170,14 +2158,14 @@ public class ArgDefaultValueParsingTest {
       _builder.append("def capAction {}");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int, arg2 : int...) {}");
+      _builder.append("def myaction(arg0 : int, arg1 : int, arg2 : int*) {}");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
       _builder.append("skill S2 extends S1 implements C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg1 : int, arg2 : int...) {");
+      _builder.append("def myaction(arg1 : int, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(\"invalid\")");
@@ -2188,10 +2176,6 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _formalParameter = SarlPackage.eINSTANCE.getFormalParameter();
-      this._validationTestHelper.assertError(mas, _formalParameter, 
-        org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST, 
-        "cannot override final action");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -2204,7 +2188,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int=42, arg2 : int...) {");
+      _builder.append("def myaction(arg0 : int, arg1 : int=42, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(\"valid\")");
@@ -2213,7 +2197,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int...) {");
+      _builder.append("def myaction(arg0 : int, arg1 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(\"invalid\")");

@@ -1164,7 +1164,7 @@ public class ArgDefaultValueCompilerTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int=45, arg2 : int...) {");
+      _builder.append("def myaction(arg0 : int, arg1 : int=45, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -1237,7 +1237,7 @@ public class ArgDefaultValueCompilerTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int, arg2 : int...) {");
+      _builder.append("def myaction(arg0 : int=45, arg1 : int, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -1310,7 +1310,7 @@ public class ArgDefaultValueCompilerTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...) {");
+      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -2317,7 +2317,7 @@ public class ArgDefaultValueCompilerTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg0 : int, arg1 : int=45, arg2 : int...) {");
+      _builder.append("new(arg0 : int, arg1 : int=45, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -2370,7 +2370,7 @@ public class ArgDefaultValueCompilerTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg0 : int=45, arg1 : int, arg2 : int...) {");
+      _builder.append("new(arg0 : int=45, arg1 : int, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -2423,7 +2423,7 @@ public class ArgDefaultValueCompilerTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg0 : int=45, arg1 : int=56, arg2 : int...) {");
+      _builder.append("new(arg0 : int=45, arg1 : int=56, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");

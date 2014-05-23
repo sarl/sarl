@@ -25,10 +25,10 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 	<properties>
 		<year>2014</year>
 		<copyrighters>Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND</copyrighters>
-		<tycho-version>0.19.0</tycho-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<xtext.version>2.5.0</xtext.version>
-		<jnario.version>0.7.1</jnario.version>
+		<tycho.version>0.20.0</tycho.version>
+		<xtext.version>2.6.0</xtext.version>
+		<jnario.version>0.7.5</jnario.version>
 	</properties>
 
 	<!-- ======================================= -->
@@ -80,6 +80,23 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 				<artifactId>org.eclipse.xtend.lib</artifactId>
 				<version>${xtext.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext</artifactId>
+				<version>${xtext.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext.xbase</artifactId>
+				<version>${xtext.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jnario</groupId>
+				<artifactId>org.jnario.lib.maven</artifactId>
+				<version>${jnario.version}</version>
+				<scope>test</scope>
+			</dependency>
 			<!-- SARL Modules -->
 			<dependency>
 				<groupId>io.sarl.lang</groupId>
@@ -87,9 +104,30 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>io.sarl.lang</groupId>
+				<artifactId>io.sarl.lang</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl.lang</groupId>
+				<artifactId>io.sarl.lang.tests</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>io.sarl</groupId>
 				<artifactId>io.sarl.core</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.util</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.sdk</artifactId>
+				<version>${project.version}</version>
+				<type>pom</type>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -133,7 +171,34 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 					</executions>
 					<configuration>
 						<outputDirectory>xtend-gen</outputDirectory>
+						<source>1.7</source>
+						<target>1.7</target>
+						<encoding>${project.build.sourceEncoding}</encoding>
 					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.eclipse.xtext</groupId>
+					<artifactId>xtext-maven-plugin</artifactId>
+					<version>${xtext.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-maven-plugin</artifactId>
+					<version>${tycho.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-p2-director-plugin</artifactId>
+					<version>${tycho.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>target-platform-configuration</artifactId>
+					<version>${tycho.version}</version>
 				</plugin>
 
 				<plugin>
@@ -153,7 +218,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 					<artifactId>groovy-maven-plugin</artifactId>
 					<version>2.0</version>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
@@ -162,22 +227,34 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>2.5</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>1.8</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
 					<version>2.2.1</version>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.jnario</groupId>
 					<artifactId>report</artifactId>
 					<version>${jnario.version}</version>
 				</plugin>
-								
+
 				<plugin>
 					<groupId>org.jnario</groupId>
 					<artifactId>jnario-maven-plugin</artifactId>
 					<version>${jnario.version}</version>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
@@ -267,6 +344,43 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 										<ignore></ignore>
 									</action>
 								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											exec-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.2.1,)
+										</versionRange>
+										<goals>
+											<goal>java</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.eclipse.xtext</groupId>
+										<artifactId>xtext-maven-plugin</artifactId>
+										<versionRange>
+											[2.2.0,)
+										</versionRange>
+										<goals>
+											<goal>compile</goal>
+											<goal>testCompile</goal>
+											<goal>generate</goal>
+											<goal>generate-sources</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
@@ -330,7 +444,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
-					<encoding>UTF-8</encoding>
+					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
 
@@ -385,9 +499,9 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
-					<docencoding>UTF-8</docencoding>
-					<encoding>UTF-8</encoding>
-					<charset>UTF-8</charset>
+					<docencoding>${project.build.sourceEncoding}</docencoding>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<charset>${project.build.sourceEncoding}</charset>
 					<show>protected</show>
 					<detectLinks>true</detectLinks>
 					<detectJavaApiLink>true</detectJavaApiLink>

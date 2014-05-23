@@ -29,10 +29,13 @@ import io.sarl.lang.sarl.Skill
 import io.sarl.lang.signature.ActionKey
 import io.sarl.lang.signature.ActionNameKey
 import io.sarl.lang.signature.ActionSignatureProvider
+import io.sarl.lang.signature.InferredActionSignature
 import io.sarl.lang.signature.SignatureKey
 import java.util.LinkedList
 import java.util.List
+import java.util.Map
 import java.util.Set
+import java.util.TreeMap
 import java.util.TreeSet
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
@@ -249,8 +252,8 @@ class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 	
-	private def Set<ActionKey> getCapacityActionsFromHierarchy(EList<InheritingElement> sources) {
-		var Set<ActionKey> actions = new TreeSet
+	/*private def Map<ActionNameKey,EList<InferredActionSignature>> getCapacityActionsFromHierarchy(EList<InheritingElement> sources) {
+		var Map<ActionNameKey,EList<InferredActionSignature>> actions = new TreeMap
 		var Set<String> encounteredCapacities = new TreeSet
 		var List<Capacity> capacities = new LinkedList
 		for(p : sources) {
@@ -272,18 +275,31 @@ class SARLValidator extends AbstractSARLValidator {
 						if (container===null) {
 							container = logicalContainerProvider.getNearestLogicalContainer(feature)
 						}
+						var ank = sarlSignatureProvider.createFunctionID(container, feature.name)
 						var sk = sarlSignatureProvider.createSignatureID(feature.params)
+						var is = sarlSignatureProvider.getSignatures(ank, sk)
 						actions.add(sk.toActionKey(feature.name))
 					}
 				}
 			}
 		}
 		return actions
-	}
+	}*/
 	
 	@Check
 	def checkSkillActionImplementationPrototype(Skill skill) {
-		var Set<ActionKey> actions = getCapacityActionsFromHierarchy(skill.implementedTypes)
+		/*var Set<ActionKey> actions = getCapacityActionsFromHierarchy(skill.implementedTypes)
+		var JvmIdentifiableElement container = null
+		for(feature : skill.features) {
+			if (feature instanceof Action) {
+				if (container===null) {
+					container = logicalContainerProvider.getNearestLogicalContainer(feature)
+				}
+				var signature = feature.signature as ActionSignature
+				var sk = sarlSignatureProvider.createSignatureID(signature.params)
+				
+			}
+		}*/
 	}
 	
 }

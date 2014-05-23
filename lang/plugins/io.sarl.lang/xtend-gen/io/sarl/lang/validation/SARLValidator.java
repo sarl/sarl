@@ -20,11 +20,9 @@ import com.google.inject.Inject;
 import io.sarl.lang.SARLKeywords;
 import io.sarl.lang.sarl.Action;
 import io.sarl.lang.sarl.ActionSignature;
-import io.sarl.lang.sarl.Capacity;
 import io.sarl.lang.sarl.Constructor;
 import io.sarl.lang.sarl.FeatureContainer;
 import io.sarl.lang.sarl.FormalParameter;
-import io.sarl.lang.sarl.InheritingElement;
 import io.sarl.lang.sarl.ParameterizedFeature;
 import io.sarl.lang.sarl.Skill;
 import io.sarl.lang.signature.ActionKey;
@@ -34,8 +32,6 @@ import io.sarl.lang.signature.InferredActionSignature;
 import io.sarl.lang.signature.SignatureKey;
 import io.sarl.lang.validation.AbstractSARLValidator;
 import io.sarl.lang.validation.IssueCodes;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import org.eclipse.emf.common.util.EList;
@@ -415,57 +411,43 @@ public class SARLValidator extends AbstractSARLValidator {
     }
   }
   
-  private Set<ActionKey> getCapacityActionsFromHierarchy(final EList<InheritingElement> sources) {
-    Set<ActionKey> actions = new TreeSet<ActionKey>();
-    Set<String> encounteredCapacities = new TreeSet<String>();
-    List<Capacity> capacities = new LinkedList<Capacity>();
-    for (final InheritingElement p : sources) {
-      if ((p instanceof Capacity)) {
-        capacities.add(((Capacity)p));
-      }
-    }
-    boolean _isEmpty = capacities.isEmpty();
-    boolean _not = (!_isEmpty);
-    boolean _while = _not;
-    while (_while) {
-      {
-        Capacity cap = capacities.remove(0);
-        boolean _add = encounteredCapacities.add("");
-        if (_add) {
-          EList<InheritingElement> _superTypes = cap.getSuperTypes();
-          for (final InheritingElement p_1 : _superTypes) {
-            if ((p_1 instanceof Capacity)) {
-              capacities.add(((Capacity)p_1));
-            }
-          }
-          JvmIdentifiableElement container = null;
-          EList<EObject> _features = cap.getFeatures();
-          for (final EObject feature : _features) {
-            if ((feature instanceof ActionSignature)) {
-              boolean _tripleEquals = (container == null);
-              if (_tripleEquals) {
-                JvmIdentifiableElement _nearestLogicalContainer = this.logicalContainerProvider.getNearestLogicalContainer(feature);
-                container = _nearestLogicalContainer;
-              }
-              EList<FormalParameter> _params = ((ActionSignature)feature).getParams();
-              SignatureKey sk = this.sarlSignatureProvider.createSignatureID(_params);
-              String _name = ((ActionSignature)feature).getName();
-              ActionKey _actionKey = sk.toActionKey(_name);
-              actions.add(_actionKey);
-            }
-          }
-        }
-      }
-      boolean _isEmpty_1 = capacities.isEmpty();
-      boolean _not_1 = (!_isEmpty_1);
-      _while = _not_1;
-    }
-    return actions;
-  }
-  
+  /**
+   * private def Map<ActionNameKey,EList<InferredActionSignature>> getCapacityActionsFromHierarchy(EList<InheritingElement> sources) {
+   * var Map<ActionNameKey,EList<InferredActionSignature>> actions = new TreeMap
+   * var Set<String> encounteredCapacities = new TreeSet
+   * var List<Capacity> capacities = new LinkedList
+   * for(p : sources) {
+   * if (p instanceof Capacity) {
+   * capacities.add(p)
+   * }
+   * }
+   * while (!capacities.empty) {
+   * var cap = capacities.remove(0);
+   * if (encounteredCapacities.add("")) {
+   * for(p : cap.superTypes) {
+   * if (p instanceof Capacity) {
+   * capacities.add(p)
+   * }
+   * }
+   * var JvmIdentifiableElement container = null
+   * for(feature : cap.features) {
+   * if (feature instanceof ActionSignature) {
+   * if (container===null) {
+   * container = logicalContainerProvider.getNearestLogicalContainer(feature)
+   * }
+   * var ank = sarlSignatureProvider.createFunctionID(container, feature.name)
+   * var sk = sarlSignatureProvider.createSignatureID(feature.params)
+   * var is = sarlSignatureProvider.getSignatures(ank, sk)
+   * actions.add(sk.toActionKey(feature.name))
+   * }
+   * }
+   * }
+   * }
+   * return actions
+   * }
+   */
   @Check
-  public void checkSkillActionImplementationPrototype(final Skill skill) {
-    EList<InheritingElement> _implementedTypes = skill.getImplementedTypes();
-    Set<ActionKey> actions = this.getCapacityActionsFromHierarchy(_implementedTypes);
+  public Object checkSkillActionImplementationPrototype(final Skill skill) {
+    return null;
   }
 }

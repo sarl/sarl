@@ -47,7 +47,7 @@ public class VarArgsCompilerTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg : int...) {");
+      _builder.append("def myaction(arg : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg)");
@@ -109,7 +109,7 @@ public class VarArgsCompilerTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int...) {");
+      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
@@ -171,7 +171,7 @@ public class VarArgsCompilerTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg : int...) {");
+      _builder.append("def myaction(arg : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg)");
@@ -213,7 +213,7 @@ public class VarArgsCompilerTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int...) {");
+      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
@@ -255,7 +255,7 @@ public class VarArgsCompilerTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg : int...) {");
+      _builder.append("new(arg : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg)");
@@ -297,7 +297,7 @@ public class VarArgsCompilerTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg1 : char, arg2 : boolean, arg3 : int...) {");
+      _builder.append("new(arg1 : char, arg2 : boolean, arg3 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
@@ -339,7 +339,7 @@ public class VarArgsCompilerTest {
       _builder.append("capacity C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg : int...)");
+      _builder.append("def myaction(arg : int*)");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -369,7 +369,7 @@ public class VarArgsCompilerTest {
       _builder.append("capacity C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int...)");
+      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int*)");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -399,7 +399,7 @@ public class VarArgsCompilerTest {
       _builder.append("event E1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg : int...) {");
+      _builder.append("new(arg : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg)");
@@ -446,7 +446,7 @@ public class VarArgsCompilerTest {
       _builder.append("event E1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg1 : char, arg2 : boolean, arg3 : int...) {");
+      _builder.append("new(arg1 : char, arg2 : boolean, arg3 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
@@ -495,7 +495,7 @@ public class VarArgsCompilerTest {
       _builder.append("skill S1 implements C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg : int...) {");
+      _builder.append("def myaction(arg : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg)");
@@ -559,7 +559,7 @@ public class VarArgsCompilerTest {
       _builder.append("skill S1 implements C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int...) {");
+      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
@@ -623,7 +623,7 @@ public class VarArgsCompilerTest {
       _builder.append("skill S1 implements C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg : int...) {");
+      _builder.append("new(arg : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg)");
@@ -687,7 +687,7 @@ public class VarArgsCompilerTest {
       _builder.append("skill S1 implements C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg1 : char, arg2 : boolean, arg3 : int...) {");
+      _builder.append("new(arg1 : char, arg2 : boolean, arg3 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
