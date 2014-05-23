@@ -16,6 +16,37 @@
 		<module>io.sarl.bundle</module>
 	</modules>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.eclipse.xtend</groupId>
+				<artifactId>org.eclipse.xtend.lib</artifactId>
+				<version>${xtext.version}</version>
+			</dependency>
+			<!-- SARL Modules -->
+			<dependency>
+				<groupId>io.sarl.lang</groupId>
+				<artifactId>io.sarl.lang.core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.util</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.sdk</artifactId>
+				<version>${project.version}</version>
+				<type>pom</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<resources>
