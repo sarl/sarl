@@ -27,6 +27,7 @@ import io.sarl.lang.validation.IssueCodes;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
@@ -309,6 +310,129 @@ public class CapacityParsingTest {
       this._validationTestHelper.assertError(mas, _action, 
         IssueCodes.ACTION_COLLISION, 
         "Cannot define many times the same feature in \'S1\': myaction(a : int)");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void invalidActionNameInCapacity() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def _handle_myaction");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction2");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
+      this._validationTestHelper.assertError(mas, _actionSignature, 
+        IssueCodes.INVALID_ACTION_NAME, 
+        "Invalid action name \'_handle_myaction\'.");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void invalidActionNameInSkill() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 { }");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(\"ok\")");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def _handle_myaction {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(\"ko\")");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction2 {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(\"ok\")");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
+      this._validationTestHelper.assertError(mas, _actionSignature, 
+        IssueCodes.INVALID_ACTION_NAME, 
+        "Invalid action name \'_handle_myaction\'.");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void missedFinalFieldInitialization() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 { }");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val field1 : int = 5");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val field2 : String");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmField = TypesPackage.eINSTANCE.getJvmField();
+      this._validationTestHelper.assertError(mas, _jvmField, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_INITIALIZATION, 
+        "The blank final field \'field2\' may not have been initialized");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void completeFinalFieldInitialization() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 { }");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val field1 : int = 5");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val field2 : String = \"\"");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

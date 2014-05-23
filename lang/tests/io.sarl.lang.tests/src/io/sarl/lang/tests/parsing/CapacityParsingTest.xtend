@@ -32,6 +32,7 @@ import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
 import io.sarl.lang.validation.IssueCodes
+import org.eclipse.xtext.common.types.TypesPackage
 
 /**
  * @author $Author: srodriguez$
@@ -177,6 +178,70 @@ class CapacityParsingTest {
 			SarlPackage::eINSTANCE.action,
 			IssueCodes::ACTION_COLLISION,
 			"Cannot define many times the same feature in 'S1': myaction(a : int)")
+	}
+	
+	@Test
+	def invalidActionNameInCapacity() {
+		val mas = '''
+			capacity C1 {
+				def myaction
+				def _handle_myaction
+				def myaction2
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.actionSignature,
+			IssueCodes::INVALID_ACTION_NAME,
+			"Invalid action name '_handle_myaction'.")
+	}
+
+	@Test
+	def invalidActionNameInSkill() {
+		val mas = '''
+			capacity C1 { }
+			skill S1 implements C1 {
+				def myaction {
+					System.out.println("ok")
+				}
+				def _handle_myaction {
+					System.out.println("ko")
+				}
+				def myaction2 {
+					System.out.println("ok")
+				}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.actionSignature,
+			IssueCodes::INVALID_ACTION_NAME,
+			"Invalid action name '_handle_myaction'.")
+	}
+
+	@Test
+	def void missedFinalFieldInitialization() {
+		val mas = '''
+			capacity C1 { }
+			skill S1 implements C1 {
+				val field1 : int = 5
+				val field2 : String
+			}
+		'''.parse
+		mas.assertError(
+			TypesPackage::eINSTANCE.jvmField,
+			org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION,
+			"The blank final field 'field2' may not have been initialized")
+	}
+	
+	@Test
+	def void completeFinalFieldInitialization() {
+		val mas = '''
+			capacity C1 { }
+			skill S1 implements C1 {
+				val field1 : int = 5
+				val field2 : String = ""
+			}
+		'''.parse
+		mas.assertNoErrors
 	}
 
 }

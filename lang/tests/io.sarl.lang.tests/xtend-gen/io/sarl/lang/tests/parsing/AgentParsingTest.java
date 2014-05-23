@@ -24,6 +24,7 @@ import io.sarl.lang.validation.IssueCodes;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
@@ -377,6 +378,51 @@ public class AgentParsingTest {
       this._validationTestHelper.assertError(mas, _attribute, 
         IssueCodes.INVALID_ATTRIBUTE_NAME, 
         "Invalid attribute name \'___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD\'. You must not give to an attribute a name that is starting with \'___FORMAL_PARAMETER_DEFAULT_VALUE_\'. This prefix is reserved by the SARL compiler.");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void missedFinalFieldInitialization() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("agent A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val field1 : int = 5");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val field2 : String");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmField = TypesPackage.eINSTANCE.getJvmField();
+      this._validationTestHelper.assertError(mas, _jvmField, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_INITIALIZATION, 
+        "The blank final field \'field2\' may not have been initialized");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void completeFinalFieldInitialization() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("agent A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val field1 : int = 5");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val field2 : String = \"\"");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

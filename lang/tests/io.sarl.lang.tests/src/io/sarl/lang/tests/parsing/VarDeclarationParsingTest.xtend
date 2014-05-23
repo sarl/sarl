@@ -177,7 +177,7 @@ class VarDeclarationParsingTest {
 		val mas = '''
 			import java.util.List
 			agent A1 {
-				val list : List<Integer>
+				val list : List<Integer> = null
 				val i = 45
 				val j : double = 45
 			}

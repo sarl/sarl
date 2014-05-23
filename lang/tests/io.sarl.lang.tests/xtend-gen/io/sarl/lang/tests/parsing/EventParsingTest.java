@@ -19,7 +19,6 @@ import com.google.inject.Inject;
 import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.validation.IssueCodes;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.common.types.TypesPackage;
@@ -29,19 +28,20 @@ import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
+ * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 @RunWith(XtextRunner.class)
 @InjectWith(SARLInjectorProvider.class)
 @SuppressWarnings("all")
-public class BehaviorParsingTest {
+public class EventParsingTest {
   @Inject
   @Extension
   private ParseHelper<SarlScript> _parseHelper;
@@ -51,72 +51,45 @@ public class BehaviorParsingTest {
   private ValidationTestHelper _validationTestHelper;
   
   @Test
-  public void multipleActionDefinitionInAgent() {
+  public void missedFinalFieldInitialization() {
     try {
       StringConcatenation _builder = new StringConcatenation();
-      _builder.append("behavior B1 {");
+      _builder.append("event E1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(a : int, b : int) { }");
+      _builder.append("val field1 : int = 5");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(a : int) { }");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def myaction(a : int) { }");
+      _builder.append("val field2 : String");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _action = SarlPackage.eINSTANCE.getAction();
-      this._validationTestHelper.assertError(mas, _action, 
-        IssueCodes.ACTION_COLLISION, 
-        "Cannot define many times the same feature in \'B1\': myaction(a : int)");
+      EClass _jvmField = TypesPackage.eINSTANCE.getJvmField();
+      this._validationTestHelper.assertError(mas, _jvmField, 
+        IssueCodes.MISSING_INITIALIZATION, 
+        "The blank final field \'field2\' may not have been initialized");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
   }
   
   @Test
-  public void invalidActionName() {
+  public void completeFinalFieldInitialization() {
     try {
       StringConcatenation _builder = new StringConcatenation();
-      _builder.append("behavior B1 {");
+      _builder.append("event E1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("System.out.println(\"ok\")");
+      _builder.append("val field1 : int = 5");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def _handle_myaction {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("System.out.println(\"ko\")");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def myaction2 {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("System.out.println(\"ok\")");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
+      _builder.append("val field2 : String = \"\"");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
-      this._validationTestHelper.assertError(mas, _actionSignature, 
-        IssueCodes.INVALID_ACTION_NAME, 
-        "Invalid action name \'_handle_myaction\'.");
+      this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -126,7 +99,7 @@ public class BehaviorParsingTest {
   public void invalidAttributeName_0() {
     try {
       StringConcatenation _builder = new StringConcatenation();
-      _builder.append("behavior B1 {");
+      _builder.append("event E1 {");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("var myfield1 = 4.5");
@@ -142,7 +115,7 @@ public class BehaviorParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
-        IssueCodes.INVALID_ATTRIBUTE_NAME, 
+        io.sarl.lang.validation.IssueCodes.INVALID_ATTRIBUTE_NAME, 
         "Invalid attribute name \'___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD\'. You must not give to an attribute a name that is starting with \'___FORMAL_PARAMETER_DEFAULT_VALUE_\'. This prefix is reserved by the SARL compiler.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -153,7 +126,7 @@ public class BehaviorParsingTest {
   public void invalidAttributeName_1() {
     try {
       StringConcatenation _builder = new StringConcatenation();
-      _builder.append("behavior B1 {");
+      _builder.append("event E1 {");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("val myfield1 = 4.5");
@@ -169,53 +142,8 @@ public class BehaviorParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
-        IssueCodes.INVALID_ATTRIBUTE_NAME, 
+        io.sarl.lang.validation.IssueCodes.INVALID_ATTRIBUTE_NAME, 
         "Invalid attribute name \'___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD\'. You must not give to an attribute a name that is starting with \'___FORMAL_PARAMETER_DEFAULT_VALUE_\'. This prefix is reserved by the SARL compiler.");
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
-  }
-  
-  @Test
-  public void missedFinalFieldInitialization() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("behavior B1 {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("val field1 : int = 5");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("val field2 : String");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _jvmField = TypesPackage.eINSTANCE.getJvmField();
-      this._validationTestHelper.assertError(mas, _jvmField, 
-        org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_INITIALIZATION, 
-        "The blank final field \'field2\' may not have been initialized");
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
-  }
-  
-  @Test
-  public void completeFinalFieldInitialization() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("behavior B1 {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("val field1 : int = 5");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("val field2 : String = \"\"");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      final SarlScript mas = this._parseHelper.parse(_builder);
-      this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

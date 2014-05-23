@@ -19,8 +19,11 @@ import com.google.inject.Inject
 import io.sarl.lang.SARLKeywords
 import io.sarl.lang.sarl.Action
 import io.sarl.lang.sarl.ActionSignature
+import io.sarl.lang.sarl.Agent
 import io.sarl.lang.sarl.Attribute
+import io.sarl.lang.sarl.Behavior
 import io.sarl.lang.sarl.Constructor
+import io.sarl.lang.sarl.Event
 import io.sarl.lang.sarl.FeatureContainer
 import io.sarl.lang.sarl.FormalParameter
 import io.sarl.lang.sarl.ParameterizedFeature
@@ -33,6 +36,7 @@ import java.util.Set
 import java.util.TreeSet
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmDeclaredType
+import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.common.types.JvmTypeReference
@@ -45,6 +49,7 @@ import org.eclipse.xtext.xbase.XNullLiteral
 import org.eclipse.xtext.xbase.XNumberLiteral
 import org.eclipse.xtext.xbase.XStringLiteral
 import org.eclipse.xtext.xbase.XTypeLiteral
+import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
 import org.eclipse.xtext.xbase.typesystem.computation.NumberLiterals
 import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner
@@ -67,6 +72,9 @@ class SARLValidator extends AbstractSARLValidator {
 	
 	@Inject
 	private NumberLiterals numberLiterals
+	
+	@Inject
+	private IJvmModelAssociations associations;
 	
 	@Inject
 	private ActionSignatureProvider sarlSignatureProvider
@@ -321,6 +329,58 @@ class SARLValidator extends AbstractSARLValidator {
 					null,
 					io.sarl.lang.validation.IssueCodes::INVALID_ATTRIBUTE_NAME)
 		}
+	}
+	
+	@Check
+	def checkEventFinalFieldInitialization(Event event) {
+		for(obj : associations.getJvmElements(event)) {
+			if (obj instanceof JvmGenericType) {
+				obj.checkFinalFieldInitialization
+				return // Are we sure that returning at the first occurence of JvmGenericType is correct?
+			}
+		}
+	}
+	
+	@Check
+	def checkAgentFinalFieldInitialization(Agent agent) {
+		for(obj : associations.getJvmElements(agent)) {
+			if (obj instanceof JvmGenericType) {
+				obj.checkFinalFieldInitialization
+				return // Are we sure that returning at the first occurence of JvmGenericType is correct?
+			}
+		}
+	}
+
+	@Check
+	def checkBehaviorFinalFieldInitialization(Behavior behavior) {
+		for(obj : associations.getJvmElements(behavior)) {
+			if (obj instanceof JvmGenericType) {
+				obj.checkFinalFieldInitialization
+				return // Are we sure that returning at the first occurence of JvmGenericType is correct?
+			}
+		}
+	}
+
+	@Check
+	def checkSkillFinalFieldInitialization(Skill skill) {
+		for(obj : associations.getJvmElements(skill)) {
+			if (obj instanceof JvmGenericType) {
+				obj.checkFinalFieldInitialization
+				return // Are we sure that returning at the first occurence of JvmGenericType is correct?
+			}
+		}
+	}
+
+	// Override this function to ensure that the initialization default is reported.
+	protected override reportUninitializedField(JvmField field) {
+		error(
+			String.format(
+				"The blank final field '%s' may not have been initialized.",
+				field.simpleName
+			), 
+			field,
+			null,
+			IssueCodes::MISSING_INITIALIZATION)
 	}
 
 }

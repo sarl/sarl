@@ -69,6 +69,7 @@ import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 import org.eclipse.xtext.xbase.typesystem.references.OwnedConverter
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
+import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -97,8 +98,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 
 	@Inject private ActionSignatureProvider sarlSignatureProvider
 
-	@Inject
-	private CommonTypeComputationServices services;
+	@Inject	private ReadAndWriteTracking readAndWriteTracking;
+
+	@Inject	private CommonTypeComputationServices services;
 
 	/**
 	 * The dispatch method {@code infer} is called for each instance of the
@@ -182,12 +184,14 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				}
 
 				val serialValue = serial
-				members += element.toField("serialVersionUID", newTypeRef(long)) [
+				val serialField = element.toField("serialVersionUID", newTypeRef(long)) [
 					visibility = JvmVisibility::PRIVATE
 					final = true
 					static = true
 					initializer = [append(serialValue+"L")]
 				]
+				members += serialField
+				readAndWriteTracking.markInitialized(serialField)
 
 			])
 	}
@@ -370,6 +374,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			initializer = attr.initialValue
 		]
 		owner.members += field
+		if (attr.initialValue!==null) {
+			readAndWriteTracking.markInitialized(field)
+		}
 		return field
 	}
 	
@@ -520,6 +527,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					initializer = param.defaultValue
 				]
 				actionContainer.members += field
+				if (param.defaultValue!==null) {
+					readAndWriteTracking.markInitialized(field)
+				}
 			}
 			
 			lastParam = param.toParameter(param.name, param.parameterType)

@@ -20,66 +20,55 @@ import io.sarl.lang.SARLInjectorProvider
 import io.sarl.lang.sarl.SarlPackage
 import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.validation.IssueCodes
+import org.eclipse.xtext.common.types.TypesPackage
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.eclipse.xtext.common.types.TypesPackage
 
 /**
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
+ * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 @RunWith(XtextRunner)
 @InjectWith(SARLInjectorProvider)
-class BehaviorParsingTest {
+class EventParsingTest {
 	@Inject extension ParseHelper<SarlScript>
 	@Inject extension ValidationTestHelper
-
+	
 	@Test
-	def void multipleActionDefinitionInAgent() {
+	def void missedFinalFieldInitialization() {
 		val mas = '''
-			behavior B1 {
-				def myaction(a : int, b : int) { }
-				def myaction(a : int) { }
-				def myaction(a : int) { }
+			event E1 {
+				val field1 : int = 5
+				val field2 : String
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.action,
-			IssueCodes::ACTION_COLLISION,
-			"Cannot define many times the same feature in 'B1': myaction(a : int)")
+			TypesPackage::eINSTANCE.jvmField,
+			org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION,
+			"The blank final field 'field2' may not have been initialized")
 	}
-
+	
 	@Test
-	def invalidActionName() {
+	def void completeFinalFieldInitialization() {
 		val mas = '''
-			behavior B1 {
-				def myaction {
-					System.out.println("ok")
-				}
-				def _handle_myaction {
-					System.out.println("ko")
-				}
-				def myaction2 {
-					System.out.println("ok")
-				}
+			event E1 {
+				val field1 : int = 5
+				val field2 : String = ""
 			}
 		'''.parse
-		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
-			IssueCodes::INVALID_ACTION_NAME,
-			"Invalid action name '_handle_myaction'.")
+		mas.assertNoErrors
 	}
 
 	@Test
 	def invalidAttributeName_0() {
 		val mas = '''
-			behavior B1 {
+			event E1 {
 				var myfield1 = 4.5
 				var ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = "String"
 				var myfield2 = true
@@ -94,7 +83,7 @@ class BehaviorParsingTest {
 	@Test
 	def invalidAttributeName_1() {
 		val mas = '''
-			behavior B1 {
+			event E1 {
 				val myfield1 = 4.5
 				val ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = "String"
 				val myfield2 = true
@@ -104,31 +93,6 @@ class BehaviorParsingTest {
 			SarlPackage::eINSTANCE.attribute,
 			IssueCodes::INVALID_ATTRIBUTE_NAME,
 			"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.")
-	}
-
-	@Test
-	def void missedFinalFieldInitialization() {
-		val mas = '''
-			behavior B1 {
-				val field1 : int = 5
-				val field2 : String
-			}
-		'''.parse
-		mas.assertError(
-			TypesPackage::eINSTANCE.jvmField,
-			org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION,
-			"The blank final field 'field2' may not have been initialized")
-	}
-	
-	@Test
-	def void completeFinalFieldInitialization() {
-		val mas = '''
-			behavior B1 {
-				val field1 : int = 5
-				val field2 : String = ""
-			}
-		'''.parse
-		mas.assertNoErrors
 	}
 
 }

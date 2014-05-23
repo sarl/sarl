@@ -30,6 +30,7 @@ import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
 import io.sarl.lang.validation.IssueCodes
+import org.eclipse.xtext.common.types.TypesPackage
 
 /**
  * @author $Author: srodriguez$
@@ -219,6 +220,31 @@ class AgentParsingTest {
 			SarlPackage::eINSTANCE.attribute,
 			IssueCodes::INVALID_ATTRIBUTE_NAME,
 			"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.")
+	}
+
+	@Test
+	def void missedFinalFieldInitialization() {
+		val mas = '''
+			agent A1 {
+				val field1 : int = 5
+				val field2 : String
+			}
+		'''.parse
+		mas.assertError(
+			TypesPackage::eINSTANCE.jvmField,
+			org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION,
+			"The blank final field 'field2' may not have been initialized")
+	}
+	
+	@Test
+	def void completeFinalFieldInitialization() {
+		val mas = '''
+			agent A1 {
+				val field1 : int = 5
+				val field2 : String = ""
+			}
+		'''.parse
+		mas.assertNoErrors
 	}
 
 }

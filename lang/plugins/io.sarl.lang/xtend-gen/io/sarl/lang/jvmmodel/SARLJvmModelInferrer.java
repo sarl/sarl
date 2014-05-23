@@ -90,6 +90,7 @@ import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.OwnedConverter;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
+import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
 
 /**
  * <p>Infers a JVM model from the source model.</p>
@@ -125,6 +126,9 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
   
   @Inject
   private ActionSignatureProvider sarlSignatureProvider;
+  
+  @Inject
+  private ReadAndWriteTracking readAndWriteTracking;
   
   @Inject
   private CommonTypeComputationServices services;
@@ -252,7 +256,6 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_2, _method);
         }
         final long serialValue = serial;
-        EList<JvmMember> _members_3 = it.getMembers();
         JvmTypeReference _newTypeRef_1 = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(it, long.class);
         final Procedure1<JvmField> _function_1 = new Procedure1<JvmField>() {
           public void apply(final JvmField it) {
@@ -268,8 +271,10 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
             SARLJvmModelInferrer.this._jvmTypesBuilder.setInitializer(it, _function);
           }
         };
-        JvmField _field = SARLJvmModelInferrer.this._jvmTypesBuilder.toField(element, "serialVersionUID", _newTypeRef_1, _function_1);
-        SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members_3, _field);
+        final JvmField serialField = SARLJvmModelInferrer.this._jvmTypesBuilder.toField(element, "serialVersionUID", _newTypeRef_1, _function_1);
+        EList<JvmMember> _members_3 = it.getMembers();
+        SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members_3, serialField);
+        SARLJvmModelInferrer.this.readAndWriteTracking.markInitialized(serialField);
       }
     };
     _accept.initializeLater(_function);
@@ -602,6 +607,11 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
     JvmField field = this._jvmTypesBuilder.toField(attr, _name, _type, _function);
     EList<JvmMember> _members = owner.getMembers();
     this._jvmTypesBuilder.<JvmField>operator_add(_members, field);
+    XExpression _initialValue = attr.getInitialValue();
+    boolean _tripleNotEquals = (_initialValue != null);
+    if (_tripleNotEquals) {
+      this.readAndWriteTracking.markInitialized(field);
+    }
     return field;
   }
   
@@ -893,6 +903,11 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           JvmField field = this._jvmTypesBuilder.toField(_defaultValue_1, name, _parameterType, _function);
           EList<JvmMember> _members = actionContainer.getMembers();
           this._jvmTypesBuilder.<JvmField>operator_add(_members, field);
+          XExpression _defaultValue_2 = param.getDefaultValue();
+          boolean _tripleNotEquals_1 = (_defaultValue_2 != null);
+          if (_tripleNotEquals_1) {
+            this.readAndWriteTracking.markInitialized(field);
+          }
         }
         String _name = param.getName();
         JvmTypeReference _parameterType_1 = param.getParameterType();

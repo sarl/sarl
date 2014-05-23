@@ -109,7 +109,7 @@ class VarDeclarationCompilerTest {
 		'''
 			import java.util.List
 			agent A1 {
-				val list : List<Integer>
+				val list : List<Integer> = null
 				val i = 45
 				val j : double = 45
 			}
@@ -126,7 +126,7 @@ class VarDeclarationCompilerTest {
 			    super(parentID);
 			  }
 			  
-			  protected final List<Integer> list;
+			  protected final static List<Integer> list = null;
 			  
 			  protected final static int i = 45;
 			  

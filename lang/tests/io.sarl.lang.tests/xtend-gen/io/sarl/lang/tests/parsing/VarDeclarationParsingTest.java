@@ -302,7 +302,7 @@ public class VarDeclarationParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("val list : List<Integer>");
+      _builder.append("val list : List<Integer> = null");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("val i = 45");

@@ -20,8 +20,11 @@ import com.google.inject.Inject;
 import io.sarl.lang.SARLKeywords;
 import io.sarl.lang.sarl.Action;
 import io.sarl.lang.sarl.ActionSignature;
+import io.sarl.lang.sarl.Agent;
 import io.sarl.lang.sarl.Attribute;
+import io.sarl.lang.sarl.Behavior;
 import io.sarl.lang.sarl.Constructor;
+import io.sarl.lang.sarl.Event;
 import io.sarl.lang.sarl.FeatureContainer;
 import io.sarl.lang.sarl.FormalParameter;
 import io.sarl.lang.sarl.ParameterizedFeature;
@@ -38,6 +41,7 @@ import java.util.TreeSet;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
@@ -52,6 +56,7 @@ import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XTypeLiteral;
+import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations;
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.typesystem.computation.NumberLiterals;
@@ -75,6 +80,9 @@ public class SARLValidator extends AbstractSARLValidator {
   
   @Inject
   private NumberLiterals numberLiterals;
+  
+  @Inject
+  private IJvmModelAssociations associations;
   
   @Inject
   private ActionSignatureProvider sarlSignatureProvider;
@@ -478,5 +486,58 @@ public class SARLValidator extends AbstractSARLValidator {
         null, 
         IssueCodes.INVALID_ATTRIBUTE_NAME);
     }
+  }
+  
+  @Check
+  public void checkEventFinalFieldInitialization(final Event event) {
+    Set<EObject> _jvmElements = this.associations.getJvmElements(event);
+    for (final EObject obj : _jvmElements) {
+      if ((obj instanceof JvmGenericType)) {
+        this.checkFinalFieldInitialization(((JvmGenericType)obj));
+        return;
+      }
+    }
+  }
+  
+  @Check
+  public void checkAgentFinalFieldInitialization(final Agent agent) {
+    Set<EObject> _jvmElements = this.associations.getJvmElements(agent);
+    for (final EObject obj : _jvmElements) {
+      if ((obj instanceof JvmGenericType)) {
+        this.checkFinalFieldInitialization(((JvmGenericType)obj));
+        return;
+      }
+    }
+  }
+  
+  @Check
+  public void checkBehaviorFinalFieldInitialization(final Behavior behavior) {
+    Set<EObject> _jvmElements = this.associations.getJvmElements(behavior);
+    for (final EObject obj : _jvmElements) {
+      if ((obj instanceof JvmGenericType)) {
+        this.checkFinalFieldInitialization(((JvmGenericType)obj));
+        return;
+      }
+    }
+  }
+  
+  @Check
+  public void checkSkillFinalFieldInitialization(final Skill skill) {
+    Set<EObject> _jvmElements = this.associations.getJvmElements(skill);
+    for (final EObject obj : _jvmElements) {
+      if ((obj instanceof JvmGenericType)) {
+        this.checkFinalFieldInitialization(((JvmGenericType)obj));
+        return;
+      }
+    }
+  }
+  
+  protected void reportUninitializedField(final JvmField field) {
+    String _simpleName = field.getSimpleName();
+    String _format = String.format(
+      "The blank final field \'%s\' may not have been initialized.", _simpleName);
+    this.error(_format, field, 
+      null, 
+      org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_INITIALIZATION);
   }
 }

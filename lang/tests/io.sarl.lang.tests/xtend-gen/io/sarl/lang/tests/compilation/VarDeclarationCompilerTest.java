@@ -215,7 +215,7 @@ public class VarDeclarationCompilerTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("val list : List<Integer>");
+      _builder.append("val list : List<Integer> = null");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("val i = 45");
@@ -256,7 +256,7 @@ public class VarDeclarationCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("protected final List<Integer> list;");
+      _builder_1.append("protected final static List<Integer> list = null;");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.newLine();
