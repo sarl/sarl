@@ -18,7 +18,6 @@ grammar io.sarl.lang.SARL with org.eclipse.xtext.xbase.Xbase
 generate sarl "http://www.sarl.io/lang/SARL"
 import "http://www.eclipse.org/xtext/common/JavaVMTypes" as jvm
 import "http://www.eclipse.org/xtext/xbase/Xbase" as xbase
-import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
 SarlScript:
 	('package' name=QualifiedName ';'?)?
@@ -198,6 +197,9 @@ DefaultParameterValue returns xbase::XExpression:
 	XTypeLiteral
 ;
 
+//-----------------------------------------------
+// BELOW THIS POINT, THE RULES FROM XBASE ARE OVERLOADED
+
 XVariableDeclaration returns xbase::XExpression:
 	{xbase::XVariableDeclaration}
 	(writeable?='var'|'val')
@@ -205,25 +207,27 @@ XVariableDeclaration returns xbase::XExpression:
 	('=' right=XExpression)?
 ;
 
-//JvmFormalParameter returns jvm::JvmFormalParameter:
-//	{jvm::JvmFormalParameter}
-//	name=ValidID (=>':' parameterType=JvmTypeReference)? 
-//;
-//	
-//FullJvmFormalParameter returns jvm::JvmFormalParameter:
-//	{jvm::JvmFormalParameter}
-//	name=ValidID ':' parameterType=JvmTypeReference
-//;
-//
-//LoopFormalParameter returns jvm::JvmFormalParameter:
-//	{jvm::JvmFormalParameter}
-//	name=ValidID
-//	( 'as' parameterType=JvmTypeReference )?
-//;
-//
-//XForLoopExpression returns xbase::XExpression:
-//	{xbase::XForLoopExpression}
-//	'for' '(' declaredParam=LoopFormalParameter ':' forExpression=XExpression ')'
-//		eachExpression=XExpression
-//;
+JvmFormalParameter returns jvm::JvmFormalParameter:
+	{jvm::JvmFormalParameter}
+	name=ValidID (=>':' parameterType=JvmTypeReference)? 
+;
+	
+FullJvmFormalParameter returns jvm::JvmFormalParameter:
+	{jvm::JvmFormalParameter}
+	name=ValidID ':' parameterType=JvmTypeReference
+;
+
+// The following rule is not provided by Xbase, but we use it
+// in the overloaded version of XForLoopExpression
+XXLoopFormalParameter returns jvm::JvmFormalParameter:
+	{jvm::JvmFormalParameter}
+	name=ValidID
+	( 'as' parameterType=JvmTypeReference )?
+;
+
+XForLoopExpression returns xbase::XExpression:
+	=>({xbase::XForLoopExpression}
+	'for' '(' declaredParam=XXLoopFormalParameter ':') forExpression=XExpression ')'
+	eachExpression=XExpression
+;
 

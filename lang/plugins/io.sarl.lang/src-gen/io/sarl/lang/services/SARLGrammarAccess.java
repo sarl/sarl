@@ -1379,27 +1379,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cRightAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cRightXExpressionParserRuleCall_3_1_0 = (RuleCall)cRightAssignment_3_1.eContents().get(0);
 		
-		////JvmFormalParameter returns jvm::JvmFormalParameter:
-		////	{jvm::JvmFormalParameter}
-		////	name=ValidID (=>':' parameterType=JvmTypeReference)? 
-		////;
-		////	
-		////FullJvmFormalParameter returns jvm::JvmFormalParameter:
-		////	{jvm::JvmFormalParameter}
-		////	name=ValidID ':' parameterType=JvmTypeReference
-		////;
-		////
-		////LoopFormalParameter returns jvm::JvmFormalParameter:
-		////	{jvm::JvmFormalParameter}
-		////	name=ValidID
-		////	( 'as' parameterType=JvmTypeReference )?
-		////;
-		////
-		////XForLoopExpression returns xbase::XExpression:
-		////	{xbase::XForLoopExpression}
-		////	'for' '(' declaredParam=LoopFormalParameter ':' forExpression=XExpression ')'
-		////		eachExpression=XExpression
-		////;
+		////-----------------------------------------------
+		//// BELOW THIS POINT, THE RULES FROM XBASE ARE OVERLOADED
 		//XVariableDeclaration returns xbase::XExpression:
 		//	{xbase::XVariableDeclaration} (writeable?="var" | "val") (=> (name=ValidID ":" type=JvmTypeReference) | name=ValidID)
 		//	("=" right=XExpression)?;
@@ -1466,6 +1447,190 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//XExpression
 		public RuleCall getRightXExpressionParserRuleCall_3_1_0() { return cRightXExpressionParserRuleCall_3_1_0; }
 	}
+
+	public class JvmFormalParameterElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "JvmFormalParameter");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cJvmFormalParameterAction_0 = (Action)cGroup.eContents().get(0);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameValidIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
+		private final Keyword cColonKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
+		private final Assignment cParameterTypeAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final RuleCall cParameterTypeJvmTypeReferenceParserRuleCall_2_1_0 = (RuleCall)cParameterTypeAssignment_2_1.eContents().get(0);
+		
+		//JvmFormalParameter returns jvm::JvmFormalParameter:
+		//	{jvm::JvmFormalParameter} name=ValidID (":" parameterType=JvmTypeReference)?;
+		public ParserRule getRule() { return rule; }
+
+		//{jvm::JvmFormalParameter} name=ValidID (":" parameterType=JvmTypeReference)?
+		public Group getGroup() { return cGroup; }
+
+		//{jvm::JvmFormalParameter}
+		public Action getJvmFormalParameterAction_0() { return cJvmFormalParameterAction_0; }
+
+		//name=ValidID
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_1_0() { return cNameValidIDParserRuleCall_1_0; }
+
+		//(=> ":" parameterType=JvmTypeReference)?
+		public Group getGroup_2() { return cGroup_2; }
+
+		//=> ":"
+		public Keyword getColonKeyword_2_0() { return cColonKeyword_2_0; }
+
+		//parameterType=JvmTypeReference
+		public Assignment getParameterTypeAssignment_2_1() { return cParameterTypeAssignment_2_1; }
+
+		//JvmTypeReference
+		public RuleCall getParameterTypeJvmTypeReferenceParserRuleCall_2_1_0() { return cParameterTypeJvmTypeReferenceParserRuleCall_2_1_0; }
+	}
+
+	public class FullJvmFormalParameterElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "FullJvmFormalParameter");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cJvmFormalParameterAction_0 = (Action)cGroup.eContents().get(0);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameValidIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Keyword cColonKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cParameterTypeAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cParameterTypeJvmTypeReferenceParserRuleCall_3_0 = (RuleCall)cParameterTypeAssignment_3.eContents().get(0);
+		
+		//FullJvmFormalParameter returns jvm::JvmFormalParameter:
+		//	{jvm::JvmFormalParameter} name=ValidID ":" parameterType=JvmTypeReference;
+		public ParserRule getRule() { return rule; }
+
+		//{jvm::JvmFormalParameter} name=ValidID ":" parameterType=JvmTypeReference
+		public Group getGroup() { return cGroup; }
+
+		//{jvm::JvmFormalParameter}
+		public Action getJvmFormalParameterAction_0() { return cJvmFormalParameterAction_0; }
+
+		//name=ValidID
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_1_0() { return cNameValidIDParserRuleCall_1_0; }
+
+		//":"
+		public Keyword getColonKeyword_2() { return cColonKeyword_2; }
+
+		//parameterType=JvmTypeReference
+		public Assignment getParameterTypeAssignment_3() { return cParameterTypeAssignment_3; }
+
+		//JvmTypeReference
+		public RuleCall getParameterTypeJvmTypeReferenceParserRuleCall_3_0() { return cParameterTypeJvmTypeReferenceParserRuleCall_3_0; }
+	}
+
+	public class XXLoopFormalParameterElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "XXLoopFormalParameter");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cJvmFormalParameterAction_0 = (Action)cGroup.eContents().get(0);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameValidIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
+		private final Keyword cAsKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
+		private final Assignment cParameterTypeAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final RuleCall cParameterTypeJvmTypeReferenceParserRuleCall_2_1_0 = (RuleCall)cParameterTypeAssignment_2_1.eContents().get(0);
+		
+		//// The following rule is not provided by Xbase, but we use it
+		//// in the overloaded version of XForLoopExpression
+		//XXLoopFormalParameter returns jvm::JvmFormalParameter:
+		//	{jvm::JvmFormalParameter} name=ValidID ("as" parameterType=JvmTypeReference)?;
+		public ParserRule getRule() { return rule; }
+
+		//{jvm::JvmFormalParameter} name=ValidID ("as" parameterType=JvmTypeReference)?
+		public Group getGroup() { return cGroup; }
+
+		//{jvm::JvmFormalParameter}
+		public Action getJvmFormalParameterAction_0() { return cJvmFormalParameterAction_0; }
+
+		//name=ValidID
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_1_0() { return cNameValidIDParserRuleCall_1_0; }
+
+		//("as" parameterType=JvmTypeReference)?
+		public Group getGroup_2() { return cGroup_2; }
+
+		//"as"
+		public Keyword getAsKeyword_2_0() { return cAsKeyword_2_0; }
+
+		//parameterType=JvmTypeReference
+		public Assignment getParameterTypeAssignment_2_1() { return cParameterTypeAssignment_2_1; }
+
+		//JvmTypeReference
+		public RuleCall getParameterTypeJvmTypeReferenceParserRuleCall_2_1_0() { return cParameterTypeJvmTypeReferenceParserRuleCall_2_1_0; }
+	}
+
+	public class XForLoopExpressionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "XForLoopExpression");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Group cGroup_0 = (Group)cGroup.eContents().get(0);
+		private final Group cGroup_0_0 = (Group)cGroup_0.eContents().get(0);
+		private final Action cXForLoopExpressionAction_0_0_0 = (Action)cGroup_0_0.eContents().get(0);
+		private final Keyword cForKeyword_0_0_1 = (Keyword)cGroup_0_0.eContents().get(1);
+		private final Keyword cLeftParenthesisKeyword_0_0_2 = (Keyword)cGroup_0_0.eContents().get(2);
+		private final Assignment cDeclaredParamAssignment_0_0_3 = (Assignment)cGroup_0_0.eContents().get(3);
+		private final RuleCall cDeclaredParamXXLoopFormalParameterParserRuleCall_0_0_3_0 = (RuleCall)cDeclaredParamAssignment_0_0_3.eContents().get(0);
+		private final Keyword cColonKeyword_0_0_4 = (Keyword)cGroup_0_0.eContents().get(4);
+		private final Assignment cForExpressionAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cForExpressionXExpressionParserRuleCall_1_0 = (RuleCall)cForExpressionAssignment_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cEachExpressionAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cEachExpressionXExpressionParserRuleCall_3_0 = (RuleCall)cEachExpressionAssignment_3.eContents().get(0);
+		
+		//XForLoopExpression returns xbase::XExpression:
+		//	=> ({xbase::XForLoopExpression} "for" "(" declaredParam=XXLoopFormalParameter ":") forExpression=XExpression ")"
+		//	eachExpression=XExpression;
+		public ParserRule getRule() { return rule; }
+
+		//=> ({xbase::XForLoopExpression} "for" "(" declaredParam=XXLoopFormalParameter ":") forExpression=XExpression ")"
+		//eachExpression=XExpression
+		public Group getGroup() { return cGroup; }
+
+		//=> ({xbase::XForLoopExpression} "for" "(" declaredParam=XXLoopFormalParameter ":")
+		public Group getGroup_0() { return cGroup_0; }
+
+		//{xbase::XForLoopExpression} "for" "(" declaredParam=XXLoopFormalParameter ":"
+		public Group getGroup_0_0() { return cGroup_0_0; }
+
+		//{xbase::XForLoopExpression}
+		public Action getXForLoopExpressionAction_0_0_0() { return cXForLoopExpressionAction_0_0_0; }
+
+		//"for"
+		public Keyword getForKeyword_0_0_1() { return cForKeyword_0_0_1; }
+
+		//"("
+		public Keyword getLeftParenthesisKeyword_0_0_2() { return cLeftParenthesisKeyword_0_0_2; }
+
+		//declaredParam=XXLoopFormalParameter
+		public Assignment getDeclaredParamAssignment_0_0_3() { return cDeclaredParamAssignment_0_0_3; }
+
+		//XXLoopFormalParameter
+		public RuleCall getDeclaredParamXXLoopFormalParameterParserRuleCall_0_0_3_0() { return cDeclaredParamXXLoopFormalParameterParserRuleCall_0_0_3_0; }
+
+		//":"
+		public Keyword getColonKeyword_0_0_4() { return cColonKeyword_0_0_4; }
+
+		//forExpression=XExpression
+		public Assignment getForExpressionAssignment_1() { return cForExpressionAssignment_1; }
+
+		//XExpression
+		public RuleCall getForExpressionXExpressionParserRuleCall_1_0() { return cForExpressionXExpressionParserRuleCall_1_0; }
+
+		//")"
+		public Keyword getRightParenthesisKeyword_2() { return cRightParenthesisKeyword_2; }
+
+		//eachExpression=XExpression
+		public Assignment getEachExpressionAssignment_3() { return cEachExpressionAssignment_3; }
+
+		//XExpression
+		public RuleCall getEachExpressionXExpressionParserRuleCall_3_0() { return cEachExpressionXExpressionParserRuleCall_3_0; }
+	}
 	
 	
 	private SarlScriptElements pSarlScript;
@@ -1496,6 +1661,10 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	private FormalParameterElements pFormalParameter;
 	private DefaultParameterValueElements pDefaultParameterValue;
 	private XVariableDeclarationElements pXVariableDeclaration;
+	private JvmFormalParameterElements pJvmFormalParameter;
+	private FullJvmFormalParameterElements pFullJvmFormalParameter;
+	private XXLoopFormalParameterElements pXXLoopFormalParameter;
+	private XForLoopExpressionElements pXForLoopExpression;
 	
 	private final Grammar grammar;
 
@@ -1838,27 +2007,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getDefaultParameterValueAccess().getRule();
 	}
 
-	////JvmFormalParameter returns jvm::JvmFormalParameter:
-	////	{jvm::JvmFormalParameter}
-	////	name=ValidID (=>':' parameterType=JvmTypeReference)? 
-	////;
-	////	
-	////FullJvmFormalParameter returns jvm::JvmFormalParameter:
-	////	{jvm::JvmFormalParameter}
-	////	name=ValidID ':' parameterType=JvmTypeReference
-	////;
-	////
-	////LoopFormalParameter returns jvm::JvmFormalParameter:
-	////	{jvm::JvmFormalParameter}
-	////	name=ValidID
-	////	( 'as' parameterType=JvmTypeReference )?
-	////;
-	////
-	////XForLoopExpression returns xbase::XExpression:
-	////	{xbase::XForLoopExpression}
-	////	'for' '(' declaredParam=LoopFormalParameter ':' forExpression=XExpression ')'
-	////		eachExpression=XExpression
-	////;
+	////-----------------------------------------------
+	//// BELOW THIS POINT, THE RULES FROM XBASE ARE OVERLOADED
 	//XVariableDeclaration returns xbase::XExpression:
 	//	{xbase::XVariableDeclaration} (writeable?="var" | "val") (=> (name=ValidID ":" type=JvmTypeReference) | name=ValidID)
 	//	("=" right=XExpression)?;
@@ -1868,6 +2018,49 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getXVariableDeclarationRule() {
 		return getXVariableDeclarationAccess().getRule();
+	}
+
+	//JvmFormalParameter returns jvm::JvmFormalParameter:
+	//	{jvm::JvmFormalParameter} name=ValidID (":" parameterType=JvmTypeReference)?;
+	public JvmFormalParameterElements getJvmFormalParameterAccess() {
+		return (pJvmFormalParameter != null) ? pJvmFormalParameter : (pJvmFormalParameter = new JvmFormalParameterElements());
+	}
+	
+	public ParserRule getJvmFormalParameterRule() {
+		return getJvmFormalParameterAccess().getRule();
+	}
+
+	//FullJvmFormalParameter returns jvm::JvmFormalParameter:
+	//	{jvm::JvmFormalParameter} name=ValidID ":" parameterType=JvmTypeReference;
+	public FullJvmFormalParameterElements getFullJvmFormalParameterAccess() {
+		return (pFullJvmFormalParameter != null) ? pFullJvmFormalParameter : (pFullJvmFormalParameter = new FullJvmFormalParameterElements());
+	}
+	
+	public ParserRule getFullJvmFormalParameterRule() {
+		return getFullJvmFormalParameterAccess().getRule();
+	}
+
+	//// The following rule is not provided by Xbase, but we use it
+	//// in the overloaded version of XForLoopExpression
+	//XXLoopFormalParameter returns jvm::JvmFormalParameter:
+	//	{jvm::JvmFormalParameter} name=ValidID ("as" parameterType=JvmTypeReference)?;
+	public XXLoopFormalParameterElements getXXLoopFormalParameterAccess() {
+		return (pXXLoopFormalParameter != null) ? pXXLoopFormalParameter : (pXXLoopFormalParameter = new XXLoopFormalParameterElements());
+	}
+	
+	public ParserRule getXXLoopFormalParameterRule() {
+		return getXXLoopFormalParameterAccess().getRule();
+	}
+
+	//XForLoopExpression returns xbase::XExpression:
+	//	=> ({xbase::XForLoopExpression} "for" "(" declaredParam=XXLoopFormalParameter ":") forExpression=XExpression ")"
+	//	eachExpression=XExpression;
+	public XForLoopExpressionElements getXForLoopExpressionAccess() {
+		return (pXForLoopExpression != null) ? pXForLoopExpression : (pXForLoopExpression = new XForLoopExpressionElements());
+	}
+	
+	public ParserRule getXForLoopExpressionRule() {
+		return getXForLoopExpressionAccess().getRule();
 	}
 
 	//XExpression:
@@ -2251,17 +2444,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getXCasePartAccess().getRule();
 	}
 
-	//XForLoopExpression returns XExpression:
-	//	=> ({XForLoopExpression} "for" "(" declaredParam=JvmFormalParameter ":") forExpression=XExpression ")"
-	//	eachExpression=XExpression;
-	public XbaseGrammarAccess.XForLoopExpressionElements getXForLoopExpressionAccess() {
-		return gaXbase.getXForLoopExpressionAccess();
-	}
-	
-	public ParserRule getXForLoopExpressionRule() {
-		return getXForLoopExpressionAccess().getRule();
-	}
-
 	//XBasicForLoopExpression returns XExpression:
 	//	{XBasicForLoopExpression} "for" "(" (initExpressions+=XExpressionOrVarDeclaration (","
 	//	initExpressions+=XExpressionOrVarDeclaration)*)? ";" expression=XExpression? ";" (updateExpressions+=XExpression (","
@@ -2312,26 +2494,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getXExpressionOrVarDeclarationRule() {
 		return getXExpressionOrVarDeclarationAccess().getRule();
-	}
-
-	//JvmFormalParameter returns types::JvmFormalParameter:
-	//	parameterType=JvmTypeReference? name=ValidID;
-	public XbaseGrammarAccess.JvmFormalParameterElements getJvmFormalParameterAccess() {
-		return gaXbase.getJvmFormalParameterAccess();
-	}
-	
-	public ParserRule getJvmFormalParameterRule() {
-		return getJvmFormalParameterAccess().getRule();
-	}
-
-	//FullJvmFormalParameter returns types::JvmFormalParameter:
-	//	parameterType=JvmTypeReference name=ValidID;
-	public XbaseGrammarAccess.FullJvmFormalParameterElements getFullJvmFormalParameterAccess() {
-		return gaXbase.getFullJvmFormalParameterAccess();
-	}
-	
-	public ParserRule getFullJvmFormalParameterRule() {
-		return getFullJvmFormalParameterAccess().getRule();
 	}
 
 	//XFeatureCall returns XExpression:

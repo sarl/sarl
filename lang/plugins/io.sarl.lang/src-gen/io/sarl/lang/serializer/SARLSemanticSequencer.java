@@ -242,6 +242,10 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 					sequence_JvmFormalParameter(context, (JvmFormalParameter) semanticObject); 
 					return; 
 				}
+				else if(context == grammarAccess.getXXLoopFormalParameterRule()) {
+					sequence_XXLoopFormalParameter(context, (JvmFormalParameter) semanticObject); 
+					return; 
+				}
 				else break;
 			case TypesPackage.JVM_GENERIC_ARRAY_TYPE_REFERENCE:
 				if(context == grammarAccess.getJvmArgumentTypeReferenceRule() ||
@@ -1466,6 +1470,15 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
+	 *     (name=ValidID parameterType=JvmTypeReference)
+	 */
+	protected void sequence_FullJvmFormalParameter(EObject context, JvmFormalParameter semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
 	 *     implementedTypes+=[InheritingElement|ID]
 	 */
 	protected void sequence_ImplementingElement(EObject context, ImplementingElement semanticObject) {
@@ -1478,6 +1491,15 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	 *     superTypes+=[InheritingElement|ID]
 	 */
 	protected void sequence_InheritingElement(EObject context, InheritingElement semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (name=ValidID parameterType=JvmTypeReference?)
+	 */
+	protected void sequence_JvmFormalParameter(EObject context, JvmFormalParameter semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -1542,9 +1564,40 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
+	 *     (declaredParam=XXLoopFormalParameter forExpression=XExpression eachExpression=XExpression)
+	 */
+	protected void sequence_XForLoopExpression(EObject context, XForLoopExpression semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, XbasePackage.Literals.XFOR_LOOP_EXPRESSION__FOR_EXPRESSION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XbasePackage.Literals.XFOR_LOOP_EXPRESSION__FOR_EXPRESSION));
+			if(transientValues.isValueTransient(semanticObject, XbasePackage.Literals.XFOR_LOOP_EXPRESSION__EACH_EXPRESSION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XbasePackage.Literals.XFOR_LOOP_EXPRESSION__EACH_EXPRESSION));
+			if(transientValues.isValueTransient(semanticObject, XbasePackage.Literals.XFOR_LOOP_EXPRESSION__DECLARED_PARAM) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XbasePackage.Literals.XFOR_LOOP_EXPRESSION__DECLARED_PARAM));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getXForLoopExpressionAccess().getDeclaredParamXXLoopFormalParameterParserRuleCall_0_0_3_0(), semanticObject.getDeclaredParam());
+		feeder.accept(grammarAccess.getXForLoopExpressionAccess().getForExpressionXExpressionParserRuleCall_1_0(), semanticObject.getForExpression());
+		feeder.accept(grammarAccess.getXForLoopExpressionAccess().getEachExpressionXExpressionParserRuleCall_3_0(), semanticObject.getEachExpression());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
 	 *     (writeable?='var'? ((name=ValidID type=JvmTypeReference) | name=ValidID) right=XExpression?)
 	 */
 	protected void sequence_XVariableDeclaration(EObject context, XVariableDeclaration semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (name=ValidID parameterType=JvmTypeReference?)
+	 */
+	protected void sequence_XXLoopFormalParameter(EObject context, JvmFormalParameter semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 }
