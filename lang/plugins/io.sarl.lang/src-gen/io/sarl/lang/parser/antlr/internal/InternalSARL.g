@@ -1874,56 +1874,16 @@ ruleDefaultParameterValue returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-(
+
     { 
-        newCompositeNode(grammarAccess.getDefaultParameterValueAccess().getXBooleanLiteralParserRuleCall_0()); 
+        newCompositeNode(grammarAccess.getDefaultParameterValueAccess().getXLiteralParserRuleCall()); 
     }
-    this_XBooleanLiteral_0=ruleXBooleanLiteral
+    this_XLiteral_0=ruleXLiteral
     { 
-        $current = $this_XBooleanLiteral_0.current; 
+        $current = $this_XLiteral_0.current; 
         afterParserOrEnumRuleCall();
     }
 
-    |
-    { 
-        newCompositeNode(grammarAccess.getDefaultParameterValueAccess().getXNumberLiteralParserRuleCall_1()); 
-    }
-    this_XNumberLiteral_1=ruleXNumberLiteral
-    { 
-        $current = $this_XNumberLiteral_1.current; 
-        afterParserOrEnumRuleCall();
-    }
-
-    |
-    { 
-        newCompositeNode(grammarAccess.getDefaultParameterValueAccess().getXNullLiteralParserRuleCall_2()); 
-    }
-    this_XNullLiteral_2=ruleXNullLiteral
-    { 
-        $current = $this_XNullLiteral_2.current; 
-        afterParserOrEnumRuleCall();
-    }
-
-    |
-    { 
-        newCompositeNode(grammarAccess.getDefaultParameterValueAccess().getXStringLiteralParserRuleCall_3()); 
-    }
-    this_XStringLiteral_3=ruleXStringLiteral
-    { 
-        $current = $this_XStringLiteral_3.current; 
-        afterParserOrEnumRuleCall();
-    }
-
-    |
-    { 
-        newCompositeNode(grammarAccess.getDefaultParameterValueAccess().getXTypeLiteralParserRuleCall_4()); 
-    }
-    this_XTypeLiteral_4=ruleXTypeLiteral
-    { 
-        $current = $this_XTypeLiteral_4.current; 
-        afterParserOrEnumRuleCall();
-    }
-)
 ;
 
 

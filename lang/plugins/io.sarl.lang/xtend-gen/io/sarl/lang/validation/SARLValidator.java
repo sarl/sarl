@@ -20,6 +20,7 @@ import com.google.inject.Inject;
 import io.sarl.lang.SARLKeywords;
 import io.sarl.lang.sarl.Action;
 import io.sarl.lang.sarl.ActionSignature;
+import io.sarl.lang.sarl.Attribute;
 import io.sarl.lang.sarl.Constructor;
 import io.sarl.lang.sarl.FeatureContainer;
 import io.sarl.lang.sarl.FormalParameter;
@@ -412,7 +413,7 @@ public class SARLValidator extends AbstractSARLValidator {
   }
   
   /**
-   * private def Map<ActionNameKey,EList<InferredActionSignature>> getCapacityActionsFromHierarchy(EList<InheritingElement> sources) {
+   * TODO private def Map<ActionNameKey,EList<InferredActionSignature>> getCapacityActionsFromHierarchy(EList<InheritingElement> sources) {
    * var Map<ActionNameKey,EList<InferredActionSignature>> actions = new TreeMap
    * var Set<String> encounteredCapacities = new TreeSet
    * var List<Capacity> capacities = new LinkedList
@@ -449,5 +450,33 @@ public class SARLValidator extends AbstractSARLValidator {
   @Check
   public Object checkSkillActionImplementationPrototype(final Skill skill) {
     return null;
+  }
+  
+  @Check
+  public void checkActionName(final ActionSignature action) {
+    String _name = action.getName();
+    boolean _startsWith = _name.startsWith("_handle_");
+    if (_startsWith) {
+      String _name_1 = action.getName();
+      String _format = String.format(
+        "Invalid action name \'%s\'. You must not give to an action a name that is starting with \'_handle_\'. This prefix is reserved by the SARL compiler.", _name_1);
+      this.error(_format, action, 
+        null, 
+        IssueCodes.INVALID_ACTION_NAME);
+    }
+  }
+  
+  @Check
+  public void checkAttributeName(final Attribute attribute) {
+    String _name = attribute.getName();
+    boolean _startsWith = _name.startsWith("___FORMAL_PARAMETER_DEFAULT_VALUE_");
+    if (_startsWith) {
+      String _name_1 = attribute.getName();
+      String _format = String.format(
+        "Invalid attribute name \'%s\'. You must not give to an attribute a name that is starting with \'___FORMAL_PARAMETER_DEFAULT_VALUE_\'. This prefix is reserved by the SARL compiler.", _name_1);
+      this.error(_format, attribute, 
+        null, 
+        IssueCodes.INVALID_ATTRIBUTE_NAME);
+    }
   }
 }
