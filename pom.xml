@@ -91,6 +91,11 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 				<artifactId>io.sarl.core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>io.sarl</groupId>
+				<artifactId>bundle</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -153,7 +158,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 					<artifactId>groovy-maven-plugin</artifactId>
 					<version>2.0</version>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
@@ -165,19 +170,19 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 					<artifactId>maven-source-plugin</artifactId>
 					<version>2.2.1</version>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.jnario</groupId>
 					<artifactId>report</artifactId>
 					<version>${jnario.version}</version>
 				</plugin>
-								
+
 				<plugin>
 					<groupId>org.jnario</groupId>
 					<artifactId>jnario-maven-plugin</artifactId>
 					<version>${jnario.version}</version>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>

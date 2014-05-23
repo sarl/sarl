@@ -14,5 +14,12 @@
 	<build>
 
 	</build>
+	
+	<dependencies>
+		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.bundle</artifactId>
+		</dependency>
+	</dependencies>
 
 </project>
