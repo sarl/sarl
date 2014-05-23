@@ -139,7 +139,7 @@ capacity Lifecycle {
 	 * Spawns a new member agent in the parent's context (parentID)
 	 * @fires AgentSpawned inside the default context of the parent. The source of the event is this agent.
 	 */
-	def spawnInContext(agentClass : Class <? extends Agent>, context : AgentContext, params : Object...) : UUID fires AgentSpawned
+	def spawnInContext(agentClass : Class <? extends Agent>, context : AgentContext, params : Object*) : UUID fires AgentSpawned
 	
     /**
 	* Kills this agent. 
@@ -298,5 +298,5 @@ capacity DefaultContextInteractions {
 	* within the default space of the context.
 	* @fires AgentSpawned in DefaultSpace
 	*/
-	def spawn(aAgent : Class<? extends Agent>, params : Object...) : UUID fires AgentSpawned
+	def spawn(aAgent : Class<? extends Agent>, params : Object*) : UUID fires AgentSpawned
 }
