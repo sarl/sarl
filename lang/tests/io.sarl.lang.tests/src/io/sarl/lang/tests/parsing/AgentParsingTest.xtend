@@ -170,4 +170,55 @@ class AgentParsingTest {
 			"Cannot define many times the same feature in 'A1': myaction(a : int)")
 	}
 
+	@Test
+	def invalidActionName() {
+		val mas = '''
+			agent A1 {
+				def myaction {
+					System.out.println("ok")
+				}
+				def _handle_myaction {
+					System.out.println("ko")
+				}
+				def myaction2 {
+					System.out.println("ok")
+				}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.actionSignature,
+			IssueCodes::INVALID_ACTION_NAME,
+			"Invalid action name '_handle_myaction'.")
+	}
+
+	@Test
+	def invalidAttributeName_0() {
+		val mas = '''
+			agent A1 {
+				var myfield1 = 4.5
+				var ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = "String"
+				var myfield2 = true
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.attribute,
+			IssueCodes::INVALID_ATTRIBUTE_NAME,
+			"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.")
+	}
+
+	@Test
+	def invalidAttributeName_1() {
+		val mas = '''
+			agent A1 {
+				val myfield1 = 4.5
+				val ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = "String"
+				val myfield2 = true
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.attribute,
+			IssueCodes::INVALID_ATTRIBUTE_NAME,
+			"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.")
+	}
+
 }

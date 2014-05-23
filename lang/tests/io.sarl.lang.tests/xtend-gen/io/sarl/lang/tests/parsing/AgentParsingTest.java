@@ -282,4 +282,103 @@ public class AgentParsingTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
+  
+  @Test
+  public void invalidActionName() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("agent A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(\"ok\")");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def _handle_myaction {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(\"ko\")");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction2 {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(\"ok\")");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
+      this._validationTestHelper.assertError(mas, _actionSignature, 
+        IssueCodes.INVALID_ACTION_NAME, 
+        "Invalid action name \'_handle_myaction\'.");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void invalidAttributeName_0() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("agent A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var myfield1 = 4.5");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var myfield2 = true");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
+      this._validationTestHelper.assertError(mas, _attribute, 
+        IssueCodes.INVALID_ATTRIBUTE_NAME, 
+        "Invalid attribute name \'___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD\'. You must not give to an attribute a name that is starting with \'___FORMAL_PARAMETER_DEFAULT_VALUE_\'. This prefix is reserved by the SARL compiler.");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void invalidAttributeName_1() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("agent A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val myfield1 = 4.5");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("val myfield2 = true");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
+      this._validationTestHelper.assertError(mas, _attribute, 
+        IssueCodes.INVALID_ATTRIBUTE_NAME, 
+        "Invalid attribute name \'___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD\'. You must not give to an attribute a name that is starting with \'___FORMAL_PARAMETER_DEFAULT_VALUE_\'. This prefix is reserved by the SARL compiler.");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
 }
