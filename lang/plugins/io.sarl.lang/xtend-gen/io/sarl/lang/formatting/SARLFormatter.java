@@ -173,7 +173,7 @@ public class SARLFormatter extends XbaseFormatter {
     _setLinewrap.after(_group);
     FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
     Alternatives _alternatives_1_0_3 = ele.getAlternatives_1_0_3();
-    _setNoSpace.around(_alternatives_1_0_3);
+    _setNoSpace.before(_alternatives_1_0_3);
   }
   
   public void configureAttributes(final FormattingConfig c, final SARLGrammarAccess.AttributeElements ele) {

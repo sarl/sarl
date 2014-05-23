@@ -82,7 +82,7 @@ class ArgDefaultValueParsingTest {
 		mas.assertError(
 			SarlPackage::eINSTANCE.actionSignature,
 			Diagnostic::SYNTAX_DIAGNOSTIC,
-			"mismatched input '=' expecting ')'")
+			"mismatched input '*=' expecting ')'")
 	}
 
 	@Test
@@ -309,7 +309,7 @@ class ArgDefaultValueParsingTest {
 		mas.assertError(
 			SarlPackage::eINSTANCE.constructor,
 			Diagnostic::SYNTAX_DIAGNOSTIC,
-			"mismatched input '=' expecting ')'")
+			"mismatched input '*=' expecting ')'")
 	}
 
 	@Test
@@ -530,7 +530,7 @@ class ArgDefaultValueParsingTest {
 		mas.assertError(
 			SarlPackage::eINSTANCE.actionSignature,
 			Diagnostic::SYNTAX_DIAGNOSTIC,
-			"mismatched input '=' expecting ')'")
+			"mismatched input '*=' expecting ')'")
 	}
 
 	@Test
@@ -735,7 +735,7 @@ class ArgDefaultValueParsingTest {
 		mas.assertError(
 			SarlPackage::eINSTANCE.actionSignature,
 			Diagnostic::SYNTAX_DIAGNOSTIC,
-			"mismatched input '=' expecting ')'")
+			"mismatched input '*=' expecting ')'")
 	}
 
 	@Test

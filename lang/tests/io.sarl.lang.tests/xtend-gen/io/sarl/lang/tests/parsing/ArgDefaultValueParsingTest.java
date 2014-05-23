@@ -128,7 +128,7 @@ public class ArgDefaultValueParsingTest {
       EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
       this._validationTestHelper.assertError(mas, _actionSignature, 
         Diagnostic.SYNTAX_DIAGNOSTIC, 
-        "mismatched input \'=\' expecting \')\'");
+        "mismatched input \'*=\' expecting \')\'");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -587,7 +587,7 @@ public class ArgDefaultValueParsingTest {
       EClass _constructor = SarlPackage.eINSTANCE.getConstructor();
       this._validationTestHelper.assertError(mas, _constructor, 
         Diagnostic.SYNTAX_DIAGNOSTIC, 
-        "mismatched input \'=\' expecting \')\'");
+        "mismatched input \'*=\' expecting \')\'");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -1028,7 +1028,7 @@ public class ArgDefaultValueParsingTest {
       EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
       this._validationTestHelper.assertError(mas, _actionSignature, 
         Diagnostic.SYNTAX_DIAGNOSTIC, 
-        "mismatched input \'=\' expecting \')\'");
+        "mismatched input \'*=\' expecting \')\'");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -1415,7 +1415,7 @@ public class ArgDefaultValueParsingTest {
       EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
       this._validationTestHelper.assertError(mas, _actionSignature, 
         Diagnostic.SYNTAX_DIAGNOSTIC, 
-        "mismatched input \'=\' expecting \')\'");
+        "mismatched input \'*=\' expecting \')\'");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

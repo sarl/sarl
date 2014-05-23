@@ -67,6 +67,7 @@ import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor.IPostIndexingInitializing
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
+import org.eclipse.xtext.xbase.typesystem.IBatchTypeResolver
 import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 import org.eclipse.xtext.xbase.typesystem.references.OwnedConverter
@@ -502,6 +503,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		val arguments = new ArrayList
 		for(parameterSpec : signature) {
 			if (parameterSpec instanceof InferredValuedParameter) {
+				associate(parameterSpec.expr, owner)
 				// Special case: convert a String literal to a char
 				var boolean treated = false;
 				var expr = parameterSpec.expr
@@ -517,13 +519,10 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					}
 				}
 				val jExpr = new FakeTreeAppendable
-				xbaseCompiler.compileAsJavaExpression(
-					parameterSpec.expr, jExpr, parameterSpec.type
-				)
+				xbaseCompiler.toJavaExpression(parameterSpec.expr, jExpr)
 				if (!treated){
 					arguments.add(jExpr.content)
 				}
-				associate(parameterSpec.expr, owner)
 			}
 			else {
 				val param = parameterSpec.parameter

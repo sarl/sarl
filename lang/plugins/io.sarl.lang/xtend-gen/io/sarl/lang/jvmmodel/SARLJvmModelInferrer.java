@@ -882,6 +882,8 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
     final ArrayList<String> arguments = new ArrayList<String>();
     for (final InferredStandardParameter parameterSpec : signature) {
       if ((parameterSpec instanceof InferredValuedParameter)) {
+        XExpression _expr = ((InferredValuedParameter)parameterSpec).getExpr();
+        this._jvmTypesBuilder.<JvmExecutable>associate(_expr, owner);
         boolean treated = false;
         XExpression expr = ((InferredValuedParameter)parameterSpec).getExpr();
         if ((expr instanceof XStringLiteral)) {
@@ -911,15 +913,12 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           }
         }
         final FakeTreeAppendable jExpr = new FakeTreeAppendable();
-        XExpression _expr = ((InferredValuedParameter)parameterSpec).getExpr();
-        JvmTypeReference _type_1 = ((InferredValuedParameter)parameterSpec).getType();
-        this.xbaseCompiler.compileAsJavaExpression(_expr, jExpr, _type_1);
+        XExpression _expr_1 = ((InferredValuedParameter)parameterSpec).getExpr();
+        this.xbaseCompiler.toJavaExpression(_expr_1, jExpr);
         if ((!treated)) {
           String _content = jExpr.getContent();
           arguments.add(_content);
         }
-        XExpression _expr_1 = ((InferredValuedParameter)parameterSpec).getExpr();
-        this._jvmTypesBuilder.<JvmExecutable>associate(_expr_1, owner);
       } else {
         final FormalParameter param = parameterSpec.getParameter();
         String _name = param.getName();

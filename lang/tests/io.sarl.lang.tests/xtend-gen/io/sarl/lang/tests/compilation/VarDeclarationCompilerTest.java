@@ -821,7 +821,7 @@ public class VarDeclarationCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public float mycall(final int a, final Function2<? super Float,? super Integer,? extends Float> f) {");
+      _builder_1.append("public float mycall(final int a, final Function2<? super Float, ? super Integer, ? extends Float> f) {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("Float _apply = f.apply(Float.valueOf(5.45f), Integer.valueOf(6));");
@@ -838,7 +838,7 @@ public class VarDeclarationCompilerTest {
       _builder_1.append("public void myaction() {");
       _builder_1.newLine();
       _builder_1.append("    ");
-      _builder_1.append("final Function2<Float,Integer,Float> _function = new Function2<Float,Integer,Float>() {");
+      _builder_1.append("final Function2<Float, Integer, Float> _function = new Function2<Float, Integer, Float>() {");
       _builder_1.newLine();
       _builder_1.append("      ");
       _builder_1.append("public Float apply(final Float a, final Integer b) {");

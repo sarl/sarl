@@ -635,7 +635,8 @@ capacity ExternalContextAccess {
 				
 				import static java.lang.String . *
 				
-				event E {}
+				event E {
+				}
 		'''.assertFormattedAs(
 			'''
 			package test

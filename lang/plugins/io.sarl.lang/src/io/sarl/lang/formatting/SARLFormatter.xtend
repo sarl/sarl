@@ -124,7 +124,7 @@ class SARLFormatter extends XbaseFormatter {
 
 	def void configureXImportDeclaration(FormattingConfig c, XImportDeclarationElements ele) {
 		c.setLinewrap(1, 1, 2).after(ele.group)
-		c.setNoSpace.around(ele.alternatives_1_0_3)
+		c.setNoSpace.before(ele.alternatives_1_0_3)
 	}
 
 	def void configureAttributes(FormattingConfig c, AttributeElements ele) {

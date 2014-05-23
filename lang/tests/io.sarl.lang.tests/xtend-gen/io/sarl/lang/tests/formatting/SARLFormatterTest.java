@@ -1182,7 +1182,10 @@ public class SARLFormatterTest {
     _builder.append("\t");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("event E {}");
+    _builder.append("event E {");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
     _builder.newLine();
     StringConcatenation _builder_1 = new StringConcatenation();
     _builder_1.append("package test");
