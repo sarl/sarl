@@ -15,6 +15,9 @@
  */
 package io.sarl.lang;
 
+import io.sarl.lang.signature.ActionSignatureProvider;
+import io.sarl.lang.signature.DefaultActionSignatureProvider;
+
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
  * 
@@ -24,5 +27,13 @@ package io.sarl.lang;
  * @mavenartifactid $ArtifactId$
  */
 public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
-	//
+	
+	/**
+	 * @return the type of provider for inferred action signatures.
+	 */
+	@SuppressWarnings("static-method")
+	public Class<? extends ActionSignatureProvider> bindActionSignatureProvider() {
+		return DefaultActionSignatureProvider.class;
+	}
+	
 }

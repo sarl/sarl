@@ -20,6 +20,7 @@ import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.TopElement;
+import io.sarl.lang.validation.IssueCodes;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -37,6 +38,7 @@ import org.junit.runner.RunWith;
 
 /**
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -249,6 +251,33 @@ public class AgentParsingTest {
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
       this._validationTestHelper.assertNoErrors(mas);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void multipleActionDefinitionInAgent() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("agent A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int, b : int) { }");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) { }");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) { }");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _action = SarlPackage.eINSTANCE.getAction();
+      this._validationTestHelper.assertError(mas, _action, 
+        IssueCodes.ACTION_COLLISION, 
+        "Cannot define many times the same feature in \'A1\': myaction(a : int)");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

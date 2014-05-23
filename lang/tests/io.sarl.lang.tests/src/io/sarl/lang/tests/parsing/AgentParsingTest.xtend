@@ -29,9 +29,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
+import io.sarl.lang.validation.IssueCodes
 
 /**
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -153,5 +155,19 @@ class AgentParsingTest {
 
 	}
 	
+	@Test
+	def void multipleActionDefinitionInAgent() {
+		val mas = '''
+			agent A1 {
+				def myaction(a : int, b : int) { }
+				def myaction(a : int) { }
+				def myaction(a : int) { }
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.action,
+			IssueCodes::ACTION_COLLISION,
+			"Cannot define many times the same feature in 'A1': myaction(a : int)")
+	}
 
 }

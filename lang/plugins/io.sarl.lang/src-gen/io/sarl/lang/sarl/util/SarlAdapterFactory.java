@@ -130,6 +130,11 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
         return createSkillFeatureAdapter();
       }
       @Override
+      public Adapter caseParameterizedFeature(ParameterizedFeature object)
+      {
+        return createParameterizedFeatureAdapter();
+      }
+      @Override
       public Adapter caseFormalParameter(FormalParameter object)
       {
         return createFormalParameterAdapter();
@@ -377,6 +382,21 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createSkillFeatureAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.ParameterizedFeature <em>Parameterized Feature</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.ParameterizedFeature
+   * @generated
+   */
+  public Adapter createParameterizedFeatureAdapter()
   {
     return null;
   }

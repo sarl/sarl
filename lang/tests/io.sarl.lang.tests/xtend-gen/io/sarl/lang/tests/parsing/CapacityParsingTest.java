@@ -20,10 +20,14 @@ import com.google.inject.Inject;
 import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.sarl.Agent;
 import io.sarl.lang.sarl.Capacity;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.TopElement;
+import io.sarl.lang.validation.IssueCodes;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
@@ -38,6 +42,7 @@ import org.junit.runner.RunWith;
 
 /**
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -231,5 +236,81 @@ public class CapacityParsingTest {
     final Iterable<Agent> agents = Iterables.<Agent>filter(_elements, Agent.class);
     int _size = IterableExtensions.size(agents);
     Assert.assertEquals(2, _size);
+  }
+  
+  @Test
+  public void testCapacityDirectImplementation() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("import io.sarl.lang.sarl.Capacity");
+      _builder.newLine();
+      _builder.append("skill S1 implements Capacity {");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _skill = SarlPackage.eINSTANCE.getSkill();
+      this._validationTestHelper.assertError(mas, _skill, 
+        Diagnostic.LINKING_DIAGNOSTIC, 
+        "Couldn\'t resolve reference to InheritingElement \'Capacity\'");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void multipleActionDefinitionInCapacity() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int, b : int)");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int)");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int)");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
+      this._validationTestHelper.assertError(mas, _actionSignature, 
+        IssueCodes.ACTION_COLLISION, 
+        "Cannot define many times the same feature in \'C1\': myaction(a : int)");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void multipleActionDefinitionInSkill() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 { }");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int, b : int) { }");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) { }");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) { }");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _action = SarlPackage.eINSTANCE.getAction();
+      this._validationTestHelper.assertError(mas, _action, 
+        IssueCodes.ACTION_COLLISION, 
+        "Cannot define many times the same feature in \'S1\': myaction(a : int)");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
   }
 }

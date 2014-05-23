@@ -30,7 +30,7 @@ import org.junit.runner.RunWith
 import static org.junit.Assert.*
 
 /**
- * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -45,7 +45,7 @@ class VarArgsParsingTest {
 	def void inAgentAction_singleParam() {
 		val mas = '''
 			agent A1 {
-				def myaction(arg : int...) {
+				def myaction(arg : int*) {
 					System.out.println(arg)
 				}
 			}
@@ -58,7 +58,7 @@ class VarArgsParsingTest {
 	def void inAgentAction() {
 		val mas = '''
 			agent A1 {
-				def myaction(arg1 : char, arg2 : boolean, arg3 : int...) {
+				def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {
 					System.out.println(arg3)
 				}
 			}
@@ -71,7 +71,7 @@ class VarArgsParsingTest {
 	def void inAgentAction_invalid() {
 		val mas = '''
 			agent A1 {
-				def myaction(arg1 : char, arg2 : boolean..., arg3 : int) {
+				def myaction(arg1 : char, arg2 : boolean*, arg3 : int) {
 					System.out.println(arg3)
 				}
 			}
@@ -86,7 +86,7 @@ class VarArgsParsingTest {
 	def void inBehaviorAction_singleParam() {
 		val mas = '''
 			behavior B1 {
-				def myaction(arg : int...) {
+				def myaction(arg : int*) {
 					System.out.println(arg)
 				}
 			}
@@ -99,7 +99,7 @@ class VarArgsParsingTest {
 	def void inBehaviorAction() {
 		val mas = '''
 			behavior B1 {
-				def myaction(arg1 : char, arg2 : boolean, arg3 : int...) {
+				def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {
 					System.out.println(arg3)
 				}
 			}
@@ -112,7 +112,7 @@ class VarArgsParsingTest {
 	def void inBehaviorAction_invalid() {
 		val mas = '''
 			behavior B1 {
-				def myaction(arg1 : char, arg2 : boolean..., arg3 : int) {
+				def myaction(arg1 : char, arg2 : boolean*, arg3 : int) {
 					System.out.println(arg3)
 				}
 			}
@@ -128,7 +128,7 @@ class VarArgsParsingTest {
 		val mas = '''
 			capacity C1 {}
 			skill S1 implements C1 {
-				def myaction(arg : int...) {
+				def myaction(arg : int*) {
 					System.out.println(arg)
 				}
 			}
@@ -142,7 +142,7 @@ class VarArgsParsingTest {
 		val mas = '''
 			capacity C1 {}
 			skill S1 implements C1 {
-				def myaction(arg1 : char, arg2 : boolean, arg3 : int...) {
+				def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {
 					System.out.println(arg3)
 				}
 			}
@@ -156,7 +156,7 @@ class VarArgsParsingTest {
 		val mas = '''
 			capacity C1 {}
 			skill S1 implements C1 {
-				def myaction(arg1 : char, arg2 : boolean..., arg3 : int) {
+				def myaction(arg1 : char, arg2 : boolean*, arg3 : int) {
 					System.out.println(arg3)
 				}
 			}
@@ -171,7 +171,7 @@ class VarArgsParsingTest {
 	def void inCapacityAction_singleParam() {
 		val mas = '''
 			capacity C1 {
-				def myaction(arg : int...)
+				def myaction(arg : int*)
 			}
 		'''.parse
 		mas.assertNoErrors
@@ -182,7 +182,7 @@ class VarArgsParsingTest {
 	def void inCapacityAction() {
 		val mas = '''
 			capacity C1 {
-				def myaction(arg1 : char, arg2 : boolean, arg3 : int...)
+				def myaction(arg1 : char, arg2 : boolean, arg3 : int*)
 			}
 		'''.parse
 		mas.assertNoErrors
@@ -193,7 +193,7 @@ class VarArgsParsingTest {
 	def void inCapacityAction_invalid() {
 		val mas = '''
 			capacity C1 {
-				def myaction(arg1 : char, arg2 : boolean..., arg3 : int)
+				def myaction(arg1 : char, arg2 : boolean*, arg3 : int)
 			}
 		'''.parse
 		mas.assertError(
@@ -206,7 +206,7 @@ class VarArgsParsingTest {
 	def void inEventConstructor_singleParam() {
 		val mas = '''
 			event E1 {
-				new(arg : int...) {
+				new(arg : int*) {
 					System.out.println(arg)
 				}
 			}
@@ -219,7 +219,7 @@ class VarArgsParsingTest {
 	def void inEventConstructor() {
 		val mas = '''
 			event E1 {
-				new (arg1 : char, arg2 : boolean, arg3 : int...) {
+				new (arg1 : char, arg2 : boolean, arg3 : int*) {
 					System.out.println(arg3)
 				}
 			}
@@ -232,7 +232,7 @@ class VarArgsParsingTest {
 	def void inEventConstructor_invalid() {
 		val mas = '''
 			event E1 {
-				new (arg1 : char, arg2 : boolean..., arg3 : int) {
+				new (arg1 : char, arg2 : boolean*, arg3 : int) {
 					System.out.println(arg3)
 				}
 			}
@@ -248,7 +248,7 @@ class VarArgsParsingTest {
 		val mas = '''
 			capacity C1 {}
 			skill S1 implements C1 {
-				new(arg : int...) {
+				new(arg : int*) {
 					System.out.println(arg)
 				}
 			}
@@ -262,7 +262,7 @@ class VarArgsParsingTest {
 		val mas = '''
 			capacity C1 {}
 			skill S1 implements C1 {
-				new (arg1 : char, arg2 : boolean, arg3 : int...) {
+				new (arg1 : char, arg2 : boolean, arg3 : int*) {
 					System.out.println(arg3)
 				}
 			}
@@ -276,7 +276,7 @@ class VarArgsParsingTest {
 		val mas = '''
 			capacity C1 {}
 			skill S1 implements C1 {
-				new (arg1 : char, arg2 : boolean..., arg3 : int) {
+				new (arg1 : char, arg2 : boolean*, arg3 : int) {
 					System.out.println(arg3)
 				}
 			}
@@ -291,7 +291,7 @@ class VarArgsParsingTest {
 	def void inBehaviorConstructor_singleParam() {
 		val mas = '''
 			behavior B1 {
-				new(arg : int...) {
+				new(arg : int*) {
 					System.out.println(arg)
 				}
 			}
@@ -304,7 +304,7 @@ class VarArgsParsingTest {
 	def void inBehaviorConstructor() {
 		val mas = '''
 			behavior B1 {
-				new (arg1 : char, arg2 : boolean, arg3 : int...) {
+				new (arg1 : char, arg2 : boolean, arg3 : int*) {
 					System.out.println(arg3)
 				}
 			}
@@ -317,7 +317,7 @@ class VarArgsParsingTest {
 	def void inBehaviorConstructor_invalid() {
 		val mas = '''
 			behavior B1 {
-				new (arg1 : char, arg2 : boolean..., arg3 : int) {
+				new (arg1 : char, arg2 : boolean*, arg3 : int) {
 					System.out.println(arg3)
 				}
 			}
@@ -326,6 +326,54 @@ class VarArgsParsingTest {
 			SarlPackage::eINSTANCE.constructor,
 			Diagnostic::SYNTAX_DIAGNOSTIC,
 			"mismatched input ',' expecting ')'")
+	}
+
+	@Test
+	def void multipleActionDefinitionsInBehavior_0() {
+		val mas = '''
+			behavior B1 {
+				def myaction(arg0 : int, arg1 : int*) {
+					System.out.println("invalid")
+				}
+				def myaction {
+					System.out.println("invalid")
+				}
+			}
+		'''.parse
+		mas.assertNoErrors
+	}
+
+	@Test
+	def void multipleActionDefinitionsInBehavior_1() {
+		val mas = '''
+			behavior B1 {
+				def myaction(arg0 : int, arg1 : int*) {
+					System.out.println("invalid")
+				}
+				def myaction(arg0 : int) {
+					System.out.println("invalid")
+				}
+			}
+		'''.parse
+		mas.assertNoErrors
+	}
+
+	@Test
+	def void multipleActionDefinitionsInBehavior_2() {
+		val mas = '''
+			behavior B1 {
+				def myaction(arg0 : int, arg1 : int*) {
+					System.out.println("invalid")
+				}
+				def myaction(arg0 : int, arg1 : int) {
+					System.out.println("invalid")
+				}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.action,
+			io.sarl.lang.validation.IssueCodes::ACTION_COLLISION,
+			"Cannot define many times the same feature in 'B1': myaction(arg0 : int, arg1 : int)")
 	}
 
 }

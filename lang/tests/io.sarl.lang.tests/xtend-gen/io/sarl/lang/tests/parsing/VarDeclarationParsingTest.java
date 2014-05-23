@@ -387,10 +387,10 @@ public class VarDeclarationParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _xForLoopExpression = XbasePackage.eINSTANCE.getXForLoopExpression();
-      this._validationTestHelper.assertError(mas, _xForLoopExpression, 
+      EClass _xFeatureCall = XbasePackage.eINSTANCE.getXFeatureCall();
+      this._validationTestHelper.assertError(mas, _xFeatureCall, 
         Diagnostic.SYNTAX_DIAGNOSTIC, 
-        "extraneous input \'i\' expecting \':\'");
+        "missing \';\' at \'i\'");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

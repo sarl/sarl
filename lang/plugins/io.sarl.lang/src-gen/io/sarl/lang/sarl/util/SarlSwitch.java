@@ -161,6 +161,18 @@ public class SarlSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case SarlPackage.PARAMETERIZED_FEATURE:
+      {
+        ParameterizedFeature parameterizedFeature = (ParameterizedFeature)theEObject;
+        T result = caseParameterizedFeature(parameterizedFeature);
+        if (result == null) result = caseFeature(parameterizedFeature);
+        if (result == null) result = caseEventFeature(parameterizedFeature);
+        if (result == null) result = caseAgentFeature(parameterizedFeature);
+        if (result == null) result = caseBehaviorFeature(parameterizedFeature);
+        if (result == null) result = caseSkillFeature(parameterizedFeature);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case SarlPackage.FORMAL_PARAMETER:
       {
         FormalParameter formalParameter = (FormalParameter)theEObject;
@@ -276,6 +288,7 @@ public class SarlSwitch<T> extends Switch<T>
       {
         Constructor constructor = (Constructor)theEObject;
         T result = caseConstructor(constructor);
+        if (result == null) result = caseParameterizedFeature(constructor);
         if (result == null) result = caseFeature(constructor);
         if (result == null) result = caseEventFeature(constructor);
         if (result == null) result = caseAgentFeature(constructor);
@@ -300,6 +313,7 @@ public class SarlSwitch<T> extends Switch<T>
       {
         ActionSignature actionSignature = (ActionSignature)theEObject;
         T result = caseActionSignature(actionSignature);
+        if (result == null) result = caseParameterizedFeature(actionSignature);
         if (result == null) result = caseFeature(actionSignature);
         if (result == null) result = caseEventFeature(actionSignature);
         if (result == null) result = caseAgentFeature(actionSignature);
@@ -484,6 +498,22 @@ public class SarlSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseSkillFeature(SkillFeature object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Parameterized Feature</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Parameterized Feature</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseParameterizedFeature(ParameterizedFeature object)
   {
     return null;
   }

@@ -97,7 +97,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction() {");
+      _builder_1.append("public final void myaction() {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(4);");
@@ -170,7 +170,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction() {");
+      _builder_1.append("public final void myaction() {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(4.5);");
@@ -243,7 +243,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction() {");
+      _builder_1.append("public final void myaction() {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(true);");
@@ -316,7 +316,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction() {");
+      _builder_1.append("public final void myaction() {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(54);");
@@ -389,7 +389,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction() {");
+      _builder_1.append("public final void myaction() {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(4.5);");
@@ -462,7 +462,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction() {");
+      _builder_1.append("public final void myaction() {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(450);");
@@ -535,7 +535,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction() {");
+      _builder_1.append("public final void myaction() {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(450);");
@@ -608,7 +608,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction() {");
+      _builder_1.append("public final void myaction() {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(\"abcd\");");
@@ -681,7 +681,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction() {");
+      _builder_1.append("public final void myaction() {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(\'d\');");
@@ -754,7 +754,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {");
+      _builder_1.append("public final void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(4, arg1, arg2, arg3, arg4);");
@@ -827,7 +827,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction(final int arg0, final int arg2, final int arg3, final String arg4) {");
+      _builder_1.append("public final void myaction(final int arg0, final int arg2, final int arg3, final String arg4) {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(arg0, \"abc\", arg2, arg3, arg4);");
@@ -900,7 +900,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction(final int arg0, final String arg1, final int arg3, final String arg4) {");
+      _builder_1.append("public final void myaction(final int arg0, final String arg1, final int arg3, final String arg4) {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(arg0, arg1, 18, arg3, arg4);");
@@ -973,7 +973,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {");
+      _builder_1.append("public final void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(arg0, arg1, arg2, 34, arg4);");
@@ -1046,7 +1046,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction(final int arg0, final String arg1, final int arg2, final int arg3) {");
+      _builder_1.append("public final void myaction(final int arg0, final String arg1, final int arg2, final int arg3) {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(arg0, arg1, arg2, arg3, \"xyz\");");
@@ -1119,7 +1119,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction(final String arg1, final int arg2, final String arg4) {");
+      _builder_1.append("public final void myaction(final String arg1, final int arg2, final String arg4) {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(4, arg1, arg2, 56, arg4);");
@@ -1130,7 +1130,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {");
+      _builder_1.append("public final void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(arg0, arg1, arg2, 56, arg4);");
@@ -1141,7 +1141,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {");
+      _builder_1.append("public final void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(4, arg1, arg2, arg3, arg4);");
@@ -1164,7 +1164,7 @@ public class ArgDefaultValueCompilerTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int=45, arg2 : int...) {");
+      _builder.append("def myaction(arg0 : int, arg1 : int=45, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -1214,7 +1214,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction(final int arg0, final int... arg2) {");
+      _builder_1.append("public final void myaction(final int arg0, final int... arg2) {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(arg0, 45, arg2);");
@@ -1237,7 +1237,7 @@ public class ArgDefaultValueCompilerTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int, arg2 : int...) {");
+      _builder.append("def myaction(arg0 : int=45, arg1 : int, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -1287,7 +1287,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction(final int arg1, final int... arg2) {");
+      _builder_1.append("public final void myaction(final int arg1, final int... arg2) {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(45, arg1, arg2);");
@@ -1310,7 +1310,7 @@ public class ArgDefaultValueCompilerTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...) {");
+      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -1360,7 +1360,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction(final int... arg2) {");
+      _builder_1.append("public final void myaction(final int... arg2) {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(45, 56, arg2);");
@@ -1371,7 +1371,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction(final int arg0, final int... arg2) {");
+      _builder_1.append("public final void myaction(final int arg0, final int... arg2) {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(arg0, 56, arg2);");
@@ -1444,7 +1444,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction() {");
+      _builder_1.append("public final void myaction() {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(45, 56, 78, 14);");
@@ -1455,7 +1455,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction(final int arg0) {");
+      _builder_1.append("public final void myaction(final int arg0) {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(arg0, 56, 78, 14);");
@@ -1466,7 +1466,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction(final int arg0, final int arg1) {");
+      _builder_1.append("public final void myaction(final int arg0, final int arg1) {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(arg0, arg1, 78, 14);");
@@ -1477,7 +1477,7 @@ public class ArgDefaultValueCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction(final int arg0, final int arg1, final int arg2) {");
+      _builder_1.append("public final void myaction(final int arg0, final int arg1, final int arg2) {");
       _builder_1.newLine();
       _builder_1.append("    ");
       _builder_1.append("myaction(arg0, arg1, arg2, 14);");
@@ -2317,7 +2317,7 @@ public class ArgDefaultValueCompilerTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg0 : int, arg1 : int=45, arg2 : int...) {");
+      _builder.append("new(arg0 : int, arg1 : int=45, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -2370,7 +2370,7 @@ public class ArgDefaultValueCompilerTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg0 : int=45, arg1 : int, arg2 : int...) {");
+      _builder.append("new(arg0 : int=45, arg1 : int, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");
@@ -2423,7 +2423,7 @@ public class ArgDefaultValueCompilerTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg0 : int=45, arg1 : int=56, arg2 : int...) {");
+      _builder.append("new(arg0 : int=45, arg1 : int=56, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg0)");

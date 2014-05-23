@@ -21,6 +21,7 @@ import io.sarl.lang.sarl.FormalParameter;
 import io.sarl.lang.sarl.ImplementingElement;
 import io.sarl.lang.sarl.InheritingElement;
 import io.sarl.lang.sarl.NamedElement;
+import io.sarl.lang.sarl.ParameterizedFeature;
 import io.sarl.lang.sarl.RequiredCapacity;
 import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.sarl.SarlPackage;
@@ -126,6 +127,13 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * @generated
    */
   private EClass skillFeatureEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass parameterizedFeatureEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -470,6 +478,36 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getParameterizedFeature()
+  {
+    return parameterizedFeatureEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getParameterizedFeature_Params()
+  {
+    return (EReference)parameterizedFeatureEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getParameterizedFeature_Varargs()
+  {
+    return (EAttribute)parameterizedFeatureEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getFormalParameter()
   {
     return formalParameterEClass;
@@ -523,16 +561,6 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
   public EClass getCapacity()
   {
     return capacityEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getCapacity_Actions()
-  {
-    return (EReference)capacityEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -710,29 +738,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getConstructor_Params()
-  {
-    return (EReference)constructorEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getConstructor_Varargs()
-  {
-    return (EAttribute)constructorEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EReference getConstructor_Body()
   {
-    return (EReference)constructorEClass.getEStructuralFeatures().get(2);
+    return (EReference)constructorEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -790,7 +798,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getActionSignature_Params()
+  public EReference getActionSignature_Type()
   {
     return (EReference)actionSignatureEClass.getEStructuralFeatures().get(1);
   }
@@ -800,29 +808,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getActionSignature_Varargs()
-  {
-    return (EAttribute)actionSignatureEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getActionSignature_Type()
-  {
-    return (EReference)actionSignatureEClass.getEStructuralFeatures().get(3);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EReference getActionSignature_FiredEvents()
   {
-    return (EReference)actionSignatureEClass.getEStructuralFeatures().get(4);
+    return (EReference)actionSignatureEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -884,6 +872,10 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
     skillFeatureEClass = createEClass(SKILL_FEATURE);
 
+    parameterizedFeatureEClass = createEClass(PARAMETERIZED_FEATURE);
+    createEReference(parameterizedFeatureEClass, PARAMETERIZED_FEATURE__PARAMS);
+    createEAttribute(parameterizedFeatureEClass, PARAMETERIZED_FEATURE__VARARGS);
+
     formalParameterEClass = createEClass(FORMAL_PARAMETER);
     createEAttribute(formalParameterEClass, FORMAL_PARAMETER__NAME);
     createEReference(formalParameterEClass, FORMAL_PARAMETER__PARAMETER_TYPE);
@@ -892,7 +884,6 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
     eventEClass = createEClass(EVENT);
 
     capacityEClass = createEClass(CAPACITY);
-    createEReference(capacityEClass, CAPACITY__ACTIONS);
 
     agentEClass = createEClass(AGENT);
 
@@ -918,8 +909,6 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
     createEReference(requiredCapacityEClass, REQUIRED_CAPACITY__REQUIRED_CAPACITIES);
 
     constructorEClass = createEClass(CONSTRUCTOR);
-    createEReference(constructorEClass, CONSTRUCTOR__PARAMS);
-    createEAttribute(constructorEClass, CONSTRUCTOR__VARARGS);
     createEReference(constructorEClass, CONSTRUCTOR__BODY);
 
     actionEClass = createEClass(ACTION);
@@ -928,8 +917,6 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
     actionSignatureEClass = createEClass(ACTION_SIGNATURE);
     createEAttribute(actionSignatureEClass, ACTION_SIGNATURE__NAME);
-    createEReference(actionSignatureEClass, ACTION_SIGNATURE__PARAMS);
-    createEAttribute(actionSignatureEClass, ACTION_SIGNATURE__VARARGS);
     createEReference(actionSignatureEClass, ACTION_SIGNATURE__TYPE);
     createEReference(actionSignatureEClass, ACTION_SIGNATURE__FIRED_EVENTS);
   }
@@ -977,6 +964,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
     inheritingElementEClass.getESuperTypes().add(this.getFeatureContainer());
     implementingElementEClass.getESuperTypes().add(this.getTopElement());
     implementingElementEClass.getESuperTypes().add(this.getInheritingElement());
+    parameterizedFeatureEClass.getESuperTypes().add(this.getFeature());
     eventEClass.getESuperTypes().add(this.getInheritingElement());
     capacityEClass.getESuperTypes().add(this.getInheritingElement());
     agentEClass.getESuperTypes().add(this.getInheritingElement());
@@ -986,9 +974,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
     capacityUsesEClass.getESuperTypes().add(this.getFeature());
     behaviorUnitEClass.getESuperTypes().add(this.getFeature());
     requiredCapacityEClass.getESuperTypes().add(this.getFeature());
-    constructorEClass.getESuperTypes().add(this.getFeature());
+    constructorEClass.getESuperTypes().add(this.getParameterizedFeature());
     actionEClass.getESuperTypes().add(this.getFeature());
-    actionSignatureEClass.getESuperTypes().add(this.getFeature());
+    actionSignatureEClass.getESuperTypes().add(this.getParameterizedFeature());
 
     // Initialize classes and features; add operations and parameters
     initEClass(sarlScriptEClass, SarlScript.class, "SarlScript", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1020,6 +1008,10 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
     initEClass(skillFeatureEClass, SkillFeature.class, "SkillFeature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+    initEClass(parameterizedFeatureEClass, ParameterizedFeature.class, "ParameterizedFeature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getParameterizedFeature_Params(), this.getFormalParameter(), null, "params", null, 0, -1, ParameterizedFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getParameterizedFeature_Varargs(), ecorePackage.getEBoolean(), "varargs", null, 0, 1, ParameterizedFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(formalParameterEClass, FormalParameter.class, "FormalParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getFormalParameter_Name(), ecorePackage.getEString(), "name", null, 0, 1, FormalParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getFormalParameter_ParameterType(), theTypesPackage.getJvmTypeReference(), null, "parameterType", null, 0, 1, FormalParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1028,7 +1020,6 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
     initEClass(eventEClass, Event.class, "Event", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(capacityEClass, Capacity.class, "Capacity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getCapacity_Actions(), this.getFeature(), null, "actions", null, 0, -1, Capacity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(agentEClass, Agent.class, "Agent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1054,18 +1045,14 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
     initEReference(getRequiredCapacity_RequiredCapacities(), this.getCapacity(), null, "requiredCapacities", null, 0, -1, RequiredCapacity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(constructorEClass, Constructor.class, "Constructor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getConstructor_Params(), this.getFormalParameter(), null, "params", null, 0, -1, Constructor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getConstructor_Varargs(), ecorePackage.getEBoolean(), "varargs", null, 0, 1, Constructor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getConstructor_Body(), theXbasePackage.getXExpression(), null, "body", null, 0, 1, Constructor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(actionEClass, Action.class, "Action", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getAction_Signature(), this.getFeature(), null, "signature", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAction_Signature(), this.getParameterizedFeature(), null, "signature", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getAction_Body(), theXbasePackage.getXExpression(), null, "body", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(actionSignatureEClass, ActionSignature.class, "ActionSignature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getActionSignature_Name(), ecorePackage.getEString(), "name", null, 0, 1, ActionSignature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getActionSignature_Params(), this.getFormalParameter(), null, "params", null, 0, -1, ActionSignature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getActionSignature_Varargs(), ecorePackage.getEBoolean(), "varargs", null, 0, 1, ActionSignature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getActionSignature_Type(), theTypesPackage.getJvmTypeReference(), null, "type", null, 0, 1, ActionSignature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getActionSignature_FiredEvents(), this.getEvent(), null, "firedEvents", null, 0, -1, ActionSignature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

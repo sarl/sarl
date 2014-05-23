@@ -20,6 +20,7 @@ import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.TopElement;
+import io.sarl.lang.validation.IssueCodes;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -35,7 +36,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -59,7 +60,7 @@ public class VarArgsParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg : int...) {");
+      _builder.append("def myaction(arg : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg)");
@@ -86,7 +87,7 @@ public class VarArgsParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int...) {");
+      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
@@ -113,7 +114,7 @@ public class VarArgsParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg1 : char, arg2 : boolean..., arg3 : int) {");
+      _builder.append("def myaction(arg1 : char, arg2 : boolean*, arg3 : int) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
@@ -140,7 +141,7 @@ public class VarArgsParsingTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg : int...) {");
+      _builder.append("def myaction(arg : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg)");
@@ -167,7 +168,7 @@ public class VarArgsParsingTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int...) {");
+      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
@@ -194,7 +195,7 @@ public class VarArgsParsingTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg1 : char, arg2 : boolean..., arg3 : int) {");
+      _builder.append("def myaction(arg1 : char, arg2 : boolean*, arg3 : int) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
@@ -223,7 +224,7 @@ public class VarArgsParsingTest {
       _builder.append("skill S1 implements C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg : int...) {");
+      _builder.append("def myaction(arg : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg)");
@@ -252,7 +253,7 @@ public class VarArgsParsingTest {
       _builder.append("skill S1 implements C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int...) {");
+      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
@@ -281,7 +282,7 @@ public class VarArgsParsingTest {
       _builder.append("skill S1 implements C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg1 : char, arg2 : boolean..., arg3 : int) {");
+      _builder.append("def myaction(arg1 : char, arg2 : boolean*, arg3 : int) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
@@ -308,7 +309,7 @@ public class VarArgsParsingTest {
       _builder.append("capacity C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg : int...)");
+      _builder.append("def myaction(arg : int*)");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -329,7 +330,7 @@ public class VarArgsParsingTest {
       _builder.append("capacity C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int...)");
+      _builder.append("def myaction(arg1 : char, arg2 : boolean, arg3 : int*)");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -350,7 +351,7 @@ public class VarArgsParsingTest {
       _builder.append("capacity C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg1 : char, arg2 : boolean..., arg3 : int)");
+      _builder.append("def myaction(arg1 : char, arg2 : boolean*, arg3 : int)");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -371,7 +372,7 @@ public class VarArgsParsingTest {
       _builder.append("event E1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg : int...) {");
+      _builder.append("new(arg : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg)");
@@ -398,7 +399,7 @@ public class VarArgsParsingTest {
       _builder.append("event E1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new (arg1 : char, arg2 : boolean, arg3 : int...) {");
+      _builder.append("new (arg1 : char, arg2 : boolean, arg3 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
@@ -425,7 +426,7 @@ public class VarArgsParsingTest {
       _builder.append("event E1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new (arg1 : char, arg2 : boolean..., arg3 : int) {");
+      _builder.append("new (arg1 : char, arg2 : boolean*, arg3 : int) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
@@ -454,7 +455,7 @@ public class VarArgsParsingTest {
       _builder.append("skill S1 implements C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg : int...) {");
+      _builder.append("new(arg : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg)");
@@ -483,7 +484,7 @@ public class VarArgsParsingTest {
       _builder.append("skill S1 implements C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new (arg1 : char, arg2 : boolean, arg3 : int...) {");
+      _builder.append("new (arg1 : char, arg2 : boolean, arg3 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
@@ -512,7 +513,7 @@ public class VarArgsParsingTest {
       _builder.append("skill S1 implements C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new (arg1 : char, arg2 : boolean..., arg3 : int) {");
+      _builder.append("new (arg1 : char, arg2 : boolean*, arg3 : int) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
@@ -539,7 +540,7 @@ public class VarArgsParsingTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new(arg : int...) {");
+      _builder.append("new(arg : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg)");
@@ -566,7 +567,7 @@ public class VarArgsParsingTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new (arg1 : char, arg2 : boolean, arg3 : int...) {");
+      _builder.append("new (arg1 : char, arg2 : boolean, arg3 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
@@ -593,7 +594,7 @@ public class VarArgsParsingTest {
       _builder.append("behavior B1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("new (arg1 : char, arg2 : boolean..., arg3 : int) {");
+      _builder.append("new (arg1 : char, arg2 : boolean*, arg3 : int) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(arg3)");
@@ -608,6 +609,108 @@ public class VarArgsParsingTest {
       this._validationTestHelper.assertError(mas, _constructor, 
         Diagnostic.SYNTAX_DIAGNOSTIC, 
         "mismatched input \',\' expecting \')\'");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void multipleActionDefinitionsInBehavior_0() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("behavior B1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(arg0 : int, arg1 : int*) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(\"invalid\")");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(\"invalid\")");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      this._validationTestHelper.assertNoErrors(mas);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void multipleActionDefinitionsInBehavior_1() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("behavior B1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(arg0 : int, arg1 : int*) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(\"invalid\")");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(arg0 : int) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(\"invalid\")");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      this._validationTestHelper.assertNoErrors(mas);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void multipleActionDefinitionsInBehavior_2() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("behavior B1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(arg0 : int, arg1 : int*) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(\"invalid\")");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(arg0 : int, arg1 : int) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(\"invalid\")");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _action = SarlPackage.eINSTANCE.getAction();
+      this._validationTestHelper.assertError(mas, _action, 
+        IssueCodes.ACTION_COLLISION, 
+        "Cannot define many times the same feature in \'B1\': myaction(arg0 : int, arg1 : int)");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

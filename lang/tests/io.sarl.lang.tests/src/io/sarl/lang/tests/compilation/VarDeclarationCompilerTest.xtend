@@ -356,13 +356,13 @@ class VarDeclarationCompilerTest {
 			    super(parentID);
 			  }
 			  
-			  public float mycall(final int a, final Function2<? super Float,? super Integer,? extends Float> f) {
+			  public float mycall(final int a, final Function2<? super Float, ? super Integer, ? extends Float> f) {
 			    Float _apply = f.apply(Float.valueOf(5.45f), Integer.valueOf(6));
 			    return (a + (_apply).floatValue());
 			  }
 			  
 			  public void myaction() {
-			    final Function2<Float,Integer,Float> _function = new Function2<Float,Integer,Float>() {
+			    final Function2<Float, Integer, Float> _function = new Function2<Float, Integer, Float>() {
 			      public Float apply(final Float a, final Integer b) {
 			        float _floatValue = a.floatValue();
 			        float _multiply = (2f * _floatValue);

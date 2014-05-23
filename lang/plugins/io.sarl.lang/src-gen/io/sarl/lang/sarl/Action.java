@@ -32,12 +32,12 @@ public interface Action extends Feature
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Signature</em>' containment reference.
-   * @see #setSignature(Feature)
+   * @see #setSignature(ParameterizedFeature)
    * @see io.sarl.lang.sarl.SarlPackage#getAction_Signature()
    * @model containment="true"
    * @generated
    */
-  Feature getSignature();
+  ParameterizedFeature getSignature();
 
   /**
    * Sets the value of the '{@link io.sarl.lang.sarl.Action#getSignature <em>Signature</em>}' containment reference.
@@ -47,7 +47,7 @@ public interface Action extends Feature
    * @see #getSignature()
    * @generated
    */
-  void setSignature(Feature value);
+  void setSignature(ParameterizedFeature value);
 
   /**
    * Returns the value of the '<em><b>Body</b></em>' containment reference.

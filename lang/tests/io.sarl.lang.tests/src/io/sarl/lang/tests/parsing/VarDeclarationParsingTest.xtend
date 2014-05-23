@@ -216,9 +216,9 @@ class VarDeclarationParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			XbasePackage.eINSTANCE.XForLoopExpression,
+			XbasePackage.eINSTANCE.XFeatureCall,
 			Diagnostic::SYNTAX_DIAGNOSTIC,
-			"extraneous input 'i' expecting ':'")
+			"missing ';' at 'i'")
 	}
 
 	@Test
@@ -374,5 +374,5 @@ class VarDeclarationParsingTest {
 		mas.assertNoErrors
 		assertEquals(1, mas.elements.size)
 	}
-
+	
 }

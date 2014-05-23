@@ -38,7 +38,7 @@ class VarArgsCompilerTest {
 	def inAgentAction_singleParam() {
 		'''
 			agent A1 {
-				def myaction(arg : int...) {
+				def myaction(arg : int*) {
 					System.out.println(arg)
 				}
 			}
@@ -65,7 +65,7 @@ class VarArgsCompilerTest {
 	def inAgentAction() {
 		'''
 			agent A1 {
-				def myaction(arg1 : char, arg2 : boolean, arg3 : int...) {
+				def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {
 					System.out.println(arg3)
 				}
 			}
@@ -92,7 +92,7 @@ class VarArgsCompilerTest {
 	def inBehaviorAction_singleParam() {
 		'''
 			behavior B1 {
-				def myaction(arg : int...) {
+				def myaction(arg : int*) {
 					System.out.println(arg)
 				}
 			}
@@ -112,7 +112,7 @@ class VarArgsCompilerTest {
 	def inBehaviorAction() {
 		'''
 			behavior B1 {
-				def myaction(arg1 : char, arg2 : boolean, arg3 : int...) {
+				def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {
 					System.out.println(arg3)
 				}
 			}
@@ -132,7 +132,7 @@ class VarArgsCompilerTest {
 	def inBehaviorConstructor_singleParam() {
 		'''
 			behavior B1 {
-				new(arg : int...) {
+				new(arg : int*) {
 					System.out.println(arg)
 				}
 			}
@@ -152,7 +152,7 @@ class VarArgsCompilerTest {
 	def inBehaviorConstructor() {
 		'''
 			behavior B1 {
-				new(arg1 : char, arg2 : boolean, arg3 : int...) {
+				new(arg1 : char, arg2 : boolean, arg3 : int*) {
 					System.out.println(arg3)
 				}
 			}
@@ -172,7 +172,7 @@ class VarArgsCompilerTest {
 	def inCapacityAction_singleParam() {
 		'''
 			capacity C1 {
-				def myaction(arg : int...)
+				def myaction(arg : int*)
 			}
 		'''.assertCompilesTo('''
 			import io.sarl.lang.core.Capacity;
@@ -188,7 +188,7 @@ class VarArgsCompilerTest {
 	def inCapacityAction() {
 		'''
 			capacity C1 {
-				def myaction(arg1 : char, arg2 : boolean, arg3 : int...)
+				def myaction(arg1 : char, arg2 : boolean, arg3 : int*)
 			}
 		'''.assertCompilesTo('''
 			import io.sarl.lang.core.Capacity;
@@ -204,7 +204,7 @@ class VarArgsCompilerTest {
 	def inEventAction_singleParam() {
 		'''
 			event E1 {
-				new(arg : int...) {
+				new(arg : int*) {
 					System.out.println(arg)
 				}
 			}
@@ -226,7 +226,7 @@ class VarArgsCompilerTest {
 	def inEventConstructor() {
 		'''
 			event E1 {
-				new(arg1 : char, arg2 : boolean, arg3 : int...) {
+				new(arg1 : char, arg2 : boolean, arg3 : int*) {
 					System.out.println(arg3)
 				}
 			}
@@ -250,7 +250,7 @@ class VarArgsCompilerTest {
 		'''
 			capacity C1 {}
 			skill S1 implements C1 {
-				def myaction(arg : int...) {
+				def myaction(arg : int*) {
 					System.out.println(arg)
 				}
 			}
@@ -284,7 +284,7 @@ class VarArgsCompilerTest {
 		'''
 			capacity C1 {}
 			skill S1 implements C1 {
-				def myaction(arg1 : char, arg2 : boolean, arg3 : int...) {
+				def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {
 					System.out.println(arg3)
 				}
 			}
@@ -318,7 +318,7 @@ class VarArgsCompilerTest {
 		'''
 			capacity C1 {}
 			skill S1 implements C1 {
-				new(arg : int...) {
+				new(arg : int*) {
 					System.out.println(arg)
 				}
 			}
@@ -352,7 +352,7 @@ class VarArgsCompilerTest {
 		'''
 			capacity C1 {}
 			skill S1 implements C1 {
-				new(arg1 : char, arg2 : boolean, arg3 : int...) {
+				new(arg1 : char, arg2 : boolean, arg3 : int*) {
 					System.out.println(arg3)
 				}
 			}

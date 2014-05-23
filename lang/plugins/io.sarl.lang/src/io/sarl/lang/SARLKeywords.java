@@ -22,7 +22,11 @@ public interface SARLKeywords {
 
 	/** {@code occurrence}
 	 */
-	public static final String KEYWORD_OCCURRENCE = "occurrence"; //$NON-NLS-1$
+	public static final String OCCURRENCE = "occurrence"; //$NON-NLS-1$
+
+	/** {@code new}
+	 */
+	public static final String CONSTRUCTOR = "new"; //$NON-NLS-1$
 
 }
 
