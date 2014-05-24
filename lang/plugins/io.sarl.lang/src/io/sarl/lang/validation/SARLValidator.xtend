@@ -61,7 +61,6 @@ import static extension io.sarl.lang.util.JvmElementUtil.*
  * Validator for the SARL elements.
  * <p>
  * The following issues are not yet supported:<ul>
- * <li>Override of final method - ERROR</li>
  * <li>Missed function implementation - ERROR</li>
  * <li>Skill implementation cannot have default value - ERROR</li>
  * <li>Invalid super constructor call - ERROR</li>
@@ -371,6 +370,25 @@ class SARLValidator extends AbstractSARLValidator {
 							null,
 							io.sarl.lang.validation.IssueCodes::FIELD_NAME_SHADOWING)
 					}
+				}
+			}
+		}
+	}
+
+	@Check
+	def checkNoFinalTypeExtension(InheritingElement element) {
+		var jvmElement = element.jvmGenericType
+		if (jvmElement!==null) {
+			for(superType : jvmElement.superTypes) {
+				var ref = toLightweightTypeReference(superType)
+				if (ref!==null && ref.final) {
+					error(
+						String.format(
+							"Cannot extend the final type '%s'.",
+							superType.qualifiedName),
+						element,
+						null,
+						io.sarl.lang.validation.IssueCodes::FINAL_TYPE_EXTENSION)
 				}
 			}
 		}

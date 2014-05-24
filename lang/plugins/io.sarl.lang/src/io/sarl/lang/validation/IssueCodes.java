@@ -130,4 +130,10 @@ public class IssueCodes {
 	 */
 	public static final String REDUNDANT_INTERFACE_IMPLEMENTATION = ISSUE_CODE_PREFIX+"redundant_interface_implementation"; //$NON-NLS-1$
 
+	/**
+	/**
+	 * It is not allowed to override a final type.
+	 */
+	public static final String FINAL_TYPE_EXTENSION = ISSUE_CODE_PREFIX+"final_type_extension"; //$NON-NLS-1$
+
 }
