@@ -53,7 +53,7 @@ public class SignatureKey extends BasicEList<String> implements Comparable<Signa
 			StringBuilder b = new StringBuilder();
 			b.append(iterator.next());
 			while (iterator.hasNext()) {
-				b.append("|"); //$NON-NLS-1$
+				b.append(","); //$NON-NLS-1$
 				b.append(iterator.next());
 			}
 			return b.toString();

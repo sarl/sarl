@@ -54,6 +54,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 import org.eclipse.xtext.xbase.validation.IssueCodes
 
 import static org.eclipse.xtext.common.types.JvmVisibility.*
+import static extension io.sarl.lang.util.JvmElementUtil.*
 
 // 
 /**
@@ -99,14 +100,6 @@ class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 		
-	protected def boolean isClass(LightweightTypeReference typeRef) {
-		var t = typeRef.type
-		if (t instanceof JvmGenericType) {
-			return !t.interface
-		}
-		return false
-	}	
-	
 	private def checkDefaultValueTypeCompatibleWithParameterType(FormalParameter param) {
 		var toType = toLightweightTypeReference(param.parameterType, true)
 		var fromType = param.defaultValue.actualType
@@ -230,10 +223,6 @@ class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 		
-	protected def boolean isHiddenAction(String name) {
-		return name.startsWith("_handle_")
-	}
-
 	@Check
 	def checkActionName(ActionSignature action) {
 		if (isHiddenAction(action.name)) {
@@ -246,10 +235,6 @@ class SARLValidator extends AbstractSARLValidator {
 				null,
 				io.sarl.lang.validation.IssueCodes::INVALID_ACTION_NAME)
 		}
-	}
-	
-	protected def boolean isHiddenAttribute(String name) {
-		return name.startsWith("___FORMAL_PARAMETER_DEFAULT_VALUE_")
 	}
 	
 	@Check
@@ -266,18 +251,13 @@ class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 	
-	protected def JvmGenericType getJvmGeneric(EObject element) {
-		for(obj : services.jvmModelAssociations.getJvmElements(element)) {
-			if (obj instanceof JvmGenericType) {
-				return obj
-			}
-		}
-		return null
+	protected def JvmGenericType getJvmGenericType(EObject element) {
+		return element.getJvmGenericType(services.jvmModelAssociations)
 	}
 	
 	@Check
 	def dispatch checkFinalFieldInitialization(Event event) {
-		var JvmGenericType type = event.jvmGeneric
+		var JvmGenericType type = event.jvmGenericType
 		if (type!==null) {
 			type.checkFinalFieldInitialization
 		}
@@ -285,7 +265,7 @@ class SARLValidator extends AbstractSARLValidator {
 	
 	@Check
 	def dispatch checkFinalFieldInitialization(Agent agent) {
-		var JvmGenericType type = agent.jvmGeneric
+		var JvmGenericType type = agent.jvmGenericType
 		if (type!==null) {
 			type.checkFinalFieldInitialization
 		}
@@ -293,7 +273,7 @@ class SARLValidator extends AbstractSARLValidator {
 
 	@Check
 	def dispatch checkFinalFieldInitialization(Behavior behavior) {
-		var JvmGenericType type = behavior.jvmGeneric
+		var JvmGenericType type = behavior.jvmGenericType
 		if (type!==null) {
 			type.checkFinalFieldInitialization
 		}
@@ -301,7 +281,7 @@ class SARLValidator extends AbstractSARLValidator {
 
 	@Check
 	def dispatch checkFinalFieldInitialization(Skill skill) {
-		var JvmGenericType type = skill.jvmGeneric
+		var JvmGenericType type = skill.jvmGenericType
 		if (type!==null) {
 			type.checkFinalFieldInitialization
 		}
@@ -318,76 +298,7 @@ class SARLValidator extends AbstractSARLValidator {
 			null,
 			IssueCodes::MISSING_INITIALIZATION)
 	}
-	
-	protected def boolean isVisible(JvmDeclaredType fromType, JvmMember target) {
-		switch(target.visibility) {
-			case PRIVATE: {
-				return false
-			}
-			case DEFAULT: {
-				return target.declaringType.packageName == fromType.packageName
-			}
-			case PROTECTED: {
-				return true
-			}
-			case PUBLIC: {
-				return true
-			}
-		}
-		return false
-	}
-
-	protected def void populateInheritanceContext(
-				JvmGenericType jvmElement,
-				Map<ActionKey,JvmOperation> finalOperations,
-				Map<ActionKey,JvmOperation> overridableOperations,
-				Map<String,JvmField> inheritedFields,
-				Map<ActionKey,JvmOperation> operationsToImplement) {
-
-		// Get the operations that must be implemented			
-		for(interfaceReference : jvmElement.extendedInterfaces) {
-			for(feature : (interfaceReference.type as JvmGenericType).allFeatures) {
-				if (feature.declaringType.qualifiedName!="java.lang.Object") {
-					if (feature instanceof JvmOperation) {
-						val sig = sarlSignatureProvider.createSignatureIDFromJvmModel(feature.parameters)
-						val actionKey = sarlSignatureProvider.createActionID(feature.simpleName, sig)
-						operationsToImplement.put(actionKey, feature);
-					}
-				}
-			}
-		}
-
-		// Check on the implemented features, inherited from the super type			
-		if (jvmElement.extendedClass!==null) {
-			for(feature : (jvmElement.extendedClass.type as JvmGenericType).allFeatures) {
-				if (feature.declaringType.qualifiedName!="java.lang.Object"
-					&& isVisible(jvmElement, feature)
-					&& !isHiddenAction(feature.simpleName)) {
-					if (feature instanceof JvmOperation) {
-						if (!feature.static) {
-							val sig = sarlSignatureProvider.createSignatureIDFromJvmModel(feature.parameters)
-							val actionKey = sarlSignatureProvider.createActionID(feature.simpleName, sig)
-							if (feature.abstract) {
-								operationsToImplement.put(actionKey, feature)
-							}
-							else if (feature.final) {
-								finalOperations.put(actionKey, feature)
-								operationsToImplement.remove(actionKey)
-							}
-							else {
-								overridableOperations.put(actionKey, feature)
-								operationsToImplement.remove(actionKey)
-							}
-						} 
-					}
-					else if (feature instanceof JvmField) {
-						inheritedFields.put(feature.simpleName, feature);
-					}
-				}
-			}
-		}
-	}
-	
+		
 	private def checkRedundantInterface(JvmGenericType jvmElement, JvmTypeReference interfaceReference, LightweightTypeReference lightweightInterfaceReference, Iterable<LightweightTypeReference> knownInterfaces) {
 		if (jvmElement.extendedClass!==null) {
 			var superType = jvmElement.extendedClass.toLightweightTypeReference
@@ -432,7 +343,7 @@ class SARLValidator extends AbstractSARLValidator {
 
 	@Check
 	def checkInheritedFeatures(InheritingElement element) {
-		var jvmElement = element.jvmGeneric
+		var jvmElement = element.jvmGenericType
 		if (jvmElement!==null) {
 			val Map<ActionKey,JvmOperation> finalOperations = new TreeMap
 			val Map<ActionKey,JvmOperation> overridableOperations = new TreeMap
@@ -441,7 +352,8 @@ class SARLValidator extends AbstractSARLValidator {
 
 			jvmElement.populateInheritanceContext(
 				finalOperations, overridableOperations,
-				inheritedFields, operationsToImplement
+				inheritedFields, operationsToImplement,
+				sarlSignatureProvider
 			)
 						
 			jvmElement.checkRedundantInterfaces
