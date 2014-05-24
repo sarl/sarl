@@ -69,13 +69,13 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="requiredCapacities" unique="false"
         upperBound="-1" eType="#//Capacity"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Constructor" eSuperTypes="#//ParameterizedFeature">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
-        containment="true"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Action" eSuperTypes="#//Feature">
     <eStructuralFeatures xsi:type="ecore:EReference" name="signature" eType="#//ParameterizedFeature"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Constructor" eSuperTypes="#//ParameterizedFeature">
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
         containment="true"/>
   </eClassifiers>

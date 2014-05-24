@@ -296,4 +296,292 @@ class CapacityParsingTest {
 			"The field 'field1' in 'S2' is hidding the inherited field 'S1.field1'.")
 	}
 
+	@Test
+	def void redundantCapacity_fromSuperType() {
+		val mas = '''
+			capacity C1 {}
+			capacity C2 {}
+			skill S1 implements C1 { }
+			skill S2 extends S1 implements C2, C1 { }
+		'''.parse
+		mas.assertWarning(
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
+			io.sarl.lang.validation.IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
+			"The feature 'C1' is already implemented by the super type 'S1'.")
+	}
+
+	@Test
+	def void redundantCapacity_duplicate() {
+		val mas = '''
+			capacity C1 {}
+			capacity C2 {}
+			capacity C3 {}
+			skill S1 implements C1 { }
+			skill S2 extends S1 implements C2, C3, C2 { }
+		'''.parse
+		mas.assertWarning(
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
+			io.sarl.lang.validation.IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
+			"The feature 'C2' is already implemented by the preceding interface 'C2'.")
+	}
+
+	@Test
+	def void redundantCapacity_fromPreviousCapacity() {
+		val mas = '''
+			capacity C1 {}
+			capacity C2 {}
+			capacity C3 extends C2 {}
+			skill S1 implements C1 { }
+			skill S2 extends S1 implements C3, C2 { }
+		'''.parse
+		mas.assertWarning(
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
+			io.sarl.lang.validation.IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
+			"The feature 'C2' is already implemented by the preceding interface 'C3'.")
+	}
+
+	@Test
+	def void missedActionImplementation_0() {
+		val mas = '''
+			capacity C1 {
+				def myaction1(a : int)
+			}
+			capacity C2 {
+				def myaction2(b : float, c : boolean)
+			}
+			skill S1 implements C1, C2 {
+				def myaction1(x : int) { }
+				def myaction2(y : float, z : boolean) { }
+			}
+		'''.parse
+		mas.assertNoErrors
+	}
+
+	@Test
+	def void missedActionImplementation_1() {
+		val mas = '''
+			capacity C1 {
+				def myaction1(a : int)
+			}
+			capacity C2 {
+				def myaction2(b : float, c : boolean)
+			}
+			skill S1 implements C1, C2 {
+				def myaction2(b : float, c : boolean) { }
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage.eINSTANCE.skill,
+			io.sarl.lang.validation.IssueCodes::MISSING_ACTION_IMPLEMENTATION,
+			"The operation myaction1(int) must be implemented.")
+	}
+
+	@Test
+	def void missedActionImplementation_2() {
+		val mas = '''
+			capacity C1 {
+				def myaction1(a : int)
+			}
+			capacity C2 {
+				def myaction2(b : float, c : boolean)
+			}
+			skill S1 implements C1, C2 {
+				def myaction1(x : float) { }
+				def myaction2(y : float, z : boolean) { }
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage.eINSTANCE.skill,
+			io.sarl.lang.validation.IssueCodes::MISSING_ACTION_IMPLEMENTATION,
+			"The operation myaction1(int) must be implemented.")
+	}
+
+	@Test
+	def void incompatibleReturnType_0() {
+		val mas = '''
+			capacity C1 { }
+			capacity C2 { }
+			skill S1 implements C1 {
+				def myaction(a : int) : int {
+					return 0
+				}
+			}
+			skill S2 extends S1 implements C2 {
+				def myaction(a : int) : float {
+					return 0f
+				}
+			}
+		'''.parse
+		mas.assertError(
+			TypesPackage::eINSTANCE.jvmOperation,
+			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
+			"Incompatible return type between 'float' and 'int' for myaction(int).")
+	}
+
+	@Test
+	def void incompatibleReturnType_1() {
+		val mas = '''
+			capacity C1 { }
+			capacity C2 { }
+			skill S1 implements C1 {
+				def myaction(a : int) {
+					// void
+				}
+			}
+			skill S2 extends S1 implements C2 {
+				def myaction(a : int) : int {
+					return 0
+				}
+			}
+		'''.parse
+		mas.assertError(
+			TypesPackage::eINSTANCE.jvmOperation,
+			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
+			"Incompatible return type between 'int' and 'void' for myaction(int).")
+	}
+
+	@Test
+	def void incompatibleReturnType_2() {
+		val mas = '''
+			capacity C1 { }
+			capacity C2 { }
+			skill S1 implements C1 {
+				def myaction(a : int) : int {
+					return 0
+				}
+			}
+			skill S2 extends S1 implements C2 {
+				def myaction(a : int) {
+					// void
+				}
+			}
+		'''.parse
+		mas.assertError(
+			TypesPackage::eINSTANCE.jvmOperation,
+			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
+			"Incompatible return type between 'void' and 'int' for myaction(int).")
+	}
+
+	@Test
+	def void incompatibleReturnType_3() {
+		val mas = '''
+			capacity C1 {
+				def myaction(a : int) : int
+			}
+			skill S2 implements C1 {
+				def myaction(a : int) : float {
+					return 0f
+				}
+			}
+		'''.parse
+		mas.assertError(
+			TypesPackage::eINSTANCE.jvmOperation,
+			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
+			"Incompatible return type between 'float' and 'int' for myaction(int).")
+	}
+
+	@Test
+	def void incompatibleReturnType_4() {
+		val mas = '''
+			capacity C1 {
+				def myaction(a : int) // void
+			}
+			skill S2 implements C1 {
+				def myaction(a : int) : int {
+					return 0
+				}
+			}
+		'''.parse
+		mas.assertError(
+			TypesPackage::eINSTANCE.jvmOperation,
+			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
+			"Incompatible return type between 'int' and 'void' for myaction(int).")
+	}
+
+	@Test
+	def void incompatibleReturnType_5() {
+		val mas = '''
+			capacity C1 {
+				def myaction(a : int) : int
+			}
+			skill S2 implements C1 {
+				def myaction(a : int) {
+					// void
+				}
+			}
+		'''.parse
+		mas.assertError(
+			TypesPackage::eINSTANCE.jvmOperation,
+			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
+			"Incompatible return type between 'void' and 'int' for myaction(int).")
+	}
+
+	@Test
+	def void compatibleReturnType_0() {
+		val mas = '''
+			capacity C1 { }
+			capacity C2 { }
+			skill S1 implements C1 {
+				def myaction(a : int) : Number {
+					return 0.0
+				}
+			}
+			skill S2 extends S1 implements C2 {
+				def myaction(a : int) : Double {
+					return 0.0
+				}
+			}
+		'''.parse
+		mas.assertNoErrors
+	}
+
+	@Test
+	def void compatibleReturnType_1() {
+		val mas = '''
+			capacity C1 { }
+			capacity C2 { }
+			skill S1 implements C1 {
+				def myaction(a : int) : float {
+					return 0f
+				}
+			}
+			skill S2 extends S1 implements C2 {
+				def myaction(a : int) : float {
+					return 0f
+				}
+			}
+		'''.parse
+		mas.assertNoErrors
+	}
+
+	@Test
+	def void compatibleReturnType_2() {
+		val mas = '''
+			capacity C1 {
+				def myaction(a : int) : Number
+			}
+			skill S2 implements C1 {
+				def myaction(a : int) : Double {
+					return 0.0
+				}
+			}
+		'''.parse
+		mas.assertNoErrors
+	}
+
+	@Test
+	def void compatibleReturnType_3() {
+		val mas = '''
+			capacity C1 {
+				def myaction(a : int) : float
+			}
+			skill S2 implements C1 {
+				def myaction(a : int) : float {
+					return 0f
+				}
+			}
+		'''.parse
+		mas.assertNoErrors
+	}
+
 }

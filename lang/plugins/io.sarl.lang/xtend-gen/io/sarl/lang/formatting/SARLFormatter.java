@@ -97,11 +97,11 @@ public class SARLFormatter extends XbaseFormatter {
     Keyword _leftParenthesisKeyword_2_0 = ele.getLeftParenthesisKeyword_2_0();
     _setNoSpace.around(_leftParenthesisKeyword_2_0);
     FormattingConfig.NoSpaceLocator _setNoSpace_1 = c.setNoSpace();
-    Keyword _rightParenthesisKeyword_2_4 = ele.getRightParenthesisKeyword_2_4();
-    _setNoSpace_1.before(_rightParenthesisKeyword_2_4);
+    Keyword _rightParenthesisKeyword_2_2 = ele.getRightParenthesisKeyword_2_2();
+    _setNoSpace_1.before(_rightParenthesisKeyword_2_2);
     FormattingConfig.NoSpaceLocator _setNoSpace_2 = c.setNoSpace();
-    Keyword _commaKeyword_2_2_0 = ele.getCommaKeyword_2_2_0();
-    _setNoSpace_2.before(_commaKeyword_2_2_0);
+    Keyword _commaKeyword_2_1_1_0 = ele.getCommaKeyword_2_1_1_0();
+    _setNoSpace_2.before(_commaKeyword_2_1_1_0);
   }
   
   public void configureSkill(final FormattingConfig c, final SARLGrammarAccess.SkillElements ele) {
@@ -157,11 +157,11 @@ public class SARLFormatter extends XbaseFormatter {
     Keyword _leftParenthesisKeyword_3_0 = ele.getLeftParenthesisKeyword_3_0();
     _setNoSpace.around(_leftParenthesisKeyword_3_0);
     FormattingConfig.NoSpaceLocator _setNoSpace_1 = c.setNoSpace();
-    Keyword _rightParenthesisKeyword_3_4 = ele.getRightParenthesisKeyword_3_4();
-    _setNoSpace_1.before(_rightParenthesisKeyword_3_4);
+    Keyword _rightParenthesisKeyword_3_2 = ele.getRightParenthesisKeyword_3_2();
+    _setNoSpace_1.before(_rightParenthesisKeyword_3_2);
     FormattingConfig.NoSpaceLocator _setNoSpace_2 = c.setNoSpace();
-    Keyword _commaKeyword_3_2_0 = ele.getCommaKeyword_3_2_0();
-    _setNoSpace_2.before(_commaKeyword_3_2_0);
+    Keyword _commaKeyword_3_1_1_0 = ele.getCommaKeyword_3_1_1_0();
+    _setNoSpace_2.before(_commaKeyword_3_1_1_0);
     FormattingConfig.NoSpaceLocator _setNoSpace_3 = c.setNoSpace();
     Keyword _commaKeyword_5_2_0 = ele.getCommaKeyword_5_2_0();
     _setNoSpace_3.before(_commaKeyword_5_2_0);

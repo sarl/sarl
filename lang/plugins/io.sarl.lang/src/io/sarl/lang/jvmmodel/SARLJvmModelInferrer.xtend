@@ -70,6 +70,8 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 import org.eclipse.xtext.xbase.typesystem.references.OwnedConverter
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking
+import io.sarl.lang.signature.SignatureKey
+import io.sarl.lang.core.Address
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -127,21 +129,22 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 *            rely on linking using the index if isPreIndexingPhase is
 	 *            <code>true</code>.
 	 */
-	def dispatch void infer(Event element, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		acceptor.accept(element.toClass(element.fullyQualifiedName)).initializeLater(
+	def dispatch void infer(Event event, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+		acceptor.accept(event.toClass(event.fullyQualifiedName)).initializeLater(
 			[
 				// Reset the action registry
 				sarlSignatureProvider.resetSignatures(it)
 
-				documentation = element.documentation
+				documentation = event.documentation
 				
 				var long serial = 1L
-				serial = serial + generateSuperTypes(element, typeof(io.sarl.lang.core.Event))
+				serial = serial + generateSuperTypes(event, typeof(io.sarl.lang.core.Event))
 				var JvmField jvmField
 				var List<JvmField> jvmFields = new ArrayList()
 				var actionIndex = 0
+				var hasConstructor = false
 
-				for (feature : element.features) {
+				for (feature : event.features) {
 					switch feature {
 						Attribute: {
 							jvmField = generateAttribute(feature, JvmVisibility::PUBLIC)
@@ -150,31 +153,53 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							serial = serial + feature.name.hashCode
 						}
 						Constructor: {
-							generateConstructor(element, feature, actionIndex)
-							serial = serial + element.fullyQualifiedName.hashCode
+							generateConstructor(event, feature, actionIndex)
+							serial = serial + event.fullyQualifiedName.hashCode
 							actionIndex++
+							hasConstructor = true
 						}
 					}
 
+				}
+				
+				if (!hasConstructor) {
+					members += event.toConstructor [
+						documentation = '''
+							Construct an event. The source of the event is unknown.
+						'''
+						body = '''
+							super();
+						'''
+					]
+					members += event.toConstructor [
+						documentation = '''
+							Construct an event.
+							@param source - address of the agent that is emitting this event.
+						'''
+						parameters += event.toParameter('source', newTypeRef(Address))
+						body = '''
+							super(source);
+						'''
+					]
 				}
 								
 				if (!jvmFields.isEmpty) {
 
 					val JvmField[] tab = jvmFields // single translation to the array
- 					var elementType = element.toClass(element.fullyQualifiedName)
+ 					var elementType = event.toClass(event.fullyQualifiedName)
  					
- 					members += toEqualsMethod_Bug434912(element, elementType, true, tab)
+ 					members += toEqualsMethod_Bug434912(event, elementType, true, tab)
 					
-					members += toHashCodeMethod_Bug392440(element, true, tab)
+					members += toHashCodeMethod_Bug392440(event, true, tab)
 					
-					members += element.toMethod("attributesToString", newTypeRef(String))[
+					members += event.toMethod("attributesToString", newTypeRef(String))[
 						visibility = JvmVisibility::PROTECTED
-						documentation = '''Returns a String representation of the Event «element.name» attributes only.'''
+						documentation = '''Returns a String representation of the Event «event.name» attributes only.'''
 						body = [
 							append(
 								'''
 								StringBuilder result = new StringBuilder(super.attributesToString());
-								«FOR attr : element.features.filter(Attribute)»
+								«FOR attr : event.features.filter(Attribute)»
 									result.append("«attr.name»  = ").append(this.«attr.name»);
 								«ENDFOR»
 								return result.toString();''')
@@ -184,7 +209,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				}
 
 				val serialValue = serial
-				val serialField = element.toField("serialVersionUID", newTypeRef(long)) [
+				val serialField = event.toField("serialVersionUID", newTypeRef(long)) [
 					visibility = JvmVisibility::PRIVATE
 					final = true
 					static = true
@@ -213,29 +238,31 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			])
 	}
 
-	def dispatch void infer(Skill element, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		acceptor.accept(element.toClass(element.fullyQualifiedName)).initializeLater(
+	def dispatch void infer(Skill skill, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+		acceptor.accept(skill.toClass(skill.fullyQualifiedName)).initializeLater(
 			[
 				// Reset the action registry
 				sarlSignatureProvider.resetSignatures(it)
 
-				documentation = element.documentation
-				generateSuperTypes(element, typeof(io.sarl.lang.core.Skill))
-				for (cap : element.implementedTypes) {
+				documentation = skill.documentation
+				generateSuperTypes(skill, typeof(io.sarl.lang.core.Skill))
+
+				for (cap : skill.implementedTypes) {
 					if (cap.name!=null) {
 						if (cap.fullyQualifiedName != null) {
-							superTypes += element.newTypeRef(cap.fullyQualifiedName.toString)
+							superTypes += skill.newTypeRef(cap.fullyQualifiedName.toString)
 						} else {
-							log.fine("Unable to resolve the fully qualified name of the implemented capacity '"+cap.name+"' for the skill:" + element.name)
+							log.fine("Unable to resolve the fully qualified name of the implemented capacity '"+cap.name+"' for the skill:" + skill.name)
 						}
 					} else {
-						log.fine("Unable to resolve an implemented capacity name for the skill:" + element.name)
+						log.fine("Unable to resolve an implemented capacity name for the skill:" + skill.name)
 					}
 				}
 				
 				var actionIndex = 0
+				var hasConstructor = false
 				
-				for (feature : element.features) {
+				for (feature : skill.features) {
 					switch feature {
 						Action: {
 							generateAction(feature.signature as ActionSignature, feature.body, actionIndex)
@@ -246,31 +273,54 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						}
 						CapacityUses: {
 							for (used : feature.capacitiesUsed) {
-								actionIndex = generateCapacityDelegatorMethods(element, used, actionIndex)
+								actionIndex = generateCapacityDelegatorMethods(skill, used, actionIndex)
 							}
 						}
 						Constructor: {
-							generateConstructor(element, feature, actionIndex)
+							generateConstructor(skill, feature, actionIndex)
 							actionIndex++
+							hasConstructor = true
 						}
 					}
+				}
+				
+				if (!hasConstructor) {
+					members += skill.toConstructor [
+						documentation = '''
+							Construct a skill.
+							@param owner - agent that is owning this skill. 
+						'''
+						parameters += skill.toParameter('owner', newTypeRef(io.sarl.lang.core.Agent))
+						body = '''
+							super(owner);
+						'''
+					]
+					members += skill.toConstructor [
+						documentation = '''
+							Construct a skill. The owning agent is unknown. 
+						'''
+						body = '''
+							super();
+						'''
+					]
 				}
 			])
 	}
 
-	def dispatch void infer(Behavior element, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		acceptor.accept(element.toClass(element.fullyQualifiedName)).initializeLater(
+	def dispatch void infer(Behavior behavior, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+		acceptor.accept(behavior.toClass(behavior.fullyQualifiedName)).initializeLater(
 			[
 				// Reset the action registry
 				sarlSignatureProvider.resetSignatures(it)
 
-				documentation = element.documentation
-				generateSuperTypes(element, typeof(io.sarl.lang.core.Behavior))
+				documentation = behavior.documentation
+				generateSuperTypes(behavior, typeof(io.sarl.lang.core.Behavior))
 				
 				var behaviorUnitIndex = 1
 				var actionIndex = 1
+				var hasConstructor = false
 				
-				for (feature : element.features) {
+				for (feature : behavior.features) {
 					switch feature {
 						RequiredCapacity: {
 							//TODO 
@@ -288,17 +338,31 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						}
 						CapacityUses: {
 							for (used : feature.capacitiesUsed) {
-								actionIndex = generateCapacityDelegatorMethods(element, used, actionIndex)
+								actionIndex = generateCapacityDelegatorMethods(behavior, used, actionIndex)
 							}
 						}
 						Constructor: {
-							generateConstructor(element, feature, actionIndex)
+							generateConstructor(behavior, feature, actionIndex)
 							actionIndex++
+							hasConstructor = true
 						}
 						Attribute: {
 							generateAttribute(feature, JvmVisibility::PROTECTED)
 						}
 					}
+				}
+				
+				if (!hasConstructor) {
+					members += behavior.toConstructor [
+						documentation = '''
+							Construct a behavior.
+							@param owner - reference to the agent that is owning this behavior.
+						'''
+						parameters += behavior.toParameter('owner', newTypeRef(io.sarl.lang.core.Agent))
+						body = '''
+							super(owner);
+						'''
+					]
 				}
 			])
 	}
@@ -311,7 +375,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			documentation = agent.documentation
 			generateSuperTypes(agent, typeof(io.sarl.lang.core.Agent))
 			members += agent.toConstructor [
-				documentation = '''Creates a new Agent of type «agent.name»'''
+				documentation = '''
+					Construct an agent.
+					@param parentID - identifier of the parent. It is the identifer
+					of the parent agent and the enclosing contect, at the same time.
+				'''
 				parameters += agent.toParameter('parentID', newTypeRef(UUID))
 				body = '''
 					super(parentID);
@@ -630,7 +698,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		return op
 	}
 
-	protected def void generateConstructor(JvmGenericType owner, TopElement context, Constructor constructor, int index) {
+	protected def SignatureKey generateConstructor(JvmGenericType owner, TopElement context, Constructor constructor, int index) {
 		val actionKey = sarlSignatureProvider.createConstructorID(owner)
 		
 		owner.members += context.toConstructor [
@@ -661,6 +729,8 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				]
 			]
 		}
+		
+		return otherSignatures.formalParameterKey
 	}
 	
 	/** 

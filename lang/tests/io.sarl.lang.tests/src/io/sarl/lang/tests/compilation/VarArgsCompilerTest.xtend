@@ -48,7 +48,10 @@ class VarArgsCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
-			   * Creates a new Agent of type A1
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * 
 			   */
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
@@ -75,7 +78,10 @@ class VarArgsCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
-			   * Creates a new Agent of type A1
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * 
 			   */
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
@@ -104,6 +110,15 @@ class VarArgsCompilerTest {
 			  public void myaction(final int... arg) {
 			    System.out.println(arg);
 			  }
+			  
+			  /**
+			   * Construct a behavior.
+			   * @param owner - reference to the agent that is owning this behavior.
+			   * 
+			   */
+			  public B1(final io.sarl.lang.core.Agent owner) {
+			    super(owner);
+			  }
 			}
 		''')
 	}
@@ -123,6 +138,15 @@ class VarArgsCompilerTest {
 			public class B1 extends Behavior {
 			  public void myaction(final char arg1, final boolean arg2, final int... arg3) {
 			    System.out.println(arg3);
+			  }
+			  
+			  /**
+			   * Construct a behavior.
+			   * @param owner - reference to the agent that is owning this behavior.
+			   * 
+			   */
+			  public B1(final io.sarl.lang.core.Agent owner) {
+			    super(owner);
 			  }
 			}
 		''')
@@ -274,6 +298,23 @@ class VarArgsCompilerTest {
 			  public void myaction(final int... arg) {
 			    System.out.println(arg);
 			  }
+			  
+			  /**
+			   * Construct a skill.
+			   * @param owner - agent that is owning this skill. 
+			   * 
+			   */
+			  public S1(final io.sarl.lang.core.Agent owner) {
+			    super(owner);
+			  }
+			  
+			  /**
+			   * Construct a skill. The owning agent is unknown. 
+			   * 
+			   */
+			  public S1() {
+			    super();
+			  }
 			}
 			
 		''')
@@ -307,6 +348,23 @@ class VarArgsCompilerTest {
 			public class S1 extends Skill implements C1 {
 			  public void myaction(final char arg1, final boolean arg2, final int... arg3) {
 			    System.out.println(arg3);
+			  }
+			  
+			  /**
+			   * Construct a skill.
+			   * @param owner - agent that is owning this skill. 
+			   * 
+			   */
+			  public S1(final io.sarl.lang.core.Agent owner) {
+			    super(owner);
+			  }
+			  
+			  /**
+			   * Construct a skill. The owning agent is unknown. 
+			   * 
+			   */
+			  public S1() {
+			    super();
 			  }
 			}
 			

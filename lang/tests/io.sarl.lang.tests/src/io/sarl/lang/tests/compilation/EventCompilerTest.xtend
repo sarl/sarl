@@ -48,6 +48,23 @@ class EventCompilerTest {
 
 			@SuppressWarnings("all")
 			public class E1 extends Event {
+			  /**
+			   * Construct an event. The source of the event is unknown.
+			   * 
+			   */
+			  public E1() {
+			    super();
+			  }
+			  
+			  /**
+			   * Construct an event.
+			   * @param source - address of the agent that is emitting this event.
+			   * 
+			   */
+			  public E1(final io.sarl.lang.core.Address source) {
+			    super(source);
+			  }
+			  
 			  private final static long serialVersionUID = 588368462L;
 			}
 		''')
@@ -65,6 +82,23 @@ class EventCompilerTest {
 		@SuppressWarnings("all")
 		public class E1 extends Event {
 		  public String name;
+		  
+		  /**
+		   * Construct an event. The source of the event is unknown.
+		   * 
+		   */
+		  public E1() {
+		    super();
+		  }
+		  
+		  /**
+		   * Construct an event.
+		   * @param source - address of the agent that is emitting this event.
+		   * 
+		   */
+		  public E1(final io.sarl.lang.core.Address source) {
+		    super(source);
+		  }
 		  
 		  @Override
 		  public boolean equals(final Object obj) {
@@ -112,6 +146,23 @@ class EventCompilerTest {
 		val expectedE2 = '''
 		@SuppressWarnings("all")
 		public class E2 extends E1 {
+		  /**
+		   * Construct an event. The source of the event is unknown.
+		   * 
+		   */
+		  public E2() {
+		    super();
+		  }
+		  
+		  /**
+		   * Construct an event.
+		   * @param source - address of the agent that is emitting this event.
+		   * 
+		   */
+		  public E2(final io.sarl.lang.core.Address source) {
+		    super(source);
+		  }
+		  
 		  private final static long serialVersionUID = 2189L;
 		}
 		'''
@@ -122,7 +173,6 @@ class EventCompilerTest {
 			}
 			
 			event E2 extends E1{
-				
 			}
 		'''.compile([CompilationTestHelper.Result r |
 			Assert.assertEquals(expectedE2,r.getGeneratedCode("E2"))

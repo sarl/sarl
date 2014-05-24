@@ -40,11 +40,9 @@ import java.util.Set
 import java.util.TreeMap
 import java.util.TreeSet
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
-import org.eclipse.xtext.common.types.JvmMember
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.validation.Check
@@ -53,19 +51,14 @@ import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 import org.eclipse.xtext.xbase.validation.IssueCodes
 
-import static org.eclipse.xtext.common.types.JvmVisibility.*
 import static extension io.sarl.lang.util.JvmElementUtil.*
+import org.eclipse.xtext.common.types.JvmConstructor
 
-// 
 /**
  * Validator for the SARL elements.
  * <p>
  * The following issues are not yet supported:<ul>
- * <li>Missed function implementation - ERROR</li>
  * <li>Skill implementation cannot have default value - ERROR</li>
- * <li>Invalid super constructor call - ERROR</li>
- * <li>Missed super call - ERROR</li>
- * <li>Invalid return type for an action against the inherited type</li>
  * <li>Incompatible modifiers for a function</li>
  * </ul>
  * 
@@ -102,45 +95,13 @@ class SARLValidator extends AbstractSARLValidator {
 	private def checkDefaultValueTypeCompatibleWithParameterType(FormalParameter param) {
 		var toType = toLightweightTypeReference(param.parameterType, true)
 		var fromType = param.defaultValue.actualType
-		if (fromType===null) {
-			error(
-				String.format(
-					"Cannot determine the type of the default value for the parameter '%s'.",
-					param.name
-				), 
-				param,
-				null,
-				IssueCodes::INVALID_TYPE_PARAMETER_BOUNDS)
-		}
-		
-		if ((fromType.type instanceof JvmDeclaredType || fromType.isPrimitive)
-			&&
-			(!fromType.type.isInterface || toType.isFinal) // if one of the types is an interface and the other is a non final class (or interface) there always can be a subtype
-			&&
-			(!fromType.type.isInterface || fromType.isFinal)
-			&&
-			(!toType.isAssignableFrom(fromType))
-			&&
-			(   fromType.isFinal || toType.isFinal
-				|| fromType.isClass && toType.isClass)
-			&&
-			(!fromType.isAssignableFrom(toType)) // no upcast
-		) { 
+		if (!canCast(fromType, toType, true)) {
 			error(String.format("Cannot cast from %s to %s",
 					fromType.getNameOfTypes, toType.canonicalName),
 				param,
 				null,
 				ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 				IssueCodes::INVALID_CAST);
-		}
-		else if(toType.primitive && !(fromType.primitive || fromType.wrapper)) {
-				error(String.format("Cannot cast from %s to %s",
-					fromType.getNameOfTypes, toType.canonicalName
-					),
-					param,
-					null, 
-					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-					IssueCodes::INVALID_CAST);
 		}
 	}
 
@@ -305,8 +266,8 @@ class SARLValidator extends AbstractSARLValidator {
 				warning(
 					String.format(
 						"The feature '%s' is already implemented by the super type '%s'.",
-						canonicalName(lightweightInterfaceReference),
-						canonicalName(superType)),
+						lightweightInterfaceReference.canonicalName,
+						superType.canonicalName),
 					interfaceReference,
 					null,
 					io.sarl.lang.validation.IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION)
@@ -348,11 +309,12 @@ class SARLValidator extends AbstractSARLValidator {
 			val Map<ActionKey,JvmOperation> overridableOperations = new TreeMap
 			val Map<String,JvmField> inheritedFields = new TreeMap
 			val Map<ActionKey,JvmOperation> operationsToImplement = new TreeMap
+			val Map<SignatureKey,JvmConstructor> superConstructors = new TreeMap
 
 			jvmElement.populateInheritanceContext(
 				finalOperations, overridableOperations,
 				inheritedFields, operationsToImplement,
-				sarlSignatureProvider
+				superConstructors, sarlSignatureProvider
 			)
 						
 			jvmElement.checkRedundantInterfaces
@@ -370,6 +332,51 @@ class SARLValidator extends AbstractSARLValidator {
 							null,
 							io.sarl.lang.validation.IssueCodes::FIELD_NAME_SHADOWING)
 					}
+				}
+			}
+			
+			for(feature : jvmElement.declaredOperations) {
+				val sig = sarlSignatureProvider.createSignatureIDFromJvmModel(feature.parameters)
+				val actionKey = sarlSignatureProvider.createActionID(feature.simpleName, sig)
+				operationsToImplement.remove(actionKey)
+				if (finalOperations.containsKey(actionKey)) {
+					error(
+						String.format(
+							"Cannot override the operation %s, which is declared a final in the super type.",
+							actionKey.toString),
+						feature,
+						null,
+						io.sarl.lang.validation.IssueCodes::OVERRIDE_FINAL_OPERATION)
+				}
+				else {
+					var superOperation = overridableOperations.get(actionKey)
+					if (superOperation!==null) {
+						var currentReturnType = toLightweightTypeReference(feature.returnType)
+						var inheritedReturnType = toLightweightTypeReference(superOperation.returnType)
+						if (!canCast(currentReturnType, inheritedReturnType, false)) {
+							error(
+								String.format(
+									"Incompatible return type between '%s' and '%s' for %s.",
+									currentReturnType.canonicalName,
+									inheritedReturnType.canonicalName,
+									actionKey.toString),
+								feature,
+								null,
+								IssueCodes::INCOMPATIBLE_RETURN_TYPE)
+						}
+					}
+				}
+			}
+			
+			if (!jvmElement.abstract && !jvmElement.interface) {
+				for(entry : operationsToImplement.entrySet) {
+					error(
+						String.format(
+							"The operation %s must be implemented.",
+							entry.key.toString),
+						element,
+						null,
+						io.sarl.lang.validation.IssueCodes::MISSING_ACTION_IMPLEMENTATION)
 				}
 			}
 		}

@@ -284,6 +284,18 @@ public class SarlSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case SarlPackage.ACTION:
+      {
+        Action action = (Action)theEObject;
+        T result = caseAction(action);
+        if (result == null) result = caseFeature(action);
+        if (result == null) result = caseEventFeature(action);
+        if (result == null) result = caseAgentFeature(action);
+        if (result == null) result = caseBehaviorFeature(action);
+        if (result == null) result = caseSkillFeature(action);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case SarlPackage.CONSTRUCTOR:
       {
         Constructor constructor = (Constructor)theEObject;
@@ -294,18 +306,6 @@ public class SarlSwitch<T> extends Switch<T>
         if (result == null) result = caseAgentFeature(constructor);
         if (result == null) result = caseBehaviorFeature(constructor);
         if (result == null) result = caseSkillFeature(constructor);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case SarlPackage.ACTION:
-      {
-        Action action = (Action)theEObject;
-        T result = caseAction(action);
-        if (result == null) result = caseFeature(action);
-        if (result == null) result = caseEventFeature(action);
-        if (result == null) result = caseAgentFeature(action);
-        if (result == null) result = caseBehaviorFeature(action);
-        if (result == null) result = caseSkillFeature(action);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -679,22 +679,6 @@ public class SarlSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Constructor</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Constructor</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseConstructor(Constructor object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>Action</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -706,6 +690,22 @@ public class SarlSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseAction(Action object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Constructor</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Constructor</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseConstructor(Constructor object)
   {
     return null;
   }

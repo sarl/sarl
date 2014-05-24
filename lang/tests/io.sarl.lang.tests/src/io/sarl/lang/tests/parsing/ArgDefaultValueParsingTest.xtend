@@ -24,13 +24,12 @@ import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
+import org.eclipse.xtext.xbase.XbasePackage
 import org.eclipse.xtext.xbase.validation.IssueCodes
 import org.junit.Test
 import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
-import org.eclipse.xtext.xbase.XbasePackage
-import org.eclipse.xtext.common.types.TypesPackage
 
 /**
  * @author $Author: sgalland$
@@ -1108,47 +1107,59 @@ class ArgDefaultValueParsingTest {
 	}
 
 	@Test
-	def void redundantCapacity_fromSuperType() {
+	def void missedActionImplementation_0() {
 		val mas = '''
-			capacity C1 {}
-			capacity C2 {}
-			skill S1 implements C1 { }
-			skill S2 extends S1 implements C2, C1 { }
+			capacity C1 {
+				def myaction1(a : int=4)
+			}
+			capacity C2 {
+				def myaction2(b : float=6, c : boolean)
+			}
+			skill S1 implements C1, C2 {
+				def myaction1(x : int) { }
+				def myaction2(y : float, z : boolean) { }
+			}
 		'''.parse
-		mas.assertWarning(
-			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
-			io.sarl.lang.validation.IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
-			"The feature 'C1' is already implemented by the super type 'S1'.")
+		mas.assertNoErrors
 	}
 
 	@Test
-	def void redundantCapacity_duplicate() {
+	def void missedActionImplementation_1() {
 		val mas = '''
-			capacity C1 {}
-			capacity C2 {}
-			capacity C3 {}
-			skill S1 implements C1 { }
-			skill S2 extends S1 implements C2, C3, C2 { }
+			capacity C1 {
+				def myaction1(a : int=4)
+			}
+			capacity C2 {
+				def myaction2(b : float=6, c : boolean)
+			}
+			skill S1 implements C1, C2 {
+				def myaction2(b : float, c : boolean) { }
+			}
 		'''.parse
-		mas.assertWarning(
-			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
-			io.sarl.lang.validation.IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
-			"The feature 'C2' is already implemented by the preceding interface 'C2'.")
+		mas.assertError(
+			SarlPackage.eINSTANCE.skill,
+			io.sarl.lang.validation.IssueCodes::MISSING_ACTION_IMPLEMENTATION,
+			"The operation myaction1(int) must be implemented.")
 	}
 
 	@Test
-	def void redundantCapacity_fromPreviousCapacity() {
+	def void missedActionImplementation_2() {
 		val mas = '''
-			capacity C1 {}
-			capacity C2 {}
-			capacity C3 extends C2 {}
-			skill S1 implements C1 { }
-			skill S2 extends S1 implements C3, C2 { }
+			capacity C1 {
+				def myaction1(a : int=4)
+			}
+			capacity C2 {
+				def myaction2(b : float=6, c : boolean)
+			}
+			skill S1 implements C1, C2 {
+				def myaction1(x : float) { }
+				def myaction2(y : float, z : boolean) { }
+			}
 		'''.parse
-		mas.assertWarning(
-			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
-			io.sarl.lang.validation.IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
-			"The feature 'C2' is already implemented by the preceding interface 'C3'.")
+		mas.assertError(
+			SarlPackage.eINSTANCE.skill,
+			io.sarl.lang.validation.IssueCodes::MISSING_ACTION_IMPLEMENTATION,
+			"The operation myaction1(int) must be implemented.")
 	}
 
 }

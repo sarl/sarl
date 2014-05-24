@@ -533,4 +533,560 @@ public class CapacityParsingTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
+  
+  @Test
+  public void redundantCapacity_fromSuperType() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {}");
+      _builder.newLine();
+      _builder.append("capacity C2 {}");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 { }");
+      _builder.newLine();
+      _builder.append("skill S2 extends S1 implements C2, C1 { }");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
+      this._validationTestHelper.assertWarning(mas, _jvmParameterizedTypeReference, 
+        IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION, 
+        "The feature \'C1\' is already implemented by the super type \'S1\'.");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void redundantCapacity_duplicate() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {}");
+      _builder.newLine();
+      _builder.append("capacity C2 {}");
+      _builder.newLine();
+      _builder.append("capacity C3 {}");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 { }");
+      _builder.newLine();
+      _builder.append("skill S2 extends S1 implements C2, C3, C2 { }");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
+      this._validationTestHelper.assertWarning(mas, _jvmParameterizedTypeReference, 
+        IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION, 
+        "The feature \'C2\' is already implemented by the preceding interface \'C2\'.");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void redundantCapacity_fromPreviousCapacity() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {}");
+      _builder.newLine();
+      _builder.append("capacity C2 {}");
+      _builder.newLine();
+      _builder.append("capacity C3 extends C2 {}");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 { }");
+      _builder.newLine();
+      _builder.append("skill S2 extends S1 implements C3, C2 { }");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
+      this._validationTestHelper.assertWarning(mas, _jvmParameterizedTypeReference, 
+        IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION, 
+        "The feature \'C2\' is already implemented by the preceding interface \'C3\'.");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void missedActionImplementation_0() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction1(a : int)");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("capacity C2 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction2(b : float, c : boolean)");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1, C2 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction1(x : int) { }");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction2(y : float, z : boolean) { }");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      this._validationTestHelper.assertNoErrors(mas);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void missedActionImplementation_1() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction1(a : int)");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("capacity C2 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction2(b : float, c : boolean)");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1, C2 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction2(b : float, c : boolean) { }");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _skill = SarlPackage.eINSTANCE.getSkill();
+      this._validationTestHelper.assertError(mas, _skill, 
+        IssueCodes.MISSING_ACTION_IMPLEMENTATION, 
+        "The operation myaction1(int) must be implemented.");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void missedActionImplementation_2() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction1(a : int)");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("capacity C2 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction2(b : float, c : boolean)");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1, C2 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction1(x : float) { }");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction2(y : float, z : boolean) { }");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _skill = SarlPackage.eINSTANCE.getSkill();
+      this._validationTestHelper.assertError(mas, _skill, 
+        IssueCodes.MISSING_ACTION_IMPLEMENTATION, 
+        "The operation myaction1(int) must be implemented.");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void incompatibleReturnType_0() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 { }");
+      _builder.newLine();
+      _builder.append("capacity C2 { }");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : int {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("skill S2 extends S1 implements C2 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : float {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0f");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmOperation = TypesPackage.eINSTANCE.getJvmOperation();
+      this._validationTestHelper.assertError(mas, _jvmOperation, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE, 
+        "Incompatible return type between \'float\' and \'int\' for myaction(int).");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void incompatibleReturnType_1() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 { }");
+      _builder.newLine();
+      _builder.append("capacity C2 { }");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("// void");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("skill S2 extends S1 implements C2 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : int {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmOperation = TypesPackage.eINSTANCE.getJvmOperation();
+      this._validationTestHelper.assertError(mas, _jvmOperation, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE, 
+        "Incompatible return type between \'int\' and \'void\' for myaction(int).");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void incompatibleReturnType_2() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 { }");
+      _builder.newLine();
+      _builder.append("capacity C2 { }");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : int {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("skill S2 extends S1 implements C2 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("// void");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmOperation = TypesPackage.eINSTANCE.getJvmOperation();
+      this._validationTestHelper.assertError(mas, _jvmOperation, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE, 
+        "Incompatible return type between \'void\' and \'int\' for myaction(int).");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void incompatibleReturnType_3() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : int");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("skill S2 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : float {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0f");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmOperation = TypesPackage.eINSTANCE.getJvmOperation();
+      this._validationTestHelper.assertError(mas, _jvmOperation, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE, 
+        "Incompatible return type between \'float\' and \'int\' for myaction(int).");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void incompatibleReturnType_4() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) // void");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("skill S2 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : int {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmOperation = TypesPackage.eINSTANCE.getJvmOperation();
+      this._validationTestHelper.assertError(mas, _jvmOperation, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE, 
+        "Incompatible return type between \'int\' and \'void\' for myaction(int).");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void incompatibleReturnType_5() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : int");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("skill S2 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("// void");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmOperation = TypesPackage.eINSTANCE.getJvmOperation();
+      this._validationTestHelper.assertError(mas, _jvmOperation, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE, 
+        "Incompatible return type between \'void\' and \'int\' for myaction(int).");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void compatibleReturnType_0() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 { }");
+      _builder.newLine();
+      _builder.append("capacity C2 { }");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : Number {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0.0");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("skill S2 extends S1 implements C2 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : Double {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0.0");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      this._validationTestHelper.assertNoErrors(mas);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void compatibleReturnType_1() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 { }");
+      _builder.newLine();
+      _builder.append("capacity C2 { }");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : float {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0f");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("skill S2 extends S1 implements C2 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : float {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0f");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      this._validationTestHelper.assertNoErrors(mas);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void compatibleReturnType_2() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : Number");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("skill S2 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : Double {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0.0");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      this._validationTestHelper.assertNoErrors(mas);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void compatibleReturnType_3() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : float");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("skill S2 implements C1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : float {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0f");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      this._validationTestHelper.assertNoErrors(mas);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
 }

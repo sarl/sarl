@@ -1035,92 +1035,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getRequiredCapacitiesCapacityQualifiedNameParserRuleCall_3_1_0_1() { return cRequiredCapacitiesCapacityQualifiedNameParserRuleCall_3_1_0_1; }
 	}
 
-	public class VarArgTokenElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "VarArgToken");
-		private final Keyword cAsteriskKeyword = (Keyword)rule.eContents().get(1);
-		
-		//VarArgToken:
-		//	"*";
-		public ParserRule getRule() { return rule; }
-
-		//"*"
-		public Keyword getAsteriskKeyword() { return cAsteriskKeyword; }
-	}
-
-	public class ConstructorElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Constructor");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cConstructorAction_0 = (Action)cGroup.eContents().get(0);
-		private final Keyword cNewKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
-		private final Keyword cLeftParenthesisKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
-		private final Assignment cParamsAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
-		private final RuleCall cParamsFormalParameterParserRuleCall_2_1_0 = (RuleCall)cParamsAssignment_2_1.eContents().get(0);
-		private final Group cGroup_2_2 = (Group)cGroup_2.eContents().get(2);
-		private final Keyword cCommaKeyword_2_2_0 = (Keyword)cGroup_2_2.eContents().get(0);
-		private final Assignment cParamsAssignment_2_2_1 = (Assignment)cGroup_2_2.eContents().get(1);
-		private final RuleCall cParamsFormalParameterParserRuleCall_2_2_1_0 = (RuleCall)cParamsAssignment_2_2_1.eContents().get(0);
-		private final Assignment cVarargsAssignment_2_3 = (Assignment)cGroup_2.eContents().get(3);
-		private final RuleCall cVarargsVarArgTokenParserRuleCall_2_3_0 = (RuleCall)cVarargsAssignment_2_3.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_2_4 = (Keyword)cGroup_2.eContents().get(4);
-		private final Assignment cBodyAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cBodyXBlockExpressionParserRuleCall_3_0 = (RuleCall)cBodyAssignment_3.eContents().get(0);
-		
-		//Constructor returns ParameterizedFeature:
-		//	{Constructor} "new" ("(" params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken? ")")?
-		//	body=XBlockExpression;
-		public ParserRule getRule() { return rule; }
-
-		//{Constructor} "new" ("(" params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken? ")")?
-		//body=XBlockExpression
-		public Group getGroup() { return cGroup; }
-
-		//{Constructor}
-		public Action getConstructorAction_0() { return cConstructorAction_0; }
-
-		//"new"
-		public Keyword getNewKeyword_1() { return cNewKeyword_1; }
-
-		//("(" params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken? ")")?
-		public Group getGroup_2() { return cGroup_2; }
-
-		//"("
-		public Keyword getLeftParenthesisKeyword_2_0() { return cLeftParenthesisKeyword_2_0; }
-
-		//params+=FormalParameter
-		public Assignment getParamsAssignment_2_1() { return cParamsAssignment_2_1; }
-
-		//FormalParameter
-		public RuleCall getParamsFormalParameterParserRuleCall_2_1_0() { return cParamsFormalParameterParserRuleCall_2_1_0; }
-
-		//("," params+=FormalParameter)*
-		public Group getGroup_2_2() { return cGroup_2_2; }
-
-		//","
-		public Keyword getCommaKeyword_2_2_0() { return cCommaKeyword_2_2_0; }
-
-		//params+=FormalParameter
-		public Assignment getParamsAssignment_2_2_1() { return cParamsAssignment_2_2_1; }
-
-		//FormalParameter
-		public RuleCall getParamsFormalParameterParserRuleCall_2_2_1_0() { return cParamsFormalParameterParserRuleCall_2_2_1_0; }
-
-		//varargs?=VarArgToken?
-		public Assignment getVarargsAssignment_2_3() { return cVarargsAssignment_2_3; }
-
-		//VarArgToken
-		public RuleCall getVarargsVarArgTokenParserRuleCall_2_3_0() { return cVarargsVarArgTokenParserRuleCall_2_3_0; }
-
-		//")"
-		public Keyword getRightParenthesisKeyword_2_4() { return cRightParenthesisKeyword_2_4; }
-
-		//body=XBlockExpression
-		public Assignment getBodyAssignment_3() { return cBodyAssignment_3; }
-
-		//XBlockExpression
-		public RuleCall getBodyXBlockExpressionParserRuleCall_3_0() { return cBodyXBlockExpressionParserRuleCall_3_0; }
-	}
-
 	public class ActionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Action");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -1153,6 +1067,96 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getBodyXBlockExpressionParserRuleCall_2_0() { return cBodyXBlockExpressionParserRuleCall_2_0; }
 	}
 
+	public class VarArgTokenElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "VarArgToken");
+		private final Keyword cAsteriskKeyword = (Keyword)rule.eContents().get(1);
+		
+		//VarArgToken:
+		//	"*";
+		public ParserRule getRule() { return rule; }
+
+		//"*"
+		public Keyword getAsteriskKeyword() { return cAsteriskKeyword; }
+	}
+
+	public class ConstructorElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Constructor");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cConstructorAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cNewKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
+		private final Keyword cLeftParenthesisKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
+		private final Group cGroup_2_1 = (Group)cGroup_2.eContents().get(1);
+		private final Assignment cParamsAssignment_2_1_0 = (Assignment)cGroup_2_1.eContents().get(0);
+		private final RuleCall cParamsFormalParameterParserRuleCall_2_1_0_0 = (RuleCall)cParamsAssignment_2_1_0.eContents().get(0);
+		private final Group cGroup_2_1_1 = (Group)cGroup_2_1.eContents().get(1);
+		private final Keyword cCommaKeyword_2_1_1_0 = (Keyword)cGroup_2_1_1.eContents().get(0);
+		private final Assignment cParamsAssignment_2_1_1_1 = (Assignment)cGroup_2_1_1.eContents().get(1);
+		private final RuleCall cParamsFormalParameterParserRuleCall_2_1_1_1_0 = (RuleCall)cParamsAssignment_2_1_1_1.eContents().get(0);
+		private final Assignment cVarargsAssignment_2_1_2 = (Assignment)cGroup_2_1.eContents().get(2);
+		private final RuleCall cVarargsVarArgTokenParserRuleCall_2_1_2_0 = (RuleCall)cVarargsAssignment_2_1_2.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
+		private final Assignment cBodyAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cBodyXBlockExpressionParserRuleCall_3_0 = (RuleCall)cBodyAssignment_3.eContents().get(0);
+		
+		//Constructor returns ParameterizedFeature:
+		//	{Constructor} "new" ("(" (params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken?)? ")")?
+		//	body=XBlockExpression;
+		public ParserRule getRule() { return rule; }
+
+		//{Constructor} "new" ("(" (params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken?)? ")")?
+		//body=XBlockExpression
+		public Group getGroup() { return cGroup; }
+
+		//{Constructor}
+		public Action getConstructorAction_0() { return cConstructorAction_0; }
+
+		//"new"
+		public Keyword getNewKeyword_1() { return cNewKeyword_1; }
+
+		//(=> "(" (params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken?)? ")")?
+		public Group getGroup_2() { return cGroup_2; }
+
+		//=> "("
+		public Keyword getLeftParenthesisKeyword_2_0() { return cLeftParenthesisKeyword_2_0; }
+
+		//(params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken?)?
+		public Group getGroup_2_1() { return cGroup_2_1; }
+
+		//params+=FormalParameter
+		public Assignment getParamsAssignment_2_1_0() { return cParamsAssignment_2_1_0; }
+
+		//FormalParameter
+		public RuleCall getParamsFormalParameterParserRuleCall_2_1_0_0() { return cParamsFormalParameterParserRuleCall_2_1_0_0; }
+
+		//(=> "," params+=FormalParameter)*
+		public Group getGroup_2_1_1() { return cGroup_2_1_1; }
+
+		//=> ","
+		public Keyword getCommaKeyword_2_1_1_0() { return cCommaKeyword_2_1_1_0; }
+
+		//params+=FormalParameter
+		public Assignment getParamsAssignment_2_1_1_1() { return cParamsAssignment_2_1_1_1; }
+
+		//FormalParameter
+		public RuleCall getParamsFormalParameterParserRuleCall_2_1_1_1_0() { return cParamsFormalParameterParserRuleCall_2_1_1_1_0; }
+
+		//varargs?=VarArgToken?
+		public Assignment getVarargsAssignment_2_1_2() { return cVarargsAssignment_2_1_2; }
+
+		//VarArgToken
+		public RuleCall getVarargsVarArgTokenParserRuleCall_2_1_2_0() { return cVarargsVarArgTokenParserRuleCall_2_1_2_0; }
+
+		//")"
+		public Keyword getRightParenthesisKeyword_2_2() { return cRightParenthesisKeyword_2_2; }
+
+		//body=XBlockExpression
+		public Assignment getBodyAssignment_3() { return cBodyAssignment_3; }
+
+		//XBlockExpression
+		public RuleCall getBodyXBlockExpressionParserRuleCall_3_0() { return cBodyXBlockExpressionParserRuleCall_3_0; }
+	}
+
 	public class ActionSignatureElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ActionSignature");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -1162,15 +1166,16 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cNameValidIDParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Keyword cLeftParenthesisKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
-		private final Assignment cParamsAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final RuleCall cParamsFormalParameterParserRuleCall_3_1_0 = (RuleCall)cParamsAssignment_3_1.eContents().get(0);
-		private final Group cGroup_3_2 = (Group)cGroup_3.eContents().get(2);
-		private final Keyword cCommaKeyword_3_2_0 = (Keyword)cGroup_3_2.eContents().get(0);
-		private final Assignment cParamsAssignment_3_2_1 = (Assignment)cGroup_3_2.eContents().get(1);
-		private final RuleCall cParamsFormalParameterParserRuleCall_3_2_1_0 = (RuleCall)cParamsAssignment_3_2_1.eContents().get(0);
-		private final Assignment cVarargsAssignment_3_3 = (Assignment)cGroup_3.eContents().get(3);
-		private final RuleCall cVarargsVarArgTokenParserRuleCall_3_3_0 = (RuleCall)cVarargsAssignment_3_3.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_3_4 = (Keyword)cGroup_3.eContents().get(4);
+		private final Group cGroup_3_1 = (Group)cGroup_3.eContents().get(1);
+		private final Assignment cParamsAssignment_3_1_0 = (Assignment)cGroup_3_1.eContents().get(0);
+		private final RuleCall cParamsFormalParameterParserRuleCall_3_1_0_0 = (RuleCall)cParamsAssignment_3_1_0.eContents().get(0);
+		private final Group cGroup_3_1_1 = (Group)cGroup_3_1.eContents().get(1);
+		private final Keyword cCommaKeyword_3_1_1_0 = (Keyword)cGroup_3_1_1.eContents().get(0);
+		private final Assignment cParamsAssignment_3_1_1_1 = (Assignment)cGroup_3_1_1.eContents().get(1);
+		private final RuleCall cParamsFormalParameterParserRuleCall_3_1_1_1_0 = (RuleCall)cParamsAssignment_3_1_1_1.eContents().get(0);
+		private final Assignment cVarargsAssignment_3_1_2 = (Assignment)cGroup_3_1.eContents().get(2);
+		private final RuleCall cVarargsVarArgTokenParserRuleCall_3_1_2_0 = (RuleCall)cVarargsAssignment_3_1_2.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_3_2 = (Keyword)cGroup_3.eContents().get(2);
 		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
 		private final Keyword cColonKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
 		private final Assignment cTypeAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
@@ -1187,13 +1192,13 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cFiredEventsEventQualifiedNameParserRuleCall_5_2_1_0_1 = (RuleCall)cFiredEventsEventCrossReference_5_2_1_0.eContents().get(1);
 		
 		//ActionSignature returns ParameterizedFeature:
-		//	{ActionSignature} "def" name=ValidID ("(" params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken?
-		//	")")? (":" type=JvmTypeReference)? ("fires" firedEvents+=[Event|QualifiedName] (","
+		//	{ActionSignature} "def" name=ValidID ("(" (params+=FormalParameter ("," params+=FormalParameter)*
+		//	varargs?=VarArgToken?)? ")")? (":" type=JvmTypeReference)? ("fires" firedEvents+=[Event|QualifiedName] (","
 		//	firedEvents+=[Event|QualifiedName])*)?;
 		public ParserRule getRule() { return rule; }
 
-		//{ActionSignature} "def" name=ValidID ("(" params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken?
-		//")")? (":" type=JvmTypeReference)? ("fires" firedEvents+=[Event|QualifiedName] (","
+		//{ActionSignature} "def" name=ValidID ("(" (params+=FormalParameter ("," params+=FormalParameter)*
+		//varargs?=VarArgToken?)? ")")? (":" type=JvmTypeReference)? ("fires" firedEvents+=[Event|QualifiedName] (","
 		//firedEvents+=[Event|QualifiedName])*)?
 		public Group getGroup() { return cGroup; }
 
@@ -1209,38 +1214,41 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_2_0() { return cNameValidIDParserRuleCall_2_0; }
 
-		//("(" params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken? ")")?
+		//(=> "(" (params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken?)? ")")?
 		public Group getGroup_3() { return cGroup_3; }
 
-		//"("
+		//=> "("
 		public Keyword getLeftParenthesisKeyword_3_0() { return cLeftParenthesisKeyword_3_0; }
 
-		//params+=FormalParameter
-		public Assignment getParamsAssignment_3_1() { return cParamsAssignment_3_1; }
-
-		//FormalParameter
-		public RuleCall getParamsFormalParameterParserRuleCall_3_1_0() { return cParamsFormalParameterParserRuleCall_3_1_0; }
-
-		//("," params+=FormalParameter)*
-		public Group getGroup_3_2() { return cGroup_3_2; }
-
-		//","
-		public Keyword getCommaKeyword_3_2_0() { return cCommaKeyword_3_2_0; }
+		//(params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken?)?
+		public Group getGroup_3_1() { return cGroup_3_1; }
 
 		//params+=FormalParameter
-		public Assignment getParamsAssignment_3_2_1() { return cParamsAssignment_3_2_1; }
+		public Assignment getParamsAssignment_3_1_0() { return cParamsAssignment_3_1_0; }
 
 		//FormalParameter
-		public RuleCall getParamsFormalParameterParserRuleCall_3_2_1_0() { return cParamsFormalParameterParserRuleCall_3_2_1_0; }
+		public RuleCall getParamsFormalParameterParserRuleCall_3_1_0_0() { return cParamsFormalParameterParserRuleCall_3_1_0_0; }
+
+		//(=> "," params+=FormalParameter)*
+		public Group getGroup_3_1_1() { return cGroup_3_1_1; }
+
+		//=> ","
+		public Keyword getCommaKeyword_3_1_1_0() { return cCommaKeyword_3_1_1_0; }
+
+		//params+=FormalParameter
+		public Assignment getParamsAssignment_3_1_1_1() { return cParamsAssignment_3_1_1_1; }
+
+		//FormalParameter
+		public RuleCall getParamsFormalParameterParserRuleCall_3_1_1_1_0() { return cParamsFormalParameterParserRuleCall_3_1_1_1_0; }
 
 		//varargs?=VarArgToken?
-		public Assignment getVarargsAssignment_3_3() { return cVarargsAssignment_3_3; }
+		public Assignment getVarargsAssignment_3_1_2() { return cVarargsAssignment_3_1_2; }
 
 		//VarArgToken
-		public RuleCall getVarargsVarArgTokenParserRuleCall_3_3_0() { return cVarargsVarArgTokenParserRuleCall_3_3_0; }
+		public RuleCall getVarargsVarArgTokenParserRuleCall_3_1_2_0() { return cVarargsVarArgTokenParserRuleCall_3_1_2_0; }
 
 		//")"
-		public Keyword getRightParenthesisKeyword_3_4() { return cRightParenthesisKeyword_3_4; }
+		public Keyword getRightParenthesisKeyword_3_2() { return cRightParenthesisKeyword_3_2; }
 
 		//(":" type=JvmTypeReference)?
 		public Group getGroup_4() { return cGroup_4; }
@@ -1643,9 +1651,9 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	private CapacityUsesElements pCapacityUses;
 	private BehaviorUnitElements pBehaviorUnit;
 	private RequiredCapacityElements pRequiredCapacity;
+	private ActionElements pAction;
 	private VarArgTokenElements pVarArgToken;
 	private ConstructorElements pConstructor;
-	private ActionElements pAction;
 	private ActionSignatureElements pActionSignature;
 	private FormalParameterElements pFormalParameter;
 	private DefaultParameterValueElements pDefaultParameterValue;
@@ -1933,6 +1941,16 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getRequiredCapacityAccess().getRule();
 	}
 
+	//Action returns Feature:
+	//	{Action} signature=ActionSignature body=XBlockExpression;
+	public ActionElements getActionAccess() {
+		return (pAction != null) ? pAction : (pAction = new ActionElements());
+	}
+	
+	public ParserRule getActionRule() {
+		return getActionAccess().getRule();
+	}
+
 	//VarArgToken:
 	//	"*";
 	public VarArgTokenElements getVarArgTokenAccess() {
@@ -1944,7 +1962,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Constructor returns ParameterizedFeature:
-	//	{Constructor} "new" ("(" params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken? ")")?
+	//	{Constructor} "new" ("(" (params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken?)? ")")?
 	//	body=XBlockExpression;
 	public ConstructorElements getConstructorAccess() {
 		return (pConstructor != null) ? pConstructor : (pConstructor = new ConstructorElements());
@@ -1954,19 +1972,9 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getConstructorAccess().getRule();
 	}
 
-	//Action returns Feature:
-	//	{Action} signature=ActionSignature body=XBlockExpression;
-	public ActionElements getActionAccess() {
-		return (pAction != null) ? pAction : (pAction = new ActionElements());
-	}
-	
-	public ParserRule getActionRule() {
-		return getActionAccess().getRule();
-	}
-
 	//ActionSignature returns ParameterizedFeature:
-	//	{ActionSignature} "def" name=ValidID ("(" params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken?
-	//	")")? (":" type=JvmTypeReference)? ("fires" firedEvents+=[Event|QualifiedName] (","
+	//	{ActionSignature} "def" name=ValidID ("(" (params+=FormalParameter ("," params+=FormalParameter)*
+	//	varargs?=VarArgToken?)? ")")? (":" type=JvmTypeReference)? ("fires" firedEvents+=[Event|QualifiedName] (","
 	//	firedEvents+=[Event|QualifiedName])*)?;
 	public ActionSignatureElements getActionSignatureAccess() {
 		return (pActionSignature != null) ? pActionSignature : (pActionSignature = new ActionSignatureElements());

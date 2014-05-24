@@ -75,6 +75,23 @@ class Bug23 {
 		public class MyAgentSpawned extends AgentSpawned {
 		  public UUID titi;
 		  
+		  /**
+		   * Construct an event. The source of the event is unknown.
+		   * 
+		   */
+		  public MyAgentSpawned() {
+		    super();
+		  }
+		  
+		  /**
+		   * Construct an event.
+		   * @param source - address of the agent that is emitting this event.
+		   * 
+		   */
+		  public MyAgentSpawned(final io.sarl.lang.core.Address source) {
+		    super(source);
+		  }
+		  
 		  @Override
 		  public boolean equals(final Object obj) {
 		    if (this == obj)

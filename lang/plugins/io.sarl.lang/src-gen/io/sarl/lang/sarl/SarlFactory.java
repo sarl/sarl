@@ -221,15 +221,6 @@ public interface SarlFactory extends EFactory
   RequiredCapacity createRequiredCapacity();
 
   /**
-   * Returns a new object of class '<em>Constructor</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Constructor</em>'.
-   * @generated
-   */
-  Constructor createConstructor();
-
-  /**
    * Returns a new object of class '<em>Action</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -237,6 +228,15 @@ public interface SarlFactory extends EFactory
    * @generated
    */
   Action createAction();
+
+  /**
+   * Returns a new object of class '<em>Constructor</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Constructor</em>'.
+   * @generated
+   */
+  Constructor createConstructor();
 
   /**
    * Returns a new object of class '<em>Action Signature</em>'.

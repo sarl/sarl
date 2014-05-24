@@ -151,7 +151,10 @@ class Bug92 {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
-			   * Creates a new Agent of type A1
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * 
 			   */
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
@@ -174,7 +177,10 @@ class Bug92 {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
-			   * Creates a new Agent of type A1
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * 
 			   */
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
@@ -197,7 +203,10 @@ class Bug92 {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
-			   * Creates a new Agent of type A1
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * 
 			   */
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
@@ -238,7 +247,10 @@ class Bug92 {
 			@SuppressWarnings("all")
 			public class DeviceAgent extends EntityAgent {
 			  /**
-			   * Creates a new Agent of type DeviceAgent
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * 
 			   */
 			  public DeviceAgent(final java.util.UUID parentID) {
 			    super(parentID);
@@ -263,7 +275,10 @@ class Bug92 {
 			@SuppressWarnings("all")
 			public class EntityAgent extends Agent {
 			  /**
-			   * Creates a new Agent of type EntityAgent
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * 
 			   */
 			  public EntityAgent(final java.util.UUID parentID) {
 			    super(parentID);
@@ -308,7 +323,10 @@ class Bug92 {
 			@SuppressWarnings("all")
 			public class DeviceAgent extends EntityAgent {
 			  /**
-			   * Creates a new Agent of type DeviceAgent
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * 
 			   */
 			  public DeviceAgent(final java.util.UUID parentID) {
 			    super(parentID);
@@ -333,7 +351,10 @@ class Bug92 {
 			@SuppressWarnings("all")
 			public class EntityAgent extends Agent {
 			  /**
-			   * Creates a new Agent of type EntityAgent
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * 
 			   */
 			  public EntityAgent(final java.util.UUID parentID) {
 			    super(parentID);

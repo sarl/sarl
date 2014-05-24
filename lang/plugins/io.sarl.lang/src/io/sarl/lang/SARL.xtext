@@ -160,6 +160,11 @@ RequiredCapacity returns Feature:
 	(',' requiredCapacities+=[Capacity|QualifiedName])*
 ;
 
+Action returns Feature:
+	{Action}
+	signature=ActionSignature body=XBlockExpression
+;
+
 VarArgToken:
 	'*'
 ;
@@ -167,21 +172,25 @@ VarArgToken:
 Constructor returns ParameterizedFeature:
 	{Constructor}
 	'new'
-	(	'(' params+=FormalParameter (',' params+=FormalParameter)* 
-		(varargs?=VarArgToken)? ')'
-	)? body=XBlockExpression
-;
-
-Action returns Feature:
-	{Action}
-	signature=ActionSignature body=XBlockExpression
+	(	=>'('
+		(	params+=FormalParameter
+			(=>',' params+=FormalParameter)* 
+			(varargs?=VarArgToken)?
+		)?
+		')'
+	)?
+	body=XBlockExpression
 ;
 
 ActionSignature returns ParameterizedFeature:
 	{ActionSignature}
 	'def' name=ValidID 
-	(	'(' params+=FormalParameter
-		(',' params+=FormalParameter)* (varargs?=VarArgToken)? ')'
+	(	=>'('
+		(	params+=FormalParameter
+			(=>',' params+=FormalParameter)* 
+			(varargs?=VarArgToken)?
+		)?
+		')'
 	)?
 	(':' type=JvmTypeReference)?
 	('fires' firedEvents+=[Event|QualifiedName] (',' firedEvents+=[Event|QualifiedName])*)?

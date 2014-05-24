@@ -46,7 +46,10 @@ class AgentCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
-			   * Creates a new Agent of type A1
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * 
 			   */
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);

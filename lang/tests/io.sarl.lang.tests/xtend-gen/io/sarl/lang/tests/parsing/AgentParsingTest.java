@@ -515,4 +515,198 @@ public class AgentParsingTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
+  
+  @Test
+  public void incompatibleReturnType_0() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("agent A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : int {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("agent A2 extends A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : float {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0f");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmOperation = TypesPackage.eINSTANCE.getJvmOperation();
+      this._validationTestHelper.assertError(mas, _jvmOperation, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE, 
+        "Incompatible return type between \'float\' and \'int\' for myaction(int).");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void incompatibleReturnType_1() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("agent A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("// void");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("agent A2 extends A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : int {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmOperation = TypesPackage.eINSTANCE.getJvmOperation();
+      this._validationTestHelper.assertError(mas, _jvmOperation, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE, 
+        "Incompatible return type between \'int\' and \'void\' for myaction(int).");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void incompatibleReturnType_2() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("agent A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : int {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("agent A2 extends A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("// void");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmOperation = TypesPackage.eINSTANCE.getJvmOperation();
+      this._validationTestHelper.assertError(mas, _jvmOperation, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE, 
+        "Incompatible return type between \'void\' and \'int\' for myaction(int).");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void compatibleReturnType_0() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("agent A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : Number {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0.0");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("agent A2 extends A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : Double {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0.0");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      this._validationTestHelper.assertNoErrors(mas);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void compatibleReturnType_1() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("agent A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : float {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0f");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("agent A2 extends A1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int) : float {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return 0f");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      this._validationTestHelper.assertNoErrors(mas);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
 }

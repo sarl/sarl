@@ -22,6 +22,7 @@ import io.sarl.lang.signature.SignatureKey;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmFeature;
 import org.eclipse.xtext.common.types.JvmField;
@@ -31,6 +32,7 @@ import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations;
+import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 /**
@@ -51,6 +53,7 @@ public class JvmElementUtil {
 	 * @param overridableOperations - filled with the oervrideable operations inherited by the element.
 	 * @param inheritedFields - filled with the fields inherited by the element.
 	 * @param operationsToImplement - filled with the abstract operations inherited by the element.
+	 * @param superConstructors - filled with the construstors of the super type.
 	 * @param sarlSignatureProvider - provider of tools related to action signatures.
 	 */
 	public static void populateInheritanceContext(
@@ -59,6 +62,7 @@ public class JvmElementUtil {
 			Map<ActionKey,JvmOperation> overridableOperations,
 			Map<String,JvmField> inheritedFields,
 			Map<ActionKey,JvmOperation> operationsToImplement,
+			Map<SignatureKey,JvmConstructor> superConstructors,
 			ActionSignatureProvider sarlSignatureProvider) {
 
 		// Get the operations that must be implemented			
@@ -77,7 +81,8 @@ public class JvmElementUtil {
 
 		// Check on the implemented features, inherited from the super type			
 		if (jvmElement.getExtendedClass()!=null) {
-			for(JvmFeature feature : ((JvmGenericType)jvmElement.getExtendedClass().getType()).getAllFeatures()) {
+			JvmGenericType parentType = (JvmGenericType)jvmElement.getExtendedClass().getType();
+			for(JvmFeature feature : parentType.getAllFeatures()) {
 				if (!"java.lang.Object".equals(feature.getDeclaringType().getQualifiedName()) //$NON-NLS-1$
 						&& isVisible(jvmElement, feature)
 						&& !isHiddenAction(feature.getSimpleName())) {
@@ -104,6 +109,10 @@ public class JvmElementUtil {
 					}
 				}
 			}
+			for(JvmConstructor cons : parentType.getDeclaredConstructors()) {
+				SignatureKey sig = sarlSignatureProvider.createSignatureIDFromJvmModel(cons.getParameters());
+				superConstructors.put(sig,  cons);
+			}
 		}
 	}
 
@@ -115,14 +124,14 @@ public class JvmElementUtil {
 	 */
 	public static boolean isVisible(JvmDeclaredType fromType, JvmMember target) {
 		switch(target.getVisibility()) {
-			case DEFAULT: {
-				return target.getDeclaringType().getPackageName().equals(fromType.getPackageName());
-			}
-			case PROTECTED:
-			case PUBLIC:
-				return true;
-			case PRIVATE:
-			default:
+		case DEFAULT: {
+			return target.getDeclaringType().getPackageName().equals(fromType.getPackageName());
+		}
+		case PROTECTED:
+		case PUBLIC:
+			return true;
+		case PRIVATE:
+		default:
 		}
 		return false;
 	}
@@ -152,7 +161,7 @@ public class JvmElementUtil {
 	public static boolean isHiddenAttribute(String name) {
 		return name.startsWith("___FORMAL_PARAMETER_DEFAULT_VALUE_"); //$NON-NLS-1$
 	}
-	
+
 	/** Replies the JVM generic type of the given object.
 	 * 
 	 * @param element
@@ -180,6 +189,62 @@ public class JvmElementUtil {
 		}
 		return false;
 	}	
-	
 
+	/** Replies if the given reference is referencing a final type.
+	 * 
+	 * @param expressionTypeRef
+	 * @return <code>true</code> if the given type is final.
+	 */
+	public static boolean isFinal(LightweightTypeReference expressionTypeRef) {
+		if (expressionTypeRef.isArray()) {
+			return isFinal(expressionTypeRef.getComponentType());
+		}
+		if (expressionTypeRef.isPrimitive())
+			return true;
+		return expressionTypeRef.getType() instanceof JvmDeclaredType
+				&& ((JvmDeclaredType) expressionTypeRef.getType()).isFinal();
+	}
+
+	/** Replies if the given type is an interface.
+	 * 
+	 * @param type
+	 * @return <code>true</code> if the given type is an interface.
+	 */
+	public static boolean isInterface(LightweightTypeReference type) {
+		return type.getType() instanceof JvmGenericType && ((JvmGenericType)type.getType()).isInterface();
+	}
+
+	/** Replies if it is allowed to cast between the given types.
+	 * 
+	 * @param fromType - source type
+	 * @param toType - target type
+	 * @param enablePrimitiveWidening - indicates if the widening of the primitive types is allowed.
+	 * @return the state of the cast.
+	 */
+	public static boolean canCast(LightweightTypeReference fromType, LightweightTypeReference toType, boolean enablePrimitiveWidening) {
+		if (fromType==null || toType==null) return false;
+		if (fromType.isPrimitiveVoid()!=toType.isPrimitiveVoid()) {
+			return false;
+		}
+		TypeConformanceComputationArgument conform = new TypeConformanceComputationArgument(
+				false, false, true, enablePrimitiveWidening, false, true);
+		if (fromType.getType() instanceof JvmDeclaredType || fromType.isPrimitive()) {
+			// if one of the types is an interface and the other is a non final class (or interface) there always can be a subtype
+			if ((!isInterface(fromType) || isFinal(toType)) && (!isInterface(toType) || isFinal(fromType))) { 
+				if (!toType.isAssignableFrom(fromType, conform)) {
+					if (   isFinal(fromType) || isFinal(toType)
+							|| isClass(fromType) && isClass(toType)) {
+						if (!fromType.isAssignableFrom(toType, conform)) { // no upcast
+							return false;
+						}
+					}
+				}
+			}
+		}
+		if(toType.isPrimitive() && !(fromType.isPrimitive() || fromType.isWrapper())) {
+			return false;
+		}
+		return true;
+	}
+		
 }

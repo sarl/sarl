@@ -131,6 +131,24 @@ public class IssueCodes {
 	public static final String REDUNDANT_INTERFACE_IMPLEMENTATION = ISSUE_CODE_PREFIX+"redundant_interface_implementation"; //$NON-NLS-1$
 
 	/**
+	 * An action must be implemented.
+	 * <p>
+	 * The following code causes a warning:<pre><code>
+	 * capacity C1 {
+	 *    def myaction
+	 * }
+	 * skill S2 implements C1 {
+	 * }
+	 * </code></pre>
+	 * </code></pre>
+	 */
+	public static final String MISSING_ACTION_IMPLEMENTATION = ISSUE_CODE_PREFIX+"missing_action_implementation"; //$NON-NLS-1$
+
+	/**
+	 * It is not allowed to override an inherited final operation.
+	 */
+	public static final String OVERRIDE_FINAL_OPERATION = ISSUE_CODE_PREFIX+"override_final_operation"; //$NON-NLS-1$
+
 	/**
 	 * It is not allowed to override a final type.
 	 */

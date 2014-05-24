@@ -295,4 +295,98 @@ class AgentParsingTest {
 			"The field 'field1' in 'A2' is hidding the inherited field 'A1.field1'.")
 	}
 
+	@Test
+	def void incompatibleReturnType_0() {
+		val mas = '''
+			agent A1 {
+				def myaction(a : int) : int {
+					return 0
+				}
+			}
+			agent A2 extends A1 {
+				def myaction(a : int) : float {
+					return 0f
+				}
+			}
+		'''.parse
+		mas.assertError(
+			TypesPackage::eINSTANCE.jvmOperation,
+			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
+			"Incompatible return type between 'float' and 'int' for myaction(int).")
+	}
+
+	@Test
+	def void incompatibleReturnType_1() {
+		val mas = '''
+			agent A1 {
+				def myaction(a : int) {
+					// void
+				}
+			}
+			agent A2 extends A1 {
+				def myaction(a : int) : int {
+					return 0
+				}
+			}
+		'''.parse
+		mas.assertError(
+			TypesPackage::eINSTANCE.jvmOperation,
+			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
+			"Incompatible return type between 'int' and 'void' for myaction(int).")
+	}
+
+	@Test
+	def void incompatibleReturnType_2() {
+		val mas = '''
+			agent A1 {
+				def myaction(a : int) : int {
+					return 0
+				}
+			}
+			agent A2 extends A1 {
+				def myaction(a : int) {
+					// void
+				}
+			}
+		'''.parse
+		mas.assertError(
+			TypesPackage::eINSTANCE.jvmOperation,
+			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
+			"Incompatible return type between 'void' and 'int' for myaction(int).")
+	}
+
+	@Test
+	def void compatibleReturnType_0() {
+		val mas = '''
+			agent A1 {
+				def myaction(a : int) : Number {
+					return 0.0
+				}
+			}
+			agent A2 extends A1 {
+				def myaction(a : int) : Double {
+					return 0.0
+				}
+			}
+		'''.parse
+		mas.assertNoErrors
+	}
+
+	@Test
+	def void compatibleReturnType_1() {
+		val mas = '''
+			agent A1 {
+				def myaction(a : int) : float {
+					return 0f
+				}
+			}
+			agent A2 extends A1 {
+				def myaction(a : int) : float {
+					return 0f
+				}
+			}
+		'''.parse
+		mas.assertNoErrors
+	}
+
 }

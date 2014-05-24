@@ -86,8 +86,8 @@ class SARLFormatter extends XbaseFormatter {
 	def configureConstructor(FormattingConfig c, ConstructorElements ele) {
 		c.setLinewrap(2).before(ele.group)
 		c.setNoSpace.around(ele.leftParenthesisKeyword_2_0)
-		c.setNoSpace.before(ele.rightParenthesisKeyword_2_4)
-		c.setNoSpace.before(ele.commaKeyword_2_2_0)
+		c.setNoSpace.before(ele.rightParenthesisKeyword_2_2)
+		c.setNoSpace.before(ele.commaKeyword_2_1_1_0)
 
 	}
 
@@ -117,8 +117,8 @@ class SARLFormatter extends XbaseFormatter {
 	def configureActionSignatures(FormattingConfig c, ActionSignatureElements ele) {
 		c.setLinewrap(2).before(ele.group)
 		c.setNoSpace.around(ele.leftParenthesisKeyword_3_0)
-		c.setNoSpace.before(ele.rightParenthesisKeyword_3_4)
-		c.setNoSpace.before(ele.commaKeyword_3_2_0)
+		c.setNoSpace.before(ele.rightParenthesisKeyword_3_2)
+		c.setNoSpace.before(ele.commaKeyword_3_1_1_0)
 		c.setNoSpace.before(ele.commaKeyword_5_2_0)
 	}
 

@@ -19,10 +19,11 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import io.sarl.lang.SARLKeywords;
+import io.sarl.lang.core.Address;
+import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Percept;
 import io.sarl.lang.sarl.Action;
 import io.sarl.lang.sarl.ActionSignature;
-import io.sarl.lang.sarl.Agent;
 import io.sarl.lang.sarl.Attribute;
 import io.sarl.lang.sarl.Behavior;
 import io.sarl.lang.sarl.BehaviorUnit;
@@ -43,6 +44,7 @@ import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.InferredActionSignature;
 import io.sarl.lang.signature.InferredStandardParameter;
 import io.sarl.lang.signature.InferredValuedParameter;
+import io.sarl.lang.signature.SignatureKey;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -158,23 +160,24 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
    *            rely on linking using the index if isPreIndexingPhase is
    *            <code>true</code>.
    */
-  protected void _infer(final Event element, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {
-    QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(element);
-    JvmGenericType _class = this._jvmTypesBuilder.toClass(element, _fullyQualifiedName);
+  protected void _infer(final Event event, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {
+    QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(event);
+    JvmGenericType _class = this._jvmTypesBuilder.toClass(event, _fullyQualifiedName);
     IJvmDeclaredTypeAcceptor.IPostIndexingInitializing<JvmGenericType> _accept = acceptor.<JvmGenericType>accept(_class);
     final Procedure1<JvmGenericType> _function = new Procedure1<JvmGenericType>() {
       public void apply(final JvmGenericType it) {
         SARLJvmModelInferrer.this.sarlSignatureProvider.resetSignatures(it);
-        String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(element);
+        String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(event);
         SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
         long serial = 1L;
-        long _generateSuperTypes = SARLJvmModelInferrer.this.generateSuperTypes(it, element, io.sarl.lang.core.Event.class);
+        long _generateSuperTypes = SARLJvmModelInferrer.this.generateSuperTypes(it, event, io.sarl.lang.core.Event.class);
         long _plus = (serial + _generateSuperTypes);
         serial = _plus;
         JvmField jvmField = null;
         List<JvmField> jvmFields = new ArrayList<JvmField>();
         int actionIndex = 0;
-        EList<EObject> _features = element.getFeatures();
+        boolean hasConstructor = false;
+        EList<EObject> _features = event.getFeatures();
         for (final EObject feature : _features) {
           boolean _matched = false;
           if (!_matched) {
@@ -194,35 +197,82 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           if (!_matched) {
             if (feature instanceof Constructor) {
               _matched=true;
-              SARLJvmModelInferrer.this.generateConstructor(it, element, ((Constructor)feature), actionIndex);
-              QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(element);
+              SARLJvmModelInferrer.this.generateConstructor(it, event, ((Constructor)feature), actionIndex);
+              QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(event);
               int _hashCode = _fullyQualifiedName.hashCode();
               long _plus_1 = (serial + _hashCode);
               serial = _plus_1;
               actionIndex++;
+              hasConstructor = true;
             }
           }
+        }
+        if ((!hasConstructor)) {
+          EList<JvmMember> _members = it.getMembers();
+          final Procedure1<JvmConstructor> _function = new Procedure1<JvmConstructor>() {
+            public void apply(final JvmConstructor it) {
+              StringConcatenation _builder = new StringConcatenation();
+              _builder.append("Construct an event. The source of the event is unknown.");
+              _builder.newLine();
+              SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _builder.toString());
+              StringConcatenationClient _client = new StringConcatenationClient() {
+                @Override
+                protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                  _builder.append("super();");
+                  _builder.newLine();
+                }
+              };
+              SARLJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
+            }
+          };
+          JvmConstructor _constructor = SARLJvmModelInferrer.this._jvmTypesBuilder.toConstructor(event, _function);
+          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmConstructor>operator_add(_members, _constructor);
+          EList<JvmMember> _members_1 = it.getMembers();
+          final Procedure1<JvmConstructor> _function_1 = new Procedure1<JvmConstructor>() {
+            public void apply(final JvmConstructor it) {
+              StringConcatenation _builder = new StringConcatenation();
+              _builder.append("Construct an event.");
+              _builder.newLine();
+              _builder.append("@param source - address of the agent that is emitting this event.");
+              _builder.newLine();
+              SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _builder.toString());
+              EList<JvmFormalParameter> _parameters = it.getParameters();
+              JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(it, Address.class);
+              JvmFormalParameter _parameter = SARLJvmModelInferrer.this._jvmTypesBuilder.toParameter(event, "source", _newTypeRef);
+              SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
+              StringConcatenationClient _client = new StringConcatenationClient() {
+                @Override
+                protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                  _builder.append("super(source);");
+                  _builder.newLine();
+                }
+              };
+              SARLJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
+            }
+          };
+          JvmConstructor _constructor_1 = SARLJvmModelInferrer.this._jvmTypesBuilder.toConstructor(event, _function_1);
+          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmConstructor>operator_add(_members_1, _constructor_1);
         }
         boolean _isEmpty = jvmFields.isEmpty();
         boolean _not = (!_isEmpty);
         if (_not) {
           final JvmField[] tab = ((JvmField[])Conversions.unwrapArray(jvmFields, JvmField.class));
-          QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(element);
-          JvmGenericType elementType = SARLJvmModelInferrer.this._jvmTypesBuilder.toClass(element, _fullyQualifiedName);
-          EList<JvmMember> _members = it.getMembers();
-          JvmOperation _equalsMethod_Bug434912 = SARLJvmModelInferrer.this.toEqualsMethod_Bug434912(it, element, elementType, true, tab);
-          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members, _equalsMethod_Bug434912);
-          EList<JvmMember> _members_1 = it.getMembers();
-          JvmOperation _hashCodeMethod_Bug392440 = SARLJvmModelInferrer.this.toHashCodeMethod_Bug392440(it, element, true, tab);
-          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_1, _hashCodeMethod_Bug392440);
+          QualifiedName _fullyQualifiedName = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(event);
+          JvmGenericType elementType = SARLJvmModelInferrer.this._jvmTypesBuilder.toClass(event, _fullyQualifiedName);
           EList<JvmMember> _members_2 = it.getMembers();
+          JvmOperation _equalsMethod_Bug434912 = SARLJvmModelInferrer.this.toEqualsMethod_Bug434912(it, event, elementType, true, tab);
+          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_2, _equalsMethod_Bug434912);
+          EList<JvmMember> _members_3 = it.getMembers();
+          JvmOperation _hashCodeMethod_Bug392440 = SARLJvmModelInferrer.this.toHashCodeMethod_Bug392440(it, event, true, tab);
+          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_3, _hashCodeMethod_Bug392440);
+          EList<JvmMember> _members_4 = it.getMembers();
           JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(it, String.class);
-          final Procedure1<JvmOperation> _function = new Procedure1<JvmOperation>() {
+          final Procedure1<JvmOperation> _function_2 = new Procedure1<JvmOperation>() {
             public void apply(final JvmOperation it) {
               it.setVisibility(JvmVisibility.PROTECTED);
               StringConcatenation _builder = new StringConcatenation();
               _builder.append("Returns a String representation of the Event ");
-              String _name = element.getName();
+              String _name = event.getName();
               _builder.append(_name, "");
               _builder.append(" attributes only.");
               SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _builder.toString());
@@ -232,7 +282,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
                   _builder.append("StringBuilder result = new StringBuilder(super.attributesToString());");
                   _builder.newLine();
                   {
-                    EList<EObject> _features = element.getFeatures();
+                    EList<EObject> _features = event.getFeatures();
                     Iterable<Attribute> _filter = Iterables.<Attribute>filter(_features, Attribute.class);
                     for(final Attribute attr : _filter) {
                       _builder.append("result.append(\"");
@@ -252,12 +302,12 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
               SARLJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _function);
             }
           };
-          JvmOperation _method = SARLJvmModelInferrer.this._jvmTypesBuilder.toMethod(element, "attributesToString", _newTypeRef, _function);
-          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_2, _method);
+          JvmOperation _method = SARLJvmModelInferrer.this._jvmTypesBuilder.toMethod(event, "attributesToString", _newTypeRef, _function_2);
+          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_4, _method);
         }
         final long serialValue = serial;
         JvmTypeReference _newTypeRef_1 = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(it, long.class);
-        final Procedure1<JvmField> _function_1 = new Procedure1<JvmField>() {
+        final Procedure1<JvmField> _function_3 = new Procedure1<JvmField>() {
           public void apply(final JvmField it) {
             it.setVisibility(JvmVisibility.PRIVATE);
             it.setFinal(true);
@@ -271,9 +321,9 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
             SARLJvmModelInferrer.this._jvmTypesBuilder.setInitializer(it, _function);
           }
         };
-        final JvmField serialField = SARLJvmModelInferrer.this._jvmTypesBuilder.toField(element, "serialVersionUID", _newTypeRef_1, _function_1);
-        EList<JvmMember> _members_3 = it.getMembers();
-        SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members_3, serialField);
+        final JvmField serialField = SARLJvmModelInferrer.this._jvmTypesBuilder.toField(event, "serialVersionUID", _newTypeRef_1, _function_3);
+        EList<JvmMember> _members_5 = it.getMembers();
+        SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members_5, serialField);
         SARLJvmModelInferrer.this.readAndWriteTracking.markInitialized(serialField);
       }
     };
@@ -304,17 +354,17 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
     _accept.initializeLater(_function);
   }
   
-  protected void _infer(final Skill element, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {
-    QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(element);
-    JvmGenericType _class = this._jvmTypesBuilder.toClass(element, _fullyQualifiedName);
+  protected void _infer(final Skill skill, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {
+    QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(skill);
+    JvmGenericType _class = this._jvmTypesBuilder.toClass(skill, _fullyQualifiedName);
     IJvmDeclaredTypeAcceptor.IPostIndexingInitializing<JvmGenericType> _accept = acceptor.<JvmGenericType>accept(_class);
     final Procedure1<JvmGenericType> _function = new Procedure1<JvmGenericType>() {
       public void apply(final JvmGenericType it) {
         SARLJvmModelInferrer.this.sarlSignatureProvider.resetSignatures(it);
-        String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(element);
+        String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(skill);
         SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
-        SARLJvmModelInferrer.this.generateSuperTypes(it, element, io.sarl.lang.core.Skill.class);
-        EList<InheritingElement> _implementedTypes = element.getImplementedTypes();
+        SARLJvmModelInferrer.this.generateSuperTypes(it, skill, io.sarl.lang.core.Skill.class);
+        EList<InheritingElement> _implementedTypes = skill.getImplementedTypes();
         for (final InheritingElement cap : _implementedTypes) {
           String _name = cap.getName();
           boolean _notEquals = (!Objects.equal(_name, null));
@@ -325,24 +375,25 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
               EList<JvmTypeReference> _superTypes = it.getSuperTypes();
               QualifiedName _fullyQualifiedName_1 = SARLJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(cap);
               String _string = _fullyQualifiedName_1.toString();
-              JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(element, _string);
+              JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(skill, _string);
               SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _newTypeRef);
             } else {
               String _name_1 = cap.getName();
               String _plus = ("Unable to resolve the fully qualified name of the implemented capacity \'" + _name_1);
               String _plus_1 = (_plus + "\' for the skill:");
-              String _name_2 = element.getName();
+              String _name_2 = skill.getName();
               String _plus_2 = (_plus_1 + _name_2);
               SARLJvmModelInferrer.this.log.fine(_plus_2);
             }
           } else {
-            String _name_3 = element.getName();
+            String _name_3 = skill.getName();
             String _plus_3 = ("Unable to resolve an implemented capacity name for the skill:" + _name_3);
             SARLJvmModelInferrer.this.log.fine(_plus_3);
           }
         }
         int actionIndex = 0;
-        EList<EObject> _features = element.getFeatures();
+        boolean hasConstructor = false;
+        EList<EObject> _features = skill.getFeatures();
         for (final EObject feature : _features) {
           boolean _matched = false;
           if (!_matched) {
@@ -365,7 +416,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
               _matched=true;
               EList<Capacity> _capacitiesUsed = ((CapacityUses)feature).getCapacitiesUsed();
               for (final Capacity used : _capacitiesUsed) {
-                int _generateCapacityDelegatorMethods = SARLJvmModelInferrer.this.generateCapacityDelegatorMethods(it, element, used, actionIndex);
+                int _generateCapacityDelegatorMethods = SARLJvmModelInferrer.this.generateCapacityDelegatorMethods(it, skill, used, actionIndex);
                 actionIndex = _generateCapacityDelegatorMethods;
               }
             }
@@ -373,29 +424,77 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           if (!_matched) {
             if (feature instanceof Constructor) {
               _matched=true;
-              SARLJvmModelInferrer.this.generateConstructor(it, element, ((Constructor)feature), actionIndex);
+              SARLJvmModelInferrer.this.generateConstructor(it, skill, ((Constructor)feature), actionIndex);
               actionIndex++;
+              hasConstructor = true;
             }
           }
+        }
+        if ((!hasConstructor)) {
+          EList<JvmMember> _members = it.getMembers();
+          final Procedure1<JvmConstructor> _function = new Procedure1<JvmConstructor>() {
+            public void apply(final JvmConstructor it) {
+              StringConcatenation _builder = new StringConcatenation();
+              _builder.append("Construct a skill.");
+              _builder.newLine();
+              _builder.append("@param owner - agent that is owning this skill. ");
+              _builder.newLine();
+              SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _builder.toString());
+              EList<JvmFormalParameter> _parameters = it.getParameters();
+              JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(it, Agent.class);
+              JvmFormalParameter _parameter = SARLJvmModelInferrer.this._jvmTypesBuilder.toParameter(skill, "owner", _newTypeRef);
+              SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
+              StringConcatenationClient _client = new StringConcatenationClient() {
+                @Override
+                protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                  _builder.append("super(owner);");
+                  _builder.newLine();
+                }
+              };
+              SARLJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
+            }
+          };
+          JvmConstructor _constructor = SARLJvmModelInferrer.this._jvmTypesBuilder.toConstructor(skill, _function);
+          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmConstructor>operator_add(_members, _constructor);
+          EList<JvmMember> _members_1 = it.getMembers();
+          final Procedure1<JvmConstructor> _function_1 = new Procedure1<JvmConstructor>() {
+            public void apply(final JvmConstructor it) {
+              StringConcatenation _builder = new StringConcatenation();
+              _builder.append("Construct a skill. The owning agent is unknown. ");
+              _builder.newLine();
+              SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _builder.toString());
+              StringConcatenationClient _client = new StringConcatenationClient() {
+                @Override
+                protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                  _builder.append("super();");
+                  _builder.newLine();
+                }
+              };
+              SARLJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
+            }
+          };
+          JvmConstructor _constructor_1 = SARLJvmModelInferrer.this._jvmTypesBuilder.toConstructor(skill, _function_1);
+          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmConstructor>operator_add(_members_1, _constructor_1);
         }
       }
     };
     _accept.initializeLater(_function);
   }
   
-  protected void _infer(final Behavior element, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {
-    QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(element);
-    JvmGenericType _class = this._jvmTypesBuilder.toClass(element, _fullyQualifiedName);
+  protected void _infer(final Behavior behavior, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {
+    QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(behavior);
+    JvmGenericType _class = this._jvmTypesBuilder.toClass(behavior, _fullyQualifiedName);
     IJvmDeclaredTypeAcceptor.IPostIndexingInitializing<JvmGenericType> _accept = acceptor.<JvmGenericType>accept(_class);
     final Procedure1<JvmGenericType> _function = new Procedure1<JvmGenericType>() {
       public void apply(final JvmGenericType it) {
         SARLJvmModelInferrer.this.sarlSignatureProvider.resetSignatures(it);
-        String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(element);
+        String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(behavior);
         SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
-        SARLJvmModelInferrer.this.generateSuperTypes(it, element, io.sarl.lang.core.Behavior.class);
+        SARLJvmModelInferrer.this.generateSuperTypes(it, behavior, io.sarl.lang.core.Behavior.class);
         int behaviorUnitIndex = 1;
         int actionIndex = 1;
-        EList<EObject> _features = element.getFeatures();
+        boolean hasConstructor = false;
+        EList<EObject> _features = behavior.getFeatures();
         for (final EObject feature : _features) {
           boolean _matched = false;
           if (!_matched) {
@@ -429,7 +528,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
               _matched=true;
               EList<Capacity> _capacitiesUsed = ((CapacityUses)feature).getCapacitiesUsed();
               for (final Capacity used : _capacitiesUsed) {
-                int _generateCapacityDelegatorMethods = SARLJvmModelInferrer.this.generateCapacityDelegatorMethods(it, element, used, actionIndex);
+                int _generateCapacityDelegatorMethods = SARLJvmModelInferrer.this.generateCapacityDelegatorMethods(it, behavior, used, actionIndex);
                 actionIndex = _generateCapacityDelegatorMethods;
               }
             }
@@ -437,8 +536,9 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
           if (!_matched) {
             if (feature instanceof Constructor) {
               _matched=true;
-              SARLJvmModelInferrer.this.generateConstructor(it, element, ((Constructor)feature), actionIndex);
+              SARLJvmModelInferrer.this.generateConstructor(it, behavior, ((Constructor)feature), actionIndex);
               actionIndex++;
+              hasConstructor = true;
             }
           }
           if (!_matched) {
@@ -448,12 +548,39 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
             }
           }
         }
+        if ((!hasConstructor)) {
+          EList<JvmMember> _members = it.getMembers();
+          final Procedure1<JvmConstructor> _function = new Procedure1<JvmConstructor>() {
+            public void apply(final JvmConstructor it) {
+              StringConcatenation _builder = new StringConcatenation();
+              _builder.append("Construct a behavior.");
+              _builder.newLine();
+              _builder.append("@param owner - reference to the agent that is owning this behavior.");
+              _builder.newLine();
+              SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _builder.toString());
+              EList<JvmFormalParameter> _parameters = it.getParameters();
+              JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(it, Agent.class);
+              JvmFormalParameter _parameter = SARLJvmModelInferrer.this._jvmTypesBuilder.toParameter(behavior, "owner", _newTypeRef);
+              SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
+              StringConcatenationClient _client = new StringConcatenationClient() {
+                @Override
+                protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                  _builder.append("super(owner);");
+                  _builder.newLine();
+                }
+              };
+              SARLJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
+            }
+          };
+          JvmConstructor _constructor = SARLJvmModelInferrer.this._jvmTypesBuilder.toConstructor(behavior, _function);
+          SARLJvmModelInferrer.this._jvmTypesBuilder.<JvmConstructor>operator_add(_members, _constructor);
+        }
       }
     };
     _accept.initializeLater(_function);
   }
   
-  protected void _infer(final Agent agent, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {
+  protected void _infer(final io.sarl.lang.sarl.Agent agent, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {
     QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(agent);
     JvmGenericType _class = this._jvmTypesBuilder.toClass(agent, _fullyQualifiedName);
     IJvmDeclaredTypeAcceptor.IPostIndexingInitializing<JvmGenericType> _accept = acceptor.<JvmGenericType>accept(_class);
@@ -462,14 +589,17 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
         SARLJvmModelInferrer.this.sarlSignatureProvider.resetSignatures(it);
         String _documentation = SARLJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(agent);
         SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
-        SARLJvmModelInferrer.this.generateSuperTypes(it, agent, io.sarl.lang.core.Agent.class);
+        SARLJvmModelInferrer.this.generateSuperTypes(it, agent, Agent.class);
         EList<JvmMember> _members = it.getMembers();
         final Procedure1<JvmConstructor> _function = new Procedure1<JvmConstructor>() {
           public void apply(final JvmConstructor it) {
             StringConcatenation _builder = new StringConcatenation();
-            _builder.append("Creates a new Agent of type ");
-            String _name = agent.getName();
-            _builder.append(_name, "");
+            _builder.append("Construct an agent.");
+            _builder.newLine();
+            _builder.append("@param parentID - identifier of the parent. It is the identifer");
+            _builder.newLine();
+            _builder.append("of the parent agent and the enclosing contect, at the same time.");
+            _builder.newLine();
             SARLJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _builder.toString());
             EList<JvmFormalParameter> _parameters = it.getParameters();
             JvmTypeReference _newTypeRef = SARLJvmModelInferrer.this._jvmTypesBuilder.newTypeRef(it, UUID.class);
@@ -1033,7 +1163,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
     return op;
   }
   
-  protected void generateConstructor(final JvmGenericType owner, final TopElement context, final Constructor constructor, final int index) {
+  protected SignatureKey generateConstructor(final JvmGenericType owner, final TopElement context, final Constructor constructor, final int index) {
     final ActionNameKey actionKey = this.sarlSignatureProvider.createConstructorID(owner);
     EList<JvmMember> _members = owner.getMembers();
     final Procedure1<JvmConstructor> _function = new Procedure1<JvmConstructor>() {
@@ -1078,6 +1208,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
       JvmConstructor _constructor_1 = this._jvmTypesBuilder.toConstructor(owner, _function_1);
       this._jvmTypesBuilder.<JvmConstructor>operator_add(_members_1, _constructor_1);
     }
+    return otherSignatures.getFormalParameterKey();
   }
   
   /**
@@ -1419,28 +1550,28 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
     return reference;
   }
   
-  public void infer(final EObject element, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {
-    if (element instanceof Skill) {
-      _infer((Skill)element, acceptor, isPreIndexingPhase);
+  public void infer(final EObject skill, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {
+    if (skill instanceof Skill) {
+      _infer((Skill)skill, acceptor, isPreIndexingPhase);
       return;
-    } else if (element instanceof Agent) {
-      _infer((Agent)element, acceptor, isPreIndexingPhase);
+    } else if (skill instanceof io.sarl.lang.sarl.Agent) {
+      _infer((io.sarl.lang.sarl.Agent)skill, acceptor, isPreIndexingPhase);
       return;
-    } else if (element instanceof Behavior) {
-      _infer((Behavior)element, acceptor, isPreIndexingPhase);
+    } else if (skill instanceof Behavior) {
+      _infer((Behavior)skill, acceptor, isPreIndexingPhase);
       return;
-    } else if (element instanceof Capacity) {
-      _infer((Capacity)element, acceptor, isPreIndexingPhase);
+    } else if (skill instanceof Capacity) {
+      _infer((Capacity)skill, acceptor, isPreIndexingPhase);
       return;
-    } else if (element instanceof Event) {
-      _infer((Event)element, acceptor, isPreIndexingPhase);
+    } else if (skill instanceof Event) {
+      _infer((Event)skill, acceptor, isPreIndexingPhase);
       return;
-    } else if (element != null) {
-      _infer(element, acceptor, isPreIndexingPhase);
+    } else if (skill != null) {
+      _infer(skill, acceptor, isPreIndexingPhase);
       return;
     } else {
       throw new IllegalArgumentException("Unhandled parameter types: " +
-        Arrays.<Object>asList(element, acceptor, isPreIndexingPhase).toString());
+        Arrays.<Object>asList(skill, acceptor, isPreIndexingPhase).toString());
     }
   }
 }

@@ -18,6 +18,8 @@ import org.eclipse.xtext.serializer.sequencer.AbstractSyntacticSequencer;
 public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected SARLGrammarAccess grammarAccess;
+	protected AbstractElementAlias match_ActionSignature___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q;
+	protected AbstractElementAlias match_Constructor___LeftParenthesisKeyword_2_0_RightParenthesisKeyword_2_2__q;
 	protected AbstractElementAlias match_Event___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q;
 	protected AbstractElementAlias match_SarlScript_SemicolonKeyword_0_2_q;
 	protected AbstractElementAlias match_XBlockExpression_SemicolonKeyword_2_1_q;
@@ -30,6 +32,8 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (SARLGrammarAccess) access;
+		match_ActionSignature___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getActionSignatureAccess().getLeftParenthesisKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getActionSignatureAccess().getRightParenthesisKeyword_3_2()));
+		match_Constructor___LeftParenthesisKeyword_2_0_RightParenthesisKeyword_2_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getConstructorAccess().getLeftParenthesisKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getConstructorAccess().getRightParenthesisKeyword_2_2()));
 		match_Event___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getEventAccess().getLeftCurlyBracketKeyword_4_0()), new TokenAlias(false, false, grammarAccess.getEventAccess().getRightCurlyBracketKeyword_4_2()));
 		match_SarlScript_SemicolonKeyword_0_2_q = new TokenAlias(false, true, grammarAccess.getSarlScriptAccess().getSemicolonKeyword_0_2());
 		match_XBlockExpression_SemicolonKeyword_2_1_q = new TokenAlias(false, true, grammarAccess.getXBlockExpressionAccess().getSemicolonKeyword_2_1());
@@ -102,7 +106,11 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 		List<INode> transitionNodes = collectNodes(fromNode, toNode);
 		for (AbstractElementAlias syntax : transition.getAmbiguousSyntaxes()) {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
-			if(match_Event___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q.equals(syntax))
+			if(match_ActionSignature___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q.equals(syntax))
+				emit_ActionSignature___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_Constructor___LeftParenthesisKeyword_2_0_RightParenthesisKeyword_2_2__q.equals(syntax))
+				emit_Constructor___LeftParenthesisKeyword_2_0_RightParenthesisKeyword_2_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_Event___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q.equals(syntax))
 				emit_Event___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_SarlScript_SemicolonKeyword_0_2_q.equals(syntax))
 				emit_SarlScript_SemicolonKeyword_0_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
@@ -122,6 +130,22 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 		}
 	}
 
+	/**
+	 * Syntax:
+	 *     ('(' ')')?
+	 */
+	protected void emit_ActionSignature___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ('(' ')')?
+	 */
+	protected void emit_Constructor___LeftParenthesisKeyword_2_0_RightParenthesisKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
 	/**
 	 * Syntax:
 	 *     ('{' '}')?

@@ -62,7 +62,16 @@ public class AgentCompilerTest {
       _builder_1.append("/**");
       _builder_1.newLine();
       _builder_1.append("   ");
-      _builder_1.append("* Creates a new Agent of type A1");
+      _builder_1.append("* Construct an agent.");
+      _builder_1.newLine();
+      _builder_1.append("   ");
+      _builder_1.append("* @param parentID - identifier of the parent. It is the identifer");
+      _builder_1.newLine();
+      _builder_1.append("   ");
+      _builder_1.append("* of the parent agent and the enclosing contect, at the same time.");
+      _builder_1.newLine();
+      _builder_1.append("   ");
+      _builder_1.append("* ");
       _builder_1.newLine();
       _builder_1.append("   ");
       _builder_1.append("*/");

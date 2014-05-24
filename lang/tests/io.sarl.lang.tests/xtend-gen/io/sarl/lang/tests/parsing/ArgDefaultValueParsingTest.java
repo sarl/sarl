@@ -24,7 +24,6 @@ import io.sarl.lang.validation.IssueCodes;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.xtend2.lib.StringConcatenation;
-import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
@@ -2157,70 +2156,108 @@ public class ArgDefaultValueParsingTest {
   }
   
   @Test
-  public void redundantCapacity_fromSuperType() {
+  public void missedActionImplementation_0() {
     try {
       StringConcatenation _builder = new StringConcatenation();
-      _builder.append("capacity C1 {}");
+      _builder.append("capacity C1 {");
       _builder.newLine();
-      _builder.append("capacity C2 {}");
+      _builder.append("\t");
+      _builder.append("def myaction1(a : int=4)");
       _builder.newLine();
-      _builder.append("skill S1 implements C1 { }");
+      _builder.append("}");
       _builder.newLine();
-      _builder.append("skill S2 extends S1 implements C2, C1 { }");
+      _builder.append("capacity C2 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction2(b : float=6, c : boolean)");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1, C2 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction1(x : int) { }");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction2(y : float, z : boolean) { }");
+      _builder.newLine();
+      _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
-      this._validationTestHelper.assertWarning(mas, _jvmParameterizedTypeReference, 
-        IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION, 
-        "The feature \'C1\' is already implemented by the super type \'S1\'.");
+      this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
   }
   
   @Test
-  public void redundantCapacity_duplicate() {
+  public void missedActionImplementation_1() {
     try {
       StringConcatenation _builder = new StringConcatenation();
-      _builder.append("capacity C1 {}");
+      _builder.append("capacity C1 {");
       _builder.newLine();
-      _builder.append("capacity C2 {}");
+      _builder.append("\t");
+      _builder.append("def myaction1(a : int=4)");
       _builder.newLine();
-      _builder.append("capacity C3 {}");
+      _builder.append("}");
       _builder.newLine();
-      _builder.append("skill S1 implements C1 { }");
+      _builder.append("capacity C2 {");
       _builder.newLine();
-      _builder.append("skill S2 extends S1 implements C2, C3, C2 { }");
+      _builder.append("\t");
+      _builder.append("def myaction2(b : float=6, c : boolean)");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1, C2 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction2(b : float, c : boolean) { }");
+      _builder.newLine();
+      _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
-      this._validationTestHelper.assertWarning(mas, _jvmParameterizedTypeReference, 
-        IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION, 
-        "The feature \'C2\' is already implemented by the preceding interface \'C2\'.");
+      EClass _skill = SarlPackage.eINSTANCE.getSkill();
+      this._validationTestHelper.assertError(mas, _skill, 
+        IssueCodes.MISSING_ACTION_IMPLEMENTATION, 
+        "The operation myaction1(int) must be implemented.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
   }
   
   @Test
-  public void redundantCapacity_fromPreviousCapacity() {
+  public void missedActionImplementation_2() {
     try {
       StringConcatenation _builder = new StringConcatenation();
-      _builder.append("capacity C1 {}");
+      _builder.append("capacity C1 {");
       _builder.newLine();
-      _builder.append("capacity C2 {}");
+      _builder.append("\t");
+      _builder.append("def myaction1(a : int=4)");
       _builder.newLine();
-      _builder.append("capacity C3 extends C2 {}");
+      _builder.append("}");
       _builder.newLine();
-      _builder.append("skill S1 implements C1 { }");
+      _builder.append("capacity C2 {");
       _builder.newLine();
-      _builder.append("skill S2 extends S1 implements C3, C2 { }");
+      _builder.append("\t");
+      _builder.append("def myaction2(b : float=6, c : boolean)");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1, C2 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction1(x : float) { }");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction2(y : float, z : boolean) { }");
+      _builder.newLine();
+      _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
-      this._validationTestHelper.assertWarning(mas, _jvmParameterizedTypeReference, 
-        IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION, 
-        "The feature \'C2\' is already implemented by the preceding interface \'C3\'.");
+      EClass _skill = SarlPackage.eINSTANCE.getSkill();
+      this._validationTestHelper.assertError(mas, _skill, 
+        IssueCodes.MISSING_ACTION_IMPLEMENTATION, 
+        "The operation myaction1(int) must be implemented.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
