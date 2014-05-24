@@ -24,6 +24,7 @@ import io.sarl.lang.validation.IssueCodes;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
@@ -2015,33 +2016,6 @@ public class ArgDefaultValueParsingTest {
   }
   
   @Test
-  public void overridingCapacitySkill_invalid_defArgs() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("capacity C1 {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*)");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("skill S1 implements C1 {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def capAction {}");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*) {}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      final SarlScript mas = this._parseHelper.parse(_builder);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
-  }
-  
-  @Test
   public void overridingCapacitySkill() {
     try {
       StringConcatenation _builder = new StringConcatenation();
@@ -2067,122 +2041,6 @@ public class ArgDefaultValueParsingTest {
       EList<TopElement> _elements = mas.getElements();
       int _size = _elements.size();
       Assert.assertEquals(2, _size);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
-  }
-  
-  @Test
-  public void overridingCapacitySkill_invalid_override() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("capacity C1 {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*)");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("skill S1 implements C1 {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def capAction {}");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int, arg2 : int*) {}");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def myaction(arg1 : int, arg2 : int*) {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("System.out.println(\"Invalid\")");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      final SarlScript mas = this._parseHelper.parse(_builder);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
-  }
-  
-  @Test
-  public void overridingSkillSkill_invalid() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("capacity C1 {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*)");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("skill S1 implements C1 {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def capAction {}");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*) {}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("skill S2 extends S1 implements C1 {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def myaction(arg1 : int=56, arg2 : int*) {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("System.out.println(\"invalid\")");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      final SarlScript mas = this._parseHelper.parse(_builder);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
-  }
-  
-  @Test
-  public void overridingSkillSkill() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("capacity C1 {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...)");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("skill S1 implements C1 {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def capAction {}");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int, arg2 : int*) {}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("skill S2 extends S1 implements C1 {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("def myaction(arg1 : int, arg2 : int*) {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("System.out.println(\"invalid\")");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      final SarlScript mas = this._parseHelper.parse(_builder);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -2293,6 +2151,76 @@ public class ArgDefaultValueParsingTest {
       this._validationTestHelper.assertError(mas, _action, 
         IssueCodes.ACTION_ALREADY_DEFINED, 
         "Cannot define many times the same feature in \'S1\': myaction(arg0 : int, arg1 : int)");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void redundantCapacity_fromSuperType() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {}");
+      _builder.newLine();
+      _builder.append("capacity C2 {}");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 { }");
+      _builder.newLine();
+      _builder.append("skill S2 extends S1 implements C2, C1 { }");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
+      this._validationTestHelper.assertWarning(mas, _jvmParameterizedTypeReference, 
+        IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION, 
+        "The feature \'C1\' is already implemented by the super type \'S1\'.");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void redundantCapacity_duplicate() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {}");
+      _builder.newLine();
+      _builder.append("capacity C2 {}");
+      _builder.newLine();
+      _builder.append("capacity C3 {}");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 { }");
+      _builder.newLine();
+      _builder.append("skill S2 extends S1 implements C2, C3, C2 { }");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
+      this._validationTestHelper.assertWarning(mas, _jvmParameterizedTypeReference, 
+        IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION, 
+        "The feature \'C2\' is already implemented by the preceding interface \'C2\'.");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void redundantCapacity_fromPreviousCapacity() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {}");
+      _builder.newLine();
+      _builder.append("capacity C2 {}");
+      _builder.newLine();
+      _builder.append("capacity C3 extends C2 {}");
+      _builder.newLine();
+      _builder.append("skill S1 implements C1 { }");
+      _builder.newLine();
+      _builder.append("skill S2 extends S1 implements C3, C2 { }");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
+      this._validationTestHelper.assertWarning(mas, _jvmParameterizedTypeReference, 
+        IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION, 
+        "The feature \'C2\' is already implemented by the preceding interface \'C3\'.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

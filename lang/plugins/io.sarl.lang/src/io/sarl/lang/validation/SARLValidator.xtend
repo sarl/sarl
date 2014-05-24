@@ -33,6 +33,8 @@ import io.sarl.lang.signature.ActionKey
 import io.sarl.lang.signature.ActionNameKey
 import io.sarl.lang.signature.ActionSignatureProvider
 import io.sarl.lang.signature.SignatureKey
+import java.util.ArrayList
+import java.util.List
 import java.util.Map
 import java.util.Set
 import java.util.TreeMap
@@ -44,6 +46,7 @@ import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.common.types.JvmMember
 import org.eclipse.xtext.common.types.JvmOperation
+import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.ValidationMessageAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
@@ -57,7 +60,6 @@ import static org.eclipse.xtext.common.types.JvmVisibility.*
  * Validator for the SARL elements.
  * <p>
  * The following issues are not yet supported:<ul>
- * <li>Redundant capacity implementation - WARNING</li>
  * <li>Override of final method - ERROR</li>
  * <li>Missed function implementation - ERROR</li>
  * <li>Skill implementation cannot have default value - ERROR</li>
@@ -335,7 +337,7 @@ class SARLValidator extends AbstractSARLValidator {
 		return false
 	}
 
-	protected def populateInheritanceContext(
+	protected def void populateInheritanceContext(
 				JvmGenericType jvmElement,
 				Map<ActionKey,JvmOperation> finalOperations,
 				Map<ActionKey,JvmOperation> overridableOperations,
@@ -385,6 +387,48 @@ class SARLValidator extends AbstractSARLValidator {
 			}
 		}
 	}
+	
+	private def checkRedundantInterface(JvmGenericType jvmElement, JvmTypeReference interfaceReference, LightweightTypeReference lightweightInterfaceReference, Iterable<LightweightTypeReference> knownInterfaces) {
+		if (jvmElement.extendedClass!==null) {
+			var superType = jvmElement.extendedClass.toLightweightTypeReference
+			if (memberOfTypeHierarchy(superType, lightweightInterfaceReference)) {
+				warning(
+					String.format(
+						"The feature '%s' is already implemented by the super type '%s'.",
+						canonicalName(lightweightInterfaceReference),
+						canonicalName(superType)),
+					interfaceReference,
+					null,
+					io.sarl.lang.validation.IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION)
+					return;
+			}
+		}
+		
+		for(previousInterface : knownInterfaces) {
+			if (memberOfTypeHierarchy(previousInterface, lightweightInterfaceReference)) {
+				warning(
+					String.format(
+						"The feature '%s' is already implemented by the preceding interface '%s'.",
+						canonicalName(lightweightInterfaceReference),
+						canonicalName(previousInterface)),
+					interfaceReference,
+					null,
+					io.sarl.lang.validation.IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION)
+					return;
+			}
+		}
+	}
+	
+	private def checkRedundantInterfaces(JvmGenericType jvmElement) {
+		if (!isIgnored(io.sarl.lang.validation.IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION)) {
+			var List<LightweightTypeReference> knownInterfaces = new ArrayList
+			for(interface : jvmElement.extendedInterfaces) {
+				var interfaceType = interface.toLightweightTypeReference
+				checkRedundantInterface(jvmElement, interface, interfaceType, knownInterfaces)
+				knownInterfaces.add(interfaceType)
+			}
+		}
+	}
 
 	@Check
 	def checkInheritedFeatures(InheritingElement element) {
@@ -400,6 +444,8 @@ class SARLValidator extends AbstractSARLValidator {
 				inheritedFields, operationsToImplement
 			)
 						
+			jvmElement.checkRedundantInterfaces
+			
 			if (!isIgnored(io.sarl.lang.validation.IssueCodes::FIELD_NAME_SHADOWING)) {
 				for(feature : jvmElement.declaredFields) {
 					val inheritedField = inheritedFields.get(feature.simpleName)
@@ -409,7 +455,7 @@ class SARLValidator extends AbstractSARLValidator {
 								"The field '%s' in '%s' is hidding the inherited field '%s'.",
 								feature.simpleName, jvmElement.qualifiedName,
 								inheritedField.qualifiedName),
-							feature, //TODO
+							feature,
 							null,
 							io.sarl.lang.validation.IssueCodes::FIELD_NAME_SHADOWING)
 					}

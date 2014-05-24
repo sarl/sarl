@@ -124,4 +124,10 @@ public class IssueCodes {
 	 */
 	public static final String FIELD_NAME_SHADOWING = ISSUE_CODE_PREFIX+"field_name_shadowing"; //$NON-NLS-1$
 
+	/**
+	 * An interface is implemented, but it is already implemented by the super type,
+	 * or inherited by another interface.
+	 */
+	public static final String REDUNDANT_INTERFACE_IMPLEMENTATION = ISSUE_CODE_PREFIX+"redundant_interface_implementation"; //$NON-NLS-1$
+
 }

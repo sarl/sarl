@@ -41,6 +41,7 @@ public class SARLConfigurableIssueCodesProvider extends XbaseConfigurableIssueCo
 		super.initialize(iAcceptor);
 		
 		iAcceptor.accept(create(IssueCodes.FIELD_NAME_SHADOWING, SeverityConverter.SEVERITY_WARNING));
+		iAcceptor.accept(create(IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION, SeverityConverter.SEVERITY_ERROR));
 	}
 
 }

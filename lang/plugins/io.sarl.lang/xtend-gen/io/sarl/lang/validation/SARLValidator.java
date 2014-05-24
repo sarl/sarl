@@ -37,7 +37,9 @@ import io.sarl.lang.signature.InferredActionSignature;
 import io.sarl.lang.signature.SignatureKey;
 import io.sarl.lang.validation.AbstractSARLValidator;
 import io.sarl.lang.validation.IssueCodes;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -68,7 +70,6 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
  * Validator for the SARL elements.
  * <p>
  * The following issues are not yet supported:<ul>
- * <li>Redundant capacity implementation - WARNING</li>
  * <li>Override of final method - ERROR</li>
  * <li>Missed function implementation - ERROR</li>
  * <li>Skill implementation cannot have default value - ERROR</li>
@@ -560,6 +561,55 @@ public class SARLValidator extends AbstractSARLValidator {
     }
   }
   
+  private void checkRedundantInterface(final JvmGenericType jvmElement, final JvmTypeReference interfaceReference, final LightweightTypeReference lightweightInterfaceReference, final Iterable<LightweightTypeReference> knownInterfaces) {
+    JvmTypeReference _extendedClass = jvmElement.getExtendedClass();
+    boolean _tripleNotEquals = (_extendedClass != null);
+    if (_tripleNotEquals) {
+      JvmTypeReference _extendedClass_1 = jvmElement.getExtendedClass();
+      LightweightTypeReference superType = this.toLightweightTypeReference(_extendedClass_1);
+      boolean _memberOfTypeHierarchy = this.memberOfTypeHierarchy(superType, lightweightInterfaceReference);
+      if (_memberOfTypeHierarchy) {
+        String _canonicalName = this.canonicalName(lightweightInterfaceReference);
+        String _canonicalName_1 = this.canonicalName(superType);
+        String _format = String.format(
+          "The feature \'%s\' is already implemented by the super type \'%s\'.", _canonicalName, _canonicalName_1);
+        this.warning(_format, interfaceReference, 
+          null, 
+          IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION);
+        return;
+      }
+    }
+    for (final LightweightTypeReference previousInterface : knownInterfaces) {
+      boolean _memberOfTypeHierarchy_1 = this.memberOfTypeHierarchy(previousInterface, lightweightInterfaceReference);
+      if (_memberOfTypeHierarchy_1) {
+        String _canonicalName_2 = this.canonicalName(lightweightInterfaceReference);
+        String _canonicalName_3 = this.canonicalName(previousInterface);
+        String _format_1 = String.format(
+          "The feature \'%s\' is already implemented by the preceding interface \'%s\'.", _canonicalName_2, _canonicalName_3);
+        this.warning(_format_1, interfaceReference, 
+          null, 
+          IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION);
+        return;
+      }
+    }
+  }
+  
+  private void checkRedundantInterfaces(final JvmGenericType jvmElement) {
+    boolean _isIgnored = this.isIgnored(IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION);
+    boolean _not = (!_isIgnored);
+    if (_not) {
+      List<LightweightTypeReference> knownInterfaces = new ArrayList<LightweightTypeReference>();
+      Iterable<JvmTypeReference> _extendedInterfaces = jvmElement.getExtendedInterfaces();
+      for (final JvmTypeReference interface_ : _extendedInterfaces) {
+        {
+          LightweightTypeReference interfaceType = this.toLightweightTypeReference(interface_);
+          this.checkRedundantInterface(jvmElement, interface_, interfaceType, knownInterfaces);
+          knownInterfaces.add(interfaceType);
+        }
+      }
+    }
+  }
+  
   @Check
   public void checkInheritedFeatures(final InheritingElement element) {
     JvmGenericType jvmElement = this.getJvmGeneric(element);
@@ -570,6 +620,7 @@ public class SARLValidator extends AbstractSARLValidator {
       final Map<String, JvmField> inheritedFields = new TreeMap<String, JvmField>();
       final Map<ActionKey, JvmOperation> operationsToImplement = new TreeMap<ActionKey, JvmOperation>();
       this.populateInheritanceContext(jvmElement, finalOperations, overridableOperations, inheritedFields, operationsToImplement);
+      this.checkRedundantInterfaces(jvmElement);
       boolean _isIgnored = this.isIgnored(IssueCodes.FIELD_NAME_SHADOWING);
       boolean _not = (!_isIgnored);
       if (_not) {

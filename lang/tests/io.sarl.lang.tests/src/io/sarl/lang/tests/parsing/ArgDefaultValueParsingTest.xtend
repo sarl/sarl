@@ -30,6 +30,7 @@ import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
 import org.eclipse.xtext.xbase.XbasePackage
+import org.eclipse.xtext.common.types.TypesPackage
 
 /**
  * @author $Author: sgalland$
@@ -1037,24 +1038,6 @@ class ArgDefaultValueParsingTest {
 	}
 
 	@Test
-	def void overridingCapacitySkill_invalid_defArgs() {
-		val mas = '''
-			capacity C1 {
-				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*)
-			}
-			skill S1 implements C1 {
-				def capAction {}
-				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*) {}
-			}
-		'''.parse
-		//TODO
-		/*mas.assertError(
-			SarlPackage::eINSTANCE.action,
-			io.sarl.lang.validation.IssueCodes::ACTION_COLLISION,
-			"invalid declaration")*/
-	}
-
-	@Test
 	def void overridingCapacitySkill() {
 		val mas = '''
 			capacity C1 {
@@ -1067,73 +1050,6 @@ class ArgDefaultValueParsingTest {
 		'''.parse
 		mas.assertNoErrors
 		assertEquals(2, mas.elements.size)
-	}
-
-	@Test
-	def void overridingCapacitySkill_invalid_override() {
-		val mas = '''
-			capacity C1 {
-				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*)
-			}
-			skill S1 implements C1 {
-				def capAction {}
-				def myaction(arg0 : int, arg1 : int, arg2 : int*) {}
-				def myaction(arg1 : int, arg2 : int*) {
-					System.out.println("Invalid")
-				}
-			}
-		'''.parse
-		//TODO
-		/*mas.assertError(
-			SarlPackage::eINSTANCE.action,
-			io.sarl.lang.validation.IssueCodes::ACTION_COLLISION,
-			"Cannot define many times the same feature in 'S1': myaction(arg0 : int, arg1 : int)")*/
-	}
-
-	@Test
-	def void overridingSkillSkill_invalid() {
-		val mas = '''
-			capacity C1 {
-				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*)
-			}
-			skill S1 implements C1 {
-				def capAction {}
-				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*) {}
-			}
-			skill S2 extends S1 implements C1 {
-				def myaction(arg1 : int=56, arg2 : int*) {
-					System.out.println("invalid")
-				}
-			}
-		'''.parse
-		//TODO
-		/*mas.assertError(
-			SarlPackage::eINSTANCE.formalParameter,
-			IssueCodes::INVALID_CAST,
-			"function redefinition")*/
-	}
-
-	@Test
-	def void overridingSkillSkill() {
-		val mas = '''
-			capacity C1 {
-				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int...)
-			}
-			skill S1 implements C1 {
-				def capAction {}
-				def myaction(arg0 : int, arg1 : int, arg2 : int*) {}
-			}
-			skill S2 extends S1 implements C1 {
-				def myaction(arg1 : int, arg2 : int*) {
-					System.out.println("invalid")
-				}
-			}
-		'''.parse
-		//TODO
-		/*mas.assertError(
-			SarlPackage::eINSTANCE.formalParameter,
-			IssueCodes::INVALID_CAST,
-			"cannot override final action")*/
 	}
 
 	@Test
@@ -1189,6 +1105,50 @@ class ArgDefaultValueParsingTest {
 			SarlPackage::eINSTANCE.action,
 			io.sarl.lang.validation.IssueCodes::ACTION_ALREADY_DEFINED,
 			"Cannot define many times the same feature in 'S1': myaction(arg0 : int, arg1 : int)")
+	}
+
+	@Test
+	def void redundantCapacity_fromSuperType() {
+		val mas = '''
+			capacity C1 {}
+			capacity C2 {}
+			skill S1 implements C1 { }
+			skill S2 extends S1 implements C2, C1 { }
+		'''.parse
+		mas.assertWarning(
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
+			io.sarl.lang.validation.IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
+			"The feature 'C1' is already implemented by the super type 'S1'.")
+	}
+
+	@Test
+	def void redundantCapacity_duplicate() {
+		val mas = '''
+			capacity C1 {}
+			capacity C2 {}
+			capacity C3 {}
+			skill S1 implements C1 { }
+			skill S2 extends S1 implements C2, C3, C2 { }
+		'''.parse
+		mas.assertWarning(
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
+			io.sarl.lang.validation.IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
+			"The feature 'C2' is already implemented by the preceding interface 'C2'.")
+	}
+
+	@Test
+	def void redundantCapacity_fromPreviousCapacity() {
+		val mas = '''
+			capacity C1 {}
+			capacity C2 {}
+			capacity C3 extends C2 {}
+			skill S1 implements C1 { }
+			skill S2 extends S1 implements C3, C2 { }
+		'''.parse
+		mas.assertWarning(
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
+			io.sarl.lang.validation.IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
+			"The feature 'C2' is already implemented by the preceding interface 'C3'.")
 	}
 
 }
