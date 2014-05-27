@@ -320,7 +320,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						}
 						CapacityUses: {
 							for (used : feature.capacitiesUsed) {
-								actionIndex = generateCapacityDelegatorMethods(skill, used, actionIndex)
+								actionIndex = generateCapacityDelegatorMethods(skill, used, actionIndex, operationsToImplement, overridableOperations)
 							}
 						}
 					}
@@ -382,7 +382,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						}
 						CapacityUses: {
 							for (used : feature.capacitiesUsed) {
-								actionIndex = generateCapacityDelegatorMethods(behavior, used, actionIndex)
+								actionIndex = generateCapacityDelegatorMethods(behavior, used, actionIndex, null, null)
 							}
 						}
 						Constructor: {
@@ -455,7 +455,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					}
 					CapacityUses: {
 						for (used : feature.capacitiesUsed) {
-							actionIndex = generateCapacityDelegatorMethods(agent, used, actionIndex)
+							actionIndex = generateCapacityDelegatorMethods(agent, used, actionIndex, null, null)
 						}
 					}
 				}
@@ -566,93 +566,57 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		return field
 	}
 	
-	protected def void iterateOnActions(Capacity capacity, (Capacity, Collection<ActionSignature>)=>void func) {
-		val caps = new LinkedList<InheritingElement>()
-		caps.add(capacity)
-		while (!caps.empty) {
-			var cap = caps.removeFirst
-			if (cap instanceof Capacity) {
-				caps.addAll(cap.superTypes)
-				var list = new ArrayList<ActionSignature>
-				for(sig : cap.features) {
-					list.add(sig as ActionSignature)
-				}
-				func.apply(cap, list)
-			}
-		}
-	}
-	
-	private def String secureTypeName(NamedElement o) {
-		var name = o.fullyQualifiedName
-		if (name!==null) return name.toString
-		var sname = o.name
-		if (sname!==null) return sname
-		log.finer("Cannot determine the fully qualified name of: "+o)
-		return o.toString
-	}
+	protected def int generateCapacityDelegatorMethods(
+		JvmGenericType owner, InheritingElement context,
+		Capacity capacity, int index,
+		Map<ActionKey,JvmOperation> operationsToImplement,
+		Map<ActionKey,JvmOperation> implementedOperations) {
 
-	protected def void extractCapacityActions(Capacity capacity, Set<ActionSignature> functions, Map<String,Collection<? extends ActionSignature>> functionsPerCapacity) {
-		capacity.iterateOnActions [ c, l |
-			if (functions!==null) functions.addAll(l)
-			if (functionsPerCapacity!==null)
-				functionsPerCapacity.put(c.secureTypeName,l)
-		]
-	}
+		var jvmElement = getJvmGenericType(capacity, services.jvmModelAssociations)
+
+		if (jvmElement!==null) {
+			val Map<ActionKey,JvmOperation> capacityOperations = new TreeMap
+			
+			populateInterfaceElements(
+					jvmElement,
+					capacityOperations,
+					null, this.sarlSignatureProvider)
 	
-	protected def int generateCapacityDelegatorMethods(JvmGenericType owner, InheritingElement context, Capacity capacity, int index) {
-		//FIXME :the generation of the functions does not take the inherited context into account
-		// Detect the needed actions by iterating on the capacity hierarchy
-		val functions = new TreeSet(new ActionSignatureComparator)
-		val functionsPerCapacity = new TreeMap<String,Collection<? extends ActionSignature>>
-		capacity.extractCapacityActions(functions, functionsPerCapacity)
-		// Go through inherited classes, and remove the functions that are provided by the super classes
-		val classes = new LinkedList(context.superTypes)
-		while (!classes.empty) {
-			val superClass = classes.removeFirst
-			classes.addAll(superClass.superTypes)
-			for( feature : superClass.features) {
-				if (feature instanceof ActionSignature) {
-					functions.remove(feature)
-				}
-				else if (feature instanceof CapacityUses) {
-					val caps = new LinkedList<Capacity>
-					caps.addAll(feature.capacitiesUsed)
-					while(!caps.empty) {
-						val cap = caps.removeFirst
-						for(s : cap.superTypes) {
-							if (s instanceof Capacity) caps.add(s)
+			var actionIndex = index
+	
+			for(entry : capacityOperations.entrySet) {
+				if (implementedOperations===null || !implementedOperations.containsKey(entry.key)) {
+					var op = context.toMethod(entry.value.simpleName, entry.value.returnType) [
+						visibility = JvmVisibility::PROTECTED
+						val List<String> args = new ArrayList
+						for(param : entry.value.parameters) {
+							parameters += context.toParameter(param.simpleName, param.parameterType)
+							args += param.simpleName
 						}
-						var list = functionsPerCapacity.get(cap.secureTypeName)
-						if (list===null) {
-							cap.iterateOnActions [ c, l |
-								functionsPerCapacity.put(c.secureTypeName, l)
-								functions.removeAll(l)
-							]
-						}
-						else {
-								functions.removeAll(list)
-						}
-					}
+						body = [
+							if (entry.value.returnType.identifier!='void') {
+								append("return ")
+							}
+							append("getSkill(")
+							append(entry.value.declaringType.qualifiedName)
+							append(".class).")
+							append(entry.value.simpleName)
+							append("(")
+							append(args.join(", "))
+							append(");")
+						]
+					]
+					op.annotations += context.toAnnotation(typeof(Generated))
+					owner.members += op
+					// 
+					if (operationsToImplement!==null) operationsToImplement.remove(entry.key)
+					if (implementedOperations!==null) implementedOperations.put(entry.key, entry.value)
+					actionIndex++
 				}
 			}
+			return actionIndex
 		}
-		// Generate the missed actions
-		var actionIndex = index
-		for (signature : functions) {
-			owner.generateAction(signature, null, actionIndex, false, null, null, null).setBody [
-				if (signature.type != null) {
-					append('''return ''')
-				}
-				append('''getSkill(''')
-				append(context.newTypeRef(capacity.fullyQualifiedName.toString).type)
-				append('''.class).«signature.name»(''')
-				append(signature.params.join(', ')[name])
-				append(');')
-			]
-			actionIndex++
-		}
-		
-		return actionIndex
+		return index
 	}
 
 	protected def JvmOperation generateBehaviorUnit(JvmGenericType owner, BehaviorUnit unit, int index) {

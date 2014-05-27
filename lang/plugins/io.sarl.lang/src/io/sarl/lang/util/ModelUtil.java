@@ -45,6 +45,34 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
  */
 public class ModelUtil {
 
+	/** Analyzing the type hierarchy of the given interface and
+	 * extract hierarchy information.
+	 * 
+	 * @param jvmElement - the element to analyze
+	 * @param operations - filled with the operations inside and inherited by the element.
+	 * @param fields - filled with the fields inside and inherited by the element.
+	 * @param sarlSignatureProvider - provider of tools related to action signatures.
+	 */
+	public static void populateInterfaceElements(
+			JvmGenericType jvmElement,
+			Map<ActionKey,JvmOperation> operations,
+			Map<String, JvmField> fields,
+			ActionSignatureProvider sarlSignatureProvider) {
+		for(JvmFeature feature : jvmElement.getAllFeatures()) {
+			if (!"java.lang.Object".equals(feature.getDeclaringType().getQualifiedName())) { //$NON-NLS-1$
+				if (operations!=null && feature instanceof JvmOperation) {
+					JvmOperation operation = (JvmOperation)feature;
+					SignatureKey sig = sarlSignatureProvider.createSignatureIDFromJvmModel(operation.isVarArgs(), operation.getParameters());
+					ActionKey actionKey = sarlSignatureProvider.createActionID(operation.getSimpleName(), sig);
+					operations.put(actionKey, operation);
+				}
+				else if (fields!=null && feature instanceof JvmField) {
+					fields.put(feature.getSimpleName(), (JvmField)feature);
+				}
+			}
+		}
+	}
+	
 	/** Analyzing the type hierarchy of the given element, and
 	 * extract any type-related information.
 	 * 
