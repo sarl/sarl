@@ -37,24 +37,18 @@ import io.sarl.lang.sarl.Constructor
 import io.sarl.lang.sarl.Event
 import io.sarl.lang.sarl.FormalParameter
 import io.sarl.lang.sarl.InheritingElement
-import io.sarl.lang.sarl.NamedElement
 import io.sarl.lang.sarl.RequiredCapacity
 import io.sarl.lang.sarl.Skill
 import io.sarl.lang.sarl.TopElement
 import io.sarl.lang.signature.ActionKey
-import io.sarl.lang.signature.ActionSignatureComparator
 import io.sarl.lang.signature.ActionSignatureProvider
 import io.sarl.lang.signature.InferredStandardParameter
 import io.sarl.lang.signature.InferredValuedParameter
 import io.sarl.lang.signature.SignatureKey
 import java.util.ArrayList
-import java.util.Collection
-import java.util.LinkedList
 import java.util.List
 import java.util.Map
-import java.util.Set
 import java.util.TreeMap
-import java.util.TreeSet
 import java.util.UUID
 import java.util.logging.Logger
 import org.eclipse.emf.ecore.EObject
@@ -332,68 +326,8 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					}
 				}
 				
-				// Implement the actions that are generated due to default value parameters
-				var String currentKeyStr = null
-				var JvmOperation originalOperation = null
-				var SignatureKey sigKey = null
-				for(missedOperation : operationsToImplement.entrySet) {
-					var originalSignature = missedOperation.value.annotationString(typeof(DefaultValueUse))
-					if (originalSignature!==null) {
-						if (originalSignature!=currentKeyStr) {
-							currentKeyStr = originalSignature
-							sigKey = this.sarlSignatureProvider.createSignatureIDFromString(originalSignature)
-							var key = this.sarlSignatureProvider.createActionID(missedOperation.key.functionName, sigKey)
-							originalOperation = overridableOperations.get(key);
-						}
-						if (originalOperation!==null) {
-							var op = skill.toMethod(originalOperation.simpleName, originalOperation.returnType, null)
-							op.varArgs = originalOperation.varArgs
-							op.final = true
-							var args = new ArrayList<String>
-							
-							var it1 = missedOperation.value.parameters.iterator
-							var it2 = originalOperation.parameters.iterator
-							var JvmFormalParameter oparam = null
-							
-							while (it2.hasNext) {
-								var param = it2.next
-								var vId = param.annotationString(typeof(DefaultValue))
-								if (oparam==null && it1.hasNext) {
-									oparam = it1.next
-								}
-								if (oparam!==null && oparam.simpleName==param.simpleName) {
-									args += oparam.simpleName
-									op.parameters += param.toParameter(oparam.simpleName, oparam.parameterType)
-									oparam = null
-								}
-								else if (vId!==null && !vId.empty) {
-									args.add(
-										originalOperation.declaringType.qualifiedName
-										+".___FORMAL_PARAMETER_DEFAULT_VALUE_"
-										+vId)
-								}
-								else {
-									throw new IllegalStateException("Invalid generation of the default-valued formal parameters")
-								}
-							}
-							
-							{
-								val tmpName = originalOperation.simpleName
-								val tmpArgs = args
-								op.body = [
-									append(tmpName)
-									append("(")
-									append(IterableExtensions.join(tmpArgs, ", "))
-									append(");")
-								] //(new CallingFunctionGenerator(originalOperation.simpleName, args))
-							}
-							op.annotations += skill.toAnnotation(typeof(DefaultValueUse), originalSignature)
-							it.members += op				
-							actionIndex++
-						}
-					}
-				}
-				
+				actionIndex = generateMissedFunction(skill, actionIndex, operationsToImplement, overridableOperations)
+								
 				if (!hasConstructor) {
 					it.members += skill.toConstructor [
 						documentation = '''
@@ -527,6 +461,76 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				}
 			}
 		]
+	}
+	
+	protected def int generateMissedFunction(
+		JvmGenericType output,
+		EObject owner,
+		int actionIndex,
+		Map<ActionKey,JvmOperation> operationsToImplement,
+		Map<ActionKey,JvmOperation> overridableOperations) {
+		var actIndex = actionIndex
+		var String currentKeyStr = null
+		var JvmOperation originalOperation = null
+		var SignatureKey sigKey = null
+		for(missedOperation : operationsToImplement.entrySet) {
+			var originalSignature = missedOperation.value.annotationString(typeof(DefaultValueUse))
+			if (originalSignature!==null) {
+				if (originalSignature!=currentKeyStr) {
+					currentKeyStr = originalSignature
+					sigKey = this.sarlSignatureProvider.createSignatureIDFromString(originalSignature)
+					var key = this.sarlSignatureProvider.createActionID(missedOperation.key.functionName, sigKey)
+					originalOperation = overridableOperations.get(key);
+				}
+				if (originalOperation!==null) {
+					var op = owner.toMethod(originalOperation.simpleName, originalOperation.returnType, null)
+					op.varArgs = originalOperation.varArgs
+					op.final = true
+					var args = new ArrayList<String>
+					
+					var it1 = missedOperation.value.parameters.iterator
+					var it2 = originalOperation.parameters.iterator
+					var JvmFormalParameter oparam = null
+					
+					while (it2.hasNext) {
+						var param = it2.next
+						var vId = param.annotationString(typeof(DefaultValue))
+						if (oparam==null && it1.hasNext) {
+							oparam = it1.next
+						}
+						if (oparam!==null && oparam.simpleName==param.simpleName) {
+							args += oparam.simpleName
+							op.parameters += param.toParameter(oparam.simpleName, oparam.parameterType)
+							oparam = null
+						}
+						else if (vId!==null && !vId.empty) {
+							args.add(
+								originalOperation.declaringType.qualifiedName
+								+".___FORMAL_PARAMETER_DEFAULT_VALUE_"
+								+vId)
+						}
+						else {
+							throw new IllegalStateException("Invalid generation of the default-valued formal parameters")
+						}
+					}
+					
+					{
+						val tmpName = originalOperation.simpleName
+						val tmpArgs = args
+						op.body = [
+							append(tmpName)
+							append("(")
+							append(IterableExtensions.join(tmpArgs, ", "))
+							append(");")
+						] //(new CallingFunctionGenerator(originalOperation.simpleName, args))
+					}
+					op.annotations += owner.toAnnotation(typeof(DefaultValueUse), originalSignature)
+					output.members += op				
+					actIndex++
+				}
+			}
+		}
+		return actIndex
 	}
 
 	protected def long generateSuperTypes(JvmGenericType owner, InheritingElement element, Class<?> defaultType) {

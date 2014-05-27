@@ -40,5 +40,5 @@ public @interface DefaultValueUse {
 	/** Replies the original signature of the function with default value parameters.
 	 * @return the original signature.
 	 */
-	public String signature();
+	String value();
 }

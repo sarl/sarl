@@ -265,12 +265,14 @@ class Bug92 {
 			    super(parentID);
 			  }
 			  
-			  public void setVoltage(final Double currentVoltage) {
-			    getSkill(ComputeEnergyCapacity.class).setVoltage(currentVoltage);
+			  @Generated
+			  protected Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {
+			    return getSkill(ComputeEnergyCapacity.class).getEnergy(currentTime, deltaTime, wantedEnergy);
 			  }
 			  
-			  public Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {
-			    return getSkill(ComputeEnergyCapacity.class).getEnergy(currentTime, deltaTime, wantedEnergy);
+			  @Generated
+			  protected void setVoltage(final Double currentVoltage) {
+			    getSkill(ComputeEnergyCapacity.class).setVoltage(currentVoltage);
 			  }
 			  
 			  protected Double busTime = Double.valueOf(0d);
@@ -346,12 +348,14 @@ class Bug92 {
 			    super(parentID);
 			  }
 			  
-			  public void setVoltage(final Double currentVoltage) {
-			    getSkill(ComputeEnergyCapacity.class).setVoltage(currentVoltage);
+			  @Generated
+			  protected Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {
+			    return getSkill(ComputeEnergyCapacity.class).getEnergy(currentTime, deltaTime, wantedEnergy);
 			  }
 			  
-			  public Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {
-			    return getSkill(ComputeEnergyCapacity.class).getEnergy(currentTime, deltaTime, wantedEnergy);
+			  @Generated
+			  protected void setVoltage(final Double currentVoltage) {
+			    getSkill(ComputeEnergyCapacity.class).setVoltage(currentVoltage);
 			  }
 			  
 			  protected double busTime = 0d;
