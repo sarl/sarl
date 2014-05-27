@@ -44,6 +44,7 @@ class EventCompilerTest {
 				
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Event;
 
 			@SuppressWarnings("all")
@@ -52,6 +53,7 @@ class EventCompilerTest {
 			   * Construct an event. The source of the event is unknown.
 			   * 
 			   */
+			  @Generated
 			  public E1() {
 			    super();
 			  }
@@ -61,10 +63,12 @@ class EventCompilerTest {
 			   * @param source - address of the agent that is emitting this event.
 			   * 
 			   */
+			  @Generated
 			  public E1(final io.sarl.lang.core.Address source) {
 			    super(source);
 			  }
 			  
+			  @Generated
 			  private final static long serialVersionUID = 588368462L;
 			}
 		''')
@@ -77,6 +81,7 @@ class EventCompilerTest {
 			var name : String
 		}
 		'''.assertCompilesTo('''
+		import io.sarl.lang.annotation.Generated;
 		import io.sarl.lang.core.Event;
 
 		@SuppressWarnings("all")
@@ -87,6 +92,7 @@ class EventCompilerTest {
 		   * Construct an event. The source of the event is unknown.
 		   * 
 		   */
+		  @Generated
 		  public E1() {
 		    super();
 		  }
@@ -96,11 +102,13 @@ class EventCompilerTest {
 		   * @param source - address of the agent that is emitting this event.
 		   * 
 		   */
+		  @Generated
 		  public E1(final io.sarl.lang.core.Address source) {
 		    super(source);
 		  }
 		  
 		  @Override
+		  @Generated
 		  public boolean equals(final Object obj) {
 		    if (this == obj)
 		      return true;
@@ -120,6 +128,7 @@ class EventCompilerTest {
 		  }
 		  
 		  @Override
+		  @Generated
 		  public int hashCode() {
 		    final int prime = 31;
 		    int result = super.hashCode();
@@ -130,12 +139,14 @@ class EventCompilerTest {
 		  /**
 		   * Returns a String representation of the Event E1 attributes only.
 		   */
+		  @Generated
 		  protected String attributesToString() {
 		    StringBuilder result = new StringBuilder(super.attributesToString());
 		    result.append("name  = ").append(this.name);
 		    return result.toString();
 		  }
 		  
+		  @Generated
 		  private final static long serialVersionUID = 591742169L;
 		}
 		''')
@@ -144,12 +155,15 @@ class EventCompilerTest {
 	@Test
 	def inheritanceCompile(){
 		val expectedE2 = '''
+		import io.sarl.lang.annotation.Generated;
+		
 		@SuppressWarnings("all")
 		public class E2 extends E1 {
 		  /**
 		   * Construct an event. The source of the event is unknown.
 		   * 
 		   */
+		  @Generated
 		  public E2() {
 		    super();
 		  }
@@ -159,10 +173,12 @@ class EventCompilerTest {
 		   * @param source - address of the agent that is emitting this event.
 		   * 
 		   */
+		  @Generated
 		  public E2(final io.sarl.lang.core.Address source) {
 		    super(source);
 		  }
 		  
+		  @Generated
 		  private final static long serialVersionUID = 2189L;
 		}
 		'''
@@ -190,6 +206,7 @@ class EventCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Event;
 
 			@SuppressWarnings("all")
@@ -203,6 +220,7 @@ class EventCompilerTest {
 			  }
 			  
 			  @Override
+			  @Generated
 			  public boolean equals(final Object obj) {
 			    if (this == obj)
 			      return true;
@@ -221,6 +239,7 @@ class EventCompilerTest {
 			  }
 			  
 			  @Override
+			  @Generated
 			  public int hashCode() {
 			    final int prime = 31;
 			    int result = super.hashCode();
@@ -232,6 +251,7 @@ class EventCompilerTest {
 			  /**
 			   * Returns a String representation of the Event E1 attributes only.
 			   */
+			  @Generated
 			  protected String attributesToString() {
 			    StringBuilder result = new StringBuilder(super.attributesToString());
 			    result.append("titi  = ").append(this.titi);
@@ -239,6 +259,7 @@ class EventCompilerTest {
 			    return result.toString();
 			  }
 			  
+			  @Generated
 			  private final static long serialVersionUID = 595497177L;
 			}
 		''')

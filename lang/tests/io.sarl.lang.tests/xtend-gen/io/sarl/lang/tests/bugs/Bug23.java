@@ -109,6 +109,8 @@ public class Bug23 {
   public void myAgentSpawnedCompile() {
     try {
       StringConcatenation _builder = new StringConcatenation();
+      _builder.append("import io.sarl.lang.annotation.Generated;");
+      _builder.newLine();
       _builder.append("import java.util.UUID;");
       _builder.newLine();
       _builder.newLine();
@@ -132,6 +134,9 @@ public class Bug23 {
       _builder.newLine();
       _builder.append("   ");
       _builder.append("*/");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("@Generated");
       _builder.newLine();
       _builder.append("  ");
       _builder.append("public MyAgentSpawned() {");
@@ -160,6 +165,9 @@ public class Bug23 {
       _builder.append("*/");
       _builder.newLine();
       _builder.append("  ");
+      _builder.append("@Generated");
+      _builder.newLine();
+      _builder.append("  ");
       _builder.append("public MyAgentSpawned(final io.sarl.lang.core.Address source) {");
       _builder.newLine();
       _builder.append("    ");
@@ -172,6 +180,9 @@ public class Bug23 {
       _builder.newLine();
       _builder.append("  ");
       _builder.append("@Override");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("@Generated");
       _builder.newLine();
       _builder.append("  ");
       _builder.append("public boolean equals(final Object obj) {");
@@ -230,6 +241,9 @@ public class Bug23 {
       _builder.append("@Override");
       _builder.newLine();
       _builder.append("  ");
+      _builder.append("@Generated");
+      _builder.newLine();
+      _builder.append("  ");
       _builder.append("public int hashCode() {");
       _builder.newLine();
       _builder.append("    ");
@@ -259,6 +273,9 @@ public class Bug23 {
       _builder.append("*/");
       _builder.newLine();
       _builder.append("  ");
+      _builder.append("@Generated");
+      _builder.newLine();
+      _builder.append("  ");
       _builder.append("protected String attributesToString() {");
       _builder.newLine();
       _builder.append("    ");
@@ -274,6 +291,9 @@ public class Bug23 {
       _builder.append("}");
       _builder.newLine();
       _builder.append("  ");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("@Generated");
       _builder.newLine();
       _builder.append("  ");
       _builder.append("private final static long serialVersionUID = -267285920L;");

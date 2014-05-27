@@ -69,6 +69,7 @@ class Bug23 {
 	@Test
 	def myAgentSpawnedCompile() {
 		val expectedMyAgentSpawned = '''
+		import io.sarl.lang.annotation.Generated;
 		import java.util.UUID;
 
 		@SuppressWarnings("all")
@@ -79,6 +80,7 @@ class Bug23 {
 		   * Construct an event. The source of the event is unknown.
 		   * 
 		   */
+		  @Generated
 		  public MyAgentSpawned() {
 		    super();
 		  }
@@ -88,11 +90,13 @@ class Bug23 {
 		   * @param source - address of the agent that is emitting this event.
 		   * 
 		   */
+		  @Generated
 		  public MyAgentSpawned(final io.sarl.lang.core.Address source) {
 		    super(source);
 		  }
 		  
 		  @Override
+		  @Generated
 		  public boolean equals(final Object obj) {
 		    if (this == obj)
 		      return true;
@@ -112,6 +116,7 @@ class Bug23 {
 		  }
 		  
 		  @Override
+		  @Generated
 		  public int hashCode() {
 		    final int prime = 31;
 		    int result = super.hashCode();
@@ -122,12 +127,14 @@ class Bug23 {
 		  /**
 		   * Returns a String representation of the Event MyAgentSpawned attributes only.
 		   */
+		  @Generated
 		  protected String attributesToString() {
 		    StringBuilder result = new StringBuilder(super.attributesToString());
 		    result.append("titi  = ").append(this.titi);
 		    return result.toString();
 		  }
 		  
+		  @Generated
 		  private final static long serialVersionUID = -267285920L;
 		}
 		'''

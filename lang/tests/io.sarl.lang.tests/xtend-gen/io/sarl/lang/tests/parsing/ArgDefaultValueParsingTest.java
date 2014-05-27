@@ -2028,10 +2028,22 @@ public class ArgDefaultValueParsingTest {
       _builder.append("skill S1 implements C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def capAction {}");
+      _builder.append("def capAction {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(\"ok\");");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int, arg2 : int*) {}");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(arg0 : int, arg1 : int, arg2 : int*) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("System.out.println(\"ok\");");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -2072,10 +2084,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _action = SarlPackage.eINSTANCE.getAction();
-      this._validationTestHelper.assertError(mas, _action, 
-        IssueCodes.ACTION_ALREADY_DEFINED, 
-        "Cannot define many times the same feature in \'B1\': myaction(arg0 : int, arg1 : int)");
+      this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -2088,7 +2097,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int=42, arg2 : int...) {");
+      _builder.append("def myaction(arg0 : int, arg1 : int=42, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(\"valid\")");
@@ -2097,7 +2106,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int...) {");
+      _builder.append("def myaction(arg0 : int, arg1 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(\"invalid\")");
@@ -2108,10 +2117,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _action = SarlPackage.eINSTANCE.getAction();
-      this._validationTestHelper.assertError(mas, _action, 
-        IssueCodes.ACTION_ALREADY_DEFINED, 
-        "Cannot define many times the same feature in \'A1\': myaction(arg0 : int, arg1 : int)");
+      this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -2126,7 +2132,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("skill S1 implements C1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int=42, arg2 : int...) {");
+      _builder.append("def myaction(arg0 : int, arg1 : int=42, arg2 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(\"valid\")");
@@ -2135,7 +2141,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction(arg0 : int, arg1 : int...) {");
+      _builder.append("def myaction(arg0 : int, arg1 : int*) {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("System.out.println(\"invalid\")");
@@ -2146,10 +2152,7 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _action = SarlPackage.eINSTANCE.getAction();
-      this._validationTestHelper.assertError(mas, _action, 
-        IssueCodes.ACTION_ALREADY_DEFINED, 
-        "Cannot define many times the same feature in \'S1\': myaction(arg0 : int, arg1 : int)");
+      this._validationTestHelper.assertNoErrors(mas);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

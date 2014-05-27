@@ -146,6 +146,7 @@ class Bug92 {
 				var myDouble = 0d
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -156,6 +157,7 @@ class Bug92 {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -172,6 +174,7 @@ class Bug92 {
 				var myDouble : Double = 0d
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -182,6 +185,7 @@ class Bug92 {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -198,6 +202,7 @@ class Bug92 {
 				var myDouble : double = 0d
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -208,6 +213,7 @@ class Bug92 {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -238,12 +244,14 @@ class Bug92 {
 			
 			@SuppressWarnings("all")
 			public interface ComputeEnergyCapacity extends Capacity {
-			  public Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy);
+			  public abstract Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy);
 			  
-			  public void setVoltage(final Double currentVoltage);
+			  public abstract void setVoltage(final Double currentVoltage);
 			}
 		'''
 		val expected2 = '''
+			import io.sarl.lang.annotation.Generated;
+			
 			@SuppressWarnings("all")
 			public class DeviceAgent extends EntityAgent {
 			  /**
@@ -252,6 +260,7 @@ class Bug92 {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public DeviceAgent(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -270,6 +279,7 @@ class Bug92 {
 			}
 		'''
 		val expected3 = '''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -280,6 +290,7 @@ class Bug92 {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public EntityAgent(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -314,12 +325,14 @@ class Bug92 {
 			
 			@SuppressWarnings("all")
 			public interface ComputeEnergyCapacity extends Capacity {
-			  public Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy);
+			  public abstract Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy);
 			  
-			  public void setVoltage(final Double currentVoltage);
+			  public abstract void setVoltage(final Double currentVoltage);
 			}
 		'''
 		val expected2 = '''
+			import io.sarl.lang.annotation.Generated;
+
 			@SuppressWarnings("all")
 			public class DeviceAgent extends EntityAgent {
 			  /**
@@ -328,6 +341,7 @@ class Bug92 {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public DeviceAgent(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -346,6 +360,7 @@ class Bug92 {
 			}
 		'''
 		val expected3 = '''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -356,6 +371,7 @@ class Bug92 {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public EntityAgent(final java.util.UUID parentID) {
 			    super(parentID);
 			  }

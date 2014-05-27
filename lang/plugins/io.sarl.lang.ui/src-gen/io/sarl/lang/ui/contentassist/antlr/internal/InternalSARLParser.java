@@ -58227,25 +58227,7 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
             loop144:
             do {
                 int alt144=2;
-                int LA144_0 = input.LA(1);
-
-                if ( (LA144_0==65) ) {
-                    int LA144_2 = input.LA(2);
-
-                    if ( (LA144_2==66) ) {
-                        int LA144_3 = input.LA(3);
-
-                        if ( (synpred200_InternalSARL()) ) {
-                            alt144=1;
-                        }
-
-
-                    }
-
-
-                }
-
-
+                alt144 = dfa144.predict(input);
                 switch (alt144) {
             	case 1 :
             	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:20351:2: rule__JvmTypeReference__Group_0_1__0
@@ -72147,6 +72129,7 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
     protected DFA133 dfa133 = new DFA133(this);
     protected DFA134 dfa134 = new DFA134(this);
     protected DFA139 dfa139 = new DFA139(this);
+    protected DFA144 dfa144 = new DFA144(this);
     protected DFA148 dfa148 = new DFA148(this);
     static final String DFA17_eotS =
         "\13\uffff";
@@ -74706,6 +74689,166 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
             if (state.backtracking>0) {state.failed=true; return -1;}
             NoViableAltException nvae =
                 new NoViableAltException(getDescription(), 139, _s, input);
+            error(nvae);
+            throw nvae;
+        }
+    }
+    static final String DFA144_eotS =
+        "\125\uffff";
+    static final String DFA144_eofS =
+        "\1\1\124\uffff";
+    static final String DFA144_minS =
+        "\1\4\37\uffff\1\0\64\uffff";
+    static final String DFA144_maxS =
+        "\1\142\37\uffff\1\0\64\uffff";
+    static final String DFA144_acceptS =
+        "\1\uffff\1\2\122\uffff\1\1";
+    static final String DFA144_specialS =
+        "\40\uffff\1\0\64\uffff}>";
+    static final String[] DFA144_transitionS = {
+            "\5\1\4\uffff\47\1\1\uffff\1\1\1\uffff\2\1\5\uffff\3\1\1\40\32"+
+            "\1\2\uffff\5\1",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "\1\uffff",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+    };
+
+    static final short[] DFA144_eot = DFA.unpackEncodedString(DFA144_eotS);
+    static final short[] DFA144_eof = DFA.unpackEncodedString(DFA144_eofS);
+    static final char[] DFA144_min = DFA.unpackEncodedStringToUnsignedChars(DFA144_minS);
+    static final char[] DFA144_max = DFA.unpackEncodedStringToUnsignedChars(DFA144_maxS);
+    static final short[] DFA144_accept = DFA.unpackEncodedString(DFA144_acceptS);
+    static final short[] DFA144_special = DFA.unpackEncodedString(DFA144_specialS);
+    static final short[][] DFA144_transition;
+
+    static {
+        int numStates = DFA144_transitionS.length;
+        DFA144_transition = new short[numStates][];
+        for (int i=0; i<numStates; i++) {
+            DFA144_transition[i] = DFA.unpackEncodedString(DFA144_transitionS[i]);
+        }
+    }
+
+    class DFA144 extends DFA {
+
+        public DFA144(BaseRecognizer recognizer) {
+            this.recognizer = recognizer;
+            this.decisionNumber = 144;
+            this.eot = DFA144_eot;
+            this.eof = DFA144_eof;
+            this.min = DFA144_min;
+            this.max = DFA144_max;
+            this.accept = DFA144_accept;
+            this.special = DFA144_special;
+            this.transition = DFA144_transition;
+        }
+        public String getDescription() {
+            return "()* loopback of 20351:1: ( rule__JvmTypeReference__Group_0_1__0 )*";
+        }
+        public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
+            TokenStream input = (TokenStream)_input;
+        	int _s = s;
+            switch ( s ) {
+                    case 0 : 
+                        int LA144_32 = input.LA(1);
+
+                         
+                        int index144_32 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred200_InternalSARL()) ) {s = 84;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index144_32);
+                        if ( s>=0 ) return s;
+                        break;
+            }
+            if (state.backtracking>0) {state.failed=true; return -1;}
+            NoViableAltException nvae =
+                new NoViableAltException(getDescription(), 144, _s, input);
             error(nvae);
             throw nvae;
         }

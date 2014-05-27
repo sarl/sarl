@@ -1043,8 +1043,12 @@ class ArgDefaultValueParsingTest {
 				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*)
 			}
 			skill S1 implements C1 {
-				def capAction {}
-				def myaction(arg0 : int, arg1 : int, arg2 : int*) {}
+				def capAction {
+					System.out.println("ok");
+				}
+				def myaction(arg0 : int, arg1 : int, arg2 : int*) {
+					System.out.println("ok");
+				}
 			}
 		'''.parse
 		mas.assertNoErrors
@@ -1063,28 +1067,22 @@ class ArgDefaultValueParsingTest {
 				}
 			}
 		'''.parse
-		mas.assertError(
-			SarlPackage::eINSTANCE.action,
-			io.sarl.lang.validation.IssueCodes::ACTION_ALREADY_DEFINED,
-			"Cannot define many times the same feature in 'B1': myaction(arg0 : int, arg1 : int)")
+		mas.assertNoErrors
 	}
 
 	@Test
 	def void multipleActionDefinitionsInAgent() {
 		val mas = '''
 			agent A1 {
-				def myaction(arg0 : int, arg1 : int=42, arg2 : int...) {
+				def myaction(arg0 : int, arg1 : int=42, arg2 : int*) {
 					System.out.println("valid")
 				}
-				def myaction(arg0 : int, arg1 : int...) {
+				def myaction(arg0 : int, arg1 : int*) {
 					System.out.println("invalid")
 				}
 			}
 		'''.parse
-		mas.assertError(
-			SarlPackage::eINSTANCE.action,
-			io.sarl.lang.validation.IssueCodes::ACTION_ALREADY_DEFINED,
-			"Cannot define many times the same feature in 'A1': myaction(arg0 : int, arg1 : int)")
+		mas.assertNoErrors
 	}
 
 	@Test
@@ -1092,18 +1090,15 @@ class ArgDefaultValueParsingTest {
 		val mas = '''
 			capacity C1 {}
 			skill S1 implements C1 {
-				def myaction(arg0 : int, arg1 : int=42, arg2 : int...) {
+				def myaction(arg0 : int, arg1 : int=42, arg2 : int*) {
 					System.out.println("valid")
 				}
-				def myaction(arg0 : int, arg1 : int...) {
+				def myaction(arg0 : int, arg1 : int*) {
 					System.out.println("invalid")
 				}
 			}
 		'''.parse
-		mas.assertError(
-			SarlPackage::eINSTANCE.action,
-			io.sarl.lang.validation.IssueCodes::ACTION_ALREADY_DEFINED,
-			"Cannot define many times the same feature in 'S1': myaction(arg0 : int, arg1 : int)")
+		mas.assertNoErrors
 	}
 
 	@Test

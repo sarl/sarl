@@ -43,6 +43,7 @@ class VarArgsCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -53,6 +54,7 @@ class VarArgsCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -73,6 +75,7 @@ class VarArgsCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -83,6 +86,7 @@ class VarArgsCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -203,7 +207,7 @@ class VarArgsCompilerTest {
 			
 			@SuppressWarnings("all")
 			public interface C1 extends Capacity {
-			  public void myaction(final int... arg);
+			  public abstract void myaction(final int... arg);
 			}
 		''')
 	}
@@ -219,7 +223,7 @@ class VarArgsCompilerTest {
 			
 			@SuppressWarnings("all")
 			public interface C1 extends Capacity {
-			  public void myaction(final char arg1, final boolean arg2, final int... arg3);
+			  public abstract void myaction(final char arg1, final boolean arg2, final int... arg3);
 			}
 		''')
 	}
@@ -233,6 +237,7 @@ class VarArgsCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Event;
 			
 			@SuppressWarnings("all")
@@ -241,6 +246,7 @@ class VarArgsCompilerTest {
 			    System.out.println(arg);
 			  }
 			  
+			  @Generated
 			  private final static long serialVersionUID = 588370681L;
 			}
 		''')
@@ -255,6 +261,7 @@ class VarArgsCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Event;
 			
 			@SuppressWarnings("all")
@@ -263,6 +270,7 @@ class VarArgsCompilerTest {
 			    System.out.println(arg3);
 			  }
 			  
+			  @Generated
 			  private final static long serialVersionUID = 588370681L;
 			}
 		''')

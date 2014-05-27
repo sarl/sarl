@@ -35,11 +35,10 @@ import io.sarl.lang.signature.ActionNameKey;
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.InferredActionSignature;
 import io.sarl.lang.signature.SignatureKey;
-import io.sarl.lang.util.JvmElementUtil;
+import io.sarl.lang.util.ModelUtil;
 import io.sarl.lang.validation.AbstractSARLValidator;
 import io.sarl.lang.validation.IssueCodes;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -68,13 +67,13 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
  * <p>
  * The following issues are not yet supported:<ul>
  * <li>Skill implementation cannot have default value - ERROR</li>
- * <li>Incompatible modifiers for a function</li>
  * </ul>
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @see "http://www.eclipse.org/Xtext/documentation.html#validation"
  */
 @SuppressWarnings("all")
 public class SARLValidator extends AbstractSARLValidator {
@@ -84,6 +83,9 @@ public class SARLValidator extends AbstractSARLValidator {
   @Inject
   private ActionSignatureProvider sarlSignatureProvider;
   
+  /**
+   * @param feature
+   */
   @Check
   public void checkNoDefaultValueForVariadicParameter(final ParameterizedFeature feature) {
     boolean _isVarargs = feature.isVarargs();
@@ -91,8 +93,8 @@ public class SARLValidator extends AbstractSARLValidator {
       EList<FormalParameter> _params = feature.getParams();
       FormalParameter lastParam = IterableExtensions.<FormalParameter>last(_params);
       XExpression _defaultValue = lastParam.getDefaultValue();
-      boolean _notEquals = (!Objects.equal(_defaultValue, null));
-      if (_notEquals) {
+      boolean _tripleNotEquals = (_defaultValue != null);
+      if (_tripleNotEquals) {
         String _name = lastParam.getName();
         String _format = String.format(
           "A default value cannot be declared for the variadic formal parameter \'%s\'.", _name);
@@ -108,7 +110,7 @@ public class SARLValidator extends AbstractSARLValidator {
     LightweightTypeReference toType = this.toLightweightTypeReference(_parameterType, true);
     XExpression _defaultValue = param.getDefaultValue();
     LightweightTypeReference fromType = this.getActualType(_defaultValue);
-    boolean _canCast = JvmElementUtil.canCast(fromType, toType, true);
+    boolean _canCast = ModelUtil.canCast(fromType, toType, true);
     boolean _not = (!_canCast);
     if (_not) {
       String _nameOfTypes = this.getNameOfTypes(fromType);
@@ -121,22 +123,28 @@ public class SARLValidator extends AbstractSARLValidator {
     }
   }
   
+  /**
+   * @param feature
+   */
   @Check
   public void checkDefaultValueTypeCompatibleWithParameterType(final ParameterizedFeature feature) {
     EList<FormalParameter> _params = feature.getParams();
     for (final FormalParameter param : _params) {
       XExpression _defaultValue = param.getDefaultValue();
-      boolean _notEquals = (!Objects.equal(_defaultValue, null));
-      if (_notEquals) {
+      boolean _tripleNotEquals = (_defaultValue != null);
+      if (_tripleNotEquals) {
         this.checkDefaultValueTypeCompatibleWithParameterType(param);
       }
     }
   }
   
+  /**
+   * @param featureContainer
+   */
   @Check
   public void checkNoFeatureMultiDefinition(final FeatureContainer featureContainer) {
-    Set<String> localFields = new TreeSet<String>();
-    Set<ActionKey> localFunctions = new TreeSet<ActionKey>();
+    final Set<String> localFields = new TreeSet<String>();
+    final Set<ActionKey> localFunctions = new TreeSet<ActionKey>();
     ActionNameKey actionID = null;
     SignatureKey signatureID = null;
     String name = null;
@@ -156,8 +164,9 @@ public class SARLValidator extends AbstractSARLValidator {
           name = _name;
           ActionNameKey _createFunctionID = this.sarlSignatureProvider.createFunctionID(container, name);
           actionID = _createFunctionID;
+          boolean _isVarargs = s.isVarargs();
           EList<FormalParameter> _params = s.getParams();
-          SignatureKey _createSignatureIDFromSarlModel = this.sarlSignatureProvider.createSignatureIDFromSarlModel(_params);
+          SignatureKey _createSignatureIDFromSarlModel = this.sarlSignatureProvider.createSignatureIDFromSarlModel(_isVarargs, _params);
           signatureID = _createSignatureIDFromSarlModel;
         } else {
           if ((feature instanceof ActionSignature)) {
@@ -165,16 +174,18 @@ public class SARLValidator extends AbstractSARLValidator {
             name = _name_1;
             ActionNameKey _createFunctionID_1 = this.sarlSignatureProvider.createFunctionID(container, name);
             actionID = _createFunctionID_1;
+            boolean _isVarargs_1 = ((ActionSignature)feature).isVarargs();
             EList<FormalParameter> _params_1 = ((ActionSignature)feature).getParams();
-            SignatureKey _createSignatureIDFromSarlModel_1 = this.sarlSignatureProvider.createSignatureIDFromSarlModel(_params_1);
+            SignatureKey _createSignatureIDFromSarlModel_1 = this.sarlSignatureProvider.createSignatureIDFromSarlModel(_isVarargs_1, _params_1);
             signatureID = _createSignatureIDFromSarlModel_1;
           } else {
             if ((feature instanceof Constructor)) {
               name = SARLKeywords.CONSTRUCTOR;
               ActionNameKey _createConstructorID = this.sarlSignatureProvider.createConstructorID(container);
               actionID = _createConstructorID;
+              boolean _isVarargs_2 = ((Constructor)feature).isVarargs();
               EList<FormalParameter> _params_2 = ((Constructor)feature).getParams();
-              SignatureKey _createSignatureIDFromSarlModel_2 = this.sarlSignatureProvider.createSignatureIDFromSarlModel(_params_2);
+              SignatureKey _createSignatureIDFromSarlModel_2 = this.sarlSignatureProvider.createSignatureIDFromSarlModel(_isVarargs_2, _params_2);
               signatureID = _createSignatureIDFromSarlModel_2;
             } else {
               name = null;
@@ -232,10 +243,13 @@ public class SARLValidator extends AbstractSARLValidator {
     }
   }
   
+  /**
+   * @param action
+   */
   @Check
   public void checkActionName(final ActionSignature action) {
     String _name = action.getName();
-    boolean _isHiddenAction = JvmElementUtil.isHiddenAction(_name);
+    boolean _isHiddenAction = ModelUtil.isHiddenAction(_name);
     if (_isHiddenAction) {
       String _name_1 = action.getName();
       String _format = String.format(
@@ -246,10 +260,13 @@ public class SARLValidator extends AbstractSARLValidator {
     }
   }
   
+  /**
+   * @param attribute
+   */
   @Check
   public void checkAttributeName(final Attribute attribute) {
     String _name = attribute.getName();
-    boolean _isHiddenAttribute = JvmElementUtil.isHiddenAttribute(_name);
+    boolean _isHiddenAttribute = ModelUtil.isHiddenAttribute(_name);
     if (_isHiddenAttribute) {
       String _name_1 = attribute.getName();
       String _format = String.format(
@@ -260,14 +277,23 @@ public class SARLValidator extends AbstractSARLValidator {
     }
   }
   
+  /**
+   * Replies the JVM generic type for the given element.
+   * 
+   * @param element
+   * @return the generic type of the given element.
+   */
   protected JvmGenericType getJvmGenericType(final EObject element) {
     CommonTypeComputationServices _services = this.getServices();
     IJvmModelAssociations _jvmModelAssociations = _services.getJvmModelAssociations();
-    return JvmElementUtil.getJvmGenericType(element, _jvmModelAssociations);
+    return ModelUtil.getJvmGenericType(element, _jvmModelAssociations);
   }
   
+  /**
+   * @param event
+   */
   @Check
-  protected void _checkFinalFieldInitialization(final Event event) {
+  public void checkFinalFieldInitialization(final Event event) {
     JvmGenericType type = this.getJvmGenericType(event);
     boolean _tripleNotEquals = (type != null);
     if (_tripleNotEquals) {
@@ -275,8 +301,11 @@ public class SARLValidator extends AbstractSARLValidator {
     }
   }
   
+  /**
+   * @param agent
+   */
   @Check
-  protected void _checkFinalFieldInitialization(final Agent agent) {
+  public void checkFinalFieldInitialization(final Agent agent) {
     JvmGenericType type = this.getJvmGenericType(agent);
     boolean _tripleNotEquals = (type != null);
     if (_tripleNotEquals) {
@@ -284,20 +313,26 @@ public class SARLValidator extends AbstractSARLValidator {
     }
   }
   
+  /**
+   * @param behavior
+   */
   @Check
-  protected void _checkFinalFieldInitialization(final Behavior behavior) {
+  public void checkFinalFieldInitialization(final Behavior behavior) {
     JvmGenericType type = this.getJvmGenericType(behavior);
-    boolean _tripleNotEquals = (type != null);
-    if (_tripleNotEquals) {
+    boolean _notEquals = (!Objects.equal(type, null));
+    if (_notEquals) {
       this.checkFinalFieldInitialization(type);
     }
   }
   
+  /**
+   * @param skill
+   */
   @Check
-  protected void _checkFinalFieldInitialization(final Skill skill) {
+  public void checkFinalFieldInitialization(final Skill skill) {
     JvmGenericType type = this.getJvmGenericType(skill);
-    boolean _tripleNotEquals = (type != null);
-    if (_tripleNotEquals) {
+    boolean _notEquals = (!Objects.equal(type, null));
+    if (_notEquals) {
       this.checkFinalFieldInitialization(type);
     }
   }
@@ -350,43 +385,49 @@ public class SARLValidator extends AbstractSARLValidator {
     if (_not) {
       List<LightweightTypeReference> knownInterfaces = new ArrayList<LightweightTypeReference>();
       Iterable<JvmTypeReference> _extendedInterfaces = jvmElement.getExtendedInterfaces();
-      for (final JvmTypeReference interface_ : _extendedInterfaces) {
+      for (final JvmTypeReference inter : _extendedInterfaces) {
         {
-          LightweightTypeReference interfaceType = this.toLightweightTypeReference(interface_);
-          this.checkRedundantInterface(jvmElement, interface_, interfaceType, knownInterfaces);
+          LightweightTypeReference interfaceType = this.toLightweightTypeReference(inter);
+          this.checkRedundantInterface(jvmElement, inter, interfaceType, knownInterfaces);
           knownInterfaces.add(interfaceType);
         }
       }
     }
   }
   
+  /**
+   * @param element
+   */
   @Check
   public void checkInheritedFeatures(final InheritingElement element) {
     JvmGenericType jvmElement = this.getJvmGenericType(element);
     boolean _tripleNotEquals = (jvmElement != null);
     if (_tripleNotEquals) {
-      final Map<ActionKey, JvmOperation> finalOperations = new TreeMap<ActionKey, JvmOperation>();
-      final Map<ActionKey, JvmOperation> overridableOperations = new TreeMap<ActionKey, JvmOperation>();
-      final Map<String, JvmField> inheritedFields = new TreeMap<String, JvmField>();
-      final Map<ActionKey, JvmOperation> operationsToImplement = new TreeMap<ActionKey, JvmOperation>();
-      final Map<SignatureKey, JvmConstructor> superConstructors = new TreeMap<SignatureKey, JvmConstructor>();
-      JvmElementUtil.populateInheritanceContext(jvmElement, finalOperations, overridableOperations, inheritedFields, operationsToImplement, superConstructors, this.sarlSignatureProvider);
+      Map<ActionKey, JvmOperation> finalOperations = new TreeMap<ActionKey, JvmOperation>();
+      Map<ActionKey, JvmOperation> overridableOperations = new TreeMap<ActionKey, JvmOperation>();
+      Map<String, JvmField> inheritedFields = new TreeMap<String, JvmField>();
+      Map<ActionKey, JvmOperation> operationsToImplement = new TreeMap<ActionKey, JvmOperation>();
+      Map<SignatureKey, JvmConstructor> superConstructors = new TreeMap<SignatureKey, JvmConstructor>();
+      ModelUtil.populateInheritanceContext(jvmElement, finalOperations, overridableOperations, inheritedFields, operationsToImplement, superConstructors, this.sarlSignatureProvider);
       this.checkRedundantInterfaces(jvmElement);
       boolean _isIgnored = this.isIgnored(IssueCodes.FIELD_NAME_SHADOWING);
       boolean _not = (!_isIgnored);
       if (_not) {
         Iterable<JvmField> _declaredFields = jvmElement.getDeclaredFields();
         for (final JvmField feature : _declaredFields) {
-          {
-            String _simpleName = feature.getSimpleName();
-            final JvmField inheritedField = inheritedFields.get(_simpleName);
+          String _simpleName = feature.getSimpleName();
+          boolean _isHiddenAttribute = ModelUtil.isHiddenAttribute(_simpleName);
+          boolean _not_1 = (!_isHiddenAttribute);
+          if (_not_1) {
+            String _simpleName_1 = feature.getSimpleName();
+            JvmField inheritedField = inheritedFields.get(_simpleName_1);
             boolean _tripleNotEquals_1 = (inheritedField != null);
             if (_tripleNotEquals_1) {
-              String _simpleName_1 = feature.getSimpleName();
+              String _simpleName_2 = feature.getSimpleName();
               String _qualifiedName = jvmElement.getQualifiedName();
               String _qualifiedName_1 = inheritedField.getQualifiedName();
               String _format = String.format(
-                "The field \'%s\' in \'%s\' is hidding the inherited field \'%s\'.", _simpleName_1, _qualifiedName, _qualifiedName_1);
+                "The field \'%s\' in \'%s\' is hidding the inherited field \'%s\'.", _simpleName_2, _qualifiedName, _qualifiedName_1);
               this.warning(_format, feature, 
                 null, 
                 IssueCodes.FIELD_NAME_SHADOWING);
@@ -397,38 +438,59 @@ public class SARLValidator extends AbstractSARLValidator {
       Iterable<JvmOperation> _declaredOperations = jvmElement.getDeclaredOperations();
       for (final JvmOperation feature_1 : _declaredOperations) {
         {
+          boolean _isVarArgs = feature_1.isVarArgs();
           EList<JvmFormalParameter> _parameters = feature_1.getParameters();
-          final SignatureKey sig = this.sarlSignatureProvider.createSignatureIDFromJvmModel(_parameters);
-          String _simpleName = feature_1.getSimpleName();
-          final ActionKey actionKey = this.sarlSignatureProvider.createActionID(_simpleName, sig);
-          operationsToImplement.remove(actionKey);
+          SignatureKey sig = this.sarlSignatureProvider.createSignatureIDFromJvmModel(_isVarArgs, _parameters);
+          String _simpleName_3 = feature_1.getSimpleName();
+          ActionKey actionKey = this.sarlSignatureProvider.createActionID(_simpleName_3, sig);
+          JvmOperation implementedFunction = operationsToImplement.remove(actionKey);
           boolean _containsKey = finalOperations.containsKey(actionKey);
           if (_containsKey) {
             String _string = actionKey.toString();
-            String _format = String.format(
+            String _format_1 = String.format(
               "Cannot override the operation %s, which is declared a final in the super type.", _string);
-            this.error(_format, feature_1, 
+            this.error(_format_1, feature_1, 
               null, 
               IssueCodes.OVERRIDE_FINAL_OPERATION);
           } else {
-            JvmOperation superOperation = overridableOperations.get(actionKey);
-            boolean _tripleNotEquals_1 = (superOperation != null);
-            if (_tripleNotEquals_1) {
+            boolean _tripleNotEquals_2 = (implementedFunction != null);
+            if (_tripleNotEquals_2) {
               JvmTypeReference _returnType = feature_1.getReturnType();
               LightweightTypeReference currentReturnType = this.toLightweightTypeReference(_returnType);
-              JvmTypeReference _returnType_1 = superOperation.getReturnType();
+              JvmTypeReference _returnType_1 = implementedFunction.getReturnType();
               LightweightTypeReference inheritedReturnType = this.toLightweightTypeReference(_returnType_1);
-              boolean _canCast = JvmElementUtil.canCast(currentReturnType, inheritedReturnType, false);
-              boolean _not_1 = (!_canCast);
-              if (_not_1) {
+              boolean _canCast = ModelUtil.canCast(currentReturnType, inheritedReturnType, false);
+              boolean _not_2 = (!_canCast);
+              if (_not_2) {
                 String _canonicalName = this.canonicalName(currentReturnType);
                 String _canonicalName_1 = this.canonicalName(inheritedReturnType);
                 String _string_1 = actionKey.toString();
-                String _format_1 = String.format(
+                String _format_2 = String.format(
                   "Incompatible return type between \'%s\' and \'%s\' for %s.", _canonicalName, _canonicalName_1, _string_1);
-                this.error(_format_1, feature_1, 
+                this.error(_format_2, feature_1, 
                   null, 
                   org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
+              }
+            } else {
+              JvmOperation superOperation = overridableOperations.get(actionKey);
+              boolean _tripleNotEquals_3 = (superOperation != null);
+              if (_tripleNotEquals_3) {
+                JvmTypeReference _returnType_2 = feature_1.getReturnType();
+                LightweightTypeReference currentReturnType_1 = this.toLightweightTypeReference(_returnType_2);
+                JvmTypeReference _returnType_3 = superOperation.getReturnType();
+                LightweightTypeReference inheritedReturnType_1 = this.toLightweightTypeReference(_returnType_3);
+                boolean _canCast_1 = ModelUtil.canCast(currentReturnType_1, inheritedReturnType_1, false);
+                boolean _not_3 = (!_canCast_1);
+                if (_not_3) {
+                  String _canonicalName_2 = this.canonicalName(currentReturnType_1);
+                  String _canonicalName_3 = this.canonicalName(inheritedReturnType_1);
+                  String _string_2 = actionKey.toString();
+                  String _format_3 = String.format(
+                    "Incompatible return type between \'%s\' and \'%s\' for %s.", _canonicalName_2, _canonicalName_3, _string_2);
+                  this.error(_format_3, feature_1, 
+                    null, 
+                    org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
+                }
               }
             }
           }
@@ -436,22 +498,21 @@ public class SARLValidator extends AbstractSARLValidator {
       }
       boolean _and = false;
       boolean _isAbstract = jvmElement.isAbstract();
-      boolean _not_1 = (!_isAbstract);
-      if (!_not_1) {
+      boolean _not_2 = (!_isAbstract);
+      if (!_not_2) {
         _and = false;
       } else {
         boolean _isInterface = jvmElement.isInterface();
-        boolean _not_2 = (!_isInterface);
-        _and = _not_2;
+        boolean _not_3 = (!_isInterface);
+        _and = _not_3;
       }
       if (_and) {
-        Set<Map.Entry<ActionKey, JvmOperation>> _entrySet = operationsToImplement.entrySet();
-        for (final Map.Entry<ActionKey, JvmOperation> entry : _entrySet) {
-          ActionKey _key = entry.getKey();
-          String _string = _key.toString();
-          String _format = String.format(
+        Set<ActionKey> _keySet = operationsToImplement.keySet();
+        for (final ActionKey key : _keySet) {
+          String _string = key.toString();
+          String _format_1 = String.format(
             "The operation %s must be implemented.", _string);
-          this.error(_format, element, 
+          this.error(_format_1, element, 
             null, 
             IssueCodes.MISSING_ACTION_IMPLEMENTATION);
         }
@@ -459,6 +520,9 @@ public class SARLValidator extends AbstractSARLValidator {
     }
   }
   
+  /**
+   * @param element
+   */
   @Check
   public void checkNoFinalTypeExtension(final InheritingElement element) {
     JvmGenericType jvmElement = this.getJvmGenericType(element);
@@ -486,25 +550,6 @@ public class SARLValidator extends AbstractSARLValidator {
           }
         }
       }
-    }
-  }
-  
-  public void checkFinalFieldInitialization(final InheritingElement skill) {
-    if (skill instanceof Skill) {
-      _checkFinalFieldInitialization((Skill)skill);
-      return;
-    } else if (skill instanceof Agent) {
-      _checkFinalFieldInitialization((Agent)skill);
-      return;
-    } else if (skill instanceof Behavior) {
-      _checkFinalFieldInitialization((Behavior)skill);
-      return;
-    } else if (skill instanceof Event) {
-      _checkFinalFieldInitialization((Event)skill);
-      return;
-    } else {
-      throw new IllegalArgumentException("Unhandled parameter types: " +
-        Arrays.<Object>asList(skill).toString());
     }
   }
 }

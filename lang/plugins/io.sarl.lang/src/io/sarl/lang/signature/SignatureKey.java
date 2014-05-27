@@ -29,12 +29,43 @@ import org.eclipse.emf.common.util.BasicEList;
  */
 public class SignatureKey extends BasicEList<String> implements Comparable<SignatureKey> {
 
-	private static final long serialVersionUID = 4692246488417437647L;
-
+	private static final long serialVersionUID = -7553816659790345857L;
+	
+	private final boolean isVarargs;
+	
 	/**
+	 * @param isVarArgs - indicates if this signature has the varargs flag.
+	 * @param initialCapacity - initional capacity of the array.
 	 */
-	protected SignatureKey() {
-		
+	SignatureKey(boolean isVarArgs, int initialCapacity) {
+		super(initialCapacity);
+		this.isVarargs = isVarArgs;
+	}
+	
+	/** Parse the given string and create a signature.
+	 * <p>
+	 * The format of the text is the same as the one replied by {@link #toString()}.
+	 * 
+	 * @param text
+	 */
+	SignatureKey(String text) {
+		assert(text!=null); 
+		String[] elements = text.split("\\s*,\\s*"); //$NON-NLS-1$
+		this.isVarargs = (elements.length>0 && elements[elements.length-1].endsWith("*")); //$NON-NLS-1$
+		if (this.isVarargs) {
+			elements[elements.length-1] = elements[elements.length-1].replaceFirst("\\*$", "[]");  //$NON-NLS-1$//$NON-NLS-2$
+		}
+		for(String p : elements) {
+			add(p);
+		}
+	}
+
+	/** Replies if this signature has a variatic parameter.
+	 * 
+	 * @return <code>true</code> if the last element is variatic.
+	 */
+	public boolean isVarargs() {
+		return this.isVarargs;
 	}
 	
 	/** {@inheritDoc}
@@ -48,14 +79,19 @@ public class SignatureKey extends BasicEList<String> implements Comparable<Signa
 	 */
 	@Override
 	public String toString() {
-		Iterator<String> iterator = iterator();
-		if (iterator.hasNext()) {
+		if (!isEmpty()) {
 			StringBuilder b = new StringBuilder();
-			b.append(iterator.next());
-			while (iterator.hasNext()) {
-				b.append(","); //$NON-NLS-1$
-				b.append(iterator.next());
+			int size = size()-1;
+			for(int i=0; i<size; ++i) {
+				if (i>0) b.append(","); //$NON-NLS-1$
+				b.append(get(i));
 			}
+			String lastElement = get(size);
+			if (isVarargs()) {
+				lastElement = lastElement.replaceFirst("\\[\\]$", "*");  //$NON-NLS-1$//$NON-NLS-2$
+			}
+			if (size>0) b.append(","); //$NON-NLS-1$
+			b.append(lastElement);
 			return b.toString();
 		}
 		return ""; //$NON-NLS-1$
@@ -69,8 +105,11 @@ public class SignatureKey extends BasicEList<String> implements Comparable<Signa
 		if (cmp!=0) return cmp;
 		Iterator<String> i1 = iterator();
 		Iterator<String> i2 = o.iterator();
+		String s1, s2;
 		while (i1.hasNext() && i2.hasNext()) {
-			cmp = i1.next().compareTo(i2.next());
+			s1 = i1.next();
+			s2 = i2.next();
+			cmp = s1.compareTo(s2);
 			if (cmp!=0) return cmp;
 		}
 		return 0;

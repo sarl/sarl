@@ -60,6 +60,8 @@ public class VarDeclarationCompilerTest {
       _builder.append("}");
       _builder.newLine();
       StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.annotation.Generated;");
+      _builder_1.newLine();
       _builder_1.append("import io.sarl.lang.core.Agent;");
       _builder_1.newLine();
       _builder_1.append("import java.util.List;");
@@ -86,6 +88,9 @@ public class VarDeclarationCompilerTest {
       _builder_1.newLine();
       _builder_1.append("   ");
       _builder_1.append("*/");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("public A1(final java.util.UUID parentID) {");
@@ -154,6 +159,8 @@ public class VarDeclarationCompilerTest {
       _builder.append("}");
       _builder.newLine();
       StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.annotation.Generated;");
+      _builder_1.newLine();
       _builder_1.append("import io.sarl.lang.core.Agent;");
       _builder_1.newLine();
       _builder_1.append("import java.util.List;");
@@ -180,6 +187,9 @@ public class VarDeclarationCompilerTest {
       _builder_1.newLine();
       _builder_1.append("   ");
       _builder_1.append("*/");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("public A1(final java.util.UUID parentID) {");
@@ -244,6 +254,8 @@ public class VarDeclarationCompilerTest {
       _builder.append("}");
       _builder.newLine();
       StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.annotation.Generated;");
+      _builder_1.newLine();
       _builder_1.append("import io.sarl.lang.core.Agent;");
       _builder_1.newLine();
       _builder_1.append("import java.util.List;");
@@ -270,6 +282,9 @@ public class VarDeclarationCompilerTest {
       _builder_1.newLine();
       _builder_1.append("   ");
       _builder_1.append("*/");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("public A1(final java.util.UUID parentID) {");
@@ -330,6 +345,8 @@ public class VarDeclarationCompilerTest {
       _builder.append("}");
       _builder.newLine();
       StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.annotation.Generated;");
+      _builder_1.newLine();
       _builder_1.append("import io.sarl.lang.core.Agent;");
       _builder_1.newLine();
       _builder_1.newLine();
@@ -354,6 +371,9 @@ public class VarDeclarationCompilerTest {
       _builder_1.newLine();
       _builder_1.append("   ");
       _builder_1.append("*/");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("public A1(final java.util.UUID parentID) {");
@@ -421,6 +441,8 @@ public class VarDeclarationCompilerTest {
       _builder.append("}");
       _builder.newLine();
       StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.annotation.Generated;");
+      _builder_1.newLine();
       _builder_1.append("import io.sarl.lang.core.Agent;");
       _builder_1.newLine();
       _builder_1.append("import java.util.List;");
@@ -447,6 +469,9 @@ public class VarDeclarationCompilerTest {
       _builder_1.newLine();
       _builder_1.append("   ");
       _builder_1.append("*/");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("public A1(final java.util.UUID parentID) {");
@@ -516,6 +541,8 @@ public class VarDeclarationCompilerTest {
       _builder.append("}");
       _builder.newLine();
       StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.annotation.Generated;");
+      _builder_1.newLine();
       _builder_1.append("import io.sarl.lang.core.Agent;");
       _builder_1.newLine();
       _builder_1.append("import java.util.List;");
@@ -542,6 +569,9 @@ public class VarDeclarationCompilerTest {
       _builder_1.newLine();
       _builder_1.append("   ");
       _builder_1.append("*/");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("public A1(final java.util.UUID parentID) {");
@@ -615,6 +645,8 @@ public class VarDeclarationCompilerTest {
       _builder.append("}");
       _builder.newLine();
       StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.annotation.Generated;");
+      _builder_1.newLine();
       _builder_1.append("import io.sarl.lang.core.Agent;");
       _builder_1.newLine();
       _builder_1.append("import org.eclipse.xtext.xbase.lib.Exceptions;");
@@ -641,6 +673,9 @@ public class VarDeclarationCompilerTest {
       _builder_1.newLine();
       _builder_1.append("   ");
       _builder_1.append("*/");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("public A1(final java.util.UUID parentID) {");
@@ -739,6 +774,8 @@ public class VarDeclarationCompilerTest {
       _builder.append("}");
       _builder.newLine();
       StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.annotation.Generated;");
+      _builder_1.newLine();
       _builder_1.append("import io.sarl.lang.core.Agent;");
       _builder_1.newLine();
       _builder_1.append("import org.eclipse.xtext.xbase.lib.Exceptions;");
@@ -765,6 +802,9 @@ public class VarDeclarationCompilerTest {
       _builder_1.newLine();
       _builder_1.append("   ");
       _builder_1.append("*/");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("public A1(final java.util.UUID parentID) {");
@@ -863,6 +903,8 @@ public class VarDeclarationCompilerTest {
       _builder.append("}");
       _builder.newLine();
       StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.annotation.Generated;");
+      _builder_1.newLine();
       _builder_1.append("import io.sarl.lang.core.Agent;");
       _builder_1.newLine();
       _builder_1.append("import org.eclipse.xtext.xbase.lib.Functions.Function2;");
@@ -889,6 +931,9 @@ public class VarDeclarationCompilerTest {
       _builder_1.newLine();
       _builder_1.append("   ");
       _builder_1.append("*/");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("public A1(final java.util.UUID parentID) {");

@@ -16,12 +16,13 @@
 package io.sarl.lang.tests.compilation
 
 import com.google.inject.Inject
-import org.eclipse.xtext.junit4.XtextRunner
-import org.junit.runner.RunWith
-import org.eclipse.xtext.junit4.InjectWith
 import io.sarl.lang.SARLInjectorProvider
-import org.junit.Test
+import org.eclipse.xtext.junit4.InjectWith
+import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper
+import org.junit.Assert
+import org.junit.Test
+import org.junit.runner.RunWith
 
 /**
  * @author $Author: sgalland$
@@ -43,6 +44,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -53,6 +58,7 @@ class ArgDefaultValueCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -60,12 +66,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
 			  
-			  public void myaction(final int arg) {
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("1_0") final int arg) {
 			    System.out.println(arg);
 			  }
 			  
+			  @DefaultValueUse("int")
 			  public final void myaction() {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
@@ -82,6 +91,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -92,6 +105,7 @@ class ArgDefaultValueCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -99,12 +113,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
+			  @Generated
 			  private final static float ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4.5f;
 			  
-			  public void myaction(final float arg) {
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("1_0") final float arg) {
 			    System.out.println(arg);
 			  }
 			  
+			  @DefaultValueUse("float")
 			  public final void myaction() {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
@@ -121,6 +138,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -131,6 +152,7 @@ class ArgDefaultValueCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -138,12 +160,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
+			  @Generated
 			  private final static boolean ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = true;
 			  
-			  public void myaction(final boolean arg) {
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("1_0") final boolean arg) {
 			    System.out.println(arg);
 			  }
 			  
+			  @DefaultValueUse("boolean")
 			  public final void myaction() {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
@@ -160,6 +185,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -170,6 +199,7 @@ class ArgDefaultValueCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -177,12 +207,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
+			  @Generated
 			  private final static double ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4.5;
 			  
-			  public void myaction(final double arg) {
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("1_0") final double arg) {
 			    System.out.println(arg);
 			  }
 			  
+			  @DefaultValueUse("double")
 			  public final void myaction() {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
@@ -199,6 +232,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -209,6 +246,7 @@ class ArgDefaultValueCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -216,12 +254,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
+			  @Generated
 			  private final static long ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 450;
 			  
-			  public void myaction(final long arg) {
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("1_0") final long arg) {
 			    System.out.println(arg);
 			  }
 			  
+			  @DefaultValueUse("long")
 			  public final void myaction() {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
@@ -238,6 +279,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -248,6 +293,7 @@ class ArgDefaultValueCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -255,12 +301,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
+			  @Generated
 			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = "abcd";
 			  
-			  public void myaction(final String arg) {
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("1_0") final String arg) {
 			    System.out.println(arg);
 			  }
 			  
+			  @DefaultValueUse("java.lang.String")
 			  public final void myaction() {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
@@ -277,6 +326,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -287,6 +340,7 @@ class ArgDefaultValueCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -294,12 +348,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
+			  @Generated
 			  private final static char ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 'd';
 			  
-			  public void myaction(final char arg) {
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("1_0") final char arg) {
 			    System.out.println(arg);
 			  }
 			  
+			  @DefaultValueUse("char")
 			  public final void myaction() {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
@@ -316,6 +373,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -326,6 +387,7 @@ class ArgDefaultValueCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -333,12 +395,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
 			  
-			  public void myaction(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("1_0") final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public final void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, arg3, arg4);
 			  }
@@ -355,6 +420,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -365,6 +434,7 @@ class ArgDefaultValueCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -372,12 +442,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg1
 			   */
+			  @Generated
 			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = "abc";
 			  
-			  public void myaction(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
+			  @DefaultValueSource
+			  public void myaction(final int arg0, @DefaultValue("1_1") final String arg1, final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public final void myaction(final int arg0, final int arg2, final int arg3, final String arg4) {
 			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2, arg3, arg4);
 			  }
@@ -394,6 +467,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -404,6 +481,7 @@ class ArgDefaultValueCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -411,12 +489,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg2
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2 = 18;
 			  
-			  public void myaction(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
+			  @DefaultValueSource
+			  public void myaction(final int arg0, final String arg1, @DefaultValue("1_2") final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public final void myaction(final int arg0, final String arg1, final int arg3, final String arg4) {
 			    myaction(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, arg3, arg4);
 			  }
@@ -433,6 +514,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -443,6 +528,7 @@ class ArgDefaultValueCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -450,12 +536,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg3
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 34;
 			  
-			  public void myaction(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
+			  @DefaultValueSource
+			  public void myaction(final int arg0, final String arg1, final int arg2, @DefaultValue("1_3") final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public final void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {
 			    myaction(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
 			  }
@@ -472,6 +561,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -482,6 +575,7 @@ class ArgDefaultValueCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -489,12 +583,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg4
 			   */
+			  @Generated
 			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_4 = "xyz";
 			  
-			  public void myaction(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
+			  @DefaultValueSource
+			  public void myaction(final int arg0, final String arg1, final int arg2, final int arg3, @DefaultValue("1_4") final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public final void myaction(final int arg0, final String arg1, final int arg2, final int arg3) {
 			    myaction(arg0, arg1, arg2, arg3, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_4);
 			  }
@@ -511,6 +608,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -521,6 +622,7 @@ class ArgDefaultValueCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -528,25 +630,31 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
 			  
 			  /**
 			   * Default value for the parameter arg3
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 56;
 			  
-			  public void myaction(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("1_0") final int arg0, final String arg1, final int arg2, @DefaultValue("1_3") final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public final void myaction(final String arg1, final int arg2, final String arg4) {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
 			  }
 			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public final void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {
 			    myaction(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
 			  }
 			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public final void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, arg3, arg4);
 			  }
@@ -563,6 +671,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -573,6 +685,7 @@ class ArgDefaultValueCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -580,12 +693,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg1
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 45;
 			  
-			  public void myaction(final int arg0, final int arg1, final int... arg2) {
+			  @DefaultValueSource
+			  public void myaction(final int arg0, @DefaultValue("1_1") final int arg1, final int... arg2) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,int,int*")
 			  public final void myaction(final int arg0, final int... arg2) {
 			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
 			  }
@@ -602,6 +718,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -612,6 +732,7 @@ class ArgDefaultValueCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -619,12 +740,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
 			  
-			  public void myaction(final int arg0, final int arg1, final int... arg2) {
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("1_0") final int arg0, final int arg1, final int... arg2) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,int,int*")
 			  public final void myaction(final int arg1, final int... arg2) {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2);
 			  }
@@ -641,6 +765,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -651,6 +779,7 @@ class ArgDefaultValueCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -658,21 +787,26 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
 			  
 			  /**
 			   * Default value for the parameter arg1
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 56;
 			  
-			  public void myaction(final int arg0, final int arg1, final int... arg2) {
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("1_0") final int arg0, @DefaultValue("1_1") final int arg1, final int... arg2) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,int,int*")
 			  public final void myaction(final int... arg2) {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
 			  }
 			  
+			  @DefaultValueUse("int,int,int*")
 			  public final void myaction(final int arg0, final int... arg2) {
 			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
 			  }
@@ -689,6 +823,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -699,6 +837,7 @@ class ArgDefaultValueCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -706,39 +845,48 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
 			  
 			  /**
 			   * Default value for the parameter arg1
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 56;
 			  
 			  /**
 			   * Default value for the parameter arg2
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2 = 78;
 			  
 			  /**
 			   * Default value for the parameter arg3
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 14;
 			  
-			  public void myaction(final int arg0, final int arg1, final int arg2, final int arg3) {
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("1_0") final int arg0, @DefaultValue("1_1") final int arg1, @DefaultValue("1_2") final int arg2, @DefaultValue("1_3") final int arg3) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,int,int,int")
 			  public final void myaction() {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
 			  }
 			  
+			  @DefaultValueUse("int,int,int,int")
 			  public final void myaction(final int arg0) {
 			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
 			  }
 			  
+			  @DefaultValueUse("int,int,int,int")
 			  public final void myaction(final int arg0, final int arg1) {
 			    myaction(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
 			  }
 			  
+			  @DefaultValueUse("int,int,int,int")
 			  public final void myaction(final int arg0, final int arg1, final int arg2) {
 			    myaction(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
 			  }
@@ -755,6 +903,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -762,12 +914,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
 			  
-			  public B1(final int arg) {
+			  @DefaultValueSource
+			  public B1(@DefaultValue("1_0") final int arg) {
 			    System.out.println(arg);
 			  }
 			  
+			  @DefaultValueUse("int")
 			  public B1() {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
@@ -784,6 +939,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -791,12 +950,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
+			  @Generated
 			  private final static float ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4.5f;
 			  
-			  public B1(final float arg) {
+			  @DefaultValueSource
+			  public B1(@DefaultValue("1_0") final float arg) {
 			    System.out.println(arg);
 			  }
 			  
+			  @DefaultValueUse("float")
 			  public B1() {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
@@ -813,6 +975,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -820,12 +986,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
+			  @Generated
 			  private final static boolean ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = true;
 			  
-			  public B1(final boolean arg) {
+			  @DefaultValueSource
+			  public B1(@DefaultValue("1_0") final boolean arg) {
 			    System.out.println(arg);
 			  }
 			  
+			  @DefaultValueUse("boolean")
 			  public B1() {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
@@ -842,6 +1011,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -849,12 +1022,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
+			  @Generated
 			  private final static double ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4.5;
 			  
-			  public B1(final double arg) {
+			  @DefaultValueSource
+			  public B1(@DefaultValue("1_0") final double arg) {
 			    System.out.println(arg);
 			  }
 			  
+			  @DefaultValueUse("double")
 			  public B1() {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
@@ -871,6 +1047,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -878,12 +1058,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
+			  @Generated
 			  private final static long ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 450;
 			  
-			  public B1(final long arg) {
+			  @DefaultValueSource
+			  public B1(@DefaultValue("1_0") final long arg) {
 			    System.out.println(arg);
 			  }
 			  
+			  @DefaultValueUse("long")
 			  public B1() {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
@@ -900,6 +1083,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -907,12 +1094,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
+			  @Generated
 			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = "abcd";
 			  
-			  public B1(final String arg) {
+			  @DefaultValueSource
+			  public B1(@DefaultValue("1_0") final String arg) {
 			    System.out.println(arg);
 			  }
 			  
+			  @DefaultValueUse("java.lang.String")
 			  public B1() {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
@@ -929,6 +1119,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -936,12 +1130,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
+			  @Generated
 			  private final static char ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 'd';
 			  
-			  public B1(final char arg) {
+			  @DefaultValueSource
+			  public B1(@DefaultValue("1_0") final char arg) {
 			    System.out.println(arg);
 			  }
 			  
+			  @DefaultValueUse("char")
 			  public B1() {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
@@ -958,6 +1155,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -965,12 +1166,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
 			  
-			  public B1(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
+			  @DefaultValueSource
+			  public B1(@DefaultValue("1_0") final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public B1(final String arg1, final int arg2, final int arg3, final String arg4) {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, arg3, arg4);
 			  }
@@ -987,6 +1191,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -994,12 +1202,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg1
 			   */
+			  @Generated
 			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = "abc";
 			  
-			  public B1(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
+			  @DefaultValueSource
+			  public B1(final int arg0, @DefaultValue("1_1") final String arg1, final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public B1(final int arg0, final int arg2, final int arg3, final String arg4) {
 			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2, arg3, arg4);
 			  }
@@ -1016,6 +1227,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -1023,12 +1238,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg2
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2 = 18;
 			  
-			  public B1(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
+			  @DefaultValueSource
+			  public B1(final int arg0, final String arg1, @DefaultValue("1_2") final int arg2, final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public B1(final int arg0, final String arg1, final int arg3, final String arg4) {
 			    this(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, arg3, arg4);
 			  }
@@ -1045,6 +1263,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -1052,12 +1274,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg3
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 34;
 			  
-			  public B1(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
+			  @DefaultValueSource
+			  public B1(final int arg0, final String arg1, final int arg2, @DefaultValue("1_3") final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public B1(final int arg0, final String arg1, final int arg2, final String arg4) {
 			    this(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
 			  }
@@ -1074,6 +1299,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -1081,12 +1310,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg4
 			   */
+			  @Generated
 			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_4 = "xyz";
 			  
-			  public B1(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
+			  @DefaultValueSource
+			  public B1(final int arg0, final String arg1, final int arg2, final int arg3, @DefaultValue("1_4") final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public B1(final int arg0, final String arg1, final int arg2, final int arg3) {
 			    this(arg0, arg1, arg2, arg3, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_4);
 			  }
@@ -1103,6 +1335,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -1110,25 +1346,31 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
 			  
 			  /**
 			   * Default value for the parameter arg3
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 56;
 			  
-			  public B1(final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
+			  @DefaultValueSource
+			  public B1(@DefaultValue("1_0") final int arg0, final String arg1, final int arg2, @DefaultValue("1_3") final int arg3, final String arg4) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public B1(final String arg1, final int arg2, final String arg4) {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
 			  }
 			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public B1(final int arg0, final String arg1, final int arg2, final String arg4) {
 			    this(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
 			  }
 			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public B1(final String arg1, final int arg2, final int arg3, final String arg4) {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, arg3, arg4);
 			  }
@@ -1145,6 +1387,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -1152,12 +1398,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg1
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 45;
 			  
-			  public B1(final int arg0, final int arg1, final int... arg2) {
+			  @DefaultValueSource
+			  public B1(final int arg0, @DefaultValue("1_1") final int arg1, final int... arg2) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,int,int*")
 			  public B1(final int arg0, final int... arg2) {
 			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
 			  }
@@ -1174,6 +1423,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -1181,12 +1434,15 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
 			  
-			  public B1(final int arg0, final int arg1, final int... arg2) {
+			  @DefaultValueSource
+			  public B1(@DefaultValue("1_0") final int arg0, final int arg1, final int... arg2) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,int,int*")
 			  public B1(final int arg1, final int... arg2) {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2);
 			  }
@@ -1203,6 +1459,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -1210,21 +1470,26 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
 			  
 			  /**
 			   * Default value for the parameter arg1
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 56;
 			  
-			  public B1(final int arg0, final int arg1, final int... arg2) {
+			  @DefaultValueSource
+			  public B1(@DefaultValue("1_0") final int arg0, @DefaultValue("1_1") final int arg1, final int... arg2) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,int,int*")
 			  public B1(final int... arg2) {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
 			  }
 			  
+			  @DefaultValueUse("int,int,int*")
 			  public B1(final int arg0, final int... arg2) {
 			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
 			  }
@@ -1241,6 +1506,10 @@ class ArgDefaultValueCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -1248,44 +1517,302 @@ class ArgDefaultValueCompilerTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
 			  
 			  /**
 			   * Default value for the parameter arg1
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 56;
 			  
 			  /**
 			   * Default value for the parameter arg2
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2 = 78;
 			  
 			  /**
 			   * Default value for the parameter arg3
 			   */
+			  @Generated
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 14;
 			  
-			  public B1(final int arg0, final int arg1, final int arg2, final int arg3) {
+			  @DefaultValueSource
+			  public B1(@DefaultValue("1_0") final int arg0, @DefaultValue("1_1") final int arg1, @DefaultValue("1_2") final int arg2, @DefaultValue("1_3") final int arg3) {
 			    System.out.println(arg0);
 			  }
 			  
+			  @DefaultValueUse("int,int,int,int")
 			  public B1() {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
 			  }
 			  
+			  @DefaultValueUse("int,int,int,int")
 			  public B1(final int arg0) {
 			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
 			  }
 			  
+			  @DefaultValueUse("int,int,int,int")
 			  public B1(final int arg0, final int arg1) {
 			    this(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
 			  }
 			  
+			  @DefaultValueUse("int,int,int,int")
 			  public B1(final int arg0, final int arg1, final int arg2) {
 			    this(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
 			  }
 			}
 		''')
+	}
+
+	@Test
+	def void inCapacity() {
+		'''
+			capacity C1 {
+				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int, arg3 : int=14)
+			}
+		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Capacity;
+			
+			@SuppressWarnings("all")
+			public interface C1 extends Capacity {
+			  /**
+			   * Default value for the parameter arg0
+			   */
+			  @Generated
+			  public final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 45;
+			  
+			  /**
+			   * Default value for the parameter arg1
+			   */
+			  @Generated
+			  public final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = 56;
+			  
+			  /**
+			   * Default value for the parameter arg3
+			   */
+			  @Generated
+			  public final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3 = 14;
+			  
+			  @DefaultValueSource
+			  public abstract void myaction(@DefaultValue("0_0") final int arg0, @DefaultValue("0_1") final int arg1, final int arg2, @DefaultValue("0_3") final int arg3);
+			  
+			  @DefaultValueUse("int,int,int,int")
+			  public abstract void myaction(final int arg2);
+			  
+			  @DefaultValueUse("int,int,int,int")
+			  public abstract void myaction(final int arg0, final int arg2);
+			  
+			  @DefaultValueUse("int,int,int,int")
+			  public abstract void myaction(final int arg0, final int arg1, final int arg2);
+			}
+		''')
+	}
+
+	@Test
+	def void overridingCapacitySkill() {
+		val expectedC1 = '''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Capacity;
+			
+			@SuppressWarnings("all")
+			public interface C1 extends Capacity {
+			  /**
+			   * Default value for the parameter arg0
+			   */
+			  @Generated
+			  public final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 45;
+			  
+			  /**
+			   * Default value for the parameter arg1
+			   */
+			  @Generated
+			  public final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = 56;
+			  
+			  @DefaultValueSource
+			  public abstract void myaction(@DefaultValue("0_0") final int arg0, @DefaultValue("0_1") final int arg1, final int... arg2);
+			  
+			  @DefaultValueUse("int,int,int*")
+			  public abstract void myaction(final int... arg2);
+			  
+			  @DefaultValueUse("int,int,int*")
+			  public abstract void myaction(final int arg0, final int... arg2);
+			}
+		'''
+		val expectedS1 = '''
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.core.Skill;
+			
+			@SuppressWarnings("all")
+			public class S1 extends Skill implements C1 {
+			  public void capAction() {
+			  }
+			  
+			  public void myaction(final int arg0, final int arg1, final int... arg2) {
+			  }
+			  
+			  @DefaultValueUse("int,int,int*")
+			  public final void myaction(final int... arg2) {
+			    myaction(C1.___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, C1.___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
+			  }
+			  
+			  @DefaultValueUse("int,int,int*")
+			  public final void myaction(final int arg0, final int... arg2) {
+			    myaction(arg0, C1.___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
+			  }
+			  
+			  /**
+			   * Construct a skill.
+			   * @param owner - agent that is owning this skill. 
+			   * 
+			   */
+			  public S1(final io.sarl.lang.core.Agent owner) {
+			    super(owner);
+			  }
+			  
+			  /**
+			   * Construct a skill. The owning agent is unknown. 
+			   * 
+			   */
+			  public S1() {
+			    super();
+			  }
+			}
+		'''
+		
+		'''
+			capacity C1 {
+				def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*)
+			}
+			skill S1 implements C1 {
+				def capAction {}
+				def myaction(arg0 : int, arg1 : int, arg2 : int*) {}
+			}
+		'''.compile([CompilationTestHelper.Result r |
+			Assert.assertEquals(expectedC1,r.getGeneratedCode("C1"))
+			Assert.assertEquals(expectedS1,r.getGeneratedCode("S1"))
+		])
+	}
+	
+	@Test
+	def void missedActionImplementation() {
+		val expectedC1 = '''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Capacity;
+			
+			@SuppressWarnings("all")
+			public interface C1 extends Capacity {
+			  /**
+			   * Default value for the parameter a
+			   */
+			  @Generated
+			  public final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4;
+			  
+			  @DefaultValueSource
+			  public abstract void myaction1(@DefaultValue("0_0") final int a);
+			  
+			  @DefaultValueUse("int")
+			  public abstract void myaction1();
+			}
+		'''
+		val expectedC2 = '''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Capacity;
+			
+			@SuppressWarnings("all")
+			public interface C2 extends Capacity {
+			  /**
+			   * Default value for the parameter b
+			   */
+			  @Generated
+			  public final static float ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 6;
+			  
+			  @DefaultValueSource
+			  public abstract void myaction2(@DefaultValue("0_0") final float b, final boolean c);
+			  
+			  @DefaultValueUse("float,boolean")
+			  public abstract void myaction2(final boolean c);
+			}
+		'''
+		val expectedS1 = '''
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.core.Skill;
+			
+			@SuppressWarnings("all")
+			public class S1 extends Skill implements C1, C2 {
+			  public void myaction1(final int x) {
+			    System.out.println(x);
+			  }
+			  
+			  public void myaction2(final float y, final boolean z) {
+			    System.err.println(y);
+			    System.err.println(z);
+			  }
+			  
+			  @DefaultValueUse("int")
+			  public final void myaction1() {
+			    myaction1(C1.___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
+			  }
+			  
+			  @DefaultValueUse("float,boolean")
+			  public final void myaction2(final boolean c) {
+			    myaction2(C2.___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, c);
+			  }
+			  
+			  /**
+			   * Construct a skill.
+			   * @param owner - agent that is owning this skill. 
+			   * 
+			   */
+			  public S1(final io.sarl.lang.core.Agent owner) {
+			    super(owner);
+			  }
+			  
+			  /**
+			   * Construct a skill. The owning agent is unknown. 
+			   * 
+			   */
+			  public S1() {
+			    super();
+			  }
+			}
+		'''
+		
+		'''
+			capacity C1 {
+				def myaction1(a : int=4)
+			}
+			capacity C2 {
+				def myaction2(b : float=6, c : boolean)
+			}
+			skill S1 implements C1, C2 {
+				def myaction1(x : int) {
+					System.out.println(x);
+				}
+				def myaction2(y : float, z : boolean) {
+					System.err.println(y);
+					System.err.println(z);
+				}
+			}
+		'''.compile([CompilationTestHelper.Result r |
+			Assert.assertEquals(expectedC1,r.getGeneratedCode("C1"))
+			Assert.assertEquals(expectedC2,r.getGeneratedCode("C2"))
+			Assert.assertEquals(expectedS1,r.getGeneratedCode("S1"))
+		])
 	}
 
 }

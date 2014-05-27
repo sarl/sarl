@@ -54,6 +54,8 @@ public class EventCompilerTest {
       _builder.append("}");
       _builder.newLine();
       StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.annotation.Generated;");
+      _builder_1.newLine();
       _builder_1.append("import io.sarl.lang.core.Event;");
       _builder_1.newLine();
       _builder_1.newLine();
@@ -72,6 +74,9 @@ public class EventCompilerTest {
       _builder_1.newLine();
       _builder_1.append("   ");
       _builder_1.append("*/");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("public E1() {");
@@ -100,6 +105,9 @@ public class EventCompilerTest {
       _builder_1.append("*/");
       _builder_1.newLine();
       _builder_1.append("  ");
+      _builder_1.append("@Generated");
+      _builder_1.newLine();
+      _builder_1.append("  ");
       _builder_1.append("public E1(final io.sarl.lang.core.Address source) {");
       _builder_1.newLine();
       _builder_1.append("    ");
@@ -109,6 +117,9 @@ public class EventCompilerTest {
       _builder_1.append("}");
       _builder_1.newLine();
       _builder_1.append("  ");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("private final static long serialVersionUID = 588368462L;");
@@ -133,6 +144,8 @@ public class EventCompilerTest {
       _builder.append("}");
       _builder.newLine();
       StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.annotation.Generated;");
+      _builder_1.newLine();
       _builder_1.append("import io.sarl.lang.core.Event;");
       _builder_1.newLine();
       _builder_1.newLine();
@@ -158,6 +171,9 @@ public class EventCompilerTest {
       _builder_1.append("*/");
       _builder_1.newLine();
       _builder_1.append("  ");
+      _builder_1.append("@Generated");
+      _builder_1.newLine();
+      _builder_1.append("  ");
       _builder_1.append("public E1() {");
       _builder_1.newLine();
       _builder_1.append("    ");
@@ -184,6 +200,9 @@ public class EventCompilerTest {
       _builder_1.append("*/");
       _builder_1.newLine();
       _builder_1.append("  ");
+      _builder_1.append("@Generated");
+      _builder_1.newLine();
+      _builder_1.append("  ");
       _builder_1.append("public E1(final io.sarl.lang.core.Address source) {");
       _builder_1.newLine();
       _builder_1.append("    ");
@@ -196,6 +215,9 @@ public class EventCompilerTest {
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("@Override");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("public boolean equals(final Object obj) {");
@@ -254,6 +276,9 @@ public class EventCompilerTest {
       _builder_1.append("@Override");
       _builder_1.newLine();
       _builder_1.append("  ");
+      _builder_1.append("@Generated");
+      _builder_1.newLine();
+      _builder_1.append("  ");
       _builder_1.append("public int hashCode() {");
       _builder_1.newLine();
       _builder_1.append("    ");
@@ -283,6 +308,9 @@ public class EventCompilerTest {
       _builder_1.append("*/");
       _builder_1.newLine();
       _builder_1.append("  ");
+      _builder_1.append("@Generated");
+      _builder_1.newLine();
+      _builder_1.append("  ");
       _builder_1.append("protected String attributesToString() {");
       _builder_1.newLine();
       _builder_1.append("    ");
@@ -300,6 +328,9 @@ public class EventCompilerTest {
       _builder_1.append("  ");
       _builder_1.newLine();
       _builder_1.append("  ");
+      _builder_1.append("@Generated");
+      _builder_1.newLine();
+      _builder_1.append("  ");
       _builder_1.append("private final static long serialVersionUID = 591742169L;");
       _builder_1.newLine();
       _builder_1.append("}");
@@ -314,6 +345,9 @@ public class EventCompilerTest {
   public void inheritanceCompile() {
     try {
       StringConcatenation _builder = new StringConcatenation();
+      _builder.append("import io.sarl.lang.annotation.Generated;");
+      _builder.newLine();
+      _builder.newLine();
       _builder.append("@SuppressWarnings(\"all\")");
       _builder.newLine();
       _builder.append("public class E2 extends E1 {");
@@ -329,6 +363,9 @@ public class EventCompilerTest {
       _builder.newLine();
       _builder.append("   ");
       _builder.append("*/");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("@Generated");
       _builder.newLine();
       _builder.append("  ");
       _builder.append("public E2() {");
@@ -357,6 +394,9 @@ public class EventCompilerTest {
       _builder.append("*/");
       _builder.newLine();
       _builder.append("  ");
+      _builder.append("@Generated");
+      _builder.newLine();
+      _builder.append("  ");
       _builder.append("public E2(final io.sarl.lang.core.Address source) {");
       _builder.newLine();
       _builder.append("    ");
@@ -366,6 +406,9 @@ public class EventCompilerTest {
       _builder.append("}");
       _builder.newLine();
       _builder.append("  ");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("@Generated");
       _builder.newLine();
       _builder.append("  ");
       _builder.append("private final static long serialVersionUID = 2189L;");
@@ -422,6 +465,8 @@ public class EventCompilerTest {
       _builder.append("}");
       _builder.newLine();
       StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.annotation.Generated;");
+      _builder_1.newLine();
       _builder_1.append("import io.sarl.lang.core.Event;");
       _builder_1.newLine();
       _builder_1.newLine();
@@ -452,6 +497,9 @@ public class EventCompilerTest {
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("@Override");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("public boolean equals(final Object obj) {");
@@ -507,6 +555,9 @@ public class EventCompilerTest {
       _builder_1.append("@Override");
       _builder_1.newLine();
       _builder_1.append("  ");
+      _builder_1.append("@Generated");
+      _builder_1.newLine();
+      _builder_1.append("  ");
       _builder_1.append("public int hashCode() {");
       _builder_1.newLine();
       _builder_1.append("    ");
@@ -539,6 +590,9 @@ public class EventCompilerTest {
       _builder_1.append("*/");
       _builder_1.newLine();
       _builder_1.append("  ");
+      _builder_1.append("@Generated");
+      _builder_1.newLine();
+      _builder_1.append("  ");
       _builder_1.append("protected String attributesToString() {");
       _builder_1.newLine();
       _builder_1.append("    ");
@@ -557,6 +611,9 @@ public class EventCompilerTest {
       _builder_1.append("}");
       _builder_1.newLine();
       _builder_1.append("  ");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("private final static long serialVersionUID = 595497177L;");

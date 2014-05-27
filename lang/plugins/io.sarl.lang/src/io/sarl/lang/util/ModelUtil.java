@@ -43,7 +43,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class JvmElementUtil {
+public class ModelUtil {
 
 	/** Analyzing the type hierarchy of the given element, and
 	 * extract any type-related information.
@@ -65,15 +65,17 @@ public class JvmElementUtil {
 			Map<SignatureKey,JvmConstructor> superConstructors,
 			ActionSignatureProvider sarlSignatureProvider) {
 
-		// Get the operations that must be implemented			
-		for(JvmTypeReference interfaceReference : jvmElement.getExtendedInterfaces()) {
-			for(JvmFeature feature : ((JvmGenericType)interfaceReference.getType()).getAllFeatures()) {
-				if (!"java.lang.Object".equals(feature.getDeclaringType().getQualifiedName())) { //$NON-NLS-1$
-					if (feature instanceof JvmOperation) {
-						JvmOperation operation = (JvmOperation)feature;
-						SignatureKey sig = sarlSignatureProvider.createSignatureIDFromJvmModel(operation.getParameters());
-						ActionKey actionKey = sarlSignatureProvider.createActionID(operation.getSimpleName(), sig);
-						operationsToImplement.put(actionKey, operation);
+		// Get the operations that must be implemented
+		if (operationsToImplement!=null) {
+			for(JvmTypeReference interfaceReference : jvmElement.getExtendedInterfaces()) {
+				for(JvmFeature feature : ((JvmGenericType)interfaceReference.getType()).getAllFeatures()) {
+					if (!"java.lang.Object".equals(feature.getDeclaringType().getQualifiedName())) { //$NON-NLS-1$
+						if (feature instanceof JvmOperation) {
+							JvmOperation operation = (JvmOperation)feature;
+							SignatureKey sig = sarlSignatureProvider.createSignatureIDFromJvmModel(operation.isVarArgs(), operation.getParameters());
+							ActionKey actionKey = sarlSignatureProvider.createActionID(operation.getSimpleName(), sig);
+							operationsToImplement.put(actionKey, operation);
+						}
 					}
 				}
 			}
@@ -89,29 +91,32 @@ public class JvmElementUtil {
 					if (feature instanceof JvmOperation) {
 						if (!feature.isStatic()) {
 							JvmOperation operation = (JvmOperation)feature;
-							SignatureKey sig = sarlSignatureProvider.createSignatureIDFromJvmModel(operation.getParameters());
+							SignatureKey sig = sarlSignatureProvider.createSignatureIDFromJvmModel(operation.isVarArgs(), operation.getParameters());
 							ActionKey actionKey = sarlSignatureProvider.createActionID(feature.getSimpleName(), sig);
 							if (operation.isAbstract()) {
-								operationsToImplement.put(actionKey, operation);
+								if (operationsToImplement!=null) operationsToImplement.put(actionKey, operation);
 							}
 							else if (operation.isFinal()) {
-								finalOperations.put(actionKey, operation);
-								operationsToImplement.remove(actionKey);
+								if (finalOperations!=null) finalOperations.put(actionKey, operation);
+								if (operationsToImplement!=null) operationsToImplement.remove(actionKey);
 							}
 							else {
-								overridableOperations.put(actionKey, operation);
-								operationsToImplement.remove(actionKey);
+								if (overridableOperations!=null) overridableOperations.put(actionKey, operation);
+								if (operationsToImplement!=null) operationsToImplement.remove(actionKey);
 							}
 						} 
 					}
-					else if (feature instanceof JvmField) {
+					else if (feature instanceof JvmField && inheritedFields!=null) {
 						inheritedFields.put(feature.getSimpleName(), (JvmField)feature);
 					}
 				}
 			}
-			for(JvmConstructor cons : parentType.getDeclaredConstructors()) {
-				SignatureKey sig = sarlSignatureProvider.createSignatureIDFromJvmModel(cons.getParameters());
-				superConstructors.put(sig,  cons);
+			
+			if (superConstructors!=null) {
+				for(JvmConstructor cons : parentType.getDeclaredConstructors()) {
+					SignatureKey sig = sarlSignatureProvider.createSignatureIDFromJvmModel(cons.isVarArgs(), cons.getParameters());
+					superConstructors.put(sig,  cons);
+				}
 			}
 		}
 	}

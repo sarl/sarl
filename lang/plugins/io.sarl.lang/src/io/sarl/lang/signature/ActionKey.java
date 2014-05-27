@@ -41,6 +41,22 @@ public class ActionKey implements Cloneable, Serializable, Comparable<ActionKey>
 		this.signature = signature;
 	}
 	
+	/** Replies the name of the function for this key.
+	 * 
+	 * @return the name.
+	 */
+	public String getFunctionName() {
+		return this.function;
+	}
+	
+	/** Replies the name of the function for this key.
+	 * 
+	 * @return the name.
+	 */
+	public SignatureKey getSignature() {
+		return this.signature;
+	}
+
 	/** {@inheritDoc}
 	 */
 	@Override

@@ -58,6 +58,8 @@ public class VarArgsCompilerTest {
       _builder.append("}");
       _builder.newLine();
       StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.annotation.Generated;");
+      _builder_1.newLine();
       _builder_1.append("import io.sarl.lang.core.Agent;");
       _builder_1.newLine();
       _builder_1.newLine();
@@ -82,6 +84,9 @@ public class VarArgsCompilerTest {
       _builder_1.newLine();
       _builder_1.append("   ");
       _builder_1.append("*/");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("public A1(final java.util.UUID parentID) {");
@@ -129,6 +134,8 @@ public class VarArgsCompilerTest {
       _builder.append("}");
       _builder.newLine();
       StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.annotation.Generated;");
+      _builder_1.newLine();
       _builder_1.append("import io.sarl.lang.core.Agent;");
       _builder_1.newLine();
       _builder_1.newLine();
@@ -153,6 +160,9 @@ public class VarArgsCompilerTest {
       _builder_1.newLine();
       _builder_1.append("   ");
       _builder_1.append("*/");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("public A1(final java.util.UUID parentID) {");
@@ -422,7 +432,7 @@ public class VarArgsCompilerTest {
       _builder_1.append("public interface C1 extends Capacity {");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction(final int... arg);");
+      _builder_1.append("public abstract void myaction(final int... arg);");
       _builder_1.newLine();
       _builder_1.append("}");
       _builder_1.newLine();
@@ -452,7 +462,7 @@ public class VarArgsCompilerTest {
       _builder_1.append("public interface C1 extends Capacity {");
       _builder_1.newLine();
       _builder_1.append("  ");
-      _builder_1.append("public void myaction(final char arg1, final boolean arg2, final int... arg3);");
+      _builder_1.append("public abstract void myaction(final char arg1, final boolean arg2, final int... arg3);");
       _builder_1.newLine();
       _builder_1.append("}");
       _builder_1.newLine();
@@ -480,6 +490,8 @@ public class VarArgsCompilerTest {
       _builder.append("}");
       _builder.newLine();
       StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.annotation.Generated;");
+      _builder_1.newLine();
       _builder_1.append("import io.sarl.lang.core.Event;");
       _builder_1.newLine();
       _builder_1.newLine();
@@ -497,6 +509,9 @@ public class VarArgsCompilerTest {
       _builder_1.append("}");
       _builder_1.newLine();
       _builder_1.append("  ");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("private final static long serialVersionUID = 588370681L;");
@@ -527,6 +542,8 @@ public class VarArgsCompilerTest {
       _builder.append("}");
       _builder.newLine();
       StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("import io.sarl.lang.annotation.Generated;");
+      _builder_1.newLine();
       _builder_1.append("import io.sarl.lang.core.Event;");
       _builder_1.newLine();
       _builder_1.newLine();
@@ -544,6 +561,9 @@ public class VarArgsCompilerTest {
       _builder_1.append("}");
       _builder_1.newLine();
       _builder_1.append("  ");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("@Generated");
       _builder_1.newLine();
       _builder_1.append("  ");
       _builder_1.append("private final static long serialVersionUID = 588370681L;");

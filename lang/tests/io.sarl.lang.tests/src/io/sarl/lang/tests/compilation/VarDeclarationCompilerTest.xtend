@@ -44,6 +44,7 @@ class VarDeclarationCompilerTest {
 				var j : double = 45
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			import java.util.List;
 			
@@ -55,6 +56,7 @@ class VarDeclarationCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -83,6 +85,7 @@ class VarDeclarationCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			import java.util.List;
 			
@@ -94,6 +97,7 @@ class VarDeclarationCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -120,6 +124,7 @@ class VarDeclarationCompilerTest {
 				val j : double = 45
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			import java.util.List;
 			
@@ -131,6 +136,7 @@ class VarDeclarationCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -156,6 +162,7 @@ class VarDeclarationCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			
 			@SuppressWarnings("all")
@@ -166,6 +173,7 @@ class VarDeclarationCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -193,6 +201,7 @@ class VarDeclarationCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			import java.util.List;
 			
@@ -204,6 +213,7 @@ class VarDeclarationCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -232,6 +242,7 @@ class VarDeclarationCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			import java.util.List;
 			
@@ -243,6 +254,7 @@ class VarDeclarationCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -272,6 +284,7 @@ class VarDeclarationCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			import org.eclipse.xtext.xbase.lib.Exceptions;
 			
@@ -283,6 +296,7 @@ class VarDeclarationCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -320,6 +334,7 @@ class VarDeclarationCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			import org.eclipse.xtext.xbase.lib.Exceptions;
 			
@@ -331,6 +346,7 @@ class VarDeclarationCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }
@@ -368,6 +384,7 @@ class VarDeclarationCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			import org.eclipse.xtext.xbase.lib.Functions.Function2;
 			
@@ -379,6 +396,7 @@ class VarDeclarationCompilerTest {
 			   * of the parent agent and the enclosing contect, at the same time.
 			   * 
 			   */
+			  @Generated
 			  public A1(final java.util.UUID parentID) {
 			    super(parentID);
 			  }

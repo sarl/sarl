@@ -36,26 +36,22 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 	private final Map<SignatureKey,EList<InferredStandardParameter>> inferredParameters; 
 	private final EList<FormalParameter> parameters;
 	private final SignatureKey parameterKey;
-	private final boolean varargs;
 	private final ActionNameKey key;
 	
 	/**
 	 * @param key - key used to store this signature into a {@link ActionSignatureProvider}.
 	 * @param parameters - list of formal parameters.
 	 * @param parameterKey - key for the formal parameters.
-	 * @param varargs - indicates if the formal parameters has varargs.
 	 * @param inferredParameters - list of inferred parameters.
 	 */
 	protected DefaultInferredActionSignature(
 			ActionNameKey key,
 			EList<FormalParameter> parameters,
 			SignatureKey parameterKey,
-			boolean varargs,
 			Map<SignatureKey,EList<InferredStandardParameter>> inferredParameters) {
 		this.key = key;
 		this.parameters = parameters;
 		this.parameterKey = parameterKey;
-		this.varargs = varargs;
 		this.inferredParameters = inferredParameters;
 	}
 
@@ -87,7 +83,7 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 	/** {@inheritDoc}
 	 */
 	public boolean isVarargs() {
-		return this.varargs;
+		return this.parameterKey.isVarargs();
 	}
 
 	/** {@inheritDoc}

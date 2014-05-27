@@ -50,17 +50,29 @@ public interface ActionSignatureProvider {
 	
 	/** Build an identifier for the given parameters.
 	 * 
-	 * @param parameters
+	 * @param isVarargs - indicates if the signature has a variatic parameter.
+	 * @param parameters - the list of the formal parameter to put in the signature key.
 	 * @return the id.
 	 */
-	public SignatureKey createSignatureIDFromSarlModel(EList<FormalParameter> parameters);
+	public SignatureKey createSignatureIDFromSarlModel(boolean isVarargs, EList<FormalParameter> parameters);
 
 	/** Build an identifier for the given parameters.
+	 * 
+	 * @param isVarargs - indicates if the signature has a variatic parameter.
+	 * @param parameters - the list of the formal parameter to put in the signature key.
+	 * @return the id.
+	 */
+	public SignatureKey createSignatureIDFromJvmModel(boolean isVarargs, EList<JvmFormalParameter> parameters);
+
+	/** Build an identifier for the given parameters.
+	 * <p>
+	 * The given parameter must following the format of the value given
+	 * by {@link SignatureKey#toString()}.
 	 * 
 	 * @param parameters
 	 * @return the id.
 	 */
-	public SignatureKey createSignatureIDFromJvmModel(EList<JvmFormalParameter> parameters);
+	public SignatureKey createSignatureIDFromString(String parameters);
 
 	/** Build an identifier for the given function.
 	 * 
@@ -77,11 +89,12 @@ public interface ActionSignatureProvider {
 	public void resetSignatures(JvmIdentifiableElement container);
 
 	/** Build and replies the inferred action signature for the element with
-	 * the given ID.
+	 * the given ID. This function creates the different signatures according
+	 * to the definition, or not, of default values for the formal parameters.
 	 * 
-	 * @param id
-	 * @param isVarargs
-	 * @param parameters
+	 * @param id - identifier of the function.
+	 * @param isVarargs - indicates if the signature has a variatic parameter.
+	 * @param parameters - list of the formal parameters of the function.
 	 * @return the signature or <code>null</code> if none.
 	 */
 	public InferredActionSignature createSignature(ActionNameKey id, boolean isVarargs, EList<FormalParameter> parameters);
