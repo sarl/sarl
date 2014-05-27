@@ -20,6 +20,7 @@ import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.DefaultActionSignatureProvider;
 import io.sarl.lang.validation.SARLConfigurableIssueCodesProvider;
+import io.sarl.lang.validation.SARLFeatureNameValidator;
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -44,6 +45,13 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	@Override
 	public Class<? extends ConfigurableIssueCodesProvider> bindConfigurableIssueCodesProvider() {
 		return SARLConfigurableIssueCodesProvider.class;
+	}
+	
+	/** {@inheritDoc}
+	 */
+	@Override
+	public Class<? extends org.eclipse.xtext.xbase.validation.FeatureNameValidator> bindFeatureNameValidator() {
+		return SARLFeatureNameValidator.class;
 	}
 	
 }
