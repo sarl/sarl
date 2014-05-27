@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
  * @see Generated
  * @see DefaultValue
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD,ElementType.CONSTRUCTOR})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DefaultValueUse {
 	/** Replies the original signature of the function with default value parameters.

@@ -35,7 +35,7 @@ import java.lang.annotation.Target;
  * @see DefaultValueSource
  * @see DefaultValue
  */
-@Target({ElementType.METHOD,ElementType.FIELD})
+@Target({ElementType.METHOD,ElementType.CONSTRUCTOR,ElementType.FIELD,ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Generated {
 	//

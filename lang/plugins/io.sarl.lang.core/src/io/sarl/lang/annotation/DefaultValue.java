@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
  * @see Generated
  * @see DefaultValueSource
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DefaultValue {
 	/** Replies the id of the field that contains the default value.
