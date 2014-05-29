@@ -26,6 +26,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 		<year>2014</year>
 		<copyrighters>Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND</copyrighters>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<compiler.level>1.7</compiler.level>
 		<tycho.version>0.20.0</tycho.version>
 		<xtext.version>2.6.0</xtext.version>
 		<jnario.version>0.7.5</jnario.version>
@@ -117,8 +118,8 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 					</executions>
 					<configuration>
 						<outputDirectory>xtend-gen</outputDirectory>
-						<source>1.7</source>
-						<target>1.7</target>
+						<source>${compiler.level}</source>
+						<target>${compiler.level}</target>
 						<encoding>${project.build.sourceEncoding}</encoding>
 					</configuration>
 				</plugin>
@@ -127,6 +128,12 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 					<groupId>org.eclipse.xtext</groupId>
 					<artifactId>xtext-maven-plugin</artifactId>
 					<version>${xtext.version}</version>
+					<configuration>
+						<outputDirectory>xtend-gen</outputDirectory>
+						<encoding>${project.build.sourceEncoding}</encoding>
+						<compilerSourceLevel>${compiler.level}</compilerSourceLevel>
+						<compilerTargetLevel>${compiler.level}</compilerTargetLevel>
+					</configuration>
 				</plugin>
 
 				<plugin>
@@ -388,8 +395,8 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>${compiler.level}</source>
+					<target>${compiler.level}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
