@@ -4,6 +4,7 @@ package io.sarl.lang.sarl;
 
 import org.eclipse.emf.common.util.EList;
 
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 
 /**
@@ -79,19 +80,19 @@ public interface ActionSignature extends ParameterizedFeature
   void setType(JvmTypeReference value);
 
   /**
-   * Returns the value of the '<em><b>Fired Events</b></em>' reference list.
-   * The list contents are of type {@link io.sarl.lang.sarl.Event}.
+   * Returns the value of the '<em><b>Fired Events</b></em>' containment reference list.
+   * The list contents are of type {@link org.eclipse.xtext.common.types.JvmParameterizedTypeReference}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Fired Events</em>' reference list isn't clear,
+   * If the meaning of the '<em>Fired Events</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Fired Events</em>' reference list.
+   * @return the value of the '<em>Fired Events</em>' containment reference list.
    * @see io.sarl.lang.sarl.SarlPackage#getActionSignature_FiredEvents()
-   * @model
+   * @model containment="true"
    * @generated
    */
-  EList<Event> getFiredEvents();
+  EList<JvmParameterizedTypeReference> getFiredEvents();
 
 } // ActionSignature

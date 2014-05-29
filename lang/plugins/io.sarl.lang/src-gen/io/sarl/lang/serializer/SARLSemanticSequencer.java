@@ -269,6 +269,10 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 					sequence_JvmParameterizedTypeReference(context, (JvmParameterizedTypeReference) semanticObject); 
 					return; 
 				}
+				else if(context == grammarAccess.getRawTypeReferenceRule()) {
+					sequence_RawTypeReference(context, (JvmParameterizedTypeReference) semanticObject); 
+					return; 
+				}
 				else break;
 			case TypesPackage.JVM_TYPE_PARAMETER:
 				if(context == grammarAccess.getJvmTypeParameterRule()) {
@@ -1345,7 +1349,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	 *         name=ValidID 
 	 *         (params+=FormalParameter params+=FormalParameter* varargs?=VarArgToken?)? 
 	 *         type=JvmTypeReference? 
-	 *         (firedEvents+=[Event|QualifiedName] firedEvents+=[Event|QualifiedName]*)?
+	 *         (firedEvents+=RawTypeReference firedEvents+=RawTypeReference*)?
 	 *     )
 	 */
 	protected void sequence_ActionSignature(EObject context, ActionSignature semanticObject) {
@@ -1374,7 +1378,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID superTypes+=[Agent|QualifiedName]? features+=AgentFeature*)
+	 *     (name=ValidID superTypes+=RawTypeReference? features+=AgentFeature*)
 	 */
 	protected void sequence_Agent(EObject context, Agent semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1392,7 +1396,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (event=[Event|QualifiedName] guard=XExpression? body=XBlockExpression)
+	 *     (event=RawTypeReference guard=XExpression? body=XBlockExpression)
 	 */
 	protected void sequence_BehaviorUnit(EObject context, BehaviorUnit semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1401,7 +1405,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID superTypes+=[Behavior|QualifiedName]? features+=BehaviorFeature*)
+	 *     (name=ValidID superTypes+=RawTypeReference? features+=BehaviorFeature*)
 	 */
 	protected void sequence_Behavior(EObject context, Behavior semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1410,7 +1414,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (capacitiesUsed+=[Capacity|QualifiedName] capacitiesUsed+=[Capacity|QualifiedName]*)
+	 *     (capacitiesUsed+=RawTypeReference capacitiesUsed+=RawTypeReference*)
 	 */
 	protected void sequence_CapacityUses(EObject context, CapacityUses semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1419,7 +1423,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID (superTypes+=[Capacity|QualifiedName] superTypes+=[Capacity|QualifiedName]*)? features+=ActionSignature*)
+	 *     (name=ValidID (superTypes+=RawTypeReference superTypes+=RawTypeReference*)? features+=ActionSignature*)
 	 */
 	protected void sequence_Capacity(EObject context, Capacity semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1437,7 +1441,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ValidID superTypes+=[Event|QualifiedName]? features+=EventFeature*)
+	 *     (name=ValidID superTypes+=RawTypeReference? features+=EventFeature*)
 	 */
 	protected void sequence_Event(EObject context, Event semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1482,7 +1486,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     implementedTypes+=[InheritingElement|ID]
+	 *     implementedTypes+=RawTypeReference
 	 */
 	protected void sequence_ImplementingElement(EObject context, ImplementingElement semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1491,7 +1495,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     superTypes+=[InheritingElement|ID]
+	 *     superTypes+=RawTypeReference
 	 */
 	protected void sequence_InheritingElement(EObject context, InheritingElement semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1534,7 +1538,16 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (requiredCapacities+=[Capacity|QualifiedName] requiredCapacities+=[Capacity|QualifiedName]*)
+	 *     type=[JvmType|QualifiedName]
+	 */
+	protected void sequence_RawTypeReference(EObject context, JvmParameterizedTypeReference semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (requiredCapacities+=RawTypeReference requiredCapacities+=RawTypeReference*)
 	 */
 	protected void sequence_RequiredCapacity(EObject context, RequiredCapacity semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1552,13 +1565,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (
-	 *         name=ValidID 
-	 *         superTypes+=[Skill|QualifiedName]? 
-	 *         implementedTypes+=[Capacity|QualifiedName] 
-	 *         implementedTypes+=[Capacity|QualifiedName]* 
-	 *         features+=SkillFeature*
-	 *     )
+	 *     (name=ValidID superTypes+=RawTypeReference? implementedTypes+=RawTypeReference implementedTypes+=RawTypeReference* features+=SkillFeature*)
 	 */
 	protected void sequence_Skill(EObject context, Skill semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

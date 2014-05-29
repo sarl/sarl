@@ -15,22 +15,12 @@
  */
 package io.sarl.docs.gettingstarted;
 
-import com.google.common.collect.Iterables;
 import io.sarl.docs.gettingstarted.AgentDefinitionIntroductionSpec;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.BehaviorUnit;
-import io.sarl.lang.sarl.Event;
 import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.TopElement;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.jnario.lib.JnarioIterableExtensions;
 import org.jnario.runner.ExampleGroupRunner;
 import org.jnario.runner.Named;
 import org.jnario.runner.Order;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -70,7 +60,7 @@ public class AgentDefinitionIntroductionAgentPerceptionsSpec extends AgentDefini
     _builder.append("package myapp.demo");
     _builder.newLine();
     _builder.newLine();
-    _builder.append("event MyEvent {\t}");
+    _builder.append("event MyEvent");
     _builder.newLine();
     _builder.newLine();
     _builder.append("agent MyAgent {");
@@ -87,20 +77,6 @@ public class AgentDefinitionIntroductionAgentPerceptionsSpec extends AgentDefini
     _builder.append("} ");
     _builder.newLine();
     final SarlScript model = this._sARLParser.parsesSuccessfully(_builder);
-    EList<TopElement> _elements = model.getElements();
-    Iterable<Agent> _filter = Iterables.<Agent>filter(_elements, Agent.class);
-    final Agent agent = IterableExtensions.<Agent>head(_filter);
-    EList<EObject> _features = agent.getFeatures();
-    int _size = _features.size();
-    Assert.assertEquals(1, _size);
-    EList<EObject> _features_1 = agent.getFeatures();
-    EObject _first = JnarioIterableExtensions.<EObject>first(_features_1);
-    final BehaviorUnit beh = ((BehaviorUnit) _first);
-    EList<TopElement> _elements_1 = model.getElements();
-    Iterable<Event> _filter_1 = Iterables.<Event>filter(_elements_1, Event.class);
-    Event _head = IterableExtensions.<Event>head(_filter_1);
-    Event _event = beh.getEvent();
-    Assert.assertEquals(_head, _event);
   }
   
   /**

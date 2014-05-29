@@ -104,6 +104,7 @@ public class ActionKey implements Cloneable, Serializable, Comparable<ActionKey>
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public int compareTo(ActionKey o) {
 		if (o==null) return Integer.MAX_VALUE;
 		int cmp = this.function.compareTo(o.function);

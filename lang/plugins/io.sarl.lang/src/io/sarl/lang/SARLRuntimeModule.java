@@ -31,7 +31,7 @@ import io.sarl.lang.validation.SARLFeatureNameValidator;
  * @mavenartifactid $ArtifactId$
  */
 public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
-	
+
 	/**
 	 * @return the type of provider for inferred action signatures.
 	 */
@@ -44,14 +44,24 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	 */
 	@Override
 	public Class<? extends ConfigurableIssueCodesProvider> bindConfigurableIssueCodesProvider() {
+		assert(
+				super.bindConfigurableIssueCodesProvider().isAssignableFrom(
+						SARLConfigurableIssueCodesProvider.class))
+						: "The class SARLConfigurableIssueCodesProvider does not extend the class provided by default by Xbase"; //$NON-NLS-1$
+		//
 		return SARLConfigurableIssueCodesProvider.class;
 	}
-	
+
 	/** {@inheritDoc}
 	 */
 	@Override
 	public Class<? extends org.eclipse.xtext.xbase.validation.FeatureNameValidator> bindFeatureNameValidator() {
+		assert(
+				super.bindFeatureNameValidator().isAssignableFrom(
+						SARLFeatureNameValidator.class))
+						: "The class SARLFeatureNameValidator does not extend the class provided by default by Xbase"; //$NON-NLS-1$
+		//
 		return SARLFeatureNameValidator.class;
 	}
-	
+
 }

@@ -3,7 +3,6 @@
 package io.sarl.lang.sarl.impl;
 
 import io.sarl.lang.sarl.BehaviorUnit;
-import io.sarl.lang.sarl.Event;
 import io.sarl.lang.sarl.SarlPackage;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -13,6 +12,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 
 import org.eclipse.xtext.xbase.XExpression;
 
@@ -34,14 +35,14 @@ import org.eclipse.xtext.xbase.XExpression;
 public class BehaviorUnitImpl extends FeatureImpl implements BehaviorUnit
 {
   /**
-   * The cached value of the '{@link #getEvent() <em>Event</em>}' reference.
+   * The cached value of the '{@link #getEvent() <em>Event</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getEvent()
    * @generated
    * @ordered
    */
-  protected Event event;
+  protected JvmParameterizedTypeReference event;
 
   /**
    * The cached value of the '{@link #getGuard() <em>Guard</em>}' containment reference.
@@ -89,27 +90,7 @@ public class BehaviorUnitImpl extends FeatureImpl implements BehaviorUnit
    * <!-- end-user-doc -->
    * @generated
    */
-  public Event getEvent()
-  {
-    if (event != null && event.eIsProxy())
-    {
-      InternalEObject oldEvent = (InternalEObject)event;
-      event = (Event)eResolveProxy(oldEvent);
-      if (event != oldEvent)
-      {
-        if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, SarlPackage.BEHAVIOR_UNIT__EVENT, oldEvent, event));
-      }
-    }
-    return event;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Event basicGetEvent()
+  public JvmParameterizedTypeReference getEvent()
   {
     return event;
   }
@@ -119,12 +100,37 @@ public class BehaviorUnitImpl extends FeatureImpl implements BehaviorUnit
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setEvent(Event newEvent)
+  public NotificationChain basicSetEvent(JvmParameterizedTypeReference newEvent, NotificationChain msgs)
   {
-    Event oldEvent = event;
+    JvmParameterizedTypeReference oldEvent = event;
     event = newEvent;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.BEHAVIOR_UNIT__EVENT, oldEvent, event));
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SarlPackage.BEHAVIOR_UNIT__EVENT, oldEvent, newEvent);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setEvent(JvmParameterizedTypeReference newEvent)
+  {
+    if (newEvent != event)
+    {
+      NotificationChain msgs = null;
+      if (event != null)
+        msgs = ((InternalEObject)event).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SarlPackage.BEHAVIOR_UNIT__EVENT, null, msgs);
+      if (newEvent != null)
+        msgs = ((InternalEObject)newEvent).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SarlPackage.BEHAVIOR_UNIT__EVENT, null, msgs);
+      msgs = basicSetEvent(newEvent, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.BEHAVIOR_UNIT__EVENT, newEvent, newEvent));
   }
 
   /**
@@ -233,6 +239,8 @@ public class BehaviorUnitImpl extends FeatureImpl implements BehaviorUnit
   {
     switch (featureID)
     {
+      case SarlPackage.BEHAVIOR_UNIT__EVENT:
+        return basicSetEvent(null, msgs);
       case SarlPackage.BEHAVIOR_UNIT__GUARD:
         return basicSetGuard(null, msgs);
       case SarlPackage.BEHAVIOR_UNIT__BODY:
@@ -252,8 +260,7 @@ public class BehaviorUnitImpl extends FeatureImpl implements BehaviorUnit
     switch (featureID)
     {
       case SarlPackage.BEHAVIOR_UNIT__EVENT:
-        if (resolve) return getEvent();
-        return basicGetEvent();
+        return getEvent();
       case SarlPackage.BEHAVIOR_UNIT__GUARD:
         return getGuard();
       case SarlPackage.BEHAVIOR_UNIT__BODY:
@@ -273,7 +280,7 @@ public class BehaviorUnitImpl extends FeatureImpl implements BehaviorUnit
     switch (featureID)
     {
       case SarlPackage.BEHAVIOR_UNIT__EVENT:
-        setEvent((Event)newValue);
+        setEvent((JvmParameterizedTypeReference)newValue);
         return;
       case SarlPackage.BEHAVIOR_UNIT__GUARD:
         setGuard((XExpression)newValue);
@@ -296,7 +303,7 @@ public class BehaviorUnitImpl extends FeatureImpl implements BehaviorUnit
     switch (featureID)
     {
       case SarlPackage.BEHAVIOR_UNIT__EVENT:
-        setEvent((Event)null);
+        setEvent((JvmParameterizedTypeReference)null);
         return;
       case SarlPackage.BEHAVIOR_UNIT__GUARD:
         setGuard((XExpression)null);

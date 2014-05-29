@@ -39,6 +39,7 @@ public class ActionSignatureComparator implements Comparator<ActionSignature> {
 	
 	/** {@inheritDoc}
 	 */
+	@Override
 	public int compare(ActionSignature a, ActionSignature b) {
 		if (a==b) return 0;
 		if (a==null) return Integer.MIN_VALUE;

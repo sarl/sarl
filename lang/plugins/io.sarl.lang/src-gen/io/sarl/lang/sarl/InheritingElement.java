@@ -4,6 +4,8 @@ package io.sarl.lang.sarl;
 
 import org.eclipse.emf.common.util.EList;
 
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Inheriting Element</b></em>'.
@@ -23,19 +25,19 @@ import org.eclipse.emf.common.util.EList;
 public interface InheritingElement extends TopElement, FeatureContainer
 {
   /**
-   * Returns the value of the '<em><b>Super Types</b></em>' reference list.
-   * The list contents are of type {@link io.sarl.lang.sarl.InheritingElement}.
+   * Returns the value of the '<em><b>Super Types</b></em>' containment reference list.
+   * The list contents are of type {@link org.eclipse.xtext.common.types.JvmParameterizedTypeReference}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Super Types</em>' reference list isn't clear,
+   * If the meaning of the '<em>Super Types</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Super Types</em>' reference list.
+   * @return the value of the '<em>Super Types</em>' containment reference list.
    * @see io.sarl.lang.sarl.SarlPackage#getInheritingElement_SuperTypes()
-   * @model
+   * @model containment="true"
    * @generated
    */
-  EList<InheritingElement> getSuperTypes();
+  EList<JvmParameterizedTypeReference> getSuperTypes();
 
 } // InheritingElement

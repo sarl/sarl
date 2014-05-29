@@ -175,14 +175,14 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
         return createCapacityUsesAdapter();
       }
       @Override
-      public Adapter caseBehaviorUnit(BehaviorUnit object)
-      {
-        return createBehaviorUnitAdapter();
-      }
-      @Override
       public Adapter caseRequiredCapacity(RequiredCapacity object)
       {
         return createRequiredCapacityAdapter();
+      }
+      @Override
+      public Adapter caseBehaviorUnit(BehaviorUnit object)
+      {
+        return createBehaviorUnitAdapter();
       }
       @Override
       public Adapter caseAction(Action object)
@@ -522,21 +522,6 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.BehaviorUnit <em>Behavior Unit</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see io.sarl.lang.sarl.BehaviorUnit
-   * @generated
-   */
-  public Adapter createBehaviorUnitAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.RequiredCapacity <em>Required Capacity</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -547,6 +532,21 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createRequiredCapacityAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.BehaviorUnit <em>Behavior Unit</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.BehaviorUnit
+   * @generated
+   */
+  public Adapter createBehaviorUnitAdapter()
   {
     return null;
   }

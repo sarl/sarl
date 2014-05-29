@@ -2,6 +2,8 @@
  */
 package io.sarl.lang.sarl;
 
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+
 import org.eclipse.xtext.xbase.XExpression;
 
 /**
@@ -25,30 +27,30 @@ import org.eclipse.xtext.xbase.XExpression;
 public interface BehaviorUnit extends Feature
 {
   /**
-   * Returns the value of the '<em><b>Event</b></em>' reference.
+   * Returns the value of the '<em><b>Event</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Event</em>' reference isn't clear,
+   * If the meaning of the '<em>Event</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Event</em>' reference.
-   * @see #setEvent(Event)
+   * @return the value of the '<em>Event</em>' containment reference.
+   * @see #setEvent(JvmParameterizedTypeReference)
    * @see io.sarl.lang.sarl.SarlPackage#getBehaviorUnit_Event()
-   * @model
+   * @model containment="true"
    * @generated
    */
-  Event getEvent();
+  JvmParameterizedTypeReference getEvent();
 
   /**
-   * Sets the value of the '{@link io.sarl.lang.sarl.BehaviorUnit#getEvent <em>Event</em>}' reference.
+   * Sets the value of the '{@link io.sarl.lang.sarl.BehaviorUnit#getEvent <em>Event</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Event</em>' reference.
+   * @param value the new value of the '<em>Event</em>' containment reference.
    * @see #getEvent()
    * @generated
    */
-  void setEvent(Event value);
+  void setEvent(JvmParameterizedTypeReference value);
 
   /**
    * Returns the value of the '<em><b>Guard</b></em>' containment reference.

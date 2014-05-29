@@ -963,8 +963,8 @@ class ArgDefaultValueParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.formalParameter,
-			IssueCodes::INVALID_CAST,
-			"Cannot cast from String to int")
+			IssueCodes::INCOMPATIBLE_TYPES,
+			"Type mismatch: cannot convert from String to int")
 	}
 
 	@Test
@@ -978,8 +978,8 @@ class ArgDefaultValueParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.formalParameter,
-			IssueCodes::INVALID_CAST,
-			"Cannot cast from String to int")
+			IssueCodes::INCOMPATIBLE_TYPES,
+			"Type mismatch: cannot convert from String to int")
 	}
 
 	@Test

@@ -24,6 +24,11 @@ public class SARLUiModule extends io.sarl.lang.ui.AbstractSARLUiModule {
 	 */
 	@Override
 	public Class<? extends ISemanticHighlightingCalculator> bindISemanticHighlightingCalculator() {
+		assert(
+				super.bindISemanticHighlightingCalculator().isAssignableFrom(
+						SARLHighlightingCalculator.class))
+						: "The class SARLHighlightingCalculator does not extend the class provided by default by Xbase"; //$NON-NLS-1$
+		//
 		return SARLHighlightingCalculator.class;
 	}
 }

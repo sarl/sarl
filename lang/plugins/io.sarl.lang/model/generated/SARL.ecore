@@ -18,12 +18,14 @@
         eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="InheritingElement" eSuperTypes="#//TopElement #//FeatureContainer">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="superTypes" unique="false"
-        upperBound="-1" eType="#//InheritingElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="superTypes" upperBound="-1"
+        eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ImplementingElement" eSuperTypes="#//TopElement #//InheritingElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="implementedTypes" unique="false"
-        upperBound="-1" eType="#//InheritingElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="implementedTypes" upperBound="-1"
+        eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EventFeature"/>
   <eClassifiers xsi:type="ecore:EClass" name="AgentFeature"/>
@@ -55,19 +57,22 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CapacityUses" eSuperTypes="#//Feature">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="capacitiesUsed" unique="false"
-        upperBound="-1" eType="#//Capacity"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="capacitiesUsed" upperBound="-1"
+        eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RequiredCapacity" eSuperTypes="#//Feature">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="requiredCapacities" upperBound="-1"
+        eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BehaviorUnit" eSuperTypes="#//Feature">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="event" eType="#//Event"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="event" eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="guard" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
         containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RequiredCapacity" eSuperTypes="#//Feature">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="requiredCapacities" unique="false"
-        upperBound="-1" eType="#//Capacity"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Action" eSuperTypes="#//Feature">
     <eStructuralFeatures xsi:type="ecore:EReference" name="signature" eType="#//ParameterizedFeature"
@@ -83,7 +88,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="firedEvents" unique="false"
-        upperBound="-1" eType="#//Event"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="firedEvents" upperBound="-1"
+        eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
+        containment="true"/>
   </eClassifiers>
 </ecore:EPackage>

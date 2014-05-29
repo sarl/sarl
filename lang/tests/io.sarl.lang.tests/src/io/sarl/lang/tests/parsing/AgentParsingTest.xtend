@@ -17,20 +17,20 @@ package io.sarl.lang.tests.parsing
 
 import com.google.inject.Inject
 import io.sarl.lang.SARLInjectorProvider
-import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.sarl.SarlPackage
+import io.sarl.lang.sarl.SarlScript
+import io.sarl.lang.validation.IssueCodes
+import org.eclipse.xtext.common.types.TypesPackage
 import org.eclipse.xtext.diagnostics.Diagnostic
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
-import io.sarl.lang.validation.IssueCodes
-import org.eclipse.xtext.common.types.TypesPackage
+import org.eclipse.xtext.xbase.XbasePackage
 
 /**
  * @author $Author: srodriguez$
@@ -106,12 +106,12 @@ class AgentParsingTest {
 		'''.parse
 
 		mas.assertError(
-			SarlPackage::eINSTANCE.behaviorUnit,
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
 			Diagnostic::LINKING_DIAGNOSTIC,
-			"Couldn't resolve reference to Event 'E'.")
+			"Couldn't resolve reference to JvmType 'E'.")
 	}
 
-	@Test @Ignore("not ready yet")
+	@Test
 	def constAttributesMustHaveIniatlizer() {
 		val mas = '''
 			
@@ -121,9 +121,9 @@ class AgentParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.attribute,
-			Diagnostic::SYNTAX_DIAGNOSTIC,
-			"Constant attribute 'number' must be initialized ."
+			TypesPackage::eINSTANCE.jvmField,
+			org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION,
+			"The blank final field 'number' may not have been initialized"
 		)
 	}
 
@@ -135,9 +135,9 @@ class AgentParsingTest {
 			}
 		'''.parse		
 		mas.assertError(
-			SarlPackage::eINSTANCE.capacityUses,
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
 			Diagnostic::LINKING_DIAGNOSTIC,
-			"Couldn't resolve reference to Capacity 'MyCap'."
+			"Couldn't resolve reference to JvmType 'MyCap'"
 		)
 	}
 
@@ -387,6 +387,94 @@ class AgentParsingTest {
 			}
 		'''.parse
 		mas.assertNoErrors
+	}
+
+	@Test
+	def void invalidExtend() {
+		val mas = '''
+			capacity C1 {
+			}
+			agent A1 extends C1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.agent,
+			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			"Invalid super-type: 'C1'. Only the type 'io.sarl.lang.core.Agent' and one of its subtypes are allowed for 'A1'")
+	}
+
+	@Test
+	def void invalidFires() {
+		val mas = '''
+			event E1
+			behavior B1 { }
+			agent A1 {
+				def myaction1 fires E1, B1
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.actionSignature,
+			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			"Invalid type: 'B1'. Only events can be used after the keyword 'fires'")
+	}
+
+	@Test
+	def invalidBehaviorUnit_EventType() {
+		val mas = '''
+			agent A1 {
+				on String {}
+			}
+		'''.parse
+
+		mas.assertError(
+			SarlPackage::eINSTANCE.behaviorUnit,
+			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			"Invalid type: 'java.lang.String'. Only events are allowed after the keyword 'on'")
+	}
+
+	@Test
+	def invalidBehaviorUnit_GuardType() {
+		val mas = '''
+			event E1
+			agent A1 {
+				on E1 [ "hello" ] {}
+			}
+		'''.parse
+
+		mas.assertError(
+			XbasePackage::eINSTANCE.XExpression,
+			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_TYPES,
+			"Type mismatch: cannot convert from String to boolean")
+	}
+
+	@Test
+	def trueGuardBehaviorUnit() {
+		val mas = '''
+			event E1
+			agent A1 {
+				on E1 [ true ] {}
+			}
+		'''.parse
+
+		mas.assertWarning(
+			XbasePackage::eINSTANCE.XExpression,
+			IssueCodes::DISCOURAGED_BOOLEAN_EXPRESSION,
+			"Discouraged boolean value. The guard is always true.")
+	}
+
+	@Test
+	def falseGuardBehaviorUnit() {
+		val mas = '''
+			event E1
+			agent A1 {
+				on E1 [ false ] {}
+			}
+		'''.parse
+
+		mas.assertWarning(
+			SarlPackage::eINSTANCE.behaviorUnit,
+			org.eclipse.xtext.xbase.validation.IssueCodes::UNREACHABLE_CODE,
+			"Dead code. The guard is always false.")
 	}
 
 }

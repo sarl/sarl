@@ -233,4 +233,26 @@ public class EventParsingTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
+  
+  @Test
+  public void invalidExtend() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("event E1 extends C1 {");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _event = SarlPackage.eINSTANCE.getEvent();
+      this._validationTestHelper.assertError(mas, _event, 
+        IssueCodes.TYPE_BOUNDS_MISMATCH, 
+        "Invalid super-type: \'C1\'. Only the type \'io.sarl.lang.core.Event\' and one of its subtypes are allowed for \'E1\'");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
 }

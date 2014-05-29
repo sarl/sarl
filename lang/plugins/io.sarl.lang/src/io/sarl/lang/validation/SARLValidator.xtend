@@ -17,17 +17,22 @@ package io.sarl.lang.validation
 
 import com.google.inject.Inject
 import io.sarl.lang.SARLKeywords
+import io.sarl.lang.core.Event
 import io.sarl.lang.sarl.Action
 import io.sarl.lang.sarl.ActionSignature
 import io.sarl.lang.sarl.Agent
 import io.sarl.lang.sarl.Attribute
 import io.sarl.lang.sarl.Behavior
+import io.sarl.lang.sarl.BehaviorUnit
+import io.sarl.lang.sarl.Capacity
+import io.sarl.lang.sarl.CapacityUses
 import io.sarl.lang.sarl.Constructor
-import io.sarl.lang.sarl.Event
 import io.sarl.lang.sarl.FeatureContainer
 import io.sarl.lang.sarl.FormalParameter
+import io.sarl.lang.sarl.ImplementingElement
 import io.sarl.lang.sarl.InheritingElement
 import io.sarl.lang.sarl.ParameterizedFeature
+import io.sarl.lang.sarl.RequiredCapacity
 import io.sarl.lang.sarl.Skill
 import io.sarl.lang.signature.ActionKey
 import io.sarl.lang.signature.ActionNameKey
@@ -47,7 +52,9 @@ import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.validation.Check
+import org.eclipse.xtext.validation.CheckType
 import org.eclipse.xtext.validation.ValidationMessageAcceptor
+import org.eclipse.xtext.xbase.XBooleanLiteral
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 
@@ -56,8 +63,10 @@ import static io.sarl.lang.util.ModelUtil.*
 /**
  * Validator for the SARL elements.
  * <p>
- * The following issues are not yet supported:<ul>
- * <li>Skill implementation cannot have default value - ERROR</li>
+ * The check type may be one of:<ul>
+ * <li>{@link CheckType#FAST}: is executed after a delay of 500ms after ANY editing action (type, enter, delete);</li>
+ * <li>{@link CheckType#NORMAL}: is executed after a build (manual, or automatic);</li>
+ * <li>{@link CheckType#EXPENSIVE}: is executed by right clicking ANYWHERE in the editor window and chooseing "Validate".</li>
  * </ul>
  * 
  * @author $Author: sgalland$
@@ -77,14 +86,14 @@ class SARLValidator extends AbstractSARLValidator {
 	/**
 	 * @param feature
 	 */
-	@Check
+	@Check(CheckType.FAST)
 	public def checkNoDefaultValueForVariadicParameter(ParameterizedFeature feature) {
 		if (feature.varargs) {
 			var FormalParameter lastParam = feature.params.last()
 			if (lastParam.defaultValue!==null) {
 				error(
 						String.format(
-								"A default value cannot be declared for the variadic formal parameter '%s'.", //$NON-NLS-1$
+								"A default value cannot be declared for the variadic formal parameter '%s'.",
 								lastParam.name), 
 						lastParam,
 						null,
@@ -97,19 +106,19 @@ class SARLValidator extends AbstractSARLValidator {
 		var toType = toLightweightTypeReference(param.parameterType, true)
 		var fromType = param.defaultValue.actualType
 		if (!canCast(fromType, toType, true)) {
-			error(String.format("Cannot cast from %s to %s", //$NON-NLS-1$
+			error(String.format("Type mismatch: cannot convert from %s to %s",
 					fromType.nameOfTypes, toType.canonicalName),
 					param,
 					null,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-					org.eclipse.xtext.xbase.validation.IssueCodes::INVALID_CAST)
+					org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_TYPES)
 		}
 	}
 
 	/**
 	 * @param feature
 	 */
-	@Check
+	@Check(CheckType.FAST)
 	public def checkDefaultValueTypeCompatibleWithParameterType(ParameterizedFeature feature) {
 		for(param : feature.params) {
 			if (param.defaultValue!==null) {
@@ -121,7 +130,7 @@ class SARLValidator extends AbstractSARLValidator {
 	/**
 	 * @param featureContainer
 	 */
-	@Check
+	@Check(CheckType.FAST)
 	public def checkNoFeatureMultiDefinition(FeatureContainer featureContainer) {
 		val Set<String> localFields = new TreeSet
 		val Set<ActionKey> localFunctions = new TreeSet
@@ -159,7 +168,7 @@ class SARLValidator extends AbstractSARLValidator {
 					if (!localFields.add(feature.name)) {
 						error(
 								String.format(
-										"Cannot define many times the same feature in '%s': %s", //$NON-NLS-1$
+										"Cannot define many times the same feature in '%s': %s",
 										featureContainer.name,
 										feature.name
 										), 
@@ -176,9 +185,9 @@ class SARLValidator extends AbstractSARLValidator {
 						if (!localFunctions.add(key.toActionKey(name))) {
 							error(
 									String.format(
-											"Cannot define many times the same feature in '%s': %s", //$NON-NLS-1$
+											"Cannot define many times the same feature in '%s': %s",
 											featureContainer.name,
-											name+"("+sig.toString()+")" //$NON-NLS-1$ //$NON-NLS-2$
+											name+"("+sig.toString()+")"
 											), 
 									feature,
 									null,
@@ -193,12 +202,12 @@ class SARLValidator extends AbstractSARLValidator {
 	/**
 	 * @param action
 	 */
-	@Check
+	@Check(CheckType.FAST)
 	public def checkActionName(ActionSignature action) {
 		if (isHiddenAction(action.getName())) {
 			error(
 					String.format(
-							"Invalid action name '%s'. You must not give to an action a name that is starting with '_handle_'. This prefix is reserved by the SARL compiler.", //$NON-NLS-1$
+							"Invalid action name '%s'. You must not give to an action a name that is starting with '_handle_'. This prefix is reserved by the SARL compiler.",
 							action.name
 							), 
 					action,
@@ -210,12 +219,12 @@ class SARLValidator extends AbstractSARLValidator {
 	/**
 	 * @param attribute
 	 */
-	@Check
+	@Check(CheckType.FAST)
 	public def checkAttributeName(Attribute attribute) {
 		if (isHiddenAttribute(attribute.getName())) {
 			error(
 					String.format(
-							"Invalid attribute name '%s'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.", //$NON-NLS-1$
+							"Invalid attribute name '%s'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.",
 							attribute.name
 							), 
 					attribute,
@@ -230,14 +239,19 @@ class SARLValidator extends AbstractSARLValidator {
 	 * @return the generic type of the given element.
 	 */
 	protected def JvmGenericType getJvmGenericType(EObject element) {
-		return getJvmGenericType(element, services.jvmModelAssociations)
+		for(obj : services.jvmModelAssociations.getJvmElements(element)) {
+			if (obj instanceof JvmGenericType) {
+				return obj
+			}
+		}
+		return null;
 	}
 
 	/**
 	 * @param event
 	 */
-	@Check
-	public def checkFinalFieldInitialization(Event event) {
+	@Check(CheckType.FAST)
+	public def checkFinalFieldInitialization(io.sarl.lang.sarl.Event event) {
 		var type = event.jvmGenericType
 		if (type!==null) {
 			type.checkFinalFieldInitialization
@@ -247,7 +261,7 @@ class SARLValidator extends AbstractSARLValidator {
 	/**
 	 * @param agent
 	 */
-	@Check
+	@Check(CheckType.FAST)
 	public def checkFinalFieldInitialization(Agent agent) {
 		var type = agent.jvmGenericType
 		if (type!==null) {
@@ -258,7 +272,7 @@ class SARLValidator extends AbstractSARLValidator {
 	/**
 	 * @param behavior
 	 */
-	@Check
+	@Check(CheckType.FAST)
 	public def checkFinalFieldInitialization(Behavior behavior) {
 		var type = behavior.jvmGenericType
 		if (type!=null) {
@@ -269,7 +283,7 @@ class SARLValidator extends AbstractSARLValidator {
 	/**
 	 * @param skill
 	 */
-	@Check
+	@Check(CheckType.FAST)
 	public def checkFinalFieldInitialization(Skill skill) {
 		var type = skill.jvmGenericType
 		if (type!=null) {
@@ -281,7 +295,7 @@ class SARLValidator extends AbstractSARLValidator {
 	protected override reportUninitializedField(JvmField field) {
 		error(
 				String.format(
-						"The blank final field '%s' may not have been initialized.", //$NON-NLS-1$
+						"The blank final field '%s' may not have been initialized.",
 						field.simpleName
 						), 
 				field,
@@ -298,7 +312,7 @@ class SARLValidator extends AbstractSARLValidator {
 			if (memberOfTypeHierarchy(superType, lightweightInterfaceReference)) {
 				warning(
 						String.format(
-								"The feature '%s' is already implemented by the super type '%s'.", //$NON-NLS-1$
+								"The feature '%s' is already implemented by the super type '%s'.",
 								lightweightInterfaceReference.canonicalName,
 								superType.canonicalName),
 						interfaceReference,
@@ -312,7 +326,7 @@ class SARLValidator extends AbstractSARLValidator {
 			if (memberOfTypeHierarchy(previousInterface, lightweightInterfaceReference)) {
 				warning(
 						String.format(
-								"The feature '%s' is already implemented by the preceding interface '%s'.", //$NON-NLS-1$
+								"The feature '%s' is already implemented by the preceding interface '%s'.",
 								lightweightInterfaceReference.canonicalName,
 								previousInterface.canonicalName),
 						interfaceReference,
@@ -337,7 +351,7 @@ class SARLValidator extends AbstractSARLValidator {
 	/**
 	 * @param element
 	 */
-	@Check
+	@Check(CheckType.FAST)
 	public def checkInheritedFeatures(InheritingElement element) {
 		var jvmElement = element.jvmGenericType
 		if (jvmElement!==null) {
@@ -362,7 +376,7 @@ class SARLValidator extends AbstractSARLValidator {
 						if (inheritedField!==null) {
 							warning(
 									String.format(
-											"The field '%s' in '%s' is hidding the inherited field '%s'.", //$NON-NLS-1$
+											"The field '%s' in '%s' is hidding the inherited field '%s'.",
 											feature.simpleName, jvmElement.qualifiedName,
 											inheritedField.qualifiedName),
 									feature,
@@ -380,7 +394,7 @@ class SARLValidator extends AbstractSARLValidator {
 				if (finalOperations.containsKey(actionKey)) {
 					error(
 							String.format(
-									"Cannot override the operation %s, which is declared a final in the super type.", //$NON-NLS-1$
+									"Cannot override the operation %s, which is declared a final in the super type.",
 									actionKey.toString),
 							feature,
 							null,
@@ -393,7 +407,7 @@ class SARLValidator extends AbstractSARLValidator {
 						if (!canCast(currentReturnType, inheritedReturnType, false)) {
 							error(
 									String.format(
-											"Incompatible return type between '%s' and '%s' for %s.", //$NON-NLS-1$
+											"Incompatible return type between '%s' and '%s' for %s.",
 											currentReturnType.canonicalName,
 											inheritedReturnType.canonicalName,
 											actionKey.toString),
@@ -410,7 +424,7 @@ class SARLValidator extends AbstractSARLValidator {
 							if (!canCast(currentReturnType, inheritedReturnType, false)) {
 								error(
 										String.format(
-												"Incompatible return type between '%s' and '%s' for %s.", //$NON-NLS-1$
+												"Incompatible return type between '%s' and '%s' for %s.",
 												currentReturnType.canonicalName,
 												inheritedReturnType.canonicalName,
 												actionKey.toString),
@@ -427,7 +441,7 @@ class SARLValidator extends AbstractSARLValidator {
 				for(key : operationsToImplement.keySet()) {
 					error(
 							String.format(
-									"The operation %s must be implemented.", //$NON-NLS-1$
+									"The operation %s must be implemented.",
 									key.toString),
 							element,
 							null,
@@ -440,7 +454,7 @@ class SARLValidator extends AbstractSARLValidator {
 	/**
 	 * @param element
 	 */
-	@Check
+	@Check(CheckType.FAST)
 	public def checkNoFinalTypeExtension(InheritingElement element) {
 		var jvmElement = element.jvmGenericType
 		if (jvmElement!==null) {
@@ -449,13 +463,247 @@ class SARLValidator extends AbstractSARLValidator {
 				if (ref!==null && ref.final) {
 					error(
 							String.format(
-									"Cannot extend the final type '%s'.", //$NON-NLS-1$
+									"Cannot extend the final type '%s'.",
 									superType.qualifiedName),
 							element,
 							null,
 							IssueCodes::FINAL_TYPE_EXTENSION)
 				}
 			}
+		}
+	}
+
+	/**
+	 * @param behaviorUnit
+	 */
+	@Check(CheckType.FAST)
+	public def checkBehaviorUnitGuardType(BehaviorUnit behaviorUnit) {
+		var guard = behaviorUnit.guard
+		if (guard!==null) {
+			if (guard instanceof XBooleanLiteral) {
+				if (guard.isTrue) {
+					if (!isIgnored(IssueCodes::DISCOURAGED_BOOLEAN_EXPRESSION)) {
+						warning("Discouraged boolean value. The guard is always true.",
+								guard,
+								null,
+								IssueCodes::DISCOURAGED_BOOLEAN_EXPRESSION)
+					}
+				}
+				else {
+					if (!isIgnored(org.eclipse.xtext.xbase.validation.IssueCodes::UNREACHABLE_CODE)) {
+						warning("Dead code. The guard is always false.",
+								behaviorUnit,
+								null,
+								org.eclipse.xtext.xbase.validation.IssueCodes::UNREACHABLE_CODE)
+					}
+				}
+				return;
+			}
+
+			var fromType = guard.actualType
+			if (!fromType.isAssignableFrom(Boolean::TYPE)) {
+				error(String.format("Type mismatch: cannot convert from %s to %s",
+						fromType.nameOfTypes, boolean.name),
+						behaviorUnit.guard,
+						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_TYPES)
+			}
+		}
+	}
+
+	/**
+	 * @param element
+	 */
+	@Check(CheckType.FAST)
+	public def checkCapacityTypeForUses(CapacityUses uses) {
+		for(usedType : uses.capacitiesUsed) {
+			var ref = usedType.toLightweightTypeReference
+			if (ref!==null && !ref.isSubtypeOf(io.sarl.lang.core.Capacity)) {
+				error(
+						String.format(
+								"Invalid type: '%s'. Only capacities can be used after the keyword '%s'.",
+								usedType.qualifiedName,
+								SARLKeywords::USES),
+						uses,
+						null,
+						org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
+			}
+		}
+	}
+
+	/**
+	 * @param element
+	 */
+	@Check(CheckType.FAST)
+	public def checkCapacityTypeForRequires(RequiredCapacity requires) {
+		for(requiredType : requires.requiredCapacities) {
+			var ref = requiredType.toLightweightTypeReference
+			if (ref!==null && !ref.isSubtypeOf(io.sarl.lang.core.Capacity)) {
+				error(
+						String.format(
+								"Invalid type: '%s'. Only capacities can be used after the keyword '%s'.",
+								requiredType.qualifiedName,
+								SARLKeywords::REQUIRES),
+						requires,
+						null,
+						org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
+			}
+		}
+	}
+
+	/**
+	 * @param action
+	 */
+	@Check(CheckType.FAST)
+	public def checkActionSignatureFires(ActionSignature action) {
+		for(event : action.firedEvents) {
+			var ref = event.toLightweightTypeReference
+			if (ref!==null && !ref.isSubtypeOf(Event)) {
+				error(
+						String.format(
+								"Invalid type: '%s'. Only events can be used after the keyword '%s'.",
+								event.qualifiedName,
+								SARLKeywords::FIRES),
+						action,
+						null,
+						org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
+			}
+		}
+	}
+	
+	protected def checkSuperTypes(InheritingElement element, Class<?> expectedType, boolean onlySubTypes) {
+		var isInterface = expectedType.interface
+		for(superType : element.superTypes) {
+			var ref = superType.toLightweightTypeReference
+			if (ref!==null &&
+				((ref.interfaceType!==isInterface) || !ref.isSubtypeOf(expectedType)
+				|| (onlySubTypes && ref.isType(expectedType)))) {
+				var String msg
+				if (onlySubTypes) {
+					msg = "Invalid super-type: '%s'. Only subtypes of '%s' are allowed for '%s'."
+				}
+				else {
+					msg = "Invalid super-type: '%s'. Only the type '%s' and one of its subtypes are allowed for '%s'."
+				}
+				error(
+						String.format(
+								msg,
+								superType.qualifiedName,
+								expectedType.name,
+								element.name),
+						element,
+						null,
+						org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
+			}
+		}
+	}
+
+
+	protected def checkImplementedTypes(ImplementingElement element, Class<?> expectedType, int mandatoryNumberOfTypes, boolean onlySubTypes) {
+		var nb = 0
+		for(superType : element.implementedTypes) {
+			var ref = superType.toLightweightTypeReference
+			if (ref!==null &&
+				(!ref.interfaceType || !ref.isSubtypeOf(expectedType)
+				|| (onlySubTypes && ref.isType(expectedType)))) {
+				var String msg
+				if (onlySubTypes) {
+					msg = "Invalid implemented type: '%s'. Only subtypes of '%s' are allowed for '%s'."
+				}
+				else {
+					msg = "Invalid implemented type: '%s'. Only the type '%s' and one of its subtypes are allowed for '%s'."
+				}
+				error(
+						String.format(
+								msg,
+								superType.qualifiedName,
+								expectedType.name,
+								element.name),
+						element,
+						null,
+						org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
+			}
+			else {
+				nb++
+			}
+		}
+		if (nb<mandatoryNumberOfTypes) {
+				error(
+						String.format(
+								"Missing implemented type '%s' for '%s'.",
+								expectedType.name,
+								element.name),
+						element,
+						null,
+						org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_TYPE)
+		}
+	}
+
+	/**
+	 * @param action
+	 */
+	@Check(CheckType.FAST)
+	public def checkEventSuperType(io.sarl.lang.sarl.Event event) {
+		checkSuperTypes(event, Event, false)
+	}
+
+	/**
+	 * @param action
+	 */
+	@Check(CheckType.FAST)
+	public def checkBehaviorSuperType(Behavior behavior) {
+		checkSuperTypes(behavior, io.sarl.lang.core.Behavior, false)
+	}
+
+	/**
+	 * @param action
+	 */
+	@Check(CheckType.FAST)
+	public def checkAgentSuperType(Agent agent) {
+		checkSuperTypes(agent, io.sarl.lang.core.Agent, false)
+	}
+
+	/**
+	 * @param action
+	 */
+	@Check(CheckType.FAST)
+	public def checkCapacitySuperType(Capacity capacity) {
+		checkSuperTypes(capacity, io.sarl.lang.core.Capacity, false)
+	}
+
+	/**
+	 * @param action
+	 */
+	@Check(CheckType.FAST)
+	public def checkSkillSuperType(Skill skill) {
+		checkSuperTypes(skill, io.sarl.lang.core.Skill, false)
+		checkImplementedTypes(skill, io.sarl.lang.core.Capacity, 1, true)
+	}
+
+	/**
+	 * @param action
+	 */
+	@Check(CheckType.FAST)
+	public def checkBehaviorUnitEventType(BehaviorUnit behaviorUnit) {
+		var event = behaviorUnit.event
+		var error = true
+		if (event!==null) {
+			var ref = event.toLightweightTypeReference
+			if (ref!==null && !ref.interfaceType 
+				&& ref.isSubtypeOf(Event)) {
+				error = false
+			}
+		}
+		if (error) {
+			error(
+					String.format(
+							"Invalid type: '%s'. Only events are allowed after the keyword '%s'.",
+							event.qualifiedName,
+							SARLKeywords.ON),
+					behaviorUnit,
+					null,
+					org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
 		}
 	}
 

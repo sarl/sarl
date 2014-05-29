@@ -1878,8 +1878,8 @@ public class ArgDefaultValueParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _formalParameter = SarlPackage.eINSTANCE.getFormalParameter();
       this._validationTestHelper.assertError(mas, _formalParameter, 
-        org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST, 
-        "Cannot cast from String to int");
+        org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES, 
+        "Type mismatch: cannot convert from String to int");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -1905,8 +1905,8 @@ public class ArgDefaultValueParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _formalParameter = SarlPackage.eINSTANCE.getFormalParameter();
       this._validationTestHelper.assertError(mas, _formalParameter, 
-        org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST, 
-        "Cannot cast from String to int");
+        org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES, 
+        "Type mismatch: cannot convert from String to int");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

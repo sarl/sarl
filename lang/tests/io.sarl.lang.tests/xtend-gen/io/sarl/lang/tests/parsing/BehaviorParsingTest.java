@@ -502,4 +502,26 @@ public class BehaviorParsingTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
+  
+  @Test
+  public void invalidExtend() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("capacity C1 {");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("behavior B1 extends C1 {");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _behavior = SarlPackage.eINSTANCE.getBehavior();
+      this._validationTestHelper.assertError(mas, _behavior, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH, 
+        "Invalid super-type: \'C1\'. Only the type \'io.sarl.lang.core.Behavior\' and one of its subtypes are allowed for \'B1\'");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
 }

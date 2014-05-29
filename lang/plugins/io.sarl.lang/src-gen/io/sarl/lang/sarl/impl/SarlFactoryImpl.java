@@ -84,8 +84,8 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
       case SarlPackage.SKILL: return createSkill();
       case SarlPackage.ATTRIBUTE: return createAttribute();
       case SarlPackage.CAPACITY_USES: return createCapacityUses();
-      case SarlPackage.BEHAVIOR_UNIT: return createBehaviorUnit();
       case SarlPackage.REQUIRED_CAPACITY: return createRequiredCapacity();
+      case SarlPackage.BEHAVIOR_UNIT: return createBehaviorUnit();
       case SarlPackage.ACTION: return createAction();
       case SarlPackage.CONSTRUCTOR: return createConstructor();
       case SarlPackage.ACTION_SIGNATURE: return createActionSignature();
@@ -319,10 +319,10 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public BehaviorUnit createBehaviorUnit()
+  public RequiredCapacity createRequiredCapacity()
   {
-    BehaviorUnitImpl behaviorUnit = new BehaviorUnitImpl();
-    return behaviorUnit;
+    RequiredCapacityImpl requiredCapacity = new RequiredCapacityImpl();
+    return requiredCapacity;
   }
 
   /**
@@ -330,10 +330,10 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public RequiredCapacity createRequiredCapacity()
+  public BehaviorUnit createBehaviorUnit()
   {
-    RequiredCapacityImpl requiredCapacity = new RequiredCapacityImpl();
-    return requiredCapacity;
+    BehaviorUnitImpl behaviorUnit = new BehaviorUnitImpl();
+    return behaviorUnit;
   }
 
   /**

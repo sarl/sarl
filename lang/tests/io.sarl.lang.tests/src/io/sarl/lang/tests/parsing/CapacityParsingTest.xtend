@@ -17,22 +17,16 @@ package io.sarl.lang.tests.parsing
 
 import com.google.inject.Inject
 import io.sarl.lang.SARLInjectorProvider
-import io.sarl.lang.sarl.Agent
-import io.sarl.lang.sarl.Capacity
 import io.sarl.lang.sarl.SarlPackage
 import io.sarl.lang.sarl.SarlScript
-import org.eclipse.xtext.diagnostics.Diagnostic
+import io.sarl.lang.validation.IssueCodes
+import org.eclipse.xtext.common.types.TypesPackage
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import static org.junit.Assert.*
-import io.sarl.lang.validation.IssueCodes
-import org.eclipse.xtext.common.types.TypesPackage
 
 /**
  * @author $Author: srodriguez$
@@ -45,108 +39,19 @@ import org.eclipse.xtext.common.types.TypesPackage
 @InjectWith(SARLInjectorProvider)
 class CapacityParsingTest {
 	@Inject extension ParseHelper<SarlScript>
-
 	@Inject extension ValidationTestHelper
 	
-	var SarlScript mas
-	var Iterable<Capacity> knownCapacities
-	
-	@Before
-	def void setUp() {
-		mas = '''
-			package test
-			capacity C {
-				def op1
-			}
-			capacity C2 {
-				def op2
-			}
-			capacity C3 {
-				def op3
-			}
-			capacity C4 {
-				def op4
-			}
-			
-			skill S implements C {
-				def op1 {
-					//do Something
-				}
-			}
-			skill S2 implements C2 {
-				def op1 {
-					//do Something
-				}
-			}
-			event E {}
-			agent A {
-				on E {
-					val shouldChange = true
-					if (shouldChange) {
-					C.setSkill(S)	
-					}else {
-					
-					 while(true) {
-					 C3.op3 	
-					 }
-					 C3.read 
-					
-					}
-					
-				}
-				
-				on E {
-					C2.op1
-					
-				}
-			}
-			agent B {
-				on E {
-					doSomething(C3)
-					C4.op4
-				}
-			}
-		'''.parse
-		knownCapacities = mas.elements.filter(Capacity)
-
-	}
-
-	@Test def void testParsedElements() {
-		assertEquals(9, mas.elements.size)
-
-	}
-
-	def void testErrorFreeExampleCode() {
-
-		mas.assertNoErrors
-	}
-
-	@Test def void testAgentFind() {
-		val agents = mas.elements.filter(Agent)
-		assertEquals(2, agents.size)
-		assertEquals("A", agents.head.name)
-	}
-
-	@Test def void testFindCapacityReferences() {
-		val agents = mas.elements.filter(Agent)
-		assertEquals(2, agents.size)
-
-//		assertEquals(3, agents.head.findCapacityReferences(knownCapacities).size)
-//		assertEquals(1, agents.last.findCapacityReferences(knownCapacities).size)
-
-	}
-
 	@Test
 	def void testCapacityDirectImplementation() {
 		val mas = '''
-			import io.sarl.lang.sarl.Capacity
+			import io.sarl.lang.core.Capacity
 			skill S1 implements Capacity {
 			}
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.skill,
-			Diagnostic::LINKING_DIAGNOSTIC,
-			"Couldn't resolve reference to InheritingElement 'Capacity'")
+			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			"Invalid implemented type: 'io.sarl.lang.core.Capacity'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'")
 	}
 
 	@Test
@@ -306,7 +211,7 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertWarning(
 			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
-			io.sarl.lang.validation.IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
+			IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
 			"The feature 'C1' is already implemented by the super type 'S1'.")
 	}
 
@@ -321,7 +226,7 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertWarning(
 			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
-			io.sarl.lang.validation.IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
+			IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
 			"The feature 'C2' is already implemented by the preceding interface 'C2'.")
 	}
 
@@ -336,7 +241,7 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertWarning(
 			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
-			io.sarl.lang.validation.IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
+			IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
 			"The feature 'C2' is already implemented by the preceding interface 'C3'.")
 	}
 
@@ -372,7 +277,7 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage.eINSTANCE.skill,
-			io.sarl.lang.validation.IssueCodes::MISSING_ACTION_IMPLEMENTATION,
+			IssueCodes::MISSING_ACTION_IMPLEMENTATION,
 			"The operation myaction1(int) must be implemented.")
 	}
 
@@ -392,7 +297,7 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage.eINSTANCE.skill,
-			io.sarl.lang.validation.IssueCodes::MISSING_ACTION_IMPLEMENTATION,
+			IssueCodes::MISSING_ACTION_IMPLEMENTATION,
 			"The operation myaction1(int) must be implemented.")
 	}
 
@@ -579,6 +484,101 @@ class CapacityParsingTest {
 				def myaction(a : int) : float {
 					return 0f
 				}
+			}
+		'''.parse
+		mas.assertNoErrors
+	}
+
+	@Test
+	def void invalidCapacityTypeForUses() {
+		val mas = '''
+			capacity C1 {
+				def myaction(a : int) : float
+			}
+			event E1 {
+				var abc : int
+			}
+			behavior B1 {
+				uses C1, E1
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacityUses,
+			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			"Invalid type: 'E1'. Only capacities can be used after the keyword 'uses'")
+	}
+
+	@Test
+	def void invalidCapacityTypeForRequires() {
+		val mas = '''
+			capacity C1 {
+				def myaction(a : int) : float
+			}
+			event E1 {
+				var abc : int
+			}
+			behavior B1 {
+				requires C1, E1
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.requiredCapacity,
+			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			"Invalid type: 'E1'. Only capacities can be used after the keyword 'requires'")
+	}
+
+	@Test
+	def void invalidCapacityExtend() {
+		val mas = '''
+			agent A1 {
+			}
+			capacity C1 extends A1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			"Invalid super-type: 'A1'. Only the type 'io.sarl.lang.core.Capacity' and one of its subtypes are allowed for 'C1'")
+	}
+
+	@Test
+	def void invalidSkillExtend_0() {
+		val mas = '''
+			capacity C1 {
+			}
+			agent A1 {
+			}
+			skill S1 extends A1 implements C1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.skill,
+			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			"Invalid super-type: 'A1'. Only the type 'io.sarl.lang.core.Skill' and one of its subtypes are allowed for 'S1'")
+	}
+
+	@Test
+	def void invalidSkillExtend_1() {
+		val mas = '''
+			behavior B1 {
+			}
+			skill S1 implements B1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.skill,
+			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed")
+	}
+
+	@Test
+	def void inheritance() {
+		val mas = '''
+			capacity CapTest1 {
+				def func1 : int
+			}
+			capacity CapTest2 extends CapTest1 {
+				def func2(a : int)
 			}
 		'''.parse
 		mas.assertNoErrors

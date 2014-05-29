@@ -26,4 +26,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: io.sarl.lang.tests.bugs,
  io.sarl.lang.tests.compilation,
  io.sarl.lang.tests.formatting,
- io.sarl.lang.tests.parsing
+ io.sarl.lang.tests.parsing,
+ io.sarl.lang

@@ -28,6 +28,22 @@ public interface SARLKeywords {
 	 */
 	public static final String CONSTRUCTOR = "new"; //$NON-NLS-1$
 
+	/** {@code uses}
+	 */
+	public static final String USES = "uses"; //$NON-NLS-1$
+
+	/** {@code requires}
+	 */
+	public static final String REQUIRES = "requires"; //$NON-NLS-1$
+
+	/** {@code fires}
+	 */
+	public static final String FIRES = "fires"; //$NON-NLS-1$
+
+	/** {@code on}
+	 */
+	public static final String ON = "on"; //$NON-NLS-1$
+
 }
 
 

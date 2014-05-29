@@ -3,7 +3,6 @@
 package io.sarl.lang.sarl.impl;
 
 import io.sarl.lang.sarl.ActionSignature;
-import io.sarl.lang.sarl.Event;
 import io.sarl.lang.sarl.SarlPackage;
 
 import java.util.Collection;
@@ -18,8 +17,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 
 /**
@@ -70,14 +71,14 @@ public class ActionSignatureImpl extends ParameterizedFeatureImpl implements Act
   protected JvmTypeReference type;
 
   /**
-   * The cached value of the '{@link #getFiredEvents() <em>Fired Events</em>}' reference list.
+   * The cached value of the '{@link #getFiredEvents() <em>Fired Events</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getFiredEvents()
    * @generated
    * @ordered
    */
-  protected EList<Event> firedEvents;
+  protected EList<JvmParameterizedTypeReference> firedEvents;
 
   /**
    * <!-- begin-user-doc -->
@@ -176,11 +177,11 @@ public class ActionSignatureImpl extends ParameterizedFeatureImpl implements Act
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<Event> getFiredEvents()
+  public EList<JvmParameterizedTypeReference> getFiredEvents()
   {
     if (firedEvents == null)
     {
-      firedEvents = new EObjectResolvingEList<Event>(Event.class, this, SarlPackage.ACTION_SIGNATURE__FIRED_EVENTS);
+      firedEvents = new EObjectContainmentEList<JvmParameterizedTypeReference>(JvmParameterizedTypeReference.class, this, SarlPackage.ACTION_SIGNATURE__FIRED_EVENTS);
     }
     return firedEvents;
   }
@@ -197,6 +198,8 @@ public class ActionSignatureImpl extends ParameterizedFeatureImpl implements Act
     {
       case SarlPackage.ACTION_SIGNATURE__TYPE:
         return basicSetType(null, msgs);
+      case SarlPackage.ACTION_SIGNATURE__FIRED_EVENTS:
+        return ((InternalEList<?>)getFiredEvents()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -240,7 +243,7 @@ public class ActionSignatureImpl extends ParameterizedFeatureImpl implements Act
         return;
       case SarlPackage.ACTION_SIGNATURE__FIRED_EVENTS:
         getFiredEvents().clear();
-        getFiredEvents().addAll((Collection<? extends Event>)newValue);
+        getFiredEvents().addAll((Collection<? extends JvmParameterizedTypeReference>)newValue);
         return;
     }
     super.eSet(featureID, newValue);

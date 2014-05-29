@@ -253,7 +253,7 @@ public interface SarlPackage extends EPackage
   int INHERITING_ELEMENT__FEATURES = TOP_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Super Types</b></em>' reference list.
+   * The feature id for the '<em><b>Super Types</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -299,7 +299,7 @@ public interface SarlPackage extends EPackage
   int IMPLEMENTING_ELEMENT__FEATURES = TOP_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Super Types</b></em>' reference list.
+   * The feature id for the '<em><b>Super Types</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -308,7 +308,7 @@ public interface SarlPackage extends EPackage
   int IMPLEMENTING_ELEMENT__SUPER_TYPES = TOP_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The feature id for the '<em><b>Implemented Types</b></em>' reference list.
+   * The feature id for the '<em><b>Implemented Types</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -494,7 +494,7 @@ public interface SarlPackage extends EPackage
   int EVENT__FEATURES = INHERITING_ELEMENT__FEATURES;
 
   /**
-   * The feature id for the '<em><b>Super Types</b></em>' reference list.
+   * The feature id for the '<em><b>Super Types</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -540,7 +540,7 @@ public interface SarlPackage extends EPackage
   int CAPACITY__FEATURES = INHERITING_ELEMENT__FEATURES;
 
   /**
-   * The feature id for the '<em><b>Super Types</b></em>' reference list.
+   * The feature id for the '<em><b>Super Types</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -586,7 +586,7 @@ public interface SarlPackage extends EPackage
   int AGENT__FEATURES = INHERITING_ELEMENT__FEATURES;
 
   /**
-   * The feature id for the '<em><b>Super Types</b></em>' reference list.
+   * The feature id for the '<em><b>Super Types</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -632,7 +632,7 @@ public interface SarlPackage extends EPackage
   int BEHAVIOR__FEATURES = INHERITING_ELEMENT__FEATURES;
 
   /**
-   * The feature id for the '<em><b>Super Types</b></em>' reference list.
+   * The feature id for the '<em><b>Super Types</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -678,7 +678,7 @@ public interface SarlPackage extends EPackage
   int SKILL__FEATURES = IMPLEMENTING_ELEMENT__FEATURES;
 
   /**
-   * The feature id for the '<em><b>Super Types</b></em>' reference list.
+   * The feature id for the '<em><b>Super Types</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -687,7 +687,7 @@ public interface SarlPackage extends EPackage
   int SKILL__SUPER_TYPES = IMPLEMENTING_ELEMENT__SUPER_TYPES;
 
   /**
-   * The feature id for the '<em><b>Implemented Types</b></em>' reference list.
+   * The feature id for the '<em><b>Implemented Types</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -770,7 +770,7 @@ public interface SarlPackage extends EPackage
   int CAPACITY_USES = 19;
 
   /**
-   * The feature id for the '<em><b>Capacities Used</b></em>' reference list.
+   * The feature id for the '<em><b>Capacities Used</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -788,6 +788,34 @@ public interface SarlPackage extends EPackage
   int CAPACITY_USES_FEATURE_COUNT = FEATURE_FEATURE_COUNT + 1;
 
   /**
+   * The meta object id for the '{@link io.sarl.lang.sarl.impl.RequiredCapacityImpl <em>Required Capacity</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see io.sarl.lang.sarl.impl.RequiredCapacityImpl
+   * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getRequiredCapacity()
+   * @generated
+   */
+  int REQUIRED_CAPACITY = 20;
+
+  /**
+   * The feature id for the '<em><b>Required Capacities</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REQUIRED_CAPACITY__REQUIRED_CAPACITIES = FEATURE_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Required Capacity</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REQUIRED_CAPACITY_FEATURE_COUNT = FEATURE_FEATURE_COUNT + 1;
+
+  /**
    * The meta object id for the '{@link io.sarl.lang.sarl.impl.BehaviorUnitImpl <em>Behavior Unit</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -795,10 +823,10 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getBehaviorUnit()
    * @generated
    */
-  int BEHAVIOR_UNIT = 20;
+  int BEHAVIOR_UNIT = 21;
 
   /**
-   * The feature id for the '<em><b>Event</b></em>' reference.
+   * The feature id for the '<em><b>Event</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -832,34 +860,6 @@ public interface SarlPackage extends EPackage
    * @ordered
    */
   int BEHAVIOR_UNIT_FEATURE_COUNT = FEATURE_FEATURE_COUNT + 3;
-
-  /**
-   * The meta object id for the '{@link io.sarl.lang.sarl.impl.RequiredCapacityImpl <em>Required Capacity</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see io.sarl.lang.sarl.impl.RequiredCapacityImpl
-   * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getRequiredCapacity()
-   * @generated
-   */
-  int REQUIRED_CAPACITY = 21;
-
-  /**
-   * The feature id for the '<em><b>Required Capacities</b></em>' reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int REQUIRED_CAPACITY__REQUIRED_CAPACITIES = FEATURE_FEATURE_COUNT + 0;
-
-  /**
-   * The number of structural features of the '<em>Required Capacity</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int REQUIRED_CAPACITY_FEATURE_COUNT = FEATURE_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link io.sarl.lang.sarl.impl.ActionImpl <em>Action</em>}' class.
@@ -991,7 +991,7 @@ public interface SarlPackage extends EPackage
   int ACTION_SIGNATURE__TYPE = PARAMETERIZED_FEATURE_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Fired Events</b></em>' reference list.
+   * The feature id for the '<em><b>Fired Events</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1125,10 +1125,10 @@ public interface SarlPackage extends EPackage
   EClass getInheritingElement();
 
   /**
-   * Returns the meta object for the reference list '{@link io.sarl.lang.sarl.InheritingElement#getSuperTypes <em>Super Types</em>}'.
+   * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.InheritingElement#getSuperTypes <em>Super Types</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the reference list '<em>Super Types</em>'.
+   * @return the meta object for the containment reference list '<em>Super Types</em>'.
    * @see io.sarl.lang.sarl.InheritingElement#getSuperTypes()
    * @see #getInheritingElement()
    * @generated
@@ -1146,10 +1146,10 @@ public interface SarlPackage extends EPackage
   EClass getImplementingElement();
 
   /**
-   * Returns the meta object for the reference list '{@link io.sarl.lang.sarl.ImplementingElement#getImplementedTypes <em>Implemented Types</em>}'.
+   * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.ImplementingElement#getImplementedTypes <em>Implemented Types</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the reference list '<em>Implemented Types</em>'.
+   * @return the meta object for the containment reference list '<em>Implemented Types</em>'.
    * @see io.sarl.lang.sarl.ImplementingElement#getImplementedTypes()
    * @see #getImplementingElement()
    * @generated
@@ -1386,15 +1386,36 @@ public interface SarlPackage extends EPackage
   EClass getCapacityUses();
 
   /**
-   * Returns the meta object for the reference list '{@link io.sarl.lang.sarl.CapacityUses#getCapacitiesUsed <em>Capacities Used</em>}'.
+   * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.CapacityUses#getCapacitiesUsed <em>Capacities Used</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the reference list '<em>Capacities Used</em>'.
+   * @return the meta object for the containment reference list '<em>Capacities Used</em>'.
    * @see io.sarl.lang.sarl.CapacityUses#getCapacitiesUsed()
    * @see #getCapacityUses()
    * @generated
    */
   EReference getCapacityUses_CapacitiesUsed();
+
+  /**
+   * Returns the meta object for class '{@link io.sarl.lang.sarl.RequiredCapacity <em>Required Capacity</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Required Capacity</em>'.
+   * @see io.sarl.lang.sarl.RequiredCapacity
+   * @generated
+   */
+  EClass getRequiredCapacity();
+
+  /**
+   * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.RequiredCapacity#getRequiredCapacities <em>Required Capacities</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Required Capacities</em>'.
+   * @see io.sarl.lang.sarl.RequiredCapacity#getRequiredCapacities()
+   * @see #getRequiredCapacity()
+   * @generated
+   */
+  EReference getRequiredCapacity_RequiredCapacities();
 
   /**
    * Returns the meta object for class '{@link io.sarl.lang.sarl.BehaviorUnit <em>Behavior Unit</em>}'.
@@ -1407,10 +1428,10 @@ public interface SarlPackage extends EPackage
   EClass getBehaviorUnit();
 
   /**
-   * Returns the meta object for the reference '{@link io.sarl.lang.sarl.BehaviorUnit#getEvent <em>Event</em>}'.
+   * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.BehaviorUnit#getEvent <em>Event</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Event</em>'.
+   * @return the meta object for the containment reference '<em>Event</em>'.
    * @see io.sarl.lang.sarl.BehaviorUnit#getEvent()
    * @see #getBehaviorUnit()
    * @generated
@@ -1438,27 +1459,6 @@ public interface SarlPackage extends EPackage
    * @generated
    */
   EReference getBehaviorUnit_Body();
-
-  /**
-   * Returns the meta object for class '{@link io.sarl.lang.sarl.RequiredCapacity <em>Required Capacity</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Required Capacity</em>'.
-   * @see io.sarl.lang.sarl.RequiredCapacity
-   * @generated
-   */
-  EClass getRequiredCapacity();
-
-  /**
-   * Returns the meta object for the reference list '{@link io.sarl.lang.sarl.RequiredCapacity#getRequiredCapacities <em>Required Capacities</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the reference list '<em>Required Capacities</em>'.
-   * @see io.sarl.lang.sarl.RequiredCapacity#getRequiredCapacities()
-   * @see #getRequiredCapacity()
-   * @generated
-   */
-  EReference getRequiredCapacity_RequiredCapacities();
 
   /**
    * Returns the meta object for class '{@link io.sarl.lang.sarl.Action <em>Action</em>}'.
@@ -1546,10 +1546,10 @@ public interface SarlPackage extends EPackage
   EReference getActionSignature_Type();
 
   /**
-   * Returns the meta object for the reference list '{@link io.sarl.lang.sarl.ActionSignature#getFiredEvents <em>Fired Events</em>}'.
+   * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.ActionSignature#getFiredEvents <em>Fired Events</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the reference list '<em>Fired Events</em>'.
+   * @return the meta object for the containment reference list '<em>Fired Events</em>'.
    * @see io.sarl.lang.sarl.ActionSignature#getFiredEvents()
    * @see #getActionSignature()
    * @generated
@@ -1680,7 +1680,7 @@ public interface SarlPackage extends EPackage
     EClass INHERITING_ELEMENT = eINSTANCE.getInheritingElement();
 
     /**
-     * The meta object literal for the '<em><b>Super Types</b></em>' reference list feature.
+     * The meta object literal for the '<em><b>Super Types</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -1698,7 +1698,7 @@ public interface SarlPackage extends EPackage
     EClass IMPLEMENTING_ELEMENT = eINSTANCE.getImplementingElement();
 
     /**
-     * The meta object literal for the '<em><b>Implemented Types</b></em>' reference list feature.
+     * The meta object literal for the '<em><b>Implemented Types</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -1908,12 +1908,30 @@ public interface SarlPackage extends EPackage
     EClass CAPACITY_USES = eINSTANCE.getCapacityUses();
 
     /**
-     * The meta object literal for the '<em><b>Capacities Used</b></em>' reference list feature.
+     * The meta object literal for the '<em><b>Capacities Used</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
     EReference CAPACITY_USES__CAPACITIES_USED = eINSTANCE.getCapacityUses_CapacitiesUsed();
+
+    /**
+     * The meta object literal for the '{@link io.sarl.lang.sarl.impl.RequiredCapacityImpl <em>Required Capacity</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see io.sarl.lang.sarl.impl.RequiredCapacityImpl
+     * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getRequiredCapacity()
+     * @generated
+     */
+    EClass REQUIRED_CAPACITY = eINSTANCE.getRequiredCapacity();
+
+    /**
+     * The meta object literal for the '<em><b>Required Capacities</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference REQUIRED_CAPACITY__REQUIRED_CAPACITIES = eINSTANCE.getRequiredCapacity_RequiredCapacities();
 
     /**
      * The meta object literal for the '{@link io.sarl.lang.sarl.impl.BehaviorUnitImpl <em>Behavior Unit</em>}' class.
@@ -1926,7 +1944,7 @@ public interface SarlPackage extends EPackage
     EClass BEHAVIOR_UNIT = eINSTANCE.getBehaviorUnit();
 
     /**
-     * The meta object literal for the '<em><b>Event</b></em>' reference feature.
+     * The meta object literal for the '<em><b>Event</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -1948,24 +1966,6 @@ public interface SarlPackage extends EPackage
      * @generated
      */
     EReference BEHAVIOR_UNIT__BODY = eINSTANCE.getBehaviorUnit_Body();
-
-    /**
-     * The meta object literal for the '{@link io.sarl.lang.sarl.impl.RequiredCapacityImpl <em>Required Capacity</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see io.sarl.lang.sarl.impl.RequiredCapacityImpl
-     * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getRequiredCapacity()
-     * @generated
-     */
-    EClass REQUIRED_CAPACITY = eINSTANCE.getRequiredCapacity();
-
-    /**
-     * The meta object literal for the '<em><b>Required Capacities</b></em>' reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference REQUIRED_CAPACITY__REQUIRED_CAPACITIES = eINSTANCE.getRequiredCapacity_RequiredCapacities();
 
     /**
      * The meta object literal for the '{@link io.sarl.lang.sarl.impl.ActionImpl <em>Action</em>}' class.
@@ -2038,7 +2038,7 @@ public interface SarlPackage extends EPackage
     EReference ACTION_SIGNATURE__TYPE = eINSTANCE.getActionSignature_Type();
 
     /**
-     * The meta object literal for the '<em><b>Fired Events</b></em>' reference list feature.
+     * The meta object literal for the '<em><b>Fired Events</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated

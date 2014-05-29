@@ -21,8 +21,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -72,14 +73,14 @@ public class InheritingElementImpl extends TopElementImpl implements InheritingE
   protected EList<EObject> features;
 
   /**
-   * The cached value of the '{@link #getSuperTypes() <em>Super Types</em>}' reference list.
+   * The cached value of the '{@link #getSuperTypes() <em>Super Types</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getSuperTypes()
    * @generated
    * @ordered
    */
-  protected EList<InheritingElement> superTypes;
+  protected EList<JvmParameterizedTypeReference> superTypes;
 
   /**
    * <!-- begin-user-doc -->
@@ -144,11 +145,11 @@ public class InheritingElementImpl extends TopElementImpl implements InheritingE
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<InheritingElement> getSuperTypes()
+  public EList<JvmParameterizedTypeReference> getSuperTypes()
   {
     if (superTypes == null)
     {
-      superTypes = new EObjectResolvingEList<InheritingElement>(InheritingElement.class, this, SarlPackage.INHERITING_ELEMENT__SUPER_TYPES);
+      superTypes = new EObjectContainmentEList<JvmParameterizedTypeReference>(JvmParameterizedTypeReference.class, this, SarlPackage.INHERITING_ELEMENT__SUPER_TYPES);
     }
     return superTypes;
   }
@@ -165,6 +166,8 @@ public class InheritingElementImpl extends TopElementImpl implements InheritingE
     {
       case SarlPackage.INHERITING_ELEMENT__FEATURES:
         return ((InternalEList<?>)getFeatures()).basicRemove(otherEnd, msgs);
+      case SarlPackage.INHERITING_ELEMENT__SUPER_TYPES:
+        return ((InternalEList<?>)getSuperTypes()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -209,7 +212,7 @@ public class InheritingElementImpl extends TopElementImpl implements InheritingE
         return;
       case SarlPackage.INHERITING_ELEMENT__SUPER_TYPES:
         getSuperTypes().clear();
-        getSuperTypes().addAll((Collection<? extends InheritingElement>)newValue);
+        getSuperTypes().addAll((Collection<? extends JvmParameterizedTypeReference>)newValue);
         return;
     }
     super.eSet(featureID, newValue);

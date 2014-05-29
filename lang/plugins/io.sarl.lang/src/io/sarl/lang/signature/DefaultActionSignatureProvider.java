@@ -46,7 +46,7 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 	@Inject
 	private TypeReferences references;
 
-	private final Map<String,Map<String,Map<SignatureKey,InferredActionSignature>>> elements = new TreeMap<String, Map<String,Map<SignatureKey,InferredActionSignature>>>();
+	private final Map<String,Map<String,Map<SignatureKey,InferredActionSignature>>> elements = new TreeMap<>();
 
 	/**
 	 */
@@ -55,7 +55,7 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 	}
 
 	private Map<SignatureKey,EList<InferredStandardParameter>> buildSignaturesForArgDefaultValues(List<FormalParameter> params, SignatureKey fillSignatureKeyOutputParameter) {
-		Map<SignatureKey,EList<InferredStandardParameter>> signatures = new TreeMap<SignatureKey,EList<InferredStandardParameter>>();
+		Map<SignatureKey,EList<InferredStandardParameter>> signatures = new TreeMap<>();
 		fillSignatureKeyOutputParameter.clear();
 		if (!params.isEmpty()) {
 			Map<SignatureKey,EList<InferredStandardParameter>> tmpSignatures;
@@ -70,7 +70,7 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 					type = param.getParameterType().getIdentifier();
 				}
 				fillSignatureKeyOutputParameter.add(type);
-				tmpSignatures = new TreeMap<SignatureKey,EList<InferredStandardParameter>>();
+				tmpSignatures = new TreeMap<>();
 				if (signatures.isEmpty()) {
 					// First parameter
 					if (isOptional) {
@@ -109,6 +109,7 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public Iterable<InferredActionSignature> getSignatures(ActionNameKey id) {
 		Map<String,Map<SignatureKey,InferredActionSignature>> c = this.elements.get(id.getContainerID());
 		if (c!=null) {
@@ -120,6 +121,7 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public InferredActionSignature getSignatures(ActionNameKey actionID, SignatureKey signatureID) {
 		Map<String,Map<SignatureKey,InferredActionSignature>> c = this.elements.get(actionID.getContainerID());
 		if (c!=null) {
@@ -133,6 +135,7 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public InferredActionSignature createSignature(ActionNameKey id,
 			boolean isVarargs, EList<FormalParameter> parameters) {
 		SignatureKey key = new SignatureKey(isVarargs, parameters.size());
@@ -144,12 +147,12 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 				ip);
 		Map<String,Map<SignatureKey,InferredActionSignature>> c = this.elements.get(id.getContainerID());
 		if (c==null) {
-			c = new TreeMap<String, Map<SignatureKey,InferredActionSignature>>();
+			c = new TreeMap<>();
 			this.elements.put(id.getContainerID(), c);
 		}
 		Map<SignatureKey,InferredActionSignature> list = c.get(id.getFunctionName());
 		if (list==null) {
-			list = new TreeMap<SignatureKey,InferredActionSignature>();
+			list = new TreeMap<>();
 			c.put(id.getFunctionName(), list);
 		}
 		list.put(key,s);
@@ -169,6 +172,7 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public ActionNameKey createFunctionID(JvmIdentifiableElement container,
 			String functionName) {
 		return new ActionNameKey(
@@ -178,6 +182,7 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public ActionNameKey createConstructorID(JvmIdentifiableElement container) {
 		return new ActionNameKey(
 				computeContainerId(container),
@@ -186,6 +191,7 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public SignatureKey createSignatureIDFromSarlModel(boolean isVarargs, EList<FormalParameter> parameters) {
 		SignatureKey sig = new SignatureKey(isVarargs, parameters.size());
 		for(FormalParameter p : parameters) {
@@ -197,6 +203,7 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public SignatureKey createSignatureIDFromString(String parameters) {
 		return new SignatureKey(parameters);
 	}
@@ -204,6 +211,7 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public SignatureKey createSignatureIDFromJvmModel(boolean isVarargs, EList<JvmFormalParameter> parameters) {
 		SignatureKey sig = new SignatureKey(isVarargs, parameters.size());
 		for(JvmFormalParameter p : parameters) {
@@ -214,12 +222,14 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public ActionKey createActionID(String actionName, SignatureKey parameters) {
 		return new ActionKey(actionName, parameters);
 	}
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public void resetSignatures(JvmIdentifiableElement container) {
 		String id = computeContainerId(container);
 		this.elements.remove(id);

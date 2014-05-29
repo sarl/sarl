@@ -18,17 +18,22 @@ package io.sarl.lang.validation;
 import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import io.sarl.lang.SARLKeywords;
+import io.sarl.lang.core.Capacity;
 import io.sarl.lang.sarl.Action;
 import io.sarl.lang.sarl.ActionSignature;
 import io.sarl.lang.sarl.Agent;
 import io.sarl.lang.sarl.Attribute;
 import io.sarl.lang.sarl.Behavior;
+import io.sarl.lang.sarl.BehaviorUnit;
+import io.sarl.lang.sarl.CapacityUses;
 import io.sarl.lang.sarl.Constructor;
 import io.sarl.lang.sarl.Event;
 import io.sarl.lang.sarl.FeatureContainer;
 import io.sarl.lang.sarl.FormalParameter;
+import io.sarl.lang.sarl.ImplementingElement;
 import io.sarl.lang.sarl.InheritingElement;
 import io.sarl.lang.sarl.ParameterizedFeature;
+import io.sarl.lang.sarl.RequiredCapacity;
 import io.sarl.lang.sarl.Skill;
 import io.sarl.lang.signature.ActionKey;
 import io.sarl.lang.signature.ActionNameKey;
@@ -52,9 +57,12 @@ import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.validation.CheckType;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
+import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations;
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider;
@@ -65,8 +73,10 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 /**
  * Validator for the SARL elements.
  * <p>
- * The following issues are not yet supported:<ul>
- * <li>Skill implementation cannot have default value - ERROR</li>
+ * The check type may be one of:<ul>
+ * <li>{@link CheckType#FAST}: is executed after a delay of 500ms after ANY editing action (type, enter, delete);</li>
+ * <li>{@link CheckType#NORMAL}: is executed after a build (manual, or automatic);</li>
+ * <li>{@link CheckType#EXPENSIVE}: is executed by right clicking ANYWHERE in the editor window and chooseing "Validate".</li>
  * </ul>
  * 
  * @author $Author: sgalland$
@@ -86,7 +96,7 @@ public class SARLValidator extends AbstractSARLValidator {
   /**
    * @param feature
    */
-  @Check
+  @Check(CheckType.FAST)
   public void checkNoDefaultValueForVariadicParameter(final ParameterizedFeature feature) {
     boolean _isVarargs = feature.isVarargs();
     if (_isVarargs) {
@@ -115,18 +125,18 @@ public class SARLValidator extends AbstractSARLValidator {
     if (_not) {
       String _nameOfTypes = this.getNameOfTypes(fromType);
       String _canonicalName = this.canonicalName(toType);
-      String _format = String.format("Cannot cast from %s to %s", _nameOfTypes, _canonicalName);
+      String _format = String.format("Type mismatch: cannot convert from %s to %s", _nameOfTypes, _canonicalName);
       this.error(_format, param, 
         null, 
         ValidationMessageAcceptor.INSIGNIFICANT_INDEX, 
-        org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST);
+        org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES);
     }
   }
   
   /**
    * @param feature
    */
-  @Check
+  @Check(CheckType.FAST)
   public void checkDefaultValueTypeCompatibleWithParameterType(final ParameterizedFeature feature) {
     EList<FormalParameter> _params = feature.getParams();
     for (final FormalParameter param : _params) {
@@ -141,7 +151,7 @@ public class SARLValidator extends AbstractSARLValidator {
   /**
    * @param featureContainer
    */
-  @Check
+  @Check(CheckType.FAST)
   public void checkNoFeatureMultiDefinition(final FeatureContainer featureContainer) {
     final Set<String> localFields = new TreeSet<String>();
     final Set<ActionKey> localFunctions = new TreeSet<ActionKey>();
@@ -246,7 +256,7 @@ public class SARLValidator extends AbstractSARLValidator {
   /**
    * @param action
    */
-  @Check
+  @Check(CheckType.FAST)
   public void checkActionName(final ActionSignature action) {
     String _name = action.getName();
     boolean _isHiddenAction = ModelUtil.isHiddenAction(_name);
@@ -263,7 +273,7 @@ public class SARLValidator extends AbstractSARLValidator {
   /**
    * @param attribute
    */
-  @Check
+  @Check(CheckType.FAST)
   public void checkAttributeName(final Attribute attribute) {
     String _name = attribute.getName();
     boolean _isHiddenAttribute = ModelUtil.isHiddenAttribute(_name);
@@ -286,13 +296,19 @@ public class SARLValidator extends AbstractSARLValidator {
   protected JvmGenericType getJvmGenericType(final EObject element) {
     CommonTypeComputationServices _services = this.getServices();
     IJvmModelAssociations _jvmModelAssociations = _services.getJvmModelAssociations();
-    return ModelUtil.getJvmGenericType(element, _jvmModelAssociations);
+    Set<EObject> _jvmElements = _jvmModelAssociations.getJvmElements(element);
+    for (final EObject obj : _jvmElements) {
+      if ((obj instanceof JvmGenericType)) {
+        return ((JvmGenericType)obj);
+      }
+    }
+    return null;
   }
   
   /**
    * @param event
    */
-  @Check
+  @Check(CheckType.FAST)
   public void checkFinalFieldInitialization(final Event event) {
     JvmGenericType type = this.getJvmGenericType(event);
     boolean _tripleNotEquals = (type != null);
@@ -304,7 +320,7 @@ public class SARLValidator extends AbstractSARLValidator {
   /**
    * @param agent
    */
-  @Check
+  @Check(CheckType.FAST)
   public void checkFinalFieldInitialization(final Agent agent) {
     JvmGenericType type = this.getJvmGenericType(agent);
     boolean _tripleNotEquals = (type != null);
@@ -316,7 +332,7 @@ public class SARLValidator extends AbstractSARLValidator {
   /**
    * @param behavior
    */
-  @Check
+  @Check(CheckType.FAST)
   public void checkFinalFieldInitialization(final Behavior behavior) {
     JvmGenericType type = this.getJvmGenericType(behavior);
     boolean _notEquals = (!Objects.equal(type, null));
@@ -328,7 +344,7 @@ public class SARLValidator extends AbstractSARLValidator {
   /**
    * @param skill
    */
-  @Check
+  @Check(CheckType.FAST)
   public void checkFinalFieldInitialization(final Skill skill) {
     JvmGenericType type = this.getJvmGenericType(skill);
     boolean _notEquals = (!Objects.equal(type, null));
@@ -398,7 +414,7 @@ public class SARLValidator extends AbstractSARLValidator {
   /**
    * @param element
    */
-  @Check
+  @Check(CheckType.FAST)
   public void checkInheritedFeatures(final InheritingElement element) {
     JvmGenericType jvmElement = this.getJvmGenericType(element);
     boolean _tripleNotEquals = (jvmElement != null);
@@ -523,7 +539,7 @@ public class SARLValidator extends AbstractSARLValidator {
   /**
    * @param element
    */
-  @Check
+  @Check(CheckType.FAST)
   public void checkNoFinalTypeExtension(final InheritingElement element) {
     JvmGenericType jvmElement = this.getJvmGenericType(element);
     boolean _tripleNotEquals = (jvmElement != null);
@@ -550,6 +566,347 @@ public class SARLValidator extends AbstractSARLValidator {
           }
         }
       }
+    }
+  }
+  
+  /**
+   * @param behaviorUnit
+   */
+  @Check(CheckType.FAST)
+  public void checkBehaviorUnitGuardType(final BehaviorUnit behaviorUnit) {
+    XExpression guard = behaviorUnit.getGuard();
+    boolean _tripleNotEquals = (guard != null);
+    if (_tripleNotEquals) {
+      if ((guard instanceof XBooleanLiteral)) {
+        boolean _isIsTrue = ((XBooleanLiteral)guard).isIsTrue();
+        if (_isIsTrue) {
+          boolean _isIgnored = this.isIgnored(IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION);
+          boolean _not = (!_isIgnored);
+          if (_not) {
+            this.warning("Discouraged boolean value. The guard is always true.", guard, 
+              null, 
+              IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION);
+          }
+        } else {
+          boolean _isIgnored_1 = this.isIgnored(org.eclipse.xtext.xbase.validation.IssueCodes.UNREACHABLE_CODE);
+          boolean _not_1 = (!_isIgnored_1);
+          if (_not_1) {
+            this.warning("Dead code. The guard is always false.", behaviorUnit, 
+              null, 
+              org.eclipse.xtext.xbase.validation.IssueCodes.UNREACHABLE_CODE);
+          }
+        }
+        return;
+      }
+      LightweightTypeReference fromType = this.getActualType(guard);
+      boolean _isAssignableFrom = fromType.isAssignableFrom(Boolean.TYPE);
+      boolean _not_2 = (!_isAssignableFrom);
+      if (_not_2) {
+        String _nameOfTypes = this.getNameOfTypes(fromType);
+        String _name = boolean.class.getName();
+        String _format = String.format("Type mismatch: cannot convert from %s to %s", _nameOfTypes, _name);
+        XExpression _guard = behaviorUnit.getGuard();
+        this.error(_format, _guard, 
+          null, 
+          ValidationMessageAcceptor.INSIGNIFICANT_INDEX, 
+          org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES);
+      }
+    }
+  }
+  
+  /**
+   * @param element
+   */
+  @Check(CheckType.FAST)
+  public void checkCapacityTypeForUses(final CapacityUses uses) {
+    EList<JvmParameterizedTypeReference> _capacitiesUsed = uses.getCapacitiesUsed();
+    for (final JvmParameterizedTypeReference usedType : _capacitiesUsed) {
+      {
+        LightweightTypeReference ref = this.toLightweightTypeReference(usedType);
+        boolean _and = false;
+        boolean _tripleNotEquals = (ref != null);
+        if (!_tripleNotEquals) {
+          _and = false;
+        } else {
+          boolean _isSubtypeOf = ref.isSubtypeOf(Capacity.class);
+          boolean _not = (!_isSubtypeOf);
+          _and = _not;
+        }
+        if (_and) {
+          String _qualifiedName = usedType.getQualifiedName();
+          String _format = String.format(
+            "Invalid type: \'%s\'. Only capacities can be used after the keyword \'%s\'.", _qualifiedName, 
+            SARLKeywords.USES);
+          this.error(_format, uses, 
+            null, 
+            org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH);
+        }
+      }
+    }
+  }
+  
+  /**
+   * @param element
+   */
+  @Check(CheckType.FAST)
+  public void checkCapacityTypeForRequires(final RequiredCapacity requires) {
+    EList<JvmParameterizedTypeReference> _requiredCapacities = requires.getRequiredCapacities();
+    for (final JvmParameterizedTypeReference requiredType : _requiredCapacities) {
+      {
+        LightweightTypeReference ref = this.toLightweightTypeReference(requiredType);
+        boolean _and = false;
+        boolean _tripleNotEquals = (ref != null);
+        if (!_tripleNotEquals) {
+          _and = false;
+        } else {
+          boolean _isSubtypeOf = ref.isSubtypeOf(Capacity.class);
+          boolean _not = (!_isSubtypeOf);
+          _and = _not;
+        }
+        if (_and) {
+          String _qualifiedName = requiredType.getQualifiedName();
+          String _format = String.format(
+            "Invalid type: \'%s\'. Only capacities can be used after the keyword \'%s\'.", _qualifiedName, 
+            SARLKeywords.REQUIRES);
+          this.error(_format, requires, 
+            null, 
+            org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH);
+        }
+      }
+    }
+  }
+  
+  /**
+   * @param action
+   */
+  @Check(CheckType.FAST)
+  public void checkActionSignatureFires(final ActionSignature action) {
+    EList<JvmParameterizedTypeReference> _firedEvents = action.getFiredEvents();
+    for (final JvmParameterizedTypeReference event : _firedEvents) {
+      {
+        LightweightTypeReference ref = this.toLightweightTypeReference(event);
+        boolean _and = false;
+        boolean _tripleNotEquals = (ref != null);
+        if (!_tripleNotEquals) {
+          _and = false;
+        } else {
+          boolean _isSubtypeOf = ref.isSubtypeOf(io.sarl.lang.core.Event.class);
+          boolean _not = (!_isSubtypeOf);
+          _and = _not;
+        }
+        if (_and) {
+          String _qualifiedName = event.getQualifiedName();
+          String _format = String.format(
+            "Invalid type: \'%s\'. Only events can be used after the keyword \'%s\'.", _qualifiedName, 
+            SARLKeywords.FIRES);
+          this.error(_format, action, 
+            null, 
+            org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH);
+        }
+      }
+    }
+  }
+  
+  protected void checkSuperTypes(final InheritingElement element, final Class<?> expectedType, final boolean onlySubTypes) {
+    boolean isInterface = expectedType.isInterface();
+    EList<JvmParameterizedTypeReference> _superTypes = element.getSuperTypes();
+    for (final JvmParameterizedTypeReference superType : _superTypes) {
+      {
+        LightweightTypeReference ref = this.toLightweightTypeReference(superType);
+        boolean _and = false;
+        boolean _tripleNotEquals = (ref != null);
+        if (!_tripleNotEquals) {
+          _and = false;
+        } else {
+          boolean _or = false;
+          boolean _or_1 = false;
+          boolean _isInterfaceType = ref.isInterfaceType();
+          boolean _tripleNotEquals_1 = (Boolean.valueOf(_isInterfaceType) != Boolean.valueOf(isInterface));
+          if (_tripleNotEquals_1) {
+            _or_1 = true;
+          } else {
+            boolean _isSubtypeOf = ref.isSubtypeOf(expectedType);
+            boolean _not = (!_isSubtypeOf);
+            _or_1 = _not;
+          }
+          if (_or_1) {
+            _or = true;
+          } else {
+            boolean _and_1 = false;
+            if (!onlySubTypes) {
+              _and_1 = false;
+            } else {
+              boolean _isType = ref.isType(expectedType);
+              _and_1 = _isType;
+            }
+            _or = _and_1;
+          }
+          _and = _or;
+        }
+        if (_and) {
+          String msg = null;
+          if (onlySubTypes) {
+            msg = "Invalid super-type: \'%s\'. Only subtypes of \'%s\' are allowed for \'%s\'.";
+          } else {
+            msg = "Invalid super-type: \'%s\'. Only the type \'%s\' and one of its subtypes are allowed for \'%s\'.";
+          }
+          String _qualifiedName = superType.getQualifiedName();
+          String _name = expectedType.getName();
+          String _name_1 = element.getName();
+          String _format = String.format(msg, _qualifiedName, _name, _name_1);
+          this.error(_format, element, 
+            null, 
+            org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH);
+        }
+      }
+    }
+  }
+  
+  protected void checkImplementedTypes(final ImplementingElement element, final Class<?> expectedType, final int mandatoryNumberOfTypes, final boolean onlySubTypes) {
+    int nb = 0;
+    EList<JvmParameterizedTypeReference> _implementedTypes = element.getImplementedTypes();
+    for (final JvmParameterizedTypeReference superType : _implementedTypes) {
+      {
+        LightweightTypeReference ref = this.toLightweightTypeReference(superType);
+        boolean _and = false;
+        boolean _tripleNotEquals = (ref != null);
+        if (!_tripleNotEquals) {
+          _and = false;
+        } else {
+          boolean _or = false;
+          boolean _or_1 = false;
+          boolean _isInterfaceType = ref.isInterfaceType();
+          boolean _not = (!_isInterfaceType);
+          if (_not) {
+            _or_1 = true;
+          } else {
+            boolean _isSubtypeOf = ref.isSubtypeOf(expectedType);
+            boolean _not_1 = (!_isSubtypeOf);
+            _or_1 = _not_1;
+          }
+          if (_or_1) {
+            _or = true;
+          } else {
+            boolean _and_1 = false;
+            if (!onlySubTypes) {
+              _and_1 = false;
+            } else {
+              boolean _isType = ref.isType(expectedType);
+              _and_1 = _isType;
+            }
+            _or = _and_1;
+          }
+          _and = _or;
+        }
+        if (_and) {
+          String msg = null;
+          if (onlySubTypes) {
+            msg = "Invalid implemented type: \'%s\'. Only subtypes of \'%s\' are allowed for \'%s\'.";
+          } else {
+            msg = "Invalid implemented type: \'%s\'. Only the type \'%s\' and one of its subtypes are allowed for \'%s\'.";
+          }
+          String _qualifiedName = superType.getQualifiedName();
+          String _name = expectedType.getName();
+          String _name_1 = element.getName();
+          String _format = String.format(msg, _qualifiedName, _name, _name_1);
+          this.error(_format, element, 
+            null, 
+            org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH);
+        } else {
+          nb++;
+        }
+      }
+    }
+    if ((nb < mandatoryNumberOfTypes)) {
+      String _name = expectedType.getName();
+      String _name_1 = element.getName();
+      String _format = String.format(
+        "Missing implemented type \'%s\' for \'%s\'.", _name, _name_1);
+      this.error(_format, element, 
+        null, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_TYPE);
+    }
+  }
+  
+  /**
+   * @param action
+   */
+  @Check(CheckType.FAST)
+  public void checkEventSuperType(final Event event) {
+    this.checkSuperTypes(event, io.sarl.lang.core.Event.class, false);
+  }
+  
+  /**
+   * @param action
+   */
+  @Check(CheckType.FAST)
+  public void checkBehaviorSuperType(final Behavior behavior) {
+    this.checkSuperTypes(behavior, io.sarl.lang.core.Behavior.class, false);
+  }
+  
+  /**
+   * @param action
+   */
+  @Check(CheckType.FAST)
+  public void checkAgentSuperType(final Agent agent) {
+    this.checkSuperTypes(agent, io.sarl.lang.core.Agent.class, false);
+  }
+  
+  /**
+   * @param action
+   */
+  @Check(CheckType.FAST)
+  public void checkCapacitySuperType(final io.sarl.lang.sarl.Capacity capacity) {
+    this.checkSuperTypes(capacity, Capacity.class, false);
+  }
+  
+  /**
+   * @param action
+   */
+  @Check(CheckType.FAST)
+  public void checkSkillSuperType(final Skill skill) {
+    this.checkSuperTypes(skill, io.sarl.lang.core.Skill.class, false);
+    this.checkImplementedTypes(skill, Capacity.class, 1, true);
+  }
+  
+  /**
+   * @param action
+   */
+  @Check(CheckType.FAST)
+  public void checkBehaviorUnitEventType(final BehaviorUnit behaviorUnit) {
+    JvmParameterizedTypeReference event = behaviorUnit.getEvent();
+    boolean error = true;
+    boolean _tripleNotEquals = (event != null);
+    if (_tripleNotEquals) {
+      LightweightTypeReference ref = this.toLightweightTypeReference(event);
+      boolean _and = false;
+      boolean _and_1 = false;
+      boolean _tripleNotEquals_1 = (ref != null);
+      if (!_tripleNotEquals_1) {
+        _and_1 = false;
+      } else {
+        boolean _isInterfaceType = ref.isInterfaceType();
+        boolean _not = (!_isInterfaceType);
+        _and_1 = _not;
+      }
+      if (!_and_1) {
+        _and = false;
+      } else {
+        boolean _isSubtypeOf = ref.isSubtypeOf(io.sarl.lang.core.Event.class);
+        _and = _isSubtypeOf;
+      }
+      if (_and) {
+        error = false;
+      }
+    }
+    if (error) {
+      String _qualifiedName = event.getQualifiedName();
+      String _format = String.format(
+        "Invalid type: \'%s\'. Only events are allowed after the keyword \'%s\'.", _qualifiedName, 
+        SARLKeywords.ON);
+      this.error(_format, behaviorUnit, 
+        null, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH);
     }
   }
 }

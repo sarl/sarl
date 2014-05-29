@@ -21,10 +21,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//FeatureContainer/features"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//InheritingElement">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SARL.ecore#//InheritingElement/superTypes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//InheritingElement/superTypes"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//ImplementingElement">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SARL.ecore#//ImplementingElement/implementedTypes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//ImplementingElement/implementedTypes"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//EventFeature"/>
     <genClasses ecoreClass="SARL.ecore#//AgentFeature"/>
@@ -51,15 +51,15 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//Attribute/initialValue"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//CapacityUses">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SARL.ecore#//CapacityUses/capacitiesUsed"/>
-    </genClasses>
-    <genClasses ecoreClass="SARL.ecore#//BehaviorUnit">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SARL.ecore#//BehaviorUnit/event"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//BehaviorUnit/guard"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//BehaviorUnit/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//CapacityUses/capacitiesUsed"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//RequiredCapacity">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SARL.ecore#//RequiredCapacity/requiredCapacities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//RequiredCapacity/requiredCapacities"/>
+    </genClasses>
+    <genClasses ecoreClass="SARL.ecore#//BehaviorUnit">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//BehaviorUnit/event"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//BehaviorUnit/guard"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//BehaviorUnit/body"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//Action">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//Action/signature"/>
@@ -71,7 +71,7 @@
     <genClasses ecoreClass="SARL.ecore#//ActionSignature">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//ActionSignature/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//ActionSignature/type"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SARL.ecore#//ActionSignature/firedEvents"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//ActionSignature/firedEvents"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

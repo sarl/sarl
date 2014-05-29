@@ -142,4 +142,18 @@ class EventParsingTest {
 			"The field 'field1' in 'E1' is hidding the inherited field 'E0.field1'.")
 	}
 
+	@Test
+	def void invalidExtend() {
+		val mas = '''
+			capacity C1 {
+			}
+			event E1 extends C1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.event,
+			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			"Invalid super-type: 'C1'. Only the type 'io.sarl.lang.core.Event' and one of its subtypes are allowed for 'E1'")
+	}
+
 }

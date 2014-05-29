@@ -99,6 +99,7 @@ public class SignatureKey extends BasicEList<String> implements Comparable<Signa
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public int compareTo(SignatureKey o) {
 		if (o==null) return Integer.MAX_VALUE;
 		int cmp = Integer.compare(size(), o.size());

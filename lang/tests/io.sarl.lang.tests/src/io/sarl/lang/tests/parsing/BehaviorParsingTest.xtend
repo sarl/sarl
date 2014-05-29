@@ -273,4 +273,18 @@ class BehaviorParsingTest {
 		mas.assertNoErrors
 	}
 
+	@Test
+	def void invalidExtend() {
+		val mas = '''
+			capacity C1 {
+			}
+			behavior B1 extends C1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.behavior,
+			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			"Invalid super-type: 'C1'. Only the type 'io.sarl.lang.core.Behavior' and one of its subtypes are allowed for 'B1'")
+	}
+
 }

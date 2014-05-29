@@ -57,6 +57,7 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public ActionNameKey getKey() {
 		return this.key;
 	}
@@ -64,38 +65,45 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Map<SignatureKey,EList<InferredStandardParameter>> getInferredSignatures() {
 		return this.inferredParameters;
 	}
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public EList<FormalParameter> getFormalParameters() {
 		return this.parameters;
 	}
 	
 	/** {@inheritDoc}
 	 */
+	@Override
 	public SignatureKey getFormalParameterKey() {
 		return this.parameterKey;
 	}
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public boolean isVarargs() {
 		return this.parameterKey.isVarargs();
 	}
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public Iterator<EList<InferredStandardParameter>> iterator() {
 		return this.inferredParameters.values().iterator();
 	}
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public Iterable<SignatureKey> signatureKeys() {
 		return new Iterable<SignatureKey>() {
+			@Override
 			public Iterator<SignatureKey> iterator() {
 				return new SignatureKeyIterator(
 						getFormalParameterKey(),
@@ -129,6 +137,7 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public String toString(String functionName) {
 		if (!this.parameters.isEmpty()) {
 			StringBuilder b = new StringBuilder();
@@ -170,6 +179,7 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 		
 		/** {@inheritDoc}
 		 */
+		@Override
 		public boolean hasNext() {
 			return this.first!=null
 					|| this.it.hasNext();
@@ -177,6 +187,7 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 		
 		/** {@inheritDoc}
 		 */
+		@Override
 		public SignatureKey next() {
 			if (this.first!=null) {
 				SignatureKey n = this.first;
@@ -188,6 +199,7 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 		
 		/** {@inheritDoc}
 		 */
+		@Override
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}

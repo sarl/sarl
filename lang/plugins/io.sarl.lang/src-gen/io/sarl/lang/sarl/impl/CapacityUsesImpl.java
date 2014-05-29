@@ -2,17 +2,22 @@
  */
 package io.sarl.lang.sarl.impl;
 
-import io.sarl.lang.sarl.Capacity;
 import io.sarl.lang.sarl.CapacityUses;
 import io.sarl.lang.sarl.SarlPackage;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,14 +35,14 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 public class CapacityUsesImpl extends FeatureImpl implements CapacityUses
 {
   /**
-   * The cached value of the '{@link #getCapacitiesUsed() <em>Capacities Used</em>}' reference list.
+   * The cached value of the '{@link #getCapacitiesUsed() <em>Capacities Used</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getCapacitiesUsed()
    * @generated
    * @ordered
    */
-  protected EList<Capacity> capacitiesUsed;
+  protected EList<JvmParameterizedTypeReference> capacitiesUsed;
 
   /**
    * <!-- begin-user-doc -->
@@ -65,13 +70,29 @@ public class CapacityUsesImpl extends FeatureImpl implements CapacityUses
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<Capacity> getCapacitiesUsed()
+  public EList<JvmParameterizedTypeReference> getCapacitiesUsed()
   {
     if (capacitiesUsed == null)
     {
-      capacitiesUsed = new EObjectResolvingEList<Capacity>(Capacity.class, this, SarlPackage.CAPACITY_USES__CAPACITIES_USED);
+      capacitiesUsed = new EObjectContainmentEList<JvmParameterizedTypeReference>(JvmParameterizedTypeReference.class, this, SarlPackage.CAPACITY_USES__CAPACITIES_USED);
     }
     return capacitiesUsed;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case SarlPackage.CAPACITY_USES__CAPACITIES_USED:
+        return ((InternalEList<?>)getCapacitiesUsed()).basicRemove(otherEnd, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -103,7 +124,7 @@ public class CapacityUsesImpl extends FeatureImpl implements CapacityUses
     {
       case SarlPackage.CAPACITY_USES__CAPACITIES_USED:
         getCapacitiesUsed().clear();
-        getCapacitiesUsed().addAll((Collection<? extends Capacity>)newValue);
+        getCapacitiesUsed().addAll((Collection<? extends JvmParameterizedTypeReference>)newValue);
         return;
     }
     super.eSet(featureID, newValue);

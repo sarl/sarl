@@ -19,9 +19,13 @@ import io.sarl.lang.signature.ActionKey;
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.SignatureKey;
 
+import java.lang.reflect.Modifier;
 import java.util.Map;
 
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.common.types.JvmAnnotationReference;
+import org.eclipse.xtext.common.types.JvmAnnotationTarget;
+import org.eclipse.xtext.common.types.JvmAnnotationType;
+import org.eclipse.xtext.common.types.JvmAnnotationValue;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmFeature;
@@ -29,11 +33,14 @@ import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmMember;
 import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
-import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations;
 import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument;
+import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
+import org.eclipse.xtext.xbase.typesystem.references.OwnedConverter;
+import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 /**
  * Utilities functions on JvmElements.
@@ -195,21 +202,6 @@ public class ModelUtil {
 		return name.startsWith("___FORMAL_PARAMETER_DEFAULT_VALUE_"); //$NON-NLS-1$
 	}
 
-	/** Replies the JVM generic type of the given object.
-	 * 
-	 * @param element
-	 * @param associations - manager of the associations between the SARL objects and the JVM objects.
-	 * @return the generic type, or <code>null</code> if none.
-	 */
-	public static JvmGenericType getJvmGenericType(EObject element, IJvmModelAssociations associations) {
-		for(EObject obj : associations.getJvmElements(element)) {
-			if (obj instanceof JvmGenericType) {
-				return (JvmGenericType)obj;
-			}
-		}
-		return null;
-	}
-
 	/** Replies if the given reference is pointing to a class type.
 	 * 
 	 * @param typeRef
@@ -221,6 +213,15 @@ public class ModelUtil {
 			return !((JvmGenericType)t).isInterface();
 		}
 		return false;
+	}	
+
+	/** Replies if the given type is a class type.
+	 * 
+	 * @param type
+	 * @return <code>true</code> if the element is a class type.
+	 */
+	public static boolean isClass(Class<?> type) {
+		return !type.isInterface();
 	}	
 
 	/** Replies if the given reference is referencing a final type.
@@ -236,6 +237,21 @@ public class ModelUtil {
 			return true;
 		return expressionTypeRef.getType() instanceof JvmDeclaredType
 				&& ((JvmDeclaredType) expressionTypeRef.getType()).isFinal();
+	}
+
+	/** Replies if the given type is a final type.
+	 * 
+	 * @param expressionType
+	 * @return <code>true</code> if the given type is final.
+	 */
+	public static boolean isFinal(Class<?> expressionType) {
+		if (expressionType.isArray()) {
+			return isFinal(expressionType.getComponentType());
+		}
+		if (expressionType.isPrimitive())
+			return true;
+		return expressionType.isEnum() || 
+				Modifier.isFinal(expressionType.getModifiers());
 	}
 
 	/** Replies if the given type is an interface.
@@ -279,5 +295,53 @@ public class ModelUtil {
 		}
 		return true;
 	}
-		
+			
+	/** Convert a type reference to a lightweight type reference.
+	 * 
+	 * @param typeRef - reference to convert.
+	 * @param services - services used for the conversion
+	 * @return the lightweight type reference.
+	 */
+	public static LightweightTypeReference toLightweightTypeReference(JvmTypeReference typeRef, CommonTypeComputationServices services) {
+		return toLightweightTypeReference(typeRef, services, false);
+	}
+	
+	/** Convert a type reference to a lightweight type reference.
+	 * 
+	 * @param typeRef - reference to convert.
+	 * @param services - services used for the conversion
+	 * @param keepUnboundWildcardInformation - indicates if the unbound wild card information must be keeped in the lightweight reference.
+	 * @return the lightweight type reference.
+	 */
+	public static LightweightTypeReference toLightweightTypeReference(JvmTypeReference typeRef, CommonTypeComputationServices services, boolean keepUnboundWildcardInformation) {
+		if (typeRef==null) return null;
+		OwnedConverter converter = new OwnedConverter(new StandardTypeReferenceOwner(services, typeRef), keepUnboundWildcardInformation);
+		LightweightTypeReference reference = converter.toLightweightReference(typeRef);
+		return reference;
+	}
+
+	/** Extract the string value of the given annotation, if it exists.
+	 * 
+	 * @param op - the annoted element.
+	 * @param annotationType - the type of the annotation to consider
+	 * @return the value of the annotation, or <code>null</code> if no annotation or no
+	 * value.
+	 */
+	public static String annotationString(JvmAnnotationTarget op, Class<?> annotationType) {
+		String n = annotationType.getName();
+		for(JvmAnnotationReference aref : op.getAnnotations()) {
+			JvmAnnotationType an = aref.getAnnotation();
+			if (n!=null && n.equals(an.getQualifiedName())) {
+				for(JvmAnnotationValue value : aref.getValues()) {
+					if (value instanceof JvmStringAnnotationValue) {
+						for(String sValue : ((JvmStringAnnotationValue)value).getValues()) {
+							if (sValue!=null) return sValue;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 }

@@ -99,6 +99,26 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getSkillParserRuleCall_4() { return cSkillParserRuleCall_4; }
 	}
 
+	public class RawTypeReferenceElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "RawTypeReference");
+		private final Assignment cTypeAssignment = (Assignment)rule.eContents().get(1);
+		private final CrossReference cTypeJvmTypeCrossReference_0 = (CrossReference)cTypeAssignment.eContents().get(0);
+		private final RuleCall cTypeJvmTypeQualifiedNameParserRuleCall_0_1 = (RuleCall)cTypeJvmTypeCrossReference_0.eContents().get(1);
+		
+		//RawTypeReference returns jvm::JvmParameterizedTypeReference:
+		//	type=[jvm::JvmType|QualifiedName];
+		public ParserRule getRule() { return rule; }
+
+		//type=[jvm::JvmType|QualifiedName]
+		public Assignment getTypeAssignment() { return cTypeAssignment; }
+
+		//[jvm::JvmType|QualifiedName]
+		public CrossReference getTypeJvmTypeCrossReference_0() { return cTypeJvmTypeCrossReference_0; }
+
+		//QualifiedName
+		public RuleCall getTypeJvmTypeQualifiedNameParserRuleCall_0_1() { return cTypeJvmTypeQualifiedNameParserRuleCall_0_1; }
+	}
+
 	public class NamedElementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "NamedElement");
 		private final Assignment cNameAssignment = (Assignment)rule.eContents().get(1);
@@ -204,31 +224,27 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cInheritingElementAction_0 = (Action)cGroup.eContents().get(0);
 		private final Assignment cSuperTypesAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final CrossReference cSuperTypesInheritingElementCrossReference_1_0 = (CrossReference)cSuperTypesAssignment_1.eContents().get(0);
-		private final RuleCall cSuperTypesInheritingElementIDTerminalRuleCall_1_0_1 = (RuleCall)cSuperTypesInheritingElementCrossReference_1_0.eContents().get(1);
+		private final RuleCall cSuperTypesRawTypeReferenceParserRuleCall_1_0 = (RuleCall)cSuperTypesAssignment_1.eContents().get(0);
 		
 		//// Define an interface that is providing the 'superTypes' feature.
 		//// This rule is declared only for generated the Java interface
 		//// with the expected features.
 		//// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
 		//InheritingElement returns FeatureContainer:
-		//	{InheritingElement} superTypes+=[InheritingElement];
+		//	{InheritingElement} superTypes+=RawTypeReference;
 		public ParserRule getRule() { return rule; }
 
-		//{InheritingElement} superTypes+=[InheritingElement]
+		//{InheritingElement} superTypes+=RawTypeReference
 		public Group getGroup() { return cGroup; }
 
 		//{InheritingElement}
 		public Action getInheritingElementAction_0() { return cInheritingElementAction_0; }
 
-		//superTypes+=[InheritingElement]
+		//superTypes+=RawTypeReference
 		public Assignment getSuperTypesAssignment_1() { return cSuperTypesAssignment_1; }
 
-		//[InheritingElement]
-		public CrossReference getSuperTypesInheritingElementCrossReference_1_0() { return cSuperTypesInheritingElementCrossReference_1_0; }
-
-		//ID
-		public RuleCall getSuperTypesInheritingElementIDTerminalRuleCall_1_0_1() { return cSuperTypesInheritingElementIDTerminalRuleCall_1_0_1; }
+		//RawTypeReference
+		public RuleCall getSuperTypesRawTypeReferenceParserRuleCall_1_0() { return cSuperTypesRawTypeReferenceParserRuleCall_1_0; }
 	}
 
 	public class ImplementingElementElements extends AbstractParserRuleElementFinder {
@@ -236,31 +252,27 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cImplementingElementAction_0 = (Action)cGroup.eContents().get(0);
 		private final Assignment cImplementedTypesAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final CrossReference cImplementedTypesInheritingElementCrossReference_1_0 = (CrossReference)cImplementedTypesAssignment_1.eContents().get(0);
-		private final RuleCall cImplementedTypesInheritingElementIDTerminalRuleCall_1_0_1 = (RuleCall)cImplementedTypesInheritingElementCrossReference_1_0.eContents().get(1);
+		private final RuleCall cImplementedTypesRawTypeReferenceParserRuleCall_1_0 = (RuleCall)cImplementedTypesAssignment_1.eContents().get(0);
 		
 		//// Define an interface that is providing the 'implementedTypes' feature.
 		//// This rule is declared only for generated the Java interface
 		//// with the expected features.
 		//// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
 		//ImplementingElement returns InheritingElement:
-		//	{ImplementingElement} implementedTypes+=[InheritingElement];
+		//	{ImplementingElement} implementedTypes+=RawTypeReference;
 		public ParserRule getRule() { return rule; }
 
-		//{ImplementingElement} implementedTypes+=[InheritingElement]
+		//{ImplementingElement} implementedTypes+=RawTypeReference
 		public Group getGroup() { return cGroup; }
 
 		//{ImplementingElement}
 		public Action getImplementingElementAction_0() { return cImplementingElementAction_0; }
 
-		//implementedTypes+=[InheritingElement]
+		//implementedTypes+=RawTypeReference
 		public Assignment getImplementedTypesAssignment_1() { return cImplementedTypesAssignment_1; }
 
-		//[InheritingElement]
-		public CrossReference getImplementedTypesInheritingElementCrossReference_1_0() { return cImplementedTypesInheritingElementCrossReference_1_0; }
-
-		//ID
-		public RuleCall getImplementedTypesInheritingElementIDTerminalRuleCall_1_0_1() { return cImplementedTypesInheritingElementIDTerminalRuleCall_1_0_1; }
+		//RawTypeReference
+		public RuleCall getImplementedTypesRawTypeReferenceParserRuleCall_1_0() { return cImplementedTypesRawTypeReferenceParserRuleCall_1_0; }
 	}
 
 	public class EventElements extends AbstractParserRuleElementFinder {
@@ -273,8 +285,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Keyword cExtendsKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
 		private final Assignment cSuperTypesAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final CrossReference cSuperTypesEventCrossReference_3_1_0 = (CrossReference)cSuperTypesAssignment_3_1.eContents().get(0);
-		private final RuleCall cSuperTypesEventQualifiedNameParserRuleCall_3_1_0_1 = (RuleCall)cSuperTypesEventCrossReference_3_1_0.eContents().get(1);
+		private final RuleCall cSuperTypesRawTypeReferenceParserRuleCall_3_1_0 = (RuleCall)cSuperTypesAssignment_3_1.eContents().get(0);
 		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
 		private final Keyword cLeftCurlyBracketKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
 		private final Assignment cFeaturesAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
@@ -282,10 +293,10 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightCurlyBracketKeyword_4_2 = (Keyword)cGroup_4.eContents().get(2);
 		
 		//Event returns InheritingElement:
-		//	{Event} "event" name=ValidID ("extends" superTypes+=[Event|QualifiedName])? ("{" features+=EventFeature* "}")?;
+		//	{Event} "event" name=ValidID ("extends" superTypes+=RawTypeReference)? ("{" features+=EventFeature* "}")?;
 		public ParserRule getRule() { return rule; }
 
-		//{Event} "event" name=ValidID ("extends" superTypes+=[Event|QualifiedName])? ("{" features+=EventFeature* "}")?
+		//{Event} "event" name=ValidID ("extends" superTypes+=RawTypeReference)? ("{" features+=EventFeature* "}")?
 		public Group getGroup() { return cGroup; }
 
 		//{Event}
@@ -300,20 +311,17 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_2_0() { return cNameValidIDParserRuleCall_2_0; }
 
-		//("extends" superTypes+=[Event|QualifiedName])?
+		//("extends" superTypes+=RawTypeReference)?
 		public Group getGroup_3() { return cGroup_3; }
 
 		//"extends"
 		public Keyword getExtendsKeyword_3_0() { return cExtendsKeyword_3_0; }
 
-		//superTypes+=[Event|QualifiedName]
+		//superTypes+=RawTypeReference
 		public Assignment getSuperTypesAssignment_3_1() { return cSuperTypesAssignment_3_1; }
 
-		//[Event|QualifiedName]
-		public CrossReference getSuperTypesEventCrossReference_3_1_0() { return cSuperTypesEventCrossReference_3_1_0; }
-
-		//QualifiedName
-		public RuleCall getSuperTypesEventQualifiedNameParserRuleCall_3_1_0_1() { return cSuperTypesEventQualifiedNameParserRuleCall_3_1_0_1; }
+		//RawTypeReference
+		public RuleCall getSuperTypesRawTypeReferenceParserRuleCall_3_1_0() { return cSuperTypesRawTypeReferenceParserRuleCall_3_1_0; }
 
 		//("{" features+=EventFeature* "}")?
 		public Group getGroup_4() { return cGroup_4; }
@@ -341,25 +349,23 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Keyword cExtendsKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
 		private final Assignment cSuperTypesAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final CrossReference cSuperTypesCapacityCrossReference_3_1_0 = (CrossReference)cSuperTypesAssignment_3_1.eContents().get(0);
-		private final RuleCall cSuperTypesCapacityQualifiedNameParserRuleCall_3_1_0_1 = (RuleCall)cSuperTypesCapacityCrossReference_3_1_0.eContents().get(1);
+		private final RuleCall cSuperTypesRawTypeReferenceParserRuleCall_3_1_0 = (RuleCall)cSuperTypesAssignment_3_1.eContents().get(0);
 		private final Group cGroup_3_2 = (Group)cGroup_3.eContents().get(2);
 		private final Keyword cCommaKeyword_3_2_0 = (Keyword)cGroup_3_2.eContents().get(0);
 		private final Assignment cSuperTypesAssignment_3_2_1 = (Assignment)cGroup_3_2.eContents().get(1);
-		private final CrossReference cSuperTypesCapacityCrossReference_3_2_1_0 = (CrossReference)cSuperTypesAssignment_3_2_1.eContents().get(0);
-		private final RuleCall cSuperTypesCapacityQualifiedNameParserRuleCall_3_2_1_0_1 = (RuleCall)cSuperTypesCapacityCrossReference_3_2_1_0.eContents().get(1);
+		private final RuleCall cSuperTypesRawTypeReferenceParserRuleCall_3_2_1_0 = (RuleCall)cSuperTypesAssignment_3_2_1.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		private final Assignment cFeaturesAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final RuleCall cFeaturesActionSignatureParserRuleCall_5_0 = (RuleCall)cFeaturesAssignment_5.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		//Capacity returns InheritingElement:
-		//	{Capacity} "capacity" name=ValidID ("extends" superTypes+=[Capacity|QualifiedName] (","
-		//	superTypes+=[Capacity|QualifiedName])*)? "{" features+=ActionSignature* "}";
+		//	{Capacity} "capacity" name=ValidID ("extends" superTypes+=RawTypeReference ("," superTypes+=RawTypeReference)*)? "{"
+		//	features+=ActionSignature* "}";
 		public ParserRule getRule() { return rule; }
 
-		//{Capacity} "capacity" name=ValidID ("extends" superTypes+=[Capacity|QualifiedName] (","
-		//superTypes+=[Capacity|QualifiedName])*)? "{" features+=ActionSignature* "}"
+		//{Capacity} "capacity" name=ValidID ("extends" superTypes+=RawTypeReference ("," superTypes+=RawTypeReference)*)? "{"
+		//features+=ActionSignature* "}"
 		public Group getGroup() { return cGroup; }
 
 		//{Capacity}
@@ -374,35 +380,29 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_2_0() { return cNameValidIDParserRuleCall_2_0; }
 
-		//("extends" superTypes+=[Capacity|QualifiedName] ("," superTypes+=[Capacity|QualifiedName])*)?
+		//("extends" superTypes+=RawTypeReference ("," superTypes+=RawTypeReference)*)?
 		public Group getGroup_3() { return cGroup_3; }
 
 		//"extends"
 		public Keyword getExtendsKeyword_3_0() { return cExtendsKeyword_3_0; }
 
-		//superTypes+=[Capacity|QualifiedName]
+		//superTypes+=RawTypeReference
 		public Assignment getSuperTypesAssignment_3_1() { return cSuperTypesAssignment_3_1; }
 
-		//[Capacity|QualifiedName]
-		public CrossReference getSuperTypesCapacityCrossReference_3_1_0() { return cSuperTypesCapacityCrossReference_3_1_0; }
+		//RawTypeReference
+		public RuleCall getSuperTypesRawTypeReferenceParserRuleCall_3_1_0() { return cSuperTypesRawTypeReferenceParserRuleCall_3_1_0; }
 
-		//QualifiedName
-		public RuleCall getSuperTypesCapacityQualifiedNameParserRuleCall_3_1_0_1() { return cSuperTypesCapacityQualifiedNameParserRuleCall_3_1_0_1; }
-
-		//("," superTypes+=[Capacity|QualifiedName])*
+		//("," superTypes+=RawTypeReference)*
 		public Group getGroup_3_2() { return cGroup_3_2; }
 
 		//","
 		public Keyword getCommaKeyword_3_2_0() { return cCommaKeyword_3_2_0; }
 
-		//superTypes+=[Capacity|QualifiedName]
+		//superTypes+=RawTypeReference
 		public Assignment getSuperTypesAssignment_3_2_1() { return cSuperTypesAssignment_3_2_1; }
 
-		//[Capacity|QualifiedName]
-		public CrossReference getSuperTypesCapacityCrossReference_3_2_1_0() { return cSuperTypesCapacityCrossReference_3_2_1_0; }
-
-		//QualifiedName
-		public RuleCall getSuperTypesCapacityQualifiedNameParserRuleCall_3_2_1_0_1() { return cSuperTypesCapacityQualifiedNameParserRuleCall_3_2_1_0_1; }
+		//RawTypeReference
+		public RuleCall getSuperTypesRawTypeReferenceParserRuleCall_3_2_1_0() { return cSuperTypesRawTypeReferenceParserRuleCall_3_2_1_0; }
 
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
@@ -427,18 +427,17 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Keyword cExtendsKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
 		private final Assignment cSuperTypesAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final CrossReference cSuperTypesAgentCrossReference_3_1_0 = (CrossReference)cSuperTypesAssignment_3_1.eContents().get(0);
-		private final RuleCall cSuperTypesAgentQualifiedNameParserRuleCall_3_1_0_1 = (RuleCall)cSuperTypesAgentCrossReference_3_1_0.eContents().get(1);
+		private final RuleCall cSuperTypesRawTypeReferenceParserRuleCall_3_1_0 = (RuleCall)cSuperTypesAssignment_3_1.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		private final Assignment cFeaturesAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final RuleCall cFeaturesAgentFeatureParserRuleCall_5_0 = (RuleCall)cFeaturesAssignment_5.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		//Agent returns InheritingElement:
-		//	{Agent} "agent" name=ValidID ("extends" superTypes+=[Agent|QualifiedName])? "{" features+=AgentFeature* "}";
+		//	{Agent} "agent" name=ValidID ("extends" superTypes+=RawTypeReference)? "{" features+=AgentFeature* "}";
 		public ParserRule getRule() { return rule; }
 
-		//{Agent} "agent" name=ValidID ("extends" superTypes+=[Agent|QualifiedName])? "{" features+=AgentFeature* "}"
+		//{Agent} "agent" name=ValidID ("extends" superTypes+=RawTypeReference)? "{" features+=AgentFeature* "}"
 		public Group getGroup() { return cGroup; }
 
 		//{Agent}
@@ -453,20 +452,17 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_2_0() { return cNameValidIDParserRuleCall_2_0; }
 
-		//("extends" superTypes+=[Agent|QualifiedName])?
+		//("extends" superTypes+=RawTypeReference)?
 		public Group getGroup_3() { return cGroup_3; }
 
 		//"extends"
 		public Keyword getExtendsKeyword_3_0() { return cExtendsKeyword_3_0; }
 
-		//superTypes+=[Agent|QualifiedName]
+		//superTypes+=RawTypeReference
 		public Assignment getSuperTypesAssignment_3_1() { return cSuperTypesAssignment_3_1; }
 
-		//[Agent|QualifiedName]
-		public CrossReference getSuperTypesAgentCrossReference_3_1_0() { return cSuperTypesAgentCrossReference_3_1_0; }
-
-		//QualifiedName
-		public RuleCall getSuperTypesAgentQualifiedNameParserRuleCall_3_1_0_1() { return cSuperTypesAgentQualifiedNameParserRuleCall_3_1_0_1; }
+		//RawTypeReference
+		public RuleCall getSuperTypesRawTypeReferenceParserRuleCall_3_1_0() { return cSuperTypesRawTypeReferenceParserRuleCall_3_1_0; }
 
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
@@ -491,19 +487,17 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Keyword cExtendsKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
 		private final Assignment cSuperTypesAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final CrossReference cSuperTypesBehaviorCrossReference_3_1_0 = (CrossReference)cSuperTypesAssignment_3_1.eContents().get(0);
-		private final RuleCall cSuperTypesBehaviorQualifiedNameParserRuleCall_3_1_0_1 = (RuleCall)cSuperTypesBehaviorCrossReference_3_1_0.eContents().get(1);
+		private final RuleCall cSuperTypesRawTypeReferenceParserRuleCall_3_1_0 = (RuleCall)cSuperTypesAssignment_3_1.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		private final Assignment cFeaturesAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final RuleCall cFeaturesBehaviorFeatureParserRuleCall_5_0 = (RuleCall)cFeaturesAssignment_5.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		//Behavior returns InheritingElement:
-		//	{Behavior} "behavior" name=ValidID ("extends" superTypes+=[Behavior|QualifiedName])? "{" features+=BehaviorFeature*
-		//	"}";
+		//	{Behavior} "behavior" name=ValidID ("extends" superTypes+=RawTypeReference)? "{" features+=BehaviorFeature* "}";
 		public ParserRule getRule() { return rule; }
 
-		//{Behavior} "behavior" name=ValidID ("extends" superTypes+=[Behavior|QualifiedName])? "{" features+=BehaviorFeature* "}"
+		//{Behavior} "behavior" name=ValidID ("extends" superTypes+=RawTypeReference)? "{" features+=BehaviorFeature* "}"
 		public Group getGroup() { return cGroup; }
 
 		//{Behavior}
@@ -518,20 +512,17 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_2_0() { return cNameValidIDParserRuleCall_2_0; }
 
-		//("extends" superTypes+=[Behavior|QualifiedName])?
+		//("extends" superTypes+=RawTypeReference)?
 		public Group getGroup_3() { return cGroup_3; }
 
 		//"extends"
 		public Keyword getExtendsKeyword_3_0() { return cExtendsKeyword_3_0; }
 
-		//superTypes+=[Behavior|QualifiedName]
+		//superTypes+=RawTypeReference
 		public Assignment getSuperTypesAssignment_3_1() { return cSuperTypesAssignment_3_1; }
 
-		//[Behavior|QualifiedName]
-		public CrossReference getSuperTypesBehaviorCrossReference_3_1_0() { return cSuperTypesBehaviorCrossReference_3_1_0; }
-
-		//QualifiedName
-		public RuleCall getSuperTypesBehaviorQualifiedNameParserRuleCall_3_1_0_1() { return cSuperTypesBehaviorQualifiedNameParserRuleCall_3_1_0_1; }
+		//RawTypeReference
+		public RuleCall getSuperTypesRawTypeReferenceParserRuleCall_3_1_0() { return cSuperTypesRawTypeReferenceParserRuleCall_3_1_0; }
 
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
@@ -557,32 +548,27 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_3_0 = (Group)cUnorderedGroup_3.eContents().get(0);
 		private final Keyword cExtendsKeyword_3_0_0 = (Keyword)cGroup_3_0.eContents().get(0);
 		private final Assignment cSuperTypesAssignment_3_0_1 = (Assignment)cGroup_3_0.eContents().get(1);
-		private final CrossReference cSuperTypesSkillCrossReference_3_0_1_0 = (CrossReference)cSuperTypesAssignment_3_0_1.eContents().get(0);
-		private final RuleCall cSuperTypesSkillQualifiedNameParserRuleCall_3_0_1_0_1 = (RuleCall)cSuperTypesSkillCrossReference_3_0_1_0.eContents().get(1);
+		private final RuleCall cSuperTypesRawTypeReferenceParserRuleCall_3_0_1_0 = (RuleCall)cSuperTypesAssignment_3_0_1.eContents().get(0);
 		private final Group cGroup_3_1 = (Group)cUnorderedGroup_3.eContents().get(1);
 		private final Keyword cImplementsKeyword_3_1_0 = (Keyword)cGroup_3_1.eContents().get(0);
 		private final Assignment cImplementedTypesAssignment_3_1_1 = (Assignment)cGroup_3_1.eContents().get(1);
-		private final CrossReference cImplementedTypesCapacityCrossReference_3_1_1_0 = (CrossReference)cImplementedTypesAssignment_3_1_1.eContents().get(0);
-		private final RuleCall cImplementedTypesCapacityQualifiedNameParserRuleCall_3_1_1_0_1 = (RuleCall)cImplementedTypesCapacityCrossReference_3_1_1_0.eContents().get(1);
+		private final RuleCall cImplementedTypesRawTypeReferenceParserRuleCall_3_1_1_0 = (RuleCall)cImplementedTypesAssignment_3_1_1.eContents().get(0);
 		private final Group cGroup_3_1_2 = (Group)cGroup_3_1.eContents().get(2);
 		private final Keyword cCommaKeyword_3_1_2_0 = (Keyword)cGroup_3_1_2.eContents().get(0);
 		private final Assignment cImplementedTypesAssignment_3_1_2_1 = (Assignment)cGroup_3_1_2.eContents().get(1);
-		private final CrossReference cImplementedTypesCapacityCrossReference_3_1_2_1_0 = (CrossReference)cImplementedTypesAssignment_3_1_2_1.eContents().get(0);
-		private final RuleCall cImplementedTypesCapacityQualifiedNameParserRuleCall_3_1_2_1_0_1 = (RuleCall)cImplementedTypesCapacityCrossReference_3_1_2_1_0.eContents().get(1);
+		private final RuleCall cImplementedTypesRawTypeReferenceParserRuleCall_3_1_2_1_0 = (RuleCall)cImplementedTypesAssignment_3_1_2_1.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		private final Assignment cFeaturesAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final RuleCall cFeaturesSkillFeatureParserRuleCall_5_0 = (RuleCall)cFeaturesAssignment_5.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		//Skill returns ImplementingElement:
-		//	{Skill} "skill" name=ValidID (("extends" superTypes+=[Skill|QualifiedName])? & "implements"
-		//	implementedTypes+=[Capacity|QualifiedName] ("," implementedTypes+=[Capacity|QualifiedName])*) "{"
-		//	features+=SkillFeature* "}";
+		//	{Skill} "skill" name=ValidID (("extends" superTypes+=RawTypeReference)? & "implements"
+		//	implementedTypes+=RawTypeReference ("," implementedTypes+=RawTypeReference)*) "{" features+=SkillFeature* "}";
 		public ParserRule getRule() { return rule; }
 
-		//{Skill} "skill" name=ValidID (("extends" superTypes+=[Skill|QualifiedName])? & "implements"
-		//implementedTypes+=[Capacity|QualifiedName] ("," implementedTypes+=[Capacity|QualifiedName])*) "{"
-		//features+=SkillFeature* "}"
+		//{Skill} "skill" name=ValidID (("extends" superTypes+=RawTypeReference)? & "implements"
+		//implementedTypes+=RawTypeReference ("," implementedTypes+=RawTypeReference)*) "{" features+=SkillFeature* "}"
 		public Group getGroup() { return cGroup; }
 
 		//{Skill}
@@ -597,54 +583,45 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_2_0() { return cNameValidIDParserRuleCall_2_0; }
 
-		//("extends" superTypes+=[Skill|QualifiedName])? & "implements" implementedTypes+=[Capacity|QualifiedName] (","
-		//implementedTypes+=[Capacity|QualifiedName])*
+		//("extends" superTypes+=RawTypeReference)? & "implements" implementedTypes+=RawTypeReference (","
+		//implementedTypes+=RawTypeReference)*
 		public UnorderedGroup getUnorderedGroup_3() { return cUnorderedGroup_3; }
 
-		//("extends" superTypes+=[Skill|QualifiedName])?
+		//("extends" superTypes+=RawTypeReference)?
 		public Group getGroup_3_0() { return cGroup_3_0; }
 
 		//"extends"
 		public Keyword getExtendsKeyword_3_0_0() { return cExtendsKeyword_3_0_0; }
 
-		//superTypes+=[Skill|QualifiedName]
+		//superTypes+=RawTypeReference
 		public Assignment getSuperTypesAssignment_3_0_1() { return cSuperTypesAssignment_3_0_1; }
 
-		//[Skill|QualifiedName]
-		public CrossReference getSuperTypesSkillCrossReference_3_0_1_0() { return cSuperTypesSkillCrossReference_3_0_1_0; }
+		//RawTypeReference
+		public RuleCall getSuperTypesRawTypeReferenceParserRuleCall_3_0_1_0() { return cSuperTypesRawTypeReferenceParserRuleCall_3_0_1_0; }
 
-		//QualifiedName
-		public RuleCall getSuperTypesSkillQualifiedNameParserRuleCall_3_0_1_0_1() { return cSuperTypesSkillQualifiedNameParserRuleCall_3_0_1_0_1; }
-
-		//"implements" implementedTypes+=[Capacity|QualifiedName] ("," implementedTypes+=[Capacity|QualifiedName])*
+		//"implements" implementedTypes+=RawTypeReference ("," implementedTypes+=RawTypeReference)*
 		public Group getGroup_3_1() { return cGroup_3_1; }
 
 		//"implements"
 		public Keyword getImplementsKeyword_3_1_0() { return cImplementsKeyword_3_1_0; }
 
-		//implementedTypes+=[Capacity|QualifiedName]
+		//implementedTypes+=RawTypeReference
 		public Assignment getImplementedTypesAssignment_3_1_1() { return cImplementedTypesAssignment_3_1_1; }
 
-		//[Capacity|QualifiedName]
-		public CrossReference getImplementedTypesCapacityCrossReference_3_1_1_0() { return cImplementedTypesCapacityCrossReference_3_1_1_0; }
+		//RawTypeReference
+		public RuleCall getImplementedTypesRawTypeReferenceParserRuleCall_3_1_1_0() { return cImplementedTypesRawTypeReferenceParserRuleCall_3_1_1_0; }
 
-		//QualifiedName
-		public RuleCall getImplementedTypesCapacityQualifiedNameParserRuleCall_3_1_1_0_1() { return cImplementedTypesCapacityQualifiedNameParserRuleCall_3_1_1_0_1; }
-
-		//("," implementedTypes+=[Capacity|QualifiedName])*
+		//("," implementedTypes+=RawTypeReference)*
 		public Group getGroup_3_1_2() { return cGroup_3_1_2; }
 
 		//","
 		public Keyword getCommaKeyword_3_1_2_0() { return cCommaKeyword_3_1_2_0; }
 
-		//implementedTypes+=[Capacity|QualifiedName]
+		//implementedTypes+=RawTypeReference
 		public Assignment getImplementedTypesAssignment_3_1_2_1() { return cImplementedTypesAssignment_3_1_2_1; }
 
-		//[Capacity|QualifiedName]
-		public CrossReference getImplementedTypesCapacityCrossReference_3_1_2_1_0() { return cImplementedTypesCapacityCrossReference_3_1_2_1_0; }
-
-		//QualifiedName
-		public RuleCall getImplementedTypesCapacityQualifiedNameParserRuleCall_3_1_2_1_0_1() { return cImplementedTypesCapacityQualifiedNameParserRuleCall_3_1_2_1_0_1; }
+		//RawTypeReference
+		public RuleCall getImplementedTypesRawTypeReferenceParserRuleCall_3_1_2_1_0() { return cImplementedTypesRawTypeReferenceParserRuleCall_3_1_2_1_0; }
 
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
@@ -801,14 +778,15 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cEqualsSignKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
 		private final Assignment cInitialValueAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cInitialValueXExpressionParserRuleCall_3_1_0 = (RuleCall)cInitialValueAssignment_3_1.eContents().get(0);
+		private final Keyword cSemicolonKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		//Attribute returns Feature:
 		//	{Attribute} (writeable?="var" | "val") (=> (name=ValidID ":" type=JvmTypeReference) | name=ValidID) ("="
-		//	initialValue=XExpression)?;
+		//	initialValue=XExpression)? ";"?;
 		public ParserRule getRule() { return rule; }
 
 		//{Attribute} (writeable?="var" | "val") (=> (name=ValidID ":" type=JvmTypeReference) | name=ValidID) ("="
-		//initialValue=XExpression)?
+		//initialValue=XExpression)? ";"?
 		public Group getGroup() { return cGroup; }
 
 		//{Attribute}
@@ -867,6 +845,9 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 
 		//XExpression
 		public RuleCall getInitialValueXExpressionParserRuleCall_3_1_0() { return cInitialValueXExpressionParserRuleCall_3_1_0; }
+
+		//";"?
+		public Keyword getSemicolonKeyword_4() { return cSemicolonKeyword_4; }
 	}
 
 	public class CapacityUsesElements extends AbstractParserRuleElementFinder {
@@ -875,19 +856,18 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Action cCapacityUsesAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cUsesKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cCapacitiesUsedAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final CrossReference cCapacitiesUsedCapacityCrossReference_2_0 = (CrossReference)cCapacitiesUsedAssignment_2.eContents().get(0);
-		private final RuleCall cCapacitiesUsedCapacityQualifiedNameParserRuleCall_2_0_1 = (RuleCall)cCapacitiesUsedCapacityCrossReference_2_0.eContents().get(1);
+		private final RuleCall cCapacitiesUsedRawTypeReferenceParserRuleCall_2_0 = (RuleCall)cCapacitiesUsedAssignment_2.eContents().get(0);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Keyword cCommaKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
 		private final Assignment cCapacitiesUsedAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final CrossReference cCapacitiesUsedCapacityCrossReference_3_1_0 = (CrossReference)cCapacitiesUsedAssignment_3_1.eContents().get(0);
-		private final RuleCall cCapacitiesUsedCapacityQualifiedNameParserRuleCall_3_1_0_1 = (RuleCall)cCapacitiesUsedCapacityCrossReference_3_1_0.eContents().get(1);
+		private final RuleCall cCapacitiesUsedRawTypeReferenceParserRuleCall_3_1_0 = (RuleCall)cCapacitiesUsedAssignment_3_1.eContents().get(0);
+		private final Keyword cSemicolonKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		//CapacityUses returns Feature:
-		//	{CapacityUses} "uses" capacitiesUsed+=[Capacity|QualifiedName] ("," capacitiesUsed+=[Capacity|QualifiedName])*;
+		//	{CapacityUses} "uses" capacitiesUsed+=RawTypeReference ("," capacitiesUsed+=RawTypeReference)* ";"?;
 		public ParserRule getRule() { return rule; }
 
-		//{CapacityUses} "uses" capacitiesUsed+=[Capacity|QualifiedName] ("," capacitiesUsed+=[Capacity|QualifiedName])*
+		//{CapacityUses} "uses" capacitiesUsed+=RawTypeReference ("," capacitiesUsed+=RawTypeReference)* ";"?
 		public Group getGroup() { return cGroup; }
 
 		//{CapacityUses}
@@ -896,29 +876,74 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//"uses"
 		public Keyword getUsesKeyword_1() { return cUsesKeyword_1; }
 
-		//capacitiesUsed+=[Capacity|QualifiedName]
+		//capacitiesUsed+=RawTypeReference
 		public Assignment getCapacitiesUsedAssignment_2() { return cCapacitiesUsedAssignment_2; }
 
-		//[Capacity|QualifiedName]
-		public CrossReference getCapacitiesUsedCapacityCrossReference_2_0() { return cCapacitiesUsedCapacityCrossReference_2_0; }
+		//RawTypeReference
+		public RuleCall getCapacitiesUsedRawTypeReferenceParserRuleCall_2_0() { return cCapacitiesUsedRawTypeReferenceParserRuleCall_2_0; }
 
-		//QualifiedName
-		public RuleCall getCapacitiesUsedCapacityQualifiedNameParserRuleCall_2_0_1() { return cCapacitiesUsedCapacityQualifiedNameParserRuleCall_2_0_1; }
-
-		//("," capacitiesUsed+=[Capacity|QualifiedName])*
+		//("," capacitiesUsed+=RawTypeReference)*
 		public Group getGroup_3() { return cGroup_3; }
 
 		//","
 		public Keyword getCommaKeyword_3_0() { return cCommaKeyword_3_0; }
 
-		//capacitiesUsed+=[Capacity|QualifiedName]
+		//capacitiesUsed+=RawTypeReference
 		public Assignment getCapacitiesUsedAssignment_3_1() { return cCapacitiesUsedAssignment_3_1; }
 
-		//[Capacity|QualifiedName]
-		public CrossReference getCapacitiesUsedCapacityCrossReference_3_1_0() { return cCapacitiesUsedCapacityCrossReference_3_1_0; }
+		//RawTypeReference
+		public RuleCall getCapacitiesUsedRawTypeReferenceParserRuleCall_3_1_0() { return cCapacitiesUsedRawTypeReferenceParserRuleCall_3_1_0; }
 
-		//QualifiedName
-		public RuleCall getCapacitiesUsedCapacityQualifiedNameParserRuleCall_3_1_0_1() { return cCapacitiesUsedCapacityQualifiedNameParserRuleCall_3_1_0_1; }
+		//";"?
+		public Keyword getSemicolonKeyword_4() { return cSemicolonKeyword_4; }
+	}
+
+	public class RequiredCapacityElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "RequiredCapacity");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cRequiredCapacityAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cRequiresKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cRequiredCapacitiesAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cRequiredCapacitiesRawTypeReferenceParserRuleCall_2_0 = (RuleCall)cRequiredCapacitiesAssignment_2.eContents().get(0);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Keyword cCommaKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Assignment cRequiredCapacitiesAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
+		private final RuleCall cRequiredCapacitiesRawTypeReferenceParserRuleCall_3_1_0 = (RuleCall)cRequiredCapacitiesAssignment_3_1.eContents().get(0);
+		private final Keyword cSemicolonKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		
+		//RequiredCapacity returns Feature:
+		//	{RequiredCapacity} "requires" requiredCapacities+=RawTypeReference ("," requiredCapacities+=RawTypeReference)* ";"?;
+		public ParserRule getRule() { return rule; }
+
+		//{RequiredCapacity} "requires" requiredCapacities+=RawTypeReference ("," requiredCapacities+=RawTypeReference)* ";"?
+		public Group getGroup() { return cGroup; }
+
+		//{RequiredCapacity}
+		public Action getRequiredCapacityAction_0() { return cRequiredCapacityAction_0; }
+
+		//"requires"
+		public Keyword getRequiresKeyword_1() { return cRequiresKeyword_1; }
+
+		//requiredCapacities+=RawTypeReference
+		public Assignment getRequiredCapacitiesAssignment_2() { return cRequiredCapacitiesAssignment_2; }
+
+		//RawTypeReference
+		public RuleCall getRequiredCapacitiesRawTypeReferenceParserRuleCall_2_0() { return cRequiredCapacitiesRawTypeReferenceParserRuleCall_2_0; }
+
+		//("," requiredCapacities+=RawTypeReference)*
+		public Group getGroup_3() { return cGroup_3; }
+
+		//","
+		public Keyword getCommaKeyword_3_0() { return cCommaKeyword_3_0; }
+
+		//requiredCapacities+=RawTypeReference
+		public Assignment getRequiredCapacitiesAssignment_3_1() { return cRequiredCapacitiesAssignment_3_1; }
+
+		//RawTypeReference
+		public RuleCall getRequiredCapacitiesRawTypeReferenceParserRuleCall_3_1_0() { return cRequiredCapacitiesRawTypeReferenceParserRuleCall_3_1_0; }
+
+		//";"?
+		public Keyword getSemicolonKeyword_4() { return cSemicolonKeyword_4; }
 	}
 
 	public class BehaviorUnitElements extends AbstractParserRuleElementFinder {
@@ -927,8 +952,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Action cBehaviorUnitAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cOnKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cEventAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final CrossReference cEventEventCrossReference_2_0 = (CrossReference)cEventAssignment_2.eContents().get(0);
-		private final RuleCall cEventEventQualifiedNameParserRuleCall_2_0_1 = (RuleCall)cEventEventCrossReference_2_0.eContents().get(1);
+		private final RuleCall cEventRawTypeReferenceParserRuleCall_2_0 = (RuleCall)cEventAssignment_2.eContents().get(0);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Keyword cLeftSquareBracketKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
 		private final Assignment cGuardAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
@@ -938,10 +962,10 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cBodyXBlockExpressionParserRuleCall_4_0 = (RuleCall)cBodyAssignment_4.eContents().get(0);
 		
 		//BehaviorUnit returns Feature:
-		//	{BehaviorUnit} "on" event=[Event|QualifiedName] ("[" guard=XExpression "]")? body=XBlockExpression;
+		//	{BehaviorUnit} "on" event=RawTypeReference ("[" guard=XExpression "]")? body=XBlockExpression;
 		public ParserRule getRule() { return rule; }
 
-		//{BehaviorUnit} "on" event=[Event|QualifiedName] ("[" guard=XExpression "]")? body=XBlockExpression
+		//{BehaviorUnit} "on" event=RawTypeReference ("[" guard=XExpression "]")? body=XBlockExpression
 		public Group getGroup() { return cGroup; }
 
 		//{BehaviorUnit}
@@ -950,19 +974,16 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//"on"
 		public Keyword getOnKeyword_1() { return cOnKeyword_1; }
 
-		//event=[Event|QualifiedName]
+		//event=RawTypeReference
 		public Assignment getEventAssignment_2() { return cEventAssignment_2; }
 
-		//[Event|QualifiedName]
-		public CrossReference getEventEventCrossReference_2_0() { return cEventEventCrossReference_2_0; }
+		//RawTypeReference
+		public RuleCall getEventRawTypeReferenceParserRuleCall_2_0() { return cEventRawTypeReferenceParserRuleCall_2_0; }
 
-		//QualifiedName
-		public RuleCall getEventEventQualifiedNameParserRuleCall_2_0_1() { return cEventEventQualifiedNameParserRuleCall_2_0_1; }
-
-		//("[" guard=XExpression "]")?
+		//(=> "[" guard=XExpression "]")?
 		public Group getGroup_3() { return cGroup_3; }
 
-		//"["
+		//=> "["
 		public Keyword getLeftSquareBracketKeyword_3_0() { return cLeftSquareBracketKeyword_3_0; }
 
 		//guard=XExpression
@@ -979,60 +1000,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 
 		//XBlockExpression
 		public RuleCall getBodyXBlockExpressionParserRuleCall_4_0() { return cBodyXBlockExpressionParserRuleCall_4_0; }
-	}
-
-	public class RequiredCapacityElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "RequiredCapacity");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cRequiredCapacityAction_0 = (Action)cGroup.eContents().get(0);
-		private final Keyword cRequiresKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cRequiredCapacitiesAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final CrossReference cRequiredCapacitiesCapacityCrossReference_2_0 = (CrossReference)cRequiredCapacitiesAssignment_2.eContents().get(0);
-		private final RuleCall cRequiredCapacitiesCapacityQualifiedNameParserRuleCall_2_0_1 = (RuleCall)cRequiredCapacitiesCapacityCrossReference_2_0.eContents().get(1);
-		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
-		private final Keyword cCommaKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
-		private final Assignment cRequiredCapacitiesAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final CrossReference cRequiredCapacitiesCapacityCrossReference_3_1_0 = (CrossReference)cRequiredCapacitiesAssignment_3_1.eContents().get(0);
-		private final RuleCall cRequiredCapacitiesCapacityQualifiedNameParserRuleCall_3_1_0_1 = (RuleCall)cRequiredCapacitiesCapacityCrossReference_3_1_0.eContents().get(1);
-		
-		//RequiredCapacity returns Feature:
-		//	{RequiredCapacity} "requires" requiredCapacities+=[Capacity|QualifiedName] (","
-		//	requiredCapacities+=[Capacity|QualifiedName])*;
-		public ParserRule getRule() { return rule; }
-
-		//{RequiredCapacity} "requires" requiredCapacities+=[Capacity|QualifiedName] (","
-		//requiredCapacities+=[Capacity|QualifiedName])*
-		public Group getGroup() { return cGroup; }
-
-		//{RequiredCapacity}
-		public Action getRequiredCapacityAction_0() { return cRequiredCapacityAction_0; }
-
-		//"requires"
-		public Keyword getRequiresKeyword_1() { return cRequiresKeyword_1; }
-
-		//requiredCapacities+=[Capacity|QualifiedName]
-		public Assignment getRequiredCapacitiesAssignment_2() { return cRequiredCapacitiesAssignment_2; }
-
-		//[Capacity|QualifiedName]
-		public CrossReference getRequiredCapacitiesCapacityCrossReference_2_0() { return cRequiredCapacitiesCapacityCrossReference_2_0; }
-
-		//QualifiedName
-		public RuleCall getRequiredCapacitiesCapacityQualifiedNameParserRuleCall_2_0_1() { return cRequiredCapacitiesCapacityQualifiedNameParserRuleCall_2_0_1; }
-
-		//("," requiredCapacities+=[Capacity|QualifiedName])*
-		public Group getGroup_3() { return cGroup_3; }
-
-		//","
-		public Keyword getCommaKeyword_3_0() { return cCommaKeyword_3_0; }
-
-		//requiredCapacities+=[Capacity|QualifiedName]
-		public Assignment getRequiredCapacitiesAssignment_3_1() { return cRequiredCapacitiesAssignment_3_1; }
-
-		//[Capacity|QualifiedName]
-		public CrossReference getRequiredCapacitiesCapacityCrossReference_3_1_0() { return cRequiredCapacitiesCapacityCrossReference_3_1_0; }
-
-		//QualifiedName
-		public RuleCall getRequiredCapacitiesCapacityQualifiedNameParserRuleCall_3_1_0_1() { return cRequiredCapacitiesCapacityQualifiedNameParserRuleCall_3_1_0_1; }
 	}
 
 	public class ActionElements extends AbstractParserRuleElementFinder {
@@ -1183,23 +1150,21 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_5 = (Group)cGroup.eContents().get(5);
 		private final Keyword cFiresKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
 		private final Assignment cFiredEventsAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
-		private final CrossReference cFiredEventsEventCrossReference_5_1_0 = (CrossReference)cFiredEventsAssignment_5_1.eContents().get(0);
-		private final RuleCall cFiredEventsEventQualifiedNameParserRuleCall_5_1_0_1 = (RuleCall)cFiredEventsEventCrossReference_5_1_0.eContents().get(1);
+		private final RuleCall cFiredEventsRawTypeReferenceParserRuleCall_5_1_0 = (RuleCall)cFiredEventsAssignment_5_1.eContents().get(0);
 		private final Group cGroup_5_2 = (Group)cGroup_5.eContents().get(2);
 		private final Keyword cCommaKeyword_5_2_0 = (Keyword)cGroup_5_2.eContents().get(0);
 		private final Assignment cFiredEventsAssignment_5_2_1 = (Assignment)cGroup_5_2.eContents().get(1);
-		private final CrossReference cFiredEventsEventCrossReference_5_2_1_0 = (CrossReference)cFiredEventsAssignment_5_2_1.eContents().get(0);
-		private final RuleCall cFiredEventsEventQualifiedNameParserRuleCall_5_2_1_0_1 = (RuleCall)cFiredEventsEventCrossReference_5_2_1_0.eContents().get(1);
+		private final RuleCall cFiredEventsRawTypeReferenceParserRuleCall_5_2_1_0 = (RuleCall)cFiredEventsAssignment_5_2_1.eContents().get(0);
 		
 		//ActionSignature returns ParameterizedFeature:
 		//	{ActionSignature} "def" name=ValidID ("(" (params+=FormalParameter ("," params+=FormalParameter)*
-		//	varargs?=VarArgToken?)? ")")? (":" type=JvmTypeReference)? ("fires" firedEvents+=[Event|QualifiedName] (","
-		//	firedEvents+=[Event|QualifiedName])*)?;
+		//	varargs?=VarArgToken?)? ")")? (":" type=JvmTypeReference)? ("fires" firedEvents+=RawTypeReference (","
+		//	firedEvents+=RawTypeReference)*)?;
 		public ParserRule getRule() { return rule; }
 
 		//{ActionSignature} "def" name=ValidID ("(" (params+=FormalParameter ("," params+=FormalParameter)*
-		//varargs?=VarArgToken?)? ")")? (":" type=JvmTypeReference)? ("fires" firedEvents+=[Event|QualifiedName] (","
-		//firedEvents+=[Event|QualifiedName])*)?
+		//varargs?=VarArgToken?)? ")")? (":" type=JvmTypeReference)? ("fires" firedEvents+=RawTypeReference (","
+		//firedEvents+=RawTypeReference)*)?
 		public Group getGroup() { return cGroup; }
 
 		//{ActionSignature}
@@ -1262,35 +1227,29 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//JvmTypeReference
 		public RuleCall getTypeJvmTypeReferenceParserRuleCall_4_1_0() { return cTypeJvmTypeReferenceParserRuleCall_4_1_0; }
 
-		//("fires" firedEvents+=[Event|QualifiedName] ("," firedEvents+=[Event|QualifiedName])*)?
+		//("fires" firedEvents+=RawTypeReference ("," firedEvents+=RawTypeReference)*)?
 		public Group getGroup_5() { return cGroup_5; }
 
 		//"fires"
 		public Keyword getFiresKeyword_5_0() { return cFiresKeyword_5_0; }
 
-		//firedEvents+=[Event|QualifiedName]
+		//firedEvents+=RawTypeReference
 		public Assignment getFiredEventsAssignment_5_1() { return cFiredEventsAssignment_5_1; }
 
-		//[Event|QualifiedName]
-		public CrossReference getFiredEventsEventCrossReference_5_1_0() { return cFiredEventsEventCrossReference_5_1_0; }
+		//RawTypeReference
+		public RuleCall getFiredEventsRawTypeReferenceParserRuleCall_5_1_0() { return cFiredEventsRawTypeReferenceParserRuleCall_5_1_0; }
 
-		//QualifiedName
-		public RuleCall getFiredEventsEventQualifiedNameParserRuleCall_5_1_0_1() { return cFiredEventsEventQualifiedNameParserRuleCall_5_1_0_1; }
-
-		//("," firedEvents+=[Event|QualifiedName])*
+		//("," firedEvents+=RawTypeReference)*
 		public Group getGroup_5_2() { return cGroup_5_2; }
 
 		//","
 		public Keyword getCommaKeyword_5_2_0() { return cCommaKeyword_5_2_0; }
 
-		//firedEvents+=[Event|QualifiedName]
+		//firedEvents+=RawTypeReference
 		public Assignment getFiredEventsAssignment_5_2_1() { return cFiredEventsAssignment_5_2_1; }
 
-		//[Event|QualifiedName]
-		public CrossReference getFiredEventsEventCrossReference_5_2_1_0() { return cFiredEventsEventCrossReference_5_2_1_0; }
-
-		//QualifiedName
-		public RuleCall getFiredEventsEventQualifiedNameParserRuleCall_5_2_1_0_1() { return cFiredEventsEventQualifiedNameParserRuleCall_5_2_1_0_1; }
+		//RawTypeReference
+		public RuleCall getFiredEventsRawTypeReferenceParserRuleCall_5_2_1_0() { return cFiredEventsRawTypeReferenceParserRuleCall_5_2_1_0; }
 	}
 
 	public class FormalParameterElements extends AbstractParserRuleElementFinder {
@@ -1632,6 +1591,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	private SarlScriptElements pSarlScript;
 	private TopElementElements pTopElement;
+	private RawTypeReferenceElements pRawTypeReference;
 	private NamedElementElements pNamedElement;
 	private FeatureContainerElements pFeatureContainer;
 	private FeatureElements pFeature;
@@ -1649,8 +1609,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	private SkillFeatureElements pSkillFeature;
 	private AttributeElements pAttribute;
 	private CapacityUsesElements pCapacityUses;
-	private BehaviorUnitElements pBehaviorUnit;
 	private RequiredCapacityElements pRequiredCapacity;
+	private BehaviorUnitElements pBehaviorUnit;
 	private ActionElements pAction;
 	private VarArgTokenElements pVarArgToken;
 	private ConstructorElements pConstructor;
@@ -1721,6 +1681,16 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getTopElementAccess().getRule();
 	}
 
+	//RawTypeReference returns jvm::JvmParameterizedTypeReference:
+	//	type=[jvm::JvmType|QualifiedName];
+	public RawTypeReferenceElements getRawTypeReferenceAccess() {
+		return (pRawTypeReference != null) ? pRawTypeReference : (pRawTypeReference = new RawTypeReferenceElements());
+	}
+	
+	public ParserRule getRawTypeReferenceRule() {
+		return getRawTypeReferenceAccess().getRule();
+	}
+
 	//// Define an interface that is providing the 'name' feature.
 	//// This rule is declared only for generated the Java interface
 	//// with the expected features.
@@ -1782,7 +1752,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//// with the expected features.
 	//// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
 	//InheritingElement returns FeatureContainer:
-	//	{InheritingElement} superTypes+=[InheritingElement];
+	//	{InheritingElement} superTypes+=RawTypeReference;
 	public InheritingElementElements getInheritingElementAccess() {
 		return (pInheritingElement != null) ? pInheritingElement : (pInheritingElement = new InheritingElementElements());
 	}
@@ -1796,7 +1766,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//// with the expected features.
 	//// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
 	//ImplementingElement returns InheritingElement:
-	//	{ImplementingElement} implementedTypes+=[InheritingElement];
+	//	{ImplementingElement} implementedTypes+=RawTypeReference;
 	public ImplementingElementElements getImplementingElementAccess() {
 		return (pImplementingElement != null) ? pImplementingElement : (pImplementingElement = new ImplementingElementElements());
 	}
@@ -1806,7 +1776,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Event returns InheritingElement:
-	//	{Event} "event" name=ValidID ("extends" superTypes+=[Event|QualifiedName])? ("{" features+=EventFeature* "}")?;
+	//	{Event} "event" name=ValidID ("extends" superTypes+=RawTypeReference)? ("{" features+=EventFeature* "}")?;
 	public EventElements getEventAccess() {
 		return (pEvent != null) ? pEvent : (pEvent = new EventElements());
 	}
@@ -1816,8 +1786,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Capacity returns InheritingElement:
-	//	{Capacity} "capacity" name=ValidID ("extends" superTypes+=[Capacity|QualifiedName] (","
-	//	superTypes+=[Capacity|QualifiedName])*)? "{" features+=ActionSignature* "}";
+	//	{Capacity} "capacity" name=ValidID ("extends" superTypes+=RawTypeReference ("," superTypes+=RawTypeReference)*)? "{"
+	//	features+=ActionSignature* "}";
 	public CapacityElements getCapacityAccess() {
 		return (pCapacity != null) ? pCapacity : (pCapacity = new CapacityElements());
 	}
@@ -1827,7 +1797,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Agent returns InheritingElement:
-	//	{Agent} "agent" name=ValidID ("extends" superTypes+=[Agent|QualifiedName])? "{" features+=AgentFeature* "}";
+	//	{Agent} "agent" name=ValidID ("extends" superTypes+=RawTypeReference)? "{" features+=AgentFeature* "}";
 	public AgentElements getAgentAccess() {
 		return (pAgent != null) ? pAgent : (pAgent = new AgentElements());
 	}
@@ -1837,8 +1807,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Behavior returns InheritingElement:
-	//	{Behavior} "behavior" name=ValidID ("extends" superTypes+=[Behavior|QualifiedName])? "{" features+=BehaviorFeature*
-	//	"}";
+	//	{Behavior} "behavior" name=ValidID ("extends" superTypes+=RawTypeReference)? "{" features+=BehaviorFeature* "}";
 	public BehaviorElements getBehaviorAccess() {
 		return (pBehavior != null) ? pBehavior : (pBehavior = new BehaviorElements());
 	}
@@ -1848,9 +1817,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Skill returns ImplementingElement:
-	//	{Skill} "skill" name=ValidID (("extends" superTypes+=[Skill|QualifiedName])? & "implements"
-	//	implementedTypes+=[Capacity|QualifiedName] ("," implementedTypes+=[Capacity|QualifiedName])*) "{"
-	//	features+=SkillFeature* "}";
+	//	{Skill} "skill" name=ValidID (("extends" superTypes+=RawTypeReference)? & "implements"
+	//	implementedTypes+=RawTypeReference ("," implementedTypes+=RawTypeReference)*) "{" features+=SkillFeature* "}";
 	public SkillElements getSkillAccess() {
 		return (pSkill != null) ? pSkill : (pSkill = new SkillElements());
 	}
@@ -1901,7 +1869,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 
 	//Attribute returns Feature:
 	//	{Attribute} (writeable?="var" | "val") (=> (name=ValidID ":" type=JvmTypeReference) | name=ValidID) ("="
-	//	initialValue=XExpression)?;
+	//	initialValue=XExpression)? ";"?;
 	public AttributeElements getAttributeAccess() {
 		return (pAttribute != null) ? pAttribute : (pAttribute = new AttributeElements());
 	}
@@ -1911,7 +1879,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//CapacityUses returns Feature:
-	//	{CapacityUses} "uses" capacitiesUsed+=[Capacity|QualifiedName] ("," capacitiesUsed+=[Capacity|QualifiedName])*;
+	//	{CapacityUses} "uses" capacitiesUsed+=RawTypeReference ("," capacitiesUsed+=RawTypeReference)* ";"?;
 	public CapacityUsesElements getCapacityUsesAccess() {
 		return (pCapacityUses != null) ? pCapacityUses : (pCapacityUses = new CapacityUsesElements());
 	}
@@ -1920,25 +1888,24 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getCapacityUsesAccess().getRule();
 	}
 
-	//BehaviorUnit returns Feature:
-	//	{BehaviorUnit} "on" event=[Event|QualifiedName] ("[" guard=XExpression "]")? body=XBlockExpression;
-	public BehaviorUnitElements getBehaviorUnitAccess() {
-		return (pBehaviorUnit != null) ? pBehaviorUnit : (pBehaviorUnit = new BehaviorUnitElements());
-	}
-	
-	public ParserRule getBehaviorUnitRule() {
-		return getBehaviorUnitAccess().getRule();
-	}
-
 	//RequiredCapacity returns Feature:
-	//	{RequiredCapacity} "requires" requiredCapacities+=[Capacity|QualifiedName] (","
-	//	requiredCapacities+=[Capacity|QualifiedName])*;
+	//	{RequiredCapacity} "requires" requiredCapacities+=RawTypeReference ("," requiredCapacities+=RawTypeReference)* ";"?;
 	public RequiredCapacityElements getRequiredCapacityAccess() {
 		return (pRequiredCapacity != null) ? pRequiredCapacity : (pRequiredCapacity = new RequiredCapacityElements());
 	}
 	
 	public ParserRule getRequiredCapacityRule() {
 		return getRequiredCapacityAccess().getRule();
+	}
+
+	//BehaviorUnit returns Feature:
+	//	{BehaviorUnit} "on" event=RawTypeReference ("[" guard=XExpression "]")? body=XBlockExpression;
+	public BehaviorUnitElements getBehaviorUnitAccess() {
+		return (pBehaviorUnit != null) ? pBehaviorUnit : (pBehaviorUnit = new BehaviorUnitElements());
+	}
+	
+	public ParserRule getBehaviorUnitRule() {
+		return getBehaviorUnitAccess().getRule();
 	}
 
 	//Action returns Feature:
@@ -1974,8 +1941,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 
 	//ActionSignature returns ParameterizedFeature:
 	//	{ActionSignature} "def" name=ValidID ("(" (params+=FormalParameter ("," params+=FormalParameter)*
-	//	varargs?=VarArgToken?)? ")")? (":" type=JvmTypeReference)? ("fires" firedEvents+=[Event|QualifiedName] (","
-	//	firedEvents+=[Event|QualifiedName])*)?;
+	//	varargs?=VarArgToken?)? ")")? (":" type=JvmTypeReference)? ("fires" firedEvents+=RawTypeReference (","
+	//	firedEvents+=RawTypeReference)*)?;
 	public ActionSignatureElements getActionSignatureAccess() {
 		return (pActionSignature != null) ? pActionSignature : (pActionSignature = new ActionSignatureElements());
 	}

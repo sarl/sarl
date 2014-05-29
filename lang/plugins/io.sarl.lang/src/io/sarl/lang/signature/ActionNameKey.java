@@ -101,6 +101,7 @@ public class ActionNameKey implements Cloneable, Serializable, Comparable<Action
 
 	/** {@inheritDoc}
 	 */
+	@Override
 	public int compareTo(ActionNameKey o) {
 		if (o==null) return Integer.MAX_VALUE;
 		int cmp = this.container.compareTo(o.container);

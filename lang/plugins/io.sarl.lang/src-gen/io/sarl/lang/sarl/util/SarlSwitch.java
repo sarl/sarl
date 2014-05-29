@@ -260,18 +260,6 @@ public class SarlSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case SarlPackage.BEHAVIOR_UNIT:
-      {
-        BehaviorUnit behaviorUnit = (BehaviorUnit)theEObject;
-        T result = caseBehaviorUnit(behaviorUnit);
-        if (result == null) result = caseFeature(behaviorUnit);
-        if (result == null) result = caseEventFeature(behaviorUnit);
-        if (result == null) result = caseAgentFeature(behaviorUnit);
-        if (result == null) result = caseBehaviorFeature(behaviorUnit);
-        if (result == null) result = caseSkillFeature(behaviorUnit);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case SarlPackage.REQUIRED_CAPACITY:
       {
         RequiredCapacity requiredCapacity = (RequiredCapacity)theEObject;
@@ -281,6 +269,18 @@ public class SarlSwitch<T> extends Switch<T>
         if (result == null) result = caseAgentFeature(requiredCapacity);
         if (result == null) result = caseBehaviorFeature(requiredCapacity);
         if (result == null) result = caseSkillFeature(requiredCapacity);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case SarlPackage.BEHAVIOR_UNIT:
+      {
+        BehaviorUnit behaviorUnit = (BehaviorUnit)theEObject;
+        T result = caseBehaviorUnit(behaviorUnit);
+        if (result == null) result = caseFeature(behaviorUnit);
+        if (result == null) result = caseEventFeature(behaviorUnit);
+        if (result == null) result = caseAgentFeature(behaviorUnit);
+        if (result == null) result = caseBehaviorFeature(behaviorUnit);
+        if (result == null) result = caseSkillFeature(behaviorUnit);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -647,22 +647,6 @@ public class SarlSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Behavior Unit</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Behavior Unit</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseBehaviorUnit(BehaviorUnit object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>Required Capacity</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -674,6 +658,22 @@ public class SarlSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseRequiredCapacity(RequiredCapacity object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Behavior Unit</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Behavior Unit</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseBehaviorUnit(BehaviorUnit object)
   {
     return null;
   }

@@ -113,7 +113,7 @@ describe "Agent Definition Introduction" {
 			val SarlScript model = '''
 			package myapp.demo
 			
-			event MyEvent {	}
+			event MyEvent
 			
 			agent MyAgent {
 				on MyEvent {
@@ -121,10 +121,6 @@ describe "Agent Definition Introduction" {
 				}
 			} 
 			'''.parsesSuccessfully
-			val agent = model.elements.filter(Agent).head
-			assertEquals(1,agent.features.size)
-			val BehaviorUnit beh = agent.features.first as BehaviorUnit
-			assertEquals(model.elements.filter(Event).head,beh.event)
 		}
 		
 		/*

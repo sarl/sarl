@@ -2,17 +2,22 @@
  */
 package io.sarl.lang.sarl.impl;
 
-import io.sarl.lang.sarl.Capacity;
 import io.sarl.lang.sarl.RequiredCapacity;
 import io.sarl.lang.sarl.SarlPackage;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,14 +35,14 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 public class RequiredCapacityImpl extends FeatureImpl implements RequiredCapacity
 {
   /**
-   * The cached value of the '{@link #getRequiredCapacities() <em>Required Capacities</em>}' reference list.
+   * The cached value of the '{@link #getRequiredCapacities() <em>Required Capacities</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getRequiredCapacities()
    * @generated
    * @ordered
    */
-  protected EList<Capacity> requiredCapacities;
+  protected EList<JvmParameterizedTypeReference> requiredCapacities;
 
   /**
    * <!-- begin-user-doc -->
@@ -65,13 +70,29 @@ public class RequiredCapacityImpl extends FeatureImpl implements RequiredCapacit
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<Capacity> getRequiredCapacities()
+  public EList<JvmParameterizedTypeReference> getRequiredCapacities()
   {
     if (requiredCapacities == null)
     {
-      requiredCapacities = new EObjectResolvingEList<Capacity>(Capacity.class, this, SarlPackage.REQUIRED_CAPACITY__REQUIRED_CAPACITIES);
+      requiredCapacities = new EObjectContainmentEList<JvmParameterizedTypeReference>(JvmParameterizedTypeReference.class, this, SarlPackage.REQUIRED_CAPACITY__REQUIRED_CAPACITIES);
     }
     return requiredCapacities;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case SarlPackage.REQUIRED_CAPACITY__REQUIRED_CAPACITIES:
+        return ((InternalEList<?>)getRequiredCapacities()).basicRemove(otherEnd, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -103,7 +124,7 @@ public class RequiredCapacityImpl extends FeatureImpl implements RequiredCapacit
     {
       case SarlPackage.REQUIRED_CAPACITY__REQUIRED_CAPACITIES:
         getRequiredCapacities().clear();
-        getRequiredCapacities().addAll((Collection<? extends Capacity>)newValue);
+        getRequiredCapacities().addAll((Collection<? extends JvmParameterizedTypeReference>)newValue);
         return;
     }
     super.eSet(featureID, newValue);

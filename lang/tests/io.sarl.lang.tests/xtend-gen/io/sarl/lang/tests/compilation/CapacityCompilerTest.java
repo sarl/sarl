@@ -1162,4 +1162,61 @@ public class CapacityCompilerTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
+  
+  @Test
+  public void inheritance() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("import io.sarl.lang.core.Capacity;");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("@SuppressWarnings(\"all\")");
+      _builder.newLine();
+      _builder.append("public interface CapTest1 extends Capacity {");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("public abstract int func1();");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final String expectedC1 = _builder.toString();
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("@SuppressWarnings(\"all\")");
+      _builder_1.newLine();
+      _builder_1.append("public interface CapTest2 extends CapTest1 {");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("public abstract void func2(final int a);");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      final String expectedC2 = _builder_1.toString();
+      StringConcatenation _builder_2 = new StringConcatenation();
+      _builder_2.append("capacity CapTest1 {");
+      _builder_2.newLine();
+      _builder_2.append("\t");
+      _builder_2.append("def func1 : int");
+      _builder_2.newLine();
+      _builder_2.append("}");
+      _builder_2.newLine();
+      _builder_2.append("capacity CapTest2 extends CapTest1 {");
+      _builder_2.newLine();
+      _builder_2.append("\t");
+      _builder_2.append("def func2(a : int)");
+      _builder_2.newLine();
+      _builder_2.append("}");
+      _builder_2.newLine();
+      final IAcceptor<CompilationTestHelper.Result> _function = new IAcceptor<CompilationTestHelper.Result>() {
+        public void accept(final CompilationTestHelper.Result r) {
+          String _generatedCode = r.getGeneratedCode("CapTest1");
+          Assert.assertEquals(expectedC1, _generatedCode);
+          String _generatedCode_1 = r.getGeneratedCode("CapTest2");
+          Assert.assertEquals(expectedC2, _generatedCode_1);
+        }
+      };
+      this._compilationTestHelper.compile(_builder_2, _function);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
 }

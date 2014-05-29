@@ -46,9 +46,24 @@ public class SARLFeatureNameValidator extends LogicalContainerAwareFeatureNameVa
 	public boolean isDisallowedName(QualifiedName name) {
 		if (ModelUtil.isHiddenAction(name.getLastSegment())
 			||ModelUtil.isHiddenAttribute(name.getLastSegment())) {
-			return false;
+			return true;
 		}
 		return super.isDisallowedName(name);
+	}
+	
+	/** {@inheritDoc}
+	 */
+	@Override
+	public boolean isDiscouragedName(QualifiedName name) {
+		String n = name.getLastSegment();
+		if ("const".equals(n) //$NON-NLS-1$
+			||"class".equals(n) //$NON-NLS-1$
+			||"interface".equals(n) //$NON-NLS-1$
+			||"annotation".equals(n) //$NON-NLS-1$
+			||"enum".equals(n)) { //$NON-NLS-1$
+			return true;
+		}
+		return super.isDiscouragedName(name);
 	}
 	
 }

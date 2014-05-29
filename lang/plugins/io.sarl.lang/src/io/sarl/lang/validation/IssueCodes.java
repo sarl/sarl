@@ -105,7 +105,6 @@ public class IssueCodes {
 	 *    var ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = 3
 	 * }
 	 * </code></pre>
-	 * </code></pre>
 	 */
 	public static final String INVALID_ATTRIBUTE_NAME = ISSUE_CODE_PREFIX+"invalid_attribute_name"; //$NON-NLS-1$
 
@@ -119,7 +118,6 @@ public class IssueCodes {
 	 * behavior B2 extends B1 {
 	 *    var myfield
 	 * }
-	 * </code></pre>
 	 * </code></pre>
 	 */
 	public static final String FIELD_NAME_SHADOWING = ISSUE_CODE_PREFIX+"field_name_shadowing"; //$NON-NLS-1$
@@ -140,7 +138,6 @@ public class IssueCodes {
 	 * skill S2 implements C1 {
 	 * }
 	 * </code></pre>
-	 * </code></pre>
 	 */
 	public static final String MISSING_ACTION_IMPLEMENTATION = ISSUE_CODE_PREFIX+"missing_action_implementation"; //$NON-NLS-1$
 
@@ -153,5 +150,17 @@ public class IssueCodes {
 	 * It is not allowed to override a final type.
 	 */
 	public static final String FINAL_TYPE_EXTENSION = ISSUE_CODE_PREFIX+"final_type_extension"; //$NON-NLS-1$
+
+	/**
+	 * It is discouraged to have a true/false constant as conditions in guards, if...
+	 * <p>
+	 * The following code causes a warning:<pre><code>
+	 * event E1
+	 * agent A1 {
+	 *    on E1 [true] { }
+	 * }
+	 * </code></pre>
+	 */
+	public static final String DISCOURAGED_BOOLEAN_EXPRESSION = ISSUE_CODE_PREFIX+"discouraged_boolean_expression"; //$NON-NLS-1$
 
 }

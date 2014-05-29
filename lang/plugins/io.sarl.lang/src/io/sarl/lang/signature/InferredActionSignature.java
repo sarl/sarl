@@ -74,6 +74,7 @@ public interface InferredActionSignature extends Iterable<EList<InferredStandard
 	 * 
 	 * @return the parameter list.
 	 */
+	@Override
 	public String toString();
 
 	/** Replies the formatted list of parameters.

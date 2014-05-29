@@ -524,80 +524,34 @@ class CapacityCompilerTest {
 		])
 	}
 
-//	@Test
-//	def void skillImplementation() {
-//		'''
-//			import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
-//			import io.sarl.lang.core.Agent
-//			import io.sarl.lang.tests.stubs.CapacityTest
-//			skill S1 implements CapacityTest {
-//			  def in(delay : long, procedure : (Agent) => void) : Object {
-//			    System.out.println("a")
-//			    return this
-//			  }
-//			  
-//			  def task(name : String) : Object {
-//			    System.out.println("b")
-//			    return this
-//			  }
-//			  
-//			  def every(period : long, procedure : (Agent) => void) : Object {
-//			    System.out.println("c")
-//			    return this
-//			  }
-//			  
-//			  def every(task : Object, period : long, procedure : (Agent) => void) : Object {
-//			    System.out.println("d")
-//			    return this
-//			  }
-//			}
-//		'''.assertCompilesTo('''
-//			import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
-//			import io.sarl.lang.core.Agent
-//			import io.sarl.lang.tests.stubs.CapacityTest
-//			import io.sarl.lang.annotation.Generated;
-//			import io.sarl.lang.core.Skill;
-//			
-//			@SuppressWarnings("all")
-//			public class S1 extends Skill implements C1 {
-//			  public Object in(final long delay, final Procedure1<? super Agent> procedure) {
-//			    System.out.println("a");
-//			    return this;
-//			  }
-//			  
-//			  public Object task(final String name) {
-//			    System.out.println("b");
-//			    return this;
-//			  }
-//			  
-//			  public Object every(final long period, final Procedure1<? super Agent> procedure) {
-//			    System.out.println("c");
-//			    return this;
-//			  }
-//			  
-//			  public abstract Object every(final Object task, final long period, final Procedure1<? super Agent> procedure) {
-//			    System.out.println("d");
-//			    return this;
-//			  }
-//			  
-//			  /**
-//			   * Construct a skill.
-//			   * @param owner - agent that is owning this skill. 
-//			   * 
-//			   */
-//			  public S1(final io.sarl.lang.core.Agent owner) {
-//			    super(owner);
-//			  }
-//			  
-//			  /**
-//			   * Construct a skill. The owning agent is unknown. 
-//			   * 
-//			   */
-//			  public S1() {
-//			    super();
-//			  }
-//			}
-//		''')
-//	}
+	@Test
+	def void inheritance() {
+		val expectedC1 = '''
+			import io.sarl.lang.core.Capacity;
+			
+			@SuppressWarnings("all")
+			public interface CapTest1 extends Capacity {
+			  public abstract int func1();
+			}
+		'''
+		val expectedC2 = '''
+			@SuppressWarnings("all")
+			public interface CapTest2 extends CapTest1 {
+			  public abstract void func2(final int a);
+			}
+		'''
+		
+		'''
+			capacity CapTest1 {
+				def func1 : int
+			}
+			capacity CapTest2 extends CapTest1 {
+				def func2(a : int)
+			}
+		'''.compile([CompilationTestHelper.Result r |
+			Assert.assertEquals(expectedC1,r.getGeneratedCode("CapTest1"))
+			Assert.assertEquals(expectedC2,r.getGeneratedCode("CapTest2"))
+		])
+	}
 
 }

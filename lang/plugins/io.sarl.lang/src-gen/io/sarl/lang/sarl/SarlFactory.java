@@ -203,15 +203,6 @@ public interface SarlFactory extends EFactory
   CapacityUses createCapacityUses();
 
   /**
-   * Returns a new object of class '<em>Behavior Unit</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Behavior Unit</em>'.
-   * @generated
-   */
-  BehaviorUnit createBehaviorUnit();
-
-  /**
    * Returns a new object of class '<em>Required Capacity</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -219,6 +210,15 @@ public interface SarlFactory extends EFactory
    * @generated
    */
   RequiredCapacity createRequiredCapacity();
+
+  /**
+   * Returns a new object of class '<em>Behavior Unit</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Behavior Unit</em>'.
+   * @generated
+   */
+  BehaviorUnit createBehaviorUnit();
 
   /**
    * Returns a new object of class '<em>Action</em>'.

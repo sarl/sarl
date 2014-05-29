@@ -22,6 +22,7 @@ import org.eclipse.xtext.junit4.InjectWith
 import io.sarl.lang.SARLInjectorProvider
 import org.junit.Test
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper
+import org.junit.Assert
 
 /**
  * @author $Author: srodriguez$
@@ -58,6 +59,138 @@ class AgentCompilerTest {
 			  }
 			}
 		''')
-		}
+	}
 		
+	@Test
+	def trueGuardBehaviorUnit() {
+		val expectedE1 = '''
+		import io.sarl.lang.annotation.Generated;
+		import io.sarl.lang.core.Event;
+		
+		@SuppressWarnings("all")
+		public class E1 extends Event {
+		  /**
+		   * Construct an event. The source of the event is unknown.
+		   * 
+		   */
+		  @Generated
+		  public E1() {
+		    super();
+		  }
+		  
+		  /**
+		   * Construct an event.
+		   * @param source - address of the agent that is emitting this event.
+		   * 
+		   */
+		  @Generated
+		  public E1(final io.sarl.lang.core.Address source) {
+		    super(source);
+		  }
+		  
+		  @Generated
+		  private final static long serialVersionUID = 588368462L;
+		}
+		'''
+		val expectedA1 = '''
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
+			import io.sarl.lang.core.Percept;
+			
+			@SuppressWarnings("all")
+			public class A1 extends Agent {
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * 
+			   */
+			  @Generated
+			  public A1(final java.util.UUID parentID) {
+			    super(parentID);
+			  }
+			  
+			  @Percept
+			  public void _handle_E1_1(final E1 occurrence) {
+			    System.out.println(occurrence);
+			  }
+			}
+		'''
+		
+		'''
+			event E1
+			agent A1 {
+				on E1 [ true ] {
+					System.out.println(occurrence)
+				}
+			}
+		'''.compile([CompilationTestHelper.Result r |
+			Assert.assertEquals(expectedE1,r.getGeneratedCode("E1"))
+			Assert.assertEquals(expectedA1,r.getGeneratedCode("A1"))
+		]);
+	}
+
+	@Test
+	def falseGuardBehaviorUnit() {
+		val expectedE1 = '''
+		import io.sarl.lang.annotation.Generated;
+		import io.sarl.lang.core.Event;
+		
+		@SuppressWarnings("all")
+		public class E1 extends Event {
+		  /**
+		   * Construct an event. The source of the event is unknown.
+		   * 
+		   */
+		  @Generated
+		  public E1() {
+		    super();
+		  }
+		  
+		  /**
+		   * Construct an event.
+		   * @param source - address of the agent that is emitting this event.
+		   * 
+		   */
+		  @Generated
+		  public E1(final io.sarl.lang.core.Address source) {
+		    super(source);
+		  }
+		  
+		  @Generated
+		  private final static long serialVersionUID = 588368462L;
+		}
+		'''
+		val expectedA1 = '''
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
+			
+			@SuppressWarnings("all")
+			public class A1 extends Agent {
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * 
+			   */
+			  @Generated
+			  public A1(final java.util.UUID parentID) {
+			    super(parentID);
+			  }
+			}
+		'''
+		
+		'''
+			event E1
+			agent A1 {
+				on E1 [ false ] {
+					System.out.println(occurrence)
+				}
+			}
+		'''.compile([CompilationTestHelper.Result r |
+			Assert.assertEquals(expectedE1,r.getGeneratedCode("E1"))
+			Assert.assertEquals(expectedA1,r.getGeneratedCode("A1"))
+		]);
+	}
+
 }
