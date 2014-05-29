@@ -32,9 +32,12 @@ import io.sarl.lang.sarl.FeatureContainer;
 import io.sarl.lang.sarl.FormalParameter;
 import io.sarl.lang.sarl.ImplementingElement;
 import io.sarl.lang.sarl.InheritingElement;
+import io.sarl.lang.sarl.NamedElement;
 import io.sarl.lang.sarl.ParameterizedFeature;
 import io.sarl.lang.sarl.RequiredCapacity;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.Skill;
+import io.sarl.lang.sarl.TopElement;
 import io.sarl.lang.signature.ActionKey;
 import io.sarl.lang.signature.ActionNameKey;
 import io.sarl.lang.signature.ActionSignatureProvider;
@@ -44,13 +47,16 @@ import io.sarl.lang.util.ModelUtil;
 import io.sarl.lang.validation.AbstractSARLValidator;
 import io.sarl.lang.validation.IssueCodes;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
@@ -58,15 +64,19 @@ import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.util.TypeReferences;
+import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
-import org.eclipse.xtext.validation.ValidationMessageAcceptor;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations;
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.lib.ReassignFirstArgument;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
@@ -93,6 +103,204 @@ public class SARLValidator extends AbstractSARLValidator {
   @Inject
   private ActionSignatureProvider sarlSignatureProvider;
   
+  private static int compareVersions(final String v1, final String v2) {
+    final String[] t1 = v1.split("\\s*[.-]\\s*");
+    final String[] t2 = v2.split("\\s*[.-]\\s*");
+    String s1 = null;
+    String s2 = null;
+    int n1 = 0;
+    int n2 = 0;
+    int cmp = 0;
+    for (int i = 0; ((i < t1.length) || (i < t2.length)); i++) {
+      {
+        String _get = t1[i];
+        s1 = _get;
+        String _get_1 = t2[i];
+        s2 = _get_1;
+        try {
+          int _length = t1.length;
+          boolean _lessThan = (i < _length);
+          if (_lessThan) {
+            int _parseInt = Integer.parseInt(s1);
+            n1 = _parseInt;
+          } else {
+            n1 = 0;
+          }
+          int _length_1 = t2.length;
+          boolean _lessThan_1 = (i < _length_1);
+          if (_lessThan_1) {
+            int _parseInt_1 = Integer.parseInt(s2);
+            n2 = _parseInt_1;
+          } else {
+            n2 = 0;
+          }
+          int _compare = Integer.compare(n1, n2);
+          cmp = _compare;
+        } catch (final Throwable _t) {
+          if (_t instanceof Exception) {
+            final Exception e = (Exception)_t;
+            int _compareTo = s1.compareTo(s2);
+            cmp = _compareTo;
+          } else {
+            throw Exceptions.sneakyThrow(_t);
+          }
+        }
+        if ((cmp != 0)) {
+          return cmp;
+        }
+      }
+    }
+    return 0;
+  }
+  
+  @Check(CheckType.NORMAL)
+  public void checkClassPath(final SarlScript sarlScript) {
+    CommonTypeComputationServices _services = this.getServices();
+    TypeReferences typeReferences = _services.getTypeReferences();
+    String version = System.getProperty("java.specification.version");
+    boolean _or = false;
+    boolean _or_1 = false;
+    boolean _equals = Objects.equal(version, null);
+    if (_equals) {
+      _or_1 = true;
+    } else {
+      boolean _isEmpty = version.isEmpty();
+      _or_1 = _isEmpty;
+    }
+    if (_or_1) {
+      _or = true;
+    } else {
+      int _compareVersions = SARLValidator.compareVersions(version, "1.7");
+      boolean _lessThan = (_compareVersions < 0);
+      _or = _lessThan;
+    }
+    if (_or) {
+      this.error(
+        "Couldn\'t find a JDK 1.7 or higher on the project\'s classpath.", sarlScript, 
+        null, 
+        IssueCodes.JDK_NOT_ON_CLASSPATH);
+    }
+    JvmType _findDeclaredType = typeReferences.findDeclaredType(ReassignFirstArgument.class, sarlScript);
+    boolean _equals_1 = Objects.equal(_findDeclaredType, null);
+    if (_equals_1) {
+      this.error(
+        "Couldn\'t find the mandatory library \'org.eclipse.xtext.xbase.lib\' 2.6.0 or higher on the project\'s classpath.", sarlScript, 
+        null, 
+        IssueCodes.XBASE_LIB_NOT_ON_CLASSPATH);
+    }
+  }
+  
+  protected String getExpectedPackageName(final SarlScript script) {
+    boolean _and = false;
+    String _name = script.getName();
+    boolean _tripleNotEquals = (_name != null);
+    if (!_tripleNotEquals) {
+      _and = false;
+    } else {
+      String _name_1 = script.getName();
+      boolean _isEmpty = _name_1.isEmpty();
+      boolean _not = (!_isEmpty);
+      _and = _not;
+    }
+    if (_and) {
+      Resource r = script.eResource();
+      boolean _tripleNotEquals_1 = (r != null);
+      if (_tripleNotEquals_1) {
+        URI uri = r.getURI();
+        boolean _tripleNotEquals_2 = (uri != null);
+        if (_tripleNotEquals_2) {
+          String[] segments = null;
+          {
+            String[] tab = uri.segments();
+            int _length = tab.length;
+            boolean _greaterThan = (_length > 1);
+            if (_greaterThan) {
+              int _length_1 = tab.length;
+              int _minus = (_length_1 - 1);
+              String[] _copyOf = Arrays.<String>copyOf(tab, _minus);
+              segments = _copyOf;
+            } else {
+              segments = new String[] {};
+            }
+          }
+          QualifiedName qn = QualifiedName.create(segments);
+          return qn.toString();
+        }
+      }
+    }
+    return script.getName();
+  }
+  
+  /**
+   * @param script
+   */
+  @Check(CheckType.NORMAL)
+  public void checkFileNamingConventions(final SarlScript script) {
+    boolean _isIgnored = this.isIgnored(IssueCodes.WRONG_PACKAGE);
+    boolean _not = (!_isIgnored);
+    if (_not) {
+      String expectedPackage = this.getExpectedPackageName(script);
+      String declaredPackage = script.getName();
+      boolean _notEquals = (!Objects.equal(expectedPackage, declaredPackage));
+      if (_notEquals) {
+        String _format = String.format(
+          "The declared package \'%s\' does not match the expected package \'%s\'", declaredPackage, expectedPackage);
+        this.addIssue(_format, script, 
+          null, 
+          IssueCodes.WRONG_PACKAGE);
+      }
+    }
+  }
+  
+  /**
+   * @param script
+   */
+  @Check(CheckType.NORMAL)
+  public void checkDuplicateTypes(final SarlScript script) {
+    QualifiedName packageName = null;
+    boolean _and = false;
+    String _name = script.getName();
+    boolean _tripleNotEquals = (_name != null);
+    if (!_tripleNotEquals) {
+      _and = false;
+    } else {
+      String _name_1 = script.getName();
+      boolean _isEmpty = _name_1.isEmpty();
+      boolean _not = (!_isEmpty);
+      _and = _not;
+    }
+    if (_and) {
+      String _name_2 = script.getName();
+      String[] _split = _name_2.split("\\.");
+      QualifiedName _create = QualifiedName.create(_split);
+      packageName = _create;
+    } else {
+      QualifiedName _create_1 = QualifiedName.create();
+      packageName = _create_1;
+    }
+    TreeSet<QualifiedName> names = new TreeSet<QualifiedName>();
+    EList<TopElement> _elements = script.getElements();
+    for (final TopElement feature : _elements) {
+      if ((feature instanceof NamedElement)) {
+        String _name_3 = ((NamedElement)feature).getName();
+        final QualifiedName featureName = packageName.append(_name_3);
+        boolean _contains = names.contains(featureName);
+        if (_contains) {
+          String _string = featureName.toString();
+          Resource _eResource = script.eResource();
+          URI _uRI = _eResource.getURI();
+          String _format = String.format(
+            "Duplicate definition of the type \'%s\' in the file \'%s\'", _string, _uRI);
+          this.error(_format, feature, 
+            null, 
+            IssueCodes.DUPLICATE_TYPE_NAME);
+        } else {
+          names.add(featureName);
+        }
+      }
+    }
+  }
+  
   /**
    * @param feature
    */
@@ -110,7 +318,7 @@ public class SARLValidator extends AbstractSARLValidator {
           "A default value cannot be declared for the variadic formal parameter \'%s\'.", _name);
         this.error(_format, lastParam, 
           null, 
-          IssueCodes.DEFAULT_VALUE_FOR_VARIADIC_PARAMETER);
+          IssueCodes.INVALID_USE_OF_VAR_ARG);
       }
     }
   }
@@ -128,7 +336,6 @@ public class SARLValidator extends AbstractSARLValidator {
       String _format = String.format("Type mismatch: cannot convert from %s to %s", _nameOfTypes, _canonicalName);
       this.error(_format, param, 
         null, 
-        ValidationMessageAcceptor.INSIGNIFICANT_INDEX, 
         org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES);
     }
   }
@@ -209,10 +416,10 @@ public class SARLValidator extends AbstractSARLValidator {
                   String _name_3 = featureContainer.getName();
                   String _name_4 = ((Attribute)feature).getName();
                   String _format = String.format(
-                    "Cannot define many times the same feature in \'%s\': %s", _name_3, _name_4);
+                    "Duplicate field in \'%s\': %s", _name_3, _name_4);
                   this.error(_format, feature, 
                     null, 
-                    IssueCodes.FIELD_ALREADY_DEFINED);
+                    IssueCodes.DUPLICATE_FIELD);
                 }
               }
             }
@@ -241,10 +448,10 @@ public class SARLValidator extends AbstractSARLValidator {
                 String _plus = ((name + "(") + _string);
                 String _plus_1 = (_plus + ")");
                 String _format_1 = String.format(
-                  "Cannot define many times the same feature in \'%s\': %s", _name_5, _plus_1);
+                  "Duplicate action in \'%s\': %s", _name_5, _plus_1);
                 this.error(_format_1, feature, 
                   null, 
-                  IssueCodes.ACTION_ALREADY_DEFINED);
+                  IssueCodes.DUPLICATE_METHOD);
               }
             }
           }
@@ -266,7 +473,7 @@ public class SARLValidator extends AbstractSARLValidator {
         "Invalid action name \'%s\'. You must not give to an action a name that is starting with \'_handle_\'. This prefix is reserved by the SARL compiler.", _name_1);
       this.error(_format, action, 
         null, 
-        IssueCodes.INVALID_ACTION_NAME);
+        IssueCodes.INVALID_MEMBER_NAME);
     }
   }
   
@@ -283,7 +490,7 @@ public class SARLValidator extends AbstractSARLValidator {
         "Invalid attribute name \'%s\'. You must not give to an attribute a name that is starting with \'___FORMAL_PARAMETER_DEFAULT_VALUE_\'. This prefix is reserved by the SARL compiler.", _name_1);
       this.error(_format, attribute, 
         null, 
-        IssueCodes.INVALID_ATTRIBUTE_NAME);
+        IssueCodes.INVALID_MEMBER_NAME);
     }
   }
   
@@ -374,7 +581,7 @@ public class SARLValidator extends AbstractSARLValidator {
         String _canonicalName_1 = this.canonicalName(superType);
         String _format = String.format(
           "The feature \'%s\' is already implemented by the super type \'%s\'.", _canonicalName, _canonicalName_1);
-        this.warning(_format, interfaceReference, 
+        this.addIssue(_format, interfaceReference, 
           null, 
           IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION);
         return;
@@ -387,7 +594,7 @@ public class SARLValidator extends AbstractSARLValidator {
         String _canonicalName_3 = this.canonicalName(previousInterface);
         String _format_1 = String.format(
           "The feature \'%s\' is already implemented by the preceding interface \'%s\'.", _canonicalName_2, _canonicalName_3);
-        this.warning(_format_1, interfaceReference, 
+        this.addIssue(_format_1, interfaceReference, 
           null, 
           IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION);
         return;
@@ -426,7 +633,7 @@ public class SARLValidator extends AbstractSARLValidator {
       Map<SignatureKey, JvmConstructor> superConstructors = new TreeMap<SignatureKey, JvmConstructor>();
       ModelUtil.populateInheritanceContext(jvmElement, finalOperations, overridableOperations, inheritedFields, operationsToImplement, superConstructors, this.sarlSignatureProvider);
       this.checkRedundantInterfaces(jvmElement);
-      boolean _isIgnored = this.isIgnored(IssueCodes.FIELD_NAME_SHADOWING);
+      boolean _isIgnored = this.isIgnored(org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING);
       boolean _not = (!_isIgnored);
       if (_not) {
         Iterable<JvmField> _declaredFields = jvmElement.getDeclaredFields();
@@ -446,7 +653,7 @@ public class SARLValidator extends AbstractSARLValidator {
                 "The field \'%s\' in \'%s\' is hidding the inherited field \'%s\'.", _simpleName_2, _qualifiedName, _qualifiedName_1);
               this.warning(_format, feature, 
                 null, 
-                IssueCodes.FIELD_NAME_SHADOWING);
+                org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING);
             }
           }
         }
@@ -467,7 +674,7 @@ public class SARLValidator extends AbstractSARLValidator {
               "Cannot override the operation %s, which is declared a final in the super type.", _string);
             this.error(_format_1, feature_1, 
               null, 
-              IssueCodes.OVERRIDE_FINAL_OPERATION);
+              IssueCodes.OVERRIDDEN_FINAL);
           } else {
             boolean _tripleNotEquals_2 = (implementedFunction != null);
             if (_tripleNotEquals_2) {
@@ -530,7 +737,7 @@ public class SARLValidator extends AbstractSARLValidator {
             "The operation %s must be implemented.", _string);
           this.error(_format_1, element, 
             null, 
-            IssueCodes.MISSING_ACTION_IMPLEMENTATION);
+            IssueCodes.MISSING_METHOD_IMPLEMENTATION);
         }
       }
     }
@@ -562,7 +769,7 @@ public class SARLValidator extends AbstractSARLValidator {
               "Cannot extend the final type \'%s\'.", _qualifiedName);
             this.error(_format, element, 
               null, 
-              IssueCodes.FINAL_TYPE_EXTENSION);
+              IssueCodes.OVERRIDDEN_FINAL);
           }
         }
       }
@@ -583,7 +790,7 @@ public class SARLValidator extends AbstractSARLValidator {
           boolean _isIgnored = this.isIgnored(IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION);
           boolean _not = (!_isIgnored);
           if (_not) {
-            this.warning("Discouraged boolean value. The guard is always true.", guard, 
+            this.addIssue("Discouraged boolean value. The guard is always true.", guard, 
               null, 
               IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION);
           }
@@ -591,7 +798,7 @@ public class SARLValidator extends AbstractSARLValidator {
           boolean _isIgnored_1 = this.isIgnored(org.eclipse.xtext.xbase.validation.IssueCodes.UNREACHABLE_CODE);
           boolean _not_1 = (!_isIgnored_1);
           if (_not_1) {
-            this.warning("Dead code. The guard is always false.", behaviorUnit, 
+            this.addIssue("Dead code. The guard is always false.", behaviorUnit, 
               null, 
               org.eclipse.xtext.xbase.validation.IssueCodes.UNREACHABLE_CODE);
           }
@@ -608,7 +815,6 @@ public class SARLValidator extends AbstractSARLValidator {
         XExpression _guard = behaviorUnit.getGuard();
         this.error(_format, _guard, 
           null, 
-          ValidationMessageAcceptor.INSIGNIFICANT_INDEX, 
           org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES);
       }
     }

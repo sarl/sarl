@@ -91,8 +91,8 @@ public class CapacityParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
       this._validationTestHelper.assertError(mas, _actionSignature, 
-        io.sarl.lang.validation.IssueCodes.ACTION_ALREADY_DEFINED, 
-        "Cannot define many times the same feature in \'C1\': myaction(a : int)");
+        io.sarl.lang.validation.IssueCodes.DUPLICATE_METHOD, 
+        "Duplicate action in \'C1\': myaction(a : int)");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -120,8 +120,8 @@ public class CapacityParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _action = SarlPackage.eINSTANCE.getAction();
       this._validationTestHelper.assertError(mas, _action, 
-        io.sarl.lang.validation.IssueCodes.ACTION_ALREADY_DEFINED, 
-        "Cannot define many times the same feature in \'S1\': myaction(a : int)");
+        io.sarl.lang.validation.IssueCodes.DUPLICATE_METHOD, 
+        "Duplicate action in \'S1\': myaction(a : int)");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -149,8 +149,8 @@ public class CapacityParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
-        io.sarl.lang.validation.IssueCodes.FIELD_ALREADY_DEFINED, 
-        "Cannot define many times the same feature in \'S1\': myfield");
+        io.sarl.lang.validation.IssueCodes.DUPLICATE_FIELD, 
+        "Duplicate field in \'S1\': myfield");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -178,8 +178,8 @@ public class CapacityParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
-        io.sarl.lang.validation.IssueCodes.FIELD_ALREADY_DEFINED, 
-        "Cannot define many times the same feature in \'S1\': myfield");
+        io.sarl.lang.validation.IssueCodes.DUPLICATE_FIELD, 
+        "Duplicate field in \'S1\': myfield");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -205,7 +205,7 @@ public class CapacityParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
       this._validationTestHelper.assertError(mas, _actionSignature, 
-        io.sarl.lang.validation.IssueCodes.INVALID_ACTION_NAME, 
+        io.sarl.lang.validation.IssueCodes.INVALID_MEMBER_NAME, 
         "Invalid action name \'_handle_myaction\'.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -252,7 +252,7 @@ public class CapacityParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
       this._validationTestHelper.assertError(mas, _actionSignature, 
-        io.sarl.lang.validation.IssueCodes.INVALID_ACTION_NAME, 
+        io.sarl.lang.validation.IssueCodes.INVALID_MEMBER_NAME, 
         "Invalid action name \'_handle_myaction\'.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -339,7 +339,7 @@ public class CapacityParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _jvmField = TypesPackage.eINSTANCE.getJvmField();
       this._validationTestHelper.assertWarning(mas, _jvmField, 
-        io.sarl.lang.validation.IssueCodes.FIELD_NAME_SHADOWING, 
+        IssueCodes.VARIABLE_NAME_SHADOWING, 
         "The field \'field1\' in \'S2\' is hidding the inherited field \'S1.field1\'.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -479,7 +479,7 @@ public class CapacityParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _skill = SarlPackage.eINSTANCE.getSkill();
       this._validationTestHelper.assertError(mas, _skill, 
-        io.sarl.lang.validation.IssueCodes.MISSING_ACTION_IMPLEMENTATION, 
+        io.sarl.lang.validation.IssueCodes.MISSING_METHOD_IMPLEMENTATION, 
         "The operation myaction1(int) must be implemented.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -517,7 +517,7 @@ public class CapacityParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _skill = SarlPackage.eINSTANCE.getSkill();
       this._validationTestHelper.assertError(mas, _skill, 
-        io.sarl.lang.validation.IssueCodes.MISSING_ACTION_IMPLEMENTATION, 
+        io.sarl.lang.validation.IssueCodes.MISSING_METHOD_IMPLEMENTATION, 
         "The operation myaction1(int) must be implemented.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);

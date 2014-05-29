@@ -76,7 +76,7 @@ class EventParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.attribute,
-			IssueCodes::INVALID_ATTRIBUTE_NAME,
+			IssueCodes::INVALID_MEMBER_NAME,
 			"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.")
 	}
 
@@ -91,7 +91,7 @@ class EventParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.attribute,
-			IssueCodes::INVALID_ATTRIBUTE_NAME,
+			IssueCodes::INVALID_MEMBER_NAME,
 			"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.")
 	}
 
@@ -106,8 +106,8 @@ class EventParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.attribute,
-			IssueCodes::FIELD_ALREADY_DEFINED,
-			"Cannot define many times the same feature in 'E1': myfield")
+			IssueCodes::DUPLICATE_FIELD,
+			"Duplicate field in 'E1': myfield")
 	}
 
 	@Test
@@ -121,8 +121,8 @@ class EventParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.attribute,
-			IssueCodes::FIELD_ALREADY_DEFINED,
-			"Cannot define many times the same feature in 'E1': myfield")
+			IssueCodes::DUPLICATE_FIELD,
+			"Duplicate field in 'E1': myfield")
 	}
 
 	@Test
@@ -138,7 +138,7 @@ class EventParsingTest {
 		'''.parse
 		mas.assertWarning(
 			TypesPackage::eINSTANCE.jvmField,
-			IssueCodes::FIELD_NAME_SHADOWING,
+			org.eclipse.xtext.xbase.validation.IssueCodes::VARIABLE_NAME_SHADOWING,
 			"The field 'field1' in 'E1' is hidding the inherited field 'E0.field1'.")
 	}
 

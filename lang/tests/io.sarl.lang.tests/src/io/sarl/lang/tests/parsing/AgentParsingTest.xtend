@@ -167,8 +167,8 @@ class AgentParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.action,
-			IssueCodes::ACTION_ALREADY_DEFINED,
-			"Cannot define many times the same feature in 'A1': myaction(a : int)")
+			IssueCodes::DUPLICATE_METHOD,
+			"Duplicate action in 'A1': myaction(a : int)")
 	}
 
 	@Test
@@ -182,8 +182,8 @@ class AgentParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.attribute,
-			IssueCodes::FIELD_ALREADY_DEFINED,
-			"Cannot define many times the same feature in 'A1': myfield")
+			IssueCodes::DUPLICATE_FIELD,
+			"Duplicate field in 'A1': myfield")
 	}
 
 	@Test
@@ -197,8 +197,8 @@ class AgentParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.attribute,
-			IssueCodes::FIELD_ALREADY_DEFINED,
-			"Cannot define many times the same feature in 'A1': myfield")
+			IssueCodes::DUPLICATE_FIELD,
+			"Duplicate field in 'A1': myfield")
 	}
 
 	@Test
@@ -218,7 +218,7 @@ class AgentParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.actionSignature,
-			IssueCodes::INVALID_ACTION_NAME,
+			IssueCodes::INVALID_MEMBER_NAME,
 			"Invalid action name '_handle_myaction'.")
 	}
 
@@ -233,7 +233,7 @@ class AgentParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.attribute,
-			IssueCodes::INVALID_ATTRIBUTE_NAME,
+			IssueCodes::INVALID_MEMBER_NAME,
 			"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.")
 	}
 
@@ -248,7 +248,7 @@ class AgentParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.attribute,
-			IssueCodes::INVALID_ATTRIBUTE_NAME,
+			IssueCodes::INVALID_MEMBER_NAME,
 			"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.")
 	}
 
@@ -291,7 +291,7 @@ class AgentParsingTest {
 		'''.parse
 		mas.assertWarning(
 			TypesPackage::eINSTANCE.jvmField,
-			IssueCodes::FIELD_NAME_SHADOWING,
+			org.eclipse.xtext.xbase.validation.IssueCodes::VARIABLE_NAME_SHADOWING,
 			"The field 'field1' in 'A2' is hidding the inherited field 'A1.field1'.")
 	}
 
@@ -457,7 +457,7 @@ class AgentParsingTest {
 		'''.parse
 
 		mas.assertWarning(
-			XbasePackage::eINSTANCE.XExpression,
+			XbasePackage::eINSTANCE.XBooleanLiteral,
 			IssueCodes::DISCOURAGED_BOOLEAN_EXPRESSION,
 			"Discouraged boolean value. The guard is always true.")
 	}

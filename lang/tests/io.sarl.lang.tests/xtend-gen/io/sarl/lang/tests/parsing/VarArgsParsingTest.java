@@ -709,8 +709,8 @@ public class VarArgsParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _action = SarlPackage.eINSTANCE.getAction();
       this._validationTestHelper.assertError(mas, _action, 
-        IssueCodes.ACTION_ALREADY_DEFINED, 
-        "Cannot define many times the same feature in \'B1\': myaction(arg0 : int, arg1 : int)");
+        IssueCodes.DUPLICATE_METHOD, 
+        "Duplicate action in \'B1\': myaction(arg0 : int, arg1 : int)");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

@@ -24,6 +24,8 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
 
 /**
  * Patches for the bug 434912 in Xtend.
+ * <p>
+ * Pull-request: {@link "https://github.com/eclipse/xtext/pull/2"}
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -43,6 +45,8 @@ class XtendBug434912 {
 	 * 
 	 * Copied/pasted from {@link JvmTypesBuilder#toEquals}.
 	 * Updated for fixing the issue {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=434912"}
+	 * 
+	 * Pull-request: {@link "https://github.com/eclipse/xtext/pull/2"} 
 	 *
 	 * @param owner 
 	 * @param sourceElement

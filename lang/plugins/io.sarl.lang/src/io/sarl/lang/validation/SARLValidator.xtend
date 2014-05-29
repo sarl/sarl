@@ -15,50 +15,52 @@
  */
 package io.sarl.lang.validation
 
+import static io.sarl.lang.util.ModelUtil.*
+import java.util.Arrays
+import org.eclipse.xtext.validation.CheckType
 import com.google.inject.Inject
-import io.sarl.lang.SARLKeywords
-import io.sarl.lang.core.Event
-import io.sarl.lang.sarl.Action
-import io.sarl.lang.sarl.ActionSignature
-import io.sarl.lang.sarl.Agent
-import io.sarl.lang.sarl.Attribute
-import io.sarl.lang.sarl.Behavior
-import io.sarl.lang.sarl.BehaviorUnit
-import io.sarl.lang.sarl.Capacity
-import io.sarl.lang.sarl.CapacityUses
-import io.sarl.lang.sarl.Constructor
-import io.sarl.lang.sarl.FeatureContainer
-import io.sarl.lang.sarl.FormalParameter
-import io.sarl.lang.sarl.ImplementingElement
-import io.sarl.lang.sarl.InheritingElement
+import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
+import io.sarl.lang.signature.ActionSignatureProvider
+import org.eclipse.xtext.validation.Check
+import io.sarl.lang.sarl.SarlScript
+import org.eclipse.xtext.naming.QualifiedName
+import java.util.TreeSet
+import io.sarl.lang.sarl.NamedElement
 import io.sarl.lang.sarl.ParameterizedFeature
-import io.sarl.lang.sarl.RequiredCapacity
-import io.sarl.lang.sarl.Skill
+import io.sarl.lang.sarl.FormalParameter
+import io.sarl.lang.sarl.FeatureContainer
+import java.util.Set
 import io.sarl.lang.signature.ActionKey
 import io.sarl.lang.signature.ActionNameKey
-import io.sarl.lang.signature.ActionSignatureProvider
 import io.sarl.lang.signature.SignatureKey
-import java.util.ArrayList
-import java.util.List
-import java.util.Map
-import java.util.Set
-import java.util.TreeMap
-import java.util.TreeSet
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.common.types.JvmConstructor
-import org.eclipse.xtext.common.types.JvmField
-import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
-import org.eclipse.xtext.common.types.JvmOperation
+import io.sarl.lang.sarl.Action
+import io.sarl.lang.sarl.ActionSignature
+import io.sarl.lang.sarl.Constructor
+import io.sarl.lang.SARLKeywords
+import io.sarl.lang.sarl.Attribute
+import org.eclipse.xtext.common.types.JvmGenericType
+import org.eclipse.emf.ecore.EObject
+import io.sarl.lang.sarl.Event
+import io.sarl.lang.sarl.Agent
+import io.sarl.lang.sarl.Behavior
+import io.sarl.lang.sarl.Skill
+import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmTypeReference
-import org.eclipse.xtext.validation.Check
-import org.eclipse.xtext.validation.CheckType
-import org.eclipse.xtext.validation.ValidationMessageAcceptor
-import org.eclipse.xtext.xbase.XBooleanLiteral
-import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
-
-import static io.sarl.lang.util.ModelUtil.*
+import java.util.List
+import java.util.ArrayList
+import io.sarl.lang.sarl.InheritingElement
+import java.util.TreeMap
+import org.eclipse.xtext.common.types.JvmOperation
+import java.util.Map
+import org.eclipse.xtext.common.types.JvmConstructor
+import io.sarl.lang.sarl.BehaviorUnit
+import org.eclipse.xtext.xbase.XBooleanLiteral
+import io.sarl.lang.sarl.CapacityUses
+import io.sarl.lang.core.Capacity
+import io.sarl.lang.sarl.RequiredCapacity
+import io.sarl.lang.sarl.ImplementingElement
 
 /**
  * Validator for the SARL elements.
@@ -83,6 +85,145 @@ class SARLValidator extends AbstractSARLValidator {
 	@Inject
 	private ActionSignatureProvider sarlSignatureProvider;
 
+	private static def int compareVersions(String v1, String v2) {
+		val t1 = v1.split("\\s*[.-]\\s*")
+		val t2 = v2.split("\\s*[.-]\\s*")
+		var String s1
+		var String s2
+		var int n1
+		var int n2
+		var int cmp
+		for(var i=0; i<t1.length || i<t2.length; i++) {
+			s1 = t1.get(i)
+			s2 = t2.get(i)
+			try {
+				if (i<t1.length) {
+					n1 = Integer.parseInt(s1)
+				}
+				else {
+					n1 = 0
+				}
+				if (i<t2.length) {
+					n2 = Integer.parseInt(s2)
+				}
+				else {
+					n2 = 0
+				}
+				cmp = Integer.compare(n1, n2)
+			}
+			catch(Exception e) {
+				// Treat the string elements
+				cmp = s1.compareTo(s2)
+			}
+			if (cmp!=0) return cmp
+		}
+		return 0
+	}
+
+	@Check(CheckType.NORMAL)
+	public def checkClassPath(SarlScript sarlScript) {
+		var typeReferences = services.typeReferences;
+
+		var version = System.getProperty("java.specification.version"); //$NON-NLS-1$
+				
+		if (version==null || version.empty ||
+			compareVersions(version, "1.7")<0) {
+			error(
+				"Couldn't find a JDK 1.7 or higher on the project's classpath.",
+				sarlScript,
+				null,
+				IssueCodes::JDK_NOT_ON_CLASSPATH);
+		}
+
+		if (typeReferences.findDeclaredType(ReassignFirstArgument, sarlScript) == null) {
+			error(
+				"Couldn't find the mandatory library 'org.eclipse.xtext.xbase.lib' 2.6.0 or higher on the project's classpath.",
+				sarlScript,
+				null,
+				IssueCodes::XBASE_LIB_NOT_ON_CLASSPATH)
+		}
+	}
+
+	protected def String getExpectedPackageName(SarlScript script) {
+		if (script.name!==null && !script.name.empty) {
+			var r = script.eResource
+			if (r!==null) {
+				var uri = r.URI
+				if (uri!==null) {
+					var String[] segments
+					{
+						var tab = uri.segments
+						if (tab.length>1) {
+							segments = Arrays.copyOf(tab, tab.length-1) 
+						}
+						else {
+							segments = #[]
+						}
+					}
+					var qn = QualifiedName::create(segments)
+					return qn.toString
+				}
+			}
+		}
+		return script.name
+	}
+	
+	/**
+	 * @param script
+	 */
+	@Check(CheckType.NORMAL)
+	public def checkFileNamingConventions(SarlScript script) {
+		if (!isIgnored(IssueCodes::WRONG_PACKAGE)) {
+			var expectedPackage = getExpectedPackageName(script);
+			var declaredPackage = script.name;
+			if (expectedPackage!=declaredPackage) {
+				addIssue(
+					String.format(
+						"The declared package '%s' does not match the expected package '%s'",
+						declaredPackage,
+						expectedPackage),
+					script, 
+					null, 
+					IssueCodes.WRONG_PACKAGE);
+			}
+		}
+	}
+
+	/**
+	 * @param script
+	 */
+	@Check(CheckType.NORMAL)
+	public def checkDuplicateTypes(SarlScript script) {
+		var QualifiedName packageName
+		if (script.name!==null && !script.name.empty) {
+			packageName = QualifiedName::create(script.name.split("\\."))
+		}
+		else {
+			packageName = QualifiedName.create()			
+		}
+		var names = new TreeSet<QualifiedName>
+		for(feature : script.elements) {
+			if (feature instanceof NamedElement) {
+				val QualifiedName featureName = packageName.append(feature.name)
+				// Check in the local file
+				if (names.contains(featureName)) {
+					error(
+							String.format(
+									"Duplicate definition of the type '%s' in the file '%s'",
+									featureName.toString,
+									script.eResource.URI), 
+							feature,
+							null,
+							IssueCodes.DUPLICATE_TYPE_NAME)
+				}
+				// Check in the rest of the class path
+				else {
+					names.add(featureName)
+				}
+			}
+		}
+	}
+
 	/**
 	 * @param feature
 	 */
@@ -97,7 +238,7 @@ class SARLValidator extends AbstractSARLValidator {
 								lastParam.name), 
 						lastParam,
 						null,
-						IssueCodes.DEFAULT_VALUE_FOR_VARIADIC_PARAMETER)
+						IssueCodes.INVALID_USE_OF_VAR_ARG)
 			}
 		}
 	}
@@ -110,7 +251,6 @@ class SARLValidator extends AbstractSARLValidator {
 					fromType.nameOfTypes, toType.canonicalName),
 					param,
 					null,
-					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_TYPES)
 		}
 	}
@@ -168,13 +308,13 @@ class SARLValidator extends AbstractSARLValidator {
 					if (!localFields.add(feature.name)) {
 						error(
 								String.format(
-										"Cannot define many times the same feature in '%s': %s",
+										"Duplicate field in '%s': %s",
 										featureContainer.name,
 										feature.name
 										), 
 								feature,
 								null,
-								IssueCodes::FIELD_ALREADY_DEFINED)
+								IssueCodes::DUPLICATE_FIELD)
 					}
 				}
 			}
@@ -185,13 +325,13 @@ class SARLValidator extends AbstractSARLValidator {
 						if (!localFunctions.add(key.toActionKey(name))) {
 							error(
 									String.format(
-											"Cannot define many times the same feature in '%s': %s",
+											"Duplicate action in '%s': %s",
 											featureContainer.name,
 											name+"("+sig.toString()+")"
 											), 
 									feature,
 									null,
-									IssueCodes::ACTION_ALREADY_DEFINED)
+									IssueCodes::DUPLICATE_METHOD)
 						}
 					}
 				}
@@ -212,7 +352,7 @@ class SARLValidator extends AbstractSARLValidator {
 							), 
 					action,
 					null,
-					IssueCodes::INVALID_ACTION_NAME)
+					IssueCodes::INVALID_MEMBER_NAME)
 		}
 	}
 
@@ -229,7 +369,7 @@ class SARLValidator extends AbstractSARLValidator {
 							), 
 					attribute,
 					null,
-					IssueCodes::INVALID_ATTRIBUTE_NAME)
+					IssueCodes::INVALID_MEMBER_NAME)
 		}
 	}
 
@@ -251,7 +391,7 @@ class SARLValidator extends AbstractSARLValidator {
 	 * @param event
 	 */
 	@Check(CheckType.FAST)
-	public def checkFinalFieldInitialization(io.sarl.lang.sarl.Event event) {
+	public def checkFinalFieldInitialization(Event event) {
 		var type = event.jvmGenericType
 		if (type!==null) {
 			type.checkFinalFieldInitialization
@@ -310,21 +450,21 @@ class SARLValidator extends AbstractSARLValidator {
 		if (jvmElement.getExtendedClass()!==null) {
 			var superType = jvmElement.extendedClass.toLightweightTypeReference
 			if (memberOfTypeHierarchy(superType, lightweightInterfaceReference)) {
-				warning(
-						String.format(
-								"The feature '%s' is already implemented by the super type '%s'.",
-								lightweightInterfaceReference.canonicalName,
-								superType.canonicalName),
-						interfaceReference,
-						null,
-						IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION)
+				addIssue(
+					String.format(
+							"The feature '%s' is already implemented by the super type '%s'.",
+							lightweightInterfaceReference.canonicalName,
+							superType.canonicalName),
+					interfaceReference,
+					null,
+					IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION)
 				return
 			}
 		}
 
 		for(previousInterface : knownInterfaces) {
 			if (memberOfTypeHierarchy(previousInterface, lightweightInterfaceReference)) {
-				warning(
+				addIssue(
 						String.format(
 								"The feature '%s' is already implemented by the preceding interface '%s'.",
 								lightweightInterfaceReference.canonicalName,
@@ -369,7 +509,7 @@ class SARLValidator extends AbstractSARLValidator {
 
 			checkRedundantInterfaces(jvmElement)
 
-			if (!IssueCodes::FIELD_NAME_SHADOWING.ignored) {
+			if (!org.eclipse.xtext.xbase.validation.IssueCodes::VARIABLE_NAME_SHADOWING.ignored) {
 				for(feature : jvmElement.declaredFields) {
 					if (!isHiddenAttribute(feature.simpleName)) {
 						var inheritedField = inheritedFields.get(feature.simpleName)
@@ -381,7 +521,7 @@ class SARLValidator extends AbstractSARLValidator {
 											inheritedField.qualifiedName),
 									feature,
 									null,
-									IssueCodes::FIELD_NAME_SHADOWING)
+									org.eclipse.xtext.xbase.validation.IssueCodes::VARIABLE_NAME_SHADOWING)
 						}
 					}
 				}
@@ -398,7 +538,7 @@ class SARLValidator extends AbstractSARLValidator {
 									actionKey.toString),
 							feature,
 							null,
-							IssueCodes::OVERRIDE_FINAL_OPERATION)
+							IssueCodes::OVERRIDDEN_FINAL)
 				}
 				else {
 					if (implementedFunction!==null) {
@@ -445,7 +585,7 @@ class SARLValidator extends AbstractSARLValidator {
 									key.toString),
 							element,
 							null,
-							IssueCodes::MISSING_ACTION_IMPLEMENTATION)
+							IssueCodes::MISSING_METHOD_IMPLEMENTATION)
 				}
 			}
 		}
@@ -467,7 +607,7 @@ class SARLValidator extends AbstractSARLValidator {
 									superType.qualifiedName),
 							element,
 							null,
-							IssueCodes::FINAL_TYPE_EXTENSION)
+							IssueCodes::OVERRIDDEN_FINAL)
 				}
 			}
 		}
@@ -483,7 +623,7 @@ class SARLValidator extends AbstractSARLValidator {
 			if (guard instanceof XBooleanLiteral) {
 				if (guard.isTrue) {
 					if (!isIgnored(IssueCodes::DISCOURAGED_BOOLEAN_EXPRESSION)) {
-						warning("Discouraged boolean value. The guard is always true.",
+						addIssue("Discouraged boolean value. The guard is always true.",
 								guard,
 								null,
 								IssueCodes::DISCOURAGED_BOOLEAN_EXPRESSION)
@@ -491,7 +631,7 @@ class SARLValidator extends AbstractSARLValidator {
 				}
 				else {
 					if (!isIgnored(org.eclipse.xtext.xbase.validation.IssueCodes::UNREACHABLE_CODE)) {
-						warning("Dead code. The guard is always false.",
+						addIssue("Dead code. The guard is always false.",
 								behaviorUnit,
 								null,
 								org.eclipse.xtext.xbase.validation.IssueCodes::UNREACHABLE_CODE)
@@ -506,7 +646,6 @@ class SARLValidator extends AbstractSARLValidator {
 						fromType.nameOfTypes, boolean.name),
 						behaviorUnit.guard,
 						null,
-						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 						org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_TYPES)
 			}
 		}
@@ -519,7 +658,7 @@ class SARLValidator extends AbstractSARLValidator {
 	public def checkCapacityTypeForUses(CapacityUses uses) {
 		for(usedType : uses.capacitiesUsed) {
 			var ref = usedType.toLightweightTypeReference
-			if (ref!==null && !ref.isSubtypeOf(io.sarl.lang.core.Capacity)) {
+			if (ref!==null && !ref.isSubtypeOf(Capacity)) {
 				error(
 						String.format(
 								"Invalid type: '%s'. Only capacities can be used after the keyword '%s'.",
@@ -539,7 +678,7 @@ class SARLValidator extends AbstractSARLValidator {
 	public def checkCapacityTypeForRequires(RequiredCapacity requires) {
 		for(requiredType : requires.requiredCapacities) {
 			var ref = requiredType.toLightweightTypeReference
-			if (ref!==null && !ref.isSubtypeOf(io.sarl.lang.core.Capacity)) {
+			if (ref!==null && !ref.isSubtypeOf(Capacity)) {
 				error(
 						String.format(
 								"Invalid type: '%s'. Only capacities can be used after the keyword '%s'.",
@@ -559,7 +698,7 @@ class SARLValidator extends AbstractSARLValidator {
 	public def checkActionSignatureFires(ActionSignature action) {
 		for(event : action.firedEvents) {
 			var ref = event.toLightweightTypeReference
-			if (ref!==null && !ref.isSubtypeOf(Event)) {
+			if (ref!==null && !ref.isSubtypeOf(io.sarl.lang.core.Event)) {
 				error(
 						String.format(
 								"Invalid type: '%s'. Only events can be used after the keyword '%s'.",
@@ -644,8 +783,8 @@ class SARLValidator extends AbstractSARLValidator {
 	 * @param action
 	 */
 	@Check(CheckType.FAST)
-	public def checkEventSuperType(io.sarl.lang.sarl.Event event) {
-		checkSuperTypes(event, Event, false)
+	public def checkEventSuperType(Event event) {
+		checkSuperTypes(event, io.sarl.lang.core.Event, false)
 	}
 
 	/**
@@ -668,8 +807,8 @@ class SARLValidator extends AbstractSARLValidator {
 	 * @param action
 	 */
 	@Check(CheckType.FAST)
-	public def checkCapacitySuperType(Capacity capacity) {
-		checkSuperTypes(capacity, io.sarl.lang.core.Capacity, false)
+	public def checkCapacitySuperType(io.sarl.lang.sarl.Capacity capacity) {
+		checkSuperTypes(capacity, Capacity, false)
 	}
 
 	/**
@@ -678,7 +817,7 @@ class SARLValidator extends AbstractSARLValidator {
 	@Check(CheckType.FAST)
 	public def checkSkillSuperType(Skill skill) {
 		checkSuperTypes(skill, io.sarl.lang.core.Skill, false)
-		checkImplementedTypes(skill, io.sarl.lang.core.Capacity, 1, true)
+		checkImplementedTypes(skill, Capacity, 1, true)
 	}
 
 	/**
@@ -691,7 +830,7 @@ class SARLValidator extends AbstractSARLValidator {
 		if (event!==null) {
 			var ref = event.toLightweightTypeReference
 			if (ref!==null && !ref.interfaceType 
-				&& ref.isSubtypeOf(Event)) {
+				&& ref.isSubtypeOf(io.sarl.lang.core.Event)) {
 				error = false
 			}
 		}

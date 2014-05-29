@@ -20,13 +20,13 @@ import io.sarl.lang.SARLInjectorProvider
 import io.sarl.lang.sarl.SarlPackage
 import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.validation.IssueCodes
+import org.eclipse.xtext.common.types.TypesPackage
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.eclipse.xtext.common.types.TypesPackage
 
 /**
  * @author $Author: sgalland$
@@ -51,8 +51,8 @@ class BehaviorParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.action,
-			IssueCodes::ACTION_ALREADY_DEFINED,
-			"Cannot define many times the same feature in 'B1': myaction(a : int)")
+			IssueCodes::DUPLICATE_METHOD,
+			"Duplicate action in 'B1': myaction(a : int)")
 	}
 
 	@Test
@@ -66,8 +66,8 @@ class BehaviorParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.attribute,
-			IssueCodes::FIELD_ALREADY_DEFINED,
-			"Cannot define many times the same feature in 'B1': myfield")
+			IssueCodes::DUPLICATE_FIELD,
+			"Duplicate field in 'B1': myfield")
 	}
 
 	@Test
@@ -81,8 +81,8 @@ class BehaviorParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.attribute,
-			IssueCodes::FIELD_ALREADY_DEFINED,
-			"Cannot define many times the same feature in 'B1': myfield")
+			IssueCodes::DUPLICATE_FIELD,
+			"Duplicate field in 'B1': myfield")
 	}
 
 	@Test
@@ -102,7 +102,7 @@ class BehaviorParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.actionSignature,
-			IssueCodes::INVALID_ACTION_NAME,
+			IssueCodes::INVALID_MEMBER_NAME,
 			"Invalid action name '_handle_myaction'.")
 	}
 
@@ -117,7 +117,7 @@ class BehaviorParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.attribute,
-			IssueCodes::INVALID_ATTRIBUTE_NAME,
+			IssueCodes::INVALID_MEMBER_NAME,
 			"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.")
 	}
 
@@ -132,7 +132,7 @@ class BehaviorParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.attribute,
-			IssueCodes::INVALID_ATTRIBUTE_NAME,
+			IssueCodes::INVALID_MEMBER_NAME,
 			"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.")
 	}
 
@@ -175,7 +175,7 @@ class BehaviorParsingTest {
 		'''.parse
 		mas.assertWarning(
 			TypesPackage::eINSTANCE.jvmField,
-			IssueCodes::FIELD_NAME_SHADOWING,
+			org.eclipse.xtext.xbase.validation.IssueCodes::VARIABLE_NAME_SHADOWING,
 			"The field 'field1' in 'B2' is hidding the inherited field 'B1.field1'.")
 	}
 
@@ -287,4 +287,35 @@ class BehaviorParsingTest {
 			"Invalid super-type: 'C1'. Only the type 'io.sarl.lang.core.Behavior' and one of its subtypes are allowed for 'B1'")
 	}
 
+	@Test
+	def void multipleParameterNames() {
+		val mas = '''
+			behavior B1 {
+				def myaction(a : int, b : int, c : int, b : int) {
+				}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.formalParameter,
+			org.eclipse.xtext.xbase.validation.IssueCodes::VARIABLE_NAME_SHADOWING,
+			"Duplicate local variable b")
+	}
+
+	@Test
+	def void duplicateTypeNames() {
+		val mas = '''
+			package io.sarl.test
+			behavior B1 {
+			}
+			behavior B2 {
+			}
+			behavior B1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.behavior,
+			IssueCodes::DUPLICATE_TYPE_NAME,
+			"Duplicate definition of the type 'io.sarl.test.B1' in the file '__synthetic0.sarl'")
+	}
+	
 }

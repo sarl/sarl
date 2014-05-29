@@ -115,7 +115,7 @@ public class EventParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
-        io.sarl.lang.validation.IssueCodes.INVALID_ATTRIBUTE_NAME, 
+        io.sarl.lang.validation.IssueCodes.INVALID_MEMBER_NAME, 
         "Invalid attribute name \'___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD\'. You must not give to an attribute a name that is starting with \'___FORMAL_PARAMETER_DEFAULT_VALUE_\'. This prefix is reserved by the SARL compiler.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -142,7 +142,7 @@ public class EventParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
-        io.sarl.lang.validation.IssueCodes.INVALID_ATTRIBUTE_NAME, 
+        io.sarl.lang.validation.IssueCodes.INVALID_MEMBER_NAME, 
         "Invalid attribute name \'___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD\'. You must not give to an attribute a name that is starting with \'___FORMAL_PARAMETER_DEFAULT_VALUE_\'. This prefix is reserved by the SARL compiler.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -169,8 +169,8 @@ public class EventParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
-        io.sarl.lang.validation.IssueCodes.FIELD_ALREADY_DEFINED, 
-        "Cannot define many times the same feature in \'E1\': myfield");
+        io.sarl.lang.validation.IssueCodes.DUPLICATE_FIELD, 
+        "Duplicate field in \'E1\': myfield");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -196,8 +196,8 @@ public class EventParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
-        io.sarl.lang.validation.IssueCodes.FIELD_ALREADY_DEFINED, 
-        "Cannot define many times the same feature in \'E1\': myfield");
+        io.sarl.lang.validation.IssueCodes.DUPLICATE_FIELD, 
+        "Duplicate field in \'E1\': myfield");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -227,7 +227,7 @@ public class EventParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _jvmField = TypesPackage.eINSTANCE.getJvmField();
       this._validationTestHelper.assertWarning(mas, _jvmField, 
-        io.sarl.lang.validation.IssueCodes.FIELD_NAME_SHADOWING, 
+        IssueCodes.VARIABLE_NAME_SHADOWING, 
         "The field \'field1\' in \'E1\' is hidding the inherited field \'E0.field1\'.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);

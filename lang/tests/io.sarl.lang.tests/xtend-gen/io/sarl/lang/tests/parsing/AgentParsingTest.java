@@ -276,8 +276,8 @@ public class AgentParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _action = SarlPackage.eINSTANCE.getAction();
       this._validationTestHelper.assertError(mas, _action, 
-        io.sarl.lang.validation.IssueCodes.ACTION_ALREADY_DEFINED, 
-        "Cannot define many times the same feature in \'A1\': myaction(a : int)");
+        io.sarl.lang.validation.IssueCodes.DUPLICATE_METHOD, 
+        "Duplicate action in \'A1\': myaction(a : int)");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -303,8 +303,8 @@ public class AgentParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
-        io.sarl.lang.validation.IssueCodes.FIELD_ALREADY_DEFINED, 
-        "Cannot define many times the same feature in \'A1\': myfield");
+        io.sarl.lang.validation.IssueCodes.DUPLICATE_FIELD, 
+        "Duplicate field in \'A1\': myfield");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -330,8 +330,8 @@ public class AgentParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
-        io.sarl.lang.validation.IssueCodes.FIELD_ALREADY_DEFINED, 
-        "Cannot define many times the same feature in \'A1\': myfield");
+        io.sarl.lang.validation.IssueCodes.DUPLICATE_FIELD, 
+        "Duplicate field in \'A1\': myfield");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -375,7 +375,7 @@ public class AgentParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
       this._validationTestHelper.assertError(mas, _actionSignature, 
-        io.sarl.lang.validation.IssueCodes.INVALID_ACTION_NAME, 
+        io.sarl.lang.validation.IssueCodes.INVALID_MEMBER_NAME, 
         "Invalid action name \'_handle_myaction\'.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -402,7 +402,7 @@ public class AgentParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
-        io.sarl.lang.validation.IssueCodes.INVALID_ATTRIBUTE_NAME, 
+        io.sarl.lang.validation.IssueCodes.INVALID_MEMBER_NAME, 
         "Invalid attribute name \'___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD\'. You must not give to an attribute a name that is starting with \'___FORMAL_PARAMETER_DEFAULT_VALUE_\'. This prefix is reserved by the SARL compiler.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -429,7 +429,7 @@ public class AgentParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
-        io.sarl.lang.validation.IssueCodes.INVALID_ATTRIBUTE_NAME, 
+        io.sarl.lang.validation.IssueCodes.INVALID_MEMBER_NAME, 
         "Invalid attribute name \'___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD\'. You must not give to an attribute a name that is starting with \'___FORMAL_PARAMETER_DEFAULT_VALUE_\'. This prefix is reserved by the SARL compiler.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -508,7 +508,7 @@ public class AgentParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _jvmField = TypesPackage.eINSTANCE.getJvmField();
       this._validationTestHelper.assertWarning(mas, _jvmField, 
-        io.sarl.lang.validation.IssueCodes.FIELD_NAME_SHADOWING, 
+        IssueCodes.VARIABLE_NAME_SHADOWING, 
         "The field \'field1\' in \'A2\' is hidding the inherited field \'A1.field1\'.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -814,8 +814,8 @@ public class AgentParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _xExpression = XbasePackage.eINSTANCE.getXExpression();
-      this._validationTestHelper.assertWarning(mas, _xExpression, 
+      EClass _xBooleanLiteral = XbasePackage.eINSTANCE.getXBooleanLiteral();
+      this._validationTestHelper.assertWarning(mas, _xBooleanLiteral, 
         io.sarl.lang.validation.IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION, 
         "Discouraged boolean value. The guard is always true.");
     } catch (Throwable _e) {

@@ -70,8 +70,8 @@ public class BehaviorParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _action = SarlPackage.eINSTANCE.getAction();
       this._validationTestHelper.assertError(mas, _action, 
-        IssueCodes.ACTION_ALREADY_DEFINED, 
-        "Cannot define many times the same feature in \'B1\': myaction(a : int)");
+        IssueCodes.DUPLICATE_METHOD, 
+        "Duplicate action in \'B1\': myaction(a : int)");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -97,8 +97,8 @@ public class BehaviorParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
-        IssueCodes.FIELD_ALREADY_DEFINED, 
-        "Cannot define many times the same feature in \'B1\': myfield");
+        IssueCodes.DUPLICATE_FIELD, 
+        "Duplicate field in \'B1\': myfield");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -124,8 +124,8 @@ public class BehaviorParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
-        IssueCodes.FIELD_ALREADY_DEFINED, 
-        "Cannot define many times the same feature in \'B1\': myfield");
+        IssueCodes.DUPLICATE_FIELD, 
+        "Duplicate field in \'B1\': myfield");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -169,7 +169,7 @@ public class BehaviorParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
       this._validationTestHelper.assertError(mas, _actionSignature, 
-        IssueCodes.INVALID_ACTION_NAME, 
+        IssueCodes.INVALID_MEMBER_NAME, 
         "Invalid action name \'_handle_myaction\'.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -196,7 +196,7 @@ public class BehaviorParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
-        IssueCodes.INVALID_ATTRIBUTE_NAME, 
+        IssueCodes.INVALID_MEMBER_NAME, 
         "Invalid attribute name \'___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD\'. You must not give to an attribute a name that is starting with \'___FORMAL_PARAMETER_DEFAULT_VALUE_\'. This prefix is reserved by the SARL compiler.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -223,7 +223,7 @@ public class BehaviorParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _attribute = SarlPackage.eINSTANCE.getAttribute();
       this._validationTestHelper.assertError(mas, _attribute, 
-        IssueCodes.INVALID_ATTRIBUTE_NAME, 
+        IssueCodes.INVALID_MEMBER_NAME, 
         "Invalid attribute name \'___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD\'. You must not give to an attribute a name that is starting with \'___FORMAL_PARAMETER_DEFAULT_VALUE_\'. This prefix is reserved by the SARL compiler.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -302,7 +302,7 @@ public class BehaviorParsingTest {
       final SarlScript mas = this._parseHelper.parse(_builder);
       EClass _jvmField = TypesPackage.eINSTANCE.getJvmField();
       this._validationTestHelper.assertWarning(mas, _jvmField, 
-        IssueCodes.FIELD_NAME_SHADOWING, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING, 
         "The field \'field1\' in \'B2\' is hidding the inherited field \'B1.field1\'.");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -520,6 +520,58 @@ public class BehaviorParsingTest {
       this._validationTestHelper.assertError(mas, _behavior, 
         org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH, 
         "Invalid super-type: \'C1\'. Only the type \'io.sarl.lang.core.Behavior\' and one of its subtypes are allowed for \'B1\'");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void multipleParameterNames() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("behavior B1 {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("def myaction(a : int, b : int, c : int, b : int) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _formalParameter = SarlPackage.eINSTANCE.getFormalParameter();
+      this._validationTestHelper.assertError(mas, _formalParameter, 
+        org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING, 
+        "Duplicate local variable b");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void duplicateTypeNames() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("package io.sarl.test");
+      _builder.newLine();
+      _builder.append("behavior B1 {");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("behavior B2 {");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("behavior B1 {");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final SarlScript mas = this._parseHelper.parse(_builder);
+      EClass _behavior = SarlPackage.eINSTANCE.getBehavior();
+      this._validationTestHelper.assertError(mas, _behavior, 
+        IssueCodes.DUPLICATE_TYPE_NAME, 
+        "Duplicate definition of the type \'io.sarl.test.B1\' in the file \'__synthetic0.sarl\'");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

@@ -79,7 +79,7 @@ public class ModelUtil {
 			}
 		}
 	}
-	
+
 	/** Analyzing the type hierarchy of the given element, and
 	 * extract any type-related information.
 	 * 
@@ -146,7 +146,7 @@ public class ModelUtil {
 					}
 				}
 			}
-			
+
 			if (superConstructors!=null) {
 				for(JvmConstructor cons : parentType.getDeclaredConstructors()) {
 					SignatureKey sig = sarlSignatureProvider.createSignatureIDFromJvmModel(cons.isVarArgs(), cons.getParameters());
@@ -295,7 +295,7 @@ public class ModelUtil {
 		}
 		return true;
 	}
-			
+
 	/** Convert a type reference to a lightweight type reference.
 	 * 
 	 * @param typeRef - reference to convert.
@@ -305,7 +305,7 @@ public class ModelUtil {
 	public static LightweightTypeReference toLightweightTypeReference(JvmTypeReference typeRef, CommonTypeComputationServices services) {
 		return toLightweightTypeReference(typeRef, services, false);
 	}
-	
+
 	/** Convert a type reference to a lightweight type reference.
 	 * 
 	 * @param typeRef - reference to convert.
@@ -343,5 +343,5 @@ public class ModelUtil {
 		}
 		return null;
 	}
-
+	
 }

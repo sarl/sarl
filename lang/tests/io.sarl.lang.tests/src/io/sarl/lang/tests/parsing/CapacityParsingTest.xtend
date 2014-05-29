@@ -65,8 +65,8 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.actionSignature,
-			IssueCodes::ACTION_ALREADY_DEFINED,
-			"Cannot define many times the same feature in 'C1': myaction(a : int)")
+			IssueCodes::DUPLICATE_METHOD,
+			"Duplicate action in 'C1': myaction(a : int)")
 	}
 
 	@Test
@@ -81,8 +81,8 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.action,
-			IssueCodes::ACTION_ALREADY_DEFINED,
-			"Cannot define many times the same feature in 'S1': myaction(a : int)")
+			IssueCodes::DUPLICATE_METHOD,
+			"Duplicate action in 'S1': myaction(a : int)")
 	}
 	
 	@Test
@@ -97,8 +97,8 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.attribute,
-			IssueCodes::FIELD_ALREADY_DEFINED,
-			"Cannot define many times the same feature in 'S1': myfield")
+			IssueCodes::DUPLICATE_FIELD,
+			"Duplicate field in 'S1': myfield")
 	}
 
 	@Test
@@ -113,8 +113,8 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.attribute,
-			IssueCodes::FIELD_ALREADY_DEFINED,
-			"Cannot define many times the same feature in 'S1': myfield")
+			IssueCodes::DUPLICATE_FIELD,
+			"Duplicate field in 'S1': myfield")
 	}
 
 	@Test
@@ -128,7 +128,7 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.actionSignature,
-			IssueCodes::INVALID_ACTION_NAME,
+			IssueCodes::INVALID_MEMBER_NAME,
 			"Invalid action name '_handle_myaction'.")
 	}
 
@@ -150,7 +150,7 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage::eINSTANCE.actionSignature,
-			IssueCodes::INVALID_ACTION_NAME,
+			IssueCodes::INVALID_MEMBER_NAME,
 			"Invalid action name '_handle_myaction'.")
 	}
 
@@ -197,7 +197,7 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertWarning(
 			TypesPackage::eINSTANCE.jvmField,
-			IssueCodes::FIELD_NAME_SHADOWING,
+			org.eclipse.xtext.xbase.validation.IssueCodes::VARIABLE_NAME_SHADOWING,
 			"The field 'field1' in 'S2' is hidding the inherited field 'S1.field1'.")
 	}
 
@@ -277,7 +277,7 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage.eINSTANCE.skill,
-			IssueCodes::MISSING_ACTION_IMPLEMENTATION,
+			IssueCodes::MISSING_METHOD_IMPLEMENTATION,
 			"The operation myaction1(int) must be implemented.")
 	}
 
@@ -297,7 +297,7 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			SarlPackage.eINSTANCE.skill,
-			IssueCodes::MISSING_ACTION_IMPLEMENTATION,
+			IssueCodes::MISSING_METHOD_IMPLEMENTATION,
 			"The operation myaction1(int) must be implemented.")
 	}
 
