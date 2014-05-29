@@ -4,6 +4,7 @@
 package io.sarl.lang.ui;
 
 import io.sarl.lang.ui.custom.SARLHighlightingCalculator;
+import io.sarl.lang.ui.validation.SARLUIValidator;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.ISemanticHighlightingCalculator;
@@ -31,4 +32,18 @@ public class SARLUiModule extends io.sarl.lang.ui.AbstractSARLUiModule {
 		//
 		return SARLHighlightingCalculator.class;
 	}
+	
+	/** {@inheritDoc}
+	 */
+	@Override
+	@org.eclipse.xtext.service.SingletonBinding(eager=true)
+	public Class<? extends org.eclipse.xtext.xbase.ui.validation.XbaseUIValidator> bindXbaseUIValidator() {
+		assert(
+				super.bindXbaseUIValidator().isAssignableFrom(
+						SARLUIValidator.class))
+						: "The class SARLUIValidator does not extend the class provided by default by Xbase"; //$NON-NLS-1$
+		//
+		return SARLUIValidator.class;
+	}
+		
 }

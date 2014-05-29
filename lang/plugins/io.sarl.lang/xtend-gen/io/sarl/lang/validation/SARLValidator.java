@@ -47,7 +47,6 @@ import io.sarl.lang.util.ModelUtil;
 import io.sarl.lang.validation.AbstractSARLValidator;
 import io.sarl.lang.validation.IssueCodes;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -187,68 +186,6 @@ public class SARLValidator extends AbstractSARLValidator {
         "Couldn\'t find the mandatory library \'org.eclipse.xtext.xbase.lib\' 2.6.0 or higher on the project\'s classpath.", sarlScript, 
         null, 
         IssueCodes.XBASE_LIB_NOT_ON_CLASSPATH);
-    }
-  }
-  
-  protected String getExpectedPackageName(final SarlScript script) {
-    boolean _and = false;
-    String _name = script.getName();
-    boolean _tripleNotEquals = (_name != null);
-    if (!_tripleNotEquals) {
-      _and = false;
-    } else {
-      String _name_1 = script.getName();
-      boolean _isEmpty = _name_1.isEmpty();
-      boolean _not = (!_isEmpty);
-      _and = _not;
-    }
-    if (_and) {
-      Resource r = script.eResource();
-      boolean _tripleNotEquals_1 = (r != null);
-      if (_tripleNotEquals_1) {
-        URI uri = r.getURI();
-        boolean _tripleNotEquals_2 = (uri != null);
-        if (_tripleNotEquals_2) {
-          String[] segments = null;
-          {
-            String[] tab = uri.segments();
-            int _length = tab.length;
-            boolean _greaterThan = (_length > 1);
-            if (_greaterThan) {
-              int _length_1 = tab.length;
-              int _minus = (_length_1 - 1);
-              String[] _copyOf = Arrays.<String>copyOf(tab, _minus);
-              segments = _copyOf;
-            } else {
-              segments = new String[] {};
-            }
-          }
-          QualifiedName qn = QualifiedName.create(segments);
-          return qn.toString();
-        }
-      }
-    }
-    return script.getName();
-  }
-  
-  /**
-   * @param script
-   */
-  @Check(CheckType.NORMAL)
-  public void checkFileNamingConventions(final SarlScript script) {
-    boolean _isIgnored = this.isIgnored(IssueCodes.WRONG_PACKAGE);
-    boolean _not = (!_isIgnored);
-    if (_not) {
-      String expectedPackage = this.getExpectedPackageName(script);
-      String declaredPackage = script.getName();
-      boolean _notEquals = (!Objects.equal(expectedPackage, declaredPackage));
-      if (_notEquals) {
-        String _format = String.format(
-          "The declared package \'%s\' does not match the expected package \'%s\'", declaredPackage, expectedPackage);
-        this.addIssue(_format, script, 
-          null, 
-          IssueCodes.WRONG_PACKAGE);
-      }
     }
   }
   

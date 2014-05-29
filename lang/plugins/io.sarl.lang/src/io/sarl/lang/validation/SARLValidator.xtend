@@ -15,52 +15,52 @@
  */
 package io.sarl.lang.validation
 
-import static io.sarl.lang.util.ModelUtil.*
-import java.util.Arrays
-import org.eclipse.xtext.validation.CheckType
 import com.google.inject.Inject
-import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
-import io.sarl.lang.signature.ActionSignatureProvider
-import org.eclipse.xtext.validation.Check
-import io.sarl.lang.sarl.SarlScript
-import org.eclipse.xtext.naming.QualifiedName
-import java.util.TreeSet
-import io.sarl.lang.sarl.NamedElement
-import io.sarl.lang.sarl.ParameterizedFeature
-import io.sarl.lang.sarl.FormalParameter
-import io.sarl.lang.sarl.FeatureContainer
-import java.util.Set
-import io.sarl.lang.signature.ActionKey
-import io.sarl.lang.signature.ActionNameKey
-import io.sarl.lang.signature.SignatureKey
-import org.eclipse.xtext.common.types.JvmIdentifiableElement
+import io.sarl.lang.SARLKeywords
+import io.sarl.lang.core.Capacity
+import io.sarl.lang.core.Event
 import io.sarl.lang.sarl.Action
 import io.sarl.lang.sarl.ActionSignature
-import io.sarl.lang.sarl.Constructor
-import io.sarl.lang.SARLKeywords
-import io.sarl.lang.sarl.Attribute
-import org.eclipse.xtext.common.types.JvmGenericType
-import org.eclipse.emf.ecore.EObject
-import io.sarl.lang.sarl.Event
 import io.sarl.lang.sarl.Agent
+import io.sarl.lang.sarl.Attribute
 import io.sarl.lang.sarl.Behavior
-import io.sarl.lang.sarl.Skill
-import org.eclipse.xtext.common.types.JvmField
-import org.eclipse.xtext.common.types.JvmTypeReference
-import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
-import java.util.List
-import java.util.ArrayList
-import io.sarl.lang.sarl.InheritingElement
-import java.util.TreeMap
-import org.eclipse.xtext.common.types.JvmOperation
-import java.util.Map
-import org.eclipse.xtext.common.types.JvmConstructor
 import io.sarl.lang.sarl.BehaviorUnit
-import org.eclipse.xtext.xbase.XBooleanLiteral
 import io.sarl.lang.sarl.CapacityUses
-import io.sarl.lang.core.Capacity
-import io.sarl.lang.sarl.RequiredCapacity
+import io.sarl.lang.sarl.Constructor
+import io.sarl.lang.sarl.FeatureContainer
+import io.sarl.lang.sarl.FormalParameter
 import io.sarl.lang.sarl.ImplementingElement
+import io.sarl.lang.sarl.InheritingElement
+import io.sarl.lang.sarl.NamedElement
+import io.sarl.lang.sarl.ParameterizedFeature
+import io.sarl.lang.sarl.RequiredCapacity
+import io.sarl.lang.sarl.SarlScript
+import io.sarl.lang.sarl.Skill
+import io.sarl.lang.signature.ActionKey
+import io.sarl.lang.signature.ActionNameKey
+import io.sarl.lang.signature.ActionSignatureProvider
+import io.sarl.lang.signature.SignatureKey
+import java.util.ArrayList
+import java.util.List
+import java.util.Map
+import java.util.Set
+import java.util.TreeMap
+import java.util.TreeSet
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.common.types.JvmConstructor
+import org.eclipse.xtext.common.types.JvmField
+import org.eclipse.xtext.common.types.JvmGenericType
+import org.eclipse.xtext.common.types.JvmIdentifiableElement
+import org.eclipse.xtext.common.types.JvmOperation
+import org.eclipse.xtext.common.types.JvmTypeReference
+import org.eclipse.xtext.naming.QualifiedName
+import org.eclipse.xtext.validation.Check
+import org.eclipse.xtext.validation.CheckType
+import org.eclipse.xtext.xbase.XBooleanLiteral
+import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
+import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
+
+import static io.sarl.lang.util.ModelUtil.*
 
 /**
  * Validator for the SARL elements.
@@ -141,51 +141,6 @@ class SARLValidator extends AbstractSARLValidator {
 				sarlScript,
 				null,
 				IssueCodes::XBASE_LIB_NOT_ON_CLASSPATH)
-		}
-	}
-
-	protected def String getExpectedPackageName(SarlScript script) {
-		if (script.name!==null && !script.name.empty) {
-			var r = script.eResource
-			if (r!==null) {
-				var uri = r.URI
-				if (uri!==null) {
-					var String[] segments
-					{
-						var tab = uri.segments
-						if (tab.length>1) {
-							segments = Arrays.copyOf(tab, tab.length-1) 
-						}
-						else {
-							segments = #[]
-						}
-					}
-					var qn = QualifiedName::create(segments)
-					return qn.toString
-				}
-			}
-		}
-		return script.name
-	}
-	
-	/**
-	 * @param script
-	 */
-	@Check(CheckType.NORMAL)
-	public def checkFileNamingConventions(SarlScript script) {
-		if (!isIgnored(IssueCodes::WRONG_PACKAGE)) {
-			var expectedPackage = getExpectedPackageName(script);
-			var declaredPackage = script.name;
-			if (expectedPackage!=declaredPackage) {
-				addIssue(
-					String.format(
-						"The declared package '%s' does not match the expected package '%s'",
-						declaredPackage,
-						expectedPackage),
-					script, 
-					null, 
-					IssueCodes.WRONG_PACKAGE);
-			}
 		}
 	}
 
@@ -391,7 +346,7 @@ class SARLValidator extends AbstractSARLValidator {
 	 * @param event
 	 */
 	@Check(CheckType.FAST)
-	public def checkFinalFieldInitialization(Event event) {
+	public def checkFinalFieldInitialization(io.sarl.lang.sarl.Event event) {
 		var type = event.jvmGenericType
 		if (type!==null) {
 			type.checkFinalFieldInitialization
@@ -698,7 +653,7 @@ class SARLValidator extends AbstractSARLValidator {
 	public def checkActionSignatureFires(ActionSignature action) {
 		for(event : action.firedEvents) {
 			var ref = event.toLightweightTypeReference
-			if (ref!==null && !ref.isSubtypeOf(io.sarl.lang.core.Event)) {
+			if (ref!==null && !ref.isSubtypeOf(Event)) {
 				error(
 						String.format(
 								"Invalid type: '%s'. Only events can be used after the keyword '%s'.",
@@ -783,8 +738,8 @@ class SARLValidator extends AbstractSARLValidator {
 	 * @param action
 	 */
 	@Check(CheckType.FAST)
-	public def checkEventSuperType(Event event) {
-		checkSuperTypes(event, io.sarl.lang.core.Event, false)
+	public def checkEventSuperType(io.sarl.lang.sarl.Event event) {
+		checkSuperTypes(event, Event, false)
 	}
 
 	/**
@@ -830,7 +785,7 @@ class SARLValidator extends AbstractSARLValidator {
 		if (event!==null) {
 			var ref = event.toLightweightTypeReference
 			if (ref!==null && !ref.interfaceType 
-				&& ref.isSubtypeOf(io.sarl.lang.core.Event)) {
+				&& ref.isSubtypeOf(Event)) {
 				error = false
 			}
 		}
