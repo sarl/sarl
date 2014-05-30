@@ -99,8 +99,8 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _formalParameter = SarlPackage.eINSTANCE.getFormalParameter();
-      this._validationTestHelper.assertError(mas, _formalParameter, 
+      EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
+      this._validationTestHelper.assertError(mas, _actionSignature, 
         IssueCodes.INVALID_USE_OF_VAR_ARG, 
         "A default value cannot be declared for the variadic formal parameter");
     } catch (Throwable _e) {
@@ -423,8 +423,8 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _formalParameter = SarlPackage.eINSTANCE.getFormalParameter();
-      this._validationTestHelper.assertError(mas, _formalParameter, 
+      EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
+      this._validationTestHelper.assertError(mas, _actionSignature, 
         IssueCodes.INVALID_USE_OF_VAR_ARG, 
         "A default value cannot be declared for the variadic formal parameter");
     } catch (Throwable _e) {
@@ -558,10 +558,10 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _formalParameter = SarlPackage.eINSTANCE.getFormalParameter();
-      this._validationTestHelper.assertError(mas, _formalParameter, 
+      EClass _constructor = SarlPackage.eINSTANCE.getConstructor();
+      this._validationTestHelper.assertError(mas, _constructor, 
         IssueCodes.INVALID_USE_OF_VAR_ARG, 
-        "A default value cannot be declared for the variadic formal parameter");
+        "A default value cannot be declared for the variadic formal parameter \'arg\'");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -882,10 +882,10 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _formalParameter = SarlPackage.eINSTANCE.getFormalParameter();
-      this._validationTestHelper.assertError(mas, _formalParameter, 
+      EClass _constructor = SarlPackage.eINSTANCE.getConstructor();
+      this._validationTestHelper.assertError(mas, _constructor, 
         IssueCodes.INVALID_USE_OF_VAR_ARG, 
-        "A default value cannot be declared for the variadic formal parameter");
+        "A default value cannot be declared for the variadic formal parameter \'arg2\'");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -1005,8 +1005,8 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _formalParameter = SarlPackage.eINSTANCE.getFormalParameter();
-      this._validationTestHelper.assertError(mas, _formalParameter, 
+      EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
+      this._validationTestHelper.assertError(mas, _actionSignature, 
         IssueCodes.INVALID_USE_OF_VAR_ARG, 
         "A default value cannot be declared for the variadic formal parameter");
     } catch (Throwable _e) {
@@ -1257,8 +1257,8 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _formalParameter = SarlPackage.eINSTANCE.getFormalParameter();
-      this._validationTestHelper.assertError(mas, _formalParameter, 
+      EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
+      this._validationTestHelper.assertError(mas, _actionSignature, 
         IssueCodes.INVALID_USE_OF_VAR_ARG, 
         "A default value cannot be declared for the variadic formal parameter");
     } catch (Throwable _e) {
@@ -1382,8 +1382,8 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _formalParameter = SarlPackage.eINSTANCE.getFormalParameter();
-      this._validationTestHelper.assertError(mas, _formalParameter, 
+      EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
+      this._validationTestHelper.assertError(mas, _actionSignature, 
         IssueCodes.INVALID_USE_OF_VAR_ARG, 
         "A default value cannot be declared for the variadic formal parameter");
     } catch (Throwable _e) {
@@ -1754,8 +1754,8 @@ public class ArgDefaultValueParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _formalParameter = SarlPackage.eINSTANCE.getFormalParameter();
-      this._validationTestHelper.assertError(mas, _formalParameter, 
+      EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
+      this._validationTestHelper.assertError(mas, _actionSignature, 
         IssueCodes.INVALID_USE_OF_VAR_ARG, 
         "A default value cannot be declared for the variadic formal parameter");
     } catch (Throwable _e) {

@@ -66,7 +66,7 @@ class ArgDefaultValueParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.formalParameter,
+			SarlPackage::eINSTANCE.actionSignature,
 			io.sarl.lang.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
 			"A default value cannot be declared for the variadic formal parameter")
 	}
@@ -226,7 +226,7 @@ class ArgDefaultValueParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.formalParameter,
+			SarlPackage::eINSTANCE.actionSignature,
 			io.sarl.lang.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
 			"A default value cannot be declared for the variadic formal parameter")
 	}
@@ -293,9 +293,9 @@ class ArgDefaultValueParsingTest {
 			}
 		'''.parse 
 		mas.assertError(
-			SarlPackage::eINSTANCE.formalParameter,
+			SarlPackage::eINSTANCE.constructor,
 			io.sarl.lang.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
-			"A default value cannot be declared for the variadic formal parameter")
+			"A default value cannot be declared for the variadic formal parameter 'arg'")
 	}
 
 	@Test
@@ -453,9 +453,9 @@ class ArgDefaultValueParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.formalParameter,
+			SarlPackage::eINSTANCE.constructor,
 			io.sarl.lang.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
-			"A default value cannot be declared for the variadic formal parameter")
+			"A default value cannot be declared for the variadic formal parameter 'arg2'")
 	}
 
 	@Test
@@ -516,7 +516,7 @@ class ArgDefaultValueParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.formalParameter,
+			SarlPackage::eINSTANCE.actionSignature,
 			io.sarl.lang.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
 			"A default value cannot be declared for the variadic formal parameter")
 	}
@@ -652,7 +652,7 @@ class ArgDefaultValueParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.formalParameter,
+			SarlPackage::eINSTANCE.actionSignature,
 			io.sarl.lang.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
 			"A default value cannot be declared for the variadic formal parameter")
 	}
@@ -717,7 +717,7 @@ class ArgDefaultValueParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.formalParameter,
+			SarlPackage::eINSTANCE.actionSignature,
 			io.sarl.lang.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
 			"A default value cannot be declared for the variadic formal parameter")
 	}
@@ -901,7 +901,7 @@ class ArgDefaultValueParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.formalParameter,
+			SarlPackage::eINSTANCE.actionSignature,
 			io.sarl.lang.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
 			"A default value cannot be declared for the variadic formal parameter")
 	}

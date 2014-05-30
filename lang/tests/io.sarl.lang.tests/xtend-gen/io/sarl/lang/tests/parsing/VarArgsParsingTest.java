@@ -707,8 +707,8 @@ public class VarArgsParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _action = SarlPackage.eINSTANCE.getAction();
-      this._validationTestHelper.assertError(mas, _action, 
+      EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
+      this._validationTestHelper.assertError(mas, _actionSignature, 
         IssueCodes.DUPLICATE_METHOD, 
         "Duplicate action in \'B1\': myaction(arg0 : int, arg1 : int)");
     } catch (Throwable _e) {

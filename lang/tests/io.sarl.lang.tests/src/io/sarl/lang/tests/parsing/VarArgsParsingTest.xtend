@@ -371,7 +371,7 @@ class VarArgsParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.action,
+			SarlPackage::eINSTANCE.actionSignature,
 			io.sarl.lang.validation.IssueCodes::DUPLICATE_METHOD,
 			"Duplicate action in 'B1': myaction(arg0 : int, arg1 : int)")
 	}

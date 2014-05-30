@@ -34,6 +34,7 @@ import io.sarl.lang.sarl.InheritingElement
 import io.sarl.lang.sarl.NamedElement
 import io.sarl.lang.sarl.ParameterizedFeature
 import io.sarl.lang.sarl.RequiredCapacity
+import io.sarl.lang.sarl.SarlPackage
 import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.sarl.Skill
 import io.sarl.lang.signature.ActionKey
@@ -47,6 +48,7 @@ import java.util.Set
 import java.util.TreeMap
 import java.util.TreeSet
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.common.types.JvmConstructor
 import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmGenericType
@@ -56,11 +58,13 @@ import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.CheckType
+import org.eclipse.xtext.validation.ValidationMessageAcceptor
 import org.eclipse.xtext.xbase.XBooleanLiteral
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 
 import static io.sarl.lang.util.ModelUtil.*
+import org.eclipse.xtext.common.types.TypesPackage
 
 /**
  * Validator for the SARL elements.
@@ -84,41 +88,6 @@ class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private ActionSignatureProvider sarlSignatureProvider;
-
-	private static def int compareVersions(String v1, String v2) {
-		val t1 = v1.split("\\s*[.-]\\s*")
-		val t2 = v2.split("\\s*[.-]\\s*")
-		var String s1
-		var String s2
-		var int n1
-		var int n2
-		var int cmp
-		for(var i=0; i<t1.length || i<t2.length; i++) {
-			s1 = t1.get(i)
-			s2 = t2.get(i)
-			try {
-				if (i<t1.length) {
-					n1 = Integer.parseInt(s1)
-				}
-				else {
-					n1 = 0
-				}
-				if (i<t2.length) {
-					n2 = Integer.parseInt(s2)
-				}
-				else {
-					n2 = 0
-				}
-				cmp = Integer.compare(n1, n2)
-			}
-			catch(Exception e) {
-				// Treat the string elements
-				cmp = s1.compareTo(s2)
-			}
-			if (cmp!=0) return cmp
-		}
-		return 0
-	}
 
 	@Check(CheckType.NORMAL)
 	public def checkClassPath(SarlScript sarlScript) {
@@ -168,7 +137,8 @@ class SARLValidator extends AbstractSARLValidator {
 									featureName.toString,
 									script.eResource.URI), 
 							feature,
-							null,
+							SarlPackage.Literals::NAMED_ELEMENT__NAME,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 							IssueCodes.DUPLICATE_TYPE_NAME)
 				}
 				// Check in the rest of the class path
@@ -191,8 +161,9 @@ class SARLValidator extends AbstractSARLValidator {
 						String.format(
 								"A default value cannot be declared for the variadic formal parameter '%s'.",
 								lastParam.name), 
-						lastParam,
-						null,
+						feature,
+						SarlPackage.Literals::PARAMETERIZED_FEATURE__VARARGS,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 						IssueCodes.INVALID_USE_OF_VAR_ARG)
 			}
 		}
@@ -205,7 +176,8 @@ class SARLValidator extends AbstractSARLValidator {
 			error(String.format("Type mismatch: cannot convert from %s to %s",
 					fromType.nameOfTypes, toType.canonicalName),
 					param,
-					null,
+					SarlPackage.Literals::FORMAL_PARAMETER__DEFAULT_VALUE,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_TYPES)
 		}
 	}
@@ -232,6 +204,8 @@ class SARLValidator extends AbstractSARLValidator {
 		var ActionNameKey actionID
 		var SignatureKey signatureID
 		var String name
+		var EStructuralFeature errorStructFeature
+		var EObject errorFeature
 
 		var JvmIdentifiableElement container = null
 
@@ -244,21 +218,29 @@ class SARLValidator extends AbstractSARLValidator {
 				name = s.name
 				actionID = this.sarlSignatureProvider.createFunctionID(container, name)
 				signatureID = this.sarlSignatureProvider.createSignatureIDFromSarlModel(s.varargs, s.params)
+				errorFeature = s
+				errorStructFeature = SarlPackage.Literals::ACTION_SIGNATURE__NAME
 			}
 			else if (feature instanceof ActionSignature) {
 				name = feature.name
 				actionID = this.sarlSignatureProvider.createFunctionID(container, name)
 				signatureID = this.sarlSignatureProvider.createSignatureIDFromSarlModel(feature.varargs, feature.params)
+				errorFeature = feature
+				errorStructFeature = SarlPackage.Literals::ACTION_SIGNATURE__NAME
 			}
 			else if (feature instanceof Constructor) {
 				name = SARLKeywords.CONSTRUCTOR
 				actionID = this.sarlSignatureProvider.createConstructorID(container)
 				signatureID = this.sarlSignatureProvider.createSignatureIDFromSarlModel(feature.varargs, feature.params)
+				errorFeature = feature
+				errorStructFeature = null
 			}
 			else {
 				name = null
 				actionID = null
 				signatureID = null
+				errorFeature = null
+				errorStructFeature = null
 				if (feature instanceof Attribute) {
 					if (!localFields.add(feature.name)) {
 						error(
@@ -268,7 +250,8 @@ class SARLValidator extends AbstractSARLValidator {
 										feature.name
 										), 
 								feature,
-								null,
+								SarlPackage.Literals::ATTRIBUTE__NAME,
+								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 								IssueCodes::DUPLICATE_FIELD)
 					}
 				}
@@ -284,8 +267,9 @@ class SARLValidator extends AbstractSARLValidator {
 											featureContainer.name,
 											name+"("+sig.toString()+")"
 											), 
-									feature,
-									null,
+									errorFeature,
+									errorStructFeature,
+									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 									IssueCodes::DUPLICATE_METHOD)
 						}
 					}
@@ -306,7 +290,8 @@ class SARLValidator extends AbstractSARLValidator {
 							action.name
 							), 
 					action,
-					null,
+					SarlPackage.Literals::ACTION_SIGNATURE__NAME,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					IssueCodes::INVALID_MEMBER_NAME)
 		}
 	}
@@ -323,7 +308,8 @@ class SARLValidator extends AbstractSARLValidator {
 							attribute.name
 							), 
 					attribute,
-					null,
+					SarlPackage.Literals::ATTRIBUTE__NAME,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					IssueCodes::INVALID_MEMBER_NAME)
 		}
 	}
@@ -395,6 +381,7 @@ class SARLValidator extends AbstractSARLValidator {
 						), 
 				field,
 				null,
+				ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 				org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION)
 	}
 
@@ -412,6 +399,7 @@ class SARLValidator extends AbstractSARLValidator {
 							superType.canonicalName),
 					interfaceReference,
 					null,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION)
 				return
 			}
@@ -426,6 +414,7 @@ class SARLValidator extends AbstractSARLValidator {
 								previousInterface.canonicalName),
 						interfaceReference,
 						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 						IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION)
 				return
 			}
@@ -476,6 +465,7 @@ class SARLValidator extends AbstractSARLValidator {
 											inheritedField.qualifiedName),
 									feature,
 									null,
+									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 									org.eclipse.xtext.xbase.validation.IssueCodes::VARIABLE_NAME_SHADOWING)
 						}
 					}
@@ -493,6 +483,7 @@ class SARLValidator extends AbstractSARLValidator {
 									actionKey.toString),
 							feature,
 							null,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 							IssueCodes::OVERRIDDEN_FINAL)
 				}
 				else {
@@ -507,7 +498,8 @@ class SARLValidator extends AbstractSARLValidator {
 											inheritedReturnType.canonicalName,
 											actionKey.toString),
 									feature,
-									null,
+									TypesPackage::Literals::JVM_OPERATION__RETURN_TYPE,
+									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 									org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE)
 						}
 					}
@@ -524,7 +516,8 @@ class SARLValidator extends AbstractSARLValidator {
 												inheritedReturnType.canonicalName,
 												actionKey.toString),
 										feature,
-										null,
+										TypesPackage::Literals::JVM_OPERATION__RETURN_TYPE,
+										ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 										org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE);
 							}
 						}
@@ -540,6 +533,7 @@ class SARLValidator extends AbstractSARLValidator {
 									key.toString),
 							element,
 							null,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 							IssueCodes::MISSING_METHOD_IMPLEMENTATION)
 				}
 			}
@@ -561,7 +555,8 @@ class SARLValidator extends AbstractSARLValidator {
 									"Cannot extend the final type '%s'.",
 									superType.qualifiedName),
 							element,
-							null,
+							SarlPackage::Literals::INHERITING_ELEMENT__SUPER_TYPES,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 							IssueCodes::OVERRIDDEN_FINAL)
 				}
 			}
@@ -581,6 +576,7 @@ class SARLValidator extends AbstractSARLValidator {
 						addIssue("Discouraged boolean value. The guard is always true.",
 								guard,
 								null,
+								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 								IssueCodes::DISCOURAGED_BOOLEAN_EXPRESSION)
 					}
 				}
@@ -589,6 +585,7 @@ class SARLValidator extends AbstractSARLValidator {
 						addIssue("Dead code. The guard is always false.",
 								behaviorUnit,
 								null,
+								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 								org.eclipse.xtext.xbase.validation.IssueCodes::UNREACHABLE_CODE)
 					}
 				}
@@ -601,6 +598,7 @@ class SARLValidator extends AbstractSARLValidator {
 						fromType.nameOfTypes, boolean.name),
 						behaviorUnit.guard,
 						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 						org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_TYPES)
 			}
 		}
@@ -619,8 +617,9 @@ class SARLValidator extends AbstractSARLValidator {
 								"Invalid type: '%s'. Only capacities can be used after the keyword '%s'.",
 								usedType.qualifiedName,
 								SARLKeywords::USES),
-						uses,
+						usedType,
 						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 						org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
 			}
 		}
@@ -639,8 +638,9 @@ class SARLValidator extends AbstractSARLValidator {
 								"Invalid type: '%s'. Only capacities can be used after the keyword '%s'.",
 								requiredType.qualifiedName,
 								SARLKeywords::REQUIRES),
-						requires,
+						requiredType,
 						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 						org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
 			}
 		}
@@ -659,8 +659,9 @@ class SARLValidator extends AbstractSARLValidator {
 								"Invalid type: '%s'. Only events can be used after the keyword '%s'.",
 								event.qualifiedName,
 								SARLKeywords::FIRES),
-						action,
+						event,
 						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 						org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
 			}
 		}
@@ -686,8 +687,9 @@ class SARLValidator extends AbstractSARLValidator {
 								superType.qualifiedName,
 								expectedType.name,
 								element.name),
-						element,
+						superType,
 						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 						org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
 			}
 		}
@@ -714,8 +716,9 @@ class SARLValidator extends AbstractSARLValidator {
 								superType.qualifiedName,
 								expectedType.name,
 								element.name),
-						element,
+						superType,
 						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 						org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
 			}
 			else {
@@ -729,7 +732,8 @@ class SARLValidator extends AbstractSARLValidator {
 								expectedType.name,
 								element.name),
 						element,
-						null,
+						SarlPackage::Literals::IMPLEMENTING_ELEMENT__IMPLEMENTED_TYPES,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 						org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_TYPE)
 		}
 	}
@@ -781,22 +785,16 @@ class SARLValidator extends AbstractSARLValidator {
 	@Check(CheckType.FAST)
 	public def checkBehaviorUnitEventType(BehaviorUnit behaviorUnit) {
 		var event = behaviorUnit.event
-		var error = true
-		if (event!==null) {
-			var ref = event.toLightweightTypeReference
-			if (ref!==null && !ref.interfaceType 
-				&& ref.isSubtypeOf(Event)) {
-				error = false
-			}
-		}
-		if (error) {
+		var ref = event.toLightweightTypeReference
+		if (ref===null || ref.interfaceType || !ref.isSubtypeOf(Event)) {
 			error(
 					String.format(
 							"Invalid type: '%s'. Only events are allowed after the keyword '%s'.",
 							event.qualifiedName,
 							SARLKeywords.ON),
-					behaviorUnit,
+					event,
 					null,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
 		}
 	}

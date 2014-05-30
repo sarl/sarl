@@ -166,7 +166,7 @@ class AgentParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.action,
+			SarlPackage::eINSTANCE.actionSignature,
 			IssueCodes::DUPLICATE_METHOD,
 			"Duplicate action in 'A1': myaction(a : int)")
 	}
@@ -398,7 +398,7 @@ class AgentParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.agent,
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
 			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
 			"Invalid super-type: 'C1'. Only the type 'io.sarl.lang.core.Agent' and one of its subtypes are allowed for 'A1'")
 	}
@@ -409,11 +409,11 @@ class AgentParsingTest {
 			event E1
 			behavior B1 { }
 			agent A1 {
-				def myaction1 fires E1, B1
+				def myaction1 fires E1, B1 { }
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
 			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
 			"Invalid type: 'B1'. Only events can be used after the keyword 'fires'")
 	}
@@ -427,7 +427,7 @@ class AgentParsingTest {
 		'''.parse
 
 		mas.assertError(
-			SarlPackage::eINSTANCE.behaviorUnit,
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
 			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
 			"Invalid type: 'java.lang.String'. Only events are allowed after the keyword 'on'")
 	}

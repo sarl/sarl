@@ -50,7 +50,7 @@ class BehaviorParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.action,
+			SarlPackage::eINSTANCE.actionSignature,
 			IssueCodes::DUPLICATE_METHOD,
 			"Duplicate action in 'B1': myaction(a : int)")
 	}
@@ -282,7 +282,7 @@ class BehaviorParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.behavior,
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
 			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
 			"Invalid super-type: 'C1'. Only the type 'io.sarl.lang.core.Behavior' and one of its subtypes are allowed for 'B1'")
 	}

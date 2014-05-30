@@ -42,6 +42,8 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.OwnedConverter;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
+import com.ibm.icu.util.VersionInfo;
+
 /**
  * Utilities functions on JvmElements.
  * 
@@ -342,6 +344,52 @@ public class ModelUtil {
 			}
 		}
 		return null;
+	}
+	
+	/** Compare the two strings as they are version numbers.
+	 * 
+	 * @param v1
+	 * @param v2
+	 * @return Negative integer of <var>v1</var> is lower than <var>v2</var>;
+	 * positive integer of <var>v1</var> is greater than <var>v2</var>;
+	 * {@code 0} if they are strictly equal.
+	 */
+	public static int compareVersions(String v1, String v2) {
+		VersionInfo vi1 = VersionInfo.getInstance(v1);
+		VersionInfo vi2 = VersionInfo.getInstance(v2);
+		return vi1.compareTo(vi2);
+//		val t1 = v1.split("\\s*[.-]\\s*")
+//		val t2 = v2.split("\\s*[.-]\\s*")
+//		var String s1
+//		var String s2
+//		var int n1
+//		var int n2
+//		var int cmp
+//		for(var i=0; i<t1.length || i<t2.length; i++) {
+//			s1 = t1.get(i)
+//			s2 = t2.get(i)
+//			try {
+//				if (i<t1.length) {
+//					n1 = Integer.parseInt(s1)
+//				}
+//				else {
+//					n1 = 0
+//				}
+//				if (i<t2.length) {
+//					n2 = Integer.parseInt(s2)
+//				}
+//				else {
+//					n2 = 0
+//				}
+//				cmp = Integer.compare(n1, n2)
+//			}
+//			catch(Exception e) {
+//				// Treat the string elements
+//				cmp = s1.compareTo(s2)
+//			}
+//			if (cmp!=0) return cmp
+//		}
+//		return 0
 	}
 	
 }

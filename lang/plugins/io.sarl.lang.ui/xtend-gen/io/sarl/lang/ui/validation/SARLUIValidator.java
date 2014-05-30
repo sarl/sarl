@@ -32,7 +32,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IJavaProject;
@@ -43,6 +43,7 @@ import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
 import org.eclipse.xtext.util.Pair;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.validation.ValidationMessageAcceptor;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.ui.validation.XbaseUIValidator;
 
@@ -108,9 +109,10 @@ public class SARLUIValidator extends XbaseUIValidator {
         String _notNull = Strings.notNull(declaredPackage);
         String _notNull_1 = Strings.notNull(expectedPackage);
         String _format = String.format("The declared package \'%s\' does not match the expected package \'%s\'", _notNull, _notNull_1);
-        EAttribute _sarlScript_Name = SarlPackage.eINSTANCE.getSarlScript_Name();
-        this.addIssue(_format, _sarlScript_Name, 
-          null, 
+        EObject _currentObject = this.getCurrentObject();
+        this.addIssue(_format, _currentObject, 
+          SarlPackage.Literals.SARL_SCRIPT__NAME, 
+          ValidationMessageAcceptor.INSIGNIFICANT_INDEX, 
           IssueCodes.WRONG_PACKAGE, expectedPackage);
       }
     }

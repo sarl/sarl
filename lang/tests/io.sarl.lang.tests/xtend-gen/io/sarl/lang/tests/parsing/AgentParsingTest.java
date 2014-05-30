@@ -274,8 +274,8 @@ public class AgentParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _action = SarlPackage.eINSTANCE.getAction();
-      this._validationTestHelper.assertError(mas, _action, 
+      EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
+      this._validationTestHelper.assertError(mas, _actionSignature, 
         io.sarl.lang.validation.IssueCodes.DUPLICATE_METHOD, 
         "Duplicate action in \'A1\': myaction(a : int)");
     } catch (Throwable _e) {
@@ -722,8 +722,8 @@ public class AgentParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _agent = SarlPackage.eINSTANCE.getAgent();
-      this._validationTestHelper.assertError(mas, _agent, 
+      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
+      this._validationTestHelper.assertError(mas, _jvmParameterizedTypeReference, 
         IssueCodes.TYPE_BOUNDS_MISMATCH, 
         "Invalid super-type: \'C1\'. Only the type \'io.sarl.lang.core.Agent\' and one of its subtypes are allowed for \'A1\'");
     } catch (Throwable _e) {
@@ -742,13 +742,13 @@ public class AgentParsingTest {
       _builder.append("agent A1 {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("def myaction1 fires E1, B1");
+      _builder.append("def myaction1 fires E1, B1 { }");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
-      this._validationTestHelper.assertError(mas, _actionSignature, 
+      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
+      this._validationTestHelper.assertError(mas, _jvmParameterizedTypeReference, 
         IssueCodes.TYPE_BOUNDS_MISMATCH, 
         "Invalid type: \'B1\'. Only events can be used after the keyword \'fires\'");
     } catch (Throwable _e) {
@@ -768,8 +768,8 @@ public class AgentParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _behaviorUnit = SarlPackage.eINSTANCE.getBehaviorUnit();
-      this._validationTestHelper.assertError(mas, _behaviorUnit, 
+      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
+      this._validationTestHelper.assertError(mas, _jvmParameterizedTypeReference, 
         IssueCodes.TYPE_BOUNDS_MISMATCH, 
         "Invalid type: \'java.lang.String\'. Only events are allowed after the keyword \'on\'");
     } catch (Throwable _e) {

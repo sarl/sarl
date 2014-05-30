@@ -36,6 +36,7 @@ import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.xbase.ui.validation.XbaseUIValidator
 
 import static org.eclipse.xtext.util.Strings.*
+import org.eclipse.xtext.validation.ValidationMessageAcceptor
 
 /** Validator based on the Eclipse UI.
  * 
@@ -75,9 +76,11 @@ public class SARLUIValidator extends XbaseUIValidator {
 						notNull(declaredPackage),
 						notNull(expectedPackage)
 					),
-					SarlPackage::eINSTANCE.getSarlScript_Name,
-					null,
-					IssueCodes.WRONG_PACKAGE, expectedPackage)
+					currentObject,
+					SarlPackage::Literals::SARL_SCRIPT__NAME,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+					IssueCodes.WRONG_PACKAGE,
+					expectedPackage)
 			}
 		}
 	}

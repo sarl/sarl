@@ -49,7 +49,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.skill,
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
 			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
 			"Invalid implemented type: 'io.sarl.lang.core.Capacity'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'")
 	}
@@ -80,7 +80,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.action,
+			SarlPackage::eINSTANCE.actionSignature,
 			IssueCodes::DUPLICATE_METHOD,
 			"Duplicate action in 'S1': myaction(a : int)")
 	}
@@ -503,7 +503,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.capacityUses,
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
 			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
 			"Invalid type: 'E1'. Only capacities can be used after the keyword 'uses'")
 	}
@@ -522,7 +522,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.requiredCapacity,
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
 			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
 			"Invalid type: 'E1'. Only capacities can be used after the keyword 'requires'")
 	}
@@ -536,7 +536,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.capacity,
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
 			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
 			"Invalid super-type: 'A1'. Only the type 'io.sarl.lang.core.Capacity' and one of its subtypes are allowed for 'C1'")
 	}
@@ -552,7 +552,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.skill,
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
 			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
 			"Invalid super-type: 'A1'. Only the type 'io.sarl.lang.core.Skill' and one of its subtypes are allowed for 'S1'")
 	}
@@ -566,7 +566,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.skill,
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
 			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
 			"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed")
 	}

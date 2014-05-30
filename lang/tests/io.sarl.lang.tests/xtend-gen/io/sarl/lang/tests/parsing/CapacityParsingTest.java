@@ -62,8 +62,8 @@ public class CapacityParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _skill = SarlPackage.eINSTANCE.getSkill();
-      this._validationTestHelper.assertError(mas, _skill, 
+      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
+      this._validationTestHelper.assertError(mas, _jvmParameterizedTypeReference, 
         IssueCodes.TYPE_BOUNDS_MISMATCH, 
         "Invalid implemented type: \'io.sarl.lang.core.Capacity\'. Only subtypes of \'io.sarl.lang.core.Capacity\' are allowed for \'S1\'");
     } catch (Throwable _e) {
@@ -118,8 +118,8 @@ public class CapacityParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _action = SarlPackage.eINSTANCE.getAction();
-      this._validationTestHelper.assertError(mas, _action, 
+      EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
+      this._validationTestHelper.assertError(mas, _actionSignature, 
         io.sarl.lang.validation.IssueCodes.DUPLICATE_METHOD, 
         "Duplicate action in \'S1\': myaction(a : int)");
     } catch (Throwable _e) {
@@ -928,8 +928,8 @@ public class CapacityParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _capacityUses = SarlPackage.eINSTANCE.getCapacityUses();
-      this._validationTestHelper.assertError(mas, _capacityUses, 
+      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
+      this._validationTestHelper.assertError(mas, _jvmParameterizedTypeReference, 
         IssueCodes.TYPE_BOUNDS_MISMATCH, 
         "Invalid type: \'E1\'. Only capacities can be used after the keyword \'uses\'");
     } catch (Throwable _e) {
@@ -963,8 +963,8 @@ public class CapacityParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _requiredCapacity = SarlPackage.eINSTANCE.getRequiredCapacity();
-      this._validationTestHelper.assertError(mas, _requiredCapacity, 
+      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
+      this._validationTestHelper.assertError(mas, _jvmParameterizedTypeReference, 
         IssueCodes.TYPE_BOUNDS_MISMATCH, 
         "Invalid type: \'E1\'. Only capacities can be used after the keyword \'requires\'");
     } catch (Throwable _e) {
@@ -985,8 +985,8 @@ public class CapacityParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _capacity = SarlPackage.eINSTANCE.getCapacity();
-      this._validationTestHelper.assertError(mas, _capacity, 
+      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
+      this._validationTestHelper.assertError(mas, _jvmParameterizedTypeReference, 
         IssueCodes.TYPE_BOUNDS_MISMATCH, 
         "Invalid super-type: \'A1\'. Only the type \'io.sarl.lang.core.Capacity\' and one of its subtypes are allowed for \'C1\'");
     } catch (Throwable _e) {
@@ -1011,8 +1011,8 @@ public class CapacityParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _skill = SarlPackage.eINSTANCE.getSkill();
-      this._validationTestHelper.assertError(mas, _skill, 
+      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
+      this._validationTestHelper.assertError(mas, _jvmParameterizedTypeReference, 
         IssueCodes.TYPE_BOUNDS_MISMATCH, 
         "Invalid super-type: \'A1\'. Only the type \'io.sarl.lang.core.Skill\' and one of its subtypes are allowed for \'S1\'");
     } catch (Throwable _e) {
@@ -1033,8 +1033,8 @@ public class CapacityParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _skill = SarlPackage.eINSTANCE.getSkill();
-      this._validationTestHelper.assertError(mas, _skill, 
+      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
+      this._validationTestHelper.assertError(mas, _jvmParameterizedTypeReference, 
         IssueCodes.TYPE_BOUNDS_MISMATCH, 
         "Invalid implemented type: \'B1\'. Only subtypes of \'io.sarl.lang.core.Capacity\' are allowed");
     } catch (Throwable _e) {

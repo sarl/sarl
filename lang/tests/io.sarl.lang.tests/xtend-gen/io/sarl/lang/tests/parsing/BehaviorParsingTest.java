@@ -68,8 +68,8 @@ public class BehaviorParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _action = SarlPackage.eINSTANCE.getAction();
-      this._validationTestHelper.assertError(mas, _action, 
+      EClass _actionSignature = SarlPackage.eINSTANCE.getActionSignature();
+      this._validationTestHelper.assertError(mas, _actionSignature, 
         IssueCodes.DUPLICATE_METHOD, 
         "Duplicate action in \'B1\': myaction(a : int)");
     } catch (Throwable _e) {
@@ -516,8 +516,8 @@ public class BehaviorParsingTest {
       _builder.append("}");
       _builder.newLine();
       final SarlScript mas = this._parseHelper.parse(_builder);
-      EClass _behavior = SarlPackage.eINSTANCE.getBehavior();
-      this._validationTestHelper.assertError(mas, _behavior, 
+      EClass _jvmParameterizedTypeReference = TypesPackage.eINSTANCE.getJvmParameterizedTypeReference();
+      this._validationTestHelper.assertError(mas, _jvmParameterizedTypeReference, 
         org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH, 
         "Invalid super-type: \'C1\'. Only the type \'io.sarl.lang.core.Behavior\' and one of its subtypes are allowed for \'B1\'");
     } catch (Throwable _e) {
