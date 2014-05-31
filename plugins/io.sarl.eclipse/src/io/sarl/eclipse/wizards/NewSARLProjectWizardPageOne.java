@@ -1316,7 +1316,7 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 			//sarlLangCoreBundleInstallLocationLocal = FileLocator.toFileURL(sarlLangCoreBundleInstallLocation);
 			//sarlUtilBundleInstallLocationLocal = FileLocator.toFileURL(sarlUtilBundleInstallLocation);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new Error(e);
 		}
 		String xBaseBundleFullPath = null;
 		if (xBaseBundleInstallLocationLocal.getPath().startsWith("file:")) {
