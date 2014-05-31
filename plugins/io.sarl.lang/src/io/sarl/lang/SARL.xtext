@@ -1,0 +1,245 @@
+/*
+ * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+grammar io.sarl.lang.SARL with org.eclipse.xtext.xbase.Xbase
+
+generate sarl "http://www.sarl.io/lang/SARL"
+import "http://www.eclipse.org/xtext/common/JavaVMTypes" as jvm
+import "http://www.eclipse.org/xtext/xbase/Xbase" as xbase
+
+SarlScript:
+	('package' name=QualifiedName ';'?)?
+	importSection=XImportSection?
+	elements+=TopElement*
+;
+
+TopElement:
+	Event | Capacity | Agent | Behavior | Skill 
+;
+
+RawTypeReference returns jvm::JvmParameterizedTypeReference:
+	type=[jvm::JvmType|QualifiedName]
+;
+
+// Define an interface that is providing the 'name' feature.
+// This rule is declared only for generated the Java interface
+// with the expected features.
+// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
+NamedElement:
+	name=ValidID
+;
+
+// Define an interface that is providing the 'features' feature.
+// This rule is declared only for generated the Java interface
+// with the expected features.
+// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
+FeatureContainer returns NamedElement:
+	{FeatureContainer}
+	features+=Feature
+;
+
+// Define an interface that is a feature.
+// This rule is declared only for generated the Java interface
+// with the expected features.
+// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
+Feature:
+	{Feature}
+;
+
+// Define an interface that is a feature with parameters.
+// This rule is declared only for generated the Java interface
+// with the expected features.
+// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
+ParameterizedFeature returns Feature:
+	{ParameterizedFeature}
+	params+=FormalParameter
+	varargs?=ID
+;
+
+// Define an interface that is providing the 'superTypes' feature.
+// This rule is declared only for generated the Java interface
+// with the expected features.
+// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
+InheritingElement returns FeatureContainer:
+	{InheritingElement}
+	superTypes+=RawTypeReference
+;
+
+// Define an interface that is providing the 'implementedTypes' feature.
+// This rule is declared only for generated the Java interface
+// with the expected features.
+// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
+ImplementingElement returns InheritingElement:
+	{ImplementingElement}
+	implementedTypes+=RawTypeReference
+;
+
+Event returns InheritingElement:
+	{Event}
+	'event' name=ValidID ('extends' superTypes+=RawTypeReference)? 
+	('{' features+=EventFeature* '}')?
+;
+
+Capacity returns InheritingElement:
+	{Capacity}
+	'capacity' name=ValidID ('extends' superTypes+=RawTypeReference
+		( ',' superTypes+=RawTypeReference )* )? 
+	'{' features+=ActionSignature* '}'
+;
+
+Agent returns InheritingElement:
+	{Agent}
+	'agent' name=ValidID ('extends' superTypes+=RawTypeReference)? '{'
+	features+=AgentFeature*
+	'}'
+;
+
+Behavior returns InheritingElement:
+	{Behavior}
+	'behavior' name=ValidID ('extends' superTypes+=RawTypeReference)? '{'
+	features+=BehaviorFeature*
+	'}'
+;
+
+Skill returns ImplementingElement:
+	{Skill}
+	'skill' name=ValidID 
+	(	('extends' superTypes+=RawTypeReference)?
+		&
+		(	'implements' implementedTypes+=RawTypeReference
+			(',' implementedTypes+=RawTypeReference)*
+		)
+	)
+	'{' features+=SkillFeature* '}'
+;
+
+EventFeature:
+	Attribute | Constructor
+;
+	
+AgentFeature:
+	Attribute | BehaviorUnit | Action | CapacityUses | RequiredCapacity
+;
+
+BehaviorFeature:
+	Attribute | BehaviorUnit | Action | CapacityUses | RequiredCapacity | Constructor
+;
+
+SkillFeature:
+	Attribute | Action | RequiredCapacity | Constructor | CapacityUses
+;
+
+Attribute returns Feature:
+	{Attribute}
+	(writeable?='var' | 'val') (=>(name=ValidID ':' type=JvmTypeReference) | name=ValidID) 
+	('=' initialValue=XExpression)? ';'?
+;
+	
+CapacityUses returns Feature:
+	{CapacityUses}
+	'uses' capacitiesUsed+=RawTypeReference
+	(',' capacitiesUsed+=RawTypeReference)* ';'?
+;
+
+RequiredCapacity returns Feature:
+	{RequiredCapacity}
+	'requires' requiredCapacities+=RawTypeReference
+	(',' requiredCapacities+=RawTypeReference)* ';'?
+;
+
+BehaviorUnit returns Feature:
+	{BehaviorUnit}
+	'on' event=RawTypeReference (=> '[' guard=XExpression ']')? body=XBlockExpression
+;
+
+Action returns Feature:
+	{Action}
+	signature=ActionSignature body=XBlockExpression
+;
+
+VarArgToken:
+	'*'
+;
+	
+Constructor returns ParameterizedFeature:
+	{Constructor}
+	'new'
+	(	=>'('
+		(	params+=FormalParameter
+			(=>',' params+=FormalParameter)* 
+			(varargs?=VarArgToken)?
+		)?
+		')'
+	)?
+	body=XBlockExpression
+;
+
+ActionSignature returns ParameterizedFeature:
+	{ActionSignature}
+	'def' name=ValidID 
+	(	=>'('
+		(	params+=FormalParameter
+			(=>',' params+=FormalParameter)* 
+			(varargs?=VarArgToken)?
+		)?
+		')'
+	)?
+	(':' type=JvmTypeReference)?
+	('fires' firedEvents+=RawTypeReference (',' firedEvents+=RawTypeReference)*)?
+;
+	
+FormalParameter:
+	 name=ValidID ':' parameterType=JvmTypeReference 
+	 ('=' defaultValue=DefaultParameterValue)?
+;
+
+DefaultParameterValue returns xbase::XExpression:
+	XLiteral
+;
+
+//-----------------------------------------------
+// BELOW THIS POINT, THE RULES FROM XBASE ARE OVERLOADED
+
+XVariableDeclaration returns xbase::XExpression:
+	{xbase::XVariableDeclaration}
+	(writeable?='var'|'val')
+	(=>(name=ValidID ':' type=JvmTypeReference) | name=ValidID)
+	('=' right=XExpression)?
+;
+
+JvmFormalParameter returns jvm::JvmFormalParameter:
+	{jvm::JvmFormalParameter}
+	name=ValidID (=>':' parameterType=JvmTypeReference)? 
+;
+	
+FullJvmFormalParameter returns jvm::JvmFormalParameter:
+	{jvm::JvmFormalParameter}
+	name=ValidID ':' parameterType=JvmTypeReference
+;
+
+// The following rule is not provided by Xbase, but we use it
+// in the overloaded version of XForLoopExpression
+XXLoopFormalParameter returns jvm::JvmFormalParameter:
+	{jvm::JvmFormalParameter}
+	name=ValidID
+	( 'as' parameterType=JvmTypeReference )?
+;
+
+XForLoopExpression returns xbase::XExpression:
+	=>({xbase::XForLoopExpression}
+	'for' '(' declaredParam=XXLoopFormalParameter ':') forExpression=XExpression ')'
+	eachExpression=XExpression
+;
+

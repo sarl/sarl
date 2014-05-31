@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: %Bundle-Name
-Bundle-SymbolicName: io.sarl.lang.core
-Bundle-Version: 0.1.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: javax.inject;version="1.0.0"
-Export-Package: io.sarl.lang.core
-Bundle-Vendor: %Bundle-Vendor

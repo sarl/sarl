@@ -1,0 +1,106 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>io.sarl</groupId>
+		<artifactId>io.sarl.releng</artifactId>
+		<version>0.1.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>io.sarl.lang.updatesite</artifactId>
+	<packaging>eclipse-repository</packaging>
+	<name>SARL Lang Update Site</name>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-director-plugin</artifactId>
+				<executions>
+					<execution>
+						<!-- install the product using the p2 director -->
+						<id>materialize-products</id>
+						<goals>
+							<goal>materialize-products</goal>
+						</goals>
+					</execution>
+					<execution>
+						<!-- create zip file with the installed product -->
+						<id>archive-products</id>
+						<goals>
+							<goal>archive-products</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<!-- This profile is used to upload the P2 repo -->
+		<profile>
+			<id>uploadP2Repo</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+
+			<properties>
+				<!-- Properties relative to the distant host where to upload the repo -->
+				<p2UploadFolder>file:///var/www/sarl-p2-repository</p2UploadFolder>
+				<!-- Relative path to the repo being uploaded -->
+				<p2RepoPath>${project.build.directory}/repository/</p2RepoPath>
+			</properties>
+
+			<build>
+				<plugins>
+					<!-- Compute the target folder -->
+					<plugin>
+						<groupId>org.codehaus.gmaven</groupId>
+						<artifactId>groovy-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>add-dynamic-properties</id>
+								<phase>initialize</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<source>
+										snapshotTag = "-SNAPSHOT"
+										if (project.version.endsWith(snapshotTag)) {
+											len = project.version.size() - snapshotTag.size()
+											version = project.version.substring(0,len)
+											formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss");
+											releaseNumber = "R"+formatter.format(new Date());
+											project.properties.p2UploadToDir = "/snapshots/"+version+"/"+releaseNumber
+										}
+										else {
+											project.properties.p2UploadToDir = "/releases/"+project.version
+										}
+									</source>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<!-- Upload the repo to the server -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>wagon-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>upload-repo</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>upload</goal>
+								</goals>
+								<configuration>
+									<fromDir>${p2RepoPath}</fromDir>
+									<includes>**</includes>
+									<toDir>${p2UploadToDir}</toDir>
+									<url>${p2UploadFolder}</url>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

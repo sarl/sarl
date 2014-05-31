@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Bundle-Name
+Bundle-SymbolicName: io.sarl.lang.core
+Bundle-Version: 0.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7,
+ JavaSE-1.6,
+ J2SE-1.5
+Import-Package: javax.inject;version="1.0.0"
+Bundle-Vendor: %Bundle-Vendor
+Export-Package: io.sarl.lang.annotation,
+ io.sarl.lang.core,
+ io.sarl.lang.util
+

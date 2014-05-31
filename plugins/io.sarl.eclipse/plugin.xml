@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+	<extension point="org.eclipse.ui.newWizards">
+		<category
+			id="io.sarl.eclipse.category.wizards"
+			name="%category.name">
+		</category>
+		<wizard
+        category="io.sarl.eclipse.category.wizards"
+        class="io.sarl.eclipse.wizards.SARLProjectNewWizard"
+        finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
+        icon="icons/sarl-project-logo-16.png"
+        id="io.sarl.eclipse.wizard.new.sarl"
+        name="%wizard.name"
+        preferredPerspectives="org.eclipse.jdt.ui.JavaPerspective"
+        project="false">
+		</wizard>
+		<!--
+		<wizard
+        category="io.sarl.eclipse.category.wizards"
+        class="io.sarl.eclipse.wizards.SARLProjectNewWizard"
+        finalPerspective="io.sarl.eclipse.perspective"
+        icon="icons/sarl-project-logo-16.png"
+        id="io.sarl.eclipse.wizard.new.sarl"
+        name="%wizard.name"
+        preferredPerspectives="io.sarl.eclipse.perspective, org.eclipse.jdt.ui.JavaPerspective"
+        project="false">
+		</wizard>-->
+  <wizard
+        category="io.sarl.eclipse.category.wizards"
+        class="io.sarl.eclipse.wizards.SARLFileNewWizard"
+        descriptionImage="icons/sarl-file-logo-32.png"
+        finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
+        icon="icons/sarl-file-logo-16.png"
+        id="io.sarl.eclipse.wizard.file.sarl"
+        name="%wizard.name.0">
+  </wizard>
+	</extension>
+	
+	<extension
+       id="SARLProjectNature"
+       name="%nature.name"
+       point="org.eclipse.core.resources.natures">
+		<runtime>
+			<run class="io.sarl.eclipse.natures.SARLProjectNature">
+			</run>
+		</runtime>
+	</extension>	
+
+  <extension
+        point="org.eclipse.ui.ide.projectNatureImages">
+     <image
+           icon="icons/sarl-project-nature-16.png"
+           id="io.sarl.eclipse.natures.SARLProjectNatureImage"
+           natureId="io.sarl.eclipse.SARLProjectNature">
+     </image>
+  </extension>
+<!--
+	<extension point="org.eclipse.ui.views">
+		<view
+        category="io.sarl.eclipse.category.navigator"
+        class="io.sarl.eclipse.navigator.SARLProjectNavigator"
+        icon="icons/sarl-project-explorer-16.png"
+        id="io.sarl.eclipse.navigator"
+        name="%view.name">
+		</view>
+  <category
+        id="io.sarl.eclipse.category.navigator"
+        name="%category.name.0">
+  </category>		
+	</extension>
+	
+	<extension point="org.eclipse.ui.navigator.viewer">
+		<viewerActionBinding viewerId="io.sarl.eclipse.navigator">
+			<includes>
+				<actionExtension
+					pattern="org.eclipse.ui.navigator.resources.*">
+				</actionExtension>
+			</includes>
+		</viewerActionBinding>
+		
+		<viewerContentBinding viewerId="io.sarl.eclipse.navigator">
+ 			<includes>
+       <contentExtension pattern="io.sarl.eclipse.navigatorContent">
+       </contentExtension>
+				
+			</includes>			
+		</viewerContentBinding>
+	</extension>
+	
+	<extension
+        point="org.eclipse.ui.navigator.navigatorContent">
+     <navigatorContent
+           contentProvider="io.sarl.eclipse.navigator.ContentProvider"
+           id="io.sarl.eclipse.navigatorContent"
+           labelProvider="io.sarl.eclipse.navigator.LabelProvider"
+           name="%navigatorContent.name">
+        <triggerPoints>
+           <or>
+              <instanceof
+                    value="io.sarl.eclipse.navigator.SARLProjectWorkbenchRoot">
+              </instanceof>
+           </or>
+        </triggerPoints>
+     </navigatorContent>
+  </extension>
+	
+	<extension point="org.eclipse.ui.perspectives">
+		<perspective
+			id="io.sarl.eclipse.perspective"
+			name="%perspective.name"
+			icon="icons/sarl-perspective-16.png"
+			class="io.sarl.eclipse.perspectives.SARLPerspective">
+		</perspective>
+	</extension>
+	
+ 	<extension point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension  targetID="io.sarl.eclipse.perspective">
+			<view
+					id="io.sarl.eclipse.navigator" 
+					relative="org.eclipse.ui.editorss" 
+					relationship="left"
+					ratio="0.25"/>	
+		</perspectiveExtension> 
+ 	</extension>
+ 	-->
+  <extension
+        id="io.sarl.eclipse.contenttype"
+        point="org.eclipse.core.contenttype.contentTypes">
+     <content-type
+           base-type="org.eclipse.core.runtime.text"
+           default-charset="UTF-8"
+           file-extensions="sarl, SARL, Sarl"
+           id="io.sarl.eclipse.contenttype.sarl"
+           name="%content-type.name"
+           priority="normal">
+     </content-type>
+  </extension>
+
+
+
+
+</plugin>
