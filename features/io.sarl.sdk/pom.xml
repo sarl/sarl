@@ -6,7 +6,7 @@
 		<artifactId>io.sarl.features.parent</artifactId>
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>io.sarl</groupId>
+
 	<artifactId>io.sarl.sdk</artifactId>
 	<packaging>eclipse-feature</packaging>
 	<name>SARL SDK</name>
