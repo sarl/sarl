@@ -1,3 +1,12 @@
+# Xtend generated files
+docs/io.sarl.docs.suite/src/test/xtend-gen
+lang/plugins/io.sarl.lang/xtend-gen
+lang/plugins/io.sarl.lang.ui/xtend-gen
+lang/tests/io.sarl.lang.tests/xtend-gen
+plugins/io.sarl.lang.ui/xtend-gen
+plugins/io.sarl.lang/xtend-gen
+tests/io.sarl.lang.tests/xtend-gen
+
 # NetBean / Eclipse
 bin
 *.java._trace
