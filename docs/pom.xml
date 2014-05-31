@@ -43,7 +43,7 @@
 			</dependency>
 			<!-- SARL Modules -->
 			<dependency>
-				<groupId>io.sarl</groupId>
+				<groupId>io.sarl.maven</groupId>
 				<artifactId>io.sarl.sdk</artifactId>
 				<version>${project.version}</version>
 				<type>pom</type>

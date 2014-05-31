@@ -76,15 +76,12 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.11</version>
+				<scope>test</scope>
 			</dependency>
 
 
 			<!-- The other dependencies are inside the submodules for avoiding to 
 				propagate the dependency information outside a specific module -->
-			<!--<dependency> <groupId>io.sarl</groupId> <artifactId>io.sarl.core</artifactId> 
-				<version>${project.version}</version> </dependency> <dependency> <groupId>io.sarl</groupId> 
-				<artifactId>io.sarl.util</artifactId> <version>${project.version}</version> 
-				</dependency> -->
 
 		</dependencies>
 	</dependencyManagement>

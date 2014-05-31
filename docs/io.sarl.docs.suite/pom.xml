@@ -20,7 +20,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>io.sarl</groupId>
+			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.sdk</artifactId>
 			<type>pom</type>
 		</dependency>
