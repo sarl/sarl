@@ -42,10 +42,10 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 		<module>plugins</module>
 		<module>tests</module>
 		<module>releng</module>
-		<!-- SARL Language Documentation -->
-		<module>docs</module>
 		<!-- SARL Maven Contributions -->
 		<module>maven</module>
+		<!-- SARL Language Documentation -->
+		<module>docs</module>
 	</modules>
 
 	<!-- ======================================= -->
