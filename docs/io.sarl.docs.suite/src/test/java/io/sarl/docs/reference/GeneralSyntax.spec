@@ -81,18 +81,6 @@ describe "General Syntax Reference" {
 	 */
 	describe "Name Syntax" {
 		
-		/* 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*)
-		 */ 
-		fact {
-			'''
-			import java.awt.^event.ActionEvent
-			agent A {
-				var field : ActionEvent
-			}
-			'''.parsesSuccessfully
-		}
-		
 	}
 
 	/* A literal denotes a fixed, unchangeable value. Literals for 
@@ -145,76 +133,71 @@ describe "General Syntax Reference" {
 		/* SARL supports roughly the same number literals as Java.
 		 * There is two exceptions: there is no notation for specifying octal numbers, and 
 		 * if you put the dot character in a number, you must specify the fractional and mantissa parts.
+		 * 
+		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
-		describe "Number Literals" {
-
-			/* 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
-			 */
-			fact "Standard Formats"{
-				'''
-				agent A {
-					var a = 42		// Decimal
-					var b = 0xbeef	// Hexadecimal
-					var c = 077		// Decimal 77, NOT octal
-					var d = 0.1		// The leading zero must be specified
-					var e = 1.0		// The trailing zero must be specified
-				}
-				'''.parsesSuccessfully
+		fact "Number Literals"{
+			'''
+			agent A {
+				var a = 42		// Decimal
+				var b = 0xbeef	// Hexadecimal
+				var c = 077		// Decimal 77, NOT octal
+				var d = 0.1		// The leading zero must be specified
+				var e = 1.0		// The trailing zero must be specified
 			}
-
-			/* As in Java 7, you can separate digits using <code>_</code> for
-			 * better readability of large numbers.
-			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
-			 */
-			fact "Large numbers"{
-				'''
-				agent A {
-					var a = 123_456_78l
-				}
-				'''.parsesSuccessfully
-			}
-
-			/* Postfixing an integer literal may change its type:
-			 * no suffix is for <code>int</code>,
-			 * suffix <code>L</code> is for <code>long</code>, and
-			 * suffix <code>BI</code> is for <code>BigInteger</code>. 
-			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
-			 */
-			fact "Integer suffixes"{
-				'''
-				agent A {
-					var anInteger = 1234
-					var aLong = 1234l
-					var aBigInteger = 1234bi
-				}
-				'''.parsesSuccessfully
-			}
-
-			/* Postfixing a floating-point literal may change its type:
-			 * no suffix is for <code>double</code>,
-			 * suffix <code>D</code> is for <code>double</code>,
-			 * suffix <code>F</code> is for <code>float</code>, and
-			 * suffix <code>BD</code> is for <code>BigDecimal</code>. 
-			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
-			 */
-			fact "Floating-point-value suffixes"{
-				'''
-				agent A {
-					var aDouble = 1234.0
-					var anotherDouble = 5678d
-					var aFloat = 1234.0f
-					var anotherFloat = 5678f
-					var aBigDecimal = 1234bd
-				}
-				'''.parsesSuccessfully
-			}
-
+			'''.parsesSuccessfully
 		}
-	
+
+		/* As in Java 7, you can separate digits using <code>_</code> for
+		 * better readability of large numbers.
+		 * 
+		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 */
+		fact "Large Numbers"{
+			'''
+			agent A {
+				var a = 123_456_78l
+			}
+			'''.parsesSuccessfully
+		}
+
+		/* Postfixing an integer literal may change its type:
+		 * no suffix is for <code>int</code>,
+		 * suffix <code>L</code> is for <code>long</code>, and
+		 * suffix <code>BI</code> is for <code>BigInteger</code>. 
+		 * 
+		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 */
+		fact "Integer suffixes"{
+			'''
+			agent A {
+				var anInteger = 1234
+				var aLong = 1234l
+				var aBigInteger = 1234bi
+			}
+			'''.parsesSuccessfully
+		}
+
+		/* Postfixing a floating-point literal may change its type:
+		 * no suffix is for <code>double</code>,
+		 * suffix <code>D</code> is for <code>double</code>,
+		 * suffix <code>F</code> is for <code>float</code>, and
+		 * suffix <code>BD</code> is for <code>BigDecimal</code>. 
+		 * 
+		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 */
+		fact "Floating-point-value suffixes"{
+			'''
+			agent A {
+				var aDouble = 1234.0
+				var anotherDouble = 5678d
+				var aFloat = 1234.0f
+				var anotherFloat = 5678f
+				var aBigDecimal = 1234bd
+			}
+			'''.parsesSuccessfully
+		}
+
 		/* There are two boolean literals, <code>true</code> and <code>false</code>
 		 * which correspond to their Java counterpart of type <code>boolean</code>.
 		 * 
@@ -1431,26 +1414,45 @@ describe "General Syntax Reference" {
 	 * The only difference is 
 	 * that in SARL it is an expression and can therefore be used at
 	 * more places. 
-	 * 
-	 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 	 */
-	fact "Synchronized Expression" {
-		'''
-		agent A {
-			var lock = new Object
-			def example1 : Object {
-				synchronized(lock) {
-					println("Hello")
+	describe "Synchronized Expression"{
+
+		/* The synchronization statement can be used as in Java:
+		 * 
+		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 */		
+		fact "Classic Syntax" {
+			'''
+			agent A {
+				var lock = new Object
+				def example : Object {
+					synchronized(lock) {
+						println("Hello")
+					}
 				}
 			}
-			def example2 {
-				val name = synchronized(lock) { 
-						"Hello" 
-					}
-				println(name)
-			}
+			'''.parsesSuccessfully
 		}
-		'''.parsesSuccessfully
+	
+		/* Because the synchronization keyword is related to an expression,
+		 * it is possible to write synchronized code inside another expression.
+		 * 
+		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 */		
+		fact "Expression Syntax" {
+			'''
+			agent A {
+				var lock = new Object
+				def example {
+					val name = synchronized(lock) { 
+							"Hello" 
+						}
+					println(name)
+				}
+			}
+			'''.parsesSuccessfully
+		}
+
 	}
 
 }
