@@ -57,6 +57,28 @@
 	</dependencies>
 	<build>
 		<plugins>
+                        <plugin>
+                                <groupId>org.apache.maven.plugins</groupId>
+                                <artifactId>maven-clean-plugin</artifactId>
+                                <executions>
+                                        <execution>
+                                                <phase>clean</phase>
+                                                <goals>
+                                                        <goal>clean</goal>
+                                                </goals>
+                                                <configuration>
+                                                        <filesets>
+                                                                <fileset>
+                                                                        <directory>src/main/xtend-gen</directory>
+                                                                </fileset>
+                                                                <fileset>
+                                                                        <directory>src/test/xtend-gen</directory>
+                                                                </fileset>
+                                                        </filesets>
+                                                </configuration>
+                                        </execution>
+                                </executions>
+                        </plugin>
 			<plugin>
 				<groupId>org.eclipse.xtend</groupId>
 				<artifactId>xtend-maven-plugin</artifactId>
