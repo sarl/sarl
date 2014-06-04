@@ -37,24 +37,17 @@ import io.sarl.lang.sarl.RequiredCapacity
 import io.sarl.lang.sarl.SarlPackage
 import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.sarl.Skill
-import io.sarl.lang.signature.ActionKey
 import io.sarl.lang.signature.ActionNameKey
 import io.sarl.lang.signature.ActionSignatureProvider
 import io.sarl.lang.signature.SignatureKey
-import java.util.ArrayList
-import java.util.List
-import java.util.Map
-import java.util.Set
-import java.util.TreeMap
-import java.util.TreeSet
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.xtext.common.types.JvmConstructor
+import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
-import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmTypeReference
+import org.eclipse.xtext.common.types.TypesPackage
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.CheckType
@@ -64,7 +57,6 @@ import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 
 import static io.sarl.lang.util.ModelUtil.*
-import org.eclipse.xtext.common.types.TypesPackage
 
 /**
  * Validator for the SARL elements.
@@ -125,7 +117,7 @@ class SARLValidator extends AbstractSARLValidator {
 		else {
 			packageName = QualifiedName.create()			
 		}
-		var names = new TreeSet<QualifiedName>
+		var names = newTreeSet(null)
 		for(feature : script.elements) {
 			if (feature instanceof NamedElement) {
 				val QualifiedName featureName = packageName.append(feature.name)
@@ -199,8 +191,8 @@ class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public def checkNoFeatureMultiDefinition(FeatureContainer featureContainer) {
-		val Set<String> localFields = new TreeSet
-		val Set<ActionKey> localFunctions = new TreeSet
+		val localFields = newTreeSet(null)
+		val localFunctions = newTreeSet(null)
 		var ActionNameKey actionID
 		var SignatureKey signatureID
 		var String name
@@ -423,7 +415,7 @@ class SARLValidator extends AbstractSARLValidator {
 
 	private def checkRedundantInterfaces(JvmGenericType jvmElement) {
 		if (!isIgnored(IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION)) {
-			var List<LightweightTypeReference> knownInterfaces = new ArrayList
+			var knownInterfaces = newArrayList
 			for(inter : jvmElement.extendedInterfaces) {
 				var interfaceType = inter.toLightweightTypeReference
 				checkRedundantInterface(jvmElement, inter, interfaceType, knownInterfaces)
@@ -439,11 +431,11 @@ class SARLValidator extends AbstractSARLValidator {
 	public def checkInheritedFeatures(InheritingElement element) {
 		var jvmElement = element.jvmGenericType
 		if (jvmElement!==null) {
-			var Map<ActionKey,JvmOperation> finalOperations = new TreeMap
-			var Map<ActionKey,JvmOperation> overridableOperations = new TreeMap
-			var Map<String,JvmField> inheritedFields = new TreeMap
-			var Map<ActionKey,JvmOperation> operationsToImplement = new TreeMap
-			var Map<SignatureKey,JvmConstructor> superConstructors = new TreeMap
+			var finalOperations = newTreeMap(null)
+			var overridableOperations = newTreeMap(null)
+			var inheritedFields = newTreeMap(null)
+			var operationsToImplement = newTreeMap(null)
+			var superConstructors = newTreeMap(null)
 
 			populateInheritanceContext(
 					jvmElement,
@@ -498,7 +490,7 @@ class SARLValidator extends AbstractSARLValidator {
 											inheritedReturnType.canonicalName,
 											actionKey.toString),
 									feature,
-									TypesPackage::Literals::JVM_OPERATION__RETURN_TYPE,
+									TypesPackage.Literals::JVM_OPERATION__RETURN_TYPE,
 									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 									org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE)
 						}
@@ -516,7 +508,7 @@ class SARLValidator extends AbstractSARLValidator {
 												inheritedReturnType.canonicalName,
 												actionKey.toString),
 										feature,
-										TypesPackage::Literals::JVM_OPERATION__RETURN_TYPE,
+										TypesPackage.Literals::JVM_OPERATION__RETURN_TYPE,
 										ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 										org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE);
 							}
@@ -555,7 +547,7 @@ class SARLValidator extends AbstractSARLValidator {
 									"Cannot extend the final type '%s'.",
 									superType.qualifiedName),
 							element,
-							SarlPackage::Literals::INHERITING_ELEMENT__SUPER_TYPES,
+							SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
 							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 							IssueCodes::OVERRIDDEN_FINAL)
 				}
@@ -732,7 +724,7 @@ class SARLValidator extends AbstractSARLValidator {
 								expectedType.name,
 								element.name),
 						element,
-						SarlPackage::Literals::IMPLEMENTING_ELEMENT__IMPLEMENTED_TYPES,
+						SarlPackage.Literals::IMPLEMENTING_ELEMENT__IMPLEMENTED_TYPES,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 						org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_TYPE)
 		}

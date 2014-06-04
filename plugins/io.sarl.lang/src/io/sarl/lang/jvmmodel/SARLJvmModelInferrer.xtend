@@ -46,10 +46,6 @@ import io.sarl.lang.signature.ActionSignatureProvider
 import io.sarl.lang.signature.InferredStandardParameter
 import io.sarl.lang.signature.InferredValuedParameter
 import io.sarl.lang.signature.SignatureKey
-import java.util.ArrayList
-import java.util.List
-import java.util.Map
-import java.util.TreeMap
 import java.util.UUID
 import java.util.logging.Logger
 import org.eclipse.emf.ecore.EObject
@@ -74,6 +70,8 @@ import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking
 
 import static io.sarl.lang.util.ModelUtil.*
 import org.eclipse.xtext.xbase.XBooleanLiteral
+import java.util.List
+import java.util.Map
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -151,7 +149,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				var long serial = 1L
 				serial = serial + generateExtendedTypes(it, event, io.sarl.lang.core.Event)
 				var JvmField jvmField
-				var List<JvmField> jvmFields = new ArrayList()
+				var jvmFields = newArrayList
 				var actionIndex = 0
 				var hasConstructor = false
 
@@ -271,9 +269,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				generateExtendedTypes(it, skill, io.sarl.lang.core.Skill)
 				generateImplementedTypes(it, skill, io.sarl.lang.core.Capacity)
 
-				val Map<ActionKey,JvmOperation> finalOperations = new TreeMap
-				val Map<ActionKey,JvmOperation> overridableOperations = new TreeMap
-				val Map<ActionKey,JvmOperation> operationsToImplement = new TreeMap
+				val finalOperations = newTreeMap(null)
+				val overridableOperations = newTreeMap(null)
+				val operationsToImplement = newTreeMap(null)
 				populateInheritanceContext(
 						it,
 						finalOperations, overridableOperations,
@@ -474,7 +472,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					var op = owner.toMethod(originalOperation.simpleName, originalOperation.returnType, null)
 					op.varArgs = originalOperation.varArgs
 					op.final = true
-					var args = new ArrayList<String>
+					var args = newArrayList
 					
 					var it1 = missedOperation.value.parameters.iterator
 					var it2 = originalOperation.parameters.iterator
@@ -580,7 +578,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			var reference = toLightweightTypeReference(capacityType, services)
 			if (reference.isSubtypeOf(io.sarl.lang.core.Capacity)) {
 				var actionIndex = index
-				val Map<ActionKey,JvmOperation> capacityOperations = new TreeMap
+				val capacityOperations = newTreeMap(null)
 				
 				populateInterfaceElements(
 						capacityType.type as JvmGenericType,
@@ -591,7 +589,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					if (implementedOperations===null || !implementedOperations.containsKey(entry.key)) {
 						var op = context.toMethod(entry.value.simpleName, entry.value.returnType) [
 							visibility = JvmVisibility::PROTECTED
-							val List<String> args = new ArrayList
+							val args = newArrayList
 							for(param : entry.value.parameters) {
 								parameters += context.toParameter(param.simpleName, param.parameterType)
 								args += param.simpleName
@@ -685,7 +683,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		boolean isForInterface,
 		int actionIndex) {
 
-		var parameterTypes = new ArrayList
+		var parameterTypes = newArrayList
 		var JvmFormalParameter lastParam = null
 		var paramIndex = 0
 		var hasDefaultValue = false
@@ -732,7 +730,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 
 	protected def List<String> generateFormalParametersWithDefaultValue(JvmExecutable owner, JvmGenericType actionContainer, boolean varargs, List<InferredStandardParameter> signature, int actionIndex) {
 		var JvmFormalParameter lastParam = null
-		val arguments = new ArrayList
+		val arguments = newArrayList
 		var paramIndex = 0
 		for(parameterSpec : signature) {
 			if (parameterSpec instanceof InferredValuedParameter) {
