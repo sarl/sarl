@@ -40,6 +40,7 @@ import io.sarl.lang.sarl.Skill
 import io.sarl.lang.signature.ActionNameKey
 import io.sarl.lang.signature.ActionSignatureProvider
 import io.sarl.lang.signature.SignatureKey
+import io.sarl.lang.util.JvmIdentifiableComparator
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.common.types.JvmDeclaredType
@@ -659,36 +660,81 @@ class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 	
-	protected def checkSuperTypes(InheritingElement element, Class<?> expectedType, boolean onlySubTypes) {
-		var isInterface = expectedType.interface
-		for(superType : element.superTypes) {
-			var ref = superType.toLightweightTypeReference
-			if (ref!==null &&
-				((ref.interfaceType!==isInterface) || !ref.isSubtypeOf(expectedType)
-				|| (onlySubTypes && ref.isType(expectedType)))) {
-				var String msg
-				if (onlySubTypes) {
-					msg = "Invalid super-type: '%s'. Only subtypes of '%s' are allowed for '%s'."
+	protected def boolean checkSuperTypes(InheritingElement element, Class<?> expectedType, boolean onlySubTypes) {
+		var success = true
+		var inferredType = element.jvmGenericType
+		if (inferredType != null) {
+			var isInterface = expectedType.interface
+			var jvmTypes = inferredType.superTypes.iterator
+			for(superType : element.superTypes) {
+				var JvmTypeReference jvmType
+				if (jvmTypes.hasNext) {
+					jvmType = jvmTypes.next 
+					var ref = superType.toLightweightTypeReference
+					if (ref!==null) {
+						if (((ref.interfaceType!==isInterface) || !ref.isSubtypeOf(expectedType)
+							|| (onlySubTypes && ref.isType(expectedType)))) {
+							var String msg
+							if (onlySubTypes) {
+								msg = "Invalid super-type: '%s'. Only subtypes of '%s' are allowed for '%s'."
+							}
+							else {
+								msg = "Invalid super-type: '%s'. Only the type '%s' and one of its subtypes are allowed for '%s'."
+							}
+							error(
+									String.format(
+											msg,
+											superType.qualifiedName,
+											expectedType.name,
+											element.name),
+									superType,
+									null,
+									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+									org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
+							success = false
+						}
+						else if (superType.qualifiedName==inferredType.qualifiedName) {
+							error( String::format(
+											"Inconsistent type hierarchy for '%s': cycle is detected.",
+											inferredType.qualifiedName),
+									SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
+									IssueCodes::INCONSISTENT_TYPE_HIERARCHY)
+							success = false
+						}
+						else if (superType.qualifiedName==inferredType.qualifiedName
+								|| jvmType.qualifiedName!=superType.qualifiedName) {
+							error( String::format(
+											"Inconsistent type hierarchy for '%s': cycle is detected, or super-type not found.",
+											inferredType.qualifiedName),
+									SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
+									IssueCodes::INCONSISTENT_TYPE_HIERARCHY)
+							success = false
+						}
+					}
 				}
 				else {
-					msg = "Invalid super-type: '%s'. Only the type '%s' and one of its subtypes are allowed for '%s'."
+					error( String::format("Inconsistent type hierarchy for '%s': type not found '%s'.",
+									inferredType.qualifiedName,
+									superType.qualifiedName),
+							SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
+							IssueCodes::INCONSISTENT_TYPE_HIERARCHY)
+					success = false
 				}
-				error(
-						String.format(
-								msg,
-								superType.qualifiedName,
-								expectedType.name,
-								element.name),
-						superType,
-						null,
-						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
 			}
+			/*if (success && inferredType.hasCycleInHierarchy) {
+				error( String::format("The inheritance hierarchy of '%s' contains cycles.",
+								inferredType.qualifiedName),
+						SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
+						IssueCodes::CYCLIC_INHERITANCE)
+				success = false
+			}*/
 		}
+		return success
 	}
 
 
-	protected def checkImplementedTypes(ImplementingElement element, Class<?> expectedType, int mandatoryNumberOfTypes, boolean onlySubTypes) {
+	protected def boolean checkImplementedTypes(ImplementingElement element, Class<?> expectedType, int mandatoryNumberOfTypes, boolean onlySubTypes) {
+		var success = true
 		var nb = 0
 		for(superType : element.implementedTypes) {
 			var ref = superType.toLightweightTypeReference
@@ -712,6 +758,7 @@ class SARLValidator extends AbstractSARLValidator {
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 						org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
+				success = false
 			}
 			else {
 				nb++
@@ -727,7 +774,38 @@ class SARLValidator extends AbstractSARLValidator {
 						SarlPackage.Literals::IMPLEMENTING_ELEMENT__IMPLEMENTED_TYPES,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 						org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_TYPE)
+				success = false
 		}
+		return success
+	}
+	
+	/**
+	 * CAUTION: Copied from Xtend validator
+	 */
+	protected def boolean hasCycleInHierarchy(JvmDeclaredType type) {
+		var queue = newLinkedList
+		var processedSuperTypes = <JvmDeclaredType>newTreeSet(new JvmIdentifiableComparator)
+		queue += type
+		do {
+			var t = queue.removeFirst
+			if (processedSuperTypes.contains(t)) {
+				return true
+			}
+			processedSuperTypes += t
+			for (JvmTypeReference superTypeRef : t.getSuperTypes()) {
+				var ref = superTypeRef.toLightweightTypeReference
+				if (ref!==null && !ref.interfaceType) {
+					var y = superTypeRef.type
+					if (y instanceof JvmDeclaredType) {
+						if (y.qualifiedName!="java.lang.Object") {
+							queue += y
+						}
+					}
+				}
+			}
+		}
+		while (!queue.empty)
+		return false;
 	}
 
 	/**

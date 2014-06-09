@@ -326,7 +326,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore/>
 									</action>
 								</pluginExecution>
 								<pluginExecution>

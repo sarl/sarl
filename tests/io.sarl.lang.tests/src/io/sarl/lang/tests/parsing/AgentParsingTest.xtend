@@ -477,4 +477,84 @@ class AgentParsingTest {
 			"Dead code. The guard is always false.")
 	}
 
+	@Test
+	def recursiveAgentExtension_0() {
+		val mas = '''
+			agent A1 extends A1 {
+			}
+		'''.parse
+
+		mas.assertError(
+			SarlPackage::eINSTANCE.inheritingElement,
+			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
+			"Inconsistent type hierarchy for 'A1': cycle is detected")
+	}
+
+	@Test
+	def recursiveAgentExtension_1() {
+		val mas = '''
+			agent A1 extends A2 {
+			}
+			agent A2 extends A1 {
+			}
+		'''.parse
+
+		mas.assertError(
+			SarlPackage::eINSTANCE.inheritingElement,
+			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
+			"Inconsistent type hierarchy for 'A1': cycle is detected, or super-type not found")
+	}
+
+	@Test
+	def recursiveAgentExtension_2() {
+		val mas = '''
+			agent A1 extends A3 {
+			}
+			agent A2 extends A1 {
+			}
+			agent A3 extends A2 {
+			}
+		'''.parse
+
+		mas.assertError(
+			SarlPackage::eINSTANCE.inheritingElement,
+			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
+			"Inconsistent type hierarchy for 'A1': cycle is detected, or super-type not found")
+	}
+
+	@Test
+	def sequenceAgentDefinition_invalid() {
+		val mas = '''
+			agent A1 extends A2 {
+			}
+			agent A2 extends A3 {
+			}
+			agent A3 {
+			}
+		'''.parse
+
+		mas.assertError(
+			SarlPackage::eINSTANCE.inheritingElement,
+			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
+			"Inconsistent type hierarchy for 'A1': cycle is detected, or super-type not found")
+		mas.assertError(
+			SarlPackage::eINSTANCE.inheritingElement,
+			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
+			"Inconsistent type hierarchy for 'A2': cycle is detected, or super-type not found")
+	}
+
+	@Test
+	def sequenceAgentDefinition_valid() {
+		val mas = '''
+			agent A3 {
+			}
+			agent A2 extends A3 {
+			}
+			agent A1 extends A2 {
+			}
+		'''.parse
+
+		mas.assertNoErrors
+	}
+
 }

@@ -142,4 +142,7 @@ public class IssueCodes {
 	 */
 	public static final String DUPLICATE_TYPE_NAME = ISSUE_CODE_PREFIX + "duplicate_class"; //$NON-NLS-1$
 	
+	/** The type hierarchy is inconsistent.
+	 */
+	public static final String INCONSISTENT_TYPE_HIERARCHY = ISSUE_CODE_PREFIX + "inconsistent_type_hierarchy"; //$NON-NLS-1$
 }
