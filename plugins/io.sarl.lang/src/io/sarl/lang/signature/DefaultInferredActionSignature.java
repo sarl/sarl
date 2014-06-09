@@ -120,15 +120,15 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 			StringBuilder b = new StringBuilder();
 			Iterator<FormalParameter> it = this.parameters.iterator();
 			FormalParameter p = it.next();
-			b.append(p.getName());
+			b.append(p.getName()!=null ? p.getName() : null);
 			b.append(" : "); //$NON-NLS-1$
-			b.append(p.getParameterType().getIdentifier());
+			b.append(p.getParameterType()!=null ? p.getParameterType().getIdentifier() : null);
 			while (it.hasNext()) {
 				p = it.next();
 				b.append(", "); //$NON-NLS-1$
-				b.append(p.getName());
+				b.append(p.getName()!=null ? p.getName() : null);
 				b.append(" : "); //$NON-NLS-1$
-				b.append(p.getParameterType().getIdentifier());
+				b.append(p.getParameterType()!=null ? p.getParameterType().getIdentifier() : null);
 			}
 			return b.toString();
 		}
@@ -145,15 +145,15 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 			b.append("("); //$NON-NLS-1$
 			Iterator<FormalParameter> it = this.parameters.iterator();
 			FormalParameter p = it.next();
-			b.append(p.getName());
+			b.append(p.getName()!=null ? p.getName() : null);
 			b.append(" : "); //$NON-NLS-1$
-			b.append(p.getParameterType().getIdentifier());
+			b.append(p.getParameterType()!=null ? p.getParameterType().getIdentifier() : null);
 			while (it.hasNext()) {
 				p = it.next();
 				b.append(", "); //$NON-NLS-1$
-				b.append(p.getName());
+				b.append(p.getName()!=null ? p.getName() : null);
 				b.append(" : "); //$NON-NLS-1$
-				b.append(p.getParameterType().getIdentifier());
+				b.append(p.getParameterType()!=null ? p.getParameterType().getIdentifier() : null);
 			}
 			b.append(")"); //$NON-NLS-1$
 			return b.toString();

@@ -54,7 +54,7 @@ class XtendBug392440 {
 	 * @return the operation.
 	 */
 	public def JvmOperation toHashCodeMethod(JvmGenericType owner, EObject sourceElement, boolean extendsSomethingWithProperHashCode, JvmField ...jvmFields) {
-		if (sourceElement === null) return null
+		if (owner === null || sourceElement === null) return null
 		var JvmOperation result = this.typesBuilder.toMethod(
 			sourceElement, "hashCode", 
 			this.typesBuilder.newTypeRef(sourceElement, Integer.TYPE), null

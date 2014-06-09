@@ -154,21 +154,25 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				var hasConstructor = false
 
 				for (feature : event.features) {
-					switch feature {
-						Attribute: {
-							jvmField = generateAttribute(feature, JvmVisibility::PUBLIC)
-							jvmFields.add(jvmField)
-							members += jvmField
-							serial = serial + feature.name.hashCode
-						}
-						Constructor: {
-							generateConstructor(event, feature, actionIndex)
-							serial = serial + event.fullyQualifiedName.hashCode
-							actionIndex++
-							hasConstructor = true
+					if (feature!==null) {
+						switch feature {
+							Attribute: {
+								jvmField = generateAttribute(feature, JvmVisibility::PUBLIC)
+								if (jvmField!==null) {
+									jvmFields.add(jvmField)
+									members += jvmField
+									serial = serial + feature.name.hashCode
+								}
+							}
+							Constructor: {
+								if (generateConstructor(event, feature, actionIndex) !== null) {
+									serial = serial + event.fullyQualifiedName.hashCode
+									actionIndex++
+									hasConstructor = true
+								}
+							}
 						}
 					}
-
 				}
 				
 				if (!hasConstructor) {
@@ -201,13 +205,17 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					val JvmField[] tab = jvmFields // single translation to the array
  					var elementType = event.toClass(event.fullyQualifiedName)
  					
- 					var op = toEqualsBugFix.toEqualsMethod(it, event, elementType, true, tab)
-					op.annotations += toAnnotation(Generated)	
-					members += op
+					var op = toEqualsBugFix.toEqualsMethod(it, event, elementType, true, tab)
+ 					if (op!==null) {
+						op.annotations += toAnnotation(Generated)	
+						members += op
+					}
 					
 					op = hashCodeBugFix.toHashCodeMethod(it, event, true, tab)
-					op.annotations += toAnnotation(Generated)	
-					members += op
+					if (op!==null) {
+						op.annotations += toAnnotation(Generated)	
+						members += op
+					}
 					
 					op = event.toMethod("attributesToString", newTypeRef(String))[
 						visibility = JvmVisibility::PROTECTED
@@ -222,9 +230,10 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 								return result.toString();''')
 						]
 					]
-					op.annotations += toAnnotation(Generated)	
-					members += op
-					
+					if (op!==null) {
+						op.annotations += toAnnotation(Generated)	
+						members += op
+					}
 				}
 
 				val serialValue = serial
@@ -252,8 +261,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				
 				var actionIndex = 0
 				for (feature : capacity.features) {
-					generateAction(feature as ActionSignature, null, actionIndex)
-					actionIndex++
+					if (feature!==null) {
+						if (generateAction(feature as ActionSignature, null, actionIndex) !== null) {
+							actionIndex++
+						}
+					}
 				}
 			])
 	}
@@ -282,33 +294,35 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				var hasConstructor = false
 				
 				for (feature : skill.features) {
-					switch feature {
-						Action: {
-							var sig = feature.signature as ActionSignature
-							it.generateAction(
-								sig,
-								feature.body,
-								actionIndex, false,
-								operationsToImplement,
-								overridableOperations
-							) [ return !finalOperations.containsKey(it)
-										&& !overridableOperations.containsKey(it)
-							]
-							actionIndex++
-						}
-						Constructor: {
-							it.generateConstructor(
-								skill, feature, actionIndex
-							)
-							actionIndex++
-							hasConstructor = true
-						}
-						Attribute: {
-							it.generateAttribute(feature, JvmVisibility::PROTECTED)
-						}
-						CapacityUses: {
-							for (used : feature.capacitiesUsed) {
-								actionIndex = generateCapacityDelegatorMethods(skill, used, actionIndex, operationsToImplement, overridableOperations)
+					if (feature!==null) {
+						switch feature {
+							Action: {
+								var sig = feature.signature as ActionSignature
+								if (it.generateAction(
+									sig,
+									feature.body,
+									actionIndex, false,
+									operationsToImplement,
+									overridableOperations
+								) [ return !finalOperations.containsKey(it)
+											&& !overridableOperations.containsKey(it)
+								] !== null) {
+									actionIndex++
+								}
+							}
+							Constructor: {
+								if (it.generateConstructor(skill, feature, actionIndex) !== null) {
+									actionIndex++
+									hasConstructor = true
+								}
+							}
+							Attribute: {
+								it.generateAttribute(feature, JvmVisibility::PROTECTED)
+							}
+							CapacityUses: {
+								for (used : feature.capacitiesUsed) {
+									actionIndex = generateCapacityDelegatorMethods(skill, used, actionIndex, operationsToImplement, overridableOperations)
+								}
 							}
 						}
 					}
@@ -353,33 +367,37 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				var hasConstructor = false
 				
 				for (feature : behavior.features) {
-					switch feature {
-						RequiredCapacity: {
-							//TODO 
-						}
-						BehaviorUnit: {
-							val bMethod = generateBehaviorUnit(feature, behaviorUnitIndex)
-							if (bMethod !== null) {
-								behaviorUnitIndex++						
-								members += bMethod
+					if (feature!==null) {
+						switch feature {
+							RequiredCapacity: {
+								//TODO 
 							}
-						}
-						Action: {
-							generateAction(feature.signature as ActionSignature, feature.body, actionIndex)
-							actionIndex++
-						}
-						CapacityUses: {
-							for (used : feature.capacitiesUsed) {
-								actionIndex = generateCapacityDelegatorMethods(behavior, used, actionIndex, null, null)
+							BehaviorUnit: {
+								val bMethod = generateBehaviorUnit(feature, behaviorUnitIndex)
+								if (bMethod !== null) {
+									behaviorUnitIndex++						
+									members += bMethod
+								}
 							}
-						}
-						Constructor: {
-							generateConstructor(behavior, feature, actionIndex)
-							actionIndex++
-							hasConstructor = true
-						}
-						Attribute: {
-							generateAttribute(feature, JvmVisibility::PROTECTED)
+							Action: {
+								if (generateAction(feature.signature as ActionSignature, feature.body, actionIndex) !== null) {
+									actionIndex++
+								}
+							}
+							CapacityUses: {
+								for (used : feature.capacitiesUsed) {
+									actionIndex = generateCapacityDelegatorMethods(behavior, used, actionIndex, null, null)
+								}
+							}
+							Constructor: {
+								if (generateConstructor(behavior, feature, actionIndex) !== null) {
+									actionIndex++
+									hasConstructor = true
+								}
+							}
+							Attribute: {
+								generateAttribute(feature, JvmVisibility::PROTECTED)
+							}
 						}
 					}
 				}
@@ -424,24 +442,27 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			var actionIndex = 1
 			
 			for (feature : agent.features) {
-				switch feature {
-					BehaviorUnit: {
-						val bMethod = generateBehaviorUnit(feature, behaviorUnitIndex)
-						if (bMethod !== null) {
-							behaviorUnitIndex++
-							members += bMethod
+				if (feature!==null) {
+					switch feature {
+						BehaviorUnit: {
+							val bMethod = generateBehaviorUnit(feature, behaviorUnitIndex)
+							if (bMethod !== null) {
+								behaviorUnitIndex++
+								members += bMethod
+							}
 						}
-					}
-					Action: {
-						generateAction(feature.signature as ActionSignature, feature.body, actionIndex)
-						actionIndex++
-					}
-					Attribute: {
-						generateAttribute(feature, JvmVisibility::PROTECTED)
-					}
-					CapacityUses: {
-						for (used : feature.capacitiesUsed) {
-							actionIndex = generateCapacityDelegatorMethods(agent, used, actionIndex, null, null)
+						Action: {
+							if (generateAction(feature.signature as ActionSignature, feature.body, actionIndex) !== null) {
+								actionIndex++
+							}
+						}
+						Attribute: {
+							generateAttribute(feature, JvmVisibility::PROTECTED)
+						}
+						CapacityUses: {
+							for (used : feature.capacitiesUsed) {
+								actionIndex = generateCapacityDelegatorMethods(agent, used, actionIndex, null, null)
+							}
 						}
 					}
 				}
@@ -455,10 +476,12 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		int actionIndex,
 		Map<ActionKey,JvmOperation> operationsToImplement,
 		Map<ActionKey,JvmOperation> overridableOperations) {
+			
 		var actIndex = actionIndex
 		var String currentKeyStr = null
 		var JvmOperation originalOperation = null
 		var SignatureKey sigKey = null
+		
 		for(missedOperation : operationsToImplement.entrySet) {
 			var originalSignature = annotationString(missedOperation.value, DefaultValueUse)
 			if (originalSignature!==null) {
@@ -519,6 +542,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		return actIndex
 	}
 
+// FIXME: Null
 	protected def long generateExtendedTypes(JvmGenericType owner, InheritingElement element, Class<?> defaultType) {
 		var serial = 0L
 		var isInterface = owner.interface
@@ -688,36 +712,41 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		var paramIndex = 0
 		var hasDefaultValue = false
 		for (param : params) {
-			lastParam = param.toParameter(param.name, param.parameterType)
-
-			if (param.defaultValue!==null) {
-				hasDefaultValue = true
-				var namePostPart = actionIndex+"_"+paramIndex
-				var name = "___FORMAL_PARAMETER_DEFAULT_VALUE_"+namePostPart
-				// FIXME: Hide these attributes into an inner interface.
-				var field = param.defaultValue.toField(name, param.parameterType) [
-					documentation = "Default value for the parameter "+param.name
-					static = true
-					final = true
-					if (isForInterface) {
-						visibility = JvmVisibility::PUBLIC
-					}
-					else {
-						visibility = JvmVisibility::PRIVATE
-					}
-					initializer = param.defaultValue
-				]
-				field.annotations += param.toAnnotation(Generated)
-				actionContainer.members += field
-				readAndWriteTracking.markInitialized(field)
-				var annot = param.toAnnotation(DefaultValue, namePostPart)
-				lastParam.annotations += annot
+			val paramName = param.name
+			val paramType = param.parameterType
+			
+			if (paramName!==null && paramType!==null) {
+				lastParam = param.toParameter(paramName, paramType)
+	
+				if (param.defaultValue!==null) {
+					hasDefaultValue = true
+					var namePostPart = actionIndex+"_"+paramIndex
+					var name = "___FORMAL_PARAMETER_DEFAULT_VALUE_"+namePostPart
+					// FIXME: Hide these attributes into an inner interface.
+					var field = param.defaultValue.toField(name, paramType) [
+						documentation = "Default value for the parameter "+paramName
+						static = true
+						final = true
+						if (isForInterface) {
+							visibility = JvmVisibility::PUBLIC
+						}
+						else {
+							visibility = JvmVisibility::PRIVATE
+						}
+						initializer = param.defaultValue
+					]
+					field.annotations += param.toAnnotation(Generated)
+					actionContainer.members += field
+					readAndWriteTracking.markInitialized(field)
+					var annot = param.toAnnotation(DefaultValue, namePostPart)
+					lastParam.annotations += annot
+				}
+				
+				owner.parameters += lastParam
+				parameterTypes.add(paramType.identifier)
+				
+				paramIndex++
 			}
-			
-			owner.parameters += lastParam
-			parameterTypes.add(param.parameterType.identifier)
-			
-			paramIndex++
 		}
 		if (varargs && lastParam !== null) {
 			lastParam.parameterType = lastParam.parameterType.addArrayTypeDimension
@@ -738,9 +767,13 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			}
 			else {
 				val param = parameterSpec.parameter
-				lastParam = param.toParameter(param.name, param.parameterType)
-				owner.parameters += lastParam
-				arguments.add(param.name)
+				val paramName = param.name
+				val paramType = param.parameterType
+				if (paramName!==null && paramType!==null) {
+					lastParam = param.toParameter(paramName, paramType)
+					owner.parameters += lastParam
+					arguments.add(paramName)
+				}
 			}
 			paramIndex++
 		}

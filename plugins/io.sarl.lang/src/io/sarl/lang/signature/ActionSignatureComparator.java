@@ -21,6 +21,8 @@ import io.sarl.lang.sarl.FormalParameter;
 import java.util.Comparator;
 import java.util.Iterator;
 
+import org.eclipse.xtext.common.types.JvmTypeReference;
+
 /**
  * A key for signatures.
  * 
@@ -51,9 +53,18 @@ public class ActionSignatureComparator implements Comparator<ActionSignature> {
 		while (i1.hasNext() && i2.hasNext()) {
 			FormalParameter p1 = i1.next();
 			FormalParameter p2 = i2.next();
-			cmp = p1.getParameterType().getIdentifier().compareTo(
-					p2.getParameterType().getIdentifier());
-			if (cmp!=0) return cmp;
+			if (p1!=p2) {
+				if (p1==null) return Integer.MIN_VALUE;
+				if (p2==null) return Integer.MAX_VALUE;
+				JvmTypeReference t1 = p1.getParameterType();
+				JvmTypeReference t2 = p2.getParameterType();
+				if (t1!=t2) {
+					if (t1==null) return Integer.MIN_VALUE;
+					if (t2==null) return Integer.MAX_VALUE;
+					cmp = t1.getIdentifier().compareTo(t2.getIdentifier());
+					if (cmp!=0) return cmp;
+				}
+			}
 		}
 		return 0;
 	}

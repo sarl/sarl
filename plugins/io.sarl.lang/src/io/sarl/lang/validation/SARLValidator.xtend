@@ -163,15 +163,25 @@ class SARLValidator extends AbstractSARLValidator {
 	}
 
 	private def checkDefaultValueTypeCompatibleWithParameterType(FormalParameter param) {
-		var toType = toLightweightTypeReference(param.parameterType, true)
-		var fromType = param.defaultValue.actualType
-		if (!canCast(fromType, toType, true)) {
-			error(String.format("Type mismatch: cannot convert from %s to %s",
-					fromType.nameOfTypes, toType.canonicalName),
-					param,
-					SarlPackage.Literals::FORMAL_PARAMETER__DEFAULT_VALUE,
-					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-					org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_TYPES)
+		var rawType = param.parameterType
+		if (rawType!==null) {
+			var toType = toLightweightTypeReference(rawType, true)
+			var fromType = param.defaultValue.actualType
+			if (!canCast(fromType, toType, true)) {
+				error(String.format("Type mismatch: cannot convert from %s to %s",
+						fromType.nameOfTypes, toType.canonicalName),
+						param,
+						SarlPackage.Literals::FORMAL_PARAMETER__DEFAULT_VALUE,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_TYPES)
+			}
+		}
+		else {
+				error("Illegal syntax",
+						param,
+						SarlPackage.Literals::FORMAL_PARAMETER__DEFAULT_VALUE,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						org.eclipse.xtext.xbase.validation.IssueCodes::INVALID_USE_OF_TYPE)
 		}
 	}
 

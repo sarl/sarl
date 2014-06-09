@@ -26,7 +26,9 @@ import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.TypeReferences;
+import org.eclipse.xtext.xbase.XExpression;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -61,46 +63,53 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 			Map<SignatureKey,EList<InferredStandardParameter>> tmpSignatures;
 			final int lastParamIndex = params.size() - 1;
 			for(int i=0; i<=lastParamIndex; ++i) {
-				final FormalParameter param = params.get(i);
-				final boolean isOptional = (param.getDefaultValue()!=null && ((i<lastParamIndex) || (!fillSignatureKeyOutputParameter.isVarargs())));
-				String type;
-				if (i>=lastParamIndex && fillSignatureKeyOutputParameter.isVarargs()) {
-					type = this.references.createArrayType(param.getParameterType()).getIdentifier();
-				} else {
-					type = param.getParameterType().getIdentifier();
-				}
-				fillSignatureKeyOutputParameter.add(type);
-				tmpSignatures = new TreeMap<>();
-				if (signatures.isEmpty()) {
-					// First parameter
-					if (isOptional) {
-						SignatureKey key = new SignatureKey(fillSignatureKeyOutputParameter.isVarargs(), params.size());
-						EList<InferredStandardParameter> value = ECollections.newBasicEList();
-						value.add(new InferredValuedParameter(param));
-						tmpSignatures.put(key, value);				
+				FormalParameter param = params.get(i);
+				
+				XExpression paramDefaultValue = param.getDefaultValue();
+				JvmTypeReference paramType = param.getParameterType();
+				
+				if (paramType!=null) {
+					boolean isOptional = (paramDefaultValue!=null && ((i<lastParamIndex) || (!fillSignatureKeyOutputParameter.isVarargs())));
+					String type;
+					if (i>=lastParamIndex && fillSignatureKeyOutputParameter.isVarargs()) {
+						type = this.references.createArrayType(paramType).getIdentifier();
+					} else {
+						type = paramType.getIdentifier();
 					}
-					SignatureKey key = new SignatureKey(fillSignatureKeyOutputParameter.isVarargs(), params.size());
-					key.add(type);
-					EList<InferredStandardParameter> value = ECollections.newBasicEList();
-					value.add(new InferredStandardParameter(param));
-					tmpSignatures.put(key, value);
-				}
-				else {
-					// Other parameters
-					for(Entry<SignatureKey,EList<InferredStandardParameter>> entry : signatures.entrySet()) {
+					fillSignatureKeyOutputParameter.add(type);
+					tmpSignatures = new TreeMap<>();
+					if (signatures.isEmpty()) {
+						// First parameter
 						if (isOptional) {
-							SignatureKey key = entry.getKey().clone();
-							EList<InferredStandardParameter> value = ECollections.newBasicEList(entry.getValue());
+							SignatureKey key = new SignatureKey(fillSignatureKeyOutputParameter.isVarargs(), params.size());
+							EList<InferredStandardParameter> value = ECollections.newBasicEList();
 							value.add(new InferredValuedParameter(param));
-							tmpSignatures.put(key, value);
+							tmpSignatures.put(key, value);				
 						}
-						SignatureKey key = entry.getKey().clone();
+						SignatureKey key = new SignatureKey(fillSignatureKeyOutputParameter.isVarargs(), params.size());
 						key.add(type);
-						entry.getValue().add(new InferredStandardParameter(param));
-						tmpSignatures.put(key, entry.getValue());
+						EList<InferredStandardParameter> value = ECollections.newBasicEList();
+						value.add(new InferredStandardParameter(param));
+						tmpSignatures.put(key, value);
 					}
+					else {
+						// Other parameters
+						for(Entry<SignatureKey,EList<InferredStandardParameter>> entry : signatures.entrySet()) {
+							if (isOptional) {
+								SignatureKey key = entry.getKey().clone();
+								EList<InferredStandardParameter> value = ECollections.newBasicEList(entry.getValue());
+								value.add(new InferredValuedParameter(param));
+								tmpSignatures.put(key, value);
+							}
+							SignatureKey key = entry.getKey().clone();
+							key.add(type);
+							entry.getValue().add(new InferredStandardParameter(param));
+							tmpSignatures.put(key, entry.getValue());
+						}
+					}
+					signatures = tmpSignatures;
 				}
-				signatures = tmpSignatures;
+				
 			}
 			signatures.remove(fillSignatureKeyOutputParameter);
 		}
@@ -138,6 +147,7 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 	@Override
 	public InferredActionSignature createSignature(ActionNameKey id,
 			boolean isVarargs, EList<FormalParameter> parameters) {
+		assert(parameters!=null);
 		SignatureKey key = new SignatureKey(isVarargs, parameters.size());
 		Map<SignatureKey,EList<InferredStandardParameter>> ip = buildSignaturesForArgDefaultValues(parameters, key);
 		InferredActionSignature s = new DefaultInferredActionSignature(
@@ -195,7 +205,9 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 	public SignatureKey createSignatureIDFromSarlModel(boolean isVarargs, EList<FormalParameter> parameters) {
 		SignatureKey sig = new SignatureKey(isVarargs, parameters.size());
 		for(FormalParameter p : parameters) {
-			sig.add(p.getParameterType().getIdentifier());
+			if (p.getParameterType()!=null) {
+				sig.add(p.getParameterType().getIdentifier());
+			}
 		}
 		return sig;
 	}
@@ -215,7 +227,10 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 	public SignatureKey createSignatureIDFromJvmModel(boolean isVarargs, EList<JvmFormalParameter> parameters) {
 		SignatureKey sig = new SignatureKey(isVarargs, parameters.size());
 		for(JvmFormalParameter p : parameters) {
-			sig.add(p.getParameterType().getIdentifier());
+			JvmTypeReference paramType = p.getParameterType();
+			if (paramType!=null) {
+				sig.add(paramType.getIdentifier());
+			}
 		}
 		return sig;
 	}

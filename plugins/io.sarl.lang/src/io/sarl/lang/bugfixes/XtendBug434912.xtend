@@ -56,6 +56,7 @@ class XtendBug434912 {
 	 * @return the operation.
 	 */
 	public def JvmOperation toEqualsMethod(JvmGenericType owner, EObject sourceElement, JvmDeclaredType declaredType, boolean isDelegateToSuperEquals, JvmField... jvmFields) {
+		if (owner === null || sourceElement === null) return null;
 		var JvmOperation result = this.typesBuilder.toMethod(
 			sourceElement, "equals", 
 			this.typesBuilder.newTypeRef(sourceElement, Boolean.TYPE),
