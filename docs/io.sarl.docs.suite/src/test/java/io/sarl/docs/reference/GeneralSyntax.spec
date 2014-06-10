@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,6 +18,20 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
+import java.math.BigDecimal
+import java.math.BigInteger
+import org.eclipse.xtext.xbase.XBlockExpression
+import org.eclipse.xtext.xbase.XBooleanLiteral
+import org.eclipse.xtext.xbase.XCastedExpression
+import org.eclipse.xtext.xbase.XConstructorCall
+import org.eclipse.xtext.xbase.XFeatureCall
+import org.eclipse.xtext.xbase.XListLiteral
+import org.eclipse.xtext.xbase.XMemberFeatureCall
+import org.eclipse.xtext.xbase.XNullLiteral
+import org.eclipse.xtext.xbase.XNumberLiteral
+import org.eclipse.xtext.xbase.XSetLiteral
+import org.eclipse.xtext.xbase.XStringLiteral
+import org.eclipse.xtext.xbase.XTypeLiteral
 import org.jnario.runner.CreateWith
 
 /*
@@ -30,7 +44,7 @@ import org.jnario.runner.CreateWith
 describe "General Syntax Reference" {
 
 	@Inject extension SARLParser
-		
+	
 	/* SARL, like Java, is a statically typed language. In fact it completely supports 
 	 * Java's type system, including the primitive types like int or boolean, 
 	 * arrays and all the Java classes, interfaces, enums and annotations that reside 
@@ -50,13 +64,11 @@ describe "General Syntax Reference" {
 	 * 
 	 * In addition to Java's autoboxing to convert primitives to their corresponding wrapper 
 	 * types (e.g. int is automatically converted to Integer when needed), there are 
-	 * additional conversion rules in SARL.
-	 * 
-	 * Arrays are automatically converted to <code>List&lt;ComponentType&gt;</code> and vice versa.
-	 * That is you can write the following:
-	 *  
+	 * additional conversion rules in SARL: arrays are automatically converted to
+	 * <code>List&lt;ComponentType&gt;</code> and vice versa.
+	 *
 	 * Resembling and supporting every aspect of Java's type system ensures that there is 
-	 * no impedance mismatch between Java and Xtend. __This means that SARL and Java are 
+	 * no impedance mismatch between Java and SARL. __This means that SARL and Java are 
 	 * 100% interoperable__. There are no exceptional cases and you do not have to 
 	 * think in two worlds. You can invoke SARL code from Java and vice versa without any
 	 * surprises or hassles.	
@@ -65,7 +77,7 @@ describe "General Syntax Reference" {
 		
 	}
 
-	/* In SARL, the names of the features (agents, variables, fields...)
+	/* In SARL, the names of the features (agents, variables, fields, etc.)
 	 * cannot be one of the keywords of SARL or Java.
 	 * For example, it is forbidden to type:<pre><code>
 	 * import java.awt.event.ActionEvent 
@@ -81,6 +93,197 @@ describe "General Syntax Reference" {
 	 */
 	describe "Name Syntax" {
 		
+	}
+
+	/* In SARL, each script must follow the format:<pre><code>
+	 * &lt;package definition&gt;
+	 * &lt;imports&gt;
+	 * &lt;top-level features&gt;
+	 * </code></pre>
+	 */
+	describe "Script Format" {
+
+		/*
+		 * For structuring your software, it is convenient to put the scripts
+		 * in different packages (as Java does for the classes).
+		 * 
+		 * The keyword <code>package</code> permits to define the name of
+		 * the package associated to a SARL file. Consequently, all
+		 * the features defined in the script defined in this package,
+		 * and their names are qualified with the name of the package.
+		 * 
+		 * The package's name has also a consequency in the generation of
+		 * the Java files associated to the SARL script. Indeed, all the
+		 * Java files are generated in a folder, which is matching the
+		 * name of the package.
+		 * 
+		 * In the following example, the qualified name of the agent is
+		 * <code>io.sarl.documentation.example.A</code>.
+		 * 
+		 * <span class="label label-warning">Important</span> If the 
+		 * <code>package</code> keyword is not used, the default package will
+		 * be used. The default package has an empty name.
+		 * It is recommended by the SARL Best Practices to specify a package's
+		 * name always. 
+		 * 
+		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 */
+		fact "Package Declaration" {
+			var model = '''
+			package io.sarl.docs.reference.gsr
+			
+			agent A {
+			}
+			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(0)
+		}	 
+		
+		/* The section part of a SARL script is dedicated to the 
+		 * declaration of the imported classes.
+		 * Each time you want to use a feature defined in another package
+		 * than the one of your SARL script, you shoumd include it
+		 * with the <code>import</code> directive.
+		 * 
+		 * <span class="label label-warning">Important</span> This directive 
+		 * works in the same way as in the Java language.
+		 * 
+		 * The <code>import</code> keyword is following by the qualified name
+		 * of the feature to import. In the following code, it is illustrated
+		 * by the first directive.
+		 * 
+		 * Optionnally, you could import all the features defined inside a package.
+		 * This could be done by replacing the names of the features with the
+		 * wildcard character <code>*</code>. The second import directive is
+		 * an example of the inclusion of all the classes defined in
+		 * <code>java.net</code>.
+		 * 
+		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 */
+		fact "Import Directive" {
+			var model = '''
+			package io.sarl.docs.reference.gsr
+			
+			import java.util.List
+			import java.net.*
+			
+			agent A {
+			}
+			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustHaveImport(0, "java.util.List", false, false, false)
+			model.mustHaveTopElements(1)
+			model.elements.get(0).mustBeAgent("A", null)
+			
+			model.mustHaveImports(2)
+			model.mustHaveImport(0, "java.util.List", false, false, false)
+			model.mustHaveImport(1, "java.net", false, true, false)
+			model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(0)
+		}
+	
+		/* Sometimes, it is mandatory to import a class for accessing its
+		 * statically defined functions, i.e. a function that can be
+		 * called without any associated object's instance.
+		 * 
+		 * In this case, the name of the static function is qualified
+		 * by the fully qualifed name of the class. For example, 
+		 * the function <code>max()</code> is invoked with this
+		 * syntax, in the example below.
+		 * 
+		 * However, if there is plenty of invocations to static
+		 * methods in your source code, the static-import mechanism
+		 * permits to make the code more readable by removing the
+		 * fully qualified name of the clases, in which the called
+		 * functions are defined.
+		 * 
+		 * A static import is specifiy with the <code>static</code>
+		 * keyword just after the <code>import</code> keyword.
+		 * The following identifier must be a fully qualifed name of
+		 * one or more functions (with the wildcard characted).
+		 * In the example below, all the functions defined in
+		 * <code>java.util.Arrays</code> are imported. Then,
+		 * it is possible to invoked one of them by entering its
+		 * name, as the call to <code>toString(int[])</code> below.
+		 * 
+		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 */
+		fact "Static Import Directive" {
+			var model = '''
+			package io.sarl.docs.reference.gsr
+			
+			import java.util.Collection
+			import java.util.Collections
+			import static java.util.Arrays.*
+			
+			agent A {
+				
+				var col : Collection<Integer>
+				var tab : int[]
+				
+				def example {
+					// Explicit call to a static method
+					println( Collections::max(col) )
+					
+					// Short hand for calling a static method, when statically imported
+					println( toString(tab) )
+				}
+			}
+			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustHaveImports(3)
+			model.mustHaveImport(0, "java.util.Collection", false, false, false)
+			model.mustHaveImport(1, "java.util.Collections", false, false, false)
+			model.mustHaveImport(2, "java.util.Arrays", true, true, false)
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(3)
+			a.mustHaveFeatures(3)
+			a.features.get(0).mustBeAttribute(true, "col", "java.util.Collection<java.lang.Integer>", false)
+			a.features.get(1).mustBeAttribute(true, "tab", "int[]", false)
+			a.features.get(2).mustBeAction("example", null, 0, false).body.mustBe(XBlockExpression)
+			// Do not test the block content since it should be validated by the Xbase library.
+		}	 
+
+		/* A large part of a SARL script contains the definitions of
+		 * the top-level features. These features are core concepts
+		 * of SARL, such as <code>agent</code>, <code>event</code>, or
+		 * <code>capacity</code>.
+		 * 
+		 * All these top-level features are documented in there own
+		 * Reference.
+		 * 
+		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 */
+		fact "Top-Level Features" {
+			var model = '''
+			package io.sarl.docs.reference.gsr
+			
+			event E {
+			}
+
+			capacity C {
+			}
+			
+			skill S implements C {
+			}
+
+			behavior B {
+			}
+
+			agent A {
+			}
+			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(5)
+			model.elements.get(0).mustBeEvent("E", null).mustHaveFeatures(0)
+			model.elements.get(1).mustBeCapacity("C").mustHaveFeatures(0)
+			model.elements.get(2).mustBeSkill("S", null).mustHaveFeatures(0)
+			model.elements.get(3).mustBeBehavior("B", null).mustHaveFeatures(0)
+			model.elements.get(4).mustBeAgent("A", null).mustHaveFeatures(0)
+		}	 
+
 	}
 
 	/* A literal denotes a fixed, unchangeable value. Literals for 
@@ -100,7 +303,8 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "String Literals"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var a = 'Hello World!'
 				var b = "Hello World!"
@@ -111,6 +315,15 @@ describe "General Syntax Reference" {
 							World!"
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(5)
+			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XStringLiteral).mustBeEqual("Hello World!")
+			a.features.get(1).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XStringLiteral).mustBeEqual("Hello World!")
+			a.features.get(2).mustBeAttribute(true, "c", null, true).initialValue.mustBe(XStringLiteral).mustBeEqual("Hello \"World!\"")
+			a.features.get(3).mustBeAttribute(true, "d", null, true).initialValue.mustBe(XStringLiteral).mustBeEqual("Hello \"World!\"")
+			a.features.get(4).mustBeAttribute(true, "e", null, true).initialValue.mustBe(XStringLiteral).mustBeEqual("Hello \n	\n				World!")
 		}
 	
 		/* Character literals use the same notation as String literals. 
@@ -122,12 +335,19 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Character Literals"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var a : char = 'a'
-				var b : char = "a"
+				var b : char = "b"
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
+			a.features.get(0).mustBeAttribute(true, "a", "char", true).initialValue.mustBe(XStringLiteral).mustBeEqual('a')
+			a.features.get(1).mustBeAttribute(true, "b", "char", true).initialValue.mustBe(XStringLiteral).mustBeEqual('b')
 		}
 			
 		/* SARL supports roughly the same number literals as Java.
@@ -137,7 +357,8 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Number Literals"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var a = 42		// Decimal
 				var b = 0xbeef	// Hexadecimal
@@ -146,6 +367,15 @@ describe "General Syntax Reference" {
 				var e = 1.0		// The trailing zero must be specified
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(5)
+			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(42)
+			a.features.get(1).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(0xbeef)
+			a.features.get(2).mustBeAttribute(true, "c", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(77)
+			a.features.get(3).mustBeAttribute(true, "d", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(0.1)
+			a.features.get(4).mustBeAttribute(true, "e", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(1.0)
 		}
 
 		/* As in Java 7, you can separate digits using <code>_</code> for
@@ -154,11 +384,17 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Large Numbers"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var a = 123_456_78l
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(1)
+			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(12345678l)
 		}
 
 		/* Postfixing an integer literal may change its type:
@@ -169,13 +405,21 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Integer suffixes"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var anInteger = 1234
 				var aLong = 1234l
 				var aBigInteger = 1234bi
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(3)
+			a.features.get(0).mustBeAttribute(true, "anInteger", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(1234)
+			a.features.get(1).mustBeAttribute(true, "aLong", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(1234l)
+			a.features.get(2).mustBeAttribute(true, "aBigInteger", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(new BigInteger("1234"))
 		}
 
 		/* Postfixing a floating-point literal may change its type:
@@ -187,7 +431,8 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Floating-point-value suffixes"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var aDouble = 1234.0
 				var anotherDouble = 5678d
@@ -196,6 +441,15 @@ describe "General Syntax Reference" {
 				var aBigDecimal = 1234bd
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(5)
+			a.features.get(0).mustBeAttribute(true, "aDouble", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(1234.0)
+			a.features.get(1).mustBeAttribute(true, "anotherDouble", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(5678d)
+			a.features.get(2).mustBeAttribute(true, "aFloat", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(1234f)
+			a.features.get(3).mustBeAttribute(true, "anotherFloat", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(5678f)
+			a.features.get(4).mustBeAttribute(true, "aBigDecimal", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(new BigDecimal("1234"))
 		}
 
 		/* There are two boolean literals, <code>true</code> and <code>false</code>
@@ -204,12 +458,19 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Boolean Literals"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr			
 			agent A {
 				var a = true
 				var b = false
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
+			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XBooleanLiteral).mustBeEqual(true)
+			a.features.get(1).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XBooleanLiteral).mustBeEqual(false)
 		}
 	
 		/* The null pointer literal <code>null</code> has exactly the same
@@ -218,11 +479,17 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Null Literals"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var a = null
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(1)
+			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XNullLiteral)
 		}
 	
 		/* The syntax for type literals is generally the plain name of the 
@@ -237,7 +504,8 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Type Literals"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				// the variable a contains the Java type String.class
 				var a = String
@@ -248,6 +516,13 @@ describe "General Syntax Reference" {
 				var c = String.getDeclaredFields()
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(3)
+			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XFeatureCall).mustBeType(String)
+			a.features.get(1).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XTypeLiteral).mustBeEqual(Integer)
+			a.features.get(2).mustBeAttribute(true, "c", null, true).initialValue.mustBe(XMemberFeatureCall).mustCall("java.lang.Class.getDeclaredFields")
 		}
 	
 	}
@@ -257,29 +532,37 @@ describe "General Syntax Reference" {
 	describe "Collection Literals"{
 
 		 /* It is easy to create instances of collections since the methods in 
-		  * <code>CollectionLiterals</code> are automatically imported.
-		  * They permits to create instances of the collections from the JDK.
-		  * 
-		  * @filter(.* = '''|'''|.parsesSuccessfully.*)
-		  */
+		* <code>CollectionLiterals</code> are automatically imported.
+		* They permits to create instances of the collections from the JDK.
+		* 
+		* @filter(.* = '''|'''|.parsesSuccessfully.*)
+		*/
 		fact "Collection Creation"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var myList = newArrayList('Hello', 'world')
 				var myMap = newLinkedHashMap('a' -> 1, 'b' -> 2)
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
+			a.features.get(0).mustBeAttribute(true, "myList", null, true).initialValue.mustBe(XFeatureCall).mustCall("org.eclipse.xtext.xbase.lib.CollectionLiterals.newArrayList")
+			a.features.get(1).mustBeAttribute(true, "myMap", null, true).initialValue.mustBe(XFeatureCall).mustCall("org.eclipse.xtext.xbase.lib.CollectionLiterals.newLinkedHashMap")
 		}
 		
 		 /* In addition SARL supports collection literals to create 
-		  * immutable collections and arrays, depending on the 
-		  * target type. There is three types of immutable
-		  * collections: array, set, and hash table.
-		  * 
-		  * @filter(.* = '''|'''|.parsesSuccessfully.*)
-		  */
+		* immutable collections and arrays, depending on the 
+		* target type. There is three types of immutable
+		* collections: array, set, and hash table.
+		* 
+		* @filter(.* = '''|'''|.parsesSuccessfully.*)
+		*/
 		fact "Immutable Collections"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				// the variable a contains an immutable array.
 				var a = #['Hello','World']
@@ -289,6 +572,13 @@ describe "General Syntax Reference" {
 				var c = #{'a' -> 1 ,'b' ->2}
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(3)
+			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XListLiteral)
+			a.features.get(1).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XSetLiteral)
+			a.features.get(2).mustBeAttribute(true, "c", null, true).initialValue.mustBe(XSetLiteral)
 		}
 	
 	}
@@ -306,7 +596,8 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */		
 		fact "Array Creation"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				// variable a contains a array of size 400 which contains Objects.
 				var a : String[] = newArrayOfSize(400)
@@ -314,6 +605,12 @@ describe "General Syntax Reference" {
 				var b : int[] = newIntArrayOfSize(200)
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
+			a.features.get(0).mustBeAttribute(true, "a", "java.lang.String[]", true).initialValue.mustBe(XFeatureCall).mustCall("org.eclipse.xtext.xbase.lib.ArrayLiterals.newArrayOfSize")
+			a.features.get(1).mustBeAttribute(true, "b", "int[]", true).initialValue.mustBe(XFeatureCall).mustCall("org.eclipse.xtext.xbase.lib.ArrayLiterals.newIntArrayOfSize")
 		}
 		
 		/* Retrieving and setting values of arrays is done through the extension 
@@ -325,7 +622,8 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */		
 		fact "Array Getter and Setter"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var a = #['Hello', 'world', '!']
 				// variable b contains the second element of the array a: 'world'.
@@ -334,6 +632,13 @@ describe "General Syntax Reference" {
 				var c = a.length
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(3)
+			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XListLiteral)
+			a.features.get(1).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XMemberFeatureCall).mustCall("java.util.List.get")
+			a.features.get(2).mustBeAttribute(true, "c", null, true).initialValue.mustBe(XMemberFeatureCall).mustCall("org.eclipse.xtext.xbase.lib.ArrayExtensions.length")
 		}
 
 		/* Arrays are automatically converted to lists 
@@ -344,13 +649,21 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */		
 		fact "Array to List"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr			
 			import java.util.List
 			agent A {
 				val myArray : int[] = #[1,2,3]
 				val myList : List<Integer> = myArray
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustHaveImports(1)
+			model.mustHaveImport(0, "java.util.List", false, false, false)
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
+			a.features.get(0).mustBeAttribute(false, "myArray", "int[]", true).initialValue.mustBe(XListLiteral)
+			a.features.get(1).mustBeAttribute(false, "myList", "java.util.List<java.lang.Integer>", true).initialValue.mustBe(XFeatureCall).mustCall("io.sarl.docs.reference.gsr.A.myArray")
 		}
 
 	}
@@ -361,7 +674,8 @@ describe "General Syntax Reference" {
 	 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 	 */
 	fact "Type Cast" {
-		'''
+		var model = '''
+		package io.sarl.docs.reference.gsr		
 		agent A {
 			// the variable something is of type Number.
 			var something : Number = new Integer(123)
@@ -373,6 +687,13 @@ describe "General Syntax Reference" {
 			var b = 56 as Integer
 		}
 		'''.parsesSuccessfully
+		model.mustHavePackage("io.sarl.docs.reference.gsr")
+		model.mustNotHaveImport
+		model.mustHaveTopElements(1)
+		var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(3)
+		a.features.get(0).mustBeAttribute(true, "something", "java.lang.Number", true).initialValue.mustBe(XConstructorCall)
+		a.features.get(1).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XCastedExpression)
+		a.features.get(2).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XCastedExpression)
 	}
 
 	/* SARL supports a collection of operators. Most of them are infix operators,
@@ -388,6 +709,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "Infix Operators"{
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var r : Object
 				val l = newArrayList()
@@ -464,7 +786,7 @@ describe "General Syntax Reference" {
 					// Unsigned shift right e1 by e2.
 					r = e1 >>> e2
 					r = e1.operator_tripleGreaterThan(e2)
-					//  
+					//
 					//r = e1 <> e2
 					//r = e1.operator_diamond(e2)
 					// e1 if e1 is not null, or e2 if e1 is null.
@@ -510,6 +832,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "Postfix Operators"{
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var e1 : int
 				
@@ -535,6 +858,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "Assignments"{
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var a = 34
 				
@@ -558,7 +882,8 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Operator Overloading"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				def operator_plus(a : Pair<Integer,Integer>, b : Pair<Integer,Integer>) : Pair<Integer,Integer> {
 					return new Pair(a.key, b.value)
@@ -575,6 +900,14 @@ describe "General Syntax Reference" {
 				}
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
+			var act1 = a.features.get(0).mustBeAction("operator_plus", "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>", 2, false)
+			act1.mustHaveParameter(0, "a", "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>", false)
+			act1.mustHaveParameter(1, "b", "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>", false)
+			a.features.get(1).mustBeAction("example", null, 0, false)
 		}
 
 	}
@@ -591,17 +924,18 @@ describe "General Syntax Reference" {
 	 */
 	fact "Blocks" {
 		'''
+		package io.sarl.docs.reference.gsr
 		agent A {
 			var greeting = "abc"
 			// The block of the following function as a value of the same type as x,
 			// which is after inferring String.
 			def block : String {
-			  var x = greeting;
-			  if (x.equals("Hello ")) {
-			    x + "World!" 
-			  } else {
-			    x
-			  }
+				var x = greeting;
+				if (x.equals("Hello ")) {
+					x + "World!" 
+				} else {
+					x
+				}
 			}
 		}
 		'''.parsesSuccessfully
@@ -634,18 +968,24 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Variable vs. Value Declaration"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				def example {
-				  val max = 100
-				  var i = 0
-				  while (i < max) {
-				    println("Hi there!")
-				    i = i + 1
-				  }
+					val max = 100
+					var i = 0
+					while (i < max) {
+						println("Hi there!")
+						i = i + 1
+					}
 				}
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(1)
+			a.features.get(0).mustBeAction("example", null, 0, false)
 		}
 
 		/* The type of the variable itself can either be explicitly declared or it can be 
@@ -654,7 +994,8 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Typing"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				// Explicit type
 				var a : String = "abc"
@@ -662,17 +1003,23 @@ describe "General Syntax Reference" {
 				var b = "abc"
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
+			a.features.get(0).mustBeAttribute(true, "a", "java.lang.String", true)
+			a.features.get(1).mustBeAttribute(true, "b", null, true)
 		}
 
 	}
 
 	/* A function, or method, or action, is a named block of code that could be invoked.
-	 *  
+	 *
 	 * A function declaration starts with the keyword <code>def</code>.
 	 * This declaration can only occur in top-level features
 	 * (<code>agent</code>, <code>skill</code>, etc.)
 	 *
-	 * The function  declaration follows the syntax:<pre><code>
+	 * The functiondeclaration follows the syntax:<pre><code>
 	 * def NAME [([PARAMETER, PARAMETER, PARAMETER...])] [: RETURN TYPE] [BLOCK]
 	 * </code></pre>
 	 * 
@@ -683,11 +1030,12 @@ describe "General Syntax Reference" {
 		/* 
 		 * 
 		 * The following code gives examples of function declarations:
-		 *  
+		 *
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Standard Declarations"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				// No parameter.
 				// Return type: void
@@ -719,6 +1067,22 @@ describe "General Syntax Reference" {
 				}
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(6)
+			a.features.get(0).mustBeAction("action1", null, 0, false)
+			a.features.get(1).mustBeAction("action2", "int", 0, false)
+			var act1 = a.features.get(2).mustBeAction("action3", null, 1, false)
+			act1.mustHaveParameter(0, "a", "int", false)
+			var act2 = a.features.get(3).mustBeAction("action4", null, 2, false)
+			act2.mustHaveParameter(0, "a", "int", false)
+			act2.mustHaveParameter(1, "b", "java.lang.String", false)
+			var act3 = a.features.get(4).mustBeAction("action5", "double", 1, false)
+			act3.mustHaveParameter(0, "a", "int", false)
+			var act4 = a.features.get(5).mustBeAction("action6", "java.lang.String", 2, false)
+			act4.mustHaveParameter(0, "a", "int", false)
+			act4.mustHaveParameter(1, "b", "java.lang.String", false)
 		}
 
 		/* A variadic function is a function of indefinite arity: 
@@ -731,11 +1095,12 @@ describe "General Syntax Reference" {
 		 * 
 		 * In other languages, such as Java and C++, the variadic
 		 * operator is <code>...</code>
-		 *  
+		 *
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Variadic Function"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				// Function with indefinite number of integers as parameters
 				def action1(v : int*) { }
@@ -754,6 +1119,17 @@ describe "General Syntax Reference" {
 				}
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(3)
+			var act1 = a.features.get(0).mustBeAction("action1", null, 1, true)
+			act1.mustHaveParameter(0, "v", "int", false)
+			var act2 = a.features.get(1).mustBeAction("action2", null, 3, true)
+			act2.mustHaveParameter(0, "a", "boolean", false)
+			act2.mustHaveParameter(1, "b", "double", false)
+			act2.mustHaveParameter(2, "c", "int", false)
+			a.features.get(2).mustBeAction("calls", null, 0, false)
 		}
 
 		/* SARL allows to specify a default value for a formal parameter.
@@ -765,12 +1141,13 @@ describe "General Syntax Reference" {
 		 * 
 		 * In SARL, if a formal parameter has a default value, the following formal 
 		 * parameters do not need to have default value also. This is a major
-		 * difference with the default values in  the C++ language for instance. 
-		 *   
+		 * difference with the default values inthe C++ language for instance. 
+		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Default Value for the Formal Parameters"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				// Function with one parameter with a default value.
 				def action1(v : int = 5) { }
@@ -795,31 +1172,50 @@ describe "General Syntax Reference" {
 				}
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(3)
+			var act1 = a.features.get(0).mustBeAction("action1", null, 1, false)
+			act1.mustHaveParameter(0, "v", "int", true)
+			var act2 = a.features.get(1).mustBeAction("action2", null, 3, false)
+			act2.mustHaveParameter(0, "a", "boolean", true)
+			act2.mustHaveParameter(1, "b", "double", false)
+			act2.mustHaveParameter(2, "c", "int", true)
+			a.features.get(2).mustBeAction("calls", null, 0, false)
 		}
 
 		/* It is possible to mix the variadic parameter and the default values,
 		 * except that the variadic parameter cannot have a default value. 
-		 *   
+		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Mixing Variadic Parameter and Default Values"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				def action(v : int = 5, a : float*) { }
 				
 				// Calls
 				def calls {
 					// v == 1, a == #[]
-					action(1)  
+					action(1)
 					// v == 5, a == #[]
 					action()
 					// v == 1, a == #[3.5, 6.45]
-					action(1, 3.5f, 6.45f)  
+					action(1, 3.5f, 6.45f)
 					// v == 5, a == #[3.5, 6.45]
 					action(3.5f, 6.45f)
 				}
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
+			var act1 = a.features.get(0).mustBeAction("action", null, 2, true)
+			act1.mustHaveParameter(0, "v", "int", true)
+			act1.mustHaveParameter(1, "a", "float", false)
 		}
 
 	}
@@ -838,6 +1234,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "Property Access"{
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var prop1 : Object
 				var prop2 : Object
@@ -881,6 +1278,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "Implicit Variables this and it"{
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var a = 35
 				def example : int {
@@ -900,12 +1298,19 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Static Access"{
-			'''
+			var model = '''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var a = Integer::TYPE
 				var b = Integer.TYPE
 			}
 			'''.parsesSuccessfully
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustNotHaveImport
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
+			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XMemberFeatureCall).mustCall("java.lang.Integer.TYPE")
+			a.features.get(1).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XMemberFeatureCall).mustCall("java.lang.Integer.TYPE")
 		}
 
 		/* Checking for null references can make code very unreadable. 
@@ -919,6 +1324,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "Null-Safe Feature Call"{
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var myRef = "abc"
 				def examples {
@@ -942,6 +1348,7 @@ describe "General Syntax Reference" {
 	 */
 	fact "Constructor Call" {
 		'''
+		package io.sarl.docs.reference.gsr
 		import java.util.ArrayList
 		agent A {
 			var a = new Integer(345)
@@ -951,6 +1358,74 @@ describe "General Syntax Reference" {
 		'''.parsesSuccessfully
 	}
 	
+	/*
+	 * Extension methods allow adding new methods to existing 
+	 * types without modifying them. This is really 
+	 * helpful as they can greatly improve the readability. They
+	 * use a simple syntactic trick: the first parameter of a method
+	 * can either be passed in after opening the parentheses or before the 
+	 * method call. For example, given a method: <pre><code> 
+	 * def removeVowels (String s){
+	 *     s.replaceAll("[aeiouAEIOU]", "")
+	 * }
+	 * </code></pre>
+	 * 
+	 * We can call this method either like in Java: <pre><code> 
+	 * removeVowels("Hello")
+	 * </code></pre>
+	 * 
+	 * or as an extension method of String: <pre></code> 
+	 * "Hello".removeVowels
+	 * </code></pre>
+	 */
+	describe "Extension Methods"{
+ 
+		/*
+		 * You can import static methods as extensions, for example, when we import: <pre></code>
+		 * import static extension java.util.Collections.&#42;
+		 * </code></pre>
+		 * we can directly call the imported static methods on our list objects:
+		 * 
+		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 */
+		fact "Import Static Extension Methods"{
+			'''
+			package io.sarl.docs.reference.gsr
+			import static extension java.util.Collections.*
+			agent A {
+				def example {
+					val colors : String[] = #["red", "blue", "green"]
+					colors.sort // sort is implemented by Collections#sort(List<T>)
+				}
+			}
+			'''.parsesSuccessfully
+		}
+
+		/*
+		 * All visible non-static methods of the current class and its super 
+		 * types are automatically available as extensions.
+		 * 
+		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 */
+		fact "Local extension methods."{
+			'''
+			package io.sarl.docs.reference.gsr
+			import java.util.List
+			agent A {
+				// Define an extension method for List
+				def hasOneElement(list : List<?>) : boolean {
+					list.size == 1
+				}
+				// Invoke the extension method
+				def example : boolean {
+					newArrayList("red").hasOneElement
+				}
+			}
+			'''.parsesSuccessfully
+		}
+		
+	}
+
 	/* A lambda expression is basically a piece of code, which is wrapped 
 	 * in an object to pass it around. As a Java developer it is best to 
 	 * think of a lambda expression as an anonymous class with a single 
@@ -966,6 +1441,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "Basic Definition"{
 			'''
+			package io.sarl.docs.reference.gsr
 			import java.awt.^event.ActionEvent
 			import javax.swing.JTextField
 			agent A {
@@ -982,13 +1458,14 @@ describe "General Syntax Reference" {
 		}
 		
 		/* The lambda above has one parameter called e which is of type <code>ActionEvent</code>.
-		 *  
+		 *
 		 * You do not have to specify the type explicitly because it can be inferred from the context.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Inferred Parameter Type"{
 			'''
+			package io.sarl.docs.reference.gsr
 			import javax.swing.JTextField
 			agent A {
 				def example {
@@ -1011,6 +1488,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "Implicit Parameters: it"{
 			'''
+			package io.sarl.docs.reference.gsr
 			import javax.swing.JTextField
 			agent A {
 				def example {
@@ -1031,10 +1509,11 @@ describe "General Syntax Reference" {
 		 */
 		fact "Empty List of Parameters"{
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				def example {
 					val runnable : Runnable = [ |
-							  println("Hello I'm executed!")
+							println("Hello I'm executed!")
 							]
 				}
 			}
@@ -1051,18 +1530,19 @@ describe "General Syntax Reference" {
 		 */
 		fact "Lambda as the Last Parameter of a Method"{
 			'''
+			package io.sarl.docs.reference.gsr
 			import java.util.List
 			import java.util.Collections
 			agent A {
 				var t : List<String>
 				def example1 {
 					Collections.sort(t) [ a, b |
-								  a.length - b.length
+								a.length - b.length
 								]
 				}
 				def example2 {
 					Collections.sort(t, [ a, b |
-								  a.length - b.length
+								a.length - b.length
 								]
 					)
 				}
@@ -1080,6 +1560,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "Typing"{
 			'''
+			package io.sarl.docs.reference.gsr
 			import org.eclipse.xtext.xbase.lib.Functions.Function1
 			agent A {
 				// Define a function f, which takes one parameter of 
@@ -1106,6 +1587,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "Classic Syntax"{
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var e1 : Object
 				var e2 : Object
@@ -1128,6 +1610,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "Inlined If Expression"{
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var e1
 				var e2
@@ -1162,19 +1645,20 @@ describe "General Syntax Reference" {
 		 * of a field or variable.
 		 * 
 		 * <span class="label label-warning">Important</span> A case must contains an expression. If you want to do nothing
-		 * for a given case, put an empty block.  
+		 * for a given case, put an empty block.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Cases"{
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var myString = "abc"
 				def example1 : String {
 					switch myString {
-					  case myString.length > 5 : "a long string."
-					  case 'some' : "It's some string."
-					  default : "It's another short string."
+					case myString.length > 5 : "a long string."
+					case 'some' : "It's some string."
+					default : "It's another short string."
 					}
 				}
 				def computeString : String {
@@ -1182,14 +1666,14 @@ describe "General Syntax Reference" {
 				}
 				def example2 : String {
 					switch computeString {
-					  case 'some' : "It's some string."
-					  default : "It's another short string: "
+					case 'some' : "It's some string."
+					default : "It's another short string: "
 					}
 				}
 				def example3 {
 					switch myString {
-					  case 'some' : println("It's some string.")
-					  default : { }
+					case 'some' : println("It's some string.")
+					default : { }
 					}
 				}
 			}
@@ -1207,12 +1691,13 @@ describe "General Syntax Reference" {
 		 */
 		fact "Type Guards"{
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var myString : Object
 				def example2 : String {
 					switch myString {
-					  String case myString.length==5 : "It's string of length 5."
-					  String : "a string."
+					String case myString.length==5 : "It's string of length 5."
+					String : "a string."
 					}
 				}
 			}
@@ -1226,13 +1711,14 @@ describe "General Syntax Reference" {
 		 */
 		fact "Fall Through"{
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var myString : String
 				def example {
 					switch myString {
-					  case myString.length==5,
-					  case 'some' : println("a string.")
-					  default: println("Default")
+					case myString.length==5,
+					case 'some' : println("a string.")
+					default: println("Default")
 					}
 				}
 			}
@@ -1258,6 +1744,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "For Loop"{
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 					var tab : String[]
 					def example {
@@ -1285,6 +1772,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "Traditional Java For Loop" {
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 					def example {
 						for (var i = 0; i<123; i++) {
@@ -1302,6 +1790,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "While Loop" {
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 					def example {
 						var i = 0
@@ -1323,6 +1812,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "Do-While Loop" {
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 					def example {
 						var i = 0
@@ -1350,6 +1840,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "Throwing Exceptions"{
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 					def example {
 						throw new IllegalArgumentException("explanation")
@@ -1366,6 +1857,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "Try, Catch, Finally"{
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 					def example {
 						try {
@@ -1392,6 +1884,7 @@ describe "General Syntax Reference" {
 		 */
 		fact "Try-Catch as an Expression"{
 			'''
+			package io.sarl.docs.reference.gsr
 			import java.io.IOException
 			agent A {
 					def readFromFile : String { } 
@@ -1399,7 +1892,7 @@ describe "General Syntax Reference" {
 						val name =	try {
 										readFromFile
 									} catch (e : IOException) {
-									    "unknown"
+										"unknown"
 									}
 						println(name)
 					}
@@ -1423,6 +1916,7 @@ describe "General Syntax Reference" {
 		 */		
 		fact "Classic Syntax" {
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var lock = new Object
 				def example : Object {
@@ -1441,6 +1935,7 @@ describe "General Syntax Reference" {
 		 */		
 		fact "Expression Syntax" {
 			'''
+			package io.sarl.docs.reference.gsr
 			agent A {
 				var lock = new Object
 				def example {
