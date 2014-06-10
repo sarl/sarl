@@ -182,7 +182,7 @@ public class SARLParser {
 		assertEquals("Not same event name", name, e.getName()); //$NON-NLS-1$
 		if (superType!=null) {
 			assertEquals("Invalid number of super-types", 1, e.getSuperTypes().size()); //$NON-NLS-1$
-			assertEquals("Invalid super-type", superType, e.getSuperTypes().get(0)); //$NON-NLS-1$
+			assertEquals("Invalid super-type", superType, e.getSuperTypes().get(0).getQualifiedName()); //$NON-NLS-1$
 		}
 		else {
 			assertEquals("Invalid number of super-types", 0, e.getSuperTypes().size()); //$NON-NLS-1$
@@ -221,7 +221,7 @@ public class SARLParser {
 		assertEquals("Not same skill name", name, s.getName()); //$NON-NLS-1$
 		if (superType!=null) {
 			assertEquals("Invalid number of super-types", 1, s.getSuperTypes().size()); //$NON-NLS-1$
-			assertEquals("Invalid super-type", superType, s.getSuperTypes().get(0)); //$NON-NLS-1$
+			assertEquals("Invalid super-type", superType, s.getSuperTypes().get(0).getQualifiedName()); //$NON-NLS-1$
 		}
 		else {
 			assertEquals(0, s.getSuperTypes().size());
@@ -246,7 +246,7 @@ public class SARLParser {
 		assertEquals("Invalid behavior name", name, b.getName()); //$NON-NLS-1$
 		if (superType!=null) {
 			assertEquals("Invalid number of super-types", 1, b.getSuperTypes().size()); //$NON-NLS-1$
-			assertEquals("Invalid super-type", superType, b.getSuperTypes().get(0)); //$NON-NLS-1$
+			assertEquals("Invalid super-type", superType, b.getSuperTypes().get(0).getQualifiedName()); //$NON-NLS-1$
 		}
 		else {
 			assertEquals("Invalid number of super-types", 0, b.getSuperTypes().size()); //$NON-NLS-1$
@@ -266,7 +266,7 @@ public class SARLParser {
 		assertEquals("Invalid agent name", name, a.getName()); //$NON-NLS-1$
 		if (superType!=null) {
 			assertEquals("Invalid number of super-types", 1, a.getSuperTypes().size()); //$NON-NLS-1$
-			assertEquals("Invalid super-type", superType, a.getSuperTypes().get(0)); //$NON-NLS-1$
+			assertEquals("Invalid super-type", superType, a.getSuperTypes().get(0).getQualifiedName()); //$NON-NLS-1$
 		}
 		else {
 			assertEquals("Invalid number of super-types", 0, a.getSuperTypes().size()); //$NON-NLS-1$

@@ -7,9 +7,17 @@ import io.sarl.docs.reference.*
 
 ##Getting Started
 
--"Agent Definition Introduction"
+- "Agent Definition Introduction"
+//- "Launching the agent with the Janus platform"
 
 ##Reference Documentation
 
--"General Syntax Reference"
--"Event Reference"
+- "General Syntax Reference"
+- "Event Reference"
+//- "Capacity Reference"
+//- "Skill Reference"
+//- "Builtin Capacity Reference"
+//- "Behabioral Unit Reference"
+- "Agent Reference"
+//- "Space Reference"
+
