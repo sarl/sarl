@@ -14,10 +14,10 @@ import io.sarl.docs.reference.*
 
 - "General Syntax Reference"
 - "Event Reference"
-//- "Capacity Reference"
+- "Capacity Reference"
 //- "Skill Reference"
 //- "Builtin Capacity Reference"
-//- "Behabioral Unit Reference"
 - "Agent Reference"
+//- "Behabioral Unit Reference"
 //- "Space Reference"
 

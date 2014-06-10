@@ -191,7 +191,7 @@ describe "Event Reference"{
 			/* In some use cases, it is useful to specialize the definition
 			 * of an event. This mechanism is supported by the inheritance
 			 * feature of SARL, which has the same semantic as the inheritance
-			 * mechanism as the Java object-oriented languages.
+			 * mechanism as the Java object-oriented language.
 			 * 
 			 * The extended event is specified just after the <code>extends</code>
 			 * keyword.

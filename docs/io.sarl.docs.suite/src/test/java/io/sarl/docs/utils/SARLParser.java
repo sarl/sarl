@@ -387,7 +387,7 @@ public class SARLParser {
 			pf = ((Action)o).getSignature();
 		}
 		else {
-			pf = (Constructor)o;
+			pf = (ParameterizedFeature)o;
 		}
 		FormalParameter p = pf.getParams().get(index);
 		assertNotNull("Expecting formal parameter", p); //$NON-NLS-1$
