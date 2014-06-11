@@ -219,11 +219,12 @@ describe "Event Reference"{
 			 * is accessible. For <code>Event2</code>, the two attributes
 			 * are accessible, because the type <code>Event2</code> inherits
 			 * the fields of <code>Event1</code>.
-			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			describe "Extending Events"{
-				
+
+				/*
+				 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+				 */				
 				fact "Declaration" {
 					val model = '''
 					event Event1 {
@@ -246,6 +247,9 @@ describe "Event Reference"{
 					e2.features.get(0).mustBeAttribute(true, "number", "int", false)
 				}
 
+				/*
+				 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+				 */				
 				fact "Use" {
 					val model = '''
 							// Create an instance of Event1 and set its attribute.

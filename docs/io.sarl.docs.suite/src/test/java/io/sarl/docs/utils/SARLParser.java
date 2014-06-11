@@ -29,7 +29,9 @@ import io.sarl.lang.sarl.ActionSignature;
 import io.sarl.lang.sarl.Agent;
 import io.sarl.lang.sarl.Attribute;
 import io.sarl.lang.sarl.Behavior;
+import io.sarl.lang.sarl.BehaviorUnit;
 import io.sarl.lang.sarl.Capacity;
+import io.sarl.lang.sarl.CapacityUses;
 import io.sarl.lang.sarl.Constructor;
 import io.sarl.lang.sarl.Event;
 import io.sarl.lang.sarl.Feature;
@@ -441,6 +443,41 @@ public class SARLParser {
 		assertEquals("Invalid number of formal parameters", numberOfParameters, cons.getParams().size()); //$NON-NLS-1$
 		assertEquals("Invalid variadic flag", varargs, cons.isVarargs()); //$NON-NLS-1$
 		return cons;
+	}
+
+	/**
+	 * @param o
+	 * @param eventQualifiedName
+	 * @param guard
+	 * @return the unit
+	 */
+	public BehaviorUnit mustBeBehaviorUnit(EObject o, String eventQualifiedName, boolean guard) {
+		assertTrue("Invalid type of behavior unit", o instanceof BehaviorUnit); //$NON-NLS-1$
+		BehaviorUnit bu = (BehaviorUnit)o;
+		assertEquals("Invalid event name", eventQualifiedName, bu.getEvent().getQualifiedName()); //$NON-NLS-1$
+		assertEquals("Invalid guard", guard, (bu.getGuard()!=null)); //$NON-NLS-1$
+		assertNotNull("Expecting behavior unit body", bu.getBody()); //$NON-NLS-1$
+		return bu;
+	}
+
+	/**
+	 * @param o
+	 * @param capacityQualifiedName
+	 * @return the statement
+	 */
+	public CapacityUses mustBeCapacityUses(EObject o, String... capacityQualifiedName) {
+		assertTrue("Invalid type of capacity uses", o instanceof CapacityUses); //$NON-NLS-1$
+		CapacityUses cu = (CapacityUses)o;
+		assertTrue("not enough parameters for the function mustBeCapacityUses", capacityQualifiedName.length>0); //$NON-NLS-1$
+		assertEquals("Invalid number of capacities", cu.getCapacitiesUsed().size(), capacityQualifiedName.length); //$NON-NLS-1$
+		Set<String> elements = new TreeSet<>(Arrays.asList(capacityQualifiedName));
+		for(JvmParameterizedTypeReference t : cu.getCapacitiesUsed()) {
+			if (t!=null) {
+				assertTrue("not expecting capacity: "+t.getQualifiedName(), elements.remove(t.getQualifiedName())); //$NON-NLS-1$
+			}
+		}
+		assertTrue("Expecting capacities: "+elements, elements.isEmpty()); //$NON-NLS-1$
+		return cu;
 	}
 
 	/**
