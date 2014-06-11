@@ -57,28 +57,28 @@
 	</dependencies>
 	<build>
 		<plugins>
-                        <plugin>
-                                <groupId>org.apache.maven.plugins</groupId>
-                                <artifactId>maven-clean-plugin</artifactId>
-                                <executions>
-                                        <execution>
-                                                <phase>clean</phase>
-                                                <goals>
-                                                        <goal>clean</goal>
-                                                </goals>
-                                                <configuration>
-                                                        <filesets>
-                                                                <fileset>
-                                                                        <directory>src/main/xtend-gen</directory>
-                                                                </fileset>
-                                                                <fileset>
-                                                                        <directory>src/test/xtend-gen</directory>
-                                                                </fileset>
-                                                        </filesets>
-                                                </configuration>
-                                        </execution>
-                                </executions>
-                        </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+						<configuration>
+							<filesets>
+								<fileset>
+									<directory>src/main/xtend-gen</directory>
+								</fileset>
+								<fileset>
+									<directory>src/test/xtend-gen</directory>
+								</fileset>
+							</filesets>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.eclipse.xtend</groupId>
 				<artifactId>xtend-maven-plugin</artifactId>
@@ -125,6 +125,29 @@
 						<include>**\/*TestCase.java</include>
 					</includes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-jnario-resources</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/jnario-doc</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/test/resources</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

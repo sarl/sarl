@@ -16,7 +16,7 @@ import io.sarl.docs.reference.*
 - "Event Reference"
 - "Capacity Reference"
 - "Skill Reference"
-//- "Builtin Capacity Reference"
+- "Builtin Capacity Reference"
 - "Agent Reference"
 //- "Behabior Reference"
 //- "Space Reference"
