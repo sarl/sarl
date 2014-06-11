@@ -95,11 +95,14 @@ describe "Event Reference"{
 			 */
 			fact "Define an empty event"{
 				val model = '''
-				package io.sarl.docs.reference.er
 				event Event1 {
 				}
 				event Event2
-				'''.parsesSuccessfully
+				'''.parsesSuccessfully(
+					"package io.sarl.docs.reference.er",
+					// TEXT
+					""
+				)
 				model.mustHavePackage("io.sarl.docs.reference.er")
 				model.mustNotHaveImport
 				model.mustHaveTopElements(2)
@@ -131,13 +134,16 @@ describe "Event Reference"{
 			 */
 			fact "Define an event with attributes"{
 				val model = '''
-				package io.sarl.docs.reference.er
 				event MyEvent {
 					var number : Integer
 					var string = "abc"
 					var something
 				}
-				'''.parsesSuccessfully
+				'''.parsesSuccessfully(
+					"package io.sarl.docs.reference.er",
+					// TEXT
+					""
+				)
 				model.mustHavePackage("io.sarl.docs.reference.er")
 				model.mustNotHaveImport
 				model.mustHaveTopElements(1)
@@ -167,8 +173,6 @@ describe "Event Reference"{
 			 */
 			fact "Define an event with value attributes"{
 				val model = '''
-				package io.sarl.docs.reference.er
-				import io.sarl.lang.core.Agent
 				event MyEvent {
 					val string = "abcd"
 					val number : Integer
@@ -177,7 +181,12 @@ describe "Event Reference"{
 						number = nb
 					}
 				}
-				'''.parsesSuccessfully
+				'''.parsesSuccessfully(
+					"package io.sarl.docs.reference.er
+					import io.sarl.lang.core.Agent",
+					// TEXT
+					""
+				)
 				model.mustHavePackage("io.sarl.docs.reference.er")
 				model.mustHaveImports(1)
 				model.mustHaveImport(0, "io.sarl.lang.core.Agent", false, false, false)
@@ -213,36 +222,63 @@ describe "Event Reference"{
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
-			fact "Extending Events"{
-				val model = '''
-				package io.sarl.docs.reference.er
-				event Event1 {
-					var string : String
-				}
-				event Event2 extends Event1 {
-					var number : int
-				}
-				agent A {
-					def example {
-						// Create an instance of Event1 and set its attribute.
-						var e1 = new Event1
-						e1.string = "abc"
-						// Create an instance of Event2 and set its attributes.
-						var e2 = new Event2
-						e2.string = "abc"
-						e2.number = 345
+			describe "Extending Events"{
+				
+				fact "Declaration" {
+					val model = '''
+					event Event1 {
+						var string : String
 					}
+					event Event2 extends Event1 {
+						var number : int
+					}
+					'''.parsesSuccessfully(
+						"package io.sarl.docs.reference.er",
+						// TEXT
+						""
+					)
+					model.mustHavePackage("io.sarl.docs.reference.er")
+					model.mustNotHaveImport
+					model.mustHaveTopElements(2)
+					var e1 = model.elements.get(0).mustBeEvent("Event1", null).mustHaveFeatures(1)
+					e1.features.get(0).mustBeAttribute(true, "string", "java.lang.String", false)
+					var e2 = model.elements.get(1).mustBeEvent("Event2", "io.sarl.docs.reference.er.Event1").mustHaveFeatures(1)
+					e2.features.get(0).mustBeAttribute(true, "number", "int", false)
 				}
-				'''.parsesSuccessfully
-				model.mustHavePackage("io.sarl.docs.reference.er")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(3)
-				var e1 = model.elements.get(0).mustBeEvent("Event1", null).mustHaveFeatures(1)
-				e1.features.get(0).mustBeAttribute(true, "string", "java.lang.String", false)
-				var e2 = model.elements.get(1).mustBeEvent("Event2", "io.sarl.docs.reference.er.Event1").mustHaveFeatures(1)
-				e2.features.get(0).mustBeAttribute(true, "number", "int", false)
-				var a = model.elements.get(2).mustBeAgent("A", null).mustHaveFeatures(1)
-				a.features.get(0).mustBeAction("example", null, 0, false)
+
+				fact "Use" {
+					val model = '''
+							// Create an instance of Event1 and set its attribute.
+							var e1 = new Event1
+							e1.string = "abc"
+							// Create an instance of Event2 and set its attributes.
+							var e2 = new Event2
+							e2.string = "abc"
+							e2.number = 345
+					'''.parsesSuccessfully(
+						"package io.sarl.docs.reference.er
+						event Event1 {
+							var string : String
+						}
+						event Event2 extends Event1 {
+							var number : int
+						}
+						agent A {
+							def example {",
+						// TEXT
+						"} }"
+					)
+					model.mustHavePackage("io.sarl.docs.reference.er")
+					model.mustNotHaveImport
+					model.mustHaveTopElements(3)
+					var e1 = model.elements.get(0).mustBeEvent("Event1", null).mustHaveFeatures(1)
+					e1.features.get(0).mustBeAttribute(true, "string", "java.lang.String", false)
+					var e2 = model.elements.get(1).mustBeEvent("Event2", "io.sarl.docs.reference.er.Event1").mustHaveFeatures(1)
+					e2.features.get(0).mustBeAttribute(true, "number", "int", false)
+					var a = model.elements.get(2).mustBeAgent("A", null).mustHaveFeatures(1)
+					a.features.get(0).mustBeAction("example", null, 0, false)
+				}
+
 			}
 
 		}

@@ -16,11 +16,14 @@
 package io.sarl.docs.utils;
 
 import static com.google.common.collect.Iterables.contains;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.isEmpty;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import io.sarl.lang.sarl.Action;
 import io.sarl.lang.sarl.ActionSignature;
 import io.sarl.lang.sarl.Agent;
@@ -38,6 +41,7 @@ import io.sarl.lang.sarl.Skill;
 import io.sarl.lang.sarl.TopElement;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -47,11 +51,13 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.resource.ClassloaderClasspathUriResolver;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.resource.XtextResourceSet;
+import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
@@ -62,6 +68,7 @@ import org.eclipse.xtext.xbase.lib.Functions;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.hamcrest.Matcher;
 
+import com.google.common.base.Predicate;
 import com.google.inject.Inject;
 
 /**
@@ -80,13 +87,19 @@ public class SARLParser {
 	@Inject
 	private ValidationTestHelper validationTestHelper;
 
+	private boolean initial = true;
+	
 	/**
 	 * @param text
 	 * @return the model.
 	 * @throws Exception
 	 */
 	public SarlScript parse(CharSequence text) throws Exception {
-		return this.parser.parse(text, getResourceSetWithDeafaultModels());
+		if (this.initial) {
+			this.initial = false;
+			return this.parser.parse(text, getResourceSetWithDefaultModels());
+		}
+		return this.parser.parse(text);
 	}
 	
 	/**
@@ -101,7 +114,64 @@ public class SARLParser {
 		return model;
 	}
 
-	private ResourceSet getResourceSetWithDeafaultModels() {
+	/**
+	 * 
+	 * @param text
+	 * @throws Exception
+	 */
+	public void parsesWithError(CharSequence text) throws Exception{
+		SarlScript model = parse(text);
+		
+		List<Issue> validate = this.validationTestHelper.validate(model);
+		Iterable<Issue> issues = filter(validate, new Predicate<Issue>() {
+			@Override
+			public boolean apply(Issue input) {
+				return Severity.ERROR == input.getSeverity();
+			}
+		});
+		if (isEmpty(issues))
+			fail("Expected error, but got no error."); //$NON-NLS-1$
+	}
+
+	/** Parse the contatenation of the three parameters.
+	 * 
+	 * @param outputText
+	 * @param postfix
+	 * @return the model.
+	 * @throws Exception
+	 */
+	public SarlScript parsesSuccessfully(CharSequence outputText, CharSequence postfix) throws Exception{
+		StringBuilder b = new StringBuilder(outputText);
+		if (postfix!=null && postfix.length()>0) {
+			b.append("\n"); //$NON-NLS-1$
+			b.append(postfix);
+		}
+		return parsesSuccessfully(b.toString());
+	}
+
+	/** Parse the contatenation of the three parameters.
+	 * 
+	 * @param outputText
+	 * @param prefix
+	 * @param postfix
+	 * @return the model.
+	 * @throws Exception
+	 */
+	public SarlScript parsesSuccessfully(CharSequence outputText, CharSequence prefix, CharSequence postfix) throws Exception{
+		StringBuilder b = new StringBuilder();
+		if (prefix!=null && prefix.length()>0) {
+			b.append(prefix);
+			b.append("\n"); //$NON-NLS-1$
+		}
+		b.append(outputText);
+		if (postfix!=null && postfix.length()>0) {
+			b.append("\n"); //$NON-NLS-1$
+			b.append(postfix);
+		}
+		return parsesSuccessfully(b.toString());
+	}
+
+	private ResourceSet getResourceSetWithDefaultModels() {
 		this.xtextResourceSet.setClasspathURIContext(getClass());
 		this.xtextResourceSet.setClasspathUriResolver(new ClassloaderClasspathUriResolver());
 		this.xtextResourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE);
@@ -227,8 +297,8 @@ public class SARLParser {
 			assertEquals(0, s.getSuperTypes().size());
 		}
 		Set<String> set = new TreeSet<>(Arrays.asList(capacities));
-		assertEquals("Invalid number of capacities", capacities.length, s.getSuperTypes().size()); //$NON-NLS-1$
-		for(JvmParameterizedTypeReference ref : s.getSuperTypes()) {
+		assertEquals("Invalid number of capacities", capacities.length, s.getImplementedTypes().size()); //$NON-NLS-1$
+		for(JvmParameterizedTypeReference ref : s.getImplementedTypes()) {
 			assertTrue("Unexpected capacity: "+ref.getQualifiedName(), set.remove(ref.getQualifiedName())); //$NON-NLS-1$
 		}
 		return s;

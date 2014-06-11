@@ -69,14 +69,17 @@ describe "Capacity Reference"{
 			 */
 			fact "Capacity Definition"{
 				val model = '''
-				package io.sarl.docs.reference.cr
 				capacity Logging {
 					// Log an information message
 					def info(text : String)
 					// Log a debugging message
 					def debug(text : String)
 				}
-				'''.parsesSuccessfully
+				'''.parsesSuccessfully(
+					"package io.sarl.docs.reference.cr",
+					// TEXT
+					""
+				)
 				model.mustHavePackage("io.sarl.docs.reference.cr")
 				model.mustNotHaveImport
 				model.mustHaveTopElements(1)
@@ -94,28 +97,31 @@ describe "Capacity Reference"{
 			 * keyword.
 			 * 
 			 * <span class="label label-warning">Important</span> A capacity can
-			 * extend more than one other caapcity type (same constrain as for
+			 * extend more than one other capacity type (same constrain as for
 			 * the interfaces in the Java language).
 			 * 
 			 * In the following code, the <code>Logging</code> capacity (defined
-			 * previously) is extended for enables to output error messages.
+			 * previously) is extended for enabling to output error messages.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Extending a Capacity"{
 				val model = '''
-				package io.sarl.docs.reference.cr
-				capacity Logging {
-					// Log an information message
-					def info(text : String)
-					// Log a debugging message
-					def debug(text : String)
-				}
 				capacity ErrorLogging extends Logging {
 					// Log a error message
 					def error(text : String)
 				}
-				'''.parsesSuccessfully
+				'''.parsesSuccessfully(
+					"package io.sarl.docs.reference.cr
+					capacity Logging {
+						// Log an information message
+						def info(text : String)
+						// Log a debugging message
+						def debug(text : String)
+					}",
+					// TEXT
+					""
+				)
 				model.mustHavePackage("io.sarl.docs.reference.cr")
 				model.mustNotHaveImport
 				model.mustHaveTopElements(2)
@@ -135,7 +141,6 @@ describe "Capacity Reference"{
 			 */
 			fact "Extending Multiple Capacities"{
 				val model = '''
-				package io.sarl.docs.reference.cr
 				capacity Cap1 {
 					def action1
 				}
@@ -145,7 +150,11 @@ describe "Capacity Reference"{
 				capacity Cap3 extends Cap1, Cap2 {
 					def action3
 				}
-				'''.parsesSuccessfully
+				'''.parsesSuccessfully(
+					"package io.sarl.docs.reference.cr",
+					// TEXT
+					""
+				)
 				model.mustHavePackage("io.sarl.docs.reference.cr")
 				model.mustNotHaveImport
 				model.mustHaveTopElements(3)
