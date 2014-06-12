@@ -48,6 +48,7 @@ public class SARLConfigurableIssueCodesProvider extends XbaseConfigurableIssueCo
 		iAcceptor.accept(create(IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION, SeverityConverter.SEVERITY_WARNING));
 		iAcceptor.accept(create(IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION, SeverityConverter.SEVERITY_WARNING));
 		iAcceptor.accept(create(IssueCodes.WRONG_PACKAGE, SeverityConverter.SEVERITY_WARNING));
+		iAcceptor.accept(create(IssueCodes.DISCOURAGED_CAPACITY_DEFINITION, SeverityConverter.SEVERITY_WARNING));
 	}
 
 }

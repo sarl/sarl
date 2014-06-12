@@ -145,4 +145,10 @@ public class IssueCodes {
 	/** The type hierarchy is inconsistent.
 	 */
 	public static final String INCONSISTENT_TYPE_HIERARCHY = ISSUE_CODE_PREFIX + "inconsistent_type_hierarchy"; //$NON-NLS-1$
+
+	/** A capacity was defined in a way that is discouraged.
+	 * The message associated to this issue code explains the details.
+	 */
+	public static final String DISCOURAGED_CAPACITY_DEFINITION = ISSUE_CODE_PREFIX + "discouraged_capacity_definition"; //$NON-NLS-1$
+
 }

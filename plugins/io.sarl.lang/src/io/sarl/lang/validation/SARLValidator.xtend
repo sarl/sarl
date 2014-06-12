@@ -425,7 +425,7 @@ class SARLValidator extends AbstractSARLValidator {
 	}
 
 	private def checkRedundantInterfaces(JvmGenericType jvmElement) {
-		if (!isIgnored(IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION)) {
+		if (!IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION.ignored) {
 			var knownInterfaces = newArrayList
 			for(inter : jvmElement.extendedInterfaces) {
 				var interfaceType = inter.toLightweightTypeReference
@@ -575,7 +575,7 @@ class SARLValidator extends AbstractSARLValidator {
 		if (guard!==null) {
 			if (guard instanceof XBooleanLiteral) {
 				if (guard.isTrue) {
-					if (!isIgnored(IssueCodes::DISCOURAGED_BOOLEAN_EXPRESSION)) {
+					if (!IssueCodes::DISCOURAGED_BOOLEAN_EXPRESSION.ignored) {
 						addIssue("Discouraged boolean value. The guard is always true.",
 								guard,
 								null,
@@ -584,7 +584,7 @@ class SARLValidator extends AbstractSARLValidator {
 					}
 				}
 				else {
-					if (!isIgnored(org.eclipse.xtext.xbase.validation.IssueCodes::UNREACHABLE_CODE)) {
+					if (!org.eclipse.xtext.xbase.validation.IssueCodes::UNREACHABLE_CODE.ignored) {
 						addIssue("Dead code. The guard is always false.",
 								behaviorUnit,
 								null,
@@ -876,6 +876,22 @@ class SARLValidator extends AbstractSARLValidator {
 					null,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
+		}
+	}
+
+	/**
+	 * @param capacity
+	 */
+	@Check(CheckType.FAST)
+	public def checkCapacityFeatures(io.sarl.lang.sarl.Capacity capacity) {
+		if (capacity.features.empty) {
+			if (!IssueCodes::DISCOURAGED_CAPACITY_DEFINITION.ignored) {
+				addIssue("Discouraged capacity definition. A capacity without actions defined inside is not useful since it cannot be called by an agent or a behavior.",
+						capacity,
+						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						IssueCodes::DISCOURAGED_CAPACITY_DEFINITION)
+			}
 		}
 	}
 

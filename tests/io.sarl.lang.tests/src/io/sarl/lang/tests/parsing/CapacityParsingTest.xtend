@@ -584,4 +584,15 @@ class CapacityParsingTest {
 		mas.assertNoErrors
 	}
 
+	@Test
+	def void emptyCapacity() {
+		val mas = '''
+			capacity C1 { }
+		'''.parse
+		mas.assertWarning(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::DISCOURAGED_CAPACITY_DEFINITION,
+			"Discouraged capacity definition. A capacity without actions defined inside is not useful since it cannot be called by an agent or a behavior.")
+	}
+
 }
