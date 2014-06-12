@@ -34,7 +34,8 @@ import org.jnario.runner.CreateWith
  * commonly accepted competences of agents, such autonomy, reactivity, proactivity 
  * and social capacities. 
  * Figure below describes the open architecture of an Agent in SARL.
- * ![An Agent in SARL](./AgentBehaviors.png)
+ * 
+ * <center><img alt="An Agent in SARL" src="./AgentBehaviors.png" width="60%" /></center>
  * 
  * The full set of Builtin Capacities will be presented in the corresponding
  * [Reference document](./BuiltinCapacityReferenceSpec.html). Among these
@@ -63,7 +64,7 @@ describe "Agent Reference"{
 		 */
 		describe "Defining an Agent" {
 
-			/* The following code illustration the definition of an agent
+			/* The following code illustres the definition of an agent
 			 * named <code>MyAgent</code>, and that is empty.
 			 * 
 			 * Basically, this agent does nothing, and does not react
@@ -87,7 +88,7 @@ describe "Agent Reference"{
 			}
 			
 			/* The mental state of an agent is composed by all the data
-			 * inthe knowledge of the agent.
+			 * in the knowledge of the agent.
 			 * Most of the time, the mental state is implemented as a
 			 * collection of attributes in the agent.
 			 * 
@@ -213,7 +214,7 @@ describe "Agent Reference"{
 		 * The definition of the reactive behaviors is based on the event handling
 		 * mechanism of SARL. Events may be emitted in [spaces](./SpaceReferenceSpec.html),
 		 * and received by the agents belonging to these spaces.
-		 * An agent may specify it is interesting for receiving an event by specifying
+		 * An agent may indicate that it is interesting for receiving an event by specifying
 		 * an event handler using the following syntax: <pre><code>
 		 * on &lt;EventName&gt; [&lt;Guard&gt;] {
 		 * 		&lt;Statements&gt;
@@ -380,7 +381,7 @@ describe "Agent Reference"{
 			 * In the following example, the agent is reacting to the reception
 			 * of the <code>SomethingChanged</code> event.
 			 * 
-			 * As for all the event handler, it could be guarded by a predicate.
+			 * As for all the event handlers, it could be guarded by a predicate.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
@@ -514,11 +515,11 @@ describe "Agent Reference"{
 				"no fact to test"
 			}
 
-			/* When a agent must use a capacity in one of its behaviors,
+			/* When an agent must use a capacity in one of its behaviors,
 			 * it must own an implementation of this capacity: a skill.
 			 * 
 			 * For assigning a skill to an agent, the instance of the skill
-			 * must be created. Then it must be associated with the
+			 * must be created. Then, it is associated with the
 			 * implemented capacity.
 			 * In the following example, the agent is creating the
 			 * <code>Ski</code> skill. This instance is associated to
@@ -578,7 +579,7 @@ describe "Agent Reference"{
 			}
 
 			/* After a skill is registered into the agent,
-			 * it may be invoked.
+			 * it could be invoked.
 			 *
 			 * For invoking a function implemented by a skill,
 			 * the two following steps must be done: <ol>
@@ -673,11 +674,11 @@ describe "Agent Reference"{
 			 * to use it for invoking the capacities.
 			 * 
 			 * But, instead of using an <code>import</code> directive,
-			 * the <code>uses</code> keyword is provided for importin the
+			 * the <code>uses</code> keyword is provided for importing the
 			 * capacities into the agent. In the following example,
 			 * the <code>Cap</code> capacity is imported.
 			 * 
-			 * After a capacity is "imported", it is possible to
+			 * After a capacity was "imported", it is possible to
 			 * directly call the functions of the capacity
 			 * (according to the extension method syntax).
 			 * In the following example, the action

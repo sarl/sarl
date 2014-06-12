@@ -49,8 +49,9 @@ import org.jnario.runner.CreateWith
  * The following figure presents the different contexts assocated to an agent.
  * Several builtin capacities permit to access and manage these contexts.
  * The agents are represented by stylized humans, the contexts by the blue boxes,
- * and the spaces by the small colorized boxes in the contexts.   
- * ![Contexts and Spaces.](./Contexts.png)
+ * and the spaces by the small colorized boxes in the contexts.
+ * 
+ * <center><img alt="Contexts and Spaces" src="./Contexts.png" width="60%" /></center>
  */
 @CreateWith(SARLSpecCreator)
 describe "Builtin Capacity Reference" {
