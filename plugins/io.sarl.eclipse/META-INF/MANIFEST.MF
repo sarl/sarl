@@ -22,8 +22,6 @@ Require-Bundle: org.eclipse.core.resources,
  io.sarl.core;bundle-version="0.1.0"
 Export-Package: io.sarl.eclipse.internal,
  io.sarl.eclipse.natures,
- io.sarl.eclipse.navigator,
- io.sarl.eclipse.navigator.node,
  io.sarl.eclipse.perspectives,
  io.sarl.eclipse.wizards
 

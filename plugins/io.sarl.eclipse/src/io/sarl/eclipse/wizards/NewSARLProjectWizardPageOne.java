@@ -1280,41 +1280,40 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 	 */
 	public IClasspathEntry[] getDefaultClasspathEntries() {
 		
-		Bundle xBaseBundle = Platform.getBundle("org.eclipse.xtext.xbase");
+		Bundle xBaseBundle = Platform.getBundle("org.eclipse.xtext.xbase.lib");
 		Bundle xTendBundle = Platform.getBundle("org.eclipse.xtend.lib");
-		
-		Bundle sarlCoreBundle = Platform.getBundle("io.sarl.bundle");
-		//Bundle sarlLangCoreBundle = Platform.getBundle("io.sarl.lang.core");
-		//Bundle sarlUtilBundle = Platform.getBundle("io.sarl.util");
+		Bundle sarlCoreBundle = Platform.getBundle("io.sarl.core");
+		Bundle sarlLangCoreBundle = Platform.getBundle("io.sarl.lang.core");
+		Bundle sarlUtilBundle = Platform.getBundle("io.sarl.util");
 
 		
 		URL xBaseBundleInstallLocation = null;
 		URL xTendBundleInstallLocation = null;
 		URL sarlCoreBundleInstallLocation = null;
-		//URL sarlLangCoreBundleInstallLocation = null;
-		//URL sarlUtilBundleInstallLocation = null;
+		URL sarlLangCoreBundleInstallLocation = null;
+		URL sarlUtilBundleInstallLocation = null;
 		
 		try {
 			xBaseBundleInstallLocation = new URL(xBaseBundle.getLocation());
 			xTendBundleInstallLocation = new URL(xTendBundle.getLocation());
 			sarlCoreBundleInstallLocation = new URL(sarlCoreBundle.getLocation());
-			//sarlLangCoreBundleInstallLocation = new URL(sarlLangCoreBundle.getLocation());
-			//sarlUtilBundleInstallLocation = new URL(sarlUtilBundle.getLocation());
+			sarlLangCoreBundleInstallLocation = new URL(sarlLangCoreBundle.getLocation());
+			sarlUtilBundleInstallLocation = new URL(sarlUtilBundle.getLocation());
 		} catch (MalformedURLException e1) {
 			e1.printStackTrace();
 		}
-
+//FIXME add everywhere a check to null path for every single entry
 		URL xBaseBundleInstallLocationLocal = null;
 		URL xTendBundleInstallLocationLocal = null;
 		URL sarlCoreBundleInstallLocationLocal = null;
-		//URL sarlLangCoreBundleInstallLocationLocal = null;
-		//URL sarlUtilBundleInstallLocationLocal = null;
+		URL sarlLangCoreBundleInstallLocationLocal = null;
+		URL sarlUtilBundleInstallLocationLocal = null;
 		try {
 			xBaseBundleInstallLocationLocal = FileLocator.toFileURL(xBaseBundleInstallLocation);
 			xTendBundleInstallLocationLocal = FileLocator.toFileURL(xTendBundleInstallLocation);
 			sarlCoreBundleInstallLocationLocal = FileLocator.toFileURL(sarlCoreBundleInstallLocation);
-			//sarlLangCoreBundleInstallLocationLocal = FileLocator.toFileURL(sarlLangCoreBundleInstallLocation);
-			//sarlUtilBundleInstallLocationLocal = FileLocator.toFileURL(sarlUtilBundleInstallLocation);
+			sarlLangCoreBundleInstallLocationLocal = FileLocator.toFileURL(sarlLangCoreBundleInstallLocation);
+			sarlUtilBundleInstallLocationLocal = FileLocator.toFileURL(sarlUtilBundleInstallLocation);
 		} catch (IOException e) {
 			throw new Error(e);
 		}
@@ -1350,7 +1349,7 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 		} else {
 			sarlCoreBundleFullPath = new File(sarlCoreBundleInstallLocationLocal.getPath()).getAbsolutePath();
 		}
-		/*
+		
 		String sarlLangCoreBundleFullPath = null;
 		if (sarlLangCoreBundleInstallLocationLocal.getPath().startsWith("file:")) {
 			try {
@@ -1371,19 +1370,20 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 			}
 		} else {
 			sarlUtilBundleFullPath = new File(sarlUtilBundleInstallLocationLocal.getPath()).getAbsolutePath();
-		}		
-		*/
-		IClasspathEntry xBase = JavaCore.newContainerEntry(Path.fromOSString(xBaseBundleFullPath));
-		IClasspathEntry xTend = JavaCore.newContainerEntry(Path.fromOSString(xTendBundleFullPath));
+		}	
 		
-		IClasspathEntry sarlLang = JavaCore.newContainerEntry(Path.fromOSString(sarlCoreBundleFullPath));
-		//IClasspathEntry sarlLangCore = JavaCore.newContainerEntry(Path.fromOSString(sarlLangCoreBundleFullPath));
-		//IClasspathEntry sarlUtil = JavaCore.newContainerEntry(Path.fromOSString(sarlUtilBundleFullPath));
+		
+		
+		IClasspathEntry xBase = JavaCore.newLibraryEntry(Path.fromOSString(xBaseBundleFullPath),null,null);
+		IClasspathEntry xTend = JavaCore.newLibraryEntry(Path.fromOSString(xTendBundleFullPath),null,null);		
+		IClasspathEntry sarlLang = JavaCore.newLibraryEntry(Path.fromOSString(sarlCoreBundleFullPath),null,null);
+		IClasspathEntry sarlLangCore = JavaCore.newLibraryEntry(Path.fromOSString(sarlLangCoreBundleFullPath),null,null);
+		IClasspathEntry sarlUtil = JavaCore.newLibraryEntry(Path.fromOSString(sarlUtilBundleFullPath),null,null);
 		
 		
 		IPath newPath = fJREGroup.getJREContainerPath();
 		if (newPath != null) {
-			return new IClasspathEntry[] { JavaCore.newContainerEntry(newPath), xBase,xTend,sarlLang};
+			return new IClasspathEntry[] { JavaCore.newContainerEntry(newPath), xBase,xTend,sarlLang,sarlLangCore,sarlUtil};
 		}
 		IClasspathEntry[] entries = PreferenceConstants.getDefaultJRELibrary();
 		int oldLength = entries.length;
@@ -1391,8 +1391,8 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 		entries[oldLength] = xBase;
 		entries[oldLength+1] = xTend;
 		entries[oldLength+2] = sarlLang;
-		/*entries[oldLength+3] = sarlLangCore;
-		entries[oldLength+4] = sarlUtil;*/
+		entries[oldLength+3] = sarlLangCore;
+		entries[oldLength+4] = sarlUtil;
 		
 		return entries;
 		
