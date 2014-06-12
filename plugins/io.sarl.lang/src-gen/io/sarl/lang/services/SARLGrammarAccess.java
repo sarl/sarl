@@ -546,13 +546,13 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		//Skill returns ImplementingElement:
-		//	{Skill} "skill" name=ValidID (("extends" superTypes+=JvmParameterizedTypeReference)? & "implements"
-		//	implementedTypes+=JvmParameterizedTypeReference ("," implementedTypes+=JvmParameterizedTypeReference)*) "{"
+		//	{Skill} "skill" name=ValidID (("extends" superTypes+=JvmParameterizedTypeReference)? & ("implements"
+		//	implementedTypes+=JvmParameterizedTypeReference ("," implementedTypes+=JvmParameterizedTypeReference)*)?) "{"
 		//	features+=SkillFeature* "}";
 		public ParserRule getRule() { return rule; }
 
-		//{Skill} "skill" name=ValidID (("extends" superTypes+=JvmParameterizedTypeReference)? & "implements"
-		//implementedTypes+=JvmParameterizedTypeReference ("," implementedTypes+=JvmParameterizedTypeReference)*) "{"
+		//{Skill} "skill" name=ValidID (("extends" superTypes+=JvmParameterizedTypeReference)? & ("implements"
+		//implementedTypes+=JvmParameterizedTypeReference ("," implementedTypes+=JvmParameterizedTypeReference)*)?) "{"
 		//features+=SkillFeature* "}"
 		public Group getGroup() { return cGroup; }
 
@@ -568,8 +568,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_2_0() { return cNameValidIDParserRuleCall_2_0; }
 
-		//("extends" superTypes+=JvmParameterizedTypeReference)? & "implements" implementedTypes+=JvmParameterizedTypeReference
-		//("," implementedTypes+=JvmParameterizedTypeReference)*
+		//("extends" superTypes+=JvmParameterizedTypeReference)? & ("implements" implementedTypes+=JvmParameterizedTypeReference
+		//("," implementedTypes+=JvmParameterizedTypeReference)*)?
 		public UnorderedGroup getUnorderedGroup_3() { return cUnorderedGroup_3; }
 
 		//("extends" superTypes+=JvmParameterizedTypeReference)?
@@ -584,7 +584,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//JvmParameterizedTypeReference
 		public RuleCall getSuperTypesJvmParameterizedTypeReferenceParserRuleCall_3_0_1_0() { return cSuperTypesJvmParameterizedTypeReferenceParserRuleCall_3_0_1_0; }
 
-		//"implements" implementedTypes+=JvmParameterizedTypeReference ("," implementedTypes+=JvmParameterizedTypeReference)*
+		//("implements" implementedTypes+=JvmParameterizedTypeReference ("," implementedTypes+=JvmParameterizedTypeReference)*)?
 		public Group getGroup_3_1() { return cGroup_3_1; }
 
 		//"implements"
@@ -1797,8 +1797,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Skill returns ImplementingElement:
-	//	{Skill} "skill" name=ValidID (("extends" superTypes+=JvmParameterizedTypeReference)? & "implements"
-	//	implementedTypes+=JvmParameterizedTypeReference ("," implementedTypes+=JvmParameterizedTypeReference)*) "{"
+	//	{Skill} "skill" name=ValidID (("extends" superTypes+=JvmParameterizedTypeReference)? & ("implements"
+	//	implementedTypes+=JvmParameterizedTypeReference ("," implementedTypes+=JvmParameterizedTypeReference)*)?) "{"
 	//	features+=SkillFeature* "}";
 	public SkillElements getSkillAccess() {
 		return (pSkill != null) ? pSkill : (pSkill = new SkillElements());

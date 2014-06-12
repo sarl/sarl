@@ -9452,11 +9452,11 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
             if ( (LA9_0==RULE_ID) ) {
                 int LA9_1 = input.LA(2);
 
-                if ( (LA9_1==62) ) {
-                    alt9=1;
-                }
-                else if ( (LA9_1==EOF||LA9_1==14||LA9_1==17||LA9_1==53||LA9_1==56||(LA9_1>=63 && LA9_1<=65)||LA9_1==68||LA9_1==71||LA9_1==94) ) {
+                if ( (LA9_1==EOF||LA9_1==14||LA9_1==17||LA9_1==53||LA9_1==56||(LA9_1>=63 && LA9_1<=65)||LA9_1==68||LA9_1==71||LA9_1==94) ) {
                     alt9=2;
+                }
+                else if ( (LA9_1==62) ) {
+                    alt9=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -9764,11 +9764,11 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                 {
                 int LA12_1 = input.LA(2);
 
-                if ( (LA12_1==14) ) {
-                    alt12=1;
-                }
-                else if ( (LA12_1==EOF||(LA12_1>=RULE_ID && LA12_1<=RULE_STRING)||LA12_1==13||(LA12_1>=15 && LA12_1<=51)||LA12_1==53||(LA12_1>=55 && LA12_1<=56)||(LA12_1>=62 && LA12_1<=71)||(LA12_1>=73 && LA12_1<=91)||(LA12_1>=94 && LA12_1<=96)||LA12_1==98) ) {
+                if ( (LA12_1==EOF||(LA12_1>=RULE_ID && LA12_1<=RULE_STRING)||LA12_1==13||(LA12_1>=15 && LA12_1<=51)||LA12_1==53||(LA12_1>=55 && LA12_1<=56)||(LA12_1>=62 && LA12_1<=71)||(LA12_1>=73 && LA12_1<=91)||(LA12_1>=94 && LA12_1<=96)||LA12_1==98) ) {
                     alt12=2;
+                }
+                else if ( (LA12_1==14) ) {
+                    alt12=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -9783,11 +9783,11 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                 {
                 int LA12_2 = input.LA(2);
 
-                if ( (LA12_2==EOF||(LA12_2>=RULE_ID && LA12_2<=RULE_STRING)||LA12_2==13||(LA12_2>=15 && LA12_2<=51)||LA12_2==53||(LA12_2>=55 && LA12_2<=56)||(LA12_2>=62 && LA12_2<=71)||(LA12_2>=73 && LA12_2<=91)||(LA12_2>=94 && LA12_2<=96)||LA12_2==98) ) {
-                    alt12=2;
-                }
-                else if ( (LA12_2==14) ) {
+                if ( (LA12_2==14) ) {
                     alt12=1;
+                }
+                else if ( (LA12_2==EOF||(LA12_2>=RULE_ID && LA12_2<=RULE_STRING)||LA12_2==13||(LA12_2>=15 && LA12_2<=51)||LA12_2==53||(LA12_2>=55 && LA12_2<=56)||(LA12_2>=62 && LA12_2<=71)||(LA12_2>=73 && LA12_2<=91)||(LA12_2>=94 && LA12_2<=96)||LA12_2==98) ) {
+                    alt12=2;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -9802,11 +9802,11 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                 {
                 int LA12_3 = input.LA(2);
 
-                if ( (LA12_3==14) ) {
-                    alt12=1;
-                }
-                else if ( (LA12_3==EOF||(LA12_3>=RULE_ID && LA12_3<=RULE_STRING)||LA12_3==13||(LA12_3>=15 && LA12_3<=51)||LA12_3==53||(LA12_3>=55 && LA12_3<=56)||(LA12_3>=62 && LA12_3<=71)||(LA12_3>=73 && LA12_3<=91)||(LA12_3>=94 && LA12_3<=96)||LA12_3==98) ) {
+                if ( (LA12_3==EOF||(LA12_3>=RULE_ID && LA12_3<=RULE_STRING)||LA12_3==13||(LA12_3>=15 && LA12_3<=51)||LA12_3==53||(LA12_3>=55 && LA12_3<=56)||(LA12_3>=62 && LA12_3<=71)||(LA12_3>=73 && LA12_3<=91)||(LA12_3>=94 && LA12_3<=96)||LA12_3==98) ) {
                     alt12=2;
+                }
+                else if ( (LA12_3==14) ) {
+                    alt12=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -9821,11 +9821,11 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                 {
                 int LA12_4 = input.LA(2);
 
-                if ( (LA12_4==14) ) {
-                    alt12=1;
-                }
-                else if ( (LA12_4==EOF||(LA12_4>=RULE_ID && LA12_4<=RULE_STRING)||LA12_4==13||(LA12_4>=15 && LA12_4<=51)||LA12_4==53||(LA12_4>=55 && LA12_4<=56)||(LA12_4>=62 && LA12_4<=71)||(LA12_4>=73 && LA12_4<=91)||(LA12_4>=94 && LA12_4<=96)||LA12_4==98) ) {
+                if ( (LA12_4==EOF||(LA12_4>=RULE_ID && LA12_4<=RULE_STRING)||LA12_4==13||(LA12_4>=15 && LA12_4<=51)||LA12_4==53||(LA12_4>=55 && LA12_4<=56)||(LA12_4>=62 && LA12_4<=71)||(LA12_4>=73 && LA12_4<=91)||(LA12_4>=94 && LA12_4<=96)||LA12_4==98) ) {
                     alt12=2;
+                }
+                else if ( (LA12_4==14) ) {
+                    alt12=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -62301,25 +62301,41 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Skill__UnorderedGroup_3"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21853:1: rule__Skill__UnorderedGroup_3 : rule__Skill__UnorderedGroup_3__0 {...}?;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21853:1: rule__Skill__UnorderedGroup_3 : ( rule__Skill__UnorderedGroup_3__0 )? ;
     public final void rule__Skill__UnorderedGroup_3() throws RecognitionException {
 
             	int stackSize = keepStackSize();
         		getUnorderedGroupHelper().enter(grammarAccess.getSkillAccess().getUnorderedGroup_3());
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21858:1: ( rule__Skill__UnorderedGroup_3__0 {...}?)
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21859:2: rule__Skill__UnorderedGroup_3__0 {...}?
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21858:1: ( ( rule__Skill__UnorderedGroup_3__0 )? )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21859:2: ( rule__Skill__UnorderedGroup_3__0 )?
             {
-            pushFollow(FOLLOW_rule__Skill__UnorderedGroup_3__0_in_rule__Skill__UnorderedGroup_343924);
-            rule__Skill__UnorderedGroup_3__0();
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21859:2: ( rule__Skill__UnorderedGroup_3__0 )?
+            int alt156=2;
+            int LA156_0 = input.LA(1);
 
-            state._fsp--;
-            if (state.failed) return ;
-            if ( ! getUnorderedGroupHelper().canLeave(grammarAccess.getSkillAccess().getUnorderedGroup_3()) ) {
-                if (state.backtracking>0) {state.failed=true; return ;}
-                throw new FailedPredicateException(input, "rule__Skill__UnorderedGroup_3", "getUnorderedGroupHelper().canLeave(grammarAccess.getSkillAccess().getUnorderedGroup_3())");
+            if ( LA156_0 ==46 && getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 0) ) {
+                alt156=1;
             }
+            else if ( LA156_0 ==61 && getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 1) ) {
+                alt156=1;
+            }
+            switch (alt156) {
+                case 1 :
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:0:0: rule__Skill__UnorderedGroup_3__0
+                    {
+                    pushFollow(FOLLOW_rule__Skill__UnorderedGroup_3__0_in_rule__Skill__UnorderedGroup_343924);
+                    rule__Skill__UnorderedGroup_3__0();
+
+                    state._fsp--;
+                    if (state.failed) return ;
+
+                    }
+                    break;
+
+            }
+
 
             }
 
@@ -62340,59 +62356,59 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Skill__UnorderedGroup_3__Impl"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21870:1: rule__Skill__UnorderedGroup_3__Impl : ( ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) ) | ({...}? => ( ( ( rule__Skill__Group_3_1__0 ) ) ) ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21869:1: rule__Skill__UnorderedGroup_3__Impl : ( ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) ) | ({...}? => ( ( ( rule__Skill__Group_3_1__0 ) ) ) ) ) ;
     public final void rule__Skill__UnorderedGroup_3__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         		boolean selected = false;
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21875:1: ( ( ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) ) | ({...}? => ( ( ( rule__Skill__Group_3_1__0 ) ) ) ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21876:3: ( ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) ) | ({...}? => ( ( ( rule__Skill__Group_3_1__0 ) ) ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21874:1: ( ( ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) ) | ({...}? => ( ( ( rule__Skill__Group_3_1__0 ) ) ) ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21875:3: ( ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) ) | ({...}? => ( ( ( rule__Skill__Group_3_1__0 ) ) ) ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21876:3: ( ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) ) | ({...}? => ( ( ( rule__Skill__Group_3_1__0 ) ) ) ) )
-            int alt156=2;
-            int LA156_0 = input.LA(1);
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21875:3: ( ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) ) | ({...}? => ( ( ( rule__Skill__Group_3_1__0 ) ) ) ) )
+            int alt157=2;
+            int LA157_0 = input.LA(1);
 
-            if ( LA156_0 ==46 && getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 0) ) {
-                alt156=1;
+            if ( LA157_0 ==46 && getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 0) ) {
+                alt157=1;
             }
-            else if ( LA156_0 ==61 && getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 1) ) {
-                alt156=2;
+            else if ( LA157_0 ==61 && getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 1) ) {
+                alt157=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return ;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 156, 0, input);
+                    new NoViableAltException("", 157, 0, input);
 
                 throw nvae;
             }
-            switch (alt156) {
+            switch (alt157) {
                 case 1 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21878:4: ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21877:4: ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) )
                     {
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21878:4: ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) )
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21879:5: {...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21877:4: ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21878:5: {...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) )
                     {
                     if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 0) ) {
                         if (state.backtracking>0) {state.failed=true; return ;}
                         throw new FailedPredicateException(input, "rule__Skill__UnorderedGroup_3__Impl", "getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 0)");
                     }
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21879:102: ( ( ( rule__Skill__Group_3_0__0 ) ) )
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21880:6: ( ( rule__Skill__Group_3_0__0 ) )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21878:102: ( ( ( rule__Skill__Group_3_0__0 ) ) )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21879:6: ( ( rule__Skill__Group_3_0__0 ) )
                     {
                     getUnorderedGroupHelper().select(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 0);
                     selected = true;
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21886:6: ( ( rule__Skill__Group_3_0__0 ) )
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21888:7: ( rule__Skill__Group_3_0__0 )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21885:6: ( ( rule__Skill__Group_3_0__0 ) )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21887:7: ( rule__Skill__Group_3_0__0 )
                     {
                     if ( state.backtracking==0 ) {
                        before(grammarAccess.getSkillAccess().getGroup_3_0()); 
                     }
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21889:7: ( rule__Skill__Group_3_0__0 )
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21889:8: rule__Skill__Group_3_0__0
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21888:7: ( rule__Skill__Group_3_0__0 )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21888:8: rule__Skill__Group_3_0__0
                     {
-                    pushFollow(FOLLOW_rule__Skill__Group_3_0__0_in_rule__Skill__UnorderedGroup_3__Impl44013);
+                    pushFollow(FOLLOW_rule__Skill__Group_3_0__0_in_rule__Skill__UnorderedGroup_3__Impl44011);
                     rule__Skill__Group_3_0__0();
 
                     state._fsp--;
@@ -62416,30 +62432,30 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                     }
                     break;
                 case 2 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21895:4: ({...}? => ( ( ( rule__Skill__Group_3_1__0 ) ) ) )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21894:4: ({...}? => ( ( ( rule__Skill__Group_3_1__0 ) ) ) )
                     {
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21895:4: ({...}? => ( ( ( rule__Skill__Group_3_1__0 ) ) ) )
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21896:5: {...}? => ( ( ( rule__Skill__Group_3_1__0 ) ) )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21894:4: ({...}? => ( ( ( rule__Skill__Group_3_1__0 ) ) ) )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21895:5: {...}? => ( ( ( rule__Skill__Group_3_1__0 ) ) )
                     {
                     if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 1) ) {
                         if (state.backtracking>0) {state.failed=true; return ;}
                         throw new FailedPredicateException(input, "rule__Skill__UnorderedGroup_3__Impl", "getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 1)");
                     }
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21896:102: ( ( ( rule__Skill__Group_3_1__0 ) ) )
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21897:6: ( ( rule__Skill__Group_3_1__0 ) )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21895:102: ( ( ( rule__Skill__Group_3_1__0 ) ) )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21896:6: ( ( rule__Skill__Group_3_1__0 ) )
                     {
                     getUnorderedGroupHelper().select(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 1);
                     selected = true;
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21903:6: ( ( rule__Skill__Group_3_1__0 ) )
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21905:7: ( rule__Skill__Group_3_1__0 )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21902:6: ( ( rule__Skill__Group_3_1__0 ) )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21904:7: ( rule__Skill__Group_3_1__0 )
                     {
                     if ( state.backtracking==0 ) {
                        before(grammarAccess.getSkillAccess().getGroup_3_1()); 
                     }
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21906:7: ( rule__Skill__Group_3_1__0 )
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21906:8: rule__Skill__Group_3_1__0
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21905:7: ( rule__Skill__Group_3_1__0 )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21905:8: rule__Skill__Group_3_1__0
                     {
-                    pushFollow(FOLLOW_rule__Skill__Group_3_1__0_in_rule__Skill__UnorderedGroup_3__Impl44104);
+                    pushFollow(FOLLOW_rule__Skill__Group_3_1__0_in_rule__Skill__UnorderedGroup_3__Impl44102);
                     rule__Skill__Group_3_1__0();
 
                     state._fsp--;
@@ -62486,35 +62502,35 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Skill__UnorderedGroup_3__0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21921:1: rule__Skill__UnorderedGroup_3__0 : rule__Skill__UnorderedGroup_3__Impl ( rule__Skill__UnorderedGroup_3__1 )? ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21920:1: rule__Skill__UnorderedGroup_3__0 : rule__Skill__UnorderedGroup_3__Impl ( rule__Skill__UnorderedGroup_3__1 )? ;
     public final void rule__Skill__UnorderedGroup_3__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21925:1: ( rule__Skill__UnorderedGroup_3__Impl ( rule__Skill__UnorderedGroup_3__1 )? )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21926:2: rule__Skill__UnorderedGroup_3__Impl ( rule__Skill__UnorderedGroup_3__1 )?
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21924:1: ( rule__Skill__UnorderedGroup_3__Impl ( rule__Skill__UnorderedGroup_3__1 )? )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21925:2: rule__Skill__UnorderedGroup_3__Impl ( rule__Skill__UnorderedGroup_3__1 )?
             {
-            pushFollow(FOLLOW_rule__Skill__UnorderedGroup_3__Impl_in_rule__Skill__UnorderedGroup_3__044163);
+            pushFollow(FOLLOW_rule__Skill__UnorderedGroup_3__Impl_in_rule__Skill__UnorderedGroup_3__044161);
             rule__Skill__UnorderedGroup_3__Impl();
 
             state._fsp--;
             if (state.failed) return ;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21927:2: ( rule__Skill__UnorderedGroup_3__1 )?
-            int alt157=2;
-            int LA157_0 = input.LA(1);
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21926:2: ( rule__Skill__UnorderedGroup_3__1 )?
+            int alt158=2;
+            int LA158_0 = input.LA(1);
 
-            if ( LA157_0 ==46 && getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 0) ) {
-                alt157=1;
+            if ( LA158_0 ==46 && getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 0) ) {
+                alt158=1;
             }
-            else if ( LA157_0 ==61 && getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 1) ) {
-                alt157=1;
+            else if ( LA158_0 ==61 && getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 1) ) {
+                alt158=1;
             }
-            switch (alt157) {
+            switch (alt158) {
                 case 1 :
                     // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:0:0: rule__Skill__UnorderedGroup_3__1
                     {
-                    pushFollow(FOLLOW_rule__Skill__UnorderedGroup_3__1_in_rule__Skill__UnorderedGroup_3__044166);
+                    pushFollow(FOLLOW_rule__Skill__UnorderedGroup_3__1_in_rule__Skill__UnorderedGroup_3__044164);
                     rule__Skill__UnorderedGroup_3__1();
 
                     state._fsp--;
@@ -62544,16 +62560,16 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Skill__UnorderedGroup_3__1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21934:1: rule__Skill__UnorderedGroup_3__1 : rule__Skill__UnorderedGroup_3__Impl ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21933:1: rule__Skill__UnorderedGroup_3__1 : rule__Skill__UnorderedGroup_3__Impl ;
     public final void rule__Skill__UnorderedGroup_3__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21938:1: ( rule__Skill__UnorderedGroup_3__Impl )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21939:2: rule__Skill__UnorderedGroup_3__Impl
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21937:1: ( rule__Skill__UnorderedGroup_3__Impl )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21938:2: rule__Skill__UnorderedGroup_3__Impl
             {
-            pushFollow(FOLLOW_rule__Skill__UnorderedGroup_3__Impl_in_rule__Skill__UnorderedGroup_3__144191);
+            pushFollow(FOLLOW_rule__Skill__UnorderedGroup_3__Impl_in_rule__Skill__UnorderedGroup_3__144189);
             rule__Skill__UnorderedGroup_3__Impl();
 
             state._fsp--;
@@ -62577,22 +62593,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__SarlScript__NameAssignment_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21950:1: rule__SarlScript__NameAssignment_0_1 : ( ruleQualifiedName ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21949:1: rule__SarlScript__NameAssignment_0_1 : ( ruleQualifiedName ) ;
     public final void rule__SarlScript__NameAssignment_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21954:1: ( ( ruleQualifiedName ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21955:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21953:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21954:1: ( ruleQualifiedName )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21955:1: ( ruleQualifiedName )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21956:1: ruleQualifiedName
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21954:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21955:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getSarlScriptAccess().getNameQualifiedNameParserRuleCall_0_1_0()); 
             }
-            pushFollow(FOLLOW_ruleQualifiedName_in_rule__SarlScript__NameAssignment_0_144223);
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__SarlScript__NameAssignment_0_144221);
             ruleQualifiedName();
 
             state._fsp--;
@@ -62622,22 +62638,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__SarlScript__ImportSectionAssignment_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21965:1: rule__SarlScript__ImportSectionAssignment_1 : ( ruleXImportSection ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21964:1: rule__SarlScript__ImportSectionAssignment_1 : ( ruleXImportSection ) ;
     public final void rule__SarlScript__ImportSectionAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21969:1: ( ( ruleXImportSection ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21970:1: ( ruleXImportSection )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21968:1: ( ( ruleXImportSection ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21969:1: ( ruleXImportSection )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21970:1: ( ruleXImportSection )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21971:1: ruleXImportSection
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21969:1: ( ruleXImportSection )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21970:1: ruleXImportSection
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getSarlScriptAccess().getImportSectionXImportSectionParserRuleCall_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXImportSection_in_rule__SarlScript__ImportSectionAssignment_144254);
+            pushFollow(FOLLOW_ruleXImportSection_in_rule__SarlScript__ImportSectionAssignment_144252);
             ruleXImportSection();
 
             state._fsp--;
@@ -62667,22 +62683,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__SarlScript__ElementsAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21980:1: rule__SarlScript__ElementsAssignment_2 : ( ruleTopElement ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21979:1: rule__SarlScript__ElementsAssignment_2 : ( ruleTopElement ) ;
     public final void rule__SarlScript__ElementsAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21984:1: ( ( ruleTopElement ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21985:1: ( ruleTopElement )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21983:1: ( ( ruleTopElement ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21984:1: ( ruleTopElement )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21985:1: ( ruleTopElement )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21986:1: ruleTopElement
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21984:1: ( ruleTopElement )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21985:1: ruleTopElement
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getSarlScriptAccess().getElementsTopElementParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleTopElement_in_rule__SarlScript__ElementsAssignment_244285);
+            pushFollow(FOLLOW_ruleTopElement_in_rule__SarlScript__ElementsAssignment_244283);
             ruleTopElement();
 
             state._fsp--;
@@ -62712,22 +62728,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Event__NameAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22001:1: rule__Event__NameAssignment_2 : ( ruleValidID ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22000:1: rule__Event__NameAssignment_2 : ( ruleValidID ) ;
     public final void rule__Event__NameAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22005:1: ( ( ruleValidID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22006:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22004:1: ( ( ruleValidID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22005:1: ( ruleValidID )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22006:1: ( ruleValidID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22007:1: ruleValidID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22005:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22006:1: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getEventAccess().getNameValidIDParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleValidID_in_rule__Event__NameAssignment_244322);
+            pushFollow(FOLLOW_ruleValidID_in_rule__Event__NameAssignment_244320);
             ruleValidID();
 
             state._fsp--;
@@ -62757,22 +62773,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Event__SuperTypesAssignment_3_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22016:1: rule__Event__SuperTypesAssignment_3_1 : ( ruleJvmParameterizedTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22015:1: rule__Event__SuperTypesAssignment_3_1 : ( ruleJvmParameterizedTypeReference ) ;
     public final void rule__Event__SuperTypesAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22020:1: ( ( ruleJvmParameterizedTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22021:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22019:1: ( ( ruleJvmParameterizedTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22020:1: ( ruleJvmParameterizedTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22021:1: ( ruleJvmParameterizedTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22022:1: ruleJvmParameterizedTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22020:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22021:1: ruleJvmParameterizedTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getEventAccess().getSuperTypesJvmParameterizedTypeReferenceParserRuleCall_3_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Event__SuperTypesAssignment_3_144353);
+            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Event__SuperTypesAssignment_3_144351);
             ruleJvmParameterizedTypeReference();
 
             state._fsp--;
@@ -62802,22 +62818,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Event__FeaturesAssignment_4_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22031:1: rule__Event__FeaturesAssignment_4_1 : ( ruleEventFeature ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22030:1: rule__Event__FeaturesAssignment_4_1 : ( ruleEventFeature ) ;
     public final void rule__Event__FeaturesAssignment_4_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22035:1: ( ( ruleEventFeature ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22036:1: ( ruleEventFeature )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22034:1: ( ( ruleEventFeature ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22035:1: ( ruleEventFeature )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22036:1: ( ruleEventFeature )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22037:1: ruleEventFeature
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22035:1: ( ruleEventFeature )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22036:1: ruleEventFeature
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getEventAccess().getFeaturesEventFeatureParserRuleCall_4_1_0()); 
             }
-            pushFollow(FOLLOW_ruleEventFeature_in_rule__Event__FeaturesAssignment_4_144384);
+            pushFollow(FOLLOW_ruleEventFeature_in_rule__Event__FeaturesAssignment_4_144382);
             ruleEventFeature();
 
             state._fsp--;
@@ -62847,22 +62863,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Capacity__NameAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22046:1: rule__Capacity__NameAssignment_2 : ( ruleValidID ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22045:1: rule__Capacity__NameAssignment_2 : ( ruleValidID ) ;
     public final void rule__Capacity__NameAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22050:1: ( ( ruleValidID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22051:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22049:1: ( ( ruleValidID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22050:1: ( ruleValidID )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22051:1: ( ruleValidID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22052:1: ruleValidID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22050:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22051:1: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getCapacityAccess().getNameValidIDParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleValidID_in_rule__Capacity__NameAssignment_244415);
+            pushFollow(FOLLOW_ruleValidID_in_rule__Capacity__NameAssignment_244413);
             ruleValidID();
 
             state._fsp--;
@@ -62892,22 +62908,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Capacity__SuperTypesAssignment_3_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22061:1: rule__Capacity__SuperTypesAssignment_3_1 : ( ruleJvmParameterizedTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22060:1: rule__Capacity__SuperTypesAssignment_3_1 : ( ruleJvmParameterizedTypeReference ) ;
     public final void rule__Capacity__SuperTypesAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22065:1: ( ( ruleJvmParameterizedTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22066:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22064:1: ( ( ruleJvmParameterizedTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22065:1: ( ruleJvmParameterizedTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22066:1: ( ruleJvmParameterizedTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22067:1: ruleJvmParameterizedTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22065:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22066:1: ruleJvmParameterizedTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getCapacityAccess().getSuperTypesJvmParameterizedTypeReferenceParserRuleCall_3_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Capacity__SuperTypesAssignment_3_144446);
+            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Capacity__SuperTypesAssignment_3_144444);
             ruleJvmParameterizedTypeReference();
 
             state._fsp--;
@@ -62937,22 +62953,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Capacity__SuperTypesAssignment_3_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22076:1: rule__Capacity__SuperTypesAssignment_3_2_1 : ( ruleJvmParameterizedTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22075:1: rule__Capacity__SuperTypesAssignment_3_2_1 : ( ruleJvmParameterizedTypeReference ) ;
     public final void rule__Capacity__SuperTypesAssignment_3_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22080:1: ( ( ruleJvmParameterizedTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22081:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22079:1: ( ( ruleJvmParameterizedTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22080:1: ( ruleJvmParameterizedTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22081:1: ( ruleJvmParameterizedTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22082:1: ruleJvmParameterizedTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22080:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22081:1: ruleJvmParameterizedTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getCapacityAccess().getSuperTypesJvmParameterizedTypeReferenceParserRuleCall_3_2_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Capacity__SuperTypesAssignment_3_2_144477);
+            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Capacity__SuperTypesAssignment_3_2_144475);
             ruleJvmParameterizedTypeReference();
 
             state._fsp--;
@@ -62982,22 +62998,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Capacity__FeaturesAssignment_5"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22091:1: rule__Capacity__FeaturesAssignment_5 : ( ruleActionSignature ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22090:1: rule__Capacity__FeaturesAssignment_5 : ( ruleActionSignature ) ;
     public final void rule__Capacity__FeaturesAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22095:1: ( ( ruleActionSignature ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22096:1: ( ruleActionSignature )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22094:1: ( ( ruleActionSignature ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22095:1: ( ruleActionSignature )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22096:1: ( ruleActionSignature )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22097:1: ruleActionSignature
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22095:1: ( ruleActionSignature )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22096:1: ruleActionSignature
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getCapacityAccess().getFeaturesActionSignatureParserRuleCall_5_0()); 
             }
-            pushFollow(FOLLOW_ruleActionSignature_in_rule__Capacity__FeaturesAssignment_544508);
+            pushFollow(FOLLOW_ruleActionSignature_in_rule__Capacity__FeaturesAssignment_544506);
             ruleActionSignature();
 
             state._fsp--;
@@ -63027,22 +63043,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Agent__NameAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22106:1: rule__Agent__NameAssignment_2 : ( ruleValidID ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22105:1: rule__Agent__NameAssignment_2 : ( ruleValidID ) ;
     public final void rule__Agent__NameAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22110:1: ( ( ruleValidID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22111:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22109:1: ( ( ruleValidID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22110:1: ( ruleValidID )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22111:1: ( ruleValidID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22112:1: ruleValidID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22110:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22111:1: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getAgentAccess().getNameValidIDParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleValidID_in_rule__Agent__NameAssignment_244539);
+            pushFollow(FOLLOW_ruleValidID_in_rule__Agent__NameAssignment_244537);
             ruleValidID();
 
             state._fsp--;
@@ -63072,22 +63088,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Agent__SuperTypesAssignment_3_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22121:1: rule__Agent__SuperTypesAssignment_3_1 : ( ruleJvmParameterizedTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22120:1: rule__Agent__SuperTypesAssignment_3_1 : ( ruleJvmParameterizedTypeReference ) ;
     public final void rule__Agent__SuperTypesAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22125:1: ( ( ruleJvmParameterizedTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22126:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22124:1: ( ( ruleJvmParameterizedTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22125:1: ( ruleJvmParameterizedTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22126:1: ( ruleJvmParameterizedTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22127:1: ruleJvmParameterizedTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22125:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22126:1: ruleJvmParameterizedTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getAgentAccess().getSuperTypesJvmParameterizedTypeReferenceParserRuleCall_3_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Agent__SuperTypesAssignment_3_144570);
+            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Agent__SuperTypesAssignment_3_144568);
             ruleJvmParameterizedTypeReference();
 
             state._fsp--;
@@ -63117,22 +63133,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Agent__FeaturesAssignment_5"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22136:1: rule__Agent__FeaturesAssignment_5 : ( ruleAgentFeature ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22135:1: rule__Agent__FeaturesAssignment_5 : ( ruleAgentFeature ) ;
     public final void rule__Agent__FeaturesAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22140:1: ( ( ruleAgentFeature ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22141:1: ( ruleAgentFeature )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22139:1: ( ( ruleAgentFeature ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22140:1: ( ruleAgentFeature )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22141:1: ( ruleAgentFeature )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22142:1: ruleAgentFeature
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22140:1: ( ruleAgentFeature )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22141:1: ruleAgentFeature
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getAgentAccess().getFeaturesAgentFeatureParserRuleCall_5_0()); 
             }
-            pushFollow(FOLLOW_ruleAgentFeature_in_rule__Agent__FeaturesAssignment_544601);
+            pushFollow(FOLLOW_ruleAgentFeature_in_rule__Agent__FeaturesAssignment_544599);
             ruleAgentFeature();
 
             state._fsp--;
@@ -63162,22 +63178,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Behavior__NameAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22151:1: rule__Behavior__NameAssignment_2 : ( ruleValidID ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22150:1: rule__Behavior__NameAssignment_2 : ( ruleValidID ) ;
     public final void rule__Behavior__NameAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22155:1: ( ( ruleValidID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22156:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22154:1: ( ( ruleValidID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22155:1: ( ruleValidID )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22156:1: ( ruleValidID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22157:1: ruleValidID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22155:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22156:1: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getBehaviorAccess().getNameValidIDParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleValidID_in_rule__Behavior__NameAssignment_244632);
+            pushFollow(FOLLOW_ruleValidID_in_rule__Behavior__NameAssignment_244630);
             ruleValidID();
 
             state._fsp--;
@@ -63207,22 +63223,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Behavior__SuperTypesAssignment_3_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22166:1: rule__Behavior__SuperTypesAssignment_3_1 : ( ruleJvmParameterizedTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22165:1: rule__Behavior__SuperTypesAssignment_3_1 : ( ruleJvmParameterizedTypeReference ) ;
     public final void rule__Behavior__SuperTypesAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22170:1: ( ( ruleJvmParameterizedTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22171:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22169:1: ( ( ruleJvmParameterizedTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22170:1: ( ruleJvmParameterizedTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22171:1: ( ruleJvmParameterizedTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22172:1: ruleJvmParameterizedTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22170:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22171:1: ruleJvmParameterizedTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getBehaviorAccess().getSuperTypesJvmParameterizedTypeReferenceParserRuleCall_3_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Behavior__SuperTypesAssignment_3_144663);
+            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Behavior__SuperTypesAssignment_3_144661);
             ruleJvmParameterizedTypeReference();
 
             state._fsp--;
@@ -63252,22 +63268,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Behavior__FeaturesAssignment_5"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22181:1: rule__Behavior__FeaturesAssignment_5 : ( ruleBehaviorFeature ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22180:1: rule__Behavior__FeaturesAssignment_5 : ( ruleBehaviorFeature ) ;
     public final void rule__Behavior__FeaturesAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22185:1: ( ( ruleBehaviorFeature ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22186:1: ( ruleBehaviorFeature )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22184:1: ( ( ruleBehaviorFeature ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22185:1: ( ruleBehaviorFeature )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22186:1: ( ruleBehaviorFeature )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22187:1: ruleBehaviorFeature
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22185:1: ( ruleBehaviorFeature )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22186:1: ruleBehaviorFeature
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getBehaviorAccess().getFeaturesBehaviorFeatureParserRuleCall_5_0()); 
             }
-            pushFollow(FOLLOW_ruleBehaviorFeature_in_rule__Behavior__FeaturesAssignment_544694);
+            pushFollow(FOLLOW_ruleBehaviorFeature_in_rule__Behavior__FeaturesAssignment_544692);
             ruleBehaviorFeature();
 
             state._fsp--;
@@ -63297,22 +63313,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Skill__NameAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22196:1: rule__Skill__NameAssignment_2 : ( ruleValidID ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22195:1: rule__Skill__NameAssignment_2 : ( ruleValidID ) ;
     public final void rule__Skill__NameAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22200:1: ( ( ruleValidID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22201:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22199:1: ( ( ruleValidID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22200:1: ( ruleValidID )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22201:1: ( ruleValidID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22202:1: ruleValidID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22200:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22201:1: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getSkillAccess().getNameValidIDParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleValidID_in_rule__Skill__NameAssignment_244725);
+            pushFollow(FOLLOW_ruleValidID_in_rule__Skill__NameAssignment_244723);
             ruleValidID();
 
             state._fsp--;
@@ -63342,22 +63358,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Skill__SuperTypesAssignment_3_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22211:1: rule__Skill__SuperTypesAssignment_3_0_1 : ( ruleJvmParameterizedTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22210:1: rule__Skill__SuperTypesAssignment_3_0_1 : ( ruleJvmParameterizedTypeReference ) ;
     public final void rule__Skill__SuperTypesAssignment_3_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22215:1: ( ( ruleJvmParameterizedTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22216:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22214:1: ( ( ruleJvmParameterizedTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22215:1: ( ruleJvmParameterizedTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22216:1: ( ruleJvmParameterizedTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22217:1: ruleJvmParameterizedTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22215:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22216:1: ruleJvmParameterizedTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getSkillAccess().getSuperTypesJvmParameterizedTypeReferenceParserRuleCall_3_0_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Skill__SuperTypesAssignment_3_0_144756);
+            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Skill__SuperTypesAssignment_3_0_144754);
             ruleJvmParameterizedTypeReference();
 
             state._fsp--;
@@ -63387,22 +63403,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Skill__ImplementedTypesAssignment_3_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22226:1: rule__Skill__ImplementedTypesAssignment_3_1_1 : ( ruleJvmParameterizedTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22225:1: rule__Skill__ImplementedTypesAssignment_3_1_1 : ( ruleJvmParameterizedTypeReference ) ;
     public final void rule__Skill__ImplementedTypesAssignment_3_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22230:1: ( ( ruleJvmParameterizedTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22231:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22229:1: ( ( ruleJvmParameterizedTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22230:1: ( ruleJvmParameterizedTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22231:1: ( ruleJvmParameterizedTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22232:1: ruleJvmParameterizedTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22230:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22231:1: ruleJvmParameterizedTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getSkillAccess().getImplementedTypesJvmParameterizedTypeReferenceParserRuleCall_3_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Skill__ImplementedTypesAssignment_3_1_144787);
+            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Skill__ImplementedTypesAssignment_3_1_144785);
             ruleJvmParameterizedTypeReference();
 
             state._fsp--;
@@ -63432,22 +63448,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Skill__ImplementedTypesAssignment_3_1_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22241:1: rule__Skill__ImplementedTypesAssignment_3_1_2_1 : ( ruleJvmParameterizedTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22240:1: rule__Skill__ImplementedTypesAssignment_3_1_2_1 : ( ruleJvmParameterizedTypeReference ) ;
     public final void rule__Skill__ImplementedTypesAssignment_3_1_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22245:1: ( ( ruleJvmParameterizedTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22246:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22244:1: ( ( ruleJvmParameterizedTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22245:1: ( ruleJvmParameterizedTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22246:1: ( ruleJvmParameterizedTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22247:1: ruleJvmParameterizedTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22245:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22246:1: ruleJvmParameterizedTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getSkillAccess().getImplementedTypesJvmParameterizedTypeReferenceParserRuleCall_3_1_2_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Skill__ImplementedTypesAssignment_3_1_2_144818);
+            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Skill__ImplementedTypesAssignment_3_1_2_144816);
             ruleJvmParameterizedTypeReference();
 
             state._fsp--;
@@ -63477,22 +63493,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Skill__FeaturesAssignment_5"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22256:1: rule__Skill__FeaturesAssignment_5 : ( ruleSkillFeature ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22255:1: rule__Skill__FeaturesAssignment_5 : ( ruleSkillFeature ) ;
     public final void rule__Skill__FeaturesAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22260:1: ( ( ruleSkillFeature ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22261:1: ( ruleSkillFeature )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22259:1: ( ( ruleSkillFeature ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22260:1: ( ruleSkillFeature )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22261:1: ( ruleSkillFeature )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22262:1: ruleSkillFeature
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22260:1: ( ruleSkillFeature )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22261:1: ruleSkillFeature
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getSkillAccess().getFeaturesSkillFeatureParserRuleCall_5_0()); 
             }
-            pushFollow(FOLLOW_ruleSkillFeature_in_rule__Skill__FeaturesAssignment_544849);
+            pushFollow(FOLLOW_ruleSkillFeature_in_rule__Skill__FeaturesAssignment_544847);
             ruleSkillFeature();
 
             state._fsp--;
@@ -63522,28 +63538,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Attribute__WriteableAssignment_1_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22271:1: rule__Attribute__WriteableAssignment_1_0 : ( ( 'var' ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22270:1: rule__Attribute__WriteableAssignment_1_0 : ( ( 'var' ) ) ;
     public final void rule__Attribute__WriteableAssignment_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22275:1: ( ( ( 'var' ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22276:1: ( ( 'var' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22274:1: ( ( ( 'var' ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22275:1: ( ( 'var' ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22276:1: ( ( 'var' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22275:1: ( ( 'var' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22276:1: ( 'var' )
+            {
+            if ( state.backtracking==0 ) {
+               before(grammarAccess.getAttributeAccess().getWriteableVarKeyword_1_0_0()); 
+            }
             // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22277:1: ( 'var' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22278:1: 'var'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getAttributeAccess().getWriteableVarKeyword_1_0_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22278:1: ( 'var' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22279:1: 'var'
-            {
-            if ( state.backtracking==0 ) {
-               before(grammarAccess.getAttributeAccess().getWriteableVarKeyword_1_0_0()); 
-            }
-            match(input,94,FOLLOW_94_in_rule__Attribute__WriteableAssignment_1_044885); if (state.failed) return ;
+            match(input,94,FOLLOW_94_in_rule__Attribute__WriteableAssignment_1_044883); if (state.failed) return ;
             if ( state.backtracking==0 ) {
                after(grammarAccess.getAttributeAccess().getWriteableVarKeyword_1_0_0()); 
             }
@@ -63575,22 +63591,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Attribute__NameAssignment_2_0_0_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22294:1: rule__Attribute__NameAssignment_2_0_0_0 : ( ruleValidID ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22293:1: rule__Attribute__NameAssignment_2_0_0_0 : ( ruleValidID ) ;
     public final void rule__Attribute__NameAssignment_2_0_0_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22298:1: ( ( ruleValidID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22299:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22297:1: ( ( ruleValidID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22298:1: ( ruleValidID )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22299:1: ( ruleValidID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22300:1: ruleValidID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22298:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22299:1: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getAttributeAccess().getNameValidIDParserRuleCall_2_0_0_0_0()); 
             }
-            pushFollow(FOLLOW_ruleValidID_in_rule__Attribute__NameAssignment_2_0_0_044924);
+            pushFollow(FOLLOW_ruleValidID_in_rule__Attribute__NameAssignment_2_0_0_044922);
             ruleValidID();
 
             state._fsp--;
@@ -63620,22 +63636,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Attribute__TypeAssignment_2_0_0_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22309:1: rule__Attribute__TypeAssignment_2_0_0_2 : ( ruleJvmTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22308:1: rule__Attribute__TypeAssignment_2_0_0_2 : ( ruleJvmTypeReference ) ;
     public final void rule__Attribute__TypeAssignment_2_0_0_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22313:1: ( ( ruleJvmTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22314:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22312:1: ( ( ruleJvmTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22313:1: ( ruleJvmTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22314:1: ( ruleJvmTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22315:1: ruleJvmTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22313:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22314:1: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getAttributeAccess().getTypeJvmTypeReferenceParserRuleCall_2_0_0_2_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__Attribute__TypeAssignment_2_0_0_244955);
+            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__Attribute__TypeAssignment_2_0_0_244953);
             ruleJvmTypeReference();
 
             state._fsp--;
@@ -63665,22 +63681,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Attribute__NameAssignment_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22324:1: rule__Attribute__NameAssignment_2_1 : ( ruleValidID ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22323:1: rule__Attribute__NameAssignment_2_1 : ( ruleValidID ) ;
     public final void rule__Attribute__NameAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22328:1: ( ( ruleValidID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22329:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22327:1: ( ( ruleValidID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22328:1: ( ruleValidID )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22329:1: ( ruleValidID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22330:1: ruleValidID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22328:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22329:1: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getAttributeAccess().getNameValidIDParserRuleCall_2_1_0()); 
             }
-            pushFollow(FOLLOW_ruleValidID_in_rule__Attribute__NameAssignment_2_144986);
+            pushFollow(FOLLOW_ruleValidID_in_rule__Attribute__NameAssignment_2_144984);
             ruleValidID();
 
             state._fsp--;
@@ -63710,22 +63726,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Attribute__InitialValueAssignment_3_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22339:1: rule__Attribute__InitialValueAssignment_3_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22338:1: rule__Attribute__InitialValueAssignment_3_1 : ( ruleXExpression ) ;
     public final void rule__Attribute__InitialValueAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22343:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22344:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22342:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22343:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22344:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22345:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22343:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22344:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getAttributeAccess().getInitialValueXExpressionParserRuleCall_3_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__Attribute__InitialValueAssignment_3_145017);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__Attribute__InitialValueAssignment_3_145015);
             ruleXExpression();
 
             state._fsp--;
@@ -63755,22 +63771,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__CapacityUses__CapacitiesUsedAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22354:1: rule__CapacityUses__CapacitiesUsedAssignment_2 : ( ruleJvmParameterizedTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22353:1: rule__CapacityUses__CapacitiesUsedAssignment_2 : ( ruleJvmParameterizedTypeReference ) ;
     public final void rule__CapacityUses__CapacitiesUsedAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22358:1: ( ( ruleJvmParameterizedTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22359:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22357:1: ( ( ruleJvmParameterizedTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22358:1: ( ruleJvmParameterizedTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22359:1: ( ruleJvmParameterizedTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22360:1: ruleJvmParameterizedTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22358:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22359:1: ruleJvmParameterizedTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedJvmParameterizedTypeReferenceParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__CapacityUses__CapacitiesUsedAssignment_245048);
+            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__CapacityUses__CapacitiesUsedAssignment_245046);
             ruleJvmParameterizedTypeReference();
 
             state._fsp--;
@@ -63800,22 +63816,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__CapacityUses__CapacitiesUsedAssignment_3_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22369:1: rule__CapacityUses__CapacitiesUsedAssignment_3_1 : ( ruleJvmParameterizedTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22368:1: rule__CapacityUses__CapacitiesUsedAssignment_3_1 : ( ruleJvmParameterizedTypeReference ) ;
     public final void rule__CapacityUses__CapacitiesUsedAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22373:1: ( ( ruleJvmParameterizedTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22374:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22372:1: ( ( ruleJvmParameterizedTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22373:1: ( ruleJvmParameterizedTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22374:1: ( ruleJvmParameterizedTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22375:1: ruleJvmParameterizedTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22373:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22374:1: ruleJvmParameterizedTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedJvmParameterizedTypeReferenceParserRuleCall_3_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__CapacityUses__CapacitiesUsedAssignment_3_145079);
+            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__CapacityUses__CapacitiesUsedAssignment_3_145077);
             ruleJvmParameterizedTypeReference();
 
             state._fsp--;
@@ -63845,22 +63861,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__RequiredCapacity__RequiredCapacitiesAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22384:1: rule__RequiredCapacity__RequiredCapacitiesAssignment_2 : ( ruleJvmParameterizedTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22383:1: rule__RequiredCapacity__RequiredCapacitiesAssignment_2 : ( ruleJvmParameterizedTypeReference ) ;
     public final void rule__RequiredCapacity__RequiredCapacitiesAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22388:1: ( ( ruleJvmParameterizedTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22389:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22387:1: ( ( ruleJvmParameterizedTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22388:1: ( ruleJvmParameterizedTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22389:1: ( ruleJvmParameterizedTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22390:1: ruleJvmParameterizedTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22388:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22389:1: ruleJvmParameterizedTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesJvmParameterizedTypeReferenceParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__RequiredCapacity__RequiredCapacitiesAssignment_245110);
+            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__RequiredCapacity__RequiredCapacitiesAssignment_245108);
             ruleJvmParameterizedTypeReference();
 
             state._fsp--;
@@ -63890,22 +63906,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__RequiredCapacity__RequiredCapacitiesAssignment_3_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22399:1: rule__RequiredCapacity__RequiredCapacitiesAssignment_3_1 : ( ruleJvmParameterizedTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22398:1: rule__RequiredCapacity__RequiredCapacitiesAssignment_3_1 : ( ruleJvmParameterizedTypeReference ) ;
     public final void rule__RequiredCapacity__RequiredCapacitiesAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22403:1: ( ( ruleJvmParameterizedTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22404:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22402:1: ( ( ruleJvmParameterizedTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22403:1: ( ruleJvmParameterizedTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22404:1: ( ruleJvmParameterizedTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22405:1: ruleJvmParameterizedTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22403:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22404:1: ruleJvmParameterizedTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesJvmParameterizedTypeReferenceParserRuleCall_3_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__RequiredCapacity__RequiredCapacitiesAssignment_3_145141);
+            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__RequiredCapacity__RequiredCapacitiesAssignment_3_145139);
             ruleJvmParameterizedTypeReference();
 
             state._fsp--;
@@ -63935,22 +63951,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__BehaviorUnit__EventAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22414:1: rule__BehaviorUnit__EventAssignment_2 : ( ruleJvmParameterizedTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22413:1: rule__BehaviorUnit__EventAssignment_2 : ( ruleJvmParameterizedTypeReference ) ;
     public final void rule__BehaviorUnit__EventAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22418:1: ( ( ruleJvmParameterizedTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22419:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22417:1: ( ( ruleJvmParameterizedTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22418:1: ( ruleJvmParameterizedTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22419:1: ( ruleJvmParameterizedTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22420:1: ruleJvmParameterizedTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22418:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22419:1: ruleJvmParameterizedTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getBehaviorUnitAccess().getEventJvmParameterizedTypeReferenceParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__BehaviorUnit__EventAssignment_245172);
+            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__BehaviorUnit__EventAssignment_245170);
             ruleJvmParameterizedTypeReference();
 
             state._fsp--;
@@ -63980,22 +63996,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__BehaviorUnit__GuardAssignment_3_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22429:1: rule__BehaviorUnit__GuardAssignment_3_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22428:1: rule__BehaviorUnit__GuardAssignment_3_1 : ( ruleXExpression ) ;
     public final void rule__BehaviorUnit__GuardAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22433:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22434:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22432:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22433:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22434:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22435:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22433:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22434:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getBehaviorUnitAccess().getGuardXExpressionParserRuleCall_3_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__BehaviorUnit__GuardAssignment_3_145203);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__BehaviorUnit__GuardAssignment_3_145201);
             ruleXExpression();
 
             state._fsp--;
@@ -64025,22 +64041,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__BehaviorUnit__BodyAssignment_4"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22444:1: rule__BehaviorUnit__BodyAssignment_4 : ( ruleXBlockExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22443:1: rule__BehaviorUnit__BodyAssignment_4 : ( ruleXBlockExpression ) ;
     public final void rule__BehaviorUnit__BodyAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22448:1: ( ( ruleXBlockExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22449:1: ( ruleXBlockExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22447:1: ( ( ruleXBlockExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22448:1: ( ruleXBlockExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22449:1: ( ruleXBlockExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22450:1: ruleXBlockExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22448:1: ( ruleXBlockExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22449:1: ruleXBlockExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getBehaviorUnitAccess().getBodyXBlockExpressionParserRuleCall_4_0()); 
             }
-            pushFollow(FOLLOW_ruleXBlockExpression_in_rule__BehaviorUnit__BodyAssignment_445234);
+            pushFollow(FOLLOW_ruleXBlockExpression_in_rule__BehaviorUnit__BodyAssignment_445232);
             ruleXBlockExpression();
 
             state._fsp--;
@@ -64070,22 +64086,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Action__SignatureAssignment_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22459:1: rule__Action__SignatureAssignment_1 : ( ruleActionSignature ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22458:1: rule__Action__SignatureAssignment_1 : ( ruleActionSignature ) ;
     public final void rule__Action__SignatureAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22463:1: ( ( ruleActionSignature ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22464:1: ( ruleActionSignature )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22462:1: ( ( ruleActionSignature ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22463:1: ( ruleActionSignature )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22464:1: ( ruleActionSignature )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22465:1: ruleActionSignature
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22463:1: ( ruleActionSignature )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22464:1: ruleActionSignature
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getActionAccess().getSignatureActionSignatureParserRuleCall_1_0()); 
             }
-            pushFollow(FOLLOW_ruleActionSignature_in_rule__Action__SignatureAssignment_145265);
+            pushFollow(FOLLOW_ruleActionSignature_in_rule__Action__SignatureAssignment_145263);
             ruleActionSignature();
 
             state._fsp--;
@@ -64115,22 +64131,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Action__BodyAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22474:1: rule__Action__BodyAssignment_2 : ( ruleXBlockExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22473:1: rule__Action__BodyAssignment_2 : ( ruleXBlockExpression ) ;
     public final void rule__Action__BodyAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22478:1: ( ( ruleXBlockExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22479:1: ( ruleXBlockExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22477:1: ( ( ruleXBlockExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22478:1: ( ruleXBlockExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22479:1: ( ruleXBlockExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22480:1: ruleXBlockExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22478:1: ( ruleXBlockExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22479:1: ruleXBlockExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getActionAccess().getBodyXBlockExpressionParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleXBlockExpression_in_rule__Action__BodyAssignment_245296);
+            pushFollow(FOLLOW_ruleXBlockExpression_in_rule__Action__BodyAssignment_245294);
             ruleXBlockExpression();
 
             state._fsp--;
@@ -64160,22 +64176,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Constructor__ParamsAssignment_2_1_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22489:1: rule__Constructor__ParamsAssignment_2_1_0 : ( ruleFormalParameter ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22488:1: rule__Constructor__ParamsAssignment_2_1_0 : ( ruleFormalParameter ) ;
     public final void rule__Constructor__ParamsAssignment_2_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22493:1: ( ( ruleFormalParameter ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22494:1: ( ruleFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22492:1: ( ( ruleFormalParameter ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22493:1: ( ruleFormalParameter )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22494:1: ( ruleFormalParameter )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22495:1: ruleFormalParameter
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22493:1: ( ruleFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22494:1: ruleFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getConstructorAccess().getParamsFormalParameterParserRuleCall_2_1_0_0()); 
             }
-            pushFollow(FOLLOW_ruleFormalParameter_in_rule__Constructor__ParamsAssignment_2_1_045327);
+            pushFollow(FOLLOW_ruleFormalParameter_in_rule__Constructor__ParamsAssignment_2_1_045325);
             ruleFormalParameter();
 
             state._fsp--;
@@ -64205,22 +64221,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Constructor__ParamsAssignment_2_1_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22504:1: rule__Constructor__ParamsAssignment_2_1_1_1 : ( ruleFormalParameter ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22503:1: rule__Constructor__ParamsAssignment_2_1_1_1 : ( ruleFormalParameter ) ;
     public final void rule__Constructor__ParamsAssignment_2_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22508:1: ( ( ruleFormalParameter ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22509:1: ( ruleFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22507:1: ( ( ruleFormalParameter ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22508:1: ( ruleFormalParameter )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22509:1: ( ruleFormalParameter )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22510:1: ruleFormalParameter
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22508:1: ( ruleFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22509:1: ruleFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getConstructorAccess().getParamsFormalParameterParserRuleCall_2_1_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleFormalParameter_in_rule__Constructor__ParamsAssignment_2_1_1_145358);
+            pushFollow(FOLLOW_ruleFormalParameter_in_rule__Constructor__ParamsAssignment_2_1_1_145356);
             ruleFormalParameter();
 
             state._fsp--;
@@ -64250,22 +64266,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Constructor__VarargsAssignment_2_1_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22519:1: rule__Constructor__VarargsAssignment_2_1_2 : ( ruleVarArgToken ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22518:1: rule__Constructor__VarargsAssignment_2_1_2 : ( ruleVarArgToken ) ;
     public final void rule__Constructor__VarargsAssignment_2_1_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22523:1: ( ( ruleVarArgToken ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22524:1: ( ruleVarArgToken )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22522:1: ( ( ruleVarArgToken ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22523:1: ( ruleVarArgToken )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22524:1: ( ruleVarArgToken )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22525:1: ruleVarArgToken
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22523:1: ( ruleVarArgToken )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22524:1: ruleVarArgToken
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getConstructorAccess().getVarargsVarArgTokenParserRuleCall_2_1_2_0()); 
             }
-            pushFollow(FOLLOW_ruleVarArgToken_in_rule__Constructor__VarargsAssignment_2_1_245389);
+            pushFollow(FOLLOW_ruleVarArgToken_in_rule__Constructor__VarargsAssignment_2_1_245387);
             ruleVarArgToken();
 
             state._fsp--;
@@ -64295,22 +64311,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Constructor__BodyAssignment_3"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22534:1: rule__Constructor__BodyAssignment_3 : ( ruleXBlockExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22533:1: rule__Constructor__BodyAssignment_3 : ( ruleXBlockExpression ) ;
     public final void rule__Constructor__BodyAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22538:1: ( ( ruleXBlockExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22539:1: ( ruleXBlockExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22537:1: ( ( ruleXBlockExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22538:1: ( ruleXBlockExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22539:1: ( ruleXBlockExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22540:1: ruleXBlockExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22538:1: ( ruleXBlockExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22539:1: ruleXBlockExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getConstructorAccess().getBodyXBlockExpressionParserRuleCall_3_0()); 
             }
-            pushFollow(FOLLOW_ruleXBlockExpression_in_rule__Constructor__BodyAssignment_345420);
+            pushFollow(FOLLOW_ruleXBlockExpression_in_rule__Constructor__BodyAssignment_345418);
             ruleXBlockExpression();
 
             state._fsp--;
@@ -64340,22 +64356,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__ActionSignature__NameAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22549:1: rule__ActionSignature__NameAssignment_2 : ( ruleValidID ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22548:1: rule__ActionSignature__NameAssignment_2 : ( ruleValidID ) ;
     public final void rule__ActionSignature__NameAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22553:1: ( ( ruleValidID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22554:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22552:1: ( ( ruleValidID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22553:1: ( ruleValidID )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22554:1: ( ruleValidID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22555:1: ruleValidID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22553:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22554:1: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getActionSignatureAccess().getNameValidIDParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleValidID_in_rule__ActionSignature__NameAssignment_245451);
+            pushFollow(FOLLOW_ruleValidID_in_rule__ActionSignature__NameAssignment_245449);
             ruleValidID();
 
             state._fsp--;
@@ -64385,22 +64401,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__ActionSignature__ParamsAssignment_3_1_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22564:1: rule__ActionSignature__ParamsAssignment_3_1_0 : ( ruleFormalParameter ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22563:1: rule__ActionSignature__ParamsAssignment_3_1_0 : ( ruleFormalParameter ) ;
     public final void rule__ActionSignature__ParamsAssignment_3_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22568:1: ( ( ruleFormalParameter ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22569:1: ( ruleFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22567:1: ( ( ruleFormalParameter ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22568:1: ( ruleFormalParameter )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22569:1: ( ruleFormalParameter )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22570:1: ruleFormalParameter
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22568:1: ( ruleFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22569:1: ruleFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getActionSignatureAccess().getParamsFormalParameterParserRuleCall_3_1_0_0()); 
             }
-            pushFollow(FOLLOW_ruleFormalParameter_in_rule__ActionSignature__ParamsAssignment_3_1_045482);
+            pushFollow(FOLLOW_ruleFormalParameter_in_rule__ActionSignature__ParamsAssignment_3_1_045480);
             ruleFormalParameter();
 
             state._fsp--;
@@ -64430,22 +64446,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__ActionSignature__ParamsAssignment_3_1_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22579:1: rule__ActionSignature__ParamsAssignment_3_1_1_1 : ( ruleFormalParameter ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22578:1: rule__ActionSignature__ParamsAssignment_3_1_1_1 : ( ruleFormalParameter ) ;
     public final void rule__ActionSignature__ParamsAssignment_3_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22583:1: ( ( ruleFormalParameter ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22584:1: ( ruleFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22582:1: ( ( ruleFormalParameter ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22583:1: ( ruleFormalParameter )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22584:1: ( ruleFormalParameter )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22585:1: ruleFormalParameter
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22583:1: ( ruleFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22584:1: ruleFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getActionSignatureAccess().getParamsFormalParameterParserRuleCall_3_1_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleFormalParameter_in_rule__ActionSignature__ParamsAssignment_3_1_1_145513);
+            pushFollow(FOLLOW_ruleFormalParameter_in_rule__ActionSignature__ParamsAssignment_3_1_1_145511);
             ruleFormalParameter();
 
             state._fsp--;
@@ -64475,22 +64491,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__ActionSignature__VarargsAssignment_3_1_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22594:1: rule__ActionSignature__VarargsAssignment_3_1_2 : ( ruleVarArgToken ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22593:1: rule__ActionSignature__VarargsAssignment_3_1_2 : ( ruleVarArgToken ) ;
     public final void rule__ActionSignature__VarargsAssignment_3_1_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22598:1: ( ( ruleVarArgToken ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22599:1: ( ruleVarArgToken )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22597:1: ( ( ruleVarArgToken ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22598:1: ( ruleVarArgToken )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22599:1: ( ruleVarArgToken )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22600:1: ruleVarArgToken
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22598:1: ( ruleVarArgToken )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22599:1: ruleVarArgToken
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getActionSignatureAccess().getVarargsVarArgTokenParserRuleCall_3_1_2_0()); 
             }
-            pushFollow(FOLLOW_ruleVarArgToken_in_rule__ActionSignature__VarargsAssignment_3_1_245544);
+            pushFollow(FOLLOW_ruleVarArgToken_in_rule__ActionSignature__VarargsAssignment_3_1_245542);
             ruleVarArgToken();
 
             state._fsp--;
@@ -64520,22 +64536,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__ActionSignature__TypeAssignment_4_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22609:1: rule__ActionSignature__TypeAssignment_4_1 : ( ruleJvmTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22608:1: rule__ActionSignature__TypeAssignment_4_1 : ( ruleJvmTypeReference ) ;
     public final void rule__ActionSignature__TypeAssignment_4_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22613:1: ( ( ruleJvmTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22614:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22612:1: ( ( ruleJvmTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22613:1: ( ruleJvmTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22614:1: ( ruleJvmTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22615:1: ruleJvmTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22613:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22614:1: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getActionSignatureAccess().getTypeJvmTypeReferenceParserRuleCall_4_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__ActionSignature__TypeAssignment_4_145575);
+            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__ActionSignature__TypeAssignment_4_145573);
             ruleJvmTypeReference();
 
             state._fsp--;
@@ -64565,22 +64581,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__ActionSignature__FiredEventsAssignment_5_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22624:1: rule__ActionSignature__FiredEventsAssignment_5_1 : ( ruleJvmParameterizedTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22623:1: rule__ActionSignature__FiredEventsAssignment_5_1 : ( ruleJvmParameterizedTypeReference ) ;
     public final void rule__ActionSignature__FiredEventsAssignment_5_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22628:1: ( ( ruleJvmParameterizedTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22629:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22627:1: ( ( ruleJvmParameterizedTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22628:1: ( ruleJvmParameterizedTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22629:1: ( ruleJvmParameterizedTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22630:1: ruleJvmParameterizedTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22628:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22629:1: ruleJvmParameterizedTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getActionSignatureAccess().getFiredEventsJvmParameterizedTypeReferenceParserRuleCall_5_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__ActionSignature__FiredEventsAssignment_5_145606);
+            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__ActionSignature__FiredEventsAssignment_5_145604);
             ruleJvmParameterizedTypeReference();
 
             state._fsp--;
@@ -64610,22 +64626,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__ActionSignature__FiredEventsAssignment_5_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22639:1: rule__ActionSignature__FiredEventsAssignment_5_2_1 : ( ruleJvmParameterizedTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22638:1: rule__ActionSignature__FiredEventsAssignment_5_2_1 : ( ruleJvmParameterizedTypeReference ) ;
     public final void rule__ActionSignature__FiredEventsAssignment_5_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22643:1: ( ( ruleJvmParameterizedTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22644:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22642:1: ( ( ruleJvmParameterizedTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22643:1: ( ruleJvmParameterizedTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22644:1: ( ruleJvmParameterizedTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22645:1: ruleJvmParameterizedTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22643:1: ( ruleJvmParameterizedTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22644:1: ruleJvmParameterizedTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getActionSignatureAccess().getFiredEventsJvmParameterizedTypeReferenceParserRuleCall_5_2_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__ActionSignature__FiredEventsAssignment_5_2_145637);
+            pushFollow(FOLLOW_ruleJvmParameterizedTypeReference_in_rule__ActionSignature__FiredEventsAssignment_5_2_145635);
             ruleJvmParameterizedTypeReference();
 
             state._fsp--;
@@ -64655,22 +64671,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FormalParameter__NameAssignment_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22654:1: rule__FormalParameter__NameAssignment_0 : ( ruleValidID ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22653:1: rule__FormalParameter__NameAssignment_0 : ( ruleValidID ) ;
     public final void rule__FormalParameter__NameAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22658:1: ( ( ruleValidID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22659:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22657:1: ( ( ruleValidID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22658:1: ( ruleValidID )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22659:1: ( ruleValidID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22660:1: ruleValidID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22658:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22659:1: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getFormalParameterAccess().getNameValidIDParserRuleCall_0_0()); 
             }
-            pushFollow(FOLLOW_ruleValidID_in_rule__FormalParameter__NameAssignment_045668);
+            pushFollow(FOLLOW_ruleValidID_in_rule__FormalParameter__NameAssignment_045666);
             ruleValidID();
 
             state._fsp--;
@@ -64700,22 +64716,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FormalParameter__ParameterTypeAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22669:1: rule__FormalParameter__ParameterTypeAssignment_2 : ( ruleJvmTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22668:1: rule__FormalParameter__ParameterTypeAssignment_2 : ( ruleJvmTypeReference ) ;
     public final void rule__FormalParameter__ParameterTypeAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22673:1: ( ( ruleJvmTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22674:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22672:1: ( ( ruleJvmTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22673:1: ( ruleJvmTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22674:1: ( ruleJvmTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22675:1: ruleJvmTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22673:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22674:1: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getFormalParameterAccess().getParameterTypeJvmTypeReferenceParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__FormalParameter__ParameterTypeAssignment_245699);
+            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__FormalParameter__ParameterTypeAssignment_245697);
             ruleJvmTypeReference();
 
             state._fsp--;
@@ -64745,22 +64761,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FormalParameter__DefaultValueAssignment_3_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22684:1: rule__FormalParameter__DefaultValueAssignment_3_1 : ( ruleDefaultParameterValue ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22683:1: rule__FormalParameter__DefaultValueAssignment_3_1 : ( ruleDefaultParameterValue ) ;
     public final void rule__FormalParameter__DefaultValueAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22688:1: ( ( ruleDefaultParameterValue ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22689:1: ( ruleDefaultParameterValue )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22687:1: ( ( ruleDefaultParameterValue ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22688:1: ( ruleDefaultParameterValue )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22689:1: ( ruleDefaultParameterValue )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22690:1: ruleDefaultParameterValue
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22688:1: ( ruleDefaultParameterValue )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22689:1: ruleDefaultParameterValue
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getFormalParameterAccess().getDefaultValueDefaultParameterValueParserRuleCall_3_1_0()); 
             }
-            pushFollow(FOLLOW_ruleDefaultParameterValue_in_rule__FormalParameter__DefaultValueAssignment_3_145730);
+            pushFollow(FOLLOW_ruleDefaultParameterValue_in_rule__FormalParameter__DefaultValueAssignment_3_145728);
             ruleDefaultParameterValue();
 
             state._fsp--;
@@ -64790,28 +64806,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XVariableDeclaration__WriteableAssignment_1_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22699:1: rule__XVariableDeclaration__WriteableAssignment_1_0 : ( ( 'var' ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22698:1: rule__XVariableDeclaration__WriteableAssignment_1_0 : ( ( 'var' ) ) ;
     public final void rule__XVariableDeclaration__WriteableAssignment_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22703:1: ( ( ( 'var' ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22704:1: ( ( 'var' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22702:1: ( ( ( 'var' ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22703:1: ( ( 'var' ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22704:1: ( ( 'var' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22703:1: ( ( 'var' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22704:1: ( 'var' )
+            {
+            if ( state.backtracking==0 ) {
+               before(grammarAccess.getXVariableDeclarationAccess().getWriteableVarKeyword_1_0_0()); 
+            }
             // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22705:1: ( 'var' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22706:1: 'var'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXVariableDeclarationAccess().getWriteableVarKeyword_1_0_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22706:1: ( 'var' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22707:1: 'var'
-            {
-            if ( state.backtracking==0 ) {
-               before(grammarAccess.getXVariableDeclarationAccess().getWriteableVarKeyword_1_0_0()); 
-            }
-            match(input,94,FOLLOW_94_in_rule__XVariableDeclaration__WriteableAssignment_1_045766); if (state.failed) return ;
+            match(input,94,FOLLOW_94_in_rule__XVariableDeclaration__WriteableAssignment_1_045764); if (state.failed) return ;
             if ( state.backtracking==0 ) {
                after(grammarAccess.getXVariableDeclarationAccess().getWriteableVarKeyword_1_0_0()); 
             }
@@ -64843,22 +64859,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XVariableDeclaration__NameAssignment_2_0_0_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22722:1: rule__XVariableDeclaration__NameAssignment_2_0_0_0 : ( ruleValidID ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22721:1: rule__XVariableDeclaration__NameAssignment_2_0_0_0 : ( ruleValidID ) ;
     public final void rule__XVariableDeclaration__NameAssignment_2_0_0_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22726:1: ( ( ruleValidID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22727:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22725:1: ( ( ruleValidID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22726:1: ( ruleValidID )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22727:1: ( ruleValidID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22728:1: ruleValidID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22726:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22727:1: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXVariableDeclarationAccess().getNameValidIDParserRuleCall_2_0_0_0_0()); 
             }
-            pushFollow(FOLLOW_ruleValidID_in_rule__XVariableDeclaration__NameAssignment_2_0_0_045805);
+            pushFollow(FOLLOW_ruleValidID_in_rule__XVariableDeclaration__NameAssignment_2_0_0_045803);
             ruleValidID();
 
             state._fsp--;
@@ -64888,22 +64904,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XVariableDeclaration__TypeAssignment_2_0_0_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22737:1: rule__XVariableDeclaration__TypeAssignment_2_0_0_2 : ( ruleJvmTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22736:1: rule__XVariableDeclaration__TypeAssignment_2_0_0_2 : ( ruleJvmTypeReference ) ;
     public final void rule__XVariableDeclaration__TypeAssignment_2_0_0_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22741:1: ( ( ruleJvmTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22742:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22740:1: ( ( ruleJvmTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22741:1: ( ruleJvmTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22742:1: ( ruleJvmTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22743:1: ruleJvmTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22741:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22742:1: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXVariableDeclarationAccess().getTypeJvmTypeReferenceParserRuleCall_2_0_0_2_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__XVariableDeclaration__TypeAssignment_2_0_0_245836);
+            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__XVariableDeclaration__TypeAssignment_2_0_0_245834);
             ruleJvmTypeReference();
 
             state._fsp--;
@@ -64933,22 +64949,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XVariableDeclaration__NameAssignment_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22752:1: rule__XVariableDeclaration__NameAssignment_2_1 : ( ruleValidID ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22751:1: rule__XVariableDeclaration__NameAssignment_2_1 : ( ruleValidID ) ;
     public final void rule__XVariableDeclaration__NameAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22756:1: ( ( ruleValidID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22757:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22755:1: ( ( ruleValidID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22756:1: ( ruleValidID )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22757:1: ( ruleValidID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22758:1: ruleValidID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22756:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22757:1: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXVariableDeclarationAccess().getNameValidIDParserRuleCall_2_1_0()); 
             }
-            pushFollow(FOLLOW_ruleValidID_in_rule__XVariableDeclaration__NameAssignment_2_145867);
+            pushFollow(FOLLOW_ruleValidID_in_rule__XVariableDeclaration__NameAssignment_2_145865);
             ruleValidID();
 
             state._fsp--;
@@ -64978,22 +64994,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XVariableDeclaration__RightAssignment_3_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22767:1: rule__XVariableDeclaration__RightAssignment_3_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22766:1: rule__XVariableDeclaration__RightAssignment_3_1 : ( ruleXExpression ) ;
     public final void rule__XVariableDeclaration__RightAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22771:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22772:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22770:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22771:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22772:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22773:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22771:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22772:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXVariableDeclarationAccess().getRightXExpressionParserRuleCall_3_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XVariableDeclaration__RightAssignment_3_145898);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XVariableDeclaration__RightAssignment_3_145896);
             ruleXExpression();
 
             state._fsp--;
@@ -65023,22 +65039,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__JvmFormalParameter__NameAssignment_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22782:1: rule__JvmFormalParameter__NameAssignment_1 : ( ruleValidID ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22781:1: rule__JvmFormalParameter__NameAssignment_1 : ( ruleValidID ) ;
     public final void rule__JvmFormalParameter__NameAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22786:1: ( ( ruleValidID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22787:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22785:1: ( ( ruleValidID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22786:1: ( ruleValidID )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22787:1: ( ruleValidID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22788:1: ruleValidID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22786:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22787:1: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmFormalParameterAccess().getNameValidIDParserRuleCall_1_0()); 
             }
-            pushFollow(FOLLOW_ruleValidID_in_rule__JvmFormalParameter__NameAssignment_145929);
+            pushFollow(FOLLOW_ruleValidID_in_rule__JvmFormalParameter__NameAssignment_145927);
             ruleValidID();
 
             state._fsp--;
@@ -65068,22 +65084,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__JvmFormalParameter__ParameterTypeAssignment_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22797:1: rule__JvmFormalParameter__ParameterTypeAssignment_2_1 : ( ruleJvmTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22796:1: rule__JvmFormalParameter__ParameterTypeAssignment_2_1 : ( ruleJvmTypeReference ) ;
     public final void rule__JvmFormalParameter__ParameterTypeAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22801:1: ( ( ruleJvmTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22802:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22800:1: ( ( ruleJvmTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22801:1: ( ruleJvmTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22802:1: ( ruleJvmTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22803:1: ruleJvmTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22801:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22802:1: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmFormalParameterAccess().getParameterTypeJvmTypeReferenceParserRuleCall_2_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__JvmFormalParameter__ParameterTypeAssignment_2_145960);
+            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__JvmFormalParameter__ParameterTypeAssignment_2_145958);
             ruleJvmTypeReference();
 
             state._fsp--;
@@ -65113,22 +65129,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FullJvmFormalParameter__NameAssignment_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22812:1: rule__FullJvmFormalParameter__NameAssignment_1 : ( ruleValidID ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22811:1: rule__FullJvmFormalParameter__NameAssignment_1 : ( ruleValidID ) ;
     public final void rule__FullJvmFormalParameter__NameAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22816:1: ( ( ruleValidID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22817:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22815:1: ( ( ruleValidID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22816:1: ( ruleValidID )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22817:1: ( ruleValidID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22818:1: ruleValidID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22816:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22817:1: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getFullJvmFormalParameterAccess().getNameValidIDParserRuleCall_1_0()); 
             }
-            pushFollow(FOLLOW_ruleValidID_in_rule__FullJvmFormalParameter__NameAssignment_145991);
+            pushFollow(FOLLOW_ruleValidID_in_rule__FullJvmFormalParameter__NameAssignment_145989);
             ruleValidID();
 
             state._fsp--;
@@ -65158,22 +65174,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FullJvmFormalParameter__ParameterTypeAssignment_3"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22827:1: rule__FullJvmFormalParameter__ParameterTypeAssignment_3 : ( ruleJvmTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22826:1: rule__FullJvmFormalParameter__ParameterTypeAssignment_3 : ( ruleJvmTypeReference ) ;
     public final void rule__FullJvmFormalParameter__ParameterTypeAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22831:1: ( ( ruleJvmTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22832:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22830:1: ( ( ruleJvmTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22831:1: ( ruleJvmTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22832:1: ( ruleJvmTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22833:1: ruleJvmTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22831:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22832:1: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getFullJvmFormalParameterAccess().getParameterTypeJvmTypeReferenceParserRuleCall_3_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__FullJvmFormalParameter__ParameterTypeAssignment_346022);
+            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__FullJvmFormalParameter__ParameterTypeAssignment_346020);
             ruleJvmTypeReference();
 
             state._fsp--;
@@ -65203,22 +65219,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XXLoopFormalParameter__NameAssignment_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22842:1: rule__XXLoopFormalParameter__NameAssignment_1 : ( ruleValidID ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22841:1: rule__XXLoopFormalParameter__NameAssignment_1 : ( ruleValidID ) ;
     public final void rule__XXLoopFormalParameter__NameAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22846:1: ( ( ruleValidID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22847:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22845:1: ( ( ruleValidID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22846:1: ( ruleValidID )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22847:1: ( ruleValidID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22848:1: ruleValidID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22846:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22847:1: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXXLoopFormalParameterAccess().getNameValidIDParserRuleCall_1_0()); 
             }
-            pushFollow(FOLLOW_ruleValidID_in_rule__XXLoopFormalParameter__NameAssignment_146053);
+            pushFollow(FOLLOW_ruleValidID_in_rule__XXLoopFormalParameter__NameAssignment_146051);
             ruleValidID();
 
             state._fsp--;
@@ -65248,22 +65264,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XXLoopFormalParameter__ParameterTypeAssignment_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22857:1: rule__XXLoopFormalParameter__ParameterTypeAssignment_2_1 : ( ruleJvmTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22856:1: rule__XXLoopFormalParameter__ParameterTypeAssignment_2_1 : ( ruleJvmTypeReference ) ;
     public final void rule__XXLoopFormalParameter__ParameterTypeAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22861:1: ( ( ruleJvmTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22862:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22860:1: ( ( ruleJvmTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22861:1: ( ruleJvmTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22862:1: ( ruleJvmTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22863:1: ruleJvmTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22861:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22862:1: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXXLoopFormalParameterAccess().getParameterTypeJvmTypeReferenceParserRuleCall_2_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__XXLoopFormalParameter__ParameterTypeAssignment_2_146084);
+            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__XXLoopFormalParameter__ParameterTypeAssignment_2_146082);
             ruleJvmTypeReference();
 
             state._fsp--;
@@ -65293,22 +65309,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XForLoopExpression__DeclaredParamAssignment_0_0_3"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22872:1: rule__XForLoopExpression__DeclaredParamAssignment_0_0_3 : ( ruleXXLoopFormalParameter ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22871:1: rule__XForLoopExpression__DeclaredParamAssignment_0_0_3 : ( ruleXXLoopFormalParameter ) ;
     public final void rule__XForLoopExpression__DeclaredParamAssignment_0_0_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22876:1: ( ( ruleXXLoopFormalParameter ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22877:1: ( ruleXXLoopFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22875:1: ( ( ruleXXLoopFormalParameter ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22876:1: ( ruleXXLoopFormalParameter )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22877:1: ( ruleXXLoopFormalParameter )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22878:1: ruleXXLoopFormalParameter
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22876:1: ( ruleXXLoopFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22877:1: ruleXXLoopFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXForLoopExpressionAccess().getDeclaredParamXXLoopFormalParameterParserRuleCall_0_0_3_0()); 
             }
-            pushFollow(FOLLOW_ruleXXLoopFormalParameter_in_rule__XForLoopExpression__DeclaredParamAssignment_0_0_346115);
+            pushFollow(FOLLOW_ruleXXLoopFormalParameter_in_rule__XForLoopExpression__DeclaredParamAssignment_0_0_346113);
             ruleXXLoopFormalParameter();
 
             state._fsp--;
@@ -65338,22 +65354,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XForLoopExpression__ForExpressionAssignment_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22887:1: rule__XForLoopExpression__ForExpressionAssignment_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22886:1: rule__XForLoopExpression__ForExpressionAssignment_1 : ( ruleXExpression ) ;
     public final void rule__XForLoopExpression__ForExpressionAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22891:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22892:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22890:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22891:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22892:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22893:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22891:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22892:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXForLoopExpressionAccess().getForExpressionXExpressionParserRuleCall_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XForLoopExpression__ForExpressionAssignment_146146);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XForLoopExpression__ForExpressionAssignment_146144);
             ruleXExpression();
 
             state._fsp--;
@@ -65383,22 +65399,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XForLoopExpression__EachExpressionAssignment_3"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22902:1: rule__XForLoopExpression__EachExpressionAssignment_3 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22901:1: rule__XForLoopExpression__EachExpressionAssignment_3 : ( ruleXExpression ) ;
     public final void rule__XForLoopExpression__EachExpressionAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22906:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22907:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22905:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22906:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22907:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22908:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22906:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22907:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXForLoopExpressionAccess().getEachExpressionXExpressionParserRuleCall_3_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XForLoopExpression__EachExpressionAssignment_346177);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XForLoopExpression__EachExpressionAssignment_346175);
             ruleXExpression();
 
             state._fsp--;
@@ -65428,28 +65444,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XAssignment__FeatureAssignment_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22917:1: rule__XAssignment__FeatureAssignment_0_1 : ( ( ruleFeatureCallID ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22916:1: rule__XAssignment__FeatureAssignment_0_1 : ( ( ruleFeatureCallID ) ) ;
     public final void rule__XAssignment__FeatureAssignment_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22921:1: ( ( ( ruleFeatureCallID ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22922:1: ( ( ruleFeatureCallID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22920:1: ( ( ( ruleFeatureCallID ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22921:1: ( ( ruleFeatureCallID ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22922:1: ( ( ruleFeatureCallID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22923:1: ( ruleFeatureCallID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22921:1: ( ( ruleFeatureCallID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22922:1: ( ruleFeatureCallID )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAssignmentAccess().getFeatureJvmIdentifiableElementCrossReference_0_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22924:1: ( ruleFeatureCallID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22925:1: ruleFeatureCallID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22923:1: ( ruleFeatureCallID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22924:1: ruleFeatureCallID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAssignmentAccess().getFeatureJvmIdentifiableElementFeatureCallIDParserRuleCall_0_1_0_1()); 
             }
-            pushFollow(FOLLOW_ruleFeatureCallID_in_rule__XAssignment__FeatureAssignment_0_146212);
+            pushFollow(FOLLOW_ruleFeatureCallID_in_rule__XAssignment__FeatureAssignment_0_146210);
             ruleFeatureCallID();
 
             state._fsp--;
@@ -65485,22 +65501,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XAssignment__ValueAssignment_0_3"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22936:1: rule__XAssignment__ValueAssignment_0_3 : ( ruleXAssignment ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22935:1: rule__XAssignment__ValueAssignment_0_3 : ( ruleXAssignment ) ;
     public final void rule__XAssignment__ValueAssignment_0_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22940:1: ( ( ruleXAssignment ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22941:1: ( ruleXAssignment )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22939:1: ( ( ruleXAssignment ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22940:1: ( ruleXAssignment )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22941:1: ( ruleXAssignment )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22942:1: ruleXAssignment
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22940:1: ( ruleXAssignment )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22941:1: ruleXAssignment
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAssignmentAccess().getValueXAssignmentParserRuleCall_0_3_0()); 
             }
-            pushFollow(FOLLOW_ruleXAssignment_in_rule__XAssignment__ValueAssignment_0_346247);
+            pushFollow(FOLLOW_ruleXAssignment_in_rule__XAssignment__ValueAssignment_0_346245);
             ruleXAssignment();
 
             state._fsp--;
@@ -65530,28 +65546,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XAssignment__FeatureAssignment_1_1_0_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22951:1: rule__XAssignment__FeatureAssignment_1_1_0_0_1 : ( ( ruleOpMultiAssign ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22950:1: rule__XAssignment__FeatureAssignment_1_1_0_0_1 : ( ( ruleOpMultiAssign ) ) ;
     public final void rule__XAssignment__FeatureAssignment_1_1_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22955:1: ( ( ( ruleOpMultiAssign ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22956:1: ( ( ruleOpMultiAssign ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22954:1: ( ( ( ruleOpMultiAssign ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22955:1: ( ( ruleOpMultiAssign ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22956:1: ( ( ruleOpMultiAssign ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22957:1: ( ruleOpMultiAssign )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22955:1: ( ( ruleOpMultiAssign ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22956:1: ( ruleOpMultiAssign )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAssignmentAccess().getFeatureJvmIdentifiableElementCrossReference_1_1_0_0_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22958:1: ( ruleOpMultiAssign )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22959:1: ruleOpMultiAssign
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22957:1: ( ruleOpMultiAssign )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22958:1: ruleOpMultiAssign
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAssignmentAccess().getFeatureJvmIdentifiableElementOpMultiAssignParserRuleCall_1_1_0_0_1_0_1()); 
             }
-            pushFollow(FOLLOW_ruleOpMultiAssign_in_rule__XAssignment__FeatureAssignment_1_1_0_0_146282);
+            pushFollow(FOLLOW_ruleOpMultiAssign_in_rule__XAssignment__FeatureAssignment_1_1_0_0_146280);
             ruleOpMultiAssign();
 
             state._fsp--;
@@ -65587,22 +65603,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XAssignment__RightOperandAssignment_1_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22970:1: rule__XAssignment__RightOperandAssignment_1_1_1 : ( ruleXAssignment ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22969:1: rule__XAssignment__RightOperandAssignment_1_1_1 : ( ruleXAssignment ) ;
     public final void rule__XAssignment__RightOperandAssignment_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22974:1: ( ( ruleXAssignment ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22975:1: ( ruleXAssignment )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22973:1: ( ( ruleXAssignment ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22974:1: ( ruleXAssignment )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22975:1: ( ruleXAssignment )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22976:1: ruleXAssignment
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22974:1: ( ruleXAssignment )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22975:1: ruleXAssignment
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAssignmentAccess().getRightOperandXAssignmentParserRuleCall_1_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXAssignment_in_rule__XAssignment__RightOperandAssignment_1_1_146317);
+            pushFollow(FOLLOW_ruleXAssignment_in_rule__XAssignment__RightOperandAssignment_1_1_146315);
             ruleXAssignment();
 
             state._fsp--;
@@ -65632,28 +65648,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XOrExpression__FeatureAssignment_1_0_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22985:1: rule__XOrExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpOr ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22984:1: rule__XOrExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpOr ) ) ;
     public final void rule__XOrExpression__FeatureAssignment_1_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22989:1: ( ( ( ruleOpOr ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22990:1: ( ( ruleOpOr ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22988:1: ( ( ( ruleOpOr ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22989:1: ( ( ruleOpOr ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22990:1: ( ( ruleOpOr ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22991:1: ( ruleOpOr )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22989:1: ( ( ruleOpOr ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22990:1: ( ruleOpOr )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXOrExpressionAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22992:1: ( ruleOpOr )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22993:1: ruleOpOr
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22991:1: ( ruleOpOr )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:22992:1: ruleOpOr
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXOrExpressionAccess().getFeatureJvmIdentifiableElementOpOrParserRuleCall_1_0_0_1_0_1()); 
             }
-            pushFollow(FOLLOW_ruleOpOr_in_rule__XOrExpression__FeatureAssignment_1_0_0_146352);
+            pushFollow(FOLLOW_ruleOpOr_in_rule__XOrExpression__FeatureAssignment_1_0_0_146350);
             ruleOpOr();
 
             state._fsp--;
@@ -65689,22 +65705,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XOrExpression__RightOperandAssignment_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23004:1: rule__XOrExpression__RightOperandAssignment_1_1 : ( ruleXAndExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23003:1: rule__XOrExpression__RightOperandAssignment_1_1 : ( ruleXAndExpression ) ;
     public final void rule__XOrExpression__RightOperandAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23008:1: ( ( ruleXAndExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23009:1: ( ruleXAndExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23007:1: ( ( ruleXAndExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23008:1: ( ruleXAndExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23009:1: ( ruleXAndExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23010:1: ruleXAndExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23008:1: ( ruleXAndExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23009:1: ruleXAndExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXOrExpressionAccess().getRightOperandXAndExpressionParserRuleCall_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXAndExpression_in_rule__XOrExpression__RightOperandAssignment_1_146387);
+            pushFollow(FOLLOW_ruleXAndExpression_in_rule__XOrExpression__RightOperandAssignment_1_146385);
             ruleXAndExpression();
 
             state._fsp--;
@@ -65734,28 +65750,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XAndExpression__FeatureAssignment_1_0_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23019:1: rule__XAndExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpAnd ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23018:1: rule__XAndExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpAnd ) ) ;
     public final void rule__XAndExpression__FeatureAssignment_1_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23023:1: ( ( ( ruleOpAnd ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23024:1: ( ( ruleOpAnd ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23022:1: ( ( ( ruleOpAnd ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23023:1: ( ( ruleOpAnd ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23024:1: ( ( ruleOpAnd ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23025:1: ( ruleOpAnd )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23023:1: ( ( ruleOpAnd ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23024:1: ( ruleOpAnd )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAndExpressionAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23026:1: ( ruleOpAnd )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23027:1: ruleOpAnd
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23025:1: ( ruleOpAnd )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23026:1: ruleOpAnd
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAndExpressionAccess().getFeatureJvmIdentifiableElementOpAndParserRuleCall_1_0_0_1_0_1()); 
             }
-            pushFollow(FOLLOW_ruleOpAnd_in_rule__XAndExpression__FeatureAssignment_1_0_0_146422);
+            pushFollow(FOLLOW_ruleOpAnd_in_rule__XAndExpression__FeatureAssignment_1_0_0_146420);
             ruleOpAnd();
 
             state._fsp--;
@@ -65791,22 +65807,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XAndExpression__RightOperandAssignment_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23038:1: rule__XAndExpression__RightOperandAssignment_1_1 : ( ruleXEqualityExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23037:1: rule__XAndExpression__RightOperandAssignment_1_1 : ( ruleXEqualityExpression ) ;
     public final void rule__XAndExpression__RightOperandAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23042:1: ( ( ruleXEqualityExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23043:1: ( ruleXEqualityExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23041:1: ( ( ruleXEqualityExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23042:1: ( ruleXEqualityExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23043:1: ( ruleXEqualityExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23044:1: ruleXEqualityExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23042:1: ( ruleXEqualityExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23043:1: ruleXEqualityExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAndExpressionAccess().getRightOperandXEqualityExpressionParserRuleCall_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXEqualityExpression_in_rule__XAndExpression__RightOperandAssignment_1_146457);
+            pushFollow(FOLLOW_ruleXEqualityExpression_in_rule__XAndExpression__RightOperandAssignment_1_146455);
             ruleXEqualityExpression();
 
             state._fsp--;
@@ -65836,28 +65852,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XEqualityExpression__FeatureAssignment_1_0_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23053:1: rule__XEqualityExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpEquality ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23052:1: rule__XEqualityExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpEquality ) ) ;
     public final void rule__XEqualityExpression__FeatureAssignment_1_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23057:1: ( ( ( ruleOpEquality ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23058:1: ( ( ruleOpEquality ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23056:1: ( ( ( ruleOpEquality ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23057:1: ( ( ruleOpEquality ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23058:1: ( ( ruleOpEquality ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23059:1: ( ruleOpEquality )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23057:1: ( ( ruleOpEquality ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23058:1: ( ruleOpEquality )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXEqualityExpressionAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23060:1: ( ruleOpEquality )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23061:1: ruleOpEquality
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23059:1: ( ruleOpEquality )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23060:1: ruleOpEquality
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXEqualityExpressionAccess().getFeatureJvmIdentifiableElementOpEqualityParserRuleCall_1_0_0_1_0_1()); 
             }
-            pushFollow(FOLLOW_ruleOpEquality_in_rule__XEqualityExpression__FeatureAssignment_1_0_0_146492);
+            pushFollow(FOLLOW_ruleOpEquality_in_rule__XEqualityExpression__FeatureAssignment_1_0_0_146490);
             ruleOpEquality();
 
             state._fsp--;
@@ -65893,22 +65909,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XEqualityExpression__RightOperandAssignment_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23072:1: rule__XEqualityExpression__RightOperandAssignment_1_1 : ( ruleXRelationalExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23071:1: rule__XEqualityExpression__RightOperandAssignment_1_1 : ( ruleXRelationalExpression ) ;
     public final void rule__XEqualityExpression__RightOperandAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23076:1: ( ( ruleXRelationalExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23077:1: ( ruleXRelationalExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23075:1: ( ( ruleXRelationalExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23076:1: ( ruleXRelationalExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23077:1: ( ruleXRelationalExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23078:1: ruleXRelationalExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23076:1: ( ruleXRelationalExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23077:1: ruleXRelationalExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXEqualityExpressionAccess().getRightOperandXRelationalExpressionParserRuleCall_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXRelationalExpression_in_rule__XEqualityExpression__RightOperandAssignment_1_146527);
+            pushFollow(FOLLOW_ruleXRelationalExpression_in_rule__XEqualityExpression__RightOperandAssignment_1_146525);
             ruleXRelationalExpression();
 
             state._fsp--;
@@ -65938,22 +65954,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XRelationalExpression__TypeAssignment_1_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23087:1: rule__XRelationalExpression__TypeAssignment_1_0_1 : ( ruleJvmTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23086:1: rule__XRelationalExpression__TypeAssignment_1_0_1 : ( ruleJvmTypeReference ) ;
     public final void rule__XRelationalExpression__TypeAssignment_1_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23091:1: ( ( ruleJvmTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23092:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23090:1: ( ( ruleJvmTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23091:1: ( ruleJvmTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23092:1: ( ruleJvmTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23093:1: ruleJvmTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23091:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23092:1: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXRelationalExpressionAccess().getTypeJvmTypeReferenceParserRuleCall_1_0_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__XRelationalExpression__TypeAssignment_1_0_146558);
+            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__XRelationalExpression__TypeAssignment_1_0_146556);
             ruleJvmTypeReference();
 
             state._fsp--;
@@ -65983,28 +65999,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XRelationalExpression__FeatureAssignment_1_1_0_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23102:1: rule__XRelationalExpression__FeatureAssignment_1_1_0_0_1 : ( ( ruleOpCompare ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23101:1: rule__XRelationalExpression__FeatureAssignment_1_1_0_0_1 : ( ( ruleOpCompare ) ) ;
     public final void rule__XRelationalExpression__FeatureAssignment_1_1_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23106:1: ( ( ( ruleOpCompare ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23107:1: ( ( ruleOpCompare ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23105:1: ( ( ( ruleOpCompare ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23106:1: ( ( ruleOpCompare ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23107:1: ( ( ruleOpCompare ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23108:1: ( ruleOpCompare )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23106:1: ( ( ruleOpCompare ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23107:1: ( ruleOpCompare )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXRelationalExpressionAccess().getFeatureJvmIdentifiableElementCrossReference_1_1_0_0_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23109:1: ( ruleOpCompare )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23110:1: ruleOpCompare
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23108:1: ( ruleOpCompare )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23109:1: ruleOpCompare
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXRelationalExpressionAccess().getFeatureJvmIdentifiableElementOpCompareParserRuleCall_1_1_0_0_1_0_1()); 
             }
-            pushFollow(FOLLOW_ruleOpCompare_in_rule__XRelationalExpression__FeatureAssignment_1_1_0_0_146593);
+            pushFollow(FOLLOW_ruleOpCompare_in_rule__XRelationalExpression__FeatureAssignment_1_1_0_0_146591);
             ruleOpCompare();
 
             state._fsp--;
@@ -66040,22 +66056,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XRelationalExpression__RightOperandAssignment_1_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23121:1: rule__XRelationalExpression__RightOperandAssignment_1_1_1 : ( ruleXOtherOperatorExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23120:1: rule__XRelationalExpression__RightOperandAssignment_1_1_1 : ( ruleXOtherOperatorExpression ) ;
     public final void rule__XRelationalExpression__RightOperandAssignment_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23125:1: ( ( ruleXOtherOperatorExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23126:1: ( ruleXOtherOperatorExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23124:1: ( ( ruleXOtherOperatorExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23125:1: ( ruleXOtherOperatorExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23126:1: ( ruleXOtherOperatorExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23127:1: ruleXOtherOperatorExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23125:1: ( ruleXOtherOperatorExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23126:1: ruleXOtherOperatorExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXRelationalExpressionAccess().getRightOperandXOtherOperatorExpressionParserRuleCall_1_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXOtherOperatorExpression_in_rule__XRelationalExpression__RightOperandAssignment_1_1_146628);
+            pushFollow(FOLLOW_ruleXOtherOperatorExpression_in_rule__XRelationalExpression__RightOperandAssignment_1_1_146626);
             ruleXOtherOperatorExpression();
 
             state._fsp--;
@@ -66085,28 +66101,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XOtherOperatorExpression__FeatureAssignment_1_0_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23136:1: rule__XOtherOperatorExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpOther ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23135:1: rule__XOtherOperatorExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpOther ) ) ;
     public final void rule__XOtherOperatorExpression__FeatureAssignment_1_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23140:1: ( ( ( ruleOpOther ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23141:1: ( ( ruleOpOther ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23139:1: ( ( ( ruleOpOther ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23140:1: ( ( ruleOpOther ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23141:1: ( ( ruleOpOther ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23142:1: ( ruleOpOther )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23140:1: ( ( ruleOpOther ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23141:1: ( ruleOpOther )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXOtherOperatorExpressionAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23143:1: ( ruleOpOther )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23144:1: ruleOpOther
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23142:1: ( ruleOpOther )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23143:1: ruleOpOther
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXOtherOperatorExpressionAccess().getFeatureJvmIdentifiableElementOpOtherParserRuleCall_1_0_0_1_0_1()); 
             }
-            pushFollow(FOLLOW_ruleOpOther_in_rule__XOtherOperatorExpression__FeatureAssignment_1_0_0_146663);
+            pushFollow(FOLLOW_ruleOpOther_in_rule__XOtherOperatorExpression__FeatureAssignment_1_0_0_146661);
             ruleOpOther();
 
             state._fsp--;
@@ -66142,22 +66158,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XOtherOperatorExpression__RightOperandAssignment_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23155:1: rule__XOtherOperatorExpression__RightOperandAssignment_1_1 : ( ruleXAdditiveExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23154:1: rule__XOtherOperatorExpression__RightOperandAssignment_1_1 : ( ruleXAdditiveExpression ) ;
     public final void rule__XOtherOperatorExpression__RightOperandAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23159:1: ( ( ruleXAdditiveExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23160:1: ( ruleXAdditiveExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23158:1: ( ( ruleXAdditiveExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23159:1: ( ruleXAdditiveExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23160:1: ( ruleXAdditiveExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23161:1: ruleXAdditiveExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23159:1: ( ruleXAdditiveExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23160:1: ruleXAdditiveExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXOtherOperatorExpressionAccess().getRightOperandXAdditiveExpressionParserRuleCall_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXAdditiveExpression_in_rule__XOtherOperatorExpression__RightOperandAssignment_1_146698);
+            pushFollow(FOLLOW_ruleXAdditiveExpression_in_rule__XOtherOperatorExpression__RightOperandAssignment_1_146696);
             ruleXAdditiveExpression();
 
             state._fsp--;
@@ -66187,28 +66203,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XAdditiveExpression__FeatureAssignment_1_0_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23170:1: rule__XAdditiveExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpAdd ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23169:1: rule__XAdditiveExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpAdd ) ) ;
     public final void rule__XAdditiveExpression__FeatureAssignment_1_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23174:1: ( ( ( ruleOpAdd ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23175:1: ( ( ruleOpAdd ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23173:1: ( ( ( ruleOpAdd ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23174:1: ( ( ruleOpAdd ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23175:1: ( ( ruleOpAdd ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23176:1: ( ruleOpAdd )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23174:1: ( ( ruleOpAdd ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23175:1: ( ruleOpAdd )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAdditiveExpressionAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23177:1: ( ruleOpAdd )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23178:1: ruleOpAdd
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23176:1: ( ruleOpAdd )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23177:1: ruleOpAdd
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAdditiveExpressionAccess().getFeatureJvmIdentifiableElementOpAddParserRuleCall_1_0_0_1_0_1()); 
             }
-            pushFollow(FOLLOW_ruleOpAdd_in_rule__XAdditiveExpression__FeatureAssignment_1_0_0_146733);
+            pushFollow(FOLLOW_ruleOpAdd_in_rule__XAdditiveExpression__FeatureAssignment_1_0_0_146731);
             ruleOpAdd();
 
             state._fsp--;
@@ -66244,22 +66260,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XAdditiveExpression__RightOperandAssignment_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23189:1: rule__XAdditiveExpression__RightOperandAssignment_1_1 : ( ruleXMultiplicativeExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23188:1: rule__XAdditiveExpression__RightOperandAssignment_1_1 : ( ruleXMultiplicativeExpression ) ;
     public final void rule__XAdditiveExpression__RightOperandAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23193:1: ( ( ruleXMultiplicativeExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23194:1: ( ruleXMultiplicativeExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23192:1: ( ( ruleXMultiplicativeExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23193:1: ( ruleXMultiplicativeExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23194:1: ( ruleXMultiplicativeExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23195:1: ruleXMultiplicativeExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23193:1: ( ruleXMultiplicativeExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23194:1: ruleXMultiplicativeExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAdditiveExpressionAccess().getRightOperandXMultiplicativeExpressionParserRuleCall_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXMultiplicativeExpression_in_rule__XAdditiveExpression__RightOperandAssignment_1_146768);
+            pushFollow(FOLLOW_ruleXMultiplicativeExpression_in_rule__XAdditiveExpression__RightOperandAssignment_1_146766);
             ruleXMultiplicativeExpression();
 
             state._fsp--;
@@ -66289,28 +66305,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XMultiplicativeExpression__FeatureAssignment_1_0_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23204:1: rule__XMultiplicativeExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpMulti ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23203:1: rule__XMultiplicativeExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpMulti ) ) ;
     public final void rule__XMultiplicativeExpression__FeatureAssignment_1_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23208:1: ( ( ( ruleOpMulti ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23209:1: ( ( ruleOpMulti ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23207:1: ( ( ( ruleOpMulti ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23208:1: ( ( ruleOpMulti ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23209:1: ( ( ruleOpMulti ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23210:1: ( ruleOpMulti )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23208:1: ( ( ruleOpMulti ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23209:1: ( ruleOpMulti )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMultiplicativeExpressionAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23211:1: ( ruleOpMulti )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23212:1: ruleOpMulti
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23210:1: ( ruleOpMulti )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23211:1: ruleOpMulti
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMultiplicativeExpressionAccess().getFeatureJvmIdentifiableElementOpMultiParserRuleCall_1_0_0_1_0_1()); 
             }
-            pushFollow(FOLLOW_ruleOpMulti_in_rule__XMultiplicativeExpression__FeatureAssignment_1_0_0_146803);
+            pushFollow(FOLLOW_ruleOpMulti_in_rule__XMultiplicativeExpression__FeatureAssignment_1_0_0_146801);
             ruleOpMulti();
 
             state._fsp--;
@@ -66346,22 +66362,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XMultiplicativeExpression__RightOperandAssignment_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23223:1: rule__XMultiplicativeExpression__RightOperandAssignment_1_1 : ( ruleXUnaryOperation ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23222:1: rule__XMultiplicativeExpression__RightOperandAssignment_1_1 : ( ruleXUnaryOperation ) ;
     public final void rule__XMultiplicativeExpression__RightOperandAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23227:1: ( ( ruleXUnaryOperation ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23228:1: ( ruleXUnaryOperation )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23226:1: ( ( ruleXUnaryOperation ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23227:1: ( ruleXUnaryOperation )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23228:1: ( ruleXUnaryOperation )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23229:1: ruleXUnaryOperation
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23227:1: ( ruleXUnaryOperation )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23228:1: ruleXUnaryOperation
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMultiplicativeExpressionAccess().getRightOperandXUnaryOperationParserRuleCall_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXUnaryOperation_in_rule__XMultiplicativeExpression__RightOperandAssignment_1_146838);
+            pushFollow(FOLLOW_ruleXUnaryOperation_in_rule__XMultiplicativeExpression__RightOperandAssignment_1_146836);
             ruleXUnaryOperation();
 
             state._fsp--;
@@ -66391,28 +66407,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XUnaryOperation__FeatureAssignment_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23238:1: rule__XUnaryOperation__FeatureAssignment_0_1 : ( ( ruleOpUnary ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23237:1: rule__XUnaryOperation__FeatureAssignment_0_1 : ( ( ruleOpUnary ) ) ;
     public final void rule__XUnaryOperation__FeatureAssignment_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23242:1: ( ( ( ruleOpUnary ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23243:1: ( ( ruleOpUnary ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23241:1: ( ( ( ruleOpUnary ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23242:1: ( ( ruleOpUnary ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23243:1: ( ( ruleOpUnary ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23244:1: ( ruleOpUnary )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23242:1: ( ( ruleOpUnary ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23243:1: ( ruleOpUnary )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXUnaryOperationAccess().getFeatureJvmIdentifiableElementCrossReference_0_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23245:1: ( ruleOpUnary )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23246:1: ruleOpUnary
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23244:1: ( ruleOpUnary )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23245:1: ruleOpUnary
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXUnaryOperationAccess().getFeatureJvmIdentifiableElementOpUnaryParserRuleCall_0_1_0_1()); 
             }
-            pushFollow(FOLLOW_ruleOpUnary_in_rule__XUnaryOperation__FeatureAssignment_0_146873);
+            pushFollow(FOLLOW_ruleOpUnary_in_rule__XUnaryOperation__FeatureAssignment_0_146871);
             ruleOpUnary();
 
             state._fsp--;
@@ -66448,22 +66464,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XUnaryOperation__OperandAssignment_0_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23257:1: rule__XUnaryOperation__OperandAssignment_0_2 : ( ruleXUnaryOperation ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23256:1: rule__XUnaryOperation__OperandAssignment_0_2 : ( ruleXUnaryOperation ) ;
     public final void rule__XUnaryOperation__OperandAssignment_0_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23261:1: ( ( ruleXUnaryOperation ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23262:1: ( ruleXUnaryOperation )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23260:1: ( ( ruleXUnaryOperation ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23261:1: ( ruleXUnaryOperation )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23262:1: ( ruleXUnaryOperation )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23263:1: ruleXUnaryOperation
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23261:1: ( ruleXUnaryOperation )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23262:1: ruleXUnaryOperation
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXUnaryOperationAccess().getOperandXUnaryOperationParserRuleCall_0_2_0()); 
             }
-            pushFollow(FOLLOW_ruleXUnaryOperation_in_rule__XUnaryOperation__OperandAssignment_0_246908);
+            pushFollow(FOLLOW_ruleXUnaryOperation_in_rule__XUnaryOperation__OperandAssignment_0_246906);
             ruleXUnaryOperation();
 
             state._fsp--;
@@ -66493,22 +66509,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XCastedExpression__TypeAssignment_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23272:1: rule__XCastedExpression__TypeAssignment_1_1 : ( ruleJvmTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23271:1: rule__XCastedExpression__TypeAssignment_1_1 : ( ruleJvmTypeReference ) ;
     public final void rule__XCastedExpression__TypeAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23276:1: ( ( ruleJvmTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23277:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23275:1: ( ( ruleJvmTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23276:1: ( ruleJvmTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23277:1: ( ruleJvmTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23278:1: ruleJvmTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23276:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23277:1: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXCastedExpressionAccess().getTypeJvmTypeReferenceParserRuleCall_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__XCastedExpression__TypeAssignment_1_146939);
+            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__XCastedExpression__TypeAssignment_1_146937);
             ruleJvmTypeReference();
 
             state._fsp--;
@@ -66538,28 +66554,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XPostfixOperation__FeatureAssignment_1_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23287:1: rule__XPostfixOperation__FeatureAssignment_1_0_1 : ( ( ruleOpPostfix ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23286:1: rule__XPostfixOperation__FeatureAssignment_1_0_1 : ( ( ruleOpPostfix ) ) ;
     public final void rule__XPostfixOperation__FeatureAssignment_1_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23291:1: ( ( ( ruleOpPostfix ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23292:1: ( ( ruleOpPostfix ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23290:1: ( ( ( ruleOpPostfix ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23291:1: ( ( ruleOpPostfix ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23292:1: ( ( ruleOpPostfix ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23293:1: ( ruleOpPostfix )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23291:1: ( ( ruleOpPostfix ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23292:1: ( ruleOpPostfix )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXPostfixOperationAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23294:1: ( ruleOpPostfix )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23295:1: ruleOpPostfix
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23293:1: ( ruleOpPostfix )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23294:1: ruleOpPostfix
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXPostfixOperationAccess().getFeatureJvmIdentifiableElementOpPostfixParserRuleCall_1_0_1_0_1()); 
             }
-            pushFollow(FOLLOW_ruleOpPostfix_in_rule__XPostfixOperation__FeatureAssignment_1_0_146974);
+            pushFollow(FOLLOW_ruleOpPostfix_in_rule__XPostfixOperation__FeatureAssignment_1_0_146972);
             ruleOpPostfix();
 
             state._fsp--;
@@ -66595,28 +66611,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XMemberFeatureCall__ExplicitStaticAssignment_1_0_0_0_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23306:1: rule__XMemberFeatureCall__ExplicitStaticAssignment_1_0_0_0_1_1 : ( ( '::' ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23305:1: rule__XMemberFeatureCall__ExplicitStaticAssignment_1_0_0_0_1_1 : ( ( '::' ) ) ;
     public final void rule__XMemberFeatureCall__ExplicitStaticAssignment_1_0_0_0_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23310:1: ( ( ( '::' ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23311:1: ( ( '::' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23309:1: ( ( ( '::' ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23310:1: ( ( '::' ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23311:1: ( ( '::' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23310:1: ( ( '::' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23311:1: ( '::' )
+            {
+            if ( state.backtracking==0 ) {
+               before(grammarAccess.getXMemberFeatureCallAccess().getExplicitStaticColonColonKeyword_1_0_0_0_1_1_0()); 
+            }
             // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23312:1: ( '::' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23313:1: '::'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getExplicitStaticColonColonKeyword_1_0_0_0_1_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23313:1: ( '::' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23314:1: '::'
-            {
-            if ( state.backtracking==0 ) {
-               before(grammarAccess.getXMemberFeatureCallAccess().getExplicitStaticColonColonKeyword_1_0_0_0_1_1_0()); 
-            }
-            match(input,95,FOLLOW_95_in_rule__XMemberFeatureCall__ExplicitStaticAssignment_1_0_0_0_1_147014); if (state.failed) return ;
+            match(input,95,FOLLOW_95_in_rule__XMemberFeatureCall__ExplicitStaticAssignment_1_0_0_0_1_147012); if (state.failed) return ;
             if ( state.backtracking==0 ) {
                after(grammarAccess.getXMemberFeatureCallAccess().getExplicitStaticColonColonKeyword_1_0_0_0_1_1_0()); 
             }
@@ -66648,28 +66664,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XMemberFeatureCall__FeatureAssignment_1_0_0_0_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23329:1: rule__XMemberFeatureCall__FeatureAssignment_1_0_0_0_2 : ( ( ruleFeatureCallID ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23328:1: rule__XMemberFeatureCall__FeatureAssignment_1_0_0_0_2 : ( ( ruleFeatureCallID ) ) ;
     public final void rule__XMemberFeatureCall__FeatureAssignment_1_0_0_0_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23333:1: ( ( ( ruleFeatureCallID ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23334:1: ( ( ruleFeatureCallID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23332:1: ( ( ( ruleFeatureCallID ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23333:1: ( ( ruleFeatureCallID ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23334:1: ( ( ruleFeatureCallID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23335:1: ( ruleFeatureCallID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23333:1: ( ( ruleFeatureCallID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23334:1: ( ruleFeatureCallID )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_0_0_2_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23336:1: ( ruleFeatureCallID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23337:1: ruleFeatureCallID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23335:1: ( ruleFeatureCallID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23336:1: ruleFeatureCallID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getFeatureJvmIdentifiableElementFeatureCallIDParserRuleCall_1_0_0_0_2_0_1()); 
             }
-            pushFollow(FOLLOW_ruleFeatureCallID_in_rule__XMemberFeatureCall__FeatureAssignment_1_0_0_0_247057);
+            pushFollow(FOLLOW_ruleFeatureCallID_in_rule__XMemberFeatureCall__FeatureAssignment_1_0_0_0_247055);
             ruleFeatureCallID();
 
             state._fsp--;
@@ -66705,22 +66721,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XMemberFeatureCall__ValueAssignment_1_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23348:1: rule__XMemberFeatureCall__ValueAssignment_1_0_1 : ( ruleXAssignment ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23347:1: rule__XMemberFeatureCall__ValueAssignment_1_0_1 : ( ruleXAssignment ) ;
     public final void rule__XMemberFeatureCall__ValueAssignment_1_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23352:1: ( ( ruleXAssignment ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23353:1: ( ruleXAssignment )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23351:1: ( ( ruleXAssignment ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23352:1: ( ruleXAssignment )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23353:1: ( ruleXAssignment )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23354:1: ruleXAssignment
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23352:1: ( ruleXAssignment )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23353:1: ruleXAssignment
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getValueXAssignmentParserRuleCall_1_0_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXAssignment_in_rule__XMemberFeatureCall__ValueAssignment_1_0_147092);
+            pushFollow(FOLLOW_ruleXAssignment_in_rule__XMemberFeatureCall__ValueAssignment_1_0_147090);
             ruleXAssignment();
 
             state._fsp--;
@@ -66750,28 +66766,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XMemberFeatureCall__NullSafeAssignment_1_1_0_0_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23363:1: rule__XMemberFeatureCall__NullSafeAssignment_1_1_0_0_1_1 : ( ( '?.' ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23362:1: rule__XMemberFeatureCall__NullSafeAssignment_1_1_0_0_1_1 : ( ( '?.' ) ) ;
     public final void rule__XMemberFeatureCall__NullSafeAssignment_1_1_0_0_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23367:1: ( ( ( '?.' ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23368:1: ( ( '?.' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23366:1: ( ( ( '?.' ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23367:1: ( ( '?.' ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23368:1: ( ( '?.' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23367:1: ( ( '?.' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23368:1: ( '?.' )
+            {
+            if ( state.backtracking==0 ) {
+               before(grammarAccess.getXMemberFeatureCallAccess().getNullSafeQuestionMarkFullStopKeyword_1_1_0_0_1_1_0()); 
+            }
             // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23369:1: ( '?.' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23370:1: '?.'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getNullSafeQuestionMarkFullStopKeyword_1_1_0_0_1_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23370:1: ( '?.' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23371:1: '?.'
-            {
-            if ( state.backtracking==0 ) {
-               before(grammarAccess.getXMemberFeatureCallAccess().getNullSafeQuestionMarkFullStopKeyword_1_1_0_0_1_1_0()); 
-            }
-            match(input,96,FOLLOW_96_in_rule__XMemberFeatureCall__NullSafeAssignment_1_1_0_0_1_147128); if (state.failed) return ;
+            match(input,96,FOLLOW_96_in_rule__XMemberFeatureCall__NullSafeAssignment_1_1_0_0_1_147126); if (state.failed) return ;
             if ( state.backtracking==0 ) {
                after(grammarAccess.getXMemberFeatureCallAccess().getNullSafeQuestionMarkFullStopKeyword_1_1_0_0_1_1_0()); 
             }
@@ -66803,28 +66819,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XMemberFeatureCall__ExplicitStaticAssignment_1_1_0_0_1_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23386:1: rule__XMemberFeatureCall__ExplicitStaticAssignment_1_1_0_0_1_2 : ( ( '::' ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23385:1: rule__XMemberFeatureCall__ExplicitStaticAssignment_1_1_0_0_1_2 : ( ( '::' ) ) ;
     public final void rule__XMemberFeatureCall__ExplicitStaticAssignment_1_1_0_0_1_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23390:1: ( ( ( '::' ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23391:1: ( ( '::' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23389:1: ( ( ( '::' ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23390:1: ( ( '::' ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23391:1: ( ( '::' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23390:1: ( ( '::' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23391:1: ( '::' )
+            {
+            if ( state.backtracking==0 ) {
+               before(grammarAccess.getXMemberFeatureCallAccess().getExplicitStaticColonColonKeyword_1_1_0_0_1_2_0()); 
+            }
             // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23392:1: ( '::' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23393:1: '::'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getExplicitStaticColonColonKeyword_1_1_0_0_1_2_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23393:1: ( '::' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23394:1: '::'
-            {
-            if ( state.backtracking==0 ) {
-               before(grammarAccess.getXMemberFeatureCallAccess().getExplicitStaticColonColonKeyword_1_1_0_0_1_2_0()); 
-            }
-            match(input,95,FOLLOW_95_in_rule__XMemberFeatureCall__ExplicitStaticAssignment_1_1_0_0_1_247172); if (state.failed) return ;
+            match(input,95,FOLLOW_95_in_rule__XMemberFeatureCall__ExplicitStaticAssignment_1_1_0_0_1_247170); if (state.failed) return ;
             if ( state.backtracking==0 ) {
                after(grammarAccess.getXMemberFeatureCallAccess().getExplicitStaticColonColonKeyword_1_1_0_0_1_2_0()); 
             }
@@ -66856,22 +66872,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23409:1: rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_1 : ( ruleJvmArgumentTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23408:1: rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23413:1: ( ( ruleJvmArgumentTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23414:1: ( ruleJvmArgumentTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23412:1: ( ( ruleJvmArgumentTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23413:1: ( ruleJvmArgumentTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23414:1: ( ruleJvmArgumentTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23415:1: ruleJvmArgumentTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23413:1: ( ruleJvmArgumentTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23414:1: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getTypeArgumentsJvmArgumentTypeReferenceParserRuleCall_1_1_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmArgumentTypeReference_in_rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_147211);
+            pushFollow(FOLLOW_ruleJvmArgumentTypeReference_in_rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_147209);
             ruleJvmArgumentTypeReference();
 
             state._fsp--;
@@ -66901,22 +66917,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23424:1: rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_2_1 : ( ruleJvmArgumentTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23423:1: rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_2_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23428:1: ( ( ruleJvmArgumentTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23429:1: ( ruleJvmArgumentTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23427:1: ( ( ruleJvmArgumentTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23428:1: ( ruleJvmArgumentTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23429:1: ( ruleJvmArgumentTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23430:1: ruleJvmArgumentTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23428:1: ( ruleJvmArgumentTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23429:1: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getTypeArgumentsJvmArgumentTypeReferenceParserRuleCall_1_1_1_2_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmArgumentTypeReference_in_rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_2_147242);
+            pushFollow(FOLLOW_ruleJvmArgumentTypeReference_in_rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_2_147240);
             ruleJvmArgumentTypeReference();
 
             state._fsp--;
@@ -66946,28 +66962,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XMemberFeatureCall__FeatureAssignment_1_1_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23439:1: rule__XMemberFeatureCall__FeatureAssignment_1_1_2 : ( ( ruleIdOrSuper ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23438:1: rule__XMemberFeatureCall__FeatureAssignment_1_1_2 : ( ( ruleIdOrSuper ) ) ;
     public final void rule__XMemberFeatureCall__FeatureAssignment_1_1_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23443:1: ( ( ( ruleIdOrSuper ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23444:1: ( ( ruleIdOrSuper ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23442:1: ( ( ( ruleIdOrSuper ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23443:1: ( ( ruleIdOrSuper ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23444:1: ( ( ruleIdOrSuper ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23445:1: ( ruleIdOrSuper )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23443:1: ( ( ruleIdOrSuper ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23444:1: ( ruleIdOrSuper )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getFeatureJvmIdentifiableElementCrossReference_1_1_2_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23446:1: ( ruleIdOrSuper )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23447:1: ruleIdOrSuper
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23445:1: ( ruleIdOrSuper )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23446:1: ruleIdOrSuper
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getFeatureJvmIdentifiableElementIdOrSuperParserRuleCall_1_1_2_0_1()); 
             }
-            pushFollow(FOLLOW_ruleIdOrSuper_in_rule__XMemberFeatureCall__FeatureAssignment_1_1_247277);
+            pushFollow(FOLLOW_ruleIdOrSuper_in_rule__XMemberFeatureCall__FeatureAssignment_1_1_247275);
             ruleIdOrSuper();
 
             state._fsp--;
@@ -67003,28 +67019,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XMemberFeatureCall__ExplicitOperationCallAssignment_1_1_3_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23458:1: rule__XMemberFeatureCall__ExplicitOperationCallAssignment_1_1_3_0 : ( ( '(' ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23457:1: rule__XMemberFeatureCall__ExplicitOperationCallAssignment_1_1_3_0 : ( ( '(' ) ) ;
     public final void rule__XMemberFeatureCall__ExplicitOperationCallAssignment_1_1_3_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23462:1: ( ( ( '(' ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23463:1: ( ( '(' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23461:1: ( ( ( '(' ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23462:1: ( ( '(' ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23463:1: ( ( '(' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23462:1: ( ( '(' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23463:1: ( '(' )
+            {
+            if ( state.backtracking==0 ) {
+               before(grammarAccess.getXMemberFeatureCallAccess().getExplicitOperationCallLeftParenthesisKeyword_1_1_3_0_0()); 
+            }
             // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23464:1: ( '(' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23465:1: '('
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getExplicitOperationCallLeftParenthesisKeyword_1_1_3_0_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23465:1: ( '(' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23466:1: '('
-            {
-            if ( state.backtracking==0 ) {
-               before(grammarAccess.getXMemberFeatureCallAccess().getExplicitOperationCallLeftParenthesisKeyword_1_1_3_0_0()); 
-            }
-            match(input,69,FOLLOW_69_in_rule__XMemberFeatureCall__ExplicitOperationCallAssignment_1_1_3_047317); if (state.failed) return ;
+            match(input,69,FOLLOW_69_in_rule__XMemberFeatureCall__ExplicitOperationCallAssignment_1_1_3_047315); if (state.failed) return ;
             if ( state.backtracking==0 ) {
                after(grammarAccess.getXMemberFeatureCallAccess().getExplicitOperationCallLeftParenthesisKeyword_1_1_3_0_0()); 
             }
@@ -67056,22 +67072,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23481:1: rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_0 : ( ruleXShortClosure ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23480:1: rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_0 : ( ruleXShortClosure ) ;
     public final void rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23485:1: ( ( ruleXShortClosure ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23486:1: ( ruleXShortClosure )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23484:1: ( ( ruleXShortClosure ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23485:1: ( ruleXShortClosure )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23486:1: ( ruleXShortClosure )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23487:1: ruleXShortClosure
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23485:1: ( ruleXShortClosure )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23486:1: ruleXShortClosure
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getMemberCallArgumentsXShortClosureParserRuleCall_1_1_3_1_0_0()); 
             }
-            pushFollow(FOLLOW_ruleXShortClosure_in_rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_047356);
+            pushFollow(FOLLOW_ruleXShortClosure_in_rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_047354);
             ruleXShortClosure();
 
             state._fsp--;
@@ -67101,22 +67117,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23496:1: rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_0 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23495:1: rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_0 : ( ruleXExpression ) ;
     public final void rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23500:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23501:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23499:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23500:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23501:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23502:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23500:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23501:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getMemberCallArgumentsXExpressionParserRuleCall_1_1_3_1_1_0_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_047387);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_047385);
             ruleXExpression();
 
             state._fsp--;
@@ -67146,22 +67162,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23511:1: rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_1_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23510:1: rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_1_1 : ( ruleXExpression ) ;
     public final void rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23515:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23516:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23514:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23515:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23516:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23517:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23515:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23516:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getMemberCallArgumentsXExpressionParserRuleCall_1_1_3_1_1_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_1_147418);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_1_147416);
             ruleXExpression();
 
             state._fsp--;
@@ -67191,22 +67207,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_4"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23526:1: rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_4 : ( ruleXClosure ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23525:1: rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_4 : ( ruleXClosure ) ;
     public final void rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23530:1: ( ( ruleXClosure ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23531:1: ( ruleXClosure )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23529:1: ( ( ruleXClosure ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23530:1: ( ruleXClosure )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23531:1: ( ruleXClosure )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23532:1: ruleXClosure
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23530:1: ( ruleXClosure )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23531:1: ruleXClosure
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getMemberCallArgumentsXClosureParserRuleCall_1_1_4_0()); 
             }
-            pushFollow(FOLLOW_ruleXClosure_in_rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_447449);
+            pushFollow(FOLLOW_ruleXClosure_in_rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_447447);
             ruleXClosure();
 
             state._fsp--;
@@ -67236,22 +67252,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XSetLiteral__ElementsAssignment_3_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23541:1: rule__XSetLiteral__ElementsAssignment_3_0 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23540:1: rule__XSetLiteral__ElementsAssignment_3_0 : ( ruleXExpression ) ;
     public final void rule__XSetLiteral__ElementsAssignment_3_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23545:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23546:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23544:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23545:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23546:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23547:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23545:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23546:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSetLiteralAccess().getElementsXExpressionParserRuleCall_3_0_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XSetLiteral__ElementsAssignment_3_047480);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XSetLiteral__ElementsAssignment_3_047478);
             ruleXExpression();
 
             state._fsp--;
@@ -67281,22 +67297,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XSetLiteral__ElementsAssignment_3_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23556:1: rule__XSetLiteral__ElementsAssignment_3_1_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23555:1: rule__XSetLiteral__ElementsAssignment_3_1_1 : ( ruleXExpression ) ;
     public final void rule__XSetLiteral__ElementsAssignment_3_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23560:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23561:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23559:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23560:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23561:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23562:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23560:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23561:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSetLiteralAccess().getElementsXExpressionParserRuleCall_3_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XSetLiteral__ElementsAssignment_3_1_147511);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XSetLiteral__ElementsAssignment_3_1_147509);
             ruleXExpression();
 
             state._fsp--;
@@ -67326,22 +67342,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XListLiteral__ElementsAssignment_3_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23571:1: rule__XListLiteral__ElementsAssignment_3_0 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23570:1: rule__XListLiteral__ElementsAssignment_3_0 : ( ruleXExpression ) ;
     public final void rule__XListLiteral__ElementsAssignment_3_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23575:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23576:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23574:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23575:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23576:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23577:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23575:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23576:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXListLiteralAccess().getElementsXExpressionParserRuleCall_3_0_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XListLiteral__ElementsAssignment_3_047542);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XListLiteral__ElementsAssignment_3_047540);
             ruleXExpression();
 
             state._fsp--;
@@ -67371,22 +67387,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XListLiteral__ElementsAssignment_3_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23586:1: rule__XListLiteral__ElementsAssignment_3_1_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23585:1: rule__XListLiteral__ElementsAssignment_3_1_1 : ( ruleXExpression ) ;
     public final void rule__XListLiteral__ElementsAssignment_3_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23590:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23591:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23589:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23590:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23591:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23592:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23590:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23591:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXListLiteralAccess().getElementsXExpressionParserRuleCall_3_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XListLiteral__ElementsAssignment_3_1_147573);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XListLiteral__ElementsAssignment_3_1_147571);
             ruleXExpression();
 
             state._fsp--;
@@ -67416,22 +67432,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23601:1: rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_0 : ( ruleJvmFormalParameter ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23600:1: rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_0 : ( ruleJvmFormalParameter ) ;
     public final void rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23605:1: ( ( ruleJvmFormalParameter ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23606:1: ( ruleJvmFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23604:1: ( ( ruleJvmFormalParameter ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23605:1: ( ruleJvmFormalParameter )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23606:1: ( ruleJvmFormalParameter )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23607:1: ruleJvmFormalParameter
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23605:1: ( ruleJvmFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23606:1: ruleJvmFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXClosureAccess().getDeclaredFormalParametersJvmFormalParameterParserRuleCall_1_0_0_0_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmFormalParameter_in_rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_047604);
+            pushFollow(FOLLOW_ruleJvmFormalParameter_in_rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_047602);
             ruleJvmFormalParameter();
 
             state._fsp--;
@@ -67461,22 +67477,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23616:1: rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_1_1 : ( ruleJvmFormalParameter ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23615:1: rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_1_1 : ( ruleJvmFormalParameter ) ;
     public final void rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23620:1: ( ( ruleJvmFormalParameter ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23621:1: ( ruleJvmFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23619:1: ( ( ruleJvmFormalParameter ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23620:1: ( ruleJvmFormalParameter )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23621:1: ( ruleJvmFormalParameter )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23622:1: ruleJvmFormalParameter
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23620:1: ( ruleJvmFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23621:1: ruleJvmFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXClosureAccess().getDeclaredFormalParametersJvmFormalParameterParserRuleCall_1_0_0_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmFormalParameter_in_rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_1_147635);
+            pushFollow(FOLLOW_ruleJvmFormalParameter_in_rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_1_147633);
             ruleJvmFormalParameter();
 
             state._fsp--;
@@ -67506,28 +67522,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XClosure__ExplicitSyntaxAssignment_1_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23631:1: rule__XClosure__ExplicitSyntaxAssignment_1_0_1 : ( ( '|' ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23630:1: rule__XClosure__ExplicitSyntaxAssignment_1_0_1 : ( ( '|' ) ) ;
     public final void rule__XClosure__ExplicitSyntaxAssignment_1_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23635:1: ( ( ( '|' ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23636:1: ( ( '|' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23634:1: ( ( ( '|' ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23635:1: ( ( '|' ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23636:1: ( ( '|' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23635:1: ( ( '|' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23636:1: ( '|' )
+            {
+            if ( state.backtracking==0 ) {
+               before(grammarAccess.getXClosureAccess().getExplicitSyntaxVerticalLineKeyword_1_0_1_0()); 
+            }
             // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23637:1: ( '|' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23638:1: '|'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXClosureAccess().getExplicitSyntaxVerticalLineKeyword_1_0_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23638:1: ( '|' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23639:1: '|'
-            {
-            if ( state.backtracking==0 ) {
-               before(grammarAccess.getXClosureAccess().getExplicitSyntaxVerticalLineKeyword_1_0_1_0()); 
-            }
-            match(input,97,FOLLOW_97_in_rule__XClosure__ExplicitSyntaxAssignment_1_0_147671); if (state.failed) return ;
+            match(input,97,FOLLOW_97_in_rule__XClosure__ExplicitSyntaxAssignment_1_0_147669); if (state.failed) return ;
             if ( state.backtracking==0 ) {
                after(grammarAccess.getXClosureAccess().getExplicitSyntaxVerticalLineKeyword_1_0_1_0()); 
             }
@@ -67559,22 +67575,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XClosure__ExpressionAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23654:1: rule__XClosure__ExpressionAssignment_2 : ( ruleXExpressionInClosure ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23653:1: rule__XClosure__ExpressionAssignment_2 : ( ruleXExpressionInClosure ) ;
     public final void rule__XClosure__ExpressionAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23658:1: ( ( ruleXExpressionInClosure ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23659:1: ( ruleXExpressionInClosure )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23657:1: ( ( ruleXExpressionInClosure ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23658:1: ( ruleXExpressionInClosure )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23659:1: ( ruleXExpressionInClosure )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23660:1: ruleXExpressionInClosure
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23658:1: ( ruleXExpressionInClosure )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23659:1: ruleXExpressionInClosure
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXClosureAccess().getExpressionXExpressionInClosureParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpressionInClosure_in_rule__XClosure__ExpressionAssignment_247710);
+            pushFollow(FOLLOW_ruleXExpressionInClosure_in_rule__XClosure__ExpressionAssignment_247708);
             ruleXExpressionInClosure();
 
             state._fsp--;
@@ -67604,22 +67620,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XExpressionInClosure__ExpressionsAssignment_1_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23669:1: rule__XExpressionInClosure__ExpressionsAssignment_1_0 : ( ruleXExpressionOrVarDeclaration ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23668:1: rule__XExpressionInClosure__ExpressionsAssignment_1_0 : ( ruleXExpressionOrVarDeclaration ) ;
     public final void rule__XExpressionInClosure__ExpressionsAssignment_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23673:1: ( ( ruleXExpressionOrVarDeclaration ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23674:1: ( ruleXExpressionOrVarDeclaration )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23672:1: ( ( ruleXExpressionOrVarDeclaration ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23673:1: ( ruleXExpressionOrVarDeclaration )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23674:1: ( ruleXExpressionOrVarDeclaration )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23675:1: ruleXExpressionOrVarDeclaration
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23673:1: ( ruleXExpressionOrVarDeclaration )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23674:1: ruleXExpressionOrVarDeclaration
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXExpressionInClosureAccess().getExpressionsXExpressionOrVarDeclarationParserRuleCall_1_0_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpressionOrVarDeclaration_in_rule__XExpressionInClosure__ExpressionsAssignment_1_047741);
+            pushFollow(FOLLOW_ruleXExpressionOrVarDeclaration_in_rule__XExpressionInClosure__ExpressionsAssignment_1_047739);
             ruleXExpressionOrVarDeclaration();
 
             state._fsp--;
@@ -67649,22 +67665,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23684:1: rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_0 : ( ruleJvmFormalParameter ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23683:1: rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_0 : ( ruleJvmFormalParameter ) ;
     public final void rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23688:1: ( ( ruleJvmFormalParameter ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23689:1: ( ruleJvmFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23687:1: ( ( ruleJvmFormalParameter ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23688:1: ( ruleJvmFormalParameter )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23689:1: ( ruleJvmFormalParameter )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23690:1: ruleJvmFormalParameter
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23688:1: ( ruleJvmFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23689:1: ruleJvmFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXShortClosureAccess().getDeclaredFormalParametersJvmFormalParameterParserRuleCall_0_0_1_0_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmFormalParameter_in_rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_047772);
+            pushFollow(FOLLOW_ruleJvmFormalParameter_in_rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_047770);
             ruleJvmFormalParameter();
 
             state._fsp--;
@@ -67694,22 +67710,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23699:1: rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_1_1 : ( ruleJvmFormalParameter ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23698:1: rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_1_1 : ( ruleJvmFormalParameter ) ;
     public final void rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23703:1: ( ( ruleJvmFormalParameter ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23704:1: ( ruleJvmFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23702:1: ( ( ruleJvmFormalParameter ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23703:1: ( ruleJvmFormalParameter )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23704:1: ( ruleJvmFormalParameter )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23705:1: ruleJvmFormalParameter
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23703:1: ( ruleJvmFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23704:1: ruleJvmFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXShortClosureAccess().getDeclaredFormalParametersJvmFormalParameterParserRuleCall_0_0_1_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmFormalParameter_in_rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_1_147803);
+            pushFollow(FOLLOW_ruleJvmFormalParameter_in_rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_1_147801);
             ruleJvmFormalParameter();
 
             state._fsp--;
@@ -67739,28 +67755,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XShortClosure__ExplicitSyntaxAssignment_0_0_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23714:1: rule__XShortClosure__ExplicitSyntaxAssignment_0_0_2 : ( ( '|' ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23713:1: rule__XShortClosure__ExplicitSyntaxAssignment_0_0_2 : ( ( '|' ) ) ;
     public final void rule__XShortClosure__ExplicitSyntaxAssignment_0_0_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23718:1: ( ( ( '|' ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23719:1: ( ( '|' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23717:1: ( ( ( '|' ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23718:1: ( ( '|' ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23719:1: ( ( '|' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23718:1: ( ( '|' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23719:1: ( '|' )
+            {
+            if ( state.backtracking==0 ) {
+               before(grammarAccess.getXShortClosureAccess().getExplicitSyntaxVerticalLineKeyword_0_0_2_0()); 
+            }
             // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23720:1: ( '|' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23721:1: '|'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXShortClosureAccess().getExplicitSyntaxVerticalLineKeyword_0_0_2_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23721:1: ( '|' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23722:1: '|'
-            {
-            if ( state.backtracking==0 ) {
-               before(grammarAccess.getXShortClosureAccess().getExplicitSyntaxVerticalLineKeyword_0_0_2_0()); 
-            }
-            match(input,97,FOLLOW_97_in_rule__XShortClosure__ExplicitSyntaxAssignment_0_0_247839); if (state.failed) return ;
+            match(input,97,FOLLOW_97_in_rule__XShortClosure__ExplicitSyntaxAssignment_0_0_247837); if (state.failed) return ;
             if ( state.backtracking==0 ) {
                after(grammarAccess.getXShortClosureAccess().getExplicitSyntaxVerticalLineKeyword_0_0_2_0()); 
             }
@@ -67792,22 +67808,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XShortClosure__ExpressionAssignment_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23737:1: rule__XShortClosure__ExpressionAssignment_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23736:1: rule__XShortClosure__ExpressionAssignment_1 : ( ruleXExpression ) ;
     public final void rule__XShortClosure__ExpressionAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23741:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23742:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23740:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23741:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23742:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23743:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23741:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23742:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXShortClosureAccess().getExpressionXExpressionParserRuleCall_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XShortClosure__ExpressionAssignment_147878);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XShortClosure__ExpressionAssignment_147876);
             ruleXExpression();
 
             state._fsp--;
@@ -67837,22 +67853,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XIfExpression__IfAssignment_3"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23752:1: rule__XIfExpression__IfAssignment_3 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23751:1: rule__XIfExpression__IfAssignment_3 : ( ruleXExpression ) ;
     public final void rule__XIfExpression__IfAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23756:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23757:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23755:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23756:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23757:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23758:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23756:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23757:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXIfExpressionAccess().getIfXExpressionParserRuleCall_3_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XIfExpression__IfAssignment_347909);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XIfExpression__IfAssignment_347907);
             ruleXExpression();
 
             state._fsp--;
@@ -67882,22 +67898,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XIfExpression__ThenAssignment_5"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23767:1: rule__XIfExpression__ThenAssignment_5 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23766:1: rule__XIfExpression__ThenAssignment_5 : ( ruleXExpression ) ;
     public final void rule__XIfExpression__ThenAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23771:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23772:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23770:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23771:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23772:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23773:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23771:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23772:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXIfExpressionAccess().getThenXExpressionParserRuleCall_5_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XIfExpression__ThenAssignment_547940);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XIfExpression__ThenAssignment_547938);
             ruleXExpression();
 
             state._fsp--;
@@ -67927,22 +67943,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XIfExpression__ElseAssignment_6_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23782:1: rule__XIfExpression__ElseAssignment_6_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23781:1: rule__XIfExpression__ElseAssignment_6_1 : ( ruleXExpression ) ;
     public final void rule__XIfExpression__ElseAssignment_6_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23786:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23787:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23785:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23786:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23787:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23788:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23786:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23787:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXIfExpressionAccess().getElseXExpressionParserRuleCall_6_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XIfExpression__ElseAssignment_6_147971);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XIfExpression__ElseAssignment_6_147969);
             ruleXExpression();
 
             state._fsp--;
@@ -67972,22 +67988,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XSwitchExpression__DeclaredParamAssignment_2_0_0_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23797:1: rule__XSwitchExpression__DeclaredParamAssignment_2_0_0_0_1 : ( ruleJvmFormalParameter ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23796:1: rule__XSwitchExpression__DeclaredParamAssignment_2_0_0_0_1 : ( ruleJvmFormalParameter ) ;
     public final void rule__XSwitchExpression__DeclaredParamAssignment_2_0_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23801:1: ( ( ruleJvmFormalParameter ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23802:1: ( ruleJvmFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23800:1: ( ( ruleJvmFormalParameter ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23801:1: ( ruleJvmFormalParameter )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23802:1: ( ruleJvmFormalParameter )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23803:1: ruleJvmFormalParameter
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23801:1: ( ruleJvmFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23802:1: ruleJvmFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSwitchExpressionAccess().getDeclaredParamJvmFormalParameterParserRuleCall_2_0_0_0_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmFormalParameter_in_rule__XSwitchExpression__DeclaredParamAssignment_2_0_0_0_148002);
+            pushFollow(FOLLOW_ruleJvmFormalParameter_in_rule__XSwitchExpression__DeclaredParamAssignment_2_0_0_0_148000);
             ruleJvmFormalParameter();
 
             state._fsp--;
@@ -68017,22 +68033,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XSwitchExpression__SwitchAssignment_2_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23812:1: rule__XSwitchExpression__SwitchAssignment_2_0_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23811:1: rule__XSwitchExpression__SwitchAssignment_2_0_1 : ( ruleXExpression ) ;
     public final void rule__XSwitchExpression__SwitchAssignment_2_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23816:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23817:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23815:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23816:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23817:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23818:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23816:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23817:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSwitchExpressionAccess().getSwitchXExpressionParserRuleCall_2_0_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XSwitchExpression__SwitchAssignment_2_0_148033);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XSwitchExpression__SwitchAssignment_2_0_148031);
             ruleXExpression();
 
             state._fsp--;
@@ -68062,22 +68078,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XSwitchExpression__DeclaredParamAssignment_2_1_0_0_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23827:1: rule__XSwitchExpression__DeclaredParamAssignment_2_1_0_0_0 : ( ruleJvmFormalParameter ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23826:1: rule__XSwitchExpression__DeclaredParamAssignment_2_1_0_0_0 : ( ruleJvmFormalParameter ) ;
     public final void rule__XSwitchExpression__DeclaredParamAssignment_2_1_0_0_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23831:1: ( ( ruleJvmFormalParameter ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23832:1: ( ruleJvmFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23830:1: ( ( ruleJvmFormalParameter ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23831:1: ( ruleJvmFormalParameter )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23832:1: ( ruleJvmFormalParameter )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23833:1: ruleJvmFormalParameter
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23831:1: ( ruleJvmFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23832:1: ruleJvmFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSwitchExpressionAccess().getDeclaredParamJvmFormalParameterParserRuleCall_2_1_0_0_0_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmFormalParameter_in_rule__XSwitchExpression__DeclaredParamAssignment_2_1_0_0_048064);
+            pushFollow(FOLLOW_ruleJvmFormalParameter_in_rule__XSwitchExpression__DeclaredParamAssignment_2_1_0_0_048062);
             ruleJvmFormalParameter();
 
             state._fsp--;
@@ -68107,22 +68123,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XSwitchExpression__SwitchAssignment_2_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23842:1: rule__XSwitchExpression__SwitchAssignment_2_1_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23841:1: rule__XSwitchExpression__SwitchAssignment_2_1_1 : ( ruleXExpression ) ;
     public final void rule__XSwitchExpression__SwitchAssignment_2_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23846:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23847:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23845:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23846:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23847:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23848:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23846:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23847:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSwitchExpressionAccess().getSwitchXExpressionParserRuleCall_2_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XSwitchExpression__SwitchAssignment_2_1_148095);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XSwitchExpression__SwitchAssignment_2_1_148093);
             ruleXExpression();
 
             state._fsp--;
@@ -68152,22 +68168,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XSwitchExpression__CasesAssignment_4"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23857:1: rule__XSwitchExpression__CasesAssignment_4 : ( ruleXCasePart ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23856:1: rule__XSwitchExpression__CasesAssignment_4 : ( ruleXCasePart ) ;
     public final void rule__XSwitchExpression__CasesAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23861:1: ( ( ruleXCasePart ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23862:1: ( ruleXCasePart )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23860:1: ( ( ruleXCasePart ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23861:1: ( ruleXCasePart )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23862:1: ( ruleXCasePart )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23863:1: ruleXCasePart
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23861:1: ( ruleXCasePart )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23862:1: ruleXCasePart
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSwitchExpressionAccess().getCasesXCasePartParserRuleCall_4_0()); 
             }
-            pushFollow(FOLLOW_ruleXCasePart_in_rule__XSwitchExpression__CasesAssignment_448126);
+            pushFollow(FOLLOW_ruleXCasePart_in_rule__XSwitchExpression__CasesAssignment_448124);
             ruleXCasePart();
 
             state._fsp--;
@@ -68197,22 +68213,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XSwitchExpression__DefaultAssignment_5_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23872:1: rule__XSwitchExpression__DefaultAssignment_5_2 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23871:1: rule__XSwitchExpression__DefaultAssignment_5_2 : ( ruleXExpression ) ;
     public final void rule__XSwitchExpression__DefaultAssignment_5_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23876:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23877:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23875:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23876:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23877:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23878:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23876:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23877:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSwitchExpressionAccess().getDefaultXExpressionParserRuleCall_5_2_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XSwitchExpression__DefaultAssignment_5_248157);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XSwitchExpression__DefaultAssignment_5_248155);
             ruleXExpression();
 
             state._fsp--;
@@ -68242,22 +68258,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XCasePart__TypeGuardAssignment_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23887:1: rule__XCasePart__TypeGuardAssignment_1 : ( ruleJvmTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23886:1: rule__XCasePart__TypeGuardAssignment_1 : ( ruleJvmTypeReference ) ;
     public final void rule__XCasePart__TypeGuardAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23891:1: ( ( ruleJvmTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23892:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23890:1: ( ( ruleJvmTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23891:1: ( ruleJvmTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23892:1: ( ruleJvmTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23893:1: ruleJvmTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23891:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23892:1: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXCasePartAccess().getTypeGuardJvmTypeReferenceParserRuleCall_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__XCasePart__TypeGuardAssignment_148188);
+            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__XCasePart__TypeGuardAssignment_148186);
             ruleJvmTypeReference();
 
             state._fsp--;
@@ -68287,22 +68303,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XCasePart__CaseAssignment_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23902:1: rule__XCasePart__CaseAssignment_2_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23901:1: rule__XCasePart__CaseAssignment_2_1 : ( ruleXExpression ) ;
     public final void rule__XCasePart__CaseAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23906:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23907:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23905:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23906:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23907:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23908:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23906:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23907:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXCasePartAccess().getCaseXExpressionParserRuleCall_2_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XCasePart__CaseAssignment_2_148219);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XCasePart__CaseAssignment_2_148217);
             ruleXExpression();
 
             state._fsp--;
@@ -68332,22 +68348,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XCasePart__ThenAssignment_3_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23917:1: rule__XCasePart__ThenAssignment_3_0_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23916:1: rule__XCasePart__ThenAssignment_3_0_1 : ( ruleXExpression ) ;
     public final void rule__XCasePart__ThenAssignment_3_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23921:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23922:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23920:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23921:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23922:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23923:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23921:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23922:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXCasePartAccess().getThenXExpressionParserRuleCall_3_0_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XCasePart__ThenAssignment_3_0_148250);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XCasePart__ThenAssignment_3_0_148248);
             ruleXExpression();
 
             state._fsp--;
@@ -68377,22 +68393,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XBasicForLoopExpression__InitExpressionsAssignment_3_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23932:1: rule__XBasicForLoopExpression__InitExpressionsAssignment_3_0 : ( ruleXExpressionOrVarDeclaration ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23931:1: rule__XBasicForLoopExpression__InitExpressionsAssignment_3_0 : ( ruleXExpressionOrVarDeclaration ) ;
     public final void rule__XBasicForLoopExpression__InitExpressionsAssignment_3_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23936:1: ( ( ruleXExpressionOrVarDeclaration ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23937:1: ( ruleXExpressionOrVarDeclaration )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23935:1: ( ( ruleXExpressionOrVarDeclaration ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23936:1: ( ruleXExpressionOrVarDeclaration )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23937:1: ( ruleXExpressionOrVarDeclaration )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23938:1: ruleXExpressionOrVarDeclaration
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23936:1: ( ruleXExpressionOrVarDeclaration )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23937:1: ruleXExpressionOrVarDeclaration
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXBasicForLoopExpressionAccess().getInitExpressionsXExpressionOrVarDeclarationParserRuleCall_3_0_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpressionOrVarDeclaration_in_rule__XBasicForLoopExpression__InitExpressionsAssignment_3_048281);
+            pushFollow(FOLLOW_ruleXExpressionOrVarDeclaration_in_rule__XBasicForLoopExpression__InitExpressionsAssignment_3_048279);
             ruleXExpressionOrVarDeclaration();
 
             state._fsp--;
@@ -68422,22 +68438,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XBasicForLoopExpression__InitExpressionsAssignment_3_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23947:1: rule__XBasicForLoopExpression__InitExpressionsAssignment_3_1_1 : ( ruleXExpressionOrVarDeclaration ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23946:1: rule__XBasicForLoopExpression__InitExpressionsAssignment_3_1_1 : ( ruleXExpressionOrVarDeclaration ) ;
     public final void rule__XBasicForLoopExpression__InitExpressionsAssignment_3_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23951:1: ( ( ruleXExpressionOrVarDeclaration ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23952:1: ( ruleXExpressionOrVarDeclaration )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23950:1: ( ( ruleXExpressionOrVarDeclaration ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23951:1: ( ruleXExpressionOrVarDeclaration )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23952:1: ( ruleXExpressionOrVarDeclaration )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23953:1: ruleXExpressionOrVarDeclaration
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23951:1: ( ruleXExpressionOrVarDeclaration )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23952:1: ruleXExpressionOrVarDeclaration
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXBasicForLoopExpressionAccess().getInitExpressionsXExpressionOrVarDeclarationParserRuleCall_3_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpressionOrVarDeclaration_in_rule__XBasicForLoopExpression__InitExpressionsAssignment_3_1_148312);
+            pushFollow(FOLLOW_ruleXExpressionOrVarDeclaration_in_rule__XBasicForLoopExpression__InitExpressionsAssignment_3_1_148310);
             ruleXExpressionOrVarDeclaration();
 
             state._fsp--;
@@ -68467,22 +68483,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XBasicForLoopExpression__ExpressionAssignment_5"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23962:1: rule__XBasicForLoopExpression__ExpressionAssignment_5 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23961:1: rule__XBasicForLoopExpression__ExpressionAssignment_5 : ( ruleXExpression ) ;
     public final void rule__XBasicForLoopExpression__ExpressionAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23966:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23967:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23965:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23966:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23967:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23968:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23966:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23967:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXBasicForLoopExpressionAccess().getExpressionXExpressionParserRuleCall_5_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XBasicForLoopExpression__ExpressionAssignment_548343);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XBasicForLoopExpression__ExpressionAssignment_548341);
             ruleXExpression();
 
             state._fsp--;
@@ -68512,22 +68528,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23977:1: rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_0 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23976:1: rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_0 : ( ruleXExpression ) ;
     public final void rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23981:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23982:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23980:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23981:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23982:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23983:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23981:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23982:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXBasicForLoopExpressionAccess().getUpdateExpressionsXExpressionParserRuleCall_7_0_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_048374);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_048372);
             ruleXExpression();
 
             state._fsp--;
@@ -68557,22 +68573,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23992:1: rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_1_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23991:1: rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_1_1 : ( ruleXExpression ) ;
     public final void rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23996:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23997:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23995:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23996:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23997:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23998:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23996:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:23997:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXBasicForLoopExpressionAccess().getUpdateExpressionsXExpressionParserRuleCall_7_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_1_148405);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_1_148403);
             ruleXExpression();
 
             state._fsp--;
@@ -68602,22 +68618,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XBasicForLoopExpression__EachExpressionAssignment_9"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24007:1: rule__XBasicForLoopExpression__EachExpressionAssignment_9 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24006:1: rule__XBasicForLoopExpression__EachExpressionAssignment_9 : ( ruleXExpression ) ;
     public final void rule__XBasicForLoopExpression__EachExpressionAssignment_9() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24011:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24012:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24010:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24011:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24012:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24013:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24011:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24012:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXBasicForLoopExpressionAccess().getEachExpressionXExpressionParserRuleCall_9_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XBasicForLoopExpression__EachExpressionAssignment_948436);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XBasicForLoopExpression__EachExpressionAssignment_948434);
             ruleXExpression();
 
             state._fsp--;
@@ -68647,22 +68663,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XWhileExpression__PredicateAssignment_3"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24022:1: rule__XWhileExpression__PredicateAssignment_3 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24021:1: rule__XWhileExpression__PredicateAssignment_3 : ( ruleXExpression ) ;
     public final void rule__XWhileExpression__PredicateAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24026:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24027:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24025:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24026:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24027:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24028:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24026:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24027:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXWhileExpressionAccess().getPredicateXExpressionParserRuleCall_3_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XWhileExpression__PredicateAssignment_348467);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XWhileExpression__PredicateAssignment_348465);
             ruleXExpression();
 
             state._fsp--;
@@ -68692,22 +68708,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XWhileExpression__BodyAssignment_5"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24037:1: rule__XWhileExpression__BodyAssignment_5 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24036:1: rule__XWhileExpression__BodyAssignment_5 : ( ruleXExpression ) ;
     public final void rule__XWhileExpression__BodyAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24041:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24042:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24040:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24041:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24042:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24043:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24041:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24042:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXWhileExpressionAccess().getBodyXExpressionParserRuleCall_5_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XWhileExpression__BodyAssignment_548498);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XWhileExpression__BodyAssignment_548496);
             ruleXExpression();
 
             state._fsp--;
@@ -68737,22 +68753,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XDoWhileExpression__BodyAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24052:1: rule__XDoWhileExpression__BodyAssignment_2 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24051:1: rule__XDoWhileExpression__BodyAssignment_2 : ( ruleXExpression ) ;
     public final void rule__XDoWhileExpression__BodyAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24056:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24057:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24055:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24056:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24057:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24058:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24056:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24057:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXDoWhileExpressionAccess().getBodyXExpressionParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XDoWhileExpression__BodyAssignment_248529);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XDoWhileExpression__BodyAssignment_248527);
             ruleXExpression();
 
             state._fsp--;
@@ -68782,22 +68798,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XDoWhileExpression__PredicateAssignment_5"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24067:1: rule__XDoWhileExpression__PredicateAssignment_5 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24066:1: rule__XDoWhileExpression__PredicateAssignment_5 : ( ruleXExpression ) ;
     public final void rule__XDoWhileExpression__PredicateAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24071:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24072:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24070:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24071:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24072:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24073:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24071:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24072:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXDoWhileExpressionAccess().getPredicateXExpressionParserRuleCall_5_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XDoWhileExpression__PredicateAssignment_548560);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XDoWhileExpression__PredicateAssignment_548558);
             ruleXExpression();
 
             state._fsp--;
@@ -68827,22 +68843,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XBlockExpression__ExpressionsAssignment_2_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24082:1: rule__XBlockExpression__ExpressionsAssignment_2_0 : ( ruleXExpressionOrVarDeclaration ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24081:1: rule__XBlockExpression__ExpressionsAssignment_2_0 : ( ruleXExpressionOrVarDeclaration ) ;
     public final void rule__XBlockExpression__ExpressionsAssignment_2_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24086:1: ( ( ruleXExpressionOrVarDeclaration ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24087:1: ( ruleXExpressionOrVarDeclaration )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24085:1: ( ( ruleXExpressionOrVarDeclaration ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24086:1: ( ruleXExpressionOrVarDeclaration )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24087:1: ( ruleXExpressionOrVarDeclaration )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24088:1: ruleXExpressionOrVarDeclaration
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24086:1: ( ruleXExpressionOrVarDeclaration )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24087:1: ruleXExpressionOrVarDeclaration
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXBlockExpressionAccess().getExpressionsXExpressionOrVarDeclarationParserRuleCall_2_0_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpressionOrVarDeclaration_in_rule__XBlockExpression__ExpressionsAssignment_2_048591);
+            pushFollow(FOLLOW_ruleXExpressionOrVarDeclaration_in_rule__XBlockExpression__ExpressionsAssignment_2_048589);
             ruleXExpressionOrVarDeclaration();
 
             state._fsp--;
@@ -68872,22 +68888,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XFeatureCall__TypeArgumentsAssignment_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24097:1: rule__XFeatureCall__TypeArgumentsAssignment_1_1 : ( ruleJvmArgumentTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24096:1: rule__XFeatureCall__TypeArgumentsAssignment_1_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__XFeatureCall__TypeArgumentsAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24101:1: ( ( ruleJvmArgumentTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24102:1: ( ruleJvmArgumentTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24100:1: ( ( ruleJvmArgumentTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24101:1: ( ruleJvmArgumentTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24102:1: ( ruleJvmArgumentTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24103:1: ruleJvmArgumentTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24101:1: ( ruleJvmArgumentTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24102:1: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getTypeArgumentsJvmArgumentTypeReferenceParserRuleCall_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmArgumentTypeReference_in_rule__XFeatureCall__TypeArgumentsAssignment_1_148622);
+            pushFollow(FOLLOW_ruleJvmArgumentTypeReference_in_rule__XFeatureCall__TypeArgumentsAssignment_1_148620);
             ruleJvmArgumentTypeReference();
 
             state._fsp--;
@@ -68917,22 +68933,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XFeatureCall__TypeArgumentsAssignment_1_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24112:1: rule__XFeatureCall__TypeArgumentsAssignment_1_2_1 : ( ruleJvmArgumentTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24111:1: rule__XFeatureCall__TypeArgumentsAssignment_1_2_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__XFeatureCall__TypeArgumentsAssignment_1_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24116:1: ( ( ruleJvmArgumentTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24117:1: ( ruleJvmArgumentTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24115:1: ( ( ruleJvmArgumentTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24116:1: ( ruleJvmArgumentTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24117:1: ( ruleJvmArgumentTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24118:1: ruleJvmArgumentTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24116:1: ( ruleJvmArgumentTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24117:1: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getTypeArgumentsJvmArgumentTypeReferenceParserRuleCall_1_2_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmArgumentTypeReference_in_rule__XFeatureCall__TypeArgumentsAssignment_1_2_148653);
+            pushFollow(FOLLOW_ruleJvmArgumentTypeReference_in_rule__XFeatureCall__TypeArgumentsAssignment_1_2_148651);
             ruleJvmArgumentTypeReference();
 
             state._fsp--;
@@ -68962,28 +68978,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XFeatureCall__FeatureAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24127:1: rule__XFeatureCall__FeatureAssignment_2 : ( ( ruleIdOrSuper ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24126:1: rule__XFeatureCall__FeatureAssignment_2 : ( ( ruleIdOrSuper ) ) ;
     public final void rule__XFeatureCall__FeatureAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24131:1: ( ( ( ruleIdOrSuper ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24132:1: ( ( ruleIdOrSuper ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24130:1: ( ( ( ruleIdOrSuper ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24131:1: ( ( ruleIdOrSuper ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24132:1: ( ( ruleIdOrSuper ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24133:1: ( ruleIdOrSuper )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24131:1: ( ( ruleIdOrSuper ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24132:1: ( ruleIdOrSuper )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getFeatureJvmIdentifiableElementCrossReference_2_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24134:1: ( ruleIdOrSuper )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24135:1: ruleIdOrSuper
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24133:1: ( ruleIdOrSuper )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24134:1: ruleIdOrSuper
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getFeatureJvmIdentifiableElementIdOrSuperParserRuleCall_2_0_1()); 
             }
-            pushFollow(FOLLOW_ruleIdOrSuper_in_rule__XFeatureCall__FeatureAssignment_248688);
+            pushFollow(FOLLOW_ruleIdOrSuper_in_rule__XFeatureCall__FeatureAssignment_248686);
             ruleIdOrSuper();
 
             state._fsp--;
@@ -69019,28 +69035,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XFeatureCall__ExplicitOperationCallAssignment_3_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24146:1: rule__XFeatureCall__ExplicitOperationCallAssignment_3_0 : ( ( '(' ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24145:1: rule__XFeatureCall__ExplicitOperationCallAssignment_3_0 : ( ( '(' ) ) ;
     public final void rule__XFeatureCall__ExplicitOperationCallAssignment_3_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24150:1: ( ( ( '(' ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24151:1: ( ( '(' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24149:1: ( ( ( '(' ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24150:1: ( ( '(' ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24151:1: ( ( '(' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24150:1: ( ( '(' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24151:1: ( '(' )
+            {
+            if ( state.backtracking==0 ) {
+               before(grammarAccess.getXFeatureCallAccess().getExplicitOperationCallLeftParenthesisKeyword_3_0_0()); 
+            }
             // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24152:1: ( '(' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24153:1: '('
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getExplicitOperationCallLeftParenthesisKeyword_3_0_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24153:1: ( '(' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24154:1: '('
-            {
-            if ( state.backtracking==0 ) {
-               before(grammarAccess.getXFeatureCallAccess().getExplicitOperationCallLeftParenthesisKeyword_3_0_0()); 
-            }
-            match(input,69,FOLLOW_69_in_rule__XFeatureCall__ExplicitOperationCallAssignment_3_048728); if (state.failed) return ;
+            match(input,69,FOLLOW_69_in_rule__XFeatureCall__ExplicitOperationCallAssignment_3_048726); if (state.failed) return ;
             if ( state.backtracking==0 ) {
                after(grammarAccess.getXFeatureCallAccess().getExplicitOperationCallLeftParenthesisKeyword_3_0_0()); 
             }
@@ -69072,22 +69088,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24169:1: rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_0 : ( ruleXShortClosure ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24168:1: rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_0 : ( ruleXShortClosure ) ;
     public final void rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24173:1: ( ( ruleXShortClosure ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24174:1: ( ruleXShortClosure )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24172:1: ( ( ruleXShortClosure ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24173:1: ( ruleXShortClosure )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24174:1: ( ruleXShortClosure )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24175:1: ruleXShortClosure
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24173:1: ( ruleXShortClosure )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24174:1: ruleXShortClosure
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getFeatureCallArgumentsXShortClosureParserRuleCall_3_1_0_0()); 
             }
-            pushFollow(FOLLOW_ruleXShortClosure_in_rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_048767);
+            pushFollow(FOLLOW_ruleXShortClosure_in_rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_048765);
             ruleXShortClosure();
 
             state._fsp--;
@@ -69117,22 +69133,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24184:1: rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_0 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24183:1: rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_0 : ( ruleXExpression ) ;
     public final void rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24188:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24189:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24187:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24188:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24189:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24190:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24188:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24189:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getFeatureCallArgumentsXExpressionParserRuleCall_3_1_1_0_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_048798);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_048796);
             ruleXExpression();
 
             state._fsp--;
@@ -69162,22 +69178,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24199:1: rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_1_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24198:1: rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_1_1 : ( ruleXExpression ) ;
     public final void rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24203:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24204:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24202:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24203:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24204:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24205:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24203:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24204:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getFeatureCallArgumentsXExpressionParserRuleCall_3_1_1_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_1_148829);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_1_148827);
             ruleXExpression();
 
             state._fsp--;
@@ -69207,22 +69223,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XFeatureCall__FeatureCallArgumentsAssignment_4"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24214:1: rule__XFeatureCall__FeatureCallArgumentsAssignment_4 : ( ruleXClosure ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24213:1: rule__XFeatureCall__FeatureCallArgumentsAssignment_4 : ( ruleXClosure ) ;
     public final void rule__XFeatureCall__FeatureCallArgumentsAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24218:1: ( ( ruleXClosure ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24219:1: ( ruleXClosure )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24217:1: ( ( ruleXClosure ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24218:1: ( ruleXClosure )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24219:1: ( ruleXClosure )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24220:1: ruleXClosure
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24218:1: ( ruleXClosure )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24219:1: ruleXClosure
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getFeatureCallArgumentsXClosureParserRuleCall_4_0()); 
             }
-            pushFollow(FOLLOW_ruleXClosure_in_rule__XFeatureCall__FeatureCallArgumentsAssignment_448860);
+            pushFollow(FOLLOW_ruleXClosure_in_rule__XFeatureCall__FeatureCallArgumentsAssignment_448858);
             ruleXClosure();
 
             state._fsp--;
@@ -69252,28 +69268,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XConstructorCall__ConstructorAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24229:1: rule__XConstructorCall__ConstructorAssignment_2 : ( ( ruleQualifiedName ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24228:1: rule__XConstructorCall__ConstructorAssignment_2 : ( ( ruleQualifiedName ) ) ;
     public final void rule__XConstructorCall__ConstructorAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24233:1: ( ( ( ruleQualifiedName ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24234:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24232:1: ( ( ( ruleQualifiedName ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24233:1: ( ( ruleQualifiedName ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24234:1: ( ( ruleQualifiedName ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24235:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24233:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24234:1: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getConstructorJvmConstructorCrossReference_2_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24236:1: ( ruleQualifiedName )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24237:1: ruleQualifiedName
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24235:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24236:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getConstructorJvmConstructorQualifiedNameParserRuleCall_2_0_1()); 
             }
-            pushFollow(FOLLOW_ruleQualifiedName_in_rule__XConstructorCall__ConstructorAssignment_248895);
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__XConstructorCall__ConstructorAssignment_248893);
             ruleQualifiedName();
 
             state._fsp--;
@@ -69309,22 +69325,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XConstructorCall__TypeArgumentsAssignment_3_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24248:1: rule__XConstructorCall__TypeArgumentsAssignment_3_1 : ( ruleJvmArgumentTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24247:1: rule__XConstructorCall__TypeArgumentsAssignment_3_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__XConstructorCall__TypeArgumentsAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24252:1: ( ( ruleJvmArgumentTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24253:1: ( ruleJvmArgumentTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24251:1: ( ( ruleJvmArgumentTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24252:1: ( ruleJvmArgumentTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24253:1: ( ruleJvmArgumentTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24254:1: ruleJvmArgumentTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24252:1: ( ruleJvmArgumentTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24253:1: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getTypeArgumentsJvmArgumentTypeReferenceParserRuleCall_3_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmArgumentTypeReference_in_rule__XConstructorCall__TypeArgumentsAssignment_3_148930);
+            pushFollow(FOLLOW_ruleJvmArgumentTypeReference_in_rule__XConstructorCall__TypeArgumentsAssignment_3_148928);
             ruleJvmArgumentTypeReference();
 
             state._fsp--;
@@ -69354,22 +69370,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XConstructorCall__TypeArgumentsAssignment_3_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24263:1: rule__XConstructorCall__TypeArgumentsAssignment_3_2_1 : ( ruleJvmArgumentTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24262:1: rule__XConstructorCall__TypeArgumentsAssignment_3_2_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__XConstructorCall__TypeArgumentsAssignment_3_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24267:1: ( ( ruleJvmArgumentTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24268:1: ( ruleJvmArgumentTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24266:1: ( ( ruleJvmArgumentTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24267:1: ( ruleJvmArgumentTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24268:1: ( ruleJvmArgumentTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24269:1: ruleJvmArgumentTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24267:1: ( ruleJvmArgumentTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24268:1: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getTypeArgumentsJvmArgumentTypeReferenceParserRuleCall_3_2_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmArgumentTypeReference_in_rule__XConstructorCall__TypeArgumentsAssignment_3_2_148961);
+            pushFollow(FOLLOW_ruleJvmArgumentTypeReference_in_rule__XConstructorCall__TypeArgumentsAssignment_3_2_148959);
             ruleJvmArgumentTypeReference();
 
             state._fsp--;
@@ -69399,28 +69415,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XConstructorCall__ExplicitConstructorCallAssignment_4_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24278:1: rule__XConstructorCall__ExplicitConstructorCallAssignment_4_0 : ( ( '(' ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24277:1: rule__XConstructorCall__ExplicitConstructorCallAssignment_4_0 : ( ( '(' ) ) ;
     public final void rule__XConstructorCall__ExplicitConstructorCallAssignment_4_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24282:1: ( ( ( '(' ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24283:1: ( ( '(' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24281:1: ( ( ( '(' ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24282:1: ( ( '(' ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24283:1: ( ( '(' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24282:1: ( ( '(' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24283:1: ( '(' )
+            {
+            if ( state.backtracking==0 ) {
+               before(grammarAccess.getXConstructorCallAccess().getExplicitConstructorCallLeftParenthesisKeyword_4_0_0()); 
+            }
             // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24284:1: ( '(' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24285:1: '('
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getExplicitConstructorCallLeftParenthesisKeyword_4_0_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24285:1: ( '(' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24286:1: '('
-            {
-            if ( state.backtracking==0 ) {
-               before(grammarAccess.getXConstructorCallAccess().getExplicitConstructorCallLeftParenthesisKeyword_4_0_0()); 
-            }
-            match(input,69,FOLLOW_69_in_rule__XConstructorCall__ExplicitConstructorCallAssignment_4_048997); if (state.failed) return ;
+            match(input,69,FOLLOW_69_in_rule__XConstructorCall__ExplicitConstructorCallAssignment_4_048995); if (state.failed) return ;
             if ( state.backtracking==0 ) {
                after(grammarAccess.getXConstructorCallAccess().getExplicitConstructorCallLeftParenthesisKeyword_4_0_0()); 
             }
@@ -69452,22 +69468,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XConstructorCall__ArgumentsAssignment_4_1_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24301:1: rule__XConstructorCall__ArgumentsAssignment_4_1_0 : ( ruleXShortClosure ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24300:1: rule__XConstructorCall__ArgumentsAssignment_4_1_0 : ( ruleXShortClosure ) ;
     public final void rule__XConstructorCall__ArgumentsAssignment_4_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24305:1: ( ( ruleXShortClosure ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24306:1: ( ruleXShortClosure )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24304:1: ( ( ruleXShortClosure ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24305:1: ( ruleXShortClosure )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24306:1: ( ruleXShortClosure )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24307:1: ruleXShortClosure
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24305:1: ( ruleXShortClosure )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24306:1: ruleXShortClosure
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getArgumentsXShortClosureParserRuleCall_4_1_0_0()); 
             }
-            pushFollow(FOLLOW_ruleXShortClosure_in_rule__XConstructorCall__ArgumentsAssignment_4_1_049036);
+            pushFollow(FOLLOW_ruleXShortClosure_in_rule__XConstructorCall__ArgumentsAssignment_4_1_049034);
             ruleXShortClosure();
 
             state._fsp--;
@@ -69497,22 +69513,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XConstructorCall__ArgumentsAssignment_4_1_1_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24316:1: rule__XConstructorCall__ArgumentsAssignment_4_1_1_0 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24315:1: rule__XConstructorCall__ArgumentsAssignment_4_1_1_0 : ( ruleXExpression ) ;
     public final void rule__XConstructorCall__ArgumentsAssignment_4_1_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24320:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24321:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24319:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24320:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24321:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24322:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24320:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24321:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getArgumentsXExpressionParserRuleCall_4_1_1_0_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XConstructorCall__ArgumentsAssignment_4_1_1_049067);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XConstructorCall__ArgumentsAssignment_4_1_1_049065);
             ruleXExpression();
 
             state._fsp--;
@@ -69542,22 +69558,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XConstructorCall__ArgumentsAssignment_4_1_1_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24331:1: rule__XConstructorCall__ArgumentsAssignment_4_1_1_1_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24330:1: rule__XConstructorCall__ArgumentsAssignment_4_1_1_1_1 : ( ruleXExpression ) ;
     public final void rule__XConstructorCall__ArgumentsAssignment_4_1_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24335:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24336:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24334:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24335:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24336:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24337:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24335:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24336:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getArgumentsXExpressionParserRuleCall_4_1_1_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XConstructorCall__ArgumentsAssignment_4_1_1_1_149098);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XConstructorCall__ArgumentsAssignment_4_1_1_1_149096);
             ruleXExpression();
 
             state._fsp--;
@@ -69587,22 +69603,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XConstructorCall__ArgumentsAssignment_5"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24346:1: rule__XConstructorCall__ArgumentsAssignment_5 : ( ruleXClosure ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24345:1: rule__XConstructorCall__ArgumentsAssignment_5 : ( ruleXClosure ) ;
     public final void rule__XConstructorCall__ArgumentsAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24350:1: ( ( ruleXClosure ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24351:1: ( ruleXClosure )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24349:1: ( ( ruleXClosure ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24350:1: ( ruleXClosure )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24351:1: ( ruleXClosure )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24352:1: ruleXClosure
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24350:1: ( ruleXClosure )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24351:1: ruleXClosure
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getArgumentsXClosureParserRuleCall_5_0()); 
             }
-            pushFollow(FOLLOW_ruleXClosure_in_rule__XConstructorCall__ArgumentsAssignment_549129);
+            pushFollow(FOLLOW_ruleXClosure_in_rule__XConstructorCall__ArgumentsAssignment_549127);
             ruleXClosure();
 
             state._fsp--;
@@ -69632,28 +69648,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XBooleanLiteral__IsTrueAssignment_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24361:1: rule__XBooleanLiteral__IsTrueAssignment_1_1 : ( ( 'true' ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24360:1: rule__XBooleanLiteral__IsTrueAssignment_1_1 : ( ( 'true' ) ) ;
     public final void rule__XBooleanLiteral__IsTrueAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24365:1: ( ( ( 'true' ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24366:1: ( ( 'true' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24364:1: ( ( ( 'true' ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24365:1: ( ( 'true' ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24366:1: ( ( 'true' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24365:1: ( ( 'true' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24366:1: ( 'true' )
+            {
+            if ( state.backtracking==0 ) {
+               before(grammarAccess.getXBooleanLiteralAccess().getIsTrueTrueKeyword_1_1_0()); 
+            }
             // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24367:1: ( 'true' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24368:1: 'true'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXBooleanLiteralAccess().getIsTrueTrueKeyword_1_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24368:1: ( 'true' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24369:1: 'true'
-            {
-            if ( state.backtracking==0 ) {
-               before(grammarAccess.getXBooleanLiteralAccess().getIsTrueTrueKeyword_1_1_0()); 
-            }
-            match(input,98,FOLLOW_98_in_rule__XBooleanLiteral__IsTrueAssignment_1_149165); if (state.failed) return ;
+            match(input,98,FOLLOW_98_in_rule__XBooleanLiteral__IsTrueAssignment_1_149163); if (state.failed) return ;
             if ( state.backtracking==0 ) {
                after(grammarAccess.getXBooleanLiteralAccess().getIsTrueTrueKeyword_1_1_0()); 
             }
@@ -69685,22 +69701,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XNumberLiteral__ValueAssignment_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24384:1: rule__XNumberLiteral__ValueAssignment_1 : ( ruleNumber ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24383:1: rule__XNumberLiteral__ValueAssignment_1 : ( ruleNumber ) ;
     public final void rule__XNumberLiteral__ValueAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24388:1: ( ( ruleNumber ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24389:1: ( ruleNumber )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24387:1: ( ( ruleNumber ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24388:1: ( ruleNumber )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24389:1: ( ruleNumber )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24390:1: ruleNumber
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24388:1: ( ruleNumber )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24389:1: ruleNumber
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXNumberLiteralAccess().getValueNumberParserRuleCall_1_0()); 
             }
-            pushFollow(FOLLOW_ruleNumber_in_rule__XNumberLiteral__ValueAssignment_149204);
+            pushFollow(FOLLOW_ruleNumber_in_rule__XNumberLiteral__ValueAssignment_149202);
             ruleNumber();
 
             state._fsp--;
@@ -69730,22 +69746,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XStringLiteral__ValueAssignment_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24399:1: rule__XStringLiteral__ValueAssignment_1 : ( RULE_STRING ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24398:1: rule__XStringLiteral__ValueAssignment_1 : ( RULE_STRING ) ;
     public final void rule__XStringLiteral__ValueAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24403:1: ( ( RULE_STRING ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24404:1: ( RULE_STRING )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24402:1: ( ( RULE_STRING ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24403:1: ( RULE_STRING )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24404:1: ( RULE_STRING )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24405:1: RULE_STRING
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24403:1: ( RULE_STRING )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24404:1: RULE_STRING
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXStringLiteralAccess().getValueSTRINGTerminalRuleCall_1_0()); 
             }
-            match(input,RULE_STRING,FOLLOW_RULE_STRING_in_rule__XStringLiteral__ValueAssignment_149235); if (state.failed) return ;
+            match(input,RULE_STRING,FOLLOW_RULE_STRING_in_rule__XStringLiteral__ValueAssignment_149233); if (state.failed) return ;
             if ( state.backtracking==0 ) {
                after(grammarAccess.getXStringLiteralAccess().getValueSTRINGTerminalRuleCall_1_0()); 
             }
@@ -69771,28 +69787,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XTypeLiteral__TypeAssignment_3"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24414:1: rule__XTypeLiteral__TypeAssignment_3 : ( ( ruleQualifiedName ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24413:1: rule__XTypeLiteral__TypeAssignment_3 : ( ( ruleQualifiedName ) ) ;
     public final void rule__XTypeLiteral__TypeAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24418:1: ( ( ( ruleQualifiedName ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24419:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24417:1: ( ( ( ruleQualifiedName ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24418:1: ( ( ruleQualifiedName ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24419:1: ( ( ruleQualifiedName ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24420:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24418:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24419:1: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXTypeLiteralAccess().getTypeJvmTypeCrossReference_3_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24421:1: ( ruleQualifiedName )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24422:1: ruleQualifiedName
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24420:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24421:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXTypeLiteralAccess().getTypeJvmTypeQualifiedNameParserRuleCall_3_0_1()); 
             }
-            pushFollow(FOLLOW_ruleQualifiedName_in_rule__XTypeLiteral__TypeAssignment_349270);
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__XTypeLiteral__TypeAssignment_349268);
             ruleQualifiedName();
 
             state._fsp--;
@@ -69828,22 +69844,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XTypeLiteral__ArrayDimensionsAssignment_4"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24433:1: rule__XTypeLiteral__ArrayDimensionsAssignment_4 : ( ruleArrayBrackets ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24432:1: rule__XTypeLiteral__ArrayDimensionsAssignment_4 : ( ruleArrayBrackets ) ;
     public final void rule__XTypeLiteral__ArrayDimensionsAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24437:1: ( ( ruleArrayBrackets ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24438:1: ( ruleArrayBrackets )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24436:1: ( ( ruleArrayBrackets ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24437:1: ( ruleArrayBrackets )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24438:1: ( ruleArrayBrackets )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24439:1: ruleArrayBrackets
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24437:1: ( ruleArrayBrackets )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24438:1: ruleArrayBrackets
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXTypeLiteralAccess().getArrayDimensionsArrayBracketsParserRuleCall_4_0()); 
             }
-            pushFollow(FOLLOW_ruleArrayBrackets_in_rule__XTypeLiteral__ArrayDimensionsAssignment_449305);
+            pushFollow(FOLLOW_ruleArrayBrackets_in_rule__XTypeLiteral__ArrayDimensionsAssignment_449303);
             ruleArrayBrackets();
 
             state._fsp--;
@@ -69873,22 +69889,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XThrowExpression__ExpressionAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24448:1: rule__XThrowExpression__ExpressionAssignment_2 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24447:1: rule__XThrowExpression__ExpressionAssignment_2 : ( ruleXExpression ) ;
     public final void rule__XThrowExpression__ExpressionAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24452:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24453:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24451:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24452:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24453:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24454:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24452:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24453:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXThrowExpressionAccess().getExpressionXExpressionParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XThrowExpression__ExpressionAssignment_249336);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XThrowExpression__ExpressionAssignment_249334);
             ruleXExpression();
 
             state._fsp--;
@@ -69918,22 +69934,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XReturnExpression__ExpressionAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24463:1: rule__XReturnExpression__ExpressionAssignment_2 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24462:1: rule__XReturnExpression__ExpressionAssignment_2 : ( ruleXExpression ) ;
     public final void rule__XReturnExpression__ExpressionAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24467:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24468:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24466:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24467:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24468:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24469:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24467:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24468:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXReturnExpressionAccess().getExpressionXExpressionParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XReturnExpression__ExpressionAssignment_249367);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XReturnExpression__ExpressionAssignment_249365);
             ruleXExpression();
 
             state._fsp--;
@@ -69963,22 +69979,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XTryCatchFinallyExpression__ExpressionAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24478:1: rule__XTryCatchFinallyExpression__ExpressionAssignment_2 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24477:1: rule__XTryCatchFinallyExpression__ExpressionAssignment_2 : ( ruleXExpression ) ;
     public final void rule__XTryCatchFinallyExpression__ExpressionAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24482:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24483:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24481:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24482:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24483:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24484:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24482:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24483:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXTryCatchFinallyExpressionAccess().getExpressionXExpressionParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XTryCatchFinallyExpression__ExpressionAssignment_249398);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XTryCatchFinallyExpression__ExpressionAssignment_249396);
             ruleXExpression();
 
             state._fsp--;
@@ -70008,22 +70024,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XTryCatchFinallyExpression__CatchClausesAssignment_3_0_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24493:1: rule__XTryCatchFinallyExpression__CatchClausesAssignment_3_0_0 : ( ruleXCatchClause ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24492:1: rule__XTryCatchFinallyExpression__CatchClausesAssignment_3_0_0 : ( ruleXCatchClause ) ;
     public final void rule__XTryCatchFinallyExpression__CatchClausesAssignment_3_0_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24497:1: ( ( ruleXCatchClause ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24498:1: ( ruleXCatchClause )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24496:1: ( ( ruleXCatchClause ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24497:1: ( ruleXCatchClause )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24498:1: ( ruleXCatchClause )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24499:1: ruleXCatchClause
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24497:1: ( ruleXCatchClause )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24498:1: ruleXCatchClause
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXTryCatchFinallyExpressionAccess().getCatchClausesXCatchClauseParserRuleCall_3_0_0_0()); 
             }
-            pushFollow(FOLLOW_ruleXCatchClause_in_rule__XTryCatchFinallyExpression__CatchClausesAssignment_3_0_049429);
+            pushFollow(FOLLOW_ruleXCatchClause_in_rule__XTryCatchFinallyExpression__CatchClausesAssignment_3_0_049427);
             ruleXCatchClause();
 
             state._fsp--;
@@ -70053,22 +70069,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_0_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24508:1: rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_0_1_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24507:1: rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_0_1_1 : ( ruleXExpression ) ;
     public final void rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_0_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24512:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24513:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24511:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24512:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24513:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24514:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24512:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24513:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXTryCatchFinallyExpressionAccess().getFinallyExpressionXExpressionParserRuleCall_3_0_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_0_1_149460);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_0_1_149458);
             ruleXExpression();
 
             state._fsp--;
@@ -70098,22 +70114,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24523:1: rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_1_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24522:1: rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_1_1 : ( ruleXExpression ) ;
     public final void rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24527:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24528:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24526:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24527:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24528:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24529:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24527:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24528:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXTryCatchFinallyExpressionAccess().getFinallyExpressionXExpressionParserRuleCall_3_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_1_149491);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_1_149489);
             ruleXExpression();
 
             state._fsp--;
@@ -70143,22 +70159,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XSynchronizedExpression__ParamAssignment_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24538:1: rule__XSynchronizedExpression__ParamAssignment_1 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24537:1: rule__XSynchronizedExpression__ParamAssignment_1 : ( ruleXExpression ) ;
     public final void rule__XSynchronizedExpression__ParamAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24542:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24543:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24541:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24542:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24543:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24544:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24542:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24543:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSynchronizedExpressionAccess().getParamXExpressionParserRuleCall_1_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XSynchronizedExpression__ParamAssignment_149522);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XSynchronizedExpression__ParamAssignment_149520);
             ruleXExpression();
 
             state._fsp--;
@@ -70188,22 +70204,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XSynchronizedExpression__ExpressionAssignment_3"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24553:1: rule__XSynchronizedExpression__ExpressionAssignment_3 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24552:1: rule__XSynchronizedExpression__ExpressionAssignment_3 : ( ruleXExpression ) ;
     public final void rule__XSynchronizedExpression__ExpressionAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24557:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24558:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24556:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24557:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24558:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24559:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24557:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24558:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSynchronizedExpressionAccess().getExpressionXExpressionParserRuleCall_3_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XSynchronizedExpression__ExpressionAssignment_349553);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XSynchronizedExpression__ExpressionAssignment_349551);
             ruleXExpression();
 
             state._fsp--;
@@ -70233,22 +70249,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XCatchClause__DeclaredParamAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24568:1: rule__XCatchClause__DeclaredParamAssignment_2 : ( ruleFullJvmFormalParameter ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24567:1: rule__XCatchClause__DeclaredParamAssignment_2 : ( ruleFullJvmFormalParameter ) ;
     public final void rule__XCatchClause__DeclaredParamAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24572:1: ( ( ruleFullJvmFormalParameter ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24573:1: ( ruleFullJvmFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24571:1: ( ( ruleFullJvmFormalParameter ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24572:1: ( ruleFullJvmFormalParameter )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24573:1: ( ruleFullJvmFormalParameter )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24574:1: ruleFullJvmFormalParameter
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24572:1: ( ruleFullJvmFormalParameter )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24573:1: ruleFullJvmFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXCatchClauseAccess().getDeclaredParamFullJvmFormalParameterParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleFullJvmFormalParameter_in_rule__XCatchClause__DeclaredParamAssignment_249584);
+            pushFollow(FOLLOW_ruleFullJvmFormalParameter_in_rule__XCatchClause__DeclaredParamAssignment_249582);
             ruleFullJvmFormalParameter();
 
             state._fsp--;
@@ -70278,22 +70294,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XCatchClause__ExpressionAssignment_4"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24583:1: rule__XCatchClause__ExpressionAssignment_4 : ( ruleXExpression ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24582:1: rule__XCatchClause__ExpressionAssignment_4 : ( ruleXExpression ) ;
     public final void rule__XCatchClause__ExpressionAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24587:1: ( ( ruleXExpression ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24588:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24586:1: ( ( ruleXExpression ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24587:1: ( ruleXExpression )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24588:1: ( ruleXExpression )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24589:1: ruleXExpression
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24587:1: ( ruleXExpression )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24588:1: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXCatchClauseAccess().getExpressionXExpressionParserRuleCall_4_0()); 
             }
-            pushFollow(FOLLOW_ruleXExpression_in_rule__XCatchClause__ExpressionAssignment_449615);
+            pushFollow(FOLLOW_ruleXExpression_in_rule__XCatchClause__ExpressionAssignment_449613);
             ruleXExpression();
 
             state._fsp--;
@@ -70323,22 +70339,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XFunctionTypeRef__ParamTypesAssignment_0_1_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24598:1: rule__XFunctionTypeRef__ParamTypesAssignment_0_1_0 : ( ruleJvmTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24597:1: rule__XFunctionTypeRef__ParamTypesAssignment_0_1_0 : ( ruleJvmTypeReference ) ;
     public final void rule__XFunctionTypeRef__ParamTypesAssignment_0_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24602:1: ( ( ruleJvmTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24603:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24601:1: ( ( ruleJvmTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24602:1: ( ruleJvmTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24603:1: ( ruleJvmTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24604:1: ruleJvmTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24602:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24603:1: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFunctionTypeRefAccess().getParamTypesJvmTypeReferenceParserRuleCall_0_1_0_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__XFunctionTypeRef__ParamTypesAssignment_0_1_049646);
+            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__XFunctionTypeRef__ParamTypesAssignment_0_1_049644);
             ruleJvmTypeReference();
 
             state._fsp--;
@@ -70368,22 +70384,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XFunctionTypeRef__ParamTypesAssignment_0_1_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24613:1: rule__XFunctionTypeRef__ParamTypesAssignment_0_1_1_1 : ( ruleJvmTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24612:1: rule__XFunctionTypeRef__ParamTypesAssignment_0_1_1_1 : ( ruleJvmTypeReference ) ;
     public final void rule__XFunctionTypeRef__ParamTypesAssignment_0_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24617:1: ( ( ruleJvmTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24618:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24616:1: ( ( ruleJvmTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24617:1: ( ruleJvmTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24618:1: ( ruleJvmTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24619:1: ruleJvmTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24617:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24618:1: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFunctionTypeRefAccess().getParamTypesJvmTypeReferenceParserRuleCall_0_1_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__XFunctionTypeRef__ParamTypesAssignment_0_1_1_149677);
+            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__XFunctionTypeRef__ParamTypesAssignment_0_1_1_149675);
             ruleJvmTypeReference();
 
             state._fsp--;
@@ -70413,22 +70429,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XFunctionTypeRef__ReturnTypeAssignment_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24628:1: rule__XFunctionTypeRef__ReturnTypeAssignment_2 : ( ruleJvmTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24627:1: rule__XFunctionTypeRef__ReturnTypeAssignment_2 : ( ruleJvmTypeReference ) ;
     public final void rule__XFunctionTypeRef__ReturnTypeAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24632:1: ( ( ruleJvmTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24633:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24631:1: ( ( ruleJvmTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24632:1: ( ruleJvmTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24633:1: ( ruleJvmTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24634:1: ruleJvmTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24632:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24633:1: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFunctionTypeRefAccess().getReturnTypeJvmTypeReferenceParserRuleCall_2_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__XFunctionTypeRef__ReturnTypeAssignment_249708);
+            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__XFunctionTypeRef__ReturnTypeAssignment_249706);
             ruleJvmTypeReference();
 
             state._fsp--;
@@ -70458,28 +70474,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__JvmParameterizedTypeReference__TypeAssignment_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24643:1: rule__JvmParameterizedTypeReference__TypeAssignment_0 : ( ( ruleQualifiedName ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24642:1: rule__JvmParameterizedTypeReference__TypeAssignment_0 : ( ( ruleQualifiedName ) ) ;
     public final void rule__JvmParameterizedTypeReference__TypeAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24647:1: ( ( ( ruleQualifiedName ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24648:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24646:1: ( ( ( ruleQualifiedName ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24647:1: ( ( ruleQualifiedName ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24648:1: ( ( ruleQualifiedName ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24649:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24647:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24648:1: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmParameterizedTypeReferenceAccess().getTypeJvmTypeCrossReference_0_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24650:1: ( ruleQualifiedName )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24651:1: ruleQualifiedName
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24649:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24650:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmParameterizedTypeReferenceAccess().getTypeJvmTypeQualifiedNameParserRuleCall_0_0_1()); 
             }
-            pushFollow(FOLLOW_ruleQualifiedName_in_rule__JvmParameterizedTypeReference__TypeAssignment_049743);
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__JvmParameterizedTypeReference__TypeAssignment_049741);
             ruleQualifiedName();
 
             state._fsp--;
@@ -70515,22 +70531,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24662:1: rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_1 : ( ruleJvmArgumentTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24661:1: rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24666:1: ( ( ruleJvmArgumentTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24667:1: ( ruleJvmArgumentTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24665:1: ( ( ruleJvmArgumentTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24666:1: ( ruleJvmArgumentTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24667:1: ( ruleJvmArgumentTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24668:1: ruleJvmArgumentTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24666:1: ( ruleJvmArgumentTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24667:1: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmParameterizedTypeReferenceAccess().getArgumentsJvmArgumentTypeReferenceParserRuleCall_1_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmArgumentTypeReference_in_rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_149778);
+            pushFollow(FOLLOW_ruleJvmArgumentTypeReference_in_rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_149776);
             ruleJvmArgumentTypeReference();
 
             state._fsp--;
@@ -70560,22 +70576,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24677:1: rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_2_1 : ( ruleJvmArgumentTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24676:1: rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_2_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24681:1: ( ( ruleJvmArgumentTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24682:1: ( ruleJvmArgumentTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24680:1: ( ( ruleJvmArgumentTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24681:1: ( ruleJvmArgumentTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24682:1: ( ruleJvmArgumentTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24683:1: ruleJvmArgumentTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24681:1: ( ruleJvmArgumentTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24682:1: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmParameterizedTypeReferenceAccess().getArgumentsJvmArgumentTypeReferenceParserRuleCall_1_2_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmArgumentTypeReference_in_rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_2_149809);
+            pushFollow(FOLLOW_ruleJvmArgumentTypeReference_in_rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_2_149807);
             ruleJvmArgumentTypeReference();
 
             state._fsp--;
@@ -70605,22 +70621,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__JvmWildcardTypeReference__ConstraintsAssignment_2_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24692:1: rule__JvmWildcardTypeReference__ConstraintsAssignment_2_0 : ( ruleJvmUpperBound ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24691:1: rule__JvmWildcardTypeReference__ConstraintsAssignment_2_0 : ( ruleJvmUpperBound ) ;
     public final void rule__JvmWildcardTypeReference__ConstraintsAssignment_2_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24696:1: ( ( ruleJvmUpperBound ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24697:1: ( ruleJvmUpperBound )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24695:1: ( ( ruleJvmUpperBound ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24696:1: ( ruleJvmUpperBound )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24697:1: ( ruleJvmUpperBound )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24698:1: ruleJvmUpperBound
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24696:1: ( ruleJvmUpperBound )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24697:1: ruleJvmUpperBound
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmWildcardTypeReferenceAccess().getConstraintsJvmUpperBoundParserRuleCall_2_0_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmUpperBound_in_rule__JvmWildcardTypeReference__ConstraintsAssignment_2_049840);
+            pushFollow(FOLLOW_ruleJvmUpperBound_in_rule__JvmWildcardTypeReference__ConstraintsAssignment_2_049838);
             ruleJvmUpperBound();
 
             state._fsp--;
@@ -70650,22 +70666,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__JvmWildcardTypeReference__ConstraintsAssignment_2_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24707:1: rule__JvmWildcardTypeReference__ConstraintsAssignment_2_1 : ( ruleJvmLowerBound ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24706:1: rule__JvmWildcardTypeReference__ConstraintsAssignment_2_1 : ( ruleJvmLowerBound ) ;
     public final void rule__JvmWildcardTypeReference__ConstraintsAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24711:1: ( ( ruleJvmLowerBound ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24712:1: ( ruleJvmLowerBound )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24710:1: ( ( ruleJvmLowerBound ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24711:1: ( ruleJvmLowerBound )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24712:1: ( ruleJvmLowerBound )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24713:1: ruleJvmLowerBound
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24711:1: ( ruleJvmLowerBound )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24712:1: ruleJvmLowerBound
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmWildcardTypeReferenceAccess().getConstraintsJvmLowerBoundParserRuleCall_2_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmLowerBound_in_rule__JvmWildcardTypeReference__ConstraintsAssignment_2_149871);
+            pushFollow(FOLLOW_ruleJvmLowerBound_in_rule__JvmWildcardTypeReference__ConstraintsAssignment_2_149869);
             ruleJvmLowerBound();
 
             state._fsp--;
@@ -70695,22 +70711,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__JvmUpperBound__TypeReferenceAssignment_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24722:1: rule__JvmUpperBound__TypeReferenceAssignment_1 : ( ruleJvmTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24721:1: rule__JvmUpperBound__TypeReferenceAssignment_1 : ( ruleJvmTypeReference ) ;
     public final void rule__JvmUpperBound__TypeReferenceAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24726:1: ( ( ruleJvmTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24727:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24725:1: ( ( ruleJvmTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24726:1: ( ruleJvmTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24727:1: ( ruleJvmTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24728:1: ruleJvmTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24726:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24727:1: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmUpperBoundAccess().getTypeReferenceJvmTypeReferenceParserRuleCall_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__JvmUpperBound__TypeReferenceAssignment_149902);
+            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__JvmUpperBound__TypeReferenceAssignment_149900);
             ruleJvmTypeReference();
 
             state._fsp--;
@@ -70740,22 +70756,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__JvmUpperBoundAnded__TypeReferenceAssignment_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24737:1: rule__JvmUpperBoundAnded__TypeReferenceAssignment_1 : ( ruleJvmTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24736:1: rule__JvmUpperBoundAnded__TypeReferenceAssignment_1 : ( ruleJvmTypeReference ) ;
     public final void rule__JvmUpperBoundAnded__TypeReferenceAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24741:1: ( ( ruleJvmTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24742:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24740:1: ( ( ruleJvmTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24741:1: ( ruleJvmTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24742:1: ( ruleJvmTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24743:1: ruleJvmTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24741:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24742:1: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmUpperBoundAndedAccess().getTypeReferenceJvmTypeReferenceParserRuleCall_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__JvmUpperBoundAnded__TypeReferenceAssignment_149933);
+            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__JvmUpperBoundAnded__TypeReferenceAssignment_149931);
             ruleJvmTypeReference();
 
             state._fsp--;
@@ -70785,22 +70801,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__JvmLowerBound__TypeReferenceAssignment_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24752:1: rule__JvmLowerBound__TypeReferenceAssignment_1 : ( ruleJvmTypeReference ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24751:1: rule__JvmLowerBound__TypeReferenceAssignment_1 : ( ruleJvmTypeReference ) ;
     public final void rule__JvmLowerBound__TypeReferenceAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24756:1: ( ( ruleJvmTypeReference ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24757:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24755:1: ( ( ruleJvmTypeReference ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24756:1: ( ruleJvmTypeReference )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24757:1: ( ruleJvmTypeReference )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24758:1: ruleJvmTypeReference
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24756:1: ( ruleJvmTypeReference )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24757:1: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmLowerBoundAccess().getTypeReferenceJvmTypeReferenceParserRuleCall_1_0()); 
             }
-            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__JvmLowerBound__TypeReferenceAssignment_149964);
+            pushFollow(FOLLOW_ruleJvmTypeReference_in_rule__JvmLowerBound__TypeReferenceAssignment_149962);
             ruleJvmTypeReference();
 
             state._fsp--;
@@ -70830,22 +70846,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XImportSection__ImportDeclarationsAssignment"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24770:1: rule__XImportSection__ImportDeclarationsAssignment : ( ruleXImportDeclaration ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24769:1: rule__XImportSection__ImportDeclarationsAssignment : ( ruleXImportDeclaration ) ;
     public final void rule__XImportSection__ImportDeclarationsAssignment() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24774:1: ( ( ruleXImportDeclaration ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24775:1: ( ruleXImportDeclaration )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24773:1: ( ( ruleXImportDeclaration ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24774:1: ( ruleXImportDeclaration )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24775:1: ( ruleXImportDeclaration )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24776:1: ruleXImportDeclaration
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24774:1: ( ruleXImportDeclaration )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24775:1: ruleXImportDeclaration
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportSectionAccess().getImportDeclarationsXImportDeclarationParserRuleCall_0()); 
             }
-            pushFollow(FOLLOW_ruleXImportDeclaration_in_rule__XImportSection__ImportDeclarationsAssignment49998);
+            pushFollow(FOLLOW_ruleXImportDeclaration_in_rule__XImportSection__ImportDeclarationsAssignment49996);
             ruleXImportDeclaration();
 
             state._fsp--;
@@ -70875,28 +70891,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XImportDeclaration__StaticAssignment_1_0_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24785:1: rule__XImportDeclaration__StaticAssignment_1_0_0 : ( ( 'static' ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24784:1: rule__XImportDeclaration__StaticAssignment_1_0_0 : ( ( 'static' ) ) ;
     public final void rule__XImportDeclaration__StaticAssignment_1_0_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24789:1: ( ( ( 'static' ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24790:1: ( ( 'static' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24788:1: ( ( ( 'static' ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24789:1: ( ( 'static' ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24790:1: ( ( 'static' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24789:1: ( ( 'static' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24790:1: ( 'static' )
+            {
+            if ( state.backtracking==0 ) {
+               before(grammarAccess.getXImportDeclarationAccess().getStaticStaticKeyword_1_0_0_0()); 
+            }
             // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24791:1: ( 'static' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24792:1: 'static'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getStaticStaticKeyword_1_0_0_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24792:1: ( 'static' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24793:1: 'static'
-            {
-            if ( state.backtracking==0 ) {
-               before(grammarAccess.getXImportDeclarationAccess().getStaticStaticKeyword_1_0_0_0()); 
-            }
-            match(input,47,FOLLOW_47_in_rule__XImportDeclaration__StaticAssignment_1_0_050034); if (state.failed) return ;
+            match(input,47,FOLLOW_47_in_rule__XImportDeclaration__StaticAssignment_1_0_050032); if (state.failed) return ;
             if ( state.backtracking==0 ) {
                after(grammarAccess.getXImportDeclarationAccess().getStaticStaticKeyword_1_0_0_0()); 
             }
@@ -70928,28 +70944,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XImportDeclaration__ExtensionAssignment_1_0_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24808:1: rule__XImportDeclaration__ExtensionAssignment_1_0_1 : ( ( 'extension' ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24807:1: rule__XImportDeclaration__ExtensionAssignment_1_0_1 : ( ( 'extension' ) ) ;
     public final void rule__XImportDeclaration__ExtensionAssignment_1_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24812:1: ( ( ( 'extension' ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24813:1: ( ( 'extension' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24811:1: ( ( ( 'extension' ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24812:1: ( ( 'extension' ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24813:1: ( ( 'extension' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24812:1: ( ( 'extension' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24813:1: ( 'extension' )
+            {
+            if ( state.backtracking==0 ) {
+               before(grammarAccess.getXImportDeclarationAccess().getExtensionExtensionKeyword_1_0_1_0()); 
+            }
             // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24814:1: ( 'extension' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24815:1: 'extension'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getExtensionExtensionKeyword_1_0_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24815:1: ( 'extension' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24816:1: 'extension'
-            {
-            if ( state.backtracking==0 ) {
-               before(grammarAccess.getXImportDeclarationAccess().getExtensionExtensionKeyword_1_0_1_0()); 
-            }
-            match(input,49,FOLLOW_49_in_rule__XImportDeclaration__ExtensionAssignment_1_0_150078); if (state.failed) return ;
+            match(input,49,FOLLOW_49_in_rule__XImportDeclaration__ExtensionAssignment_1_0_150076); if (state.failed) return ;
             if ( state.backtracking==0 ) {
                after(grammarAccess.getXImportDeclarationAccess().getExtensionExtensionKeyword_1_0_1_0()); 
             }
@@ -70981,28 +70997,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XImportDeclaration__ImportedTypeAssignment_1_0_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24831:1: rule__XImportDeclaration__ImportedTypeAssignment_1_0_2 : ( ( ruleQualifiedNameInStaticImport ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24830:1: rule__XImportDeclaration__ImportedTypeAssignment_1_0_2 : ( ( ruleQualifiedNameInStaticImport ) ) ;
     public final void rule__XImportDeclaration__ImportedTypeAssignment_1_0_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24835:1: ( ( ( ruleQualifiedNameInStaticImport ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24836:1: ( ( ruleQualifiedNameInStaticImport ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24834:1: ( ( ( ruleQualifiedNameInStaticImport ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24835:1: ( ( ruleQualifiedNameInStaticImport ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24836:1: ( ( ruleQualifiedNameInStaticImport ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24837:1: ( ruleQualifiedNameInStaticImport )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24835:1: ( ( ruleQualifiedNameInStaticImport ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24836:1: ( ruleQualifiedNameInStaticImport )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getImportedTypeJvmDeclaredTypeCrossReference_1_0_2_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24838:1: ( ruleQualifiedNameInStaticImport )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24839:1: ruleQualifiedNameInStaticImport
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24837:1: ( ruleQualifiedNameInStaticImport )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24838:1: ruleQualifiedNameInStaticImport
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getImportedTypeJvmDeclaredTypeQualifiedNameInStaticImportParserRuleCall_1_0_2_0_1()); 
             }
-            pushFollow(FOLLOW_ruleQualifiedNameInStaticImport_in_rule__XImportDeclaration__ImportedTypeAssignment_1_0_250121);
+            pushFollow(FOLLOW_ruleQualifiedNameInStaticImport_in_rule__XImportDeclaration__ImportedTypeAssignment_1_0_250119);
             ruleQualifiedNameInStaticImport();
 
             state._fsp--;
@@ -71038,28 +71054,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XImportDeclaration__WildcardAssignment_1_0_3_0"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24850:1: rule__XImportDeclaration__WildcardAssignment_1_0_3_0 : ( ( '*' ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24849:1: rule__XImportDeclaration__WildcardAssignment_1_0_3_0 : ( ( '*' ) ) ;
     public final void rule__XImportDeclaration__WildcardAssignment_1_0_3_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24854:1: ( ( ( '*' ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24855:1: ( ( '*' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24853:1: ( ( ( '*' ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24854:1: ( ( '*' ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24855:1: ( ( '*' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24854:1: ( ( '*' ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24855:1: ( '*' )
+            {
+            if ( state.backtracking==0 ) {
+               before(grammarAccess.getXImportDeclarationAccess().getWildcardAsteriskKeyword_1_0_3_0_0()); 
+            }
             // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24856:1: ( '*' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24857:1: '*'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getWildcardAsteriskKeyword_1_0_3_0_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24857:1: ( '*' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24858:1: '*'
-            {
-            if ( state.backtracking==0 ) {
-               before(grammarAccess.getXImportDeclarationAccess().getWildcardAsteriskKeyword_1_0_3_0_0()); 
-            }
-            match(input,13,FOLLOW_13_in_rule__XImportDeclaration__WildcardAssignment_1_0_3_050161); if (state.failed) return ;
+            match(input,13,FOLLOW_13_in_rule__XImportDeclaration__WildcardAssignment_1_0_3_050159); if (state.failed) return ;
             if ( state.backtracking==0 ) {
                after(grammarAccess.getXImportDeclarationAccess().getWildcardAsteriskKeyword_1_0_3_0_0()); 
             }
@@ -71091,22 +71107,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XImportDeclaration__MemberNameAssignment_1_0_3_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24873:1: rule__XImportDeclaration__MemberNameAssignment_1_0_3_1 : ( ruleValidID ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24872:1: rule__XImportDeclaration__MemberNameAssignment_1_0_3_1 : ( ruleValidID ) ;
     public final void rule__XImportDeclaration__MemberNameAssignment_1_0_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24877:1: ( ( ruleValidID ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24878:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24876:1: ( ( ruleValidID ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24877:1: ( ruleValidID )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24878:1: ( ruleValidID )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24879:1: ruleValidID
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24877:1: ( ruleValidID )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24878:1: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getMemberNameValidIDParserRuleCall_1_0_3_1_0()); 
             }
-            pushFollow(FOLLOW_ruleValidID_in_rule__XImportDeclaration__MemberNameAssignment_1_0_3_150200);
+            pushFollow(FOLLOW_ruleValidID_in_rule__XImportDeclaration__MemberNameAssignment_1_0_3_150198);
             ruleValidID();
 
             state._fsp--;
@@ -71136,28 +71152,28 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XImportDeclaration__ImportedTypeAssignment_1_1"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24888:1: rule__XImportDeclaration__ImportedTypeAssignment_1_1 : ( ( ruleQualifiedName ) ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24887:1: rule__XImportDeclaration__ImportedTypeAssignment_1_1 : ( ( ruleQualifiedName ) ) ;
     public final void rule__XImportDeclaration__ImportedTypeAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24892:1: ( ( ( ruleQualifiedName ) ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24893:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24891:1: ( ( ( ruleQualifiedName ) ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24892:1: ( ( ruleQualifiedName ) )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24893:1: ( ( ruleQualifiedName ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24894:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24892:1: ( ( ruleQualifiedName ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24893:1: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getImportedTypeJvmDeclaredTypeCrossReference_1_1_0()); 
             }
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24895:1: ( ruleQualifiedName )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24896:1: ruleQualifiedName
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24894:1: ( ruleQualifiedName )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24895:1: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getImportedTypeJvmDeclaredTypeQualifiedNameParserRuleCall_1_1_0_1()); 
             }
-            pushFollow(FOLLOW_ruleQualifiedName_in_rule__XImportDeclaration__ImportedTypeAssignment_1_150235);
+            pushFollow(FOLLOW_ruleQualifiedName_in_rule__XImportDeclaration__ImportedTypeAssignment_1_150233);
             ruleQualifiedName();
 
             state._fsp--;
@@ -71193,22 +71209,22 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__XImportDeclaration__ImportedNamespaceAssignment_1_2"
-    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24907:1: rule__XImportDeclaration__ImportedNamespaceAssignment_1_2 : ( ruleQualifiedNameWithWildcard ) ;
+    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24906:1: rule__XImportDeclaration__ImportedNamespaceAssignment_1_2 : ( ruleQualifiedNameWithWildcard ) ;
     public final void rule__XImportDeclaration__ImportedNamespaceAssignment_1_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24911:1: ( ( ruleQualifiedNameWithWildcard ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24912:1: ( ruleQualifiedNameWithWildcard )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24910:1: ( ( ruleQualifiedNameWithWildcard ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24911:1: ( ruleQualifiedNameWithWildcard )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24912:1: ( ruleQualifiedNameWithWildcard )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24913:1: ruleQualifiedNameWithWildcard
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24911:1: ( ruleQualifiedNameWithWildcard )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24912:1: ruleQualifiedNameWithWildcard
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getImportedNamespaceQualifiedNameWithWildcardParserRuleCall_1_2_0()); 
             }
-            pushFollow(FOLLOW_ruleQualifiedNameWithWildcard_in_rule__XImportDeclaration__ImportedNamespaceAssignment_1_250270);
+            pushFollow(FOLLOW_ruleQualifiedNameWithWildcard_in_rule__XImportDeclaration__ImportedNamespaceAssignment_1_250268);
             ruleQualifiedNameWithWildcard();
 
             state._fsp--;
@@ -71732,30 +71748,45 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
     // $ANTLR start synpred212_InternalSARL
     public final void synpred212_InternalSARL_fragment() throws RecognitionException {   
-        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21878:4: ( ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) ) )
-        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21878:4: ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) )
+        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21859:2: ( rule__Skill__UnorderedGroup_3__0 )
+        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21859:2: rule__Skill__UnorderedGroup_3__0
         {
-        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21878:4: ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) )
-        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21879:5: {...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) )
+        pushFollow(FOLLOW_rule__Skill__UnorderedGroup_3__0_in_synpred212_InternalSARL43924);
+        rule__Skill__UnorderedGroup_3__0();
+
+        state._fsp--;
+        if (state.failed) return ;
+
+        }
+    }
+    // $ANTLR end synpred212_InternalSARL
+
+    // $ANTLR start synpred213_InternalSARL
+    public final void synpred213_InternalSARL_fragment() throws RecognitionException {   
+        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21877:4: ( ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) ) )
+        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21877:4: ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) )
+        {
+        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21877:4: ({...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) ) )
+        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21878:5: {...}? => ( ( ( rule__Skill__Group_3_0__0 ) ) )
         {
         if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 0) ) {
             if (state.backtracking>0) {state.failed=true; return ;}
-            throw new FailedPredicateException(input, "synpred212_InternalSARL", "getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 0)");
+            throw new FailedPredicateException(input, "synpred213_InternalSARL", "getUnorderedGroupHelper().canSelect(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 0)");
         }
-        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21879:102: ( ( ( rule__Skill__Group_3_0__0 ) ) )
-        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21880:6: ( ( rule__Skill__Group_3_0__0 ) )
+        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21878:102: ( ( ( rule__Skill__Group_3_0__0 ) ) )
+        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21879:6: ( ( rule__Skill__Group_3_0__0 ) )
         {
         getUnorderedGroupHelper().select(grammarAccess.getSkillAccess().getUnorderedGroup_3(), 0);
-        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21886:6: ( ( rule__Skill__Group_3_0__0 ) )
-        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21888:7: ( rule__Skill__Group_3_0__0 )
+        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21885:6: ( ( rule__Skill__Group_3_0__0 ) )
+        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21887:7: ( rule__Skill__Group_3_0__0 )
         {
         if ( state.backtracking==0 ) {
            before(grammarAccess.getSkillAccess().getGroup_3_0()); 
         }
-        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21889:7: ( rule__Skill__Group_3_0__0 )
-        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21889:8: rule__Skill__Group_3_0__0
+        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21888:7: ( rule__Skill__Group_3_0__0 )
+        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21888:8: rule__Skill__Group_3_0__0
         {
-        pushFollow(FOLLOW_rule__Skill__Group_3_0__0_in_synpred212_InternalSARL44013);
+        pushFollow(FOLLOW_rule__Skill__Group_3_0__0_in_synpred213_InternalSARL44011);
         rule__Skill__Group_3_0__0();
 
         state._fsp--;
@@ -71775,14 +71806,14 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
         }
     }
-    // $ANTLR end synpred212_InternalSARL
+    // $ANTLR end synpred213_InternalSARL
 
-    // $ANTLR start synpred213_InternalSARL
-    public final void synpred213_InternalSARL_fragment() throws RecognitionException {   
-        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21927:2: ( rule__Skill__UnorderedGroup_3__1 )
-        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21927:2: rule__Skill__UnorderedGroup_3__1
+    // $ANTLR start synpred214_InternalSARL
+    public final void synpred214_InternalSARL_fragment() throws RecognitionException {   
+        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21926:2: ( rule__Skill__UnorderedGroup_3__1 )
+        // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:21926:2: rule__Skill__UnorderedGroup_3__1
         {
-        pushFollow(FOLLOW_rule__Skill__UnorderedGroup_3__1_in_synpred213_InternalSARL44166);
+        pushFollow(FOLLOW_rule__Skill__UnorderedGroup_3__1_in_synpred214_InternalSARL44164);
         rule__Skill__UnorderedGroup_3__1();
 
         state._fsp--;
@@ -71790,7 +71821,7 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
         }
     }
-    // $ANTLR end synpred213_InternalSARL
+    // $ANTLR end synpred214_InternalSARL
 
     // Delegated rules
 
@@ -72023,6 +72054,20 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
         int start = input.mark();
         try {
             synpred191_InternalSARL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred214_InternalSARL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred214_InternalSARL_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -72271,14 +72316,14 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
     static final String DFA17_maxS =
         "\1\43\2\uffff\1\40\7\uffff";
     static final String DFA17_acceptS =
-        "\1\uffff\1\1\1\2\1\uffff\1\4\1\5\1\7\1\10\1\11\1\6\1\3";
+        "\1\uffff\1\1\1\2\1\uffff\1\4\1\5\1\7\1\10\1\11\1\3\1\6";
     static final String DFA17_specialS =
         "\13\uffff}>";
     static final String[] DFA17_transitionS = {
             "\1\3\1\6\1\1\1\2\1\4\1\5\1\7\1\10",
             "",
             "",
-            "\1\11\3\uffff\1\12",
+            "\1\12\3\uffff\1\11",
             "",
             "",
             "",
@@ -72740,7 +72785,7 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
     static final String DFA87_acceptS =
         "\10\uffff\1\2\1\1";
     static final String DFA87_specialS =
-        "\1\uffff\1\6\1\4\1\1\1\3\1\2\1\5\1\0\2\uffff}>";
+        "\1\uffff\1\3\1\2\1\6\1\1\1\4\1\5\1\0\2\uffff}>";
     static final String[] DFA87_transitionS = {
             "\5\10\4\uffff\1\10\1\uffff\3\10\1\1\1\2\1\3\1\4\1\5\5\10\1\7"+
             "\1\6\26\10\1\uffff\1\10\1\uffff\2\10\5\uffff\12\10\1\uffff\23"+
@@ -72808,36 +72853,6 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                         if ( s>=0 ) return s;
                         break;
                     case 1 : 
-                        int LA87_3 = input.LA(1);
-
-                         
-                        int index87_3 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred143_InternalSARL()) ) {s = 9;}
-
-                        else if ( (true) ) {s = 8;}
-
-                         
-                        input.seek(index87_3);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 2 : 
-                        int LA87_5 = input.LA(1);
-
-                         
-                        int index87_5 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred143_InternalSARL()) ) {s = 9;}
-
-                        else if ( (true) ) {s = 8;}
-
-                         
-                        input.seek(index87_5);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 3 : 
                         int LA87_4 = input.LA(1);
 
                          
@@ -72852,7 +72867,7 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                         input.seek(index87_4);
                         if ( s>=0 ) return s;
                         break;
-                    case 4 : 
+                    case 2 : 
                         int LA87_2 = input.LA(1);
 
                          
@@ -72865,6 +72880,36 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
                          
                         input.seek(index87_2);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 3 : 
+                        int LA87_1 = input.LA(1);
+
+                         
+                        int index87_1 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred143_InternalSARL()) ) {s = 9;}
+
+                        else if ( (true) ) {s = 8;}
+
+                         
+                        input.seek(index87_1);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 4 : 
+                        int LA87_5 = input.LA(1);
+
+                         
+                        int index87_5 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred143_InternalSARL()) ) {s = 9;}
+
+                        else if ( (true) ) {s = 8;}
+
+                         
+                        input.seek(index87_5);
                         if ( s>=0 ) return s;
                         break;
                     case 5 : 
@@ -72883,10 +72928,10 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                         if ( s>=0 ) return s;
                         break;
                     case 6 : 
-                        int LA87_1 = input.LA(1);
+                        int LA87_3 = input.LA(1);
 
                          
-                        int index87_1 = input.index();
+                        int index87_3 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred143_InternalSARL()) ) {s = 9;}
@@ -72894,7 +72939,7 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                         else if ( (true) ) {s = 8;}
 
                          
-                        input.seek(index87_1);
+                        input.seek(index87_3);
                         if ( s>=0 ) return s;
                         break;
             }
@@ -72916,7 +72961,7 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
     static final String DFA93_acceptS =
         "\1\uffff\1\2\10\uffff\1\1";
     static final String DFA93_specialS =
-        "\2\uffff\1\4\1\1\1\7\1\3\1\5\1\2\1\0\1\6\1\uffff}>";
+        "\2\uffff\1\5\1\4\1\0\1\3\1\2\1\6\1\1\1\7\1\uffff}>";
     static final String[] DFA93_transitionS = {
             "\5\1\4\uffff\1\1\1\uffff\15\1\1\3\1\2\1\4\1\5\1\6\1\7\1\10\1"+
             "\11\20\1\1\uffff\1\1\1\uffff\2\1\5\uffff\12\1\1\uffff\23\1\2"+
@@ -72970,6 +73015,21 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
         	int _s = s;
             switch ( s ) {
                     case 0 : 
+                        int LA93_4 = input.LA(1);
+
+                         
+                        int index93_4 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred149_InternalSARL()) ) {s = 10;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index93_4);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 1 : 
                         int LA93_8 = input.LA(1);
 
                          
@@ -72984,26 +73044,11 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                         input.seek(index93_8);
                         if ( s>=0 ) return s;
                         break;
-                    case 1 : 
-                        int LA93_3 = input.LA(1);
-
-                         
-                        int index93_3 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred149_InternalSARL()) ) {s = 10;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index93_3);
-                        if ( s>=0 ) return s;
-                        break;
                     case 2 : 
-                        int LA93_7 = input.LA(1);
+                        int LA93_6 = input.LA(1);
 
                          
-                        int index93_7 = input.index();
+                        int index93_6 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred149_InternalSARL()) ) {s = 10;}
@@ -73011,7 +73056,7 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                         else if ( (true) ) {s = 1;}
 
                          
-                        input.seek(index93_7);
+                        input.seek(index93_6);
                         if ( s>=0 ) return s;
                         break;
                     case 3 : 
@@ -73030,6 +73075,21 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                         if ( s>=0 ) return s;
                         break;
                     case 4 : 
+                        int LA93_3 = input.LA(1);
+
+                         
+                        int index93_3 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred149_InternalSARL()) ) {s = 10;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index93_3);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 5 : 
                         int LA93_2 = input.LA(1);
 
                          
@@ -73044,11 +73104,11 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                         input.seek(index93_2);
                         if ( s>=0 ) return s;
                         break;
-                    case 5 : 
-                        int LA93_6 = input.LA(1);
+                    case 6 : 
+                        int LA93_7 = input.LA(1);
 
                          
-                        int index93_6 = input.index();
+                        int index93_7 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred149_InternalSARL()) ) {s = 10;}
@@ -73056,10 +73116,10 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
                         else if ( (true) ) {s = 1;}
 
                          
-                        input.seek(index93_6);
+                        input.seek(index93_7);
                         if ( s>=0 ) return s;
                         break;
-                    case 6 : 
+                    case 7 : 
                         int LA93_9 = input.LA(1);
 
                          
@@ -73072,21 +73132,6 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
 
                          
                         input.seek(index93_9);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 7 : 
-                        int LA93_4 = input.LA(1);
-
-                         
-                        int index93_4 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred149_InternalSARL()) ) {s = 10;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index93_4);
                         if ( s>=0 ) return s;
                         break;
             }
@@ -76842,196 +76887,196 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
     public static final BitSet FOLLOW_rule__QualifiedNameInStaticImport__Group__1__Impl_in_rule__QualifiedNameInStaticImport__Group__143860 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_44_in_rule__QualifiedNameInStaticImport__Group__1__Impl43888 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule__Skill__UnorderedGroup_3__0_in_rule__Skill__UnorderedGroup_343924 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Skill__Group_3_0__0_in_rule__Skill__UnorderedGroup_3__Impl44013 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Skill__Group_3_1__0_in_rule__Skill__UnorderedGroup_3__Impl44104 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Skill__UnorderedGroup_3__Impl_in_rule__Skill__UnorderedGroup_3__044163 = new BitSet(new long[]{0x2000400000000002L});
-    public static final BitSet FOLLOW_rule__Skill__UnorderedGroup_3__1_in_rule__Skill__UnorderedGroup_3__044166 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Skill__UnorderedGroup_3__Impl_in_rule__Skill__UnorderedGroup_3__144191 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__SarlScript__NameAssignment_0_144223 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXImportSection_in_rule__SarlScript__ImportSectionAssignment_144254 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleTopElement_in_rule__SarlScript__ElementsAssignment_244285 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleValidID_in_rule__Event__NameAssignment_244322 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Event__SuperTypesAssignment_3_144353 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleEventFeature_in_rule__Event__FeaturesAssignment_4_144384 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleValidID_in_rule__Capacity__NameAssignment_244415 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Capacity__SuperTypesAssignment_3_144446 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Capacity__SuperTypesAssignment_3_2_144477 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleActionSignature_in_rule__Capacity__FeaturesAssignment_544508 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleValidID_in_rule__Agent__NameAssignment_244539 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Agent__SuperTypesAssignment_3_144570 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleAgentFeature_in_rule__Agent__FeaturesAssignment_544601 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleValidID_in_rule__Behavior__NameAssignment_244632 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Behavior__SuperTypesAssignment_3_144663 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleBehaviorFeature_in_rule__Behavior__FeaturesAssignment_544694 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleValidID_in_rule__Skill__NameAssignment_244725 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Skill__SuperTypesAssignment_3_0_144756 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Skill__ImplementedTypesAssignment_3_1_144787 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Skill__ImplementedTypesAssignment_3_1_2_144818 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleSkillFeature_in_rule__Skill__FeaturesAssignment_544849 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_94_in_rule__Attribute__WriteableAssignment_1_044885 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleValidID_in_rule__Attribute__NameAssignment_2_0_0_044924 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__Attribute__TypeAssignment_2_0_0_244955 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleValidID_in_rule__Attribute__NameAssignment_2_144986 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__Attribute__InitialValueAssignment_3_145017 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__CapacityUses__CapacitiesUsedAssignment_245048 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__CapacityUses__CapacitiesUsedAssignment_3_145079 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__RequiredCapacity__RequiredCapacitiesAssignment_245110 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__RequiredCapacity__RequiredCapacitiesAssignment_3_145141 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__BehaviorUnit__EventAssignment_245172 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__BehaviorUnit__GuardAssignment_3_145203 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXBlockExpression_in_rule__BehaviorUnit__BodyAssignment_445234 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleActionSignature_in_rule__Action__SignatureAssignment_145265 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXBlockExpression_in_rule__Action__BodyAssignment_245296 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleFormalParameter_in_rule__Constructor__ParamsAssignment_2_1_045327 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleFormalParameter_in_rule__Constructor__ParamsAssignment_2_1_1_145358 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleVarArgToken_in_rule__Constructor__VarargsAssignment_2_1_245389 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXBlockExpression_in_rule__Constructor__BodyAssignment_345420 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleValidID_in_rule__ActionSignature__NameAssignment_245451 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleFormalParameter_in_rule__ActionSignature__ParamsAssignment_3_1_045482 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleFormalParameter_in_rule__ActionSignature__ParamsAssignment_3_1_1_145513 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleVarArgToken_in_rule__ActionSignature__VarargsAssignment_3_1_245544 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__ActionSignature__TypeAssignment_4_145575 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__ActionSignature__FiredEventsAssignment_5_145606 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__ActionSignature__FiredEventsAssignment_5_2_145637 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleValidID_in_rule__FormalParameter__NameAssignment_045668 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__FormalParameter__ParameterTypeAssignment_245699 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleDefaultParameterValue_in_rule__FormalParameter__DefaultValueAssignment_3_145730 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_94_in_rule__XVariableDeclaration__WriteableAssignment_1_045766 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleValidID_in_rule__XVariableDeclaration__NameAssignment_2_0_0_045805 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__XVariableDeclaration__TypeAssignment_2_0_0_245836 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleValidID_in_rule__XVariableDeclaration__NameAssignment_2_145867 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XVariableDeclaration__RightAssignment_3_145898 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleValidID_in_rule__JvmFormalParameter__NameAssignment_145929 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__JvmFormalParameter__ParameterTypeAssignment_2_145960 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleValidID_in_rule__FullJvmFormalParameter__NameAssignment_145991 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__FullJvmFormalParameter__ParameterTypeAssignment_346022 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleValidID_in_rule__XXLoopFormalParameter__NameAssignment_146053 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__XXLoopFormalParameter__ParameterTypeAssignment_2_146084 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXXLoopFormalParameter_in_rule__XForLoopExpression__DeclaredParamAssignment_0_0_346115 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XForLoopExpression__ForExpressionAssignment_146146 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XForLoopExpression__EachExpressionAssignment_346177 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleFeatureCallID_in_rule__XAssignment__FeatureAssignment_0_146212 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXAssignment_in_rule__XAssignment__ValueAssignment_0_346247 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleOpMultiAssign_in_rule__XAssignment__FeatureAssignment_1_1_0_0_146282 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXAssignment_in_rule__XAssignment__RightOperandAssignment_1_1_146317 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleOpOr_in_rule__XOrExpression__FeatureAssignment_1_0_0_146352 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXAndExpression_in_rule__XOrExpression__RightOperandAssignment_1_146387 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleOpAnd_in_rule__XAndExpression__FeatureAssignment_1_0_0_146422 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXEqualityExpression_in_rule__XAndExpression__RightOperandAssignment_1_146457 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleOpEquality_in_rule__XEqualityExpression__FeatureAssignment_1_0_0_146492 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXRelationalExpression_in_rule__XEqualityExpression__RightOperandAssignment_1_146527 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__XRelationalExpression__TypeAssignment_1_0_146558 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleOpCompare_in_rule__XRelationalExpression__FeatureAssignment_1_1_0_0_146593 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXOtherOperatorExpression_in_rule__XRelationalExpression__RightOperandAssignment_1_1_146628 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleOpOther_in_rule__XOtherOperatorExpression__FeatureAssignment_1_0_0_146663 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXAdditiveExpression_in_rule__XOtherOperatorExpression__RightOperandAssignment_1_146698 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleOpAdd_in_rule__XAdditiveExpression__FeatureAssignment_1_0_0_146733 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXMultiplicativeExpression_in_rule__XAdditiveExpression__RightOperandAssignment_1_146768 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleOpMulti_in_rule__XMultiplicativeExpression__FeatureAssignment_1_0_0_146803 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXUnaryOperation_in_rule__XMultiplicativeExpression__RightOperandAssignment_1_146838 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleOpUnary_in_rule__XUnaryOperation__FeatureAssignment_0_146873 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXUnaryOperation_in_rule__XUnaryOperation__OperandAssignment_0_246908 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__XCastedExpression__TypeAssignment_1_146939 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleOpPostfix_in_rule__XPostfixOperation__FeatureAssignment_1_0_146974 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_95_in_rule__XMemberFeatureCall__ExplicitStaticAssignment_1_0_0_0_1_147014 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleFeatureCallID_in_rule__XMemberFeatureCall__FeatureAssignment_1_0_0_0_247057 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXAssignment_in_rule__XMemberFeatureCall__ValueAssignment_1_0_147092 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_96_in_rule__XMemberFeatureCall__NullSafeAssignment_1_1_0_0_1_147128 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_95_in_rule__XMemberFeatureCall__ExplicitStaticAssignment_1_1_0_0_1_247172 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmArgumentTypeReference_in_rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_147211 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmArgumentTypeReference_in_rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_2_147242 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleIdOrSuper_in_rule__XMemberFeatureCall__FeatureAssignment_1_1_247277 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_69_in_rule__XMemberFeatureCall__ExplicitOperationCallAssignment_1_1_3_047317 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXShortClosure_in_rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_047356 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_047387 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_1_147418 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXClosure_in_rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_447449 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XSetLiteral__ElementsAssignment_3_047480 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XSetLiteral__ElementsAssignment_3_1_147511 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XListLiteral__ElementsAssignment_3_047542 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XListLiteral__ElementsAssignment_3_1_147573 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmFormalParameter_in_rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_047604 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmFormalParameter_in_rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_1_147635 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_97_in_rule__XClosure__ExplicitSyntaxAssignment_1_0_147671 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpressionInClosure_in_rule__XClosure__ExpressionAssignment_247710 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpressionOrVarDeclaration_in_rule__XExpressionInClosure__ExpressionsAssignment_1_047741 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmFormalParameter_in_rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_047772 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmFormalParameter_in_rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_1_147803 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_97_in_rule__XShortClosure__ExplicitSyntaxAssignment_0_0_247839 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XShortClosure__ExpressionAssignment_147878 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XIfExpression__IfAssignment_347909 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XIfExpression__ThenAssignment_547940 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XIfExpression__ElseAssignment_6_147971 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmFormalParameter_in_rule__XSwitchExpression__DeclaredParamAssignment_2_0_0_0_148002 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XSwitchExpression__SwitchAssignment_2_0_148033 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmFormalParameter_in_rule__XSwitchExpression__DeclaredParamAssignment_2_1_0_0_048064 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XSwitchExpression__SwitchAssignment_2_1_148095 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXCasePart_in_rule__XSwitchExpression__CasesAssignment_448126 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XSwitchExpression__DefaultAssignment_5_248157 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__XCasePart__TypeGuardAssignment_148188 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XCasePart__CaseAssignment_2_148219 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XCasePart__ThenAssignment_3_0_148250 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpressionOrVarDeclaration_in_rule__XBasicForLoopExpression__InitExpressionsAssignment_3_048281 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpressionOrVarDeclaration_in_rule__XBasicForLoopExpression__InitExpressionsAssignment_3_1_148312 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XBasicForLoopExpression__ExpressionAssignment_548343 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_048374 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_1_148405 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XBasicForLoopExpression__EachExpressionAssignment_948436 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XWhileExpression__PredicateAssignment_348467 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XWhileExpression__BodyAssignment_548498 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XDoWhileExpression__BodyAssignment_248529 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XDoWhileExpression__PredicateAssignment_548560 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpressionOrVarDeclaration_in_rule__XBlockExpression__ExpressionsAssignment_2_048591 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmArgumentTypeReference_in_rule__XFeatureCall__TypeArgumentsAssignment_1_148622 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmArgumentTypeReference_in_rule__XFeatureCall__TypeArgumentsAssignment_1_2_148653 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleIdOrSuper_in_rule__XFeatureCall__FeatureAssignment_248688 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_69_in_rule__XFeatureCall__ExplicitOperationCallAssignment_3_048728 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXShortClosure_in_rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_048767 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_048798 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_1_148829 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXClosure_in_rule__XFeatureCall__FeatureCallArgumentsAssignment_448860 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__XConstructorCall__ConstructorAssignment_248895 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmArgumentTypeReference_in_rule__XConstructorCall__TypeArgumentsAssignment_3_148930 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmArgumentTypeReference_in_rule__XConstructorCall__TypeArgumentsAssignment_3_2_148961 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_69_in_rule__XConstructorCall__ExplicitConstructorCallAssignment_4_048997 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXShortClosure_in_rule__XConstructorCall__ArgumentsAssignment_4_1_049036 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XConstructorCall__ArgumentsAssignment_4_1_1_049067 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XConstructorCall__ArgumentsAssignment_4_1_1_1_149098 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXClosure_in_rule__XConstructorCall__ArgumentsAssignment_549129 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_98_in_rule__XBooleanLiteral__IsTrueAssignment_1_149165 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleNumber_in_rule__XNumberLiteral__ValueAssignment_149204 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_STRING_in_rule__XStringLiteral__ValueAssignment_149235 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__XTypeLiteral__TypeAssignment_349270 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleArrayBrackets_in_rule__XTypeLiteral__ArrayDimensionsAssignment_449305 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XThrowExpression__ExpressionAssignment_249336 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XReturnExpression__ExpressionAssignment_249367 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XTryCatchFinallyExpression__ExpressionAssignment_249398 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXCatchClause_in_rule__XTryCatchFinallyExpression__CatchClausesAssignment_3_0_049429 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_0_1_149460 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_1_149491 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XSynchronizedExpression__ParamAssignment_149522 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XSynchronizedExpression__ExpressionAssignment_349553 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleFullJvmFormalParameter_in_rule__XCatchClause__DeclaredParamAssignment_249584 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXExpression_in_rule__XCatchClause__ExpressionAssignment_449615 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__XFunctionTypeRef__ParamTypesAssignment_0_1_049646 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__XFunctionTypeRef__ParamTypesAssignment_0_1_1_149677 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__XFunctionTypeRef__ReturnTypeAssignment_249708 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__JvmParameterizedTypeReference__TypeAssignment_049743 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmArgumentTypeReference_in_rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_149778 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmArgumentTypeReference_in_rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_2_149809 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmUpperBound_in_rule__JvmWildcardTypeReference__ConstraintsAssignment_2_049840 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmLowerBound_in_rule__JvmWildcardTypeReference__ConstraintsAssignment_2_149871 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__JvmUpperBound__TypeReferenceAssignment_149902 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__JvmUpperBoundAnded__TypeReferenceAssignment_149933 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__JvmLowerBound__TypeReferenceAssignment_149964 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleXImportDeclaration_in_rule__XImportSection__ImportDeclarationsAssignment49998 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_47_in_rule__XImportDeclaration__StaticAssignment_1_0_050034 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_49_in_rule__XImportDeclaration__ExtensionAssignment_1_0_150078 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleQualifiedNameInStaticImport_in_rule__XImportDeclaration__ImportedTypeAssignment_1_0_250121 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_13_in_rule__XImportDeclaration__WildcardAssignment_1_0_3_050161 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleValidID_in_rule__XImportDeclaration__MemberNameAssignment_1_0_3_150200 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__XImportDeclaration__ImportedTypeAssignment_1_150235 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleQualifiedNameWithWildcard_in_rule__XImportDeclaration__ImportedNamespaceAssignment_1_250270 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Skill__Group_3_0__0_in_rule__Skill__UnorderedGroup_3__Impl44011 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Skill__Group_3_1__0_in_rule__Skill__UnorderedGroup_3__Impl44102 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Skill__UnorderedGroup_3__Impl_in_rule__Skill__UnorderedGroup_3__044161 = new BitSet(new long[]{0x2000400000000002L});
+    public static final BitSet FOLLOW_rule__Skill__UnorderedGroup_3__1_in_rule__Skill__UnorderedGroup_3__044164 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Skill__UnorderedGroup_3__Impl_in_rule__Skill__UnorderedGroup_3__144189 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__SarlScript__NameAssignment_0_144221 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXImportSection_in_rule__SarlScript__ImportSectionAssignment_144252 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleTopElement_in_rule__SarlScript__ElementsAssignment_244283 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleValidID_in_rule__Event__NameAssignment_244320 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Event__SuperTypesAssignment_3_144351 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleEventFeature_in_rule__Event__FeaturesAssignment_4_144382 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleValidID_in_rule__Capacity__NameAssignment_244413 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Capacity__SuperTypesAssignment_3_144444 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Capacity__SuperTypesAssignment_3_2_144475 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleActionSignature_in_rule__Capacity__FeaturesAssignment_544506 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleValidID_in_rule__Agent__NameAssignment_244537 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Agent__SuperTypesAssignment_3_144568 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleAgentFeature_in_rule__Agent__FeaturesAssignment_544599 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleValidID_in_rule__Behavior__NameAssignment_244630 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Behavior__SuperTypesAssignment_3_144661 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleBehaviorFeature_in_rule__Behavior__FeaturesAssignment_544692 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleValidID_in_rule__Skill__NameAssignment_244723 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Skill__SuperTypesAssignment_3_0_144754 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Skill__ImplementedTypesAssignment_3_1_144785 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__Skill__ImplementedTypesAssignment_3_1_2_144816 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleSkillFeature_in_rule__Skill__FeaturesAssignment_544847 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_94_in_rule__Attribute__WriteableAssignment_1_044883 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleValidID_in_rule__Attribute__NameAssignment_2_0_0_044922 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__Attribute__TypeAssignment_2_0_0_244953 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleValidID_in_rule__Attribute__NameAssignment_2_144984 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__Attribute__InitialValueAssignment_3_145015 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__CapacityUses__CapacitiesUsedAssignment_245046 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__CapacityUses__CapacitiesUsedAssignment_3_145077 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__RequiredCapacity__RequiredCapacitiesAssignment_245108 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__RequiredCapacity__RequiredCapacitiesAssignment_3_145139 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__BehaviorUnit__EventAssignment_245170 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__BehaviorUnit__GuardAssignment_3_145201 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXBlockExpression_in_rule__BehaviorUnit__BodyAssignment_445232 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleActionSignature_in_rule__Action__SignatureAssignment_145263 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXBlockExpression_in_rule__Action__BodyAssignment_245294 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleFormalParameter_in_rule__Constructor__ParamsAssignment_2_1_045325 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleFormalParameter_in_rule__Constructor__ParamsAssignment_2_1_1_145356 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleVarArgToken_in_rule__Constructor__VarargsAssignment_2_1_245387 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXBlockExpression_in_rule__Constructor__BodyAssignment_345418 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleValidID_in_rule__ActionSignature__NameAssignment_245449 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleFormalParameter_in_rule__ActionSignature__ParamsAssignment_3_1_045480 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleFormalParameter_in_rule__ActionSignature__ParamsAssignment_3_1_1_145511 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleVarArgToken_in_rule__ActionSignature__VarargsAssignment_3_1_245542 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__ActionSignature__TypeAssignment_4_145573 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__ActionSignature__FiredEventsAssignment_5_145604 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmParameterizedTypeReference_in_rule__ActionSignature__FiredEventsAssignment_5_2_145635 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleValidID_in_rule__FormalParameter__NameAssignment_045666 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__FormalParameter__ParameterTypeAssignment_245697 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleDefaultParameterValue_in_rule__FormalParameter__DefaultValueAssignment_3_145728 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_94_in_rule__XVariableDeclaration__WriteableAssignment_1_045764 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleValidID_in_rule__XVariableDeclaration__NameAssignment_2_0_0_045803 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__XVariableDeclaration__TypeAssignment_2_0_0_245834 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleValidID_in_rule__XVariableDeclaration__NameAssignment_2_145865 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XVariableDeclaration__RightAssignment_3_145896 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleValidID_in_rule__JvmFormalParameter__NameAssignment_145927 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__JvmFormalParameter__ParameterTypeAssignment_2_145958 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleValidID_in_rule__FullJvmFormalParameter__NameAssignment_145989 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__FullJvmFormalParameter__ParameterTypeAssignment_346020 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleValidID_in_rule__XXLoopFormalParameter__NameAssignment_146051 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__XXLoopFormalParameter__ParameterTypeAssignment_2_146082 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXXLoopFormalParameter_in_rule__XForLoopExpression__DeclaredParamAssignment_0_0_346113 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XForLoopExpression__ForExpressionAssignment_146144 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XForLoopExpression__EachExpressionAssignment_346175 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleFeatureCallID_in_rule__XAssignment__FeatureAssignment_0_146210 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXAssignment_in_rule__XAssignment__ValueAssignment_0_346245 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleOpMultiAssign_in_rule__XAssignment__FeatureAssignment_1_1_0_0_146280 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXAssignment_in_rule__XAssignment__RightOperandAssignment_1_1_146315 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleOpOr_in_rule__XOrExpression__FeatureAssignment_1_0_0_146350 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXAndExpression_in_rule__XOrExpression__RightOperandAssignment_1_146385 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleOpAnd_in_rule__XAndExpression__FeatureAssignment_1_0_0_146420 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXEqualityExpression_in_rule__XAndExpression__RightOperandAssignment_1_146455 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleOpEquality_in_rule__XEqualityExpression__FeatureAssignment_1_0_0_146490 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXRelationalExpression_in_rule__XEqualityExpression__RightOperandAssignment_1_146525 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__XRelationalExpression__TypeAssignment_1_0_146556 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleOpCompare_in_rule__XRelationalExpression__FeatureAssignment_1_1_0_0_146591 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXOtherOperatorExpression_in_rule__XRelationalExpression__RightOperandAssignment_1_1_146626 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleOpOther_in_rule__XOtherOperatorExpression__FeatureAssignment_1_0_0_146661 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXAdditiveExpression_in_rule__XOtherOperatorExpression__RightOperandAssignment_1_146696 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleOpAdd_in_rule__XAdditiveExpression__FeatureAssignment_1_0_0_146731 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXMultiplicativeExpression_in_rule__XAdditiveExpression__RightOperandAssignment_1_146766 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleOpMulti_in_rule__XMultiplicativeExpression__FeatureAssignment_1_0_0_146801 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXUnaryOperation_in_rule__XMultiplicativeExpression__RightOperandAssignment_1_146836 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleOpUnary_in_rule__XUnaryOperation__FeatureAssignment_0_146871 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXUnaryOperation_in_rule__XUnaryOperation__OperandAssignment_0_246906 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__XCastedExpression__TypeAssignment_1_146937 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleOpPostfix_in_rule__XPostfixOperation__FeatureAssignment_1_0_146972 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_95_in_rule__XMemberFeatureCall__ExplicitStaticAssignment_1_0_0_0_1_147012 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleFeatureCallID_in_rule__XMemberFeatureCall__FeatureAssignment_1_0_0_0_247055 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXAssignment_in_rule__XMemberFeatureCall__ValueAssignment_1_0_147090 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_96_in_rule__XMemberFeatureCall__NullSafeAssignment_1_1_0_0_1_147126 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_95_in_rule__XMemberFeatureCall__ExplicitStaticAssignment_1_1_0_0_1_247170 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmArgumentTypeReference_in_rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_147209 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmArgumentTypeReference_in_rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_2_147240 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleIdOrSuper_in_rule__XMemberFeatureCall__FeatureAssignment_1_1_247275 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_69_in_rule__XMemberFeatureCall__ExplicitOperationCallAssignment_1_1_3_047315 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXShortClosure_in_rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_047354 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_047385 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_1_147416 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXClosure_in_rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_447447 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XSetLiteral__ElementsAssignment_3_047478 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XSetLiteral__ElementsAssignment_3_1_147509 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XListLiteral__ElementsAssignment_3_047540 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XListLiteral__ElementsAssignment_3_1_147571 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmFormalParameter_in_rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_047602 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmFormalParameter_in_rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_1_147633 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_97_in_rule__XClosure__ExplicitSyntaxAssignment_1_0_147669 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpressionInClosure_in_rule__XClosure__ExpressionAssignment_247708 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpressionOrVarDeclaration_in_rule__XExpressionInClosure__ExpressionsAssignment_1_047739 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmFormalParameter_in_rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_047770 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmFormalParameter_in_rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_1_147801 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_97_in_rule__XShortClosure__ExplicitSyntaxAssignment_0_0_247837 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XShortClosure__ExpressionAssignment_147876 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XIfExpression__IfAssignment_347907 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XIfExpression__ThenAssignment_547938 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XIfExpression__ElseAssignment_6_147969 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmFormalParameter_in_rule__XSwitchExpression__DeclaredParamAssignment_2_0_0_0_148000 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XSwitchExpression__SwitchAssignment_2_0_148031 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmFormalParameter_in_rule__XSwitchExpression__DeclaredParamAssignment_2_1_0_0_048062 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XSwitchExpression__SwitchAssignment_2_1_148093 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXCasePart_in_rule__XSwitchExpression__CasesAssignment_448124 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XSwitchExpression__DefaultAssignment_5_248155 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__XCasePart__TypeGuardAssignment_148186 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XCasePart__CaseAssignment_2_148217 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XCasePart__ThenAssignment_3_0_148248 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpressionOrVarDeclaration_in_rule__XBasicForLoopExpression__InitExpressionsAssignment_3_048279 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpressionOrVarDeclaration_in_rule__XBasicForLoopExpression__InitExpressionsAssignment_3_1_148310 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XBasicForLoopExpression__ExpressionAssignment_548341 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_048372 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_1_148403 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XBasicForLoopExpression__EachExpressionAssignment_948434 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XWhileExpression__PredicateAssignment_348465 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XWhileExpression__BodyAssignment_548496 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XDoWhileExpression__BodyAssignment_248527 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XDoWhileExpression__PredicateAssignment_548558 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpressionOrVarDeclaration_in_rule__XBlockExpression__ExpressionsAssignment_2_048589 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmArgumentTypeReference_in_rule__XFeatureCall__TypeArgumentsAssignment_1_148620 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmArgumentTypeReference_in_rule__XFeatureCall__TypeArgumentsAssignment_1_2_148651 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleIdOrSuper_in_rule__XFeatureCall__FeatureAssignment_248686 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_69_in_rule__XFeatureCall__ExplicitOperationCallAssignment_3_048726 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXShortClosure_in_rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_048765 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_048796 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_1_148827 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXClosure_in_rule__XFeatureCall__FeatureCallArgumentsAssignment_448858 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__XConstructorCall__ConstructorAssignment_248893 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmArgumentTypeReference_in_rule__XConstructorCall__TypeArgumentsAssignment_3_148928 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmArgumentTypeReference_in_rule__XConstructorCall__TypeArgumentsAssignment_3_2_148959 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_69_in_rule__XConstructorCall__ExplicitConstructorCallAssignment_4_048995 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXShortClosure_in_rule__XConstructorCall__ArgumentsAssignment_4_1_049034 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XConstructorCall__ArgumentsAssignment_4_1_1_049065 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XConstructorCall__ArgumentsAssignment_4_1_1_1_149096 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXClosure_in_rule__XConstructorCall__ArgumentsAssignment_549127 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_98_in_rule__XBooleanLiteral__IsTrueAssignment_1_149163 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleNumber_in_rule__XNumberLiteral__ValueAssignment_149202 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_STRING_in_rule__XStringLiteral__ValueAssignment_149233 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__XTypeLiteral__TypeAssignment_349268 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleArrayBrackets_in_rule__XTypeLiteral__ArrayDimensionsAssignment_449303 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XThrowExpression__ExpressionAssignment_249334 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XReturnExpression__ExpressionAssignment_249365 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XTryCatchFinallyExpression__ExpressionAssignment_249396 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXCatchClause_in_rule__XTryCatchFinallyExpression__CatchClausesAssignment_3_0_049427 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_0_1_149458 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_1_149489 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XSynchronizedExpression__ParamAssignment_149520 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XSynchronizedExpression__ExpressionAssignment_349551 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleFullJvmFormalParameter_in_rule__XCatchClause__DeclaredParamAssignment_249582 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXExpression_in_rule__XCatchClause__ExpressionAssignment_449613 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__XFunctionTypeRef__ParamTypesAssignment_0_1_049644 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__XFunctionTypeRef__ParamTypesAssignment_0_1_1_149675 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__XFunctionTypeRef__ReturnTypeAssignment_249706 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__JvmParameterizedTypeReference__TypeAssignment_049741 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmArgumentTypeReference_in_rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_149776 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmArgumentTypeReference_in_rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_2_149807 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmUpperBound_in_rule__JvmWildcardTypeReference__ConstraintsAssignment_2_049838 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmLowerBound_in_rule__JvmWildcardTypeReference__ConstraintsAssignment_2_149869 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__JvmUpperBound__TypeReferenceAssignment_149900 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__JvmUpperBoundAnded__TypeReferenceAssignment_149931 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__JvmLowerBound__TypeReferenceAssignment_149962 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleXImportDeclaration_in_rule__XImportSection__ImportDeclarationsAssignment49996 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_47_in_rule__XImportDeclaration__StaticAssignment_1_0_050032 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_49_in_rule__XImportDeclaration__ExtensionAssignment_1_0_150076 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedNameInStaticImport_in_rule__XImportDeclaration__ImportedTypeAssignment_1_0_250119 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_13_in_rule__XImportDeclaration__WildcardAssignment_1_0_3_050159 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleValidID_in_rule__XImportDeclaration__MemberNameAssignment_1_0_3_150198 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedName_in_rule__XImportDeclaration__ImportedTypeAssignment_1_150233 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleQualifiedNameWithWildcard_in_rule__XImportDeclaration__ImportedNamespaceAssignment_1_250268 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule__OpOther__Group_6_1_0__0_in_synpred48_InternalSARL7376 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_29_in_synpred49_InternalSARL7395 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleXForLoopExpression_in_synpred70_InternalSARL8127 = new BitSet(new long[]{0x0000000000000002L});
@@ -77062,7 +77107,8 @@ public class InternalSARLParser extends AbstractInternalContentAssistParser {
     public static final BitSet FOLLOW_rule__QualifiedName__Group_1__0_in_synpred201_InternalSARL40674 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule__JvmTypeReference__Group_0_1__0_in_synpred203_InternalSARL41165 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule__JvmParameterizedTypeReference__Group_1__0_in_synpred207_InternalSARL42211 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Skill__Group_3_0__0_in_synpred212_InternalSARL44013 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Skill__UnorderedGroup_3__1_in_synpred213_InternalSARL44166 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Skill__UnorderedGroup_3__0_in_synpred212_InternalSARL43924 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Skill__Group_3_0__0_in_synpred213_InternalSARL44011 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Skill__UnorderedGroup_3__1_in_synpred214_InternalSARL44164 = new BitSet(new long[]{0x0000000000000002L});
 
 }

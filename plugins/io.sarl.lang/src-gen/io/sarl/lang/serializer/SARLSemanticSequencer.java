@@ -1555,8 +1555,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	 *     (
 	 *         name=ValidID 
 	 *         superTypes+=JvmParameterizedTypeReference? 
-	 *         implementedTypes+=JvmParameterizedTypeReference 
-	 *         implementedTypes+=JvmParameterizedTypeReference* 
+	 *         (implementedTypes+=JvmParameterizedTypeReference implementedTypes+=JvmParameterizedTypeReference*)? 
 	 *         features+=SkillFeature*
 	 *     )
 	 */

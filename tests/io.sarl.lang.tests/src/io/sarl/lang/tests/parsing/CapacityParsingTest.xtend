@@ -595,4 +595,66 @@ class CapacityParsingTest {
 			"Discouraged capacity definition. A capacity without actions defined inside is not useful since it cannot be called by an agent or a behavior.")
 	}
 
+	@Test
+	def void skillImplementCapacity() {
+		val mas = '''
+			capacity C1 {
+				def myaction
+			}
+			skill S1 implements C1 {
+				def myaction { }
+			}
+		'''.parse
+		mas.assertNoIssues
+	}
+
+	@Test
+	def void skillExtendSkill() {
+		val mas = '''
+			capacity C1 {
+				def myaction
+			}
+			skill S1 implements C1 {
+				def myaction { }
+			}
+			skill S2 extends S1 {
+				def myaction { }
+			}
+		'''.parse
+		mas.assertNoIssues
+	}
+
+	@Test
+	def void skillExtendSkillImplementCapacity() {
+		val mas = '''
+			capacity C1 {
+				def myaction
+			}
+			capacity C2 {
+				def myaction2
+			}
+			skill S1 implements C1 {
+				def myaction { }
+			}
+			skill S2 extends S1 implements C2 {
+				def myaction { }
+				def myaction2 { }
+			}
+		'''.parse
+		mas.assertNoIssues
+	}
+
+	@Test
+	def void skillNoExtendSkillNoImplementCapacity() {
+		val mas = '''
+			skill S1 {
+				def myaction { }
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.skill,
+			org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_TYPE,
+			"Missing implemented type 'io.sarl.lang.core.Capacity' for 'S1'")
+	}
+
 }

@@ -116,7 +116,7 @@ Skill returns ImplementingElement:
 		&
 		(	'implements' implementedTypes+=JvmParameterizedTypeReference
 			(',' implementedTypes+=JvmParameterizedTypeReference)*
-		)
+		)?
 	)
 	'{' features+=SkillFeature* '}'
 ;

@@ -670,13 +670,14 @@ class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 	
-	protected def boolean checkSuperTypes(InheritingElement element, Class<?> expectedType, boolean onlySubTypes) {
-		var success = true
+	protected def int checkSuperTypes(InheritingElement element, Class<?> expectedType, boolean onlySubTypes) {
+		var int nbSuperTypes = 0
 		var inferredType = element.jvmGenericType
 		if (inferredType != null) {
 			var isInterface = expectedType.interface
 			var jvmTypes = inferredType.superTypes.iterator
 			for(superType : element.superTypes) {
+				var success = true
 				var JvmTypeReference jvmType
 				if (jvmTypes.hasNext) {
 					jvmType = jvmTypes.next 
@@ -730,6 +731,10 @@ class SARLValidator extends AbstractSARLValidator {
 							IssueCodes::INCONSISTENT_TYPE_HIERARCHY)
 					success = false
 				}
+				
+				if (success) {
+					nbSuperTypes++
+				}
 			}
 			/*if (success && inferredType.hasCycleInHierarchy) {
 				error( String::format("The inheritance hierarchy of '%s' contains cycles.",
@@ -739,7 +744,7 @@ class SARLValidator extends AbstractSARLValidator {
 				success = false
 			}*/
 		}
-		return success
+		return nbSuperTypes
 	}
 
 
@@ -855,8 +860,10 @@ class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public def checkSkillSuperType(Skill skill) {
-		checkSuperTypes(skill, io.sarl.lang.core.Skill, false)
-		checkImplementedTypes(skill, Capacity, 1, true)
+		var nbSuperTypes = checkSuperTypes(skill, io.sarl.lang.core.Skill, false)
+		checkImplementedTypes(skill, Capacity,
+			(if (nbSuperTypes>0) 0 else 1),
+			true)
 	}
 
 	/**

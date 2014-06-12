@@ -310,16 +310,11 @@ describe "Skill Reference" {
 			 * In the following code, the <code>StandardJavaLogging</code> skill (defined
 			 * previously) is extended for changing the output of the info.
 			 * 
-			 * <span class="label label-warning">Important</span> A skill must implement
-			 * a capacity, even if it is extending an existing skill. It means that
-			 * the <code>implements</code> must be given, even if the extended skill
-			 * is already implementing the capacity.
-			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Extending a Skill"{
 				val model = '''
-				skill ExtendedLogging extends StandardJavaLogging implements Logging {
+				skill ExtendedLogging extends StandardJavaLogging {
 					def info(text : String) {
 						super.info("INFO: "+text)
 					}
@@ -352,30 +347,8 @@ describe "Skill Reference" {
 				var s1 = model.elements.get(1).mustBeSkill("StandardJavaLogging", null, "io.sarl.docs.reference.sr.Logging").mustHaveFeatures(2)
 				s1.features.get(0).mustBeAction("info", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
 				s1.features.get(1).mustBeAction("debug", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				var s2 = model.elements.get(2).mustBeSkill("ExtendedLogging", "io.sarl.docs.reference.sr.StandardJavaLogging", "io.sarl.docs.reference.sr.Logging").mustHaveFeatures(1)
+				var s2 = model.elements.get(2).mustBeSkill("ExtendedLogging", "io.sarl.docs.reference.sr.StandardJavaLogging").mustHaveFeatures(1)
 				s2.features.get(0).mustBeAction("info", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-
-				// TEST THE CAPACITY IMPLEMENTATION CONSTRAINT
-				"	package io.sarl.docs.reference.sr
-					import io.sarl.lang.core.Capacity
-					capacity Logging {
-						// Log an information message
-						def info(text : String)
-						// Log a debugging message
-						def debug(text : String)
-					}
-					skill StandardJavaLogging implements Logging {
-						def info(text : String) {
-						}
-						def debug(text : String) {
-						}
-					}
-					skill ExtendedLogging extends StandardJavaLogging { // MISSED IMPLEMENTS KEYWORD
-						def info(text : String) {
-							super.info(\"INFO: \"+text)
-						}
-					}
-				".parsesWithError
 			}
 
 		}

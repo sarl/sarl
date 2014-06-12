@@ -804,8 +804,7 @@ ruleSkill returns [EObject current=null]
  				)
 			)  
 
-		)+
-	  	{getUnorderedGroupHelper().canLeave(grammarAccess.getSkillAccess().getUnorderedGroup_3())}?	
+		)*	
 	)
 )
 	{ 

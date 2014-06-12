@@ -21857,8 +21857,7 @@ rule__Skill__UnorderedGroup_3
     }
 :
 	rule__Skill__UnorderedGroup_3__0
-	
-	{getUnorderedGroupHelper().canLeave(grammarAccess.getSkillAccess().getUnorderedGroup_3())}?
+	?
 	
 ;
 finally {
