@@ -29,10 +29,6 @@ TopElement:
 	Event | Capacity | Agent | Behavior | Skill 
 ;
 
-RawTypeReference returns jvm::JvmParameterizedTypeReference:
-	type=[jvm::JvmType|QualifiedName]
-;
-
 // Define an interface that is providing the 'name' feature.
 // This rule is declared only for generated the Java interface
 // with the expected features.
@@ -74,7 +70,7 @@ ParameterizedFeature returns Feature:
 // YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
 InheritingElement returns FeatureContainer:
 	{InheritingElement}
-	superTypes+=RawTypeReference
+	superTypes+=JvmParameterizedTypeReference
 ;
 
 // Define an interface that is providing the 'implementedTypes' feature.
@@ -83,32 +79,32 @@ InheritingElement returns FeatureContainer:
 // YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
 ImplementingElement returns InheritingElement:
 	{ImplementingElement}
-	implementedTypes+=RawTypeReference
+	implementedTypes+=JvmParameterizedTypeReference
 ;
 
 Event returns InheritingElement:
 	{Event}
-	'event' name=ValidID ('extends' superTypes+=RawTypeReference)? 
+	'event' name=ValidID ('extends' superTypes+=JvmParameterizedTypeReference)? 
 	('{' features+=EventFeature* '}')?
 ;
 
 Capacity returns InheritingElement:
 	{Capacity}
-	'capacity' name=ValidID ('extends' superTypes+=RawTypeReference
-		( ',' superTypes+=RawTypeReference )* )? 
+	'capacity' name=ValidID ('extends' superTypes+=JvmParameterizedTypeReference
+		( ',' superTypes+=JvmParameterizedTypeReference )* )? 
 	'{' features+=ActionSignature* '}'
 ;
 
 Agent returns InheritingElement:
 	{Agent}
-	'agent' name=ValidID ('extends' superTypes+=RawTypeReference)? '{'
+	'agent' name=ValidID ('extends' superTypes+=JvmParameterizedTypeReference)? '{'
 	features+=AgentFeature*
 	'}'
 ;
 
 Behavior returns InheritingElement:
 	{Behavior}
-	'behavior' name=ValidID ('extends' superTypes+=RawTypeReference)? '{'
+	'behavior' name=ValidID ('extends' superTypes+=JvmParameterizedTypeReference)? '{'
 	features+=BehaviorFeature*
 	'}'
 ;
@@ -116,10 +112,10 @@ Behavior returns InheritingElement:
 Skill returns ImplementingElement:
 	{Skill}
 	'skill' name=ValidID 
-	(	('extends' superTypes+=RawTypeReference)?
+	(	('extends' superTypes+=JvmParameterizedTypeReference)?
 		&
-		(	'implements' implementedTypes+=RawTypeReference
-			(',' implementedTypes+=RawTypeReference)*
+		(	'implements' implementedTypes+=JvmParameterizedTypeReference
+			(',' implementedTypes+=JvmParameterizedTypeReference)*
 		)
 	)
 	'{' features+=SkillFeature* '}'
@@ -149,19 +145,19 @@ Attribute returns Feature:
 	
 CapacityUses returns Feature:
 	{CapacityUses}
-	'uses' capacitiesUsed+=RawTypeReference
-	(',' capacitiesUsed+=RawTypeReference)* ';'?
+	'uses' capacitiesUsed+=JvmParameterizedTypeReference
+	(',' capacitiesUsed+=JvmParameterizedTypeReference)* ';'?
 ;
 
 RequiredCapacity returns Feature:
 	{RequiredCapacity}
-	'requires' requiredCapacities+=RawTypeReference
-	(',' requiredCapacities+=RawTypeReference)* ';'?
+	'requires' requiredCapacities+=JvmParameterizedTypeReference
+	(',' requiredCapacities+=JvmParameterizedTypeReference)* ';'?
 ;
 
 BehaviorUnit returns Feature:
 	{BehaviorUnit}
-	'on' event=RawTypeReference (=> '[' guard=XExpression ']')? body=XBlockExpression
+	'on' event=JvmParameterizedTypeReference (=> '[' guard=XExpression ']')? body=XBlockExpression
 ;
 
 Action returns Feature:
@@ -197,7 +193,9 @@ ActionSignature returns ParameterizedFeature:
 		')'
 	)?
 	(':' type=JvmTypeReference)?
-	('fires' firedEvents+=RawTypeReference (',' firedEvents+=RawTypeReference)*)?
+	('fires' firedEvents+=JvmParameterizedTypeReference 
+		(',' firedEvents+=JvmParameterizedTypeReference)*
+	)?
 ;
 	
 FormalParameter:

@@ -216,42 +216,6 @@ ruleTopElement returns [EObject current=null]
 
 
 
-// Entry rule entryRuleRawTypeReference
-entryRuleRawTypeReference returns [EObject current=null] 
-	:
-	{ newCompositeNode(grammarAccess.getRawTypeReferenceRule()); }
-	 iv_ruleRawTypeReference=ruleRawTypeReference 
-	 { $current=$iv_ruleRawTypeReference.current; } 
-	 EOF 
-;
-
-// Rule RawTypeReference
-ruleRawTypeReference returns [EObject current=null] 
-    @init { enterRule(); 
-    }
-    @after { leaveRule(); }:
-(
-(
-		{
-			if ($current==null) {
-	            $current = createModelElement(grammarAccess.getRawTypeReferenceRule());
-	        }
-        }
-		{ 
-	        newCompositeNode(grammarAccess.getRawTypeReferenceAccess().getTypeJvmTypeCrossReference_0()); 
-	    }
-		ruleQualifiedName		{ 
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-)
-;
-
-
-
-
-
 
 
 
@@ -338,9 +302,9 @@ ruleEvent returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getEventAccess().getSuperTypesRawTypeReferenceParserRuleCall_3_1_0()); 
+	        newCompositeNode(grammarAccess.getEventAccess().getSuperTypesJvmParameterizedTypeReferenceParserRuleCall_3_1_0()); 
 	    }
-		lv_superTypes_4_0=ruleRawTypeReference		{
+		lv_superTypes_4_0=ruleJvmParameterizedTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getEventRule());
 	        }
@@ -348,7 +312,7 @@ ruleEvent returns [EObject current=null]
        			$current, 
        			"superTypes",
         		lv_superTypes_4_0, 
-        		"RawTypeReference");
+        		"JvmParameterizedTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -435,9 +399,9 @@ ruleCapacity returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getCapacityAccess().getSuperTypesRawTypeReferenceParserRuleCall_3_1_0()); 
+	        newCompositeNode(grammarAccess.getCapacityAccess().getSuperTypesJvmParameterizedTypeReferenceParserRuleCall_3_1_0()); 
 	    }
-		lv_superTypes_4_0=ruleRawTypeReference		{
+		lv_superTypes_4_0=ruleJvmParameterizedTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getCapacityRule());
 	        }
@@ -445,7 +409,7 @@ ruleCapacity returns [EObject current=null]
        			$current, 
        			"superTypes",
         		lv_superTypes_4_0, 
-        		"RawTypeReference");
+        		"JvmParameterizedTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -457,9 +421,9 @@ ruleCapacity returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getCapacityAccess().getSuperTypesRawTypeReferenceParserRuleCall_3_2_1_0()); 
+	        newCompositeNode(grammarAccess.getCapacityAccess().getSuperTypesJvmParameterizedTypeReferenceParserRuleCall_3_2_1_0()); 
 	    }
-		lv_superTypes_6_0=ruleRawTypeReference		{
+		lv_superTypes_6_0=ruleJvmParameterizedTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getCapacityRule());
 	        }
@@ -467,7 +431,7 @@ ruleCapacity returns [EObject current=null]
        			$current, 
        			"superTypes",
         		lv_superTypes_6_0, 
-        		"RawTypeReference");
+        		"JvmParameterizedTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -554,9 +518,9 @@ ruleAgent returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getAgentAccess().getSuperTypesRawTypeReferenceParserRuleCall_3_1_0()); 
+	        newCompositeNode(grammarAccess.getAgentAccess().getSuperTypesJvmParameterizedTypeReferenceParserRuleCall_3_1_0()); 
 	    }
-		lv_superTypes_4_0=ruleRawTypeReference		{
+		lv_superTypes_4_0=ruleJvmParameterizedTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getAgentRule());
 	        }
@@ -564,7 +528,7 @@ ruleAgent returns [EObject current=null]
        			$current, 
        			"superTypes",
         		lv_superTypes_4_0, 
-        		"RawTypeReference");
+        		"JvmParameterizedTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -651,9 +615,9 @@ ruleBehavior returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getBehaviorAccess().getSuperTypesRawTypeReferenceParserRuleCall_3_1_0()); 
+	        newCompositeNode(grammarAccess.getBehaviorAccess().getSuperTypesJvmParameterizedTypeReferenceParserRuleCall_3_1_0()); 
 	    }
-		lv_superTypes_4_0=ruleRawTypeReference		{
+		lv_superTypes_4_0=ruleJvmParameterizedTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getBehaviorRule());
 	        }
@@ -661,7 +625,7 @@ ruleBehavior returns [EObject current=null]
        			$current, 
        			"superTypes",
         		lv_superTypes_4_0, 
-        		"RawTypeReference");
+        		"JvmParameterizedTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -762,9 +726,9 @@ ruleSkill returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getSkillAccess().getSuperTypesRawTypeReferenceParserRuleCall_3_0_1_0()); 
+	        newCompositeNode(grammarAccess.getSkillAccess().getSuperTypesJvmParameterizedTypeReferenceParserRuleCall_3_0_1_0()); 
 	    }
-		lv_superTypes_5_0=ruleRawTypeReference		{
+		lv_superTypes_5_0=ruleJvmParameterizedTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getSkillRule());
 	        }
@@ -772,7 +736,7 @@ ruleSkill returns [EObject current=null]
        			$current, 
        			"superTypes",
         		lv_superTypes_5_0, 
-        		"RawTypeReference");
+        		"JvmParameterizedTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -796,9 +760,9 @@ ruleSkill returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getSkillAccess().getImplementedTypesRawTypeReferenceParserRuleCall_3_1_1_0()); 
+	        newCompositeNode(grammarAccess.getSkillAccess().getImplementedTypesJvmParameterizedTypeReferenceParserRuleCall_3_1_1_0()); 
 	    }
-		lv_implementedTypes_7_0=ruleRawTypeReference		{
+		lv_implementedTypes_7_0=ruleJvmParameterizedTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getSkillRule());
 	        }
@@ -806,7 +770,7 @@ ruleSkill returns [EObject current=null]
        			$current, 
        			"implementedTypes",
         		lv_implementedTypes_7_0, 
-        		"RawTypeReference");
+        		"JvmParameterizedTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -818,9 +782,9 @@ ruleSkill returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getSkillAccess().getImplementedTypesRawTypeReferenceParserRuleCall_3_1_2_1_0()); 
+	        newCompositeNode(grammarAccess.getSkillAccess().getImplementedTypesJvmParameterizedTypeReferenceParserRuleCall_3_1_2_1_0()); 
 	    }
-		lv_implementedTypes_9_0=ruleRawTypeReference		{
+		lv_implementedTypes_9_0=ruleJvmParameterizedTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getSkillRule());
 	        }
@@ -828,7 +792,7 @@ ruleSkill returns [EObject current=null]
        			$current, 
        			"implementedTypes",
         		lv_implementedTypes_9_0, 
-        		"RawTypeReference");
+        		"JvmParameterizedTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -1309,9 +1273,9 @@ ruleCapacityUses returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedRawTypeReferenceParserRuleCall_2_0()); 
+	        newCompositeNode(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedJvmParameterizedTypeReferenceParserRuleCall_2_0()); 
 	    }
-		lv_capacitiesUsed_2_0=ruleRawTypeReference		{
+		lv_capacitiesUsed_2_0=ruleJvmParameterizedTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getCapacityUsesRule());
 	        }
@@ -1319,7 +1283,7 @@ ruleCapacityUses returns [EObject current=null]
        			$current, 
        			"capacitiesUsed",
         		lv_capacitiesUsed_2_0, 
-        		"RawTypeReference");
+        		"JvmParameterizedTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -1331,9 +1295,9 @@ ruleCapacityUses returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedRawTypeReferenceParserRuleCall_3_1_0()); 
+	        newCompositeNode(grammarAccess.getCapacityUsesAccess().getCapacitiesUsedJvmParameterizedTypeReferenceParserRuleCall_3_1_0()); 
 	    }
-		lv_capacitiesUsed_4_0=ruleRawTypeReference		{
+		lv_capacitiesUsed_4_0=ruleJvmParameterizedTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getCapacityUsesRule());
 	        }
@@ -1341,7 +1305,7 @@ ruleCapacityUses returns [EObject current=null]
        			$current, 
        			"capacitiesUsed",
         		lv_capacitiesUsed_4_0, 
-        		"RawTypeReference");
+        		"JvmParameterizedTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -1384,9 +1348,9 @@ ruleRequiredCapacity returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesRawTypeReferenceParserRuleCall_2_0()); 
+	        newCompositeNode(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesJvmParameterizedTypeReferenceParserRuleCall_2_0()); 
 	    }
-		lv_requiredCapacities_2_0=ruleRawTypeReference		{
+		lv_requiredCapacities_2_0=ruleJvmParameterizedTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getRequiredCapacityRule());
 	        }
@@ -1394,7 +1358,7 @@ ruleRequiredCapacity returns [EObject current=null]
        			$current, 
        			"requiredCapacities",
         		lv_requiredCapacities_2_0, 
-        		"RawTypeReference");
+        		"JvmParameterizedTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -1406,9 +1370,9 @@ ruleRequiredCapacity returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesRawTypeReferenceParserRuleCall_3_1_0()); 
+	        newCompositeNode(grammarAccess.getRequiredCapacityAccess().getRequiredCapacitiesJvmParameterizedTypeReferenceParserRuleCall_3_1_0()); 
 	    }
-		lv_requiredCapacities_4_0=ruleRawTypeReference		{
+		lv_requiredCapacities_4_0=ruleJvmParameterizedTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getRequiredCapacityRule());
 	        }
@@ -1416,7 +1380,7 @@ ruleRequiredCapacity returns [EObject current=null]
        			$current, 
        			"requiredCapacities",
         		lv_requiredCapacities_4_0, 
-        		"RawTypeReference");
+        		"JvmParameterizedTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -1459,9 +1423,9 @@ ruleBehaviorUnit returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getBehaviorUnitAccess().getEventRawTypeReferenceParserRuleCall_2_0()); 
+	        newCompositeNode(grammarAccess.getBehaviorUnitAccess().getEventJvmParameterizedTypeReferenceParserRuleCall_2_0()); 
 	    }
-		lv_event_2_0=ruleRawTypeReference		{
+		lv_event_2_0=ruleJvmParameterizedTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getBehaviorUnitRule());
 	        }
@@ -1469,7 +1433,7 @@ ruleBehaviorUnit returns [EObject current=null]
        			$current, 
        			"event",
         		lv_event_2_0, 
-        		"RawTypeReference");
+        		"JvmParameterizedTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -1872,9 +1836,9 @@ ruleActionSignature returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getActionSignatureAccess().getFiredEventsRawTypeReferenceParserRuleCall_5_1_0()); 
+	        newCompositeNode(grammarAccess.getActionSignatureAccess().getFiredEventsJvmParameterizedTypeReferenceParserRuleCall_5_1_0()); 
 	    }
-		lv_firedEvents_12_0=ruleRawTypeReference		{
+		lv_firedEvents_12_0=ruleJvmParameterizedTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getActionSignatureRule());
 	        }
@@ -1882,7 +1846,7 @@ ruleActionSignature returns [EObject current=null]
        			$current, 
        			"firedEvents",
         		lv_firedEvents_12_0, 
-        		"RawTypeReference");
+        		"JvmParameterizedTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -1894,9 +1858,9 @@ ruleActionSignature returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getActionSignatureAccess().getFiredEventsRawTypeReferenceParserRuleCall_5_2_1_0()); 
+	        newCompositeNode(grammarAccess.getActionSignatureAccess().getFiredEventsJvmParameterizedTypeReferenceParserRuleCall_5_2_1_0()); 
 	    }
-		lv_firedEvents_14_0=ruleRawTypeReference		{
+		lv_firedEvents_14_0=ruleJvmParameterizedTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getActionSignatureRule());
 	        }
@@ -1904,7 +1868,7 @@ ruleActionSignature returns [EObject current=null]
        			$current, 
        			"firedEvents",
         		lv_firedEvents_14_0, 
-        		"RawTypeReference");
+        		"JvmParameterizedTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
