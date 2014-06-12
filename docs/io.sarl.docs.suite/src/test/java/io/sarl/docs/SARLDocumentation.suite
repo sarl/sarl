@@ -7,8 +7,10 @@ import io.sarl.docs.reference.*
 
 ##Getting Started
 
+- "Install SARL Tools"
+- "Create First Project"
 - "Agent Definition Introduction"
-//- "Launching the agent with the Janus platform"
+- "Run SARL Agent"
 
 ##Reference Documentation
 
@@ -19,5 +21,4 @@ import io.sarl.docs.reference.*
 - "Builtin Capacity Reference"
 - "Agent Reference"
 - "Behavior Reference"
-//- "Space Reference"
-
+- "Space Reference"

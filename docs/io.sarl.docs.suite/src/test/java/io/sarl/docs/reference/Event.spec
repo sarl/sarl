@@ -18,7 +18,6 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.jnario.runner.CreateWith
 
 /**
@@ -43,7 +42,6 @@ import org.jnario.runner.CreateWith
 describe "Event Reference"{
 
 		@Inject extension SARLParser
-		@Inject extension IQualifiedNameProvider
 
 		/* In literature, there are two major concepts for defining the
 		 * data structures that are exchanged by entities:
@@ -72,6 +70,7 @@ describe "Event Reference"{
 		 * <span class="label label-warning">Important</span> There is 
 		 * not message concept in SARL. All the communications are
 		 * supported by the concept of <code>Event</code>
+		 * 
 		 */
 		describe "Event vs. Message"{
 		}

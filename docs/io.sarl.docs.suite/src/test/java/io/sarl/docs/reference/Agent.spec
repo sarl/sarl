@@ -18,7 +18,6 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.jnario.runner.CreateWith
 
 /**
@@ -56,7 +55,6 @@ import org.jnario.runner.CreateWith
 describe "Agent Reference"{
 	
 		@Inject extension SARLParser
-		@Inject extension IQualifiedNameProvider
 		
 		/* An agent is declared with the <code>agent</code> keyword.
 		 * In the agent's body block, we can declare Mental States 

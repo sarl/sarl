@@ -18,7 +18,6 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.jnario.runner.CreateWith
 
 /**
@@ -35,7 +34,6 @@ import org.jnario.runner.CreateWith
 describe "Behavior Reference" {
 	
 		@Inject extension SARLParser
-		@Inject extension IQualifiedNameProvider
 		
 		/* A behavior is declared with the <code>behavior</code> keyword.
 		 * In the behavior's body block, we can declare Mental States 

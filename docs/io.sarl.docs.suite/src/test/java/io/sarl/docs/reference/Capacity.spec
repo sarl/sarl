@@ -18,7 +18,6 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.jnario.runner.CreateWith
 
 /**
@@ -49,7 +48,6 @@ import org.jnario.runner.CreateWith
 describe "Capacity Reference"{
 
 		@Inject extension SARLParser
-		@Inject extension IQualifiedNameProvider
 
 		describe "Defining a Capacity" {
 			
