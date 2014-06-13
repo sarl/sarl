@@ -377,13 +377,14 @@ class SARLValidator extends AbstractSARLValidator {
 
 	// Override this function to ensure that the initialization default is reported.
 	protected override reportUninitializedField(JvmField field) {
+		var sarlElement = services.jvmModelAssociations.getPrimarySourceElement(field)
 		error(
 				String.format(
 						"The blank final field '%s' may not have been initialized.",
 						field.simpleName
 						), 
-				field,
-				null,
+				sarlElement,
+				SarlPackage.Literals.ATTRIBUTE__NAME,
 				ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 				org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION)
 	}
