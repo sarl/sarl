@@ -12,6 +12,7 @@ import org.eclipse.xtext.xbase.ui.labeling.XbaseDescriptionLabelProvider
 import org.eclipse.xtext.xtype.XtypePackage
 
 import static io.sarl.lang.sarl.SarlPackage.Literals.*
+import io.sarl.lang.sarl.Attribute
 
 //import org.eclipse.xtext.resource.IEObjectDescription
 
@@ -50,7 +51,11 @@ class SARLDescriptionLabelProvider extends XbaseDescriptionLabelProvider {
 				images.forEvent
 			}
 			case ATTRIBUTE: {
-				images.forAttribute(true)
+				var obj = element.EObjectOrProxy
+				images.forAttribute(
+						(obj===null) ||
+						(!(obj instanceof Attribute)) ||
+						((obj as Attribute).writeable))
 			}
 			case CONSTRUCTOR: {
 				images.forConstructor(JvmVisibility::PUBLIC, 0)

@@ -60,7 +60,7 @@ public class SARLImages extends XbaseImages2 {
 	}
 	
 	public def ImageDescriptor forBehaviorUnit() {
-		forOperation(JvmVisibility::PRIVATE, JavaElementImageDescriptor::RUNNABLE)
+		imageHelper.getImageDescriptor("sarl-behavior-unit.png");
 	}
 
 	public def ImageDescriptor forAction() {
@@ -85,11 +85,19 @@ public class SARLImages extends XbaseImages2 {
 	}
 
 	public def ImageDescriptor forCapacityUses() {
-		getDecorated(forCapacity, JavaElementImageDescriptor::RUNNABLE)
+		forImportContainer
+	}
+
+	public def ImageDescriptor forCapacityUse() {
+		forImport
 	}
 
 	public def ImageDescriptor forCapacityRequirements() {
-		getDecorated(forCapacity, JavaElementImageDescriptor::RUNNABLE)
+		forImportContainer
+	}
+
+	public def ImageDescriptor forCapacityRequirement() {
+		forCapacity
 	}
 
 }

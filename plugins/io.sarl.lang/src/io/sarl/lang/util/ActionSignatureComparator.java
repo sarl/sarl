@@ -13,18 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.signature;
+package io.sarl.lang.util;
 
 import io.sarl.lang.sarl.ActionSignature;
-import io.sarl.lang.sarl.FormalParameter;
 
 import java.util.Comparator;
-import java.util.Iterator;
-
-import org.eclipse.xtext.common.types.JvmTypeReference;
 
 /**
- * A key for signatures.
+ * Comparator of ActionSignature.
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -33,10 +29,12 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  */
 public class ActionSignatureComparator implements Comparator<ActionSignature> {
 
+	private final FormalParameterListComparator comparator = new FormalParameterListComparator();
+	
 	/**
 	 */
 	public ActionSignatureComparator() {
-		
+		//
 	}
 	
 	/** {@inheritDoc}
@@ -46,27 +44,7 @@ public class ActionSignatureComparator implements Comparator<ActionSignature> {
 		if (a==b) return 0;
 		if (a==null) return Integer.MIN_VALUE;
 		if (b==null) return Integer.MAX_VALUE;
-		int cmp = Integer.compare(a.getParams().size(), b.getParams().size());
-		if (cmp!=0) return cmp;
-		Iterator<FormalParameter> i1 = a.getParams().iterator();
-		Iterator<FormalParameter> i2 = b.getParams().iterator();
-		while (i1.hasNext() && i2.hasNext()) {
-			FormalParameter p1 = i1.next();
-			FormalParameter p2 = i2.next();
-			if (p1!=p2) {
-				if (p1==null) return Integer.MIN_VALUE;
-				if (p2==null) return Integer.MAX_VALUE;
-				JvmTypeReference t1 = p1.getParameterType();
-				JvmTypeReference t2 = p2.getParameterType();
-				if (t1!=t2) {
-					if (t1==null) return Integer.MIN_VALUE;
-					if (t2==null) return Integer.MAX_VALUE;
-					cmp = t1.getIdentifier().compareTo(t2.getIdentifier());
-					if (cmp!=0) return cmp;
-				}
-			}
-		}
-		return 0;
+		return this.comparator.compare(a.getParams(), b.getParams());
 	}
 	
 }

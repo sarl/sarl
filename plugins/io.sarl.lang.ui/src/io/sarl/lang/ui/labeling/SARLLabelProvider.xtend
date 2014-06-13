@@ -22,13 +22,18 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
 import org.eclipse.jface.viewers.StyledString
 import org.eclipse.xtext.common.types.JvmExecutable
+import org.eclipse.xtext.common.types.JvmField
+import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
+import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.naming.QualifiedName
+import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
 import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 import org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider
 import org.eclipse.xtext.xbase.validation.UIStrings
+import org.eclipse.xtext.common.types.JvmConstructor
 
 /**
  * Provides labels for a EObjects.
@@ -39,7 +44,8 @@ class SARLLabelProvider extends XbaseLabelProvider {
 
 	@Inject UIStrings uiStrings
 	@Inject OperatorMapping operatorMapping
-	@Inject	private CommonTypeComputationServices services
+	@Inject	CommonTypeComputationServices services
+	@Inject ILogicalContainerProvider logicalContainerProvider;
 	@Inject SARLImages images
 
 	@Inject
@@ -112,6 +118,25 @@ class SARLLabelProvider extends XbaseLabelProvider {
 
 	// Texts
 	
+	protected def text(JvmParameterizedTypeReference element) {
+		var s = element.simpleName.convertToStyledString
+		if (element.arguments!==null && !element.arguments.empty) {
+			s.append("<")
+			var boolean b = false
+			for(t : element.arguments) {
+				if (b) s.append(", ")
+				else b = true
+				s.append(text(t))
+			}
+			s.append(">")
+		}
+		return s
+	}
+
+	protected def text(JvmTypeReference element) {
+		uiStrings.referenceToString(element, element.simpleName)
+	}
+
 	protected def text(SarlScript element) {
 		element.eResource.URI.trimFileExtension.lastSegment
 	}
@@ -137,11 +162,41 @@ class SARLLabelProvider extends XbaseLabelProvider {
 	}
 
 	protected def text(Attribute element) {
-		element.name
+		var jvmElement = element.jvmElement(JvmField)
+		if (jvmElement !== null) {
+			element.name.convertToStyledString
+				.append(" : " + jvmElement.type.simpleName, StyledString::COUNTER_STYLER)
+		}
+		else if (element.type !== null) {
+			element.name.convertToStyledString
+				.append(" : " + element.type.simpleName, StyledString::COUNTER_STYLER)
+		}
+		else {
+			element.name.convertToStyledString
+		}
+	}
+	
+	protected def StyledString signatureWithoutReturnType(StyledString simpleName, JvmExecutable element) {
+		simpleName.convertToStyledString.append(
+			uiStrings.parameters(element)
+		)
 	}
 
 	protected def text(Constructor element) {
-		"new" + uiStrings.parameters(element.jvmElement(JvmExecutable))
+		var jvmElement = element.jvmElement(JvmConstructor)
+		if (jvmElement!==null) {
+			var container = logicalContainerProvider.getNearestLogicalContainer(element)
+			if (container!==null) {
+				signatureWithoutReturnType(
+					container.simpleName.convertToStyledString,
+					jvmElement)
+			}
+			else {
+				signatureWithoutReturnType(
+					new StyledString("new", StyledString::DECORATIONS_STYLER),
+					jvmElement)
+			}
+		}
 	}
 
 	protected def text(Action element) {
@@ -162,7 +217,7 @@ class SARLLabelProvider extends XbaseLabelProvider {
 				return result
 			}
 		}
-		return signature(element.name, element.jvmElement(JvmExecutable))
+		return signature(element.name, element.jvmElement(JvmOperation))
 	}
 
 	protected def text(ActionSignature element) {
@@ -170,24 +225,20 @@ class SARLLabelProvider extends XbaseLabelProvider {
 	}
 
 	protected def text(CapacityUses element) {
-		"Capacity Uses".convertToString
+		"capacity uses".convertToString
 	}
 
 	protected def text(RequiredCapacity element) {
-		"Capacity Requirement".convertToString
+		"required capacities".convertToString
 	}
 
 	protected def text(BehaviorUnit element) {
-		var s = new StyledString("on ", StyledString::QUALIFIER_STYLER)
+		var s = new StyledString("on ", StyledString::DECORATIONS_STYLER)
 		s.append(element.event.simpleName)
 		if (element.guard!==null) {
-			s.append(" [guarded]", StyledString::COUNTER_STYLER)
+			s.append(" [guarded]", StyledString::DECORATIONS_STYLER)
 		}
 		s
-	}
-
-	protected def text(JvmParameterizedTypeReference element) {
-		element.simpleName
 	}
 
 }

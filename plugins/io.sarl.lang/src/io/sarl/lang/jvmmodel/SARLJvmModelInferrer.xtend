@@ -878,7 +878,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	protected def SignatureKey generateConstructor(JvmGenericType owner, TopElement context, Constructor constructor, int index) {
 		val actionKey = sarlSignatureProvider.createConstructorID(owner)
 		
-		owner.members += context.toConstructor [
+		owner.members += constructor.toConstructor [
 			constructor.copyDocumentationTo(it)
 			varArgs = constructor.varargs
 			generateFormalParametersAndDefaultValueFields(
@@ -893,7 +893,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		)
 		
 		for(otherSignature : otherSignatures) {
-			var op = owner.toConstructor [
+			var op = constructor.toConstructor [
 				constructor.copyDocumentationTo(it)
 				varArgs = constructor.varargs
 				val args = generateFormalParametersWithDefaultValue(
@@ -904,7 +904,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					append(args.join(", "))
 					append(");")
 				]
-				annotations += owner.toAnnotation(
+				annotations += constructor.toAnnotation(
 					DefaultValueUse,
 					otherSignatures.formalParameterKey.toString
 				)

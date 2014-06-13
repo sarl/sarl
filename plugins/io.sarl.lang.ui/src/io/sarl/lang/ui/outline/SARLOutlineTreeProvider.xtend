@@ -3,63 +3,183 @@
 */
 package io.sarl.lang.ui.outline
 
-import com.google.inject.Inject
+import io.sarl.lang.sarl.Action
+import io.sarl.lang.sarl.ActionSignature
+import io.sarl.lang.sarl.Agent
+import io.sarl.lang.sarl.Attribute
+import io.sarl.lang.sarl.Behavior
+import io.sarl.lang.sarl.BehaviorUnit
+import io.sarl.lang.sarl.Capacity
+import io.sarl.lang.sarl.CapacityUses
+import io.sarl.lang.sarl.Constructor
+import io.sarl.lang.sarl.Event
+import io.sarl.lang.sarl.FeatureContainer
+import io.sarl.lang.sarl.RequiredCapacity
 import io.sarl.lang.sarl.SarlPackage
 import io.sarl.lang.sarl.SarlScript
-import io.sarl.lang.ui.images.SARLImages
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.ui.editor.outline.impl.BackgroundOutlineTreeProvider
+import io.sarl.lang.sarl.Skill
+import org.eclipse.jdt.internal.ui.JavaPluginImages
+import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
-import org.eclipse.xtext.ui.editor.outline.impl.OutlineNodeFactory
-import org.eclipse.xtext.xtype.XtypePackage
-import org.eclipse.xtext.ui.editor.outline.IOutlineNode
-import io.sarl.lang.sarl.TopElement
-import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 
 /**
  * Customization of the default outline structure.
  *
  * see http://www.eclipse.org/Xtext/documentation.html#outline
  */
-class SARLOutlineTreeProvider extends BackgroundOutlineTreeProvider {
-
-	@Inject private OutlineNodeFactory factory
-	@Inject	private CommonTypeComputationServices services
-	@Inject SARLImages images
-
-//	override internalCreateChildren(DocumentRootNode parentNode, EObject modelElement) {
-//		if(modelElement instanceof SarlScript) {
-//			// Package
-//			if (modelElement.name !== null) {
-//				factory.createEStructuralFeatureNode(parentNode, modelElement, SarlPackage.Literals.SARL_SCRIPT__NAME,
-//						images.forPackage(), modelElement.name, true);
-//			}
-//			// Imports
-//			if (modelElement.importSection !== null
-//				&& !modelElement.importSection.importDeclarations.empty) {
-//				factory.createEStructuralFeatureNode(parentNode, modelElement.importSection,
-//						XtypePackage.Literals.XIMPORT_SECTION__IMPORT_DECLARATIONS,
-//						images.forImportContainer,
-//						"import declarations", false);
-//			}
-//			// Top Elements
-//			for (topElement : modelElement.elements) {
-//				createNodeForTopElement(parentNode, topElement);
-//			}
-//		}
-//	}
-//	
-//	private def createNodeForTopElement(IOutlineNode parentNode, TopElement topElement) {
-//		var classNode = createNode(parentNode, topElement);
-//
-//		var inferredType = services.jvmModelAssociations.getInferredType(xtendType);
-//		if (inferredType != null) {
-//			Set<JvmFeature> processedFeatures = newHashSet();
-//			createFeatureNodesForType(parentNode, xtendType, inferredType, inferredType, processedFeatures, 0);
-//		} else {
-//			for (XtendMember member : xtendType.getMembers())
-//				createNode(parentNode, member);
-//		}
-//	}
+class SARLOutlineTreeProvider extends DefaultOutlineTreeProvider { 
 	
+	protected def _createChildren(DocumentRootNode parentNode, SarlScript modelElement) {
+		if (modelElement.name!==null) {
+			createEStructuralFeatureNode(
+				parentNode, modelElement,
+				SarlPackage.Literals.SARL_SCRIPT__NAME, 
+				JavaPluginImages::get(JavaPluginImages::IMG_OBJS_PACKDECL),
+				modelElement.name,
+				true)
+		}
+		if (modelElement.importSection!==null && !modelElement.importSection.importDeclarations.empty) {
+			createNode(parentNode, modelElement.importSection)
+		}
+		for(topElement : modelElement.elements) {
+			createNode(parentNode, topElement)
+		}
+	}
+	
+	protected def _createNode(DocumentRootNode parentNode, FeatureContainer modelElement) {
+		var elementNode = createEStructuralFeatureNode(
+			parentNode, modelElement,
+			SarlPackage.Literals.NAMED_ELEMENT__NAME, 
+			imageDispatcher.invoke(modelElement),
+			textDispatcher.invoke(modelElement),
+			modelElement.features.empty)
+		if (!modelElement.features.empty) {
+			
+			var attributes = newArrayList
+			var constructors = newArrayList
+			var eventHandlers = newArrayList
+			var usedCapacities = newArrayList
+			var requiredCapacities = newArrayList
+			var actions = newArrayList
+			
+			var CapacityUses firstCapacityUse = null
+			var RequiredCapacity firstRequirement = null
+			
+			for(feature : modelElement.features) {
+				if (feature instanceof Attribute) {
+					attributes.add(feature)
+				}
+				else if (feature instanceof Action) {
+					actions.add(feature.signature as ActionSignature)
+				}
+				else if (feature instanceof ActionSignature) {
+					actions.add(feature)
+				}
+				else if (feature instanceof BehaviorUnit) {
+					eventHandlers.add(feature)
+				}
+				else if (feature instanceof Constructor) {
+					constructors.add(feature)
+				}
+				else if (feature instanceof CapacityUses) {
+					if (firstCapacityUse===null) firstCapacityUse = feature
+					usedCapacities.addAll(feature.capacitiesUsed)
+				}
+				else if (feature instanceof RequiredCapacity) {
+					if (firstRequirement===null) firstRequirement = feature
+					requiredCapacities.addAll(feature.requiredCapacities)
+				}
+			}
+			
+			if (!usedCapacities.empty) {
+				var subnode = createEObjectNode(
+								elementNode, firstCapacityUse,
+								imageDispatcher.invoke(firstCapacityUse),
+								textDispatcher.invoke(firstCapacityUse),
+								false)			
+				for(item : usedCapacities) {
+					createEObjectNode(
+								subnode, item,
+								imageDispatcher.invoke(item),
+								textDispatcher.invoke(item),
+								true)		
+				}
+			}
+			
+			if (!requiredCapacities.empty) {
+				var subnode = createEObjectNode(
+								elementNode, firstRequirement,
+								imageDispatcher.invoke(firstRequirement),
+								textDispatcher.invoke(firstRequirement),
+								false)			
+				for(item : requiredCapacities) {
+					createEObjectNode(
+								subnode, item,
+								imageDispatcher.invoke(item),
+								textDispatcher.invoke(item),
+								true)		
+				}
+			}
+
+			if (!constructors.empty) {
+				for(item : constructors) {
+					createNode(elementNode, item)		
+				}
+			}
+
+			if (!eventHandlers.empty) {
+				for(item : eventHandlers) {
+					createNode(elementNode, item)		
+				}
+			}
+
+			if (!actions.empty) {
+				for(item : actions) {
+					createNode(elementNode, item)		
+				}
+			}
+
+		}
+	}
+
+	protected def boolean _isLeaf(Agent modelElement) {
+  		modelElement.features.empty
+	}
+
+	protected def boolean _isLeaf(Capacity modelElement) {
+  		modelElement.features.empty
+	}
+
+	protected def boolean _isLeaf(Skill modelElement) {
+  		modelElement.features.empty
+	}
+
+	protected def boolean _isLeaf(Event modelElement) {
+  		modelElement.features.empty
+	}
+
+	protected def boolean _isLeaf(Behavior modelElement) {
+  		modelElement.features.empty
+	}
+
+	protected def boolean _isLeaf(Action modelElement) {
+  		true
+	}
+	
+	protected def boolean _isLeaf(ActionSignature modelElement) {
+  		true
+	}
+
+	protected def boolean _isLeaf(Constructor modelElement) {
+  		true
+	}
+
+	protected def boolean _isLeaf(BehaviorUnit modelElement) {
+  		true
+	}
+
+	protected def boolean _isLeaf(Attribute modelElement) {
+  		true
+	}
+
 }
