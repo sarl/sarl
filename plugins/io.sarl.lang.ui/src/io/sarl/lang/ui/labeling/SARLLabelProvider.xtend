@@ -4,26 +4,190 @@
 package io.sarl.lang.ui.labeling
 
 import com.google.inject.Inject
+import io.sarl.lang.sarl.Action
+import io.sarl.lang.sarl.ActionSignature
+import io.sarl.lang.sarl.Agent
+import io.sarl.lang.sarl.Attribute
+import io.sarl.lang.sarl.Behavior
+import io.sarl.lang.sarl.BehaviorUnit
+import io.sarl.lang.sarl.Capacity
+import io.sarl.lang.sarl.CapacityUses
+import io.sarl.lang.sarl.Constructor
+import io.sarl.lang.sarl.Event
+import io.sarl.lang.sarl.RequiredCapacity
+import io.sarl.lang.sarl.SarlScript
+import io.sarl.lang.sarl.Skill
+import io.sarl.lang.ui.images.SARLImages
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
+import org.eclipse.jface.viewers.StyledString
+import org.eclipse.xtext.common.types.JvmExecutable
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
+import org.eclipse.xtext.common.types.JvmVisibility
+import org.eclipse.xtext.naming.QualifiedName
+import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping
+import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
+import org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider
+import org.eclipse.xtext.xbase.validation.UIStrings
 
 /**
  * Provides labels for a EObjects.
  * 
  * see http://www.eclipse.org/Xtext/documentation.html#labelProvider
  */
-class SARLLabelProvider extends org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider {
+class SARLLabelProvider extends XbaseLabelProvider {
+
+	@Inject UIStrings uiStrings
+	@Inject OperatorMapping operatorMapping
+	@Inject	private CommonTypeComputationServices services
+	@Inject SARLImages images
 
 	@Inject
-	new(org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider delegate) {
+	new(AdapterFactoryLabelProvider delegate) {
 		super(delegate);
 	}
-
-	// Labels and icons can be computed like this:
 	
-//	def text(Greeting ele) {
-//		'A greeting to ' + ele.name
-//	}
-//
-//	def image(Greeting ele) {
-//		'Greeting.gif'
-//	}
+	protected def <T> T jvmElement(EObject element, Class<T> type) {
+		for(obj : services.jvmModelAssociations.getJvmElements(element)) {
+			if (type.isInstance(obj)) {
+				return type.cast(obj)
+			}
+		}
+		return null;
+	}
+
+	// Descriptors
+	
+	protected def dispatch imageDescriptor(SarlScript element) {
+		images.forFile
+	}
+	
+	protected def dispatch imageDescriptor(Agent element) {
+		images.forAgent
+	}
+	
+	protected def dispatch imageDescriptor(Event element) {
+		images.forEvent
+	}
+
+	protected def dispatch imageDescriptor(Capacity element) {
+		images.forCapacity
+	}
+
+	protected def dispatch imageDescriptor(Skill element) {
+		images.forSkill
+	}
+
+	protected def dispatch imageDescriptor(Behavior element) {
+		images.forBehavior
+	}
+
+	protected def dispatch imageDescriptor(Attribute element) {
+		images.forAttribute(element.writeable)
+	}
+
+	protected def dispatch imageDescriptor(Constructor element) {
+		images.forConstructor(JvmVisibility::PUBLIC, 0)
+	}
+
+	protected def dispatch imageDescriptor(Action element) {
+		images.forAction
+	}
+
+	protected def dispatch imageDescriptor(ActionSignature element) {
+		images.forActionSignature
+	}
+
+	protected def dispatch imageDescriptor(CapacityUses element) {
+		images.forCapacityUses
+	}
+
+	protected def dispatch imageDescriptor(RequiredCapacity element) {
+		images.forCapacityRequirements
+	}
+
+	protected def dispatch imageDescriptor(BehaviorUnit element) {
+		images.forBehaviorUnit
+	}
+
+	// Texts
+	
+	protected def text(SarlScript element) {
+		element.eResource.URI.trimFileExtension.lastSegment
+	}
+	
+	protected def text(Agent element) {
+		element.name
+	}
+	
+	protected def text(Event element) {
+		element.name
+	}
+
+	protected def text(Capacity element) {
+		element.name
+	}
+
+	protected def text(Skill element) {
+		element.name
+	}
+
+	protected def text(Behavior element) {
+		element.name
+	}
+
+	protected def text(Attribute element) {
+		element.name
+	}
+
+	protected def text(Constructor element) {
+		"new" + uiStrings.parameters(element.jvmElement(JvmExecutable))
+	}
+
+	protected def text(Action element) {
+		if (element.signature!==null)
+			(element.signature as ActionSignature).toText
+		else
+			"" 
+	}
+	
+	private def toText(ActionSignature element) {
+		val simpleName = element.name
+		if (simpleName != null) {
+			val qnName = QualifiedName.create(simpleName)
+			val operator = operatorMapping.getOperator(qnName)
+			if (operator != null) {
+				val result = signature(operator.firstSegment, element.jvmElement(JvmExecutable))
+				result.append(' (' + simpleName + ')', StyledString::COUNTER_STYLER)
+				return result
+			}
+		}
+		return signature(element.name, element.jvmElement(JvmExecutable))
+	}
+
+	protected def text(ActionSignature element) {
+		element.toText
+	}
+
+	protected def text(CapacityUses element) {
+		"Capacity Uses".convertToString
+	}
+
+	protected def text(RequiredCapacity element) {
+		"Capacity Requirement".convertToString
+	}
+
+	protected def text(BehaviorUnit element) {
+		var s = new StyledString("on ", StyledString::QUALIFIER_STYLER)
+		s.append(element.event.simpleName)
+		if (element.guard!==null) {
+			s.append(" [guarded]", StyledString::COUNTER_STYLER)
+		}
+		s
+	}
+
+	protected def text(JvmParameterizedTypeReference element) {
+		element.simpleName
+	}
+
 }

@@ -3,11 +3,63 @@
 */
 package io.sarl.lang.ui.outline
 
+import com.google.inject.Inject
+import io.sarl.lang.sarl.SarlPackage
+import io.sarl.lang.sarl.SarlScript
+import io.sarl.lang.ui.images.SARLImages
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.ui.editor.outline.impl.BackgroundOutlineTreeProvider
+import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
+import org.eclipse.xtext.ui.editor.outline.impl.OutlineNodeFactory
+import org.eclipse.xtext.xtype.XtypePackage
+import org.eclipse.xtext.ui.editor.outline.IOutlineNode
+import io.sarl.lang.sarl.TopElement
+import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
+
 /**
  * Customization of the default outline structure.
  *
  * see http://www.eclipse.org/Xtext/documentation.html#outline
  */
-class SARLOutlineTreeProvider extends org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider {
+class SARLOutlineTreeProvider extends BackgroundOutlineTreeProvider {
+
+	@Inject private OutlineNodeFactory factory
+	@Inject	private CommonTypeComputationServices services
+	@Inject SARLImages images
+
+//	override internalCreateChildren(DocumentRootNode parentNode, EObject modelElement) {
+//		if(modelElement instanceof SarlScript) {
+//			// Package
+//			if (modelElement.name !== null) {
+//				factory.createEStructuralFeatureNode(parentNode, modelElement, SarlPackage.Literals.SARL_SCRIPT__NAME,
+//						images.forPackage(), modelElement.name, true);
+//			}
+//			// Imports
+//			if (modelElement.importSection !== null
+//				&& !modelElement.importSection.importDeclarations.empty) {
+//				factory.createEStructuralFeatureNode(parentNode, modelElement.importSection,
+//						XtypePackage.Literals.XIMPORT_SECTION__IMPORT_DECLARATIONS,
+//						images.forImportContainer,
+//						"import declarations", false);
+//			}
+//			// Top Elements
+//			for (topElement : modelElement.elements) {
+//				createNodeForTopElement(parentNode, topElement);
+//			}
+//		}
+//	}
+//	
+//	private def createNodeForTopElement(IOutlineNode parentNode, TopElement topElement) {
+//		var classNode = createNode(parentNode, topElement);
+//
+//		var inferredType = services.jvmModelAssociations.getInferredType(xtendType);
+//		if (inferredType != null) {
+//			Set<JvmFeature> processedFeatures = newHashSet();
+//			createFeatureNodesForType(parentNode, xtendType, inferredType, inferredType, processedFeatures, 0);
+//		} else {
+//			for (XtendMember member : xtendType.getMembers())
+//				createNode(parentNode, member);
+//		}
+//	}
 	
 }
