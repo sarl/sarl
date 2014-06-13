@@ -615,9 +615,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							visibility = JvmVisibility::PROTECTED
 							val args = newArrayList
 							for(param : entry.value.parameters) {
-								parameters += context.toParameter(param.simpleName, param.parameterType)
+								var sarlElement = services.jvmModelAssociations.getPrimarySourceElement(param)
+								parameters += sarlElement.toParameter(param.simpleName, param.parameterType)
 								args += param.simpleName
 							}
+							varArgs = entry.value.varArgs
 							body = [
 								if (entry.value.returnType.identifier!='void') {
 									append("return ")

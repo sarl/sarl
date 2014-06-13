@@ -536,7 +536,7 @@ class SARLValidator extends AbstractSARLValidator {
 									"The operation %s must be implemented.",
 									key.toString),
 							element,
-							null,
+							SarlPackage.Literals.NAMED_ELEMENT__NAME,
 							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 							IssueCodes::MISSING_METHOD_IMPLEMENTATION)
 				}
