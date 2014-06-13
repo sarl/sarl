@@ -21,6 +21,7 @@ import io.sarl.lang.sarl.Skill
 import org.eclipse.jdt.internal.ui.JavaPluginImages
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
+import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode
 
 /**
  * Customization of the default outline structure.
@@ -55,96 +56,58 @@ class SARLOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			modelElement.features.empty)
 		if (!modelElement.features.empty) {
 			
-			var attributes = newArrayList
-			var constructors = newArrayList
-			var eventHandlers = newArrayList
-			var usedCapacities = newArrayList
-			var requiredCapacities = newArrayList
-			var actions = newArrayList
-			
-			var CapacityUses firstCapacityUse = null
-			var RequiredCapacity firstRequirement = null
+			var EObjectNode capacityUseNode = null
+			var EObjectNode capacityRequirementNode = null
 			
 			for(feature : modelElement.features) {
 				if (feature instanceof Attribute) {
-					attributes.add(feature)
+					createNode(elementNode, feature)
 				}
 				else if (feature instanceof Action) {
-					actions.add(feature)
+					createNode(elementNode, feature)
 				}
 				else if (feature instanceof ActionSignature) {
-					actions.add(feature)
+					createNode(elementNode, feature)
 				}
 				else if (feature instanceof BehaviorUnit) {
-					eventHandlers.add(feature)
+					createNode(elementNode, feature)
 				}
 				else if (feature instanceof Constructor) {
-					constructors.add(feature)
+					createNode(elementNode, feature)
 				}
 				else if (feature instanceof CapacityUses) {
-					if (firstCapacityUse===null) firstCapacityUse = feature
-					usedCapacities.addAll(feature.capacitiesUsed)
+					if (capacityUseNode===null) {
+						capacityUseNode = createEObjectNode(
+								elementNode, feature,
+								imageDispatcher.invoke(feature),
+								textDispatcher.invoke(feature),
+								false)			
+					}
+					for(item : feature.capacitiesUsed) {
+						createEObjectNode(
+									capacityUseNode, item,
+									imageDispatcher.invoke(item),
+									textDispatcher.invoke(item),
+									true)		
+					}
 				}
 				else if (feature instanceof RequiredCapacity) {
-					if (firstRequirement===null) firstRequirement = feature
-					requiredCapacities.addAll(feature.requiredCapacities)
-				}
-			}
-			
-			if (!usedCapacities.empty) {
-				var subnode = createEObjectNode(
-								elementNode, firstCapacityUse,
-								imageDispatcher.invoke(firstCapacityUse),
-								textDispatcher.invoke(firstCapacityUse),
+					if (capacityRequirementNode===null) {
+						capacityRequirementNode = createEObjectNode(
+								elementNode, feature,
+								imageDispatcher.invoke(feature),
+								textDispatcher.invoke(feature),
 								false)			
-				for(item : usedCapacities) {
-					createEObjectNode(
-								subnode, item,
-								imageDispatcher.invoke(item),
-								textDispatcher.invoke(item),
-								true)		
+					}
+					for(item : feature.requiredCapacities) {
+						createEObjectNode(
+									capacityRequirementNode, item,
+									imageDispatcher.invoke(item),
+									textDispatcher.invoke(item),
+									true)		
+					}
 				}
 			}
-			
-			if (!requiredCapacities.empty) {
-				var subnode = createEObjectNode(
-								elementNode, firstRequirement,
-								imageDispatcher.invoke(firstRequirement),
-								textDispatcher.invoke(firstRequirement),
-								false)			
-				for(item : requiredCapacities) {
-					createEObjectNode(
-								subnode, item,
-								imageDispatcher.invoke(item),
-								textDispatcher.invoke(item),
-								true)		
-				}
-			}
-
-			if (!attributes.empty) {
-				for(item : attributes) {
-					createNode(elementNode, item)		
-				}
-			}
-
-			if (!constructors.empty) {
-				for(item : constructors) {
-					createNode(elementNode, item)		
-				}
-			}
-
-			if (!eventHandlers.empty) {
-				for(item : eventHandlers) {
-					createNode(elementNode, item)		
-				}
-			}
-
-			if (!actions.empty) {
-				for(item : actions) {
-					createNode(elementNode, item)		
-				}
-			}
-
 		}
 	}
 

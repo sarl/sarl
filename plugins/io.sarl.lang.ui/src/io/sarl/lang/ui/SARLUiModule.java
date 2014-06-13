@@ -4,9 +4,13 @@
 package io.sarl.lang.ui;
 
 import io.sarl.lang.ui.custom.SARLHighlightingCalculator;
+import io.sarl.lang.ui.outline.SARLOutlineNodeComparator;
+import io.sarl.lang.ui.outline.SARLOutlinePage;
 import io.sarl.lang.ui.validation.SARLUIValidator;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+import org.eclipse.xtext.ui.editor.outline.impl.OutlineFilterAndSorter.IComparator;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.ISemanticHighlightingCalculator;
 
 /**
@@ -21,8 +25,6 @@ public class SARLUiModule extends io.sarl.lang.ui.AbstractSARLUiModule {
 		super(plugin);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public Class<? extends ISemanticHighlightingCalculator> bindISemanticHighlightingCalculator() {
 		assert(
@@ -33,8 +35,6 @@ public class SARLUiModule extends io.sarl.lang.ui.AbstractSARLUiModule {
 		return SARLHighlightingCalculator.class;
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
 	@org.eclipse.xtext.service.SingletonBinding(eager=true)
 	public Class<? extends org.eclipse.xtext.xbase.ui.validation.XbaseUIValidator> bindXbaseUIValidator() {
@@ -45,5 +45,16 @@ public class SARLUiModule extends io.sarl.lang.ui.AbstractSARLUiModule {
 		//
 		return SARLUIValidator.class;
 	}
+	
+	@Override
+	public Class<? extends IContentOutlinePage> bindIContentOutlinePage() {
+		return SARLOutlinePage.class;
+	}
+	
+	@Override
+	public Class<? extends IComparator> bindOutlineFilterAndSorter$IComparator() {
+		return SARLOutlineNodeComparator.class;
+	}
+	
 		
 }
