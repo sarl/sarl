@@ -154,6 +154,21 @@ public class SARLParser {
 	/** Parse the contatenation of the three parameters.
 	 * 
 	 * @param outputText
+	 * @param postfix
+	 * @throws Exception
+	 */
+	public void parsesWithError(CharSequence outputText, CharSequence postfix) throws Exception{
+		StringBuilder b = new StringBuilder(outputText);
+		if (postfix!=null && postfix.length()>0) {
+			b.append("\n"); //$NON-NLS-1$
+			b.append(postfix);
+		}
+		parsesWithError(b.toString());
+	}
+
+	/** Parse the contatenation of the three parameters.
+	 * 
+	 * @param outputText
 	 * @param prefix
 	 * @param postfix
 	 * @return the model.
@@ -171,6 +186,27 @@ public class SARLParser {
 			b.append(postfix);
 		}
 		return parsesSuccessfully(b.toString());
+	}
+
+	/** Parse the contatenation of the three parameters.
+	 * 
+	 * @param outputText
+	 * @param prefix
+	 * @param postfix
+	 * @throws Exception
+	 */
+	public void parsesWithError(CharSequence outputText, CharSequence prefix, CharSequence postfix) throws Exception{
+		StringBuilder b = new StringBuilder();
+		if (prefix!=null && prefix.length()>0) {
+			b.append(prefix);
+			b.append("\n"); //$NON-NLS-1$
+		}
+		b.append(outputText);
+		if (postfix!=null && postfix.length()>0) {
+			b.append("\n"); //$NON-NLS-1$
+			b.append(postfix);
+		}
+		parsesWithError(b.toString());
 	}
 
 	private ResourceSet getResourceSetWithDefaultModels() {
