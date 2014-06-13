@@ -70,7 +70,7 @@ class SARLOutlineTreeProvider extends DefaultOutlineTreeProvider {
 					attributes.add(feature)
 				}
 				else if (feature instanceof Action) {
-					actions.add(feature.signature as ActionSignature)
+					actions.add(feature)
 				}
 				else if (feature instanceof ActionSignature) {
 					actions.add(feature)
@@ -118,6 +118,12 @@ class SARLOutlineTreeProvider extends DefaultOutlineTreeProvider {
 								imageDispatcher.invoke(item),
 								textDispatcher.invoke(item),
 								true)		
+				}
+			}
+
+			if (!attributes.empty) {
+				for(item : attributes) {
+					createNode(elementNode, item)		
 				}
 			}
 
