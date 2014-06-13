@@ -121,7 +121,7 @@ class AgentParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmField,
+			SarlPackage::eINSTANCE.attribute,
 			org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION,
 			"The blank final field 'number' may not have been initialized"
 		)
@@ -261,7 +261,7 @@ class AgentParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmField,
+			SarlPackage::eINSTANCE.attribute,
 			org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION,
 			"The blank final field 'field2' may not have been initialized")
 	}
