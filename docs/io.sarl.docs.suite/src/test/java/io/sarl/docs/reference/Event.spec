@@ -90,7 +90,7 @@ describe "Event Reference"{
 			 * The first event is defined with the "empty block" syntax.
 			 * The second event is defined with the other syntax.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 			 */
 			fact "Define an empty event"{
 				val model = '''
