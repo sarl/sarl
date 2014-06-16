@@ -828,7 +828,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					signature.name,
 					otherSignatures.formalParameterKey
 				)
-		if (operationsToImplement!==null) {
+		if (operationsToImplement!==null && actSigKey!==null) {
 			var removedOp = operationsToImplement.remove(actSigKey)
 			if (removedOp!==null && implementedOperations!==null) {
 				implementedOperations.put(actSigKey, removedOp)
@@ -840,8 +840,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					signature.name,
 					otherSignature.key
 				)
-			if (inheritedOperation==null || 
-				inheritedOperation.apply(ak)) {
+			if (ak!==null &&
+				(inheritedOperation==null || 
+				inheritedOperation.apply(ak))) {
 				var additionalOp = signature.toMethod(signature.name, returnType) [
 					signature.copyDocumentationTo(it)
 					varArgs = signature.varargs
