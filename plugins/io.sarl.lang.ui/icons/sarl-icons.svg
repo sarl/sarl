@@ -162,19 +162,6 @@
          offset="1"
          style="stop-color:#fecf6c;stop-opacity:1;" />
     </linearGradient>
-    <filter
-       inkscape:collect="always"
-       id="filter3988"
-       x="-0.012242193"
-       width="1.0244844"
-       y="-0.60656768"
-       height="2.2131355"
-       color-interpolation-filters="sRGB">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.01127205"
-         id="feGaussianBlur3990" />
-    </filter>
     <radialGradient
        inkscape:collect="always"
        xlink:href="#linearGradient3831-8"
@@ -192,10 +179,10 @@
        id="radialGradient4038"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.4673382,-0.0221181,0.019478,1.292191,-108.28037,-124.22336)"
-       cx="213.30357"
-       cy="441.29074"
-       fx="213.30357"
-       fy="441.29074"
+       cx="210.09135"
+       cy="436.93622"
+       fx="210.09135"
+       fy="436.93622"
        r="6.8753963" />
     <linearGradient
        id="linearGradient4021-4">
@@ -214,10 +201,10 @@
        id="radialGradient4110"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.4673382,-0.0221181,0.019478,1.292191,-108.28037,-124.22336)"
-       cx="213.30357"
-       cy="441.29074"
-       fx="213.30357"
-       fy="441.29074"
+       cx="210.43549"
+       cy="436.94211"
+       fx="210.43549"
+       fy="436.94211"
        r="6.8753963" />
     <linearGradient
        id="linearGradient4097-3">
@@ -236,10 +223,10 @@
        id="radialGradient4186"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.4673382,-0.0221181,0.019478,1.292191,-108.28037,-124.22336)"
-       cx="213.30357"
-       cy="441.29074"
-       fx="213.30357"
-       fy="441.29074"
+       cx="210.51958"
+       cy="437.09012"
+       fx="210.51958"
+       fy="437.09012"
        r="6.8753963" />
     <linearGradient
        id="linearGradient4175-7">
@@ -258,10 +245,10 @@
        id="radialGradient4258"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(2.5707014,0.04920806,-0.04089553,2.1364436,-316.98939,-511.99836)"
-       cx="213.30357"
-       cy="441.29074"
-       fx="213.30357"
-       fy="441.29074"
+       cx="211.73473"
+       cy="438.73578"
+       fx="211.73473"
+       fy="438.73578"
        r="6.8753963" />
     <linearGradient
        id="linearGradient4021-7">
@@ -619,11 +606,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="-61.833717"
-     inkscape:cy="67.099741"
+     inkscape:zoom="3.959798"
+     inkscape:cx="42.485643"
+     inkscape:cy="61.581602"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g4253"
      showgrid="false"
      inkscape:window-width="1440"
      inkscape:window-height="876"
@@ -668,7 +655,7 @@
          sodipodi:cy="441.29074"
          sodipodi:cx="213.30357"
          id="path4019"
-         style="color:#000000;fill:url(#radialGradient4038);fill-opacity:1;stroke:#1f7941;stroke-width:0.5;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         style="color:#000000;fill:url(#radialGradient4038);fill-opacity:1;stroke:#1f7941;stroke-width:0.50000000000000000;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
          sodipodi:type="arc" />
       <text
          sodipodi:linespacing="125%"
@@ -711,7 +698,7 @@
          sodipodi:cy="441.29074"
          sodipodi:cx="213.30357"
          id="path4019-0"
-         style="color:#000000;fill:url(#radialGradient4110);fill-opacity:1;stroke:#59479e;stroke-width:0.5;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         style="color:#000000;fill:url(#radialGradient4110);fill-opacity:1;stroke:#59479e;stroke-width:0.50000000000000000;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
          sodipodi:type="arc" />
       <text
          sodipodi:linespacing="125%"
@@ -753,7 +740,7 @@
          sodipodi:cy="441.29074"
          sodipodi:cx="213.30357"
          id="path4019-0-7"
-         style="color:#000000;fill:url(#radialGradient4186);fill-opacity:1;stroke:#8f5d26;stroke-width:0.5;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         style="color:#000000;fill:url(#radialGradient4186);fill-opacity:1;stroke:#8f5d26;stroke-width:0.50000000000000000;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
          sodipodi:type="arc" />
       <text
          sodipodi:linespacing="125%"
@@ -792,7 +779,7 @@
          sodipodi:cy="441.29074"
          sodipodi:cx="213.30357"
          id="path4019-0-7-8"
-         style="color:#000000;fill:url(#radialGradient4258);fill-opacity:1;stroke:#959595;stroke-width:0.5;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         style="color:#000000;fill:url(#radialGradient4258);fill-opacity:1;stroke:#959595;stroke-width:0.50000000000000000;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
          sodipodi:type="arc" />
       <text
          sodipodi:linespacing="125%"
