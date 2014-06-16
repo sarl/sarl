@@ -41,7 +41,6 @@ public class SARLConfigurableIssueCodesProvider extends XbaseConfigurableIssueCo
 		super.initialize(iAcceptor);
 		
 		// Override the Xbase configuration
-		iAcceptor.accept(create(org.eclipse.xtext.xbase.validation.IssueCodes.UNREACHABLE_CODE, SeverityConverter.SEVERITY_WARNING));
 		iAcceptor.accept(create(org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING, SeverityConverter.SEVERITY_WARNING));
 
 		// Add warnings from SARL
@@ -49,6 +48,7 @@ public class SARLConfigurableIssueCodesProvider extends XbaseConfigurableIssueCo
 		iAcceptor.accept(create(IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION, SeverityConverter.SEVERITY_WARNING));
 		iAcceptor.accept(create(IssueCodes.WRONG_PACKAGE, SeverityConverter.SEVERITY_WARNING));
 		iAcceptor.accept(create(IssueCodes.DISCOURAGED_CAPACITY_DEFINITION, SeverityConverter.SEVERITY_WARNING));
+		iAcceptor.accept(create(IssueCodes.UNREACHABLE_BEHAVIOR_UNIT, SeverityConverter.SEVERITY_WARNING));
 	}
 
 }

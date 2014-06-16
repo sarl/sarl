@@ -174,7 +174,7 @@ class BehaviorParsingTest {
 			}
 		'''.parse
 		mas.assertWarning(
-			TypesPackage::eINSTANCE.jvmField,
+			SarlPackage.eINSTANCE.attribute,
 			org.eclipse.xtext.xbase.validation.IssueCodes::VARIABLE_NAME_SHADOWING,
 			"The field 'field1' in 'B2' is hidding the inherited field 'B1.field1'.")
 	}
@@ -194,7 +194,7 @@ class BehaviorParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmOperation,
+			SarlPackage::eINSTANCE.actionSignature,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'float' and 'int' for myaction(int).")
 	}
@@ -214,7 +214,7 @@ class BehaviorParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmOperation,
+			SarlPackage::eINSTANCE.actionSignature,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'int' and 'void' for myaction(int).")
 	}
@@ -234,7 +234,7 @@ class BehaviorParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmOperation,
+			SarlPackage::eINSTANCE.actionSignature,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'void' and 'int' for myaction(int).")
 	}
@@ -283,7 +283,7 @@ class BehaviorParsingTest {
 		'''.parse
 		mas.assertError(
 			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
-			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			IssueCodes::INVALID_EXTENDED_TYPE,
 			"Invalid super-type: 'C1'. Only the type 'io.sarl.lang.core.Behavior' and one of its subtypes are allowed for 'B1'")
 	}
 
@@ -315,7 +315,7 @@ class BehaviorParsingTest {
 		mas.assertError(
 			SarlPackage::eINSTANCE.behavior,
 			IssueCodes::DUPLICATE_TYPE_NAME,
-			"Duplicate definition of the type 'io.sarl.test.B1' in the file '__synthetic0.sarl'")
+			"Duplicate definition of the type 'io.sarl.test.B1'")
 	}
 	
 }

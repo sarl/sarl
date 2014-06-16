@@ -25,18 +25,18 @@ import io.sarl.lang.sarl.SarlPackage
 import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.validation.IssueCodes
 import java.util.List
-import java.util.logging.Level
 import java.util.logging.Logger
-import org.eclipse.core.resources.IFile
 import org.eclipse.emf.ecore.EPackage
-import org.eclipse.jdt.core.JavaCore
-import org.eclipse.jdt.core.JavaModelException
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper
 import org.eclipse.xtext.validation.Check
+import org.eclipse.xtext.validation.ValidationMessageAcceptor
 import org.eclipse.xtext.xbase.ui.validation.XbaseUIValidator
 
 import static org.eclipse.xtext.util.Strings.*
-import org.eclipse.xtext.validation.ValidationMessageAcceptor
+import org.eclipse.core.resources.IFile
+import org.eclipse.jdt.core.JavaCore
+import org.eclipse.jdt.core.JavaModelException
+import java.util.logging.Level
 
 /** Validator based on the Eclipse UI.
  * 
@@ -66,7 +66,7 @@ public class SARLUIValidator extends XbaseUIValidator {
 	@Check
 	public def checkFileNamingConventions(SarlScript sarlFile) {
 		if (!isIgnored(IssueCodes.WRONG_PACKAGE)) {
-			var expectedPackage = getExpectedPackageName(sarlFile)
+			var expectedPackage = sarlFile.getExpectedPackageName
 			var declaredPackage = sarlFile.name
 			if(expectedPackage !== null && 
 				!((isEmpty(expectedPackage) && declaredPackage === null) || 
@@ -77,27 +77,34 @@ public class SARLUIValidator extends XbaseUIValidator {
 						notNull(expectedPackage)
 					),
 					currentObject,
-					SarlPackage::Literals::SARL_SCRIPT__NAME,
+					SarlPackage.Literals::SARL_SCRIPT__NAME,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					IssueCodes.WRONG_PACKAGE,
 					expectedPackage)
 			}
 		}
 	}
-
-	protected def getExpectedPackageName(SarlScript sarlFile) {
+	
+	/** Replies the expected package name for a SARL script.
+	 * 
+	 * @param sarlFile - script to consider.
+	 * @param storage2UriMapper - mapper from storage to URI.
+	 * @param log - logger to use for output the problems. It may be <code>null</code>.
+	 * @return the expected package name.
+	 */
+	protected def String getExpectedPackageName(SarlScript sarlFile) {
 		var fileURI = sarlFile.eResource.URI
-		for(storage: storage2UriMapper.getStorages(fileURI)) {
+		for(storage : storage2UriMapper.getStorages(fileURI)) {
 			var first = storage.first
-			if(first instanceof IFile) {
+			if (first instanceof IFile) {
 				var fileWorkspacePath = first.fullPath
 				var javaProject = JavaCore::create(storage.second)
-				if(javaProject !== null && javaProject.exists && javaProject.isOpen) {
+				if(javaProject!==null && javaProject.exists && javaProject.isOpen) {
 					try {
-						for(root: javaProject.getPackageFragmentRoots()) {
-							if(!root.isArchive() && !root.isExternal()) {
+						for(root: javaProject.packageFragmentRoots) {
+							if(!root.isArchive && !root.isExternal) {
 								var resource = root.resource
-								if(resource !== null) {
+								if(resource!==null) {
 									var sourceFolderPath = resource.fullPath
 									if(sourceFolderPath.isPrefixOf(fileWorkspacePath)) {
 										var claspathRelativePath = fileWorkspacePath.makeRelativeTo(sourceFolderPath)
@@ -108,12 +115,12 @@ public class SARLUIValidator extends XbaseUIValidator {
 						}
 					}
 					catch(JavaModelException e) {
-						log.log(Level::SEVERE, "Error resolving expected path for SarlScript", e)
+						log.log(Level::SEVERE, "Error resolving expected path for SarlScript", e); //$NON-NLS-1$
 					}
 				}
 			}
 		}
 		return null;
 	}
-	
+
 }

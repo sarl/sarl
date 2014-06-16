@@ -116,9 +116,13 @@ public class IssueCodes {
 
 	/**
 	 * It is not allowed to override a final type.
+	 */
+	public static final String OVERRIDDEN_FINAL_TYPE = ISSUE_CODE_PREFIX + "overridden_final_type"; //$NON-NLS-1$
+
+	/**
 	 * It is not allowed to override an inherited final operation.
 	 */
-	public static final String OVERRIDDEN_FINAL = ISSUE_CODE_PREFIX + "overridden_final"; //$NON-NLS-1$
+	public static final String OVERRIDDEN_FINAL_OPERATION = ISSUE_CODE_PREFIX + "operation"; //$NON-NLS-1$
 
 	/**
 	 * It is discouraged to have a true/false constant as conditions in guards, if...
@@ -150,5 +154,25 @@ public class IssueCodes {
 	 * The message associated to this issue code explains the details.
 	 */
 	public static final String DISCOURAGED_CAPACITY_DEFINITION = ISSUE_CODE_PREFIX + "discouraged_capacity_definition"; //$NON-NLS-1$
+
+	/** A behavior unit will be never executed due to its guard.
+	 */
+	public static final String UNREACHABLE_BEHAVIOR_UNIT = ISSUE_CODE_PREFIX + "unreachable_behavior_unit"; //$NON-NLS-1$
+
+	/** A capacity type is mandatory after the "uses" and "requires" keyword.
+	 */
+	public static final String INVALID_CAPACITY_TYPE = ISSUE_CODE_PREFIX + "invalid_capacity_type"; //$NON-NLS-1$
+
+	/** A event type is mandatory after the "fires" keyword.
+	 */
+	public static final String INVALID_FIRING_EVENT_TYPE = ISSUE_CODE_PREFIX + "invalid_firing_event_type"; //$NON-NLS-1$
+
+	/** A type is invalid after the "implements" keyword.
+	 */
+	public static final String INVALID_IMPLEMENTED_TYPE = ISSUE_CODE_PREFIX + "invalid_implemented_type"; //$NON-NLS-1$
+
+	/** A type is invalid after the "extends" keyword.
+	 */
+	public static final String INVALID_EXTENDED_TYPE = ISSUE_CODE_PREFIX + "invalid_extended_type"; //$NON-NLS-1$
 
 }

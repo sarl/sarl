@@ -40,15 +40,16 @@ import io.sarl.lang.sarl.Skill
 import io.sarl.lang.signature.ActionNameKey
 import io.sarl.lang.signature.ActionSignatureProvider
 import io.sarl.lang.signature.SignatureKey
-import io.sarl.lang.util.JvmIdentifiableComparator
+import io.sarl.lang.util.ModelUtil
+import java.util.List
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
 import org.eclipse.xtext.common.types.JvmTypeReference
-import org.eclipse.xtext.common.types.TypesPackage
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.CheckType
@@ -82,6 +83,10 @@ class SARLValidator extends AbstractSARLValidator {
 	@Inject
 	private ActionSignatureProvider sarlSignatureProvider;
 
+	protected def canonicalTypeName(LightweightTypeReference typeRef) {
+		if (typeRef===null) "void" else typeRef.getHumanReadableName()
+	}
+
 	@Check(CheckType.NORMAL)
 	public def checkClassPath(SarlScript sarlScript) {
 		var typeReferences = services.typeReferences;
@@ -110,7 +115,7 @@ class SARLValidator extends AbstractSARLValidator {
 	 * @param script
 	 */
 	@Check(CheckType.NORMAL)
-	public def checkDuplicateTypes(SarlScript script) {
+	public def checkDuplicateTopElements(SarlScript script) {
 		var QualifiedName packageName
 		if (script.name!==null && !script.name.empty) {
 			packageName = QualifiedName::create(script.name.split("\\."))
@@ -126,13 +131,13 @@ class SARLValidator extends AbstractSARLValidator {
 				if (names.contains(featureName)) {
 					error(
 							String.format(
-									"Duplicate definition of the type '%s' in the file '%s'",
-									featureName.toString,
-									script.eResource.URI), 
+									"Duplicate definition of the type '%s'",
+									featureName.toString), 
 							feature,
 							SarlPackage.Literals::NAMED_ELEMENT__NAME,
 							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-							IssueCodes.DUPLICATE_TYPE_NAME)
+							IssueCodes.DUPLICATE_TYPE_NAME,
+							featureName.toString)
 				}
 				// Check in the rest of the class path
 				else {
@@ -167,13 +172,15 @@ class SARLValidator extends AbstractSARLValidator {
 		if (rawType!==null) {
 			var toType = toLightweightTypeReference(rawType, true)
 			var fromType = param.defaultValue.actualType
-			if (!canCast(fromType, toType, true)) {
+			if (!canCast(fromType, toType, true, false)) {
 				error(String.format("Type mismatch: cannot convert from %s to %s",
 						fromType.nameOfTypes, toType.canonicalName),
 						param,
 						SarlPackage.Literals::FORMAL_PARAMETER__DEFAULT_VALUE,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_TYPES)
+						org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_TYPES,
+						fromType.canonicalName,
+						toType.canonicalName)
 			}
 		}
 		else {
@@ -255,7 +262,8 @@ class SARLValidator extends AbstractSARLValidator {
 								feature,
 								SarlPackage.Literals::ATTRIBUTE__NAME,
 								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-								IssueCodes::DUPLICATE_FIELD)
+								IssueCodes::DUPLICATE_FIELD,
+								feature.name)
 					}
 				}
 			}
@@ -264,16 +272,18 @@ class SARLValidator extends AbstractSARLValidator {
 				if (sig!==null) {
 					for(SignatureKey key : sig.signatureKeys()) {
 						if (!localFunctions.add(key.toActionKey(name))) {
+							var funcName = name+"("+sig.toString()+")"
 							error(
 									String.format(
 											"Duplicate action in '%s': %s",
 											featureContainer.name,
-											name+"("+sig.toString()+")"
+											funcName
 											), 
 									errorFeature,
 									errorStructFeature,
 									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-									IssueCodes::DUPLICATE_METHOD)
+									IssueCodes::DUPLICATE_METHOD,
+									funcName)
 						}
 					}
 				}
@@ -286,7 +296,8 @@ class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public def checkActionName(ActionSignature action) {
-		if (isHiddenAction(action.getName())) {
+		if (isHiddenAction(action.name)) {
+			var validName = ModelUtil::fixHiddenAction(action.name)
 			error(
 					String.format(
 							"Invalid action name '%s'. You must not give to an action a name that is starting with '_handle_'. This prefix is reserved by the SARL compiler.",
@@ -295,7 +306,8 @@ class SARLValidator extends AbstractSARLValidator {
 					action,
 					SarlPackage.Literals::ACTION_SIGNATURE__NAME,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-					IssueCodes::INVALID_MEMBER_NAME)
+					IssueCodes::INVALID_MEMBER_NAME,
+					"action", action.name, validName)
 		}
 	}
 
@@ -304,7 +316,8 @@ class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public def checkAttributeName(Attribute attribute) {
-		if (isHiddenAttribute(attribute.getName())) {
+		if (isHiddenAttribute(attribute.name)) {
+			var validName = ModelUtil::fixHiddenAttribute(attribute.name)
 			error(
 					String.format(
 							"Invalid attribute name '%s'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.",
@@ -313,7 +326,8 @@ class SARLValidator extends AbstractSARLValidator {
 					attribute,
 					SarlPackage.Literals::ATTRIBUTE__NAME,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-					IssueCodes::INVALID_MEMBER_NAME)
+					IssueCodes::INVALID_MEMBER_NAME,
+					"attribute", attribute.name, validName)
 		}
 	}
 
@@ -389,50 +403,79 @@ class SARLValidator extends AbstractSARLValidator {
 				org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION)
 	}
 
-	private def checkRedundantInterface(
-			JvmGenericType jvmElement, JvmTypeReference interfaceReference, 
+	private def boolean checkRedundantInterface(
+			InheritingElement element,
+			EReference structuralElement,
+			JvmParameterizedTypeReference interfaceReference,
 			LightweightTypeReference lightweightInterfaceReference, 
-			Iterable<LightweightTypeReference> knownInterfaces) {
-		if (jvmElement.getExtendedClass()!==null) {
-			var superType = jvmElement.extendedClass.toLightweightTypeReference
-			if (memberOfTypeHierarchy(superType, lightweightInterfaceReference)) {
-				addIssue(
-					String.format(
-							"The feature '%s' is already implemented by the super type '%s'.",
-							lightweightInterfaceReference.canonicalName,
-							superType.canonicalName),
-					interfaceReference,
-					null,
-					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-					IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION)
-				return
-			}
-		}
-
+			List<LightweightTypeReference> knownInterfaces) {
+		var index = 0
 		for(previousInterface : knownInterfaces) {
 			if (memberOfTypeHierarchy(previousInterface, lightweightInterfaceReference)) {
-				addIssue(
+				error(
 						String.format(
-								"The feature '%s' is already implemented by the preceding interface '%s'.",
-								lightweightInterfaceReference.canonicalName,
-								previousInterface.canonicalName),
-						interfaceReference,
-						null,
-						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION)
-				return
+								"Duplicate implemented feature '%s'.",
+								lightweightInterfaceReference.canonicalName),
+						element,
+						structuralElement,
+						knownInterfaces.size, // The index of the element to highlight in the super-types
+						IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
+						lightweightInterfaceReference.canonicalName,
+						"pre")
+				return true
 			}
+			else if (memberOfTypeHierarchy(lightweightInterfaceReference, previousInterface)) {
+				error(
+						String.format(
+								"Duplicate implemented feature '%s'.",
+								previousInterface.canonicalName),
+						element,
+						structuralElement,
+						index,
+						IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
+						previousInterface.canonicalName,
+						"post")
+			}
+			index++
 		}
+		return false
 	}
 
-	private def checkRedundantInterfaces(JvmGenericType jvmElement) {
-		if (!IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION.ignored) {
-			var knownInterfaces = newArrayList
-			for(inter : jvmElement.extendedInterfaces) {
-				var interfaceType = inter.toLightweightTypeReference
-				checkRedundantInterface(jvmElement, inter, interfaceType, knownInterfaces)
-				knownInterfaces.add(interfaceType)
+	private def checkRedundantInterfaces(
+						InheritingElement element, 
+						EReference structuralElement,
+						Iterable<JvmParameterizedTypeReference> interfaces,
+						Iterable<JvmParameterizedTypeReference> superTypes) {
+		var knownInterfaces = newArrayList
+		for(interface : interfaces) {
+			var lightweightInterfaceReference = interface.toLightweightTypeReference
+			// Check the interface against the other interfaces 
+			if (!checkRedundantInterface(
+				element, structuralElement,
+				interface, lightweightInterfaceReference, 
+				knownInterfaces)) {
+				// Check the interface against the super-types
+				if (superTypes!==null && !IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION.ignored) {
+					for(superType : superTypes) {
+						var lightweightSuperType = superType.toLightweightTypeReference
+						if (memberOfTypeHierarchy(lightweightSuperType, lightweightInterfaceReference)) {
+							addIssue(
+									String.format(
+											"The feature '%s' is already implemented by the super-type '%s'.",
+											lightweightInterfaceReference.canonicalName,
+											lightweightSuperType.canonicalName),
+									element,
+									structuralElement,
+									knownInterfaces.size, // The index of the element to highlight in the super-types
+									IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
+									lightweightInterfaceReference.canonicalName,
+									"unknow")
+						}
+					}
+				}
 			}
+			// Prepare next loop
+			knownInterfaces += lightweightInterfaceReference
 		}
 	}
 
@@ -455,118 +498,156 @@ class SARLValidator extends AbstractSARLValidator {
 					inheritedFields, operationsToImplement,
 					superConstructors, this.sarlSignatureProvider)
 
-			checkRedundantInterfaces(jvmElement)
-
-			if (!org.eclipse.xtext.xbase.validation.IssueCodes::VARIABLE_NAME_SHADOWING.ignored) {
-				for(feature : jvmElement.declaredFields) {
-					if (!isHiddenAttribute(feature.simpleName)) {
-						var inheritedField = inheritedFields.get(feature.simpleName)
-						if (inheritedField!==null) {
-							warning(
-									String.format(
-											"The field '%s' in '%s' is hidding the inherited field '%s'.",
-											feature.simpleName, jvmElement.qualifiedName,
-											inheritedField.qualifiedName),
-									feature,
-									null,
-									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-									org.eclipse.xtext.xbase.validation.IssueCodes::VARIABLE_NAME_SHADOWING)
-						}
-					}
-				}
+			if (jvmElement.interface) {
+				checkRedundantInterfaces(
+					element, SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
+					element.superTypes,
+					null
+				)
+			}
+			else if (element instanceof ImplementingElement) {
+				checkRedundantInterfaces(
+					element, SarlPackage.Literals.IMPLEMENTING_ELEMENT__IMPLEMENTED_TYPES,
+					element.implementedTypes,
+					element.superTypes
+				)
 			}
 
-			for(feature : jvmElement.declaredOperations) {
-				var sig = this.sarlSignatureProvider.createSignatureIDFromJvmModel(feature.varArgs, feature.parameters)
-				var actionKey = this.sarlSignatureProvider.createActionID(feature.simpleName, sig)
-				var implementedFunction = operationsToImplement.remove(actionKey)
-				if (finalOperations.containsKey(actionKey)) {
-					error(
-							String.format(
-									"Cannot override the operation %s, which is declared a final in the super type.",
-									actionKey.toString),
-							feature,
-							null,
-							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-							IssueCodes::OVERRIDDEN_FINAL)
-				}
-				else {
-					if (implementedFunction!==null) {
-						var currentReturnType = feature.returnType.toLightweightTypeReference
-						var inheritedReturnType = implementedFunction.returnType.toLightweightTypeReference
-						if (!canCast(currentReturnType, inheritedReturnType, false)) {
-							error(
-									String.format(
-											"Incompatible return type between '%s' and '%s' for %s.",
-											currentReturnType.canonicalName,
-											inheritedReturnType.canonicalName,
-											actionKey.toString),
-									feature,
-									TypesPackage.Literals::JVM_OPERATION__RETURN_TYPE,
-									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-									org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE)
+			for(feature : element.features) {
+				if (feature instanceof Attribute) {
+					if (!org.eclipse.xtext.xbase.validation.IssueCodes::VARIABLE_NAME_SHADOWING.ignored) {
+						if (!isHiddenAttribute(feature.name)) {
+							var inheritedField = inheritedFields.get(feature.name)
+							if (inheritedField!==null) {
+								var nameIndex = 0
+								var newName = feature.name+Integer::toString(nameIndex)
+								while (inheritedFields.containsKey(newName)) {
+									nameIndex++
+									newName = feature.name+Integer::toString(nameIndex)
+								}
+								addIssue(
+										String.format(
+												"The field '%s' in '%s' is hidding the inherited field '%s'.",
+												feature.name, jvmElement.qualifiedName,
+												inheritedField.qualifiedName),
+										feature,
+										SarlPackage.Literals.ATTRIBUTE__NAME,
+										ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+										org.eclipse.xtext.xbase.validation.IssueCodes::VARIABLE_NAME_SHADOWING,
+										feature.name,
+										newName)
+							}
 						}
 					}
+				}
+				else if (feature instanceof Action || feature instanceof ActionSignature) {
+					var signature = (if (feature instanceof Action) (feature.signature) else feature) as ActionSignature
+					var sig = this.sarlSignatureProvider.createSignatureIDFromSarlModel(signature.varargs, signature.params)
+					var actionKey = this.sarlSignatureProvider.createActionID(signature.name, sig)
+					if (finalOperations.containsKey(actionKey)) {
+						error(
+								String.format(
+										"Cannot override the operation %s, which is declared a final in the super type.",
+										actionKey.toString),
+								signature,
+								SarlPackage.Literals.ACTION_SIGNATURE__NAME,
+								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+								IssueCodes::OVERRIDDEN_FINAL_OPERATION,
+								actionKey.toString)
+					}
 					else {
-						var superOperation = overridableOperations.get(actionKey)
-						if (superOperation!==null) {
-							var currentReturnType = feature.returnType.toLightweightTypeReference
-							var inheritedReturnType = superOperation.returnType.toLightweightTypeReference
-							if (!canCast(currentReturnType, inheritedReturnType, false)) {
+						var implementableFunction = operationsToImplement.remove(actionKey)
+						if (implementableFunction!==null) {
+							var currentReturnType = signature.type?.toLightweightTypeReference
+							var inheritedReturnType = implementableFunction.returnType?.toLightweightTypeReference
+							if (!canCast(currentReturnType, inheritedReturnType, false, true)) {
 								error(
 										String.format(
 												"Incompatible return type between '%s' and '%s' for %s.",
-												currentReturnType.canonicalName,
-												inheritedReturnType.canonicalName,
+												currentReturnType.canonicalTypeName,
+												inheritedReturnType.canonicalTypeName,
 												actionKey.toString),
-										feature,
-										TypesPackage.Literals::JVM_OPERATION__RETURN_TYPE,
+										signature,
+										SarlPackage.Literals.ACTION_SIGNATURE__TYPE,
 										ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-										org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE);
+										org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
+										currentReturnType.canonicalTypeName,
+										inheritedReturnType.identifier)
+							}
+						}
+						else {
+							var superOperation = overridableOperations.get(actionKey)
+							if (superOperation!==null) {
+								var currentReturnType = signature.type?.toLightweightTypeReference
+								var inheritedReturnType = superOperation.returnType?.toLightweightTypeReference
+								if (!canCast(currentReturnType, inheritedReturnType, false, true)) {
+									error(
+											String.format(
+													"Incompatible return type between '%s' and '%s' for %s.",
+													currentReturnType.canonicalTypeName,
+													inheritedReturnType.canonicalTypeName,
+													actionKey.toString),
+											signature,
+											SarlPackage.Literals.ACTION_SIGNATURE__TYPE,
+											ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+											org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
+											currentReturnType.canonicalTypeName,
+											inheritedReturnType.identifier)
+								}
 							}
 						}
 					}
 				}
 			}
 
-			if (!jvmElement.abstract && !jvmElement.interface) {
-				for(key : operationsToImplement.keySet()) {
-					error(
-							String.format(
-									"The operation %s must be implemented.",
-									key.toString),
-							element,
-							SarlPackage.Literals.NAMED_ELEMENT__NAME,
-							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-							IssueCodes::MISSING_METHOD_IMPLEMENTATION)
+			if (!jvmElement.abstract && !jvmElement.interface && !operationsToImplement.empty) {
+				
+				// The missed function may be generated on the Java side
+				// (see generateMissedFunction function in SARLJvmModelInferrer).
+				for(javaOp : jvmElement.declaredOperations) {
+					var sig = this.sarlSignatureProvider.createSignatureIDFromJvmModel(javaOp.varArgs, javaOp.parameters)
+					var actionKey = this.sarlSignatureProvider.createActionID(javaOp.simpleName, sig)
+					operationsToImplement.remove(actionKey)
+				}
+				
+				// Now, we are sure that there is missed operations
+				if (!operationsToImplement.empty) {
+					var data = newArrayList
+					for(value : operationsToImplement.values()) {
+						data += ModelUtil::toActionProtoptypeString(value)
+						data += ModelUtil::getDefaultValueForType(value.returnType?.toLightweightTypeReference)
+					}
+					var first = true
+					for(key : operationsToImplement.keySet()) {
+						if (first) {
+							first = false
+							error(
+									String.format(
+											"The operation %s must be implemented.",
+											key.toString),
+									element,
+									SarlPackage.Literals.NAMED_ELEMENT__NAME,
+									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+									IssueCodes::MISSING_METHOD_IMPLEMENTATION,
+									data) // Provides the prototypes for the quick fixes
+						}
+						else {
+							 // No prototypes, so no quick fix
+							error(
+									String.format(
+											"The operation %s must be implemented.",
+											key.toString),
+									element,
+									SarlPackage.Literals.NAMED_ELEMENT__NAME,
+									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+									IssueCodes::MISSING_METHOD_IMPLEMENTATION)
+						}
+					}
 				}
 			}
 		}
 	}
-
-	/**
-	 * @param element
-	 */
-	@Check(CheckType.FAST)
-	public def checkNoFinalTypeExtension(InheritingElement element) {
-		var jvmElement = element.jvmGenericType
-		if (jvmElement!==null) {
-			for(superType : jvmElement.superTypes) {
-				var ref = superType.toLightweightTypeReference
-				if (ref!==null && ref.final) {
-					error(
-							String.format(
-									"Cannot extend the final type '%s'.",
-									superType.qualifiedName),
-							element,
-							SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
-							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-							IssueCodes::OVERRIDDEN_FINAL)
-				}
-			}
-		}
-	}
-
+	
 	/**
 	 * @param behaviorUnit
 	 */
@@ -585,12 +666,13 @@ class SARLValidator extends AbstractSARLValidator {
 					}
 				}
 				else {
-					if (!org.eclipse.xtext.xbase.validation.IssueCodes::UNREACHABLE_CODE.ignored) {
+					if (!IssueCodes::UNREACHABLE_BEHAVIOR_UNIT.ignored) {
 						addIssue("Dead code. The guard is always false.",
 								behaviorUnit,
 								null,
 								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-								org.eclipse.xtext.xbase.validation.IssueCodes::UNREACHABLE_CODE)
+								IssueCodes::UNREACHABLE_BEHAVIOR_UNIT,
+								behaviorUnit.event.simpleName)
 					}
 				}
 				return;
@@ -624,7 +706,8 @@ class SARLValidator extends AbstractSARLValidator {
 						usedType,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
+						IssueCodes::INVALID_CAPACITY_TYPE,
+						usedType.simpleName)
 			}
 		}
 	}
@@ -645,7 +728,8 @@ class SARLValidator extends AbstractSARLValidator {
 						requiredType,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
+						IssueCodes::INVALID_CAPACITY_TYPE,
+						requiredType.simpleName)
 			}
 		}
 	}
@@ -666,7 +750,8 @@ class SARLValidator extends AbstractSARLValidator {
 						event,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
+						IssueCodes::INVALID_FIRING_EVENT_TYPE,
+						event.simpleName)
 			}
 		}
 	}
@@ -702,7 +787,8 @@ class SARLValidator extends AbstractSARLValidator {
 									superType,
 									null,
 									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-									org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
+									IssueCodes::INVALID_EXTENDED_TYPE,
+									superType.simpleName)
 							success = false
 						}
 						else if (superType.qualifiedName==inferredType.qualifiedName) {
@@ -737,13 +823,6 @@ class SARLValidator extends AbstractSARLValidator {
 					nbSuperTypes++
 				}
 			}
-			/*if (success && inferredType.hasCycleInHierarchy) {
-				error( String::format("The inheritance hierarchy of '%s' contains cycles.",
-								inferredType.qualifiedName),
-						SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
-						IssueCodes::CYCLIC_INHERITANCE)
-				success = false
-			}*/
 		}
 		return nbSuperTypes
 	}
@@ -773,7 +852,8 @@ class SARLValidator extends AbstractSARLValidator {
 						superType,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH)
+						IssueCodes::INVALID_IMPLEMENTED_TYPE,
+						superType.simpleName)
 				success = false
 			}
 			else {
@@ -795,35 +875,6 @@ class SARLValidator extends AbstractSARLValidator {
 		return success
 	}
 	
-	/**
-	 * CAUTION: Copied from Xtend validator
-	 */
-	protected def boolean hasCycleInHierarchy(JvmDeclaredType type) {
-		var queue = newLinkedList
-		var processedSuperTypes = <JvmDeclaredType>newTreeSet(new JvmIdentifiableComparator)
-		queue += type
-		do {
-			var t = queue.removeFirst
-			if (processedSuperTypes.contains(t)) {
-				return true
-			}
-			processedSuperTypes += t
-			for (JvmTypeReference superTypeRef : t.getSuperTypes()) {
-				var ref = superTypeRef.toLightweightTypeReference
-				if (ref!==null && !ref.interfaceType) {
-					var y = superTypeRef.type
-					if (y instanceof JvmDeclaredType) {
-						if (y.qualifiedName!="java.lang.Object") {
-							queue += y
-						}
-					}
-				}
-			}
-		}
-		while (!queue.empty)
-		return false;
-	}
-
 	/**
 	 * @param action
 	 */
@@ -898,7 +949,9 @@ class SARLValidator extends AbstractSARLValidator {
 						capacity,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						IssueCodes::DISCOURAGED_CAPACITY_DEFINITION)
+						IssueCodes::DISCOURAGED_CAPACITY_DEFINITION,
+						capacity.name,
+						"aFunction")
 			}
 		}
 	}

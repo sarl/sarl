@@ -290,7 +290,7 @@ class AgentParsingTest {
 			}
 		'''.parse
 		mas.assertWarning(
-			TypesPackage::eINSTANCE.jvmField,
+			SarlPackage::eINSTANCE.attribute,
 			org.eclipse.xtext.xbase.validation.IssueCodes::VARIABLE_NAME_SHADOWING,
 			"The field 'field1' in 'A2' is hidding the inherited field 'A1.field1'.")
 	}
@@ -310,7 +310,7 @@ class AgentParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmOperation,
+			SarlPackage::eINSTANCE.actionSignature,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'float' and 'int' for myaction(int).")
 	}
@@ -330,7 +330,7 @@ class AgentParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmOperation,
+			SarlPackage::eINSTANCE.actionSignature,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'int' and 'void' for myaction(int).")
 	}
@@ -350,7 +350,7 @@ class AgentParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmOperation,
+			SarlPackage::eINSTANCE.actionSignature,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'void' and 'int' for myaction(int).")
 	}
@@ -399,7 +399,7 @@ class AgentParsingTest {
 		'''.parse
 		mas.assertError(
 			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
-			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			IssueCodes::INVALID_EXTENDED_TYPE,
 			"Invalid super-type: 'C1'. Only the type 'io.sarl.lang.core.Agent' and one of its subtypes are allowed for 'A1'")
 	}
 
@@ -414,7 +414,7 @@ class AgentParsingTest {
 		'''.parse
 		mas.assertError(
 			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
-			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			IssueCodes::INVALID_FIRING_EVENT_TYPE,
 			"Invalid type: 'B1'. Only events can be used after the keyword 'fires'")
 	}
 
@@ -473,7 +473,7 @@ class AgentParsingTest {
 
 		mas.assertWarning(
 			SarlPackage::eINSTANCE.behaviorUnit,
-			org.eclipse.xtext.xbase.validation.IssueCodes::UNREACHABLE_CODE,
+			IssueCodes::UNREACHABLE_BEHAVIOR_UNIT,
 			"Dead code. The guard is always false.")
 	}
 

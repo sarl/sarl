@@ -137,7 +137,7 @@ class EventParsingTest {
 			}
 		'''.parse
 		mas.assertWarning(
-			TypesPackage::eINSTANCE.jvmField,
+			SarlPackage::eINSTANCE.attribute,
 			org.eclipse.xtext.xbase.validation.IssueCodes::VARIABLE_NAME_SHADOWING,
 			"The field 'field1' in 'E1' is hidding the inherited field 'E0.field1'.")
 	}
@@ -152,7 +152,7 @@ class EventParsingTest {
 		'''.parse
 		mas.assertError(
 			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
-			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			IssueCodes::INVALID_EXTENDED_TYPE,
 			"Invalid super-type: 'C1'. Only the type 'io.sarl.lang.core.Event' and one of its subtypes are allowed for 'E1'")
 	}
 

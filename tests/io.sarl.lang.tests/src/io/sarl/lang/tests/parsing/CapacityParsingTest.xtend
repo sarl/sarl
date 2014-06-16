@@ -50,7 +50,7 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
-			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			IssueCodes::INVALID_IMPLEMENTED_TYPE,
 			"Invalid implemented type: 'io.sarl.lang.core.Capacity'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'")
 	}
 
@@ -196,7 +196,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertWarning(
-			TypesPackage::eINSTANCE.jvmField,
+			SarlPackage::eINSTANCE.attribute,
 			org.eclipse.xtext.xbase.validation.IssueCodes::VARIABLE_NAME_SHADOWING,
 			"The field 'field1' in 'S2' is hidding the inherited field 'S1.field1'.")
 	}
@@ -210,9 +210,9 @@ class CapacityParsingTest {
 			skill S2 extends S1 implements C2, C1 { }
 		'''.parse
 		mas.assertWarning(
-			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
+			SarlPackage::eINSTANCE.skill,
 			IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
-			"The feature 'C1' is already implemented by the super type 'S1'.")
+			"The feature 'C1' is already implemented by the super-type 'S1'.")
 	}
 
 	@Test
@@ -224,10 +224,10 @@ class CapacityParsingTest {
 			skill S1 implements C1 { }
 			skill S2 extends S1 implements C2, C3, C2 { }
 		'''.parse
-		mas.assertWarning(
-			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
+		mas.assertError(
+			SarlPackage::eINSTANCE.skill,
 			IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
-			"The feature 'C2' is already implemented by the preceding interface 'C2'.")
+			"Duplicate implemented feature 'C2'")
 	}
 
 	@Test
@@ -239,10 +239,10 @@ class CapacityParsingTest {
 			skill S1 implements C1 { }
 			skill S2 extends S1 implements C3, C2 { }
 		'''.parse
-		mas.assertWarning(
-			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
+		mas.assertError(
+			SarlPackage::eINSTANCE.skill,
 			IssueCodes::REDUNDANT_INTERFACE_IMPLEMENTATION,
-			"The feature 'C2' is already implemented by the preceding interface 'C3'.")
+			"Duplicate implemented feature 'C2'")
 	}
 
 	@Test
@@ -318,7 +318,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmOperation,
+			SarlPackage::eINSTANCE.actionSignature,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'float' and 'int' for myaction(int).")
 	}
@@ -340,7 +340,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmOperation,
+			SarlPackage::eINSTANCE.actionSignature,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'int' and 'void' for myaction(int).")
 	}
@@ -362,7 +362,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmOperation,
+			SarlPackage::eINSTANCE.actionSignature,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'void' and 'int' for myaction(int).")
 	}
@@ -380,7 +380,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmOperation,
+			SarlPackage::eINSTANCE.actionSignature,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'float' and 'int' for myaction(int).")
 	}
@@ -398,7 +398,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmOperation,
+			SarlPackage::eINSTANCE.actionSignature,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'int' and 'void' for myaction(int).")
 	}
@@ -416,7 +416,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmOperation,
+			SarlPackage::eINSTANCE.actionSignature,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'void' and 'int' for myaction(int).")
 	}
@@ -504,7 +504,7 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
-			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			IssueCodes::INVALID_CAPACITY_TYPE,
 			"Invalid type: 'E1'. Only capacities can be used after the keyword 'uses'")
 	}
 
@@ -523,7 +523,7 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
-			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			IssueCodes::INVALID_CAPACITY_TYPE,
 			"Invalid type: 'E1'. Only capacities can be used after the keyword 'requires'")
 	}
 
@@ -537,7 +537,7 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
-			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			IssueCodes::INVALID_EXTENDED_TYPE,
 			"Invalid super-type: 'A1'. Only the type 'io.sarl.lang.core.Capacity' and one of its subtypes are allowed for 'C1'")
 	}
 
@@ -553,7 +553,7 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
-			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			IssueCodes::INVALID_EXTENDED_TYPE,
 			"Invalid super-type: 'A1'. Only the type 'io.sarl.lang.core.Skill' and one of its subtypes are allowed for 'S1'")
 	}
 
@@ -567,7 +567,7 @@ class CapacityParsingTest {
 		'''.parse
 		mas.assertError(
 			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
-			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
+			IssueCodes::INVALID_IMPLEMENTED_TYPE,
 			"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed")
 	}
 
