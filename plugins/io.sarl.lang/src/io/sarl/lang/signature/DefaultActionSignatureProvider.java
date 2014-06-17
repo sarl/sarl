@@ -238,6 +238,13 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 	/** {@inheritDoc}
 	 */
 	@Override
+	public SignatureKey createSignatureIDForVoid() {
+		return new SignatureKey(false, 0);
+	}
+
+	/** {@inheritDoc}
+	 */
+	@Override
 	public ActionKey createActionID(String actionName, SignatureKey parameters) {
 		return new ActionKey(actionName, parameters);
 	}

@@ -48,6 +48,12 @@ public interface ActionSignatureProvider {
 	 */
 	public ActionNameKey createConstructorID(JvmIdentifiableElement container);
 	
+	/** Build an identifier for the signature that has no parameter.
+	 * 
+	 * @return the id.
+	 */
+	public SignatureKey createSignatureIDForVoid();
+
 	/** Build an identifier for the given parameters.
 	 * 
 	 * @param isVarargs - indicates if the signature has a variatic parameter.

@@ -18,7 +18,6 @@ package io.sarl.lang.validation
 import com.google.inject.Inject
 import io.sarl.lang.SARLKeywords
 import io.sarl.lang.core.Capacity
-import io.sarl.lang.core.Event
 import io.sarl.lang.sarl.Action
 import io.sarl.lang.sarl.ActionSignature
 import io.sarl.lang.sarl.Agent
@@ -27,6 +26,7 @@ import io.sarl.lang.sarl.Behavior
 import io.sarl.lang.sarl.BehaviorUnit
 import io.sarl.lang.sarl.CapacityUses
 import io.sarl.lang.sarl.Constructor
+import io.sarl.lang.sarl.Event
 import io.sarl.lang.sarl.FeatureContainer
 import io.sarl.lang.sarl.FormalParameter
 import io.sarl.lang.sarl.ImplementingElement
@@ -45,6 +45,7 @@ import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.xtext.common.types.JvmConstructor
 import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
@@ -54,7 +55,10 @@ import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.CheckType
 import org.eclipse.xtext.validation.ValidationMessageAcceptor
+import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XBooleanLiteral
+import org.eclipse.xtext.xbase.XConstructorCall
+import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 
@@ -78,11 +82,11 @@ import static io.sarl.lang.util.ModelUtil.*
 class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
-	private ILogicalContainerProvider logicalContainerProvider;
+	private ILogicalContainerProvider logicalContainerProvider
 
 	@Inject
-	private ActionSignatureProvider sarlSignatureProvider;
-
+	private ActionSignatureProvider sarlSignatureProvider
+	
 	protected def canonicalTypeName(LightweightTypeReference typeRef) {
 		if (typeRef===null) "void" else typeRef.getHumanReadableName()
 	}
@@ -172,7 +176,7 @@ class SARLValidator extends AbstractSARLValidator {
 		if (rawType!==null) {
 			var toType = toLightweightTypeReference(rawType, true)
 			var fromType = param.defaultValue.actualType
-			if (!canCast(fromType, toType, true, false)) {
+			if (!canCast(fromType, toType, true, false, true)) {
 				error(String.format("Type mismatch: cannot convert from %s to %s",
 						fromType.nameOfTypes, toType.canonicalName),
 						param,
@@ -337,6 +341,7 @@ class SARLValidator extends AbstractSARLValidator {
 	 * @return the generic type of the given element.
 	 */
 	protected def JvmGenericType getJvmGenericType(EObject element) {
+		if (element instanceof JvmGenericType) return element
 		for(obj : services.jvmModelAssociations.getJvmElements(element)) {
 			if (obj instanceof JvmGenericType) {
 				return obj
@@ -349,7 +354,7 @@ class SARLValidator extends AbstractSARLValidator {
 	 * @param event
 	 */
 	@Check(CheckType.FAST)
-	public def checkFinalFieldInitialization(io.sarl.lang.sarl.Event event) {
+	public def checkFinalFieldInitialization(Event event) {
 		var type = event.jvmGenericType
 		if (type!==null) {
 			type.checkFinalFieldInitialization
@@ -490,13 +495,12 @@ class SARLValidator extends AbstractSARLValidator {
 			var overridableOperations = newTreeMap(null)
 			var inheritedFields = newTreeMap(null)
 			var operationsToImplement = newTreeMap(null)
-			var superConstructors = newTreeMap(null)
 
 			populateInheritanceContext(
 					jvmElement,
 					finalOperations, overridableOperations,
 					inheritedFields, operationsToImplement,
-					superConstructors, this.sarlSignatureProvider)
+					null, this.sarlSignatureProvider)
 
 			if (jvmElement.interface) {
 				checkRedundantInterfaces(
@@ -512,7 +516,7 @@ class SARLValidator extends AbstractSARLValidator {
 					element.superTypes
 				)
 			}
-
+			
 			for(feature : element.features) {
 				if (feature instanceof Attribute) {
 					if (!org.eclipse.xtext.xbase.validation.IssueCodes::VARIABLE_NAME_SHADOWING.ignored) {
@@ -560,7 +564,7 @@ class SARLValidator extends AbstractSARLValidator {
 						if (implementableFunction!==null) {
 							var currentReturnType = signature.type?.toLightweightTypeReference
 							var inheritedReturnType = implementableFunction.returnType?.toLightweightTypeReference
-							if (!canCast(currentReturnType, inheritedReturnType, false, true)) {
+							if (!canCast(currentReturnType, inheritedReturnType, false, true, true)) {
 								error(
 										String.format(
 												"Incompatible return type between '%s' and '%s' for %s.",
@@ -580,7 +584,7 @@ class SARLValidator extends AbstractSARLValidator {
 							if (superOperation!==null) {
 								var currentReturnType = signature.type?.toLightweightTypeReference
 								var inheritedReturnType = superOperation.returnType?.toLightweightTypeReference
-								if (!canCast(currentReturnType, inheritedReturnType, false, true)) {
+								if (!canCast(currentReturnType, inheritedReturnType, false, true, true)) {
 									error(
 											String.format(
 													"Incompatible return type between '%s' and '%s' for %s.",
@@ -599,7 +603,7 @@ class SARLValidator extends AbstractSARLValidator {
 					}
 				}
 			}
-
+			
 			if (!jvmElement.abstract && !jvmElement.interface && !operationsToImplement.empty) {
 				
 				// The missed function may be generated on the Java side
@@ -648,6 +652,108 @@ class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 	
+	private def checkImplicitConstructorCall(FeatureContainer container, SignatureKey[] defaultSignatures) {
+		var jvmElement = container.jvmGenericType
+		if (jvmElement!==null) {
+			var superConstructors = newTreeMap(null)
+			var supertype = jvmElement.extendedClass?.type
+			if (supertype!==null) {
+				var jvmSuperElement = supertype.jvmGenericType
+				if (jvmSuperElement!==null) {
+					for(superConstructor : jvmSuperElement.declaredConstructors) {
+						var sig = this.sarlSignatureProvider.createSignatureIDFromJvmModel(superConstructor.varArgs, superConstructor.parameters)
+						superConstructors.put(sig, superConstructor)
+					}
+				}
+			}
+			
+			var voidKey = sarlSignatureProvider.createSignatureIDForVoid
+			var hasDeclaredConstructor = false
+			
+			for(feature : container.features) {
+				if (feature instanceof Constructor) {
+					hasDeclaredConstructor = true
+					var invokeDefaultConstructor = true
+					var body = feature.body
+					if (body instanceof XBlockExpression) {
+						if (!body.expressions.empty) {
+							var firstStatement = body.expressions.get(0)
+							if (firstStatement instanceof XConstructorCall) {
+								invokeDefaultConstructor = false
+							}
+							else if (firstStatement instanceof XFeatureCall) {
+								var calledFeature = firstStatement.feature
+								if (calledFeature instanceof JvmConstructor) {
+									invokeDefaultConstructor = false
+								}
+							}
+						}
+					}
+					else if (body instanceof XConstructorCall) {
+						invokeDefaultConstructor = false
+					}
+					else if (body instanceof XFeatureCall) {
+						var calledFeature = body.feature
+						if (calledFeature instanceof JvmConstructor) {
+							invokeDefaultConstructor = false
+						}
+					}
+					if (invokeDefaultConstructor && !superConstructors.containsKey(voidKey)) {
+						error(
+								"Undefined default constructor in the super-type.",
+								feature,
+								SarlPackage.Literals.CONSTRUCTOR__BODY,
+								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+								IssueCodes::MISSING_CONSTRUCTOR)
+					}
+				}
+			}
+			
+			if (!hasDeclaredConstructor) {
+				for(defaultSignature : defaultSignatures) {
+					if (!superConstructors.containsKey(defaultSignature)) {
+						error(
+								String::format("The constructor %s is undefined.",
+									 this.sarlSignatureProvider.createActionID(
+									 	supertype.simpleName,
+									 	defaultSignature)
+								),
+								container,
+								SarlPackage.Literals.NAMED_ELEMENT__NAME,
+								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+								IssueCodes::MISSING_CONSTRUCTOR)
+					}
+				}
+			}
+			
+		}
+	}
+
+	/**
+	 * @param event
+	 */
+	@Check(CheckType.FAST)
+	public def checkImplicitConstructorCall(Event event) {
+		checkImplicitConstructorCall(event,
+			#[
+				sarlSignatureProvider.createSignatureIDForVoid,
+				sarlSignatureProvider.createSignatureIDFromString("io.sarl.lang.core.Address")
+			]
+		)
+	}
+
+	/**
+	 * @param behavior
+	 */
+	@Check(CheckType.FAST)
+	public def checkImplicitConstructorCall(Behavior behavior) {
+		checkImplicitConstructorCall(behavior,
+			#[
+				sarlSignatureProvider.createSignatureIDFromString("io.sarl.lang.core.Agent")
+			]
+		)
+	}
+
 	/**
 	 * @param behaviorUnit
 	 */
@@ -697,7 +803,7 @@ class SARLValidator extends AbstractSARLValidator {
 	public def checkCapacityTypeForUses(CapacityUses uses) {
 		for(usedType : uses.capacitiesUsed) {
 			var ref = usedType.toLightweightTypeReference
-			if (ref!==null && !ref.isSubtypeOf(Capacity)) {
+			if (ref!==null && !ref.isSubtypeOf(typeof(Capacity))) {
 				error(
 						String.format(
 								"Invalid type: '%s'. Only capacities can be used after the keyword '%s'.",
@@ -719,7 +825,7 @@ class SARLValidator extends AbstractSARLValidator {
 	public def checkCapacityTypeForRequires(RequiredCapacity requires) {
 		for(requiredType : requires.requiredCapacities) {
 			var ref = requiredType.toLightweightTypeReference
-			if (ref!==null && !ref.isSubtypeOf(Capacity)) {
+			if (ref!==null && !ref.isSubtypeOf(typeof(Capacity))) {
 				error(
 						String.format(
 								"Invalid type: '%s'. Only capacities can be used after the keyword '%s'.",
@@ -741,7 +847,7 @@ class SARLValidator extends AbstractSARLValidator {
 	public def checkActionSignatureFires(ActionSignature action) {
 		for(event : action.firedEvents) {
 			var ref = event.toLightweightTypeReference
-			if (ref!==null && !ref.isSubtypeOf(Event)) {
+			if (ref!==null && !ref.isSubtypeOf(typeof(io.sarl.lang.core.Event))) {
 				error(
 						String.format(
 								"Invalid type: '%s'. Only events can be used after the keyword '%s'.",
@@ -879,8 +985,8 @@ class SARLValidator extends AbstractSARLValidator {
 	 * @param action
 	 */
 	@Check(CheckType.FAST)
-	public def checkEventSuperType(io.sarl.lang.sarl.Event event) {
-		checkSuperTypes(event, Event, false)
+	public def checkEventSuperType(Event event) {
+		checkSuperTypes(event, typeof(io.sarl.lang.core.Event), false)
 	}
 
 	/**
@@ -888,7 +994,7 @@ class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public def checkBehaviorSuperType(Behavior behavior) {
-		checkSuperTypes(behavior, io.sarl.lang.core.Behavior, false)
+		checkSuperTypes(behavior, typeof(io.sarl.lang.core.Behavior), false)
 	}
 
 	/**
@@ -896,7 +1002,7 @@ class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public def checkAgentSuperType(Agent agent) {
-		checkSuperTypes(agent, io.sarl.lang.core.Agent, false)
+		checkSuperTypes(agent, typeof(io.sarl.lang.core.Agent), false)
 	}
 
 	/**
@@ -904,7 +1010,7 @@ class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public def checkCapacitySuperType(io.sarl.lang.sarl.Capacity capacity) {
-		checkSuperTypes(capacity, Capacity, false)
+		checkSuperTypes(capacity, typeof(Capacity), false)
 	}
 
 	/**
@@ -912,8 +1018,8 @@ class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public def checkSkillSuperType(Skill skill) {
-		var nbSuperTypes = checkSuperTypes(skill, io.sarl.lang.core.Skill, false)
-		checkImplementedTypes(skill, Capacity,
+		var nbSuperTypes = checkSuperTypes(skill, typeof(io.sarl.lang.core.Skill), false)
+		checkImplementedTypes(skill, typeof(Capacity),
 			(if (nbSuperTypes>0) 0 else 1),
 			true)
 	}
@@ -925,7 +1031,7 @@ class SARLValidator extends AbstractSARLValidator {
 	public def checkBehaviorUnitEventType(BehaviorUnit behaviorUnit) {
 		var event = behaviorUnit.event
 		var ref = event.toLightweightTypeReference
-		if (ref===null || ref.interfaceType || !ref.isSubtypeOf(Event)) {
+		if (ref===null || ref.interfaceType || !ref.isSubtypeOf(typeof(io.sarl.lang.core.Event))) {
 			error(
 					String.format(
 							"Invalid type: '%s'. Only events are allowed after the keyword '%s'.",

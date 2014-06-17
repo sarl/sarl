@@ -175,4 +175,9 @@ public class IssueCodes {
 	 */
 	public static final String INVALID_EXTENDED_TYPE = ISSUE_CODE_PREFIX + "invalid_extended_type"; //$NON-NLS-1$
 
+	/** A constructor must be defined because there is default constructor
+	 * in the sype-type.
+	 */
+	public static final String MISSING_CONSTRUCTOR = ISSUE_CODE_PREFIX + "missing_constructor"; //$NON-NLS-1$
+
 }

@@ -312,9 +312,10 @@ public class ModelUtil {
 	 * @param toType - target type
 	 * @param enablePrimitiveWidening - indicates if the widening of the primitive types is allowed.
 	 * @param enableVoidMatchingNull - indicates if the <code>null</code> is matching <code>void</code>.
+	 * @param allowSynonyms - indicates if the synonyms are allowed.
 	 * @return the state of the cast.
 	 */
-	public static boolean canCast(LightweightTypeReference fromType, LightweightTypeReference toType, boolean enablePrimitiveWidening, boolean enableVoidMatchingNull) {
+	public static boolean canCast(LightweightTypeReference fromType, LightweightTypeReference toType, boolean enablePrimitiveWidening, boolean enableVoidMatchingNull, boolean allowSynonyms) {
 		if (enableVoidMatchingNull) {
 			boolean fromVoid = (fromType==null) || (fromType.isPrimitiveVoid());
 			boolean toVoid = (toType==null) || (toType.isPrimitiveVoid());
@@ -329,8 +330,9 @@ public class ModelUtil {
 				return false;
 			}
 		}
+//		if (fromType.isUnknown() || toType.isUnknown()) return false;
 		TypeConformanceComputationArgument conform = new TypeConformanceComputationArgument(
-				false, false, true, enablePrimitiveWidening, false, true);
+				false, false, true, enablePrimitiveWidening, false, allowSynonyms);
 		if (fromType.getType() instanceof JvmDeclaredType || fromType.isPrimitive()) {
 			// if one of the types is an interface and the other is a non final class (or interface) there always can be a subtype
 			if ((!isInterface(fromType) || isFinal(toType)) && (!isInterface(toType) || isFinal(fromType))) { 

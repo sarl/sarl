@@ -17,14 +17,8 @@ package io.sarl.lang.jvmmodel
 
 import com.google.inject.Inject
 import io.sarl.lang.SARLKeywords
-import io.sarl.lang.annotation.DefaultValue
-import io.sarl.lang.annotation.DefaultValueSource
-import io.sarl.lang.annotation.DefaultValueUse
-import io.sarl.lang.annotation.Generated
 import io.sarl.lang.bugfixes.XtendBug392440
 import io.sarl.lang.bugfixes.XtendBug434912
-import io.sarl.lang.core.Address
-import io.sarl.lang.core.Percept
 import io.sarl.lang.sarl.Action
 import io.sarl.lang.sarl.ActionSignature
 import io.sarl.lang.sarl.Agent
@@ -46,6 +40,8 @@ import io.sarl.lang.signature.ActionSignatureProvider
 import io.sarl.lang.signature.InferredStandardParameter
 import io.sarl.lang.signature.InferredValuedParameter
 import io.sarl.lang.signature.SignatureKey
+import java.util.List
+import java.util.Map
 import java.util.UUID
 import java.util.logging.Logger
 import org.eclipse.emf.ecore.EObject
@@ -58,6 +54,7 @@ import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.naming.IQualifiedNameProvider
+import org.eclipse.xtext.xbase.XBooleanLiteral
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.compiler.XbaseCompiler
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
@@ -69,9 +66,7 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking
 
 import static io.sarl.lang.util.ModelUtil.*
-import org.eclipse.xtext.xbase.XBooleanLiteral
-import java.util.List
-import java.util.Map
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypeExtensions
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -103,6 +98,8 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	@Inject	private ReadAndWriteTracking readAndWriteTracking
 
 	@Inject	private CommonTypeComputationServices services
+	
+	@Inject private JvmTypeExtensions typeExtensions;
 
 	private var XtendBug392440 hashCodeBugFix
 	private var XtendBug434912 toEqualsBugFix
@@ -112,6 +109,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		this.hashCodeBugFix = new XtendBug392440(typesBuilder)
 		this.toEqualsBugFix = new XtendBug434912(typesBuilder)
 	}
+
+	protected def toGeneratedAnnotation(EObject o) {
+		o.toAnnotation(typeof(io.sarl.lang.annotation.Generated))
+	}
+	
 
 	/**
 	 * The dispatch method {@code infer} is called for each instance of the
@@ -147,7 +149,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				event.copyDocumentationTo(it)
 				
 				var long serial = 1L
-				serial = serial + generateExtendedTypes(it, event, io.sarl.lang.core.Event)
+				serial = serial + generateExtendedTypes(it, event, typeof(io.sarl.lang.core.Event))
 				var JvmField jvmField
 				var jvmFields = newArrayList
 				var actionIndex = 0
@@ -184,19 +186,23 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							super();
 						'''
 					]
-					op.annotations += toAnnotation(Generated)	
+					op.annotations += toGeneratedAnnotation
+					typeExtensions.setSynthetic(op, true);
 					members += op
+					//
+					val addrType = newTypeRef(typeof(io.sarl.lang.core.Address))
 					op = event.toConstructor [
 						documentation = '''
 							Construct an event.
 							@param source - address of the agent that is emitting this event.
 						'''
-						parameters += event.toParameter('source', newTypeRef(Address))
+						parameters += toParameter('source', addrType)
 						body = '''
 							super(source);
 						'''
 					]
-					op.annotations += toAnnotation(Generated)	
+					op.annotations += toGeneratedAnnotation
+					typeExtensions.setSynthetic(op, true);
 					members += op
 				}
 								
@@ -207,43 +213,47 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
  					
 					var op = toEqualsBugFix.toEqualsMethod(it, event, elementType, true, tab)
  					if (op!==null) {
-						op.annotations += toAnnotation(Generated)	
+						op.annotations += toGeneratedAnnotation
+						typeExtensions.setSynthetic(op, true);
 						members += op
 					}
 					
 					op = hashCodeBugFix.toHashCodeMethod(it, event, true, tab)
 					if (op!==null) {
-						op.annotations += toAnnotation(Generated)	
+						op.annotations += toGeneratedAnnotation
+						typeExtensions.setSynthetic(op, true);
 						members += op
 					}
 					
-					op = event.toMethod("attributesToString", newTypeRef(String))[
+					op = event.toMethod("attributesToString", newTypeRef(typeof(String)))[
 						visibility = JvmVisibility::PROTECTED
 						documentation = '''Returns a String representation of the Event «event.name» attributes only.'''
 						body = [
 							append(
 								'''
 								StringBuilder result = new StringBuilder(super.attributesToString());
-								«FOR attr : event.features.filter(Attribute)»
+								«FOR attr : event.features.filter(typeof(Attribute))»
 									result.append("«attr.name»  = ").append(this.«attr.name»);
 								«ENDFOR»
 								return result.toString();''')
 						]
 					]
 					if (op!==null) {
-						op.annotations += toAnnotation(Generated)	
+						op.annotations += toGeneratedAnnotation
+						typeExtensions.setSynthetic(op, true);
 						members += op
 					}
 				}
 
 				val serialValue = serial
-				val serialField = event.toField("serialVersionUID", newTypeRef(long)) [
+				val serialField = event.toField("serialVersionUID", newTypeRef(typeof(long))) [
 					visibility = JvmVisibility::PRIVATE
 					final = true
 					static = true
 					initializer = [append(serialValue+"L")]
 				]
-				serialField.annotations += toAnnotation(Generated)	
+				serialField.annotations += toGeneratedAnnotation
+				typeExtensions.setSynthetic(serialField, true);
 				members += serialField
 				readAndWriteTracking.markInitialized(serialField)
 
@@ -257,7 +267,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				sarlSignatureProvider.resetSignatures(it)
 
 				capacity.copyDocumentationTo(it)
-				generateExtendedTypes(it, capacity, io.sarl.lang.core.Capacity)
+				generateExtendedTypes(it, capacity, typeof(io.sarl.lang.core.Capacity))
 				
 				var actionIndex = 0
 				for (feature : capacity.features) {
@@ -278,8 +288,8 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 
 				skill.copyDocumentationTo(it)
 
-				generateExtendedTypes(it, skill, io.sarl.lang.core.Skill)
-				generateImplementedTypes(it, skill, io.sarl.lang.core.Capacity)
+				generateExtendedTypes(it, skill, typeof(io.sarl.lang.core.Skill))
+				generateImplementedTypes(it, skill, typeof(io.sarl.lang.core.Capacity))
 
 				val finalOperations = newTreeMap(null)
 				val overridableOperations = newTreeMap(null)
@@ -331,17 +341,20 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				actionIndex = generateMissedFunction(skill, actionIndex, operationsToImplement, overridableOperations)
 								
 				if (!hasConstructor) {
-					it.members += skill.toConstructor [
+					var op = skill.toConstructor [
 						documentation = '''
 							Construct a skill.
 							@param owner - agent that is owning this skill. 
 						'''
-						parameters += skill.toParameter('owner', newTypeRef(io.sarl.lang.core.Agent))
+						parameters += skill.toParameter('owner', newTypeRef(typeof(io.sarl.lang.core.Agent)))
 						body = '''
 							super(owner);
 						'''
 					]
-					it.members += skill.toConstructor [
+					op.annotations += toGeneratedAnnotation
+					it.members += op
+					typeExtensions.setSynthetic(op, true)
+					op = skill.toConstructor [
 						documentation = '''
 							Construct a skill. The owning agent is unknown. 
 						'''
@@ -349,6 +362,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							super();
 						'''
 					]
+					op.annotations += toGeneratedAnnotation
+					it.members += op
+					typeExtensions.setSynthetic(op, true)
 				}
 			])
 	}
@@ -360,7 +376,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				sarlSignatureProvider.resetSignatures(it)
 
 				behavior.copyDocumentationTo(it)
-				generateExtendedTypes(it, behavior, io.sarl.lang.core.Behavior)
+				generateExtendedTypes(it, behavior, typeof(io.sarl.lang.core.Behavior))
 				
 				var behaviorUnitIndex = 1
 				var actionIndex = 1
@@ -403,16 +419,20 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				}
 				
 				if (!hasConstructor) {
-					members += behavior.toConstructor [
+					val aType = newTypeRef(typeof(io.sarl.lang.core.Agent))
+					var op = behavior.toConstructor [
 						documentation = '''
 							Construct a behavior.
 							@param owner - reference to the agent that is owning this behavior.
 						'''
-						parameters += behavior.toParameter('owner', newTypeRef(io.sarl.lang.core.Agent))
+						parameters += toParameter('owner', aType)
 						body = '''
 							super(owner);
 						'''
 					]
+					op.annotations += toGeneratedAnnotation
+					members +=  op
+					typeExtensions.setSynthetic(op, true);
 				}
 			])
 	}
@@ -423,20 +443,21 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			sarlSignatureProvider.resetSignatures(it)
 			
 			agent.copyDocumentationTo(it)
-			generateExtendedTypes(agent, io.sarl.lang.core.Agent)
+			generateExtendedTypes(agent, typeof(io.sarl.lang.core.Agent))
 			var cons = agent.toConstructor [
 				documentation = '''
 					Construct an agent.
 					@param parentID - identifier of the parent. It is the identifer
 					of the parent agent and the enclosing contect, at the same time.
 				'''
-				parameters += agent.toParameter('parentID', newTypeRef(UUID))
+				parameters += agent.toParameter('parentID', newTypeRef(typeof(UUID)))
 				body = '''
 					super(parentID);
 				'''
 			]
-			cons.annotations += agent.toAnnotation(Generated)
+			cons.annotations += agent.toGeneratedAnnotation
 			members += cons
+			typeExtensions.setSynthetic(cons, true)
 			
 			var behaviorUnitIndex = 1
 			var actionIndex = 1
@@ -483,7 +504,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		var SignatureKey sigKey = null
 		
 		for(missedOperation : operationsToImplement.entrySet) {
-			var originalSignature = annotationString(missedOperation.value, DefaultValueUse)
+			var originalSignature = annotationString(missedOperation.value, typeof(io.sarl.lang.annotation.DefaultValueUse))
 			if (originalSignature!==null) {
 				if (originalSignature!=currentKeyStr) {
 					currentKeyStr = originalSignature
@@ -503,7 +524,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					
 					while (it2.hasNext) {
 						var param = it2.next
-						var vId = annotationString(param, DefaultValue)
+						var vId = annotationString(param, typeof(io.sarl.lang.annotation.DefaultValue))
 						if (oparam==null && it1.hasNext) {
 							oparam = it1.next
 						}
@@ -533,7 +554,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							append(");")
 						] //(new CallingFunctionGenerator(originalOperation.simpleName, args))
 					}
-					op.annotations += owner.toAnnotation(DefaultValueUse, originalSignature)
+					op.annotations += owner.toAnnotation(typeof(io.sarl.lang.annotation.DefaultValueUse), originalSignature)
 					output.members += op				
 					actIndex++
 				}
@@ -542,7 +563,6 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		return actIndex
 	}
 
-// FIXME: Null
 	protected def long generateExtendedTypes(JvmGenericType owner, InheritingElement element, Class<?> defaultType) {
 		var serial = 0L
 		var isInterface = owner.interface
@@ -600,7 +620,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		
 		if (capacityType.type instanceof JvmGenericType) {	
 			var reference = toLightweightTypeReference(capacityType, services)
-			if (reference.isSubtypeOf(io.sarl.lang.core.Capacity)) {
+			if (reference.isSubtypeOf(typeof(io.sarl.lang.core.Capacity))) {
 				var actionIndex = index
 				val capacityOperations = newTreeMap(null)
 				
@@ -633,7 +653,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 								append(");")
 							]
 						]
-						op.annotations += context.toAnnotation(Generated)
+						op.annotations += context.toGeneratedAnnotation
 						owner.members += op
 						// 
 						if (operationsToImplement!==null) operationsToImplement.remove(entry.key)
@@ -670,7 +690,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			
 			val behaviorMethod = unit.toMethod(behName, voidType) [
 				unit.copyDocumentationTo(it)
-				annotations += unit.toAnnotation(Percept)
+				annotations += unit.toAnnotation(typeof(io.sarl.lang.core.Percept))
 				parameters +=
 					unit.event.toParameter(SARLKeywords::OCCURRENCE, unit.event)
 			]
@@ -737,10 +757,10 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						}
 						initializer = param.defaultValue
 					]
-					field.annotations += param.toAnnotation(Generated)
+					field.annotations += param.toGeneratedAnnotation
 					actionContainer.members += field
 					readAndWriteTracking.markInitialized(field)
-					var annot = param.toAnnotation(DefaultValue, namePostPart)
+					var annot = param.toAnnotation(typeof(io.sarl.lang.annotation.DefaultValue), namePostPart)
 					lastParam.annotations += annot
 				}
 				
@@ -754,7 +774,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			lastParam.parameterType = lastParam.parameterType.addArrayTypeDimension
 		}
 		if (hasDefaultValue) {
-			owner.annotations += sourceElement.toAnnotation(DefaultValueSource)
+			owner.annotations += sourceElement.toAnnotation(typeof(io.sarl.lang.annotation.DefaultValueSource))
 		}
 		return parameterTypes
 	}
@@ -860,7 +880,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						]
 					}
 					annotations += signature.toAnnotation(
-						DefaultValueUse, 
+						typeof(io.sarl.lang.annotation.DefaultValueUse), 
 						otherSignatures.formalParameterKey.toString
 					)
 				]
@@ -908,7 +928,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					append(");")
 				]
 				annotations += constructor.toAnnotation(
-					DefaultValueUse,
+					typeof(io.sarl.lang.annotation.DefaultValueUse),
 					otherSignatures.formalParameterKey.toString
 				)
 			]

@@ -68,6 +68,14 @@ public class SignatureKey extends BasicEList<String> implements Comparable<Signa
 		return this.isVarargs;
 	}
 	
+	/** Replies if this signature is for Void.
+	 * 
+	 * @return <code>true</code> if the signature is for Void.
+	 */
+	public boolean isVoid() {
+		return size()==0;
+	}
+
 	/** {@inheritDoc}
 	 */
 	@Override
@@ -96,7 +104,7 @@ public class SignatureKey extends BasicEList<String> implements Comparable<Signa
 		}
 		return ""; //$NON-NLS-1$
 	}
-
+	
 	/** {@inheritDoc}
 	 */
 	@Override
