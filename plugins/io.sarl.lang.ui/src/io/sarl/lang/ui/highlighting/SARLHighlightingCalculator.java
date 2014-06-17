@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.custom;
+package io.sarl.lang.ui.highlighting;
 
 import io.sarl.lang.SARLKeywords;
 

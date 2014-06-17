@@ -3,7 +3,7 @@
  */
 package io.sarl.lang.ui;
 
-import io.sarl.lang.ui.custom.SARLHighlightingCalculator;
+import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
 import io.sarl.lang.ui.outline.SARLOutlineNodeComparator;
 import io.sarl.lang.ui.outline.SARLOutlinePage;
 import io.sarl.lang.ui.validation.SARLUIValidator;
