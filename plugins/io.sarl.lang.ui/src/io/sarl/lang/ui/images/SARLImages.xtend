@@ -44,7 +44,7 @@ public class SARLImages extends XbaseImages2 {
 	}
 	
 	public def ImageDescriptor forBehavior() {
-		forClass(JvmVisibility::PROTECTED, 0)
+		imageHelper.getImageDescriptor("sarl-behavior.png");
 	}
 
 	public def ImageDescriptor forCapacity() {
