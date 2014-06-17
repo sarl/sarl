@@ -65,6 +65,7 @@ class AgentCompilerTest {
 	def trueGuardBehaviorUnit() {
 		val expectedE1 = '''
 		import io.sarl.lang.annotation.Generated;
+		import io.sarl.lang.core.Address;
 		import io.sarl.lang.core.Event;
 		
 		@SuppressWarnings("all")
@@ -84,7 +85,7 @@ class AgentCompilerTest {
 		   * 
 		   */
 		  @Generated
-		  public E1(final io.sarl.lang.core.Address source) {
+		  public E1(final Address source) {
 		    super(source);
 		  }
 		  
@@ -134,6 +135,7 @@ class AgentCompilerTest {
 	def falseGuardBehaviorUnit() {
 		val expectedE1 = '''
 		import io.sarl.lang.annotation.Generated;
+		import io.sarl.lang.core.Address;
 		import io.sarl.lang.core.Event;
 		
 		@SuppressWarnings("all")
@@ -153,7 +155,7 @@ class AgentCompilerTest {
 		   * 
 		   */
 		  @Generated
-		  public E1(final io.sarl.lang.core.Address source) {
+		  public E1(final Address source) {
 		    super(source);
 		  }
 		  

@@ -275,6 +275,7 @@ class ArgDefaultValueParsingTest {
 		val mas = '''
 			behavior B1 {
 				new(arg : int=4) {
+					super(null) // must be never null during runtime
 					System.out.println(arg)
 				}
 			}
@@ -318,6 +319,7 @@ class ArgDefaultValueParsingTest {
 		val mas = '''
 			behavior B1 {
 				new(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String) {
+					super(null) // must be never null during runtime
 					System.out.println(arg0)
 				}
 			}
@@ -331,6 +333,7 @@ class ArgDefaultValueParsingTest {
 		val mas = '''
 			behavior B1 {
 				new(arg0 : int, arg1 : String="abc", arg2 : int, arg3 : int, arg4 : String) {
+					super(null) // must be never null during runtime
 					System.out.println(arg0)
 				}
 			}
@@ -344,6 +347,7 @@ class ArgDefaultValueParsingTest {
 		val mas = '''
 			behavior B1 {
 				new(arg0 : int, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String) {
+					super(null) // must be never null during runtime
 					System.out.println(arg0)
 				}
 			}
@@ -357,6 +361,7 @@ class ArgDefaultValueParsingTest {
 		val mas = '''
 			behavior B1 {
 				new(arg0 : int, arg1 : String, arg2 : int, arg3 : int = 34, arg4 : String) {
+					super(null) // must be never null during runtime
 					System.out.println(arg0)
 				}
 			}
@@ -370,6 +375,7 @@ class ArgDefaultValueParsingTest {
 		val mas = '''
 			behavior B1 {
 				new(arg0 : int, arg1 : String, arg2 : int, arg3 : int, arg4 : String="xyz") {
+					super(null) // must be never null during runtime
 					System.out.println(arg0)
 				}
 			}
@@ -383,6 +389,7 @@ class ArgDefaultValueParsingTest {
 		val mas = '''
 			behavior B1 {
 				new(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String) {
+					super(null) // must be never null during runtime
 					System.out.println(arg0)
 				}
 			}
@@ -396,6 +403,7 @@ class ArgDefaultValueParsingTest {
 		val mas = '''
 			behavior B1 {
 				new(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String="def") {
+					super(null) // must be never null during runtime
 					System.out.println(arg0)
 				}
 			}
@@ -409,6 +417,7 @@ class ArgDefaultValueParsingTest {
 		val mas = '''
 			behavior B1 {
 				new(arg0 : int=4, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String="def") {
+					super(null) // must be never null during runtime
 					System.out.println(arg0)
 				}
 			}
@@ -422,6 +431,7 @@ class ArgDefaultValueParsingTest {
 		val mas = '''
 			behavior B1 {
 				new(arg0 : int=4, arg1 : String="ghj", arg2 : int=18, arg3 : int=98, arg4 : String) {
+					super(null) // must be never null during runtime
 					System.out.println(arg0)
 				}
 			}
@@ -435,6 +445,7 @@ class ArgDefaultValueParsingTest {
 		val mas = '''
 			behavior B1 {
 				new(arg0 : int=4, arg1 : String="ghj", arg2 : int=18, arg3 : int=98, arg4 : String="klm") {
+					super(null) // must be never null during runtime
 					System.out.println(arg0)
 				}
 			}
@@ -448,6 +459,7 @@ class ArgDefaultValueParsingTest {
 		val mas = '''
 			behavior B1 {
 				new(arg0 : int, arg1 : int, arg2 : int=45*) {
+					super(null) // must be never null during runtime
 					System.out.println(arg0)
 				}
 			}
@@ -463,6 +475,7 @@ class ArgDefaultValueParsingTest {
 		val mas = '''
 			behavior B1 {
 				new(arg0 : int, arg1 : int=45, arg2 : int*) {
+					super(null) // must be never null during runtime
 					System.out.println(arg0)
 				}
 			}
@@ -476,6 +489,7 @@ class ArgDefaultValueParsingTest {
 		val mas = '''
 			behavior B1 {
 				new(arg0 : int=45, arg1 : int, arg2 : int*) {
+					super(null) // must be never null during runtime
 					System.out.println(arg0)
 				}
 			}
@@ -489,6 +503,7 @@ class ArgDefaultValueParsingTest {
 		val mas = '''
 			behavior B1 {
 				new(arg0 : int=45, arg1 : int=56, arg2 : int*) {
+					super(null) // must be never null during runtime
 					System.out.println(arg0)
 				}
 			}
@@ -987,6 +1002,7 @@ class ArgDefaultValueParsingTest {
 		val mas = '''
 			behavior B1 {
 				new(arg0 : int=45, arg1 : double=18, arg2 : int) {
+					super(null) // must be never null during runtime
 					System.out.println(arg0)
 				}
 			}

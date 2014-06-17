@@ -899,6 +899,7 @@ class ArgDefaultValueCompilerTest {
 		'''
 			behavior B1 {
 				new(arg : int=4) {
+				  	super(null) // must be never null in real code
 					System.out.println(arg)
 				}
 			}
@@ -919,6 +920,7 @@ class ArgDefaultValueCompilerTest {
 			  
 			  @DefaultValueSource
 			  public B1(@DefaultValue("1_0") final int arg) {
+			    super(null);
 			    System.out.println(arg);
 			  }
 			  
@@ -935,6 +937,7 @@ class ArgDefaultValueCompilerTest {
 		'''
 			behavior B1 {
 				new(arg : float=4.5f) {
+				  	super(null) // must be never null in real code
 					System.out.println(arg)
 				}
 			}
@@ -955,6 +958,7 @@ class ArgDefaultValueCompilerTest {
 			  
 			  @DefaultValueSource
 			  public B1(@DefaultValue("1_0") final float arg) {
+			    super(null);
 			    System.out.println(arg);
 			  }
 			  
@@ -971,6 +975,7 @@ class ArgDefaultValueCompilerTest {
 		'''
 			behavior B1 {
 				new(arg : boolean=true) {
+				  	super(null) // must be never null in real code
 					System.out.println(arg)
 				}
 			}
@@ -991,6 +996,7 @@ class ArgDefaultValueCompilerTest {
 			  
 			  @DefaultValueSource
 			  public B1(@DefaultValue("1_0") final boolean arg) {
+			    super(null);
 			    System.out.println(arg);
 			  }
 			  
@@ -1007,6 +1013,7 @@ class ArgDefaultValueCompilerTest {
 		'''
 			behavior B1 {
 				new(arg : double=4.5) {
+				  	super(null) // must be never null in real code
 					System.out.println(arg)
 				}
 			}
@@ -1027,6 +1034,7 @@ class ArgDefaultValueCompilerTest {
 			  
 			  @DefaultValueSource
 			  public B1(@DefaultValue("1_0") final double arg) {
+			    super(null);
 			    System.out.println(arg);
 			  }
 			  
@@ -1043,6 +1051,7 @@ class ArgDefaultValueCompilerTest {
 		'''
 			behavior B1 {
 				new(arg : long=450) {
+				  	super(null) // must be never null in real code
 					System.out.println(arg)
 				}
 			}
@@ -1063,6 +1072,7 @@ class ArgDefaultValueCompilerTest {
 			  
 			  @DefaultValueSource
 			  public B1(@DefaultValue("1_0") final long arg) {
+			    super(null);
 			    System.out.println(arg);
 			  }
 			  
@@ -1079,6 +1089,7 @@ class ArgDefaultValueCompilerTest {
 		'''
 			behavior B1 {
 				new(arg : String="abcd") {
+				  	super(null) // must be never null in real code
 					System.out.println(arg)
 				}
 			}
@@ -1099,6 +1110,7 @@ class ArgDefaultValueCompilerTest {
 			  
 			  @DefaultValueSource
 			  public B1(@DefaultValue("1_0") final String arg) {
+			    super(null);
 			    System.out.println(arg);
 			  }
 			  
@@ -1115,6 +1127,7 @@ class ArgDefaultValueCompilerTest {
 		'''
 			behavior B1 {
 				new(arg : char='d') {
+				  	super(null) // must be never null in real code
 					System.out.println(arg)
 				}
 			}
@@ -1135,6 +1148,7 @@ class ArgDefaultValueCompilerTest {
 			  
 			  @DefaultValueSource
 			  public B1(@DefaultValue("1_0") final char arg) {
+			    super(null);
 			    System.out.println(arg);
 			  }
 			  
@@ -1151,6 +1165,7 @@ class ArgDefaultValueCompilerTest {
 		'''
 			behavior B1 {
 				new(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String) {
+				  	super(null) // must be never null in real code
 					System.out.println(arg0)
 				}
 			}
@@ -1171,6 +1186,7 @@ class ArgDefaultValueCompilerTest {
 			  
 			  @DefaultValueSource
 			  public B1(@DefaultValue("1_0") final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
+			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
@@ -1187,6 +1203,7 @@ class ArgDefaultValueCompilerTest {
 		'''
 			behavior B1 {
 				new(arg0 : int, arg1 : String="abc", arg2 : int, arg3 : int, arg4 : String) {
+				  	super(null) // must be never null in real code
 					System.out.println(arg0)
 				}
 			}
@@ -1207,6 +1224,7 @@ class ArgDefaultValueCompilerTest {
 			  
 			  @DefaultValueSource
 			  public B1(final int arg0, @DefaultValue("1_1") final String arg1, final int arg2, final int arg3, final String arg4) {
+			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
@@ -1223,6 +1241,7 @@ class ArgDefaultValueCompilerTest {
 		'''
 			behavior B1 {
 				new(arg0 : int, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String) {
+				  	super(null) // must be never null in real code
 					System.out.println(arg0)
 				}
 			}
@@ -1243,6 +1262,7 @@ class ArgDefaultValueCompilerTest {
 			  
 			  @DefaultValueSource
 			  public B1(final int arg0, final String arg1, @DefaultValue("1_2") final int arg2, final int arg3, final String arg4) {
+			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
@@ -1259,6 +1279,7 @@ class ArgDefaultValueCompilerTest {
 		'''
 			behavior B1 {
 				new(arg0 : int, arg1 : String, arg2 : int, arg3 : int = 34, arg4 : String) {
+				  	super(null) // must be never null in real code
 					System.out.println(arg0)
 				}
 			}
@@ -1279,6 +1300,7 @@ class ArgDefaultValueCompilerTest {
 			  
 			  @DefaultValueSource
 			  public B1(final int arg0, final String arg1, final int arg2, @DefaultValue("1_3") final int arg3, final String arg4) {
+			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
@@ -1295,6 +1317,7 @@ class ArgDefaultValueCompilerTest {
 		'''
 			behavior B1 {
 				new(arg0 : int, arg1 : String, arg2 : int, arg3 : int, arg4 : String="xyz") {
+				  	super(null) // must be never null in real code
 					System.out.println(arg0)
 				}
 			}
@@ -1315,6 +1338,7 @@ class ArgDefaultValueCompilerTest {
 			  
 			  @DefaultValueSource
 			  public B1(final int arg0, final String arg1, final int arg2, final int arg3, @DefaultValue("1_4") final String arg4) {
+			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
@@ -1331,6 +1355,7 @@ class ArgDefaultValueCompilerTest {
 		'''
 			behavior B1 {
 				new(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String) {
+				  	super(null) // must be never null in real code
 					System.out.println(arg0)
 				}
 			}
@@ -1357,6 +1382,7 @@ class ArgDefaultValueCompilerTest {
 			  
 			  @DefaultValueSource
 			  public B1(@DefaultValue("1_0") final int arg0, final String arg1, final int arg2, @DefaultValue("1_3") final int arg3, final String arg4) {
+			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
@@ -1383,6 +1409,7 @@ class ArgDefaultValueCompilerTest {
 		'''
 			behavior B1 {
 				new(arg0 : int, arg1 : int=45, arg2 : int*) {
+				  	super(null) // must be never null in real code
 					System.out.println(arg0)
 				}
 			}
@@ -1403,6 +1430,7 @@ class ArgDefaultValueCompilerTest {
 			  
 			  @DefaultValueSource
 			  public B1(final int arg0, @DefaultValue("1_1") final int arg1, final int... arg2) {
+			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
@@ -1419,6 +1447,7 @@ class ArgDefaultValueCompilerTest {
 		'''
 			behavior B1 {
 				new(arg0 : int=45, arg1 : int, arg2 : int*) {
+				  	super(null) // must be never null in real code
 					System.out.println(arg0)
 				}
 			}
@@ -1439,6 +1468,7 @@ class ArgDefaultValueCompilerTest {
 			  
 			  @DefaultValueSource
 			  public B1(@DefaultValue("1_0") final int arg0, final int arg1, final int... arg2) {
+			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
@@ -1455,6 +1485,7 @@ class ArgDefaultValueCompilerTest {
 		'''
 			behavior B1 {
 				new(arg0 : int=45, arg1 : int=56, arg2 : int*) {
+				  	super(null) // must be never null in real code
 					System.out.println(arg0)
 				}
 			}
@@ -1481,6 +1512,7 @@ class ArgDefaultValueCompilerTest {
 			  
 			  @DefaultValueSource
 			  public B1(@DefaultValue("1_0") final int arg0, @DefaultValue("1_1") final int arg1, final int... arg2) {
+			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
@@ -1502,6 +1534,7 @@ class ArgDefaultValueCompilerTest {
 		'''
 			behavior B1 {
 				new(arg0 : int=45, arg1 : int=56, arg2 : int=78, arg3 : int=14) {
+				  	super(null) // must be never null in real code
 					System.out.println(arg0)
 				}
 			}
@@ -1540,6 +1573,7 @@ class ArgDefaultValueCompilerTest {
 			  
 			  @DefaultValueSource
 			  public B1(@DefaultValue("1_0") final int arg0, @DefaultValue("1_1") final int arg1, @DefaultValue("1_2") final int arg2, @DefaultValue("1_3") final int arg3) {
+			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
@@ -1649,6 +1683,8 @@ class ArgDefaultValueCompilerTest {
 		'''
 		val expectedS1 = '''
 			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
 			import io.sarl.lang.core.Skill;
 			
 			@SuppressWarnings("all")
@@ -1674,7 +1710,8 @@ class ArgDefaultValueCompilerTest {
 			   * @param owner - agent that is owning this skill. 
 			   * 
 			   */
-			  public S1(final io.sarl.lang.core.Agent owner) {
+			  @Generated
+			  public S1(final Agent owner) {
 			    super(owner);
 			  }
 			  
@@ -1682,6 +1719,7 @@ class ArgDefaultValueCompilerTest {
 			   * Construct a skill. The owning agent is unknown. 
 			   * 
 			   */
+			  @Generated
 			  public S1() {
 			    super();
 			  }
@@ -1750,6 +1788,8 @@ class ArgDefaultValueCompilerTest {
 		'''
 		val expectedS1 = '''
 			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
 			import io.sarl.lang.core.Skill;
 			
 			@SuppressWarnings("all")
@@ -1778,7 +1818,8 @@ class ArgDefaultValueCompilerTest {
 			   * @param owner - agent that is owning this skill. 
 			   * 
 			   */
-			  public S1(final io.sarl.lang.core.Agent owner) {
+			  @Generated
+			  public S1(final Agent owner) {
 			    super(owner);
 			  }
 			  
@@ -1786,6 +1827,7 @@ class ArgDefaultValueCompilerTest {
 			   * Construct a skill. The owning agent is unknown. 
 			   * 
 			   */
+			  @Generated
 			  public S1() {
 			    super();
 			  }

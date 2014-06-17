@@ -45,6 +45,7 @@ class EventCompilerTest {
 			}
 		'''.assertCompilesTo('''
 			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Address;
 			import io.sarl.lang.core.Event;
 
 			@SuppressWarnings("all")
@@ -64,7 +65,7 @@ class EventCompilerTest {
 			   * 
 			   */
 			  @Generated
-			  public E1(final io.sarl.lang.core.Address source) {
+			  public E1(final Address source) {
 			    super(source);
 			  }
 			  
@@ -82,6 +83,7 @@ class EventCompilerTest {
 		}
 		'''.assertCompilesTo('''
 		import io.sarl.lang.annotation.Generated;
+		import io.sarl.lang.core.Address;
 		import io.sarl.lang.core.Event;
 
 		@SuppressWarnings("all")
@@ -103,7 +105,7 @@ class EventCompilerTest {
 		   * 
 		   */
 		  @Generated
-		  public E1(final io.sarl.lang.core.Address source) {
+		  public E1(final Address source) {
 		    super(source);
 		  }
 		  
@@ -156,6 +158,7 @@ class EventCompilerTest {
 	def inheritanceCompile(){
 		val expectedE2 = '''
 		import io.sarl.lang.annotation.Generated;
+		import io.sarl.lang.core.Address;
 		
 		@SuppressWarnings("all")
 		public class E2 extends E1 {
@@ -174,7 +177,7 @@ class EventCompilerTest {
 		   * 
 		   */
 		  @Generated
-		  public E2(final io.sarl.lang.core.Address source) {
+		  public E2(final Address source) {
 		    super(source);
 		  }
 		  

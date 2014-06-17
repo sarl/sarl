@@ -46,6 +46,8 @@ class CapacityCompilerTest {
 			}
 		'''
 		val expectedS1 = '''
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
 			import io.sarl.lang.core.Skill;
 			
 			@SuppressWarnings("all")
@@ -59,7 +61,8 @@ class CapacityCompilerTest {
 			   * @param owner - agent that is owning this skill. 
 			   * 
 			   */
-			  public S1(final io.sarl.lang.core.Agent owner) {
+			  @Generated
+			  public S1(final Agent owner) {
 			    super(owner);
 			  }
 			  
@@ -67,6 +70,7 @@ class CapacityCompilerTest {
 			   * Construct a skill. The owning agent is unknown. 
 			   * 
 			   */
+			  @Generated
 			  public S1() {
 			    super();
 			  }
@@ -104,6 +108,8 @@ class CapacityCompilerTest {
 			}
 		'''
 		val expectedS1 = '''
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
 			import io.sarl.lang.core.Skill;
 			
 			@SuppressWarnings("all")
@@ -119,7 +125,8 @@ class CapacityCompilerTest {
 			   * @param owner - agent that is owning this skill. 
 			   * 
 			   */
-			  public S1(final io.sarl.lang.core.Agent owner) {
+			  @Generated
+			  public S1(final Agent owner) {
 			    super(owner);
 			  }
 			  
@@ -127,6 +134,7 @@ class CapacityCompilerTest {
 			   * Construct a skill. The owning agent is unknown. 
 			   * 
 			   */
+			  @Generated
 			  public S1() {
 			    super();
 			  }
@@ -168,6 +176,8 @@ class CapacityCompilerTest {
 			}
 		'''
 		val expectedS1 = '''
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
 			import io.sarl.lang.core.Skill;
 			
 			@SuppressWarnings("all")
@@ -181,7 +191,8 @@ class CapacityCompilerTest {
 			   * @param owner - agent that is owning this skill. 
 			   * 
 			   */
-			  public S1(final io.sarl.lang.core.Agent owner) {
+			  @Generated
+			  public S1(final Agent owner) {
 			    super(owner);
 			  }
 			  
@@ -189,12 +200,16 @@ class CapacityCompilerTest {
 			   * Construct a skill. The owning agent is unknown. 
 			   * 
 			   */
+			  @Generated
 			  public S1() {
 			    super();
 			  }
 			}
 		'''
 		val expectedS2 = '''
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
+			
 			@SuppressWarnings("all")
 			public class S2 extends S1 implements C2 {
 			  public Double myaction(final int a) {
@@ -206,7 +221,8 @@ class CapacityCompilerTest {
 			   * @param owner - agent that is owning this skill. 
 			   * 
 			   */
-			  public S2(final io.sarl.lang.core.Agent owner) {
+			  @Generated
+			  public S2(final Agent owner) {
 			    super(owner);
 			  }
 			  
@@ -214,6 +230,7 @@ class CapacityCompilerTest {
 			   * Construct a skill. The owning agent is unknown. 
 			   * 
 			   */
+			  @Generated
 			  public S2() {
 			    super();
 			  }
@@ -258,6 +275,8 @@ class CapacityCompilerTest {
 			}
 		'''
 		val expectedS1 = '''
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
 			import io.sarl.lang.core.Skill;
 			
 			@SuppressWarnings("all")
@@ -271,7 +290,8 @@ class CapacityCompilerTest {
 			   * @param owner - agent that is owning this skill. 
 			   * 
 			   */
-			  public S1(final io.sarl.lang.core.Agent owner) {
+			  @Generated
+			  public S1(final Agent owner) {
 			    super(owner);
 			  }
 			  
@@ -279,12 +299,16 @@ class CapacityCompilerTest {
 			   * Construct a skill. The owning agent is unknown. 
 			   * 
 			   */
+			  @Generated
 			  public S1() {
 			    super();
 			  }
 			}
 		'''
 		val expectedS2 = '''
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
+			
 			@SuppressWarnings("all")
 			public class S2 extends S1 implements C2 {
 			  public float myaction(final int a) {
@@ -296,7 +320,8 @@ class CapacityCompilerTest {
 			   * @param owner - agent that is owning this skill. 
 			   * 
 			   */
-			  public S2(final io.sarl.lang.core.Agent owner) {
+			  @Generated
+			  public S2(final Agent owner) {
 			    super(owner);
 			  }
 			  
@@ -304,6 +329,7 @@ class CapacityCompilerTest {
 			   * Construct a skill. The owning agent is unknown. 
 			   * 
 			   */
+			  @Generated
 			  public S2() {
 			    super();
 			  }
@@ -341,6 +367,8 @@ class CapacityCompilerTest {
 			}
 		'''
 		val expectedS1 = '''
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
 			import io.sarl.lang.core.Skill;
 			
 			@SuppressWarnings("all")
@@ -354,7 +382,8 @@ class CapacityCompilerTest {
 			   * @param owner - agent that is owning this skill. 
 			   * 
 			   */
-			  public S1(final io.sarl.lang.core.Agent owner) {
+			  @Generated
+			  public S1(final Agent owner) {
 			    super(owner);
 			  }
 			  
@@ -362,6 +391,7 @@ class CapacityCompilerTest {
 			   * Construct a skill. The owning agent is unknown. 
 			   * 
 			   */
+			  @Generated
 			  public S1() {
 			    super();
 			  }
@@ -392,6 +422,8 @@ class CapacityCompilerTest {
 			}
 		'''
 		val expectedS1 = '''
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
 			import io.sarl.lang.core.Skill;
 			
 			@SuppressWarnings("all")
@@ -405,7 +437,8 @@ class CapacityCompilerTest {
 			   * @param owner - agent that is owning this skill. 
 			   * 
 			   */
-			  public S1(final io.sarl.lang.core.Agent owner) {
+			  @Generated
+			  public S1(final Agent owner) {
 			    super(owner);
 			  }
 			  
@@ -413,6 +446,7 @@ class CapacityCompilerTest {
 			   * Construct a skill. The owning agent is unknown. 
 			   * 
 			   */
+			  @Generated
 			  public S1() {
 			    super();
 			  }
@@ -458,6 +492,7 @@ class CapacityCompilerTest {
 		'''
 		val expectedS1 = '''
 			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
 			import io.sarl.lang.core.Skill;
 			
 			@SuppressWarnings("all")
@@ -485,7 +520,8 @@ class CapacityCompilerTest {
 			   * @param owner - agent that is owning this skill. 
 			   * 
 			   */
-			  public S1(final io.sarl.lang.core.Agent owner) {
+			  @Generated
+			  public S1(final Agent owner) {
 			    super(owner);
 			  }
 			  
@@ -493,6 +529,7 @@ class CapacityCompilerTest {
 			   * Construct a skill. The owning agent is unknown. 
 			   * 
 			   */
+			  @Generated
 			  public S1() {
 			    super();
 			  }

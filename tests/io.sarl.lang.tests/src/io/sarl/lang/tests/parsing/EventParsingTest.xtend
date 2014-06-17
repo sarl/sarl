@@ -27,6 +27,7 @@ import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.eclipse.xtext.xbase.XbasePackage
 
 /**
  * @author $Author: sgalland$
@@ -154,6 +155,95 @@ class EventParsingTest {
 			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
 			IssueCodes::INVALID_EXTENDED_TYPE,
 			"Invalid super-type: 'C1'. Only the type 'io.sarl.lang.core.Event' and one of its subtypes are allowed for 'E1'")
+	}
+
+	@Test
+	def void validImplicitSuperConstructor() {
+		val mas = '''
+			package io.sarl.test
+			event E1 {
+			}
+			event E2 extends E1 {
+				new (a : int) {
+				}
+			}
+		'''.parse
+		mas.assertNoErrors
+	}
+
+	@Test
+	def void missedImplicitSuperConstructor_1() {
+		val mas = '''
+			package io.sarl.test
+			event E1 {
+				new (a : char) {
+				}
+			}
+			event E2 extends E1 {
+				new (a : int) {
+				}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.constructor,
+			IssueCodes::MISSING_CONSTRUCTOR,
+			"Undefined default constructor in the super-type")
+	}
+
+	@Test
+	def void missedImplicitSuperConstructor_2() {
+		val mas = '''
+			package io.sarl.test
+			event E1 {
+				new (a : int) {
+				}
+			}
+			event E2 extends E1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.event,
+			IssueCodes::MISSING_CONSTRUCTOR,
+			"The constructor E1() is undefined.")
+	}
+
+	@Test
+	def void missedImplicitSuperConstructor_3() {
+		val mas = '''
+			package io.sarl.test
+			event E1 {
+				new (a : int) {
+				}
+			}
+			event E2 extends E1 {
+				new (a : int) {
+				}
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.constructor,
+			IssueCodes::MISSING_CONSTRUCTOR,
+			"Undefined default constructor in the super-type")
+	}
+
+	@Test
+	def void invalidArgumentTypeToSuperConstructor() {
+		val mas = '''
+			package io.sarl.test
+			event E1 {
+				new (a : int) {
+				}
+			}
+			event E2 extends E1 {
+				new (a : int) {
+					super("")
+				}
+			}
+		'''.parse
+		mas.assertError(
+			XbasePackage::eINSTANCE.XStringLiteral,
+			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_TYPES,
+			"Type mismatch: cannot convert from String to int")
 	}
 
 }

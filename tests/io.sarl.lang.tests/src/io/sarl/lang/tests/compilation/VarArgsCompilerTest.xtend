@@ -107,6 +107,8 @@ class VarArgsCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -120,7 +122,8 @@ class VarArgsCompilerTest {
 			   * @param owner - reference to the agent that is owning this behavior.
 			   * 
 			   */
-			  public B1(final io.sarl.lang.core.Agent owner) {
+			  @Generated
+			  public B1(final Agent owner) {
 			    super(owner);
 			  }
 			}
@@ -136,6 +139,8 @@ class VarArgsCompilerTest {
 				}
 			}
 		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
 			import io.sarl.lang.core.Behavior;
 			
 			@SuppressWarnings("all")
@@ -149,7 +154,8 @@ class VarArgsCompilerTest {
 			   * @param owner - reference to the agent that is owning this behavior.
 			   * 
 			   */
-			  public B1(final io.sarl.lang.core.Agent owner) {
+			  @Generated
+			  public B1(final Agent owner) {
 			    super(owner);
 			  }
 			}
@@ -161,6 +167,7 @@ class VarArgsCompilerTest {
 		'''
 			behavior B1 {
 				new(arg : int*) {
+				  	super(null) // must be never null in real code
 					System.out.println(arg)
 				}
 			}
@@ -170,6 +177,7 @@ class VarArgsCompilerTest {
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
 			  public B1(final int... arg) {
+			    super(null);
 			    System.out.println(arg);
 			  }
 			}
@@ -181,6 +189,7 @@ class VarArgsCompilerTest {
 		'''
 			behavior B1 {
 				new(arg1 : char, arg2 : boolean, arg3 : int*) {
+				  	super(null) // must be never null in real code
 					System.out.println(arg3)
 				}
 			}
@@ -190,6 +199,7 @@ class VarArgsCompilerTest {
 			@SuppressWarnings("all")
 			public class B1 extends Behavior {
 			  public B1(final char arg1, final boolean arg2, final int... arg3) {
+			    super(null);
 			    System.out.println(arg3);
 			  }
 			}
@@ -299,6 +309,8 @@ class VarArgsCompilerTest {
 			
 			File 2 : S1.java
 			
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
 			import io.sarl.lang.core.Skill;
 			
 			@SuppressWarnings("all")
@@ -312,7 +324,8 @@ class VarArgsCompilerTest {
 			   * @param owner - agent that is owning this skill. 
 			   * 
 			   */
-			  public S1(final io.sarl.lang.core.Agent owner) {
+			  @Generated
+			  public S1(final Agent owner) {
 			    super(owner);
 			  }
 			  
@@ -320,6 +333,7 @@ class VarArgsCompilerTest {
 			   * Construct a skill. The owning agent is unknown. 
 			   * 
 			   */
+			  @Generated
 			  public S1() {
 			    super();
 			  }
@@ -350,6 +364,8 @@ class VarArgsCompilerTest {
 			
 			File 2 : S1.java
 			
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
 			import io.sarl.lang.core.Skill;
 			
 			@SuppressWarnings("all")
@@ -363,7 +379,8 @@ class VarArgsCompilerTest {
 			   * @param owner - agent that is owning this skill. 
 			   * 
 			   */
-			  public S1(final io.sarl.lang.core.Agent owner) {
+			  @Generated
+			  public S1(final Agent owner) {
 			    super(owner);
 			  }
 			  
@@ -371,6 +388,7 @@ class VarArgsCompilerTest {
 			   * Construct a skill. The owning agent is unknown. 
 			   * 
 			   */
+			  @Generated
 			  public S1() {
 			    super();
 			  }

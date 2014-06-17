@@ -70,6 +70,7 @@ class Bug23 {
 	def myAgentSpawnedCompile() {
 		val expectedMyAgentSpawned = '''
 		import io.sarl.lang.annotation.Generated;
+		import io.sarl.lang.core.Address;
 		import java.util.UUID;
 
 		@SuppressWarnings("all")
@@ -91,7 +92,7 @@ class Bug23 {
 		   * 
 		   */
 		  @Generated
-		  public MyAgentSpawned(final io.sarl.lang.core.Address source) {
+		  public MyAgentSpawned(final Address source) {
 		    super(source);
 		  }
 		  

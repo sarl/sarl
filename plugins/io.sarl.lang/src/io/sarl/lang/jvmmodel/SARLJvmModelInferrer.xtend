@@ -341,12 +341,13 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				actionIndex = generateMissedFunction(skill, actionIndex, operationsToImplement, overridableOperations)
 								
 				if (!hasConstructor) {
+					val aType = newTypeRef(typeof(io.sarl.lang.core.Agent))
 					var op = skill.toConstructor [
 						documentation = '''
 							Construct a skill.
 							@param owner - agent that is owning this skill. 
 						'''
-						parameters += skill.toParameter('owner', newTypeRef(typeof(io.sarl.lang.core.Agent)))
+						parameters += skill.toParameter('owner', aType)
 						body = '''
 							super(owner);
 						'''

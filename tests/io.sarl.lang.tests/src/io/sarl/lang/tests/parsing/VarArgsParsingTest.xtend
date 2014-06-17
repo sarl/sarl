@@ -292,6 +292,7 @@ class VarArgsParsingTest {
 		val mas = '''
 			behavior B1 {
 				new(arg : int*) {
+					super(null) // must be never null during runtime
 					System.out.println(arg)
 				}
 			}
@@ -305,6 +306,7 @@ class VarArgsParsingTest {
 		val mas = '''
 			behavior B1 {
 				new (arg1 : char, arg2 : boolean, arg3 : int*) {
+					super(null) // must be never null during runtime
 					System.out.println(arg3)
 				}
 			}
@@ -318,6 +320,7 @@ class VarArgsParsingTest {
 		val mas = '''
 			behavior B1 {
 				new (arg1 : char, arg2 : boolean*, arg3 : int) {
+					super(null) // must be never null during runtime
 					System.out.println(arg3)
 				}
 			}
