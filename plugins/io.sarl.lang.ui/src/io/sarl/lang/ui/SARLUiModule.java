@@ -4,14 +4,21 @@
 package io.sarl.lang.ui;
 
 import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
+import io.sarl.lang.ui.outline.SARLOperationOutlineFilter;
+import io.sarl.lang.ui.outline.SARLBehaviorUnitOutlineFilter;
+import io.sarl.lang.ui.outline.SARLFieldOutlineFilter;
 import io.sarl.lang.ui.outline.SARLOutlineNodeComparator;
 import io.sarl.lang.ui.outline.SARLOutlinePage;
 import io.sarl.lang.ui.validation.SARLUIValidator;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+import org.eclipse.xtext.ui.editor.outline.actions.IOutlineContribution;
 import org.eclipse.xtext.ui.editor.outline.impl.OutlineFilterAndSorter.IComparator;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.ISemanticHighlightingCalculator;
+
+import com.google.inject.Binder;
+import com.google.inject.name.Names;
 
 /**
  * Use this class to register components to be used within the IDE.
@@ -31,10 +38,10 @@ public class SARLUiModule extends io.sarl.lang.ui.AbstractSARLUiModule {
 				super.bindISemanticHighlightingCalculator().isAssignableFrom(
 						SARLHighlightingCalculator.class))
 						: "The class SARLHighlightingCalculator does not extend the class provided by default by Xbase"; //$NON-NLS-1$
-		//
-		return SARLHighlightingCalculator.class;
+				//
+				return SARLHighlightingCalculator.class;
 	}
-	
+
 	@Override
 	@org.eclipse.xtext.service.SingletonBinding(eager=true)
 	public Class<? extends org.eclipse.xtext.xbase.ui.validation.XbaseUIValidator> bindXbaseUIValidator() {
@@ -42,19 +49,35 @@ public class SARLUiModule extends io.sarl.lang.ui.AbstractSARLUiModule {
 				super.bindXbaseUIValidator().isAssignableFrom(
 						SARLUIValidator.class))
 						: "The class SARLUIValidator does not extend the class provided by default by Xbase"; //$NON-NLS-1$
-		//
-		return SARLUIValidator.class;
+				//
+				return SARLUIValidator.class;
 	}
-	
+
 	@Override
 	public Class<? extends IContentOutlinePage> bindIContentOutlinePage() {
 		return SARLOutlinePage.class;
 	}
-	
+
 	@Override
 	public Class<? extends IComparator> bindOutlineFilterAndSorter$IComparator() {
 		return SARLOutlineNodeComparator.class;
 	}
-	
-		
+
+	/**
+	 * @param binder
+	 */
+	@SuppressWarnings("static-method")
+	public void configureFilterOperationsContribution(Binder binder) {
+		binder.bind(IOutlineContribution.class).annotatedWith(
+				Names.named("SARLFieldOutlineFilter")) //$NON-NLS-1$
+				.to(SARLFieldOutlineFilter.class);
+		binder.bind(IOutlineContribution.class).annotatedWith(
+				Names.named("SARLOperationOutlineFilter")) //$NON-NLS-1$
+				.to(SARLOperationOutlineFilter.class);
+		binder.bind(IOutlineContribution.class).annotatedWith(
+				Names.named("SARLBehaviorUnitOutlineFilter")) //$NON-NLS-1$
+				.to(SARLBehaviorUnitOutlineFilter.class);
+	}
+
+
 }
