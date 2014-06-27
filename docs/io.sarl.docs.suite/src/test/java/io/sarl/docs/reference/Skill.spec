@@ -40,11 +40,12 @@ describe "Skill Reference" {
 
 		describe "Defining a Skill" {
 			
-			/* The definition of a skill is done with the <code>skill</code>
+			/* The definition of a skill is done with the `skill`
 			 * keyword. A skill must always implement a capacity. This
-			 * relationship is specified with the <code>implements</code> keyword.
+			 * relationship is specified with the `implements` keyword.
 			 * 
-			 * Below, a skill is defined for outputing the messages on the standard console.
+			 * Below, a skill is defined for outputting the messages on the standard console
+			 * (defined in the [Capacity Reference](CapacityReferenceSpec.html)).
 			 * Note that all the actions defined in the implemented capacity must
 			 * have a definition (with a body) in the skill.
 			 *  
@@ -145,7 +146,7 @@ describe "Skill Reference" {
 						output(text)
 					}
 					// Define an utility function
-					// that is outputing the text
+					// that is outputting the text
 					def output(t : String) {
 						System.err.println(t)
 					}
@@ -180,11 +181,11 @@ describe "Skill Reference" {
 			 * However, the definition of a constructor
 			 * is mandatory if a value must be initialized.
 			 *  
-			 * The constructors of the <code>Skill</code> class
-			 * are: <ul>
-			 * <li>The default constructor: <code>def Skill()</code></li>
-			 * <li>The constructor with owner: <code>def Skill(owner : Agent)</code></li>
-			 * </ul>
+			 * The constructors defined in the abstract `Skill` class
+			 * are:
+			 * 
+			 *  * The default constructor: `def Skill()`
+			 *  * The constructor with owner: `def Skill(owner : Agent)`
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
@@ -235,8 +236,8 @@ describe "Skill Reference" {
 
 			/* In some use cases, it is useful to define a skill by
 			 * implementing more than one capacity.
-			 * Below, the <code>MyLogging</code> skill is defined as an implementation
-			 * of the capacities <code>Logging</code> and <code>LogReader</code>.
+			 * Below, the `MyLogging` skill is defined as an implementation
+			 * of the capacities `Logging` and `LogReader`.
 			 * All the methods defined in the implemented interfaces must have
 			 * an implementation in the skill.
 			 * 
@@ -300,14 +301,13 @@ describe "Skill Reference" {
 			 * feature of SARL, which has the same semantic as the inheritance
 			 * mechanism as the Java object-oriented language.
 			 * 
-			 * The extended skill is specified just after the <code>extends</code>
+			 * The extended skill is specified just after the `extends`
 			 * keyword.
 			 * 
 			 * <span class="label label-warning">Important</span> A skill can
-			 * extend only one other skill type (same constrain as for
-			 * the classes in the Java language).
+			 * extend only one other skill type.
 			 * 
-			 * In the following code, the <code>StandardJavaLogging</code> skill (defined
+			 * In the following code, the `StandardJavaLogging` skill (defined
 			 * previously) is extended for changing the output of the info.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -356,17 +356,17 @@ describe "Skill Reference" {
 		/* Several capacities are defined and reserved by the SARL Core
 		 * Specification. The corresponding skills are provided
 		 * by the runtime environment (such as the [Janus platform](http://www.janusproject.io)).
-		 * The builtin skills are described in the 
-		 * [Builtin Capacity Reference](./BuiltinCapacityReferenceSpec.html).
+		 * The built-in skills are described in the 
+		 * [Built-in Capacity Reference](./BuiltinCapacityReferenceSpec.html).
 		 */
-		describe "Builtin Skills"{
+		describe "Built-in Skills"{
 		}
 
 		/* Details on the use of the skills may be found in the references of
-		 * the major behavior-based concepts of SARL:<ul>
-		 * <li>[Agent](AgentReferenceSpec.html)</li>
-		 * <li>[Behavior](BehaviorReferenceSpec.html)</li>
-		 * </ul>
+		 * the major behavior-based concepts of SARL:
+		 * 
+		 *  * [Agent](AgentReferenceSpec.html)
+		 *  * [Behavior](BehaviorReferenceSpec.html)
 		 */
 		describe "Use of the Skills"{
 		}

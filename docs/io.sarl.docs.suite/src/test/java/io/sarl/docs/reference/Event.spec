@@ -26,24 +26,24 @@ import org.jnario.runner.CreateWith
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html).
  * 
  * An event is one of the core concepts in SARL.
- * It is a data structure composed of a set of attributes.
+ * It is a data structure composed of attributes.
  * Each attribute has a name, a type, and a value.
  * 
- * Events are exchanged among the agents or the behavioral units of an agent,
+ * Events are exchanged among the agents or the behavioral units of agents,
  * inside a given [Space](./SpaceReferenceSpec.html).
  * 
- * Each event has:<ul>
- * <li>a type, i.e. its qualified name;</li>
- * <li>a source, the identifier of the emitter of the event;</li>
- * <li>a collection of name-value pairs, i.e. the attributes of the event.</li>
- * </ul>
+ * Each event has:
+ * 
+ *  * a type, i.e. its qualified name;
+ *  * a source, the identifier of the sender of the event; and
+ *  * a collection of name-value pairs, i.e. the attributes of the event.
  */
 @CreateWith(SARLSpecCreator)
 describe "Event Reference"{
 
 		@Inject extension SARLParser
 
-		/* In literature, there are two major concepts for defining the
+		/* In computer-science literature, there are two major concepts for defining the
 		 * data structures that are exchanged by entities:
 		 * the event, and the message.
 		 * 
@@ -51,25 +51,25 @@ describe "Event Reference"{
 		 * and the potential embedded data for both of them.
 		 * The difference is related to the specification of
 		 * the receiver. In one hand, the event does not
-		 * force the emitter to specify the receiver identifier.
+		 * force the sender to specify the receiver identifier.
 		 * In the other hand, the message needs to have at least
-		 * on receiver identifer.
+		 * on receiver identifier (even if it means "all" the 
+		 * possible identifiers).
 		 * 
 		 * Because the event permits to send data without being
-		 * care of the emitter, this concept is privilegied
+		 * care of the sender, this concept is privileged
 		 * by the designers of SARL.
 		 * 
-		 * Consequently, for sending a message to another entity,
-		 * you must create the instance of an event, and emit
-		 * this object in a [Space](./SpaceReferenceSpec.html), which is restricted to
-		 * the desired receivers of the message.
-		 * The emission API is detailed in the [Builtin Capacity
+		 * Consequently, for sending data to another entity,
+		 * you must create an instance of an event, and emit
+		 * this object in a [Space](./SpaceReferenceSpec.html).
+		 * The sending API is detailed in the [Built-in Capacity
 		 * Reference](BuiltinCapacityReferenceSpec.html).
 		 * 
 		 * 
 		 * <span class="label label-warning">Important</span> There is 
-		 * not message concept in SARL. All the communications are
-		 * supported by the concept of <code>Event</code>
+		 * no message concept in SARL. All the communications are
+		 * supported by the concept of `Event`
 		 * 
 		 */
 		describe "Event vs. Message"{
@@ -77,25 +77,25 @@ describe "Event Reference"{
 		
 		describe "Defining an Event" {
 			
-			/* An event can be defined with the <code>event</code> keyword.
+			/* An event can be defined with the `event` keyword.
 			 * It must be followed by the name of the event without the
 			 * qualified name of its package, which is inferred from the
-			 * <code>package</code> keyword if present.
+			 * `package` keyword if present.
 			 * 
 			 * When the event is empty, i.e. it does not contains any additional
-			 * data that the source of the event, it is specified by an empty
-			 * block, or by do not write any block, after the event's declaration.
+			 * data than the source of the event, it is specified by an empty
+			 * block, or by "nothing", after the event's declaration.
+			 * 
 			 * The example below contains the definition of the events
-			 * <code>Event1</code> and <code>Event2</code>, whic hare both empty.
+			 * `Event1` and `Event2`, which are both empty.
 			 * The first event is defined with the "empty block" syntax.
-			 * The second event is defined with the other syntax.
+			 * The second event is defined with the "nothing" syntax.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 			 */
 			fact "Define an empty event"{
 				val model = '''
-				event Event1 {
-				}
+				event Event1 {  }
 				event Event2
 				'''.parsesSuccessfully(
 					"package io.sarl.docs.reference.er",
@@ -110,24 +110,26 @@ describe "Event Reference"{
 			}
 		
 			/**
-			 * Events in SARL can carry information.
+			 * Events can carry information.
 			 * This information is described by a set of attributes.
 			 * Each attribute is declared according to the "Field Declaration"
-			 * of the General Syntax Reference.
+			 * of the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html).
 			 * 
-			 * The following code example is defining the event <code>MyEvent</code> with
+			 * The following code example is defining the event `MyEvent` with
 			 * three attributes.
 			 * Each declaration of the attributes illustrates one possible syntax for
-			 * defining a field.<ul>
-			 * <li>declaration with explicit typing: <code>var number : Integer</code></li>
-			 * <li>declaration with type inference: <code>var string = "abc"</code></li>
-			 * <li>declaration with free infered element: <code>var something</code></li>
-			 * </ul>
+			 * defining a field:
+			 * 
+			 *  * declaration with explicit typing: `var number : Integer`
+			 *  * declaration with type inference: `var string = "abc"`
+			 *  * declaration with free inferred element: `var something`
+			 *
+			 * 
 			 * According to the type inference mechanism used by SARL, the attribute
-			 * <code>something</code> will have the type <code>Object</code>.
+			 * `something` will have the type `Object`.
 			 * 
 			 * <span class="label label-warning">Important</span> Because of the use of 
-			 * the <code>var</code> keyword, the values of the attributes can be modified.
+			 * the `var` keyword, the values of the attributes can be modified.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
@@ -154,18 +156,18 @@ describe "Event Reference"{
 			
 			/**
 			 * Events in SARL can carry information that is unmodifiable using the
-			 * <code>val</code> keyword.
+			 * `val` keyword.
 			 * 
-			 * <span class="label label-warning">Important</span> The <code>val</code>
-			 * keyword has the same semantic as the <code>final</code> modifier in
-			 * the Java language. It means that an element defined with <code>val</code>
+			 * <span class="label label-warning">Important</span> The `val`
+			 * keyword has the same semantic as the `final` modifier in
+			 * the Java language. It means that an element defined with `val`
 			 * can be initialized only once. It also means that the element is read-only.
 			 * But if the element is a reference to an object, then this object is
 			 * not read-only (only the initial reference is). 
 			 * 
-			 * Because the <code>val</code> keyword defines a single-initialization
-			 * variable, it is mandatory to specify the intialization value.
-			 * This value could be specified at the end of the <code>val</code>
+			 * Because the `val` keyword defines a single-initialization
+			 * variable, it is mandatory to specify the initialization value.
+			 * This value could be specified at the end of the `val`
 			 * directive, or by specifying a constructor.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -201,23 +203,22 @@ describe "Event Reference"{
 			 * feature of SARL, which has the same semantic as the inheritance
 			 * mechanism as the Java object-oriented language.
 			 * 
-			 * The extended event is specified just after the <code>extends</code>
+			 * The extended event is specified just after the `extends`
 			 * keyword.
 			 * 
 			 * <span class="label label-warning">Important</span> An event can
-			 * extend only one other event type (same constrain as in the Java
-			 * language).
+			 * extend only one other event type.
 			 * 
 			 * In the following code, a first event is defined with the name
-			 * <code>Event1</code> and an attribute named <code>string</code>.
-			 * A second event <code>Event2</code> is defined as the extension
+			 * `Event1` and an attribute named `string`.
+			 * A second event `Event2` is defined as the extension
 			 * of the first event. It contains a new attribute named
-			 * <code>number</code>.
+			 * `number`.
 			 * It is now possible to create instances of these events.
-			 * For <code>Event1</code>, only the attribute <code>string</code>
-			 * is accessible. For <code>Event2</code>, the two attributes
-			 * are accessible, because the type <code>Event2</code> inherits
-			 * the fields of <code>Event1</code>.
+			 * For `Event1`, only the attribute `string`
+			 * is accessible. For `Event2`, the two attributes
+			 * are accessible, because the type `Event2` inherits
+			 * the fields of `Event1`.
 			 */
 			describe "Extending Events"{
 
@@ -295,10 +296,10 @@ describe "Event Reference"{
 		 * define an event with a fully qualified name equals to one
 		 * of the reserved events.
 		 * 
-		 * Two types of reserved events exist:<ul>
-		 * <li>the events reserved in the SARL Core Specification for the [agent's lifecycle](./AgentReferenceSpec.html#AgentLifeCycle); and </li>
-		 * <li>the events supported by the [Builtin Capacities](./BuiltinCapacityReferenceSpec.html).</li>
-		 * </ul>
+		 * Two types of reserved events exist:
+		 * 
+		 *  * the events reserved in the SARL Core Specification for the [agent's lifecycle](./AgentReferenceSpec.html#Behaviors_of_an_Agent); and
+		 *  * the events supported by the [Built-in Capacities](./BuiltinCapacityReferenceSpec.html).
 		 */
 		describe "Reserved Events"{
 		}

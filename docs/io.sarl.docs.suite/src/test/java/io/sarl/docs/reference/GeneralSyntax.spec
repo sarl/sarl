@@ -36,9 +36,6 @@ import org.jnario.runner.CreateWith
 
 /*
  * This document describes the general syntax of the SARL Language. 
- * While we will use the agent definition, it is also valid for other 
- * concepts. Please see the specific Reference documentation 
- * for details.
  */
 @CreateWith(SARLSpecCreator)
 describe "General Syntax Reference" {
@@ -46,11 +43,11 @@ describe "General Syntax Reference" {
 	@Inject extension SARLParser
 	
 	/* SARL, like Java, is a statically typed language. In fact it completely supports 
-	 * Java's type system, including the primitive types like int or boolean, 
-	 * arrays and all the Java classes, interfaces, enums and annotations that reside 
+	 * Java's type system, including the primitive types like _int_ or _boolean_, 
+	 * arrays and all the Java classes, interfaces, enumerations and annotations that reside 
 	 * on the class path.
 	 * 
-	 * Java generics are fully supported as well: You can define type parameters on 
+	 * Java generic types are fully supported as well: you can define type parameters on 
 	 * methods and classes and pass type arguments to generic types just as you are 
 	 * used to from Java. The type system and its conformance and casting rules are 
 	 * implemented as defined in the
@@ -63,9 +60,9 @@ describe "General Syntax Reference" {
 	 * write types down because they can be computed from the context.
 	 * 
 	 * In addition to Java's autoboxing to convert primitives to their corresponding wrapper 
-	 * types (e.g. int is automatically converted to Integer when needed), there are 
+	 * types (e.g. _int_ is automatically converted to _Integer_ when needed), there are 
 	 * additional conversion rules in SARL: arrays are automatically converted to
-	 * <code>List&lt;ComponentType&gt;</code> and vice versa.
+	 * `List<ComponentType>` and vice versa.
 	 *
 	 * Resembling and supporting every aspect of Java's type system ensures that there is 
 	 * no impedance mismatch between Java and SARL. __This means that SARL and Java are 
@@ -79,27 +76,30 @@ describe "General Syntax Reference" {
 
 	/* In SARL, the names of the features (agents, variables, fields, etc.)
 	 * cannot be one of the keywords of SARL or Java.
-	 * For example, it is forbidden to type:<pre><code>
-	 * import java.awt.event.ActionEvent 
-	 * </code></pre>
-	 * Indeed, the name fragment <code>event</code> corresponds to a kerword
-	 * of sarl.
+	 * For example, it is forbidden to type:
+	 * 
+	 *     import java.awt.event.ActionEvent 
+	 *
+	 *
+	 * Indeed, the name fragment `event` corresponds to a keyword
+	 * of SARL.
 	 * 
 	 * For solving this problem (since some names comes from Java, and
 	 * this language has not the same set of keywords than SARL), it
-	 * is possible to prefix the name fragment with the character <code>^</code>:<pre><code>
-	 * import java.awt.^event.ActionEvent 
-	 * </code></pre>
+	 * is possible to prefix the name fragment with the character `^`:
+	 * 
+	 *     import java.awt.^event.ActionEvent 
 	 */
 	describe "Name Syntax" {
 		
 	}
 
-	/* In SARL, each script must follow the format:<pre><code>
-	 * &lt;package definition&gt;
-	 * &lt;imports&gt;
-	 * &lt;top-level features&gt;
-	 * </code></pre>
+	/* A script is a file in which you must type the SARL code.
+	 * Each script must follow the format:
+	 * 
+	 *     <package declaration>
+	 *     <imports>
+	 *     <top-level features>
 	 */
 	describe "Script Format" {
 
@@ -107,24 +107,24 @@ describe "General Syntax Reference" {
 		 * For structuring your software, it is convenient to put the scripts
 		 * in different packages (as Java does for the classes).
 		 * 
-		 * The keyword <code>package</code> permits to define the name of
+		 * The keyword `package` permits to define the name of
 		 * the package associated to a SARL file. Consequently, all
-		 * the features defined in the script defined in this package,
+		 * the features defined in the script are defined in this package,
 		 * and their names are qualified with the name of the package.
 		 * 
 		 * The package's name has also a consequency in the generation of
-		 * the Java files associated to the SARL script. Indeed, all the
+		 * the Java files behind the SARL script. Indeed, all the
 		 * Java files are generated in a folder, which is matching the
 		 * name of the package.
 		 * 
 		 * In the following example, the qualified name of the agent is
-		 * <code>io.sarl.documentation.example.A</code>.
+		 * `io.sarl.docs.reference.gsr`.
 		 * 
 		 * <span class="label label-warning">Important</span> If the 
-		 * <code>package</code> keyword is not used, the default package will
+		 * `package` keyword is not used, the default package will
 		 * be used. The default package has an empty name.
-		 * It is recommended by the SARL Best Practices to specify a package's
-		 * name always. 
+		 * It is recommended in the SARL Best Practices to specify a package's
+		 * name. 
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -140,24 +140,24 @@ describe "General Syntax Reference" {
 			model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(0)
 		}	 
 		
-		/* The section part of a SARL script is dedicated to the 
+		/* The _imports_ part of a SARL script is dedicated to the 
 		 * declaration of the imported classes.
 		 * Each time you want to use a feature defined in another package
-		 * than the one of your SARL script, you shoumd include it
-		 * with the <code>import</code> directive.
+		 * than the one of your SARL script, you should include it
+		 * with the `import` directive.
 		 * 
 		 * <span class="label label-warning">Important</span> This directive 
 		 * works in the same way as in the Java language.
 		 * 
-		 * The <code>import</code> keyword is following by the qualified name
+		 * The `import` keyword is followed by the qualified name
 		 * of the feature to import. In the following code, it is illustrated
 		 * by the first directive.
 		 * 
-		 * Optionnally, you could import all the features defined inside a package.
-		 * This could be done by replacing the names of the features with the
-		 * wildcard character <code>*</code>. The second import directive is
+		 * Optionally, you could import all the features defined inside a package.
+		 * This could be done by replacing the name of the feature by the
+		 * wildcard character `*`. The second import directive is
 		 * an example of the inclusion of all the classes defined in
-		 * <code>java.net</code>.
+		 * `java.net`.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -186,28 +186,29 @@ describe "General Syntax Reference" {
 		 * called without any associated object's instance.
 		 * 
 		 * In this case, the name of the static function is qualified
-		 * by the fully qualifed name of the class. For example, 
-		 * the function <code>max()</code> is invoked with this
+		 * by the fully qualified name of the class. For example, 
+		 * the function `max()` is invoked with this
 		 * syntax, in the example below.
 		 * 
 		 * However, if there is plenty of invocations to static
 		 * methods in your source code, the static-import mechanism
 		 * permits to make the code more readable by removing the
-		 * fully qualified name of the clases, in which the called
+		 * fully qualified name of the classes, in which the called
 		 * functions are defined.
 		 * 
-		 * A static import is specifiy with the <code>static</code>
-		 * keyword just after the <code>import</code> keyword.
-		 * The following identifier must be a fully qualifed name of
-		 * one or more functions (with the wildcard characted).
+		 * A static import is specify with the `static`
+		 * keyword just after the `import` keyword.
+		 * The following identifier must be a fully qualified name of
+		 * one or more functions (with the wildcard character).
 		 * In the example below, all the functions defined in
-		 * <code>java.util.Arrays</code> are imported.
-		 * <pre><code>
-		 * import static java.util.Arrays.*
-		 * </code></pre>
+		 * `java.util.Arrays` are imported.
+		 * 
+		 *     import static java.util.Arrays.*
+		 * 
+		 * 
 		 * Then,
-		 * it is possible to invoked one of them by entering its
-		 * name, as the call to <code>toString(int[])</code> below.
+		 * it is possible to invoke one of them by typing its
+		 * name, as the call to `toString(int[])` below.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -245,11 +246,11 @@ describe "General Syntax Reference" {
 
 		/* A large part of a SARL script contains the definitions of
 		 * the top-level features. These features are core concepts
-		 * of SARL, such as <code>agent</code>, <code>event</code>, or
-		 * <code>capacity</code>.
+		 * of SARL, such as `agent`, `event`, or
+		 * `capacity`.
 		 * 
 		 * All these top-level features are documented in there own
-		 * Reference.
+		 * reference document.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -293,7 +294,7 @@ describe "General Syntax Reference" {
 	 */	
 	describe "Literals"{
 	
-		/* A string literal is of type <code>String</code>. 
+		/* A string literal is of type `String`. 
 		 * String literals are enclosed in a pair of single quotes 
 		 * or double quotes. Special characters can be 
 		 * quoted with a backslash or defined using unicode 
@@ -329,7 +330,7 @@ describe "General Syntax Reference" {
 	
 		/* Character literals use the same notation as String literals. 
 		 * If a single character literal is used in a context where a 
-		 * primitive char or the wrapper type <code>Character</code> is expected, 
+		 * primitive char or the wrapper type `Character` is expected, 
 		 * the compiler will treat the literal as such a value 
 		 * or instance.
 		 * 
@@ -383,7 +384,7 @@ describe "General Syntax Reference" {
 			a.features.get(4).mustBeAttribute(true, "e", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(1.0)
 		}
 
-		/* As in Java 7, you can separate digits using <code>_</code> for
+		/* As in Java 7, you can separate digits using `_` for
 		 * better readability of large numbers.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -404,10 +405,10 @@ describe "General Syntax Reference" {
 			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(12345678l)
 		}
 
-		/* Postfixing an integer literal may change its type:
-		 * no suffix is for <code>int</code>,
-		 * suffix <code>L</code> is for <code>long</code>, and
-		 * suffix <code>BI</code> is for <code>BigInteger</code>. 
+		/* Post-fixing an integer literal may change its type:
+		 * no suffix is for `int`,
+		 * suffix `L` is for `long`, and
+		 * suffix `BI` is for `BigInteger`. 
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -431,11 +432,11 @@ describe "General Syntax Reference" {
 			a.features.get(2).mustBeAttribute(true, "aBigInteger", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(new BigInteger("1234"))
 		}
 
-		/* Postfixing a floating-point literal may change its type:
-		 * no suffix is for <code>double</code>,
-		 * suffix <code>D</code> is for <code>double</code>,
-		 * suffix <code>F</code> is for <code>float</code>, and
-		 * suffix <code>BD</code> is for <code>BigDecimal</code>. 
+		/* Post-fixing a floating-point literal may change its type:
+		 * no suffix is for `double`,
+		 * suffix `D` is for `double`,
+		 * suffix `F` is for `float`, and
+		 * suffix `BD` is for `BigDecimal`. 
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -463,8 +464,8 @@ describe "General Syntax Reference" {
 			a.features.get(4).mustBeAttribute(true, "aBigDecimal", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(new BigDecimal("1234"))
 		}
 
-		/* There are two boolean literals, <code>true</code> and <code>false</code>
-		 * which correspond to their Java counterpart of type <code>boolean</code>.
+		/* There are two boolean literals, `true` and `false`
+		 * which correspond to their Java counterpart of type `boolean`.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -486,7 +487,7 @@ describe "General Syntax Reference" {
 			a.features.get(1).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XBooleanLiteral).mustBeEqual(false)
 		}
 	
-		/* The null pointer literal <code>null</code> has exactly the same
+		/* The null pointer literal `null` has exactly the same
 		 * semantics as in Java.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -508,10 +509,10 @@ describe "General Syntax Reference" {
 		}
 	
 		/* The syntax for type literals is generally the plain name of the 
-		 * type. Nested types use the delimiter <code>'.'</code>.
+		 * type. Nested types use the delimiter `.`.
 		 * 
 		 * To disambiguate the expression, type literals may also be specified 
-		 * using the keyword <code>typeof</code>.
+		 * using the keyword `typeof`.
 		 * 
 		 * Consequently it is possible to access the members of a type 
 		 * reflectively by using its plain name.
@@ -549,7 +550,7 @@ describe "General Syntax Reference" {
 	describe "Collection Literals"{
 
 		 /* It is easy to create instances of collections since the methods in 
-		* <code>CollectionLiterals</code> are automatically imported.
+		* `CollectionLiterals` are automatically imported.
 		* They permits to create instances of the collections from the JDK.
 		* 
 		* @filter(.* = '''|'''|.parsesSuccessfully.*)
@@ -572,7 +573,7 @@ describe "General Syntax Reference" {
 			a.features.get(1).mustBeAttribute(true, "myMap", null, true).initialValue.mustBe(XFeatureCall).mustCall("org.eclipse.xtext.xbase.lib.CollectionLiterals.newLinkedHashMap")
 		}
 		
-		 /* In addition SARL supports collection literals to create 
+		 /* In addition, SARL supports collection literals to create 
 		* immutable collections and arrays, depending on the 
 		* target type. There is three types of immutable
 		* collections: array, set, and hash table.
@@ -610,9 +611,10 @@ describe "General Syntax Reference" {
 	 */
 	describe "Array Literals"{
 
-		/* The methods from <code>ArrayLiterals</code> is automatically
+		/* The methods from `ArrayLiterals` are automatically
 		 * included. This utility class provides a collection of methods,
-		 * such as <code>ArrayLiterals.newArrayOfSize(int)</code>.
+		 * such as `ArrayLiterals.newArrayOfSize(int)` for
+		 * creating array literals.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */		
@@ -637,10 +639,10 @@ describe "General Syntax Reference" {
 		}
 		
 		/* Retrieving and setting values of arrays is done through the extension 
-		 * methods <code>get(int)</code> and <code>set(int, T)</code>.
-		 * As for Java, the index of the elements in the array starts with <code>0</code>. 
+		 * methods `get(int)` and `set(int, T)`.
+		 * As for Java, the index of the elements in the array starts with `0`. 
 		 * 
-		 * The method <code>length</code> is available for retreiving the size of the array.
+		 * The method `length` is available for retrieving the size of the array.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */		
@@ -667,8 +669,8 @@ describe "General Syntax Reference" {
 		}
 
 		/* Arrays are automatically converted to lists 
-		 * when needed. It is similar to the boxing and unboxing feature
-		 * provided by Java, between primitives and their respective object
+		 * when needed. It is similar to the boxing and unboxing features
+		 * provided by Java, between the primitives and their respective object
 		 * types.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -695,7 +697,11 @@ describe "General Syntax Reference" {
 
 	}
 	
-	/* The conformance rules for type casts are defined in the
+	/* The cast of an expression to a specific type must be done with
+	 * the `as` keyword. This keywords must be typed after the expression,
+	 * but before the casting type.
+	 * 
+	 * The conformance rules for type casts are defined in the
 	 * [Java Language Specification](http://docs.oracle.com/javase/specs/jls/se5.0/html/conversions.html#5.5).
 	 * 
 	 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -856,7 +862,7 @@ describe "General Syntax Reference" {
 			)
 		}
 
-		/* The two postfix operators <code>++</code> and <code>--</code> are supported.
+		/* The two postfix operators `++` and `--` are supported.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -879,10 +885,10 @@ describe "General Syntax Reference" {
 			)
 		}
 
-		/* Local variables and fields can be assigned using the <code>=</code> operator.
+		/* Local variables and fields can be assigned using the `=` operator.
 		 * 
-		 * Compound assignment operators (@{code +=}, @{code -=}, @{code *=}, @{code /=},
-		 * @{code %=}) can be used as a shorthand for the assignment of a binary expression.
+		 * Compound assignment operators (`+=`, `-=`, `*=`, `/=`,
+		 * `%=`) can be used as a shorthand for the assignment of a binary expression.
 		 * They work automatically when the corresponding infix operator is declared.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -909,13 +915,18 @@ describe "General Syntax Reference" {
 		/* In SARL, it is easy to overload an existing operator or
 		 * to define the algorithm of one.
 		 * You should define the operator mapping function.
-		 * Below the addition between two <code>Pair</code> is defined.
+		 * Below the addition between two `Pair` is defined.
+		 * The function that is defining the operator must have
+		 * a name with the `operator_` prefix, and one parameter
+		 * for each operand associated to the operator.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Operator Overloading"{
 			var model = '''
-				def operator_plus(a : Pair<Integer,Integer>, b : Pair<Integer,Integer>) : Pair<Integer,Integer> {
+				def operator_plus(
+							a : Pair<Integer,Integer>,
+							b : Pair<Integer,Integer>) : Pair<Integer,Integer> {
 					return new Pair(a.key, b.value)
 				}
 				def example {
@@ -950,7 +961,7 @@ describe "General Syntax Reference" {
 	 * It consists of a sequence of expressions. The value of the last 
 	 * expression in the block is the value of the complete block. 
 	 * The type of a block is also the type of the last expression. 
-	 * Empty blocks return <code>null</code> and have the type <code>Object</code>.
+	 * Empty blocks return `null` and have the type `Object`.
 	 * 
 	 * A block expression is surrounded by curly braces. The expressions in a block can be terminated by an optional semicolon.
 	 * 
@@ -978,28 +989,33 @@ describe "General Syntax Reference" {
 	}
 
 	/* Variables and Fields can be declared in SARL.
-	 * They declaring a variable or a field, you must specify if it is a value or a
+	 * For declaring a variable or a field, you must specify if it is a value or a
 	 * variable (see below for details), its name, and optionally its type and its
 	 * initial value.
 	 * 
+	 * The variable/value declaration follows the syntax:
+	 * 
+	 *     var NAME [: TYPE] [= INITIAL VALUE]
+	 *     val NAME [: TYPE] [= INITIAL VALUE]
+	 * 
 	 * Shadowing variables from outer scopes is not allowed, the only exception is the 
-	 * implicit variable <code>it</code>.
+	 * implicit variable `it`.
 	 * 
 	 */
-	describe "Field and Variable Declarations" {
+	describe "Variable and Field Declarations" {
 		
-		/* A variable declaration starting with the keyword <code>val</code> denotes 
+		/* A variable declaration starting with the keyword `val` denotes 
 		 * a value, which is essentially a final, unsettable variable.
 		 * 
-		 * The variable needs to be declared with the keyword <code>var</code>, which 
+		 * The variable needs to be declared with the keyword `var`, which 
 		 * stands for 'variable' if it should be allowed to reassign its value.
 		 * 
-		 * Variables declared outside of a lambda expression using the <code>var</code> keyword
+		 * Variables declared outside of a lambda expression using the `var` keyword
 		 * are not accessible from within the lambda expressions. Those declared with the
-		 * <code>val</code> keyword are accessible.
+		 * `val` keyword are accessible.
 		 * 
-		 * Fields declared outside of a lambda expression using the <code>var</code> keyword
-		 * or the <code>val</code> keyword are accessible from within the lambda expressions.
+		 * Fields declared outside of a lambda expression using the `var` keyword
+		 * or the `val` keyword are accessible from within the lambda expressions.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -1053,15 +1069,16 @@ describe "General Syntax Reference" {
 
 	/* A function, or method, or action, is a named block of code that could be invoked.
 	 *
-	 * A function declaration starts with the keyword <code>def</code>.
+	 * A function declaration starts with the keyword `def`.
 	 * This declaration can only occur in top-level features
-	 * (<code>agent</code>, <code>skill</code>, etc.)
+	 * (`agent`, `skill`, etc.)
 	 *
-	 * The functiondeclaration follows the syntax:<pre><code>
-	 * def NAME [([PARAMETER, PARAMETER, PARAMETER...])] [: RETURN TYPE] [BLOCK]
-	 * </code></pre>
+	 * The function declaration follows the syntax:
 	 * 
-	 * <span class="label label-warning">Important</span> The parameters are implicitly declared with the keyword <code>val</code>.
+	 *      def NAME [([PARAMETER, PARAMETER, PARAMETER...])] [: RETURN TYPE] [BLOCK]
+	 *
+	 * 
+	 * <span class="label label-warning">Important</span> The parameters are implicitly declared with the keyword `val`.
 	 */
 	describe "Function Declarations" {
 		
@@ -1129,12 +1146,12 @@ describe "General Syntax Reference" {
 		 * one which accepts a variable number of arguments.
 		 * 
 		 * SARL enables to define the last parameter of a function
-		 * as variadic with the operator <code>*</code>.
+		 * as variadic with the operator `*`.
 		 * This operator has an informal meaning similar to the
 		 * cardinality in UML: zero to many.
 		 * 
 		 * In other languages, such as Java and C++, the variadic
-		 * operator is <code>...</code>
+		 * operator is `...`
 		 *
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -1179,11 +1196,11 @@ describe "General Syntax Reference" {
 		 * When a default value is specified, it means that the caller of
 		 * the action can skip to pass a value for the corresponding argument.
 		 * And, when the function is run, the default value is given to the
-		 * skiped argument.
+		 * skipped argument.
 		 * 
-		 * In SARL, if a formal parameter has a default value, the following formal 
+		 * <span class="label label-warning">Important</span> In SARL, if a formal parameter has a default value, the following formal 
 		 * parameters do not need to have default value also. This is a major
-		 * difference with the default values inthe C++ language for instance. 
+		 * difference with the default values in the C++ language for instance. 
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -1267,7 +1284,7 @@ describe "General Syntax Reference" {
 	}
 
 	/* A simple name can refer to a field, variable or parameter. 
-	 * In addition it can point to a method with zero arguments, since 
+	 * In addition, it can point to a method with zero arguments, since 
 	 * empty parentheses are optional.
 	 */
 	describe "Field Access and Method Invocation" {
@@ -1314,12 +1331,12 @@ describe "General Syntax Reference" {
 			)
 		}
 
-		/* Like in Java the current object is bound to the keyword <code>this</code>.
+		/* Like in Java the current object is bound to the keyword `this`.
 		 * This allows for either qualified field access or method invocations.
 		 * 
-		 * You can use the variable name <code>it</code> to get the same behavior for
+		 * You can use the variable name `it` to get the same behavior for
 		 * any variable or parameter.
-		 * Another speciality of the variable <code>it</code> is that it is allowed to
+		 * Moreover, the variable `it` is that it is allowed to
 		 * be shadowed. This is especially useful when used together with lambda
 		 * expressions.
 		 * 
@@ -1344,8 +1361,8 @@ describe "General Syntax Reference" {
 		}
 
 		/* For accessing a static field or method you can use the recommended 
-		 * Java syntax or the more explicit double colon <code>::</code>. 
-		 * That means, the following epxressions are pairwise equivalent:
+		 * Java syntax or the more explicit double colon `::`. 
+		 * That means, the following expressions are pairwise equivalent:
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -1368,10 +1385,10 @@ describe "General Syntax Reference" {
 		}
 
 		/* Checking for null references can make code very unreadable. 
-		 * In many situations it is ok for an expression to return <code>null</code>
-		 * if a receiver was <code>null</code>.
+		 * In many situations it is ok for an expression to return `null`
+		 * if a receiver was `null`.
 		 * 
-		 * SARL supports the safe navigation operator <code>?</code>. to make such code
+		 * SARL supports the safe navigation operator `?`. to make such code
 		 * better readable.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -1393,8 +1410,8 @@ describe "General Syntax Reference" {
 		}
 
 		/* When it is possible to extend an existing type,
-		 * the methods can be overriden.
-		 * In this case, the <code>super</code> keyword
+		 * the methods can be overridden.
+		 * In this case, the `super` keyword
 		 * permits to invoke the inherited implementation of the method from
 		 * the overriding method.
 		 * 
@@ -1455,19 +1472,29 @@ describe "General Syntax Reference" {
 
 		/* In the implementation of a constructor, it is possible to
 		 * call one of the inherited constructors.
-		 * The syntax is similar to Java: the <code>super</code> keyword
+		 * The syntax is similar to Java: the `super` keyword
 		 * is used to represent the inherited constructor.
-		 * <pre><code>
-		 * new () {
-		 *     super // Call the inherited default constructor
-		 * }
-		 * new (param : Address) {
-		 *     super(param) // Call the inherited constructor with a parameter
-		 * }
-		 * </code></pre>
+		 * 
+		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Inherited Constructor" {
-			"nothing to test"
+			'''
+			new () {
+				super // Call the inherited default constructor
+			}
+			new (param : Integer) {
+				super(param) // Call the inherited constructor with a parameter
+			}
+			'''.parsesSuccessfully(
+				"package io.sarl.docs.reference.gsr
+				event E1 {
+					new(p : Integer) { }
+					new() { }
+				}
+				event E2 {",
+				// TEXT
+				"}"
+			)
 		}
 
 	}
@@ -1478,26 +1505,30 @@ describe "General Syntax Reference" {
 	 * helpful as they can greatly improve the readability. They
 	 * use a simple syntactic trick: the first parameter of a method
 	 * can either be passed in after opening the parentheses or before the 
-	 * method call. For example, given a method: <pre><code> 
-	 * def removeVowels (String s){
-	 *     s.replaceAll("[aeiouAEIOU]", "")
-	 * }
-	 * </code></pre>
+	 * method call. For example, given a method:
+	 *  
+	 *     def removeVowels (String s) {
+	 *         s.replaceAll("[aeiouAEIOU]", "")
+	 *     }
+	 *
 	 * 
-	 * We can call this method either like in Java: <pre><code> 
-	 * removeVowels("Hello")
-	 * </code></pre>
+	 * We can call this method either like in Java:
+	 *  
+	 *     removeVowels("Hello")
+	 *
 	 * 
-	 * or as an extension method of String: <pre></code> 
-	 * "Hello".removeVowels
-	 * </code></pre>
+	 * or as an extension method of String:
+	 *  
+	 *     "Hello".removeVowels
 	 */
 	describe "Extension Methods"{
  
 		/*
-		 * You can import static methods as extensions, for example, when we import: <pre></code>
-		 * import static extension java.util.Collections.&#42;
-		 * </code></pre>
+		 * You can import static methods as extensions, for example, when we import:
+		 * 
+		 *      import static extension java.util.Collections.*
+		 *
+		 * 
 		 * we can directly call the imported static methods on our list objects:
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -1551,7 +1582,7 @@ describe "General Syntax Reference" {
 	 */
 	describe "Lambda Expressions" {
 		
-		/* That is the code above can be written in SARL for creating a lamda exception.
+		/* That is the code above can be written in SARL for creating a lambda exception.
 		 * A lambda expression is surrounded by square brackets (inspired from Smalltalk).
 		 * Lambda expression like a method declares parameters. 
 		 * 
@@ -1576,7 +1607,7 @@ describe "General Syntax Reference" {
 			)
 		}
 		
-		/* The lambda above has one parameter called e which is of type <code>ActionEvent</code>.
+		/* The lambda above has one parameter called e which is of type `ActionEvent`.
 		 *
 		 * You do not have to specify the type explicitly because it can be inferred from the context.
 		 * 
@@ -1601,8 +1632,8 @@ describe "General Syntax Reference" {
 		}
 
 		/* As lambdas with one parameter are a common case, there is a special short hand notation 
-		 * for them, which is to leave the declaration including the vertical bar out. 
-		 * The name of the single variable will be <code>it</code>.
+		 * for these parameters, which is to leave the declaration including the vertical bar out. 
+		 * The name of the single parameter becomes `it`.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -1632,7 +1663,7 @@ describe "General Syntax Reference" {
 			'''
 					val runnable : Runnable = [ |
 							println("Hello I'm executed!")
-							]
+						]
 			'''.parsesSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
@@ -1654,11 +1685,13 @@ describe "General Syntax Reference" {
 			'''
 				var t : List<String>
 				def example1 {
+					// Lambda expression is written outside the parenthesis
 					Collections.sort(t) [ a, b |
 								a.length - b.length
 								]
 				}
 				def example2 {
+					// Lambda expression is written inside the parenthesis
 					Collections.sort(t, [ a, b |
 								a.length - b.length
 								]
@@ -1674,11 +1707,11 @@ describe "General Syntax Reference" {
 			)
 		}
 
-		/* The type of a lambda will be one of the inner types found in <code>Functions</code>
-		 * or <code>Procedures</code>. It is a procedure if the return type is <code>void</code>,
+		/* The type of a lambda will be one of the inner types found in `Functions`
+		 * or `Procedures`. It is a procedure if the return type is `void`,
 		 * otherwise it is a function.
 		 * 
-		 * The syntax for specifying the type of a lambda is: <code>(parameter types) => return type</code>
+		 * The syntax for specifying the type of a lambda is: `(parameter types) => return type`
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -1705,7 +1738,7 @@ describe "General Syntax Reference" {
 	describe "If Expression" {
 		
 		/* Results in either the value e1 or e2 depending on whether the predicate p evaluates to 
-		 * <code>true</code> or <code>false</code>.
+		 * `true` or `false`.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -1743,7 +1776,7 @@ describe "General Syntax Reference" {
 		}
 
 		/* While the if expression has the syntax of Java's if statement it behaves more 
-		 * like Java's ternary operator (<code>predicate ? thenPart : elsePart</code>),
+		 * like Java's ternary operator (`predicate ? thenPart : elsePart`),
 		 * because it is an expression and returns a value. 
 		 * Consequently, you can use if expressions deeply nested within expressions:
 		 * 
@@ -1767,23 +1800,23 @@ describe "General Syntax Reference" {
 
 	/* The switch expression is very different from Java's switch statement. The use of switch is 
 	 * not limited to certain values but can be used for any object reference. 
-	 * <code>Object.equals(Object)</code> is used to compare the value in the case with the one 
-	 * you are switching over.
+	 * The operator `==` or its Java-equivalent `Object.equals(Object)` are 
+	 * used to compare the value in the case with the one you are switching over.
 	 */
 	describe "Switch Expression" {
 		
 		/* Consider the following example.
-		 * the main expression <code>myString</code> is evaluated first and then compared to each 
+		 * the main expression `myString` is evaluated first and then compared to each 
 		 * case sequentially. If the case expression is of type boolean, the case matches 
-		 * if the expression evaluates to <code>true</code>. If it is not of type boolean it is 
-		 * compared to the value of the main expression using <code>Object.equals(Object)</code>.
+		 * if the expression evaluates to `true`. If it is not of type boolean it is 
+		 * compared to the value of the main expression using the operator `==`.
 		 * 
 		 * If a case is a match, the case expression after the colon is evaluated and is 
 		 * the result of the whole switch expression. Note that there is no need for 
-		 * a <code>break</code> keyword, as in Java: the case following the matching case is
+		 * a `break` keyword, as in Java: the case following the matching case is
 		 * never evaluated.
 		 * 
-		 * The main expression (parameter of <code>switch</code> can also be a computed value instead 
+		 * The main expression (parameter of `switch`) can also be a computed value instead 
 		 * of a field or variable.
 		 * 
 		 * <span class="label label-warning">Important</span> A case must contains an expression. If you want to do nothing
@@ -1824,7 +1857,7 @@ describe "General Syntax Reference" {
 			)
 		}
 		
-		/* In addition to the case guard you can specify a type 
+		/* In addition to the case guard, you can specify a type 
 		 * guard.
 		 * The case only matches if the switch value conforms to a given type.
 		 * A case with both a type guard and a predicate only matches if both conditions match. 
@@ -1878,11 +1911,11 @@ describe "General Syntax Reference" {
 	describe "Loops" {
 
 		/* The for loop is used to execute a certain expression for each 
-		 * element of an array or an instance of <code>Iterable</code>. 
+		 * element of an array or an instance of `Iterable`. 
 		 * 
-		 * The local variable is final, hence cannot be updated.
+		 * The for's variable is local and final, hence cannot be updated.
 		 * 
-		 * The type of a for loop is <code>void</code>. The type of the local
+		 * The type of a for loop is `void`. The type of the local
 		 * variable can be inferred from the 
 		 * iterable or array that is processed.
 		 * 
@@ -1910,10 +1943,10 @@ describe "General Syntax Reference" {
 		
 		/* The traditional for loop is very similar to the one known from Java, or even C. 
 		 * When executed, it first executes the init-expression, where local variables can be 
-		 * declared. Next the predicate is executed and if it evaluates to <code>true</code>, the 
+		 * declared. Next the predicate is executed and if it evaluates to `true`, the 
 		 * body-expression is executed. On any subsequent iterations the update-expression
 		 * is executed instead of the init-expression. This happens until the predicate
-		 * returns <code>false</code>. The type of a for loop is <code>void</code>.
+		 * returns `false`. The type of a for loop is `void`.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -1932,7 +1965,7 @@ describe "General Syntax Reference" {
 		}
 
 		/* A while loop is used to execute a certain expression unless the predicate is evaluated 
-		 * to <code>false</code>. The type of a while loop is <code>void</code>.
+		 * to `false`. The type of a while loop is `void`.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -1953,9 +1986,9 @@ describe "General Syntax Reference" {
 		}
 	
 		/* A while loop is used to execute a certain expression unless the predicate is evaluated 
-		 * to <code>false</code>. The difference to the while loop is that the execution starts by 
+		 * to `false`. The difference to the while loop is that the execution starts by 
 		 * executing the block once before evaluating the predicate for the first time. 
-		 * The type of a while loop is <code>void</code>.
+		 * The type of a while loop is `void`.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -1983,8 +2016,9 @@ describe "General Syntax Reference" {
 	 */
 	describe "Exception Support" {
 		
-		/* Throwing objects of type <code>Throwable</code> up the call stack has the same semantics
-		 * and syntax as in Java. 
+		/* Throwing objects of type `Throwable` up the call stack has the same semantics
+		 * and syntax as in Java see 
+		 * [Java Language Specification](http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html#jls-14.18)). 
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -2029,7 +2063,7 @@ describe "General Syntax Reference" {
 			)
 		}
 
-		/* For try-catch it is again beneficial that it is an expression, because you 
+		/* For try-catch, it is again beneficial that it is an expression, because you 
 		 * can write code like the following and do not have to rely on non-final variables: 
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 

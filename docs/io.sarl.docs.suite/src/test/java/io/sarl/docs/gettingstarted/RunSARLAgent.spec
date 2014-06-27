@@ -20,21 +20,24 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
-/* For running an agent, you must launch this agent on the runtime environment.
+/* For running an agent, you must launch this agent on the runtime 
+ * environment.
  * This document explains how to launch an agent on
  * the [Janus platform](http://www.janusproject.io).
  */
 @CreateWith(SARLSpecCreator)
-describe "Run SARL Agent" {
+describe "Run SARL Agent from the Command Line" {
 	
 	@Inject extension SARLParser
 
 	/* The Janus platform provides a `Boot` class.
-	 * for launching the platform, you must launch this
-	 * boot class in the Java virtual machine.
-	 * <pre><code>
-	 * java -cp app.jar io.janusproject.Boot
-	 * </code></pre>
+	 * For launching the platform, you must execute this
+	 * boot class in a Java Virtual Machine.
+	 * 
+	 * The typical command line is:
+	 * 
+	 *     java -cp app.jar io.janusproject.Boot
+	 * 
 	 * 
 	 * <span class="label label-info">Important</span> The `app.jar`
 	 * file is a Jar file that is containing the Janus
@@ -44,17 +47,17 @@ describe "Run SARL Agent" {
 
 	/* The example given in the previous section causes an error.
 	 * Indeed, it is mandatory to specify the fully qualified name
-	 * of the agent to launch: <pre><code>
-	 * java -cp app.jar io.janusproject.Boot myapp.MonAgent
-	 * </code></pre>
+	 * of the agent to launch:
+	 * 
+	 *     java -cp app.jar io.janusproject.Boot myapp.MonAgent
+	 *
 	 * 
 	 * <span class="label label-info">Important</span> The Janus
 	 * platform allows to start only one agent from the command line.
 	 * If you want to start a collection of agents, you must select
-	 * one of the following approaches: <ul>
-	 * <li>launch a separate Janus platform for each agent, or</li>
-	 * <li>launch an agent that is spawning the other agents.</li>
-	 * </ul>
+	 * one of the following approaches:
+	 *  * launch a separate Janus platform for each agent, or
+	 *  * launch an agent that is spawning the other agents.
 	 */
 	describe "Specify the Agent to Launch" { } 
 	
@@ -65,10 +68,11 @@ describe "Run SARL Agent" {
 	 */
 	describe "Command Line Parameters" {
 
-		/* The following example gives the values `FirstParameter` and
-		 * `SecondParameter` to the launched agent: <pre><code>
-		 * java -cp app.jar io.janusproject.Boot myapp.MonAgent FirstParameter SecondParameter
-		 * </code></pre>
+		/* The following example gives the values `FirstParam` and
+		 * `SecondParam` to the launched agent:
+		 * 
+		 *     java -cp app.jar io.janusproject.Boot myapp.MonAgent FirstParam SecondParam
+		 *
 		 *
 		 * @filter(.*) 
 		 */		
@@ -105,9 +109,10 @@ describe "Run SARL Agent" {
 		}
 
 		/* The Janus platform provides a collection of command line options.
-		 * For obtaining the list of these options, you should type: <pre><code>
-		 * java -cp app.jar io.janusproject.Boot --help
-		 * </code></pre>
+		 * For obtaining the list of these options, you should type:
+		 * 
+		 *     java -cp app.jar io.janusproject.Boot --help
+		 *
 		 *
 		 * @filter(.*) 
 		 */		

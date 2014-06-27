@@ -21,7 +21,7 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 /**
- * This document describes the builtin capacities in SARL.
+ * This document describes the built-in capacities in SARL.
  * Before reading this document, it is recommended to read
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html),
  * the [Capacity Reference](./CapacityReferenceSpec.html),
@@ -34,49 +34,51 @@ import org.jnario.runner.CreateWith
  * A *Skill* is a possible implementation of a capacity fulfilling all the 
  * constraints of this specification.
  * 
- * Every agent in SARL has a set of *built-in capacities* considered essential 
+ * In SARL, every agent has a set of *built-in capacities* considered essential 
  * to respect the commonly accepted competences of agents.
  * These capacities are considered the main building blocks on top of which other 
  * higher level capacities and skills can be constructed.
  * They are defined on the SARL language but the skill implementing them are provided 
- * by the runtime environment, e.g. the [Janus platform)(http://www.janus-project.io).
- * This runtime environmentis responsible for creating them and injecting them on 
+ * by the runtime environment, e.g. the [Janus platform](http://www.janus-project.io).
+ * This runtime environment is responsible for creating them and injecting them in 
  * the agent before their execution begins.
- * Therefore, when the agent receives the <code>Initialize</code> event they are
+ * Therefore, when the agent receives the `Initialize` event they are
  * already available.
  * 
- * The following figure presents the different contexts assocated to an agent.
- * Several builtin capacities permit to access and manage these contexts.
+ * The following figure presents the different contexts associated to an agent `A`.
+ * Several built-in capacities permit to access and manage these contexts.
  * The agents are represented by stylized humans, the contexts by the blue boxes,
- * and the spaces by the small colorized boxes in the contexts.
+ * and the spaces by the small color boxes in the contexts.
  * 
  * <center><img alt="Contexts and Spaces" src="./Contexts.png" width="60%" /></center>
  */
 @CreateWith(SARLSpecCreator)
-describe "Builtin Capacity Reference" {
+describe "Built-in Capacity Reference" {
 
 		@Inject extension SARLParser
 
-		/* The builtin capacity <code>ExternalContextAccess</code> provides access to the 
+		/* The built-in capacity `ExternalContextAccess` provides access to the 
 		 * [context](SpaceReferenceSpec.html) that the agent is a part of, and actions
 		 * required to join new [contexts](SpaceReferenceSpec.html), and leave them.
 		 * 
-		 * The context supported by this builtin capacity is the "external contexts",
+		 * The context supported by this built-in capacity is the "external contexts",
 		 * illustrated by the top-right context in the figure above.
 		 */
 		describe "ExternalContextAccess" {
 			
-			/*  For retreiving the context with a particular ID,
-			 * this builtin capacity provides the following function:<pre><code>
-			 * def getContext(contextID : UUID) : AgentContext
-			 * </code></pre>
+			/*  For retrieving the context with a particular ID,
+			 * this built-in capacity provides the following function:
+			 * 
+			 *     def getContext(contextID : UUID) : AgentContext
+			 *
 			 * 
 			 * The agent must have joined (see below) the context before calling this 
-			 * action or use its <code>parentContextID</code>.
+			 * action. Or, the agent may use its `parentContextID` to access to the
+			 * context in which it is located (the default context).
 			 *  
 			 * @filter(.*) 
 			 */
-			fact "Retreiving a Context"{
+			fact "Retrieving a Context"{
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.ExternalContextAccess
 					import io.sarl.lang.core.AgentContext
@@ -92,15 +94,17 @@ describe "Builtin Capacity Reference" {
 					}".parsesSuccessfully
 			}
 			
-			/* The following function enables an agent to retreive
-			 * all the contexts in which it is involved:<pre><code>
-			 * def getAllContexts : SynchronizedCollection<AgentContext>
-			 * </code></pre>
+			/* The following function enables an agent to retrieve
+			 * all the contexts in which it is involved:
+			 * 
+			 *     def getAllContexts : SynchronizedCollection<AgentContext>
+			 *
+			 * 
 			 * The default context is included in the replied collection.
 			 *  
 			 * @filter(.*) 
 			 */
-			fact "Retreiving the Contexts of an Agent"{
+			fact "Retrieving the Contexts of an Agent"{
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.ExternalContextAccess
 					import io.sarl.lang.core.AgentContext
@@ -115,27 +119,29 @@ describe "Builtin Capacity Reference" {
 			}
 			
 			/* Agents must be able to join a new parent context.
-			 * The following function gives this capability to them:<pre><code>
-			 * def join(contextID : UUID, expectedDefaultSpaceID : UUID)
-			 * </code></pre>
+			 * The following function gives this capability to them:
+			 * 
+			 *     def join(contextID : UUID, expectedDefaultSpaceID : UUID)
+			 *
+			 * 
 			 * This action registers the agent in the default space of the context.
 			 * 
-			 * The agent will be involved in the context with the ID given by <code>contextID</code>.
-			 * The parameter <code>expectedDefaultSpaceID</code> is only used to check if
+			 * The agent will be involved in the context with the ID given by `contextID`.
+			 * The parameter `expectedDefaultSpaceID` is only used to check if
 			 * the caller of this function knows the ID of the default space in the context to
 			 * be involved in. 
-			 * If the given <code>expectedDefaultSpaceID</code> does not match the ID of the
-			 * default space in the context <code>contextID</code>, then the access to the context
+			 * If the given `expectedDefaultSpaceID` does not match the ID of the
+			 * default space in the context `contextID`, then the access to the context
 			 * is forbidden.
 			 * 
 			 * <span class="label label-warning">Important</span> The context must already 
 			 * exists, and the default space inside this context must have the same ID 
-			 * as <code>expectedDefaultSpaceID</code>.
+			 * as `expectedDefaultSpaceID`.
 			 * 
-			 * This action fires two events: <ul>
-			 * <li><code>ContextJoined</code> in its inner context default space.</li>
-			 * <li><code>MemberJoined</code> in its parent context default space.</li>
-			 * </ul>
+			 * This action fires two events:
+			 * 
+			 *  * `ContextJoined` in the inner context's default space.
+			 *  * `MemberJoined` in the parent context's default space.
 			 *  
 			 * @filter(.*) 
 			 */
@@ -155,14 +161,15 @@ describe "Builtin Capacity Reference" {
 					}".parsesSuccessfully
 			}
 
-			/* When an agent wants to leave a context, it must invoke:<pre><code>
-			 * def leave(contextID : UUID)
-			 * </code></pre>
+			/* When an agent wants to leave a context, it must invoke:
 			 * 
-			 * This action fires two events: <ul>
-			 * <li><code>ContextLeft</code> in its inner context default space.</li>
-			 * <li><code>MemberLeft</code> in its parent context default space.</li>
-			 * </ul>
+			 *     def leave(contextID : UUID)
+			 *
+			 * 
+			 * This action fires two events:
+			 * 
+			 *  * `ContextLeft` in the inner context's default space.
+			 *  * `MemberLeft` in the parent context's default space.
 			 *  
 			 * @filter(.*) 
 			 */
@@ -182,22 +189,22 @@ describe "Builtin Capacity Reference" {
 		
 		}
 
-		/* The builtin capacity <code>InnerContextAccess</code> provides access to 
+		/* The built-in capacity `InnerContextAccess` provides access to 
 		 * the inner context of the agent.
-		 * This is keystone for holonic agent implementation.
-		 * The context supported by this builtin capacity is the "inner context",
+		 * This is a key feature for creating holonic agent implementation.
+		 * The context supported by this built-in capacity is the "inner context",
 		 * illustrated by the bottom context in the figure above.
 		 */
 		describe "InnerContextAccess" {
 			
-			/* For retreiving the inner context of an agent,
-			 * this builtin capacity provides the following function:<pre><code>
-			 * def getInnerContext : AgentContext
-			 * </code></pre>
+			/* For retrieving the inner context of an agent,
+			 * this built-in capacity provides the following function:
+			 * 
+			 *     def getInnerContext : AgentContext
 			 *  
 			 * @filter(.*) 
 			 */
-			fact "Retreiving the Inner Context"{
+			fact "Retrieving the Inner Context"{
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.InnerContextAccess
 					import io.sarl.lang.core.AgentContext
@@ -210,26 +217,29 @@ describe "Builtin Capacity Reference" {
 					}".parsesSuccessfully
 			}
 
-			/* For retreiving information on the member agents of the current agent,
-			 * several functions are provided by this builtin capacity.
-			 * A member agent is an agent which is not the
+			/* For retrieving information on the member agents of the current agent,
+			 * several functions are provided by this built-in capacity.
+			 * A member agent is an agent that is not the
 			 * calling agent, and is a member of at least
 			 * one space of the inner context.
 			 * 
 			 * The first function replies if the calling agent has other agents
-			 * as members of its inner context: <pre><code>
-			 * def hasMemberAgent : boolean
-			 * </code></pre>
+			 * as members of its inner context:
+			 * 
+			 *     def hasMemberAgent : boolean
+			 *
 			 * 
 			 * The second function replies the number of agents that are members
-			 * of the inner context of the calling agent: <pre><code>
-			 * def getMemberAgentCount : int
-			 * </code></pre>
+			 * of the inner context of the calling agent:
+			 * 
+			 *     def getMemberAgentCount : int
+			 *
 			 *
 			 * The third function replies all the member agents in the inner
-			 * context: <pre><code>
-			 * def getMemberAgents : SynchronizedSet<UUID>
-			 * </code></pre>
+			 * context:
+			 * 
+			 *     def getMemberAgents : SynchronizedSet<UUID>
+			 *
 			 * 
 			 * @filter(.*) 
 			 */
@@ -253,36 +263,42 @@ describe "Builtin Capacity Reference" {
 
 		}
 		
-		/* The <code>DefaultContextInteractions</code> capacity is actually provided
+		/* The `DefaultContextInteractions` capacity is actually provided
 		 * for convenience. It assumes that the action will be performed on the 
-		 * agent's *default context* and its *default space*. These context and space
+		 * agent's __default context__ or its __default space__.
+		 * These context and space
 		 * are illustrated by the top-left context in the figure above. 
 		 * 
-		 * For instance, the <code>emit</code> action is a shortcut for:<pre><code>
-		 * defaultContext.defaultSpace.emit(...)
-		 * </code></pre>
-		 * Therefore, it is actually created on top of the other builtin capacities.
+		 * For instance, the `emit` action is a shortcut for:
+		 * 
+		 *     defaultContext.defaultSpace.emit(...)
+		 *
+		 * 
+		 * Therefore, it is actually created on top of the other built-in capacities.
 		 */
 		describe "DefaultContextInteractions" {
 			
-			/* For retreiving the default context of an agent,
-			 * this builtin capacity provides the following function:<pre><code>
-			 * def getDefaultContext : AgentContext
-			 * </code></pre>
+			/* For retrieving the default context of an agent,
+			 * this built-in capacity provides the following function:
 			 * 
-			 * For retreiving the default space in the default context of an agent,
-			 * this builtin capacity provides the following function:<pre><code>
-			 * def getDefaultSpace : EventSpace
-			 * </code></pre>
+			 *     def getDefaultContext : AgentContext
+			 *
+			 * 
+			 * For retrieving the default space in the default context of an agent,
+			 * this built-in capacity provides the following function:
+			 * 
+			 *     def getDefaultSpace : EventSpace
+			 *
 			 * 
 			 * For obtaining the address of the agent in the default space,
-			 * the following function is provided: <pre><code>
-			 * def getDefaultAddress : Address
-			 * </code></pre>
+			 * the following function is provided:
+			 * 
+			 *     def getDefaultAddress : Address
+			 *
 			 *  
 			 * @filter(.*) 
 			 */
-			fact "Retreiving the Default Context and Space"{
+			fact "Retrieving the Default Context and Space"{
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.lang.core.AgentContext
@@ -301,21 +317,21 @@ describe "Builtin Capacity Reference" {
 					}".parsesSuccessfully
 			}
   
-			/* Most of the time, it is necessary for agent to create a new agent
+			/* Many time, it is useful for agent to create a new agent
 			 * into the default context. The following function is provided for this
 			 * task:
-			 * <pre><code>
-			 * def spawn(agentType : Class<? extends Agent>, params : Object[]) : UUID
-			 * </code></pre>
-			 *
-			 * This action creates an instance of the given agent type, and launchs the agent
-			 * into the default context. The parameters are passed to the spawned agent inside
-			 * the <code>Initialize</code> event: the <code>parameters</code> field.
 			 * 
-			 * This action fires two events: <ul>
-			 * <li><code>AgentSpawned</code> in the default space of the default context. The source of the event is this spawning agent.</li>
-			 * <li><code>Initialize</code> in spawned agent.</li>
-			 * </ul>
+			 *     def spawn(agentType : Class<? extends Agent>, params : Object[]) : UUID
+			 *
+			 *
+			 * This action creates an instance of the given agent type, and launches the agent
+			 * into the default context. The parameters are passed to the spawned agent inside
+			 * the `Initialize` event: the `parameters` field.
+			 * 
+			 * This action fires two events:
+			 * 
+			 *  * `AgentSpawned` in the default space of the default context. The source of the event is this spawner.
+			 *  * `Initialize` in spawned agent.
 			 *  
 			 * @filter(.*) 
 			 */
@@ -341,20 +357,23 @@ describe "Builtin Capacity Reference" {
 
 			/* The core mechanism for information exchanges among agents is
 			 * [event-based](./EventReferenceSpec.html).
-			 * For emitting an event in the default space of the default context,
-			 * the following function is provided: <pre><code>
-			 * def emit(e : Event)
-			 * </code></pre> 
-			 * This function emits a given event with no scope (all registered agent will
+			 * For sending an event in the default space of the default context,
+			 * the following function is provided:
+			 * 
+			 *     def emit(e : Event)
+			 *
+			 *  
+			 * This function emits the given event with no scope (i.e., all registered agent will
 			 * receive the event) in the default space of the default context.
 			 * 
-			 * It is equivalent to: <pre><code>
-			 * defaultContext.defaultSpace.emit(e)
-			 * </code></pre>
+			 * It is equivalent to:
+			 * 
+			 *     defaultContext.defaultSpace.emit(e)
+			 *
 			 *  
 			 * @filter(.*) 
 			 */
-			fact "Emitting an Event in the Default Space"{
+			fact "Sending an Event in the Default Space"{
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.DefaultContextInteractions
 					event E
@@ -368,39 +387,41 @@ describe "Builtin Capacity Reference" {
 					}".parsesSuccessfully
 			}
 
-			/* The previous emitting function assumes that there is no
+			/* The previous sending function assumes that there is no
 			 * restriction on the set of the receivers of the event.
-			 * It is possible to specify a <code>Scope</code> for
+			 * It is possible to specify a `Scope` for
 			 * applying a restriction.
-			 * <pre><code>
-			 * def emit(e : Event, scope : Scope<Address>)
-			 * </code></pre> 
+			 *
+			 *     def emit(e : Event, scope : Scope<Address>)
+			 * 
 			 * 
 			 * A scope is a predicates that is evaluated against the
-			 * address of the receiver. It is defined as (in Java): <pre><code>
-			 * public interface Scope<T> extends Serializable {
-			 *     public boolean matches(T element);
-			 * }
-			 * </code></pre>
+			 * addresses of the receivers. It is defined as (in Java):
+			 *
+			 *     public interface Scope<T> extends Serializable {
+			 *         public boolean matches(T element);
+			 *     }
+			 *
 			 * 
 			 * A default implementation of a scope using addresses is provided:
-			 * <code>io.sarl.util.AddressScope</code>.
+			 * `io.sarl.util.AddressScope`.
 			 * 
 			 * You must also use the utilities functions for creating scopes.
-			 * They are defined in the class <code>io.sarl.util.Scopes</code>.
+			 * They are defined in the class `io.sarl.util.Scopes`.
 			 * The following example is equivalent to the feature call of
-			 * <code>emit</code> without the scoping parameter: <pre><code>
-			 * emit(new Event, Scopes::allParticipants)
-			 * </code></pre> 
+			 * `emit` without the scoping parameter:
+			 * 
+			 *     emit(new Event, Scopes::allParticipants)
 			 * 
 			 * 
-			 * You are free to create new implementation of <code>Scope</code>
+			 * 
+			 * You are free to create new implementation of `Scope`
 			 * in order to filter the receivers of an event according to your
-			 * own critera.
+			 * own criteria.
 			 *  
 			 * @filter(.*) 
 			 */
-			fact "Emitting an Event to Specific Agents in the Default Space"{
+			fact "Sending an Event to Specific Agents in the Default Space"{
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.util.AddressScope
@@ -419,35 +440,36 @@ describe "Builtin Capacity Reference" {
 
 		}
 
-		/* The builtin capacity <code>Lifecycle</code> provides actions to 
-		 * spawn new agents on different external contexts and 
-		 * the innner context, as well as the <code>killMe</code> action to stop 
-		 * its own execution.
+		/* The built-in capacity `Lifecycle` provides actions for 
+		 * spawning new agents on different external contexts and 
+		 * the inner context, as well as the `killMe` action to stop 
+		 * the execution of an agent.
 		 */
 		describe "Lifecycle" {
 			
 			/* Because of the autonomy property of an agent, it can be stopped
-			 * only be commiting a suicide. It means that it is impossible to
-			 * stop an agent's from another agent: the agent to stop must
+			 * only by committing a suicide. It means that it is impossible to
+			 * stop an agent from another agent: the agent to stop must
 			 * be able to accept or reject this query.
 			 * 
-			 * The <code>Lifecycle</code> capacity provides the following function
+			 * The `Lifecycle` capacity provides the following function
 			 * for committing a suicide:
-			 * <pre><code>
-			 * def killMe
-			 * </code></pre>
 			 *
-			 * This action must automatically unregister this agent from the default context
-			 * and therefore all its spaces including the default space.
+			 *     def killMe
 			 * 
-			 * <span class="label label-warning">Important</span> If this is a composed agent,
-			 * it must not have any members before calling this action. Otherwise a 
-			 * RuntimeException will be thrown.
+			 *
+			 * This action automatically unregisters the calling agent from 
+			 * the default context, and therefore all its spaces including 
+			 * the default space.
 			 * 
-			 * This action fires two events: <ul>
-			 * <li><code>AgentKilled</code> in the default space of all contexts to which this agent belongs.</li>
-			 * <li><code>Destroy</code> inside the agent.</li>
-			 * </ul>
+			 * <span class="label label-warning">Important</span> If the killed 
+			 * agent is a composed agent, it must not have any members before 
+			 * calling this action. Otherwise a RuntimeException will be thrown.
+			 * 
+			 * This action fires two events:
+			 *
+			 *  * `AgentKilled` in the default space of all contexts to which the calling agent belongs.
+			 *  * `Destroy` inside the killed agent agent.
 			 *  
 			 * @filter(.*) 
 			 */
@@ -462,21 +484,23 @@ describe "Builtin Capacity Reference" {
 					}".parsesSuccessfully
 			}
 
-			/* Most of the time, it is necessary for agent to create a new agent
+			/* Many time, it is useful for an agent to create a new agent
 			 * into a given context. The following function is provided for this
 			 * task:
-			 * <pre><code>
-			 * def spawnInContext(agentType : Class<? extends Agent>, context : AgentContext, params : Object[]) : UUID
-			 * </code></pre>
-			 *
-			 * This action creates an instance of the given agent type, and launchs the agent
-			 * into the given context. The parameters are passed to the spawned agent inside
-			 * the <code>Initialize</code> event: the <code>parameters</code> field.
 			 * 
-			 * This action fires two events: <ul>
-			 * <li><code>AgentSpawned</code> in the default space of the context. The source of the event is this spawning agent.</li>
-			 * <li><code>Initialize</code> in spawned agent.</li>
-			 * </ul>
+			 *     def spawnInContext(agentType : Class<? extends Agent>,
+			 *                        context : AgentContext,
+			 *                        params : Object[]) : UUID
+			 * 
+			 *
+			 * This action creates an instance of the given agent type, and launches the agent
+			 * into the given context. The parameters are passed to the spawned agent inside
+			 * the `Initialize` event: the `parameters` field.
+			 * 
+			 * This action fires two events:
+			 *
+			 *  * `AgentSpawned` in the default space of the context. The source of the event is the calling agent.
+			 *  * `Initialize` in spawned agent.
 			 *  
 			 * @filter(.*) 
 			 */
@@ -504,14 +528,15 @@ describe "Builtin Capacity Reference" {
 
 		}
 
-		/* The builtin capacity <code>Schedules</code> enables the agent to 
+		/* The built-in capacity `Schedules` enables the agent to 
 		 * schedule tasks for future or periodic execution.
 		 */
 		describe "Schedules" {
 			
-			/* A named task may be created with: <pre><code>
-			 * def task(name : String) : AgentTask
-			 * </code></pre>
+			/* A named task may be created with:
+			 * 
+			 *     def task(name : String) : AgentTask
+			 * 
 			 * The replied task may be used for future execution, or
 			 * controlling the execution.
 			 * 
@@ -533,10 +558,14 @@ describe "Builtin Capacity Reference" {
 			}
 
 			/* For running a task in a given delay, the following functions are
-			 * provided: <pre><code>
-			 * def in(delay : long, procedure : (Agent) => void) : AgentTask
-			 * def in(task : AgentTask, delay : long, procedure : (Agent) => void) : AgentTask
-			 * </code></pre>
+			 * provided:
+			 * 
+			 *     def in(delay : long,
+			 *            procedure : (Agent) => void) : AgentTask
+			 *     def in(task : AgentTask,
+			 *            delay : long,
+			 *            procedure : (Agent) => void) : AgentTask
+			 * 
 			 * 
 			 * The first function submits the given procedure (a lambda expression as defined in
 			 * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html)) to
@@ -571,10 +600,14 @@ describe "Builtin Capacity Reference" {
 			}
 
 			/* For running a periodic task, the following functions are
-			 * provided: <pre><code>
-			 * def every(period : long, procedure : (Agent) => void) : AgentTask
-			 * def every(period : AgentTask, delay : long, procedure : (Agent) => void) : AgentTask
-			 * </code></pre>
+			 * provided:
+			 * 
+			 *     def every(period : long,
+			 *               procedure : (Agent) => void) : AgentTask
+			 *     def every(period : AgentTask,
+			 *               delay : long,
+			 *               procedure : (Agent) => void) : AgentTask
+			 * 
 			 * 
 			 * The first function submits the given procedure (a lambda expression as defined in
 			 * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html)) to
@@ -609,26 +642,28 @@ describe "Builtin Capacity Reference" {
 			}
 
 			/* It may be useful to cancel a running task, e.g. a
-			 * periodic task. The <code>Schedules</code> capacity
+			 * periodic task. The `Schedules` capacity
 			 * provides two functions for stopping the execution
-			 * of an agent task: <pre><code>
-			 * def cancel(task : AgentTask) : boolean
-			 * def cancel(task : AgentTask, mayInterruptIfRunning : boolean) : boolean
-			 * </code></pre>
+			 * of an agent task:
 			 * 
-			 * These functions will fail if the task has already completed, has 
+			 *     def cancel(task : AgentTask) : boolean
+			 *     def cancel(task : AgentTask,
+			 *                mayInterruptIfRunning : boolean) : boolean
+			 *
+			 * 
+			 * These functions will reply `false` if the task has already completed, has 
 			 * already been cancelled, or could not be cancelled for some other reason
 			 * (a failure means replying false). 
-			 * If successful, and this task has not started when <code>cancel</code> is
+			 * If successful, and this task has not started when `cancel` is
 			 * called, this task should never run. If the task has already started,
-			 * then the <code>mayInterruptIfRunning</code> parameter determines
+			 * then the `mayInterruptIfRunning` parameter determines
 			 * whether the thread executing this task should be interrupted in
 			 * an attempt to stop the task.
 			 * 
 			 * The first function interrupts ongoing tasks. So, it is equivalent to 
-			 * passing <code>true</code> as the value for the parameter 
+			 * passing `true` as the value for the parameter 
 			 * <tt>mayInterruptIfRunning</tt> to the function
-			 * <code>cancel(AgentTask, boolean)</code>.
+			 * `cancel(AgentTask, boolean)`.
 			 * 
 			 * @filter(.*) 
 			 */
@@ -651,11 +686,11 @@ describe "Builtin Capacity Reference" {
 
 		}
 
-		/* The builtin capacity <code>Behaviors</code> provides the tools to the agents 
-		 * for dynamically registered and unregistered sub-behaviors.
+		/* The built-in capacity `Behaviors` provides the tools to the agents 
+		 * for dynamically registering and unregistering sub-behaviors.
 		 * 
-		 * This capacity is closely related to the <code>InnerContextAccess</code> to 
-		 * enable a high-level abstraction on holonic multiagent system development.
+		 * This capacity is closely related to the `InnerContextAccess` for 
+		 * enabling a high-level abstraction for holonic multiagent system development.
 		 * 
 		 * The definition of a behavior is not detailled in this reference document.
 		 * Please read the [Behavior Reference](BehaviorReferenceSpec.html) for details.
@@ -663,14 +698,16 @@ describe "Builtin Capacity Reference" {
 		describe "Behaviors" {
 			
 			/* Assuming that a behavior was already defined,
-			 * it is possible for an agent to register with behavior: <pre><code>
-			 * def registerBehavior(attitude : Behavior) : Behavior
-			 * </code></pre>
+			 * it is possible for an agent to register this behavior:
+			 * 
+			 *     def registerBehavior(attitude : Behavior) : Behavior
+			 *
+			 * 
 			 * This function takes the behavior to be registered, and replies the
 			 * same behavior.
-			 * When a behavior is registering, it is receiving the events
+			 * When a behavior is registered, it is receiving the events
 			 * in the default space of the inner context of the agent, or
-			 * received by the agent.
+			 * received by the agent itself.
 			 * 
 			 * @filter(.*) 
 			 */
@@ -692,14 +729,16 @@ describe "Builtin Capacity Reference" {
 			}
 
 			/* Assuming that a behavior was already registered,
-			 * it is possible for an agent to unregister it: <pre><code>
-			 * def unregisterBehavior(attitude : Behavior) : Behavior
-			 * </code></pre>
-			 * This function takes the behavior to be registered, and replies the
+			 * it is possible for an agent to unregister it:
+			 * 
+			 *     def unregisterBehavior(attitude : Behavior) : Behavior
+			 *
+			 * 
+			 * This function takes the behavior to be unregistered, and replies the
 			 * same behavior.
 			 * When a behavior is unregistering, it is no more receiving the events
 			 * in the default space of the inner context of the agent, and
-			 * received by the agent.
+			 * the ones received by the agent itself.
 			 * 
 			 * @filter(.*) 
 			 */
@@ -723,12 +762,13 @@ describe "Builtin Capacity Reference" {
 			/* A behavior is executed through its event handlers.
 			 * Consequently, for running a behavior, it is mandatory
 			 * to wake it with an event. This particular feature is
-			 * supported by: <pre><code>
-			 * def wake(evt : Event)
-			 * </code></pre>
+			 * supported by:
+			 * 
+			 *     def wake(evt : Event)
+			 *
 			 * 
 			 * This function emits the given event into the inner context
-			 * of the agent (in its default space).
+			 * of the agent (in the default space).
 			 * 
 			 * <span class="label label-warning">Important</span> It is not
 			 * possible to execute a particular behavior. All the behaviors
@@ -753,9 +793,10 @@ describe "Builtin Capacity Reference" {
 
 			/* Sometimes, it is useful or mandatory for an agent to listen on the
 			 * events in a given space. The following function permits to
-			 * retreive the event listener of the agent: <pre><code>
-			 * def asEventListener : EventListener
-			 * </code></pre>
+			 * retreive the event listener of the agent:
+			 * 
+			 *     def asEventListener : EventListener
+			 * 
 			 * 
 			 * The listener replied by this function is the one used by the
 			 * agent (and its behaviors) for listening events related to
@@ -778,13 +819,13 @@ describe "Builtin Capacity Reference" {
 
   		}
 
-		/* Details on the use of the builtin capacities may be found in the references of
-		 * the major behavior-based concepts of SARL:<ul>
-		 * <li>[Agent](AgentReferenceSpec.html)</li>
-		 * <li>[Behavior](BehaviorReferenceSpec.html)</li>
-		 * </ul>
+		/* Details on the use of the built-in capacities may be found in the references of
+		 * the major behavior-based concepts of SARL:
+		 *
+		 *  * [Agent](AgentReferenceSpec.html)
+		 *  * [Behavior](BehaviorReferenceSpec.html)
 		 */
-		describe "Use of the Builtin Capacities"{
+		describe "Use of the Built-in Capacities"{
 		}
 		
 }

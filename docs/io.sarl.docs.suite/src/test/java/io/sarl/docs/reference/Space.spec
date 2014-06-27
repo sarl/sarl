@@ -44,35 +44,35 @@ import java.security.Principal
  * 
  * Another essential aspect of the interaction is the interaction 
  * Agent-Environment, especially in multiagent-based simulations.
- * Each of these trends of multi-agent systems has led to numerous 
+ * Each of these trends of multiagent systems has led to numerous 
  * fruitful and innovative contributions.
  * To remain generic, SARL therefore not imposes a single way of 
  * describing the interaction among agents, but rather attempt to 
  * provide means to implement each of these approaches.
  * 
- * It is in this perspective that the concepts of <code>Space</code>
- * and <code>SpaceSpecification</code> were defined.
+ * It is in this perspective that the concepts of `Space`
+ * and `SpaceSpecification` were defined.
  * 
- * *A Space is the support of the interaction between agents respecting 
- * the rules defined in a Space Specification.*
+ * __A Space is the support of the interaction between agents respecting 
+ * the rules defined in a Space Specification.__
  * 
- * *A Space Specification defines the rules (including action and
+ * __A Space Specification defines the rules (including action and
  * perception) for interacting within a given set of spaces respecting 
- * this specification.*
+ * this specification.__
  * 
- * SARL natively defines a particular type of <code>Space</code> called
+ * SARL natively defines a particular type of `Space` called
  * *Event Space* to provide a support to event-driven interactions.
  * Within an event space, agents communicate using events, the 
- * [builtin capacity <code>DefaultContextInteractions</code>](BuiltinCapacityReferenceSpec.html)
- * provides the agent with the means to emit and receive event, respectively 
- * using the <code>emit</code> actions and the <code>on</code> keyword
+ * [built-in capacity `DefaultContextInteractions`](BuiltinCapacityReferenceSpec.html)
+ * provides the agent with the means to emit and receive events, respectively 
+ * using the `emit` actions and the `on` keyword
  * in behavior definition.
- * A *Default Space* is precisely an event space.
+ * A __Default Space__ is precisely an event space.
  * 
- * Within an event space, the notion of <code>Scope</code> enables to 
+ * Within an event space, the notion of `Scope` enables to 
  * precisely control/filter the potential recipients of an event.
- * *A Scope is a predicate used to filter the potentially called 
- * listeners for a given event.*
+ * __A Scope is a predicate used to filter the potentially called 
+ * listeners for a given event.__
  * The most basic scope is represented by a collection of addresses.
  */
 @CreateWith(SARLSpecCreator)
@@ -134,21 +134,22 @@ describe "Space Reference" {
 			return type
 		}
 
-		/* SARL provides a collection of interfaces that are representing different
+		/* SARL provides a collection of Java interfaces that are representing different
 		 * types of spaces.
 		 */	
 		describe "Types of Spaces" {
 			
 			/* SARL provides a Java interface that is representing all
-			 * the spaces: <pre><code>
-			 * public interface Space {
-			 * 		public SpaceID getID();
-			 * 		public SynchronizedSet<UUID> getParticipants();
-			 * }
-			 * </code></pre>
+			 * the spaces:
 			 * 
-			 * The <code>getID</code> function replies the identifier of the space.
-			 * The <code>getParticipants</code> function replies the identifiers
+			 *      public interface Space {
+			 * 		    public SpaceID getID();
+			 * 		    public SynchronizedSet<UUID> getParticipants();
+			 *      }
+			 *
+			 * 
+			 * The `getID` function replies the identifier of the space.
+			 * The `getParticipants` function replies the identifiers
 			 * of the agents belonging to the space.
 			 *  
 			 * @filter(.*) 
@@ -161,17 +162,18 @@ describe "Space Reference" {
 			}
 			
 			/* Spaces that are based on event propagation mechanism are defined
-			 * as: <pre><code>
-			 * public interface EventSpace extends Space {
-			 * 		public Address getAddress(UUID id);
-			 * 		public void emit(Event event, Scope<Address> scope);
-			 * 		public void emit(Event event);
-			 * }
-			 * </code></pre>
+			 * as:
 			 * 
-			 * The <code>getAddress</code> function replies the address in the space
+			 *      public interface EventSpace extends Space {
+			 * 		    public Address getAddress(UUID id);
+			 * 		    public void emit(Event event, Scope<Address> scope);
+			 * 		    public void emit(Event event);
+			 *      }
+			 *
+			 * 
+			 * The `getAddress` function replies the address in the space
 			 * of the agent that has the given identifier.
-			 * The <code>emit</code> functions permits to put an event in
+			 * The `emit` functions permits to put an event in
 			 * the space.
 			 *  
 			 * @filter(.*) 
@@ -184,17 +186,17 @@ describe "Space Reference" {
 				EventSpace.mustHaveMethod("emit", Event)
 			}
 
-			/* Event spaces that are allowing to be register inside and
-			 * unregistezr from are "open event spaces": <pre><code>
-			 * public interface OpenEventSpace extends EventSpace {
-			 * 		public Address register(EventListener entity);
-			 * 		public Address unregister(EventListener entity);
-			 * }
-			 * </code></pre>
+			/* Event spaces that are allowing the agents to be register 
+			 * and unregister are "open event spaces":
 			 * 
-			 * The functions <code>register</code> and <code>unregister</code>
-			 * permits to an agent to be involved or not, respectively,
-			 * in the space.
+			 *      public interface OpenEventSpace extends EventSpace {
+			 * 		    public Address register(EventListener entity);
+			 * 		    public Address unregister(EventListener entity);
+			 *      }
+			 *
+			 * 
+			 * The functions `register` and `unregister`
+			 * permits to an agent to be involved or not.
 			 *  
 			 * @filter(.*) 
 			 */
@@ -206,13 +208,14 @@ describe "Space Reference" {
 			}
 
 			/* When an event space needs to control the registration access,
-			 * it should be a: <pre><code>
-			 * public interface RestrictedAccessEventSpace extends EventSpace {
-			 * 		public Address register(EventListener entity, Principal requester);
-			 * 		public <P extends EventListener & Principal> Address register(P entity);
-			 * 		public Address unregister(EventListener entity);
-			 * }
-			 * </code></pre>
+			 * it should be a:
+			 * 
+			 *      public interface RestrictedAccessEventSpace extends EventSpace {
+			 * 		    public Address register(EventListener entity, Principal requester);
+			 * 		    public <P extends EventListener & Principal> Address register(P entity);
+			 * 		    public Address unregister(EventListener entity);
+			 *      }
+			 *
 			 * 
 			 * The functions given by this type of space permits to implement
 			 * a space with restricted access, based on the standard Java API.
@@ -232,11 +235,11 @@ describe "Space Reference" {
 		/* The definition of a new space must be done with
 		 * the Java language.
 		 * 
-		 * For defining a space, three steps must be followed: <ol>
-		 * <li>Definition of the interface of the space;</li>
-		 * <li>Implementation of the space on a specific runtime environment;</li>
-		 * <li>Definition of the space specification.</li>
-		 * </ol>
+		 * For defining a space, three steps must be followed:
+		 * 
+		 *  * Definition of the interface of the space;
+		 *  * Implementation of the space on a specific runtime environment;
+		 *  * Definition of the space specification.
 		 */
 		describe "Defining a Space" {
 
@@ -249,11 +252,10 @@ describe "Space Reference" {
 			 * the physic environment in which the agents may evolve.
 			 * This space permits to move an object.
 			 * 
-			 * <pre><code>
-			 * public interface PhysicSpace extends Space {
-			 * 		public void moveObject(UUID identifier, float x, float y, float z);
-			 * }
-			 * </code></pre>
+			 *      public interface PhysicSpace extends Space {
+			 * 		    public void moveObject(UUID identifier, float x, float y, float z);
+			 *      }
+			 *
 			 * 
 			 * @filter(.*) 
 			 */
@@ -266,20 +268,19 @@ describe "Space Reference" {
 			 * extends one of the abstract classes provided by the
 			 * [Janus Platform](http://www.janusproject.io).
 			 * 
-			 * <pre><code>
-			 * public class PhysicSpaceImpl extends AbstractSpace implements PhysicSpace {
-			 * 		private Map<UUID,PhysicObject> entities = new TreeMap<>();
-			 * 		public PhysicSpaceImpl(UUID id) {
-			 * 			super(id);
-			 * 		}
-			 * 		public void moveObject(UUID identifier, float x, float y, float z) {
-			 * 			PhysicObject o = this.entities.get(identifier);
-			 * 			if (identifier!=null) {
-			 * 				o.move(x, y, z);
-			 * 			}
-			 * 		}
-			 * }
-			 * </code></pre>
+			 *      public class PhysicSpaceImpl extends AbstractSpace implements PhysicSpace {
+			 * 		    private Map<UUID,PhysicObject> entities = new TreeMap<>();
+			 * 		    public PhysicSpaceImpl(UUID id) {
+			 * 			    super(id);
+			 * 		    }
+			 * 		    public void moveObject(UUID identifier, float x, float y, float z) {
+			 * 			    PhysicObject o = this.entities.get(identifier);
+			 * 			    if (identifier!=null) {
+			 * 				    o.move(x, y, z);
+			 * 			    }
+			 * 		    }
+			 *      }
+			 * 
 			 * 
 			 * @filter(.*) 
 			 */
@@ -290,13 +291,12 @@ describe "Space Reference" {
 			/* For creating instances of spaces, it is necessary to define
 			 * a space specification.
 			 * 
-			 * <pre><code>
-			 * public class PhysicSpaceSpecification implements SpaceSpecification<PhysicSpace> {
-			 * 		public PhysicSpace create(SpaceID id, Object... params) {
-			 * 			return new PhysicSpace(id);
-			 * 		}
-			 * }
-			 * </code></pre>
+			 *     public class PhysicSpaceSpecification implements SpaceSpecification<PhysicSpace> {
+			 *         public PhysicSpace create(SpaceID id, Object... params) {
+			 * 	           return new PhysicSpace(id);
+			 * 	       }
+			 *     }
+			 *
 			 * 
 			 * @filter(.*) 
 			 */

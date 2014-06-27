@@ -32,36 +32,48 @@ describe "Frequently Asked Questions" {
 		 */
 		context "General FAQ" {
 			
-			/* **Yes**. 
+			/* __Yes__. 
 			 * SARL may be used for agent based applications. 
-			 * Natively SARL provides features for agent execution and 
+			 * Natively, SARL provides features for agent execution and 
 			 * direct communication. The agents may be deployed
-			 * on real computers.
+			 * on real computers and over a computer network.
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Could I use SARL to make Agent Based software?" {
+			fact "Could I use SARL to make agent-based software?" {
 				true
 			}
 
-			/* **Yes**. 
+			/* __Yes__. 
 			 * SARL may be used for agent based simulations. 
-			 * Natively SARL provides features for agent execution and 
+			 * Natively, SARL provides features for agent execution and 
 			 * direct communication. An extension is provided for
-			 * supporting the simulated environment (time, 
-			 * environment model...)
+			 * supporting the simulated environments (time management, 
+			 * environment model, etc.)
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Could I use SARL to make Agent Based Simulation software?" {
+			fact "Could I use SARL to make agent-based simulation software?" {
 				true
 			}
 			
-			/* **Yes**.
+			/* __Yes__.
+			 * Holon is recursively composed of holons. 
+			 * In SARL, agents are holons. 
+			 * SARL provides a 
+			 * complete support for holons.
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Could I use SARL to make holonic software?" {
+				true
+			}
+
+			/* __Yes__.
 			 * The SARL developers are providing the definition
 			 * of an organisational space based on the
-			 * [CRIO metamodel](http://www.aspecs.org)
-			 * (Capacity-Role-Interaction-Organization).
+			 * [CRIO metamodel](http://www.aspecs.org/CRIO)
+			 * (Capacity-Role-Interaction-Organization) for example.
 			 * This metamodel defines a system as a set of organizations 
 			 * in which roles are defined and interacting together. 
 			 * Agents play roles in organization instances (or groups) 
@@ -73,19 +85,34 @@ describe "Frequently Asked Questions" {
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Could I use SARL to make Organizational software?" {
+			fact "Could I use SARL to make organizational software?" {
 				true
 			}
 
-			/* **Yes**.
-			 * SARL natively supports the holon concept. 
-			 * Holon is recursively composed of holons. 
-			 * In SARL, agents are holons. SARL provides a 
-			 * complete support for holons.
+			/* __Yes and No__.
+			 * SARL is an agent-oriented programming language.
+			 * But, it is possible to use object-oriented concepts
+			 * for writing the code of the expressions in the agents,
+			 * the skills, etc.
+			 * A part of the grammar of SARL is inherited from the
+			 * [Xbase partial programming language](https://wiki.eclipse.org/Xbase).
+			 * It provides statements and rules that are close to
+			 * object-oriented languages.
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Could I use Janus to make Holonic software?" {
+			fact "Is SARL an object-oriented programming language?" {
+				true
+			}
+
+			/* __Yes__.
+			 * SARL and Java are 100% interoperable.
+			 * There are no exceptional cases and you do not have to think in two worlds.
+			 * You can invoke SARL code from Java and vice versa without any surprises or hassles.
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "May I use my Java classes in SARL?" {
 				true
 			}
 
@@ -95,9 +122,9 @@ describe "Frequently Asked Questions" {
 		 */
 		context "Installation and Execution" {
 
-			/* SARL is a collection of features for the Eclipse IDE.
+			/* SARL is based on a part of the Eclipse API.
 			 * Every operating system which has a compatible Java 
-			 * virtual machine with Eclipse may be used to run it. 
+			 * Virtual Machine with Eclipse may be used to run SARL. 
 			 * 
 			 * @filter(.*) 
 			 */
@@ -105,9 +132,10 @@ describe "Frequently Asked Questions" {
 				true
 			}
 
-			/* The Janus runtime platform is a Java application.
-			 * Every operating system which has a compatible Java 
-			 * virtual machine with Janus may be used to run it. 
+			/* The [Janus runtime platform](http://www.janusproject.io)
+			 * is a Java application. Every operating system which has 
+			 * a compatible Java Virtual Machine (at least with the 1.7
+			 * standard) with Janus may be used to run it. 
 			 * 
 			 * @filter(.*) 
 			 */
@@ -117,7 +145,7 @@ describe "Frequently Asked Questions" {
 
 			/* SARL requires the JRE and the JDK 1.7 or higher to run and compile.
 			 * Note that if you plan to create Android applications, you must 
-			 * configure your JDK to produce 1.7 class files. 
+			 * configure your JDK to produce 1.6 class files from 1.7 Java code. 
 			 * 
 			 * @filter(.*) 
 			 */
@@ -168,18 +196,20 @@ describe "Frequently Asked Questions" {
 		 */
 		context "Syntax" {
 
-			/* **No**.
+			/* __No__.
 			 * When a decimal point is written in the literal,
-			 * the decimal part and the fractional part must
-			 * be specify also, evne if these parts are equal
+			 * the fractional part and the mantissa part must
+			 * be specify also, even if these parts are equal
 			 * to zero.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parsesWithError.*) 
 			 */
 			fact "Can I use the same syntax as in Java for number literals?" {
 				'''
 					124.0 // Correct syntax
 					124.  // Incorrect syntax
+					0.123 // Correct syntax
+					.123  // Incorrect syntax
 				'''.parsesWithError(
 						"package io.sarl.docs.faq.syntax
 						agent A {
@@ -189,12 +219,13 @@ describe "Frequently Asked Questions" {
 				)
 			}
 			
-			/* It is not allowed to put a string that is
-			 * a reserved keyword of SARL in a package name.
+			/* It is not allowed to put a SARL keyword, such as
+			 * `agent`, in the name of a package.
 			 * 
-			 * However, it is possible to use a keyword
-			 * string into a package name if you prefix
-			 * it by the `^` character:
+			 * But, if you prefix with the `^` character the string
+			 * that corresponds to a keyword, then it is possible
+			 * to obtain a package name with one of its components
+			 * equals to a SARL keyword:
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
@@ -204,10 +235,10 @@ describe "Frequently Asked Questions" {
 				'''.parsesSuccessfully
 			}
 
-			/* **Yes and No**.
+			/* __Yes and No__.
 			 * Indeed, the `val` keyword defines a name
 			 * that it could be initialized only once time.
-			 * It is somilar to the `final` modifier of
+			 * It is similar to the `final` modifier of
 			 * the Java language.
 			 * 
 			 * Consider the example below: two values are
@@ -217,7 +248,7 @@ describe "Frequently Asked Questions" {
 			 * The `b` variable is not a real constant
 			 * because it is a reference to an object.
 			 * The reference is constant, *but* the
-			 * object is not. Consequently, it is still
+			 * referred object is not. Consequently, it is still
 			 * possible to call the setters of `b`. 
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -239,11 +270,9 @@ describe "Frequently Asked Questions" {
 			 * `int[]`, or the object-oriented syntax,
 			 * such as `List<Integer>`.
 			 * 
-			 * SARL is an object-oriented language.
-			 * Consequently, it considers that the
-			 * class array syntax is a list of integer
-			 * numbers.
-			 * Retreivin gthe values of the array must
+			 * SARL considers that the
+			 * arrays are lists of something.
+			 * Consequently, retreiving the values of the array must
 			 * be done with `get(int)`.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -270,16 +299,30 @@ describe "Frequently Asked Questions" {
 		 */
 		context "Runtime" {
 
-			/* **No**.
-			 * There is no warranty on the reception order of the events.
-			 * The runtime environment is executing the event handlers
-			 * in parallel. The real order of execution depends on
-			 * how the runtime environment is launching the handlers'
-			 * execution.  
+			/* __No__.
+			 * There is no warranty on the receiving order of the events.
+			 * This is a particular implementation choice of the runtime
+			 * environment. For example, the
+			 * [Janus runtime environment](http://www.janusproject.io) executes
+			 * the event handlers in parallel. The real order of execution depends on
+			 * how the Java executor is running the handlers on the threads.  
 			 * 
 			 * @filter(.*) 
 			 */
 			fact "Are events received in the same order than when they are sent?" {
+				true
+			}
+
+			/* __No__.
+			 * Janus was designed to discover other kernels automatically.
+			 * By default, the different instances of the Janus platform
+			 * are connected together without any particular configuration.
+			 * The sole constraint is that the kernels must be on the
+			 * same local network.  
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Must I configure the Janus kernels to be connected to other Janus kernels?" {
 				true
 			}
 

@@ -56,7 +56,7 @@ describe "Capacity Reference"{
 			 * a capacity: no attribute nor field is allowed, and no body
 			 * for the actions.
 			 * 
-			 * The definition of a capacity is done with the <code>capacity</code>
+			 * The definition of a capacity is done with the `capacity`
 			 * keyword. Below, a capacity that permits to log messages is defined.
 			 * This capacity enables to log information and debugging messages.
 			 * 
@@ -91,15 +91,15 @@ describe "Capacity Reference"{
 			 * feature of SARL, which has the same semantic as the inheritance
 			 * mechanism as the Java object-oriented language.
 			 * 
-			 * The extended capacity is specified just after the <code>extends</code>
+			 * The extended capacity is specified just after the `extends`
 			 * keyword.
 			 * 
 			 * <span class="label label-warning">Important</span> A capacity can
-			 * extend more than one other capacity type (same constrain as for
+			 * extend more than one other capacity type (same constraint as for
 			 * the interfaces in the Java language).
 			 * 
-			 * In the following code, the <code>Logging</code> capacity (defined
-			 * previously) is extended for enabling to output error messages.
+			 * In the following code, the `Logging` capacity (defined
+			 * previously) is extended for enabling the output of error messages.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
@@ -132,8 +132,8 @@ describe "Capacity Reference"{
 
 			/* In some use cases, it is useful to define a capacity by
 			 * extending more than one capacity.
-			 * Below, the <code>Cap3</code> capacity is defined as an extension of the capacities
-			 * <code>Cap1</code> and <code>Cap2</code>.
+			 * Below, the `Cap3` capacity is defined as an extension of the capacities
+			 * `Cap1` and `Cap2`.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
@@ -175,27 +175,28 @@ describe "Capacity Reference"{
 		 * define a capacity with a fully qualified name equals to one
 		 * of the reserved capacities.
 		 * 
-		 * The builtin capacities are defined in the 
-		 * [Builtin Capacity Reference](./BuiltinCapacityReferenceSpec.html).
+		 * The built-in capacities are defined in the 
+		 * [Built-in Capacity Reference](./BuiltinCapacityReferenceSpec.html).
 		 */
-		describe "Builtin Capacities"{
+		describe "Built-in Capacities"{
 		}
 
 		/* The use of the capacity is related to the associated [skills](./SkillReferenceSpec.html).
 		 * It means that a capacity cannot be called by itself since it is not providing
 		 * an implementation: this is the role of the skill.
 		 * 
-		 * When a function <code>fct</code> of the capacity <code>C</code> is called, 
-		 * it means that the caller does:<ol>
-		 * <li>Find the skill <code>S</code> associated to <code>C</code>; and</li>
-		 * <li>Call <code>fct</code> on the object <code>S</code>.</li> 
-		 * </ol> 
+		 * When a function `fct` of the capacity `C` is called, 
+		 * it means that the agent silently does:
+		 * 
+		 *  * Find the skill `S` associated to `C`; and
+		 *  * Call `fct` on the object `S`.
+		 *  
 		 * 
 		 * Details on the use of the capacities may be found in the references of
-		 * the major behavior-based concepts of SARL:<ul>
-		 * <li>[Agent](AgentReferenceSpec.html)</li>
-		 * <li>[Behavior](BehaviorReferenceSpec.html)</li>
-		 * </ul>
+		 * the major behavior-based concepts of SARL:
+		 * 
+		 *  * [Agent](AgentReferenceSpec.html)
+		 *  * [Behavior](BehaviorReferenceSpec.html)
 		 */
 		describe "Use of the Capacities"{
 		}

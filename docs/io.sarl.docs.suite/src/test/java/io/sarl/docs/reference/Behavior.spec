@@ -26,8 +26,8 @@ import org.jnario.runner.CreateWith
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html),
  * and the [Agent Reference](./AgentReferenceSpec.html).
  * 
- * A <code>Behavior</code> is the specification of a collection of behavior units.
- * This <code>Behavior</code> may be used by an agent for building its global
+ * A `Behavior` is the specification of a collection of behavior units.
+ * This `Behavior` may be used by an agent for building its global
  * behavior.
  */
 @CreateWith(SARLSpecCreator)
@@ -35,14 +35,14 @@ describe "Behavior Reference" {
 	
 		@Inject extension SARLParser
 		
-		/* A behavior is declared with the <code>behavior</code> keyword.
+		/* A behavior is declared with the `behavior` keyword.
 		 * In the behavior's body block, we can declare Mental States 
 		 * (in the form of attributes), Actions and Behaviors.
 		 */
 		describe "Defining a Behavior" {
 
-			/* The following code illustres the definition of a behavior
-			 * named <code>MyBehavior</code>, and that is empty.
+			/* The following code illustrates the definition of a behavior
+			 * named `MyBehavior`, and that is empty.
 			 * 
 			 * Basically, this behavior does nothing, and does not react
 			 * on events. 
@@ -64,17 +64,17 @@ describe "Behavior Reference" {
 				model.elements.get(0).mustBeBehavior("MyBehavior", null).mustHaveFeatures(0)
 			}
 			
-			/* The mental state of an agent is composed by all the data
+			/* The mental state of an agent is composed by the data
 			 * in the knowledge of the agent. A behavior may contain
 			 * a part of this mental state.
 			 * Most of the time, it is implemented as a
 			 * collection of attributes.
 			 * 
 			 * According to the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
-			 * the attributes may be modifiable (when declared with the <code>var</code>
-			 * keyword), or unmodifiable (when declared with the <code>val</code>
+			 * the attributes may be modifiable (when declared with the `var`
+			 * keyword), or unmodifiable (when declared with the `val`
 			 * keyword).
-			 *  
+			 *  s
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Behavior Attributes"{
@@ -136,18 +136,17 @@ describe "Behavior Reference" {
 			 * feature of SARL, which has the same semantic as the inheritance
 			 * mechanism as the Java object-oriented language.
 			 * 
-			 * The extended event is specified just after the <code>extends</code>
+			 * The extended behavior is specified just after the `extends`
 			 * keyword.
 			 * 
 			 * <span class="label label-warning">Important</span> A behavior can
-			 * extend only one other behavior type (same constrain as in the Java
-			 * language).
+			 * extend only one other behavior type.
 			 * 
 			 * In the following code, a first behavior is defined with the name
-			 * <code>MyBehavior</code> and an attribute named <code>attr</code>.
-			 * A second behavior <code>MySubBehavior</code> is defined as the extension
+			 * `MyBehavior` and an attribute named `attr`.
+			 * A second behavior `MySubBehavior` is defined as the extension
 			 * of the first behavior. It contains a function named
-			 * <code>action</code>, which is displaying the inherited attribute.
+			 * `action`, which is displaying the inherited attribute.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
@@ -175,13 +174,13 @@ describe "Behavior Reference" {
 				b2.features.get(0).mustBeAction("action", null, 0, false)
 			}
 
-			/* A behavior is alway own by an agent.
+			/* A behavior is always own by an agent.
 			 * Consequently, it is mandatory to pass the agent as parameter
 			 * of the behavior's constructor.
 			 * 
-			 * In the following example, a behavior of type <code>MyBehavior</code> is
+			 * In the following example, a behavior of type `MyBehavior` is
 			 * instanced (with the agent as the owner/parameter).
-			 * This new behavior is then register into the agentfor enabling 
+			 * This new behavior is then registered into the agent for enabling 
 			 * the reception of the events in the behavior.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -223,42 +222,45 @@ describe "Behavior Reference" {
 		/* The behaviors of an agent correspond to the units that are
 		 * executed by the agent for exhibiting its general behavior.
 		 * 
-		 * The <code>Behavior</code> statement permits to specify a
+		 * The `Behavior` statement permits to specify a
 		 * subset of the agent's behavior inside a single syntactic entity.
-		 * Two types of behaviors are considered: <ol>
-		 * <li>reactive: the agent react when it is receiving events, and</li>
-		 * <li>pro-active: the agent executes by itself one of its behaviors.</li></li>
-		 * </ol>
+		 * Two types of behaviors are considered:
+		 * 
+		 *  * reactive: the agent react when it is receiving events, and
+		 *  * pro-active: the agent executes by itself one of its behaviors.
+		 * 
 		 * 
 		 * The definition of the reactive behaviors is based on the event handling
 		 * mechanism of SARL. Events may be emitted in [spaces](./SpaceReferenceSpec.html),
 		 * and received by the agents, and their behaviors, belonging to these spaces.
 		 * A behavior may indicate that it is interesting for receiving an event by specifying
-		 * an event handler using the following syntax: <pre><code>
-		 * on &lt;EventName&gt; [&lt;Guard&gt;] {
-		 * 		&lt;Statements&gt;
-		 * }
-		 * </code></pre>
-		 * <code>&lt;EventName&gt;</code> is the name of event to wait for.
-		 * <code>&lt;Guard&gt;</code> is the optional specification of a predicate
-		 * that may be true for executing the <code>&lt;Statements&gt;</code>.
+		 * an event handler using the following syntax:
+		 * 
+		 *     on <EventName> [<Guard>] {
+		 *         <Statements>
+		 *     }
+		 *
+		 * 
+		 * `<EventName>` is the name of event to wait for.
+		 * `<Guard>` is the optional specification of a predicate
+		 * that may be true for executing the `<Statements>`.
 		 * The statements are executed only if an event with the given name is
 		 * received, *and* if the guard is true.
 		 * 
 		 * In the guard and the statements, it is possible to use the instance
 		 * of the received event: the occurrence. This instance is represented
-		 * by the <code>occurrence</code> keyword. It is an implicit
-		 * variable as the keywords <code>this</code> and <code>it</code>.
+		 * by the `occurrence` keyword. It is an implicit
+		 * variable as the keywords `this` and `it`.
 		 */
 		describe "Behavior Units of a Behavior" {
 
 			/* The reactive behavior is specified with a collection
 			 * of event handlers. The principle of a reactive behavior
-			 * is to execute a part of the behavior when something has appening
-			 * in the behavioe, the agent or in its environment.
+			 * is to execute a part of the behavior when something has happening
+			 * in the behavior, the agent or in its environment.
 			 * 
 			 * In the following example, the behavior is reacting to the reception
-			 * of the <code>SomethingChanged</code> event.
+			 * of the `SomethingChanged` event.
 			 * 
 			 * As for all the event handlers, it could be guarded by a predicate.
 			 * 
@@ -291,7 +293,7 @@ describe "Behavior Reference" {
 			 * When multiple event handlers are triggered at the same time,
 			 * they are all executed in parallel.
 			 * In the following example, the two handlers for the
-			 * <code>SomethingChanged</code> event are executed in parallel.
+			 * `SomethingChanged` event are executed in parallel.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
@@ -328,7 +330,7 @@ describe "Behavior Reference" {
 			 * 
 			 * In SARL, a pro-active behavior is a behavior that is scheduled
 			 * by the agent or one of its behaviors. The schedule mechanism is provided by the 
-			 * [<code>Schedules</code> builtin capacity](./BuiltinCapacityReferenceSpec.html).
+			 * [`Schedules` built-in capacity](./BuiltinCapacityReferenceSpec.html).
 			 * In the following example, the agent execute its pro-active behavior
 			 * every second.
 			 * 
@@ -380,16 +382,17 @@ describe "Behavior Reference" {
 			 * the [Skill Reference](./SkillReferenceSpec.html).
 			 * 
 			 * In the rest of this section, it is assumed that the following
-			 * capacity and skill are defined: <pre><code>
-			 * capacity Cap {
-			 *     def action
-			 * }
-			 * skill Ski implements Cap {
-			 *     def action {
-			 *         println("Action")
+			 * capacity and skill are defined:
+			 * 
+			 *     capacity Cap {
+			 *         def action
 			 *     }
-			 * }
-			 * </code></pre> 
+			 *     skill Ski implements Cap {
+			 *         def action {
+			 *             println("Action")
+			 *         }
+			 *     }
+			 * 
 			 * 
 			 * @filter(.*) 
 			 */
@@ -425,15 +428,17 @@ describe "Behavior Reference" {
 			}
 	
 			/* For invoking a function implemented by a skill,
-			 * the two following steps must be done: <ol>
-			 * <li>Retreive the skill instance: the function 
-			 * <code>getSkill(Class<? extends Capacity>)</code> 
-			 * permits to retreive the skill associated to the given capacity;</li>
-			 * <li>Invoke the capacity's action on the retreived skill.</li>
-			 * </ol>
+			 * the two following steps must be done:
+			 * 
+			 *  * Retrieve the skill instance: the function
+			 *    `getSkill(Class<? extends Capacity>)`
+			 *    permits to retrieve the skill associated to the
+			 *    given capacity;
+			 *  * Invoke the capacity's action on the retrieved skill.
+			 * 
 			 * 
 			 * <span class="label label-warning">Note</span> This method of
-			 * invocation is not recommended by the SARL developpers.
+			 * invocation is not recommended by the SARL developers.
 			 * You should prefer the use of the extension methods (see below).  
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -473,17 +478,17 @@ describe "Behavior Reference" {
 			 * describes the "extension method" mechanism, it is possible
 			 * to use it for invoking the capacities.
 			 * 
-			 * But, instead of using an <code>import</code> directive,
-			 * the <code>uses</code> keyword is provided for importing the
+			 * But, instead of using an `import` directive,
+			 * the `uses` keyword is provided for importing the
 			 * capacities into the agent. In the following example,
-			 * the <code>Cap</code> capacity is imported.
+			 * the `Cap` capacity is imported.
 			 * 
 			 * After a capacity was "imported", it is possible to
 			 * directly call the functions of the capacity
 			 * (according to the extension method syntax).
 			 * In the following example, the action
-			 * with the name <code>action</code> is invoked.
-			 * This action is defined in the <code>Cap</code>
+			 * with the name `action` is invoked.
+			 * This action is defined in the `Cap`
 			 * capacity. 
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 

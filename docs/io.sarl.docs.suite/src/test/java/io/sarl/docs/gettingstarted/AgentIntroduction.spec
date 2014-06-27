@@ -21,7 +21,8 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 /**
- * To create our first agent, right click on the project and follow **New** > **File**.
+ * To create our first agent, right click on the project and follow 
+ * **New > File**.
  * Name the file **demosarl.sarl**.
  * 
  * The SARL default editor will open.
@@ -35,23 +36,17 @@ describe "Agent Definition Introduction" {
 	/*
 	 * Agents are defined using the `agent` keyword.
 	 * 
-	 * SARL elements are organized in packages.
-	 * You can define the package using the <code>package</code> keyword.
-	 * 
-	 * The following code will define an agent with a fully qualified 
-	 * name of `io.sarl.docs.gettingstarted.agent.MyAgent`.
-	 * The character `^` in the package name permits to use a SARL
-	 * keyword into a package name.
-	 * 
 	 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 	 */
 	fact "Basic agent definition" {
 		val model = '''
-			package io.sarl.docs.gettingstarted.^agent
-			
 			agent MyAgent {
 			}
-		'''.parsesSuccessfully
+		'''.parsesSuccessfully(
+			"package io.sarl.docs.gettingstarted.^agent",
+			// TEXT
+			""
+		)
 		model.mustHavePackage("io.sarl.docs.gettingstarted.agent")
 		model.mustNotHaveImport
 		model.mustHaveTopElements(1)
@@ -59,11 +54,18 @@ describe "Agent Definition Introduction" {
 	} 
 	
 	/*
+	 * SARL elements are organized in packages.
+	 * You can define the package using the `package` keyword.
+	 * 
+	 * The following code will define an agent with a fully qualified 
+	 * name of `io.sarl.docs.gettingstarted.agent.MyAgent`.
+	 * The character `^` in the package name permits to use a SARL
+	 * keyword into a package name.
+	 * 
 	 * <span class="label label-info">Important</span> The package keyword defines 
 	 * the package for all elements in the same SARL file (see the
 	 * [General Syntax Reference](../reference/GeneralSyntaxReferenceSpec.html)
-	 * for details). 
-	 * 
+	 * for details).
 	 * Therefore FirstAgent and SecondAgent belong to the same package 
 	 * (i.e. `io.sarl.docs.gettingstarted.agent`).
 	 * 
@@ -94,7 +96,7 @@ describe "Agent Definition Introduction" {
 		 * To declare a new event use the `event` keyword.
 		 * The following code defines a new event `MyEvent`.
 		 * 
-		 * @filter('''|.parsesSuccessfully) 
+		 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 		 */
 		fact "Declare an Event"{
 			var model = '''
@@ -113,10 +115,13 @@ describe "Agent Definition Introduction" {
 
 		
 		/* 
-		 * Now we will want our agent to react to `MyEvent` and 
+		 * Now, we will want our agent to react to `MyEvent` and 
 		 * print a message on the console.
 		 * 
-		 * Note that `println` is a shortcut for the Java function
+		 * To define this event handler, we must use the `on` keyword,
+		 * and provide the associated code block.
+		 * 
+		 *  <span class="label label-info">Note</span> `println` is a shortcut for the Java function
 		 * `System.out.println`.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -145,9 +150,10 @@ describe "Agent Definition Introduction" {
 		/*
 		 * SARL defines two **lifecycle** events :
 		 * 
-		 *  * `Initialize`:  Notifies the creation of the agent and passes it initialization parameters.
-		 *  * `Destroy`: Notifies the Destruction of the agent.
-		 * 
+		 *  * `Initialize`:  Notifies the creation of the agent, and passes the initialization parameters to the agents.
+		 *  * `Destroy`: Notifies the destruction of the agent.
+		 *
+		 *  
 		 * This means that when agent has been spawned and its ready to 
 		 * begin its execution, it will receive an `Initialize` event.
 		 * You can react to this event just like with any other event defined in SARL.
@@ -155,7 +161,7 @@ describe "Agent Definition Introduction" {
 		 * Likewise, when the agent is going to stop its execution 
 		 * (we will see how to stop an agent later on), it will 
 		 * receive a `Destroy` Event. The purpose of this event is to 
-		 * release any System resources properly.
+		 * release any system resource properly.
 		 *
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -232,7 +238,6 @@ describe "Agent Definition Introduction" {
 		}
 		
 	}
-	
 	
 	/*
 	 * In the next section, we will learn how to start a SARL agent.
