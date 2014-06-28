@@ -158,9 +158,10 @@ describe "Agent Reference"{
 			 * The extended agent is specified just after the `extends`
 			 * keyword.
 			 * 
-			 * <span class="label label-warning">Important</span> An agent can
-			 * extend only one other agent type (same constrain as in the Java
-			 * language).
+			 * <span class="label label-danger">Important</span> An agent 
+			 * type can extend __only one__ other agent type. This is close
+			 * to the constraint on the extension of classes in the Java
+			 * language.
 			 * 
 			 * In the following code, a first agent is defined with the name
 			 * `MyAgent` and an attribute named `attr`.
@@ -594,7 +595,7 @@ describe "Agent Reference"{
 			 *  * Invoke the capacity's action on the retrieved skill.
 			 *
 			 * 
-			 * <span class="label label-warning">Note</span> This method of
+			 * <span class="label label-info">Note</span> This method of
 			 * invocation is not recommended by the SARL developers.
 			 * You should prefer the use of the extension methods (see below).  
 			 * 

@@ -139,8 +139,10 @@ describe "Behavior Reference" {
 			 * The extended behavior is specified just after the `extends`
 			 * keyword.
 			 * 
-			 * <span class="label label-warning">Important</span> A behavior can
-			 * extend only one other behavior type.
+			 * <span class="label label-danger">Important</span> A behavior type
+			 * can extend __only one__ other behavior type. This is close
+			 * to the constraint on the extension of classes in the Java
+			 * language.
 			 * 
 			 * In the following code, a first behavior is defined with the name
 			 * `MyBehavior` and an attribute named `attr`.
@@ -437,7 +439,7 @@ describe "Behavior Reference" {
 			 *  * Invoke the capacity's action on the retrieved skill.
 			 * 
 			 * 
-			 * <span class="label label-warning">Note</span> This method of
+			 * <span class="label label-info">Note</span> This method of
 			 * invocation is not recommended by the SARL developers.
 			 * You should prefer the use of the extension methods (see below).  
 			 * 

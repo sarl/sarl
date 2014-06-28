@@ -462,9 +462,9 @@ describe "Built-in Capacity Reference" {
 			 * the default context, and therefore all its spaces including 
 			 * the default space.
 			 * 
-			 * <span class="label label-warning">Important</span> If the killed 
-			 * agent is a composed agent, it must not have any members before 
-			 * calling this action. Otherwise a RuntimeException will be thrown.
+			 * <span class="label label-danger">Important</span> If the killed 
+			 * agent was a composed agent, it must not have members any more before 
+			 * calling this action. Otherwise a `RuntimeException` is thrown.
 			 * 
 			 * This action fires two events:
 			 *
@@ -771,8 +771,9 @@ describe "Built-in Capacity Reference" {
 			 * of the agent (in the default space).
 			 * 
 			 * <span class="label label-warning">Important</span> It is not
-			 * possible to execute a particular behavior. All the behaviors
-			 * waiting for a given event will be executed by this function.
+			 * possible to execute a particular behavior explicitly.
+			 * All the behaviors that are waiting for a given event will 
+			 * be executed by this function.
 			 * 
 			 * @filter(.*) 
 			 */

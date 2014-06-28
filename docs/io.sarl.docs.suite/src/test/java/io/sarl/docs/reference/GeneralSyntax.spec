@@ -112,7 +112,7 @@ describe "General Syntax Reference" {
 		 * the features defined in the script are defined in this package,
 		 * and their names are qualified with the name of the package.
 		 * 
-		 * The package's name has also a consequency in the generation of
+		 * The package's name has also a consequence in the generation of
 		 * the Java files behind the SARL script. Indeed, all the
 		 * Java files are generated in a folder, which is matching the
 		 * name of the package.
@@ -120,7 +120,7 @@ describe "General Syntax Reference" {
 		 * In the following example, the qualified name of the agent is
 		 * `io.sarl.docs.reference.gsr`.
 		 * 
-		 * <span class="label label-warning">Important</span> If the 
+		 * <span class="label label-note">Note</span> If the 
 		 * `package` keyword is not used, the default package will
 		 * be used. The default package has an empty name.
 		 * It is recommended in the SARL Best Practices to specify a package's
@@ -146,8 +146,8 @@ describe "General Syntax Reference" {
 		 * than the one of your SARL script, you should include it
 		 * with the `import` directive.
 		 * 
-		 * <span class="label label-warning">Important</span> This directive 
-		 * works in the same way as in the Java language.
+		 * <span class="label label-info">Note</span> This directive 
+		 * works in a similar way as in the Java language.
 		 * 
 		 * The `import` keyword is followed by the qualified name
 		 * of the feature to import. In the following code, it is illustrated
@@ -1078,7 +1078,8 @@ describe "General Syntax Reference" {
 	 *      def NAME [([PARAMETER, PARAMETER, PARAMETER...])] [: RETURN TYPE] [BLOCK]
 	 *
 	 * 
-	 * <span class="label label-warning">Important</span> The parameters are implicitly declared with the keyword `val`.
+	 * <span class="label label-warning">Note</span> The parameters are 
+	 * implicitly declared with the keyword `val`.
 	 */
 	describe "Function Declarations" {
 		
@@ -1198,7 +1199,8 @@ describe "General Syntax Reference" {
 		 * And, when the function is run, the default value is given to the
 		 * skipped argument.
 		 * 
-		 * <span class="label label-warning">Important</span> In SARL, if a formal parameter has a default value, the following formal 
+		 * <span class="label label-warning">Important</span> In SARL, 
+		 * if a formal parameter has a default value, the following formal 
 		 * parameters do not need to have default value also. This is a major
 		 * difference with the default values in the C++ language for instance. 
 		 * 
@@ -1457,7 +1459,7 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Instance Creation" {
-			'''
+			var model = '''
 				var a = new Integer(345)
 				var b = new ArrayList<Integer>()
 				var c = new ArrayList<Integer>
@@ -1468,6 +1470,14 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustHaveImports(1)
+			model.mustHaveImport(0, "java.util.ArrayList", false, false, false)
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(3)
+			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XConstructorCall)
+			a.features.get(1).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XConstructorCall)
+			a.features.get(2).mustBeAttribute(true, "c", null, true).initialValue.mustBe(XConstructorCall)
 		}
 
 		/* In the implementation of a constructor, it is possible to
@@ -1475,26 +1485,36 @@ describe "General Syntax Reference" {
 		 * The syntax is similar to Java: the `super` keyword
 		 * is used to represent the inherited constructor.
 		 * 
+		 * <span class="label label-warning">Important</span> It is recommended to type the
+		 * two parenthesis when invoking the default constructor of the super type.
+		 * Indeed, in some cases, typing `super` causes no side effect that is an error.
+		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Inherited Constructor" {
-			'''
+			var model = '''
 			new () {
-				super // Call the inherited default constructor
+				super() // Call the inherited default constructor
 			}
-			new (param : Integer) {
+			new (param : Address) {
 				super(param) // Call the inherited constructor with a parameter
 			}
 			'''.parsesSuccessfully(
 				"package io.sarl.docs.reference.gsr
-				event E1 {
-					new(p : Integer) { }
-					new() { }
-				}
-				event E2 {",
+				import io.sarl.lang.core.Address
+				event E1
+				event E2 extends E1 {",
 				// TEXT
 				"}"
 			)
+			model.mustHavePackage("io.sarl.docs.reference.gsr")
+			model.mustHaveImports(1)
+			model.mustHaveImport(0, "io.sarl.lang.core.Address", false, false, false)
+			model.mustHaveTopElements(2)
+			model.elements.get(0).mustBeEvent("E1", null).mustHaveFeatures(0)
+			var e2 = model.elements.get(1).mustBeEvent("E2", "io.sarl.docs.reference.gsr.E1").mustHaveFeatures(2)
+			e2.features.get(0).mustBeConstructor(0, false)
+			e2.features.get(1).mustBeConstructor(1, false).mustHaveParameter(0, "param", "io.sarl.lang.core.Address", false)
 		}
 
 	}
@@ -1819,7 +1839,8 @@ describe "General Syntax Reference" {
 		 * The main expression (parameter of `switch`) can also be a computed value instead 
 		 * of a field or variable.
 		 * 
-		 * <span class="label label-warning">Important</span> A case must contains an expression. If you want to do nothing
+		 * <span class="label label-danger">Important</span> 
+		 * A case must contains an expression. If you want to do nothing
 		 * for a given case, put an empty block.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 

@@ -39,9 +39,12 @@ describe "Run SARL Agent from the Command Line" {
 	 *     java -cp app.jar io.janusproject.Boot
 	 * 
 	 * 
-	 * <span class="label label-info">Important</span> The `app.jar`
+	 * The option `-cp` specifies the Jar file that contains
+	 * the compiled classes. The given `app.jar`
 	 * file is a Jar file that is containing the Janus
 	 * platform, the SARL libraries, and the application classes.
+	 * The last parameter is the fully qualified name of
+	 * the booting class of Janus: `io.janusproject.Boot`
 	 */
 	describe "Boot of Janus" { } 
 
@@ -52,10 +55,11 @@ describe "Run SARL Agent from the Command Line" {
 	 *     java -cp app.jar io.janusproject.Boot myapp.MonAgent
 	 *
 	 * 
-	 * <span class="label label-info">Important</span> The Janus
+	 * <span class="label label-danger">Important</span> The Janus
 	 * platform allows to start only one agent from the command line.
 	 * If you want to start a collection of agents, you must select
 	 * one of the following approaches:
+	 * 
 	 *  * launch a separate Janus platform for each agent, or
 	 *  * launch an agent that is spawning the other agents.
 	 */

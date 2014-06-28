@@ -19,6 +19,7 @@ import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
+import org.eclipse.xtext.xbase.XBlockExpression
 
 /**
  * To create our first agent, right click on the project and follow 
@@ -62,7 +63,7 @@ describe "Agent Definition Introduction" {
 	 * The character `^` in the package name permits to use a SARL
 	 * keyword into a package name.
 	 * 
-	 * <span class="label label-info">Important</span> The package keyword defines 
+	 * <span class="label label-warning">Important</span> The package keyword defines 
 	 * the package for all elements in the same SARL file (see the
 	 * [General Syntax Reference](../reference/GeneralSyntaxReferenceSpec.html)
 	 * for details).
@@ -240,9 +241,97 @@ describe "Agent Definition Introduction" {
 	}
 	
 	/*
-	 * In the next section, we will learn how to start a SARL agent.
+	 * Agents need to send data and stimuli to other agents.
+	 * This communication takes the form of event sending
+	 * (see [Event](../reference/EventReferenceSpec.html) and
+	 * [Agent](../reference/AgentReferenceSpec.html) References for details).
+	 */
+	context "Agent Communication" {
+		
+		/* 
+		 * Now, we will want our agent to send data to other agents.
+		 * The data is embedded into events. The definition of an
+		 * event is described above.
+		 * 
+		 * <span class="label label-note">Note</span> 
+		 * In this document, we limit our explanation to the
+		 * sending of the events in the default space of 
+		 * the default context of the agent.
+		 * 
+		 * For sending an event in the default space, the
+		 * `DefaultContextInteractions` built-in capacity
+		 * should be used.
+		 * 
+		 * Below, we define an agent that is used this
+		 * capacity.
+		 * 
+		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 */
+		fact "Use the capacity to send an event in the default space"{
+			val model = '''
+			agent MyAgent {
+				uses DefaultContextInteractions
+			} 
+			'''.parsesSuccessfully(
+				"package io.sarl.docs.gettingstarted.^agent
+				import io.sarl.core.DefaultContextInteractions",
+				// TEXT
+				""
+			)
+			model.mustHavePackage("io.sarl.docs.gettingstarted.agent")
+			model.mustHaveImports(1)
+			model.mustHaveImport(0, "io.sarl.core.DefaultContextInteractions", false, false, false)
+			model.mustHaveTopElements(1)
+			var a = model.elements.get(0).mustBeAgent("MyAgent", null).mustHaveFeatures(1)
+			a.features.get(0).mustBeCapacityUses("io.sarl.core.DefaultContextInteractions")
+		}
+		
+		/* 
+		 * The
+		 * `DefaultContextInteractions` built-in capacity
+		 * provides functions for sending events in the
+		 * default space.
+		 * 
+		 * Below, we define an action in which an
+		 * instance of `MyEvent` is created, and then
+		 * sent into the default space with the function
+		 * `emit(Event)`.
+		 * 
+		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 */
+		fact "Send an event in the default space"{
+			val model = '''
+			agent MyAgent {
+				uses DefaultContextInteractions
+				def doSomething {
+					var e = new MyEvent
+					emit(e)
+				}
+			} 
+			'''.parsesSuccessfully(
+				"package io.sarl.docs.gettingstarted.^agent
+				import io.sarl.core.DefaultContextInteractions
+				event MyEvent",
+				// TEXT
+				""
+			)
+			model.mustHavePackage("io.sarl.docs.gettingstarted.agent")
+			model.mustHaveImports(1)
+			model.mustHaveImport(0, "io.sarl.core.DefaultContextInteractions", false, false, false)
+			model.mustHaveTopElements(2)
+			model.elements.get(0).mustBeEvent("MyEvent", null).mustHaveFeatures(0)
+			var a = model.elements.get(1).mustBeAgent("MyAgent", null).mustHaveFeatures(2)
+			a.features.get(0).mustBeCapacityUses("io.sarl.core.DefaultContextInteractions")
+			a.features.get(1).mustBeAction("doSomething", null, 0, false).body.mustBe(XBlockExpression)
+		}
+
+	}
+
+	/*
+	 * In the next section, we will learn how to start a SARL agent on the
+	 * command line.
 	 * 
-	 * [Next](RunSARLAgentSpec.html).
+	 * [Next](RunSARLAgentCLISpec.html).
 	 */
 	describe "What's next?" { }
 

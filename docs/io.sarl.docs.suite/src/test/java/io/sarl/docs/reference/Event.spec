@@ -67,7 +67,7 @@ describe "Event Reference"{
 		 * Reference](BuiltinCapacityReferenceSpec.html).
 		 * 
 		 * 
-		 * <span class="label label-warning">Important</span> There is 
+		 * <span class="label label-info">Note</span> There is 
 		 * no message concept in SARL. All the communications are
 		 * supported by the concept of `Event`
 		 * 
@@ -128,7 +128,7 @@ describe "Event Reference"{
 			 * According to the type inference mechanism used by SARL, the attribute
 			 * `something` will have the type `Object`.
 			 * 
-			 * <span class="label label-warning">Important</span> Because of the use of 
+			 * <span class="label label-info">Note</span> Because of the use of 
 			 * the `var` keyword, the values of the attributes can be modified.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -206,8 +206,10 @@ describe "Event Reference"{
 			 * The extended event is specified just after the `extends`
 			 * keyword.
 			 * 
-			 * <span class="label label-warning">Important</span> An event can
-			 * extend only one other event type.
+			 * <span class="label label-danger">Important</span> An event type
+			 * can extend __only one__ other event type.  This is close
+			 * constraint as the class extension of classes in the Java
+			 * language.
 			 * 
 			 * In the following code, a first event is defined with the name
 			 * `Event1` and an attribute named `string`.
@@ -292,7 +294,7 @@ describe "Event Reference"{
 		 * They are composing the minimal set of events that a runtime
 		 * environment must support for running a SARL program.
 		 *
-		 * <span class="label label-warning">Important</span> You must not
+		 * <span class="label label-danger">Important</span> You must not
 		 * define an event with a fully qualified name equals to one
 		 * of the reserved events.
 		 * 

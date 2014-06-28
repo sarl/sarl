@@ -60,7 +60,7 @@ describe "Capacity Reference"{
 			 * keyword. Below, a capacity that permits to log messages is defined.
 			 * This capacity enables to log information and debugging messages.
 			 * 
-			 * <span class="label label-warning">Note</span> Defining a capacity 
+			 * <span class="label label-info">Note</span> Defining a capacity 
 			 * without action inside is a symptom of a design problem.
 			 *  
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -94,9 +94,10 @@ describe "Capacity Reference"{
 			 * The extended capacity is specified just after the `extends`
 			 * keyword.
 			 * 
-			 * <span class="label label-warning">Important</span> A capacity can
-			 * extend more than one other capacity type (same constraint as for
-			 * the interfaces in the Java language).
+			 * <span class="label label-danger">Important</span> A capacity 
+			 * type can extend __zero to many__ other capacity types.
+			 * This is close to the constraint on the implementation of
+			 * interfaces in the Java language.
 			 * 
 			 * In the following code, the `Logging` capacity (defined
 			 * previously) is extended for enabling the output of error messages.
@@ -171,7 +172,7 @@ describe "Capacity Reference"{
 		 * They are composing the minimal set of capacities that a runtime
 		 * environment must support for running a SARL program.
 		 *
-		 * <span class="label label-warning">Important</span> You must not
+		 * <span class="label label-danger">Important</span> You must not
 		 * define a capacity with a fully qualified name equals to one
 		 * of the reserved capacities.
 		 * 
