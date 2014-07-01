@@ -28,7 +28,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<compiler.level>1.7</compiler.level>
 		<tycho.version>0.20.0</tycho.version>
-		<xtext.version>2.6.1</xtext.version>
+		<xtext.version>2.6.0</xtext.version>
 		<jnario.version>0.7.5</jnario.version>
 	</properties>
 
