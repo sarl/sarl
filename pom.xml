@@ -246,6 +246,18 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 					<version>2.17</version>
 				</plugin>
 
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>1.5</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.arakhne.afc.maven</groupId>
+					<artifactId>tag-replacer</artifactId>
+					<version>11.0</version>
+				</plugin>
+
 				<!--This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
@@ -595,6 +607,51 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>release-tasks</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.arakhne.afc.maven</groupId>
+						<artifactId>tag-replacer</artifactId>
+						<executions>
+							<execution>
+								<id>update-source-tags</id>
+								<phase>process-sources</phase>
+								<goals>
+									<goal>generatereplacesrc</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<!-- ======================================= -->
 	<!-- ==== Organization Information === -->
@@ -658,11 +715,11 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 	<!-- =================== -->
 
 	<repositories>
-		<repository>
+		<!-- <repository>
 			<id>io.sarl.maven</id>
 			<name>SARL Repository</name>
 			<url>http://maven.sarl.io/</url>
-		</repository>
+		</repository> -->
 		<repository>
 			<id>kepler</id>
 			<layout>p2</layout>
@@ -691,5 +748,14 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 			<url>file:///var/www/sarl-maven-repository/</url>
 		</snapshotRepository>
 	</distributionManagement>
+
+	<!-- ==================== -->
+	<!-- ==== Development === -->
+	<!-- ==================== -->
+	<scm>
+	  <connection>scm:git:git@github.com:sarl/sarl.git</connection>
+	  <developerConnection>scm:git:git@github.com:sarl/sarl.git</developerConnection>
+	  <url>git@github.com:sarl/sarl.git</url>
+	</scm>
 
 </project>
