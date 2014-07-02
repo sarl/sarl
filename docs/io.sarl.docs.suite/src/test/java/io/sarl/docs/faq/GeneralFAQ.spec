@@ -32,6 +32,18 @@ describe "Frequently Asked Questions" {
 		 */
 		context "General FAQ" {
 			
+			/* If you cannot find an answer to your question in
+			 * the FAQ nor the reference documents nor
+			 * the [existing issues](https://github.com/sarl/sarl/issues), you
+			 * could ask to the SARL developers on 
+			 * [this page](https://github.com/sarl/sarl/issues/new).
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Where can I ask my question?" {
+				true
+			}
+
 			/* __Yes__. 
 			 * SARL may be used for agent based applications. 
 			 * Natively, SARL provides features for agent execution and 
