@@ -710,16 +710,18 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 		</developer>
 	</developers>
 
-	<!-- =================== -->
+	<!-- ===================== -->
 	<!-- ==== Repositories === -->
-	<!-- =================== -->
+	<!-- ===================== -->
 
 	<repositories>
-		<!-- <repository>
+		<!-- The SARL repository seems to be present for compiling
+		     the Eclipse product -->
+		<repository>
 			<id>io.sarl.maven</id>
 			<name>SARL Repository</name>
 			<url>http://maven.sarl.io/</url>
-		</repository> -->
+		</repository>
 		<repository>
 			<id>kepler</id>
 			<layout>p2</layout>
