@@ -65,12 +65,12 @@ import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor.IPostIndexingInitializing
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypeExtensions
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking
 
 import static io.sarl.lang.util.ModelUtil.*
-import org.eclipse.xtext.xbase.jvmmodel.JvmTypeExtensions
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -136,7 +136,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 *            <code>true</code>.
 	 */
 	def dispatch void infer(Event event, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		acceptor.accept(event.toClass(event.fullyQualifiedName)).initializeLater(
+		var qn = event.fullyQualifiedName
+		if (qn===null) {
+			return
+		}
+		acceptor.accept(event.toClass(qn)).initializeLater(
 			[
 				// Reset the action registry
 				sarlSignatureProvider.resetSignatures(it)
@@ -185,7 +189,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					typeExtensions.setSynthetic(op, true);
 					members += op
 					//
-					val addrType = newTypeRef(typeof(io.sarl.lang.core.Address))
+					val addrType = newTypeRef(typeof(Address))
 					op = event.toConstructor [
 						documentation = '''
 							Construct an event.
@@ -256,7 +260,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	}
 
 	def dispatch void infer(Capacity capacity, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		acceptor.accept(capacity.toInterface(capacity.fullyQualifiedName.toString, null)).initializeLater(
+		var qn = capacity.fullyQualifiedName
+		if (qn===null) {
+			return
+		}
+		acceptor.accept(capacity.toInterface(qn.toString, null)).initializeLater(
 			[
 				// Reset the action registry
 				sarlSignatureProvider.resetSignatures(it)
@@ -276,7 +284,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	}
 
 	def dispatch void infer(Skill skill, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		acceptor.accept(skill.toClass(skill.fullyQualifiedName)).initializeLater(
+		var qn = skill.fullyQualifiedName
+		if (qn===null) {
+			return
+		}
+		acceptor.accept(skill.toClass(qn)).initializeLater(
 			[
 				// Reset the action registry
 				sarlSignatureProvider.resetSignatures(it)
@@ -366,7 +378,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	}
 
 	def dispatch void infer(Behavior behavior, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		acceptor.accept(behavior.toClass(behavior.fullyQualifiedName)).initializeLater(
+		var qn = behavior.fullyQualifiedName
+		if (qn===null) {
+			return
+		}
+		acceptor.accept(behavior.toClass(qn)).initializeLater(
 			[
 				// Reset the action registry
 				sarlSignatureProvider.resetSignatures(it)
@@ -434,7 +450,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	}
 
 	def dispatch void infer(Agent agent, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		acceptor.accept(agent.toClass(agent.fullyQualifiedName)).initializeLater [
+		var qn = agent.fullyQualifiedName
+		if (qn===null) {
+			return
+		}
+		acceptor.accept(agent.toClass(qn)).initializeLater [
 			// Reset the action registry
 			sarlSignatureProvider.resetSignatures(it)
 			
@@ -500,7 +520,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		var SignatureKey sigKey = null
 		
 		for(missedOperation : operationsToImplement.entrySet) {
-			var originalSignature = annotationString(missedOperation.value, typeof(io.sarl.lang.annotation.DefaultValueUse))
+			var originalSignature = annotationString(missedOperation.value, typeof(DefaultValueUse))
 			if (originalSignature!==null) {
 				if (originalSignature!=currentKeyStr) {
 					currentKeyStr = originalSignature
@@ -520,7 +540,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					
 					while (it2.hasNext) {
 						var param = it2.next
-						var vId = annotationString(param, typeof(io.sarl.lang.annotation.DefaultValue))
+						var vId = annotationString(param, typeof(DefaultValue))
 						if (oparam==null && it1.hasNext) {
 							oparam = it1.next
 						}
@@ -550,7 +570,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							append(");")
 						] //(new CallingFunctionGenerator(originalOperation.simpleName, args))
 					}
-					op.annotations += owner.toAnnotation(typeof(io.sarl.lang.annotation.DefaultValueUse), originalSignature)
+					op.annotations += owner.toAnnotation(typeof(DefaultValueUse), originalSignature)
 					output.members += op				
 					actIndex++
 				}
@@ -686,7 +706,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			
 			val behaviorMethod = unit.toMethod(behName, voidType) [
 				unit.copyDocumentationTo(it)
-				annotations += unit.toAnnotation(typeof(io.sarl.lang.core.Percept))
+				annotations += unit.toAnnotation(typeof(Percept))
 				parameters +=
 					unit.event.toParameter(SARLKeywords::OCCURRENCE, unit.event)
 			]
@@ -756,7 +776,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					field.annotations += param.toGeneratedAnnotation
 					actionContainer.members += field
 					readAndWriteTracking.markInitialized(field)
-					var annot = param.toAnnotation(typeof(io.sarl.lang.annotation.DefaultValue), namePostPart)
+					var annot = param.toAnnotation(typeof(DefaultValue), namePostPart)
 					lastParam.annotations += annot
 				}
 				
@@ -770,7 +790,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			lastParam.parameterType = lastParam.parameterType.addArrayTypeDimension
 		}
 		if (hasDefaultValue) {
-			owner.annotations += sourceElement.toAnnotation(typeof(io.sarl.lang.annotation.DefaultValueSource))
+			owner.annotations += sourceElement.toAnnotation(typeof(DefaultValueSource))
 		}
 		return parameterTypes
 	}
@@ -876,7 +896,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						]
 					}
 					annotations += signature.toAnnotation(
-						typeof(io.sarl.lang.annotation.DefaultValueUse), 
+						typeof(DefaultValueUse), 
 						otherSignatures.formalParameterKey.toString
 					)
 				]
@@ -924,7 +944,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					append(");")
 				]
 				annotations += constructor.toAnnotation(
-					typeof(io.sarl.lang.annotation.DefaultValueUse),
+					typeof(DefaultValueUse),
 					otherSignatures.formalParameterKey.toString
 				)
 			]
