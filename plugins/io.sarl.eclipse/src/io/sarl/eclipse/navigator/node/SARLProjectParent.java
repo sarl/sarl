@@ -3,7 +3,7 @@
  */
 package io.sarl.eclipse.navigator.node;
 
-import io.sarl.eclipse.internal.EclipseSARLActivator;
+import io.sarl.eclipse.images.EclipseSARLImages;
 import io.sarl.eclipse.navigator.ISARLProjectElement;
 import io.sarl.eclipse.navigator.SARLProjectNavigator;
 
@@ -30,20 +30,24 @@ public class SARLProjectParent implements ISARLProjectElement {
 
 	private ISARLProjectElement[] children;
 
+	/** Construct a parent element in a SARL project.
+	 *  
+	 * @param iProject - the project.
+	 */
 	public SARLProjectParent(IProject iProject) {
 		this.project = iProject;
 	}
 
 
-
+    @Override
 	public Image getImage() {
 		if (this.image == null) {
-			this.image = EclipseSARLActivator.getImage("icons/sarl-project-folder-16.png"); //$NON-NLS-1$
+			this.image = EclipseSARLImages.getImage("icons/sarl-project-folder-16.png"); //$NON-NLS-1$
 		}
 		return this.image;
 	}
 
-    private ISARLProjectElement[] initializeChildren(IProject project) {
+    private ISARLProjectElement[] initializeChildren() {
     	ISARLProjectElement[] ichildren = {
                 new SARLProjectSARLNode(this),
                 new SARLProjectJAVANode(this)
@@ -53,50 +57,36 @@ public class SARLProjectParent implements ISARLProjectElement {
     }
     
     
-	/* (non-Javadoc)
-	 * @see io.sarl.eclipse.navigator.ISARLProjectElement#getChildren()
-	 */
+    @Override
 	public ISARLProjectElement[] getChildren() {
         if (this.children == null) {
-        	this.children = initializeChildren(this.project);
+        	this.children = initializeChildren(/*this.project*/);
         }
         // else we have already initialized them
  
         return this.children;
 	}
-	
-	public String getProjectName() {
-		return this.project.getName();
-	}
 
-	/* (non-Javadoc)
-	 * @see io.sarl.eclipse.navigator.ISARLProjectElement#getText()
-	 */
+    @Override
 	public String getText() {
 		return this.project.getName();
 	}
 
-	/* (non-Javadoc)
-	 * @see io.sarl.eclipse.navigator.ISARLProjectElement#hasChildren()
-	 */
+    @Override
 	public boolean hasChildren() {
         if (this.children == null) {
-            this.children = initializeChildren(this.project);
+            this.children = initializeChildren(/*this.project*/);
         }
         // else we have already initialized them
         return this.children.length > 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see io.sarl.eclipse.navigator.ISARLProjectElement#getProject()
-	 */
+    @Override
 	public IProject getProject() {		
 		return this.project;
 	}
 
-	/* (non-Javadoc)
-	 * @see io.sarl.eclipse.navigator.ISARLProjectElement#getParent()
-	 */
+    @Override
 	public Object getParent() {
 		return null;
 	}

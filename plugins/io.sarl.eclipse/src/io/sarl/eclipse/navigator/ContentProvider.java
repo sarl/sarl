@@ -5,8 +5,8 @@ package io.sarl.eclipse.navigator;
 
 import io.sarl.eclipse.navigator.node.SARLProjectParent;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -28,17 +28,12 @@ public class ContentProvider implements ITreeContentProvider {
     
     private ISARLProjectElement[] sarlProjectParents;
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.
-     * Object)
-     */
+    @Override
     public Object[] getChildren(Object parentElement) {
         Object[] children = null;
         if (SARLProjectWorkbenchRoot.class.isInstance(parentElement)) {
             if (this.sarlProjectParents == null) {
-            	this.sarlProjectParents = initializeParent(parentElement);
+            	this.sarlProjectParents = initializeParent();
             }
 
             children = this.sarlProjectParents;
@@ -51,12 +46,7 @@ public class ContentProvider implements ITreeContentProvider {
         return children;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object
-     * )
-     */
+    @Override
     public Object getParent(Object element) {
         System.out.println("ContentProvider.getParent: " + element.getClass().getName()); //$NON-NLS-1$
         Object parent = null;
@@ -66,12 +56,7 @@ public class ContentProvider implements ITreeContentProvider {
         return parent;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.
-     * Object)
-     */
+    @Override
     public boolean hasChildren(Object element) {
         boolean hasChildren = false;
 
@@ -85,47 +70,30 @@ public class ContentProvider implements ITreeContentProvider {
         return hasChildren;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java
-     * .lang.Object)
-     */
+    @Override
     public Object[] getElements(Object inputElement) {
         // This is the same as getChildren() so we will call that instead
         return getChildren(inputElement);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-     */
+    @Override
     public void dispose() {
         System.out.println("ContentProvider.dispose"); //$NON-NLS-1$
-        // TODO Auto-generated method stub
-
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface
-     * .viewers.Viewer, java.lang.Object, java.lang.Object)
-     */
+    @Override
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
         if (oldInput != null && newInput != null){
         	System.out.println("ContentProvider.inputChanged: old: " + oldInput.getClass().getName() + " new: " + newInput.getClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$
         } else {
-        	System.out.println("ContentProvider.inputChanged");
+        	System.out.println("ContentProvider.inputChanged"); //$NON-NLS-1$
         }
-        // TODO Auto-generated method stub
-
     }
 
-    private ISARLProjectElement[] initializeParent(Object parentElement) {
+    private static ISARLProjectElement[] initializeParent() {
         IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 
-        List<SARLProjectParent> list = new Vector<SARLProjectParent>();
+        List<SARLProjectParent> list = new ArrayList<>();
         for (int i = 0; i < projects.length; i++) {
             try {
                 if (projects[i].getNature(io.sarl.eclipse.natures.SARLProjectNature.NATURE_ID) != null) {

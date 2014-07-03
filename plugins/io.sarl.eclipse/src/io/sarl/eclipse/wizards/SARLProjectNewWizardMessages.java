@@ -11,9 +11,17 @@ import org.eclipse.osgi.util.NLS;
  */
 public class SARLProjectNewWizardMessages extends NLS {
 	private static final String BUNDLE_NAME = "io.sarl.eclipse.wizards.SARLProjectNewWizard"; //$NON-NLS-1$
+	
+	/**
+	 */
 	public static String SARLProjectNewWizard_WIZARD_NAME;
+	/**
+	 */
 	public static String SARLProjectNewWizard_WIZARD_PAGE_DESCRIPTION;
+	/**
+	 */
 	public static String SARLProjectNewWizard_WIZARD_PAGE_NAME;
+	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, SARLProjectNewWizardMessages.class);

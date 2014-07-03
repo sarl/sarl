@@ -1,7 +1,7 @@
 /**
  * 
  */
-package io.sarl.eclipse.internal;
+package io.sarl.eclipse.images;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
@@ -10,25 +10,25 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * Activator
+ * Images
  * 
  * @author $Author: ngaud$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class EclipseSARLActivator extends AbstractUIPlugin {
+public class EclipseSARLImages {
 
+	private static final String PLUGIN_ID = "io.sarl.eclipse"; //$NON-NLS-1$
 
-	public static final String PLUGIN_ID = "io.sarl.eclipse";
-
-	
+	/** Replies the image stored in the current Eclipse plugin.
+	 * 
+	 * @param imagePath
+	 * @return the image.
+	 */
     public static Image getImage(String imagePath) {
-    	
-    	
-        ImageDescriptor imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(EclipseSARLActivator.PLUGIN_ID, imagePath);
+        ImageDescriptor imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(EclipseSARLImages.PLUGIN_ID, imagePath);
         Image image = imageDescriptor.createImage();
- 
         return image;
     }
 

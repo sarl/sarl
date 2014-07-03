@@ -16,12 +16,11 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
  */
 public class WizardNewSARLFileCreationPage extends WizardNewFileCreationPage {
 
-	private static final String WIZARD_NAME = "SARL File Wizard";
-	private static final String PAGE_TITLE = "SARL File Wizard";
-	private static final String PAGE_DESCRIPTION = "Create a SARL File";
+	private static final String WIZARD_NAME = "SARL File Wizard"; //$NON-NLS-1$
+	private static final String PAGE_TITLE = "SARL File Wizard"; //$NON-NLS-1$
+	private static final String PAGE_DESCRIPTION = "Create a SARL File"; //$NON-NLS-1$
+	private static final String SARL_FILE_EXTENSION = "sarl"; //$NON-NLS-1$
 	
-	
-	public static final String SARL_FILE_EXTENSION = "sarl";
 	
 	/**
 	 * 

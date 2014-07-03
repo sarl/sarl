@@ -25,9 +25,7 @@ public class SARLFileNewWizard extends Wizard implements INewWizard {
 	private IStructuredSelection selection;
 	private WizardNewSARLFileCreationPage pageOne;
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
-	 */
+	@Override
 	public void init(IWorkbench iworkbench, IStructuredSelection iselection) {
 		this.workbench = iworkbench;
 		this.selection = iselection;
