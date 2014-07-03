@@ -17,8 +17,12 @@ package io.sarl.lang.jvmmodel
 
 import com.google.inject.Inject
 import io.sarl.lang.SARLKeywords
-import io.sarl.lang.bugfixes.XtendBug392440
-import io.sarl.lang.bugfixes.XtendBug434912
+import io.sarl.lang.annotation.DefaultValue
+import io.sarl.lang.annotation.DefaultValueSource
+import io.sarl.lang.annotation.DefaultValueUse
+import io.sarl.lang.annotation.Generated
+import io.sarl.lang.core.Address
+import io.sarl.lang.core.Percept
 import io.sarl.lang.sarl.Action
 import io.sarl.lang.sarl.ActionSignature
 import io.sarl.lang.sarl.Agent
@@ -101,17 +105,8 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	
 	@Inject private JvmTypeExtensions typeExtensions;
 
-	private var XtendBug392440 hashCodeBugFix
-	private var XtendBug434912 toEqualsBugFix
-	
-	@Inject
-	def void setTypesBuilder(JvmTypesBuilder typesBuilder) {
-		this.hashCodeBugFix = new XtendBug392440(typesBuilder)
-		this.toEqualsBugFix = new XtendBug434912(typesBuilder)
-	}
-
 	protected def toGeneratedAnnotation(EObject o) {
-		o.toAnnotation(typeof(io.sarl.lang.annotation.Generated))
+		o.toAnnotation(typeof(Generated))
 	}
 	
 
@@ -211,14 +206,14 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					val JvmField[] tab = jvmFields // single translation to the array
  					var elementType = event.toClass(event.fullyQualifiedName)
  					
-					var op = toEqualsBugFix.toEqualsMethod(it, event, elementType, true, tab)
+					var op = toEqualsMethod(event, elementType, true, tab)
  					if (op!==null) {
 						op.annotations += toGeneratedAnnotation
 						typeExtensions.setSynthetic(op, true);
 						members += op
 					}
 					
-					op = hashCodeBugFix.toHashCodeMethod(it, event, true, tab)
+					op = toHashCodeMethod(event, true, tab)
 					if (op!==null) {
 						op.annotations += toGeneratedAnnotation
 						typeExtensions.setSynthetic(op, true);

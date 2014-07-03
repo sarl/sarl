@@ -4,9 +4,9 @@
 package io.sarl.lang.ui;
 
 import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
-import io.sarl.lang.ui.outline.SARLOperationOutlineFilter;
 import io.sarl.lang.ui.outline.SARLBehaviorUnitOutlineFilter;
 import io.sarl.lang.ui.outline.SARLFieldOutlineFilter;
+import io.sarl.lang.ui.outline.SARLOperationOutlineFilter;
 import io.sarl.lang.ui.outline.SARLOutlineNodeComparator;
 import io.sarl.lang.ui.outline.SARLOutlinePage;
 import io.sarl.lang.ui.validation.SARLUIValidator;
@@ -78,6 +78,5 @@ public class SARLUiModule extends io.sarl.lang.ui.AbstractSARLUiModule {
 				Names.named("SARLBehaviorUnitOutlineFilter")) //$NON-NLS-1$
 				.to(SARLBehaviorUnitOutlineFilter.class);
 	}
-
 
 }
