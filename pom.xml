@@ -434,7 +434,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 					</environments>
 					<target>
 						<artifact>
-							<groupId>io.sarl.lang</groupId>
+							<groupId>io.sarl</groupId>
 							<artifactId>io.sarl.lang.targetplatform</artifactId>
 							<version>${project.version}</version>
 						</artifact>
@@ -560,7 +560,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 					<detectLinks>true</detectLinks>
 					<detectJavaApiLink>true</detectJavaApiLink>
 					<links>
-						<link>http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.5/</link>
+						<link>http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.7.0/</link>
 						<link>http://hazelcast.org/docs/latest/javadoc/</link>
 						<link>http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/</link>
 						<link>http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/</link>
@@ -715,26 +715,17 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 	<!-- ===================== -->
 
 	<repositories>
-		<!-- The SARL repository seems to be present for compiling
-		     the Eclipse product -->
 		<repository>
-			<id>io.sarl.maven</id>
-			<name>SARL Repository</name>
-			<url>http://maven.sarl.io/</url>
+			<id>org.eclipse.ide.luna</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/luna</url>
 		</repository>
 		<repository>
-			<id>kepler</id>
+			<id>org.eclipse.xtext.update.lastest</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/kepler</url>
-		</repository>
-		<repository>
-			<id>Xtext Update Site</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/</url>
+			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/latest/</url>
 		</repository>
 	</repositories>
-
-
 
 	<!-- =================== -->
 	<!-- ==== Deployment === -->
