@@ -254,7 +254,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				serialField.annotations += toGeneratedAnnotation
 				typeExtensions.setSynthetic(serialField, true);
 				members += serialField
-				readAndWriteTracking.markInitialized(serialField)
+				readAndWriteTracking.markInitialized(serialField, null)
 
 			])
 	}
@@ -623,7 +623,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		]
 		owner.members += field
 		if (attr.initialValue!==null) {
-			readAndWriteTracking.markInitialized(field)
+			readAndWriteTracking.markInitialized(field, null)
 		}
 		return field
 	}
@@ -775,7 +775,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					]
 					field.annotations += param.toGeneratedAnnotation
 					actionContainer.members += field
-					readAndWriteTracking.markInitialized(field)
+					readAndWriteTracking.markInitialized(field, null)
 					var annot = param.toAnnotation(typeof(DefaultValue), namePostPart)
 					lastParam.annotations += annot
 				}
