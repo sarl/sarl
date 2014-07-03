@@ -24,7 +24,6 @@ Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: io.sarl.lang,
- io.sarl.lang.bugfixes,
  io.sarl.lang.formatting,
  io.sarl.lang.jvmmodel,
  io.sarl.lang.parser.antlr,

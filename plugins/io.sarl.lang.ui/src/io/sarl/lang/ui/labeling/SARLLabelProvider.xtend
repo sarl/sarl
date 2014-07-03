@@ -20,7 +20,9 @@ import io.sarl.lang.sarl.Skill
 import io.sarl.lang.ui.images.SARLImages
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
+import org.eclipse.jface.resource.ImageDescriptor
 import org.eclipse.jface.viewers.StyledString
+import org.eclipse.xtext.common.types.JvmConstructor
 import org.eclipse.xtext.common.types.JvmExecutable
 import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmOperation
@@ -33,7 +35,6 @@ import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 import org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider
 import org.eclipse.xtext.xbase.validation.UIStrings
-import org.eclipse.xtext.common.types.JvmConstructor
 
 /**
  * Provides labels for a EObjects.
@@ -47,7 +48,7 @@ class SARLLabelProvider extends XbaseLabelProvider {
 	@Inject	CommonTypeComputationServices services
 	@Inject ILogicalContainerProvider logicalContainerProvider;
 	@Inject SARLImages images
-
+	
 	@Inject
 	new(AdapterFactoryLabelProvider delegate) {
 		super(delegate);
@@ -64,55 +65,55 @@ class SARLLabelProvider extends XbaseLabelProvider {
 
 	// Descriptors
 	
-	protected def dispatch imageDescriptor(SarlScript element) {
+	protected def dispatch ImageDescriptor imageDescriptor(SarlScript element) {
 		images.forFile
 	}
 	
-	protected def dispatch imageDescriptor(Agent element) {
+	protected def dispatch ImageDescriptor imageDescriptor(Agent element) {
 		images.forAgent
 	}
 	
-	protected def dispatch imageDescriptor(Event element) {
+	protected def dispatch ImageDescriptor imageDescriptor(Event element) {
 		images.forEvent
 	}
 
-	protected def dispatch imageDescriptor(Capacity element) {
+	protected def dispatch ImageDescriptor imageDescriptor(Capacity element) {
 		images.forCapacity
 	}
 
-	protected def dispatch imageDescriptor(Skill element) {
+	protected def dispatch ImageDescriptor imageDescriptor(Skill element) {
 		images.forSkill
 	}
 
-	protected def dispatch imageDescriptor(Behavior element) {
+	protected def dispatch ImageDescriptor imageDescriptor(Behavior element) {
 		images.forBehavior
 	}
 
-	protected def dispatch imageDescriptor(Attribute element) {
+	protected def dispatch ImageDescriptor imageDescriptor(Attribute element) {
 		images.forAttribute(element.writeable)
 	}
 
-	protected def dispatch imageDescriptor(Constructor element) {
+	protected def dispatch ImageDescriptor imageDescriptor(Constructor element) {
 		images.forConstructor(JvmVisibility::PUBLIC, 0)
 	}
 
-	protected def dispatch imageDescriptor(Action element) {
+	protected def dispatch ImageDescriptor imageDescriptor(Action element) {
 		images.forAction
 	}
 
-	protected def dispatch imageDescriptor(ActionSignature element) {
+	protected def dispatch ImageDescriptor imageDescriptor(ActionSignature element) {
 		images.forActionSignature
 	}
 
-	protected def dispatch imageDescriptor(CapacityUses element) {
+	protected def dispatch ImageDescriptor imageDescriptor(CapacityUses element) {
 		images.forCapacityUses
 	}
 
-	protected def dispatch imageDescriptor(RequiredCapacity element) {
+	protected def dispatch ImageDescriptor imageDescriptor(RequiredCapacity element) {
 		images.forCapacityRequirements
 	}
 
-	protected def dispatch imageDescriptor(BehaviorUnit element) {
+	protected def dispatch ImageDescriptor imageDescriptor(BehaviorUnit element) {
 		images.forBehaviorUnit
 	}
 
