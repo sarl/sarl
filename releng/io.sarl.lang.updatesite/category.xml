@@ -3,6 +3,9 @@
    <feature url="features/io.sarl.lang.sdk_0.1.0.qualifier.jar" id="io.sarl.lang.sdk" version="0.1.0.qualifier">
       <category name="io.sarl"/>
    </feature>
+   <feature url="features/io.sarl.sdk_0.1.0.qualifier.jar" id="io.sarl.sdk" version="0.1.0.qualifier">
+      <category name="io.sarl"/>
+   </feature>
    <category-def name="io.sarl" label="SARL Language">
       <description>
          SARL is a general-purpose agent-oriented language. 
