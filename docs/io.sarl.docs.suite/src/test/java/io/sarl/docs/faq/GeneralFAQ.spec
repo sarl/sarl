@@ -128,6 +128,18 @@ describe "Frequently Asked Questions" {
 				true
 			}
 
+			/* The release planning of SARL is detailed on the
+			 * [Milestones' page](https://github.com/sarl/sarl/issues/milestones) on
+			 * on the Github website.
+			 * The release planning og the Janus multiagent platform is following
+			 * the planning of SARL.
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Where can I found information on the release planning of SARL?" {
+				true
+			}
+
 		}
 		
 		/*  
