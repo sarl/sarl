@@ -3,6 +3,7 @@
  */
 package io.sarl.lang.ui;
 
+import io.sarl.lang.ui.bugfixes.XtextBugFixes438191And438233;
 import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
 import io.sarl.lang.ui.outline.SARLBehaviorUnitOutlineFilter;
 import io.sarl.lang.ui.outline.SARLFieldOutlineFilter;
@@ -23,7 +24,7 @@ import com.google.inject.name.Names;
 /**
  * Use this class to register components to be used within the IDE.
  */
-public class SARLUiModule extends io.sarl.lang.ui.AbstractSARLUiModule {
+public class SARLUiModule extends AbstractSARLUiModule {
 
 	/**
 	 * @param plugin
@@ -77,6 +78,11 @@ public class SARLUiModule extends io.sarl.lang.ui.AbstractSARLUiModule {
 		binder.bind(IOutlineContribution.class).annotatedWith(
 				Names.named("SARLBehaviorUnitOutlineFilter")) //$NON-NLS-1$
 				.to(SARLBehaviorUnitOutlineFilter.class);
+	}
+
+	@Override
+	public Class<? extends org.eclipse.xtext.common.types.xtext.ui.ITypesProposalProvider> bindITypesProposalProvider() {
+		return XtextBugFixes438191And438233.class;
 	}
 
 }
