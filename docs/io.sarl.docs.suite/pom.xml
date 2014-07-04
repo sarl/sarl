@@ -21,7 +21,7 @@
 
 		<dependency>
 			<groupId>io.sarl.maven</groupId>
-			<artifactId>io.sarl.sdk</artifactId>
+			<artifactId>io.sarl.maven.sdk</artifactId>
 			<type>pom</type>
 		</dependency>
 

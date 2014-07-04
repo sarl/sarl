@@ -9,7 +9,7 @@
 
 	<packaging>pom</packaging>
 
-	<artifactId>io.sarl.sdk</artifactId>
+	<artifactId>io.sarl.maven.sdk</artifactId>
 
 	<name>SARL SDK</name>
 	<description>SARL SDK provides all necessary dependencies to develop a MAS using SARL.</description>
