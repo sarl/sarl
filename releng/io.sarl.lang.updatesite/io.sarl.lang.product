@@ -6,7 +6,7 @@
    <aboutInfo>
       <image path="eclipse_lg.gif"/>
       <text>
-         SARL
+         SARL agent programming language
       </text>
    </aboutInfo>
 
@@ -243,7 +243,7 @@
    <features>
       <feature id="io.sarl.lang.sdk" version="0.1.0.qualifier"/>
       <feature id="io.sarl.sdk" version="0.1.0.qualifier"/>
-      <feature id="org.eclipse.xtext.sdk" version="2.7.0.v201407030806"/>
+      <feature id="org.eclipse.xtext.sdk" version="2.6.2.v201407030533"/>
       <feature id="org.eclipse.xtext.ui.source"/>
       <feature id="org.eclipse.xtext.ui"/>
       <feature id="org.eclipse.xtext.docs"/>
@@ -258,6 +258,7 @@
       <feature id="org.eclipse.xtend.sdk"/>
       <feature id="org.eclipse.xtext.examples"/>
       <feature id="org.eclipse.xtext.runtime"/>
+      <feature id="org.eclipse.xtext.redist" version="2.6.2.v201407030533"/>
       <feature id="org.eclipse.platform" version="4.4.0.v20140606-1558"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
       <feature id="org.eclipse.ecf.core.ssl.feature"/>
@@ -274,9 +275,6 @@
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
       <feature id="org.eclipse.emf.common"/>
       <feature id="org.eclipse.equinox.p2.extras.feature"/>
-      <feature id="org.eclipse.jdt" version="3.10.0.v20140606-1536"/>
-      <feature id="org.eclipse.m2e.feature" version="1.5.0.20140606-0033"/>
-      <feature id="org.eclipse.xtext.redist" version="2.7.0.v201407030806"/>
    </features>
 
    <configurations>

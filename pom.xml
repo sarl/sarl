@@ -28,7 +28,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<compiler.level>1.7</compiler.level>
 		<tycho.version>0.20.0</tycho.version>
-		<xtext.version>2.7.0-SNAPSHOT</xtext.version>
+		<xtext.version>2.6.2</xtext.version>
 		<jnario.version>0.7.5</jnario.version>
 	</properties>
 
@@ -723,16 +723,9 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 		<repository>
 			<id>org.eclipse.xtext.update.lastest</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/latest/</url>
+			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/</url>
 		</repository>
 	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>org.eclipse.xtext.maven.snapshots</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-		</pluginRepository>
-	</pluginRepositories>
 
 	<!-- =================== -->
 	<!-- ==== Deployment === -->

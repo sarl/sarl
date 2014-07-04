@@ -21,7 +21,7 @@
       <import plugin="org.eclipse.equinox.bidi" version="0.10.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.filesystem" version="1.4.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.core" version="0.1.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtend.lib" version="2.7.0" match="equivalent"/>
+      <import plugin="org.eclipse.xtend.lib" version="2.6.2" match="equivalent"/>
       <import plugin="io.sarl.lang.core" version="0.1.0" match="greaterOrEqual"/>
       <import plugin="org.junit" version="4.11.0" match="greaterOrEqual"/>
    </requires>
