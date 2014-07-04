@@ -4,9 +4,9 @@
 <product name="SARL Eclipse IDE" uid="io.sarl.lang.product" id="org.eclipse.platform.ide" application="org.eclipse.ui.ide.workbench" version="0.1.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
-      <image path="eclipse_lg.gif"/>
+      <image path="eclipse_lg.png"/>
       <text>
-         SARL agent programming language
+         SARL Agent Programming Language
       </text>
    </aboutInfo>
 
@@ -18,14 +18,18 @@
       </vmArgsMac>
    </launcherArgs>
 
-   <windowImages/>
+   <windowImages i16="../../../icons/sarl_16.png" i32="../../../icons/sarl_32.png" i48="../../../icons/sarl_48.png" i64="../../../icons/sarl_64.png" i128="../../../icons/sarl_128.png" i256="../../../icons/sarl_256.png"/>
 
-   <launcher>
+   <launcher name="eclipse-sarl">
+      <linux icon="../../../icons/sarl.xpm"/>
+      <macosx icon="../../../icons/sarl.icns"/>
       <solaris/>
-      <win useIco="false">
+      <win useIco="true">
+         <ico path="../../../icons/sarl.ico"/>
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
