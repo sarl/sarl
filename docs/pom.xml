@@ -44,7 +44,7 @@
 			<!-- SARL Modules -->
 			<dependency>
 				<groupId>io.sarl.maven</groupId>
-				<artifactId>io.sarl.sdk</artifactId>
+				<artifactId>io.sarl.maven.sdk</artifactId>
 				<version>${project.version}</version>
 				<type>pom</type>
 			</dependency>
