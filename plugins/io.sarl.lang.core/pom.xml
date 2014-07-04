@@ -7,7 +7,7 @@
 	<name>SARL Lang Core (Foundation Classes)</name>
 	<parent>
 		<groupId>io.sarl</groupId>
-		<artifactId>io.sarl.plugins.parent</artifactId>
+		<artifactId>io.sarl.plugins</artifactId>
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
 </project>
