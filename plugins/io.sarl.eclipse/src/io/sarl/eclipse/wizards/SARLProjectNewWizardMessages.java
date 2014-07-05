@@ -17,7 +17,10 @@ public class SARLProjectNewWizardMessages extends NLS {
 	public static String SARLProjectNewWizard_WIZARD_NAME;
 	/**
 	 */
-	public static String SARLProjectNewWizard_WIZARD_PAGE_DESCRIPTION;
+	public static String SARLProjectNewWizard_WIZARD_PAGE_1_DESCRIPTION;
+	/**
+	 */
+	public static String SARLProjectNewWizard_WIZARD_PAGE_2_DESCRIPTION;
 	/**
 	 */
 	public static String SARLProjectNewWizard_WIZARD_PAGE_NAME;

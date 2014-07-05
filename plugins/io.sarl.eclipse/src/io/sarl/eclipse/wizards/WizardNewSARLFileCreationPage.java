@@ -3,6 +3,8 @@
  */
 package io.sarl.eclipse.wizards;
 
+import io.sarl.eclipse.images.EclipseSARLImages;
+
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
@@ -21,7 +23,6 @@ public class WizardNewSARLFileCreationPage extends WizardNewFileCreationPage {
 	private static final String PAGE_DESCRIPTION = "Create a SARL File"; //$NON-NLS-1$
 	private static final String SARL_FILE_EXTENSION = "sarl"; //$NON-NLS-1$
 	
-	
 	/**
 	 * 
 	 * @param selection
@@ -32,6 +33,8 @@ public class WizardNewSARLFileCreationPage extends WizardNewFileCreationPage {
         setTitle(PAGE_TITLE);
         setDescription(PAGE_DESCRIPTION);
         setFileExtension(SARL_FILE_EXTENSION);
+        setImageDescriptor(EclipseSARLImages.getImageDescriptor(
+        		EclipseSARLImages.NEW_FILE_WIZARD_DIALOG_IMAGE));
     }
  
    /* @Override

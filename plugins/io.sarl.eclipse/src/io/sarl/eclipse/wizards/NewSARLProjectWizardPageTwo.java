@@ -3,6 +3,8 @@
  */
 package io.sarl.eclipse.wizards;
 
+import io.sarl.eclipse.images.EclipseSARLImages;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -94,6 +96,11 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 		this.fDotProjectBackup = null;
 		this.fDotClasspathBackup = null;
 		this.fIsAutobuild = null;
+
+		setTitle(SARLProjectNewWizardMessages.SARLProjectNewWizard_WIZARD_PAGE_NAME);
+		setDescription(SARLProjectNewWizardMessages.SARLProjectNewWizard_WIZARD_PAGE_2_DESCRIPTION);
+		setImageDescriptor(EclipseSARLImages.getImageDescriptor(
+				EclipseSARLImages.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
 
 	/*

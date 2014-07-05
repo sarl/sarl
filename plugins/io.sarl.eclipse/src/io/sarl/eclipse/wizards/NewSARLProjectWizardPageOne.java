@@ -1,5 +1,7 @@
 package io.sarl.eclipse.wizards;
 
+import io.sarl.eclipse.images.EclipseSARLImages;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -1045,8 +1047,6 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 	public NewSARLProjectWizardPageOne() {
 		super(PAGE_NAME);
 		setPageComplete(false);
-		setTitle(NewWizardMessages.NewJavaProjectWizardPageOne_page_title);
-		setDescription(NewWizardMessages.NewJavaProjectWizardPageOne_page_description);
 
 		this.fNameGroup = new NameGroup();
 		this.fLocationGroup = new LocationGroup();
@@ -1075,6 +1075,11 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 		setWorkingSets(new IWorkingSet[0]);
 
 		initializeDefaultVM();
+
+		setTitle(SARLProjectNewWizardMessages.SARLProjectNewWizard_WIZARD_PAGE_NAME);
+		setDescription(SARLProjectNewWizardMessages.SARLProjectNewWizard_WIZARD_PAGE_1_DESCRIPTION);
+		setImageDescriptor(EclipseSARLImages.getImageDescriptor(
+				EclipseSARLImages.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
 
 	/**

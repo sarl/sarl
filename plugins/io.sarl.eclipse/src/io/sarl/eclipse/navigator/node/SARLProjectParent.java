@@ -11,7 +11,8 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * Provides the project parent of a SARL custom project to enable a custom view in {@link SARLProjectNavigator}
+ * Provides the project parent of a SARL custom project to enable a custom 
+ * view in {@link SARLProjectNavigator}
  * 
  * @author $Author: ngaud$
  * @version $FullVersion$

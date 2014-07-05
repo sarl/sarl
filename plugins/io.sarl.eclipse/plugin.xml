@@ -7,36 +7,24 @@
 			id="io.sarl.eclipse.category.wizards"
 			name="%category.name">
 		</category>
-		<wizard
-        category="io.sarl.eclipse.category.wizards"
-        class="io.sarl.eclipse.wizards.SARLProjectNewWizard"
-        finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
-        icon="icons/sarl-project-logo-16.png"
-        id="io.sarl.eclipse.wizard.new.sarl"
-        name="%wizard.name"
-        preferredPerspectives="org.eclipse.jdt.ui.JavaPerspective"
-        project="false">
-		</wizard>
-		<!--
-		<wizard
-        category="io.sarl.eclipse.category.wizards"
-        class="io.sarl.eclipse.wizards.SARLProjectNewWizard"
-        finalPerspective="io.sarl.eclipse.perspective"
-        icon="icons/sarl-project-logo-16.png"
-        id="io.sarl.eclipse.wizard.new.sarl"
-        name="%wizard.name"
-        preferredPerspectives="io.sarl.eclipse.perspective, org.eclipse.jdt.ui.JavaPerspective"
-        project="false">
-		</wizard>-->
-  <wizard
-        category="io.sarl.eclipse.category.wizards"
-        class="io.sarl.eclipse.wizards.SARLFileNewWizard"
-        descriptionImage="icons/sarl-file-logo-32.png"
-        finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
-        icon="icons/sarl-file-logo-16.png"
-        id="io.sarl.eclipse.wizard.file.sarl"
-        name="%wizard.name.0">
-  </wizard>
+		  <wizard
+		        category="io.sarl.eclipse.category.wizards"
+		        class="io.sarl.eclipse.wizards.SARLProjectNewWizard"
+		        finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
+		        icon="icons/sarl_new_project_16.png"
+		        id="io.sarl.eclipse.wizard.new.sarl"
+		        name="%wizard.name"
+		        preferredPerspectives="org.eclipse.jdt.ui.JavaPerspective"
+		        project="true">
+		  </wizard>
+		  <wizard 
+		        category="io.sarl.eclipse.category.wizards"
+		        class="io.sarl.eclipse.wizards.SARLFileNewWizard"
+		        finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
+		        icon="icons/sarl_new_file_16.png"
+		        id="io.sarl.eclipse.wizard.file.sarl"
+		        name="%wizard.name.0">
+		  </wizard>
 	</extension>
 	
 	<extension
@@ -52,7 +40,7 @@
   <extension
         point="org.eclipse.ui.ide.projectNatureImages">
      <image
-           icon="icons/sarl-project-nature-16.png"
+           icon="icons/sarl_project_nature_16.png"
            id="io.sarl.eclipse.natures.SARLProjectNatureImage"
            natureId="io.sarl.eclipse.SARLProjectNature">
      </image>

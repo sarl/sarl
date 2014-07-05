@@ -41,9 +41,6 @@ public class SARLFileNewWizard extends Wizard implements INewWizard {
 	    addPage(this.pageOne);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
-	 */
 	@Override
 	public boolean performFinish() {
 		boolean result = false;
