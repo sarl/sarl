@@ -6,13 +6,14 @@
     <extension
             point="org.eclipse.ui.editors">
         <editor
-            class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
-            contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
-            default="true"
-            extensions="sarl"
-            id="io.sarl.lang.SARL"
-            matchingStrategy="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.editor.JavaEditorInputMatcher"
-            name="%editor.name">
+              class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
+              contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+              default="true"
+              extensions="sarl"
+              icon="icons/sarl-file.png"
+              id="io.sarl.lang.SARL"
+              matchingStrategy="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.editor.JavaEditorInputMatcher"
+              name="%editor.name">
         </editor>
     </extension>
     <extension
