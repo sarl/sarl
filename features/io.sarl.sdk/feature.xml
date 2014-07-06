@@ -2,7 +2,8 @@
 <feature
       id="io.sarl.sdk"
       label="SARL Development Kit"
-      version="0.1.0.qualifier">
+      version="0.1.0.qualifier"
+      plugin="io.sarl.eclipse">
 
    <description url="http://www.sarl.io/about/">
       Provide the Standard SARL Kit (SSK - or SARL SDK) and the development tools for the Eclipse IDE.
