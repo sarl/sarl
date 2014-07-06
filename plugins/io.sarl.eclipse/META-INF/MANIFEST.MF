@@ -19,7 +19,10 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.jdt.launching;bundle-version="3.7.0",
  org.eclipse.equinox.bidi;bundle-version="0.10.0",
  org.eclipse.core.filesystem;bundle-version="1.4.0",
- io.sarl.core;bundle-version="0.1.0"
+ io.sarl.core;bundle-version="0.1.0",
+ io.sarl.lang.ui;bundle-version="0.1.0",
+ org.eclipse.xtext.ui;bundle-version="[2.6.2,2.7.0)",
+ org.eclipse.xtext.builder;bundle-version="[2.6.2,2.7.0)"
 Export-Package: io.sarl.eclipse.images,
  io.sarl.eclipse.natures,
  io.sarl.eclipse.perspectives,

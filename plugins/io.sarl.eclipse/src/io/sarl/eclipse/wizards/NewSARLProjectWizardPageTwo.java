@@ -4,6 +4,7 @@
 package io.sarl.eclipse.wizards;
 
 import io.sarl.eclipse.images.EclipseSARLImages;
+import io.sarl.lang.ui.internal.SARLActivator;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -54,7 +55,15 @@ import org.eclipse.jdt.ui.wizards.JavaCapabilityConfigurationPage;
 import org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageTwo;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.actions.WorkspaceModifyDelegatingOperation;
+import org.eclipse.xtext.builder.EclipseOutputConfigurationProvider;
+import org.eclipse.xtext.builder.preferences.BuilderPreferenceAccess;
+import org.eclipse.xtext.generator.OutputConfiguration;
+import org.eclipse.xtext.ui.editor.preferences.PreferenceStoreAccessImpl;
+import org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock;
+
+import com.google.inject.Injector;
 
 /**
  * The second page of the SARL new project wizard.
@@ -468,6 +477,24 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 			}
 		}
 	}
+	
+	private String findGenerationSourcePath() {
+		IPath projectPath = this.fCurrProject.getFullPath();
+		IPath p;
+		String s;
+		for(IClasspathEntry entry : getRawClassPath()) {
+			p = entry.getPath();
+			p = p.removeFirstSegments(p.matchingFirstSegments(projectPath));
+			s = p.toOSString();
+			if (s.endsWith(NewSARLProjectWizardPageOne.DEFAULT_GENERATED_SOURCE_FOLDER)) {
+				return s;
+			}
+			if (s.contains("src-gen") || s.contains("generated")) { //$NON-NLS-1$ //$NON-NLS-2$
+				return s;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Called from the wizard on finish.
@@ -482,6 +509,29 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 			if (this.fCurrProject == null) {
 				updateProject(new SubProgressMonitor(monitor, 1));
 			}
+
+			String generationFolder = findGenerationSourcePath();
+			if (generationFolder != null) {
+				
+				// Retreive the preference page for the project
+				Injector injector = SARLActivator.getInstance().getInjector(SARLActivator.IO_SARL_LANG_SARL);
+
+				PreferenceStoreAccessImpl preferenceStoreAccessImpl = injector.getInstance(PreferenceStoreAccessImpl.class);
+				IPreferenceStore preferenceStore = preferenceStoreAccessImpl.getWritablePreferenceStore(this.fCurrProject);
+
+				// Force to use a specific configuration.
+				preferenceStore.setValue(OptionsConfigurationBlock.IS_PROJECT_SPECIFIC, true);				
+
+				// Initialize the project configurations
+				EclipseOutputConfigurationProvider configurationProvider = injector.getInstance(EclipseOutputConfigurationProvider.class);
+				for (OutputConfiguration projectConfiguration : configurationProvider.getOutputConfigurations(this.fCurrProject)) {
+					String directoryKey = BuilderPreferenceAccess.getKey(
+							projectConfiguration,
+							EclipseOutputConfigurationProvider.OUTPUT_DIRECTORY);
+					preferenceStore.putValue(directoryKey, generationFolder);
+				}
+			}
+
 			String newProjectCompliance = this.fKeepContent ? null : this.fFirstPage.getCompilerCompliance();
 			configureJavaProject(newProjectCompliance, new SubProgressMonitor(monitor, 2));
 

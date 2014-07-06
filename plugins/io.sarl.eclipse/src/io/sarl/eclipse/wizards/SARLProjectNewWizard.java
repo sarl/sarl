@@ -85,39 +85,26 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 		this.fSecondPage = pageTwo;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.Wizard#addPages()
-	 */
 	@Override
 	public void addPages() {
-		if (this.fFirstPage == null)
+		if (this.fFirstPage == null) {
 			this.fFirstPage = new NewSARLProjectWizardPageOne();
+		}
 		addPage(this.fFirstPage);
 
-		if (this.fSecondPage == null)
+		if (this.fSecondPage == null) {
 			this.fSecondPage = new NewSARLProjectWizardPageTwo(this.fFirstPage);
+		}
 		addPage(this.fSecondPage);
 
 		this.fFirstPage.init(getSelection(), getActivePart());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jdt.internal.ui.wizards.NewElementWizard#finishPage(org.eclipse.core.runtime.IProgressMonitor)
-	 */
 	@Override
 	protected void finishPage(IProgressMonitor monitor) throws InterruptedException, CoreException {
 		this.fSecondPage.performFinish(monitor); // use the full progress monitor
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#performFinish()
-	 */
 	@Override
 	public boolean performFinish() {
 		boolean res = super.performFinish();
