@@ -20,6 +20,8 @@
 
    <windowImages i16="../../../icons/sarl_16.png" i32="../../../icons/sarl_32.png" i48="../../../icons/sarl_48.png" i64="../../../icons/sarl_64.png" i128="../../../icons/sarl_128.png" i256="../../../icons/sarl_256.png"/>
 
+   <splash
+      location="io.sarl.eclipse" />
    <launcher name="eclipse-sarl">
       <linux icon="../../../icons/sarl.xpm"/>
       <macosx icon="../../../icons/sarl.icns"/>
