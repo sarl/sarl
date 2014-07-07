@@ -36,7 +36,7 @@ import org.jnario.runner.CreateWith
  *  * the definition of a _pro-active_ behavior: waiting for partners.
  *
  * The source code related to this tutorial may be found
- * in the [SARL demos](http://www.github/sarl/sarl-demos).
+ * in the [SARL demos](https://github.com/sarl/sarl-demos/tree/master/src/main/sarl/io/sarl/docs/tutorials/pingpong).
  */
 @CreateWith(SARLSpecCreator)
 describe "Agent Communication: the Ping Pong Agents"{
@@ -172,7 +172,7 @@ describe "Agent Communication: the Ping Pong Agents"{
 			 * is replying with a `Pong` message.
 			 * 
 			 * First, emitting an event in the default space
-			 * must be done with a builtin capacity:
+			 * must be done with a built-in capacity:
 			 * `DefaultContextInteractions`. This capacity
 			 * provides a collection of functions that 
 			 * enables the agent to interect with the 
@@ -182,7 +182,7 @@ describe "Agent Communication: the Ping Pong Agents"{
 			 * declare it with the `uses` keyword.
 			 * This keyword permits to the agent to directly
 			 * call the functions of the capacity as if
-			 * they are defined as actions in the agent.
+			 * they were defined as actions in the agent.
 			 * 
 			 * The `DefaultContextInteractions` capacity
 			 * provides the function `emit(Event)` for
@@ -337,7 +337,7 @@ describe "Agent Communication: the Ping Pong Agents"{
 			 * This new `Ping` event has an index greater
 			 * than the one of the `Pong` event.
 			 * 
-			 * The reception of the `Ping` event is
+			 * The receiving of the `Ping` event is
 			 * restricted to the sender of the
 			 * `Pong` event.
 			 * 
@@ -504,25 +504,57 @@ describe "Agent Communication: the Ping Pong Agents"{
 		 * In the rest of this section, we discuss the use
 		 * of the [Janus runtime environment](http://www.janusproject.io)
 		 * for running the agents.
+		 *
+		 *
+		 * The Janus platform is designed to launch a single agent at start-up.
+		 * Then, this launched agent must spawn the other agents in the system.
 		 * 
-		 * Two methods may be used for launching the agents: <ol>
-		 * <li>Execute each agent in a single instance of Janus.<br/>
-		 *  On the command line, you must launch Janus with:
-		 * 
-		 *     java -cp app.jar io.janusproject.Boot io.sarl.docs.tutorials.pingpong.PingAgent
-		 * 
-		 * and:
-		 * 
-		 *     java -cp app.jar io.janusproject.Boot io.sarl.docs.tutorials.pingpong.PongAgent
-		 * 
-		 *  The file `app.jar` contains the compiled classes of the tutorial,
-		 *  the Janus platform, and the SARL libraries.</li>
-		 * <li>Define a specific agent that will launch the two other agents.
-		 *     This approach is detailed below.</li>
-		 * </ol>
+		 * <span class="label label-warning">Important</span> In this section,
+		 * we explain how to launch the agents from the command line interface.
+		 * For launching the agents from the Eclipse IDE, please read
+		 * ["Run SARL Agent in the Eclipse IDE"](../gettingstarted/RunSARLAgentEclipse.spec).
 		 */
 		context "Launching the agents" {
 			
+			/* The principle is to run each agent is one instance of the 
+			 * Janus platform.
+			 *
+			 * On the command line, you must launch Janus with:
+			 * 
+			 *     java -cp app.jar io.janusproject.Boot io.sarl.docs.tutorials.pingpong.PingAgent
+			 * 
+			 * and:
+			 * 
+			 *     java -cp app.jar io.janusproject.Boot io.sarl.docs.tutorials.pingpong.PongAgent
+			 * 
+			 *  The file `app.jar` contains the compiled classes of the tutorial,
+			 *  the Janus platform, and the SARL libraries. The classname `io.janusproject.Boot`
+			 *  corresponds to the bootstrap of the Janus platform. The first parameter after
+			 *  this bootstrap is the qualified name of the agent to launch.
+			 *  
+			 * @filter(.*)
+			 */
+			fact "Method 1: Execute each agent their own instance of Janus" {
+				true
+			}
+
+			/* The principle is to launch a single instance of Janus, and run all
+			 * the agents inside.
+			 *
+			 * Because of the design of the Janus platform, we must define an
+			 * agent that will launch the other agents. This agent is named
+			 * `BootAgent`. It is defined below.
+			 *
+			 * On the command line, you must launch Janus with:
+			 * 
+			 *     java -cp app.jar io.janusproject.Boot io.sarl.docs.tutorials.pingpong.BootAgent
+			 *
+			 * @filter(.*)
+			 */
+			fact "Method 2: Execute all the agents in a single instance of Janus" {
+				true
+			}
+
 			/* The boot agent uses the `DefaultContextInteractions`
 			 * capacity for launching agents in the default context.
 			 * This capacity provides the function `spawn(Class<? extends Agent>)`
