@@ -26,5 +26,7 @@ Require-Bundle: org.eclipse.core.resources,
 Export-Package: io.sarl.eclipse.images,
  io.sarl.eclipse.natures,
  io.sarl.eclipse.perspectives,
- io.sarl.eclipse.wizards
+ io.sarl.eclipse.wizards.newfile,
+ io.sarl.eclipse.wizards.newproject,
+ io.sarl.eclipse.navigator
 
