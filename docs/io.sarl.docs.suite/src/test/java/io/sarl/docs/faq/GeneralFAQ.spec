@@ -184,7 +184,7 @@ describe "Frequently Asked Questions" {
 		context "Contribute to SARL" {
 
 			/* The sources of SARL are available on
-			 * [Github](http://www.github.org/sarl/sarl).
+			 * [Github](https://www.github.org/sarl/sarl).
 			 * Details for getting the source code may be found on the
 			 * [download page](/download/). 
 			 * 
@@ -194,9 +194,9 @@ describe "Frequently Asked Questions" {
 				true
 			}
 			
-			/* SARL Core Developers use [Github](http://www.github.org/sarl/sarl)
+			/* SARL Core Developers use [Github](https://www.github.org/sarl/sarl)
 			 * to manage bug tracking and project workflow. 
-			 * The issues are listed on [Github](http://www.github.org/sarl/sarl/issues). 
+			 * The issues are listed on [Github](https://www.github.org/sarl/sarl/issues). 
 			 * 
 			 * @filter(.*) 
 			 */
@@ -204,7 +204,7 @@ describe "Frequently Asked Questions" {
 				true
 			}
 
-			/* SARL developers use [Github](http://www.github.org/sarl/sarl)
+			/* SARL developers use [Github](https://www.github.org/sarl/sarl)
 			 * to manage bug tracking and project workflow. To report your 
 			 * issue, you may submit a new issue through this platform.
 			 * 
