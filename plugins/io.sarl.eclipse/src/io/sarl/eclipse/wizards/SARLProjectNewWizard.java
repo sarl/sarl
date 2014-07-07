@@ -3,6 +3,8 @@
  */
 package io.sarl.eclipse.wizards;
 
+import io.sarl.eclipse.images.EclipseSARLImages;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +23,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
-import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart;
 import org.eclipse.jdt.internal.ui.util.ExceptionHandler;
 import org.eclipse.jdt.internal.ui.wizards.JavaProjectWizard;
@@ -42,6 +43,7 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
  * Most part of the code of this class comes from {@link JavaProjectWizard}
  * 
  * @author $Author: ngaud$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -77,7 +79,8 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 	 * @param pageTwo
 	 */
 	public SARLProjectNewWizard(NewSARLProjectWizardPageOne pageOne, NewSARLProjectWizardPageTwo pageTwo) {
-		setDefaultPageImageDescriptor(JavaPluginImages.DESC_WIZBAN_NEWJPRJ);
+		setDefaultPageImageDescriptor(EclipseSARLImages.getImageDescriptor(
+				EclipseSARLImages.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());
 		setWindowTitle(WIZARD_NAME);
 
