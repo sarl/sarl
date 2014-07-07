@@ -70,6 +70,7 @@ import com.google.inject.Injector;
  * Most part of the code of this class is copy/paste from {@link NewJavaProjectWizardPageTwo}
  * 
  * @author $Author: ngaud$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -112,21 +113,11 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 				EclipseSARLImages.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jdt.ui.wizards.JavaCapabilityConfigurationPage#useNewSourcePage()
-	 */
 	@Override
 	protected final boolean useNewSourcePage() {
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.dialogs.IDialogPage#setVisible(boolean)
-	 */
 	@Override
 	public void setVisible(boolean visible) {
 		boolean isShownFirstTime = visible && this.fCurrProject == null;
@@ -261,7 +252,10 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 	}
 
 	/**
-	 * Evaluates the new build path and output folder according to the settings on the first page. The resulting build path is set by calling {@link #init(IJavaProject, IPath, IClasspathEntry[], boolean)}. Clients can override this method.
+	 * Evaluates the new build path and output folder according to the settings on the first page. 
+	 * The resulting build path is set by calling 
+	 * {@link #init(IJavaProject, IPath, IClasspathEntry[], boolean)}. 
+	 * Clients can override this method.
 	 * 
 	 * @param javaProject the new project which is already created when this method is called.
 	 * @param monitor the progress monitor
@@ -625,4 +619,5 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 			removeProvisonalProject();
 		}
 	}
+	
 }

@@ -4,8 +4,8 @@ import io.sarl.eclipse.images.EclipseSARLImages;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,13 +22,13 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.bidi.StructuredTextTypeHandlerFactory;
 import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.eclipse.jdt.internal.corext.util.Messages;
@@ -98,6 +98,7 @@ import org.osgi.framework.Bundle;
  * TODO and must add the selection of the JVM and proposes Janus as default Agent JVM.
  * 
  * @author $Author: ngaud$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -1254,138 +1255,87 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 	}
 
 	/**
-	 * Returns the default class path entries to be added on new projects. By default this is the JRE container as selected by the user.
+	 * Returns the default class path entries to be added on new projects.
+	 * By default this is the JRE container as selected by the user.
 	 * 
 	 * @return returns the default class path entries
 	 */
 	public IClasspathEntry[] getDefaultClasspathEntries() {
+		List<IClasspathEntry> classpathEntries = new ArrayList<>(SARL_REFERENCE_LIBRARIES.length+1);
 		
-		Bundle xBaseBundle = Platform.getBundle("org.eclipse.xtext.xbase.lib"); //$NON-NLS-1$
-		Bundle xTendBundle = Platform.getBundle("org.eclipse.xtend.lib"); //$NON-NLS-1$
-		Bundle sarlCoreBundle = Platform.getBundle("io.sarl.core"); //$NON-NLS-1$
-		Bundle sarlLangCoreBundle = Platform.getBundle("io.sarl.lang.core"); //$NON-NLS-1$
-		Bundle sarlUtilBundle = Platform.getBundle("io.sarl.util"); //$NON-NLS-1$
-
-		
-		URL xBaseBundleInstallLocation = null;
-		URL xTendBundleInstallLocation = null;
-		URL sarlCoreBundleInstallLocation = null;
-		URL sarlLangCoreBundleInstallLocation = null;
-		URL sarlUtilBundleInstallLocation = null;
-		
-		try {
-			xBaseBundleInstallLocation = new URL(xBaseBundle.getLocation());
-			xTendBundleInstallLocation = new URL(xTendBundle.getLocation());
-			sarlCoreBundleInstallLocation = new URL(sarlCoreBundle.getLocation());
-			sarlLangCoreBundleInstallLocation = new URL(sarlLangCoreBundle.getLocation());
-			sarlUtilBundleInstallLocation = new URL(sarlUtilBundle.getLocation());
-		} catch (MalformedURLException e1) {
-			e1.printStackTrace();
-		}
-		//FIXME add everywhere a check to null path for every single entry
-		URL xBaseBundleInstallLocationLocal = null;
-		URL xTendBundleInstallLocationLocal = null;
-		URL sarlCoreBundleInstallLocationLocal = null;
-		URL sarlLangCoreBundleInstallLocationLocal = null;
-		URL sarlUtilBundleInstallLocationLocal = null;
-		try {
-			xBaseBundleInstallLocationLocal = FileLocator.toFileURL(xBaseBundleInstallLocation);
-			xTendBundleInstallLocationLocal = FileLocator.toFileURL(xTendBundleInstallLocation);
-			sarlCoreBundleInstallLocationLocal = FileLocator.toFileURL(sarlCoreBundleInstallLocation);
-			sarlLangCoreBundleInstallLocationLocal = FileLocator.toFileURL(sarlLangCoreBundleInstallLocation);
-			sarlUtilBundleInstallLocationLocal = FileLocator.toFileURL(sarlUtilBundleInstallLocation);
-		} catch (IOException e) {
-			throw new Error(e);
-		}
-		String xBaseBundleFullPath = null;
-		if (xBaseBundleInstallLocationLocal.getPath().startsWith("file:")) { //$NON-NLS-1$
-			try {
-				xBaseBundleFullPath = new File(new URL(xBaseBundleInstallLocationLocal.getPath()).getPath()).getAbsolutePath();
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}
-		} else {
-			xBaseBundleFullPath = new File(xBaseBundleInstallLocationLocal.getPath()).getAbsolutePath();
-		}
-		
-		String xTendBundleFullPath = null;
-		if (xTendBundleInstallLocationLocal.getPath().startsWith("file:")) { //$NON-NLS-1$
-			try {
-				xTendBundleFullPath = new File(new URL(xTendBundleInstallLocationLocal.getPath()).getPath()).getAbsolutePath();
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}
-		} else {
-			xTendBundleFullPath = new File(xTendBundleInstallLocationLocal.getPath()).getAbsolutePath();
-		}
-		
-		String sarlCoreBundleFullPath = null;
-		if (sarlCoreBundleInstallLocationLocal.getPath().startsWith("file:")) { //$NON-NLS-1$
-			try {
-				sarlCoreBundleFullPath = new File(new URL(sarlCoreBundleInstallLocationLocal.getPath()).getPath()).getAbsolutePath();
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}
-		} else {
-			sarlCoreBundleFullPath = new File(sarlCoreBundleInstallLocationLocal.getPath()).getAbsolutePath();
-		}
-		
-		String sarlLangCoreBundleFullPath = null;
-		if (sarlLangCoreBundleInstallLocationLocal.getPath().startsWith("file:")) { //$NON-NLS-1$
-			try {
-				sarlLangCoreBundleFullPath = new File(new URL(sarlLangCoreBundleInstallLocationLocal.getPath()).getPath()).getAbsolutePath();
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}
-		} else {
-			sarlLangCoreBundleFullPath = new File(sarlLangCoreBundleInstallLocationLocal.getPath()).getAbsolutePath();
-		}
-		
-		String sarlUtilBundleFullPath = null;
-		if (sarlUtilBundleInstallLocationLocal.getPath().startsWith("file:")) { //$NON-NLS-1$
-			try {
-				sarlUtilBundleFullPath = new File(new URL(sarlUtilBundleInstallLocationLocal.getPath()).getPath()).getAbsolutePath();
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}
-		} else {
-			sarlUtilBundleFullPath = new File(sarlUtilBundleInstallLocationLocal.getPath()).getAbsolutePath();
-		}	
-		
-		
-		
-		IClasspathEntry xBase = JavaCore.newLibraryEntry(Path.fromOSString(xBaseBundleFullPath),null,null);
-		IClasspathEntry xTend = JavaCore.newLibraryEntry(Path.fromOSString(xTendBundleFullPath),null,null);		
-		IClasspathEntry sarlLang = JavaCore.newLibraryEntry(Path.fromOSString(sarlCoreBundleFullPath),null,null);
-		IClasspathEntry sarlLangCore = JavaCore.newLibraryEntry(Path.fromOSString(sarlLangCoreBundleFullPath),null,null);
-		IClasspathEntry sarlUtil = JavaCore.newLibraryEntry(Path.fromOSString(sarlUtilBundleFullPath),null,null);
-		
-		
+		// Create the "Referenced Libraries" section 
 		IPath newPath = this.fJREGroup.getJREContainerPath();
 		if (newPath != null) {
-			return new IClasspathEntry[] { JavaCore.newContainerEntry(newPath), xBase,xTend,sarlLang,sarlLangCore,sarlUtil};
+			classpathEntries.add(JavaCore.newContainerEntry(newPath));
 		}
-		IClasspathEntry[] entries = PreferenceConstants.getDefaultJRELibrary();
-		int oldLength = entries.length;
-		entries = Arrays.copyOf(entries, oldLength+3);
-		entries[oldLength] = xBase;
-		entries[oldLength+1] = xTend;
-		entries[oldLength+2] = sarlLang;
-		entries[oldLength+3] = sarlLangCore;
-		entries[oldLength+4] = sarlUtil;
-		
-		return entries;
-		
-		
-		
-		/*
-		IPath newPath = fJREGroup.getJREContainerPath();
-		if (newPath != null) {
-			return new IClasspathEntry[] { JavaCore.newContainerEntry(newPath) };
+		else {
+			IClasspathEntry[] entries = PreferenceConstants.getDefaultJRELibrary();
+			classpathEntries.addAll(Arrays.asList(entries));
 		}
-		return PreferenceConstants.getDefaultJRELibrary();
-		*/
+
+		// Build the reference library list
+		for(String referenceLibrary : SARL_REFERENCE_LIBRARIES) {
+			// Retreive the bundle
+			Bundle bundle = Platform.getBundle(referenceLibrary);
+			if (bundle == null) {
+				throw new RuntimeException("Reference library not found: "+referenceLibrary); //$NON-NLS-1$
+			}
+			
+			// Compute the bundle's location.
+			IPath bundlePath;
+			try {
+				URL bundleLocation = new URL(bundle.getLocation());
+				URI bundleFile = new URI(bundleLocation.getFile());
+				bundlePath = URIUtil.toPath(bundleFile);
+			} catch (URISyntaxException | IOException e1) {
+				throw new RuntimeException(e1);
+			}
+			
+			// Determine the source path
+			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(bundlePath.lastSegment());
+			IPath newBundlePath = null;
+			try {
+				if (project != null && project.hasNature(JavaCore.NATURE_ID)) {
+					IJavaProject javaProject = JavaCore.create(project);
+					newBundlePath = javaProject.getOutputLocation();
+				}
+			}
+			catch(Exception e) {
+				// Ignore the exceptions since they are not useful (hopefully)
+			}
+			
+			if (newBundlePath != null) {
+				bundlePath = newBundlePath;
+			}
+			else {
+				// I do not like to hard code the test against the classes' folders. But
+				// I do not find any other solution for now.
+				File localFile = bundlePath.toFile();
+				File binFolder = new File(new File(localFile, "target"), "classes"); //$NON-NLS-1$//$NON-NLS-2$
+				if (binFolder.exists()) {
+					bundlePath = bundlePath.append("target").append("classes"); //$NON-NLS-1$//$NON-NLS-2$
+				}
+				else {
+					binFolder = new File(localFile, "bin"); //$NON-NLS-1$
+					if (binFolder.exists()) {
+						bundlePath = bundlePath.append("bin"); //$NON-NLS-1$
+					}
+				}
+			}
+			
+			// Create the classpath entry
+			IClasspathEntry classPathEntry = JavaCore.newLibraryEntry(
+					bundlePath,
+					null,
+					null);
+			classpathEntries.add(classPathEntry);
+		}
 		
+		// Convert 
+		IClasspathEntry[] array = new IClasspathEntry[classpathEntries.size()];
+		classpathEntries.toArray(array);
+		classpathEntries.clear();
+		return array;
 	}
 
 	private static final String SOURCE_FOLDER_NAME = "src"; //$NON-NLS-1$
@@ -1406,9 +1356,20 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 			SOURCE_FOLDER_NAME + File.separator + MAIN_FOLDER_NAME + File.separator + JAVA_FOLDER_NAME,// src/main/java
 			SOURCE_FOLDER_NAME + File.separator + MAIN_FOLDER_NAME + File.separator + SARL_FOLDER_NAME,// src/main/sarl
 			SOURCE_FOLDER_NAME + File.separator + MAIN_FOLDER_NAME + File.separator + GENERATED_SOURCE_FOLDER_NAME,// src/main/generated-sources
-			DEFAULT_GENERATED_SOURCE_FOLDER };
+			DEFAULT_GENERATED_SOURCE_FOLDER,
+	};
 			
-
+	/** Names of the reference libraries that are required to compile the SARL
+	 * code and the generated Java code.
+	 */
+	public static final String[] SARL_REFERENCE_LIBRARIES = {
+		"org.eclipse.xtext.xbase.lib", //$NON-NLS-1$
+		"org.eclipse.xtend.lib", //$NON-NLS-1$
+		"io.sarl.core", //$NON-NLS-1$
+		"io.sarl.lang.core", //$NON-NLS-1$
+		"io.sarl.util", //$NON-NLS-1$
+	};
+	
 	/**
 	 * Returns the source class path entries to be added on new projects. The underlying resources may not exist. All entries that are returned must be of kind {@link IClasspathEntry#CPE_SOURCE}.
 	 * 

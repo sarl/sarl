@@ -15,6 +15,7 @@ import org.eclipse.ui.ide.IDE;
  * SARL new file wizard.
  * 
  * @author $Author: ngaud$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
