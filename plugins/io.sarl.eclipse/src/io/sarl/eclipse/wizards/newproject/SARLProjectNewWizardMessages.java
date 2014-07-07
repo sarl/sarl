@@ -9,8 +9,8 @@ import org.eclipse.osgi.util.NLS;
  * @author ngaud
  *
  */
-public class SARLProjectNewWizardMessages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.eclipse.wizards.SARLProjectNewWizard"; //$NON-NLS-1$
+class SARLProjectNewWizardMessages extends NLS {
+	private static final String BUNDLE_NAME = SARLProjectNewWizard.class.getName();
 	
 	/**
 	 */
