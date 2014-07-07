@@ -62,8 +62,8 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		/* For running your agent with the Janus runtime environment,
 		 * you must add the Janus library in the classpath.
 		 *
-		 * First, **you must download** the
-		 * <a href="http://www.janusproject.io/download/">Janus runtime environment **WITH ALL THE DEPENDENCIES**</a>.
+		 * First, **you must download the
+		 * <a href="http://maven.janusproject.io/last-janus-release.jar">Janus runtime environment</a>**.
 		 *
 		 * For adding the downloaded file of Janus, you must **add an external JAR** in
 		 * the *Classpath* tab. After adding the Janus JAR file, you obtain a
