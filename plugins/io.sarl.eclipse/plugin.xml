@@ -9,7 +9,7 @@
 		</category>
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
-		        class="io.sarl.eclipse.wizards.SARLProjectNewWizard"
+		        class="io.sarl.eclipse.wizards.newproject.SARLProjectNewWizard"
 		        finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
 		        icon="icons/sarl_new_project_16.png"
 		        id="io.sarl.eclipse.wizard.new.sarl"
@@ -19,7 +19,7 @@
 		  </wizard>
 		  <wizard 
 		        category="io.sarl.eclipse.category.wizards"
-		        class="io.sarl.eclipse.wizards.SARLFileNewWizard"
+		        class="io.sarl.eclipse.wizards.newfile.SARLFileNewWizard"
 		        finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
 		        icon="icons/sarl_new_file_16.png"
 		        id="io.sarl.eclipse.wizard.file.sarl"

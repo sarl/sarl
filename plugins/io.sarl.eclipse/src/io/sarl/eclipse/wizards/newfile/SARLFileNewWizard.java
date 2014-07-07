@@ -1,7 +1,7 @@
 /**
  * 
  */
-package io.sarl.eclipse.wizards;
+package io.sarl.eclipse.wizards.newfile;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.IStructuredSelection;

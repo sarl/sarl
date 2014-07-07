@@ -1,7 +1,7 @@
 /**
  * 
  */
-package io.sarl.eclipse.wizards;
+package io.sarl.eclipse.wizards.newproject;
 
 import org.eclipse.osgi.util.NLS;
 

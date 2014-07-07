@@ -1,4 +1,4 @@
-package io.sarl.eclipse.wizards;
+package io.sarl.eclipse.wizards.newproject;
 
 import io.sarl.eclipse.images.EclipseSARLImages;
 
