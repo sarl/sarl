@@ -512,11 +512,11 @@ describe "Agent Communication: the Ping Pong Agents"{
 		 * <span class="label label-warning">Important</span> In this section,
 		 * we explain how to launch the agents from the command line interface.
 		 * For launching the agents from the Eclipse IDE, please read
-		 * ["Run SARL Agent in the Eclipse IDE"](../gettingstarted/RunSARLAgentEclipse.spec).
+		 * ["Run SARL Agent in the Eclipse IDE"](../gettingstarted/RunSARLAgentInEclipseIDESpec.html).
 		 */
 		context "Launching the agents" {
 			
-			/* The principle is to run each agent is one instance of the 
+			/* The principle is to run each agent is an instance of the 
 			 * Janus platform.
 			 *
 			 * On the command line, you must launch Janus with:
@@ -534,7 +534,7 @@ describe "Agent Communication: the Ping Pong Agents"{
 			 *  
 			 * @filter(.*)
 			 */
-			fact "Method 1: Execute each agent their own instance of Janus" {
+			fact "Method 1: Execute each agent in their own instance of Janus" {
 				true
 			}
 

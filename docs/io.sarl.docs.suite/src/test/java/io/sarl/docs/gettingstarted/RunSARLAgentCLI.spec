@@ -52,7 +52,7 @@ describe "Run SARL Agent from the Command Line" {
 	 * Indeed, it is mandatory to specify the fully qualified name
 	 * of the agent to launch:
 	 * 
-	 *     java -cp app.jar io.janusproject.Boot myapp.MonAgent
+	 *     java -cp app.jar io.janusproject.Boot myapp.MyAgent
 	 *
 	 * 
 	 * <span class="label label-danger">Important</span> The Janus
@@ -75,7 +75,7 @@ describe "Run SARL Agent from the Command Line" {
 		/* The following example gives the values `FirstParam` and
 		 * `SecondParam` to the launched agent:
 		 * 
-		 *     java -cp app.jar io.janusproject.Boot myapp.MonAgent FirstParam SecondParam
+		 *     java -cp app.jar io.janusproject.Boot myapp.MyAgent FirstParam SecondParam
 		 *
 		 *
 		 * @filter(.*) 

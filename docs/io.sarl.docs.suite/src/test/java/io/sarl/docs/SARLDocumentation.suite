@@ -13,10 +13,7 @@ import io.sarl.docs.tutorials.*
 - "Create First Project"
 - "Agent Definition Introduction"
 - "Run SARL Agent from the Command Line"
-//- "Run SARL Agent from the Eclipse IDE"
-//- "Emit Events in the Default Space"
-//- "Create a Space"
-//- "Spawning agents"
+- "Run SARL Agent in the Eclipse IDE"
 
 ##Frequently Asked Questions  (FAQ)
 
