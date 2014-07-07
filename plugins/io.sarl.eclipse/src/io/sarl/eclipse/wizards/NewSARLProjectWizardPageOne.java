@@ -1263,6 +1263,16 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 	public IClasspathEntry[] getDefaultClasspathEntries() {
 		List<IClasspathEntry> classpathEntries = new ArrayList<>(SARL_REFERENCE_LIBRARIES.length+1);
 		
+		IPath workspaceRoot, platformLocation;
+				
+		try {
+			workspaceRoot = ResourcesPlugin.getWorkspace().getRoot().getLocation();
+			platformLocation = URIUtil.toPath(Platform.getInstallLocation().getURL().toURI());
+		}
+		catch(Exception e) {
+			throw new RuntimeException(e);
+		}
+
 		// Create the "Referenced Libraries" section 
 		IPath newPath = this.fJREGroup.getJREContainerPath();
 		if (newPath != null) {
@@ -1291,13 +1301,30 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 				throw new RuntimeException(e1);
 			}
 			
-			// Determine the source path
+			// Ensure that the bundle path is absolute (mandatory for beeing a classpath entry)
+			if (!bundlePath.isAbsolute()) {
+				IPath newBundlePath = workspaceRoot.append(bundlePath);
+				if (!newBundlePath.toFile().exists()) {
+					newBundlePath = platformLocation.append(bundlePath);
+				}
+				bundlePath = newBundlePath;
+			}
+			assert(bundlePath.isAbsolute()) : "The bundle path is not absolute: "+bundlePath; //$NON-NLS-1$
+			
+			// Determine the path from the output folders of the Java projects in the current workspace.
 			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(bundlePath.lastSegment());
 			IPath newBundlePath = null;
 			try {
 				if (project != null && project.hasNature(JavaCore.NATURE_ID)) {
 					IJavaProject javaProject = JavaCore.create(project);
 					newBundlePath = javaProject.getOutputLocation();
+					if (newBundlePath!=null) {
+						newBundlePath = workspaceRoot.append(newBundlePath);
+						// Test if the bundle path exists
+						if (newBundlePath!=null && !newBundlePath.toFile().exists()) {
+							newBundlePath = null;
+						}
+					}
 				}
 			}
 			catch(Exception e) {
@@ -1305,11 +1332,13 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 			}
 			
 			if (newBundlePath != null) {
+				assert(newBundlePath.isAbsolute()) : "The bundle path is not absolute: "+newBundlePath; //$NON-NLS-1$
 				bundlePath = newBundlePath;
 			}
 			else {
-				// I do not like to hard code the test against the classes' folders. But
-				// I do not find any other solution for now.
+				// Detect the binary folder in the bundle.
+				//
+				// TODO: Replace by a dynamic detection based on Jdt API. 
 				File localFile = bundlePath.toFile();
 				File binFolder = new File(new File(localFile, "target"), "classes"); //$NON-NLS-1$//$NON-NLS-2$
 				if (binFolder.exists()) {
@@ -1321,6 +1350,8 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 						bundlePath = bundlePath.append("bin"); //$NON-NLS-1$
 					}
 				}
+
+				assert(bundlePath.isAbsolute()) : "The bundle path is not absolute: "+bundlePath; //$NON-NLS-1$
 			}
 			
 			// Create the classpath entry
