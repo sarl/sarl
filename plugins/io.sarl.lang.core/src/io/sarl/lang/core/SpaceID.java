@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,31 +24,26 @@ import java.io.Serializable;
 import java.util.UUID;
 
 /**
- * Unique Identifier for a {@link Space}
- * 
- * The {@link SpaceID}
- * 
+ * Unique Identifier for a {@link Space}.
+ *
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+public class SpaceID implements Serializable, Comparable<SpaceID> {
 
-public class SpaceID implements Serializable, Comparable<SpaceID>{
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8764568066583474825L;
-	
+
 	private final UUID id;
 	private final UUID contextID;
 	private final transient Class<? extends SpaceSpecification<?>> spaceSpec;
 
-	/**
-	 * @param contextID
-	 * @param id
-	 * @param spaceSpec
+	/** Constructs a space ID.
+	 *
+	 * @param contextID - the unique ID of the context that contains the space.
+	 * @param id - the unique ID of the space.
+	 * @param spaceSpec - the specification of the space for which the ID must be created.
 	 */
 	public SpaceID(UUID contextID, UUID id, Class<? extends SpaceSpecification<?>> spaceSpec) {
 		this.id = id;
@@ -52,8 +52,8 @@ public class SpaceID implements Serializable, Comparable<SpaceID>{
 	}
 
 	/**
-	 * Returns a Unique Identifier for the space
-	 * 
+	 * Returns a Unique Identifier for the space.
+	 *
 	 * @return this space's UUID
 	 */
 	public UUID getID() {
@@ -62,7 +62,7 @@ public class SpaceID implements Serializable, Comparable<SpaceID>{
 
 	/**
 	 * Return the UUID of the context where the space was created.
-	 * 
+	 *
 	 * @return the context's id
 	 */
 	public UUID getContextID() {
@@ -71,16 +71,13 @@ public class SpaceID implements Serializable, Comparable<SpaceID>{
 
 	/**
 	 * Replies the {@link SpaceSpecification} this space respects.
-	 * 
+	 *
 	 * @return The {@link SpaceSpecification} of this space
 	 */
 	public Class<? extends SpaceSpecification<?>> getSpaceSpecification() {
 		return this.spaceSpec;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public int hashCode() {
 		int result = 1;
@@ -89,37 +86,55 @@ public class SpaceID implements Serializable, Comparable<SpaceID>{
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
+
 		SpaceID other = (SpaceID) obj;
+
+		if (!equalsContext(other)) {
+			return false;
+		}
+
+		return equalsID(other);
+	}
+
+	private boolean equalsContext(SpaceID other) {
 		if (this.contextID == null) {
-			if (other.contextID != null)
+			if (other.contextID != null) {
 				return false;
-		} else if (!this.contextID.equals(other.contextID))
+			}
+		} else if (!this.contextID.equals(other.contextID)) {
 			return false;
-		if (this.id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!this.id.equals(other.id))
-			return false;
+		}
 		return true;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	private boolean equalsID(SpaceID other) {
+		if (this.id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!this.id.equals(other.id)) {
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	public String toString() {
-		return "SpaceID [id=" + this.id + ", contextID=" + this.contextID + ", spaceSpec=" + this.spaceSpec + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		return "SpaceID [id=" + this.id //$NON-NLS-1$
+				+ ", contextID=" + this.contextID //$NON-NLS-1$
+				+ ", spaceSpec=" + this.spaceSpec //$NON-NLS-1$
+				+ "]"; //$NON-NLS-1$
 	}
 
 	@Override

@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +27,7 @@ import java.io.Serializable;
  * specification of some occurrence in a Space that may potentially trigger
  * effects by a listener. Within a Space, the notion of {@link Scope} enables to
  * precisely control/filter the potential recipients of an event.
- * 
+ *
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -31,50 +36,51 @@ import java.io.Serializable;
 public abstract class Event implements Serializable {
 
 	private static final long serialVersionUID = -4314428111329600890L;
-	
+
 	private Address source;
 
-	/**
+	/** Constructs an Event without source.
+	 * The source must be set with {@link #setSource(Address)}
+	 * by the creator of the event, or by the emitting mechanism,
+	 * before sending the event on the event bus.
 	 */
 	public Event() {
 		//
 	}
-	
-	/**
+
+	/** Constructs an Event with a source.
 	 * @param source - source of the event.
 	 */
 	public Event(Address source) {
 		this.source = source;
 	}
-	
-	/** {@inheritDoc}
-	 */
+
 	@Override
 	public boolean equals(Object obj) {
-		if (this==obj) return true;
-		if (obj!=null && getClass().equals(obj.getClass())) {
-			Event e = (Event)obj;
-			return (this.source==null && e.source==null)
-					||(this.source!=null && this.source.equals(e.source));
+		if (this == obj) {
+			return true;
+		}
+		if (obj != null && getClass().equals(obj.getClass())) {
+			Event e = (Event) obj;
+			return (this.source == null && e.source == null)
+					|| (this.source != null && this.source.equals(e.source));
 		}
 		return false;
 	}
-	
-	/** {@inheritDoc}
-	 */
+
 	@Override
 	public int hashCode() {
 		int h = 31 + getClass().hashCode();
-		if (this.source!=null) {
+		if (this.source != null) {
 			h = h * 31 + this.source.hashCode();
 		}
 		return h;
 	}
-	
+
 	/**
 	 * The source of the event.
-	 * 
-	 * @return the source of the event
+	 *
+	 * @return the source of the event.
 	 */
 	public Address getSource() {
 		return this.source;
@@ -82,8 +88,8 @@ public abstract class Event implements Serializable {
 
 	/**
 	 * The address of the source of this event.
-	 * 
-	 * @param source
+	 *
+	 * @param source - the source of the event.
 	 */
 	public void setSource(Address source) {
 		this.source = source;
@@ -91,6 +97,7 @@ public abstract class Event implements Serializable {
 
 	/**
 	 * Returns a String representation of the Event E1 attributes only.
+	 *
 	 * @return the string representation of the attributes of this Event.
 	 */
 	protected String attributesToString() {
@@ -99,9 +106,12 @@ public abstract class Event implements Serializable {
 		result.append(this.source);
 		return result.toString();
 	}
-	
+
 	@Override
 	public String toString() {
-		return getClass().getSimpleName()+" ["+attributesToString()+"]"; //$NON-NLS-1$ //$NON-NLS-2$
+		return getClass().getSimpleName()
+				+ " [" + attributesToString() //$NON-NLS-1$
+				+ "]"; //$NON-NLS-1$
 	}
+
 }

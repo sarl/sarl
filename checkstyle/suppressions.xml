@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+        "-//Puppy Crawl//DTD Suppressions 1.1//EN"
+        "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
+
+<suppressions>
+
+    <suppress checks="DeclarationOrder" files="IssueCodes.java"/>
+
+    <suppress checks="BooleanExpressionComplexity" files="ModelUtil.java"/>
+    <suppress checks="NestedIfDepth" files="ModelUtil.java"/>
+    <suppress checks="MethodLength" files="ModelUtil.java"/>
+    <suppress checks="CyclomaticComplexity" files="ModelUtil.java"/>
+    <suppress checks="NPathComplexity" files="ModelUtil.java"/>
+
+    <suppress checks="MethodName" files="SARLUiModule.java"/>
+
+    <suppress checks="" files="XtextBugFixes438191And438233.java"/>
+
+	<suppress checks="ExecutableStatementCount" files="NewSARLProjectWizardPageOne.java"/>
+	<suppress checks="MagicNumber" files="NewSARLProjectWizardPageOne.java"/>
+	<suppress checks="FileLength" files="NewSARLProjectWizardPageOne.java"/>
+	<suppress checks="ClassDataAbstractionCoupling" files="NewSARLProjectWizardPageOne.java"/>
+
+    <suppress checks="CyclomaticComplexity" files="NewSARLProjectWizardPageTwo.java"/>
+    <suppress checks="NPathComplexity" files="NewSARLProjectWizardPageTwo.java"/>
+	<suppress checks="LineLength" files="NewSARLProjectWizardPageTwo.java"/>
+	
+	<suppress checks="MethodCount" files="SARLParser.java"/>
+
+</suppressions>
+

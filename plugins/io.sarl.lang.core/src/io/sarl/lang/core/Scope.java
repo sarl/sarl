@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,7 +28,7 @@ import java.io.Serializable;
  * <p>
  * A scope is a predicate used to filter the potentially called listeners for a given event.
  * The most basic Scope is represented by a collection of Addresses (Agent, Role, etc.
- * 
+ *
  * @param <T> is the type of objects that should be matched by this scope.
  * @author $Author: srodriguez$
  * @version $FullVersion$
@@ -31,14 +36,13 @@ import java.io.Serializable;
  * @mavenartifactid $ArtifactId$
  */
 public interface Scope<T> extends Serializable {
-	
+
 	/**
 	 * Checks whether the element is included in this scope.
-	 * 
-	 * @param element - must NOT BE NULL
+	 *
+	 * @param element - the element to test. <strong>It must NOT BE NULL</strong>.
 	 * @return true if the element is inside the scope, false otherwise
 	 */
-	public boolean matches(T element);
-	
+	boolean matches(T element);
 
 }

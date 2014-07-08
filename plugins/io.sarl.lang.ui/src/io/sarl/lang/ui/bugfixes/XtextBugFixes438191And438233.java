@@ -1,3 +1,23 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.sarl.lang.ui.bugfixes;
 
 import static com.google.common.collect.Sets.newHashSet;
@@ -87,19 +107,22 @@ public class XtextBugFixes438191And438233 extends ImportingTypesProposalProvider
 				searchAndCreateProposals(scope, proposalFactory, context, typeReference, TypeMatchFilters.and(filter, new ITypesProposalProvider.Filter() {
 					public boolean accept(int modifiers, char[] packageName, char[] simpleTypeName,
 							char[][] enclosingTypeNames, String path) {
-						StringBuilder fqName = new StringBuilder(packageName.length + simpleTypeName.length + 1);
+						StringBuilder fqName = new StringBuilder(
+								packageName.length + simpleTypeName.length + 1);
 						if (packageName.length != 0) {
 							fqName.append(packageName);
 							fqName.append('.');
 						}
-						for(char[] enclosingType: enclosingTypeNames) {
+						for (char[] enclosingType: enclosingTypeNames) {
 							fqName.append(enclosingType);
 							fqName.append('.');
 						}
 						fqName.append(simpleTypeName);
 						String fqNameAsString = fqName.toString();
 						// the dirty state proposals
-						if (!alreadyAccepted.contains(fqName) && !(path.endsWith(".class") || path.endsWith(".java"))) {
+						if (!alreadyAccepted.contains(fqName)
+								&& !(path.endsWith(".class")
+									|| path.endsWith(".java"))) {
 							JvmType type = provider.findTypeByName(fqNameAsString);
 							return superTypeCollector.collect(type).contains(superType);
 						} else {
@@ -117,8 +140,9 @@ public class XtextBugFixes438191And438233 extends ImportingTypesProposalProvider
 
 				}), valueConverter, acceptor);
 			}
-		} catch(JavaModelException ex) {
+		} catch (JavaModelException ex) {
 			// ignore
 		}
 	}
+
 }

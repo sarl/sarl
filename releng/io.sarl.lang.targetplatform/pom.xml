@@ -8,5 +8,5 @@
 	</parent>
 	<artifactId>io.sarl.lang.targetplatform</artifactId>
 	<packaging>eclipse-target-definition</packaging>
-	<name>SARL Lang Target Platform Definition</name>
+	<name>Target Platform Definition</name>
 </project>

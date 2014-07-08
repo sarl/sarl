@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,8 +26,9 @@ import java.util.UUID;
 
 /**
  * Agents in SARL can interact only via Interaction Spaces.
- * A space is the support of the event-driven interaction between agents respecting the rules defined in various Space Specifications.
- * 
+ * A space is the support of the event-driven interaction between agents
+ * respecting the rules defined in various Space Specifications.
+ *
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -31,17 +37,18 @@ import java.util.UUID;
 public interface Space {
 
 	/**
-	 * Replies the Identification of this Interaction {@link Space}
-	 * 
+	 * Replies the Identification of this Interaction {@link Space}.
+	 *
 	 * @return the space's id
 	 */
-	public SpaceID getID();
+	SpaceID getID();
 
 	/**
 	 * Returns the IDs of all agents interacting in this space all over the
-	 * network
-	 * 
+	 * network.
+	 *
 	 * @return participants IDs
 	 */
-	public SynchronizedSet<UUID> getParticipants();
+	SynchronizedSet<UUID> getParticipants();
+
 }

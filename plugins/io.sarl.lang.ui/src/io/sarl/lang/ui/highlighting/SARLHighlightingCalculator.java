@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,29 +28,23 @@ import org.eclipse.xtext.ui.editor.syntaxcoloring.DefaultHighlightingConfigurati
 import org.eclipse.xtext.xbase.ui.highlighting.XbaseHighlightingCalculator;
 
 /**
- * *
- * <p>
  * A base implementation of the semantic highlighting calculation.
- * </p>
- * 
- * <p>
+ *
  * Uses syntax highlighting from {@link XbaseHighlightingCalculator} and
- * adds SARL specific keywords, e.g. <code>occurrence</code> 
- * </p>
- * 
+ * adds SARL specific keywords, e.g. <code>occurrence</code>.
+ *
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public class SARLHighlightingCalculator extends XbaseHighlightingCalculator {
-	/**
-	 * {@inheritDoc}
-	 */
+
 	@Override
 	protected Map<String, String> initializeHighlightedIdentifiers() {
 		Map<String, String> result = super.initializeHighlightedIdentifiers();
 		result.put(SARLKeywords.OCCURRENCE, DefaultHighlightingConfiguration.KEYWORD_ID);
 		return result;
 	}
+
 }

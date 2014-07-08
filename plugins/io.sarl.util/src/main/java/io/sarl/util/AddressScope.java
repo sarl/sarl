@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +27,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Scope using {@link Address} for <var>EventSpace</var>'s
+ * Scope using {@link Address} for EventSpace's.
+ *
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -30,19 +36,19 @@ import java.util.TreeSet;
  */
 public class AddressScope implements Scope<Address> {
 
-	private static final long serialVersionUID = -1176306257753661102L;
+	private static final long serialVersionUID = 1910691822350327667L;
 
 	private static final String SCOPE_ID = "aid://"; //$NON-NLS-1$
 
-	private Set<Address> addresses = null;
+	private final Set<Address> addresses;
 
 	/**
-	 * @param addrs
+	 * @param addrs - addresses to put in the scope.
 	 */
 	AddressScope(Address... addrs) {		
 	    this.addresses = new TreeSet<>();
-	    for(Address adr : addrs) {
-	        if (adr!=null) {
+	    for (Address adr : addrs) {
+	        if (adr != null) {
 	        	this.addresses.add(adr);
 	        }
 	    }
@@ -55,13 +61,13 @@ public class AddressScope implements Scope<Address> {
 
 	@Override
 	public boolean matches(Address address) {
-		assert(address != null);
+		assert (address != null);
 		return this.addresses.contains(address);
 	}
 
 	/** Create an scope restricted to the given addresses.
-	 * 
-	 * @param addresses
+	 *
+	 * @param addresses - addresses to put in the scope.
 	 * @return the scope restricted to the given addresses.
 	 */
 	public final static AddressScope getScope(Address... addresses){

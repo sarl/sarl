@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,32 +22,41 @@ package io.sarl.lang;
 
 /**
  * Set of SARL keywords that are added to the xtext/xbase ones.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
-public interface SARLKeywords {
+public final class SARLKeywords {
 
-	/** {@code occurrence}
+	/** Keyword: {@code occurrence}.
 	 */
 	public static final String OCCURRENCE = "occurrence"; //$NON-NLS-1$
 
-	/** {@code new}
+	/** Keyword: {@code new}.
 	 */
 	public static final String CONSTRUCTOR = "new"; //$NON-NLS-1$
 
-	/** {@code uses}
+	/** Keyword: {@code uses}.
 	 */
 	public static final String USES = "uses"; //$NON-NLS-1$
 
-	/** {@code requires}
+	/** Keyword: {@code requires}.
 	 */
 	public static final String REQUIRES = "requires"; //$NON-NLS-1$
 
-	/** {@code fires}
+	/** Keyword: {@code fires}.
 	 */
 	public static final String FIRES = "fires"; //$NON-NLS-1$
 
-	/** {@code on}
+	/** Keyword: {@code on}.
 	 */
 	public static final String ON = "on"; //$NON-NLS-1$
+
+	private SARLKeywords() {
+		//
+	}
 
 }
 

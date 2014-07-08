@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,7 +30,7 @@ import org.eclipse.emf.common.util.EList;
 /**
  * Provides additional function signatures according the semantic
  * associated to the parameter's default values.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -33,11 +38,11 @@ import org.eclipse.emf.common.util.EList;
  */
 public class DefaultInferredActionSignature implements InferredActionSignature {
 
-	private final Map<SignatureKey,EList<InferredStandardParameter>> inferredParameters; 
+	private final Map<SignatureKey, EList<InferredStandardParameter>> inferredParameters;
 	private final EList<FormalParameter> parameters;
 	private final SignatureKey parameterKey;
 	private final ActionNameKey key;
-	
+
 	/**
 	 * @param key - key used to store this signature into a {@link ActionSignatureProvider}.
 	 * @param parameters - list of formal parameters.
@@ -48,58 +53,43 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 			ActionNameKey key,
 			EList<FormalParameter> parameters,
 			SignatureKey parameterKey,
-			Map<SignatureKey,EList<InferredStandardParameter>> inferredParameters) {
+			Map<SignatureKey, EList<InferredStandardParameter>> inferredParameters) {
 		this.key = key;
 		this.parameters = parameters;
 		this.parameterKey = parameterKey;
 		this.inferredParameters = inferredParameters;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public ActionNameKey getKey() {
 		return this.key;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public Map<SignatureKey,EList<InferredStandardParameter>> getInferredSignatures() {
+	public Map<SignatureKey, EList<InferredStandardParameter>> getInferredSignatures() {
 		return this.inferredParameters;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public EList<FormalParameter> getFormalParameters() {
 		return this.parameters;
 	}
-	
-	/** {@inheritDoc}
-	 */
+
 	@Override
 	public SignatureKey getFormalParameterKey() {
 		return this.parameterKey;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean isVarargs() {
 		return this.parameterKey.isVarargs();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public Iterator<EList<InferredStandardParameter>> iterator() {
 		return this.inferredParameters.values().iterator();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public Iterable<SignatureKey> signatureKeys() {
 		return new Iterable<SignatureKey>() {
@@ -111,32 +101,28 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 			}
 		};
 	}
-	
-	/** {@inheritDoc}
-	 */
+
 	@Override
 	public String toString() {
 		if (!this.parameters.isEmpty()) {
 			StringBuilder b = new StringBuilder();
 			Iterator<FormalParameter> it = this.parameters.iterator();
 			FormalParameter p = it.next();
-			b.append(p.getName()!=null ? p.getName() : null);
+			b.append((p.getName() != null) ? p.getName() : null);
 			b.append(" : "); //$NON-NLS-1$
-			b.append(p.getParameterType()!=null ? p.getParameterType().getIdentifier() : null);
+			b.append((p.getParameterType() != null) ? p.getParameterType().getIdentifier() : null);
 			while (it.hasNext()) {
 				p = it.next();
 				b.append(", "); //$NON-NLS-1$
-				b.append(p.getName()!=null ? p.getName() : null);
+				b.append((p.getName() != null) ? p.getName() : null);
 				b.append(" : "); //$NON-NLS-1$
-				b.append(p.getParameterType()!=null ? p.getParameterType().getIdentifier() : null);
+				b.append((p.getParameterType() != null) ? p.getParameterType().getIdentifier() : null);
 			}
 			return b.toString();
 		}
 		return ""; //$NON-NLS-1$
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public String toString(String functionName) {
 		if (!this.parameters.isEmpty()) {
@@ -145,15 +131,15 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 			b.append("("); //$NON-NLS-1$
 			Iterator<FormalParameter> it = this.parameters.iterator();
 			FormalParameter p = it.next();
-			b.append(p.getName()!=null ? p.getName() : null);
+			b.append((p.getName() != null) ? p.getName() : null);
 			b.append(" : "); //$NON-NLS-1$
-			b.append(p.getParameterType()!=null ? p.getParameterType().getIdentifier() : null);
+			b.append((p.getParameterType() != null) ? p.getParameterType().getIdentifier() : null);
 			while (it.hasNext()) {
 				p = it.next();
 				b.append(", "); //$NON-NLS-1$
-				b.append(p.getName()!=null ? p.getName() : null);
+				b.append((p.getName() != null) ? p.getName() : null);
 				b.append(" : "); //$NON-NLS-1$
-				b.append(p.getParameterType()!=null ? p.getParameterType().getIdentifier() : null);
+				b.append((p.getParameterType() != null) ? p.getParameterType().getIdentifier() : null);
 			}
 			b.append(")"); //$NON-NLS-1$
 			return b.toString();
@@ -168,42 +154,35 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	private static class SignatureKeyIterator implements Iterator<SignatureKey> {
-		
+
 		private SignatureKey first;
 		private final Iterator<SignatureKey> it;
-		
+
 		public SignatureKeyIterator(SignatureKey first, Iterator<SignatureKey> it) {
 			this.first = first;
 			this.it = it;
 		}
-		
-		/** {@inheritDoc}
-		 */
+
 		@Override
 		public boolean hasNext() {
-			return this.first!=null
-					|| this.it.hasNext();
+			return this.first != null || this.it.hasNext();
 		}
-		
-		/** {@inheritDoc}
-		 */
+
 		@Override
 		public SignatureKey next() {
-			if (this.first!=null) {
+			if (this.first != null) {
 				SignatureKey n = this.first;
 				this.first = null;
 				return n;
 			}
 			return this.it.next();
 		}
-		
-		/** {@inheritDoc}
-		 */
+
 		@Override
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}
-		
+
 	}
 
 }

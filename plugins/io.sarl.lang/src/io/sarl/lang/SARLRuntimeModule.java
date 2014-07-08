@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,6 +21,7 @@
 package io.sarl.lang;
 
 import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
+import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.DefaultActionSignatureProvider;
@@ -23,8 +29,9 @@ import io.sarl.lang.validation.SARLConfigurableIssueCodesProvider;
 import io.sarl.lang.validation.SARLFeatureNameValidator;
 
 /**
- * Use this class to register components to be used at runtime / without the Equinox extension registry.
- * 
+ * Use this class to register components to be used at runtime / without the
+ * Equinox extension registry.
+ *
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -39,27 +46,25 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	public Class<? extends ActionSignatureProvider> bindActionSignatureProvider() {
 		return DefaultActionSignatureProvider.class;
 	}
-	
-	/** {@inheritDoc}
-	 */
+
 	@Override
 	public Class<? extends ConfigurableIssueCodesProvider> bindConfigurableIssueCodesProvider() {
-		assert(
+		assert (
 				super.bindConfigurableIssueCodesProvider().isAssignableFrom(
 						SARLConfigurableIssueCodesProvider.class))
-						: "The class SARLConfigurableIssueCodesProvider does not extend the class provided by default by Xbase"; //$NON-NLS-1$
+			: "The class SARLConfigurableIssueCodesProvider does not extend " //$NON-NLS-1$
+				+ "the class provided by default by Xbase"; //$NON-NLS-1$
 		//
 		return SARLConfigurableIssueCodesProvider.class;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
-	public Class<? extends org.eclipse.xtext.xbase.validation.FeatureNameValidator> bindFeatureNameValidator() {
-		assert(
+	public Class<? extends FeatureNameValidator> bindFeatureNameValidator() {
+		assert (
 				super.bindFeatureNameValidator().isAssignableFrom(
 						SARLFeatureNameValidator.class))
-						: "The class SARLFeatureNameValidator does not extend the class provided by default by Xbase"; //$NON-NLS-1$
+			: "The class SARLFeatureNameValidator does not extend " //$NON-NLS-1$
+				+ "the class provided by default by Xbase"; //$NON-NLS-1$
 		//
 		return SARLFeatureNameValidator.class;
 	}

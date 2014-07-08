@@ -8,7 +8,7 @@
 	</parent>
 	<artifactId>io.sarl.lang.updatesite</artifactId>
 	<packaging>eclipse-repository</packaging>
-	<name>SARL Lang Update Site</name>
+	<name>Update Site and Products</name>
 	<build>
 		<plugins>
 			<plugin>

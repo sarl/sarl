@@ -9,6 +9,6 @@
 	<groupId>io.sarl.lang</groupId>
 	<artifactId>io.sarl.lang.sdk</artifactId>
 	<packaging>eclipse-feature</packaging>
-	<name>SARL Lang SDK</name>
+	<name>Eclipse Feature for SARL Compiler</name>
 
 </project>

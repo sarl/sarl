@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,32 +26,35 @@ import org.eclipse.xtext.xbase.XExpression;
 
 /**
  * This class permits to wrap a default value when building the function signatures.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public class InferredValuedParameter extends InferredStandardParameter {
-	
+
 	/**
-	 * @param parameter
+	 * @param parameter - the wrapper parameter.
 	 */
 	protected InferredValuedParameter(FormalParameter parameter) {
 		super(parameter);
 	}
 
 	/** Replies the default value.
-	 * 
+	 *
 	 * @return the default value.
 	 */
 	public XExpression getExpr() {
 		return this.parameter.getDefaultValue();
 	}
-	
+
 	@Override
 	public String toString() {
-		if (this.parameter.getDefaultValue()==null) return super.toString();
+		if (this.parameter.getDefaultValue() == null) {
+			return super.toString();
+		}
 		return this.parameter.getDefaultValue().toString();
 	}
+
 }

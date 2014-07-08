@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,10 +28,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Inject;
 
 /**
- * The definition of the notion of Agent in SARL
- * An agent is an autonomous entity having some intrinsic skills to realize the capacities it exhibits. 
- * An agent defines a context.
- *  
+ * The definition of the notion of Agent in SARL.
+ * An agent is an autonomous entity having some intrinsic skills to realize
+ * the capacities it exhibits. An agent defines a context.
+ *
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -34,23 +39,24 @@ import javax.inject.Inject;
  */
 public class Agent implements Identifiable {
 
-	
 	private final UUID id = UUID.randomUUID();
 
 	private Map<Class<? extends Capacity>, Skill> capacities = new ConcurrentHashMap<>();
 
 	private final UUID parentID;
-	
+
 	/**
-	 * Creates a new agent by parent <code>parentID</code>
-	 * @param parentID the agent's spawner.
+	 * Creates a new agent by parent <code>parentID</code>.
+	 *
+	 * @param parentID - the agent's spawner.
 	 */
-	public Agent(UUID parentID){
+	public Agent(UUID parentID) {
 		this.parentID = parentID;
 	}
-	
+
 	/**
 	 * Returns a String representation of the Event E1 attributes only.
+	 *
 	 * @return the string representation of the attributes of this Event.
 	 */
 	protected String attributesToString() {
@@ -61,59 +67,59 @@ public class Agent implements Identifiable {
 		builder.append(this.parentID);
 		return builder.toString();
 	}
-	
-	/** {@inheritDoc}
-	 */
+
 	@Override
 	public String toString() {
-		return getClass().getSimpleName()+" ["+attributesToString()+"]"; //$NON-NLS-1$ //$NON-NLS-2$
+		return getClass().getSimpleName()
+				+ " [" + attributesToString() //$NON-NLS-1$
+				+ "]"; //$NON-NLS-1$
 	}
-	
+
 	/**
-	 * Replies the agent's spawner's ID
+	 * Replies the agent's spawner's ID.
+	 *
 	 * @return the identifier of the agent's spawner.
 	 */
-	public UUID getParentID(){
+	public UUID getParentID() {
 		return this.parentID;
 	}
-	/**
-	 * {@inheritDoc}
-	 */
+
 	@Override
 	public UUID getID() {
 		return this.id;
 	}
 
 	/**
-	 * Set the skill for the {@link Capacity} <code>capacity</code>
-	 * 
-	 * @param capacity
-	 *            capacity to set
-	 * @param skill
-	 *            implementaion of <code>capacity</code>
-	 * @return the skill that was set
-	 * @throws InvalidParameterException if the given skill does not implement the given capacity.
+	 * Set the skill for the {@link Capacity} <code>capacity</code>.
+	 *
+	 * @param <S> - type of the skill.
+	 * @param capacity capacity to set.
+	 * @param skill implementaion of <code>capacity</code>.
+	 * @return the skill that was set.
 	 */
 	protected <S extends Skill> S setSkill(Class<? extends Capacity> capacity, S skill) {
 		assert capacity != null : "the capacity parameter must not be null"; //$NON-NLS-1$
 		assert capacity.isInterface() : "the capacity parameter must be an interface"; //$NON-NLS-1$
 		assert skill != null : "the skill parameter must not be null"; //$NON-NLS-1$
 		if (!capacity.isInstance(skill)) {
-			throw new InvalidParameterException("the skill must implement the given capacity "+capacity.getName()); //$NON-NLS-1$
+			throw new InvalidParameterException(
+					"the skill must implement the given capacity " //$NON-NLS-1$
+					+ capacity.getName());
 		}
 		skill.setOwner(this);
 		Skill oldS = this.capacities.put(capacity, skill);
-		if (oldS!=null) {
+		if (oldS != null) {
 			oldS.uninstall();
 		}
 		skill.install();
-		return skill; 
+		return skill;
 	}
 
 	/**
-	 * Clears the Skill associated with the capacity
-	 * 
-	 * @param capacity
+	 * Clears the Skill associated with the capacity.
+	 *
+	 * @param <S> - the type of the skill.
+	 * @param capacity - the capacity for which the skill must be cleared.
 	 * @return the skill that was removed
 	 */
 	@SuppressWarnings("unchecked")
@@ -126,16 +132,17 @@ public class Agent implements Identifiable {
 
 	/**
 	 * Replies with the skill associated to the {@link Capacity}
-	 * <code>capacity</code> The return may be <code>null</code> if not capacity
-	 * was set
-	 * 
-	 * @param capacity
-	 * @return the skill
+	 * <code>capacity</code>. The return may be <code>null</code> if not capacity
+	 * was set.
+	 *
+	 * @param <S> - the type of the capacity.
+	 * @param capacity - the capacity to retreive.
+	 * @return the skill.
 	 */
 	protected <S extends Capacity> S getSkill(Class<S> capacity) {
 		assert capacity != null;
 		S skill = capacity.cast(this.capacities.get(capacity));
-		if(skill == null){
+		if (skill == null) {
 			throw new UnimplementedCapacityException(capacity, this.getID());
 		}
 		return skill;
@@ -143,12 +150,11 @@ public class Agent implements Identifiable {
 
 	/**
 	 * Checks if this agent has a Skill that implements the {@link Capacity}
-	 * <code>capacity</code>
-	 * 
-	 * @param capacity
-	 *            capacity to check
-	 * @return true if it has a skill associate to this capacity, false
-	 *         otherwise
+	 * <code>capacity</code>.
+	 *
+	 * @param capacity - capacity to check
+	 * @return <code>true</code> if it has a skill associate to this capacity,
+	 * <code>false</code> otherwise
 	 */
 	protected boolean hasSkill(Class<? extends Capacity> capacity) {
 		assert capacity != null;
@@ -156,17 +162,18 @@ public class Agent implements Identifiable {
 	}
 
 	/** Implementation of the operator "capacity maps-to skill".
-	 * 
-	 * @param capacity
-	 * @param skill
+	 *
+	 * @param <S> - type of the skill.
+	 * @param capacity - the capacity to map.
+	 * @param skill - the skill to be mapped to.
 	 */
 	protected <S extends Skill & Capacity> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
 		setSkill(capacity, skill);
 	}
 
 	/** Set the provider of the built-in capacities.
-	 * 
-	 * @param provider
+	 *
+	 * @param provider - the provider of built-in capacities for this agent.
 	 */
 	@Inject
 	void setBuiltinCapacitiesProvider(BuiltinCapacitiesProvider provider) {

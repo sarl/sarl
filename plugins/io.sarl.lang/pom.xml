@@ -10,13 +10,25 @@
 	<artifactId>io.sarl.lang</artifactId>
 	<packaging>eclipse-plugin</packaging>
 
-	<name>SARL Lang Definition</name>
+	<name>SARL Compiler</name>
+
+	<properties>
+		<!-- needed for checkstyle/findbugs -->
+		<main.basedir>${project.basedir}/../..</main.basedir>
+	</properties>
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.xtend</groupId>
 				<artifactId>xtend-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<sourceDirectory>src</sourceDirectory>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

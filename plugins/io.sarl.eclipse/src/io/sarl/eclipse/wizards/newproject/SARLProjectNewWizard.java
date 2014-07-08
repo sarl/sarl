@@ -1,5 +1,22 @@
-/**
- * 
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package io.sarl.eclipse.wizards.newproject;
 
@@ -40,8 +57,8 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
 /**
  * SARL new project wizard.
- * Most part of the code of this class comes from {@link JavaProjectWizard}
- * 
+ * Most part of the code of this class comes from {@link JavaProjectWizard}.
+ *
  * @author $Author: ngaud$
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -50,33 +67,32 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
  */
 public class SARLProjectNewWizard extends NewElementWizard implements IExecutableExtension {
 
+	/**
+	 * The name of this SARL new project wizard.
+	 */
+	private static final String WIZARD_NAME = SARLProjectNewWizardMessages.SARLProjectNewWizard_WIZARD_NAME;
+
+	/**
+	 * ID of the project nature defined by XText.
+	 */
+	private static final String XTEXT_NATURE_ID = "org.eclipse.xtext.ui.shared.xtextNature"; //$NON-NLS-1$
+
 	private NewSARLProjectWizardPageOne fFirstPage;
 	private NewSARLProjectWizardPageTwo fSecondPage;
 
 	private IConfigurationElement fConfigElement;
 
-	/**
-	 * The name of this SARL new project wizard
-	 */
-	private static final String WIZARD_NAME = SARLProjectNewWizardMessages.SARLProjectNewWizard_WIZARD_NAME;
-
-	/**
-	 * ID of the project nature defined by XText
-	 */
-	private static final String XTEXT_NATURE_ID = "org.eclipse.xtext.ui.shared.xtextNature"; //$NON-NLS-1$
-
-	/**
-	 * 
+	/** Construct a new wizard for creating a SARL project.
 	 */
 	public SARLProjectNewWizard() {
 		this(null, null);
 	}
 
-	
-	/**
-	 * 
-	 * @param pageOne
-	 * @param pageTwo
+
+	/** Construct a new wizard for creating a SARL project.
+	 *
+	 * @param pageOne - reference to the first page of the wizard.
+	 * @param pageTwo - reference to the second page of the wizard.
 	 */
 	public SARLProjectNewWizard(NewSARLProjectWizardPageOne pageOne, NewSARLProjectWizardPageTwo pageTwo) {
 		setDefaultPageImageDescriptor(EclipseSARLImages.getImageDescriptor(
@@ -105,7 +121,8 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 
 	@Override
 	protected void finishPage(IProgressMonitor monitor) throws InterruptedException, CoreException {
-		this.fSecondPage.performFinish(monitor); // use the full progress monitor
+		// use the full progress monitor
+		this.fSecondPage.performFinish(monitor);
 	}
 
 	@Override
@@ -137,7 +154,7 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 	}
 
 	/** Replies the active part in the workbench.
-	 * 
+	 *
 	 * @return the active part.
 	 */
 	IWorkbenchPart getActivePart() {
@@ -176,9 +193,9 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 		try {
 			addNatures(javaProject.getProject());
 		} catch (JavaModelException e) {
-			e.printStackTrace();
+			JavaPlugin.log(e);
 		} catch (CoreException e) {
-			e.printStackTrace();
+			JavaPlugin.log(e);
 		}
 
 		return javaProject;
@@ -200,7 +217,9 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 			IProgressMonitor monitor = new NullProgressMonitor();
 			project.setDescription(description, monitor);
 		} else {
-			// TODO raise a user error
+			JavaPlugin.logErrorStatus(
+					"Cannot associate one of the SARL or Xtext natures to the project", //$NON-NLS-1$
+					status);
 		}
 	}
 }

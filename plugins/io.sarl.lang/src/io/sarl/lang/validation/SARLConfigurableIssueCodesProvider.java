@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +27,7 @@ import org.eclipse.xtext.xbase.validation.XbaseConfigurableIssueCodes;
 
 /**
  * Provider of issues that could be configured by the user.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -30,25 +35,41 @@ import org.eclipse.xtext.xbase.validation.XbaseConfigurableIssueCodes;
  */
 public class SARLConfigurableIssueCodesProvider extends XbaseConfigurableIssueCodes {
 
-	/**
+	/** Construct a provider of issue codes for Xtext tools.
 	 */
 	public SARLConfigurableIssueCodesProvider() {
 		//
 	}
-	
+
 	@Override
 	protected void initialize(IAcceptor<PreferenceKey> iAcceptor) {
 		super.initialize(iAcceptor);
-		
+
 		// Override the Xbase configuration
-		iAcceptor.accept(create(org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING, SeverityConverter.SEVERITY_WARNING));
+		iAcceptor.accept(create(
+				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
+				SeverityConverter.SEVERITY_WARNING));
 
 		// Add warnings from SARL
-		iAcceptor.accept(create(IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION, SeverityConverter.SEVERITY_WARNING));
-		iAcceptor.accept(create(IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION, SeverityConverter.SEVERITY_WARNING));
-		iAcceptor.accept(create(IssueCodes.WRONG_PACKAGE, SeverityConverter.SEVERITY_WARNING));
-		iAcceptor.accept(create(IssueCodes.DISCOURAGED_CAPACITY_DEFINITION, SeverityConverter.SEVERITY_WARNING));
-		iAcceptor.accept(create(IssueCodes.UNREACHABLE_BEHAVIOR_UNIT, SeverityConverter.SEVERITY_WARNING));
+		iAcceptor.accept(create(
+				IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
+				SeverityConverter.SEVERITY_WARNING));
+
+		iAcceptor.accept(create(
+				IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION,
+				SeverityConverter.SEVERITY_WARNING));
+
+		iAcceptor.accept(create(
+				IssueCodes.WRONG_PACKAGE,
+				SeverityConverter.SEVERITY_WARNING));
+
+		iAcceptor.accept(create(
+				IssueCodes.DISCOURAGED_CAPACITY_DEFINITION,
+				SeverityConverter.SEVERITY_WARNING));
+
+		iAcceptor.accept(create(
+				IssueCodes.UNREACHABLE_BEHAVIOR_UNIT,
+				SeverityConverter.SEVERITY_WARNING));
 	}
 
 }

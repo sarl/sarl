@@ -1,5 +1,22 @@
-/**
- * 
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package io.sarl.eclipse.navigator;
 
@@ -13,101 +30,112 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
+import org.osgi.service.log.LogService;
+
+import com.google.inject.Inject;
 
 /**
- * SARL custom project navigator content provider
- * 
+ * SARL custom project navigator content provider.
+ *
  * @author $Author: ngaud$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public class ContentProvider implements ITreeContentProvider {
-    
+
 	private static final Object[] NO_CHILDREN = {};
-    
-    private ISARLProjectElement[] sarlProjectParents;
 
-    @Override
-    public Object[] getChildren(Object parentElement) {
-        Object[] children = null;
-        if (SARLProjectWorkbenchRoot.class.isInstance(parentElement)) {
-            if (this.sarlProjectParents == null) {
-            	this.sarlProjectParents = initializeParent();
-            }
+	private ISARLProjectElement[] sarlProjectParents;
 
-            children = this.sarlProjectParents;
-        } else if (ISARLProjectElement.class.isInstance(parentElement)) {
-            children = ((ISARLProjectElement) parentElement).getChildren();
-        } else {
-            children = NO_CHILDREN;
-        }
+	@Inject private LogService logger;
 
-        return children;
-    }
+	@Override
+	public Object[] getChildren(Object parentElement) {
+		Object[] children = null;
+		if (SARLProjectWorkbenchRoot.class.isInstance(parentElement)) {
+			if (this.sarlProjectParents == null) {
+				this.sarlProjectParents = initializeParent();
+			}
 
-    @Override
-    public Object getParent(Object element) {
-        System.out.println("ContentProvider.getParent: " + element.getClass().getName()); //$NON-NLS-1$
-        Object parent = null;
-        if (ISARLProjectElement.class.isInstance(element)) {
-            parent = ((ISARLProjectElement)element).getParent();
-        }
-        return parent;
-    }
+			children = this.sarlProjectParents;
+		} else if (ISARLProjectElement.class.isInstance(parentElement)) {
+			children = ((ISARLProjectElement) parentElement).getChildren();
+		} else {
+			children = NO_CHILDREN;
+		}
 
-    @Override
-    public boolean hasChildren(Object element) {
-        boolean hasChildren = false;
+		return children;
+	}
 
-        if (SARLProjectWorkbenchRoot.class.isInstance(element)) {
-            hasChildren = this.sarlProjectParents.length > 0;
-        } else if (ISARLProjectElement.class.isInstance(element)) {
-            hasChildren = ((ISARLProjectElement)element).hasChildren();
-        }
-        // else it is not one of these so return false
-        
-        return hasChildren;
-    }
+	@Override
+	public Object getParent(Object element) {
+		this.logger.log(LogService.LOG_DEBUG,
+				"ContentProvider.getParent: " //$NON-NLS-1$
+				+ element.getClass().getName());
+		Object parent = null;
+		if (ISARLProjectElement.class.isInstance(element)) {
+			parent = ((ISARLProjectElement) element).getParent();
+		}
+		return parent;
+	}
 
-    @Override
-    public Object[] getElements(Object inputElement) {
-        // This is the same as getChildren() so we will call that instead
-        return getChildren(inputElement);
-    }
+	@Override
+	public boolean hasChildren(Object element) {
+		boolean hasChildren = false;
 
-    @Override
-    public void dispose() {
-        System.out.println("ContentProvider.dispose"); //$NON-NLS-1$
-    }
+		if (SARLProjectWorkbenchRoot.class.isInstance(element)) {
+			hasChildren = this.sarlProjectParents.length > 0;
+		} else if (ISARLProjectElement.class.isInstance(element)) {
+			hasChildren = ((ISARLProjectElement) element).hasChildren();
+		}
+		// else it is not one of these so return false
+		return hasChildren;
+	}
 
-    @Override
-    public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-        if (oldInput != null && newInput != null){
-        	System.out.println("ContentProvider.inputChanged: old: " + oldInput.getClass().getName() + " new: " + newInput.getClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$
-        } else {
-        	System.out.println("ContentProvider.inputChanged"); //$NON-NLS-1$
-        }
-    }
+	@Override
+	public Object[] getElements(Object inputElement) {
+		// This is the same as getChildren() so we will call that instead
+		return getChildren(inputElement);
+	}
 
-    private static ISARLProjectElement[] initializeParent() {
-        IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+	@Override
+	public void dispose() {
+		this.logger.log(LogService.LOG_DEBUG, "ContentProvider.dispose"); //$NON-NLS-1$
+	}
 
-        List<SARLProjectParent> list = new ArrayList<>();
-        for (int i = 0; i < projects.length; i++) {
-            try {
-                if (projects[i].getNature(io.sarl.eclipse.natures.SARLProjectNature.NATURE_ID) != null) {
-                    list.add(new SARLProjectParent(projects[i]));
-                }
-            } catch (CoreException e) {
-                // Go to the next IProject
-            }
-        }
+	@Override
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		if (oldInput != null && newInput != null) {
+			this.logger.log(LogService.LOG_DEBUG,
+					"ContentProvider.inputChanged: old: " //$NON-NLS-1$
+					+ oldInput.getClass().getName()
+					+ " new: " //$NON-NLS-1$
+					+ newInput.getClass().getName());
+		} else {
+			this.logger.log(LogService.LOG_DEBUG,
+					"ContentProvider.inputChanged"); //$NON-NLS-1$
+		}
+	}
 
-        SARLProjectParent[] result = new SARLProjectParent[list.size()];
-        list.toArray(result);
+	private static ISARLProjectElement[] initializeParent() {
+		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 
-        return result;
-    }
+		List<SARLProjectParent> list = new ArrayList<>();
+		for (int i = 0; i < projects.length; i++) {
+			try {
+				if (projects[i].getNature(io.sarl.eclipse.natures.SARLProjectNature.NATURE_ID) != null) {
+					list.add(new SARLProjectParent(projects[i]));
+				}
+			} catch (CoreException e) {
+				// Go to the next IProject
+			}
+		}
+
+		SARLProjectParent[] result = new SARLProjectParent[list.size()];
+		list.toArray(result);
+
+		return result;
+	}
 
 }

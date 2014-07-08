@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,19 +27,19 @@ import java.util.Map;
 /** This interface represents a provider of built-in capacities.
  * The built-in capacities are assumed to be provided by
  * the runtime platform.
- * 
+ *
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public interface BuiltinCapacitiesProvider {
-	
+
 	/** Replies the built-in capacities for the given agent.
-	 * 
-	 * @param agent
+	 *
+	 * @param agent - the agent for which the built-in capacities must be retreived.
 	 * @return the built-in capacities for the given agent.
 	 */
-	public Map<Class<? extends Capacity>, Skill> getBuiltinCapacities(Agent agent);
-	
+	Map<Class<? extends Capacity>, Skill> getBuiltinCapacities(Agent agent);
+
 }

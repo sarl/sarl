@@ -1,16 +1,17 @@
 /*
  * $Id$
- * 
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
- * 
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
  * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,16 +32,14 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
-
-
 /** Utilities on collections.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Collections3 {
+public final class Collections3 {
 
 	/**
 	 * The empty set (immutable).  This set is serializable.
@@ -49,104 +48,159 @@ public class Collections3 {
 	 */
 	public static final SynchronizedSet<Object> EMPTY_SET = new EmptySet();
 
+	/**
+	 */
+	private Collections3() {
+		//
+	}
+
 	/** Copied from Collections.
-	 * 
+	 *
+	 * @param <E> - type of the elements in the collection.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
-	 * @param <E>
 	 */
 	private static class SynchronizedCollectionWrapper<E> implements Serializable, SynchronizedCollection<E> {
 
 		private static final long serialVersionUID = -7369575596119505391L;
 
-		final Collection<E> c;  // Backing Collection
-		final Object mutex;     // Object on which to synchronize
+		/** Backing Collection.
+		 */
+		final Collection<E> c;
+
+		/** Object on which to synchronize.
+		 */
+		final Object mutex;
 
 		SynchronizedCollectionWrapper(Collection<E> c, Object mutex) {
 			this.c = c;
 			this.mutex = mutex;
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public boolean equals(Object obj) {
-			if (this == obj) return true;
-			synchronized (this.mutex) {return this.c.equals(obj);}
+			if (this == obj) {
+				return true;
+			}
+			synchronized (this.mutex) {
+				return this.c.equals(obj);
+			}
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public int hashCode() {
-			synchronized (this.mutex) {return this.c.hashCode();}
+			synchronized (this.mutex) {
+				return this.c.hashCode();
+			}
 		}
 
 		@Override
 		public int size() {
-			synchronized (this.mutex) {return this.c.size();}
+			synchronized (this.mutex) {
+				return this.c.size();
+			}
 		}
+
 		@Override
 		public boolean isEmpty() {
-			synchronized (this.mutex) {return this.c.isEmpty();}
+			synchronized (this.mutex) {
+				return this.c.isEmpty();
+			}
 		}
+
 		@Override
 		public boolean contains(Object o) {
-			synchronized (this.mutex) {return this.c.contains(o);}
+			synchronized (this.mutex) {
+				return this.c.contains(o);
+			}
 		}
+
 		@Override
 		public Object[] toArray() {
-			synchronized (this.mutex) {return this.c.toArray();}
+			synchronized (this.mutex) {
+				return this.c.toArray();
+			}
 		}
+
 		@Override
 		public <T> T[] toArray(T[] a) {
-			synchronized (this.mutex) {return this.c.toArray(a);}
+			synchronized (this.mutex) {
+				return this.c.toArray(a);
+			}
 		}
+
 		@Override
 		public Iterator<E> iterator() {
-			return this.c.iterator(); // Must be manually synched by user!
+			// Must be manually synched by user!
+			return this.c.iterator();
 		}
+
 		@Override
 		public boolean add(E e) {
-			synchronized (this.mutex) {return this.c.add(e);}
+			synchronized (this.mutex) {
+				return this.c.add(e);
+			}
 		}
+
 		@Override
 		public boolean remove(Object o) {
-			synchronized (this.mutex) {return this.c.remove(o);}
+			synchronized (this.mutex) {
+				return this.c.remove(o);
+			}
 		}
 
 		@Override
 		public boolean containsAll(Collection<?> coll) {
-			synchronized (this.mutex) {return this.c.containsAll(coll);}
+			synchronized (this.mutex) {
+				return this.c.containsAll(coll);
+			}
 		}
+
 		@Override
 		public boolean addAll(Collection<? extends E> coll) {
-			synchronized (this.mutex) {return this.c.addAll(coll);}
+			synchronized (this.mutex) {
+				return this.c.addAll(coll);
+			}
 		}
+
 		@Override
 		public boolean removeAll(Collection<?> coll) {
-			synchronized (this.mutex) {return this.c.removeAll(coll);}
+			synchronized (this.mutex) {
+				return this.c.removeAll(coll);
+			}
 		}
+
 		@Override
 		public boolean retainAll(Collection<?> coll) {
-			synchronized (this.mutex) {return this.c.retainAll(coll);}
+			synchronized (this.mutex) {
+				return this.c.retainAll(coll);
+			}
 		}
+
 		@Override
 		public void clear() {
-			synchronized (this.mutex) {this.c.clear();}
+			synchronized (this.mutex) {
+				this.c.clear();
+			}
 		}
+
 		@Override
 		public String toString() {
-			synchronized (this.mutex) {return this.c.toString();}
+			synchronized (this.mutex) {
+				return this.c.toString();
+			}
 		}
+
 		private void writeObject(ObjectOutputStream s) throws IOException {
-			synchronized (this.mutex) {s.defaultWriteObject();}
+			synchronized (this.mutex) {
+				s.defaultWriteObject();
+			}
 		}
+
 		@Override
 		public Object mutex() {
-
 			return this.mutex;
 		}
 	}
@@ -349,7 +403,8 @@ public class Collections3 {
 
 	}
 
-	/**
+	/** Implementation of a set with a single element.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -359,7 +414,7 @@ public class Collections3 {
 
 		private static final long serialVersionUID = -143726600219970259L;
 
-		private final T singleton; 
+		private final T singleton;
 
 		/**
 		 * @param singleton
@@ -413,6 +468,7 @@ public class Collections3 {
 	 * <p>The returned set will be serializable if the specified set is
 	 * serializable.
 	 *
+	 * @param <T> - type of the set element.
 	 * @param  s the set to be "wrapped" in a synchronized set.
 	 * @param mutex is the mutex to use for synchronizing.
 	 * @return a synchronized view of the specified set.
@@ -449,6 +505,7 @@ public class Collections3 {
 	 * The returned collection will be serializable if the specified collection
 	 * is serializable.
 	 *
+	 * @param <T> - type of the set elements.
 	 * @param  c the collection to be "wrapped" in a synchronized collection.
 	 * @param mutex is the mutex to use for synchronizing.
 	 * @return a synchronized view of the specified collection.
@@ -458,17 +515,19 @@ public class Collections3 {
 	}
 
 	/** Replies an empty synchronized set.
-	 * 
+	 *
+	 * @param <T> - type of the set element.
 	 * @return an empty synchronized set.
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> SynchronizedSet<T> emptySynchronizedSet() {
-		return (SynchronizedSet<T>)EMPTY_SET;
+		return (SynchronizedSet<T>) EMPTY_SET;
 	}
 
 	/** Replies an empty synchronized set.
-	 * 
-	 * @param element
+	 *
+	 * @param <T> - type of the element.
+	 * @param element - the element to put in the singleton.
 	 * @return an empty synchronized set.
 	 */
 	public static <T> SynchronizedSet<T> synchronizedSingleton(T element) {
@@ -476,12 +535,13 @@ public class Collections3 {
 	}
 
 	/** Replies an unmodifiable synchronized set.
-	 * 
-	 * @param elements
+	 *
+	 * @param <T> - type of the elements in the set.
+	 * @param elements - the set to transform as unmodifiable set.
 	 * @return an unmodifiable synchronized set.
 	 */
 	public static <T> SynchronizedSet<T> unmodifiableSynchronizedSet(SynchronizedSet<T> elements) {
-		return new UnmodifiableSetWrapper<>(elements); 
+		return new UnmodifiableSetWrapper<>(elements);
 	}
 
 	/**
@@ -505,8 +565,9 @@ public class Collections3 {
 	 *
 	 * <p>The returned set will be serializable if the specified set is
 	 * serializable.
-	 * 
-	 * @param elements
+	 *
+	 * @param <T> - type of the elements in the set.
+	 * @param elements - the set to transform as unmodifiable set.
 	 * @param mutex is the mutex to use for synchronizing.
 	 * @return an unmodifiable synchronized set.
 	 */

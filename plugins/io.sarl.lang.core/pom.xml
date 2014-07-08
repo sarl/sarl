@@ -1,13 +1,33 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>io.sarl.lang</groupId>
-	<artifactId>io.sarl.lang.core</artifactId>
-	<packaging>eclipse-plugin</packaging>
-	<name>SARL Lang Core (Foundation Classes)</name>
+
 	<parent>
 		<groupId>io.sarl</groupId>
 		<artifactId>io.sarl.plugins</artifactId>
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
+
+	<groupId>io.sarl.lang</groupId>
+	<artifactId>io.sarl.lang.core</artifactId>
+	<packaging>eclipse-plugin</packaging>
+	<name>Foundation Classes for SARL Language</name>
+
+	<properties>
+		<!-- needed for checkstyle/findbugs -->
+		<main.basedir>${project.basedir}/../..</main.basedir>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<sourceDirectory>src</sourceDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>

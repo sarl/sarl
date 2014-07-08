@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,35 +24,36 @@ import java.util.UUID;
 
 /**
  * Event driven Interaction {@link Space} for agents.
- * 
+ *
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public interface EventSpace extends Space {
+
 	/**
-	 * Returns the address of the agent identified by <code>id</code>
-	 * 
-	 * @param id
-	 *            the agent's id
+	 * Returns the address of the agent identified by <code>id</code>.
+	 *
+	 * @param id - the agent's id.
 	 * @return the agent's address in this space.
 	 */
-	public Address getAddress(UUID id);
+	Address getAddress(UUID id);
 
 	/**
 	 * Emits the event inside this space with the given scope. Only agents
 	 * matching the scope will receive the event.
-	 * 
-	 * @param event
-	 * @param scope
+	 *
+	 * @param event - the event to emit in the space.
+	 * @param scope - the definition of the list of receiviers of the event.
 	 */
-	public void emit(Event event, final Scope<Address> scope);
+	void emit(Event event, final Scope<Address> scope);
 
 	/**
 	 * Emits the event inside this space. All registered agents will receive the event.
-	 * @param event
+	 *
+	 * @param event - the event to emit in the space.
 	 */
-	public void emit(Event event);
+	void emit(Event event);
 
 }

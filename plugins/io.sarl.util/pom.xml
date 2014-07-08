@@ -8,6 +8,20 @@
   
   <artifactId>io.sarl.util</artifactId>
   <packaging>eclipse-plugin</packaging>
-  <name>SARL Utilities</name>
+  <name>SDK Utilities</name>
   
+	<properties>
+		<!-- needed for checkstyle/findbugs -->
+		<main.basedir>${project.basedir}/../..</main.basedir>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>

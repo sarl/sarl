@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,16 +28,20 @@ import org.eclipse.xtext.junit4.IRegistryConfigurator;
 import org.jnario.lib.AbstractSpecCreator;
 
 import com.google.inject.Injector;
-/**
+
+/** Creator of specification model dedicated to SARL.
+ *
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public class SARLSpecCreator extends AbstractSpecCreator {
+
 	private Injector injector;
 
-	private SARLInjectorProvider injectorProvider = new SARLInjectorProvider();
+	private final SARLInjectorProvider injectorProvider = new SARLInjectorProvider();
 
 	@Override
 	protected <T> T create(Class<T> klass) {
@@ -58,7 +67,7 @@ public class SARLSpecCreator extends AbstractSpecCreator {
 	}
 
 	/** Replies the injector provider.
-	 * 
+	 *
 	 * @return the injector provider.
 	 */
 	protected IInjectorProvider getInjectorProvider() {

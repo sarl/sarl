@@ -9,7 +9,7 @@
 	<artifactId>io.sarl.releng</artifactId>
 	<packaging>pom</packaging>
 	
-	<name>SARL Lang Release Engineering</name>
+	<name>Release Engineering for SARL</name>
 
 	<modules>
 		<module>io.sarl.lang.targetplatform</module>

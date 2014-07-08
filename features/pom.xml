@@ -8,7 +8,7 @@
 	</parent>
 	<artifactId>io.sarl.features</artifactId>
 	<packaging>pom</packaging>
-	<name>SARL Lang Features Parent</name>
+	<name>Eclipse Features Parent</name>
 
 	<modules>
 		<module>io.sarl.lang.sdk</module>

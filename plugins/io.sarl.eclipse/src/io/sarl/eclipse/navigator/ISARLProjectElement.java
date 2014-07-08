@@ -1,5 +1,22 @@
-/**
- * 
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package io.sarl.eclipse.navigator;
 
@@ -8,51 +25,51 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * A SARL Project Element.
- * 
+ *
  * @author $Author: ngaud$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public interface ISARLProjectElement {
-	
+
 	/** Replies the image associated to the project element.
-	 * 
+	 *
 	 * @return the image.
 	 */
-    public Image getImage();
-    
+	Image getImage();
+
 	/** Replies the subelements the project element.
-	 * 
+	 *
 	 * @return the subelements.
 	 */
-    public Object[] getChildren();
- 
+	Object[] getChildren();
+
 	/** Replies the text associated to the project element.
-	 * 
+	 *
 	 * @return the text.
 	 */
-    public String getText();
- 
+	String getText();
+
 	/** Replies if this project element has a subelement.
-	 * 
+	 *
 	 * @return <code>true</code> if a subelement is existing,
 	 * <code>false</code> otherwise.
 	 */
-    public boolean hasChildren();
- 
+	boolean hasChildren();
+
 	/** Replies the project in which this project element is
 	 * located.
-	 * 
+	 *
 	 * @return the root project.
 	 */
-    public IProject getProject();
- 
+	IProject getProject();
+
 	/** Replies the element that is containing this project
-	 * element
-	 * 
+	 * element.
+	 *
 	 * @return the parent element.
 	 */
-    public Object getParent();
-    
+	Object getParent();
+
 }

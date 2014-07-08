@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,17 +20,14 @@
  */
 package io.sarl.lang.core;
 
-
-
 /**
- * Entity capable listening to events inside an Interaction {@link Space}
- * 
+ * Entity capable listening to events inside an Interaction {@link Space}.
+ *
  * {@link Space}s in SARL are event driven. Most of the time,
  * {@link EventListener}s in a {@link Space} will be {@link Agent}s. However,
  * any entity implementing the {@link EventListener} can interact inside an
  * {@link EventSpace} (e.g. UI)
- * 
- * 
+ *
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -34,10 +36,10 @@ package io.sarl.lang.core;
 public interface EventListener extends Identifiable {
 
 	/**
-	 * Request the entity to receive a given {@link Event} event
-	 * 
-	 * @param event
-	 *            the event to be received
+	 * Request the entity to receive a given {@link Event} event.
+	 *
+	 * @param event - the event to be received
 	 */
-	public void receiveEvent(Event event);
+	void receiveEvent(Event event);
+
 }

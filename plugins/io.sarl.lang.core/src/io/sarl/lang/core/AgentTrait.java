@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,7 +23,7 @@ package io.sarl.lang.core;
 import java.lang.ref.WeakReference;
 
 /** This class represents a part of trait of an agent.
- * 
+ *
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -29,20 +34,21 @@ abstract class AgentTrait {
 	private WeakReference<Agent> agentRef;
 
 	/**
-	 * @param agent
+	 * @param agent - the owner of this trait.
 	 */
 	public AgentTrait(Agent agent) {
 		this.agentRef = new WeakReference<>(agent);
 	}
-	
+
 	/**
 	 */
 	public AgentTrait() {
 		this.agentRef = new WeakReference<>(null);
 	}
-	
+
 	/**
 	 * Returns a String representation of the Event E1 attributes only.
+	 *
 	 * @return the string representation of the attributes of this Event.
 	 */
 	protected String attributesToString() {
@@ -51,24 +57,24 @@ abstract class AgentTrait {
 		result.append(getOwner());
 		return result.toString();
 	}
-	
-	/** {@inheritDoc}
-	 */
+
 	@Override
 	public String toString() {
-		return getClass().getSimpleName()+" ["+attributesToString()+"]";  //$NON-NLS-1$//$NON-NLS-2$
+		return getClass().getSimpleName()
+				+ " [" + attributesToString() //$NON-NLS-1$
+				+ "]"; //$NON-NLS-1$
 	}
 
 	/** Set the agent that has this trait.
-	 * 
-	 * @param agent
+	 *
+	 * @param agent - the owner of this trait.
 	 */
 	void setOwner(Agent agent) {
 		this.agentRef = new WeakReference<>(agent);
 	}
 
 	/** Replies the agent that has this trait.
-	 * 
+	 *
 	 * @return the owner.
 	 */
 	protected Agent getOwner() {
@@ -76,18 +82,20 @@ abstract class AgentTrait {
 	}
 
 	/** Replies the skill corresponding to the given capacity.
-	 * 
-	 * @param capacity
+	 *
+	 * @param <S> - type of the capacity.
+	 * @param capacity - the capacity to search for the implementation.
 	 * @return the skill.
 	 */
 	protected <S extends Capacity> S getSkill(Class<S> capacity) {
 		return getOwner().getSkill(capacity);
 	}
-	
-	/** Defines the implementation of the "capacity maps-to skill" operator. 
-	 * 
-	 * @param capacity
-	 * @param skill
+
+	/** Defines the implementation of the "capacity maps-to skill" operator.
+	 *
+	 * @param <S> - type of skill to be mapped to.
+	 * @param capacity - the implemented capacity.
+	 * @param skill - the skill to associate to the capacity.
 	 */
 	protected <S extends Skill & Capacity> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
 		getOwner().setSkill(capacity, skill);

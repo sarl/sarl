@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +28,7 @@ import org.eclipse.xtext.xbase.lib.Procedures;
 
 /**
  * Description of a task an agent has schedule to be performed at a later time.
+ *
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -33,7 +39,7 @@ public class AgentTask {
 	private String name;
 	private Functions.Function1<Agent, Boolean> guard;
 	private Procedures.Procedure1<? super Agent> procedure;
-	
+
 	/**
 	 */
 	public AgentTask() {
@@ -41,7 +47,7 @@ public class AgentTask {
 	}
 
 	/** Replies the procedure that is associated to this task.
-	 * 
+	 *
 	 * @return the procedure to run.
 	 */
 	public Procedures.Procedure1<? super Agent> getProcedure() {
@@ -49,15 +55,15 @@ public class AgentTask {
 	}
 
 	/** Change the procedure associated to this task.
-	 * 
-	 * @param procedure
+	 *
+	 * @param procedure - code of the procedure to associate to the task.
 	 */
 	public void setProcedure(Procedures.Procedure1<? super Agent> procedure) {
 		this.procedure = procedure;
 	}
 
 	/** Replies the guard of this task.
-	 * 
+	 *
 	 * @return the guard.
 	 */
 	public Functions.Function1<Agent, Boolean> getGuard() {
@@ -65,8 +71,8 @@ public class AgentTask {
 	}
 
 	/** Change the guard of this task.
-	 * 
-	 * @param guard
+	 *
+	 * @param guard - the code of the function that is the predicate associated to the guard.
 	 * @see #unless(Function1)
 	 * @see #ifTrue(Function1)
 	 */
@@ -75,7 +81,7 @@ public class AgentTask {
 	}
 
 	/** Replies the name of this task.
-	 * 
+	 *
 	 * @return the name.
 	 */
 	public String getName() {
@@ -83,16 +89,16 @@ public class AgentTask {
 	}
 
 	/** Change the name of this task.
-	 * 
-	 * @param name
+	 *
+	 * @param name - name of the task.
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/** Change the gard of this that with the negation of the given predicate.
-	 * 
-	 * @param predicate
+	 *
+	 * @param predicate - the code of the function that is the predicate to test.
 	 * @return <code>this</code>.
 	 * @see #setGuard(Function1)
 	 */
@@ -102,8 +108,8 @@ public class AgentTask {
 	}
 
 	/** Change the gard to the given predicate.
-	 * 
-	 * @param predicate
+	 *
+	 * @param predicate - the code of the function that is the predicate to test.
 	 * @return <code>this</code>.
 	 * @see #setGuard(Function1)
 	 */
@@ -111,15 +117,14 @@ public class AgentTask {
 		this.guard = predicate;
 		return this;
 	}
-	
-	/** {@inheritDoc}
-	 */
+
 	@Override
 	public String toString() {
-		return "AgentTask: "+this.name; //$NON-NLS-1$
+		return "AgentTask: " + this.name; //$NON-NLS-1$
 	}
 
-	/**
+	/** Private implementation of a negation function.
+	 *
 	 * @author $Author: srodriguez$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -139,4 +144,5 @@ public class AgentTask {
 		}
 
 	}
+
 }

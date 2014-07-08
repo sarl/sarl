@@ -11,7 +11,7 @@
 
 	<packaging>pom</packaging>
 
-	<name>SARL Documentation</name>
+	<name>Documentation Parent</name>
 
 	<modules>
 		<module>io.sarl.docs.suite</module>

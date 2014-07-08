@@ -11,8 +11,8 @@
 
 	<artifactId>io.sarl.maven.sdk</artifactId>
 
-	<name>SARL SDK</name>
-	<description>SARL SDK provides all necessary dependencies to develop a MAS using SARL.</description>
+	<name>SDK for Maven</name>
+	<description>Provides all necessary dependencies to develop a MAS using SARL.</description>
 
 	<dependencies>
 

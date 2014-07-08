@@ -9,6 +9,6 @@
 
 	<artifactId>io.sarl.sdk</artifactId>
 	<packaging>eclipse-feature</packaging>
-	<name>SARL SDK</name>
+	<name>Eclipse Feature for SARL SDK</name>
 
 </project>

@@ -9,7 +9,8 @@
 	<groupId>io.sarl.maven</groupId>
 	<artifactId>io.sarl.maven</artifactId>
 	<packaging>pom</packaging>
-	<name>SARL Runtime Library</name>
+	<name>Maven Artifact Parent</name>
+	
 	<modules>
 		<module>io.sarl.maven.sdk</module>
 	</modules>

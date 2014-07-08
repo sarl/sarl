@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,8 +25,8 @@ import java.util.Comparator;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 
 /**
- * Comaprator of JvmIdentifiableElements.
- * 
+ * Comparator of JvmIdentifiableElements.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -29,20 +34,24 @@ import org.eclipse.xtext.common.types.JvmIdentifiableElement;
  */
 public class JvmIdentifiableComparator implements Comparator<JvmIdentifiableElement> {
 
-	/**
+	/** Construct a comparator of JvmIdentifiables.
 	 */
 	public JvmIdentifiableComparator() {
 		//
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public int compare(JvmIdentifiableElement o1, JvmIdentifiableElement o2) {
-		if (o1==o2) return 0;
-		if (o1==null) return Integer.MIN_VALUE;
-		if (o2==null) return Integer.MAX_VALUE;
+		if (o1 == o2) {
+			return 0;
+		}
+		if (o1 == null) {
+			return Integer.MIN_VALUE;
+		}
+		if (o2 == null) {
+			return Integer.MAX_VALUE;
+		}
 		return o1.getQualifiedName().compareTo(o2.getQualifiedName());
 	}
-	
+
 }

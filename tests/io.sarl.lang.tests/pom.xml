@@ -13,7 +13,8 @@
 	<artifactId>io.sarl.lang.tests</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 
-	<name>SARL Lang Tests</name>
+	<name>Compiler Tests</name>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -22,4 +23,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>

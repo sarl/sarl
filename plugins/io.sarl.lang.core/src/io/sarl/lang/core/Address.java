@@ -1,11 +1,16 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,31 +25,29 @@ import java.util.UUID;
 
 /**
  * This class describes all the addresses used by the kernel to identify its
- * elements
- * 
+ * elements.
+ *
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public class Address implements Serializable, Comparable<Address> {
-	
 
 	private static final long serialVersionUID = 1519844913685586094L;
 
 	/**
-	 * The global unique identifier of this kernel
+	 * The global unique identifier of this kernel.
 	 */
 	private final UUID agentId;
-	
+
 	private final SpaceID spaceId;
 
 	/**
-	 * Create an address based on the specified identifier
-	 * 
-	 * @param spaceId is the identifier of the space related to this address.
-	 * @param agentId
-	 *            is the identifier of the address.
+	 * Create an address based on the specified identifier.
+	 *
+	 * @param spaceId - the identifier of the space related to this address.
+	 * @param agentId - is the identifier of the address.
 	 */
 	public Address(SpaceID spaceId, UUID agentId) {
 		assert agentId != null;
@@ -62,18 +65,16 @@ public class Address implements Serializable, Comparable<Address> {
 				+ ", spaceId=" + this.spaceId //$NON-NLS-1$
 				+ "]"; //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * Replies the identifier associated to this address.
-	 * 
+	 *
 	 * @return the identifier associated to this address.
 	 */
 	public UUID getUUID() {
 		return this.agentId;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public int hashCode() {
 		int result = 1;
@@ -83,83 +84,74 @@ public class Address implements Serializable, Comparable<Address> {
 	}
 
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof Address){
-			return equals((Address)obj);
+		if (obj instanceof Address) {
+			return equals((Address) obj);
 		}
 		return false;
 	}
 
 	/**
 	 * Test if this address and the given one are equal.
-	 * 
-	 * @param address
-	 *            is the address to be compared.
+	 *
+	 * @param address - is the address to be compared.
 	 * @return <code>true</code> if this address and the given one are equal,
 	 *         otherwise <code>false</code>
 	 */
 	public boolean equals(Address address) {
-		return address != null && this.spaceId.equals(address.getSpaceId()) && this.agentId.equals(address.getUUID());
+		return address != null && this.spaceId.equals(address.getSpaceId())
+				&& this.agentId.equals(address.getUUID());
 	}
-
 
 	/**
 	 * Compares this object with the specified object for order. Returns a
 	 * negative integer, zero, or a positive integer as this object is less
 	 * than, equal to, or greater than the specified object.
-	 * 
 	 * <p>
-	 * The implementor must ensure <tt>sgn(x.compareTo(y)) ==
-	 * -sgn(y.compareTo(x))</tt> for all <tt>x</tt> and <tt>y</tt>. (This
-	 * implies that <tt>x.compareTo(y)</tt> must throw an exception iff
-	 * <tt>y.compareTo(x)</tt> throws an exception.)
-	 * 
+	 * The implementor must ensure <code>sgn(x.compareTo(y)) ==
+	 * -sgn(y.compareTo(x))</code> for all <code>x</code> and <code>y</code>. (This
+	 * implies that <code>x.compareTo(y)</code> must throw an exception iff
+	 * <code>y.compareTo(x)</code> throws an exception.)
 	 * <p>
 	 * The implementor must also ensure that the relation is transitive:
-	 * <tt>(x.compareTo(y)&gt;0 &amp;&amp; y.compareTo(z)&gt;0)</tt> implies
-	 * <tt>x.compareTo(z)&gt;0</tt>.
-	 * 
+	 * <code>(x.compareTo(y)&gt;0 &amp;&amp; y.compareTo(z)&gt;0)</code> implies
+	 * <code>x.compareTo(z)&gt;0</code>.
 	 * <p>
-	 * Finally, the implementor must ensure that <tt>x.compareTo(y)==0</tt>
-	 * implies that <tt>sgn(x.compareTo(z)) == sgn(y.compareTo(z))</tt>, for all
-	 * <tt>z</tt>.
-	 * 
+	 * Finally, the implementor must ensure that <code>x.compareTo(y)==0</code>
+	 * implies that <code>sgn(x.compareTo(z)) == sgn(y.compareTo(z))</code>, for all
+	 * <code>z</code>.
 	 * <p>
 	 * It is strongly recommended, but <i>not</i> strictly required that
-	 * <tt>(x.compareTo(y)==0) == (x.equals(y))</tt>. Generally speaking, any
-	 * class that implements the <tt>Comparable</tt> interface and violates this
+	 * <code>(x.compareTo(y)==0) == (x.equals(y))</code>. Generally speaking, any
+	 * class that implements the <code>Comparable</code> interface and violates this
 	 * condition should clearly indicate this fact. The recommended language is
 	 * "Note: this class has a natural ordering that is inconsistent with
 	 * equals."
-	 * 
 	 * <p>
-	 * In the foregoing description, the notation <tt>sgn(</tt><i>expression</i>
-	 * <tt>)</tt> designates the mathematical <i>signum</i> function, which is
-	 * defined to return one of <tt>-1</tt>, <tt>0</tt>, or <tt>1</tt> according
+	 * In the foregoing description, the notation <code>sgn(</code><i>expression</i>
+	 * <code>)</code> designates the mathematical <i>signum</i> function, which is
+	 * defined to return one of <code>-1</code>, <code>0</code>, or <code>1</code> according
 	 * to whether the value of <i>expression</i> is negative, zero or positive.
-	 * 
-	 * @param address
-	 *            is the address to be compared.
+	 *
+	 * @param address - is the address to be compared.
 	 * @return a negative integer, zero, or a positive integer as this object is
 	 *         less than, equal to, or greater than the specified object.
-	 * @throws ClassCastException
-	 *             if the specified object's type prevents it from being
-	 *             compared to this object.
 	 */
 	@Override
 	public int compareTo(Address address) {
-		if (address == null)
+		if (address == null) {
 			return 1;
+		}
 		return this.agentId.compareTo(address.getUUID());
 	}
 
-	/**
-	 * @return the spaceId
+	/** Replies the ID of the space related to this address.
+	 *
+	 * @return the space ID.
 	 */
 	public SpaceID getSpaceId() {
 		return this.spaceId;
 	}
+
 }
