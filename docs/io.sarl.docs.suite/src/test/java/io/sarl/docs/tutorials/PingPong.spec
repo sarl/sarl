@@ -249,7 +249,11 @@ describe "Agent Communication: the Ping Pong Agents"{
 			 * The SARL SDK contains the class `AddressScope`.
 			 * It is an implementation of a `Scope` on addresses
 			 * (an address is the identifier
-			 * of an agent in the default space).
+			 * of an agent in the default space). The creation
+			 * of an instanceof of `AddressScope` is done
+			 * with the utility function `Scopes.addresses(Address*)`,
+			 * which is getting a collection of addresses for building
+			 * the maching predicate in the scope.
 			 * 
 			 * In the following code, the scope permits to
 			 * restrict to the initial sender of the `Ping` event. 
@@ -263,14 +267,14 @@ describe "Agent Communication: the Ping Pong Agents"{
 					on Ping {
 						emit(
 							new Pong( occurrence.index ),
-							AddressScope.getScope( occurrence.source )
+							Scopes.addresses( occurrence.source )
 						)
 					}
 				}
 				'''.parsesSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong
 					import io.sarl.core.DefaultContextInteractions
-					import io.sarl.util.AddressScope
+					import io.sarl.util.Scopes
 					event Ping {
 						val index : int
 						new (i : int) {
@@ -355,14 +359,14 @@ describe "Agent Communication: the Ping Pong Agents"{
 					on Pong {
 						emit(
 							new Ping( occurrence.index + 1 ),
-							AddressScope.getScope( occurrence.source )
+							Scopes.addresses( occurrence.source )
 						)
 					}
 				}
 				'''.parsesSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong
 					import io.sarl.core.DefaultContextInteractions
-					import io.sarl.util.AddressScope
+					import io.sarl.util.Scopes
 					event Ping {
 						val index : int
 						new (i : int) {
@@ -397,7 +401,7 @@ describe "Agent Communication: the Ping Pong Agents"{
 					on Pong {
 						emit(
 							new Ping( occurrence.index + 1 ),
-							AddressScope.getScope( occurrence.source )
+							Scopes.addresses( occurrence.source )
 						)
 					}
 					on Initialize {
@@ -408,7 +412,7 @@ describe "Agent Communication: the Ping Pong Agents"{
 					"package io.sarl.docs.tutorials.pingpong
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.core.Initialize
-					import io.sarl.util.AddressScope
+					import io.sarl.util.Scopes
 					event Ping {
 						val index : int
 						new (i : int) {
@@ -466,7 +470,7 @@ describe "Agent Communication: the Ping Pong Agents"{
 					on Pong {
 						emit(
 							new Ping( occurrence.index + 1 ),
-							AddressScope.getScope( occurrence.source )
+							Scopes.addresses( occurrence.source )
 						)
 					}
 					on Initialize {
@@ -484,7 +488,7 @@ describe "Agent Communication: the Ping Pong Agents"{
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.core.Initialize
 					import io.sarl.core.Schedules
-					import io.sarl.util.AddressScope
+					import io.sarl.util.Scopes
 					event Ping {
 						val index : int
 						new (i : int) {

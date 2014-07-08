@@ -408,15 +408,20 @@ describe "Built-in Capacity Reference" {
 			 *     }
 			 *
 			 * 
-			 * A default implementation of a scope using addresses is provided:
-			 * `io.sarl.util.AddressScope`.
-			 * 
-			 * You must also use the utilities functions for creating scopes.
+			 * It is recommended to use the SARL utilities functions for creating scopes.
 			 * They are defined in the class `io.sarl.util.Scopes`.
 			 * The following example is equivalent to the feature call of
 			 * `emit` without the scoping parameter:
-			 * 
+			 *
 			 *     emit(new Event, Scopes::allParticipants)
+			 *
+			 * 
+			 * A default implementation of a scope using addresses is
+			 * implemented in the Java class `io.sarl.util.AddressScope`.
+			 * The utility class `Scopes` provides the `addresses` function for
+			 * for creating an instance of `AddressScope`.
+			 *
+			 *     emit(new Event, Scopes::addresses(a1, a2))
 			 * 
 			 * 
 			 * 
@@ -429,16 +434,18 @@ describe "Built-in Capacity Reference" {
 			fact "Sending an Event to Specific Agents in the Default Space"{
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.DefaultContextInteractions
-					import io.sarl.util.AddressScope
 					import io.sarl.util.Scopes
+					import io.sarl.lang.core.Address
 					event E
 					agent A {
 						uses DefaultContextInteractions
 						def myaction {
+						    var a1 : Address
+						    var a2 : Address
 							var e : E
 							e = new E
-							emit(e, AddressScope::getScope)
 							emit(e, Scopes::allParticipants)
+							emit(e, Scope::addresses(a1, a2))
 						}
 					}".parsesSuccessfully
 			}

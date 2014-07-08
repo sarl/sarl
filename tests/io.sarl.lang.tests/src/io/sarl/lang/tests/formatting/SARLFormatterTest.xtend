@@ -320,11 +320,11 @@ class SARLFormatterTest {
 				if(f.directory){
 					if(!f.name.equals(".")&& !f.name.equals("..")) {
 						val targetID = FileSearchAgent.spawnInContext(innerContext,#[f.absolutePath,false.toString]);
-						innerContext.defaultSpace.emit(new Search =>[source=innerContext.defaultSpace.getAddress(ID); date=maxDate;fileMatch = fMatch], AddressScope.getScope(innerContext.defaultSpace.getAddress(targetID)));
+						innerContext.defaultSpace.emit(new Search =>[source=innerContext.defaultSpace.getAddress(ID); date=maxDate;fileMatch = fMatch], Scopes.addresses(innerContext.defaultSpace.getAddress(targetID)));
 					}
 				}else{
 					if((maxDate.time >= f.lastModified) && !(f.name.startsWith(".")) && (f.name.endsWith(fMatch))){
-						emit(new FoundFile =>[file = f.absolutePath],AddressScope.getScope(cmdAddr))
+						emit(new FoundFile =>[file = f.absolutePath],Scopes.addresses(cmdAddr))
 					}
 				}
 			}
@@ -345,11 +345,11 @@ class SARLFormatterTest {
 						if(f.directory) {
 							if(!f.name.equals(".") && !f.name.equals("..")) {
 								val targetID = FileSearchAgent.spawnInContext(innerContext, # [ f.absolutePath , false.toString ]);
-								innerContext.defaultSpace.emit(new Search => [source = innerContext.defaultSpace.getAddress(ID) ; date = maxDate ; fileMatch = fMatch], AddressScope.getScope(innerContext.defaultSpace.getAddress(targetID)));
+								innerContext.defaultSpace.emit(new Search => [source = innerContext.defaultSpace.getAddress(ID) ; date = maxDate ; fileMatch = fMatch], Scopes.addresses(innerContext.defaultSpace.getAddress(targetID)));
 							}
 						} else {
 							if((maxDate.time >= f.lastModified) && !(f.name.startsWith(".")) && (f.name.endsWith(fMatch))) {
-								emit(new FoundFile => [file = f.absolutePath], AddressScope.getScope(cmdAddr))
+								emit(new FoundFile => [file = f.absolutePath], Scopes.addresses(cmdAddr))
 							}
 						}
 					}
