@@ -445,7 +445,7 @@ describe "Built-in Capacity Reference" {
 							var e : E
 							e = new E
 							emit(e, Scopes::allParticipants)
-							emit(e, Scope::addresses(a1, a2))
+							emit(e, Scopes::addresses(a1, a2))
 						}
 					}".parsesSuccessfully
 			}
