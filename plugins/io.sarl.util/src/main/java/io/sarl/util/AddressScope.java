@@ -45,7 +45,7 @@ public class AddressScope implements Scope<Address> {
 	/**
 	 * @param addrs - addresses to put in the scope.
 	 */
-	AddressScope(Address... addrs) {		
+	protected AddressScope(Address... addrs) {
 	    this.addresses = new TreeSet<>();
 	    for (Address adr : addrs) {
 	        if (adr != null) {
@@ -69,9 +69,11 @@ public class AddressScope implements Scope<Address> {
 	 *
 	 * @param addresses - addresses to put in the scope.
 	 * @return the scope restricted to the given addresses.
+	 * @deprecated see {@link Scopes#addresses(Address...)}.
 	 */
-	public final static AddressScope getScope(Address... addresses){
-		return new AddressScope(addresses);
+	@Deprecated
+	public static final Scope<Address> getScope(Address... addresses) {
+		return Scopes.addresses(addresses);
 	}
 
 }

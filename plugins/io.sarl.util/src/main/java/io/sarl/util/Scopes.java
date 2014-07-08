@@ -20,6 +20,7 @@
  */
 package io.sarl.util;
 
+import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Scope;
 
 /**
@@ -46,6 +47,15 @@ public final class Scopes {
 		return new AlwaysTrueScope<>();
 	}
 
+	/** Create an scope restricted to the given addresses.
+	 *
+	 * @param addresses - addresses to put in the scope.
+	 * @return the scope restricted to the given addresses.
+	 */
+	public static Scope<Address> addresses(Address... addresses) {
+		return new AddressScope(addresses);
+	}
+
 	private static class AlwaysTrueScope<T> implements Scope<T> {
 
 		private static final long serialVersionUID = -3193147362292037L;
@@ -66,4 +76,5 @@ public final class Scopes {
 			return true;
 		}
 	}
+
 }
