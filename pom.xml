@@ -623,17 +623,17 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 						</tag>
 						<tag>
 							<name>fires</name>
-							<placement>m</placement>
+							<placement>mc</placement>
 							<head>Fired Events:</head>
 						</tag>
 						<tag>
 							<name>generated</name>
-							<placement>m</placement>
+							<placement>a</placement>
 							<head>Generated element</head>
 						</tag>
 						<tag>
 							<name>model</name>
-							<placement>m</placement>
+							<placement>a</placement>
 							<head>Model element</head>
 						</tag>
 					</tags>
