@@ -21,9 +21,7 @@ Require-Bundle: io.sarl.lang;bundle-version="0.1.0";visibility:=reexport,
  org.eclipse.jdt.ui
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7,
- JavaSE-1.6,
- J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: io.sarl.lang.ui.quickfix,
  io.sarl.lang.ui.contentassist,
  io.sarl.lang.ui.contentassist.antlr,

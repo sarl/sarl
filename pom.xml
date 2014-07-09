@@ -27,6 +27,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 		<copyrighters>Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND</copyrighters>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<compiler.level>1.7</compiler.level>
+		<jre.environment>JavaSE-1.7</jre.environment>
 		<tycho.version>0.20.0</tycho.version>
 		<xtext.version>2.6.2</xtext.version>
 		<jnario.version>0.7.5</jnario.version>
@@ -429,6 +430,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 				<configuration>
 					<resolver>p2</resolver>
 					<pomDependencies>consider</pomDependencies>
+					<executionEnvironment>${jre.environment}</executionEnvironment>
 					<environments>
 						<environment>
 							<os>win32</os>
