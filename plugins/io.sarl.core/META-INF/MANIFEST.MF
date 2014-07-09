@@ -4,8 +4,6 @@ Bundle-SymbolicName: io.sarl.core
 Bundle-Version: 0.1.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Name: %Bundle-Name
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7,
- JavaSE-1.6,
- J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.xtend.lib;bundle-version="[2.6.2,2.7.0)",
  io.sarl.lang.core;bundle-version="0.1.0"
