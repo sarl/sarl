@@ -37,6 +37,7 @@ generated-sources
 # Temp files
 *.bak
 *~
+workspace
 
 #Others
 .DS_Store
