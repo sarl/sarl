@@ -278,7 +278,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 						<suppressionsLocation>${main.basedir}/checkstyle/suppressions.xml</suppressionsLocation>
 						<headerLocation>${main.basedir}/checkstyle/ClassHeader.txt</headerLocation>
 						<enableRSS>false</enableRSS>
-						<linkXRef>true</linkXRef>
+						<linkXRef>false</linkXRef>
 						<consoleOutput>true</consoleOutput>
 				       	<failsOnError>true</failsOnError>
 				       	<failOnViolation>true</failOnViolation>
