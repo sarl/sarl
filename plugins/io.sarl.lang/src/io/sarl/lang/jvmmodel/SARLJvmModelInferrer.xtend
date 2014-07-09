@@ -119,7 +119,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 * The dispatch method {@code infer} is called for each instance of the
 	 * given element's type that is contained in a resource.
 	 * 
-	 * @param element
+	 * @param event
 	 *            the model to create one or more
 	 *            {@link JvmDeclaredType declared
 	 *            types} from.

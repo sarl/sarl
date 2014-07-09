@@ -161,8 +161,8 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 					<version>${tycho.version}</version>
 					<configuration>
 						<encoding>${project.build.sourceEncoding}</encoding>
-						<showDeprecation>true</showDeprecation>
-						<showWarnings>true</showWarnings>
+						<showDeprecation>false</showDeprecation>
+						<showWarnings>false</showWarnings>
 						<source>${compiler.level}</source>
 						<target>${compiler.level}</target>
 					</configuration>
@@ -625,6 +625,16 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 							<name>fires</name>
 							<placement>m</placement>
 							<head>Fired Events:</head>
+						</tag>
+						<tag>
+							<name>generated</name>
+							<placement>m</placement>
+							<head>Generated element</head>
+						</tag>
+						<tag>
+							<name>model</name>
+							<placement>m</placement>
+							<head>Model element</head>
 						</tag>
 					</tags>
 				</configuration>
