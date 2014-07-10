@@ -623,7 +623,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			visibility = attrVisibility
 			attr.copyDocumentationTo(it)
 			final = (!attr.writeable)
-			static = (!attr.writeable) && (attr.initialValue!==null)
+			static = false
 			initializer = attr.initialValue
 		]
 		owner.members += field
