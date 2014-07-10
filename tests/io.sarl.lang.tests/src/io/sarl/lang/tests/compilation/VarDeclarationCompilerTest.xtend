@@ -141,11 +141,11 @@ class VarDeclarationCompilerTest {
 			    super(parentID);
 			  }
 			  
-			  protected final static List<Integer> list = null;
+			  protected final List<Integer> list = null;
 			  
-			  protected final static int i = 45;
+			  protected final int i = 45;
 			  
-			  protected final static double j = 45;
+			  protected final double j = 45;
 			}
 		''')
 	}

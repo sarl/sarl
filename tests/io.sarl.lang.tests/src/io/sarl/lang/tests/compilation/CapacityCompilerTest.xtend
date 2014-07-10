@@ -52,9 +52,9 @@ class CapacityCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class S1 extends Skill implements C1 {
-			  protected final static int field1 = 5;
+			  protected final int field1 = 5;
 			  
-			  protected final static String field2 = "";
+			  protected final String field2 = "";
 			  
 			  /**
 			   * Construct a skill.

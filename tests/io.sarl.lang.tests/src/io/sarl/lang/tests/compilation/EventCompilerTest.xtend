@@ -199,7 +199,7 @@ class EventCompilerTest {
 	}
 	
 	@Test
-	def staticField() {
+	def noStaticField() {
 			'''
 			event E1 {
 				val titi : int = 4
@@ -214,7 +214,7 @@ class EventCompilerTest {
 
 			@SuppressWarnings("all")
 			public class E1 extends Event {
-			  public final static int titi = 4;
+			  public final int titi = 4;
 			  
 			  public final int toto;
 			  
