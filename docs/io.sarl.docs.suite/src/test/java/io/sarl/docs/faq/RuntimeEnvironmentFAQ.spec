@@ -35,7 +35,7 @@ describe "Runtime Environment FAQ" {
 
 		/*  
 		 */
-		context "General FAQ" {
+		context "General Questions about Janus" {
 			
 			/* Janus is an open-source multi-agent platform fully implemented 
 			 * in Java 1.7. Janus enables developers to quickly create 
@@ -50,7 +50,7 @@ describe "Runtime Environment FAQ" {
 			 * also natively manages the concept of recursive agents and 
 			 * holons.
 			 * 
-			 * **Janus is a platform not a language.**
+			 * __Janus is a platform not a language.__
 			 * 
 			 * Official website: [www.janusproject.io](http://www.janusproject.io)
 			 * 
@@ -65,7 +65,7 @@ describe "Runtime Environment FAQ" {
 			 * the [existing SARL issues](https://github.com/sarl/sarl/issues),
 			 * nor the [existing Janus issues](https://github.com/janus-project/janusproject/issues),
 			 * you could ask to the SARL developers on 
-			 * [this page](https://github.com/janus-project/janus/issues/new).
+			 * [this page](https://github.com/janus-project/janusproject/issues/new).
 			 * 
 			 * @filter(.*) 
 			 */
@@ -153,7 +153,7 @@ describe "Runtime Environment FAQ" {
 
 		/*  
 		 */
-		context "Runtime" {
+		context "Runtime Behavior of Janus" {
 
 			/* __No__.
 			 * There is no warranty on the receiving order of the events.

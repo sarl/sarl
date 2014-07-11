@@ -35,7 +35,7 @@ describe "General FAQ on SARL" {
 
 		/*  
 		 */
-		context "General FAQ" {
+		context "General Questions about SARL" {
 			
 			/* SARL is a general-purpose agent-oriented language.
 			 * 
