@@ -83,17 +83,14 @@ describe "Agent Communication: the Ping Pong Agents"{
 			 */			
 			fact "Ping Event" {
 				'''
+				package io.sarl.docs.tutorials.pingpong
 				event Ping {
 					val index : int
 					new(i : int) {
 						this.index = i
 					}
 				}
-				'''.parsesSuccessfully(
-					"package io.sarl.docs.tutorials.pingpong",
-					// TEXT
-					""
-				)
+				'''.parsesSuccessfully
 			}
 			
 			/* The `Pong` is an event that contains the
