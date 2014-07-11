@@ -583,70 +583,24 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<sourcepath>${basedir}/src/;${basedir}/src-gen;${basedir}/xtend-gen;</sourcepath>
-					<docencoding>${project.build.sourceEncoding}</docencoding>
-					<encoding>${project.build.sourceEncoding}</encoding>
-					<charset>${project.build.sourceEncoding}</charset>
-					<show>protected</show>
-					<detectLinks>true</detectLinks>
-					<detectJavaApiLink>true</detectJavaApiLink>
-					<links>
-						<link>http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.7.0/</link>
-						<link>http://hazelcast.org/docs/latest/javadoc/</link>
-						<link>http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/</link>
-						<link>http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/</link>
-						<link>http://google-guice.googlecode.com/svn/trunk/javadoc/</link>
-					</links>
-					<docfilessubdirs>true</docfilessubdirs>
-					<excludePackageNames></excludePackageNames>
-					<breakiterator>true</breakiterator>
-					<version>true</version>
-					<author>true</author>
-					<keywords>true</keywords>
-					<useStandardDocletOptions>true</useStandardDocletOptions>
-					<excludePackageNames></excludePackageNames>
-					<bottom>&lt;small&gt;Copyright &amp;copy;
-						${project.inceptionYear}-${year} ${copyrighters}.
-					</bottom>
-					<tags>
-						<tag>
-							<name>mavengroupid</name>
-							<placement>pt</placement>
-							<head>Maven Group Id:</head>
-						</tag>
-						<tag>
-							<name>mavenartifactid</name>
-							<placement>pt</placement>
-							<head>Maven Artifact Id:</head>
-						</tag>
-						<tag>
-							<name>fires</name>
-							<placement>mc</placement>
-							<head>Fired Events:</head>
-						</tag>
-						<tag>
-							<name>generated</name>
-							<placement>a</placement>
-							<head>Generated element</head>
-						</tag>
-						<tag>
-							<name>model</name>
-							<placement>a</placement>
-							<head>Model element</head>
-						</tag>
-					</tags>
-				</configuration>
+				<artifactId>maven-clean-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>attach-javadocs</id>
+						<phase>clean</phase>
 						<goals>
-							<goal>jar</goal>
+							<goal>clean</goal>
 						</goals>
+						<configuration>
+							<filesets>
+								<fileset>
+									<directory>workspace</directory>
+								</fileset>
+							</filesets>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+
 		</plugins>
 	</build>
 
@@ -661,6 +615,72 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 			</activation>
 			<build>
 				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<configuration>
+							<sourcepath>${basedir}/src/;${basedir}/src-gen;${basedir}/xtend-gen;</sourcepath>
+							<docencoding>${project.build.sourceEncoding}</docencoding>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<charset>${project.build.sourceEncoding}</charset>
+							<show>protected</show>
+							<detectLinks>true</detectLinks>
+							<detectJavaApiLink>true</detectJavaApiLink>
+							<links>
+								<link>http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.7.0/</link>
+								<link>http://hazelcast.org/docs/latest/javadoc/</link>
+								<link>http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/</link>
+								<link>http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/</link>
+								<link>http://google-guice.googlecode.com/svn/trunk/javadoc/</link>
+							</links>
+							<docfilessubdirs>true</docfilessubdirs>
+							<excludePackageNames></excludePackageNames>
+							<breakiterator>true</breakiterator>
+							<version>true</version>
+							<author>true</author>
+							<keywords>true</keywords>
+							<useStandardDocletOptions>true</useStandardDocletOptions>
+							<excludePackageNames></excludePackageNames>
+							<bottom>&lt;small&gt;Copyright &amp;copy;
+								${project.inceptionYear}-${year} ${copyrighters}.
+							</bottom>
+							<tags>
+								<tag>
+									<name>mavengroupid</name>
+									<placement>pt</placement>
+									<head>Maven Group Id:</head>
+								</tag>
+								<tag>
+									<name>mavenartifactid</name>
+									<placement>pt</placement>
+									<head>Maven Artifact Id:</head>
+								</tag>
+								<tag>
+									<name>fires</name>
+									<placement>mc</placement>
+									<head>Fired Events:</head>
+								</tag>
+								<tag>
+									<name>generated</name>
+									<placement>a</placement>
+									<head>Generated element</head>
+								</tag>
+								<tag>
+									<name>model</name>
+									<placement>a</placement>
+									<head>Model element</head>
+								</tag>
+							</tags>
+						</configuration>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
