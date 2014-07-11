@@ -1,11 +1,30 @@
 # Xtend generated files
-docs/io.sarl.docs.suite/src/test/xtend-gen
-lang/plugins/io.sarl.lang/xtend-gen
-lang/plugins/io.sarl.lang.ui/xtend-gen
-lang/tests/io.sarl.lang.tests/xtend-gen
+plugins/io.sarl.core/xtend-gen
+plugins/io.sarl.core/src/main/xtend-gen
+plugins/io.sarl.core/src/main/generated-sources
+plugins/io.sarl.core/src/test/xtend-gen
+plugins/io.sarl.core/src/test/generated-sources
 plugins/io.sarl.lang.ui/xtend-gen
+plugins/io.sarl.lang.ui/src/main/xtend-gen
+plugins/io.sarl.lang.ui/src/main/generated-sources
+plugins/io.sarl.lang.ui/src/test/xtend-gen
+plugins/io.sarl.lang.ui/src/test/generated-sources
 plugins/io.sarl.lang/xtend-gen
+plugins/io.sarl.lang/src/main/xtend-gen
+plugins/io.sarl.lang/src/main/generated-sources
+plugins/io.sarl.lang/src/test/xtend-gen
+plugins/io.sarl.lang/src/test/generated-sources
+plugins/io.sarl.lang/model/generated
+docs/io.sarl.docs.suite/xtend-gen
+docs/io.sarl.docs.suite/src/main/xtend-gen
+docs/io.sarl.docs.suite/src/main/generated-sources
+docs/io.sarl.docs.suite/src/test/xtend-gen
+docs/io.sarl.docs.suite/src/test/generated-sources
 tests/io.sarl.lang.tests/xtend-gen
+tests/io.sarl.lang.tests/src/main/xtend-gen
+tests/io.sarl.lang.tests/src/main/generated-sources
+tests/io.sarl.lang.tests/src/test/xtend-gen
+tests/io.sarl.lang.tests/src/test/generated-sources
 
 # NetBean / Eclipse
 bin
@@ -23,7 +42,6 @@ bin
 
 # Maven
 target
-generated-sources
 
 # Compiled files
 *.class
