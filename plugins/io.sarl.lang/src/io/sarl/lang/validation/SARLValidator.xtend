@@ -50,6 +50,7 @@ import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.xtext.common.types.JvmAnnotationTarget
 import org.eclipse.xtext.common.types.JvmConstructor
 import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmGenericType
@@ -64,10 +65,16 @@ import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XBooleanLiteral
 import org.eclipse.xtext.xbase.XConstructorCall
 import org.eclipse.xtext.xbase.XFeatureCall
+import org.eclipse.xtext.xbase.XMemberFeatureCall
+import org.eclipse.xtext.xbase.XTypeLiteral
+import org.eclipse.xtext.xbase.XbasePackage
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
+import org.eclipse.xtext.xtype.XImportDeclaration
+import org.eclipse.xtext.xtype.XtypePackage
 
 import static io.sarl.lang.util.ModelUtil.*
+import org.eclipse.xtext.common.types.JvmMember
 
 /**
  * Validator for the SARL elements.
@@ -1063,6 +1070,176 @@ class SARLValidator extends AbstractSARLValidator {
 						IssueCodes::DISCOURAGED_CAPACITY_DEFINITION,
 						capacity.name,
 						"aFunction")
+			}
+		}
+	}
+
+	protected def boolean isDeprecated(EObject t) {
+			if (t instanceof JvmAnnotationTarget) {
+				if (hasAnnotation(t, typeof(Deprecated))) {
+					return true
+				}
+			}
+			return false
+	}
+	
+	protected def boolean isContainerDeprecated(EObject t) {
+			var EObject visitor = t
+			while (visitor instanceof JvmMember) {
+				if (visitor.deprecated) {
+					return true
+				}
+				visitor = visitor.declaringType
+			}
+			return false
+	}
+
+	/**
+	 * @param type
+	 */
+	@Check(CheckType.NORMAL)
+	public def checkDeprecated(JvmTypeReference type) {
+		if (!IssueCodes::DEPRECATED_FEATURE.ignored
+			&& type.type !== null) {
+			if (type.type.deprecated) {
+				addIssue(String::format("Deprecated type: %s. Please consider its replacement.",
+							type.identifier),
+							type,
+							null,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							IssueCodes::DEPRECATED_FEATURE)
+			}
+			else if (type.type.containerDeprecated) {
+				addIssue(String::format("The type %s is defined inside a deprecated type. Please consider its replacement.",
+							type.identifier),
+							type,
+							null,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							IssueCodes::DEPRECATED_FEATURE)
+			}
+		}
+	}
+	
+	/**
+	 * @param decl
+	 */
+	@Check(CheckType.NORMAL)
+	public def checkDeprecated(XImportDeclaration decl) {
+		if (!IssueCodes::DEPRECATED_FEATURE.ignored
+			&& decl.importedType !== null) {
+			if (decl.importedType.deprecated) {
+				addIssue(String::format("Deprecated type: %s. Please consider its replacement.",
+							decl.importedType.identifier),
+							decl,
+							XtypePackage.Literals.XIMPORT_DECLARATION__IMPORTED_TYPE,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							IssueCodes::DEPRECATED_FEATURE)
+			}
+			else if (decl.importedType.containerDeprecated) {
+				addIssue(String::format("The type %s is defined inside a deprecated type. Please consider its replacement.",
+							decl.importedType.identifier),
+							decl,
+							XtypePackage.Literals.XIMPORT_DECLARATION__IMPORTED_TYPE,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							IssueCodes::DEPRECATED_FEATURE)
+			}
+		}
+	}
+	
+	/**
+	 * @param expression
+	 */
+	@Check(CheckType.NORMAL)
+	public def checkDeprecated(XFeatureCall expression) {
+		if (!IssueCodes::DEPRECATED_FEATURE.ignored) {
+			if (expression.feature.deprecated) {
+				addIssue(String::format("Deprecated element: %s. Please consider its replacement.",
+							expression.feature.identifier),
+							expression,
+							null,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							IssueCodes::DEPRECATED_FEATURE)
+			}
+			else if (expression.feature.containerDeprecated) {
+				addIssue(String::format("The element %s is defined inside a deprecated type. Please consider its replacement.",
+							expression.feature.identifier),
+							expression,
+							null,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							IssueCodes::DEPRECATED_FEATURE)
+			}
+		}
+	}
+
+	/**
+	 * @param expression
+	 */
+	@Check(CheckType.NORMAL)
+	public def checkDeprecated(XMemberFeatureCall expression) {
+		if (!IssueCodes::DEPRECATED_FEATURE.ignored) {
+			if (expression.feature.deprecated) {
+				addIssue(String::format("Deprecated element: %s. Please consider its replacement.",
+							expression.feature.identifier),
+							expression,
+							XbasePackage.Literals.XABSTRACT_FEATURE_CALL__FEATURE,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							IssueCodes::DEPRECATED_FEATURE)
+			}
+			else if (expression.feature.containerDeprecated) {
+				addIssue(String::format("This element is defined inside a deprecated type. Please consider its replacement.",
+							expression.feature.identifier),
+							expression,
+							XbasePackage.Literals.XABSTRACT_FEATURE_CALL__FEATURE,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							IssueCodes::DEPRECATED_FEATURE)
+			}
+		}
+	}
+
+	/**
+	 * @param expression
+	 */
+	@Check(CheckType.NORMAL)
+	public def checkDeprecated(XConstructorCall expression) {
+		if (!IssueCodes::DEPRECATED_FEATURE.ignored) {
+			if (expression.constructor.deprecated) {
+				addIssue("Deprecated constructor. Please consider its replacement.",
+							expression,
+							XbasePackage.Literals.XCONSTRUCTOR_CALL__CONSTRUCTOR,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							IssueCodes::DEPRECATED_FEATURE)
+			}
+			else if (expression.constructor.containerDeprecated) {
+				addIssue("This constructor is defined inside a deprecated type. Please consider its replacement.",
+							expression,
+							XbasePackage.Literals.XCONSTRUCTOR_CALL__CONSTRUCTOR,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							IssueCodes::DEPRECATED_FEATURE)
+			}
+		}
+	}
+
+	/**
+	 * @param expression
+	 */
+	@Check(CheckType.NORMAL)
+	public def checkDeprecated(XTypeLiteral expression) {
+		if (!IssueCodes::DEPRECATED_FEATURE.ignored) {
+			if (expression.type.deprecated) {
+				addIssue(String::format("Deprecated type: %s. Please consider its replacement.",
+							expression.type.identifier),
+							expression,
+							XbasePackage.Literals.XTYPE_LITERAL__TYPE,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							IssueCodes::DEPRECATED_FEATURE)
+			}
+			else if (expression.type.containerDeprecated) {
+				addIssue(String::format("This type %s is defined inside a deprecated type. Please consider its replacement.",
+							expression.type.identifier),
+							expression,
+							XbasePackage.Literals.XTYPE_LITERAL__TYPE,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							IssueCodes::DEPRECATED_FEATURE)
 			}
 		}
 	}

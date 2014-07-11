@@ -440,6 +440,24 @@ public final class ModelUtil {
 		return null;
 	}
 
+	/** Replies if the given target is annotated.
+	 *
+	 * @param op - the annoted element.
+	 * @param annotationType - the type of the annotation to consider
+	 * @return <code>true</code> if the op is annotated with the given annotation type,
+	 * otherwise <code>false</code>.
+	 */
+	public static boolean hasAnnotation(JvmAnnotationTarget op, Class<?> annotationType) {
+		String n = annotationType.getName();
+		for (JvmAnnotationReference aref : op.getAnnotations()) {
+			JvmAnnotationType an = aref.getAnnotation();
+			if (n != null && n.equals(an.getQualifiedName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/** Compare the two strings as they are version numbers.
 	 *
 	 * @param v1 - first version to compare.
