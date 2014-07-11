@@ -29,7 +29,7 @@ import org.jnario.runner.CreateWith
  * 
  */
 @CreateWith(SARLSpecCreator)
-describe "Frequently Asked Questions" {
+describe "General FAQ on SARL" {
 
 		@Inject extension SARLParser
 
@@ -37,15 +37,28 @@ describe "Frequently Asked Questions" {
 		 */
 		context "General FAQ" {
 			
-			/* If you cannot find an answer to your question in
-			 * the FAQ nor the reference documents nor
-			 * the [existing issues](https://github.com/sarl/sarl/issues), you
-			 * could ask to the SARL developers on 
-			 * [this page](https://github.com/sarl/sarl/issues/new).
+			/* SARL is a general-purpose agent-oriented language.
+			 * 
+			 * SARL aims at providing the fundamental abstractions 
+			 * for dealing with concurrency, distribution, interaction, 
+			 * decentralization, reactivity, autonomy and dynamic 
+			 * reconfiguration. These high-level features are now 
+			 * considered as the major requirements for an easy and 
+			 * practical implementation of modern complex software 
+			 * applications. We are convinced that the agent-oriented 
+			 * paradigm holds the keys to effectively meet this challenge.
+			 * 
+			 * Considering the variety of existing approaches and 
+			 * meta-models in the field of agent-oriented engineering 
+			 * and more generally multi-agent systems, our approach 
+			 * remains as generic as possible and highly extensible 
+			 * to easily integrate new concepts and features.
+			 * 
+			 * **The language is platform- and architecture-independent.**
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Where can I ask my question?" {
+			fact "What is SARL?" {
 				true
 			}
 
@@ -133,15 +146,43 @@ describe "Frequently Asked Questions" {
 				true
 			}
 
+			/* SARL is a general-purpose agent-oriented language.
+			 * Janus is an runtime environment for multiagent applications
+			 * that fully supports the concepts of SARL.
+			 * 
+			 * We can make a parallel with the Java universe:
+			 * <table>
+			 * <tr><th></th><th>SARL Universe</th><th>Java Universe</th></tr>
+			 * <tr><td>Language Specification</th><th>SARL Specification</th><th>Java Specification</th></tr>
+			 * <tr><td>Standard Development Kit</th><th>SARL SDK</th><th>J(ava)DK</th></tr>
+			 * <tr><td>Runtime environment</th><th>Janus</th><th>Hotspot, IcedTea, Dalvik, etc.</th></tr>
+			 * </table>
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "What is the difference between SARL and Janus?" {
+				true
+			}
+
 			/* The release planning of SARL is detailed on the
 			 * [Milestones' page](https://github.com/sarl/sarl/issues/milestones) on
 			 * on the Github website.
-			 * The release planning og the Janus multiagent platform is following
-			 * the planning of SARL.
 			 * 
 			 * @filter(.*) 
 			 */
 			fact "Where can I found information on the release planning of SARL?" {
+				true
+			}
+
+			/* If you cannot find an answer to your question in
+			 * the FAQ nor the reference documents nor
+			 * the [existing issues](https://github.com/sarl/sarl/issues), you
+			 * could ask to the SARL developers on 
+			 * [this page](https://github.com/sarl/sarl/issues/new).
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Where can I ask my question?" {
 				true
 			}
 
@@ -158,17 +199,6 @@ describe "Frequently Asked Questions" {
 			 * @filter(.*) 
 			 */
 			fact "Does my operating system is compatible with SARL?" {
-				true
-			}
-
-			/* The [Janus runtime platform](http://www.janusproject.io)
-			 * is a Java application. Every operating system which has 
-			 * a compatible Java Virtual Machine (at least with the 1.7
-			 * standard) with Janus may be used to run it. 
-			 * 
-			 * @filter(.*) 
-			 */
-			fact "Does my operating system is compatible with Janus?" {
 				true
 			}
 
@@ -216,142 +246,6 @@ describe "Frequently Asked Questions" {
 			 * @filter(.*) 
 			 */
 			fact "How can I report a problem or a bug in SARL components?" {
-				true
-			}
-
-		}
-
-		/*  
-		 */
-		context "Syntax" {
-
-			/* __No__.
-			 * When a decimal point is written in the literal,
-			 * the fractional part and the mantissa part must
-			 * be specify also, even if these parts are equal
-			 * to zero.
-			 * 
-			 * @filter(.* = '''|'''|.parsesWithError.*) 
-			 */
-			fact "Can I use the same syntax as in Java for number literals?" {
-				'''
-					124.0 // Correct syntax
-					124.  // Incorrect syntax
-					0.123 // Correct syntax
-					.123  // Incorrect syntax
-				'''.parsesWithError(
-						"package io.sarl.docs.faq.syntax
-						agent A {
-							def action : double {",
-						// TEXT
-						"} }"
-				)
-			}
-			
-			/* It is not allowed to put a SARL keyword, such as
-			 * `agent`, in the name of a package.
-			 * 
-			 * But, if you prefix with the `^` character the string
-			 * that corresponds to a keyword, then it is possible
-			 * to obtain a package name with one of its components
-			 * equals to a SARL keyword:
-			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
-			 */
-			fact "Why can I put a string in the package name?" {
-				'''
-					package io.sarl.docs.faq.syntax.^agent
-				'''.parsesSuccessfully
-			}
-
-			/* __Yes and No__.
-			 * Indeed, the `val` keyword defines a name
-			 * that it could be initialized only once time.
-			 * It is similar to the `final` modifier of
-			 * the Java language.
-			 * 
-			 * Consider the example below: two values are
-			 * defined, `a` and `b`.
-			 * The `a` variable is a real constant because it
-			 * has a raw type and it is initialized.
-			 * The `b` variable is not a real constant
-			 * because it is a reference to an object.
-			 * The reference is constant, *but* the
-			 * referred object is not. Consequently, it is still
-			 * possible to call the setters of `b`. 
-			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
-			 */
-			fact "Is the 'val' keyword defining a constant?" {
-				'''
-					val a : int = 4
-					val b : Object = new Object
-				'''.parsesSuccessfully(
-						"package io.sarl.docs.faq.syntax
-						agent A {",
-						// TEXT
-						"}"
-				)
-			}
-
-			/* In SARL, the array type may be written
-			 * with the classic array syntax, such as
-			 * `int[]`, or the object-oriented syntax,
-			 * such as `List<Integer>`.
-			 * 
-			 * SARL considers that the
-			 * arrays are lists of something.
-			 * Consequently, retreiving the values of the array must
-			 * be done with `get(int)`.
-			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
-			 */
-			fact "Why cannot use the syntax 'a[0]' for arrays?" {
-				'''
-					var a : Integer[] = #[1, 2, 3]
-					var b : List<Integer> = newArrayList(1, 2, 3)
-					
-					a.get(0) == b.get(0)
-				'''.parsesSuccessfully(
-						"package io.sarl.docs.faq.syntax
-						import java.util.List
-						agent A {
-							def action : boolean {",
-						// TEXT
-						"} }"
-				)
-			}
-
-		}
-
-		/*  
-		 */
-		context "Runtime" {
-
-			/* __No__.
-			 * There is no warranty on the receiving order of the events.
-			 * This is a particular implementation choice of the runtime
-			 * environment. For example, the
-			 * [Janus runtime environment](http://www.janusproject.io) executes
-			 * the event handlers in parallel. The real order of execution depends on
-			 * how the Java executor is running the handlers on the threads.  
-			 * 
-			 * @filter(.*) 
-			 */
-			fact "Are events received in the same order than when they are sent?" {
-				true
-			}
-
-			/* __No__.
-			 * Janus was designed to discover other kernels automatically.
-			 * By default, the different instances of the Janus platform
-			 * are connected together without any particular configuration.
-			 * The sole constraint is that the kernels must be on the
-			 * same local network.  
-			 * 
-			 * @filter(.*) 
-			 */
-			fact "Must I configure the Janus kernels to be connected to other Janus kernels?" {
 				true
 			}
 
