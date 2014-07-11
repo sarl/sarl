@@ -140,9 +140,8 @@ describe "Runtime Environment FAQ" {
 				true
 			}
 
-			/* Janus developers use [Github](https://github.com/janus-project/janusproject)
-			 * to manage bug tracking and project workflow. To report your 
-			 * issue, you may submit a new issue through this platform.
+			/* You must submit your issue on 
+			 * [this page](https://github.com/janus-project/janusproject/issues/new).
 			 * 
 			 * @filter(.*) 
 			 */

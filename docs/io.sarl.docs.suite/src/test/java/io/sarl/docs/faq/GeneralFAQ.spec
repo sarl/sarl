@@ -54,7 +54,7 @@ describe "General FAQ on SARL" {
 			 * remains as generic as possible and highly extensible 
 			 * to easily integrate new concepts and features.
 			 * 
-			 * **The language is platform- and architecture-independent.**
+			 * __The language is platform- and architecture-independent.__
 			 * 
 			 * @filter(.*) 
 			 */
@@ -151,12 +151,18 @@ describe "General FAQ on SARL" {
 			 * that fully supports the concepts of SARL.
 			 * 
 			 * We can make a parallel with the Java universe:
-			 * <table>
+			 * <center>
+			 * <table class="table-bordered" width="80%">
+			 * <thead>
 			 * <tr><th></th><th>SARL Universe</th><th>Java Universe</th></tr>
+			 * </thead>
+			 * <tbody>
 			 * <tr><td>Language Specification</th><th>SARL Specification</th><th>Java Specification</th></tr>
 			 * <tr><td>Standard Development Kit</th><th>SARL SDK</th><th>J(ava)DK</th></tr>
 			 * <tr><td>Runtime environment</th><th>Janus</th><th>Hotspot, IcedTea, Dalvik, etc.</th></tr>
+			 * </tbody>
 			 * </table>
+			 * <center>
 			 * 
 			 * @filter(.*) 
 			 */
@@ -239,9 +245,8 @@ describe "General FAQ on SARL" {
 				true
 			}
 
-			/* SARL developers use [Github](https://github.com/sarl/sarl)
-			 * to manage bug tracking and project workflow. To report your 
-			 * issue, you may submit a new issue through this platform.
+			/* You must submit your issue on 
+			 * [this page](https://github.com/sarl/sarl/issues/new).
 			 * 
 			 * @filter(.*) 
 			 */

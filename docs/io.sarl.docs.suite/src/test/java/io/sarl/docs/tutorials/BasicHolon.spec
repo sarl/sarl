@@ -26,6 +26,9 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 /**
+ * <div class="bt-download">
+ * <a href="http://maven.sarl.io/last-demos-release.jar"><img alt="Download the Binary JAR file" src="../../../../images/download-icon.png"/></a>
+ * </div>
  * This document describes the basics of the creation
  * and design of holons in SARL. This tutorial is applied
  * on a simple English auction application.
@@ -53,7 +56,7 @@ import org.jnario.runner.CreateWith
  * may be read.
  * 
  * The source code related to this tutorial may be found
- * in the [SARL demos](https://github.com/sarl/sarl-demos/tree/master/src/main/sarl/io/sarl/docs/tutorials/basicholon).
+ * in the [SARL demos](https://github.com/sarl/sarl-demos/tree/master/src/main/sarl/io/sarl/docs/tutorials/holonicauction).
  */
 @CreateWith(SARLSpecCreator)
 describe "English Auction with Holons"{
@@ -94,8 +97,8 @@ describe "English Auction with Holons"{
 		 *    the auction and the winner is the bidder with the higher
 		 *    bid.
 		 *
-		 * **By a design choice, the bidders are sub-agents of
-		 * the auctioneer agent.**
+		 * __By a design choice, the bidders are sub-agents of
+		 * the auctioneer agent.__
 		 */
 		context "Principle of the Application" {
 			//
@@ -104,33 +107,31 @@ describe "English Auction with Holons"{
 		/*
 		 * According to the
 		 * [Built-in Capacity Reference](../reference/BuiltInCapacityReferenceSpec.html),
-		 * a sub-agent is living in the **inner context** of
+		 * a sub-agent is living in the __inner context__ of
 		 * a super-agent.
 		 * Each agent defines its own context, called the inner context,
 		 * where other agents can live. Therefore, every agent can be seen 
 		 * as a part of a larger
-		 * [holon](http://en.wikipedia.org/wiki/Holon_(philosophy)),
-		 * **and** at the same time be composed 
-		 * by other agents that exist in its *inner context*. 
+		 * <a href="http://en.wikipedia.org/wiki/Holon_(philosophy)">holon</a>,
+		 * __and__ at the same time be composed 
+		 * by other agents that exist in its _inner context_. 
 		 * 
 		 * <span class="label label-info">Note</span> According to the
 		 * SARL specifications, all the agents in a context belong to
 		 * the default space of this context. This property is important
-		 * for designing the communication links between the two levels
+		 * for designing the communication links between two adjacent levels
 		 * in the hierarchy of agents. The default space of the inner context
 		 * becomes the natural place where the super-agent and
-		 * its sub-agents are communicating.
+		 * its sub-agents are interacting.
 		 */
 		context "Why are the sub-agents in the inner context?" {
 			//
 		}
 
-		/* In the application, two events are needed:
-		 * 
-		 *  * The event from the auctioneer for
-		 *    notifying the bidders of the new price; and
-		 *  * The event that is sent by a bidder to
-		 *    the auctioneer with a bid inside.
+		/* In the application, two events are neede: the event from
+		 * the auctioneer for notifying the bidders of the new price; and
+		 * the event that is sent by a bidder to the auctioneer with a 
+		 * bid inside.
 		 */
 		context "Definitions of the events" {
 
@@ -185,14 +186,11 @@ describe "English Auction with Holons"{
 		context "Definition of the bidder" {
 
 			/* The initial definition of the bidder is below.
-			 * 
 			 * The `random` attribute contains an instance of
 			 * a random number generator (from the Java library).
-			 * 
 			 * The `maxPrice` attribute is the maximum value
 			 * of the price that the bidder will consider for
 			 * bidding.
-			 * 
 			 * The bidder is randomly selecting the maximum price
 			 * between 100 and 1000.
 			 * 
@@ -219,20 +217,24 @@ describe "English Auction with Holons"{
 
 			/* The definition of the bidder agent is extended
 			 * by the bidding behavior.
-			 * 
 			 * The bidding must occur when the auctioneer is
 			 * notifying a new price, i.e. when the `Price` event
 			 * is received.
-			 * 
 			 * The bidder is computing its offer and the corresponding
 			 * new price. If this last is not exceeding the maximal
-			 * price, then the bidder is sending its bid by
-			 * sending a `Bid` event.
+			 * price, then the bidder is sending its bid in a `Bid` event.
 			 * 
-			 * <span class="label label-warning">Important</span>
-			 * The `Bid` event is sending in the default space of
-			 * the default context of the bidder. But there is no
-			 * restriction on the event's receiver. 
+			 * <span class="label label-warning">Interaction</span>
+			 * For sending data to its super-agent, a sub-agent must
+			 * fire an event in the default space of the inner context
+			 * of the super-agent.
+			 * 
+			 * 
+			 * <span class="label label-warning">Caution</span>
+			 * The `Bid` event is sent in the default space.
+			 * But there is no restriction on the event's receiver.
+			 * It means that the other sub-agents __and__ the
+			 * super-agent will receive this event. 
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 			 */
@@ -284,11 +286,15 @@ describe "English Auction with Holons"{
 			/* For restricting the receiving of the `Bid` event
 			 * to the auctioneer, it is mandatory to specify a
 			 * scope for the event.
-			 * 
 			 * For supporting the holonic communication from
 			 * the sub-agent to the super-agent, the scope
 			 * of the event corresponds to the address of the
 			 * super-agent in the default space.
+			 * 
+			 * <span class="label label-info">Note</span>
+			 * The ID of the super-agent is always the same as
+			 * the ID of the default context in which the
+			 * sub-agent is belonging to. 
 			 * 
 			 * Below, we update the bidding behavior by creating
 			 * a scope, and providing it to the `emit` function.
@@ -351,10 +357,8 @@ describe "English Auction with Holons"{
 		context "Definition of the auctioneer" {
 
 			/* The initial definition of the auctioneer is defined below.
-			 * 
 			 * The auctioneer is starting the auction with a price of 50.
 			 * It is notifying the bidders with an `Price` event.
-			 * 
 			 * Because the bidders are sub-agents, they are living
 			 * in the inner context of the auctioneer.
 			 * For sending the `Price` event to the bidders, the
@@ -403,16 +407,15 @@ describe "English Auction with Holons"{
 			}
 
 			/* The creation of the sub-agents in the auctioneer
-			 * needs to spawn an agent in the inner context.
-			 * The `Lifecycle` capacity gives to the
+			 * needs to spawn agents in the inner context.
+			 * The `Lifecycle` capacity gives the
 			 * `spawnInContext` function.
 			 * This function permits to create an agent in
 			 * a particular context.
-			 * 
 			 * Below, we create the 3 bidders in the inner context
 			 * of the auctioneer. For obtaining the inner context,
 			 * we need to use the `InnerContextAccess` capacity,
-			 * which is providing the `getInnerContext` function.
+			 * which rovides the `getInnerContext` function.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 			 */
@@ -458,11 +461,9 @@ describe "English Auction with Holons"{
 			/* The auctioneer is waiting for bids.
 			 * This behavior is coded inside the behavior
 			 * unit dedicated to the `Bid` event.
-			 * 
 			 * We add a guard on the `isAuctionOpened` attribute
 			 * to execute the behavior only if the auction is still
 			 * opened. We will see later when the auction is closed.
-			 * 
 			 * If the value of the received bid is greater than
 			 * the current price, the source of the `Bid` event
 			 * becomes the new potential winner. 
@@ -521,9 +522,8 @@ describe "English Auction with Holons"{
 				)
 			}
 
-			/* The auctioneer must way some time before it
+			/* The auctioneer must wait some time before it
 			 * is closing the auction due to lake of bid.
-			 * 
 			 * To reproduce this behavior, we introduce a
 			 * periodic task, which is executed every 10
 			 * seconds for checking if a bid was provided
@@ -534,9 +534,8 @@ describe "English Auction with Holons"{
 			 * It provides the `every` function that is
 			 * executing its second parameter at a fixed delay,
 			 * given by the first parameter.
-			 * 
 			 * In the task's code, we test if a bid was received.
-			 * If not, the auctioneer is closing the auction,
+			 * If not, the auctioneer closes the auction,
 			 * and outputs the appropriate message.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
@@ -608,8 +607,8 @@ describe "English Auction with Holons"{
 				)
 			}
 
-			/* Because the periodic task and the event handlers are
-			 * executed in parallel, we are facing a classic problem
+			/* Because the periodic task and the event handlers may be
+			 * executed in parallel, we are facing a classical problem
 			 * in concurrent programming: how to ensure that two
 			 * blocks of code are not executed at the same time for
 			 * avoiding any conflicting access on the same data.
@@ -619,7 +618,7 @@ describe "English Auction with Holons"{
 			 * meaning as in the Java language). This operator ensures
 			 * that two blocks of code, which are synchronized on the
 			 * same Object (the parameter of the operator) cannot be
-			 * executed in parallel.
+			 * executed in parallel by different threads.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 			 */
@@ -703,12 +702,11 @@ describe "English Auction with Holons"{
 		 * cause all the agents waiting something that will
 		 * never append.
 		 * 
-		 * **We need to stop the agents**
+		 * __We need to stop the agents.__
 		 * 
-		 * <span class="label label-error">Important</span> In the
+		 * <span class="label label-warning">Important</span> In the
 		 * specification of SARL, an super-agent cannot be killed
 		 * if there is some other agent belonging to its inner context.
-		 * 
 		 * Consequently, for stopping the agents, we need to stop the
 		 * sub-agents before the super-agent. 
 		 */
@@ -718,13 +716,12 @@ describe "English Auction with Holons"{
 			 * the agent's life is made by the auctioneer,
 			 * this last must notify its sub-agents that
 			 * is it time to commit a suicide.
-			 * 
 			 * We introduce the `StopAuction` event that
 			 * is used for this particular notification task.
 			 *  
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 			 */			
-			fact "Price event" {
+			fact "StopAuction event" {
 				'''
 				event StopAuction
 				'''.parsesSuccessfully(
@@ -737,7 +734,6 @@ describe "English Auction with Holons"{
 			/* The code of the bidder must be updated for
 			 * reacting on the receiving of the `StopAuction`
 			 * event.
-			 * 
 			 * When this event is received, the bidder agent
 			 * is killing itself by calling the `killMe` function.
 			 * This function is provided by the `Lifecycle`
@@ -803,12 +799,10 @@ describe "English Auction with Holons"{
 			/* The code of the auctioneer must be updated for
 			 * firing the `StopAuction` event, and for killing
 			 * itself when there is no more sub-agent.
-			 * 
-			 * The periodic task is update with a `wake` call
+			 * Firstly, the periodic task is updated with a `wake` call
 			 * that permits to notify the sub-agents of the end
 			 * of the auction.
-			 * 
-			 * In this periodic task, if the auction is closed,
+			 * Secondly, in this periodic task, if the auction is closed,
 			 * then the auctioneer is killing itself if the
 			 * `hasMemberAgent` function replies false.
 			 * This function is provided by the `InnerContextAccess`
@@ -911,29 +905,73 @@ describe "English Auction with Holons"{
 		 * <span class="label label-warning">Important</span> In this section,
 		 * we explain how to launch the agents from the command line interface.
 		 * For launching the agents from the Eclipse IDE, please read
-		 * ["Run SARL Agent in the Eclipse IDE"](../gettingstarted/RunSARLAgentInEclipseIDESpec.html).
+		 * ["Run SARL Agent in the Eclipse IDE"](../gettingstarted/RunSARLAgentInTheEclipseIDESpec.html).
 		 */
-		context "Launching the agents" {
+		context "Compile and Launch the agents" {
 			
-			/* The principle is to run the auctioneer agent in an instance of the 
-			 * Janus platform. The other agents will be created inside the same
-			 * instance of Janus.
+			/* You must have a file that contains
+			 * the compiled files of the tutorial, the Janus platform,
+			 * and all the needed libraries by SARL and Janus.
 			 *
+			 * You could directly download this file by clicking on
+			 * the download icon at the top of this page; or by compiling
+			 * the source code yourself.
+			 *  
+			 * If you download the source code of the
+			 * [SARL demos](https://github.com/sarl/sarl-demos/), and
+			 * compile them with [Maven](http://maven.apache.org),
+			 * you will obtain a JAR file with all the mandatory elements
+			 * inside. This file is located in the `target` folder,
+			 * and it has a name similar to
+			 * `sarl-demos-0.1.0-with-dependencies.jar`.
+			 * 
+			 * @filter(.*)
+			 */
+			fact "Compile the code" {
+				true
+			}
+
+			/* Here, there is two assumptions:<ol>
+			 * <li>The file `sarl-demos-0.1.0-with-dependencies.jar`
+			 *     is runnable, i.e. it can be directly launched by the Java 
+			 *     Virtual Machine.</li>
+			 * <li>From this file, the JVM is launching the Janus bootstrap automatically, i.e.
+			 *     it has a Main-Class set to `io.janusproject.Boot`.</li>
+			 * </ol>
 			 * On the command line, you must launch Janus with:
 			 * 
-			 *     java -cp app.jar io.janusproject.Boot io.sarl.docs.tutorials.holonicauction.Auctioneer
+			 *     java -jar sarl-demos-0.1.0-with-dependencies.jar
+			 *          io.sarl.docs.tutorials.holonicauction.Auctioneer
 			 *  
-			 * The file `app.jar` contains the compiled classes of the tutorial,
-			 * the Janus platform, and the SARL libraries. The classname `io.janusproject.Boot`
-			 * corresponds to the bootstrap of the Janus platform. The first parameter after
-			 * this bootstrap is the qualified name of the agent to launch.
+			 * The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
+			 * The third parameter is the qualified name of the agent to launch.
 			 *  
 			 * @filter(.*)
 			 */
-			fact "Execute from the command line" {
+			fact "Execute with a runnable JAR" {
 				true
 			}
 			
+			/* In opposite to the previous section, we assume that
+			 * the file `sarl-demos-0.1.0-with-dependencies.jar`
+			 * is not runnable.
+			 * On the command line, you must launch Janus with:
+			 * 
+			 *     java -cp sarl-demos-0.1.0-with-dependencies.jar
+			 *          io.janusproject.Boot
+			 *          io.sarl.docs.tutorials.holonicauction.Auctioneer
+			 *  
+			 * The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
+			 * The string `io.janusproject.Boot` specify the Java class to launch: the Janus bootstrap.
+			 * The first parameter after the bootstrap is the qualified name of the 
+			 * agent to launch.
+			 *  
+			 * @filter(.*)
+			 */
+			fact "Execute without a runnable JAR" {
+				true
+			}
+
 		}
 
 }
