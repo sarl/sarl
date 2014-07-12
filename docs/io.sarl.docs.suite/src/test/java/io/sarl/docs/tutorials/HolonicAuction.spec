@@ -99,6 +99,9 @@ describe "English Auction with Holons"{
 		 *
 		 * __By a design choice, the bidders are sub-agents of
 		 * the auctioneer agent.__
+		 * 
+		 * <center>![Architecture of the Holonic Auction Application](./holonic_auction.png)</center>
+		 * 
 		 */
 		context "Principle of the Application" {
 			//
@@ -128,7 +131,7 @@ describe "English Auction with Holons"{
 			//
 		}
 
-		/* In the application, two events are neede: the event from
+		/* In the application, two events are needed: the event from
 		 * the auctioneer for notifying the bidders of the new price; and
 		 * the event that is sent by a bidder to the auctioneer with a 
 		 * bid inside.
@@ -138,7 +141,6 @@ describe "English Auction with Holons"{
 			/* The `Price` event is the event sent
 			 * by the auctioneer for notifying a
 			 * bidder that the price has changed.
-			 * 
 			 * This event contains the new price.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
@@ -157,7 +159,6 @@ describe "English Auction with Holons"{
 
 			/* The `Bid` event is the event sent
 			 * by a bidder to the auctioneer.
-			 * 
 			 * This event contains the value of the bid.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
@@ -181,7 +182,7 @@ describe "English Auction with Holons"{
 		
 		/* The bidder agent is reacting to new price notifications,
 		 * and could offer a new bid if the new price is not 
-		 * exceeding the maximal price of the bidder.
+		 * exceeding its maximal price.
 		 */
 		context "Definition of the bidder" {
 
@@ -191,8 +192,8 @@ describe "English Auction with Holons"{
 			 * The `maxPrice` attribute is the maximum value
 			 * of the price that the bidder will consider for
 			 * bidding.
-			 * The bidder is randomly selecting the maximum price
-			 * between 100 and 1000.
+			 * The bidder selects the maximum price
+			 * between 100 and 1000 randomly.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 			 */
@@ -220,21 +221,22 @@ describe "English Auction with Holons"{
 			 * The bidding must occur when the auctioneer is
 			 * notifying a new price, i.e. when the `Price` event
 			 * is received.
-			 * The bidder is computing its offer and the corresponding
-			 * new price. If this last is not exceeding the maximal
+			 * The bidder computes the new price. If this last is not
+			 * exceeding the maximal
 			 * price, then the bidder is sending its bid in a `Bid` event.
 			 * 
-			 * <span class="label label-warning">Interaction</span>
+			 * <span class="label label-warning">Interaction Principle</span>
 			 * For sending data to its super-agent, a sub-agent must
 			 * fire an event in the default space of the inner context
 			 * of the super-agent.
+			 * The `emit` function is supporting this interaction.
 			 * 
 			 * 
 			 * <span class="label label-warning">Caution</span>
 			 * The `Bid` event is sent in the default space.
-			 * But there is no restriction on the event's receiver.
-			 * It means that the other sub-agents __and__ the
-			 * super-agent will receive this event. 
+			 * But there is no restriction on the event's recipient.
+			 * It means that the super-agent __and__ the
+			 * other sub-agents will receive this event. 
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 			 */
@@ -283,7 +285,7 @@ describe "English Auction with Holons"{
 				)
 			}
 
-			/* For restricting the receiving of the `Bid` event
+			/* For restricting the recipients of the `Bid` event
 			 * to the auctioneer, it is mandatory to specify a
 			 * scope for the event.
 			 * For supporting the holonic communication from
@@ -292,9 +294,8 @@ describe "English Auction with Holons"{
 			 * super-agent in the default space.
 			 * 
 			 * <span class="label label-info">Note</span>
-			 * The ID of the super-agent is always the same as
-			 * the ID of the default context in which the
-			 * sub-agent is belonging to. 
+			 * The ID of the super-agent, and the ID of the inner
+			 * context of this super-agent are always the same. 
 			 * 
 			 * Below, we update the bidding behavior by creating
 			 * a scope, and providing it to the `emit` function.
@@ -372,6 +373,11 @@ describe "English Auction with Holons"{
 			 * innerContext.defaultSpace.emit(new Price(50))
 			 * ```
 			 * 
+			 * <span class="label label-warning">Interaction Principle</span>
+			 * For sending data to its sub-agents, a super-agent must
+			 * fire an event in the default space of its inner context.
+			 * The `wake` function is supporting this interaction.
+			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 			 */
 			fact "Initial definition" {
@@ -412,10 +418,10 @@ describe "English Auction with Holons"{
 			 * `spawnInContext` function.
 			 * This function permits to create an agent in
 			 * a particular context.
-			 * Below, we create the 3 bidders in the inner context
-			 * of the auctioneer. For obtaining the inner context,
+			 * For obtaining the inner context,
 			 * we need to use the `InnerContextAccess` capacity,
-			 * which rovides the `getInnerContext` function.
+			 * which provides the `getInnerContext` function.
+			 * Below, we create the 3 bidders. 
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 			 */
@@ -432,7 +438,7 @@ describe "English Auction with Holons"{
 					
 					on Initialize {
 						for(i : 1..3) {
-							spawnInContext(Bidder, innerContext)
+							spawnInContext(typeof(Bidder), innerContext)
 						}
 						
 						wake(new Price(50))
@@ -695,9 +701,9 @@ describe "English Auction with Holons"{
 
 		}
 
-		/* We previous code is working well at one exception.
+		/* The previous code works well at one exception.
 		 * When the auction is closed, the system does not stop.
-		 * Indeed, when the auction is closed, the auctioneer
+		 * Indeed, the auctioneer
 		 * does not send any more the `Price` event. This
 		 * cause all the agents waiting something that will
 		 * never append.
@@ -715,7 +721,7 @@ describe "English Auction with Holons"{
 			/* Because the determination of the end of
 			 * the agent's life is made by the auctioneer,
 			 * this last must notify its sub-agents that
-			 * is it time to commit a suicide.
+			 * it is time to commit a suicide.
 			 * We introduce the `StopAuction` event that
 			 * is used for this particular notification task.
 			 *  
@@ -734,7 +740,7 @@ describe "English Auction with Holons"{
 			/* The code of the bidder must be updated for
 			 * reacting on the receiving of the `StopAuction`
 			 * event.
-			 * When this event is received, the bidder agent
+			 * When it is received, the bidder agent
 			 * is killing itself by calling the `killMe` function.
 			 * This function is provided by the `Lifecycle`
 			 * capacity.

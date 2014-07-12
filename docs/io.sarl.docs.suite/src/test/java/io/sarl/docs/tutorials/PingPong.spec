@@ -62,6 +62,9 @@ describe "Agent Communication: the Ping Pong Agents"{
 		 *  
 		 * These messages contains an integer number that
 		 * indicates the number of the event.
+		 * 
+		 * <center><img src="./pingpong.png"/></center>
+		 * 
 		 */
 		context "Principle of the Application" {
 			//
