@@ -172,7 +172,7 @@
        style="stroke-width:1.5;stroke-miterlimit:4;stroke-dasharray:none" />
     <text
        xml:space="preserve"
-       style="font-size:22px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#e6e6e6;fill-opacity:1;stroke:none;font-family:Sans"
+       style="font-size:22px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        x="250.2347"
        y="113.2452"
        id="text4363"
@@ -183,7 +183,7 @@
          y="113.2452">Auctioneer</tspan></text>
     <path
        inkscape:connector-curvature="0"
-       style="fill:none;stroke:#ececec;stroke-width:1.59130477999999997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:6.36521901999999962, 6.36521901999999962;stroke-dashoffset:0"
+       style="fill:#000000;stroke:#000000;stroke-width:1.59130477999999997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:6.36521901999999962, 6.36521901999999962;stroke-dashoffset:0"
        d="M 541.11204,185.0701 189.6331,184.88118"
        id="path6402-6-5"
        inkscape:export-filename="/home/srodriguez/workspaces/presentations/pres-sarl-2014-set/images/concepts-projection.png"
@@ -191,7 +191,7 @@
        inkscape:export-ydpi="90" />
     <text
        xml:space="preserve"
-       style="font-size:18px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#e6e6e6;fill-opacity:1;stroke:none;font-family:Sans"
+       style="font-size:18px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        x="547.82886"
        y="326.44135"
        id="text4445-5"
@@ -209,13 +209,13 @@
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
        transform="translate(0,6)"
-       style="fill:#e6e6e6">
+       style="fill:#000000">
       <text
          sodipodi:linespacing="125%"
          id="text4946"
          y="168.79076"
          x="471.07025"
-         style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#e6e6e6;fill-opacity:1;stroke:none;font-family:Sans"
+         style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
          xml:space="preserve"><tspan
            y="168.79076"
            x="471.07025"
@@ -226,7 +226,7 @@
          id="text4946-1"
          y="205.56384"
          x="471.07025"
-         style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#e6e6e6;fill-opacity:1;stroke:none;font-family:Sans"
+         style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
          xml:space="preserve"><tspan
            y="205.56384"
            x="471.07025"

@@ -39,7 +39,7 @@ import org.jnario.runner.CreateWith
  * and social capacities. 
  * Figure below describes the open architecture of an agent in SARL.
  * 
- * <center><img alt="An Agent in SARL" src="./AgentBehaviors.png" width="60%" /></center>
+ * <center><img src="./agent.png"/></center>
  * 
  * The full set of Built-in Capacities will be presented in the corresponding
  * [Reference document](./BuiltinCapacityReferenceSpec.html). Among these
