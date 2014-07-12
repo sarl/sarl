@@ -100,7 +100,7 @@ describe "English Auction with Holons"{
 		 * __By a design choice, the bidders are sub-agents of
 		 * the auctioneer agent.__
 		 * 
-		 * <center>![Architecture of the Holonic Auction Application](./holonic_auction.png)</center>
+		 * <center><img src="./holonic_auction.png"/></center>
 		 * 
 		 */
 		context "Principle of the Application" {
