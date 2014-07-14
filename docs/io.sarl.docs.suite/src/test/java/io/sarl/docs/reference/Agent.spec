@@ -32,35 +32,165 @@ import org.jnario.runner.CreateWith
  * the [Skill Reference](./SkillReferenceSpec.html), and the
  * [Built-in Capacity Reference](./BuiltinCapacityReferenceSpec.html).
  * 
- * *An agent is an autonomous entity having a set of skills to realize the 
- * capacities it exhibits*.
- * An agent has a set of built-in capacities considered essential to respect the 
- * commonly accepted competences of agents, such autonomy, reactivity, proactivity 
- * and social capacities. 
- * Figure below describes the open architecture of an agent in SARL.
- * 
- * <center><img src="./agent.png"/></center>
- * 
- * The full set of Built-in Capacities will be presented in the corresponding
- * [Reference document](./BuiltinCapacityReferenceSpec.html). Among these
- * built-in capacities, is the `Behaviors` capacity that enables 
- * agents to incorporate a collection of behaviors that will determine 
- * its global conduct.
- * 
- * An agent has also a default behavior directly described within its 
- * definition. 
- * __A Behavior maps a collection of perceptions represented 
- * by Events to a sequence of Actions.__
- * The various behaviors of an agent communicate using an event-driven 
- * approach.
- * __An Event is the specification of some occurrence in a Space that may 
- * potentially trigger effects by a listener__ (e.g., agent, behavior, etc.) 
+ * __An agent is an autonomous entity having a set of skills to realize the 
+ * capacities it exhibits__.
  */
 @CreateWith(SARLSpecCreator)
 describe "Agent Reference"{
 	
 		@Inject extension SARLParser
 		
+		/* Before detailing the architecture and the definition tools of an agent,
+		 * it may be helpful to understand where is "living" an agent in the
+		 * multiagent system.
+		 * 
+		 * The following figure illustrates the position of an agent (at the center
+		 * of the figure) in different context. The details are discussed below. 
+		 * <center><img src="./contexts.png"/></center>
+		 */		
+		describe "Where is living an agent?" {
+			
+			/* When it is spawn, an agent is living inside the system in
+			 * a place named "_Context_".
+			 * 
+			 * __A Context defines the boundary of a sub-system, and 
+			 * gathers a collection of spaces__.
+			 * A Space is the support of the interaction between agents respecting 
+			 * the rules defined in the spaces' specification.
+			 * 
+			 * <span class="label label-danger">Important</span> In each context,
+			 * there is at least one particular space called _Default Space_ to which 
+			 * all agents in this context belong.
+			 * 
+			 * This ensures the existence of a common shared space to all agents
+			 * in the same context. Each agent can then create specific public or 
+			 * private spaces to achieve its personal goals (the blue space on
+			 * the figure above).
+			 * 
+			 * <span class="label label-danger">Important</span> Since their creation, 
+			 * agents are incorporated into a context called the __Default Context__.
+			 * It is important to notice that the _Default Context_ is not necessarily
+			 * the same for every agent.
+			 * 
+			 * An agent has an identifier for each space it is involved in.
+			 * For the case of event-based interaction spaces, this identifier is
+			 * called "address". 
+			 */
+			fact "Default Context" {
+				true
+			}
+			
+			/* During its lifetime, an agent may join and participate to other contexts
+			 * than the default context. they are called the external contexts of the
+			 * agent.
+			 * 
+			 * <span class="label label-info">Note</span> There is no restriction
+			 * about the number of contexts in which an agent is belonging to, except
+			 * that it is always in its default context.
+			 * 
+			 * For joining or leaving a context, the agent must use the `ExternalContextAccess`
+			 * built-in capacity. It is detailed in the
+			 * [Built-in Capacity Reference](./BuiltinCapacityReferenceSpec.html). 
+			 */
+			fact "External Contexts" {
+				true
+			}
+			
+			/* In 1967, Arthur Koestler coined the term _holon_ as an attempt to
+			 * conciliate holistic and reductionist visions of the world.
+			 * A holon represents a part-whole construct that can be seen as a 
+			 * component of a higher level system or as whole composed of other 
+			 * self-similar holons as substructures.
+			 * 
+			 * Holonic Systems grew from the need to find comprehensive construct 
+			 * that could help explain social phenomena. Since then, it came to be 
+			 * used in a wide range of domains, including Philosophy,
+			 * Manufacturing Systems, and Multi-Agents Systems.
+			 * 
+			 * Several works have studied this question and they have proposed a number
+			 * of models inspired from their experience in different domains.
+			 * In many cases, we find the idea of _agents composed of other agents_.
+			 * 
+			 * More recently, the importance of holonic multiagent systems has been
+			 * recognize by different methodologies such as [ASPECS](http://www.aspecs.org)
+			 * or O-MASE.
+			 * 
+			 * <span class="label label-info">Note</span> In SARL, we recognize 
+			 * that agents can be composed of other agents. Therefore, SARL agents
+			 * are in fact holons that can compose each other to define hierarchical 
+			 * or recursive multiagent system, called holarchies.
+			 * 
+			 * In order to achieve this, SARL agents are self-similar structures that 
+			 * compose each other via their contexts. Each agent defines its own context,
+			 * called __Inner Context__.
+			 * Because this inner context may be joined by other agents, or agents may
+			 * be spawn inside this inner context, it is possible to build a holarchy.
+			 * 
+			 * <span class="label label-danger">Important</span> An agent is always
+			 * be a participant of the default space of its inner space.
+			 * 
+			 * <span class="label label-warning">Note</span> The unique identifier
+			 * (usually a Unique Universal Identifier) of
+			 * the inner context is equal to the unique identifier of its owning agent.
+			 */
+			fact "From Flat to Hierarchical System with the Inner Context" {
+				true
+			}
+			
+			/* At the top level of the holarchy, we consider an omnipresent agent. 
+			 * It is named the __Universe Agent__ (or _Root Agent_).
+			 * The runtime environment will be in charge of spawning the 
+			 * first agents in the system as members of the Universe Agent. 
+			 * 
+			 * The inner context of the Universe Agent is called the
+			 * Universe Context, or the Janus Context if you are using the
+			 * [Janus runtime environment](http://www.janusproject.io).
+			 */
+			fact "Universe Agent and Universe Context" {
+				true
+			}
+			
+		}
+		
+		/* The architecture of an agent is illustrated by the following figure.
+		 * 
+		 * <center><img src="./agent.png"/></center>
+		 */
+		describe "Open Architecture of an Agent" {
+			
+			/*
+			 * An agent has a set of built-in capacities considered essential to respect the 
+			 * commonly accepted competences of agents, such autonomy, reactivity, pro-activity 
+			 * and social capacities. 
+			 * 
+			 * The full set of Built-in Capacities will be presented in the corresponding
+			 * [Reference document](./BuiltinCapacityReferenceSpec.html). Among these
+			 * built-in capacities, is the `Behaviors` capacity that enables 
+			 * agents to incorporate a collection of behaviors that will determine 
+			 * its global conduct.
+			 */
+			fact "Built-in Capacities" {
+				true
+			}
+
+			/*
+			 * An agent has also a default behavior directly described within its 
+			 * definition.
+			 *  
+			 * __A Behavior maps a collection of perceptions represented 
+			 * by Events to a sequence of Actions.__
+			 * The various behaviors of an agent communicate using an event-driven 
+			 * approach.
+			 * 
+			 * __An Event is the specification of some occurrence in a Space that may 
+			 * potentially trigger effects by a listener__ (e.g., agent, behavior, etc.) 
+			 */			
+			fact "Agent Behaviors" {
+				true
+			}
+			
+		}
+
 		/* An agent is declared with the `agent` keyword.
 		 * In the agent's body block, we can declare Mental States 
 		 * (in the form of attributes), Actions and Behaviors.
