@@ -75,6 +75,8 @@ describe "Agent Reference"{
 			 * An agent has an identifier for each space it is involved in.
 			 * For the case of event-based interaction spaces, this identifier is
 			 * called "address". 
+			 *  
+			 * @filter(.*) 
 			 */
 			fact "Default Context" {
 				true
@@ -91,6 +93,8 @@ describe "Agent Reference"{
 			 * For joining or leaving a context, the agent must use the `ExternalContextAccess`
 			 * built-in capacity. It is detailed in the
 			 * [Built-in Capacity Reference](./BuiltinCapacityReferenceSpec.html). 
+			 *  
+			 * @filter(.*) 
 			 */
 			fact "External Contexts" {
 				true
@@ -132,6 +136,8 @@ describe "Agent Reference"{
 			 * <span class="label label-warning">Note</span> The unique identifier
 			 * (usually a Unique Universal Identifier) of
 			 * the inner context is equal to the unique identifier of its owning agent.
+			 *  
+			 * @filter(.*) 
 			 */
 			fact "From Flat to Hierarchical System with the Inner Context" {
 				true
@@ -145,6 +151,8 @@ describe "Agent Reference"{
 			 * The inner context of the Universe Agent is called the
 			 * Universe Context, or the Janus Context if you are using the
 			 * [Janus runtime environment](http://www.janusproject.io).
+			 *  
+			 * @filter(.*) 
 			 */
 			fact "Universe Agent and Universe Context" {
 				true
@@ -168,6 +176,8 @@ describe "Agent Reference"{
 			 * built-in capacities, is the `Behaviors` capacity that enables 
 			 * agents to incorporate a collection of behaviors that will determine 
 			 * its global conduct.
+			 *  
+			 * @filter(.*) 
 			 */
 			fact "Built-in Capacities" {
 				true
@@ -184,6 +194,8 @@ describe "Agent Reference"{
 			 * 
 			 * __An Event is the specification of some occurrence in a Space that may 
 			 * potentially trigger effects by a listener__ (e.g., agent, behavior, etc.) 
+			 *  
+			 * @filter(.*) 
 			 */			
 			fact "Agent Behaviors" {
 				true
