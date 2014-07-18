@@ -30,7 +30,7 @@ import org.jnario.runner.CreateWith
  * Before reading this document, it is recommended to read
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html).
  * 
- * <!-- OUPUT OUTLINE -->
+ * <!-- OUTPUT OUTLINE -->
  * 
  * An event is one of the core concepts in SARL.
  * It is a data structure composed of attributes.

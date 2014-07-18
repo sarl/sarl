@@ -26,9 +26,6 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 /**
- * <div class="bt-download">
- * <a href="http://maven.sarl.io/last-demos-release.jar"><img alt="Download the Binary JAR file" src="../../../../images/download-icon.png"/></a>
- * </div>
  * This document describes the basics of the creation
  * and design of holons in SARL. This tutorial is applied
  * on a simple English auction application.
@@ -38,6 +35,11 @@ import org.jnario.runner.CreateWith
  * used for designing a system in which a decision must be
  * taken after arbitration among components. 
  * 
+ * <!-- OUTPUT OUTLINE -->
+ * 
+ * <div class="bt-download">
+ * <a href="http://maven.sarl.io/last-demos-release.jar"><img alt="Download the Binary JAR file" src="../../../../images/download-icon.png"/></a>
+ * </div>
  * According to the vocabulary used in the SARL project,
  * all the agents are holons. In the rest of this tutorial,
  * the terms "agent" and "holon" are synonymous. 
@@ -57,8 +59,6 @@ import org.jnario.runner.CreateWith
  * 
  * The source code related to this tutorial may be found
  * in the [SARL demos](https://github.com/sarl/sarl-demos/tree/master/src/main/sarl/io/sarl/docs/tutorials/holonicauction).
- * 
- * <!-- OUPUT OUTLINE -->
  */
 @CreateWith(SARLSpecCreator)
 describe "English Auction with Holons"{

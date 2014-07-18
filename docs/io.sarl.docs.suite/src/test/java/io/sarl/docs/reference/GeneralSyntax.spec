@@ -42,7 +42,7 @@ import org.jnario.runner.CreateWith
 /*
  * This document describes the general syntax of the SARL Language. 
  * 
- * <!-- OUPUT OUTLINE -->
+ * <!-- OUTPUT OUTLINE -->
  */
 @CreateWith(SARLSpecCreator)
 describe "General Syntax Reference" {

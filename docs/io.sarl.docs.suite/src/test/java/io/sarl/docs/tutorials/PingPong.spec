@@ -26,15 +26,17 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 /**
- * <div class="bt-download">
- * <a href="http://maven.sarl.io/last-demos-release.jar"><img alt="Download the Binary JAR file" src="../../../../images/download-icon.png"/></a>
- * </div>
  * This document describes how to create a simple
  * agent-based application in which agents are
  * exchanging basic messages.
  * Before reading this document, it is recommended to read
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html).
  * 
+ * <!-- OUTPUT OUTLINE -->
+ * 
+ * <div class="bt-download">
+ * <a href="http://maven.sarl.io/last-demos-release.jar"><img alt="Download the Binary JAR file" src="../../../../images/download-icon.png"/></a>
+ * </div>
  * The elements that are explained in this tutorial are:
  * 
  *  * the definition of an event;
@@ -45,8 +47,6 @@ import org.jnario.runner.CreateWith
  *
  * The source code related to this tutorial may be found
  * in the [SARL demos](https://github.com/sarl/sarl-demos/tree/master/src/main/sarl/io/sarl/docs/tutorials/pingpong).
- * 
- * <!-- OUPUT OUTLINE -->
  */
 @CreateWith(SARLSpecCreator)
 describe "Agent Communication: the Ping Pong Agents"{

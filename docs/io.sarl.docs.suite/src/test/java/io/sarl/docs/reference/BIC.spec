@@ -32,7 +32,7 @@ import org.jnario.runner.CreateWith
  * the [Capacity Reference](./CapacityReferenceSpec.html),
  * and the [Skill Reference](./SkillReferenceSpec.html).
  * 
- * <!-- OUPUT OUTLINE -->
+ * <!-- OUTPUT OUTLINE -->
  * 
  * A *Capacity* is the specification of a collection of actions. This specification 
  * makes no assumptions about its implementation. It could be used to specify 

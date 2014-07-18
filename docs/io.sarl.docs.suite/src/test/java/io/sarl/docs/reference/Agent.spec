@@ -32,7 +32,7 @@ import org.jnario.runner.CreateWith
  * the [Skill Reference](./SkillReferenceSpec.html), and the
  * [Built-in Capacity Reference](./BuiltinCapacityReferenceSpec.html).
  * 
- * <!-- OUPUT OUTLINE -->
+ * <!-- OUTPUT OUTLINE -->
  * 
  * __An agent is an autonomous entity having a set of skills to realize the 
  * capacities it exhibits__.

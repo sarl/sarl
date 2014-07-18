@@ -30,7 +30,7 @@ import org.jnario.runner.CreateWith
  * This document explains how to launch an agent on
  * the [Janus platform](http://www.janusproject.io).
  * 
- * <!-- OUPUT OUTLINE -->
+ * <!-- OUTPUT OUTLINE -->
  */
 @CreateWith(SARLSpecCreator)
 describe "Run SARL Agent in the Eclipse IDE" {

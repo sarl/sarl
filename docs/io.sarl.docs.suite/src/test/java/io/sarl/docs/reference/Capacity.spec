@@ -30,7 +30,7 @@ import org.jnario.runner.CreateWith
  * Before reading this document, it is recommended to read
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html).
  * 
- * <!-- OUPUT OUTLINE -->
+ * <!-- OUTPUT OUTLINE -->
  * 
  * An Action is a specification of a transformation of a part of the 
  * designed system or its environment. This transformation guarantees 
