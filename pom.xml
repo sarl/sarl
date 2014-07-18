@@ -30,7 +30,8 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 		<jre.environment>JavaSE-1.7</jre.environment>
 		<tycho.version>0.20.0</tycho.version>
 		<xtext.version>2.6.2</xtext.version>
-		<jnario.version>0.7.5</jnario.version>
+		<jnario.version>1.0.0</jnario.version>
+		<jnario.report.version>1.0.1</jnario.report.version>
 	</properties>
 
 	<!-- ======================================= -->
@@ -232,7 +233,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 				<plugin>
 					<groupId>org.jnario</groupId>
 					<artifactId>report</artifactId>
-					<version>${jnario.version}</version>
+					<version>${jnario.report.version}</version>
 				</plugin>
 
 				<plugin>

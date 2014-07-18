@@ -37,7 +37,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.jnario</groupId>
-				<artifactId>org.jnario.lib.maven</artifactId>
+				<artifactId>org.jnario.lib</artifactId>
 				<version>${jnario.version}</version>
 				<scope>test</scope>
 			</dependency>
