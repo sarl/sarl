@@ -29,6 +29,8 @@ import org.jnario.runner.CreateWith
  * environment.
  * This document explains how to launch an agent on
  * the [Janus platform](http://www.janusproject.io).
+ * 
+ * <!-- OUPUT OUTLINE -->
  */
 @CreateWith(SARLSpecCreator)
 describe "Run SARL Agent from the Command Line" {

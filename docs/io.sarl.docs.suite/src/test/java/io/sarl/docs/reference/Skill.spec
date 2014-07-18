@@ -31,6 +31,8 @@ import org.jnario.runner.CreateWith
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html),
  * and the [Capacity Reference](./CapacityReferenceSpec.html).
  * 
+ * <!-- OUPUT OUTLINE -->
+ * 
  * A *Capacity* is the specification of a collection of actions. This specification 
  * makes no assumptions about its implementation. It could be used to specify 
  * what an agent can do, what a behavior requires for its execution.

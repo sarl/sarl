@@ -27,6 +27,8 @@ import org.jnario.runner.CreateWith
 import org.eclipse.xtext.xbase.XBlockExpression
 
 /**
+ * <!-- OUPUT OUTLINE -->
+ * 
  * To create our first agent, right click on the project and follow 
  * **New > File**.
  * Name the file **demosarl.sarl**.

@@ -39,6 +39,8 @@ import java.security.Principal
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html),
  * and the [Agent Reference](./AgentReferenceSpec.html).
  * 
+ * <!-- OUPUT OUTLINE -->
+ * 
  * One of the key elements that characterize and differentiate the main 
  * multiagent approaches is how interactions between agents are described.
  * Some researchers focus on agent-to-agent interactions and corresponding 

@@ -31,6 +31,8 @@ import org.jnario.runner.CreateWith
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html),
  * and the [Agent Reference](./AgentReferenceSpec.html).
  * 
+ * <!-- OUPUT OUTLINE -->
+ * 
  * A `Behavior` is the specification of a collection of behavior units.
  * This `Behavior` may be used by an agent for building its global
  * behavior.

@@ -57,6 +57,8 @@ import org.jnario.runner.CreateWith
  * 
  * The source code related to this tutorial may be found
  * in the [SARL demos](https://github.com/sarl/sarl-demos/tree/master/src/main/sarl/io/sarl/docs/tutorials/holonicauction).
+ * 
+ * <!-- OUPUT OUTLINE -->
  */
 @CreateWith(SARLSpecCreator)
 describe "English Auction with Holons"{

@@ -29,6 +29,8 @@ import org.jnario.runner.CreateWith
  * all the necessary plug-ins installed. 
  * Alternatively, you can install SARL SDK into your existing 
  * Eclipse using the Eclipse update mechanism.
+ * 
+ * <!-- OUPUT OUTLINE -->
  */
 @CreateWith(SARLSpecCreator)
 describe "Install SARL Tools" {
