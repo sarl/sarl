@@ -535,7 +535,8 @@ describe "English Auction with Holons"{
 			 * To reproduce this behavior, we introduce a
 			 * periodic task, which is executed every 10
 			 * seconds for checking if a bid was provided
-			 * during the last 10 seconds.
+			 * during the last 10 seconds. This periodic task
+			 * is started after the first 10 seconds.
 			 * 
 			 * Coding the periodic task in SARL is done with
 			 * the `Schedules` capacity.
@@ -545,6 +546,8 @@ describe "English Auction with Holons"{
 			 * In the task's code, we test if a bid was received.
 			 * If not, the auctioneer closes the auction,
 			 * and outputs the appropriate message.
+			 * To delay the task executor about the 10 first seconds,
+			 * we use the `in` function provided by the capacity.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 			 */
@@ -566,17 +569,20 @@ describe "English Auction with Holons"{
 						
 						wake(new Price(50))
 
-						every(10000) [
-							if (!hasBid) {
-								isAuctionOpened = false
-								if (winner === null) {
-									println("No winner")
-								} else {
-									println("The winner is " + winner
-										+ " with the bid of " + maxBid)
+						in(10000) [
+							val waitTask = task("wait-task")
+							waitTask.every(10000) [
+								if (!hasBid) {
+									isAuctionOpened = false
+									if (winner === null) {
+										println("No winner")
+									} else {
+										println("The winner is " + winner
+											+ " with the bid of " + maxBid)
+									}
 								}
-							}
-							hasBid = false
+								hasBid = false
+							]
 						]
 					}
 					
@@ -648,19 +654,22 @@ describe "English Auction with Holons"{
 						
 						wake(new Price(50))
 
-						every(10000) [
-							synchronized(this) {
-								if (!hasBid) {
-									isAuctionOpened = false
-									if (winner === null) {
-										println("No winner")
-									} else {
-										println("The winner is " + winner
-											+ " with the bid of " + maxBid)
+						in(10000) [
+							val waitTask = task("wait-task")
+							waitTask.every(10000) [
+								synchronized(this) {
+									if (!hasBid) {
+										isAuctionOpened = false
+										if (winner === null) {
+											println("No winner")
+										} else {
+											println("The winner is " + winner
+												+ " with the bid of " + maxBid)
+										}
 									}
+									hasBid = false
 								}
-								hasBid = false
-							}
+							]
 						]
 					}
 					
@@ -815,6 +824,9 @@ describe "English Auction with Holons"{
 			 * `hasMemberAgent` function replies false.
 			 * This function is provided by the `InnerContextAccess`
 			 * capacity.
+			 * The periodic task must also be stopped. The
+			 * `cancel` function is invoked on the periodic task
+			 * to stop its execution.
 			 *  
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 			 */			
@@ -836,26 +848,30 @@ describe "English Auction with Holons"{
 						
 						wake(new Price(50))
 
-						every(10000) [
-							synchronized(this) {
-								if (!isAuctionOpened) {
-									if (!hasMemberAgent) {
-										killMe
-									}
-								} else {
-									if (!hasBid) {
-										isAuctionOpened = false
-										if (winner === null) {
-											println("No winner")
-										} else {
-											println("The winner is " + winner
-												+ " with the bid of " + maxBid)
+						in(10000) [
+							val waitTask = task("wait-task")
+							waitTask.every(10000) [
+								synchronized(this) {
+									if (!isAuctionOpened) {
+										if (!hasMemberAgent) {
+											killMe
+											waitTask.cancel
 										}
-										wake(new StopAuction)
+									} else {
+										if (!hasBid) {
+											isAuctionOpened = false
+											if (winner === null) {
+												println("No winner")
+											} else {
+												println("The winner is " + winner
+													+ " with the bid of " + maxBid)
+											}
+											wake(new StopAuction)
+										}
+										hasBid = false
 									}
-									hasBid = false
 								}
-							}
+							]
 						]
 					}
 					

@@ -49,7 +49,7 @@ import org.jnario.runner.CreateWith
  * in the [SARL demos](https://github.com/sarl/sarl-demos/tree/master/src/main/sarl/io/sarl/docs/tutorials/pingpong).
  */
 @CreateWith(SARLSpecCreator)
-describe "Agent Communication: the Ping Pong Agents"{
+describe "Agent Communication with the Ping Pong Agents"{
 
 		@Inject extension SARLParser
 
