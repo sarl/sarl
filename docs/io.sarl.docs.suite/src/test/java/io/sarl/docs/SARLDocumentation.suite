@@ -43,7 +43,8 @@ import io.sarl.docs.tutorials.*
 
 ##Tutorials
 
-- "Agent Communication: the Ping Pong Agents"
+- "Agent Communication with the Ping Pong Agents"
+- "Agent Communication in Sub-Space with the Ping Pong Agents"
 - "English Auction with Holons"
 
 ##Reference Documentation
