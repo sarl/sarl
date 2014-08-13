@@ -50,7 +50,7 @@ describe "Run SARL Agent from the Command Line" {
 	 * the compiled classes. The given `app.jar`
 	 * file is a Jar file that is containing the Janus
 	 * platform, the SARL libraries, and the application classes.
-	 * The last parameter is the fully qualified name of
+	 * The last argument is the fully qualified name of
 	 * the booting class of Janus: `io.janusproject.Boot`
 	 */
 	describe "Boot of Janus" { } 
@@ -72,8 +72,8 @@ describe "Run SARL Agent from the Command Line" {
 	 */
 	describe "Specify the Agent to Launch" { } 
 	
-	/* It is possible to give parameters to the launched agent.
-	 * Indeed, all the parameters given on the command line
+	/* It is possible to give arguments to the launched agent.
+	 * Indeed, all the arguments given on the command line
 	 * are put in the `parameters` attribute of the `Initialize` event.
 	 * This event is fired when the launched agent is started.
 	 */
@@ -91,13 +91,13 @@ describe "Run SARL Agent from the Command Line" {
 			true
 		}
 		
-		/* For retreiving the values passed on the command line,
+		/* For retrieving the values passed on the command line,
 		 * you must handle the `Initialize` event, as illustrated
 		 * by the following example:
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
-		fact "Retreive the Command Line Parameters in the Agent" {
+		fact "Retrieve the Command Line Parameters in the Agent" {
 			val model = '''
 				agent MyAgent {
 					on Initialize {

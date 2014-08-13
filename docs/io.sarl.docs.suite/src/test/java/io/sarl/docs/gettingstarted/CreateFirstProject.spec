@@ -34,14 +34,14 @@ import org.jnario.runner.CreateWith
 describe "Create First Project" {
 	
 	/* For creating a project, you should open your Eclipse and click on
-	 * **File > New > Projects**. Then you could select "SARL Project" in
-	 * the SARL catagory.
+	 * **File > New > Projects**, and select "SARL Project" in
+	 * the SARL category.
 	 *
 	 * <center><img alt="Select the SARL Project Type" src="./new_sarl_project_screen_1.png" width="60%" /></center>
 	 * 
 	 * After clicking on "Next", the wizard is displaying the first page for creating a SARL project.
 	 * You must enter the name of your project. You could change the standard Java environment
-	 * configuration also.
+	 * configuration as well.
 	 * 
 	 * <center><img alt="Enter the Project Information" src="./new_sarl_project_screen_2.png" width="60%" /></center>
 	 * 

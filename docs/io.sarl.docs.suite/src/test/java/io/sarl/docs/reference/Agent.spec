@@ -27,7 +27,7 @@ import org.jnario.runner.CreateWith
 
 /**
  * This document describes the features related to the definition of an agent in SARL.
- * Before reading this document, it is recommended to read
+ * Before reading this document, it is recommended reading
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html),
  * the [Skill Reference](./SkillReferenceSpec.html), and the
  * [Built-in Capacity Reference](./BuiltinCapacityReferenceSpec.html).
@@ -44,10 +44,10 @@ describe "Agent Reference"{
 		
 		/* Before detailing the architecture and the definition tools of an agent,
 		 * it may be helpful to understand where is "living" an agent in the
-		 * multiagent system.
+		 * multi-agent system.
 		 * 
 		 * The following figure illustrates the position of an agent (at the center
-		 * of the figure) in different context. The details are discussed below. 
+		 * of the figure) in different contexts. The details are discussed below. 
 		 * <center><img src="./contexts.png"/></center>
 		 */		
 		describe "Where is living an agent?" {
@@ -64,7 +64,7 @@ describe "Agent Reference"{
 			 * there is at least one particular space called _Default Space_ to which 
 			 * all agents in this context belong.
 			 * 
-			 * This ensures the existence of a common shared space to all agents
+			 * It ensures the existence of a common shared space to all agents
 			 * in the same context. Each agent can then create specific public or 
 			 * private spaces to achieve its personal goals (the blue space on
 			 * the figure above).
@@ -84,8 +84,8 @@ describe "Agent Reference"{
 				true
 			}
 			
-			/* During its lifetime, an agent may join and participate to other contexts
-			 * than the default context. they are called the external contexts of the
+			/* During its lifetime, an agent may join and participate in other contexts
+			 * that are not the default context. They are called the external contexts of the
 			 * agent.
 			 * 
 			 * <span class="label label-info">Note</span> There is no restriction
@@ -117,14 +117,14 @@ describe "Agent Reference"{
 			 * of models inspired from their experience in different domains.
 			 * In many cases, we find the idea of _agents composed of other agents_.
 			 * 
-			 * More recently, the importance of holonic multiagent systems has been
-			 * recognize by different methodologies such as [ASPECS](http://www.aspecs.org)
+			 * More recently, the importance of holonic multi-agent systems has been
+			 * recognized by different methodologies such as [ASPECS](http://www.aspecs.org)
 			 * or O-MASE.
 			 * 
 			 * <span class="label label-info">Note</span> In SARL, we recognize 
 			 * that agents can be composed of other agents. Therefore, SARL agents
 			 * are in fact holons that can compose each other to define hierarchical 
-			 * or recursive multiagent system, called holarchies.
+			 * or recursive multi-agent system, called holarchies.
 			 * 
 			 * In order to achieve this, SARL agents are self-similar structures that 
 			 * compose each other via their contexts. Each agent defines its own context,
@@ -133,7 +133,7 @@ describe "Agent Reference"{
 			 * be spawn inside this inner context, it is possible to build a holarchy.
 			 * 
 			 * <span class="label label-danger">Important</span> An agent is always
-			 * be a participant of the default space of its inner space.
+			 * a participant of the default space of its inner space.
 			 * 
 			 * <span class="label label-warning">Note</span> The unique identifier
 			 * (usually a Unique Universal Identifier) of
@@ -170,7 +170,7 @@ describe "Agent Reference"{
 			
 			/*
 			 * An agent has a set of built-in capacities considered essential to respect the 
-			 * commonly accepted competences of agents, such autonomy, reactivity, pro-activity 
+			 * commonly accepted competencies of agents, such autonomy, reactivity, pro-activity 
 			 * and social capacities. 
 			 * 
 			 * The full set of Built-in Capacities will be presented in the corresponding
@@ -349,13 +349,13 @@ describe "Agent Reference"{
 		/* The behaviors of an agent correspond to the units that are
 		 * executed by the agent for exhibiting its general behavior.
 		 * 
-		 * The execution of the behaviors are related to the lifecycle of
+		 * The execution of the behaviors are related to the life cycle of
 		 * the agents. Every agent is following the steps:
 		 * 
 		 *  * Initialization: the agent react on the `Initialize` event;
 		 *  * Lifetime: the agent execute its behaviors. They may be:
 		 *  * * reactive: the agent react when it is receiving events, or
-		 *  * * pro-active: the agent executes by itself one of its behaviors.
+		 *  * * proactive: the agent executes by itself one of its behaviors.
 		 *  * Destruction: the agent react on the `Destroy` event.
 		 * 
 		 * 
@@ -528,7 +528,7 @@ describe "Agent Reference"{
 
 			/* The reactive behavior of an agent is specified with a collection
 			 * of event handlers. The principle of a reactive behavior
-			 * is to execute a part of the agent's global behavior when something
+			 * is to execute a part of the global agent behavior when something
 			 * has happening in the agent, or in its environment.
 			 * 
 			 * In the following example, the agent is reacting to the reception
@@ -594,16 +594,16 @@ describe "Agent Reference"{
 				a.features.get(1).mustBeBehaviorUnit("io.sarl.docs.reference.ar.SomethingChanged", false)
 			}
 
-			/* A pro-active behavior is a part of the global behavior of an agent that the 
+			/* A proactive behavior is a part of the global behavior of an agent that the 
 			 * agent is deciding to execute by itself.
-			 * The execution of a reactive behavior is initiated by an part of
+			 * The execution of a reactive behavior is initiated by a part of
 			 * the code external to this behavior. In opposite, the initiator
-			 * of the execution of a pro-active behavior is the agent itself.
+			 * of the execution of a proactive behavior is the agent itself.
 			 * 
-			 * In SARL, a pro-active behavior is a behavior that is scheduled
+			 * In SARL, a proactive behavior is a behavior that is scheduled
 			 * by the agent. The scheduling mechanism is provided by the 
 			 * [`Schedules` built-in capacity](./BuiltinCapacityReferenceSpec.html).
-			 * In the following example, the agent execute its pro-active behavior
+			 * In the following example, the agent execute its proactive behavior
 			 * every second.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -640,7 +640,7 @@ describe "Agent Reference"{
 		/* An agent is an autonomous entity having a set of skills to realize the
 		 * capacities it exhibits.
 		 * An agent has a set of built-in capacities considered essential to respect the
-		 * commonly accepted competences of agents, such autonomy, reactivity, proactivity
+		 * commonly accepted competencies of agents, such autonomy, reactivity, pro-activity
 		 * and social capacities. 
 		 */		
 		describe "Capacities and Skills" {
@@ -676,7 +676,7 @@ describe "Agent Reference"{
 			 * must be created. Then, it is associated with the
 			 * implemented capacity.
 			 * In the following example, the agent is creating the
-			 * `Ski` skill. This instance is associated to
+			 * `Ski` skill. This instance is associated with
 			 * the corresponding capacity `Cap` with the
 			 * function `setSkill(Class<? extends Capacity>, Skill)`.
 			 * 
@@ -740,7 +740,7 @@ describe "Agent Reference"{
 			 * 
 			 *  * Retrieve the skill instance: the function
 			 *    `getSkill(Class<? extends Capacity>)`
-			 *    permits to retrieve the skill associated to the given capacity;
+			 *    permits retrieving the skill associated to the given capacity;
 			 *  * Invoke the capacity's action on the retrieved skill.
 			 *
 			 * 
@@ -885,7 +885,7 @@ describe "Agent Reference"{
 			}
 	
 			/* The built-in capacities are accessible in the same way
-			 * a the other capacities, with the extension methods.
+			 * as the other capacities, with the extension methods.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */

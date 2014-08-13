@@ -29,7 +29,7 @@ import org.jnario.runner.CreateWith
  * This document describes how to create a simple
  * agent-based application in which agents are
  * exchanging basic messages.
- * Before reading this document, it is recommended to read
+ * Before reading this document, it is recommended reading
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html).
  * 
  * <!-- OUTPUT OUTLINE -->
@@ -43,7 +43,7 @@ import org.jnario.runner.CreateWith
  *  * the definition of an agent;
  *  * the sending of an event occurrence in the default space;
  *  * the receiving of event occurrences; and
- *  * the definition of a _pro-active_ behavior: waiting for partners.
+ *  * the definition of a _proactive_ behavior: waiting for partners.
  *
  * The source code related to this tutorial may be found
  * in the [SARL demos](https://github.com/sarl/sarl-demos/tree/master/src/main/sarl/io/sarl/docs/tutorials/pingpong).
@@ -62,7 +62,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 		 *  * The `Ping` agent is receiving a `Pong` message and 
 		 *    replies to the sender of the `Pong` with a new `Ping` message.
 		 *  
-		 * These messages contains an integer number that
+		 * These messages contain an integer number that
 		 * indicates the number of the event.
 		 * 
 		 * <center><img src="./pingpong.png"/></center>
@@ -131,9 +131,9 @@ describe "Agent Communication with the Ping Pong Agents"{
 		 * agent that is waiting for `Ping` events, and replying
 		 * `Pong` events.
 		 */
-		context "Ponging agent" {
+		context "Pong agent" {
 
-			/* The initial definition of the ponging agent is:
+			/* The initial definition of the pong agent is:
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 			 */
@@ -148,7 +148,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 				)
 			}
 
-			/* The ponging agent needs to handle the `Ping` events.
+			/* The pong agent needs to handle the `Ping` events.
 			 * For that, a "behavior unit" must be defined in the
 			 * agent. According to the 
 			 * [Agent Reference](../reference/AgentReferenceSpec.html),
@@ -178,19 +178,19 @@ describe "Agent Communication with the Ping Pong Agents"{
 				)
 			}
 
-			/* Now, it is time to define how the ponging agent
+			/* Now, it is time to define how the pong agent
 			 * is replying with a `Pong` message.
 			 * 
-			 * First, emitting an event in the default space
+			 * First, sending an event in the default space
 			 * must be done with a built-in capacity:
 			 * `DefaultContextInteractions`. This capacity
 			 * provides a collection of functions that 
-			 * enables the agent to interect with the 
+			 * enable the agent to interact with the 
 			 * default context, and its default space.
 			 * 
-			 * For using the capacity, it is recommended to
-			 * declare it with the `uses` keyword.
-			 * This keyword permits to the agent to directly
+			 * For using the capacity, it is recommended
+			 * declaring it with the `uses` keyword.
+			 * This keyword permits the agent to directly
 			 * call the functions of the capacity as if
 			 * they were defined as actions in the agent.
 			 * 
@@ -200,13 +200,13 @@ describe "Agent Communication with the Ping Pong Agents"{
 			 * default context.
 			 * 
 			 * The `Pong` event must be built with
-			 * a index value as parameter. This parameter
+			 * an index value as argument. This argument
 			 * is the index stored in the `Ping` event.
-			 * For accessing to the occurrence of the
+			 * For accessing the occurrence of the
 			 * `Ping` event, you must use the special
 			 * keyword `occurrence`.
 			 * In the following example, the `Pong`
-			 * event is built with the index parameter
+			 * event is built with the index argument
 			 * stored in the received `Ping` event.
 			 *  
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
@@ -241,7 +241,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 
 			/* In the previous code, the event is emitted
 			 * to all the agents belonging to the default
-			 * space, including the ponging agent.
+			 * space, including the pong agent.
 			 * 
 			 * For restricting the receiver of the
 			 * `Pong` event to the initial sender of the
@@ -249,16 +249,16 @@ describe "Agent Communication with the Ping Pong Agents"{
 			 * the `Pong` event.
 			 * The `DefaultContextInteractions` capacity
 			 * provides the function `emit(Event, Scope<Address>)`
-			 * for emitting an event with a specific scope.
+			 * for sending an event with a specific scope.
 			 * 
 			 * The SARL SDK contains the class `AddressScope`.
 			 * It is an implementation of a `Scope` on addresses
 			 * (an address is the identifier
 			 * of an agent in the default space). The creation
-			 * of an instanceof of `AddressScope` is done
+			 * of an instance of `AddressScope` is done
 			 * with the utility function `Scopes.addresses(Address*)`,
 			 * which is getting a collection of addresses for building
-			 * the maching predicate in the scope.
+			 * the matching predicate in the scope.
 			 * 
 			 * In the following code, the scope permits to
 			 * restrict to the initial sender of the `Ping` event. 
@@ -303,9 +303,9 @@ describe "Agent Communication with the Ping Pong Agents"{
 		 * agent that is sending `Ping` events, and waiting for
 		 * `Pong` events.
 		 */
-		context "Pinging Agent" {
+		context "Ping Agent" {
 
-			/* The initial definition of the pinging agent is:
+			/* The initial definition of the ping agent is:
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 			 */
@@ -320,7 +320,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 				)
 			}
 
-			/* The pinging agent needs to handle the `Pong` events.
+			/* The ping agent needs to handle the `Pong` events.
 			 * For that, a "behavior unit" must be defined in the
 			 * agent.
 			 *  
@@ -345,7 +345,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 				)
 			}
 
-			/* When the pinging agent is receiving a
+			/* When the ping agent is receiving a
 			 * `Pong` event, it re-sends a `Ping` event
 			 * to the sender of the `Pong` event.
 			 * This new `Ping` event has an index greater
@@ -390,10 +390,10 @@ describe "Agent Communication with the Ping Pong Agents"{
 			}
 
 			/* For starting the exchanges among the agents,
-			 * it is mandatory to send a first occurence
+			 * it is mandatory to send a first occurrence
 			 * of the `Ping` event.
 			 * 
-			 * This emit is done when the pinging agent
+			 * This emit is done when the ping agent
 			 * is started, i.e. when the agent is
 			 * receiving the `Initialize` event.
 			 * 
@@ -436,15 +436,15 @@ describe "Agent Communication with the Ping Pong Agents"{
 			}
 
 			/* The previous code has a major problem:
-			 * if there is no ponging agent launched
-			 * when the pinging agent is emitting
+			 * if there is no pong agent launched
+			 * when the ping agent is sending
 			 * the first `Ping` event, the application
 			 * will reach a deadlock, even if
-			 * the ponging agent is launched later.
+			 * the pong agent is launched later.
 			 * 
-			 * For solving this problem, the pinging
+			 * For solving this problem, the ping
 			 * agent must wait for sending the initial
-			 * `Ping` event until the ponging agent
+			 * `Ping` event until the pong agent
 			 * is belonging to the default space.
 			 * 
 			 * The concrete implementation is based on
@@ -463,7 +463,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 			 * In this periodically executed code,
 			 * the agent is testing if it is the only
 			 * one agent belonging to the default space.
-			 * If not, the agent is emitting the initial
+			 * If not, the agent is sending the initial
 			 * `Ping` event, and stopping the periodic task.
 			 *  
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
@@ -552,14 +552,14 @@ describe "Agent Communication with the Ping Pong Agents"{
 				true
 			}
 
-			/* The principle is to run each agent is an different instance of the 
+			/* The principle is to run each agent is a different instance of the 
 			 * Janus platform.
 			 */
 			describe "Method 1: Execute each agent in their own instance of Janus" {
 				
 				/* Here, there is two assumptions:<ol>
 				 * <li>The file `sarl-demos-0.1.0-with-dependencies.jar`
-				 *     is runnable, i.e. it can be directly launched by the Java
+				 *     is executable, i.e. it can be directly launched by the Java
 				 *     Virtual Machine.</li>
 				 * <li>From this file, the JVM is launching the Janus bootstrap automatically, i.e.
 				 *     it has a Main-Class set to `io.janusproject.Boot`.</li>
@@ -575,7 +575,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 				 *          io.sarl.docs.tutorials.pingpong.PingAgent
 				 *
 				 * The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
-				 * The third parameters are the qualified names of the agents to launch.
+				 * The third arguments are the qualified names of the agents to launch.
 				 *  
 				 * @filter(.*)
 				 */
@@ -585,7 +585,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 				
 				/* In opposite to the previous section, we assume that
 				 * the file `sarl-demos-0.1.0-with-dependencies.jar`
-				 * is not runnable.
+				 * is not executable.
 				 * On the command line, you must launch Janus with:
 				 * 
 				 *     java -cp sarl-demos-0.1.0-with-dependencies.jar
@@ -600,7 +600,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 				 *   
 				 * The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
 				 * The string `io.janusproject.Boot` specify the Java class to launch: the Janus bootstrap.
-				 * The first parameters after the bootstraps are the qualified name 
+				 * The first arguments after the bootstraps are the qualified name 
 				 * of the agents to launch.
 				 *  
 				 * @filter(.*)
@@ -652,7 +652,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 					)
 				}
 				
-				/* Here, there is two assumptions:<ol>
+				/* Here, there are two assumptions:<ol>
 				 * <li>The file `sarl-demos-0.1.0-with-dependencies.jar`
 				 *     is runnable, i.e. it can be directly launched by the Java
 				 *     Virtual Machine.</li>
@@ -665,7 +665,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 				 *          io.sarl.docs.tutorials.pingpong.BootAgent
 				 * 
 				 * The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
-				 * The third parameter is the qualified name of the agent to launch.
+				 * The third argument is the qualified name of the agent to launch.
 				 *  
 				 * @filter(.*)
 				 */
@@ -675,7 +675,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 				
 				/* In opposite to the previous section, we assume that
 				 * the file `sarl-demos-0.1.0-with-dependencies.jar`
-				 * is not runnable.
+				 * is not executable.
 				 * On the command line, you must launch Janus with:
 				 * 
 				 *     java -cp sarl-demos-0.1.0-with-dependencies.jar
@@ -683,8 +683,8 @@ describe "Agent Communication with the Ping Pong Agents"{
 				 *          io.sarl.docs.tutorials.pingpong.BootAgent
 				 *   
 				 * The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
-				 * The string `io.janusproject.Boot` specify the Java class to launch: the Janus bootstrap.
-				 * The first parameter after the bootstrap is the qualified name of the agent to launch.
+				 * The string `io.janusproject.Boot` specifies the Java class to launch: the Janus bootstrap.
+				 * The first argument after the bootstrap is the qualified name of the agent to launch.
 				 *  
 				 * @filter(.*)
 				 */

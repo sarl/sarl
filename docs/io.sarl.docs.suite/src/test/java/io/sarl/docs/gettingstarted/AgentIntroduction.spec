@@ -162,7 +162,7 @@ describe "Agent Definition Introduction" {
 		 *  * `Destroy`: Notifies the destruction of the agent.
 		 *
 		 *  
-		 * This means that when agent has been spawned and its ready to 
+		 * This means that when agent has been spawned and it is ready to 
 		 * begin its execution, it will receive an `Initialize` event.
 		 * You can react to this event just like with any other event defined in SARL.
 		 * 
@@ -209,7 +209,7 @@ describe "Agent Definition Introduction" {
 		 * 
 		 * This instance is called an `occurrence`.
 		 * 
-		 * In the case of an Initialize events you can access the parameters 
+		 * In the case of an Initialize events you can access the arguments 
 		 * for the agent spawn using `occurrence.parameters`
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -257,10 +257,10 @@ describe "Agent Definition Introduction" {
 		
 		/* 
 		 * Now, we will want our agent to send data to other agents.
-		 * The data is embedded into events. The definition of an
+		 * The data are embedded into events. The definition of an
 		 * event is described above.
 		 * 
-		 * <span class="label label-note">Note</span> 
+		 * <span class="label label-info">Note</span> 
 		 * In this document, we limit our explanation to the
 		 * sending of the events in the default space of 
 		 * the default context of the agent.

@@ -27,7 +27,7 @@ import org.jnario.runner.CreateWith
 
 /**
  * This document describes how to define capacities in SARL.
- * Before reading this document, it is recommended to read
+ * Before reading this document, it is recommended reading
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html).
  * 
  * <!-- OUTPUT OUTLINE -->
@@ -48,7 +48,7 @@ import org.jnario.runner.CreateWith
  * can also dynamically change the Skill associated to a given capacity.
  * Acquiring new capacities also enables an agent to get access to new 
  * behaviors requiring these capacities. This provides agents with a self-adaptation 
- * mechanism that allow them to dynamically change their architecture according to 
+ * mechanism that allows them to dynamically change their architecture according to 
  * their current needs and goals.
  */
 @CreateWith(SARLSpecCreator)
@@ -64,7 +64,7 @@ describe "Capacity Reference"{
 			 * for the actions.
 			 * 
 			 * The definition of a capacity is done with the `capacity`
-			 * keyword. Below, a capacity that permits to log messages is defined.
+			 * keyword. Below, a capacity that permits logging messages is defined.
 			 * This capacity enables to log information and debugging messages.
 			 * 
 			 * <span class="label label-info">Note</span> Defining a capacity 
@@ -102,7 +102,7 @@ describe "Capacity Reference"{
 			 * keyword.
 			 * 
 			 * <span class="label label-danger">Important</span> A capacity 
-			 * type can extend __zero to many__ other capacity types.
+			 * type can extend __zero-to-many__ other capacity types.
 			 * This is close to the constraint on the implementation of
 			 * interfaces in the Java language.
 			 * 

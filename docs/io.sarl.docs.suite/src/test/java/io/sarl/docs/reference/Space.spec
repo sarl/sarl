@@ -35,23 +35,23 @@ import java.security.Principal
 
 /**
  * This document describes the features related to the definition of a space in SARL.
- * Before reading this document, it is recommended to read
+ * Before reading this document, it is recommended reading
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html),
  * and the [Agent Reference](./AgentReferenceSpec.html).
  * 
  * <!-- OUTPUT OUTLINE -->
  * 
  * One of the key elements that characterize and differentiate the main 
- * multiagent approaches is how interactions between agents are described.
+ * multi-agent approaches is how interactions between agents are described.
  * Some researchers focus on agent-to-agent interactions and corresponding 
  * protocols. Within organizational approaches, some consider the 
- * organization as a static partition of agents where agents interacts in 
+ * organization as a static partition of agents where agents interact in 
  * groups through the roles they play. Others focus on dynamic 
  * organizations and normative aspects. 
  * 
  * Another essential aspect of the interaction is the interaction 
- * Agent-Environment, especially in multiagent-based simulations.
- * Each of these trends of multiagent systems has led to numerous 
+ * Agent-Environment, especially in agent-based simulations.
+ * Each of these trends of multi-agent systems has led to numerous 
  * fruitful and innovative contributions.
  * To remain generic, SARL therefore not imposes a single way of 
  * describing the interaction among agents, but rather attempt to 
@@ -180,7 +180,7 @@ describe "Space Reference" {
 			 * 
 			 * The `getAddress` function replies the address in the space
 			 * of the agent that has the given identifier.
-			 * The `emit` functions permits to put an event in
+			 * The `emit` functions permits put an event in
 			 * the space.
 			 *  
 			 * @filter(.*) 
@@ -203,7 +203,7 @@ describe "Space Reference" {
 			 *
 			 * 
 			 * The functions `register` and `unregister`
-			 * permits to an agent to be involved or not.
+			 * permits an agent to be involved or not.
 			 *  
 			 * @filter(.*) 
 			 */
@@ -215,7 +215,7 @@ describe "Space Reference" {
 			}
 
 			/* When an event space needs to control the registration access,
-			 * it should be a:
+			 * it should be a "restricted access event space":
 			 * 
 			 *      public interface RestrictedAccessEventSpace extends EventSpace {
 			 * 		    public Address register(EventListener entity, Principal requester);
@@ -224,7 +224,7 @@ describe "Space Reference" {
 			 *      }
 			 *
 			 * 
-			 * The functions given by this type of space permits to implement
+			 * The functions given by this type of space permits implementing
 			 * a space with restricted access, based on the standard Java API.
 			 *  
 			 * @filter(.*) 
@@ -254,7 +254,7 @@ describe "Space Reference" {
 			 * the specification of the Java interface that is describing
 			 * the functions provided by the space.
 			 * 
-			 * The new space type must extends one of the predefined types.
+			 * The new space type must extend one of the predefined types.
 			 * In the following example, the new space is related to
 			 * the physic environment in which the agents may evolve.
 			 * This space permits to move an object.

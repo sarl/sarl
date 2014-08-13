@@ -43,7 +43,7 @@ describe "General FAQ on SARL" {
 			 * for dealing with concurrency, distribution, interaction, 
 			 * decentralization, reactivity, autonomy and dynamic 
 			 * reconfiguration. These high-level features are now 
-			 * considered as the major requirements for an easy and 
+			 * considered the major requirements for an easy and 
 			 * practical implementation of modern complex software 
 			 * applications. We are convinced that the agent-oriented 
 			 * paradigm holds the keys to effectively meet this challenge.
@@ -101,10 +101,10 @@ describe "General FAQ on SARL" {
 
 			/* __Yes__.
 			 * The SARL developers are providing the definition
-			 * of an organisational space based on the
-			 * [CRIO metamodel](http://www.aspecs.org/CRIO)
+			 * of an organizational space based on the
+			 * [CRIO meta-model](http://www.aspecs.org/CRIO)
 			 * (Capacity-Role-Interaction-Organization) for example.
-			 * This metamodel defines a system as a set of organizations 
+			 * This meta-model defines a system as a set of organizations 
 			 * in which roles are defined and interacting together. 
 			 * Agents play roles in organization instances (or groups) 
 			 * and provides embedded capacity implementations 
@@ -147,7 +147,7 @@ describe "General FAQ on SARL" {
 			}
 
 			/* SARL is a general-purpose agent-oriented language.
-			 * Janus is an runtime environment for multiagent applications
+			 * Janus is a runtime environment for multi-agent applications
 			 * that fully supports the concepts of SARL.
 			 * 
 			 * We can make a parallel with the Java universe:
@@ -171,8 +171,8 @@ describe "General FAQ on SARL" {
 			}
 
 			/* The release planning of SARL is detailed on the
-			 * [Milestones' page](https://github.com/sarl/sarl/issues/milestones) on
-			 * on the Github website.
+			 * [milestones' page](https://github.com/sarl/sarl/issues/milestones)
+			 * on the Github web site.
 			 * 
 			 * @filter(.*) 
 			 */
@@ -183,7 +183,7 @@ describe "General FAQ on SARL" {
 			/* If you cannot find an answer to your question in
 			 * the FAQ nor the reference documents nor
 			 * the [existing issues](https://github.com/sarl/sarl/issues), you
-			 * could ask to the SARL developers on 
+			 * could ask the SARL developers on 
 			 * [this page](https://github.com/sarl/sarl/issues/new).
 			 * 
 			 * @filter(.*) 

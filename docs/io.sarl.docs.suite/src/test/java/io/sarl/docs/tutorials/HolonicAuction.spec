@@ -29,7 +29,7 @@ import org.jnario.runner.CreateWith
  * This document describes the basics of the creation
  * and design of holons in SARL. This tutorial is applied
  * on a simple English auction application.
- * Before reading this document, it is recommended to read
+ * Before reading this document, it is recommended reading
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html).
  * The architecture presented in this tutorial may be
  * used for designing a system in which a decision must be
@@ -68,16 +68,17 @@ describe "English Auction with Holons"{
 		/*
 		 * This type of auction is arguably the most common form of auction in use today.
 		 * Participants bid openly against one another, with each subsequent bid required to 
-		 * be higher than the previous bid. An auctioneer may announce prices, bidders may 
-		 * call out their bids themselves.
-		 * The auction ends when no participant is willing to bid further, at which point the 
-		 * highest bidder pays their bid.
+		 * be higher than the previous bid. An auctioneer may announce prices, bidders
+		 * may call out their bids themselves.
+		 * The auction ends when no participant is willing to bid further, at which
+		 * point the highest bidder pays their bid.
 		 * Alternatively, if the seller has set a minimum sale price in advance 
 		 * (the 'reserve' price) and the final bid does not reach that price the item 
 		 * remains unsold.
-		 * Sometimes the auctioneer sets a minimum amount by which the next bid must exceed the current highest bid.
-		 * The most significant distinguishing factor of this auction type is that the current highest bid is always 
-		 * available to potential bidders.
+		 * Sometimes the auctioneer sets a minimum amount by which the next bid must
+		 * exceed the current highest bid. The most significant distinguishing factor of
+		 * this auction type is that the current highest bid is always available to 
+		 * potential bidders.
 		 * 
 		 * 
 		 * Source: [Wikipedia](http://en.wikipedia.org/wiki/Auction)
@@ -89,14 +90,14 @@ describe "English Auction with Holons"{
 		/*
 		 * The principle of the application is the following:
 		 * 
-		 *  * The application is set-up with 1 auctioneer agent and
-		 *    3 bidders agents.
+		 *  * The application is set-up with one auctioneer agent and
+		 *    three bidders agents.
 		 *  * The auctioneer is announcing the starting price.
 		 *  * The bidders are offering their bids back.
 		 *  * When a bid is received, the auctioneer is announcing
 		 *    the new price.
 		 *  * If there is no received bid, the auctioneer is closing
-		 *    the auction and the winner is the bidder with the higher
+		 *    the auction, and the winner is the bidder with the higher
 		 *    bid.
 		 *
 		 * __By a design choice, the bidders are sub-agents of
@@ -423,7 +424,7 @@ describe "English Auction with Holons"{
 			 * For obtaining the inner context,
 			 * we need to use the `InnerContextAccess` capacity,
 			 * which provides the `getInnerContext` function.
-			 * Below, we create the 3 bidders. 
+			 * Below, we create the three bidders. 
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 			 */
@@ -541,12 +542,12 @@ describe "English Auction with Holons"{
 			 * Coding the periodic task in SARL is done with
 			 * the `Schedules` capacity.
 			 * It provides the `every` function that is
-			 * executing its second parameter at a fixed delay,
-			 * given by the first parameter.
+			 * executing at a fixed delay its second argument,
+			 * given by the first argument.
 			 * In the task's code, we test if a bid was received.
 			 * If not, the auctioneer closes the auction,
 			 * and outputs the appropriate message.
-			 * To delay the task executor about the 10 first seconds,
+			 * To delay the task executor about the first ten seconds,
 			 * we use the `in` function provided by the capacity.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
@@ -631,7 +632,7 @@ describe "English Auction with Holons"{
 			 * We use the `synchronize` operator (which has the same
 			 * meaning as in the Java language). This operator ensures
 			 * that two blocks of code, which are synchronized on the
-			 * same Object (the parameter of the operator) cannot be
+			 * same Object (the argument of the operator) cannot be
 			 * executed in parallel by different threads.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
@@ -722,7 +723,7 @@ describe "English Auction with Holons"{
 		 * __We need to stop the agents.__
 		 * 
 		 * <span class="label label-warning">Important</span> In the
-		 * specification of SARL, an super-agent cannot be killed
+		 * specification of SARL, a super-agent cannot be killed
 		 * if there is some other agent belonging to its inner context.
 		 * Consequently, for stopping the agents, we need to stop the
 		 * sub-agents before the super-agent. 
@@ -817,7 +818,7 @@ describe "English Auction with Holons"{
 			 * firing the `StopAuction` event, and for killing
 			 * itself when there is no more sub-agent.
 			 * Firstly, the periodic task is updated with a `wake` call
-			 * that permits to notify the sub-agents of the end
+			 * that permits notifying the sub-agents of the end
 			 * of the auction.
 			 * Secondly, in this periodic task, if the auction is closed,
 			 * then the auctioneer is killing itself if the
@@ -957,7 +958,7 @@ describe "English Auction with Holons"{
 
 			/* Here, there is two assumptions:<ol>
 			 * <li>The file `sarl-demos-0.1.0-with-dependencies.jar`
-			 *     is runnable, i.e. it can be directly launched by the Java 
+			 *     is execuable, i.e. it can be directly launched by the Java 
 			 *     Virtual Machine.</li>
 			 * <li>From this file, the JVM is launching the Janus bootstrap automatically, i.e.
 			 *     it has a Main-Class set to `io.janusproject.Boot`.</li>
@@ -968,7 +969,7 @@ describe "English Auction with Holons"{
 			 *          io.sarl.docs.tutorials.holonicauction.Auctioneer
 			 *  
 			 * The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
-			 * The third parameter is the qualified name of the agent to launch.
+			 * The third argument is the qualified name of the agent to launch.
 			 *  
 			 * @filter(.*)
 			 */
@@ -978,7 +979,7 @@ describe "English Auction with Holons"{
 			
 			/* In opposite to the previous section, we assume that
 			 * the file `sarl-demos-0.1.0-with-dependencies.jar`
-			 * is not runnable.
+			 * is not executable.
 			 * On the command line, you must launch Janus with:
 			 * 
 			 *     java -cp sarl-demos-0.1.0-with-dependencies.jar
@@ -986,8 +987,8 @@ describe "English Auction with Holons"{
 			 *          io.sarl.docs.tutorials.holonicauction.Auctioneer
 			 *  
 			 * The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
-			 * The string `io.janusproject.Boot` specify the Java class to launch: the Janus bootstrap.
-			 * The first parameter after the bootstrap is the qualified name of the 
+			 * The string `io.janusproject.Boot` specifies the Java class to launch: the Janus bootstrap.
+			 * The first argument after the bootstrap is the qualified name of the 
 			 * agent to launch.
 			 *  
 			 * @filter(.*)

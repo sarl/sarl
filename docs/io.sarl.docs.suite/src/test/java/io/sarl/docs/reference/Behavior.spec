@@ -27,7 +27,7 @@ import org.jnario.runner.CreateWith
 
 /**
  * This document describes the features related to the definition of a behavior in SARL.
- * Before reading this document, it is recommended to read
+ * Before reading this document, it is recommended reading
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html),
  * and the [Agent Reference](./AgentReferenceSpec.html).
  * 
@@ -81,7 +81,7 @@ describe "Behavior Reference" {
 			 * the attributes may be modifiable (when declared with the `var`
 			 * keyword), or unmodifiable (when declared with the `val`
 			 * keyword).
-			 *  s
+			 *
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Behavior Attributes"{
@@ -183,7 +183,7 @@ describe "Behavior Reference" {
 				b2.features.get(0).mustBeAction("action", null, 0, false)
 			}
 
-			/* A behavior is always own by an agent.
+			/* A behavior is always owned by an agent.
 			 * Consequently, it is mandatory to pass the agent as parameter
 			 * of the behavior's constructor.
 			 * 
@@ -231,7 +231,7 @@ describe "Behavior Reference" {
 		/* The behaviors of an agent correspond to the units that are
 		 * executed by the agent for exhibiting its general behavior.
 		 * 
-		 * The `Behavior` statement permits to specify a
+		 * The `Behavior` statement permits specifying a
 		 * subset of the agent's behavior inside a single syntactic entity.
 		 * Two types of behaviors are considered:
 		 * 
@@ -331,16 +331,16 @@ describe "Behavior Reference" {
 				b.features.get(1).mustBeBehaviorUnit("io.sarl.docs.reference.br.SomethingChanged", false)
 			}
 
-			/* A pro-active behavior is a part of the global behavior of an agent that the 
+			/* A proactive behavior is a part of the global behavior of an agent that the 
 			 * agent is deciding to execute by itself.
-			 * The execution of a reactive behavior is initiated by an part of
+			 * The execution of a reactive behavior is initiated by a part of
 			 * the code external to this behavior. In opposite, the initiator
-			 * of the execution of a pro-active behavior is the agent itself.
+			 * of the execution of a proactive behavior is the agent itself.
 			 * 
-			 * In SARL, a pro-active behavior is a behavior that is scheduled
+			 * In SARL, a proactive behavior is a behavior that is scheduled
 			 * by the agent or one of its behaviors. The schedule mechanism is provided by the 
 			 * [`Schedules` built-in capacity](./BuiltinCapacityReferenceSpec.html).
-			 * In the following example, the agent execute its pro-active behavior
+			 * In the following example, the agent execute its proactive behavior
 			 * every second.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -377,7 +377,7 @@ describe "Behavior Reference" {
 		/* An agent is an autonomous entity having a set of skills to realize the
 		 * capacities it exhibits.
 		 * An agent has a set of built-in capacities considered essential to respect the
-		 * commonly accepted competences of agents, such autonomy, reactivity, proactivity
+		 * commonly accepted competencies of agents, such autonomy, reactivity, pro-activity
 		 * and social capacities. 
 		 * 
 		 * Consequently, a behavior associated to an agent is able to use the skills of this
@@ -441,7 +441,7 @@ describe "Behavior Reference" {
 			 * 
 			 *  * Retrieve the skill instance: the function
 			 *    `getSkill(Class<? extends Capacity>)`
-			 *    permits to retrieve the skill associated to the
+			 *    permits retrieving the skill associated to the
 			 *    given capacity;
 			 *  * Invoke the capacity's action on the retrieved skill.
 			 * 

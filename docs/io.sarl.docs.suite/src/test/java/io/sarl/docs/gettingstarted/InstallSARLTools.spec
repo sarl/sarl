@@ -36,7 +36,7 @@ import org.jnario.runner.CreateWith
 describe "Install SARL Tools" {
 	
 	/* You must follow the instructions given on
-	 * the [Download](/download/) page for installing the
+	 * the [download](/download/) page for installing the
 	 * SARL tools.
 	 */
 	describe "Installation Instructions" { } 

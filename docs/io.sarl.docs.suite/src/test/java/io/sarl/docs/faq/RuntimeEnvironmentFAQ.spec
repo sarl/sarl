@@ -39,14 +39,14 @@ describe "Runtime Environment FAQ" {
 			
 			/* Janus is an open-source multi-agent platform fully implemented 
 			 * in Java 1.7. Janus enables developers to quickly create 
-			 * web, enterprise and desktop multiagent-based applications.
+			 * web, enterprise and desktop agent-based applications.
 			 *  
 			 * It provides a comprehensive set of features to develop, 
-			 * run, display and monitor multiagent-based applications.
+			 * run, display and monitor agent-based applications.
 			 *  
 			 * Janus-based applications can be distributed across a network. 
 			 * Janus could be used as an agent-oriented platform, an 
-			 * organizational platform, and/or an holonic platform. It 
+			 * organizational platform, and/or a holonic platform. It 
 			 * also natively manages the concept of recursive agents and 
 			 * holons.
 			 * 
@@ -64,7 +64,7 @@ describe "Runtime Environment FAQ" {
 			 * the FAQ, nor the reference documents, nor
 			 * the [existing SARL issues](https://github.com/sarl/sarl/issues),
 			 * nor the [existing Janus issues](https://github.com/janus-project/janusproject/issues),
-			 * you could ask to the SARL developers on 
+			 * you could ask the SARL developers on 
 			 * [this page](https://github.com/janus-project/janusproject/issues/new).
 			 * 
 			 * @filter(.*) 
@@ -74,10 +74,10 @@ describe "Runtime Environment FAQ" {
 			}
 
 			/* The release planning of Janus is detailed on the
-			 * [Milestones' page](https://github.com/janus-project/janusproject/issues/milestones) on
-			 * on the Github website.
+			 * [milestones' page](https://github.com/janus-project/janusproject/issues/milestones) on
+			 * the Github web site.
 			 * 
-			 * The release planning of the Janus multiagent platform is following
+			 * The release planning of the Janus multi-agent platform is following
 			 * the [planning of SARL](https://github.com/sarl/sarl/issues/milestones).
 			 * 
 			 * @filter(.*) 
@@ -122,7 +122,7 @@ describe "Runtime Environment FAQ" {
 			/* The sources of Janus are available on
 			 * [Github](https://github.com/janus-project/janusproject).
 			 * Details for getting the source code may be found on the
-			 * [official website of Janus](http://www.janusproject.io). 
+			 * [official web site of Janus](http://www.janusproject.io). 
 			 * 
 			 * @filter(.*) 
 			 */

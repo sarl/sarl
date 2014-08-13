@@ -49,7 +49,7 @@ describe "General Syntax Reference" {
 
 	@Inject extension SARLParser
 	
-	/* SARL, like Java, is a statically typed language. In fact it completely supports 
+	/* SARL, like Java, is a statically typed language. In fact, it completely supports 
 	 * Java's type system, including the primitive types like _int_ or _boolean_, 
 	 * arrays and all the Java classes, interfaces, enumerations and annotations that reside 
 	 * on the class path.
@@ -62,11 +62,11 @@ describe "General Syntax Reference" {
 	 * 
 	 * One of the problems with Java is that you are forced to write type signatures 
 	 * over and over again. That is why so many people do not like static typing. 
-	 * But this is in fact not a problem of static typing but simply a problem with 
+	 * But this is in fact not a problem of static typing, but simply a problem with 
 	 * Java. Although SARL is statically typed just like Java, you rarely have to 
 	 * write types down because they can be computed from the context.
 	 * 
-	 * In addition to Java's autoboxing to convert primitives to their corresponding wrapper 
+	 * In addition to Java's auto-boxing to convert primitives to their corresponding wrapper 
 	 * types (e.g. _int_ is automatically converted to _Integer_ when needed), there are 
 	 * additional conversion rules in SARL: arrays are automatically converted to
 	 * `List<ComponentType>` and vice versa.
@@ -91,7 +91,7 @@ describe "General Syntax Reference" {
 	 * Indeed, the name fragment `event` corresponds to a keyword
 	 * of SARL.
 	 * 
-	 * For solving this problem (since some names comes from Java, and
+	 * For solving this problem (since some names come from Java, and
 	 * this language has not the same set of keywords than SARL), it
 	 * is possible to prefix the name fragment with the character `^`:
 	 * 
@@ -127,7 +127,7 @@ describe "General Syntax Reference" {
 		 * In the following example, the qualified name of the agent is
 		 * `io.sarl.docs.reference.gsr`.
 		 * 
-		 * <span class="label label-note">Note</span> If the 
+		 * <span class="label label-info">Note</span> If the 
 		 * `package` keyword is not used, the default package will
 		 * be used. The default package has an empty name.
 		 * It is recommended in the SARL Best Practices to specify a package's
@@ -252,11 +252,11 @@ describe "General Syntax Reference" {
 		}	 
 
 		/* A large part of a SARL script contains the definitions of
-		 * the top-level features. These features are core concepts
+		 * the top-level features. These features are the core concepts
 		 * of SARL, such as `agent`, `event`, or
 		 * `capacity`.
 		 * 
-		 * All these top-level features are documented in there own
+		 * All these top-level features are documented in their own
 		 * reference document.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -338,7 +338,7 @@ describe "General Syntax Reference" {
 		/* Character literals use the same notation as String literals. 
 		 * If a single character literal is used in a context where a 
 		 * primitive char or the wrapper type `Character` is expected, 
-		 * the compiler will treat the literal as such a value 
+		 * the compiler will treat the literal as a value 
 		 * or instance.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -362,7 +362,7 @@ describe "General Syntax Reference" {
 		}
 			
 		/* SARL supports roughly the same number literals as Java.
-		 * There is two exceptions: there is no notation for specifying octal numbers, and 
+		 * There are two exceptions: there is no notation for specifying octal numbers, and 
 		 * if you put the dot character in a number, you must specify the fractional and mantissa parts.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -558,7 +558,7 @@ describe "General Syntax Reference" {
 
 		 /* It is easy to create instances of collections since the methods in 
 		* `CollectionLiterals` are automatically imported.
-		* They permits to create instances of the collections from the JDK.
+		* They permit to create instances of the collections from the JDK.
 		* 
 		* @filter(.* = '''|'''|.parsesSuccessfully.*)
 		*/
@@ -582,7 +582,7 @@ describe "General Syntax Reference" {
 		
 		 /* In addition, SARL supports collection literals to create 
 		* immutable collections and arrays, depending on the 
-		* target type. There is three types of immutable
+		* target type. There are three types of immutable
 		* collections: array, set, and hash table.
 		* 
 		* @filter(.* = '''|'''|.parsesSuccessfully.*)
@@ -1017,11 +1017,11 @@ describe "General Syntax Reference" {
 		 * The variable needs to be declared with the keyword `var`, which 
 		 * stands for 'variable' if it should be allowed to reassign its value.
 		 * 
-		 * Variables declared outside of a lambda expression using the `var` keyword
+		 * Variables declared outside a lambda expression using the `var` keyword
 		 * are not accessible from within the lambda expressions. Those declared with the
 		 * `val` keyword are accessible.
 		 * 
-		 * Fields declared outside of a lambda expression using the `var` keyword
+		 * Fields declared outside a lambda expression using the `var` keyword
 		 * or the `val` keyword are accessible from within the lambda expressions.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -1085,7 +1085,7 @@ describe "General Syntax Reference" {
 	 *      def NAME [([PARAMETER, PARAMETER, PARAMETER...])] [: RETURN TYPE] [BLOCK]
 	 *
 	 * 
-	 * <span class="label label-warning">Note</span> The parameters are 
+	 * <span class="label label-info">Note</span> The parameters are 
 	 * implicitly declared with the keyword `val`.
 	 */
 	describe "Function Declarations" {
@@ -1208,7 +1208,7 @@ describe "General Syntax Reference" {
 		 * 
 		 * <span class="label label-warning">Important</span> In SARL, 
 		 * if a formal parameter has a default value, the following formal 
-		 * parameters do not need to have default value also. This is a major
+		 * parameters do not need to have default value as well. This is a major
 		 * difference with the default values in the C++ language for instance. 
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -1293,7 +1293,7 @@ describe "General Syntax Reference" {
 	}
 
 	/* A simple name can refer to a field, variable or parameter. 
-	 * In addition, it can point to a method with zero arguments, since 
+	 * In addition, it can point to a method with zero argument since 
 	 * empty parentheses are optional.
 	 */
 	describe "Field Access and Method Invocation" {
@@ -1394,7 +1394,7 @@ describe "General Syntax Reference" {
 		}
 
 		/* Checking for null references can make code very unreadable. 
-		 * In many situations it is ok for an expression to return `null`
+		 * In many situations, it is correct for an expression to return `null`
 		 * if a receiver was `null`.
 		 * 
 		 * SARL supports the safe navigation operator `?`. to make such code
@@ -1421,7 +1421,7 @@ describe "General Syntax Reference" {
 		/* When it is possible to extend an existing type,
 		 * the methods can be overridden.
 		 * In this case, the `super` keyword
-		 * permits to invoke the inherited implementation of the method from
+		 * permits invoking the inherited implementation of the method from
 		 * the overriding method.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
@@ -1453,7 +1453,7 @@ describe "General Syntax Reference" {
 
 	}
 
-	/* Constructor calls corresponds to the calls of a constructor function for
+	/* Constructor calls correspond to the calls of a constructor function for
 	 * an object.
 	 */ 
 	describe "Constructor Call" {
@@ -1492,9 +1492,9 @@ describe "General Syntax Reference" {
 		 * The syntax is similar to Java: the `super` keyword
 		 * is used to represent the inherited constructor.
 		 * 
-		 * <span class="label label-warning">Important</span> It is recommended to type the
-		 * two parenthesis when invoking the default constructor of the super type.
-		 * Indeed, in some cases, typing `super` causes no side effect that is an error.
+		 * <span class="label label-warning">Important</span> It is recommended typing the
+		 * two parentheses when invoking the default constructor of the super type.
+		 * Indeed, in some cases, typing `super` causes no side-effect that is an error.
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -1700,8 +1700,8 @@ describe "General Syntax Reference" {
 			)
 		}
 		
-		/* When a method call's last parameter is a lambda it can be passed right after 
-		 * the parameter list.
+		/* When the last argument of a method call is a lambda, it can be passed right after 
+		 * the argument list.
 		 * 
 		 * For instance if you want to sort some strings by their length, you could write
 		 * the following two codes.
@@ -1826,7 +1826,7 @@ describe "General Syntax Reference" {
 	}
 
 	/* The switch expression is very different from Java's switch statement. The use of switch is 
-	 * not limited to certain values but can be used for any object reference. 
+	 * not limited to certain values, but can be used for any object reference. 
 	 * The operator `==` or its Java-equivalent `Object.equals(Object)` are 
 	 * used to compare the value in the case with the one you are switching over.
 	 */
@@ -1846,7 +1846,7 @@ describe "General Syntax Reference" {
 		 * The main expression (parameter of `switch`) can also be a computed value instead 
 		 * of a field or variable.
 		 * 
-		 * <span class="label label-danger">Important</span> 
+		 * <span class="label label-warning">Important</span> 
 		 * A case must contains an expression. If you want to do nothing
 		 * for a given case, put an empty block.
 		 * 
@@ -2039,7 +2039,7 @@ describe "General Syntax Reference" {
 
 	}
 
-	/* SARL supports exception throwning and catching.
+	/* SARL supports exception throwing and catching.
 	 * The mechanism is similar to the one of Java.
 	 */
 	describe "Exception Support" {
@@ -2064,7 +2064,7 @@ describe "General Syntax Reference" {
 		
 		/* The try-catch-finally expression is used to handle exceptional situations. 
 		 * Checked exceptions are treated like runtime exceptions and only optionally 
-		 * validated. You can but do not have to catch them as they will be silently thrown. 
+		 * validated. You can, but do not have to, catch them as they will be silently thrown. 
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -2091,8 +2091,9 @@ describe "General Syntax Reference" {
 			)
 		}
 
-		/* For try-catch, it is again beneficial that it is an expression, because you 
-		 * can write code like the following and do not have to rely on non-final variables: 
+		/* For try-catch, the argument is an expression. Consequently, you can
+		 * write code like the following and do not have to rely on
+		 * non-final variables: 
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */

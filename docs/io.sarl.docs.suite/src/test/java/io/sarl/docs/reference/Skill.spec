@@ -27,7 +27,7 @@ import org.jnario.runner.CreateWith
 
 /**
  * This document describes how to define skills in SARL.
- * Before reading this document, it is recommended to read
+ * Before reading this document, it is recommended reading
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html),
  * and the [Capacity Reference](./CapacityReferenceSpec.html).
  * 

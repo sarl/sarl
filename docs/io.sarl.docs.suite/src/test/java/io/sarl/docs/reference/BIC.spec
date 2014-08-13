@@ -27,7 +27,7 @@ import org.jnario.runner.CreateWith
 
 /**
  * This document describes the built-in capacities in SARL.
- * Before reading this document, it is recommended to read
+ * Before reading this document, it is recommended reading
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html),
  * the [Capacity Reference](./CapacityReferenceSpec.html),
  * and the [Skill Reference](./SkillReferenceSpec.html).
@@ -42,10 +42,10 @@ import org.jnario.runner.CreateWith
  * constraints of this specification.
  * 
  * In SARL, every agent has a set of *built-in capacities* considered essential 
- * to respect the commonly accepted competences of agents.
+ * to respect the commonly accepted competencies of agents.
  * These capacities are considered the main building blocks on top of which other 
  * higher level capacities and skills can be constructed.
- * They are defined on the SARL language but the skill implementing them are provided 
+ * They are defined in the SARL language, but the skills implementing them are provided 
  * by the runtime environment, e.g. the [Janus platform](http://www.janus-project.io).
  * This runtime environment is responsible for creating them and injecting them in 
  * the agent before their execution begins.
@@ -53,7 +53,7 @@ import org.jnario.runner.CreateWith
  * already available.
  * 
  * The following figure presents the different contexts associated to an agent `A`.
- * Several built-in capacities permit to access and manage these contexts.
+ * Several built-in capacities permit accessing and manage these contexts.
  * The agents are represented by stylized humans, the contexts by the blue boxes,
  * and the spaces by the small color boxes in the contexts.
  * 
@@ -68,7 +68,7 @@ describe "Built-in Capacity Reference" {
 		 * [context](SpaceReferenceSpec.html) that the agent is a part of, and actions
 		 * required to join new [contexts](SpaceReferenceSpec.html), and leave them.
 		 * 
-		 * The context supported by this built-in capacity is the "external contexts",
+		 * The context supported by this built-in capacity is the "external context,"
 		 * illustrated by the top-right context in the figure above.
 		 */
 		describe "ExternalContextAccess" {
@@ -80,7 +80,7 @@ describe "Built-in Capacity Reference" {
 			 *
 			 * 
 			 * The agent must have joined (see below) the context before calling this 
-			 * action. Or, the agent may use its `parentContextID` to access to the
+			 * action. Or, the agent may use its `parentContextID` for accessing the
 			 * context in which it is located (the default context).
 			 *  
 			 * @filter(.*) 
@@ -142,7 +142,7 @@ describe "Built-in Capacity Reference" {
 			 * is forbidden.
 			 * 
 			 * <span class="label label-warning">Important</span> The context must already 
-			 * exists, and the default space inside this context must have the same ID 
+			 * exist, and the default space inside this context must have the same ID 
 			 * as `expectedDefaultSpaceID`.
 			 * 
 			 * This action fires two events:
@@ -199,7 +199,7 @@ describe "Built-in Capacity Reference" {
 		/* The built-in capacity `InnerContextAccess` provides access to 
 		 * the inner context of the agent.
 		 * This is a key feature for creating holonic agent implementation.
-		 * The context supported by this built-in capacity is the "inner context",
+		 * The context supported by this built-in capacity is the "inner context,"
 		 * illustrated by the bottom context in the figure above.
 		 */
 		describe "InnerContextAccess" {
@@ -272,7 +272,7 @@ describe "Built-in Capacity Reference" {
 		
 		/* The `DefaultContextInteractions` capacity is actually provided
 		 * for convenience. It assumes that the action will be performed on the 
-		 * agent's __default context__ or its __default space__.
+		 * agent __default context__ or its __default space__.
 		 * These context and space
 		 * are illustrated by the top-left context in the figure above. 
 		 * 
@@ -410,7 +410,7 @@ describe "Built-in Capacity Reference" {
 			 *     }
 			 *
 			 * 
-			 * It is recommended to use the SARL utilities functions for creating scopes.
+			 * It is recommended using the SARL utility functions for creating scopes.
 			 * They are defined in the class `io.sarl.util.Scopes`.
 			 * The following example is equivalent to the feature call of
 			 * `emit` without the scoping parameter:
@@ -421,7 +421,7 @@ describe "Built-in Capacity Reference" {
 			 * A default implementation of a scope using addresses is
 			 * implemented in the Java class `io.sarl.util.AddressScope`.
 			 * The utility class `Scopes` provides the `addresses` function for
-			 * for creating an instance of `AddressScope`.
+			 * creating an instance of `AddressScope`.
 			 *
 			 *     emit(new Event, Scopes::addresses(a1, a2))
 			 * 
@@ -478,7 +478,7 @@ describe "Built-in Capacity Reference" {
 			 * 
 			 * <span class="label label-danger">Important</span> If the killed 
 			 * agent was a composed agent, it must not have members any more before 
-			 * calling this action. Otherwise a `RuntimeException` is thrown.
+			 * calling this action, otherwise a `RuntimeException` is thrown.
 			 * 
 			 * This action fires two events:
 			 *
@@ -588,7 +588,7 @@ describe "Built-in Capacity Reference" {
 			 * This function replies the agent task for controlling its execution.
 			 * 
 			 * The second function behaves in a similar way as the first, except that it
-			 * accepts an agent task as parameter. This task will attached to the given
+			 * accepts an agent task as parameter. This task will attach to the given
 			 * procedure. The replied task is the same as the task given as parameter.
 			 * 
 			 * @filter(.*) 
@@ -630,7 +630,7 @@ describe "Built-in Capacity Reference" {
 			 * This function replies the agent task for controlling its execution.
 			 * 
 			 * The second function behaves in a similar way as the first, except that it
-			 * accepts an agent task as parameter. This task will attached to the given
+			 * accepts an agent task as parameter. This task will attach to the given
 			 * procedure. The replied task is the same as the task given as parameter.
 			 * 
 			 * @filter(.*) 
@@ -704,9 +704,9 @@ describe "Built-in Capacity Reference" {
 		 * for dynamically registering and unregistering sub-behaviors.
 		 * 
 		 * This capacity is closely related to the `InnerContextAccess` for 
-		 * enabling a high-level abstraction for holonic multiagent system development.
+		 * enabling a high-level abstraction for holonic multi-agent system development.
 		 * 
-		 * The definition of a behavior is not detailled in this reference document.
+		 * The definition of a behavior is not detailed in this reference document.
 		 * Please read the [Behavior Reference](BehaviorReferenceSpec.html) for details.
 		 */
 		describe "Behaviors" {
@@ -807,8 +807,8 @@ describe "Built-in Capacity Reference" {
 			}
 
 			/* Sometimes, it is useful or mandatory for an agent to listen on the
-			 * events in a given space. The following function permits to
-			 * retreive the event listener of the agent:
+			 * events in a given space. The following function permits
+			 * retrieving the event listener of the agent:
 			 * 
 			 *     def asEventListener : EventListener
 			 * 

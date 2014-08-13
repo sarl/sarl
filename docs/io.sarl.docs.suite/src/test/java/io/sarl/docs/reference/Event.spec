@@ -27,7 +27,7 @@ import org.jnario.runner.CreateWith
 
 /**
  * This document describes how to define events in SARL.
- * Before reading this document, it is recommended to read
+ * Before reading this document, it is recommended reading
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html).
  * 
  * <!-- OUTPUT OUTLINE -->
@@ -59,7 +59,7 @@ describe "Event Reference"{
 		 * The difference is related to the specification of
 		 * the receiver. In one hand, the event does not
 		 * force the sender to specify the receiver identifier.
-		 * In the other hand, the message needs to have at least
+		 * On the other hand, the message needs to have at least
 		 * on receiver identifier (even if it means "all" the 
 		 * possible identifiers).
 		 * 
@@ -87,9 +87,9 @@ describe "Event Reference"{
 			/* An event can be defined with the `event` keyword.
 			 * It must be followed by the name of the event without the
 			 * qualified name of its package, which is inferred from the
-			 * `package` keyword if present.
+			 * `package` keyword, if present.
 			 * 
-			 * When the event is empty, i.e. it does not contains any additional
+			 * When the event is empty, i.e. it does not contain any additional
 			 * data than the source of the event, it is specified by an empty
 			 * block, or by "nothing", after the event's declaration.
 			 * 
@@ -226,7 +226,7 @@ describe "Event Reference"{
 			 * It is now possible to create instances of these events.
 			 * For `Event1`, only the attribute `string`
 			 * is accessible. For `Event2`, the two attributes
-			 * are accessible, because the type `Event2` inherits
+			 * are accessible. Indeed, the type `Event2` inherits
 			 * the fields of `Event1`.
 			 */
 			describe "Extending Events"{
@@ -307,7 +307,7 @@ describe "Event Reference"{
 		 * 
 		 * Two types of reserved events exist:
 		 * 
-		 *  * the events reserved in the SARL Core Specification for the [agent's lifecycle](./AgentReferenceSpec.html#Behaviors_of_an_Agent); and
+		 *  * the events reserved in the SARL Core Specification for the [agent's life cycle](./AgentReferenceSpec.html#Behaviors_of_an_Agent); and
 		 *  * the events supported by the [Built-in Capacities](./BuiltinCapacityReferenceSpec.html).
 		 */
 		describe "Reserved Events"{

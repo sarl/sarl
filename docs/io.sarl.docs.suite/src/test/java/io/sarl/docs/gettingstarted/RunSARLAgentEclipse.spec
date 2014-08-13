@@ -67,7 +67,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		}
 
 		/* For running your agent with the Janus runtime environment,
-		 * you must add the Janus library in the classpath.
+		 * you must add the Janus library in the class path.
 		 *
 		 * First, **you must download the
 		 * <a href="http://maven.janusproject.io/last-janus-release.jar">Janus runtime environment</a>**.
@@ -114,8 +114,8 @@ describe "Run SARL Agent in the Eclipse IDE" {
 
 	}
 	
-	/* It is possible to give parameters to the launched agent.
-	 * Indeed, all the parameters given as program arguments
+	/* It is possible to give arguments to the launched agent.
+	 * Indeed, all the arguments given as program arguments
 	 * are put in the `parameters` attribute of the `Initialize` event.
 	 * This event is fired when the launched agent is started.
 	 */
@@ -132,13 +132,13 @@ describe "Run SARL Agent in the Eclipse IDE" {
 			true
 		}
 		
-		/* For retreiving the values passed on the command line,
+		/* For retrieving the values passed on the command line,
 		 * you must handle the `Initialize` event, as illustrated
 		 * by the following example:
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
-		fact "Retreive the Command Line Parameters in the Agent" {
+		fact "Retrieve the Command Line Parameters in the Agent" {
 			val model = '''
 				agent MyAgent {
 					on Initialize {

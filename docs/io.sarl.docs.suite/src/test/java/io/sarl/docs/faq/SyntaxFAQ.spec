@@ -112,8 +112,8 @@ describe "SARL Syntax FAQ" {
 			 * such as `List<Integer>`.
 			 * 
 			 * SARL considers that the
-			 * arrays are lists of something.
-			 * Consequently, retreiving the values of the array must
+			 * each array is a list of something.
+			 * Consequently, retrieving the values of the array must
 			 * be done with `get(int)`.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
