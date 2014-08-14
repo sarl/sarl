@@ -21,7 +21,6 @@
 package io.sarl.lang.bugfixes
 
 import io.sarl.lang.validation.AbstractSARLValidator
-import java.io.Serializable
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmAnnotationTarget
 import org.eclipse.xtext.common.types.JvmMember
@@ -31,16 +30,13 @@ import org.eclipse.xtext.validation.CheckType
 import org.eclipse.xtext.validation.ValidationMessageAcceptor
 import org.eclipse.xtext.xbase.XConstructorCall
 import org.eclipse.xtext.xbase.XFeatureCall
-import org.eclipse.xtext.xbase.XInstanceOfExpression
 import org.eclipse.xtext.xbase.XMemberFeatureCall
 import org.eclipse.xtext.xbase.XTypeLiteral
 import org.eclipse.xtext.xbase.XbasePackage
-import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument
-import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 import org.eclipse.xtext.xtype.XImportDeclaration
 import org.eclipse.xtext.xtype.XtypePackage
 
-import static io.sarl.lang.util.ModelUtil.hasAnnotation;
+import static io.sarl.lang.util.ModelUtil.hasAnnotation
 
 /**
  * Implementation of a validator that is fixing several bugs in the Xtext API.
@@ -84,7 +80,7 @@ class XtextBugFixValidator extends AbstractSARLValidator {
 	@Check(CheckType.NORMAL)
 	public def checkDeprecated(JvmTypeReference type) {
 		if (!IssueCodes::DEPRECATED_FEATURE.ignored
-			&& type.type !== null) {
+			&& type.type !== null && !isLocalType(type.type)) {
 			if (type.type.deprecated) {
 				addIssue(String::format("Deprecated type: %s. Please consider its replacement.",
 							type.identifier),
@@ -110,7 +106,7 @@ class XtextBugFixValidator extends AbstractSARLValidator {
 	@Check(CheckType.NORMAL)
 	public def checkDeprecated(XImportDeclaration decl) {
 		if (!IssueCodes::DEPRECATED_FEATURE.ignored
-			&& decl.importedType !== null) {
+			&& decl.importedType !== null && !isLocalType(decl.importedType)) {
 			if (decl.importedType.deprecated) {
 				addIssue(String::format("Deprecated type: %s. Please consider its replacement.",
 							decl.importedType.identifier),
@@ -208,7 +204,7 @@ class XtextBugFixValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.NORMAL)
 	public def checkDeprecated(XTypeLiteral expression) {
-		if (!IssueCodes::DEPRECATED_FEATURE.ignored) {
+		if (!IssueCodes::DEPRECATED_FEATURE.ignored && !isLocalType(expression.type)) {
 			if (expression.type.deprecated) {
 				addIssue(String::format("Deprecated type: %s. Please consider its replacement.",
 							expression.type.identifier),
