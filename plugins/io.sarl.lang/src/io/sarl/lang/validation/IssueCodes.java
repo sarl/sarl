@@ -205,11 +205,6 @@ public final class IssueCodes {
 	public static final String MISSING_CONSTRUCTOR =
 			ISSUE_CODE_PREFIX + "missing_constructor"; //$NON-NLS-1$
 
-	/** A deprecated feature is used.
-	 */
-	public static final String DEPRECATED_FEATURE =
-			ISSUE_CODE_PREFIX + "deprecated_feature"; //$NON-NLS-1$
-
 	private IssueCodes() {
 		//
 	}

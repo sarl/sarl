@@ -72,7 +72,7 @@ public class SARLConfigurableIssueCodesProvider extends XbaseConfigurableIssueCo
 				SeverityConverter.SEVERITY_WARNING));
 
 		iAcceptor.accept(create(
-				IssueCodes.DEPRECATED_FEATURE,
+				io.sarl.lang.bugfixes.IssueCodes.DEPRECATED_FEATURE,
 				SeverityConverter.SEVERITY_WARNING));
 	}
 
