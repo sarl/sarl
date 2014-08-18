@@ -362,7 +362,7 @@ describe "English Auction with Holons"{
 
 			/* The initial definition of the auctioneer is defined below.
 			 * The auctioneer is starting the auction with a price of 50.
-			 * It is notifying the bidders with an `Price` event.
+			 * It is notifying the bidders with a `Price` event.
 			 * Because the bidders are sub-agents, they are living
 			 * in the inner context of the auctioneer.
 			 * For sending the `Price` event to the bidders, the
@@ -419,7 +419,7 @@ describe "English Auction with Holons"{
 			 * needs to spawn agents in the inner context.
 			 * The `Lifecycle` capacity gives the
 			 * `spawnInContext` function.
-			 * This function permits to create an agent in
+			 * This function permits creating an agent in
 			 * a particular context.
 			 * For obtaining the inner context,
 			 * we need to use the `InnerContextAccess` capacity,

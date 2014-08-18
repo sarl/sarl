@@ -171,7 +171,7 @@ describe "General FAQ on SARL" {
 			}
 
 			/* The release planning of SARL is detailed on the
-			 * [milestones' page](https://github.com/sarl/sarl/issues/milestones)
+			 * [milestones' page](https://github.com/sarl/sarl/milestones)
 			 * on the Github web site.
 			 * 
 			 * @filter(.*) 

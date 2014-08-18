@@ -74,11 +74,11 @@ describe "Runtime Environment FAQ" {
 			}
 
 			/* The release planning of Janus is detailed on the
-			 * [milestones' page](https://github.com/janus-project/janusproject/issues/milestones) on
+			 * [milestones' page](https://github.com/janus-project/janusproject/milestones) on
 			 * the Github web site.
 			 * 
 			 * The release planning of the Janus multi-agent platform is following
-			 * the [planning of SARL](https://github.com/sarl/sarl/issues/milestones).
+			 * the [planning of SARL](https://github.com/sarl/sarl/milestones).
 			 * 
 			 * @filter(.*) 
 			 */
