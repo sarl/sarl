@@ -25,10 +25,9 @@ import org.jnario.runner.CreateWith
 
 /* For developing with SARL, you should create a project.
  * This document describes two ways for created SARL projects
- * in Eclipse:
+ * in Eclipse.
  *
- * * a SARL standard project, and
- * * a Maven project with the SARL nature. 
+ * <!-- OUTPUT OUTLINE -->
  */
 @CreateWith(SARLSpecCreator)
 describe "Create First Project" {
@@ -188,9 +187,15 @@ describe "Create First Project" {
 	 *        ...
 	 *        <repositories>
 	 *           ...
+	 *           <!-- The following repositories are needed until the
+	 *                SARL and Janus are released on the Maven Central -->
 	 *           <repository>
 	 *              <id>sarl-repository</id>
 	 *              <url>http://maven.sarl.io/</url>
+	 *           </repository>
+	 *           <repository>
+	 *              <id>janus-repository</id>
+	 *              <url>http://maven.janusproject.io/</url>
 	 *           </repository>
 	 *        </repositories>
 	 *        ...
@@ -198,10 +203,18 @@ describe "Create First Project" {
 	 * 
 	 * 
 	 * Replace the version number (`0.1.0`) of SARL
-	 * with the one you want to use.
+	 * with the one you want to use. You could search on the
+	 * [Maven Central Repository](http://search.maven.org) for
+	 * the last available version.
+	 * The file [VERSION.txt](http://maven.sarl.io/VERSION.txt)
+	 * provides the lastest version numbers of the SARL artifacts, as well.
 	 * 
 	 * Replace the version number (`2.0.1.0`) of the [Janus platform](http://www.janusproject.io)
-	 * with the one you want to use.
+	 * with the one you want to use. You could search on the
+	 * [Maven Central Repository](http://search.maven.org) for
+	 * the last available version.
+	 * The file [VERSION.txt](http://maven.janusproject.io/VERSION.txt)
+	 * provides the lastest version numbers of the Janus artifacts, as well.
 	 */
 	describe "Create a Maven Project with SARL Nature" {
 		
