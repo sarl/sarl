@@ -489,7 +489,6 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 			Location location = Platform.getInstallLocation();
 			URI uri = org.eclipse.core.runtime.URIUtil.toURI(location.getURL());
 			platformLocation = URIUtil.toPath(uri);
-			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
