@@ -88,6 +88,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -485,7 +486,10 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 
 		try {
 			workspaceRoot = ResourcesPlugin.getWorkspace().getRoot().getLocation();
-			platformLocation = URIUtil.toPath(Platform.getInstallLocation().getURL().toURI());
+			Location location = Platform.getInstallLocation();
+			URI uri = org.eclipse.core.runtime.URIUtil.toURI(location.getURL());
+			platformLocation = URIUtil.toPath(uri);
+			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
