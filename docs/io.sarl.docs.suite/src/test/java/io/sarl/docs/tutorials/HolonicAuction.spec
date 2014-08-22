@@ -25,20 +25,21 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
-/**
+import static extension io.sarl.docs.utils.SpecificationTools.*
+
+/* <!-- OUTPUT OUTLINE -->
+ *
  * This document describes the basics of the creation
  * and design of holons in SARL. This tutorial is applied
  * on a simple English auction application.
  * Before reading this document, it is recommended reading
- * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html).
+ * the [General Syntax Reference](../reference/GeneralSyntaxReferenceSpec.html).
  * The architecture presented in this tutorial may be
  * used for designing a system in which a decision must be
  * taken after arbitration among components. 
  * 
- * <!-- OUTPUT OUTLINE -->
- * 
  * <div class="bt-download">
- * <a href="http://maven.sarl.io/last-demos-release.jar"><img alt="Download the Binary JAR file" src="../../../../images/download-icon.png"/></a>
+ * <a href="%sarlmavenrepository%/last-demos-release.jar"><img alt="Download the Binary JAR file" src="../../../../images/download-icon.png"/></a>
  * </div>
  * According to the vocabulary used in the SARL project,
  * all the agents are holons. In the rest of this tutorial,
@@ -82,9 +83,14 @@ describe "English Auction with Holons"{
 		 * 
 		 * 
 		 * Source: [Wikipedia](http://en.wikipedia.org/wiki/Auction)
+		 * 
+		 * @filter(.*)
 		 */
-		context "Principle of the English Auction" {
-			//
+		fact "Principle of the English Auction" {
+			// Test the URLs in the introduction of this page.
+			"../reference/GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+			"../reference/AgentReferenceSpec.html".mustBeJnarioLink
+			"%sarlmavenrepository%".mustBeHttpLink
 		}
 
 		/*
@@ -129,9 +135,11 @@ describe "English Auction with Holons"{
 		 * in the hierarchy of agents. The default space of the inner context
 		 * becomes the natural place where the super-agent and
 		 * its sub-agents are interacting.
+		 * 
+		 * @filter(.*)
 		 */
-		context "Why are the sub-agents in the inner context?" {
-			//
+		fact "Why are the sub-agents in the inner context?" {
+			"../reference/BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
 		}
 
 		/* In the application, two events are needed: the event from
@@ -953,7 +961,8 @@ describe "English Auction with Holons"{
 			 * @filter(.*)
 			 */
 			fact "Compile the code" {
-				true
+				// Test the URL in the introduction of this section
+				"../gettingstarted/RunSARLAgentInTheEclipseIDESpec.html".mustBeJnarioLink
 			}
 
 			/* Here, there is two assumptions:<ol>

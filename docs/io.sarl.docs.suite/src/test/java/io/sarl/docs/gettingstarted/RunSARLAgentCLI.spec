@@ -25,12 +25,14 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
-/* For running an agent, you must launch this agent on the runtime 
+import static extension io.sarl.docs.utils.SpecificationTools.*
+
+/* <!-- OUTPUT OUTLINE -->
+ * 
+ * For running an agent, you must launch this agent on the runtime 
  * environment.
  * This document explains how to launch an agent on
  * the [Janus platform](http://www.janusproject.io).
- * 
- * <!-- OUTPUT OUTLINE -->
  */
 @CreateWith(SARLSpecCreator)
 describe "Run SARL Agent from the Command Line" {
@@ -52,8 +54,12 @@ describe "Run SARL Agent from the Command Line" {
 	 * platform, the SARL libraries, and the application classes.
 	 * The last argument is the fully qualified name of
 	 * the booting class of Janus: `io.janusproject.Boot`
+	 * 
+	 * @filter(.*)
 	 */
-	describe "Boot of Janus" { } 
+	fact "Boot of Janus" {
+		true
+	} 
 
 	/* The example given in the previous section causes an error.
 	 * Indeed, it is mandatory to specify the fully qualified name
@@ -69,8 +75,12 @@ describe "Run SARL Agent from the Command Line" {
 	 * 
 	 *  * launch a separate Janus platform for each agent, or
 	 *  * launch an agent that is spawning the other agents.
+	 * 
+	 * @filter(.*)
 	 */
-	describe "Specify the Agent to Launch" { } 
+	fact "Specify the Agent to Launch" {
+		true
+	} 
 	
 	/* It is possible to give arguments to the launched agent.
 	 * Indeed, all the arguments given on the command line
@@ -132,5 +142,17 @@ describe "Run SARL Agent from the Command Line" {
 		}
 
 	} 
+
+	/*
+	 * Now, you are ready for developing agents with the SARL language.
+	 * Please read the rest of the documentation for obtaining more details.
+	 * 
+	 * [Next>](../SARLDocumentationSuite.html)
+	 * 
+	 * @filter(.*)
+	 */
+	fact "What's next?" {
+		"../SARLDocumentationSuite.html".mustBeJnarioLink
+	}
 
 }

@@ -23,29 +23,38 @@ package io.sarl.docs.gettingstarted
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
+import static extension io.sarl.docs.utils.SpecificationTools.*
+
 /*
  * There are two easy ways to get SARL up and running.
  * A pre-configured Eclipse distribution is available which has already 
  * all the necessary plug-ins installed. 
  * Alternatively, you can install SARL SDK into your existing 
  * Eclipse using the Eclipse update mechanism.
- * 
- * <!-- OUTPUT OUTLINE -->
  */
 @CreateWith(SARLSpecCreator)
 describe "Install SARL Tools" {
 	
 	/* You must follow the instructions given on
-	 * the [download](/download/) page for installing the
+	 * the [download](%website%/download/index.html) page for installing the
 	 * SARL tools.
+	 * 
+	 * @filter(.*) 
 	 */
-	describe "Installation Instructions" { } 
+	fact "Installation Instructions" {
+		// URLs should not end with a slash
+		"%website%".mustStartWith("http://").mustNotEndWith("/");
+	} 
 	
 	/*
 	 * In the next section, we will learn how to create a SARL project.
 	 * 
-	 * [Next](CreateFirstProjectSpec.html).
+	 * [Next>](CreateFirstProjectSpec.html)
+	 * 
+	 * @filter(.*) 
 	 */
-	describe "What's next?" { }
+	fact "What's next?" {
+		"CreateFirstProjectSpec.html".mustBeJnarioLink
+	}
 
 }

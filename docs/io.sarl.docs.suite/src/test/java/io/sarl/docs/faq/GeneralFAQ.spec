@@ -25,6 +25,8 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
+import static extension io.sarl.docs.utils.SpecificationTools.*
+
 /*
  * <!-- OUTPUT OUTLINE -->
  */
@@ -126,7 +128,7 @@ describe "General FAQ on SARL" {
 			 * the skills, etc.
 			 * A part of the grammar of SARL is inherited from the
 			 * [Xbase partial programming language](https://wiki.eclipse.org/Xbase),
-			 * provided by the [Xtext framework](http://www.eclipse.org/Xtext/).
+			 * provided by the [Xtext framework](http://www.eclipse.org/Xtext).
 			 * It provides statements and rules that are close to
 			 * object-oriented languages.
 			 * 
@@ -209,9 +211,9 @@ describe "General FAQ on SARL" {
 				true
 			}
 
-			/* SARL requires the JRE and the JDK 1.7 or higher to run and compile.
+			/* SARL requires the JRE and the JDK %compilerlevel% or higher to run and compile.
 			 * Note that if you plan to create Android applications, you must 
-			 * configure your JDK to produce 1.6 class files from 1.7 Java code. 
+			 * configure your JDK to produce 1.6 class files from %compilerlevel% Java code. 
 			 * 
 			 * @filter(.*) 
 			 */
@@ -228,12 +230,12 @@ describe "General FAQ on SARL" {
 			/* The sources of SARL are available on
 			 * [Github](https://github.com/sarl/sarl).
 			 * Details for getting the source code may be found on the
-			 * [download page](/download/). 
+			 * [download page](%website%/download/). 
 			 * 
 			 * @filter(.*) 
 			 */
 			fact "Where are the sources of SARL?" {
-				true
+				"%website%".mustBeHttpLink
 			}
 			
 			/* SARL Core Developers use [Github](https://github.com/sarl/sarl)

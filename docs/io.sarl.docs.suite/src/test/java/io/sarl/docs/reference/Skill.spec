@@ -25,13 +25,14 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
-/**
+import static extension io.sarl.docs.utils.SpecificationTools.*
+
+/* <!-- OUTPUT OUTLINE -->
+ *
  * This document describes how to define skills in SARL.
  * Before reading this document, it is recommended reading
- * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html),
- * and the [Capacity Reference](./CapacityReferenceSpec.html).
- * 
- * <!-- OUTPUT OUTLINE -->
+ * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
+ * and the [Capacity Reference](CapacityReferenceSpec.html).
  * 
  * A *Capacity* is the specification of a collection of actions. This specification 
  * makes no assumptions about its implementation. It could be used to specify 
@@ -59,6 +60,10 @@ describe "Skill Reference" {
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Basic Definition"{
+				// Test the URLs from the beginning of the page
+				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				"CapacityReferenceSpec.html".mustBeJnarioLink
+				//
 				val model = '''
 				skill ConsoleLogging implements Logging {
 					def info(text : String) {
@@ -366,9 +371,12 @@ describe "Skill Reference" {
 		 * Specification. The corresponding skills are provided
 		 * by the runtime environment (such as the [Janus platform](http://www.janusproject.io)).
 		 * The built-in skills are described in the 
-		 * [Built-in Capacity Reference](./BuiltinCapacityReferenceSpec.html).
+		 * [Built-in Capacity Reference](BuiltInCapacityReferenceSpec.html).
+		 * 
+		 * @filter(.*)
 		 */
-		describe "Built-in Skills"{
+		fact "Built-in Skills"{
+			"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
 		}
 
 		/* Details on the use of the skills may be found in the references of
@@ -376,8 +384,12 @@ describe "Skill Reference" {
 		 * 
 		 *  * [Agent](AgentReferenceSpec.html)
 		 *  * [Behavior](BehaviorReferenceSpec.html)
+		 * 
+		 * @filter(.*)
 		 */
-		describe "Use of the Skills"{
+		fact "Use of the Skills"{
+			"AgentReferenceSpec.html".mustBeJnarioLink
+			"BehaviorReferenceSpec.html".mustBeJnarioLink
 		}
 
 }

@@ -25,21 +25,21 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 import org.eclipse.xtext.xbase.XBlockExpression
-import io.sarl.docs.utils.SpecificationTools
+
+import static extension io.sarl.docs.utils.SpecificationTools.*
 
 /**
  * <!-- OUTPUT OUTLINE -->
  * 
  * To create our first agent, right click on the project and follow 
  * **New > File**.
- * Name the file **demosarl.sarl**.
+ * Name the file `myproject.sarl`.
  * 
  * The SARL default editor will open.
  */
 @CreateWith(SARLSpecCreator)
 describe "Agent Definition Introduction" {
 	
-	@Inject extension SpecificationTools
 	@Inject extension SARLParser
 
 	/*
@@ -81,6 +81,7 @@ describe "Agent Definition Introduction" {
 	 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 	 */
 	fact "Package definition" {
+		"../reference/GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
 		val model = '''
 			package io.sarl.docs.gettingstarted.^agent
 			agent MyAgent {}
@@ -108,6 +109,10 @@ describe "Agent Definition Introduction" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 		 */
 		fact "Declare an Event"{
+			// Test the URLs in the header of the section
+			"../reference/EventReferenceSpec.html".mustBeJnarioLink
+			"../reference/AgentReferenceSpec.html".mustBeJnarioLink
+			//
 			var model = '''
 			event MyEvent
 			'''.parsesSuccessfully(
@@ -276,6 +281,10 @@ describe "Agent Definition Introduction" {
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
 		fact "Use the capacity to send an event in the default space"{
+			// Test the URLs in the header of the section
+			"../reference/EventReferenceSpec.html".mustBeJnarioLink
+			"../reference/AgentReferenceSpec.html".mustBeJnarioLink 
+			//
 			val model = '''
 			agent MyAgent {
 				uses DefaultContextInteractions
@@ -339,8 +348,12 @@ describe "Agent Definition Introduction" {
 	 * In the next section, we will learn how to start a SARL agent on the
 	 * command line.
 	 * 
-	 * [Next](RunSARLAgentCLISpec.html).
+	 * [Next>](RunSARLAgentInTheEclipseIDESpec.html)
+	 * 
+	 * @filter(.*)
 	 */
-	describe "What's next?" { }
+	fact "What's next?" {
+		"RunSARLAgentInTheEclipseIDESpec.html".mustBeJnarioLink
+	}
 
 }

@@ -25,17 +25,18 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
-/**
+import static extension io.sarl.docs.utils.SpecificationTools.*
+
+/* <!-- OUTPUT OUTLINE -->
+ * 
  * This document describes how to create a simple
  * agent-based application in which agents are
  * exchanging basic messages inside a sub-space.
  * Before reading this document, it is recommended reading
- * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html).
- * 
- * <!-- OUTPUT OUTLINE -->
+ * the [General Syntax Reference](../reference/GeneralSyntaxReferenceSpec.html).
  * 
  * <div class="bt-download">
- * <a href="http://maven.sarl.io/last-demos-release.jar"><img alt="Download the Binary JAR file" src="../../../../images/download-icon.png"/></a>
+ * <a href="%sarlmavenrepository%/last-demos-release.jar"><img alt="Download the Binary JAR file" src="../../../../images/download-icon.png"/></a>
  * </div>
  * The elements that are explained in this tutorial are:
  * 
@@ -68,10 +69,13 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 		 * indicates the number of the event.
 		 * 
 		 * <center><img src="./pingpongspace.png"/></center>
-		 * 
+		 *
+		 * @filter(.*)
 		 */
-		context "Principle of the Application" {
-			//
+		fact "Principle of the Application" {
+			// Test the URLs in the introduction of this page.
+			"../reference/GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+			"%sarlmavenrepository%".mustBeHttpLink
 		}
 
 		/* First, the `Ping` and `Pong` events must be defined.
@@ -248,6 +252,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					// TEXT
 					""
 				)
+				"../reference/AgentReferenceSpec.html".mustBeJnarioLink
 			}
 
 			/* Now, it is time to define how the pong agent
@@ -749,7 +754,8 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 			 * @filter(.*)
 			 */
 			fact "Compile the code" {
-				true
+				// Test the URL in the introduction of this section
+				"../gettingstarted/RunSARLAgentInTheEclipseIDESpec.html".mustBeJnarioLink
 			}
 
 			/* The principle is to run each agent is a different instance of the 

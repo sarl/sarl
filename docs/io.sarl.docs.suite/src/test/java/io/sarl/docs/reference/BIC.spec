@@ -25,12 +25,14 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
+import static extension io.sarl.docs.utils.SpecificationTools.*
+
 /**
  * This document describes the built-in capacities in SARL.
  * Before reading this document, it is recommended reading
- * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html),
- * the [Capacity Reference](./CapacityReferenceSpec.html),
- * and the [Skill Reference](./SkillReferenceSpec.html).
+ * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
+ * the [Capacity Reference](CapacityReferenceSpec.html),
+ * and the [Skill Reference](SkillReferenceSpec.html).
  * 
  * <!-- OUTPUT OUTLINE -->
  * 
@@ -86,6 +88,12 @@ describe "Built-in Capacity Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Retrieving a Context"{
+				// Tests URLs from the beginning of the page
+				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				"CapacityReferenceSpec.html".mustBeJnarioLink
+				"SkillReferenceSpec.html".mustBeJnarioLink
+				"SpaceReferenceSpec.html".mustBeJnarioLink
+				//
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.ExternalContextAccess
 					import io.sarl.lang.core.AgentContext
@@ -363,7 +371,7 @@ describe "Built-in Capacity Reference" {
 			}
 
 			/* The core mechanism for information exchanges among agents is
-			 * [event-based](./EventReferenceSpec.html).
+			 * [event-based](EventReferenceSpec.html).
 			 * For sending an event in the default space of the default context,
 			 * the following function is provided:
 			 * 
@@ -381,6 +389,8 @@ describe "Built-in Capacity Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Sending an Event in the Default Space"{
+				"EventReferenceSpec.html".mustBeJnarioLink
+				//
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.DefaultContextInteractions
 					event E
@@ -582,7 +592,7 @@ describe "Built-in Capacity Reference" {
 			 * 
 			 * 
 			 * The first function submits the given procedure (a lambda expression as defined in
-			 * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html)) to
+			 * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html)) to
 			 * an executor provided by the runtime platform. The execution of the procedure
 			 * will be delayed during the given number of milliseconds.
 			 * This function replies the agent task for controlling its execution.
@@ -594,6 +604,8 @@ describe "Built-in Capacity Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Launching a Delayed Task"{
+				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				//
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.Schedules
 					import io.sarl.core.AgentTask
@@ -624,7 +636,7 @@ describe "Built-in Capacity Reference" {
 			 * 
 			 * 
 			 * The first function submits the given procedure (a lambda expression as defined in
-			 * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html)) to
+			 * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html)) to
 			 * an executor provided by the runtime platform. The execution of the procedure
 			 * will be launched periodically with a period of the given number of milliseconds.
 			 * This function replies the agent task for controlling its execution.
@@ -636,6 +648,8 @@ describe "Built-in Capacity Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Launching a Periodic Task"{
+				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				//
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.Schedules
 					import io.sarl.core.AgentTask
@@ -726,6 +740,9 @@ describe "Built-in Capacity Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Registering a Behavior"{
+				// Test the URL in the introduction of this section
+				"BehaviorReferenceSpec.html".mustBeJnarioLink
+				//
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.Behaviors
 					import io.sarl.lang.core.Behavior
@@ -839,8 +856,12 @@ describe "Built-in Capacity Reference" {
 		 *
 		 *  * [Agent](AgentReferenceSpec.html)
 		 *  * [Behavior](BehaviorReferenceSpec.html)
+		 * 
+		 * @filter(.*)
 		 */
-		describe "Use of the Built-in Capacities"{
+		fact "Use of the Built-in Capacities"{
+			"AgentReferenceSpec.html".mustBeJnarioLink
+			"BehaviorReferenceSpec.html".mustBeJnarioLink
 		}
 		
 }

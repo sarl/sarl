@@ -25,19 +25,20 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
-/**
+import static extension io.sarl.docs.utils.SpecificationTools.*
+
+/* <!-- OUTPUT OUTLINE -->
+ *
  * This document describes how to define events in SARL.
  * Before reading this document, it is recommended reading
- * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html).
- * 
- * <!-- OUTPUT OUTLINE -->
+ * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html).
  * 
  * An event is one of the core concepts in SARL.
  * It is a data structure composed of attributes.
  * Each attribute has a name, a type, and a value.
  * 
  * Events are exchanged among the agents or the behavioral units of agents,
- * inside a given [Space](./SpaceReferenceSpec.html).
+ * inside a given [Space](SpaceReferenceSpec.html).
  * 
  * Each event has:
  * 
@@ -69,17 +70,22 @@ describe "Event Reference"{
 		 * 
 		 * Consequently, for sending data to another entity,
 		 * you must create an instance of an event, and emit
-		 * this object in a [Space](./SpaceReferenceSpec.html).
+		 * this object in a [Space](SpaceReferenceSpec.html).
 		 * The sending API is detailed in the [Built-in Capacity
-		 * Reference](BuiltinCapacityReferenceSpec.html).
+		 * Reference](BuiltInCapacityReferenceSpec.html).
 		 * 
 		 * 
 		 * <span class="label label-info">Note</span> There is 
 		 * no message concept in SARL. All the communications are
 		 * supported by the concept of `Event`
 		 * 
+		 * @filter(.*)
 		 */
-		describe "Event vs. Message"{
+		fact "Event vs. Message"{
+			// Test the URLs from the beginning of the page
+			"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+			"SpaceReferenceSpec.html".mustBeJnarioLink
+			"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
 		}
 		
 		describe "Defining an Event" {
@@ -120,7 +126,7 @@ describe "Event Reference"{
 			 * Events can carry information.
 			 * This information is described by a set of attributes.
 			 * Each attribute is declared according to the "Field Declaration"
-			 * of the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html).
+			 * of the [General Syntax Reference](GeneralSyntaxReferenceSpec.html).
 			 * 
 			 * The following code example is defining the event `MyEvent` with
 			 * three attributes.
@@ -141,6 +147,8 @@ describe "Event Reference"{
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Define an event with attributes"{
+				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				//
 				val model = '''
 				event MyEvent {
 					var number : Integer
@@ -307,10 +315,14 @@ describe "Event Reference"{
 		 * 
 		 * Two types of reserved events exist:
 		 * 
-		 *  * the events reserved in the SARL Core Specification for the [agent's life cycle](./AgentReferenceSpec.html#Behaviors_of_an_Agent); and
-		 *  * the events supported by the [Built-in Capacities](./BuiltinCapacityReferenceSpec.html).
+		 *  * the events reserved in the SARL Core Specification for the [agent's life cycle](AgentReferenceSpec.html#Behaviors_of_an_Agent); and
+		 *  * the events supported by the [Built-in Capacities](BuiltInCapacityReferenceSpec.html).
+		 * 
+		 * @filter(.*)
 		 */
-		describe "Reserved Events"{
+		fact "Reserved Events"{
+			"AgentReferenceSpec.html#Behaviors_of_an_Agent".mustBeJnarioLink
+			"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
 		}
 
 }

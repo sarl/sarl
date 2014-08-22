@@ -513,7 +513,7 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 			p = entry.getPath();
 			p = p.removeFirstSegments(p.matchingFirstSegments(projectPath));
 			s = p.toOSString();
-			if (s.endsWith(NewSARLProjectWizardPageOne.DEFAULT_GENERATED_SOURCE_FOLDER)) {
+			if (s.endsWith(Config.DEFAULT_GENERATED_SOURCE_FOLDER)) {
 				return s;
 			}
 			if (s.contains("src-gen") || s.contains("generated")) { //$NON-NLS-1$//$NON-NLS-2$

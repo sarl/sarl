@@ -33,13 +33,14 @@ import io.sarl.lang.core.EventListener
 import io.sarl.util.RestrictedAccessEventSpace
 import java.security.Principal
 
-/**
+import static extension io.sarl.docs.utils.SpecificationTools.*
+
+/* <!-- OUTPUT OUTLINE -->
+ *
  * This document describes the features related to the definition of a space in SARL.
  * Before reading this document, it is recommended reading
- * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html),
- * and the [Agent Reference](./AgentReferenceSpec.html).
- * 
- * <!-- OUTPUT OUTLINE -->
+ * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
+ * and the [Agent Reference](AgentReferenceSpec.html).
  * 
  * One of the key elements that characterize and differentiate the main 
  * multi-agent approaches is how interactions between agents are described.
@@ -70,7 +71,7 @@ import java.security.Principal
  * SARL natively defines a particular type of `Space` called
  * *Event Space* to provide a support to event-driven interactions.
  * Within an event space, agents communicate using events, the 
- * [built-in capacity `DefaultContextInteractions`](BuiltinCapacityReferenceSpec.html)
+ * [built-in capacity `DefaultContextInteractions`](BuiltInCapacityReferenceSpec.html)
  * provides the agent with the means to emit and receive events, respectively 
  * using the `emit` actions and the `on` keyword
  * in behavior definition.
@@ -162,6 +163,11 @@ describe "Space Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Space" {
+				// Test the URLs from the beginning of the page
+				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				"AgentReferenceSpec.html".mustBeJnarioLink
+				"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
+				//
 				Space.mustExtend(null)
 				Space.mustHaveFeatures(2, 0)
 				Space.mustHaveMethod("getID")

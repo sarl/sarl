@@ -25,12 +25,13 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
-/**
+import static extension io.sarl.docs.utils.SpecificationTools.*
+
+/* <!-- OUTPUT OUTLINE -->
+ *
  * This document describes how to define capacities in SARL.
  * Before reading this document, it is recommended reading
- * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html).
- * 
- * <!-- OUTPUT OUTLINE -->
+ * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html).
  * 
  * An Action is a specification of a transformation of a part of the 
  * designed system or its environment. This transformation guarantees 
@@ -73,6 +74,9 @@ describe "Capacity Reference"{
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Capacity Definition"{
+				// Test the URLs from the beginning of this page.
+				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				//
 				val model = '''
 				capacity Logging {
 					// Log an information message
@@ -184,12 +188,15 @@ describe "Capacity Reference"{
 		 * of the reserved capacities.
 		 * 
 		 * The built-in capacities are defined in the 
-		 * [Built-in Capacity Reference](./BuiltinCapacityReferenceSpec.html).
+		 * [Built-in Capacity Reference](BuiltInCapacityReferenceSpec.html).
+		 * 
+		 * @filter(.*)
 		 */
-		describe "Built-in Capacities"{
+		fact "Built-in Capacities"{
+			"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
 		}
 
-		/* The use of the capacity is related to the associated [skills](./SkillReferenceSpec.html).
+		/* The use of the capacity is related to the associated [skills](SkillReferenceSpec.html).
 		 * It means that a capacity cannot be called by itself since it is not providing
 		 * an implementation: this is the role of the skill.
 		 * 
@@ -205,8 +212,13 @@ describe "Capacity Reference"{
 		 * 
 		 *  * [Agent](AgentReferenceSpec.html)
 		 *  * [Behavior](BehaviorReferenceSpec.html)
+		 * 
+		 * @filter(.*)
 		 */
-		describe "Use of the Capacities"{
+		fact "Use of the Capacities"{
+			"SkillReferenceSpec.html".mustBeJnarioLink
+			"AgentReferenceSpec.html".mustBeJnarioLink
+			"BehaviorReferenceSpec.html".mustBeJnarioLink
 		}
 
 }

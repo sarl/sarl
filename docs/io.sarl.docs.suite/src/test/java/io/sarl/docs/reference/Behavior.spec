@@ -25,13 +25,14 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
-/**
+import static extension io.sarl.docs.utils.SpecificationTools.*
+
+/* <!-- OUTPUT OUTLINE -->
+ *
  * This document describes the features related to the definition of a behavior in SARL.
  * Before reading this document, it is recommended reading
- * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html),
- * and the [Agent Reference](./AgentReferenceSpec.html).
- * 
- * <!-- OUTPUT OUTLINE -->
+ * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
+ * and the [Agent Reference](AgentReferenceSpec.html).
  * 
  * A `Behavior` is the specification of a collection of behavior units.
  * This `Behavior` may be used by an agent for building its global
@@ -57,6 +58,10 @@ describe "Behavior Reference" {
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Defining an empty behavior"{
+				// Tests the URLs from the beginning of the page
+				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				"AgentReferenceSpec.html".mustBeJnarioLink
+				//
 				val model = '''
 				behavior MyBehavior {
 				}
@@ -85,6 +90,8 @@ describe "Behavior Reference" {
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Behavior Attributes"{
+				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				//
 				val model = '''
 				behavior MyBehavior {
 					// Defining a modifiable element of the mental state
@@ -114,6 +121,8 @@ describe "Behavior Reference" {
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Behavior Actions"{
+				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				//
 				val model = '''
 				behavior MyBehavior {
 					// Defining an action without parameter nor return type
@@ -240,7 +249,7 @@ describe "Behavior Reference" {
 		 * 
 		 * 
 		 * The definition of the reactive behaviors is based on the event handling
-		 * mechanism of SARL. Events may be emitted in [spaces](./SpaceReferenceSpec.html),
+		 * mechanism of SARL. Events may be emitted in [spaces](SpaceReferenceSpec.html),
 		 * and received by the agents, and their behaviors, belonging to these spaces.
 		 * A behavior may indicate that it is interesting for receiving an event by specifying
 		 * an event handler using the following syntax:
@@ -276,6 +285,9 @@ describe "Behavior Reference" {
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Reactive Behavior Units"{
+				// Test the URLs in the introduction of this section
+				"SpaceReferenceSpec.html".mustBeJnarioLink
+				//
 				val model = '''
 				behavior MyBehavior {
 					on SomethingChanged {
@@ -339,13 +351,15 @@ describe "Behavior Reference" {
 			 * 
 			 * In SARL, a proactive behavior is a behavior that is scheduled
 			 * by the agent or one of its behaviors. The schedule mechanism is provided by the 
-			 * [`Schedules` built-in capacity](./BuiltinCapacityReferenceSpec.html).
+			 * [`Schedules` built-in capacity](BuiltInCapacityReferenceSpec.html).
 			 * In the following example, the agent execute its proactive behavior
 			 * every second.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Pro-active Behavior Units"{
+				"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
+				//
 				val model = '''
 				behavior MyBehavior {
 					uses Schedules
@@ -387,8 +401,8 @@ describe "Behavior Reference" {
 
 			/* The definition of a capacity or a skill is out of the scope
 			 * of this reference document. For details, please read
-			 * the [Capacity Reference](./CapacityReferenceSpec.html), and
-			 * the [Skill Reference](./SkillReferenceSpec.html).
+			 * the [Capacity Reference](CapacityReferenceSpec.html), and
+			 * the [Skill Reference](SkillReferenceSpec.html).
 			 * 
 			 * In the rest of this section, it is assumed that the following
 			 * capacity and skill are defined:
@@ -406,7 +420,8 @@ describe "Behavior Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Defining a Capacity and a Skill"{
-				"no fact to test"
+				"CapacityReferenceSpec.html".mustBeJnarioLink
+				"SkillReferenceSpec.html".mustBeJnarioLink
 			}
 
 			/* When a behavior must use a capacity,
@@ -483,7 +498,7 @@ describe "Behavior Reference" {
 	
 			/* Invoking a capacity/skill with the getter method is
 			 * not user-friendly. Since the
-			 * [General Syntax Reference](./GeneralSyntaxReferenceSpec.html)
+			 * [General Syntax Reference](GeneralSyntaxReferenceSpec.html)
 			 * describes the "extension method" mechanism, it is possible
 			 * to use it for invoking the capacities.
 			 * 
@@ -503,6 +518,8 @@ describe "Behavior Reference" {
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Using a Capacity with the Extension Methods" {
+				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				//
 				val model = '''
 				behavior MyBehavior {
 					uses Cap

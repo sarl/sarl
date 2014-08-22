@@ -25,14 +25,15 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
-/**
+import static extension io.sarl.docs.utils.SpecificationTools.*
+
+/** <!-- OUTPUT OUTLINE -->
+ * 
  * This document describes the features related to the definition of an agent in SARL.
  * Before reading this document, it is recommended reading
- * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html),
- * the [Skill Reference](./SkillReferenceSpec.html), and the
- * [Built-in Capacity Reference](./BuiltinCapacityReferenceSpec.html).
- * 
- * <!-- OUTPUT OUTLINE -->
+ * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
+ * the [Skill Reference](SkillReferenceSpec.html), and the
+ * [Built-in Capacity Reference](BuiltInCapacityReferenceSpec.html).
  * 
  * __An agent is an autonomous entity having a set of skills to realize the 
  * capacities it exhibits__.
@@ -81,7 +82,10 @@ describe "Agent Reference"{
 			 * @filter(.*) 
 			 */
 			fact "Default Context" {
-				true
+				// Test the URLs in the text from the beginning of the page
+				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				"SkillReferenceSpec.html".mustBeJnarioLink
+				"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
 			}
 			
 			/* During its lifetime, an agent may join and participate in other contexts
@@ -94,12 +98,12 @@ describe "Agent Reference"{
 			 * 
 			 * For joining or leaving a context, the agent must use the `ExternalContextAccess`
 			 * built-in capacity. It is detailed in the
-			 * [Built-in Capacity Reference](./BuiltinCapacityReferenceSpec.html). 
+			 * [Built-in Capacity Reference](BuiltInCapacityReferenceSpec.html). 
 			 *  
 			 * @filter(.*) 
 			 */
 			fact "External Contexts" {
-				true
+				"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
 			}
 			
 			/* In 1967, Arthur Koestler coined the term _holon_ as an attempt to
@@ -174,7 +178,7 @@ describe "Agent Reference"{
 			 * and social capacities. 
 			 * 
 			 * The full set of Built-in Capacities will be presented in the corresponding
-			 * [Reference document](./BuiltinCapacityReferenceSpec.html). Among these
+			 * [Reference document](BuiltInCapacityReferenceSpec.html). Among these
 			 * built-in capacities, is the `Behaviors` capacity that enables 
 			 * agents to incorporate a collection of behaviors that will determine 
 			 * its global conduct.
@@ -182,7 +186,7 @@ describe "Agent Reference"{
 			 * @filter(.*) 
 			 */
 			fact "Built-in Capacities" {
-				true
+				"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
 			}
 
 			/*
@@ -247,6 +251,7 @@ describe "Agent Reference"{
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Agent Attributes"{
+				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
 				val model = '''
 				agent MyAgent {
 					// Defining a modifiable element of the mental state
@@ -275,6 +280,7 @@ describe "Agent Reference"{
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Agent Actions"{
+				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
 				val model = '''
 				agent MyAgent {
 					// Defining an action without parameter nor return type
@@ -360,7 +366,7 @@ describe "Agent Reference"{
 		 * 
 		 * 
 		 * The definition of the reactive behaviors is based on the event handling
-		 * mechanism of SARL. Events may be emitted in [spaces](./SpaceReferenceSpec.html),
+		 * mechanism of SARL. Events may be emitted in [spaces](SpaceReferenceSpec.html),
 		 * and received by the agents belonging to these spaces.
 		 * An agent may indicate that it is interesting for receiving an event by specifying
 		 * an event handler using the following syntax:
@@ -394,11 +400,16 @@ describe "Agent Reference"{
 			 * 
 			 * It contains the list of the parameters given to the spawning
 			 * function (as specified in the 
-			 * [built-in capacities](./BuiltinCapacityReferenceSpec.html)).
+			 * [built-in capacities](BuiltInCapacityReferenceSpec.html)).
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Initialization Handler"{
+				// Test the URL in the introduction of the section
+				"SpaceReferenceSpec.html".mustBeJnarioLink
+				// Test the URL in this section
+				"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
+				//
 				val model = '''
 				agent MyAgent {
 					on Initialize {
@@ -602,13 +613,15 @@ describe "Agent Reference"{
 			 * 
 			 * In SARL, a proactive behavior is a behavior that is scheduled
 			 * by the agent. The scheduling mechanism is provided by the 
-			 * [`Schedules` built-in capacity](./BuiltinCapacityReferenceSpec.html).
+			 * [`Schedules` built-in capacity](BuiltInCapacityReferenceSpec.html).
 			 * In the following example, the agent execute its proactive behavior
 			 * every second.
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Pro-active Behaviors"{
+				"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
+				//
 				val model = '''
 				agent MyAgent {
 					uses Schedules
@@ -647,8 +660,8 @@ describe "Agent Reference"{
 
 			/* The definition of a capacity or a skill is out of the scope
 			 * of this reference document. For details, please read
-			 * the [Capacity Reference](./CapacityReferenceSpec.html), and
-			 * the [Skill Reference](./SkillReferenceSpec.html).
+			 * the [Capacity Reference](CapacityReferenceSpec.html), and
+			 * the [Skill Reference](SkillReferenceSpec.html).
 			 * 
 			 * In the rest of this section, it is assumed that the following
 			 * capacity and skill are defined:
@@ -666,7 +679,8 @@ describe "Agent Reference"{
 			 * @filter(.*) 
 			 */
 			fact "Defining a Capacity and a Skill"{
-				"no fact to test"
+				"CapacityReferenceSpec.html".mustBeJnarioLink
+				"SkillReferenceSpec.html".mustBeJnarioLink
 			}
 
 			/* When an agent must use a capacity in one of its behaviors,
@@ -824,7 +838,7 @@ describe "Agent Reference"{
 
 			/* Invoking a capacity/skill with the getter method is
 			 * not user-friendly. Since the
-			 * [General Syntax Reference](./GeneralSyntaxReferenceSpec.html)
+			 * [General Syntax Reference](GeneralSyntaxReferenceSpec.html)
 			 * describes the "extension method" mechanism, it is possible
 			 * to use it for invoking the capacities.
 			 * 
@@ -844,6 +858,8 @@ describe "Agent Reference"{
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Using a Capacity with the Extension Methods" {
+				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				//
 				val model = '''
 				agent MyAgent {
 					uses Cap

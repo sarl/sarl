@@ -23,6 +23,8 @@ package io.sarl.docs.utils;
 import static com.google.common.collect.Iterables.contains;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -31,29 +33,34 @@ import java.io.File;
 
 import junit.framework.AssertionFailedError;
 
+import org.arakhne.afc.vmutil.Caller;
 import org.eclipse.xtext.util.Arrays;
 import org.eclipse.xtext.xbase.lib.Functions;
 import org.hamcrest.Matcher;
 
+import com.google.common.io.Files;
+
 
 /** Helper for tests.
  *
- * @author $Author: srodriguez$
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("static-method")
-public class SpecificationTools {
+public final class SpecificationTools {
 
+	private SpecificationTools() {
+		//
+	}
+	
 	/** Replies a path built from the given elements.
 	 * 
 	 * @param element1 - first mandatory element.
 	 * @param elements - the rest of the elements of the path.
 	 * @return the path.
 	 */
-	public String path(String element1, String... elements) {
+	public static String path(String element1, String... elements) {
 		StringBuilder b = new StringBuilder();
 		if (element1 != null && !element1.isEmpty()) {
 			b.append(element1);
@@ -78,12 +85,12 @@ public class SpecificationTools {
 	 * @param func - the predicate.
 	 * @return obj
 	 */
-	public <T> T mustBe(T obj, Functions.Function1<T, Boolean> func) {
+	public static <T> T mustBe(T obj, Functions.Function1<T, Boolean> func) {
 		assertTrue(func.apply(obj));
 		return obj;
 	}
 
-	private boolean isArray(Object obj) {
+	private static boolean isArray(Object obj) {
 		if (obj == null) {
 			return false;
 		}
@@ -97,7 +104,7 @@ public class SpecificationTools {
 	 * @param expected - the expected object.
 	 * @return actual
 	 */
-	public <T> T mustBe(T actual, T expected) {
+	public static <T> T mustBe(T actual, T expected) {
 		if (isArray(actual) && isArray(expected)) {
 			assertArrayEquals("not equal", (Object[]) expected, (Object[]) actual); //$NON-NLS-1$
 		} else {
@@ -113,7 +120,7 @@ public class SpecificationTools {
 	 * @param expectedType - the expected type.
 	 * @return actual
 	 */
-	public <T> Class<T> mustBe(Class<T> actual, Class<?> expectedType) {
+	public static <T> Class<T> mustBe(Class<T> actual, Class<?> expectedType) {
 		assertEquals("not equal", expectedType, actual); //$NON-NLS-1$
 		return actual;
 	}
@@ -125,7 +132,7 @@ public class SpecificationTools {
 	 * @param expectedType - the type.
 	 * @return actual
 	 */
-	public <T> T mustBe(Object actual, Class<T> expectedType) {
+	public static <T> T mustBe(Object actual, Class<T> expectedType) {
 		String msg = "not equal, expected: " + expectedType.getName() + ", actual: "; //$NON-NLS-1$ //$NON-NLS-2$
 		if (actual != null) {
 			msg += actual.getClass().getName();
@@ -143,7 +150,7 @@ public class SpecificationTools {
 	 * @param matcher - the predicate.
 	 * @return actual
 	 */
-	public <T> T mustBe(T actual, Matcher<? super T> matcher) {
+	public static <T> T mustBe(T actual, Matcher<? super T> matcher) {
 		if (matcher == null) {
 			assertNull("not equal", actual); //$NON-NLS-1$
 		} else {
@@ -161,8 +168,12 @@ public class SpecificationTools {
 	 * @param element - the element that must be inside the collection.
 	 * @return actual
 	 */
-	public <T, I extends Iterable<T>> I mustContain(I actual, T element) {
-		assertTrue(contains(actual, element));
+	public static <T, I extends Iterable<T>> I mustContain(I actual, T element) {
+		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
+		assertTrue(
+				String.format("the following iterable must contain \"%s\": %s", //$NON-NLS-1$
+						element, actual),
+				contains(actual, element));
 		return actual;
 	}
 
@@ -175,7 +186,9 @@ public class SpecificationTools {
 	 * @param matcher - the predicate.
 	 * @return collection
 	 */
-	public <T, I extends Iterable<T>> I mustContain(I collection, Matcher<? super T> matcher) {
+	public static <T, I extends Iterable<T>> I mustContain(I collection, Matcher<? super T> matcher) {
+		assertNotNull("collection cannot be null", collection); //$NON-NLS-1$
+		assertNotNull("matcher cannot be null", matcher); //$NON-NLS-1$
 		for (T item : collection) {
 			if (matcher.matches(item)) {
 				return collection;
@@ -192,7 +205,8 @@ public class SpecificationTools {
 	 * @param element - the element that must be inside the collection.
 	 * @return actual
 	 */
-	public <T> T[] mustContain(T[] actual, T element) {
+	public static <T> T[] mustContain(T[] actual, T element) {
+		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
 		assertTrue(Arrays.contains(actual, element));
 		return actual;
 	}
@@ -204,7 +218,8 @@ public class SpecificationTools {
 	 * @param element - the element that must be inside the collection.
 	 * @return actual
 	 */
-	public boolean[] mustContain(boolean[] actual, boolean element) {
+	public static boolean[] mustContain(boolean[] actual, boolean element) {
+		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
 		for(boolean candidate : actual) {
 			if (candidate == element) {
 				return actual;
@@ -221,7 +236,8 @@ public class SpecificationTools {
 	 * @param element - the element that must be inside the collection.
 	 * @return actual
 	 */
-	public char[] mustContain(char[] actual, char element) {
+	public static char[] mustContain(char[] actual, char element) {
+		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
 		for(char candidate : actual) {
 			if (candidate == element) {
 				return actual;
@@ -238,7 +254,8 @@ public class SpecificationTools {
 	 * @param element - the element that must be inside the collection.
 	 * @return actual
 	 */
-	public byte[] mustContain(byte[] actual, byte element) {
+	public static byte[] mustContain(byte[] actual, byte element) {
+		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
 		for(byte candidate : actual) {
 			if (candidate == element) {
 				return actual;
@@ -255,7 +272,8 @@ public class SpecificationTools {
 	 * @param element - the element that must be inside the collection.
 	 * @return actual
 	 */
-	public short[] mustContain(short[] actual, short element) {
+	public static short[] mustContain(short[] actual, short element) {
+		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
 		for(short candidate : actual) {
 			if (candidate == element) {
 				return actual;
@@ -272,7 +290,8 @@ public class SpecificationTools {
 	 * @param element - the element that must be inside the collection.
 	 * @return actual
 	 */
-	public int[] mustContain(int[] actual, int element) {
+	public static int[] mustContain(int[] actual, int element) {
+		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
 		for(int candidate : actual) {
 			if (candidate == element) {
 				return actual;
@@ -289,7 +308,8 @@ public class SpecificationTools {
 	 * @param element - the element that must be inside the collection.
 	 * @return actual
 	 */
-	public long[] mustContain(long[] actual, long element) {
+	public static long[] mustContain(long[] actual, long element) {
+		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
 		for(long candidate : actual) {
 			if (candidate == element) {
 				return actual;
@@ -306,7 +326,8 @@ public class SpecificationTools {
 	 * @param element - the element that must be inside the collection.
 	 * @return actual
 	 */
-	public float[] mustContain(float[] actual, float element) {
+	public static float[] mustContain(float[] actual, float element) {
+		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
 		for(float candidate : actual) {
 			if (candidate == element) {
 				return actual;
@@ -323,7 +344,8 @@ public class SpecificationTools {
 	 * @param element - the element that must be inside the collection.
 	 * @return actual
 	 */
-	public double[] mustContain(double[] actual, double element) {
+	public static double[] mustContain(double[] actual, double element) {
+		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
 		for(double candidate : actual) {
 			if (candidate == element) {
 				return actual;
@@ -340,8 +362,12 @@ public class SpecificationTools {
 	 * @param substring - the expected substring.
 	 * @return actual
 	 */
-	public <T extends CharSequence> T mustContain(T actual, CharSequence substring) {
-		assertTrue(actual.toString().contains(substring));
+	public static <T extends CharSequence> T mustContain(T actual, CharSequence substring) {
+		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
+		assertTrue(
+				String.format("\"%s\" must contain \"%s\".", //$NON-NLS-1$
+					actual.toString(), substring),
+				actual.toString().contains(substring));
 		return actual;
 	}
 
@@ -352,9 +378,12 @@ public class SpecificationTools {
 	 * @param result - the expected value.
 	 * @return actual
 	 */
-	public <T> T mustBe(T actual, boolean result) {
+	public static <T> T mustBe(T actual, boolean result) {
 		if (actual instanceof Boolean) {
 			assertEquals(Boolean.valueOf(result), actual);
+		}
+		else {
+			fail("actual must be a boolean"); //$NON-NLS-1$
 		}
 		return actual;
 	}
@@ -366,8 +395,12 @@ public class SpecificationTools {
 	 * @param substring - the string to be at the beginning.
 	 * @return s
 	 */
-	public <T extends CharSequence> T mustStartWith(T s, String substring) {
-		assertTrue(s.toString().startsWith(substring));
+	public static <T extends CharSequence> T mustStartWith(T s, String substring) {
+		assertNotNull("s cannot be null", s); //$NON-NLS-1$
+		assertTrue(
+				String.format("\"%s\" must start with \"%s\".", //$NON-NLS-1$
+					s.toString(), substring),
+				s.toString().startsWith(substring));
 		return s;
 	}
 
@@ -378,9 +411,127 @@ public class SpecificationTools {
 	 * @param substring - the string to be at the end.
 	 * @return s
 	 */
-	public <T extends CharSequence> T mustEndWith(T s, String substring) {
-		assertTrue(s.toString().endsWith(substring));
+	public static <T extends CharSequence> T mustEndWith(T s, String substring) {
+		assertNotNull("s cannot be null", s); //$NON-NLS-1$
+		assertTrue(
+				String.format("\"%s\" must end with \"%s\".", //$NON-NLS-1$
+					s.toString(), substring),
+				s.toString().endsWith(substring));
 		return s;
+	}
+
+	/** Ensure that the given string does not start with the given substring.
+	 *
+	 * @param <T> - type of the string.
+	 * @param s - the string to test.
+	 * @param substring - the string to be at the beginning.
+	 * @return s
+	 */
+	public static <T extends CharSequence> T mustNotStartWith(T s, String substring) {
+		assertNotNull("s cannot be null", s); //$NON-NLS-1$
+		assertFalse(
+				String.format("\"%s\" must not start with \"%s\".", //$NON-NLS-1$
+					s.toString(), substring),
+				s.toString().startsWith(substring));
+		return s;
+	}
+
+	/** Ensure that the given string does not end with the given substring.
+	 *
+	 * @param <T> - type of the string.
+	 * @param s - the string to test.
+	 * @param substring - the string to be at the end.
+	 * @return s
+	 */
+	public static <T extends CharSequence> T mustNotEndWith(T s, String substring) {
+		assertNotNull("s cannot be null", s); //$NON-NLS-1$
+		assertFalse(
+				String.format("\"%s\" must not end with \"%s\".", //$NON-NLS-1$
+					s.toString(), substring),
+				s.toString().endsWith(substring));
+		return s;
+	}
+	
+	/** Ensure that the given caller specification has a valid link
+	 * to another Jnario specification with the given name.
+	 * 
+	 * @param referencedLink - URL
+	 * @return refencedLink
+	 */
+	public static String mustBeJnarioLink(String referencedLink) {
+		Class<?> callingSpecification = Caller.getCallerClass();
+		assertNotNull("referencedLink cannot be null", referencedLink); //$NON-NLS-1$
+		assertNotNull("callingSpecification cannot be null", callingSpecification); //$NON-NLS-1$
+		//
+		String ref = referencedLink;
+		if (ref.contains(".html#")) { //$NON-NLS-1$
+			String[] parts = ref.split(java.util.regex.Matcher.quoteReplacement(".html#")); //$NON-NLS-1$
+			assertEquals(
+					String.format("Invalid link format: %s", ref), //$NON-NLS-1$
+					2, parts.length);
+			String[] sections = parts[1].split(java.util.regex.Matcher.quoteReplacement("_") + "+"); //$NON-NLS-1$ //$NON-NLS-2$
+			StringBuilder b = new StringBuilder();
+			for(String s : sections) {
+				if (s.length() > 1) {
+					b.append(s.substring(0, 1).toUpperCase() + s.substring(1));
+				} else {
+					b.append(s.toUpperCase());
+				}
+			}
+			if (parts[0].endsWith("Spec")) { //$NON-NLS-1$
+				ref = parts[0].substring(0, parts[0].length() - 4)
+						+ b.toString() + "Spec.html"; //$NON-NLS-1$
+			} else {
+				ref = parts[0] + b.toString() + "Spec.html"; //$NON-NLS-1$
+			}
+		}
+		//
+		assertTrue(
+					String.format("\"%s\" must end with \".html\".", //$NON-NLS-1$
+							ref.toString(), ".html"), //$NON-NLS-1$
+					ref.endsWith(".html")); //$NON-NLS-1$
+		//
+		ref = ref.substring(0, ref.length() - 5);
+		File caller = new File(callingSpecification.getName().replaceAll(
+				"\\.", File.separator)).getParentFile(); //$NON-NLS-1$
+		File resolved = new File(caller, ref.replaceAll("\\/", File.separator)); //$NON-NLS-1$
+		String resolvedPath = Files.simplifyPath(resolved.getPath());
+		resolvedPath = resolvedPath.replaceAll(java.util.regex.Matcher.quoteReplacement(File.separator), "."); //$NON-NLS-1$
+		try {
+			Class.forName(resolvedPath);
+		}
+		catch(Throwable _) {
+			fail(String.format("The link \"%s\" is not linked to a Jnario specification", referencedLink)); //$NON-NLS-1$
+		}
+		return referencedLink;
+	}
+
+	/** Ensure that the given string is a valid hyper-link.
+	 * The link must start with "http://" and not end with "/".
+	 * 
+	 * @param referencedLink - the string to test.
+	 * @return refencedLink
+	 */
+	public static String mustBeHttpLink(String referencedLink) {
+		return mustNotEndWith(mustStartWith(referencedLink, "http://"), "/"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	/** Ensure that the given string is a MAven snapshot version.
+	 * 
+	 * @param version - the version string.
+	 * @return version
+	 */
+	public static String mustBeSnapshotVersion(String version) {
+		return mustEndWith(version, "-SNAPSHOT"); //$NON-NLS-1$
+	}
+
+	/** Ensure that the given string is not a MAven snapshot version.
+	 * 
+	 * @param version - the version string.
+	 * @return version
+	 */
+	public static String mustNotBeSnapshotVersion(String version) {
+		return mustNotEndWith(version, "-SNAPSHOT"); //$NON-NLS-1$
 	}
 
 }

@@ -38,17 +38,16 @@ import org.eclipse.xtext.xbase.XSetLiteral
 import org.eclipse.xtext.xbase.XStringLiteral
 import org.eclipse.xtext.xbase.XTypeLiteral
 import org.jnario.runner.CreateWith
-import io.sarl.docs.utils.SpecificationTools
 
-/*
- * This document describes the general syntax of the SARL Language. 
+import static extension io.sarl.docs.utils.SpecificationTools.*
+
+/* <!-- OUTPUT OUTLINE -->
  * 
- * <!-- OUTPUT OUTLINE -->
+ * This document describes the general syntax of the SARL Language. 
  */
 @CreateWith(SARLSpecCreator)
 describe "General Syntax Reference" {
 
-	@Inject extension SpecificationTools
 	@Inject extension SARLParser
 	
 	/* SARL, like Java, is a statically typed language. In fact, it completely supports 
@@ -1553,12 +1552,8 @@ describe "General Syntax Reference" {
 	describe "Extension Methods"{
  
 		/*
-		 * You can import static methods as extensions, for example, when we import:
-		 * 
-		 *      import static extension java.util.Collections.*
-		 *
-		 * 
-		 * we can directly call the imported static methods on our list objects:
+		 * You can import static methods as extensions, directly call the 
+		 * imported static methods on our list objects:
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
