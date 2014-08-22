@@ -28,6 +28,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<compiler.level>1.7</compiler.level>
 		<jre.environment>JavaSE-1.7</jre.environment>
+		<janus.version>2.0.1.0-SNAPSHOT</janus.version>
 		<tycho.version>0.20.0</tycho.version>
 		<xtext.version>2.6.2</xtext.version>
 		<jnario.version>1.0.0</jnario.version>
@@ -117,6 +118,12 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>wagon-maven-plugin</artifactId>
 					<version>1.0-beta-4</version>
+				</plugin>
+
+				<plugin>
+					<groupId>com.google.code.maven-replacer-plugin</groupId>
+					<artifactId>replacer</artifactId>
+					<version>1.5.3</version>
 				</plugin>
 
 				<!-- xtend-maven-plugin is in pluginManagement instead of in plugins 
@@ -352,7 +359,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 										<ignore />
 									</action>
 								</pluginExecution>
-								<pluginExecution>
+								<!--<pluginExecution>
 									<pluginExecutionFilter>
 										<groupId>org.jnario</groupId>
 										<artifactId>
@@ -371,18 +378,12 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 									<action>
 										<ignore/>
 									</action>
-								</pluginExecution>
+								</pluginExecution>-->
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>
-											org.codehaus.mojo
-										</groupId>
-										<artifactId>
-											exec-maven-plugin
-										</artifactId>
-										<versionRange>
-											[1.2.1,)
-										</versionRange>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>exec-maven-plugin</artifactId>
+										<versionRange>[1.2.1,)</versionRange>
 										<goals>
 											<goal>java</goal>
 										</goals>
@@ -395,9 +396,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 									<pluginExecutionFilter>
 										<groupId>org.eclipse.xtext</groupId>
 										<artifactId>xtext-maven-plugin</artifactId>
-										<versionRange>
-											[2.2.0,)
-										</versionRange>
+										<versionRange>[2.2.0,)</versionRange>
 										<goals>
 											<goal>compile</goal>
 											<goal>testCompile</goal>
@@ -407,6 +406,19 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 									</pluginExecutionFilter>
 									<action>
 										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.google.code.maven-replacer-plugin</groupId>
+										<artifactId>replacer</artifactId>
+										<versionRange>[0.1.0,)</versionRange>
+										<goals>
+											<goal>replace</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
