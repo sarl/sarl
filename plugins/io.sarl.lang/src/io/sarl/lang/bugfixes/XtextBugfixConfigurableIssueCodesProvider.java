@@ -41,8 +41,10 @@ import org.eclipse.xtext.xbase.validation.XbaseConfigurableIssueCodes;
 public class XtextBugfixConfigurableIssueCodesProvider extends XbaseConfigurableIssueCodes {
 
 	/* Constants are copied from org.eclipse.jdt.core.JavaCore to solve the dependency to jdt.core*/
-	private static final String COMPILER_PB_DEPRECATION = JDT_CORE_PLUGIN_ID + ".compiler.problem.deprecation"; //$NON-NLS-1$ 
-	private static final String COMPILER_PB_DEPRECATION_IN_DEPRECATED_CODE = JDT_CORE_PLUGIN_ID + ".compiler.problem.deprecationInDeprecatedCode"; //$NON-NLS-1$
+	private static final String COMPILER_PB_DEPRECATION = JDT_CORE_PLUGIN_ID
+		+ ".compiler.problem.deprecation"; //$NON-NLS-1$
+	private static final String COMPILER_PB_DEPRECATION_IN_DEPRECATED_CODE = JDT_CORE_PLUGIN_ID
+		+ ".compiler.problem.deprecationInDeprecatedCode"; //$NON-NLS-1$
 
 	/** Construct a provider of issue codes for Xtext tools.
 	 */

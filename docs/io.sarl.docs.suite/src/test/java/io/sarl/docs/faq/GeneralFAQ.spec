@@ -125,7 +125,8 @@ describe "General FAQ on SARL" {
 			 * for writing the code of the expressions in the agents,
 			 * the skills, etc.
 			 * A part of the grammar of SARL is inherited from the
-			 * [Xbase partial programming language](https://wiki.eclipse.org/Xbase).
+			 * [Xbase partial programming language](https://wiki.eclipse.org/Xbase),
+			 * provided by the [Xtext framework](http://www.eclipse.org/Xtext/).
 			 * It provides statements and rules that are close to
 			 * object-oriented languages.
 			 * 
