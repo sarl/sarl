@@ -53,9 +53,9 @@ public final class SpecificationTools {
 	private SpecificationTools() {
 		//
 	}
-	
+
 	/** Replies a path built from the given elements.
-	 * 
+	 *
 	 * @param element1 - first mandatory element.
 	 * @param elements - the rest of the elements of the path.
 	 * @return the path.
@@ -66,7 +66,7 @@ public final class SpecificationTools {
 			b.append(element1);
 		}
 		if (elements != null) {
-			for(String element : elements) {
+			for (String element : elements) {
 				if (element != null && !element.isEmpty()) {
 					if (b.length() > 0) {
 						b.append(File.separator);
@@ -77,7 +77,7 @@ public final class SpecificationTools {
 		}
 		return b.toString();
 	}
-	
+
 	/** Ensure that the given object is matching a predicate.
 	 *
 	 * @param <T> - type of the object.
@@ -220,7 +220,7 @@ public final class SpecificationTools {
 	 */
 	public static boolean[] mustContain(boolean[] actual, boolean element) {
 		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		for(boolean candidate : actual) {
+		for (boolean candidate : actual) {
 			if (candidate == element) {
 				return actual;
 			}
@@ -238,7 +238,7 @@ public final class SpecificationTools {
 	 */
 	public static char[] mustContain(char[] actual, char element) {
 		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		for(char candidate : actual) {
+		for (char candidate : actual) {
 			if (candidate == element) {
 				return actual;
 			}
@@ -256,7 +256,7 @@ public final class SpecificationTools {
 	 */
 	public static byte[] mustContain(byte[] actual, byte element) {
 		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		for(byte candidate : actual) {
+		for (byte candidate : actual) {
 			if (candidate == element) {
 				return actual;
 			}
@@ -274,7 +274,7 @@ public final class SpecificationTools {
 	 */
 	public static short[] mustContain(short[] actual, short element) {
 		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		for(short candidate : actual) {
+		for (short candidate : actual) {
 			if (candidate == element) {
 				return actual;
 			}
@@ -292,7 +292,7 @@ public final class SpecificationTools {
 	 */
 	public static int[] mustContain(int[] actual, int element) {
 		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		for(int candidate : actual) {
+		for (int candidate : actual) {
 			if (candidate == element) {
 				return actual;
 			}
@@ -310,7 +310,7 @@ public final class SpecificationTools {
 	 */
 	public static long[] mustContain(long[] actual, long element) {
 		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		for(long candidate : actual) {
+		for (long candidate : actual) {
 			if (candidate == element) {
 				return actual;
 			}
@@ -328,7 +328,7 @@ public final class SpecificationTools {
 	 */
 	public static float[] mustContain(float[] actual, float element) {
 		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		for(float candidate : actual) {
+		for (float candidate : actual) {
 			if (candidate == element) {
 				return actual;
 			}
@@ -346,7 +346,7 @@ public final class SpecificationTools {
 	 */
 	public static double[] mustContain(double[] actual, double element) {
 		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		for(double candidate : actual) {
+		for (double candidate : actual) {
 			if (candidate == element) {
 				return actual;
 			}
@@ -381,8 +381,7 @@ public final class SpecificationTools {
 	public static <T> T mustBe(T actual, boolean result) {
 		if (actual instanceof Boolean) {
 			assertEquals(Boolean.valueOf(result), actual);
-		}
-		else {
+		} else {
 			fail("actual must be a boolean"); //$NON-NLS-1$
 		}
 		return actual;
@@ -451,10 +450,10 @@ public final class SpecificationTools {
 				s.toString().endsWith(substring));
 		return s;
 	}
-	
+
 	/** Ensure that the given caller specification has a valid link
 	 * to another Jnario specification with the given name.
-	 * 
+	 *
 	 * @param referencedLink - URL
 	 * @return refencedLink
 	 */
@@ -471,7 +470,7 @@ public final class SpecificationTools {
 					2, parts.length);
 			String[] sections = parts[1].split(java.util.regex.Matcher.quoteReplacement("_") + "+"); //$NON-NLS-1$ //$NON-NLS-2$
 			StringBuilder b = new StringBuilder();
-			for(String s : sections) {
+			for (String s : sections) {
 				if (s.length() > 1) {
 					b.append(s.substring(0, 1).toUpperCase() + s.substring(1));
 				} else {
@@ -499,8 +498,7 @@ public final class SpecificationTools {
 		resolvedPath = resolvedPath.replaceAll(java.util.regex.Matcher.quoteReplacement(File.separator), "."); //$NON-NLS-1$
 		try {
 			Class.forName(resolvedPath);
-		}
-		catch(Throwable _) {
+		} catch (Throwable _) {
 			fail(String.format("The link \"%s\" is not linked to a Jnario specification", referencedLink)); //$NON-NLS-1$
 		}
 		return referencedLink;
@@ -508,7 +506,7 @@ public final class SpecificationTools {
 
 	/** Ensure that the given string is a valid hyper-link.
 	 * The link must start with "http://" and not end with "/".
-	 * 
+	 *
 	 * @param referencedLink - the string to test.
 	 * @return refencedLink
 	 */
@@ -517,7 +515,7 @@ public final class SpecificationTools {
 	}
 
 	/** Ensure that the given string is a MAven snapshot version.
-	 * 
+	 *
 	 * @param version - the version string.
 	 * @return version
 	 */
@@ -526,7 +524,7 @@ public final class SpecificationTools {
 	}
 
 	/** Ensure that the given string is not a MAven snapshot version.
-	 * 
+	 *
 	 * @param version - the version string.
 	 * @return version
 	 */
