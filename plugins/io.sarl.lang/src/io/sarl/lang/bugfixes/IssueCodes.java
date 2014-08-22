@@ -39,6 +39,11 @@ public final class IssueCodes {
 	public static final String DEPRECATED_FEATURE =
 			ISSUE_CODE_PREFIX + "deprecated_feature"; //$NON-NLS-1$
 
+	/** A deprecated feature is used in a deprecated code.
+	 */
+	public static final String DEPRECATION_IN_DEPRECATED_CODE =
+			ISSUE_CODE_PREFIX + "deprecation_in_deprecated_code"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

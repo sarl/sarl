@@ -18,59 +18,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.validation;
-
-import io.sarl.lang.bugfixes.XtextBugfixConfigurableIssueCodesProvider;
+package io.sarl.lang.bugfixes;
 
 import org.eclipse.xtext.preferences.PreferenceKey;
 import org.eclipse.xtext.util.IAcceptor;
-import org.eclipse.xtext.validation.SeverityConverter;
+import org.eclipse.xtext.xbase.validation.XbaseConfigurableIssueCodes;
 
 /**
  * Provider of issues that could be configured by the user.
+ * Implementation of a provider of issues that is fixing several bugs in the Xtext API.
+ * The code defined in this class should be sent to the Xtext project as patches.
+ * <p>
+ * <ul>
+ * <li>Deprecated: {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=437689"}</li>
+ * </ul>
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLConfigurableIssueCodesProvider extends XtextBugfixConfigurableIssueCodesProvider {
+public class XtextBugfixConfigurableIssueCodesProvider extends XbaseConfigurableIssueCodes {
+
+	/* Constants are copied from org.eclipse.jdt.core.JavaCore to solve the dependency to jdt.core*/
+	private static final String COMPILER_PB_DEPRECATION = JDT_CORE_PLUGIN_ID + ".compiler.problem.deprecation"; //$NON-NLS-1$ 
+	private static final String COMPILER_PB_DEPRECATION_IN_DEPRECATED_CODE = JDT_CORE_PLUGIN_ID + ".compiler.problem.deprecationInDeprecatedCode"; //$NON-NLS-1$
 
 	/** Construct a provider of issue codes for Xtext tools.
 	 */
-	public SARLConfigurableIssueCodesProvider() {
+	public XtextBugfixConfigurableIssueCodesProvider() {
 		//
 	}
 
 	@Override
 	protected void initialize(IAcceptor<PreferenceKey> iAcceptor) {
 		super.initialize(iAcceptor);
-
-		// Override the Xbase configuration
-		iAcceptor.accept(create(
-				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
-				SeverityConverter.SEVERITY_WARNING));
-
-		// Add warnings from SARL
-		iAcceptor.accept(create(
-				IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
-				SeverityConverter.SEVERITY_WARNING));
-
-		iAcceptor.accept(create(
-				IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION,
-				SeverityConverter.SEVERITY_WARNING));
-
-		iAcceptor.accept(create(
-				IssueCodes.WRONG_PACKAGE,
-				SeverityConverter.SEVERITY_WARNING));
-
-		iAcceptor.accept(create(
-				IssueCodes.DISCOURAGED_CAPACITY_DEFINITION,
-				SeverityConverter.SEVERITY_WARNING));
-
-		iAcceptor.accept(create(
-				IssueCodes.UNREACHABLE_BEHAVIOR_UNIT,
-				SeverityConverter.SEVERITY_WARNING));
+		iAcceptor.accept(createDelegate(
+				io.sarl.lang.bugfixes.IssueCodes.DEPRECATED_FEATURE,
+				COMPILER_PB_DEPRECATION));
+		iAcceptor.accept(createDelegate(
+				io.sarl.lang.bugfixes.IssueCodes.DEPRECATION_IN_DEPRECATED_CODE,
+				COMPILER_PB_DEPRECATION_IN_DEPRECATED_CODE));
 	}
 
 }
