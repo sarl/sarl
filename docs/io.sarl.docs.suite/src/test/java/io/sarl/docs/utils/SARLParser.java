@@ -20,10 +20,8 @@
  */
 package io.sarl.docs.utils;
 
-import static com.google.common.collect.Iterables.contains;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.isEmpty;
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -52,8 +50,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import junit.framework.AssertionFailedError;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -71,9 +67,7 @@ import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XTypeLiteral;
-import org.eclipse.xtext.xbase.lib.Functions;
 import org.eclipse.xtext.xtype.XImportDeclaration;
-import org.hamcrest.Matcher;
 
 import com.google.common.base.Predicate;
 import com.google.inject.Inject;
@@ -604,41 +598,6 @@ public class SARLParser {
 		return o;
 	}
 
-	/** Ensure that the given object is matching a predicate.
-	 *
-	 * @param <T> - type of the object.
-	 * @param obj - the object to test.
-	 * @param func - the predicate.
-	 * @return obj
-	 */
-	public <T> T mustBe(T obj, Functions.Function1<T, Boolean> func) {
-		assertTrue(func.apply(obj));
-		return obj;
-	}
-
-	private boolean isArray(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		return obj.getClass().isArray();
-	}
-
-	/** Ensure that the given object is equal to another object.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected object.
-	 * @return actual
-	 */
-	public <T> T mustBe(T actual, T expected) {
-		if (isArray(actual) && isArray(expected)) {
-			assertArrayEquals("not equal", (Object[]) expected, (Object[]) actual); //$NON-NLS-1$
-		} else {
-			assertEquals("not equal", expected, actual); //$NON-NLS-1$
-		}
-		return actual;
-	}
-
 	/** Ensure that the given string literal is equal to the given value.
 	 *
 	 * @param actual - the string literal to test.
@@ -844,134 +803,6 @@ public class SARLParser {
 		assertNotNull("null feature call", actual); //$NON-NLS-1$
 		assertEquals("Invalid type", expected, actual.getFeature().getQualifiedName()); //$NON-NLS-1$
 		return actual;
-	}
-
-	/** Ensure that the given type is equals another type.
-	 *
-	 * @param <T> - expected of the object.
-	 * @param actual - the type to test.
-	 * @param expectedType - the expected type.
-	 * @return actual
-	 */
-	public <T> Class<T> mustBe(Class<T> actual, Class<?> expectedType) {
-		assertEquals("not equal", expectedType, actual); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given object is of the given type.
-	 *
-	 * @param <T> - expected type of the object.
-	 * @param actual - the object to test.
-	 * @param expectedType - the type.
-	 * @return actual
-	 */
-	public <T> T mustBe(Object actual, Class<T> expectedType) {
-		String msg = "not equal, expected: " + expectedType.getName() + ", actual: "; //$NON-NLS-1$ //$NON-NLS-2$
-		if (actual != null) {
-			msg += actual.getClass().getName();
-		} else {
-			msg += actual;
-		}
-		assertTrue(msg, expectedType.isInstance(actual));
-		return expectedType.cast(actual);
-	}
-
-	/** Ensure that the given object is matching the given predicate.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param matcher - the predicate.
-	 * @return actual
-	 */
-	public <T> T mustBe(T actual, Matcher<? super T> matcher) {
-		if (matcher == null) {
-			assertNull("not equal", actual); //$NON-NLS-1$
-		} else {
-			assertTrue("not equal", matcher.matches(actual)); //$NON-NLS-1$
-		}
-		return actual;
-	}
-
-	/** Ensure that the given iterable object contains an element equals to the
-	 * given value.
-	 *
-	 * @param <T> - type of the elements in the collection.
-	 * @param <I> - type of the collection.
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return actual
-	 */
-	public <T, I extends Iterable<T>> I mustContain(I actual, T element) {
-		assertTrue(contains(actual, element));
-		return actual;
-	}
-
-	/** Ensure that the given iterable object contains an element that is
-	 * matching the given predicate.
-	 *
-	 * @param <T> - type of the elements in the collection.
-	 * @param <I> - type of the collection.
-	 * @param collection - the collection to test.
-	 * @param matcher - the predicate.
-	 * @return collection
-	 */
-	public <T, I extends Iterable<T>> I mustContain(I collection, Matcher<? super T> matcher) {
-		for (T item : collection) {
-			if (matcher.matches(item)) {
-				return collection;
-			}
-		}
-		throw new AssertionFailedError("the collection does not contains an element matching the given critera"); //$NON-NLS-1$
-	}
-
-	/** Ensure that the given string contains a substring.
-	 *
-	 * @param <T> - type of the string.
-	 * @param actual - the string to test.
-	 * @param substring - the expected substring.
-	 * @return actual
-	 */
-	public <T extends CharSequence> T mustContain(T actual, CharSequence substring) {
-		assertTrue(actual.toString().contains(substring));
-		return actual;
-	}
-
-	/** Ensure that the given object is a boolean object equals to the given value.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param result - the expected value.
-	 * @return actual
-	 */
-	public <T> T mustBe(T actual, boolean result) {
-		if (actual instanceof Boolean) {
-			assertEquals(Boolean.valueOf(result), actual);
-		}
-		return actual;
-	}
-
-	/** Ensure that the given string starts with the given substring.
-	 *
-	 * @param <T> - type of the string.
-	 * @param s - the string to test.
-	 * @param substring - the string to be at the beginning.
-	 * @return s
-	 */
-	public <T extends CharSequence> T mustStartWith(T s, String substring) {
-		assertTrue(s.toString().startsWith(substring));
-		return s;
-	}
-
-	/** Ensure that the given string ends with the given substring.
-	 *
-	 * @param <T> - type of the string.
-	 * @param s - the string to test.
-	 * @param substring - the string to be at the end.
-	 * @return s
-	 */
-	public <T extends CharSequence> T mustEndWith(T s, String substring) {
-		assertTrue(s.toString().endsWith(substring));
-		return s;
 	}
 
 }

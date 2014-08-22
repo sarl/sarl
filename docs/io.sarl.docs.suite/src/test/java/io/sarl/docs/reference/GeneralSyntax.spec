@@ -38,6 +38,7 @@ import org.eclipse.xtext.xbase.XSetLiteral
 import org.eclipse.xtext.xbase.XStringLiteral
 import org.eclipse.xtext.xbase.XTypeLiteral
 import org.jnario.runner.CreateWith
+import io.sarl.docs.utils.SpecificationTools
 
 /*
  * This document describes the general syntax of the SARL Language. 
@@ -47,6 +48,7 @@ import org.jnario.runner.CreateWith
 @CreateWith(SARLSpecCreator)
 describe "General Syntax Reference" {
 
+	@Inject extension SpecificationTools
 	@Inject extension SARLParser
 	
 	/* SARL, like Java, is a statically typed language. In fact, it completely supports 

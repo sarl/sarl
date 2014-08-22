@@ -21,7 +21,9 @@
 package io.sarl.docs.gettingstarted
 
 import io.sarl.docs.utils.SARLSpecCreator
+import io.sarl.docs.utils.SpecificationTools
 import org.jnario.runner.CreateWith
+import com.google.inject.Inject
 
 /* For developing with SARL, you should create a project.
  * This document describes two ways for created SARL projects
@@ -31,6 +33,8 @@ import org.jnario.runner.CreateWith
  */
 @CreateWith(SARLSpecCreator)
 describe "Create First Project" {
+
+	@Inject extension SpecificationTools
 	
 	/* For creating a project, you should open your Eclipse and click on
 	 * **File > New > Projects**, and select "SARL Project" in

@@ -25,6 +25,7 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 import org.eclipse.xtext.xbase.XBlockExpression
+import io.sarl.docs.utils.SpecificationTools
 
 /**
  * <!-- OUTPUT OUTLINE -->
@@ -38,9 +39,9 @@ import org.eclipse.xtext.xbase.XBlockExpression
 @CreateWith(SARLSpecCreator)
 describe "Agent Definition Introduction" {
 	
+	@Inject extension SpecificationTools
 	@Inject extension SARLParser
-	
-	
+
 	/*
 	 * Agents are defined using the `agent` keyword.
 	 * 
