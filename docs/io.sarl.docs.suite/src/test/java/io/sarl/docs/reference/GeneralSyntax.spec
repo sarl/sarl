@@ -40,6 +40,7 @@ import org.eclipse.xtext.xbase.XTypeLiteral
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assert.*
 
 /* <!-- OUTPUT OUTLINE -->
  * 
@@ -77,16 +78,18 @@ describe "General Syntax Reference" {
 	 * 100% interoperable__. There are no exceptional cases and you do not have to 
 	 * think in two worlds. You can invoke SARL code from Java and vice versa without any
 	 * surprises or hassles.	
+	 * 
+	 * @filter(.*)
 	 */
-	describe "Java Interoperability" {
-		
+	fact "Java Interoperability" {
+		assertNotNull(typeof(java.util.List))
 	}
 
 	/* In SARL, the names of the features (agents, variables, fields, etc.)
 	 * cannot be one of the keywords of SARL or Java.
 	 * For example, it is forbidden to type:
 	 * 
-	 *     import java.awt.event.ActionEvent 
+	 *     import io.sarl.event.ActionEvent 
 	 *
 	 *
 	 * Indeed, the name fragment `event` corresponds to a keyword
@@ -96,10 +99,14 @@ describe "General Syntax Reference" {
 	 * this language has not the same set of keywords than SARL), it
 	 * is possible to prefix the name fragment with the character `^`:
 	 * 
-	 *     import java.awt.^event.ActionEvent 
+	 *     import io.sarl.^event.ActionEvent 
+	 * 
+	 * @filter(.*)
 	 */
-	describe "Name Syntax" {
-		
+	fact "Name Syntax" {
+		'''package io.sarl.event.ActionEvent'''.parsesWithError
+		var model = '''package io.sarl.^event.ActionEvent'''.parsesSuccessfully
+		model.mustHavePackage("io.sarl.event.ActionEvent")
 	}
 
 	/* A script is a file in which you must type the SARL code.

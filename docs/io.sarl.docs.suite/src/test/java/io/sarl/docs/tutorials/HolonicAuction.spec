@@ -111,7 +111,8 @@ describe "English Auction with Holons"{
 		 * the auctioneer agent.__
 		 * 
 		 * <center><img src="./holonic_auction.png"/></center>
-		 * 
+		 *
+		 * @filter(.*)
 		 */
 		fact "Principle of the Application" {
 			"./holonic_auction.png".mustBePicture
