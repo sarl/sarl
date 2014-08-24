@@ -61,7 +61,8 @@ describe "Create First Project" {
 		 * @filter(.*) 
 		 */
 		fact "Step1: Entering the project information" {
-			true
+			"new_sarl_project_screen_1.png".mustBePicture
+			"new_sarl_project_screen_2.png".mustBePicture
 		}
 		 
 		/* The second page of the wizard contains the building settings.
@@ -86,6 +87,7 @@ describe "Create First Project" {
 			Config.PROJECT_STRUCTURE_PATH.mustContain(path("src","main","java"))
 			Config.PROJECT_STRUCTURE_PATH.mustContain(path("src","main","sarl"))
 			Config.PROJECT_STRUCTURE_PATH.mustContain(path("src","main","generated-sources","xtend"))
+			"new_sarl_project_screen_3.png".mustBePicture
 		}
 		 
 		/* The *Libraries* tab contains the binary libraries that are required for compiling the
@@ -103,6 +105,7 @@ describe "Create First Project" {
 			Config.SARL_REFERENCE_LIBRARIES.mustContain("io.sarl.lang.core")
 			Config.SARL_REFERENCE_LIBRARIES.mustContain("io.sarl.core")
 			Config.SARL_REFERENCE_LIBRARIES.mustContain("io.sarl.util")
+			"new_sarl_project_screen_4.png".mustBePicture
 		 }
 
 	}

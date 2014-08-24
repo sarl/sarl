@@ -30,10 +30,14 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.net.URL;
 
 import junit.framework.AssertionFailedError;
 
 import org.arakhne.afc.vmutil.Caller;
+import org.arakhne.afc.vmutil.FileSystem;
+import org.arakhne.afc.vmutil.Resources;
+import org.arakhne.afc.vmutil.URISchemeType;
 import org.eclipse.xtext.util.Arrays;
 import org.eclipse.xtext.xbase.lib.Functions;
 import org.hamcrest.Matcher;
@@ -530,6 +534,31 @@ public final class SpecificationTools {
 	 */
 	public static String mustNotBeSnapshotVersion(String version) {
 		return mustNotEndWith(version, "-SNAPSHOT"); //$NON-NLS-1$
+	}
+
+	/** Ensure that the given caller specification has a valid link
+	 * to a picture with the given name.
+	 *
+	 * @param referencedLink - URL
+	 * @return refencedLink
+	 */
+	public static String mustBePicture(String referencedLink) {
+		Class<?> callingSpecification = Caller.getCallerClass();
+		assertNotNull("referencedLink cannot be null", referencedLink); //$NON-NLS-1$
+		assertNotNull("callingSpecification cannot be null", callingSpecification); //$NON-NLS-1$
+		// Check if it is a URL of a file path
+		URL fileURL = FileSystem.convertStringToURL(referencedLink, true, true);
+		if (fileURL == null) {
+			fail(String.format("The picture '%s' was nout found.", referencedLink)); //$NON-NLS-1$
+		} else {
+			if (URISchemeType.FILE.isURL(fileURL)) {
+				// Get local resource
+				URL u = Resources.getResource(callingSpecification, referencedLink);
+				assertNotNull(String.format("The picture '%s' was nout found.", referencedLink), u); //$NON-NLS-1$
+			}
+		}
+		//
+		return referencedLink;
 	}
 
 }

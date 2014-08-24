@@ -86,6 +86,7 @@ describe "Agent Reference"{
 				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
 				"SkillReferenceSpec.html".mustBeJnarioLink
 				"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
+				"./contexts.png".mustBePicture
 			}
 			
 			/* During its lifetime, an agent may join and participate in other contexts
@@ -186,6 +187,7 @@ describe "Agent Reference"{
 			 * @filter(.*) 
 			 */
 			fact "Built-in Capacities" {
+				"./agent.png".mustBePicture
 				"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
 			}
 

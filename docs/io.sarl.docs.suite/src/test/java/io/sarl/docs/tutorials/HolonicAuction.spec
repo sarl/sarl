@@ -39,7 +39,7 @@ import static extension io.sarl.docs.utils.SpecificationTools.*
  * taken after arbitration among components. 
  * 
  * <div class="bt-download">
- * <a href="%sarlmavenrepository%/last-demos-release.jar"><img alt="Download the Binary JAR file" src="../../../../images/download-icon.png"/></a>
+ * <a href="%sarlmavenrepository%/last-demos-release.jar"><img alt="Download the Binary JAR file" src="%website%/images/download-icon.png"/></a>
  * </div>
  * According to the vocabulary used in the SARL project,
  * all the agents are holons. In the rest of this tutorial,
@@ -91,6 +91,7 @@ describe "English Auction with Holons"{
 			"../reference/GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
 			"../reference/AgentReferenceSpec.html".mustBeJnarioLink
 			"%sarlmavenrepository%".mustBeHttpLink
+			"%website%".mustBeHttpLink
 		}
 
 		/*
@@ -112,8 +113,8 @@ describe "English Auction with Holons"{
 		 * <center><img src="./holonic_auction.png"/></center>
 		 * 
 		 */
-		context "Principle of the Application" {
-			//
+		fact "Principle of the Application" {
+			"./holonic_auction.png".mustBePicture
 		}
 
 		/*
@@ -147,7 +148,7 @@ describe "English Auction with Holons"{
 		 * the event that is sent by a bidder to the auctioneer with a 
 		 * bid inside.
 		 */
-		context "Definitions of the events" {
+		describe "Definitions of the events" {
 
 			/* The `Price` event is the event sent
 			 * by the auctioneer for notifying a
@@ -195,7 +196,7 @@ describe "English Auction with Holons"{
 		 * and could offer a new bid if the new price is not 
 		 * exceeding its maximal price.
 		 */
-		context "Definition of the bidder" {
+		describe "Definition of the bidder" {
 
 			/* The initial definition of the bidder is below.
 			 * The `random` attribute contains an instance of
@@ -736,7 +737,7 @@ describe "English Auction with Holons"{
 		 * Consequently, for stopping the agents, we need to stop the
 		 * sub-agents before the super-agent. 
 		 */
-		context "Stop the agents" {
+		describe "Stop the agents" {
 			
 			/* Because the determination of the end of
 			 * the agent's life is made by the auctioneer,
@@ -940,7 +941,7 @@ describe "English Auction with Holons"{
 		 * For launching the agents from the Eclipse IDE, please read
 		 * ["Run SARL Agent in the Eclipse IDE"](../gettingstarted/RunSARLAgentInTheEclipseIDESpec.html).
 		 */
-		context "Compile and Launch the agents" {
+		describe "Compile and Launch the agents" {
 			
 			/* You must have a file that contains
 			 * the compiled files of the tutorial, the Janus platform,

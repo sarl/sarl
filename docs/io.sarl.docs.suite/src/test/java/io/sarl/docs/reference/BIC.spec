@@ -93,6 +93,7 @@ describe "Built-in Capacity Reference" {
 				"CapacityReferenceSpec.html".mustBeJnarioLink
 				"SkillReferenceSpec.html".mustBeJnarioLink
 				"SpaceReferenceSpec.html".mustBeJnarioLink
+				"./contexts.png".mustBePicture
 				//
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.ExternalContextAccess

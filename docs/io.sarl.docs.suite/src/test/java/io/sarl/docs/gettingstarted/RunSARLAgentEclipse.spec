@@ -70,7 +70,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * @filter(.*) 
 		 */		
 		fact "Create a Java application configuration" {
-			true
+			"EclipseRunConfiguration_0.png".mustBePicture
 		}
 
 		/* For running your agent with the Janus runtime environment,
@@ -89,6 +89,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 */		
 		fact "Add the Janus runtime environment" {
 			"%janusmavenrepository%".mustBeHttpLink
+			"EclipseRunConfiguration_1.png".mustBePicture
 		}
 
 		/* You can go back to the *Main* tab, and enter the *Main class*.
@@ -99,7 +100,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * @filter(.*) 
 		 */		
 		fact "Specify the Janus Boot agent" {
-			true
+			"EclipseRunConfiguration_2.png".mustBePicture
 		}
 
 		/* The last step is the specification of the agent to launch.
@@ -116,7 +117,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * @filter(.*) 
 		 */		
 		fact "Specify the agent to execute" {
-			true
+			"EclipseRunConfiguration_3.png".mustBePicture
 		}
 
 	}
@@ -136,7 +137,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * @filter(.*) 
 		 */		
 		fact "Give parameters to the Agent" {
-			true
+			"EclipseRunConfiguration_4.png".mustBePicture
 		}
 		
 		/* For retrieving the values passed on the command line,

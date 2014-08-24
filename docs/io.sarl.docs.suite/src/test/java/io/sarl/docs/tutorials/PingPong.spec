@@ -36,7 +36,7 @@ import static extension io.sarl.docs.utils.SpecificationTools.*
  * the [General Syntax Reference](../reference/GeneralSyntaxReferenceSpec.html).
  * 
  * <div class="bt-download">
- * <a href="%sarlmavenrepository%/last-demos-release.jar"><img alt="Download the Binary JAR file" src="../../../../images/download-icon.png"/></a>
+ * <a href="%sarlmavenrepository%/last-demos-release.jar"><img alt="Download the Binary JAR file" src="%website%/images/download-icon.png"/></a>
  * </div>
  * The elements that are explained in this tutorial are:
  * 
@@ -74,6 +74,8 @@ describe "Agent Communication with the Ping Pong Agents"{
 			// Test the URLs in the introduction
 			"../reference/GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
 			"%sarlmavenrepository%".mustBeHttpLink
+			"%website%".mustBeHttpLink
+			"./pingpong.png".mustBePicture
 		}
 
 		/* First, the `Ping` and `Pong` events must be defined.
