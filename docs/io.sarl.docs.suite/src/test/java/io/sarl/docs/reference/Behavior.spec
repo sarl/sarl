@@ -26,6 +26,7 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assert.*
 
 /* <!-- OUTPUT OUTLINE -->
  *
@@ -550,4 +551,27 @@ describe "Behavior Reference" {
 		
 		}
 	
+	/* Specification: SARL General-purpose Agent-Oriented Programming Language ("Specification")<br/>
+	 * Version: %sarlspecversion%<br/>
+	 * Status: %sarlspecreleasestatus%<br/>
+	 * Release: %sarlspecreleasedate%
+	 * 
+	 * 
+	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 *
+	 * @filter(.*) 
+	 */
+	fact "Legal Notice" {
+		"%sarlversion%".mustStartWith("%sarlspecversion%")
+		assertTrue(
+			"The release status of the specification is invalid.",
+			"%sarlspecreleasestatus%" == "Final Release"
+			|| "%sarlspecreleasestatus%" == "Draft Release")
+		"%sarlspecreleasedate%".mustBeDate
+		"%copyrightdate%".mustBeInteger
+		assertFalse(
+			"The copyrighters' string cannot be empty.",
+			"%copyrighters%".empty || "%copyrighters%".startsWith("%"))
+	}
+
 }

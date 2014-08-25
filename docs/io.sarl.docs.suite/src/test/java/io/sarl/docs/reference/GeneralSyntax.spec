@@ -2172,5 +2172,40 @@ describe "General Syntax Reference" {
 		}
 
 	}
+	
+	/* This documentation is based on documentations from the Xtext and Xtend projects.
+	 * Thank you to the contributors to these documents.
+	 * 
+	 * * [Xtend](https://www.eclipse.org/xtend/documentation.html)
+	 * * [Xtext](https://www.eclipse.org/Xtext/documentation.html)
+	 *
+	 * @filter(.*) 
+	 */
+	fact "References" {
+		true
+	}
+
+	/* Specification: SARL General-purpose Agent-Oriented Programming Language ("Specification")<br/>
+	 * Version: %sarlspecversion%<br/>
+	 * Status: %sarlspecreleasestatus%<br/>
+	 * Release: %sarlspecreleasedate%
+	 * 
+	 * 
+	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 *
+	 * @filter(.*) 
+	 */
+	fact "Legal Notice" {
+		"%sarlversion%".mustStartWith("%sarlspecversion%")
+		assertTrue(
+			"The release status of the specification is invalid.",
+			"%sarlspecreleasestatus%" == "Final Release"
+			|| "%sarlspecreleasestatus%" == "Draft Release")
+		"%sarlspecreleasedate%".mustBeDate
+		"%copyrightdate%".mustBeInteger
+		assertFalse(
+			"The copyrighters' string cannot be empty.",
+			"%copyrighters%".empty || "%copyrighters%".startsWith("%"))
+	}
 
 }

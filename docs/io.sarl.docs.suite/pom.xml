@@ -126,12 +126,45 @@
 				</executions>
 			</plugin>
 
+			<!-- Compute the target folder -->
+			<plugin>
+				<groupId>org.codehaus.gmaven</groupId>
+				<artifactId>groovy-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-dynamic-properties</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<source>
+								snapshotTag = "-SNAPSHOT"
+								if (project.version.endsWith(snapshotTag)) {
+									len = project.version.size() - snapshotTag.size()
+									version = project.version.substring(0,len)
+									project.properties.sarlspecificationreleasestatus = "Draft Release"
+								}
+								else {
+									version = project.version
+									project.properties.sarlspecificationreleasestatus = "Final Release"
+								}
+								versionFields = version.split("\\.")
+								project.properties.sarlspecificationreleaseversion = versionFields[0]+"."+versionFields[1]
+								project.properties.sarlspecificationreleasedate =
+									(new java.text.SimpleDateFormat("yyyy-MM-dd")).format(new java.util.Date())
+							</source>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>com.google.code.maven-replacer-plugin</groupId>
 				<artifactId>replacer</artifactId>
 				<executions>
-					<!-- Replace the Maven properties in the Jnario specifications.
-						 These specifications will be used for generating the reports only. -->
+					<!-- Replace the Maven properties in the Jnario specifications. These 
+						specifications will be used for generating the reports only. -->
 					<execution>
 						<id>prepare-jnario-for-reports</id>
 						<phase>generate-test-sources</phase>
@@ -148,9 +181,8 @@
 							</includes>
 						</configuration>
 					</execution>
-					<!-- Replace the Maven properties in the Java files generated
-						 from the Jnario specifications.
-						 These specifications will be used during tests only. -->
+					<!-- Replace the Maven properties in the Java files generated from the 
+						Jnario specifications. These specifications will be used during tests only. -->
 					<execution>
 						<id>process-jnario-for-tests</id>
 						<phase>process-test-sources</phase>
@@ -211,6 +243,26 @@
 						<replacement>
 							<token>%janusmavenrepository%</token>
 							<value>${janus.maven.repository.url}</value>
+						</replacement>
+						<replacement>
+							<token>%sarlspecversion%</token>
+							<value>${sarlspecificationreleaseversion}</value>
+						</replacement>
+						<replacement>
+							<token>%sarlspecreleasestatus%</token>
+							<value>${sarlspecificationreleasestatus}</value>
+						</replacement>
+						<replacement>
+							<token>%sarlspecreleasedate%</token>
+							<value>${sarlspecificationreleasedate}</value>
+						</replacement>
+						<replacement>
+							<token>%copyrightdate%</token>
+							<value>${year}</value>
+						</replacement>
+						<replacement>
+							<token>%copyrighters%</token>
+							<value>${copyrighters}</value>
 						</replacement>
 					</replacements>
 				</configuration>

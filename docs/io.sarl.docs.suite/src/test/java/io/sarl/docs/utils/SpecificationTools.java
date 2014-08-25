@@ -31,6 +31,8 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.Date;
+import java.util.regex.Pattern;
 
 import junit.framework.AssertionFailedError;
 
@@ -559,6 +561,38 @@ public final class SpecificationTools {
 		}
 		//
 		return referencedLink;
+	}
+
+	/** Ensure that the given string is a string representation of an integer,
+	 * without sign symbols.
+	 *
+	 * @param str - the string.
+	 * @return str
+	 */
+	public static String mustBeInteger(String str) {
+		assertTrue(
+				String.format("The string \"%s\" is not an integer number.", str), //$NON-NLS-1$
+				Pattern.matches("^[0-9]+$", str)); //$NON-NLS-1$
+		return str; 
+	}
+
+	/** Ensure that the given string is a string representation of a date.
+	 * A date has the format <code>yyyy-[m]m-[d]d</code>
+	 *
+	 * @param str - the string.
+	 * @return str
+	 */
+	public static String mustBeDate(String str) {
+		Date d = null;
+		try {
+			d = Date.valueOf(str);
+		} catch(Throwable _) {
+			d = null;
+		}
+		if (d == null) {
+			fail(String.format("The date \"%s\" has an invalid format.", str)); //$NON-NLS-1$
+		}
+		return str; 
 	}
 
 }
