@@ -139,7 +139,16 @@ public class SpaceID implements Serializable, Comparable<SpaceID> {
 
 	@Override
 	public int compareTo(SpaceID o) {
-		return this.id.compareTo(o.getID());
+		int cmp;
+		cmp = this.spaceSpec.getName().compareTo(o.spaceSpec.getName());
+		if (cmp != 0) {
+			return cmp;
+		}
+		cmp = this.contextID.compareTo(o.contextID);
+		if (cmp != 0) {
+			return cmp;
+		}
+		return this.id.compareTo(o.id);
 	}
 
 }

@@ -115,6 +115,16 @@ public class Agent implements Identifiable {
 		return skill;
 	}
 
+	/** Implementation of the operator "capacity maps-to skill".
+	 *
+	 * @param <S> - type of the skill.
+	 * @param capacity - the capacity to map.
+	 * @param skill - the skill to be mapped to.
+	 */
+	protected <S extends Skill> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
+		setSkill(capacity, skill);
+	}
+
 	/**
 	 * Clears the Skill associated with the capacity.
 	 *
@@ -126,7 +136,9 @@ public class Agent implements Identifiable {
 	protected <S extends Skill & Capacity> S clearSkill(Class<? extends Capacity> capacity) {
 		assert capacity != null;
 		Skill s = this.capacities.remove(capacity);
-		s.uninstall();
+		if (s != null) {
+			s.uninstall();
+		}
 		return (S) s;
 	}
 
@@ -161,16 +173,6 @@ public class Agent implements Identifiable {
 		return this.capacities.containsKey(capacity);
 	}
 
-	/** Implementation of the operator "capacity maps-to skill".
-	 *
-	 * @param <S> - type of the skill.
-	 * @param capacity - the capacity to map.
-	 * @param skill - the skill to be mapped to.
-	 */
-	protected <S extends Skill & Capacity> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
-		setSkill(capacity, skill);
-	}
-
 	/** Set the provider of the built-in capacities.
 	 *
 	 * @param provider - the provider of built-in capacities for this agent.
@@ -178,6 +180,42 @@ public class Agent implements Identifiable {
 	@Inject
 	void setBuiltinCapacitiesProvider(BuiltinCapacitiesProvider provider) {
 		this.capacities.putAll(provider.getBuiltinCapacities(this));
+	}
+
+	/** Replies if the given address is one of the addresses of this agent.
+	 * The test is done on the identifier replied by {@link Address#getUUID()}.
+	 *
+	 * @param address - the address to test.
+	 * @return <code>true</code> if the given address is one of this agent,
+	 * otherwise <code>false</code>.
+	 */
+	protected boolean isMe(Address address) {
+		return (address != null) && (this.id.equals(address.getUUID()));
+	}
+
+	/** Replies if the given identifier corresponds to the identifier
+	 * of this agent.
+	 * <p>
+	 * This function is equivalent to:<pre><code>
+	 * id.equals( agent.getID() )
+	 * </code></pre>
+	 *
+	 * @param id - the identifier to test.
+	 * @return <code>true</code> if the given identifier is the one of this agent,
+	 * otherwise <code>false</code>.
+	 */
+	protected boolean isMe(UUID id) {
+		return (id != null) && (this.id.equals(id));
+	}
+
+	/** Replies if the given event was emitted by this agent.
+	 *
+	 * @param event - the event to test.
+	 * @return <code>true</code> if the given event was emitted by
+	 * this agent; otherwise <code>false</code>.
+	 */
+	protected boolean isFromMe(Event event) {
+		return (event != null) && isMe(event.getSource());
 	}
 
 }
