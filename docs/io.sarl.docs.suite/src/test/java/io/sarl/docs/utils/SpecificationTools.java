@@ -573,7 +573,7 @@ public final class SpecificationTools {
 		assertTrue(
 				String.format("The string \"%s\" is not an integer number.", str), //$NON-NLS-1$
 				Pattern.matches("^[0-9]+$", str)); //$NON-NLS-1$
-		return str; 
+		return str;
 	}
 
 	/** Ensure that the given string is a string representation of a date.
@@ -586,13 +586,13 @@ public final class SpecificationTools {
 		Date d = null;
 		try {
 			d = Date.valueOf(str);
-		} catch(Throwable _) {
+		} catch (Throwable _) {
 			d = null;
 		}
 		if (d == null) {
 			fail(String.format("The date \"%s\" has an invalid format.", str)); //$NON-NLS-1$
 		}
-		return str; 
+		return str;
 	}
 
 }
