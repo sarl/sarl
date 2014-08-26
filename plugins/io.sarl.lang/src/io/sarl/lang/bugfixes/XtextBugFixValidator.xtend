@@ -39,9 +39,6 @@ import org.eclipse.xtext.xtype.XImportDeclaration
 import org.eclipse.xtext.xtype.XtypePackage
 
 import static io.sarl.lang.util.ModelUtil.hasAnnotation
-import org.eclipse.xtext.xbase.XInstanceOfExpression
-import java.io.Serializable
-import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument
 
 /**
  * Implementation of a validator that is fixing several bugs in the Xtext API.
@@ -49,7 +46,7 @@ import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputation
  * <p>
  * <ul>
  * <li>Deprecated: {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=437689"}</li>
- * <li>InstanceOf: {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=420959"}</li>
+ * <li>REMOVED: InstanceOf: {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=420959"}</li>
  * </ul>
  * 
  * @author $Author: sgalland$
@@ -203,55 +200,6 @@ class XtextBugFixValidator extends AbstractSARLValidator {
 					expression,
 					XbasePackage.Literals::XTYPE_LITERAL__TYPE,
 					!severities.isIgnored(IssueCodes::DEPRECATION_IN_DEPRECATED_CODE))
-		}
-	}
-
-	@Check
-	public override checkInstanceOf(XInstanceOfExpression instanceOfExpression) {
-		var leftType = instanceOfExpression.expression.getActualType
-		val rightType = instanceOfExpression.type.toLightweightTypeReference(true)
-		if (leftType === null || rightType === null || rightType.type === null || rightType.type.eIsProxy) {
-			return
-		}
-		if (rightType.containsTypeArgs) {
-			error(	"Cannot perform instanceof check against parameterized type "
-						+ rightType.getNameOfTypes,
-					null,
-					ValidationMessageAcceptor::INSIGNIFICANT_INDEX,
-					org.eclipse.xtext.xbase.validation.IssueCodes::INVALID_INSTANCEOF)
-			return
-		}
-		if (leftType.any || leftType.unknown) {
-			return
-		}
-		if (rightType.primitive) {
-			error(	"Cannot perform instanceof check against primitive type "
-						+ rightType.getNameOfTypes,
-					null,
-					ValidationMessageAcceptor::INSIGNIFICANT_INDEX,
-					org.eclipse.xtext.xbase.validation.IssueCodes::INVALID_INSTANCEOF)
-			return
-		}
-		if (leftType.primitive 
-			|| (rightType.array && !(leftType.array || leftType.isType(typeof(Object)) || leftType.isType(typeof(Cloneable)) || leftType.isType(typeof(Serializable))))
-			|| (rightType.isFinal && !memberOfTypeHierarchy(rightType, leftType))
-			|| (!memberOfTypeHierarchy(leftType, rightType))) {
-			error(	"Incompatible conditional operand types "
-						+ leftType.getNameOfTypes + " and "
-						+ rightType.getNameOfTypes,
-					null,
-					ValidationMessageAcceptor::INSIGNIFICANT_INDEX,
-					org.eclipse.xtext.xbase.validation.IssueCodes::INVALID_INSTANCEOF)
-			return
-		}
-		if (!org.eclipse.xtext.xbase.validation.IssueCodes::OBSOLETE_INSTANCEOF.isIgnored
-			&& rightType.isAssignableFrom(leftType, 
-				new TypeConformanceComputationArgument(false, false, true, true, false, false))) {
-			addIssueToState(
-				org.eclipse.xtext.xbase.validation.IssueCodes::OBSOLETE_INSTANCEOF,
-				"The expression of type " + leftType.getNameOfTypes
-					+ " is already of type " + rightType.canonicalName,
-				null)
 		}
 	}
 

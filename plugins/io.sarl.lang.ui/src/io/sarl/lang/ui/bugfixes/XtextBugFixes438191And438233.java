@@ -51,11 +51,16 @@ import com.google.inject.Inject;
 /**
  * Patches for the bugs 438233 and 438191 in Xtext.
  * 
+ * <ul>
+ * <li>Type proposals when completion: {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=438233"}</li>
+ * <li>Type proposals when completion: {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=438191"}</li>
+ * </ul>
+ * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see "https://bugs.eclipse.org/bugs/show_bug.cgi?id=438233"
+ * @see "https://bugs.eclipse.org/bugs/show_bug.cgi?id=438191"
  * @see "https://bugs.eclipse.org/bugs/show_bug.cgi?id=438233"
  */
 public class XtextBugFixes438191And438233 extends ImportingTypesProposalProvider {
