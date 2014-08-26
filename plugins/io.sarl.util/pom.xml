@@ -1,15 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>io.sarl</groupId>
 		<artifactId>io.sarl.plugins</artifactId>
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
-  
-  <artifactId>io.sarl.util</artifactId>
-  <packaging>eclipse-plugin</packaging>
-  <name>SDK Utilities</name>
-  
+
+	<artifactId>io.sarl.util</artifactId>
+	<packaging>eclipse-plugin</packaging>
+	<name>SDK Utilities</name>
+
 	<properties>
 		<!-- needed for checkstyle/findbugs -->
 		<main.basedir>${project.basedir}/../..</main.basedir>

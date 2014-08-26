@@ -17,11 +17,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.util;
+package io.sarl.util.tests;
 
+import io.sarl.util.Collections3;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -38,30 +41,22 @@ import org.junit.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings({"javadoc","synthetic-access"})
-public class Collections3_SynchronizedSetTest_Sync extends Assert {
+public class Collections3_SynchronizedCollectionTest_Sync extends Assert {
 
-    private static <S> S get(Set<S> c, int index) {
-    	Iterator<S> it = c.iterator();
-    	for(int i=0; i<index; ++i) {
-    		it.next();
-    	}
-    	return it.next();
-    }
-
-    private ExecutorService executors;
+	private ExecutorService executors;
 	private Object mutex;
-	private TreeSet<String> original;
-	private Set<String> collection;
+	private List<String> original;
+	private Collection<String> collection;
 	
 	@Before
 	public void setUp() {
 		this.executors = Executors.newFixedThreadPool(5);
 		this.mutex = new Object();
-		this.original = new TreeSet<>();
+		this.original = new ArrayList<>();
 		for(int i=0; i<50; ++i) {
 			this.original.add("0x"+Double.toHexString(Math.random())); //$NON-NLS-1$
 		}
-		this.collection = Collections3.synchronizedSet(this.original, this.mutex);
+		this.collection = Collections3.synchronizedCollection(this.original, this.mutex);
 	}
 	
 	@After
@@ -81,7 +76,7 @@ public class Collections3_SynchronizedSetTest_Sync extends Assert {
 				@Override
 				public void run() {
 					for(int i=0; i<10; ++i) {
-						Collections3_SynchronizedSetTest_Sync.this.collection.add(Integer.toString(i));
+						Collections3_SynchronizedCollectionTest_Sync.this.collection.add(Integer.toString(i));
 					}
 				}
 			});
@@ -89,7 +84,7 @@ public class Collections3_SynchronizedSetTest_Sync extends Assert {
     		int i = 0;
     		while(it.hasNext()) {
     			String s = it.next();
-    			assertSame(get(this.original, i), s);
+    			assertSame(this.original.get(i), s);
     			++i;
     		}
     	}

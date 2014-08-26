@@ -12,6 +12,43 @@
 
 	<modules>
 		<module>io.sarl.lang.tests</module>
-		
+		<module>io.sarl.lang.core.tests</module>
+		<module>io.sarl.util.tests</module>
+		<module>io.sarl.core.tests</module>
 	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.sarl.lang</groupId>
+				<artifactId>io.sarl.lang.core</artifactId>
+				<version>${project.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.core</artifactId>
+				<version>${project.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.util</artifactId>
+				<version>${project.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+				<version>${xtext.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>1.9.5</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>

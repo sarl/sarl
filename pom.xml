@@ -277,8 +277,8 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 					<version>${afc.version}</version>
 				</plugin>
 
-				<!-- Configure the checkstyle plugin. This plugin must be
-				     activated module per module in the module's pom files. -->
+				<!-- Configure the checkstyle plugin. This plugin must be activated module 
+					per module in the module's pom files. -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
@@ -298,8 +298,8 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 						<enableRSS>false</enableRSS>
 						<linkXRef>false</linkXRef>
 						<consoleOutput>true</consoleOutput>
-				       	<failsOnError>true</failsOnError>
-				       	<failOnViolation>true</failOnViolation>
+						<failsOnError>true</failsOnError>
+						<failOnViolation>true</failOnViolation>
 						<includeTestSourceDirectory>false</includeTestSourceDirectory>
 						<enableRulesSummary>true</enableRulesSummary>
 						<propertyExpansion>main.basedir=${main.basedir}</propertyExpansion>
@@ -369,26 +369,10 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 										<ignore />
 									</action>
 								</pluginExecution>
-								<!--<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.jnario</groupId>
-										<artifactId>
-											jnario-maven-plugin
-										</artifactId>
-										<versionRange>
-											[0.7.1,)
-										</versionRange>
-										<goals>
-											<goal>testCompile</goal>
-											<goal>
-												xtend-test-install-debug-info
-											</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore/>
-									</action>
-								</pluginExecution>-->
+								<!--<pluginExecution> <pluginExecutionFilter> <groupId>org.jnario</groupId> 
+									<artifactId> jnario-maven-plugin </artifactId> <versionRange> [0.7.1,) </versionRange> 
+									<goals> <goal>testCompile</goal> <goal> xtend-test-install-debug-info </goal> 
+									</goals> </pluginExecutionFilter> <action> <ignore/> </action> </pluginExecution> -->
 								<pluginExecution>
 									<pluginExecutionFilter>
 										<groupId>org.codehaus.mojo</groupId>
@@ -428,7 +412,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore/>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
@@ -522,7 +506,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.jasig.maven</groupId>
 				<artifactId>maven-notice-plugin</artifactId>
@@ -568,7 +552,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>license-maven-plugin</artifactId>
@@ -650,10 +634,6 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 							<detectJavaApiLink>true</detectJavaApiLink>
 							<links>
 								<link>http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.7.0/</link>
-								<link>http://hazelcast.org/docs/latest/javadoc/</link>
-								<link>http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/</link>
-								<link>http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/</link>
-								<link>http://google-guice.googlecode.com/svn/trunk/javadoc/</link>
 							</links>
 							<docfilessubdirs>true</docfilessubdirs>
 							<excludePackageNames></excludePackageNames>
@@ -663,8 +643,8 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 							<keywords>true</keywords>
 							<useStandardDocletOptions>true</useStandardDocletOptions>
 							<excludePackageNames></excludePackageNames>
-							<bottom>&lt;small&gt;Copyright &amp;copy;
-								${project.inceptionYear}-${year} ${copyrighters}.
+							<bottom>&lt;small&gt;Copyright &amp;copy; ${year}
+								${copyrighters}.
 							</bottom>
 							<tags>
 								<tag>
@@ -831,9 +811,9 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 	<!-- ==== Development === -->
 	<!-- ==================== -->
 	<scm>
-	  <connection>scm:git:git@github.com:sarl/sarl.git</connection>
-	  <developerConnection>scm:git:git@github.com:sarl/sarl.git</developerConnection>
-	  <url>git@github.com:sarl/sarl.git</url>
+		<connection>scm:git:git@github.com:sarl/sarl.git</connection>
+		<developerConnection>scm:git:git@github.com:sarl/sarl.git</developerConnection>
+		<url>git@github.com:sarl/sarl.git</url>
 	</scm>
 
 </project>

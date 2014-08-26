@@ -17,9 +17,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.util;
+package io.sarl.util.tests;
 
 import io.sarl.lang.util.SynchronizedSet;
+import io.sarl.util.Collections3;
 
 import java.util.ArrayList;
 import java.util.Collection;
