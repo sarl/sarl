@@ -20,15 +20,18 @@
  */
 package io.sarl.lang.core.tests;
 
-import java.util.UUID;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.core.SpaceSpecification;
 
+import java.util.UUID;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * @author $Author: sgalland$
@@ -37,20 +40,17 @@ import static org.junit.Assert.*;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings({"rawtypes","unchecked"})
-public class SpaceIDTest {
+public class SpaceIDWithSpecificationTest {
 
 	private UUID contextID;
 	private UUID id;
 	private Class specification;
 	private SpaceID spaceID;
 	
-	private int cmp(UUID a, UUID b, Class<?> c) {
+	private int cmp(UUID a, UUID b) {
 		int cmp = this.contextID.compareTo(a);
 		if (cmp == 0) {
 			cmp = this.id.compareTo(b);
-			if (cmp == 0) {
-				cmp = this.specification.getName().compareTo(c.getName());
-			}
 		}
 		return cmp;
 	}
@@ -162,20 +162,20 @@ public class SpaceIDTest {
 		uuid1 = UUID.randomUUID();
 		sid = new SpaceID(uuid1, this.id, this.specification);
 		assertEquals(
-				cmp(uuid1, this.id, this.specification),
+				cmp(uuid1, this.id),
 				this.spaceID.compareTo(sid));
 		//
 		uuid1 = UUID.randomUUID();
 		sid = new SpaceID(this.contextID, uuid1, this.specification);
 		assertEquals(
-				cmp(this.contextID, uuid1, this.specification),
+				cmp(this.contextID, uuid1),
 				this.spaceID.compareTo(sid));
 		//
 		uuid1 = UUID.randomUUID();
 		uuid2 = UUID.randomUUID();
 		sid = new SpaceID(uuid1, uuid2, this.specification);
 		assertEquals(
-				cmp(uuid1, uuid2, this.specification),
+				cmp(uuid1, uuid2),
 				this.spaceID.compareTo(sid));
 	}
 

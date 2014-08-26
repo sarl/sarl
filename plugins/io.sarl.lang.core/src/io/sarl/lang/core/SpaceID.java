@@ -41,11 +41,14 @@ public class SpaceID implements Serializable, Comparable<SpaceID> {
 
 	/** Constructs a space ID.
 	 *
-	 * @param contextID - the unique ID of the context that contains the space.
-	 * @param id - the unique ID of the space.
-	 * @param spaceSpec - the specification of the space for which the ID must be created.
+	 * @param contextID - the unique ID of the context that contains the space (cannot be <code>null</code>).
+	 * @param id - the unique ID of the space (cannot be <code>null</code>).
+	 * @param spaceSpec - the specification of the space for which the ID must be created
+	 * 	(could be <code>null</code>).
 	 */
 	public SpaceID(UUID contextID, UUID id, Class<? extends SpaceSpecification<?>> spaceSpec) {
+		assert (contextID != null);
+		assert (id != null);
 		this.id = id;
 		this.contextID = contextID;
 		this.spaceSpec = spaceSpec;
@@ -139,12 +142,7 @@ public class SpaceID implements Serializable, Comparable<SpaceID> {
 
 	@Override
 	public int compareTo(SpaceID o) {
-		int cmp;
-		cmp = this.spaceSpec.getName().compareTo(o.spaceSpec.getName());
-		if (cmp != 0) {
-			return cmp;
-		}
-		cmp = this.contextID.compareTo(o.contextID);
+		int cmp = this.contextID.compareTo(o.contextID);
 		if (cmp != 0) {
 			return cmp;
 		}
