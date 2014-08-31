@@ -43,7 +43,6 @@ import org.eclipse.xtext.common.types.JvmConstructor
 import org.eclipse.xtext.common.types.JvmExecutable
 import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmOperation
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.naming.QualifiedName
@@ -136,21 +135,6 @@ class SARLLabelProvider extends XbaseLabelProvider {
 
 	// Texts
 	
-	protected def text(JvmParameterizedTypeReference element) {
-		var s = element.simpleName.convertToStyledString
-		if (element.arguments!==null && !element.arguments.empty) {
-			s.append("<")
-			var boolean b = false
-			for(t : element.arguments) {
-				if (b) s.append(", ")
-				else b = true
-				s.append(text(t))
-			}
-			s.append(">")
-		}
-		return s
-	}
-
 	protected def text(JvmTypeReference element) {
 		uiStrings.referenceToString(element, element.simpleName)
 	}
