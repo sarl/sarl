@@ -8,21 +8,10 @@
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>io.sarl.util.tests</artifactId>
+	<groupId>io.sarl.lang</groupId>
+	<artifactId>io.sarl.lang.ui.tests</artifactId>
+	<packaging>eclipse-test-plugin</packaging>
 
-	<name>Utility Library Tests</name>
-
-	<dependencies>
-		<dependency>
-			<groupId>io.sarl.lang</groupId>
-			<artifactId>io.sarl.lang.core</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.sarl</groupId>
-			<artifactId>io.sarl.util</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+	<name>Language UI Library Tests</name>
 
 </project>

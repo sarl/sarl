@@ -7,6 +7,7 @@ Bundle-SymbolicName: io.sarl.lang.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: io.sarl.lang,
  io.sarl.lang.ui,
+ org.eclipse.xtext.xbase.lib,
  org.eclipse.core.runtime,
  org.eclipse.xtext.junit4,
  org.eclipse.ui.workbench;resolution:=optional,

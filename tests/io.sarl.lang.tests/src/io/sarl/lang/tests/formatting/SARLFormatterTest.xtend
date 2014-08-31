@@ -29,7 +29,7 @@ import org.junit.runner.RunWith
 import static extension org.junit.Assert.*
 
 /**
- * @author $Author: Sebastian Rodriguez$
+ * @author $Author: srodriguez$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

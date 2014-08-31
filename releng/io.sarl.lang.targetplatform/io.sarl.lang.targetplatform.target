@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target includeMode="feature" name="io.sarl.lang.targetplatform" sequenceNumber="21">
+<?pde version="3.8"?><target includeMode="feature" name="io.sarl.lang.targetplatform" sequenceNumber="26">
 <locations>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.xtext.redist.feature.group" version="2.6.2.v201407030533"/>
+<unit id="org.eclipse.xtext.xbase.feature.group" version="2.6.2.v201407030533"/>
+<unit id="org.eclipse.xtext.runtime.feature.group" version="2.6.2.v201407030533"/>
+<unit id="org.eclipse.xtend.sdk.feature.group" version="2.6.2.v201407030533"/>
+<unit id="org.eclipse.xtext.ui.feature.group" version="2.6.2.v201407030533"/>
+<unit id="org.eclipse.xtext.sdk.feature.group" version="2.6.2.v201407030533"/>
+<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
+</location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.feature.group" version="3.10.0.v20140606-1536"/>
 <unit id="org.eclipse.jgit.feature.group" version="3.4.0.201406110918-r"/>
@@ -10,13 +19,8 @@
 <repository location="http://download.eclipse.org/releases/luna"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.xtext.redist.feature.group" version="2.6.2.v201407030533"/>
-<unit id="org.eclipse.xtext.xbase.feature.group" version="2.6.2.v201407030533"/>
-<unit id="org.eclipse.xtext.runtime.feature.group" version="2.6.2.v201407030533"/>
-<unit id="org.eclipse.xtend.sdk.feature.group" version="2.6.2.v201407030533"/>
-<unit id="org.eclipse.xtext.ui.feature.group" version="2.6.2.v201407030533"/>
-<unit id="org.eclipse.xtext.sdk.feature.group" version="2.6.2.v201407030533"/>
-<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
+<unit id="org.powermock.mockito-junit.feature.feature.group" version="1.5.4.1"/>
+<repository location="http://powermock-osgi.googlecode.com/svn/updateSite/1.5.4.1"/>
 </location>
 </locations>
 </target>

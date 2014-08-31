@@ -79,19 +79,8 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 	<!-- ======================================= -->
 
 	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.11</version>
-				<scope>test</scope>
-			</dependency>
-
-
-			<!-- The other dependencies are inside the submodules for avoiding to 
-				propagate the dependency information outside a specific module -->
-
-		</dependencies>
+		<!-- The dependencies are inside the submodules for avoiding to 
+			propagate the dependency information outside a specific module -->
 	</dependencyManagement>
 
 	<!-- ======================================= -->
@@ -789,6 +778,11 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 			<id>org.eclipse.xtext.update.lastest</id>
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/</url>
+		</repository>
+		<repository>
+			<id>com.googlecode.powermock-osgi</id>
+			<layout>p2</layout>
+			<url>http://powermock-osgi.googlecode.com/svn/updateSite/1.5.4.1</url>
 		</repository>
 	</repositories>
 

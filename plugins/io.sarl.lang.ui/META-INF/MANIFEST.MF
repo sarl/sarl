@@ -22,8 +22,16 @@ Require-Bundle: io.sarl.lang;bundle-version="0.1.0";visibility:=reexport,
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: io.sarl.lang.ui.quickfix,
+Export-Package: io.sarl.lang.ui,
+ io.sarl.lang.ui.bugfixes,
  io.sarl.lang.ui.contentassist,
  io.sarl.lang.ui.contentassist.antlr,
- io.sarl.lang.ui.internal
+ io.sarl.lang.ui.contentassist.antlr.internal,
+ io.sarl.lang.ui.highlighting,
+ io.sarl.lang.ui.images,
+ io.sarl.lang.ui.internal,
+ io.sarl.lang.ui.labeling,
+ io.sarl.lang.ui.outline,
+ io.sarl.lang.ui.quickfix,
+ io.sarl.lang.ui.validation
 Bundle-Activator: io.sarl.lang.ui.internal.SARLActivator

@@ -13,15 +13,37 @@
 	<modules>
 		<module>io.sarl.lang.tests</module>
 		<module>io.sarl.lang.core.tests</module>
+		<module>io.sarl.lang.ui.tests</module>
 		<module>io.sarl.util.tests</module>
 		<module>io.sarl.core.tests</module>
 	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>1.5.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>1.5.5</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>io.sarl.lang</groupId>
 				<artifactId>io.sarl.lang.core</artifactId>
+				<version>${project.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl.lang</groupId>
+				<artifactId>io.sarl.lang.tests</artifactId>
 				<version>${project.version}</version>
 				<scope>test</scope>
 			</dependency>
@@ -41,12 +63,6 @@
 				<groupId>org.eclipse.xtext</groupId>
 				<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
 				<version>${xtext.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.mockito</groupId>
-				<artifactId>mockito-all</artifactId>
-				<version>1.9.5</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>
