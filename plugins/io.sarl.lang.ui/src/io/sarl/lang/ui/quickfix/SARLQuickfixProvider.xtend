@@ -27,11 +27,13 @@ import io.sarl.lang.sarl.BehaviorUnit
 import io.sarl.lang.sarl.Capacity
 import io.sarl.lang.sarl.Feature
 import io.sarl.lang.sarl.FeatureContainer
+import io.sarl.lang.sarl.ParameterizedFeature
 import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.sarl.TopElement
 import io.sarl.lang.validation.IssueCodes
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.EcoreUtil2
+import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.nodemodel.ICompositeNode
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.xtext.resource.XtextResource
@@ -40,10 +42,10 @@ import org.eclipse.xtext.ui.editor.model.edit.IModificationContext
 import org.eclipse.xtext.ui.editor.model.edit.ISemanticModification
 import org.eclipse.xtext.ui.editor.quickfix.Fix
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor
+import org.eclipse.xtext.util.Strings
 import org.eclipse.xtext.validation.Issue
 import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable
 import org.eclipse.xtext.xbase.ui.quickfix.XbaseQuickfixProvider
-import io.sarl.lang.sarl.ParameterizedFeature
 
 /**
  * Custom quickfixes.
@@ -197,6 +199,22 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			return node.endOffset
 		}
 	}
+	
+	protected def int getSpaceSize(IXtextDocument document, int offset) {
+		var size = 0
+		while (Character::isWhitespace(document.getChar(offset + size))) {
+			size++
+		}
+		return size
+	}
+
+	protected def QualifiedName qualifiedName(String name) {
+		if (name !== null) {
+			var segments = Strings::split(name, ".")
+			return QualifiedName::create(segments)
+		}
+		return QualifiedName::create()
+	}
 
 	@Fix(IssueCodes::WRONG_PACKAGE)
 	def fixPackageName(Issue issue, IssueResolutionAcceptor acceptor) {
@@ -213,11 +231,11 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	@Fix(IssueCodes::DUPLICATE_TYPE_NAME)
 	def fixDuplicateTopElements(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==1) {
-			val duplicateName = issue.data.get(0)
-			var msg = String::format("Remove the duplicate definition of '%s'", duplicateName)
+			val duplicateName = issue.data.get(0).qualifiedName
+			var msg = String::format("Remove the duplicate definition of '%s'", duplicateName.lastSegment)
 			acceptor.accept(issue, msg, msg, null)
 				[ element, context |
-					remove(element, TopElement, context)
+					remove(element, typeof(TopElement), context)
 				]
 		}
 	}
@@ -225,11 +243,11 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	@Fix(IssueCodes::DUPLICATE_FIELD)
 	def fixDuplicateAttribute(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==1) {
-			val duplicateName = issue.data.get(0)
-			var msg = String::format("Remove the duplicate field '%s'", duplicateName)
+			val duplicateName = issue.data.get(0).qualifiedName
+			var msg = String::format("Remove the duplicate field '%s'", duplicateName.lastSegment)
 			acceptor.accept(issue, msg, msg, null)
 				[ element, context |
-					remove(element, Attribute, context)
+					remove(element, typeof(Attribute), context)
 				]
 		}
 	}
@@ -238,7 +256,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	def fixDuplicateMethod(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==1) {
 			val duplicateName = issue.data.get(0)
-			var msg = String::format("Remove '%s'", duplicateName)
+			var msg = String::format("Remove the duplicate method '%s'", duplicateName)
 			acceptor.accept(issue, msg, msg, null)
 				[ element, context |
 					removeExecutableFeature(element, context)
@@ -248,9 +266,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	
 	protected def removeExecutableFeature(EObject element, IModificationContext context) {
 		var ICompositeNode node = null
-		var action = EcoreUtil2.getContainerOfType(element, Action)
+		var action = EcoreUtil2.getContainerOfType(element, typeof(Action))
 		if (action===null) {
-			var feature = EcoreUtil2.getContainerOfType(element, Feature)
+			var feature = EcoreUtil2.getContainerOfType(element, typeof(Feature))
 			node = NodeModelUtils.findActualNodeFor(feature)
 		}
 		else {
@@ -262,21 +280,24 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	}
 
 	@Fix(IssueCodes::INVALID_MEMBER_NAME)
-	def fixActionName(Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.data!=null && issue.data.length==3) {
+	def fixMemberName(Issue issue, IssueResolutionAcceptor acceptor) {
+		if (issue.data!=null && issue.data.length>=3) {
 			val type = issue.data.get(0)
 			val invalidName = issue.data.get(1)
-			val validName = issue.data.get(2)
-			var msg = String::format("Rename the %s '%s' to '%s'", type, invalidName, validName)
-			acceptor.accept(issue, msg, msg, null)
-				[ context |
-					context.xtextDocument.replace(issue.offset, issue.length, validName);
-				]
-			msg = String::format("Remove the %s '%s'", type, invalidName)
+			for (var i = 2; i < issue.data.length; i++) {
+				val validName = issue.data.get(i)
+				var msg = String::format("Rename the %s '%s' to '%s'",
+					type, invalidName, validName)
+				acceptor.accept(issue, msg, msg, null)
+					[ context |
+						context.xtextDocument.replace(issue.offset, issue.length, validName);
+					]
+			}			
+			var msg = String::format("Remove the %s '%s'", type, invalidName)
 			if (type=="attribute") {
 				acceptor.accept(issue, msg, msg, null)
 					[ element, context |
-						remove(element, Attribute, context)
+						remove(element, typeof(Attribute), context)
 					]
 			}
 			else {
@@ -331,7 +352,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			val newName = issue.data.get(1)
 			var msg = String::format("Remove the field '%s'", redundantName)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
-				remove(element, Attribute, context)
+				remove(element, typeof(Attribute), context)
 			]
 			msg = String::format("Rename the field '%s' to '%s'", redundantName, newName)
 			acceptor.accept(issue, msg, msg, null) [ context |
@@ -369,7 +390,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			val eventName = issue.data.get(0)
 			var msg = String::format("Remove the behavior unit on '%s'", eventName)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
-				remove(element, BehaviorUnit, context)
+				remove(element, typeof(BehaviorUnit), context)
 			]
 		}
 	}
@@ -409,7 +430,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	}
 
 	@Fix(IssueCodes::INVALID_IMPLEMENTED_TYPE)
-	def fixInvalidImplementedCapacityType(Issue issue, IssueResolutionAcceptor acceptor) {
+	def fixInvalidImplementedType(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==1) {
 			val typeName = issue.data.get(0)
 			var msg = String::format("Remove the type '%s'", typeName)
@@ -426,7 +447,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	}
 
 	@Fix(IssueCodes::INVALID_EXTENDED_TYPE)
-	def fixInvalidExtendedCapacityType(Issue issue, IssueResolutionAcceptor acceptor) {
+	def fixInvalidExtendedType(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==1) {
 			val typeName = issue.data.get(0)
 			var msg = String::format("Remove the type '%s'", typeName)
@@ -449,19 +470,25 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			val defaultActionName = issue.data.get(1)
 			var msg = String::format("Remove the capacity '%s'", capacityName)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
-				remove(element, Capacity, context)
+				remove(element, typeof(Capacity), context)
 			]
 			msg = String::format("Add the action '%s'", defaultActionName)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
-				var container = EcoreUtil2.getContainerOfType(element, FeatureContainer)
+				var container = EcoreUtil2.getContainerOfType(element, typeof(FeatureContainer))
 				if (container!==null) {
 					var insertOffset = getInsertOffset(container)
 					var document = context.getXtextDocument()
-					var appendable = appendableFactory.create(document, element.eResource() as XtextResource, insertOffset, 0)
-					if (container.features.empty) {
-						appendable.increaseIndentation()
+					var length = getSpaceSize(document, insertOffset)
+					var appendable = appendableFactory.create(document, element.eResource() as XtextResource, insertOffset, length)
+					var changeIndentation = (container.features.empty)
+					if (changeIndentation) {
+						appendable.increaseIndentation
 					}
 					appendable.newLine().append("def ").append(defaultActionName)
+					if (changeIndentation) {
+						appendable.decreaseIndentation
+					}
+					appendable.newLine()
 					appendable.commitChanges()
 				}
 			]
@@ -480,13 +507,15 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			}
 			val description = String::format("Add the following unimplemented actions:\n%s", lines)
 			acceptor.accept(issue, "Add unimplemented actions", description, null) [ element, context |
-				var container = EcoreUtil2.getContainerOfType(element, FeatureContainer)
+				var container = EcoreUtil2.getContainerOfType(element, typeof(FeatureContainer))
 				if (container!==null) {
 					var insertOffset = getInsertOffset(container)
 					var document = context.getXtextDocument()
-					var appendable = appendableFactory.create(document, element.eResource() as XtextResource, insertOffset, 0)
-					if (container.features.empty) {
-						appendable.increaseIndentation()
+					var length = getSpaceSize(document, insertOffset)
+					var appendable = appendableFactory.create(document, element.eResource() as XtextResource, insertOffset, length)
+					var initialIndent = (container.features.empty)
+					if (initialIndent) {
+						appendable.increaseIndentation
 					}
 					for(meth : methods.entrySet) {
 						appendable.newLine().append(meth.key).append(" {")
@@ -499,6 +528,8 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 						appendable.decreaseIndentation()
 						appendable.newLine().append("}")
 					}
+					appendable.decreaseIndentation
+					appendable.newLine()
 					appendable.commitChanges()
 				}
 			]
@@ -527,7 +558,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		]
 		msg = "Remove the default value"
 		acceptor.accept(issue, msg, msg, null) [ element, context |
-			var container = EcoreUtil2.getContainerOfType(element, ParameterizedFeature)
+			var container = EcoreUtil2.getContainerOfType(element, typeof(ParameterizedFeature))
 			if (container!==null && !container.params.empty) {
 				var formalParameter = container.params.last
 				if (formalParameter.defaultValue!==null) {

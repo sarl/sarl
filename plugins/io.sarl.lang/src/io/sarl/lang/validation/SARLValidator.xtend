@@ -307,7 +307,8 @@ class SARLValidator extends XtextBugFixValidator {
 	@Check(CheckType.FAST)
 	public def checkActionName(ActionSignature action) {
 		if (isHiddenAction(action.name)) {
-			var validName = ModelUtil::fixHiddenAction(action.name)
+			var validName1 = ModelUtil::fixHiddenAction(action.name)
+			var validName2 = ModelUtil::removeHiddenAction(action.name)
 			error(
 					String.format(
 							"Invalid action name '%s'. You must not give to an action a name that is starting with '_handle_'. This prefix is reserved by the SARL compiler.",
@@ -317,7 +318,7 @@ class SARLValidator extends XtextBugFixValidator {
 					SarlPackage.Literals::ACTION_SIGNATURE__NAME,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					IssueCodes::INVALID_MEMBER_NAME,
-					"action", action.name, validName)
+					"action", action.name, validName1, validName2)
 		}
 	}
 
