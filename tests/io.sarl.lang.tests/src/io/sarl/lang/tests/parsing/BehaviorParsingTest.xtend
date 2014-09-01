@@ -20,7 +20,6 @@ import io.sarl.lang.SARLInjectorProvider
 import io.sarl.lang.sarl.SarlPackage
 import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.validation.IssueCodes
-import org.eclipse.xtext.common.types.TypesPackage
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
@@ -275,7 +274,7 @@ class BehaviorParsingTest {
 	}
 
 	@Test
-	def void invalidExtend() {
+	def void invalidExtend_0() {
 		val mas = '''
 			capacity C1 {
 			}
@@ -283,9 +282,81 @@ class BehaviorParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
+			SarlPackage::eINSTANCE.behavior,
 			IssueCodes::INVALID_EXTENDED_TYPE,
-			"Invalid super-type: 'C1'. Only the type 'io.sarl.lang.core.Behavior' and one of its subtypes are allowed for 'B1'")
+			"Supertype must be a class")
+	}
+
+	@Test
+	def void invalidExtend_1() {
+		val mas = '''
+			agent A1 {
+			}
+			behavior B3 extends A1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.behavior,
+			IssueCodes::INVALID_EXTENDED_TYPE,
+			"Supertype must be of type 'io.sarl.lang.core.Behavior'")
+	}
+
+	@Test
+	def void invalidExtend_2() {
+		val mas = '''
+			behavior B1 extends B1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.behavior,
+			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
+			"The inheritance hierarchy of 'B1' is inconsistent")
+	}
+
+	@Test
+	def void invalidExtend_3() {
+		val mas = '''
+			behavior B1 extends B2 {
+			}
+			behavior B2 extends B1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.behavior,
+			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
+			"The inheritance hierarchy of 'B1' is inconsistent")
+	}
+
+	@Test
+	def void invalidExtend_4() {
+		val mas = '''
+			behavior B1 extends B2 {
+			}
+			behavior B2 extends B1 {
+			}
+			behavior B3 extends B2 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.behavior,
+			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
+			"The inheritance hierarchy of 'B1' is inconsistent")
+	}
+
+	@Test
+	def void invalidExtend_5() {
+		val mas = '''
+			behavior B3 extends B2 {
+			}
+			behavior B2 extends B1 {
+			}
+			behavior B1 extends B2 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.behavior,
+			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
+			"The inheritance hierarchy of 'B3' is inconsistent")
 	}
 
 	@Test

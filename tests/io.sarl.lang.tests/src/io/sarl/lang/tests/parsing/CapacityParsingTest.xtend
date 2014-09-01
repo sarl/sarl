@@ -528,7 +528,7 @@ class CapacityParsingTest {
 	}
 
 	@Test
-	def void invalidCapacityExtend() {
+	def void invalidCapacityExtend_0() {
 		val mas = '''
 			agent A1 {
 			}
@@ -536,9 +536,264 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
+			SarlPackage::eINSTANCE.capacity,
 			IssueCodes::INVALID_EXTENDED_TYPE,
-			"Invalid super-type: 'A1'. Only the type 'io.sarl.lang.core.Capacity' and one of its subtypes are allowed for 'C1'")
+			"Supertype must be an interface")
+	}
+
+	@Test
+	def void invalidCapacityExtend_1() {
+		val mas = '''
+			agent A1 {
+			}
+			capacity C1 {
+			}
+			capacity C2 extends A1, C1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::INVALID_EXTENDED_TYPE,
+			"Supertype must be an interface")
+	}
+
+	@Test
+	def void invalidCapacityExtend_2() {
+		val mas = '''
+			agent A1 {
+			}
+			capacity C1 {
+			}
+			capacity C2 extends C1, A1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::INVALID_EXTENDED_TYPE,
+			"Supertype must be an interface")
+	}
+
+	@Test
+	def void invalidCapacityExtend_3() {
+		val mas = '''
+			agent A1 {
+			}
+			capacity C1 {
+			}
+			capacity C2 {
+			}
+			capacity C3 extends A1, C1, C2 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::INVALID_EXTENDED_TYPE,
+			"Supertype must be an interface.")
+	}
+
+	@Test
+	def void invalidCapacityExtend_4() {
+		val mas = '''
+			agent A1 {
+			}
+			capacity C1 {
+			}
+			capacity C2 {
+			}
+			capacity C3 extends C1, A1, C2 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::INVALID_EXTENDED_TYPE,
+			"Supertype must be an interface.")
+	}
+
+	@Test
+	def void invalidCapacityExtend_5() {
+		val mas = '''
+			agent A1 {
+			}
+			capacity C1 {
+			}
+			capacity C2 {
+			}
+			capacity C3 extends C1, C2, A1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::INVALID_EXTENDED_TYPE,
+			"Supertype must be an interface.")
+	}
+
+	@Test
+	def void invalidCapacityExtend_6() {
+		val mas = '''
+			capacity C1 extends java.lang.Cloneable {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::INVALID_EXTENDED_TYPE,
+			"Supertype must be of type 'io.sarl.lang.core.Capacity'")
+	}
+
+	@Test
+	def void invalidCapacityExtend_7() {
+		val mas = '''
+			capacity C1 {
+			}
+			capacity C2 extends java.lang.Cloneable, C1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::INVALID_EXTENDED_TYPE,
+			"Supertype must be of type 'io.sarl.lang.core.Capacity'")
+	}
+
+	@Test
+	def void invalidCapacityExtend_8() {
+		val mas = '''
+			capacity C1 {
+			}
+			capacity C2 extends C1, java.lang.Cloneable {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::INVALID_EXTENDED_TYPE,
+			"Supertype must be of type 'io.sarl.lang.core.Capacity'")
+	}
+
+	@Test
+	def void invalidCapacityExtend_9() {
+		val mas = '''
+			capacity C1 {
+			}
+			capacity C2 {
+			}
+			capacity C3 extends java.lang.Cloneable, C1, C2 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::INVALID_EXTENDED_TYPE,
+			"Supertype must be of type 'io.sarl.lang.core.Capacity'")
+	}
+
+	@Test
+	def void invalidCapacityExtend_10() {
+		val mas = '''
+			capacity C1 {
+			}
+			capacity C2 {
+			}
+			capacity C3 extends C1, java.lang.Cloneable, C2 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::INVALID_EXTENDED_TYPE,
+			"Supertype must be of type 'io.sarl.lang.core.Capacity'")
+	}
+
+	@Test
+	def void invalidCapacityExtend_11() {
+		val mas = '''
+			capacity C1 {
+			}
+			capacity C2 {
+			}
+			capacity C3 extends C1, C2, java.lang.Cloneable {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::INVALID_EXTENDED_TYPE,
+			"Supertype must be of type 'io.sarl.lang.core.Capacity'")
+	}
+
+	@Test
+	def void invalidCapacityExtend_12() {
+		val mas = '''
+			capacity C1 extends C1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
+			"The inheritance hierarchy of 'C1' is inconsistent")
+	}
+
+	@Test
+	def void invalidCapacityExtend_13() {
+		val mas = '''
+			capacity C1 extends C2 {
+			}
+			capacity C2 extends C1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
+			"The inheritance hierarchy of 'C1' is inconsistent")
+	}
+
+	@Test
+	def void invalidCapacityExtend_14() {
+		val mas = '''
+			capacity C1 extends C3 {
+			}
+			capacity C2 extends C1 {
+			}
+			capacity C3 extends C2 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
+			"The inheritance hierarchy of 'C1' is inconsistent")
+	}
+
+	@Test
+	def void invalidCapacityExtend_15() {
+		val mas = '''
+			capacity C1 { }
+			capacity C2 { }
+			capacity C3 extends C1, C2, C3 { }
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
+			"The inheritance hierarchy of 'C3' is inconsistent")
+	}
+
+	@Test
+	def void invalidCapacityExtend_16() {
+		val mas = '''
+			capacity C1 { }
+			capacity C2 { }
+			capacity C3 extends C1, C3, C2 { }
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
+			"The inheritance hierarchy of 'C3' is inconsistent")
+	}
+
+	@Test
+	def void invalidCapacityExtend_17() {
+		val mas = '''
+			capacity C1 { }
+			capacity C2 { }
+			capacity C3 extends C3, C1, C3 { }
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.capacity,
+			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
+			"The inheritance hierarchy of 'C3' is inconsistent")
 	}
 
 	@Test
@@ -552,17 +807,87 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
+			SarlPackage::eINSTANCE.skill,
 			IssueCodes::INVALID_EXTENDED_TYPE,
-			"Invalid super-type: 'A1'. Only the type 'io.sarl.lang.core.Skill' and one of its subtypes are allowed for 'S1'")
+			"Supertype must be of type 'io.sarl.lang.core.Skill'")
 	}
 
 	@Test
 	def void invalidSkillExtend_1() {
 		val mas = '''
+			capacity C1 {
+			}
+			capacity C2 {
+			}
+			skill S1 extends C1 implements C2 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.skill,
+			IssueCodes::INVALID_EXTENDED_TYPE,
+			"Supertype must be a class")
+	}
+
+	@Test
+	def void invalidSkillImplement_0() {
+		val mas = '''
 			behavior B1 {
 			}
 			skill S1 implements B1 {
+			}
+		'''.parse
+		mas.assertError(
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
+			IssueCodes::INVALID_IMPLEMENTED_TYPE,
+			"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed")
+	}
+
+	@Test
+	def void invalidSkillImplement_1() {
+		val mas = '''
+			behavior B1 {
+			}
+			capacity C1 {
+			}
+			capacity C2 {
+			}
+			skill S1 implements B1, C1, C2 {
+			}
+		'''.parse
+		mas.assertError(
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
+			IssueCodes::INVALID_IMPLEMENTED_TYPE,
+			"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed")
+	}
+
+	@Test
+	def void invalidSkillImplement_2() {
+		val mas = '''
+			behavior B1 {
+			}
+			capacity C1 {
+			}
+			capacity C2 {
+			}
+			skill S1 implements C1, B1, C2 {
+			}
+		'''.parse
+		mas.assertError(
+			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
+			IssueCodes::INVALID_IMPLEMENTED_TYPE,
+			"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed")
+	}
+
+	@Test
+	def void invalidSkillImplement_3() {
+		val mas = '''
+			behavior B1 {
+			}
+			capacity C1 {
+			}
+			capacity C2 {
+			}
+			skill S1 implements C1, C2, B1 {
 			}
 		'''.parse
 		mas.assertError(

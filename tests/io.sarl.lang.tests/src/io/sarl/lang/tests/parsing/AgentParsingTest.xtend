@@ -26,11 +26,12 @@ import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
+import org.eclipse.xtext.xbase.XbasePackage
 import org.junit.Test
 import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
-import org.eclipse.xtext.xbase.XbasePackage
+import org.junit.Ignore
 
 /**
  * @author $Author: srodriguez$
@@ -390,7 +391,7 @@ class AgentParsingTest {
 	}
 
 	@Test
-	def void invalidExtend() {
+	def void invalidExtend_0() {
 		val mas = '''
 			capacity C1 {
 			}
@@ -398,9 +399,22 @@ class AgentParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
+			SarlPackage::eINSTANCE.agent,
 			IssueCodes::INVALID_EXTENDED_TYPE,
-			"Invalid super-type: 'C1'. Only the type 'io.sarl.lang.core.Agent' and one of its subtypes are allowed for 'A1'")
+			"Supertype must be a class")
+	}
+
+	@Test
+	@Ignore
+	def void invalidExtend_1() {
+		val mas = '''
+			agent A1 extends foo.MockFinalAgent {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.agent,
+			IssueCodes::OVERRIDDEN_FINAL_TYPE,
+			"Attempt to override final class")
 	}
 
 	@Test
@@ -485,9 +499,9 @@ class AgentParsingTest {
 		'''.parse
 
 		mas.assertError(
-			SarlPackage::eINSTANCE.inheritingElement,
+			SarlPackage::eINSTANCE.agent,
 			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
-			"Inconsistent type hierarchy for 'A1': cycle is detected")
+			"The inheritance hierarchy of 'A1' is inconsistent")
 	}
 
 	@Test
@@ -500,9 +514,9 @@ class AgentParsingTest {
 		'''.parse
 
 		mas.assertError(
-			SarlPackage::eINSTANCE.inheritingElement,
+			SarlPackage::eINSTANCE.agent,
 			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
-			"Inconsistent type hierarchy for 'A1': cycle is detected, or super-type not found")
+			"The inheritance hierarchy of 'A1' is inconsistent")
 	}
 
 	@Test
@@ -517,9 +531,9 @@ class AgentParsingTest {
 		'''.parse
 
 		mas.assertError(
-			SarlPackage::eINSTANCE.inheritingElement,
+			SarlPackage::eINSTANCE.agent,
 			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
-			"Inconsistent type hierarchy for 'A1': cycle is detected, or super-type not found")
+			"The inheritance hierarchy of 'A1' is inconsistent")
 	}
 
 	@Test
@@ -534,13 +548,13 @@ class AgentParsingTest {
 		'''.parse
 
 		mas.assertError(
-			SarlPackage::eINSTANCE.inheritingElement,
+			SarlPackage::eINSTANCE.agent,
 			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
-			"Inconsistent type hierarchy for 'A1': cycle is detected, or super-type not found")
+			"The inheritance hierarchy of 'A1' is inconsistent")
 		mas.assertError(
-			SarlPackage::eINSTANCE.inheritingElement,
+			SarlPackage::eINSTANCE.agent,
 			IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
-			"Inconsistent type hierarchy for 'A2': cycle is detected, or super-type not found")
+			"The inheritance hierarchy of 'A2' is inconsistent")
 	}
 
 	@Test

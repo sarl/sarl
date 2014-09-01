@@ -7,6 +7,7 @@ Bundle-SymbolicName: io.sarl.lang.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: io.sarl.lang,
  io.sarl.lang.ui,
+ io.sarl.lang.core;bundle-version="0.1.0",
  org.eclipse.xtext.xbase.lib,
  org.eclipse.core.runtime,
  org.eclipse.xtext.junit4,
@@ -24,8 +25,11 @@ Import-Package: io.sarl.lang.core,
  org.junit.runners;version="4.5.0",
  org.junit.runners.model;version="4.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: io.sarl.lang;uses:="org.eclipse.xtext.junit4,com.google.inject",
+Export-Package: foo,
+ io.sarl.lang;uses:="org.eclipse.xtext.junit4,com.google.inject",
  io.sarl.lang.tests.bugs;uses:="org.eclipse.xtext.common.types",
  io.sarl.lang.tests.compilation,
  io.sarl.lang.tests.formatting,
  io.sarl.lang.tests.parsing
+Bundle-ClassPath: testdata/,
+ .

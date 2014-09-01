@@ -20,6 +20,7 @@
  */
 package io.sarl.lang.validation
 
+import com.google.common.collect.Lists
 import com.google.inject.Inject
 import io.sarl.lang.SARLKeywords
 import io.sarl.lang.bugfixes.XtextBugFixValidator
@@ -56,7 +57,6 @@ import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
-import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.CheckType
@@ -873,65 +873,82 @@ class SARLValidator extends XtextBugFixValidator {
 		var int nbSuperTypes = 0
 		var inferredType = element.jvmGenericType
 		if (inferredType != null) {
-			var isInterface = expectedType.interface
-			var jvmTypes = inferredType.superTypes.iterator
+			var inferredSuperTypes = Lists::newLinkedList
+			inferredSuperTypes.addAll(inferredType.superTypes)
+			var isExpectingInterface = expectedType.interface
+			var superTypeIndex = 0
 			for(superType : element.superTypes) {
 				var success = true
-				var JvmTypeReference jvmType
-				if (jvmTypes.hasNext) {
-					jvmType = jvmTypes.next 
-					var ref = superType.toLightweightTypeReference
-					if (ref!==null) {
-						if (((ref.interfaceType!==isInterface) || !ref.isSubtypeOf(expectedType)
-							|| (onlySubTypes && ref.isType(expectedType)))) {
-							var String msg
-							if (onlySubTypes) {
-								msg = "Invalid super-type: '%s'. Only subtypes of '%s' are allowed for '%s'."
-							}
-							else {
-								msg = "Invalid super-type: '%s'. Only the type '%s' and one of its subtypes are allowed for '%s'."
-							}
-							error(
-									String.format(
-											msg,
-											superType.qualifiedName,
-											expectedType.name,
-											element.name),
-									superType,
-									null,
-									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-									IssueCodes::INVALID_EXTENDED_TYPE,
-									superType.simpleName)
-							success = false
+				var jvmSuperType = superType?.type
+				if (jvmSuperType !== null) {
+					val inferredSuperType = if (inferredSuperTypes.empty) null else inferredSuperTypes.removeFirst
+					var lighweightSuperType = superType.toLightweightTypeReference
+					if (!(jvmSuperType instanceof JvmGenericType)
+						|| (isExpectingInterface !== (jvmSuperType as JvmGenericType).interface)) {
+						if (isExpectingInterface) {
+							error("Supertype must be an interface.",
+								SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
+								superTypeIndex,
+								IssueCodes::INVALID_EXTENDED_TYPE,
+								inferredType.identifier,
+								jvmSuperType.identifier)
+						} else {
+							error("Supertype must be a class.",
+								SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
+								superTypeIndex,
+								IssueCodes::INVALID_EXTENDED_TYPE,
+								inferredType.identifier,
+								jvmSuperType.identifier)
 						}
-						else if (superType.qualifiedName==inferredType.qualifiedName) {
-							error( String::format(
-											"Inconsistent type hierarchy for '%s': cycle is detected.",
-											inferredType.qualifiedName),
-									SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
-									IssueCodes::INCONSISTENT_TYPE_HIERARCHY)
-							success = false
-						}
-						else if (superType.qualifiedName==inferredType.qualifiedName
-								|| jvmType.qualifiedName!=superType.qualifiedName) {
-							error( String::format(
-											"Inconsistent type hierarchy for '%s': cycle is detected, or super-type not found.",
-											inferredType.qualifiedName),
-									SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
-									IssueCodes::INCONSISTENT_TYPE_HIERARCHY)
-							success = false
-						}
-					}
-				}
-				else {
-					error( String::format("Inconsistent type hierarchy for '%s': type not found '%s'.",
-									inferredType.qualifiedName,
-									superType.qualifiedName),
+						success = false
+					} else if (lighweightSuperType.final) {
+						error("Attempt to override final class.",
 							SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
-							IssueCodes::INCONSISTENT_TYPE_HIERARCHY)
+							superTypeIndex,
+							IssueCodes::OVERRIDDEN_FINAL_TYPE,
+							inferredType.identifier,
+							jvmSuperType.identifier)
+						success = false
+					} else if (!lighweightSuperType.isSubtypeOf(expectedType)
+						|| ((onlySubTypes) && (lighweightSuperType.isType(expectedType)))) {
+						if (onlySubTypes) {
+							error(String::format("Supertype must be a subtype of '%s'.", expectedType.name),
+								SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
+								superTypeIndex,
+								IssueCodes::INVALID_EXTENDED_TYPE,
+								inferredType.identifier,
+								jvmSuperType.identifier)
+						} else {
+							error(String::format("Supertype must be of type '%s'.", expectedType.name),
+								SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
+								superTypeIndex,
+								IssueCodes::INVALID_EXTENDED_TYPE,
+								inferredType.identifier,
+								jvmSuperType.identifier)
+						}
+						success = false
+					} else if (inferredSuperType == null
+							|| inferredSuperType.identifier != jvmSuperType.identifier
+							|| inferredType.identifier == jvmSuperType.identifier) {
+						error(String.format("The inheritance hierarchy of '%s' is inconsistent.",
+								inferredType.qualifiedName),
+								SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
+								superTypeIndex,
+								IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
+								inferredType.identifier,
+								jvmSuperType.identifier)
+						success = false
+					}
+				} else {
+					error(String.format("The inheritance hierarchy of '%s' is inconsistent.",
+							inferredType.qualifiedName),
+							SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
+							superTypeIndex,
+							IssueCodes::INCONSISTENT_TYPE_HIERARCHY,
+							inferredType.identifier)
 					success = false
 				}
-				
+				superTypeIndex++
 				if (success) {
 					nbSuperTypes++
 				}
@@ -939,7 +956,6 @@ class SARLValidator extends XtextBugFixValidator {
 		}
 		return nbSuperTypes
 	}
-
 
 	protected def boolean checkImplementedTypes(ImplementingElement element, Class<?> expectedType, int mandatoryNumberOfTypes, boolean onlySubTypes) {
 		var success = true

@@ -20,14 +20,13 @@ import io.sarl.lang.SARLInjectorProvider
 import io.sarl.lang.sarl.SarlPackage
 import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.validation.IssueCodes
-import org.eclipse.xtext.common.types.TypesPackage
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
+import org.eclipse.xtext.xbase.XbasePackage
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.eclipse.xtext.xbase.XbasePackage
 
 /**
  * @author $Author: sgalland$
@@ -144,7 +143,7 @@ class EventParsingTest {
 	}
 
 	@Test
-	def void invalidExtend() {
+	def void invalidExtend_0() {
 		val mas = '''
 			capacity C1 {
 			}
@@ -152,9 +151,23 @@ class EventParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
+			SarlPackage::eINSTANCE.event,
 			IssueCodes::INVALID_EXTENDED_TYPE,
-			"Invalid super-type: 'C1'. Only the type 'io.sarl.lang.core.Event' and one of its subtypes are allowed for 'E1'")
+			"Supertype must be a class")
+	}
+
+	@Test
+	def void invalidExtend_1() {
+		val mas = '''
+			agent A1 {
+			}
+			event E1 extends A1 {
+			}
+		'''.parse
+		mas.assertError(
+			SarlPackage::eINSTANCE.event,
+			IssueCodes::INVALID_EXTENDED_TYPE,
+			"Supertype must be of type 'io.sarl.lang.core.Event'.")
 	}
 
 	@Test
