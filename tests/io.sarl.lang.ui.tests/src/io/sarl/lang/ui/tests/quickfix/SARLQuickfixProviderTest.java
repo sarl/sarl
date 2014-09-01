@@ -17,6 +17,7 @@ package io.sarl.lang.ui.tests.quickfix;
 
 import io.sarl.lang.validation.IssueCodes;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -1339,6 +1340,215 @@ public class SARLQuickfixProviderTest extends AbstractSARLQuickfixTest {
 				+ "\t}\n" //$NON-NLS-1$
 				+ "}\n"); //$NON-NLS-1$
 		asserts.assertNoQuickFix();
+	}
+
+	/**
+	 */
+	@Test
+	public void fixInconsistentTypeHierarchy_0() {
+		assertQuickFix(
+				IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+				//
+				// Code to fix:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 extends C1 { }\n", //$NON-NLS-1$
+				//
+				// Label and description:
+				//
+				"Remove the type 'C1'", //$NON-NLS-1$
+				"Remove the type 'C1'", //$NON-NLS-1$
+				//
+				// Expected fixed code:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 { }\n"); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void fixInconsistentTypeHierarchy_1() {
+		assertQuickFix(
+				IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+				//
+				// Code to fix:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 extends C2 { }\n" //$NON-NLS-1$
+				+ "capacity C2 extends C1 { }\n", //$NON-NLS-1$
+				//
+				// Label and description:
+				//
+				"Remove the type 'C2'", //$NON-NLS-1$
+				"Remove the type 'C2'", //$NON-NLS-1$
+				//
+				// Expected fixed code:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 { }\n" //$NON-NLS-1$
+				+ "capacity C2 extends C1 { }\n"); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void fixInconsistentTypeHierarchy_3() {
+		assertQuickFix(
+				IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+				//
+				// Code to fix:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 extends C2 { }\n" //$NON-NLS-1$
+				+ "capacity C2 extends C3 { }\n" //$NON-NLS-1$
+				+ "capacity C3 extends C1 { }\n", //$NON-NLS-1$
+				//
+				// Label and description:
+				//
+				"Remove the type 'C2'", //$NON-NLS-1$
+				"Remove the type 'C2'", //$NON-NLS-1$
+				//
+				// Expected fixed code:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 { }\n" //$NON-NLS-1$
+				+ "capacity C2 extends C3 { }\n" //$NON-NLS-1$
+				+ "capacity C3 extends C1 { }\n"); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void fixInconsistentTypeHierarchy_4() {
+		assertQuickFix(
+				IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+				//
+				// Code to fix:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C3 extends C1 { }\n" //$NON-NLS-1$
+				+ "capacity C2 extends C3 { }\n" //$NON-NLS-1$
+				+ "capacity C1 extends C2 { }\n", //$NON-NLS-1$
+				//
+				// Label and description:
+				//
+				"Remove the type 'C1'", //$NON-NLS-1$
+				"Remove the type 'C1'", //$NON-NLS-1$
+				//
+				// Expected fixed code:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C3 { }\n" //$NON-NLS-1$
+				+ "capacity C2 extends C3 { }\n" //$NON-NLS-1$
+				+ "capacity C1 extends C2 { }\n"); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void fixInconsistentTypeHierarchy_5() {
+		assertQuickFix(
+				IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+				//
+				// Code to fix:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 { }\n" //$NON-NLS-1$
+				+ "capacity C2 { }\n" //$NON-NLS-1$
+				+ "capacity C3 extends C1, C2, C3 { }\n", //$NON-NLS-1$
+				//
+				// Label and description:
+				//
+				"Remove the type 'C3'", //$NON-NLS-1$
+				"Remove the type 'C3'", //$NON-NLS-1$
+				//
+				// Expected fixed code:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 { }\n" //$NON-NLS-1$
+				+ "capacity C2 { }\n" //$NON-NLS-1$
+				+ "capacity C3 extends C1, C2 { }\n"); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void fixInconsistentTypeHierarchy_6() {
+		assertQuickFix(
+				IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+				//
+				// Code to fix:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 { }\n" //$NON-NLS-1$
+				+ "capacity C2 { }\n" //$NON-NLS-1$
+				+ "capacity C3 extends C1, C3, C2 { }\n", //$NON-NLS-1$
+				//
+				// Label and description:
+				//
+				"Remove the type 'C3'", //$NON-NLS-1$
+				"Remove the type 'C3'", //$NON-NLS-1$
+				//
+				// Expected fixed code:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 { }\n" //$NON-NLS-1$
+				+ "capacity C2 { }\n" //$NON-NLS-1$
+				+ "capacity C3 extends C1, C2 { }\n"); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void fixInconsistentTypeHierarchy_7() {
+		assertQuickFix(
+				IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+				//
+				// Code to fix:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 { }\n" //$NON-NLS-1$
+				+ "capacity C2 { }\n" //$NON-NLS-1$
+				+ "capacity C3 extends C3, C1, C2 { }\n", //$NON-NLS-1$
+				//
+				// Label and description:
+				//
+				"Remove the type 'C3'", //$NON-NLS-1$
+				"Remove the type 'C3'", //$NON-NLS-1$
+				//
+				// Expected fixed code:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 { }\n" //$NON-NLS-1$
+				+ "capacity C2 { }\n" //$NON-NLS-1$
+				+ "capacity C3 extends C1, C2 { }\n"); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	@Ignore
+	public void fixOverriddenFinalType() {
+		assertQuickFix(
+				IssueCodes.OVERRIDDEN_FINAL_TYPE,
+				//
+				// Code to fix:
+				//
+				PACKAGE_STATEMENT
+				+ "import foo.MockFinalAgent\n" //$NON-NLS-1$
+				+ "agent A1 extends MockFinalAgent { }\n", //$NON-NLS-1$
+				//
+				// Label and description:
+				//
+				"Remove the type 'MockFinalAgent'", //$NON-NLS-1$
+				"Remove the type 'MockFinalAgent'", //$NON-NLS-1$
+				//
+				// Expected fixed code:
+				//
+				PACKAGE_STATEMENT
+				+ "import foo.MockFinalAgent\n" //$NON-NLS-1$
+				+ "agent A1 { }\n"); //$NON-NLS-1$
 	}
 
 }

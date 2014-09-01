@@ -448,6 +448,40 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 
 	@Fix(IssueCodes::INVALID_EXTENDED_TYPE)
 	def fixInvalidExtendedType(Issue issue, IssueResolutionAcceptor acceptor) {
+		if (issue.data!=null && issue.data.length==2) {
+			val superTypeName = issue.data.get(1).qualifiedName
+			var msg = String::format("Remove the type '%s'", superTypeName.lastSegment)
+			acceptor.accept(issue, msg, msg, null) [ element, context |
+				var document = context.xtextDocument
+				var sep = ','
+				if (!removeBackwardUntilSeparator(issue, document, sep)) {
+					if (!removeForwardUntilSeparator(issue, document, sep)) {
+						removeBackwardWithInheritingKeyword(issue, document)
+					}
+				}
+			]
+		}
+	}
+
+	@Fix(IssueCodes::INCONSISTENT_TYPE_HIERARCHY)
+	def fixInconsistentTypeHierarchy(Issue issue, IssueResolutionAcceptor acceptor) {
+		if (issue.data!=null && issue.data.length==2) {
+			val superTypeName = issue.data.get(1).qualifiedName
+			var msg = String::format("Remove the type '%s'", superTypeName.lastSegment)
+			acceptor.accept(issue, msg, msg, null) [ element, context |
+				var document = context.xtextDocument
+				var sep = ','
+				if (!removeBackwardUntilSeparator(issue, document, sep)) {
+					if (!removeForwardUntilSeparator(issue, document, sep)) {
+						removeBackwardWithInheritingKeyword(issue, document)
+					}
+				}
+			]
+		}
+	}
+
+	@Fix(IssueCodes::OVERRIDDEN_FINAL_TYPE)
+	def fixOverriddenFinalType(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==1) {
 			val typeName = issue.data.get(0)
 			var msg = String::format("Remove the type '%s'", typeName)

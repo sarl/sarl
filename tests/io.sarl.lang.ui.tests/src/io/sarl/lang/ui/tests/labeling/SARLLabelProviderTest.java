@@ -358,7 +358,7 @@ public class SARLLabelProviderTest extends AbstractSARLUiTestCase {
 				filename("textAttribute"), //$NON-NLS-1$
 				Agent.class,
 				PACKAGE_STATEMENT
-			+ "agent A1 { var myAttr = true }"); //$NON-NLS-1$
+			+ "agent A1 { var myAttr : boolean }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);

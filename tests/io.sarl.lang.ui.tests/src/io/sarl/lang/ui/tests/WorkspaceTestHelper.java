@@ -368,6 +368,16 @@ public class WorkspaceTestHelper extends Assert {
 		return file;
 	}
 
+	/** Replies if a file exists in the source folder.
+	 * 
+	 * @param basename - the basename of the file in the source folder.
+	 * @return <code>true</code> if the file exists, otherwise <code>false</code>.
+	 */
+	public boolean isFileInSourceFolder(String basename) {
+		String fullFileName = convertBasenameToWorkspace(getProject(), basename);
+		return this.workspace.getRoot().exists(new Path(fullFileName));
+	}
+
 	/** Replies a file in the source folder.
 	 * 
 	 * @param basename - the basename of the file.

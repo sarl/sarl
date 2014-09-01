@@ -81,7 +81,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSARLUiTestCase {
 				"io", "sarl", //$NON-NLS-1$//$NON-NLS-2$
 				"lang", "ui", //$NON-NLS-1$//$NON-NLS-2$
 				"tests", "quickfix", //$NON-NLS-1$//$NON-NLS-2$
-				packageName, "fixing_" + fileName + ".sarl"); //$NON-NLS-1$//$NON-NLS-2$
+				packageName, "fixing_" + fileName); //$NON-NLS-1$
 	}
 
 	/** Create an object that permits to test the details of a quick fix.
@@ -94,9 +94,16 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSARLUiTestCase {
 			String issueCode,
 			String invalidCode) {
 		try {
-			IFile file = this.helper.createFileInSourceFolder(
-					filename(issueCode),
-					invalidCode);
+			int filenameCounter = 0;
+			String oFilename = filename(issueCode);
+			String filename = oFilename;
+			boolean foundFile = this.helper.isFileInSourceFolder(filename + ".sarl"); //$NON-NLS-1$
+			while (foundFile) {
+				++filenameCounter;
+				filename = oFilename + Integer.toString(filenameCounter);
+				foundFile = this.helper.isFileInSourceFolder(filename + ".sarl"); //$NON-NLS-1$
+			}
+			IFile file = this.helper.createFileInSourceFolder(filename, invalidCode);
 			Resource scriptResource = this.helper.createSARLScriptResource(file, invalidCode);
 			SarlScript script = (SarlScript) scriptResource.getContents().get(0);
 			assertNotNull(script);
