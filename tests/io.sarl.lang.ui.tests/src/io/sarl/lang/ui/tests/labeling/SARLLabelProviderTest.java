@@ -34,6 +34,7 @@ import io.sarl.lang.ui.tests.AbstractSARLUiTestCase;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.junit4.XtextRunner;
@@ -72,10 +73,23 @@ public class SARLLabelProviderTest extends AbstractSARLUiTestCase {
 	/**
 	 */
 	@Test
+	public void getImageDescriptorPackage() {
+		ImageDescriptor desc = this.provider.getImageDescriptor(getClass().getPackage());
+		assertNotNull(desc);
+		Image img = desc.createImage();
+		assertNotNull(img);
+		img.dispose();
+	}
+
+	/**
+	 */
+	@Test
 	public void getImageDescriptorSarlScript() {
 		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(SarlScript.class));
 		assertNotNull(desc);
-		assertNotNull(desc.createImage());
+		Image img = desc.createImage();
+		assertNotNull(img);
+		img.dispose();
 	}
 	
 	/**
@@ -84,7 +98,9 @@ public class SARLLabelProviderTest extends AbstractSARLUiTestCase {
 	public void getImageDescriptorAgent() {
 		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(Agent.class));
 		assertNotNull(desc);
-		assertNotNull(desc.createImage());
+		Image img = desc.createImage();
+		assertNotNull(img);
+		img.dispose();
 	}
 
 	/**
@@ -93,7 +109,9 @@ public class SARLLabelProviderTest extends AbstractSARLUiTestCase {
 	public void getImageDescriptorEvent() {
 		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(Event.class));
 		assertNotNull(desc);
-		assertNotNull(desc.createImage());
+		Image img = desc.createImage();
+		assertNotNull(img);
+		img.dispose();
 	}
 
 	/**
@@ -102,7 +120,9 @@ public class SARLLabelProviderTest extends AbstractSARLUiTestCase {
 	public void getImageDescriptorCapacity() {
 		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(Capacity.class));
 		assertNotNull(desc);
-		assertNotNull(desc.createImage());
+		Image img = desc.createImage();
+		assertNotNull(img);
+		img.dispose();
 	}
 
 	/**
@@ -111,7 +131,9 @@ public class SARLLabelProviderTest extends AbstractSARLUiTestCase {
 	public void getImageDescriptorSkill() {
 		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(Skill.class));
 		assertNotNull(desc);
-		assertNotNull(desc.createImage());
+		Image img = desc.createImage();
+		assertNotNull(img);
+		img.dispose();
 	}
 
 	/**
@@ -120,7 +142,9 @@ public class SARLLabelProviderTest extends AbstractSARLUiTestCase {
 	public void getImageDescriptorBehavior() {
 		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(Behavior.class));
 		assertNotNull(desc);
-		assertNotNull(desc.createImage());
+		Image img = desc.createImage();
+		assertNotNull(img);
+		img.dispose();
 	}
 
 	/**
@@ -129,7 +153,9 @@ public class SARLLabelProviderTest extends AbstractSARLUiTestCase {
 	public void getImageDescriptorAttribute() {
 		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(Attribute.class));
 		assertNotNull(desc);
-		assertNotNull(desc.createImage());
+		Image img = desc.createImage();
+		assertNotNull(img);
+		img.dispose();
 	}
 
 	/**
@@ -138,7 +164,9 @@ public class SARLLabelProviderTest extends AbstractSARLUiTestCase {
 	public void getImageDescriptorConstructor() {
 		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(Constructor.class));
 		assertNotNull(desc);
-		assertNotNull(desc.createImage());
+		Image img = desc.createImage();
+		assertNotNull(img);
+		img.dispose();
 	}
 
 	/**
@@ -147,7 +175,9 @@ public class SARLLabelProviderTest extends AbstractSARLUiTestCase {
 	public void getImageDescriptorAction() {
 		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(Action.class));
 		assertNotNull(desc);
-		assertNotNull(desc.createImage());
+		Image img = desc.createImage();
+		assertNotNull(img);
+		img.dispose();
 	}
 
 	/**
@@ -156,7 +186,9 @@ public class SARLLabelProviderTest extends AbstractSARLUiTestCase {
 	public void getImageDescriptorActionSignature() {
 		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(ActionSignature.class));
 		assertNotNull(desc);
-		assertNotNull(desc.createImage());
+		Image img = desc.createImage();
+		assertNotNull(img);
+		img.dispose();
 	}
 
 	/**
@@ -165,7 +197,9 @@ public class SARLLabelProviderTest extends AbstractSARLUiTestCase {
 	public void getImageDescriptorCapacityUses() {
 		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(CapacityUses.class));
 		assertNotNull(desc);
-		assertNotNull(desc.createImage());
+		Image img = desc.createImage();
+		assertNotNull(img);
+		img.dispose();
 	}
 
 	/**
@@ -174,7 +208,9 @@ public class SARLLabelProviderTest extends AbstractSARLUiTestCase {
 	public void getImageDescriptorRequiredCapacity() {
 		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(RequiredCapacity.class));
 		assertNotNull(desc);
-		assertNotNull(desc.createImage());
+		Image img = desc.createImage();
+		assertNotNull(img);
+		img.dispose();
 	}
 
 	/**
@@ -183,7 +219,9 @@ public class SARLLabelProviderTest extends AbstractSARLUiTestCase {
 	public void getImageDescriptorBehaviorUnit() {
 		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(BehaviorUnit.class));
 		assertNotNull(desc);
-		assertNotNull(desc.createImage());
+		Image img = desc.createImage();
+		assertNotNull(img);
+		img.dispose();
 	}
 
 	/**

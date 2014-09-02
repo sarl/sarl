@@ -33,6 +33,8 @@ import org.eclipse.xtext.xbase.validation.XbaseConfigurableIssueCodes;
  * <li>Deprecated: {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=437689"}</li>
  * </ul>
  *
+ * FIXME: https://bugs.eclipse.org/bugs/show_bug.cgi?id=437689
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

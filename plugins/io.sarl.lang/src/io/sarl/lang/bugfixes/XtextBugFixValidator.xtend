@@ -49,6 +49,9 @@ import static io.sarl.lang.util.ModelUtil.hasAnnotation
  * <li>REMOVED: InstanceOf: {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=420959"}</li>
  * </ul>
  * 
+ * FIXME: https://bugs.eclipse.org/bugs/show_bug.cgi?id=43768
+ * FIXME: https://bugs.eclipse.org/bugs/show_bug.cgi?id=420959
+ * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

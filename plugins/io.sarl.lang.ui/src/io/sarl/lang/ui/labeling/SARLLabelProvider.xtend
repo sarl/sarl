@@ -39,10 +39,8 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
 import org.eclipse.jface.resource.ImageDescriptor
 import org.eclipse.jface.viewers.StyledString
-import org.eclipse.xtext.common.types.JvmConstructor
 import org.eclipse.xtext.common.types.JvmExecutable
 import org.eclipse.xtext.common.types.JvmField
-import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.naming.QualifiedName
@@ -59,18 +57,57 @@ import org.eclipse.xtext.xbase.validation.UIStrings
  */
 class SARLLabelProvider extends XbaseLabelProvider {
 
-	@Inject UIStrings uiStrings
-	@Inject OperatorMapping operatorMapping
-	@Inject	CommonTypeComputationServices services
-	@Inject ILogicalContainerProvider logicalContainerProvider;
-	@Inject SARLImages images
+	@Inject private UIStrings uiStrings
+	@Inject private OperatorMapping operatorMapping
+	@Inject	private CommonTypeComputationServices services
+	@Inject private ILogicalContainerProvider logicalContainerProvider;
+	@Inject private SARLImages images
 	
 	@Inject
 	new(AdapterFactoryLabelProvider delegate) {
 		super(delegate);
 	}
 	
-	protected def <T> T jvmElement(EObject element, Class<T> type) {
+	protected def StyledString signatureWithoutReturnType(StyledString simpleName, JvmExecutable element) {
+		simpleName.append(
+			uiStrings.parameters(element)
+		)
+	}
+		
+	protected def getHumanReadableName(JvmTypeReference reference) {
+		if (reference === null) {
+			new StyledString("Object")
+		} else {
+			var type = reference.getType()
+			var name = uiStrings.referenceToString(reference, "Object")
+			//
+			// FIXME: https://bugs.eclipse.org/bugs/show_bug.cgi?id=443131
+			if (type !== null && type.eIsProxy() && reference.eResource() != null) {
+				// This case occurs when the reference is unknown:
+				// the found "name" is the fully qualified name of the type.
+				// So we should extract the simple name
+				var index = name.length - 1
+				val char dot = '.'
+				val char doll = '$'
+				val char dies = '#'
+				var char ch
+				while (index >= 0) {
+					ch = name.charAt(index)
+					if (ch === dot || ch === doll || ch === dies) {
+						name = name.substring(index + 1)
+						index = -1 // break the loop
+					} else {
+						index--
+					}
+				}
+			}
+			// END OF FIX
+			//
+			return name.convertToStyledString
+		}
+	}
+
+	protected def <T> T getJvmElement(EObject element, Class<T> type) {
 		for(obj : services.jvmModelAssociations.getJvmElements(element)) {
 			if (type.isInstance(obj)) {
 				return type.cast(obj)
@@ -81,6 +118,11 @@ class SARLLabelProvider extends XbaseLabelProvider {
 
 	// Descriptors
 	
+	protected def dispatch ImageDescriptor imageDescriptor(Package element) {
+		// Mostly used by the outline
+		images.forPackage
+	}
+
 	protected def dispatch ImageDescriptor imageDescriptor(SarlScript element) {
 		images.forFile
 	}
@@ -136,7 +178,7 @@ class SARLLabelProvider extends XbaseLabelProvider {
 	// Texts
 	
 	protected def text(JvmTypeReference element) {
-		uiStrings.referenceToString(element, element.simpleName)
+		element.humanReadableName
 	}
 
 	protected def text(SarlScript element) {
@@ -164,80 +206,72 @@ class SARLLabelProvider extends XbaseLabelProvider {
 	}
 
 	protected def text(Attribute element) {
-		var jvmElement = element.jvmElement(JvmField)
-		if (jvmElement !== null) {
-			element.name.convertToStyledString
-				.append(" : " + jvmElement.type.simpleName, StyledString::COUNTER_STYLER)
+		var StyledString label = element.name.convertToStyledString
+		var JvmTypeReference theType = null
+		if (element.type !== null) {
+			theType = element.type
+		} else {
+			var jvmElement = element.getJvmElement(JvmField)
+			if (jvmElement !== null) {
+				theType = jvmElement.type
+			}
 		}
-		else if (element.type !== null) {
-			element.name.convertToStyledString
-				.append(" : " + element.type.simpleName, StyledString::COUNTER_STYLER)
+		if (theType !== null) {
+			label.append(" : " + theType.humanReadableName, StyledString::COUNTER_STYLER)
 		}
-		else {
-			element.name.convertToStyledString
-		}
+		label
 	}
 	
-	protected def StyledString signatureWithoutReturnType(StyledString simpleName, JvmExecutable element) {
-		simpleName.convertToStyledString.append(
-			uiStrings.parameters(element)
-		)
-	}
-
 	protected def text(Constructor element) {
-		var jvmElement = element.jvmElement(JvmConstructor)
-		if (jvmElement!==null) {
-			var container = logicalContainerProvider.getNearestLogicalContainer(element)
-			if (container!==null) {
-				signatureWithoutReturnType(
-					container.simpleName.convertToStyledString,
-					jvmElement)
-			}
-			else {
-				signatureWithoutReturnType(
-					new StyledString("new", StyledString::DECORATIONS_STYLER),
-					jvmElement)
-			}
+		var container = logicalContainerProvider.getNearestLogicalContainer(element)
+		var StyledString name
+		if (container!==null) {
+			name = container.simpleName.convertToStyledString 
+		}
+		else {
+			name = new StyledString("new", StyledString::DECORATIONS_STYLER)
+		}
+		var jvmElement = element.getJvmElement(JvmExecutable)
+		if (jvmElement !== null) {
+			signatureWithoutReturnType(name, jvmElement)
+		} else {
+			signatureWithoutReturnType(name, jvmElement)
 		}
 	}
 
 	protected def text(Action element) {
-		if (element.signature!==null)
-			(element.signature as ActionSignature).toText
+		if (element.signature !== null)
+			(element.signature as ActionSignature).text
 		else
-			"" 
+			new StyledString("???", StyledString::DECORATIONS_STYLER)
 	}
 	
-	private def toText(ActionSignature element) {
+	protected def text(ActionSignature element) {
 		val simpleName = element.name
-		if (simpleName != null) {
+		if (simpleName !== null) {
 			val qnName = QualifiedName.create(simpleName)
 			val operator = operatorMapping.getOperator(qnName)
-			if (operator != null) {
-				val result = signature(operator.firstSegment, element.jvmElement(JvmExecutable))
+			if (operator !== null) {
+				val result = signature(operator.firstSegment, element.getJvmElement(JvmExecutable))
 				result.append(' (' + simpleName + ')', StyledString::COUNTER_STYLER)
 				return result
 			}
 		}
-		return signature(element.name, element.jvmElement(JvmOperation))
-	}
-
-	protected def text(ActionSignature element) {
-		element.toText
+		return signature(element.name, element.getJvmElement(JvmExecutable))
 	}
 
 	protected def text(CapacityUses element) {
-		"capacity uses".convertToString
+		new StyledString("capacity uses", StyledString::QUALIFIER_STYLER)
 	}
 
 	protected def text(RequiredCapacity element) {
-		"required capacities".convertToString
+		new StyledString("required capacities", StyledString::QUALIFIER_STYLER)
 	}
 
 	protected def text(BehaviorUnit element) {
 		var s = new StyledString("on ", StyledString::DECORATIONS_STYLER)
-		s.append(element.event.simpleName)
-		if (element.guard!==null) {
+		s.append(element.event.humanReadableName)
+		if (element.guard !== null) {
 			s.append(" [guarded]", StyledString::DECORATIONS_STYLER)
 		}
 		s

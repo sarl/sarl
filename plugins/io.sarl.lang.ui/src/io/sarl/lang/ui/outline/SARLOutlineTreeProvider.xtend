@@ -35,7 +35,6 @@ import io.sarl.lang.sarl.RequiredCapacity
 import io.sarl.lang.sarl.SarlPackage
 import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.sarl.Skill
-import org.eclipse.jdt.internal.ui.JavaPluginImages
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
 import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode
@@ -51,8 +50,10 @@ class SARLOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		if (modelElement.name!==null) {
 			createEStructuralFeatureNode(
 				parentNode, modelElement,
-				SarlPackage.Literals.SARL_SCRIPT__NAME, 
-				JavaPluginImages::get(JavaPluginImages::IMG_OBJS_PACKDECL),
+				SarlPackage.Literals.SARL_SCRIPT__NAME,
+				imageDispatcher.invoke(class.package),
+				// Do not use the text dispatcher below for avoiding to obtain
+				// the filename of the script.
 				modelElement.name,
 				true)
 		}

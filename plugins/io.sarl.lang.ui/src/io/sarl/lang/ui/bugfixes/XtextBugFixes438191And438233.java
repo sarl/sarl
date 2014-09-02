@@ -56,6 +56,9 @@ import com.google.inject.Inject;
  * <li>Type proposals when completion: {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=438191"}</li>
  * </ul>
  * 
+ * FIXME: https://bugs.eclipse.org/bugs/show_bug.cgi?id=438191
+ * FIXME: https://bugs.eclipse.org/bugs/show_bug.cgi?id=438233
+ * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
