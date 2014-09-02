@@ -85,12 +85,17 @@ public final class Config {
 	 * code and the generated Java code.
 	 */
 	public static final String[] SARL_REFERENCE_LIBRARIES = {
+		"com.google.guava", //$NON-NLS-1$
 		"org.eclipse.xtext.xbase.lib", //$NON-NLS-1$
-		"org.eclipse.xtend.lib", //$NON-NLS-1$
-		"io.sarl.core", //$NON-NLS-1$
 		"io.sarl.lang.core", //$NON-NLS-1$
 		"io.sarl.util", //$NON-NLS-1$
+		"io.sarl.core", //$NON-NLS-1$
 	};
+
+	/**
+	 * ID of the project nature defined by XText.
+	 */
+	public static final String XTEXT_NATURE_ID = "org.eclipse.xtext.ui.shared.xtextNature"; //$NON-NLS-1$
 
 	private Config() {
 		//

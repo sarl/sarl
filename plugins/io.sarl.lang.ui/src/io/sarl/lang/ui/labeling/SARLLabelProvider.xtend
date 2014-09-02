@@ -276,5 +276,5 @@ class SARLLabelProvider extends XbaseLabelProvider {
 		}
 		s
 	}
-
+	
 }

@@ -72,11 +72,6 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 	 */
 	private static final String WIZARD_NAME = SARLProjectNewWizardMessages.SARLProjectNewWizard_WIZARD_NAME;
 
-	/**
-	 * ID of the project nature defined by XText.
-	 */
-	private static final String XTEXT_NATURE_ID = "org.eclipse.xtext.ui.shared.xtextNature"; //$NON-NLS-1$
-
 	private NewSARLProjectWizardPageOne fFirstPage;
 	private NewSARLProjectWizardPageTwo fSecondPage;
 
@@ -205,7 +200,7 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 		final IProjectDescription description = project.getDescription();
 		final List<String> natures = new ArrayList<>(Arrays.asList(description.getNatureIds()));
 		natures.add(0, io.sarl.eclipse.natures.SARLProjectNature.NATURE_ID);
-		natures.add(1, XTEXT_NATURE_ID);
+		natures.add(1, Config.XTEXT_NATURE_ID);
 		// natures.add(2, JavaCore.NATURE_ID); not necessary since the project is already a java project
 
 		final String[] newNatures = natures.toArray(new String[natures.size()]);
