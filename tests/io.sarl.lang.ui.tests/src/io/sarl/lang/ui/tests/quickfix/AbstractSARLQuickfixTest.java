@@ -110,22 +110,39 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSARLUiTestCase {
 
 			List<Issue> issues = this.validator.validate(script);
 			Issue issue = null;
+			StringBuilder issueLabels = new StringBuilder();
 			Iterator<Issue> issueIterator = issues.iterator();
 			while (issue == null && issueIterator.hasNext()) {
 				Issue nextIssue = issueIterator.next();
 				if (issueCode.equals(nextIssue.getCode())) {
 					issue = nextIssue;
+				} else {
+					if (issueLabels.length() > 0) {
+						issueLabels.append(", "); //$NON-NLS-1$
+					}
+					issueLabels.append(nextIssue.getCode());
+					issueLabels.append(" - \""); //$NON-NLS-1$
+					issueLabels.append(Strings.convertToJavaString(nextIssue.getMessage()));
+					issueLabels.append("\""); //$NON-NLS-1$
 				}
 			}
 			if (issue == null) {
-				fail("Issue not found: " + issueCode); //$NON-NLS-1$
+				fail("The issue '" + issueCode //$NON-NLS-1$
+					+ "' was not found.\nAvailable issues are: " //$NON-NLS-1$
+					+ issueLabels.toString());
 			}
 
+			List<IssueResolution> resolutions = this.quickfixProvider.getResolutions(issue);
+			if (resolutions == null || resolutions.isEmpty()) {
+				fail("No resolution found for the issue '" + issueCode //$NON-NLS-1$
+					+ "'."); //$NON-NLS-1$
+			}
+			
 			QuickFixAsserts asserts = new QuickFixAsserts(
 					issueCode,
 					invalidCode,
 					scriptResource,
-					this.quickfixProvider.getResolutions(issue));
+					resolutions);
 
 			return asserts;
 		} catch (Exception e) {
@@ -150,50 +167,6 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSARLUiTestCase {
 		QuickFixAsserts asserts = getQuickFixAsserts(issueCode, invalidCode);
 		asserts.assertQuickFix(expectedLabel, expectedDescription, expectedResolution);
 		asserts.assertNoQuickFix();
-//		try {
-//			IFile file = this.helper.createFileInSourceFolder(
-//					filename("fixing_" + issueCode), //$NON-NLS-1$
-//					invalidCode);
-//			Resource scriptResource = this.helper.createSARLScriptResource(file, invalidCode);
-//			SarlScript script = (SarlScript) scriptResource.getContents().get(0);
-//			assertNotNull(script);
-//
-//			List<Issue> issues = this.validator.validate(script);
-//			Issue issue = null;
-//			Iterator<Issue> issueIterator = issues.iterator();
-//			while (issue == null && issueIterator.hasNext()) {
-//				Issue nextIssue = issueIterator.next();
-//				if (issueCode.equals(nextIssue.getCode())) {
-//					issue = nextIssue;
-//				}
-//			}
-//			if (issue == null) {
-//				fail("Issue not found: " + issueCode); //$NON-NLS-1$
-//			}
-//
-//			IssueResolution resolution = this.quickfixProvider.getResolutions(issue).iterator().next();
-//			assertEquals(expectedLabel, resolution.getLabel());
-//			assertEquals(expectedDescription, resolution.getDescription());
-//
-//			XtextResource xtextResource = new XtextResource(scriptResource.getURI());
-//			xtextResource.setFragmentProvider(new TestFragmentProvider(scriptResource));
-//			TestXtextDocument document = new TestXtextDocument(xtextResource, invalidCode);
-//			TestModificationContext modificationContext = new TestModificationContext(document);
-//
-//			resolution.getModification().apply(modificationContext);
-//
-//			String content;
-//			try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-//				scriptResource.save(os, null);
-//				content = os.toString();
-//			}
-//			if (!expectedResolution.equals(content)) {
-//				content = document.toString();
-//			}
-//			assertEquals("Invalid quick fix.", expectedResolution, content); //$NON-NLS-1$
-//		} catch (Exception e) {
-//			throw new RuntimeException(e);
-//		}
 	}
 
 	/**
@@ -236,8 +209,8 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSARLUiTestCase {
 					return resolution;
 				}
 			}
-			fail("Quick fix not found: " + this.issueCode //$NON-NLS-1$
-					+ "\nResolutions: " + toString() ); //$NON-NLS-1$
+			fail("Quick fix not found for the issue '" + this.issueCode //$NON-NLS-1$
+					+ "'.\nAvailable quick fix resolutions: " + toString() ); //$NON-NLS-1$
 			return null;
 		}
 		

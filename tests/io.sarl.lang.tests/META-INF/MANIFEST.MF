@@ -25,11 +25,3 @@ Import-Package: io.sarl.lang.core,
  org.junit.runners;version="4.5.0",
  org.junit.runners.model;version="4.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: foo,
- io.sarl.lang;uses:="org.eclipse.xtext.junit4,com.google.inject",
- io.sarl.lang.tests.bugs;uses:="org.eclipse.xtext.common.types",
- io.sarl.lang.tests.compilation,
- io.sarl.lang.tests.formatting,
- io.sarl.lang.tests.parsing
-Bundle-ClassPath: testdata/,
- .
