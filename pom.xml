@@ -79,8 +79,8 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 	<!-- ======================================= -->
 
 	<dependencyManagement>
-		<!-- The dependencies are inside the submodules for avoiding to 
-			propagate the dependency information outside a specific module -->
+		<!-- The dependencies are inside the submodules for avoiding to propagate 
+			the dependency information outside a specific module -->
 	</dependencyManagement>
 
 	<!-- ======================================= -->
@@ -180,6 +180,12 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 					<artifactId>tycho-maven-plugin</artifactId>
 					<version>${tycho.version}</version>
 					<extensions>true</extensions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-surefire-plugin</artifactId>
+					<version>${tycho.version}</version>
 				</plugin>
 
 				<plugin>
