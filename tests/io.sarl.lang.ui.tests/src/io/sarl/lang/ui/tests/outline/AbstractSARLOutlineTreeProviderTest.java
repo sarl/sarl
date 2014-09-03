@@ -59,7 +59,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSARLUi
 	/** {@inheritDoc}
 	 */
 	@Override
-	public void setUp() {
+	public void setUp() throws Exception {
 		super.setUp();
 		this.sorter.setComparator(this.comparator);
 	}

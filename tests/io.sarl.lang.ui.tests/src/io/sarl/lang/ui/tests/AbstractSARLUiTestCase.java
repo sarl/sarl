@@ -69,10 +69,19 @@ public abstract class AbstractSARLUiTestCase extends Assert {
 	}
 
 	/**
+	 * @throws Exception
 	 */
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		WorkspaceTestHelper.bind(this);
+	}
+	
+	/**
+	 * @throws Exception
+	 */
+	@Before
+	public void tearDown() throws Exception {
+		//
 	}
 	
 	/** Initialize the test case class.

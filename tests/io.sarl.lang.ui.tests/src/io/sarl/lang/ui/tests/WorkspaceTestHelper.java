@@ -561,5 +561,12 @@ public class WorkspaceTestHelper extends Assert {
 			return sarlScript;
 		}
 	}
+	
+	/** Wait for the termination of the Eclipse automatic build.
+	 */
+	@SuppressWarnings("static-method")
+	public void waitForAutoBuild() {
+		IResourcesSetupUtil.waitForAutoBuild();
+	}
 
 }
