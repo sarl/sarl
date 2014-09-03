@@ -61,12 +61,16 @@ import org.eclipse.xtext.resource.ClassloaderClasspathUriResolver;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.validation.Issue;
+import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
+import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XTypeLiteral;
+import org.eclipse.xtext.xbase.interpreter.IEvaluationResult;
+import org.eclipse.xtext.xbase.interpreter.IExpressionInterpreter;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 
 import com.google.common.base.Predicate;
@@ -87,11 +91,13 @@ public class SARLParser {
 	private static final int HEX_BASE = 16;
 
 	@Inject
-	private ParseHelper<SarlScript> parser;
+	private ParseHelper<SarlScript> sarlParser;
 	@Inject
 	private XtextResourceSet xtextResourceSet;
 	@Inject
 	private ValidationTestHelper validationTestHelper;
+	@Inject
+	private IExpressionInterpreter interpreter;
 
 	private boolean initial = true;
 
@@ -107,9 +113,9 @@ public class SARLParser {
 	public SarlScript parse(CharSequence text) throws Exception {
 		if (this.initial) {
 			this.initial = false;
-			return this.parser.parse(text, getResourceSetWithDefaultModels());
+			return this.sarlParser.parse(text, getResourceSetWithDefaultModels());
 		}
-		return this.parser.parse(text);
+		return this.sarlParser.parse(text);
 	}
 
 	/** Expect a correct SARL code.
@@ -229,7 +235,7 @@ public class SARLParser {
 		}
 		parsesWithError(b.toString());
 	}
-
+	
 	private ResourceSet getResourceSetWithDefaultModels() {
 		this.xtextResourceSet.setClasspathURIContext(getClass());
 		this.xtextResourceSet.setClasspathUriResolver(new ClassloaderClasspathUriResolver());
@@ -803,6 +809,228 @@ public class SARLParser {
 		assertNotNull("null feature call", actual); //$NON-NLS-1$
 		assertEquals("Invalid type", expected, actual.getFeature().getQualifiedName()); //$NON-NLS-1$
 		return actual;
+	}
+
+	/** Parse a Xbase expression.
+	 * 
+	 * @param expression - the expression to parse.
+	 * @return the XExpression that is corresponding to the given expression.
+	 * @throws Exception
+	 */
+	public XExpression expression(String expression) throws Exception {
+		return expression(expression, true);
+	}
+	
+	/** Parse a Xbase expression.
+	 * 
+	 * @param expression - the expression to parse.
+	 * @param resolve - <code>true</code> if the expression must have no error, <code>false</code>
+	 * to not care.
+	 * @return the XExpression that is corresponding to the given expression.
+	 * @throws Exception
+	 */
+	public XExpression expression(String expression, boolean resolve) throws Exception {
+		String code = "def ____TeStInG_FuNcTiOn() : Object {\n" //$NON-NLS-1$
+				+ expression
+				+ "\n}"; //$NON-NLS-1$
+		Action action = (Action) agentCode("AgentXXXXX", code, resolve).get(0); //$NON-NLS-1$
+		XBlockExpression block = (XBlockExpression) action.getBody();
+		if (block.getExpressions().size() == 1) {
+			return block.getExpressions().get(0);
+		}
+		return block;
+
+	}
+
+	/** Parse the code of an agent (attributes, actions, behavior units...).
+	 * 
+	 * @param agentTypeName - name of the type of agent.
+	 * @param code - the code to parse.
+	 * @param resolve - <code>true</code> if the code must have no error, <code>false</code>
+	 * to not care.
+	 * @return the statements in the agent definition.
+	 * @throws Exception
+	 */
+	public List<EObject> agentCode(String agentTypeName, String code, boolean resolve) throws Exception {
+		String fullCode = "agent " + agentTypeName //$NON-NLS-1$
+				+ " {\n" + code //$NON-NLS-1$
+				+ "\n}\n"; //$NON-NLS-1$
+		SarlScript script = parse(fullCode);
+		if (resolve) {
+			this.validationTestHelper.assertNoErrors(script);
+		}
+		Agent agent = (Agent) script.getElements().get(0);
+		return agent.getFeatures();
+	}
+
+	/** Evaluate an expression and reply the result.
+	 * 
+	 * @param expression - the expression to evaluate.
+	 * @param resultType - the expected type of the result.
+	 * @return the result of the evaluation.
+	 * @throws Exception
+	 */
+	public <T> T to(String expression, Class<T> resultType) throws Exception {
+		XExpression expr = expression(expression);
+		IEvaluationResult r = this.interpreter.evaluate(expr);
+		if (r == null) {
+			throw new RuntimeException("cannot evaluate"); //$NON-NLS-1$
+		}
+		Throwable e = r.getException();
+		if (e != null) {
+			if (e instanceof Exception) {
+				throw (Exception)e;
+			}
+			else if (e instanceof Error) {
+				throw (Error)e;
+			}
+			throw new RuntimeException(e);
+		}
+		Object v = r.getResult();
+		if (v == null) {
+			return null;
+		}
+		if (resultType.isInstance(v)) {
+			return resultType.cast(v);
+		}
+		fail("Invalid type. Expected: " //$NON-NLS-1$
+				+ resultType.getName() + ", but was: " //$NON-NLS-1$
+				+ v.getClass().getName());
+		return null;
+	}
+	
+	/** Evaluate a byte expression and reply the result.
+	 * 
+	 * @param expression - the expression to evaluate.
+	 * @return the result of the evaluation.
+	 * @throws Exception
+	 */
+	public byte toByte(String expression) throws Exception {
+		Number n = to(expression, Number.class);
+		if (n != null) {
+			return n.byteValue();
+		}
+		fail("Illegal number"); //$NON-NLS-1$
+		return 0;
+	}
+
+	/** Evaluate a short integer expression and reply the result.
+	 * 
+	 * @param expression - the expression to evaluate.
+	 * @return the result of the evaluation.
+	 * @throws Exception
+	 */
+	public short toShort(String expression) throws Exception {
+		Number n = to(expression, Number.class);
+		if (n != null) {
+			return n.shortValue();
+		}
+		fail("Illegal number"); //$NON-NLS-1$
+		return 0;
+	}
+
+	/** Evaluate an integer expression and reply the result.
+	 * 
+	 * @param expression - the expression to evaluate.
+	 * @return the result of the evaluation.
+	 * @throws Exception
+	 */
+	public int toInt(String expression) throws Exception {
+		Number n = to(expression, Number.class);
+		if (n != null) {
+			return n.intValue();
+		}
+		fail("Illegal number"); //$NON-NLS-1$
+		return 0;
+	}
+
+	/** Evaluate a long integer expression and reply the result.
+	 * 
+	 * @param expression - the expression to evaluate.
+	 * @return the result of the evaluation.
+	 * @throws Exception
+	 */
+	public long toLong(String expression) throws Exception {
+		Number n = to(expression, Number.class);
+		if (n != null) {
+			return n.longValue();
+		}
+		fail("Illegal number"); //$NON-NLS-1$
+		return 0;
+	}
+
+	/** Evaluate a single-precision floating point expression and reply the result.
+	 * 
+	 * @param expression - the expression to evaluate.
+	 * @return the result of the evaluation.
+	 * @throws Exception
+	 */
+	public float toFloat(String expression) throws Exception {
+		Number n = to(expression, Number.class);
+		if (n != null) {
+			return n.floatValue();
+		}
+		fail("Illegal number"); //$NON-NLS-1$
+		return 0;
+	}
+
+	/** Evaluate a double-precision floating point expression and reply the result.
+	 * 
+	 * @param expression - the expression to evaluate.
+	 * @return the result of the evaluation.
+	 * @throws Exception
+	 */
+	public double toDouble(String expression) throws Exception {
+		Number n = to(expression, Number.class);
+		if (n != null) {
+			return n.doubleValue();
+		}
+		fail("Illegal number"); //$NON-NLS-1$
+		return 0;
+	}
+
+	/** Evaluate a character expression and reply the result.
+	 * 
+	 * @param expression - the expression to evaluate.
+	 * @return the result of the evaluation.
+	 * @throws Exception
+	 */
+	public char toChar(String expression) throws Exception {
+		Character n = to(expression, Character.class);
+		if (n != null) {
+			return n.charValue();
+		}
+		fail("Illegal character"); //$NON-NLS-1$
+		return 0;
+	}
+
+	/** Evaluate a boolean expression and reply the result.
+	 * 
+	 * @param expression - the expression to evaluate.
+	 * @return the result of the evaluation.
+	 * @throws Exception
+	 */
+	public boolean toBool(String expression) throws Exception {
+		Boolean n = to(expression, Boolean.class);
+		if (n != null) {
+			return n.booleanValue();
+		}
+		fail("Illegal boolean value"); //$NON-NLS-1$
+		return false;
+	}
+
+	/** Evaluate a boolean expression and reply the result.
+	 * 
+	 * @param expression - the expression to evaluate.
+	 * @return the result of the evaluation.
+	 * @throws Exception
+	 */
+	public String toStr(String expression) throws Exception {
+		Object n = to(expression, Object.class);
+		if (n != null) {
+			return n.toString();
+		}
+		return null;
 	}
 
 }

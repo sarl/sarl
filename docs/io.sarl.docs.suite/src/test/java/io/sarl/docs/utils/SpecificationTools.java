@@ -32,6 +32,8 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.net.URL;
 import java.sql.Date;
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.regex.Pattern;
 
 import junit.framework.AssertionFailedError;
@@ -59,7 +61,7 @@ public final class SpecificationTools {
 	private SpecificationTools() {
 		//
 	}
-
+	
 	/** Replies a path built from the given elements.
 	 *
 	 * @param element1 - first mandatory element.
@@ -110,7 +112,7 @@ public final class SpecificationTools {
 	 * @param expected - the expected object.
 	 * @return actual
 	 */
-	public static <T> T mustBe(T actual, T expected) {
+	public static <T> T mustBe(T actual, Object expected) {
 		if (isArray(actual) && isArray(expected)) {
 			assertArrayEquals("not equal", (Object[]) expected, (Object[]) actual); //$NON-NLS-1$
 		} else {
@@ -381,14 +383,145 @@ public final class SpecificationTools {
 	 *
 	 * @param <T> - type of the object.
 	 * @param actual - the object to test.
-	 * @param result - the expected value.
+	 * @param expected - the expected value.
 	 * @return actual
 	 */
-	public static <T> T mustBe(T actual, boolean result) {
+	public static <T> T mustBe(T actual, boolean expected) {
 		if (actual instanceof Boolean) {
-			assertEquals(Boolean.valueOf(result), actual);
+			assertEquals(Boolean.valueOf(expected), actual);
 		} else {
 			fail("actual must be a boolean"); //$NON-NLS-1$
+		}
+		return actual;
+	}
+
+	/** Ensure that the given object is a byte equals to the given value.
+	 *
+	 * @param <T> - type of the object.
+	 * @param actual - the object to test.
+	 * @param expected - the expected value.
+	 * @return actual
+	 */
+	public static <T> T mustBe(T actual, byte expected) {
+		if (actual instanceof Byte) {
+			assertEquals(Byte.valueOf(expected), actual);
+		} else {
+			fail("actual must be a byte"); //$NON-NLS-1$
+		}
+		return actual;
+	}
+
+	/** Ensure that the given object is a short integer equals to the given value.
+	 *
+	 * @param <T> - type of the object.
+	 * @param actual - the object to test.
+	 * @param expected - the expected value.
+	 * @return actual
+	 */
+	public static <T> T mustBe(T actual, short expected) {
+		if (actual instanceof Short) {
+			assertEquals(Short.valueOf(expected), actual);
+		} else {
+			fail("actual must be a short integer"); //$NON-NLS-1$
+		}
+		return actual;
+	}
+
+	/** Ensure that the given object is an integer equals to the given value.
+	 *
+	 * @param <T> - type of the object.
+	 * @param actual - the object to test.
+	 * @param expected - the expected value.
+	 * @return actual
+	 */
+	public static <T> T mustBe(T actual, int expected) {
+		if (actual instanceof Integer) {
+			assertEquals(Integer.valueOf(expected), actual);
+		} else {
+			fail("actual must be an integer"); //$NON-NLS-1$
+		}
+		return actual;
+	}
+
+	/** Ensure that the given object is a long integer equals to the given value.
+	 *
+	 * @param <T> - type of the object.
+	 * @param actual - the object to test.
+	 * @param expected - the expected value.
+	 * @return actual
+	 */
+	public static <T> T mustBe(T actual, long expected) {
+		if (actual instanceof Long) {
+			assertEquals(Long.valueOf(expected), actual);
+		} else {
+			fail("actual must be a long integer"); //$NON-NLS-1$
+		}
+		return actual;
+	}
+
+	/** Ensure that the given object is a single-precision
+	 * floating point number equals to the given value.
+	 *
+	 * @param <T> - type of the object.
+	 * @param actual - the object to test.
+	 * @param expected - the expected value.
+	 * @return actual
+	 */
+	public static <T> T mustBe(T actual, float expected) {
+		if (actual instanceof Float) {
+			assertEquals(Float.valueOf(expected), actual);
+		} else {
+			fail("actual must be a float"); //$NON-NLS-1$
+		}
+		return actual;
+	}
+
+	/** Ensure that the given object is a double-precision
+	 * floating point number equals to the given value.
+	 *
+	 * @param <T> - type of the object.
+	 * @param actual - the object to test.
+	 * @param expected - the expected value.
+	 * @return actual
+	 */
+	public static <T> T mustBe(T actual, double expected) {
+		if (actual instanceof Double) {
+			assertEquals(Double.valueOf(expected), actual);
+		} else {
+			fail("actual must be a double"); //$NON-NLS-1$
+		}
+		return actual;
+	}
+
+	/** Ensure that the given object is a character equals to the given value.
+	 *
+	 * @param <T> - type of the object.
+	 * @param actual - the object to test.
+	 * @param expected - the expected value.
+	 * @return actual
+	 */
+	public static <T> T mustBe(T actual, char expected) {
+		if (actual instanceof Character) {
+			assertEquals(Character.valueOf(expected), actual);
+		} else {
+			fail("actual must be a character"); //$NON-NLS-1$
+		}
+		return actual;
+	}
+
+	/** Ensure that the given object is a single-precision
+	 * floating point number equals to the given value.
+	 *
+	 * @param <T> - type of the object.
+	 * @param actual - the object to test.
+	 * @param expected - the expected value.
+	 * @return actual
+	 */
+	public static <T> T mustBe(T actual, String expected) {
+		if (actual != null) {
+			assertEquals(expected.toString(), actual);
+		} else if (expected != null) {
+			fail("actual must be not null"); //$NON-NLS-1$
 		}
 		return actual;
 	}
@@ -469,14 +602,19 @@ public final class SpecificationTools {
 		assertNotNull("callingSpecification cannot be null", callingSpecification); //$NON-NLS-1$
 		//
 		String ref = referencedLink;
+		if (ref.startsWith("#")) { //$NON-NLS-1$
+			ref = "./" + callingSpecification.getSimpleName() + ".html" + ref; //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		String[] fragments = null;
 		if (ref.contains(".html#")) { //$NON-NLS-1$
 			String[] parts = ref.split(java.util.regex.Matcher.quoteReplacement(".html#")); //$NON-NLS-1$
 			assertEquals(
 					String.format("Invalid link format: %s", ref), //$NON-NLS-1$
 					2, parts.length);
-			String[] sections = parts[1].split(java.util.regex.Matcher.quoteReplacement("_") + "+"); //$NON-NLS-1$ //$NON-NLS-2$
+			fragments = parts[1].split(java.util.regex.Matcher.quoteReplacement("_") + "+"); //$NON-NLS-1$ //$NON-NLS-2$
 			StringBuilder b = new StringBuilder();
-			for (String s : sections) {
+			for (String s : fragments) {
 				if (s.length() > 1) {
 					b.append(s.substring(0, 1).toUpperCase() + s.substring(1));
 				} else {
@@ -491,23 +629,53 @@ public final class SpecificationTools {
 			}
 		}
 		//
+		if (!isJnarioSpec(callingSpecification, ref)) {
+			
+			// The specification could be a function of the Java class.
+			if (fragments != null) {
+				StringBuilder operationName = new StringBuilder();
+				for(String fragment : fragments) {
+					if (operationName.length() > 0) {
+						operationName.append(fragment.substring(0,1).toUpperCase() + fragment.substring(1).toLowerCase());
+					} else {
+						operationName.append(fragment.toLowerCase());
+					}
+				}
+				String operationNameStr = "_" + operationName.toString(); //$NON-NLS-1$
+				try {
+					callingSpecification.getMethod(operationNameStr);
+					return referencedLink;
+				}
+				catch(Throwable _) {
+					// Failure
+				}
+			}
+			
+			fail(String.format("The link \"%s\" is not linked to a Jnario specification", referencedLink)); //$NON-NLS-1$
+		}
+		return referencedLink;
+	}
+	
+	private static boolean isJnarioSpec(Class<?> callingSpecification, String reference) {
+		String url = reference;
+		//
 		assertTrue(
 					String.format("\"%s\" must end with \".html\".", //$NON-NLS-1$
-							ref.toString(), ".html"), //$NON-NLS-1$
-					ref.endsWith(".html")); //$NON-NLS-1$
+							url.toString(), ".html"), //$NON-NLS-1$
+					url.endsWith(".html")); //$NON-NLS-1$
 		//
-		ref = ref.substring(0, ref.length() - 5);
+		url = url.substring(0, url.length() - 5);
 		File caller = new File(callingSpecification.getName().replaceAll(
 				"\\.", File.separator)).getParentFile(); //$NON-NLS-1$
-		File resolved = new File(caller, ref.replaceAll("\\/", File.separator)); //$NON-NLS-1$
+		File resolved = new File(caller, url.replaceAll("\\/", File.separator)); //$NON-NLS-1$
 		String resolvedPath = Files.simplifyPath(resolved.getPath());
 		resolvedPath = resolvedPath.replaceAll(java.util.regex.Matcher.quoteReplacement(File.separator), "."); //$NON-NLS-1$
 		try {
 			Class.forName(resolvedPath);
+			return true;
 		} catch (Throwable _) {
-			fail(String.format("The link \"%s\" is not linked to a Jnario specification", referencedLink)); //$NON-NLS-1$
+			return false;
 		}
-		return referencedLink;
 	}
 
 	/** Ensure that the given string is a valid hyper-link.
@@ -593,6 +761,52 @@ public final class SpecificationTools {
 			fail(String.format("The date \"%s\" has an invalid format.", str)); //$NON-NLS-1$
 		}
 		return str;
+	}
+	
+	/** Ensure that the iterator replies the expected values in the given order.
+	 * 
+	 * @param <T> - the type of the elements in the iterator.
+	 * @param actual - the iterator to test.
+	 * @param expected - the expected values.
+	 * @return actual
+	 */
+	public static <T> Iterator<T> mustContain(Iterator<T> actual, Object[] expected) {
+		Object obj;
+		int index = 0;
+		while (actual.hasNext()) {
+			obj = actual.next();
+			if (index <= expected.length) {
+				assertEquals(expected[index], obj);
+			} else {
+				fail("Unexpected value in the iterator: " + obj); //$NON-NLS-1$
+			}
+			index ++;
+		}
+		assertEquals("Not enough elements in the iterator.", expected.length, index); //$NON-NLS-1$
+		return actual;
+	}
+
+	/** Ensure that the iterator replies the expected values in the given order.
+	 * 
+	 * @param <T> - the type of the elements in the iterator.
+	 * @param actual - the iterator to test.
+	 * @param expected - the expected values.
+	 * @return actual
+	 */
+	public static <T> ListIterator<T> mustContain(ListIterator<T> actual, Object[] expected) {
+		Object obj;
+		int index = 0;
+		while (actual.hasNext()) {
+			obj = actual.next();
+			if (index <= expected.length) {
+				assertEquals(expected[index], obj);
+			} else {
+				fail("Unexpected value in the iterator: " + obj); //$NON-NLS-1$
+			}
+			index ++;
+		}
+		assertEquals("Not enough elements in the iterator.", expected.length, index); //$NON-NLS-1$
+		return actual;
 	}
 
 }

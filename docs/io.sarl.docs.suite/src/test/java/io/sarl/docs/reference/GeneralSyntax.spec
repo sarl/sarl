@@ -25,6 +25,8 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.util.List
+import org.eclipse.xtext.junit4.validation.ValidationTestHelper
 import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XBooleanLiteral
 import org.eclipse.xtext.xbase.XCastedExpression
@@ -37,10 +39,12 @@ import org.eclipse.xtext.xbase.XNumberLiteral
 import org.eclipse.xtext.xbase.XSetLiteral
 import org.eclipse.xtext.xbase.XStringLiteral
 import org.eclipse.xtext.xbase.XTypeLiteral
+import org.eclipse.xtext.xbase.XbasePackage
 import org.jnario.runner.CreateWith
 
+import static org.junit.Assert.*
+
 import static extension io.sarl.docs.utils.SpecificationTools.*
-import static extension org.junit.Assert.*
 
 /* <!-- OUTPUT OUTLINE -->
  * 
@@ -50,6 +54,7 @@ import static extension org.junit.Assert.*
 describe "General Syntax Reference" {
 
 	@Inject extension SARLParser
+	@Inject extension ValidationTestHelper
 	
 	/* SARL, like Java, is a statically typed language. In fact, it completely supports 
 	 * Java's type system, including the primitive types like _int_ or _boolean_, 
@@ -82,7 +87,7 @@ describe "General Syntax Reference" {
 	 * @filter(.*)
 	 */
 	fact "Java Interoperability" {
-		assertNotNull(typeof(java.util.List))
+		assertNotNull(typeof(List))
 	}
 
 	/* In SARL, the names of the features (agents, variables, fields, etc.)
@@ -751,189 +756,396 @@ describe "General Syntax Reference" {
 	 */
 	describe "Operators" {
 		
-		/* Below, it is the complete list of all available operators
-		 * (from less prior to most prior), and 
-		 * their corresponding method signatures:
+		/** The arithmetic operators are listed below.
+		 * The arithmetic operators take numbers as operands. They could
+		 * be unary (one operand) or binary (two operands).
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * Each operator has an associated function name. This function contains
+		 * the concrete implementation of the operational semantic of the
+		 * operator. This function could be redefined as it is explained in the 
+		 * [operator overloading section](#Operator_Overloading).
+		 * 
+		 * <table><thead>
+		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>a + b</td><td>operator_plus</td><td>Add a and b.</td></tr>
+		 * <tr><td>a - b</td><td>operator_minus (binary)</td><td>Subtract b to a.</td></tr>
+		 * <tr><td>a * b</td><td>operator_multiply</td><td> Multiply a by b.</td></tr>
+		 * <tr><td>a / b</td><td>operator_divide</td><td>Divide a by b.</td></tr>
+		 * <tr><td>a % b</td><td>operator_modulo</td><td>Modulo of the division of a by b.</td></tr>
+		 * <tr><td>a ** b</td><td>operator_power</td><td>Compute the power b of a.</td></tr>
+		 * <tr><td>- a</td><td>operator_minus (unary</td><td>Negate the value of a.</td></tr>
+		 * <tr><td>a ++</td><td>operator_plusPlus</td><td>Increment a by 1, reply the value before the incrementation.</td></tr>
+		 * <tr><td>a --</td><td>operator_moinsMoins</td><td>Decrement a by 1, reply the value before the decrementation.</td></tr>
+		 * </tbody></table>
+		 *
+		 * @filter(.*) 
 		 */
-		fact "Infix Operators"{
-			'''
-					// Add the value 3 to the list l.
-					l += 3
-					l.operator_add(3)
-					// Remove the value 18 from the list l.
-					l -= 18
-					l.operator_remove(18)
-					// true if b1 or b2 is true
-					r = b1 || b2
-					r = b1.operator_or(b2)
-					// true if b1 and b2 are true
-					r = b1 && b2
-					r = b1.operator_and(b2)
-					// true if e1 is equal to e2, based on Object::equals(Object), null-value safe.
-					r = e1 == e2
-					r = e1.operator_equals(e2)
-					// true if e1 is not equal to e2, based on Object::equals(Object), null-value safe.
-					r = e1 != e2
-					r = e1.operator_notEquals(e2)
-					// true if e1 is same object as e2, equivalent as the operator == of Java.
-					r = e1 === e2
-					r = e1.operator_tripleEquals(e2)
-					// true if e1 is not same object as e2, equivalent as the operator != of Java.
-					r = e1 !== e2
-					r = e1.operator_tripleNotEquals(e2)
-					// true if e1 is lower than e2.
-					r = e1 < e2
-					r = e1.operator_lessThan(e2)
-					// true if e1 is greater than e2.
-					r = e1 > e2
-					r = e1.operator_greaterThan(e2)
-					// true if e1 is lower than or equal to e2.
-					r = e1 <= e2
-					r = e1.operator_lessEqualsThan(e2)
-					// true if e1 is greater than or equal to e2.
-					r = e1 >= e2
-					r = e1.operator_greaterEqualsThan(e2)
-					// Create a Pair with e1 and e2.
-					r = e1 -> e2
-					r = e1.operator_mappedTo(e2)
-					// Define a range of values from e1, inclusive, to e2, inclusive.
-					r = e1 .. e2
-					r = e1.operator_upTo(e2)
-					// Define a range of values from e1, exclusive, to e2, inclusive.
-					r = e1 >.. e2
-					r = e1.operator_greaterThanDoubleDot(e2)
-					// Define a range of values from e1, inclusive, to e2, exclusive.
-					r = e1 ..< e2
-					r = e1.operator_doubleDotLessThan(e2)
-					// Bind the object e1 to the procedure p. p must be a 
-					// procedure that takes e1 as parameter. The value of this operator is e1.
-					r = e1 => p
-					r = e1.operator_doubleArrow(p)
-					// Shift left e1 by e2.
-					r = e1 << e2
-					r = e1.operator_doubleLessThan(e2)
-					// Shift right e1 by e2.
-					r = e1 >> e2
-					r = e1.operator_doubleGreaterThan(e2)
-					// 
-					//r = e1 <<< e2
-					//r = e1.operator_tripleLessThan(e2)
-					// Unsigned shift right e1 by e2.
-					r = e1 >>> e2
-					r = e1.operator_tripleGreaterThan(e2)
-					//
-					//r = e1 <> e2
-					//r = e1.operator_diamond(e2)
-					// e1 if e1 is not null, or e2 if e1 is null.
-					r = o1 ?: o2
-					r = e1.operator_elvis(e2)
-					// negative value if e1 is strictly lower than e2,
-					// zero if e1 is equal to e2,
-					// positive value if e2 is strictly greater than e2.
-					r = e1 <=> e2
-					r = e1.operator_spaceship(e2)
-					// addition of e1 and e2
-					r = e1 + e2
-					r = e1.operator_plus(e2)
-					// substract e2 to e1
-					r = e1 - e2
-					r = e1.operator_minus(e2)
-					// multiply e1 and e2
-					r = e1 * e2
-					r = e1.operator_multiply(e2)
-					// divide e1 by e2
-					r = e1 / e2
-					r = e1.operator_divide(e2)
-					// modulo of the division of e1 by e2
-					r = e1 % e2
-					r = e1.operator_modulo(e2)
-					// e1 power e2
-					r = e1 ** e2
-					r = e1.operator_power(e2)
-					// boolean negation
-					r = !b1
-					r = b1.operator_not()
-					// unary minus sign
-					r = -e1
-					r = e1.operator_minus()
-			'''.parsesSuccessfully(
-				"package io.sarl.docs.reference.gsr
-				agent A {
-					var r : Object
-					val l = newArrayList()
-					var b1 : boolean
-					var b2 : boolean
-					var e1 = 4
-					var e2 = 18
-					var o1 = new Object
-					var o2 = new Object
-					var p
-					
-					def examples {",
-				// TEXT
-				"} }"
-			)
+		fact "Arithmetic operators" {
+			"#Operator_Overloading".mustBeJnarioLink
+			
+			"1 + 2".toInt.mustBe(3)
+			"1 - 2".toInt.mustBe(-1)
+			"1 * 2".toInt.mustBe(2)
+			"4 / 2".toInt.mustBe(2)
+			"3 % 2".toInt.mustBe(1)
+			"3 ** 2".toInt.mustBe(9)
+			"var a : int = 7\na++".toInt.mustBe(7)
+			"var a : int = 7\na++\na".toInt.mustBe(8)
+			"var a : int = 7\na--".toInt.mustBe(7)
+			"var a : int = 7\na--\na".toInt.mustBe(6)
 		}
 
-		/* The two postfix operators `++` and `--` are supported.
+		/** The comparison operators primitive types are listed below.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * Each operator has an associated function name. This function contains
+		 * the concrete implementation of the operational semantic of the
+		 * operator. This function could be redefined as it is explained in the 
+		 * [operator overloading section](#Operator_Overloading).
+		 * 
+		 * <table><thead>
+		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>a == b</td><td>operator_equals</td><td>Test if a and b are equal.</td></tr>
+		 * <tr><td>a != b</td><td>operator_notEquals</td><td>Test if a and b are not equal.</td></tr>
+		 * <tr><td>a === b</td><td>operator_tripleEquals</td><td>Test if a and b are equal.</td></tr>
+		 * <tr><td>a !== b</td><td>operator_tripleNotEquals</td><td>Test if a and b are not equal.</td></tr>
+		 * <tr><td>a &lt; b</td><td>operator_lessThan</td><td>Test if a is lower than b (a, b cannot be boolean).</td></tr>
+		 * <tr><td>a &gt; b</td><td>operator_greaterThan</td><td>Test if a is greater than b (a, b cannot be boolean).</td></tr>
+		 * <tr><td>a &lt;= b</td><td>operator_lessEqualsThan</td><td>Test if a is lower than or equal to b (a, b cannot be boolean).</td></tr>
+		 * <tr><td>a &gt;= b</td><td>operator_greaterEqualsThan</td><td>Test if a is greater than or equal to b (a, b cannot be boolean).</td></tr>
+		 * <tr><td>a &lt;=&gt; b</td><td>operator_spaceship</td><td>Replies a negative value if a < b, a positive value if a > b, otherwise 0.</td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
 		 */
-		fact "Postfix Operators"{
-			'''
-					// Increment e1 by 1.
-					e1++
-					e1.operator_plusPlus()
-					// Decrement e1 by 1.
-					e1--
-					e1.operator_minusMinus()
-			'''.parsesSuccessfully(
-				"package io.sarl.docs.reference.gsr
-				agent A {
-					var e1 : int
-					
-					def examples {",
-				// TEXT
-				"} }"
-			)
+		fact "Comparison operators on primitive types" {
+			"#Operator_Overloading".mustBeJnarioLink
+
+			"1 == 2".toBool.mustBe(false)
+			"true == false".toBool.mustBe(false)
+			
+			"1 != 2".toBool.mustBe(true)
+			"true != false".toBool.mustBe(true)
+			
+			"1 === 2".toBool.mustBe(false)
+			"true === false".toBool.mustBe(false)
+			
+			"1 !== 2".toBool.mustBe(true)
+			"true !== false".toBool.mustBe(true)
+
+			"1 < 2".toBool.mustBe(true)
+			"1 > 2".toBool.mustBe(false)
+			"1 <= 2".toBool.mustBe(true)
+			"1 >= 2".toBool.mustBe(false)
+
+			"1 <=> 2".toInt.mustBe [ it < 0 ]
+			"2 <=> 1".toInt.mustBe [ it > 0 ]
+			"2 <=> 2".toInt.mustBe [ it == 0 ]
 		}
 
-		/* Local variables and fields can be assigned using the `=` operator.
+		/** The comparison operators on objects are listed below.
 		 * 
+		 * Each operator has an associated function name. This function contains
+		 * the concrete implementation of the operational semantic of the
+		 * operator. This function could be redefined as it is explained in the 
+		 * [operator overloading section](#Operator_Overloading).
+		 * 
+		 * <table><thead>
+		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>a == b</td><td>operator_equals</td><td>Determine if a and b are equal. If a is Comparable then it is equivalent to `a.compareTo(b) == 0` else `a.equals(b)`. This operator is null-safe.</td></tr>
+		 * <tr><td>a != b</td><td>operator_notEquals</td><td>Determine if a and b are not equal. If a is Comparable then it is equivalent to `a.compareTo(b) != 0` else `!a.equals(b)` This operator is null-safe.</td></tr>
+		 * <tr><td>a === b</td><td>operator_tripleEquals</td><td>Test if a and b are the same object reference. This operator is not null-safe.</td></tr>
+		 * <tr><td>a !== b</td><td>operator_tripleNotEquals</td><td>Test if a and b are not the same object reference. This operator is not null-safe.</td></tr>
+		 * <tr><td>a &lt; b</td><td>operator_lessThan</td><td>Test if a is lower than b (a must be Comparable).</td></tr>
+		 * <tr><td>a &gt; b</td><td>operator_greaterThan</td><td>Test if a is greater than b (a must be Comparable).</td></tr>
+		 * <tr><td>a &lt;= b</td><td>operator_lessEqualsThan</td><td>Test if a is lower than or equal to b (a must be Comparable).</td></tr>
+		 * <tr><td>a &gt;= b</td><td>operator_greaterEqualsThan</td><td>Test if a is greater than or equal to b (a must be Comparable).</td></tr>
+		 * <tr><td>a &lt;=&gt; b</td><td>operator_spaceship</td><td>Replies a negative value if a < b, a positive value if a > b, otherwise 0 (a must be Comparable).</td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
+		 */
+		fact "Comparison operators on objects" {
+			"#Operator_Overloading".mustBeJnarioLink
+
+			"'a' == 'a'".toBool.mustBe(true)
+			"'a' != 'a'".toBool.mustBe(false)
+			"'a' === 'a'".toBool.mustBe(false)
+			"'a' !== 'a'".toBool.mustBe(true)
+			"'a' < 'a'".toBool.mustBe(false)
+			"'a' <= 'a'".toBool.mustBe(true)
+			"'a' > 'a'".toBool.mustBe(false)
+			"'a' >= 'a'".toBool.mustBe(true)
+			"new Integer(1) <=> new Integer(2)".toInt.mustBe [ it < 0 ]
+			"new Integer(2) <=> new Integer(1)".toInt.mustBe [ it > 0 ]
+			"new Integer(2) <=> new Integer(2)".toInt.mustBe [ it == 0 ]
+		}
+
+		/** The boolean operators are listed below.
+		 * Each operator takes one or two boolean values as operands, and
+		 * replies a boolean value resulting of the operational semantic of the
+		 * operator. 
+		 * 
+		 * Each operator has an associated function name. This function contains
+		 * the concrete implementation of the operational semantic of the
+		 * operator. This function could be redefined as it is explained in the 
+		 * [operator overloading section](#Operator_Overloading).
+		 * 
+		 * <table><thead>
+		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>a || b</td><td>operator_or</td><td>If a then true else b.</td></tr>
+		 * <tr><td>a &amp;&amp; b</td><td>operator_and</td><td>If a then b else false.</td></tr>
+		 * <tr><td>! a</td><td>operator_not</td><td>If a then false else true.</td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
+		 */
+		fact "Boolean Operators" {
+			"#Operator_Overloading".mustBeJnarioLink
+
+			"true || false".toBool.mustBe(true)
+			"true && false".toBool.mustBe(false)
+			"!true".toBool.mustBe(false)
+			"!false".toBool.mustBe(true)
+		}
+
+		/** The bit operators are listed below.
+		 * The bit operators apply operations on the bits that are representing
+		 * a numeric value.
+		 * 
+		 * Each operator has an associated function name. This function contains
+		 * the concrete implementation of the operational semantic of the
+		 * operator. This function could be redefined as it is explained in the 
+		 * [operator overloading section](#Operator_Overloading).
+		 * 
+		 * <table><thead>
+		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>a &lt;&lt; b</td><td>operator_doubleLessThan</td><td>Shift the signed bit representation of a to the left by b units.</td></tr>
+		 * <tr><td>a &gt;&gt; b</td><td>operator_doubleGreaterThan</td><td>Shift the signed bit representation of a to the left by b units.</td></tr>
+		 * <tr><td>a &lt;&lt;&lt; b</td><td>operator_tripleLessThan</td><td>Not supported.</td></tr>
+		 * <tr><td>a &gt;&gt;&gt; b</td><td>operator_tripleGreaterThan</td><td>Shift the unsigned bit representation of a to the left by b units.</td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
+		 */
+		fact "Bitwise Operators" {
+			"#Operator_Overloading".mustBeJnarioLink
+
+			"1 << 3".toInt.mustBe(8)
+			"-1 << 3".toInt.mustBe(-8)
+
+			"8 >> 3".toInt.mustBe(1)
+			"-8 >> 3".toInt.mustBe(-1)
+
+			var expr = "1 <<< 3".expression(false)
+			expr.assertError(
+					XbasePackage.Literals::XBINARY_OPERATION,
+					"org.eclipse.xtext.diagnostics.Diagnostic.Linking")
+			expr = "-1 <<< 3".expression(false)
+			expr.assertError(
+					XbasePackage.Literals::XBINARY_OPERATION,
+					"org.eclipse.xtext.diagnostics.Diagnostic.Linking")
+
+			"8 >>> 3".toInt.mustBe(1)
+			"-8 >>> 3".toInt.mustBe(536870911)
+		}
+
+		/** The string operators are listed below.
+		 * These operators are dedicated to strings of characters.
+		 * 
+		 * Each operator has an associated function name. This function contains
+		 * the concrete implementation of the operational semantic of the
+		 * operator. This function could be redefined as it is explained in the 
+		 * [operator overloading section](#Operator_Overloading).
+		 * 
+		 * <table><thead>
+		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>a + b</td><td>operator_plus</td><td>Concatenate the string representations of a and b.</td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
+		 */
+		fact "String Operators" {
+			"#Operator_Overloading".mustBeJnarioLink
+
+			"'a' + 'b'".toStr.mustBe("ab")
+			"1 + 'b'".toStr.mustBe("1b")
+			"'a' + 1".toStr.mustBe("a1")
+		}
+
+		/** The collection operators are listed below.
+		 * These operators are dedicated to the collections (lists, sets, maps...)
+		 * Most of the time, the first operand is the collection on which the
+		 * operator must be applied. 
+		 * 
+		 * Each operator has an associated function name. This function contains
+		 * the concrete implementation of the operational semantic of the
+		 * operator. This function could be redefined as it is explained in the 
+		 * [operator overloading section](#Operator_Overloading).
+		 * 
+		 * <table><thead>
+		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>c += e</td><td>operator_add</td><td>Equivalent to: `c.add(e)`</td></tr>
+		 * <tr><td>c -= e</td><td>operator_remove</td><td>Equivalent to: `c.remove(e)`</td></tr>
+		 * <tr><td>a -&gt; b</td><td>operator_mappedTo</td><td>Create an instance of `Pair<A,B>` where `A` and `B` are the types of a and b respectively.</td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
+		 */
+		fact "Collection Operators" {
+			"#Operator_Overloading".mustBeJnarioLink
+
+			"var c = newArrayList c += 3".toBool.mustBe(true)
+			"var c = newArrayList c -= 3".toBool.mustBe(false)
+			mustBe("4 -> 'a'".to(typeof(Pair)), new Pair(4, 'a'))
+		}
+
+		/** The assignment operators are listed below.
+		 * Local variables and fields can be assigned using the `=` operator.
 		 * Compound assignment operators (`+=`, `-=`, `*=`, `/=`,
 		 * `%=`) can be used as a shorthand for the assignment of a binary expression.
 		 * They work automatically when the corresponding infix operator is declared.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * <table><thead>
+		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>a = b</td><td>Set the variable a with the value of b.</td></tr>
+		 * <tr><td>a += b</td><td>Equivalent to: `a = a + b`</td></tr>
+		 * <tr><td>a -= b</td><td>Equivalent to: `a = a - b`</td></tr>
+		 * <tr><td>a *= b</td><td>Equivalent to: `a = a * b`</td></tr>
+		 * <tr><td>a /= b</td><td>Equivalent to: `a = a / b`</td></tr>
+		 * <tr><td>a %= b</td><td> Equivalent to: `a = a % b`</td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
 		 */
-		fact "Assignments"{
-			'''
-					a = 345
-					a += 45	// equivalent to a = a + 45
-					a -= 24	// equivalent to a = a - 24
-					a *= 7	// equivalent to a = a * 7
-					a /= 5	// equivalent to a = a / 5
-					a %= 9	// equivalent to a = a % 9
-			'''.parsesSuccessfully(
-				"package io.sarl.docs.reference.gsr
-				agent A {
-					var a = 34
-					
-					def aFunction {",
-				// TEXT
-				"} }"
-			)
+		fact "Assignments" {
+			"var a : int = 5\na = 6\na".toInt.mustBe(6)
+			"var a : int = 5\na += 6\na".toInt.mustBe(11)
+			"var a : int = 5\na -= 6\na".toInt.mustBe(-1)
+			"var a : int = 5\na *= 6\na".toInt.mustBe(30)
+			"var a : int = 5\na /= 6\na".toInt.mustBe(0)
+			"var a : int = 5\na %= 6\na".toInt.mustBe(5)
+		}
+
+		/** This section presents a collection of operators that permit
+		 * to define ranges of values.
+		 * 
+		 * Each operator has an associated function name. This function contains
+		 * the concrete implementation of the operational semantic of the
+		 * operator. This function could be redefined as it is explained in the 
+		 * [operator overloading section](#Operator_Overloading).
+		 * 
+		 * <table><thead>
+		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>a .. b</td><td>operator_upTo</td><td>Create a list of integer values from a (inclusive) to b (inclusive). The type of this expression is IntegerRange.</td></tr>
+		 * <tr><td>a &gt;.. b</td><td>operator_greaterThanDoubleDot</td><td>Create a list of integer values from a (exclusive) to b (inclusive). The type of this expression is ExclusiveRange. <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258">See bug report</a>.</td></tr>
+		 * <tr><td>a ..&lt; b</td><td>operator_doubleDotLessThan</td><td>Create a list of integer values from a (inclusive) to b (exclusive). The type of this expression is ExclusiveRange. <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258">See bug report</a>.</td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
+		 */
+		fact "Range operators" {
+			"#Operator_Overloading".mustBeJnarioLink
+
+			var r1 = "1 .. 4".to(typeof(IntegerRange))
+			r1.iterator().mustContain( #[1, 2, 3, 4] )
+			r1 = "4 .. 1".to(typeof(IntegerRange))
+			r1.iterator().mustContain( #[4, 3, 2, 1] )
+			
+			var r2 = "5 >.. 1".to(typeof(ExclusiveRange))
+			r2.iterator().mustContain( #[4,3,2,1] )
+			r2 = "0 >.. 0".to(typeof(ExclusiveRange))
+			r2.iterator().mustContain( #[] )
+			r2 = "5 >.. -3".to(typeof(ExclusiveRange))
+			r2.iterator().mustContain( #[4,3,2,1,0,-1,-2,-3] )
+
+			var r3 = "1 ..< 5".to(typeof(ExclusiveRange))
+			r3.iterator().mustContain( #[1,2,3,4] )
+			r3 = "0 ..< 0".to(typeof(ExclusiveRange))
+			r3.iterator().mustContain( #[] )
+			r3 = "-3 ..< 5".to(typeof(ExclusiveRange))
+			r3.iterator().mustContain( #[-3,-2,-1,0,1,2,3,4] )
+
+			//
+			// Special cases that have an invalid semantic from my point of view (SG).
+			//
+			//FIXME: https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258
+			
+			var r4 = "1 >.. 5".to(typeof(ExclusiveRange))
+			r4.iterator().mustContain( #[] ) // not: #[2,3,4,5]
+			r4 = "-3 >.. 5".to(typeof(ExclusiveRange))
+			r4.iterator().mustContain( #[] ) // not: #[-2,-1,0,1,2,3,4,5]
+			
+			var r5 = "5 ..< 1".to(typeof(ExclusiveRange))
+			r5.iterator().mustContain( #[] ) // not: #[5,4,3,2]
+			r5 = "5 ..< -3".to(typeof(ExclusiveRange))
+			r5.iterator().mustContain( #[] ) // not: #[5,4,3,2,1,0,-1,-2]
+		}
+
+		/** This section presents a collection of operators that are not
+		 * related to the categories in the previous sections.
+		 * 
+		 * Each operator has an associated function name. This function contains
+		 * the concrete implementation of the operational semantic of the
+		 * operator. This function could be redefined as it is explained in the 
+		 * [operator overloading section](#Operator_Overloading).
+		 * 
+		 * <table><thead>
+		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>a ?: b</td><td>operator_elvis</td><td>If a is not null then a else b.</td></tr>
+		 * <tr><td>a =&gt; b</td><td>operator_doubleArrow</td><td>Used as a 'with'- or 'let'-operation. It allows to bind an object to a local scope in order to do something on it. b must be a lambda expression.</td></tr>
+		 * <tr><td>a &lt;&gt; b</td><td>operator_diamond</td><td>Not yet supported.</td></tr>
+		 * </tbody></table>
+		 * 
+		 * For illustrating an usage of the `=>` operator, consider the class `Person`
+		 * with two attributes inside: `firstName` and `lastName`.
+		 * The creation of an instance of `Person` could be done with:
+		 * <pre><code>new Person => [
+		 *   firstName = 'Han'
+		 *   lastName = 'Solo'
+		 * ]</code></pre>
+		 * In this example, the instance of Person is created and passed to the
+		 * lambda expression. In this expression, it is accessible with the `it`
+		 * reserved variable, which does not need to be typed out since it is
+		 * the default object in lambda expression. The lambda expression replies
+		 * the value of `it`.
+		 *
+		 * @filter(.*) 
+		 */
+		fact "Other operators" {
+			"#Operator_Overloading".mustBeJnarioLink
+
+			"null ?: 'a'".toStr.mustBe("a")
+
+			"'b' ?: 'a'".toStr.mustBe("b")
+
+			var expr = "1 <> 3".expression(false)
+			expr.assertError(
+					XbasePackage.Literals::XBINARY_OPERATION,
+					"org.eclipse.xtext.diagnostics.Diagnostic.Linking")
 		}
 
 		/* In SARL, it is easy to overload an existing operator or
-		 * to define the algorithm of one.
-		 * You should define the operator mapping function.
-		 * Below the addition between two `Pair` is defined.
+		 * to re-define the algorithm of one.
+		 * 
+		 * You should define the operator mapping function (see the
+		 * previous sections for a comprehensive list of them).
+		 * 
+		 * Below, the addition operator `+` between two `Pair` is defined.
 		 * The function that is defining the operator must have
 		 * a name with the `operator_` prefix, and one parameter
 		 * for each operand associated to the operator.
+		 * In the example, the addition of two pairs (a,b) and (c,d)
+		 * gives the pair (a,d).
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -949,9 +1161,11 @@ describe "General Syntax Reference" {
 					var y = new Pair(4,5)
 					var z1 = operator_plus(x, y) // Call the overloaded operator
 					var z2 = x + y // Call the overloaded operator
-					// z.key == 1
-					// z.value == 5
+					// z1.key == 1
+					// z1.value == 5
 					println(z1.toString)
+					// z2.key == 1
+					// z2.value == 5
 					println(z2.toString)
 				}
 			'''.parsesSuccessfully(
