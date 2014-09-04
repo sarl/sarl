@@ -812,9 +812,12 @@ describe "General Syntax Reference" {
 		 * <tr><td>a !== b</td><td>operator_tripleNotEquals</td><td>Test if a and b are not equal.</td></tr>
 		 * <tr><td>a &lt; b</td><td>operator_lessThan</td><td>Test if a is lower than b (a, b cannot be boolean).</td></tr>
 		 * <tr><td>a &gt; b</td><td>operator_greaterThan</td><td>Test if a is greater than b (a, b cannot be boolean).</td></tr>
-		 * <tr><td>a &lt;= b</td><td>operator_lessEqualsThan</td><td>Test if a is lower than or equal to b (a, b cannot be boolean).</td></tr>
-		 * <tr><td>a &gt;= b</td><td>operator_greaterEqualsThan</td><td>Test if a is greater than or equal to b (a, b cannot be boolean).</td></tr>
-		 * <tr><td>a &lt;=&gt; b</td><td>operator_spaceship</td><td>Replies a negative value if a &lt; b, a positive value if a &gt; b, otherwise 0.</td></tr>
+		 * <tr><td>a &lt;= b</td><td>operator_lessEqualsThan</td><td>Test if a is lower than or equal to b (a, b cannot be
+		 *                           boolean).</td></tr>
+		 * <tr><td>a &gt;= b</td><td>operator_greaterEqualsThan</td><td>Test if a is greater than or equal to b (a, b cannot be
+		 *                           boolean).</td></tr>
+		 * <tr><td>a &lt;=&gt; b</td><td>operator_spaceship</td><td>Replies a negative value if a &lt; b, a positive value if
+		 *                               a &gt; b, otherwise 0.</td></tr>
 		 * </tbody></table>
 		 * 
 		 * @filter(.*) 
@@ -854,15 +857,22 @@ describe "General Syntax Reference" {
 		 * <table><thead>
 		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
 		 * </thead><tbody>
-		 * <tr><td>a == b</td><td>operator_equals</td><td>Determine if a and b are equal. If a is Comparable then it is equivalent to `a.compareTo(b) == 0` else `a.equals(b)`. This operator is null-safe.</td></tr>
-		 * <tr><td>a != b</td><td>operator_notEquals</td><td>Determine if a and b are not equal. If a is Comparable then it is equivalent to `a.compareTo(b) != 0` else `!a.equals(b)` This operator is null-safe.</td></tr>
-		 * <tr><td>a === b</td><td>operator_tripleEquals</td><td>Test if a and b are the same object reference. This operator is not null-safe.</td></tr>
-		 * <tr><td>a !== b</td><td>operator_tripleNotEquals</td><td>Test if a and b are not the same object reference. This operator is not null-safe.</td></tr>
+		 * <tr><td>a == b</td><td>operator_equals</td><td>Determine if a and b are equal. If a is Comparable then it is
+		 *                        equivalent to `a.compareTo(b) == 0` else `a.equals(b)`. This operator is null-safe.</td></tr>
+		 * <tr><td>a != b</td><td>operator_notEquals</td><td>Determine if a and b are not equal. If a is Comparable then it is
+		 *                        equivalent to `a.compareTo(b) != 0` else `!a.equals(b)` This operator is null-safe.</td></tr>
+		 * <tr><td>a === b</td><td>operator_tripleEquals</td><td>Test if a and b are the same object reference. This operator
+		 *                        is not null-safe.</td></tr>
+		 * <tr><td>a !== b</td><td>operator_tripleNotEquals</td><td>Test if a and b are not the same object reference. This
+		 *                        operator is not null-safe.</td></tr>
 		 * <tr><td>a &lt; b</td><td>operator_lessThan</td><td>Test if a is lower than b (a must be Comparable).</td></tr>
 		 * <tr><td>a &gt; b</td><td>operator_greaterThan</td><td>Test if a is greater than b (a must be Comparable).</td></tr>
-		 * <tr><td>a &lt;= b</td><td>operator_lessEqualsThan</td><td>Test if a is lower than or equal to b (a must be Comparable).</td></tr>
-		 * <tr><td>a &gt;= b</td><td>operator_greaterEqualsThan</td><td>Test if a is greater than or equal to b (a must be Comparable).</td></tr>
-		 * <tr><td>a &lt;=&gt; b</td><td>operator_spaceship</td><td>Replies a negative value if a &lt; b, a positive value if a &gt; b, otherwise 0 (a must be Comparable).</td></tr>
+		 * <tr><td>a &lt;= b</td><td>operator_lessEqualsThan</td><td>Test if a is lower than or equal to b (a must be
+		 *                           Comparable).</td></tr>
+		 * <tr><td>a &gt;= b</td><td>operator_greaterEqualsThan</td><td>Test if a is greater than or equal to b (a must be
+		 *                           Comparable).</td></tr>
+		 * <tr><td>a &lt;=&gt; b</td><td>operator_spaceship</td><td>Replies a negative value if a &lt; b, a positive value if
+		 *                               a &gt; b, otherwise 0 (a must be Comparable).</td></tr>
 		 * </tbody></table>
 		 * 
 		 * @filter(.*) 
@@ -924,10 +934,13 @@ describe "General Syntax Reference" {
 		 * <table><thead>
 		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
 		 * </thead><tbody>
-		 * <tr><td>a &lt;&lt; b</td><td>operator_doubleLessThan</td><td>Shift the signed bit representation of a to the left by b units.</td></tr>
-		 * <tr><td>a &gt;&gt; b</td><td>operator_doubleGreaterThan</td><td>Shift the signed bit representation of a to the left by b units.</td></tr>
+		 * <tr><td>a &lt;&lt; b</td><td>operator_doubleLessThan</td><td>Shift the signed bit representation of a to the left
+		 *                              by b units.</td></tr>
+		 * <tr><td>a &gt;&gt; b</td><td>operator_doubleGreaterThan</td><td>Shift the signed bit representation of a to the
+		 *                              left by b units.</td></tr>
 		 * <tr><td>a &lt;&lt;&lt; b</td><td>operator_tripleLessThan</td><td>Not supported.</td></tr>
-		 * <tr><td>a &gt;&gt;&gt; b</td><td>operator_tripleGreaterThan</td><td>Shift the unsigned bit representation of a to the left by b units.</td></tr>
+		 * <tr><td>a &gt;&gt;&gt; b</td><td>operator_tripleGreaterThan</td><td>Shift the unsigned bit representation of a to
+		 *                                  the left by b units.</td></tr>
 		 * </tbody></table>
 		 * 
 		 * @filter(.*) 
@@ -993,7 +1006,8 @@ describe "General Syntax Reference" {
 		 * </thead><tbody>
 		 * <tr><td>c += e</td><td>operator_add</td><td>Equivalent to: <code>c.add(e)</code></td></tr>
 		 * <tr><td>c -= e</td><td>operator_remove</td><td>Equivalent to: <code>c.remove(e)<code></td></tr>
-		 * <tr><td>a -&gt; b</td><td>operator_mappedTo</td><td>Create an instance of <code>Pair&lt;A,B&gt;</code> where <code>A<code> and <code>B<code> are the types of a and b respectively.</td></tr>
+		 * <tr><td>a -&gt; b</td><td>operator_mappedTo</td><td>Create an instance of <code>Pair&lt;A,B&gt;</code> where
+		 *                           <code>A</code> and <code>B</code> are the types of a and b respectively.</td></tr>
 		 * </tbody></table>
 		 * 
 		 * @filter(.*) 
@@ -1045,9 +1059,22 @@ describe "General Syntax Reference" {
 		 * <table><thead>
 		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
 		 * </thead><tbody>
-		 * <tr><td>a .. b</td><td>operator_upTo</td><td>Create a list of integer values from a (inclusive) to b (inclusive). The type of this expression is IntegerRange.</td></tr>
-		 * <tr><td>a &gt;.. b</td><td>operator_greaterThanDoubleDot</td><td>Create a list of integer values from a (exclusive) to b (inclusive). The type of this expression is ExclusiveRange. <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258">See bug report</a>.</td></tr>
-		 * <tr><td>a ..&lt; b</td><td>operator_doubleDotLessThan</td><td>Create a list of integer values from a (inclusive) to b (exclusive). The type of this expression is ExclusiveRange. <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258">See bug report</a>.</td></tr>
+		 * <tr><td>a .. b</td><td>operator_upTo</td><td>Create a list of integer values from a (inclusive) to b (inclusive).<br/>
+		 *                        <code>1..5</code> is the range from 1 to 5 with 1 &lt;= x &lt;= 5.<br/><code>5..1</code> is the
+		 *                        range from 5 to 1 with 5 &gt;= x &gt;= 1.<br/>The type of this expression is
+		 *                        IntegerRange.</td></tr>
+		 * <tr><td>a &gt;.. b</td><td>operator_greaterThanDoubleDot</td><td>Create a list of integer values from a (exclusive) to
+		 *                            b (inclusive).<br/><code>5&gt;..1</code> is the range from 4 to 1 with
+		 *                            5 &gt; x &gt;= 1.<br/>
+		 *                            See <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258">Xtext</a> for
+		 *                            discussion on the operational semantics of this operator.<br/>The type of this expression
+		 *                            is ExclusiveRange.</td></tr>
+		 * <tr><td>a ..&lt; b</td><td>operator_doubleDotLessThan</td><td>Create a list of integer values from a (inclusive) to
+		 *                            b (exclusive).<br/><code>1..&lt;5</code> is the range from 1 to 5 with
+		 *                            1 &lt;= x &lt; 5.<br/>
+		 *                            See <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258">Xtext</a> for
+		 *                            discussion on the operational semantics of this operator.<br/>The type of this expression
+		 *                            is ExclusiveRange.</td></tr>
 		 * </tbody></table>
 		 * 
 		 * @filter(.*) 
@@ -1077,7 +1104,6 @@ describe "General Syntax Reference" {
 			//
 			// Special cases that have an invalid semantic from my point of view (SG).
 			//
-			//FIXME: https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258
 			
 			var r4 = "1 >.. 5".to(typeof(ExclusiveRange))
 			r4.iterator().mustContain( #[] ) // not: #[2,3,4,5]
@@ -1102,7 +1128,9 @@ describe "General Syntax Reference" {
 		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
 		 * </thead><tbody>
 		 * <tr><td>a ?: b</td><td>operator_elvis</td><td>If a is not null then a else b.</td></tr>
-		 * <tr><td>a =&gt; b</td><td>operator_doubleArrow</td><td>Used as a 'with'- or 'let'-operation. It allows to bind an object to a local scope in order to do something on it. b must be a lambda expression.</td></tr>
+		 * <tr><td>a =&gt; b</td><td>operator_doubleArrow</td><td>Used as a 'with'- or 'let'-operation. It allows to bind an
+		 *                           object to a local scope in order to do something on it. b must be a lambda
+		 *                           expression.</td></tr>
 		 * <tr><td>a &lt;&gt; b</td><td>operator_diamond</td><td>Not yet supported.</td></tr>
 		 * </tbody></table>
 		 * 
