@@ -814,7 +814,7 @@ describe "General Syntax Reference" {
 		 * <tr><td>a &gt; b</td><td>operator_greaterThan</td><td>Test if a is greater than b (a, b cannot be boolean).</td></tr>
 		 * <tr><td>a &lt;= b</td><td>operator_lessEqualsThan</td><td>Test if a is lower than or equal to b (a, b cannot be boolean).</td></tr>
 		 * <tr><td>a &gt;= b</td><td>operator_greaterEqualsThan</td><td>Test if a is greater than or equal to b (a, b cannot be boolean).</td></tr>
-		 * <tr><td>a &lt;=&gt; b</td><td>operator_spaceship</td><td>Replies a negative value if a < b, a positive value if a > b, otherwise 0.</td></tr>
+		 * <tr><td>a &lt;=&gt; b</td><td>operator_spaceship</td><td>Replies a negative value if a &lt; b, a positive value if a &gt; b, otherwise 0.</td></tr>
 		 * </tbody></table>
 		 * 
 		 * @filter(.*) 
@@ -862,7 +862,7 @@ describe "General Syntax Reference" {
 		 * <tr><td>a &gt; b</td><td>operator_greaterThan</td><td>Test if a is greater than b (a must be Comparable).</td></tr>
 		 * <tr><td>a &lt;= b</td><td>operator_lessEqualsThan</td><td>Test if a is lower than or equal to b (a must be Comparable).</td></tr>
 		 * <tr><td>a &gt;= b</td><td>operator_greaterEqualsThan</td><td>Test if a is greater than or equal to b (a must be Comparable).</td></tr>
-		 * <tr><td>a &lt;=&gt; b</td><td>operator_spaceship</td><td>Replies a negative value if a < b, a positive value if a > b, otherwise 0 (a must be Comparable).</td></tr>
+		 * <tr><td>a &lt;=&gt; b</td><td>operator_spaceship</td><td>Replies a negative value if a &lt; b, a positive value if a &gt; b, otherwise 0 (a must be Comparable).</td></tr>
 		 * </tbody></table>
 		 * 
 		 * @filter(.*) 
@@ -991,9 +991,9 @@ describe "General Syntax Reference" {
 		 * <table><thead>
 		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
 		 * </thead><tbody>
-		 * <tr><td>c += e</td><td>operator_add</td><td>Equivalent to: `c.add(e)`</td></tr>
-		 * <tr><td>c -= e</td><td>operator_remove</td><td>Equivalent to: `c.remove(e)`</td></tr>
-		 * <tr><td>a -&gt; b</td><td>operator_mappedTo</td><td>Create an instance of `Pair<A,B>` where `A` and `B` are the types of a and b respectively.</td></tr>
+		 * <tr><td>c += e</td><td>operator_add</td><td>Equivalent to: <code>c.add(e)</code></td></tr>
+		 * <tr><td>c -= e</td><td>operator_remove</td><td>Equivalent to: <code>c.remove(e)<code></td></tr>
+		 * <tr><td>a -&gt; b</td><td>operator_mappedTo</td><td>Create an instance of <code>Pair&lt;A,B&gt;</code> where <code>A<code> and <code>B<code> are the types of a and b respectively.</td></tr>
 		 * </tbody></table>
 		 * 
 		 * @filter(.*) 
@@ -1016,11 +1016,11 @@ describe "General Syntax Reference" {
 		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
 		 * </thead><tbody>
 		 * <tr><td>a = b</td><td>Set the variable a with the value of b.</td></tr>
-		 * <tr><td>a += b</td><td>Equivalent to: `a = a + b`</td></tr>
-		 * <tr><td>a -= b</td><td>Equivalent to: `a = a - b`</td></tr>
-		 * <tr><td>a *= b</td><td>Equivalent to: `a = a * b`</td></tr>
-		 * <tr><td>a /= b</td><td>Equivalent to: `a = a / b`</td></tr>
-		 * <tr><td>a %= b</td><td> Equivalent to: `a = a % b`</td></tr>
+		 * <tr><td>a += b</td><td>Equivalent to: <code>a = a + b</code></td></tr>
+		 * <tr><td>a -= b</td><td>Equivalent to: <code>a = a - b</code></td></tr>
+		 * <tr><td>a *= b</td><td>Equivalent to: <code>a = a * b</code></td></tr>
+		 * <tr><td>a /= b</td><td>Equivalent to: <code>a = a / b</code></td></tr>
+		 * <tr><td>a %= b</td><td> Equivalent to: <code>a = a % b</code></td></tr>
 		 * </tbody></table>
 		 * 
 		 * @filter(.*) 
