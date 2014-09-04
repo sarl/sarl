@@ -235,7 +235,7 @@ public class SARLParser {
 		}
 		parsesWithError(b.toString());
 	}
-	
+
 	private ResourceSet getResourceSetWithDefaultModels() {
 		this.xtextResourceSet.setClasspathURIContext(getClass());
 		this.xtextResourceSet.setClasspathUriResolver(new ClassloaderClasspathUriResolver());
@@ -812,22 +812,22 @@ public class SARLParser {
 	}
 
 	/** Parse a Xbase expression.
-	 * 
+	 *
 	 * @param expression - the expression to parse.
 	 * @return the XExpression that is corresponding to the given expression.
-	 * @throws Exception
+	 * @throws Exception if the expression cannot be parsed.
 	 */
 	public XExpression expression(String expression) throws Exception {
 		return expression(expression, true);
 	}
-	
+
 	/** Parse a Xbase expression.
-	 * 
+	 *
 	 * @param expression - the expression to parse.
 	 * @param resolve - <code>true</code> if the expression must have no error, <code>false</code>
 	 * to not care.
 	 * @return the XExpression that is corresponding to the given expression.
-	 * @throws Exception
+	 * @throws Exception if the expression cannot be parsed.
 	 */
 	public XExpression expression(String expression, boolean resolve) throws Exception {
 		String code = "def ____TeStInG_FuNcTiOn() : Object {\n" //$NON-NLS-1$
@@ -843,13 +843,13 @@ public class SARLParser {
 	}
 
 	/** Parse the code of an agent (attributes, actions, behavior units...).
-	 * 
+	 *
 	 * @param agentTypeName - name of the type of agent.
 	 * @param code - the code to parse.
 	 * @param resolve - <code>true</code> if the code must have no error, <code>false</code>
 	 * to not care.
 	 * @return the statements in the agent definition.
-	 * @throws Exception
+	 * @throws Exception if the code cannot be parsed.
 	 */
 	public List<EObject> agentCode(String agentTypeName, String code, boolean resolve) throws Exception {
 		String fullCode = "agent " + agentTypeName //$NON-NLS-1$
@@ -864,11 +864,12 @@ public class SARLParser {
 	}
 
 	/** Evaluate an expression and reply the result.
-	 * 
+	 *
+	 * @param <T> - the expected type of the result.
 	 * @param expression - the expression to evaluate.
 	 * @param resultType - the expected type of the result.
 	 * @return the result of the evaluation.
-	 * @throws Exception
+	 * @throws Exception if the expression cannot be parsed or not of the given type.
 	 */
 	public <T> T to(String expression, Class<T> resultType) throws Exception {
 		XExpression expr = expression(expression);
@@ -879,10 +880,9 @@ public class SARLParser {
 		Throwable e = r.getException();
 		if (e != null) {
 			if (e instanceof Exception) {
-				throw (Exception)e;
-			}
-			else if (e instanceof Error) {
-				throw (Error)e;
+				throw (Exception) e;
+			} else if (e instanceof Error) {
+				throw (Error) e;
 			}
 			throw new RuntimeException(e);
 		}
@@ -898,12 +898,12 @@ public class SARLParser {
 				+ v.getClass().getName());
 		return null;
 	}
-	
+
 	/** Evaluate a byte expression and reply the result.
-	 * 
+	 *
 	 * @param expression - the expression to evaluate.
 	 * @return the result of the evaluation.
-	 * @throws Exception
+	 * @throws Exception if the expression cannot be parsed or is not a number.
 	 */
 	public byte toByte(String expression) throws Exception {
 		Number n = to(expression, Number.class);
@@ -915,10 +915,10 @@ public class SARLParser {
 	}
 
 	/** Evaluate a short integer expression and reply the result.
-	 * 
+	 *
 	 * @param expression - the expression to evaluate.
 	 * @return the result of the evaluation.
-	 * @throws Exception
+	 * @throws Exception if the expression cannot be parsed or is not a number.
 	 */
 	public short toShort(String expression) throws Exception {
 		Number n = to(expression, Number.class);
@@ -930,10 +930,10 @@ public class SARLParser {
 	}
 
 	/** Evaluate an integer expression and reply the result.
-	 * 
+	 *
 	 * @param expression - the expression to evaluate.
 	 * @return the result of the evaluation.
-	 * @throws Exception
+	 * @throws Exception if the expression cannot be parsed or is not a number.
 	 */
 	public int toInt(String expression) throws Exception {
 		Number n = to(expression, Number.class);
@@ -945,10 +945,10 @@ public class SARLParser {
 	}
 
 	/** Evaluate a long integer expression and reply the result.
-	 * 
+	 *
 	 * @param expression - the expression to evaluate.
 	 * @return the result of the evaluation.
-	 * @throws Exception
+	 * @throws Exception if the expression cannot be parsed or is not a number.
 	 */
 	public long toLong(String expression) throws Exception {
 		Number n = to(expression, Number.class);
@@ -960,10 +960,10 @@ public class SARLParser {
 	}
 
 	/** Evaluate a single-precision floating point expression and reply the result.
-	 * 
+	 *
 	 * @param expression - the expression to evaluate.
 	 * @return the result of the evaluation.
-	 * @throws Exception
+	 * @throws Exception if the expression cannot be parsed or is not a number.
 	 */
 	public float toFloat(String expression) throws Exception {
 		Number n = to(expression, Number.class);
@@ -975,10 +975,10 @@ public class SARLParser {
 	}
 
 	/** Evaluate a double-precision floating point expression and reply the result.
-	 * 
+	 *
 	 * @param expression - the expression to evaluate.
 	 * @return the result of the evaluation.
-	 * @throws Exception
+	 * @throws Exception if the expression cannot be parsed or is not a number.
 	 */
 	public double toDouble(String expression) throws Exception {
 		Number n = to(expression, Number.class);
@@ -990,10 +990,10 @@ public class SARLParser {
 	}
 
 	/** Evaluate a character expression and reply the result.
-	 * 
+	 *
 	 * @param expression - the expression to evaluate.
 	 * @return the result of the evaluation.
-	 * @throws Exception
+	 * @throws Exception if the expression cannot be parsed or is not a character.
 	 */
 	public char toChar(String expression) throws Exception {
 		Character n = to(expression, Character.class);
@@ -1005,10 +1005,10 @@ public class SARLParser {
 	}
 
 	/** Evaluate a boolean expression and reply the result.
-	 * 
+	 *
 	 * @param expression - the expression to evaluate.
 	 * @return the result of the evaluation.
-	 * @throws Exception
+	 * @throws Exception if the expression cannot be parsed or is not a boolean.
 	 */
 	public boolean toBool(String expression) throws Exception {
 		Boolean n = to(expression, Boolean.class);
@@ -1020,10 +1020,10 @@ public class SARLParser {
 	}
 
 	/** Evaluate a boolean expression and reply the result.
-	 * 
+	 *
 	 * @param expression - the expression to evaluate.
 	 * @return the result of the evaluation.
-	 * @throws Exception
+	 * @throws Exception if the expression cannot be parsed.
 	 */
 	public String toStr(String expression) throws Exception {
 		Object n = to(expression, Object.class);

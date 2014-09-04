@@ -31,6 +31,7 @@
 
 	<suppress checks="MagicNumber" files="SpecificationTools.java"/>
 	<suppress checks="MethodCount" files="SpecificationTools.java"/>
+	<suppress checks="NPathComplexity" files="SpecificationTools.java"/>
 
 </suppressions>
 

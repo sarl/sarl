@@ -61,7 +61,7 @@ public final class SpecificationTools {
 	private SpecificationTools() {
 		//
 	}
-	
+
 	/** Replies a path built from the given elements.
 	 *
 	 * @param element1 - first mandatory element.
@@ -605,7 +605,7 @@ public final class SpecificationTools {
 		if (ref.startsWith("#")) { //$NON-NLS-1$
 			ref = "./" + callingSpecification.getSimpleName() + ".html" + ref; //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		
+
 		String[] fragments = null;
 		if (ref.contains(".html#")) { //$NON-NLS-1$
 			String[] parts = ref.split(java.util.regex.Matcher.quoteReplacement(".html#")); //$NON-NLS-1$
@@ -630,13 +630,13 @@ public final class SpecificationTools {
 		}
 		//
 		if (!isJnarioSpec(callingSpecification, ref)) {
-			
+
 			// The specification could be a function of the Java class.
 			if (fragments != null) {
 				StringBuilder operationName = new StringBuilder();
-				for(String fragment : fragments) {
+				for (String fragment : fragments) {
 					if (operationName.length() > 0) {
-						operationName.append(fragment.substring(0,1).toUpperCase() + fragment.substring(1).toLowerCase());
+						operationName.append(fragment.substring(0, 1).toUpperCase() + fragment.substring(1).toLowerCase());
 					} else {
 						operationName.append(fragment.toLowerCase());
 					}
@@ -645,17 +645,16 @@ public final class SpecificationTools {
 				try {
 					callingSpecification.getMethod(operationNameStr);
 					return referencedLink;
-				}
-				catch(Throwable _) {
+				} catch (Throwable _) {
 					// Failure
 				}
 			}
-			
+
 			fail(String.format("The link \"%s\" is not linked to a Jnario specification", referencedLink)); //$NON-NLS-1$
 		}
 		return referencedLink;
 	}
-	
+
 	private static boolean isJnarioSpec(Class<?> callingSpecification, String reference) {
 		String url = reference;
 		//
@@ -762,9 +761,9 @@ public final class SpecificationTools {
 		}
 		return str;
 	}
-	
+
 	/** Ensure that the iterator replies the expected values in the given order.
-	 * 
+	 *
 	 * @param <T> - the type of the elements in the iterator.
 	 * @param actual - the iterator to test.
 	 * @param expected - the expected values.
@@ -780,14 +779,14 @@ public final class SpecificationTools {
 			} else {
 				fail("Unexpected value in the iterator: " + obj); //$NON-NLS-1$
 			}
-			index ++;
+			index++;
 		}
 		assertEquals("Not enough elements in the iterator.", expected.length, index); //$NON-NLS-1$
 		return actual;
 	}
 
 	/** Ensure that the iterator replies the expected values in the given order.
-	 * 
+	 *
 	 * @param <T> - the type of the elements in the iterator.
 	 * @param actual - the iterator to test.
 	 * @param expected - the expected values.
@@ -803,7 +802,7 @@ public final class SpecificationTools {
 			} else {
 				fail("Unexpected value in the iterator: " + obj); //$NON-NLS-1$
 			}
-			index ++;
+			index++;
 		}
 		assertEquals("Not enough elements in the iterator.", expected.length, index); //$NON-NLS-1$
 		return actual;
