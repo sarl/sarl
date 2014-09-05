@@ -1066,12 +1066,14 @@ describe "General Syntax Reference" {
 		 * <tr><td>a &gt;.. b</td><td>operator_greaterThanDoubleDot</td><td>Create a list of integer values from a (exclusive) to
 		 *                            b (inclusive).<br/><code>5&gt;..1</code> is the range from 4 to 1 with
 		 *                            5 &gt; x &gt;= 1.<br/>
+		 *                            <code>1&gt;..5</code> is the empty range since the constraint is wrong 1 &gt; x &gt;= 5.<br/>
 		 *                            See <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258">Xtext</a> for
 		 *                            discussion on the operational semantics of this operator.<br/>The type of this expression
 		 *                            is ExclusiveRange.</td></tr>
 		 * <tr><td>a ..&lt; b</td><td>operator_doubleDotLessThan</td><td>Create a list of integer values from a (inclusive) to
 		 *                            b (exclusive).<br/><code>1..&lt;5</code> is the range from 1 to 5 with
 		 *                            1 &lt;= x &lt; 5.<br/>
+		 *                            <code>5..&lt;1</code> is the empty range since the constraint is wrong 5 &lt;= x &lt; 1.<br/>
 		 *                            See <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258">Xtext</a> for
 		 *                            discussion on the operational semantics of this operator.<br/>The type of this expression
 		 *                            is ExclusiveRange.</td></tr>
@@ -1102,7 +1104,7 @@ describe "General Syntax Reference" {
 			r3.iterator().mustContain( #[-3,-2,-1,0,1,2,3,4] )
 
 			//
-			// Special cases that have an invalid semantic from my point of view (SG).
+			// Special cases that have a not-so-easy semantic, from my point of view (SG).
 			//
 			
 			var r4 = "1 >.. 5".to(typeof(ExclusiveRange))

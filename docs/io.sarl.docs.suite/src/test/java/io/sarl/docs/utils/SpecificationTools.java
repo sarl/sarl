@@ -50,6 +50,10 @@ import com.google.common.io.Files;
 
 
 /** Helper for tests.
+ * This class should disappear when the Jnario API will provide
+ * the similar features: {@link "https://github.com/sebastianbenz/Jnario/pull/141"}.
+ * 
+ * FIXME: https://github.com/sebastianbenz/Jnario/pull/141
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
