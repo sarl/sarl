@@ -238,6 +238,12 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-plugin-plugin</artifactId>
+					<version>3.3</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
 					<version>2.3</version>
 				</plugin>
@@ -408,6 +414,26 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 									</pluginExecutionFilter>
 									<action>
 										<ignore />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-plugin-plugin
+										</artifactId>
+										<versionRange>
+											[3.3,)
+										</versionRange>
+										<goals>
+											<goal>helpmojo</goal>
+											<goal>descriptor</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
@@ -791,6 +817,16 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 			<url>http://powermock-osgi.googlecode.com/svn/updateSite/1.5.4.1</url>
 		</repository>
 	</repositories>
+
+	<!--  The following definition is usefull for retreiving the
+	      SARL Maven plugins since they are not yet available on
+	      Central -->	
+	<pluginRepositories>
+		<pluginRepository>
+			<id>io.sarl.maven</id>
+			<url>${sarl.maven.repository.url}</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<!-- =================== -->
 	<!-- ==== Deployment === -->

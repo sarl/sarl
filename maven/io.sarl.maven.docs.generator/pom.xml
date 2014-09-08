@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>io.sarl.maven</groupId>
+		<artifactId>io.sarl.maven</artifactId>
+		<version>0.1.0-SNAPSHOT</version>
+	</parent>
+
+	<packaging>maven-plugin</packaging>
+
+	<artifactId>io.sarl.maven.docs.generator</artifactId>
+
+	<name>Documentation Generator</name>
+	<description>Provides Maven tools for generating the SARL documentation.</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jnario</groupId>
+			<artifactId>report</artifactId>
+			<version>${jnario.report.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generated-helpmojo</id>
+						<goals>
+							<goal>helpmojo</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
