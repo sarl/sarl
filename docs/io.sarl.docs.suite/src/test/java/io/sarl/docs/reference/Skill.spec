@@ -317,10 +317,10 @@ describe "Skill Reference" {
 			 * The extended skill is specified just after the `extends`
 			 * keyword.
 			 * 
-			 * <span class="label label-danger">Important</span> A skill type
+			 * <veryimportantnote> A skill type
 			 * can extend __only one__ other skill type.  This is close
 			 * to the constraint on the extension of classes in the Java
-			 * language.
+			 * language.</veryimportantnote>
 			 * 
 			 * In the following code, the `StandardJavaLogging` skill (defined
 			 * previously) is extended for changing the output of the info.

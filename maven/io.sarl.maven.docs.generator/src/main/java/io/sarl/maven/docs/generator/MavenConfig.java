@@ -23,7 +23,7 @@ package io.sarl.maven.docs.generator;
 
 
 /** Configuration flags from Maven.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -31,14 +31,14 @@ package io.sarl.maven.docs.generator;
  */
 final class MavenConfig {
 
-	private static boolean isSectionNumbering = false;
+	private static boolean isSectionNumbering;
 
 	private MavenConfig() {
 		//
 	}
 
 	/** Replies if the section are automatically numbered.
-	 * 
+	 *
 	 * @return <code>true</code> if sections are numbered.
 	 */
 	public static boolean isSectionNumbering() {
@@ -46,7 +46,7 @@ final class MavenConfig {
 	}
 
 	/** Set if the section are automatically numbered.
-	 * 
+	 *
 	 * @param e - <code>true</code> if sections are numbered.
 	 */
 	public static void setSectionNumbering(boolean e) {

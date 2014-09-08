@@ -62,19 +62,19 @@ describe "Agent Reference"{
 			 * A Space is the support of the interaction between agents respecting 
 			 * the rules defined in the spaces' specification.
 			 * 
-			 * <span class="label label-danger">Important</span> In each context,
+			 * <importantnote>In each context,
 			 * there is at least one particular space called _Default Space_ to which 
-			 * all agents in this context belong.
+			 * all agents in this context belong.</importantnote>
 			 * 
 			 * It ensures the existence of a common shared space to all agents
 			 * in the same context. Each agent can then create specific public or 
 			 * private spaces to achieve its personal goals (the blue space on
 			 * the figure above).
 			 * 
-			 * <span class="label label-danger">Important</span> Since their creation, 
+			 * <importantnote> Since their creation, 
 			 * agents are incorporated into a context called the __Default Context__.
 			 * It is important to notice that the _Default Context_ is not necessarily
-			 * the same for every agent.
+			 * the same for every agent.</importantnote>
 			 * 
 			 * An agent has an identifier for each space it is involved in.
 			 * For the case of event-based interaction spaces, this identifier is
@@ -94,9 +94,9 @@ describe "Agent Reference"{
 			 * that are not the default context. They are called the external contexts of the
 			 * agent.
 			 * 
-			 * <span class="label label-info">Note</span> There is no restriction
+			 * <note> There is no restriction
 			 * about the number of contexts in which an agent is belonging to, except
-			 * that it is always in its default context.
+			 * that it is always in its default context.</note>
 			 * 
 			 * For joining or leaving a context, the agent must use the `ExternalContextAccess`
 			 * built-in capacity. It is detailed in the
@@ -127,10 +127,10 @@ describe "Agent Reference"{
 			 * recognized by different methodologies such as [ASPECS](http://www.aspecs.org)
 			 * or O-MASE.
 			 * 
-			 * <span class="label label-info">Note</span> In SARL, we recognize 
+			 * <note> In SARL, we recognize 
 			 * that agents can be composed of other agents. Therefore, SARL agents
 			 * are in fact holons that can compose each other to define hierarchical 
-			 * or recursive multi-agent system, called holarchies.
+			 * or recursive multi-agent system, called holarchies.</note>
 			 * 
 			 * In order to achieve this, SARL agents are self-similar structures that 
 			 * compose each other via their contexts. Each agent defines its own context,
@@ -138,12 +138,13 @@ describe "Agent Reference"{
 			 * Because this inner context may be joined by other agents, or agents may
 			 * be spawn inside this inner context, it is possible to build a holarchy.
 			 * 
-			 * <span class="label label-danger">Important</span> An agent is always
-			 * a participant of the default space of its inner space.
+			 * <veryimportantnote> An agent is always
+			 * a participant of the default space of its inner space.</veryimportantnote>
 			 * 
-			 * <span class="label label-warning">Note</span> The unique identifier
+			 * <importantnote label="Note"> The unique identifier
 			 * (usually a Unique Universal Identifier) of
 			 * the inner context is equal to the unique identifier of its owning agent.
+			 * </importantnote>
 			 *  
 			 * @filter(.*) 
 			 */
@@ -316,10 +317,10 @@ describe "Agent Reference"{
 			 * The extended agent is specified just after the `extends`
 			 * keyword.
 			 * 
-			 * <span class="label label-danger">Important</span> An agent 
+			 * <veryimportantnote> An agent 
 			 * type can extend __only one__ other agent type. This is close
 			 * to the constraint on the extension of classes in the Java
-			 * language.
+			 * language.</veryimportantnote>
 			 * 
 			 * In the following code, a first agent is defined with the name
 			 * `MyAgent` and an attribute named `attr`.
@@ -761,9 +762,10 @@ describe "Agent Reference"{
 			 *  * Invoke the capacity's action on the retrieved skill.
 			 *
 			 * 
-			 * <span class="label label-info">Note</span> This method of
+			 * <note>This method of
 			 * invocation is not recommended by the SARL developers.
 			 * You should prefer the use of the extension methods (see below).  
+			 * </note>
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */

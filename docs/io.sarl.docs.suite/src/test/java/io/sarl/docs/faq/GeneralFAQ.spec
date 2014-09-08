@@ -160,12 +160,12 @@ describe "General FAQ on SARL" {
 			 * <tr><th></th><th>SARL Universe</th><th>Java Universe</th></tr>
 			 * </thead>
 			 * <tbody>
-			 * <tr><td>Language Specification</th><th>SARL Specification</th><th>Java Specification</th></tr>
-			 * <tr><td>Standard Development Kit</th><th>SARL SDK</th><th>J(ava)DK</th></tr>
-			 * <tr><td>Runtime environment</th><th>Janus</th><th>Hotspot, IcedTea, Dalvik, etc.</th></tr>
+			 * <tr><td>Language Specification</th><td>SARL Specification</td><td>Java Specification</td></tr>
+			 * <tr><td>Standard Development Kit</th><td>SARL SDK</td><td>J(ava)DK</td></tr>
+			 * <tr><td>Runtime environment</th><td>Janus</td><td>Hotspot, IcedTea, Dalvik, etc.</td></tr>
 			 * </tbody>
 			 * </table>
-			 * <center>
+			 * </center>
 			 * 
 			 * @filter(.*) 
 			 */

@@ -33,5 +33,7 @@
 	<suppress checks="MethodCount" files="SpecificationTools.java"/>
 	<suppress checks="NPathComplexity" files="SpecificationTools.java"/>
 
+	<suppress checks="NPathComplexity" files="SARLDocGenerator.java"/>
+
 </suppressions>
 

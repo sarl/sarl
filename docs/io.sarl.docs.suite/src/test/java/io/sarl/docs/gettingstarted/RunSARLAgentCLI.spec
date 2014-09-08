@@ -68,14 +68,15 @@ describe "Run SARL Agent from the Command Line" {
 	 *     java -cp app.jar io.janusproject.Boot myapp.MyAgent
 	 *
 	 * 
-	 * <span class="label label-danger">Important</span> The Janus
+	 * <veryimportant>The Janus
 	 * platform allows to start only one agent from the command line.
 	 * If you want to start a collection of agents, you must select
 	 * one of the following approaches:
 	 * 
 	 *  * launch a separate Janus platform for each agent, or
 	 *  * launch an agent that is spawning the other agents.
-	 * 
+	 * </veryimportant> 
+	 *
 	 * @filter(.*)
 	 */
 	fact "Specify the Agent to Launch" {

@@ -30,8 +30,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.util.Modules;
 
-/**
- * 
+/** Class for setting up the injection mechanism in the Maven plugin.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -39,7 +39,7 @@ import com.google.inject.util.Modules;
  */
 class SARLSpecStandaloneSetup extends SpecStandaloneSetupGenerated {
 
-	private static Injector injector = null;
+	private static Injector injector;
 
 	/**
 	 */
@@ -51,8 +51,9 @@ class SARLSpecStandaloneSetup extends SpecStandaloneSetupGenerated {
 	 */
 	@Override
 	public Injector createInjectorAndDoEMFRegistration() {
-		if (injector != null)
+		if (injector != null) {
 			return injector;
+		}
 		EPackage.Registry.INSTANCE.put(SpecPackage.eINSTANCE.getNsURI(), SpecPackage.eINSTANCE);
 		injector = Guice.createInjector(
 				Modules.override(new SpecRuntimeModule()).with(new SARLDocModule()));

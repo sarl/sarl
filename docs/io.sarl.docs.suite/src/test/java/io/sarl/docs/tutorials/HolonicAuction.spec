@@ -53,10 +53,10 @@ import static extension io.sarl.docs.utils.SpecificationTools.*
  *  * the emit of events from the super-agent to its sub-agent;
  *  * the emit of events from the sub-agent to its super-agent.
  *
- * <span class="label label-info">Note</span> The communication between
+ * <note>The communication between
  * the sub-agents is out of the scope of this tutorial. For interested
  * readers, the [Agent Reference](../reference/AgentReferenceSpec.html)
- * may be read.
+ * may be read.</note>
  * 
  * The source code related to this tutorial may be found
  * in the [SARL demos](https://github.com/sarl/sarl-demos/tree/master/src/main/sarl/io/sarl/docs/tutorials/holonicauction).
@@ -130,13 +130,13 @@ describe "English Auction with Holons"{
 		 * __and__ at the same time be composed 
 		 * by other agents that exist in its _inner context_. 
 		 * 
-		 * <span class="label label-info">Note</span> According to the
+		 * <note> According to the
 		 * SARL specifications, all the agents in a context belong to
 		 * the default space of this context. This property is important
 		 * for designing the communication links between two adjacent levels
 		 * in the hierarchy of agents. The default space of the inner context
 		 * becomes the natural place where the super-agent and
-		 * its sub-agents are interacting.
+		 * its sub-agents are interacting.</note>
 		 * 
 		 * @filter(.*)
 		 */
@@ -238,18 +238,20 @@ describe "English Auction with Holons"{
 			 * exceeding the maximal
 			 * price, then the bidder is sending its bid in a `Bid` event.
 			 * 
-			 * <span class="label label-warning">Interaction Principle</span>
+			 * <importantnote label="Interaction Principle">
 			 * For sending data to its super-agent, a sub-agent must
 			 * fire an event in the default space of the inner context
 			 * of the super-agent.
 			 * The `emit` function is supporting this interaction.
+			 * </importantnote>
 			 * 
 			 * 
-			 * <span class="label label-warning">Caution</span>
+			 * <cautionnote>
 			 * The `Bid` event is sent in the default space.
 			 * But there is no restriction on the event's recipient.
 			 * It means that the super-agent __and__ the
 			 * other sub-agents will receive this event. 
+			 * </cautionnote>
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 			 */
@@ -306,9 +308,9 @@ describe "English Auction with Holons"{
 			 * of the event corresponds to the address of the
 			 * super-agent in the default space.
 			 * 
-			 * <span class="label label-info">Note</span>
+			 * <note>
 			 * The ID of the super-agent, and the ID of the inner
-			 * context of this super-agent are always the same. 
+			 * context of this super-agent are always the same.</note>
 			 * 
 			 * Below, we update the bidding behavior by creating
 			 * a scope, and providing it to the `emit` function.
@@ -386,10 +388,11 @@ describe "English Auction with Holons"{
 			 * innerContext.defaultSpace.emit(new Price(50))
 			 * ```
 			 * 
-			 * <span class="label label-warning">Interaction Principle</span>
+			 * <importantnote labe="Interaction Principle">
 			 * For sending data to its sub-agents, a super-agent must
 			 * fire an event in the default space of its inner context.
 			 * The `wake` function is supporting this interaction.
+			 * </importantnote>
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
 			 */
@@ -732,11 +735,11 @@ describe "English Auction with Holons"{
 		 * 
 		 * __We need to stop the agents.__
 		 * 
-		 * <span class="label label-warning">Important</span> In the
+		 * <importantnote> In the
 		 * specification of SARL, a super-agent cannot be killed
 		 * if there is some other agent belonging to its inner context.
 		 * Consequently, for stopping the agents, we need to stop the
-		 * sub-agents before the super-agent. 
+		 * sub-agents before the super-agent.</importantnote>
 		 */
 		describe "Stop the agents" {
 			
@@ -937,10 +940,11 @@ describe "English Auction with Holons"{
 		 * Then, this launched agent must spawn the other agents in the system.
 		 * This is typically the case in the auction application.
 		 * 
-		 * <span class="label label-warning">Important</span> In this section,
+		 * <importantnote> In this section,
 		 * we explain how to launch the agents from the command line interface.
 		 * For launching the agents from the Eclipse IDE, please read
 		 * ["Run SARL Agent in the Eclipse IDE"](../gettingstarted/RunSARLAgentInTheEclipseIDESpec.html).
+		 * </importantnote>
 		 */
 		describe "Compile and Launch the agents" {
 			

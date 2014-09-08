@@ -48,7 +48,7 @@ import com.google.inject.Inject;
 
 /** Generator of the HTML files for the SARL documentation.
  * Copied from SpecDocGenerator (version 1.0.0).
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -56,9 +56,13 @@ import com.google.inject.Inject;
  */
 class SARLDocGenerator extends AbstractDocGenerator {
 
+	/** Maximal depth that may be referred in the outline.
+	 */
+	protected static final int MAX_DEPTH_REFERENCING = 9;
+
 	/** List of the markes that should be replaced by the outline.
 	 */
-	protected static String[] OUTLINE_MARKERS = new String[] {
+	protected static final String[] OUTLINE_MARKERS = new String[] {
 		Matcher.quoteReplacement("<!--") //$NON-NLS-1$
 			+ "\\s*" //$NON-NLS-1$
 			+ Matcher.quoteReplacement("OUTPUT") //$NON-NLS-1$
@@ -66,16 +70,16 @@ class SARLDocGenerator extends AbstractDocGenerator {
 			+ Matcher.quoteReplacement("OUTLINE") //$NON-NLS-1$
 			+ "\\s*" //$NON-NLS-1$
 			+ Matcher.quoteReplacement("-->"), //$NON-NLS-1$
-		Matcher.quoteReplacement("@outline") //$NON-NLS-1$
+		Matcher.quoteReplacement("@outline"), //$NON-NLS-1$
 	};
-		
+
 	/** Separator for the IDs.
 	 */
 	protected static final String ID_SEPARATOR = "_"; //$NON-NLS-1$
-	
+
 	@Inject
 	private ExampleNameProvider nameProvider;
-	
+
 	@Inject
 	private FilterExtractor filterExtractor;
 
@@ -84,20 +88,20 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	public SARLDocGenerator() {
 		//
 	}
-	
+
 	/** {@inheritDoc}
 	 */
 	@Override
 	public HtmlFile createHtmlFile(final XtendClass xtendClass) {
-        if(!(xtendClass instanceof ExampleGroup)){
-            return HtmlFile.EMPTY_FILE;
-	    }
-        final ExampleGroup exampleGroup = (ExampleGroup) xtendClass;
-	    return HtmlFile.newHtmlFile(new Procedure1<HtmlFile>() {
+        	if (!(xtendClass instanceof ExampleGroup)) {
+            		return HtmlFile.EMPTY_FILE;
+	    	}
+        	final ExampleGroup exampleGroup = (ExampleGroup) xtendClass;
+	   	return HtmlFile.newHtmlFile(new Procedure1<HtmlFile>() {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public void apply(HtmlFile it) {
-	            it.setName(SARLDocGenerator.this.nameProvider.toJavaClassName(exampleGroup)); 
+	            it.setName(SARLDocGenerator.this.nameProvider.toJavaClassName(exampleGroup));
 	            it.setTitle(asTitle(exampleGroup));
 	            it.setContent(generateRootContent(exampleGroup));
 	            it.setRootFolder(root(exampleGroup));
@@ -107,42 +111,42 @@ class SARLDocGenerator extends AbstractDocGenerator {
 			}
 		});
 	}
-	
+
 	/** Replies the HTML title of the given object.
-	 *  
+	 *
 	 * @param object - the object.
 	 * @return the HTML title.
 	 */
 	protected String asTitle(EObject object) {
 		return toTitle(this.nameProvider.describe(object));
 	}
-	
+
 	/** Replies the HTML code for the code part of a fact.
-	 *  
+	 *
 	 * @param example - the fact.
 	 * @param filters - the filters to apply to the code of the fact.
 	 * @return the HTML code.
 	 */
 	protected String toCodeBlock(Example example, List<Filter> filters) {
 		String prefix = "<pre class=\"prettyprint lang-spec linenums\">"; //$NON-NLS-1$
-        prefix = apply(filters, prefix);
-        String code = serialize(example.getExpression(), filters);
-        if (code == null || code.isEmpty()) {
-        	return ""; //$NON-NLS-1$
-        }
-        return prefix + code + "</pre>\n"; //$NON-NLS-1$
+        	prefix = apply(filters, prefix);
+        	String code = serialize(example.getExpression(), filters);
+        	if (code == null || code.isEmpty()) {
+        		return ""; //$NON-NLS-1$
+        	}
+       		return prefix + code + "</pre>\n"; //$NON-NLS-1$
 	}
-		
+
 	/** Replies the HTML tag that corresponds to a title at the given level
 	 * for the given object.
-	 * 
+	 *
 	 * @param object - the provider of the title text.
 	 * @param sectionNumber - the section numbering from the root to the current object.
 	 * @return the HTML tag for the title.
 	 */
 	protected String makeTitleTag(EObject object, SectionNumber sectionNumber) {
 		int depth = sectionNumber.getDepth();
-		if (depth < 9) {
+		if (depth < MAX_DEPTH_REFERENCING) {
 			String depthLevel = Integer.toString(depth + 1);
 			return "<h" + depthLevel //$NON-NLS-1$
 					+ id(this.nameProvider.describe(object))
@@ -154,11 +158,11 @@ class SARLDocGenerator extends AbstractDocGenerator {
 				+ "><strong>" + asTitle(object) //$NON-NLS-1$
 				+ "</strong></p>\n"; //$NON-NLS-1$
 	}
-	
+
 	/** Protect the value of an ID.
 	 * This function is similar to {@link #id(String)},
 	 * except that the prefix <code>id=</code> is not appended.
-	 * 
+	 *
 	 * @param id - the id to protect.
 	 * @return the protected ID.
 	 */
@@ -171,9 +175,9 @@ class SARLDocGenerator extends AbstractDocGenerator {
 		}
 		return ""; //$NON-NLS-1$
 	}
-	
+
 	/** Replies the HTML tag that corresponds to a reference to a title.
-	 * 
+	 *
 	 * @param object - the provider of the title text.
 	 * @param sectionNumber - the section numbering from the root to the current object.
 	 * @param text - the text of the reference.
@@ -187,8 +191,8 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	}
 
 	/** Generate the complete documentation for the given group.
-	 * 
-	 * @param group - the object from which the documentation must be generated. 
+	 *
+	 * @param group - the object from which the documentation must be generated.
 	 * @return the HTML representation of the table.
 	 */
 	@SuppressWarnings("synthetic-access")
@@ -198,9 +202,9 @@ class SARLDocGenerator extends AbstractDocGenerator {
 		String topDoc = postProcess(generateDoc(group), outline);
 		return topDoc + content;
 	}
-	
+
 	/** Post process the top documentation.
-	 * 
+	 *
 	 * @param text - the original value of the top documentation.
 	 * @param outline - the outline entries.
 	 * @return the top documentation to use.
@@ -211,7 +215,7 @@ class SARLDocGenerator extends AbstractDocGenerator {
 		if (outline != null && !outline.isEmpty()) {
 			StringBuilder b = new StringBuilder();
 			b.append("<ul class=\"page_outline\" id=\"page_outline\">"); //$NON-NLS-1$
-			for(String line : outline) {
+			for (String line : outline) {
 				if (line != null && !line.isEmpty()) {
 					b.append("<li>"); //$NON-NLS-1$
 					b.append(line);
@@ -224,21 +228,21 @@ class SARLDocGenerator extends AbstractDocGenerator {
 			outlineText = ""; //$NON-NLS-1$
 		}
 		String refactoredText = text;
-		for(String pattern : OUTLINE_MARKERS) {
+		for (String pattern : OUTLINE_MARKERS) {
 			refactoredText = refactoredText.replaceAll(pattern, outlineText);
 		}
 		return refactoredText;
 	}
-	
+
 	/** Post process an HTML documentation.
-	 * 
+	 *
 	 * @param text - the original value of the documentation.
 	 * @return the documentation to use.
 	 */
 	@SuppressWarnings("static-method")
 	protected String postProcess(String text) {
 		String refactoredText = text;
-		for(NoteTag tag : NoteTag.values()) {
+		for (NoteTag tag : NoteTag.values()) {
 			refactoredText = tag.apply(refactoredText);
 		}
 		refactoredText = refactoredText.replaceAll("(<p>){2,}", "<p>"); //$NON-NLS-1$//$NON-NLS-2$
@@ -248,8 +252,8 @@ class SARLDocGenerator extends AbstractDocGenerator {
 
 	/** Generate the HTML code from the Markdown text
 	 * of the given object.
-	 * 
-	 * @param object - the object from which the Markdown text should be extract. 
+	 *
+	 * @param object - the object from which the Markdown text should be extract.
 	 * @return the HTML representation of the table.
 	 */
 	protected final String generateDoc(EObject object) {
@@ -259,80 +263,80 @@ class SARLDocGenerator extends AbstractDocGenerator {
 		}
 		return ""; //$NON-NLS-1$
 	}
-	
+
 	/** Generate the HTML code for the members of an example group..
-	 * 
-	 * @param group - the example roup. 
+	 *
+	 * @param group - the example group.
 	 * @param sectionNumber - the section numbering from the root to the current object.
 	 * @return the HTML representation of the table.
-	 */	
+	 */
 	protected final StringConcatenation generateMembers(ExampleGroup group, SectionNumber sectionNumber) {
-        return generateMembers(group, sectionNumber, null);
+        	return generateMembers(group, sectionNumber, null);
 	}
-	
+
 	/** Generate the HTML code for the members of an example group..
-	 * 
-	 * @param group - the example roup. 
+	 *
+	 * @param group - the example group.
 	 * @param sectionNumber - the section numbering from the root to the current object.
 	 * @param outline - the list of the entries for the outline.
 	 * @return the HTML representation of the table.
-	 */	
+	 */
 	private StringConcatenation generateMembers(ExampleGroup group, SectionNumber sectionNumber, List<String> outline) {
 		StringConcatenation result = new StringConcatenation();
-    	String content;
-    	String hrefLabel;
-    	SectionNumber childNumber;
-    	boolean isRoot = sectionNumber.isRoot();
-    	boolean isFlatSections = sectionNumber.isMaxDepthReferencing();
+    		String content;
+    		String hrefLabel;
+    		SectionNumber childNumber;
+    		boolean isRoot = sectionNumber.isRoot();
+    		boolean isFlatSections = sectionNumber.isMaxDepthReferencing();
 		if (isFlatSections) {
 			result.append("<ul>"); //$NON-NLS-1$
 		}
 		int position = 0;
-        for(XtendMember member : group.getMembers()){
-        	if (member instanceof Example) {
-        		Example example = (Example) member;
-        		childNumber = sectionNumber.getChild(position);
-        		hrefLabel = makeTitleHref(example, childNumber, asTitle(example));
-        		content = generate(example, childNumber);
-        		++position;
-        	} else if (member instanceof ExampleGroup) {
-        		ExampleGroup sgroup = (ExampleGroup) member;
-        		childNumber = sectionNumber.getChild(position);
-        		hrefLabel = makeTitleHref(sgroup, childNumber, asTitle(sgroup));
-        		content = generate(sgroup, childNumber);
-        		++position;
-        	} else if (member instanceof ExampleTable) {
-        		ExampleTable table = (ExampleTable) member;
-        		childNumber = sectionNumber.getChild(position);
-        		hrefLabel = makeTitleHref(table, childNumber, asTitle(table));
-        		content = generate(table, childNumber);
-        		++position;
-        	} else {
-        		content = null;
-        		hrefLabel = null;
-        	}
-        	if (content != null && !content.isEmpty()) {
-        		if (isFlatSections) {
-        			result.append("<li>"); //$NON-NLS-1$
+        	for (XtendMember member : group.getMembers()) {
+			if (member instanceof Example) {
+				Example example = (Example) member;
+				childNumber = sectionNumber.getChild(position);
+				hrefLabel = makeTitleHref(example, childNumber, asTitle(example));
+				content = generate(example, childNumber);
+				++position;
+			} else if (member instanceof ExampleGroup) {
+				ExampleGroup sgroup = (ExampleGroup) member;
+				childNumber = sectionNumber.getChild(position);
+				hrefLabel = makeTitleHref(sgroup, childNumber, asTitle(sgroup));
+				content = generate(sgroup, childNumber);
+				++position;
+			} else if (member instanceof ExampleTable) {
+				ExampleTable table = (ExampleTable) member;
+				childNumber = sectionNumber.getChild(position);
+				hrefLabel = makeTitleHref(table, childNumber, asTitle(table));
+				content = generate(table, childNumber);
+				++position;
+			} else {
+				content = null;
+				hrefLabel = null;
+			}
+			if (content != null && !content.isEmpty()) {
+				if (isFlatSections) {
+					result.append("<li>"); //$NON-NLS-1$
+				}
+	    			result.append(content);
+				if (isFlatSections) {
+					result.append("</li>"); //$NON-NLS-1$
+				} else if (isRoot && outline != null
+			    		&& hrefLabel != null && !hrefLabel.isEmpty()) {
+			    		outline.add(hrefLabel);
+			    	}
         		}
-    			result.append(content);
-        		if (isFlatSections) {
-        			result.append("</li>"); //$NON-NLS-1$
-        		} else if (isRoot && outline != null
-            		&& hrefLabel != null && !hrefLabel.isEmpty()) {
-            		outline.add(hrefLabel);
-            	}
         	}
-        }
 		if (isFlatSections) {
 			result.append("</ul>"); //$NON-NLS-1$
 		}
-        return result;
+        	return result;
 	}
 
 	/** Generate the HTML code for the given example.
-	 * 
-	 * @param example - the example. 
+	 *
+	 * @param example - the example.
 	 * @param sectionNumber - the section numbering from the root to the current object.
 	 * @return the HTML representation of the table.
 	 */
@@ -359,10 +363,10 @@ class SARLDocGenerator extends AbstractDocGenerator {
 		result.append(errorMessage(example));
 		return result.toString();
 	}
-	
+
 	/** Generate the HTML code for the given example group.
-	 * 
-	 * @param group - the example group. 
+	 *
+	 * @param group - the example group.
 	 * @param sectionNumber - the section numbering from the root to the current object.
 	 * @return the HTML representation of the table.
 	 */
@@ -373,8 +377,8 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	}
 
 	/** Generate the HTML code for the given example table.
-	 * 
-	 * @param table - the example table. 
+	 *
+	 * @param table - the example table.
 	 * @param sectionNumber - the section numbering from the root to the current object.
 	 * @return the HTML representation of the table.
 	 */
@@ -387,20 +391,20 @@ class SARLDocGenerator extends AbstractDocGenerator {
 				+ generateDoc(table)
 		        + super.generate(table);
 	}
-	
+
 	/** A section number.
-	 * 
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
 	protected final class SectionNumber {
-		
+
 		private final SectionNumber parent;
 		private final int position;
 		private final int depth;
-		
+
 		/** Create the first root section.
 		 */
 		private SectionNumber() {
@@ -408,9 +412,9 @@ class SARLDocGenerator extends AbstractDocGenerator {
 		}
 
 		/** Create the first section in the given parent.
-		 * 
+		 *
 		 * @param parent - parent number section.
-		 * @param position - index in the given parent. 
+		 * @param position - index in the given parent.
 		 */
 		private SectionNumber(SectionNumber parent, int position) {
 			this.parent = parent;
@@ -421,17 +425,17 @@ class SARLDocGenerator extends AbstractDocGenerator {
 				this.depth = 1;
 			}
 		}
-		
+
 		/** Replies the depth of the section.
-		 * 
+		 *
 		 * @return the depth of the section.
 		 */
 		public int getDepth() {
 			return this.depth;
 		}
-		
+
 		/** Replies the HTML representation of this section number.
-		 * 
+		 *
 		 * @return the HTML representation of this section number.
 		 */
 		public String toHTML() {
@@ -458,37 +462,37 @@ class SARLDocGenerator extends AbstractDocGenerator {
 			}
 			return ""; //$NON-NLS-1$
 		}
-		
+
 		/** Replies the section number of the child at the given position.
-		 * 
+		 *
 		 * @param index - position of the child, starting from zero.
 		 * @return the section number of the first child.
 		 */
 		public SectionNumber getChild(int index) {
 			return new SectionNumber(this, index + 1);
 		}
-		
+
 		/** Replies if the section number is greater to the max depth
 		 * for referencing them.
-		 * 
+		 *
 		 * @return <code>true</code> if greater than max depth.
 		 */
 		public boolean isMaxDepthReferencing() {
-			return this.depth > 9;
+			return this.depth > MAX_DEPTH_REFERENCING;
 		}
-		
+
 		/** Replies if the section number is for a root section.
-		 * 
+		 *
 		 * @return <code>true</code> if the number is for root section.
 		 */
 		public boolean isRoot() {
 			return this.depth == 1;
 		}
-		
+
 	}
-	
+
 	/** HTML tags that could be used to put marked sections in the text.
-	 * 
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -498,11 +502,11 @@ class SARLDocGenerator extends AbstractDocGenerator {
 		/** A note.
 		 */
 		NOTE("note", "label-info", "Note"),  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-		
+
 		/** An important note.
 		 */
 		IMPORTANT("importantnote", "label-warning", "Important"),  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-		
+
 		/** A caution note.
 		 */
 		CAUTION("cautionnote", "label-warning", "Caution"),  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
@@ -511,21 +515,18 @@ class SARLDocGenerator extends AbstractDocGenerator {
 		 */
 		DANGER("veryimportantnote", "label-danger", "Important"); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 
-		/**
-		 * HTML tag.
-		 */
-		public final String htmlTag;
+		private final String htmlTag;
 		private final String htmlLabel;
 		private final String text;
-		
+
 		private NoteTag(String htmlTag, String htmlLabel, String text) {
 			this.htmlTag = htmlTag;
 			this.htmlLabel = htmlLabel;
 			this.text = text;
 		}
-		
+
 		/** Format a text according to the current note tag.
-		 * 
+		 *
 		 * @param text - the text to format.
 		 * @return the formated string.
 		 */
@@ -547,7 +548,7 @@ class SARLDocGenerator extends AbstractDocGenerator {
 				} else {
 					label = label.trim();
 				}
-				String replacement = 
+				String replacement =
 						"<p><span class=\"label " + this.htmlLabel //$NON-NLS-1$
 						+ "\">" + label + "</span> " //$NON-NLS-1$//$NON-NLS-2$
 						+ htmlText + "</p>"; //$NON-NLS-1$

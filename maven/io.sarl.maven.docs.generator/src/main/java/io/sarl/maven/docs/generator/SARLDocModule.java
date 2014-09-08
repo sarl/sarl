@@ -26,8 +26,9 @@ import org.jnario.doc.AbstractDocGenerator;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 
-/** Generator of the HTML files for the SARL documentation.
- * 
+/** Injection module that permits to inject the documentation generator
+ * for the SARL project.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -40,12 +41,12 @@ class SARLDocModule implements Module {
 	public SARLDocModule() {
 		//
 	}
-	
+
 	/** {@inheritDoc}
 	 */
 	@Override
 	public void configure(Binder binder) {
 		binder.bind(AbstractDocGenerator.class).to(SARLDocGenerator.class);
 	}
-	
+
 }

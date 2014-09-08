@@ -14,6 +14,11 @@
 	<name>Documentation Generator</name>
 	<description>Provides Maven tools for generating the SARL documentation.</description>
 
+	<properties>
+		<!-- needed for checkstyle/findbugs -->
+		<main.basedir>${project.basedir}/../..</main.basedir>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.jnario</groupId>
@@ -35,6 +40,10 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

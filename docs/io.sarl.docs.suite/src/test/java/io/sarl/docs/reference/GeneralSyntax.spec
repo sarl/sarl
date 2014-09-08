@@ -140,11 +140,11 @@ describe "General Syntax Reference" {
 		 * In the following example, the qualified name of the agent is
 		 * `io.sarl.docs.reference.gsr`.
 		 * 
-		 * <span class="label label-info">Note</span> If the 
+		 * <note> If the 
 		 * `package` keyword is not used, the default package will
 		 * be used. The default package has an empty name.
 		 * It is recommended in the SARL Best Practices to specify a package's
-		 * name. 
+		 * name.</note> 
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -166,8 +166,8 @@ describe "General Syntax Reference" {
 		 * than the one of your SARL script, you should include it
 		 * with the `import` directive.
 		 * 
-		 * <span class="label label-info">Note</span> This directive 
-		 * works in a similar way as in the Java language.
+		 * <note>This directive 
+		 * works in a similar way as in the Java language.</note>
 		 * 
 		 * The `import` keyword is followed by the qualified name
 		 * of the feature to import. In the following code, it is illustrated
@@ -1337,8 +1337,8 @@ describe "General Syntax Reference" {
 	 *      def NAME [([PARAMETER, PARAMETER, PARAMETER...])] [: RETURN TYPE] [BLOCK]
 	 *
 	 * 
-	 * <span class="label label-info">Note</span> The parameters are 
-	 * implicitly declared with the keyword `val`.
+	 * <note> The parameters are 
+	 * implicitly declared with the keyword `val`.</note>
 	 */
 	describe "Function Declarations" {
 		
@@ -1458,10 +1458,11 @@ describe "General Syntax Reference" {
 		 * And, when the function is run, the default value is given to the
 		 * skipped argument.
 		 * 
-		 * <span class="label label-warning">Important</span> In SARL, 
+		 * <importantnote> In SARL, 
 		 * if a formal parameter has a default value, the following formal 
 		 * parameters do not need to have default value as well. This is a major
 		 * difference with the default values in the C++ language for instance. 
+		 * </importantnote>
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -1744,9 +1745,10 @@ describe "General Syntax Reference" {
 		 * The syntax is similar to Java: the `super` keyword
 		 * is used to represent the inherited constructor.
 		 * 
-		 * <span class="label label-warning">Important</span> It is recommended typing the
+		 * <importantnote> It is recommended typing the
 		 * two parentheses when invoking the default constructor of the super type.
 		 * Indeed, in some cases, typing `super` causes no side-effect that is an error.
+		 * </importantnote>
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -2094,9 +2096,9 @@ describe "General Syntax Reference" {
 		 * The main expression (parameter of `switch`) can also be a computed value instead 
 		 * of a field or variable.
 		 * 
-		 * <span class="label label-warning">Important</span> 
+		 * <importantnote> 
 		 * A case must contains an expression. If you want to do nothing
-		 * for a given case, put an empty block.
+		 * for a given case, put an empty block.</importantnote>
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */

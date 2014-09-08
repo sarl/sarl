@@ -71,12 +71,12 @@ describe "Agent Definition Introduction" {
 	 * The character `^` in the package name permits to use a SARL
 	 * keyword into a package name.
 	 * 
-	 * <span class="label label-warning">Important</span> The package keyword defines 
+	 * <importantnote>The package keyword defines 
 	 * the package for all elements in the same SARL file (see the
 	 * [General Syntax Reference](../reference/GeneralSyntaxReferenceSpec.html)
 	 * for details).
 	 * Therefore FirstAgent and SecondAgent belong to the same package 
-	 * (i.e. `io.sarl.docs.gettingstarted.agent`).
+	 * (i.e. `io.sarl.docs.gettingstarted.agent`).</importantnote>
 	 * 
 	 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 	 */
@@ -135,8 +135,8 @@ describe "Agent Definition Introduction" {
 		 * To define this event handler, we must use the `on` keyword,
 		 * and provide the associated code block.
 		 * 
-		 *  <span class="label label-info">Note</span> `println` is a shortcut for the Java function
-		 * `System.out.println`.
+		 *  <note>`println` is a shortcut for the Java function
+		 * `System.out.println`.</note>
 		 * 
 		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 		 */
@@ -266,10 +266,10 @@ describe "Agent Definition Introduction" {
 		 * The data are embedded into events. The definition of an
 		 * event is described above.
 		 * 
-		 * <span class="label label-info">Note</span> 
+		 * <note> 
 		 * In this document, we limit our explanation to the
 		 * sending of the events in the default space of 
-		 * the default context of the agent.
+		 * the default context of the agent.</note>
 		 * 
 		 * For sending an event in the default space, the
 		 * `DefaultContextInteractions` built-in capacity

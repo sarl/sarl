@@ -730,10 +730,11 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 		 * The Janus platform is designed to launch a single agent at start-up.
 		 * Then, this launched agent must spawn the other agents in the system.
 		 * 
-		 * <span class="label label-warning">Important</span> In this section,
+		 * <importantnote> In this section,
 		 * we explain how to launch the agents from the command line interface.
 		 * For launching the agents from the Eclipse IDE, please read
 		 * ["Run SARL Agent in the Eclipse IDE"](../gettingstarted/RunSARLAgentInTheEclipseIDESpec.html).
+		 * </importantnote>
 		 */
 		context "Compile and Launch the agents" {
 			

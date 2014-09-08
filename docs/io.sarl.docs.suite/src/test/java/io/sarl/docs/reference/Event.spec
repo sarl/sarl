@@ -76,9 +76,9 @@ describe "Event Reference"{
 		 * Reference](BuiltInCapacityReferenceSpec.html).
 		 * 
 		 * 
-		 * <span class="label label-info">Note</span> There is 
+		 * <note> There is 
 		 * no message concept in SARL. All the communications are
-		 * supported by the concept of `Event`
+		 * supported by the concept of `Event`</note>
 		 * 
 		 * @filter(.*)
 		 */
@@ -142,8 +142,8 @@ describe "Event Reference"{
 			 * According to the type inference mechanism used by SARL, the attribute
 			 * `something` will have the type `Object`.
 			 * 
-			 * <span class="label label-info">Note</span> Because of the use of 
-			 * the `var` keyword, the values of the attributes can be modified.
+			 * <note> Because of the use of 
+			 * the `var` keyword, the values of the attributes can be modified.</note>
 			 * 
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
@@ -174,12 +174,12 @@ describe "Event Reference"{
 			 * Events in SARL can carry information that is unmodifiable using the
 			 * `val` keyword.
 			 * 
-			 * <span class="label label-warning">Important</span> The `val`
+			 * <importantnote> The `val`
 			 * keyword has the same semantic as the `final` modifier in
 			 * the Java language. It means that an element defined with `val`
 			 * can be initialized only once. It also means that the element is read-only.
 			 * But if the element is a reference to an object, then this object is
-			 * not read-only (only the initial reference is). 
+			 * not read-only (only the initial reference is).</importantnote>
 			 * 
 			 * Because the `val` keyword defines a single-initialization
 			 * variable, it is mandatory to specify the initialization value.
@@ -222,10 +222,10 @@ describe "Event Reference"{
 			 * The extended event is specified just after the `extends`
 			 * keyword.
 			 * 
-			 * <span class="label label-danger">Important</span> An event type
+			 * <veryimportantnote> An event type
 			 * can extend __only one__ other event type.  This is close
 			 * constraint as the class extension of classes in the Java
-			 * language.
+			 * language.</veryimportantnote>
 			 * 
 			 * In the following code, a first event is defined with the name
 			 * `Event1` and an attribute named `string`.
@@ -310,9 +310,9 @@ describe "Event Reference"{
 		 * They are composing the minimal set of events that a runtime
 		 * environment must support for running a SARL program.
 		 *
-		 * <span class="label label-danger">Important</span> You must not
+		 * <veryimportantnote> You must not
 		 * define an event with a fully qualified name equals to one
-		 * of the reserved events.
+		 * of the reserved events.</veryimportantnote>
 		 * 
 		 * Two types of reserved events exist:
 		 * 

@@ -61,12 +61,12 @@ import com.google.inject.Provider;
 /** Maven MOJO that is generating the documentation for the SARL project.
  * <p>
  * Copied from JnarioDocGenerate (version 1.0.1).
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * 
+ *
  * @requiresDependencyResolution test
  * @goal generate
  */
@@ -74,7 +74,7 @@ public class SARLDocGenerate extends XtendTestCompile {
 
 	/**
 	 * Location of the generated documentation.
-	 * 
+	 *
 	 * @parameter default-value="${basedir}/target/jnario-doc"
 	 * @required
 	 */
@@ -82,7 +82,7 @@ public class SARLDocGenerate extends XtendTestCompile {
 
 	/**
 	 * Location of the generated JUnit XML reports.
-	 * 
+	 *
 	 * @parameter default-value="${basedir}/target/surefire-reports"
 	 * @required
 	 */
@@ -90,63 +90,63 @@ public class SARLDocGenerate extends XtendTestCompile {
 
 	/**
 	 * Location of the generated JUnit XML reports.
-	 * 
-	 * @parameter 
+	 *
+	 * @parameter
 	 */
 	private String sourceDirectory;
-	
+
 	/**
 	 * Location of the generated JUnit XML reports.
-	 * 
-	 * @parameter default-value="true" 
+	 *
+	 * @parameter default-value="true"
 	 */
 	private boolean sectionNumbering;
 
 	/**
 	 * The project itself. This parameter is set by maven.
-	 * 
+	 *
 	 * @parameter expression="${project}"
 	 * @required
 	 */
-	private MavenProject __project;
+	private MavenProject hiddenProjectReference;
 
 	/**
 	 * Set this to true to skip compiling Xtend sources.
-	 * 
+	 *
 	 * @parameter default-value="false" expression="${skipXtend}"
 	 */
-	private boolean __skipXtend;
-	
+	private boolean hiddenSkipXtendFlag;
+
 	/**
 	 * Xtend-File encoding argument for the compiler.
-	 * 
+	 *
 	 * @parameter expression="${encoding}" default-value="${project.build.sourceEncoding}"
 	 */
-	private String __encoding;
+	private String hiddenEncodingSpecification;
 
 	/**
 	 * Set this to false to suppress the creation of *._trace files.
-	 * 
+	 *
 	 * @parameter default-value="true" expression="${writeTraceFiles}"
 	 */
-	private boolean __writeTraceFiles;
+	private boolean hiddenWriteTraceFilesFlag;
 
 	@Inject
 	private RuntimeWorkspaceConfigProvider workspaceConfigProvider;
-	
+
 	private Provider<ResourceSet> resourceSetProvider;
 
 	@Override
 	protected void internalExecute() throws MojoExecutionException {
 		// Only for injecting the attributes from Maven.
-		this.project = this.__project;
-		this.skipXtend = this.__skipXtend;
-		this.encoding = this.__encoding;
-		this.writeTraceFiles = this.__writeTraceFiles;
+		this.project = this.hiddenProjectReference;
+		this.skipXtend = this.hiddenSkipXtendFlag;
+		this.encoding = this.hiddenEncodingSpecification;
+		this.writeTraceFiles = this.hiddenWriteTraceFilesFlag;
 
 		getLog().debug("Set section numbering: " + Boolean.toString(this.sectionNumbering)); //$NON-NLS-1$
 		MavenConfig.setSectionNumbering(this.sectionNumbering);
-		
+
 		getLog().info("Generating Jnario reports to " + this.docOutputDirectory); //$NON-NLS-1$
 
 		// the order is important, the suite compiler must be executed last
@@ -166,14 +166,14 @@ public class SARLDocGenerate extends XtendTestCompile {
 	/**
 	 * @param injectors - the injector list.
 	 * @return the mapping
-	 * @throws MojoExecutionException
+	 * @throws MojoExecutionException when no Surefire report was found.
 	 */
 	protected HashBasedSpec2ResultMapping createSpec2ResultMapping(List<Injector> injectors) throws MojoExecutionException {
 		HashBasedSpec2ResultMapping resultMapping = injectors.get(2).getInstance(HashBasedSpec2ResultMapping.class);
 		File reportFolder = new File(this.reportsDirectory);
-		if(reportFolder.exists()){
+		if (reportFolder.exists()) {
 			addExecutionResults(resultMapping, reportFolder);
-		}else{
+		} else {
 			throw new MojoExecutionException("Surefire Report folder does not exist"); //$NON-NLS-1$
 		}
 		return resultMapping;
@@ -192,12 +192,13 @@ public class SARLDocGenerate extends XtendTestCompile {
 	/**
 	 * @param resultMapping - the result mapping
 	 * @param reportFolder - the report folder.
-	 * @throws MojoExecutionException
+	 * @throws MojoExecutionException when parsing error.
 	 */
-	protected void addExecutionResults(HashBasedSpec2ResultMapping resultMapping, File reportFolder) throws MojoExecutionException {
+	protected void addExecutionResults(HashBasedSpec2ResultMapping resultMapping, File reportFolder)
+			throws MojoExecutionException {
 		SpecResultParser specResultParser = new SpecResultParser();
 		for (File file : reportFolder.listFiles(new XmlFiles())) {
-			try(FileInputStream is = new FileInputStream(file)) {
+			try (FileInputStream is = new FileInputStream(file)) {
 				specResultParser.parse(is, resultMapping);
 			} catch (Exception e) {
 				throw new MojoExecutionException("Exception while parsing spec for: " + file, e); //$NON-NLS-1$
@@ -209,7 +210,7 @@ public class SARLDocGenerate extends XtendTestCompile {
 	protected void compileTestSources(XtendBatchCompiler xtend2BatchCompiler) throws MojoExecutionException {
 		List<String> testCompileSourceRoots = Lists.newArrayList(this.project.getTestCompileSourceRoots());
 		String testClassPath = Strings.concat(File.pathSeparator, getTestClassPath());
-		if(this.sourceDirectory != null){
+		if (this.sourceDirectory != null) {
 			testCompileSourceRoots = Collections.singletonList(this.sourceDirectory);
 		}
 		getLog().debug("source folders: " + testCompileSourceRoots); //$NON-NLS-1$
@@ -296,7 +297,7 @@ public class SARLDocGenerate extends XtendTestCompile {
 	}
 
 	/** Copied from JnarioDocGenerate  (version 1.0.1).
-	 * 
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$

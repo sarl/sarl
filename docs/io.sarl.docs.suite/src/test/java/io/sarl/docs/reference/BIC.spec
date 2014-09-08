@@ -151,9 +151,9 @@ describe "Built-in Capacity Reference" {
 			 * default space in the context `contextID`, then the access to the context
 			 * is forbidden.
 			 * 
-			 * <span class="label label-warning">Important</span> The context must already 
+			 * <importantnote> The context must already 
 			 * exist, and the default space inside this context must have the same ID 
-			 * as `expectedDefaultSpaceID`.
+			 * as `expectedDefaultSpaceID`.</importantnote>
 			 * 
 			 * This action fires two events:
 			 * 
@@ -488,9 +488,10 @@ describe "Built-in Capacity Reference" {
 			 * the default context, and therefore all its spaces including 
 			 * the default space.
 			 * 
-			 * <span class="label label-danger">Important</span> If the killed 
+			 * <veryimportantnote> If the killed 
 			 * agent was a composed agent, it must not have members any more before 
 			 * calling this action, otherwise a `RuntimeException` is thrown.
+			 * </veryimportantnote>
 			 * 
 			 * This action fires two events:
 			 *
@@ -803,10 +804,10 @@ describe "Built-in Capacity Reference" {
 			 * This function emits the given event into the inner context
 			 * of the agent (in the default space).
 			 * 
-			 * <span class="label label-warning">Important</span> It is not
+			 * <importantnote> It is not
 			 * possible to execute a particular behavior explicitly.
 			 * All the behaviors that are waiting for a given event will 
-			 * be executed by this function.
+			 * be executed by this function.</importantnote>
 			 * 
 			 * @filter(.*) 
 			 */
