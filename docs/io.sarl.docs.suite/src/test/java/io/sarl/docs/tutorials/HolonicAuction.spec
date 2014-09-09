@@ -88,10 +88,10 @@ describe "English Auction with Holons"{
 		 */
 		fact "Principle of the English Auction" {
 			// Test the URLs in the introduction of this page.
-			"../reference/GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
-			"../reference/AgentReferenceSpec.html".mustBeJnarioLink
-			"%sarlmavenrepository%".mustBeHttpLink
-			"%website%".mustBeHttpLink
+			"../reference/GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+			"../reference/AgentReferenceSpec.html" should beAccessibleFrom this
+			"%sarlmavenrepository%" should beURL "!file"
+			"%website%" should beURL "!file"
 		}
 
 		/*
@@ -115,7 +115,7 @@ describe "English Auction with Holons"{
 		 * @filter(.*)
 		 */
 		fact "Principle of the Application" {
-			"./holonic_auction.png".mustBePicture
+			"./holonic_auction.png" should beAccessibleFrom this
 		}
 
 		/*
@@ -141,7 +141,7 @@ describe "English Auction with Holons"{
 		 * @filter(.*)
 		 */
 		fact "Why are the sub-agents in the inner context?" {
-			"../reference/BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
+			"../reference/BuiltInCapacityReferenceSpec.html" should beAccessibleFrom this
 		}
 
 		/* In the application, two events are needed: the event from
@@ -968,7 +968,7 @@ describe "English Auction with Holons"{
 			 */
 			fact "Compile the code" {
 				// Test the URL in the introduction of this section
-				"../gettingstarted/RunSARLAgentInTheEclipseIDESpec.html".mustBeJnarioLink
+				"../gettingstarted/RunSARLAgentInTheEclipseIDESpec.html" should beAccessibleFrom this
 			}
 
 			/* Here, there is two assumptions:<ol>

@@ -22,11 +22,7 @@ package io.sarl.docs.utils;
 
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.isEmpty;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.jnario.lib.Assert.fail;
 import io.sarl.lang.sarl.Action;
 import io.sarl.lang.sarl.ActionSignature;
 import io.sarl.lang.sarl.Agent;
@@ -37,38 +33,37 @@ import io.sarl.lang.sarl.Capacity;
 import io.sarl.lang.sarl.CapacityUses;
 import io.sarl.lang.sarl.Constructor;
 import io.sarl.lang.sarl.Event;
-import io.sarl.lang.sarl.Feature;
 import io.sarl.lang.sarl.FeatureContainer;
 import io.sarl.lang.sarl.FormalParameter;
+import io.sarl.lang.sarl.ImplementingElement;
+import io.sarl.lang.sarl.InheritingElement;
 import io.sarl.lang.sarl.ParameterizedFeature;
+import io.sarl.lang.sarl.RequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.Skill;
-import io.sarl.lang.sarl.TopElement;
 
-import java.util.Arrays;
+import java.io.File;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Objects;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
+import org.eclipse.xtext.nodemodel.ICompositeNode;
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.ClassloaderClasspathUriResolver;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.XBlockExpression;
-import org.eclipse.xtext.xbase.XBooleanLiteral;
+import org.eclipse.xtext.xbase.XCastedExpression;
+import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
-import org.eclipse.xtext.xbase.XNumberLiteral;
-import org.eclipse.xtext.xbase.XStringLiteral;
-import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.interpreter.IEvaluationResult;
 import org.eclipse.xtext.xbase.interpreter.IExpressionInterpreter;
 import org.eclipse.xtext.xtype.XImportDeclaration;
@@ -87,9 +82,6 @@ import com.google.inject.Inject;
 @SuppressWarnings("static-method")
 public class SARLParser {
 
-	private static final double PRECISION = 10e-7;
-	private static final int HEX_BASE = 16;
-
 	@Inject
 	private ParseHelper<SarlScript> sarlParser;
 	@Inject
@@ -100,7 +92,30 @@ public class SARLParser {
 	private IExpressionInterpreter interpreter;
 
 	private boolean initial = true;
-
+	
+	/** Replies a path built from the given elements.
+	 *
+	 * @param element1 - first mandatory element.
+	 * @param elements - the rest of the elements of the path.
+	 * @return the path.
+	 */
+	public String path(String element1, String... elements) {
+		StringBuilder b = new StringBuilder();
+		if (element1 != null && !element1.isEmpty()) {
+			b.append(element1);
+		}
+		if (elements != null) {
+			for (String element : elements) {
+				if (element != null && !element.isEmpty()) {
+					if (b.length() > 0) {
+						b.append(File.separator);
+					}
+					b.append(element);
+				}
+			}
+		}
+		return b.toString();
+	}
 	/** Parse a SARL code and replies the SARL model.
 	 * <p>
 	 * This function returns even if the SARL code is
@@ -249,540 +264,549 @@ public class SARLParser {
 	 *
 	 * @param s - the SARL script.
 	 * @param name - the name of the package.
-	 * @return s
+	 * @return validation status
 	 */
-	public SarlScript mustHavePackage(SarlScript s, String name) {
-		assertEquals("Missed package", name, s.getName()); //$NON-NLS-1$
-		return s;
-	}
-
-	/** Ensure that the given SARL script has no import statement.
-	 *
-	 * @param s - the SARL script.
-	 * @return s
-	 */
-	public SarlScript mustNotHaveImport(SarlScript s) {
-		if (s.getImportSection() != null) {
-			assertEquals("Must not have imports", 0, s.getImportSection().getImportDeclarations().size()); //$NON-NLS-1$
-		}
-		return s;
+	public boolean should_havePackage(SarlScript s, String name) {
+		return Objects.equals(s.getName(), name);
 	}
 
 	/** Ensure that the given SARL script has number of import statements.
 	 *
 	 * @param s - the SARL script.
 	 * @param numberOfImports - the expected number of imports.
-	 * @return s
+	 * @return validation status
 	 */
-	public SarlScript mustHaveImports(SarlScript s, int numberOfImports) {
-		assertEquals("Invalid number of imports", //$NON-NLS-1$
-				numberOfImports,
-				s.getImportSection().getImportDeclarations().size());
-		return s;
+	public boolean should_haveNbImports(SarlScript s, int numberOfImports) {
+		int nb = 0;
+		if (s != null
+			&& s.getImportSection() != null
+			&& s.getImportSection().getImportDeclarations() != null) {
+			nb = s.getImportSection().getImportDeclarations().size();
+		}
+		return numberOfImports == nb;
 	}
 
-	/** Ensure that the given SARL script has number of elements defined inside.
+	/** Ensure that the given object has number of elements defined inside.
 	 *
-	 * @param s - the SARL script.
+	 * @param s - the object.
 	 * @param numberOfElements - the number of top elements defined in the script.
-	 * @return s
+	 * @return the validation status.
 	 */
-	public SarlScript mustHaveTopElements(SarlScript s, int numberOfElements) {
-		assertEquals("Invalid number of imports", numberOfElements, s.getElements().size()); //$NON-NLS-1$
-		return s;
+	public boolean should_haveNbElements(EObject s, int numberOfElements) {
+		if (s instanceof SarlScript) {
+			return numberOfElements == ((SarlScript) s).getElements().size();
+		}
+		if (s instanceof FeatureContainer) {
+			return numberOfElements == ((FeatureContainer) s).getFeatures().size();
+		}
+		return false;
 	}
 
-	/** Ensure that the given SARL script has an import statement.
+	/** Ensure that the given object is an action with the given number of parameters.
+	 *
+	 * @param s - the object.
+	 * @param numberOfParameters - the number of parameters defined for the action.
+	 * @return the validation status.
+	 */
+	public boolean should_haveNbParameters(EObject s, int numberOfParameters) {
+		int nb = 0;
+		EObject obj = s;
+		if (obj instanceof Action) {
+			obj = ((Action) obj).getSignature();
+		}
+		if (obj instanceof ParameterizedFeature) {
+			ParameterizedFeature f = (ParameterizedFeature) obj;
+			if (f.getParams() != null) {
+				nb = f.getParams().size();
+			}
+		}
+		return nb == numberOfParameters;
+	}
+
+	/** Ensure that the given SARL script has an import statement of a class.
 	 *
 	 * @param model - the SARL script.
-	 * @param index - the expected position of the import statement in the list
-	 * of the imports.
 	 * @param name - the name of the imported type.
-	 * @param isStatic - indicates if the type is statically imported.
-	 * @param hasWildcard - indicates if the type is imported with a wildcard.
-	 * @param isExtension - indicates if the type is imported as an extension.
 	 * @return model
 	 */
-	public SarlScript mustHaveImport(
-			SarlScript model, int index, String name, boolean isStatic,
-			boolean hasWildcard, boolean isExtension) {
-		XImportDeclaration d = model.getImportSection().getImportDeclarations().get(index);
-		assertNotNull("Null import directive", d); //$NON-NLS-1$
-		assertEquals("Not the same imported name", name, d.getImportedName()); //$NON-NLS-1$
-		assertEquals("Invalid static modifier", isStatic, d.isStatic()); //$NON-NLS-1$
-		assertEquals("Invalid wildcard flag", hasWildcard, d.isWildcard()); //$NON-NLS-1$
-		assertEquals("Invalid extension flag", isExtension, d.isExtension()); //$NON-NLS-1$
-		return model;
+	public boolean should_importClass(SarlScript model, String name) {
+		if (model == null
+			|| model.getImportSection() == null
+			|| model.getImportSection().getImportDeclarations() == null) {
+			return false;
+		}
+		for(XImportDeclaration d : model.getImportSection().getImportDeclarations()) {
+			if (d != null && Objects.equals(name, d.getImportedName())) {
+				return !d.isStatic() && !d.isWildcard() && !d.isExtension(); 
+			}
+		}
+		return false;
+	}
+
+	/** Ensure that the given SARL script has an import statement of the classes
+	 * in a package.
+	 *
+	 * @param model - the SARL script.
+	 * @param name - the name of the package.
+	 * @return model
+	 */
+	public boolean should_importClassesFrom(SarlScript model, String name) {
+		if (model == null
+			|| model.getImportSection() == null
+			|| model.getImportSection().getImportDeclarations() == null) {
+			return false;
+		}
+		for(XImportDeclaration d : model.getImportSection().getImportDeclarations()) {
+			if (d != null && Objects.equals(name, d.getImportedName())) {
+				return !d.isStatic() && d.isWildcard() && !d.isExtension(); 
+			}
+		}
+		return false;
+	}
+
+	/** Ensure that the given SARL script has an import statement of the classes
+	 * in a package.
+	 *
+	 * @param model - the SARL script.
+	 * @param name - the name of the type.
+	 * @return model
+	 */
+	public boolean should_importMembers(SarlScript model, String name) {
+		if (model == null
+			|| model.getImportSection() == null
+			|| model.getImportSection().getImportDeclarations() == null) {
+			return false;
+		}
+		for(XImportDeclaration d : model.getImportSection().getImportDeclarations()) {
+			if (d != null && Objects.equals(name, d.getImportedName())) {
+				return d.isStatic() && d.isWildcard() && !d.isExtension(); 
+			}
+		}
+		return false;
 	}
 
 	/** Ensure that the given object is the SARL "event" top element.
 	 *
 	 * @param o - the object to test.
 	 * @param name - the expected name of the event.
-	 * @param superType - the name of the expected super-type, or <code>null</code>
-	 * if none.
-	 * @return the agent
+	 * @return the validation status
 	 */
-	public Event mustBeEvent(TopElement o, String name, String superType) {
-		assertTrue("Not an event type", o instanceof Event); //$NON-NLS-1$
-		Event e = (Event) o;
-		assertEquals("Not same event name", name, e.getName()); //$NON-NLS-1$
-		if (superType != null) {
-			assertEquals("Invalid number of super-types", 1, e.getSuperTypes().size()); //$NON-NLS-1$
-			assertEquals("Invalid super-type", superType, e.getSuperTypes().get(0).getQualifiedName()); //$NON-NLS-1$
-		} else {
-			assertEquals("Invalid number of super-types", 0, e.getSuperTypes().size()); //$NON-NLS-1$
+	public boolean should_beEvent(EObject o, String name) {
+		if (!(o instanceof Event)) {
+			return false;
 		}
-		return e;
+		Event e = (Event) o;
+		return Objects.equals(name, e.getName());
 	}
 
 	/** Ensure that the given object is the SARL "capacity" top element.
 	 *
 	 * @param o - the object to test.
 	 * @param name - the expected name of the capacity.
-	 * @param superTypes - the list of the names of the super-types.
-	 * @return o
+	 * @return the validation status
 	 */
-	public Capacity mustBeCapacity(TopElement o, String name, String... superTypes) {
-		assertTrue("Not a capacity type", o instanceof Capacity); //$NON-NLS-1$
-		Capacity c = (Capacity) o;
-		assertEquals("Invalid capacity name", name, c.getName()); //$NON-NLS-1$
-		Set<String> set = new TreeSet<>(Arrays.asList(superTypes));
-		assertEquals("Invalid number of super-types", superTypes.length, c.getSuperTypes().size()); //$NON-NLS-1$
-		for (JvmParameterizedTypeReference ref : c.getSuperTypes()) {
-			assertTrue("Unexpected super-type: " + ref.getQualifiedName(), set.remove(ref.getQualifiedName())); //$NON-NLS-1$
+	public boolean should_beCapacity(EObject o, String name) {
+		if (!(o instanceof Capacity)) {
+			return false;
 		}
-		return c;
+		Capacity c = (Capacity) o;
+		return Objects.equals(name, c.getName());
 	}
 
 	/** Ensure that the given object is the SARL "skill" top element.
 	 *
 	 * @param o - the object to test.
 	 * @param name - the expected name of the skill.
-	 * @param superType - the name of the expected super-type, or <code>null</code>
-	 * if none.
-	 * @param capacities - the list of the names of the implemented capacities.
-	 * @return o
+	 * @return the validation status
 	 */
-	public Skill mustBeSkill(TopElement o, String name, String superType, String... capacities) {
-		assertTrue("Invalid type of skill", o instanceof Skill); //$NON-NLS-1$
+	public boolean should_beSkill(EObject o, String name) {
+		if (!(o instanceof Skill)) {
+			return false;
+		}
 		Skill s = (Skill) o;
-		assertEquals("Not same skill name", name, s.getName()); //$NON-NLS-1$
-		if (superType != null) {
-			assertEquals("Invalid number of super-types", 1, s.getSuperTypes().size()); //$NON-NLS-1$
-			assertEquals("Invalid super-type", superType, s.getSuperTypes().get(0).getQualifiedName()); //$NON-NLS-1$
-		} else {
-			assertEquals(0, s.getSuperTypes().size());
-		}
-		Set<String> set = new TreeSet<>(Arrays.asList(capacities));
-		assertEquals("Invalid number of capacities", capacities.length, s.getImplementedTypes().size()); //$NON-NLS-1$
-		for (JvmParameterizedTypeReference ref : s.getImplementedTypes()) {
-			assertTrue("Unexpected capacity: " + ref.getQualifiedName(), set.remove(ref.getQualifiedName())); //$NON-NLS-1$
-		}
-		return s;
+		return Objects.equals(name, s.getName());
 	}
 
 	/** Ensure that the given object is the SARL "behavior" top element.
 	 *
 	 * @param o - the object to test.
 	 * @param name - the expected name of the behavior.
-	 * @param superType - the name of the expected super-type, or <code>null</code>
-	 * if none.
-	 * @return o
+	 * @return the validation status
 	 */
-	public Behavior mustBeBehavior(TopElement o, String name, String superType) {
-		assertTrue("Invalid type of behavior", o instanceof Behavior); //$NON-NLS-1$
-		Behavior b = (Behavior) o;
-		assertEquals("Invalid behavior name", name, b.getName()); //$NON-NLS-1$
-		if (superType != null) {
-			assertEquals("Invalid number of super-types", 1, b.getSuperTypes().size()); //$NON-NLS-1$
-			assertEquals("Invalid super-type", superType, b.getSuperTypes().get(0).getQualifiedName()); //$NON-NLS-1$
-		} else {
-			assertEquals("Invalid number of super-types", 0, b.getSuperTypes().size()); //$NON-NLS-1$
+	public boolean should_beBehavior(EObject o, String name) {
+		if (!(o instanceof Behavior)) {
+			return false;
 		}
-		return b;
+		Behavior b = (Behavior) o;
+		return Objects.equals(name, b.getName());
 	}
 
 	/** Ensure that the given object is the SARL "agent" top element.
 	 *
 	 * @param o - the object to test.
 	 * @param name - the expected name of the agent.
-	 * @param superType - the name of the expected super-type, or <code>null</code>
+	 * @return validation status
+	 */
+	public boolean should_beAgent(EObject o, String name) {
+		if (!(o instanceof Agent)) {
+			return false;
+		}
+		Agent a = (Agent) o;
+		return Objects.equals(name, a.getName());
+	}
+
+	/** Ensure that the given object is extending the given type.
+	 *
+	 * @param o - the object to test.
+	 * @param superTypes - the names of the expected super-types, or <code>null</code>
 	 * if none.
 	 * @return o
 	 */
-	public Agent mustBeAgent(TopElement o, String name, String superType) {
-		assertTrue("Invalid type of agent", o instanceof Agent); //$NON-NLS-1$
-		Agent a = (Agent) o;
-		assertEquals("Invalid agent name", name, a.getName()); //$NON-NLS-1$
-		if (superType != null) {
-			assertEquals("Invalid number of super-types", 1, a.getSuperTypes().size()); //$NON-NLS-1$
-			assertEquals("Invalid super-type", superType, a.getSuperTypes().get(0).getQualifiedName()); //$NON-NLS-1$
-		} else {
-			assertEquals("Invalid number of super-types", 0, a.getSuperTypes().size()); //$NON-NLS-1$
+	public boolean should_extend(EObject o, Object superTypes) {
+		if (!(o instanceof InheritingElement)) {
+			return false;
 		}
-		return a;
+		InheritingElement a = (InheritingElement) o;
+		if (superTypes != null) {
+			return SpecificationTools.should_iterate(
+					a.getSuperTypes().iterator(),
+					superTypes,
+					false);
+		}
+		
+		return 0 == a.getSuperTypes().size();
 	}
 
-	/** Ensure that the given object has the given number of features inside.
-	 *
-	 * @param <T> - type of the object.
-	 * @param c - the object to test.
-	 * @param numberOfFeatures - the expected number of features.
-	 * @return c
-	 */
-	public <T extends FeatureContainer> T mustHaveFeatures(T c, int numberOfFeatures) {
-		assertEquals("Invalid number of features", numberOfFeatures, c.getFeatures().size()); //$NON-NLS-1$
-		return c;
-	}
-
-	/** Ensure that the given object is the SARL "var" or "val" statement.
+	/** Ensure that the given object is extending the given type.
 	 *
 	 * @param o - the object to test.
-	 * @param writable - indicates if the attribute is writeable ("var") or not ("val").
-	 * @param name - the expected name of the attribute.
-	 * @param type - the name of the expected type of the attribute, or <code>null</code> if inferred.
-	 * @param expression - indicates if the attribute is initialized.
-	 * @return the attribute
+	 * @param superTypes - the names of the expected super-types, or <code>null</code>
+	 * if none.
+	 * @return o
 	 */
-	public Attribute mustBeAttribute(EObject o, boolean writable, String name, String type, boolean expression) {
-		assertTrue("Invalid type of attribute", o instanceof Attribute); //$NON-NLS-1$
-		Attribute attr = (Attribute) o;
-		assertNotNull("Attribute is null", attr); //$NON-NLS-1$
-		assertEquals("Invalid name of attribute", name, attr.getName()); //$NON-NLS-1$
-		assertEquals("Invalid writable modifier", writable, attr.isWriteable()); //$NON-NLS-1$
-		if (type == null) {
-			assertNull("Unexpected attribute type", attr.getType()); //$NON-NLS-1$
-		} else {
-			assertNotNull("Expecting attribute type", attr.getType()); //$NON-NLS-1$
-			assertEquals("Unexpected attribute type", type, attr.getType().getQualifiedName()); //$NON-NLS-1$
+	public boolean should_implement(EObject o, Object superTypes) {
+		if (!(o instanceof ImplementingElement)) {
+			return false;
 		}
-		assertEquals("Invalid attribute expression", expression, attr.getInitialValue() != null); //$NON-NLS-1$
-		return attr;
+		ImplementingElement a = (ImplementingElement) o;
+		if (superTypes != null) {
+			return SpecificationTools.should_iterate(
+					a.getImplementedTypes().iterator(),
+					superTypes,
+					false);
+		}
+		return 0 == a.getImplementedTypes().size();
+	}
+
+	/** Ensure that the given object is implementing the the given number
+	 * of types.
+	 *
+	 * @param o - the object to test.
+	 * @param numberOfImplements - the number of implemented types.
+	 * @return o
+	 */
+	public boolean should_haveNbImplements(EObject o, int numberOfImplements) {
+		if (!(o instanceof ImplementingElement)) {
+			return false;
+		}
+		ImplementingElement a = (ImplementingElement) o;
+		return numberOfImplements == a.getImplementedTypes().size();
+	}
+
+	/** Ensure that the given object is the SARL "var" statement.
+	 *
+	 * @param o - the object to test.
+	 * @param name - the expected name of the attribute.
+	 * @return the validation status.
+	 */
+	public boolean should_beVariable(EObject o, String name) {
+		if (!(o instanceof Attribute)) {
+			return false;
+		}
+		Attribute attr = (Attribute) o;
+		return Objects.equals(name, attr.getName())
+				&& attr.isWriteable();
+	}
+
+	/** Ensure that the given object is the SARL "val" statement.
+	 *
+	 * @param o - the object to test.
+	 * @param name - the expected name of the attribute.
+	 * @return the validation status.
+	 */
+	public boolean should_beValue(EObject o, String name) {
+		if (!(o instanceof Attribute)) {
+			return false;
+		}
+		Attribute attr = (Attribute) o;
+		return Objects.equals(name, attr.getName())
+				&& !attr.isWriteable();
+	}
+
+	/** Ensure that the given object is the SARL "var" or "val" statement
+	 * with the given type.
+	 *
+	 * @param o - the object to test.
+	 * @param type - the expected type name of the attribute, or <code>null</code>.
+	 * @return the validation status.
+	 */
+	public boolean should_haveType(EObject o, String type) {
+		if (o instanceof Attribute) {
+			Attribute attr = (Attribute) o;
+			if (type == null) {
+				return attr.getType() == null;
+			}
+			return attr.getType() != null
+				&& Objects.equals(type, attr.getType().getQualifiedName());
+		} else if (o instanceof FormalParameter) {
+			FormalParameter param = (FormalParameter) o;
+			if (type == null) {
+				return param.getParameterType() == null;
+			}
+			return param.getParameterType() != null
+						&& Objects.equals(type, param.getParameterType().getQualifiedName());
+		}
+		return false;
 	}
 
 	/** Ensure that the given object is the SARL "def" statement (with body).
 	 *
 	 * @param o - the object to test.
 	 * @param name - the expected name of the action.
-	 * @param returnType - the name of the expectd return type.
-	 * @param numberOfParameters - the expected number of formal parameters.
-	 * @param varargs - indicates if the action is variadic.
-	 * @return the action
+	 * @return validation status
 	 */
-	public Action mustBeAction(EObject o, String name, String returnType, int numberOfParameters, boolean varargs) {
-		assertTrue("Invalid type of action", o instanceof Action); //$NON-NLS-1$
+	public boolean should_beAction(EObject o, String name) {
+		if (!(o instanceof Action)) {
+			return false;
+		}
 		Action act = (Action) o;
 		ParameterizedFeature pf = act.getSignature();
-		assertTrue("Invalid type of action signature", pf instanceof ActionSignature); //$NON-NLS-1$
-		ActionSignature sig = (ActionSignature) pf;
-		assertEquals("Invalid name of action", name, sig.getName()); //$NON-NLS-1$
-		if (returnType == null) {
-			assertNull("Unexpected return type", sig.getType()); //$NON-NLS-1$
-		} else {
-			assertNotNull("Expecting return type", sig.getType()); //$NON-NLS-1$
-			assertEquals("Invalid return type", returnType, sig.getType().getQualifiedName()); //$NON-NLS-1$
+		if (!(pf instanceof ActionSignature)) {
+			return false;
 		}
-		assertNotNull("Expecting action body", act.getBody()); //$NON-NLS-1$
-		assertEquals("Invalid number of formal parameters", numberOfParameters, sig.getParams().size()); //$NON-NLS-1$
-		assertEquals("Invalid variadic modifier", varargs, sig.isVarargs()); //$NON-NLS-1$
-		return act;
+		ActionSignature sig = (ActionSignature) pf;
+		return Objects.equals(name, sig.getName());
 	}
 
 	/** Ensure that the given object is the SARL "def" statement (without body).
 	 *
 	 * @param o - the object to test.
 	 * @param name - the expected name of the action.
-	 * @param returnType - the name of the expectd return type.
-	 * @param numberOfParameters - the expected number of formal parameters.
-	 * @param varargs - indicates if the action is variadic.
-	 * @return the action
+	 * @return validation status
 	 */
-	public ActionSignature mustBeActionSignature(
-			EObject o, String name, String returnType,
-			int numberOfParameters, boolean varargs) {
-		assertTrue("Invalid type of action signature", o instanceof ActionSignature); //$NON-NLS-1$
-		ActionSignature sig = (ActionSignature) o;
-		assertEquals("Invalid actrion signature name", name, sig.getName()); //$NON-NLS-1$
-		if (returnType == null) {
-			assertNull("Unexpected return type", sig.getType()); //$NON-NLS-1$
-		} else {
-			assertNotNull("Expecting return type", sig.getType()); //$NON-NLS-1$
-			assertEquals("Invalid return type", returnType, sig.getType().getQualifiedName()); //$NON-NLS-1$
+	public boolean should_beActionSignature(EObject o, String name) {
+		if (!(o instanceof ActionSignature)) {
+			return false;
 		}
-		assertEquals("Invalid number of formal parameters", numberOfParameters, sig.getParams().size()); //$NON-NLS-1$
-		assertEquals("Invalid variadic flag", varargs, sig.isVarargs()); //$NON-NLS-1$
-		return sig;
-	}
-
-	/** Ensure that the given object is the SARL constructor.
-	 *
-	 * @param o - the object to test.
-	 * @param numberOfParameters - the expected number of formal parameters for the constructor.
-	 * @param varargs - indicates if the constructor is variadic.
-	 * @return the action signature
-	 */
-	public Constructor mustBeConstructor(EObject o, int numberOfParameters, boolean varargs) {
-		assertTrue("Invalid constructor type", o instanceof Constructor); //$NON-NLS-1$
-		Constructor cons = (Constructor) o;
-		assertNotNull("Exepcting body constructor", cons.getBody()); //$NON-NLS-1$
-		assertEquals("Invalid number of formal parameters", numberOfParameters, cons.getParams().size()); //$NON-NLS-1$
-		assertEquals("Invalid variadic flag", varargs, cons.isVarargs()); //$NON-NLS-1$
-		return cons;
+		ActionSignature sig = (ActionSignature) o;
+		return Objects.equals(name, sig.getName());
 	}
 
 	/** Ensure that the given object is the SARL "on" statement.
 	 *
 	 * @param o - the object to test.
-	 * @param eventQualifiedName - the qualified name of the expected event.
-	 * @param guard - indicates if a guard must be defined.
-	 * @return the unit
+	 * @param event - the name of expected event.
+	 * @return validation status
 	 */
-	public BehaviorUnit mustBeBehaviorUnit(EObject o, String eventQualifiedName, boolean guard) {
-		assertTrue("Invalid type of behavior unit", o instanceof BehaviorUnit); //$NON-NLS-1$
+	public boolean should_beBehaviorUnit(EObject o, String event) {
+		if (!(o instanceof BehaviorUnit)) {
+			return false;
+		}
 		BehaviorUnit bu = (BehaviorUnit) o;
-		assertEquals("Invalid event name", eventQualifiedName, bu.getEvent().getQualifiedName()); //$NON-NLS-1$
-		assertEquals("Invalid guard", guard, (bu.getGuard() != null)); //$NON-NLS-1$
-		assertNotNull("Expecting behavior unit body", bu.getBody()); //$NON-NLS-1$
-		return bu;
+		return Objects.equals(event, bu.getEvent().getQualifiedName());
 	}
 
 	/** Ensure that the given object is the SARL "uses" statement.
 	 *
 	 * @param o - the object to test.
-	 * @param capacityQualifiedName - the list of the qualified names of
-	 * the capacites that must follow the keyword "uses".
-	 * @return the statement
+	 * @param capacities - the collection of the expected capacities.
+	 * @return validation status
 	 */
-	public CapacityUses mustBeCapacityUses(EObject o, String... capacityQualifiedName) {
-		assertTrue("Invalid type of capacity uses", o instanceof CapacityUses); //$NON-NLS-1$
-		CapacityUses cu = (CapacityUses) o;
-		assertTrue("not enough parameters for the function mustBeCapacityUses", //$NON-NLS-1$
-				capacityQualifiedName.length > 0);
-		assertEquals("Invalid number of capacities", cu.getCapacitiesUsed().size(), //$NON-NLS-1$
-				capacityQualifiedName.length);
-		Set<String> elements = new TreeSet<>(Arrays.asList(capacityQualifiedName));
-		for (JvmParameterizedTypeReference t : cu.getCapacitiesUsed()) {
-			if (t != null) {
-				assertTrue("not expecting capacity: " + t.getQualifiedName(), //$NON-NLS-1$
-						elements.remove(t.getQualifiedName()));
-			}
+	public boolean should_beCapacityUse(EObject o, Object capacities) {
+		if (!(o instanceof CapacityUses)) {
+			return false;
 		}
-		assertTrue("Expecting capacities: " + elements, elements.isEmpty()); //$NON-NLS-1$
-		return cu;
+		CapacityUses uses = (CapacityUses) o;
+		if (uses.getCapacitiesUsed() != null) {
+			return SpecificationTools.should_iterate(
+					uses.getCapacitiesUsed().iterator(),
+					capacities,
+					false);
+		}
+		return false;
+	}
+
+	/** Ensure that the given object is the SARL "requires" statement.
+	 *
+	 * @param o - the object to test.
+	 * @param capacities - the collection of the expected capacities.
+	 * @return validation status
+	 */
+	public boolean should_beCapacityRequirement(EObject o, Object capacities) {
+		if (!(o instanceof RequiredCapacity)) {
+			return false;
+		}
+		RequiredCapacity reqs = (RequiredCapacity) o;
+		if (reqs.getRequiredCapacities() != null) {
+			return SpecificationTools.should_iterate(
+					reqs.getRequiredCapacities().iterator(),
+					capacities);
+		}
+		return false;
+	}
+
+	/** Ensure that the given object is a behavior unit with or
+	 * with a guard.
+	 *
+	 * @param o - the object to test.
+	 * @param guard - the expected guard.
+	 * @return validation status
+	 */
+	public boolean should_beGuardedWith(EObject o, String guard) {
+		if (!(o instanceof BehaviorUnit)) {
+			return false;
+		}
+		BehaviorUnit bu = (BehaviorUnit) o;
+		XExpression actualGuard = bu.getGuard();
+		if (guard == null) {
+			return actualGuard == null;
+		}
+		if (SpecificationTools.should_beLiteral(actualGuard, guard)) {
+			return true;
+		}
+		String code;
+		if (actualGuard != null) {
+			ICompositeNode node = NodeModelUtils.getNode(actualGuard);
+			if (node == null) {
+				code = ""; //$NON-NLS-1$
+			} else {
+				code = node.getText();
+			}
+		} else {
+			code = ""; //$NON-NLS-1$
+		}
+		return Objects.equals(guard, code.trim());
+	}
+
+	/** Ensure that the given object is the SARL "new" statement (with body).
+	 *
+	 * @param o - the object to test.
+	 * @param something - not used.
+	 * @return validation status
+	 */
+	public boolean should_beConstructor(EObject o, Object something) {
+		if (!(o instanceof Constructor)) {
+			return false;
+		}
+		return true;
+	}
+
+	/** Ensure that the given object is the SARL "def" statement
+	 * that is variadic or not.
+	 *
+	 * @param o - the object to test.
+	 * @param isVariadic - the expected variadic flag
+	 * @return validation status
+	 */
+	public boolean should_beVariadic(EObject o, boolean isVariadic) {
+		ParameterizedFeature f;
+		if (o instanceof Action) {
+			f = ((Action) o).getSignature();
+		} else if (o instanceof ParameterizedFeature) {
+			f = (ParameterizedFeature) o;
+		} else {
+			return false;
+		}
+		return f.isVarargs() == isVariadic;
+	}
+
+	/** Ensure that the given object is the SARL "def" statement (with body)
+	 * that is returning the given type.
+	 *
+	 * @param o - the object to test.
+	 * @param returnType - the name of the expected return type.
+	 * @return the validation status
+	 */
+	public boolean should_reply(EObject o, String returnType) {
+		ParameterizedFeature pf;
+		if (o instanceof Action) {
+			pf = ((Action) o).getSignature();
+		} else if (o instanceof ParameterizedFeature) {
+			pf = (ParameterizedFeature) o;
+		} else {
+			return false;
+		}
+		if (!(pf instanceof ActionSignature)) {
+			return false;
+		}
+		ActionSignature sig = (ActionSignature) pf;
+		if (returnType == null) {
+			return sig.getType() == null;
+		}
+		return sig.getType() != null
+				&& Objects.equals(returnType, sig.getType().getQualifiedName());
 	}
 
 	/** Ensure that the given feature has a formal parameter.
 	 *
-	 * @param <T> - type of the object.
 	 * @param o - the feature to test.
-	 * @param index - the expected position of the parameter in the list of parameters.
 	 * @param name - the expected name of the formal parameter.
-	 * @param type - the name of the expected type of the formal parameter.
-	 * @param defaultValue - indicates if a default value must be defined.
-	 * @return o
+	 * @return the validation status
 	 */
-	public <T extends Feature> T mustHaveParameter(T o, int index, String name, String type, boolean defaultValue) {
-		ParameterizedFeature pf;
-		if (o instanceof Action) {
-			pf = ((Action) o).getSignature();
-		} else {
-			pf = (ParameterizedFeature) o;
+	public boolean should_beParameter(EObject o, String name) {
+		if (!(o instanceof FormalParameter)) {
+			return false;
 		}
-		FormalParameter p = pf.getParams().get(index);
-		assertNotNull("Expecting formal parameter", p); //$NON-NLS-1$
-		assertEquals("Invalid parameter name", name, p.getName()); //$NON-NLS-1$
-		if (type == null) {
-			assertNull("Unexpected parameter type", p.getParameterType()); //$NON-NLS-1$
-			assertNotNull("Expecting default value", p.getDefaultValue()); //$NON-NLS-1$
-			assertTrue("Expecting default value", defaultValue); //$NON-NLS-1$
-		} else {
-			assertNotNull("Expecting parameter type", p.getParameterType()); //$NON-NLS-1$
-			assertEquals("Invalid parameter type", type, p.getParameterType().getQualifiedName()); //$NON-NLS-1$
-			assertEquals("Invalid default value", defaultValue, p.getDefaultValue() != null); //$NON-NLS-1$
+		FormalParameter p = (FormalParameter) o;
+		return Objects.equals(name, p.getName());
+	}
+
+	/** Ensure that the given feature has a formal parameter.
+	 *
+	 * @param o - the feature to test.
+	 * @param name - the expected name of the formal parameter.
+	 * @return the validation status
+	 */
+	public boolean should_haveDefaultValue(EObject o, Object name) {
+		if (!(o instanceof FormalParameter)) {
+			return false;
 		}
-		return o;
-	}
-
-	/** Ensure that the given string literal is equal to the given value.
-	 *
-	 * @param actual - the string literal to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public XStringLiteral mustBeEqual(XStringLiteral actual, String expected) {
-		assertNotNull("not equal", actual); //$NON-NLS-1$
-		assertEquals("not equal", expected, actual.getValue()); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given string literal is equal to the given value.
-	 *
-	 * @param actual - the string literal to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public XStringLiteral mustBeEqual(XStringLiteral actual, char expected) {
-		assertNotNull("not equal", actual); //$NON-NLS-1$
-		assertNotNull("not equal", actual.getValue()); //$NON-NLS-1$
-		assertEquals("not equal", 1, actual.getValue().length()); //$NON-NLS-1$
-		assertEquals("not equal", expected, actual.getValue().charAt(0)); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given boolean literal is equal to the given value.
-	 *
-	 * @param actual - the boolean literal to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public XBooleanLiteral mustBeEqual(XBooleanLiteral actual, boolean expected) {
-		assertNotNull("not equal", actual); //$NON-NLS-1$
-		assertEquals("not equal", expected, actual.isIsTrue()); //$NON-NLS-1$
-		return actual;
-	}
-
-	private String cleanNumber(String s) {
-		if (s == null) {
-			return null;
+		FormalParameter p = (FormalParameter) o;
+		if (name == null) {
+			return p.getDefaultValue() == null;
 		}
-		if (s.startsWith("0x") || s.startsWith("0X")) { //$NON-NLS-1$//$NON-NLS-2$
-			return s;
+		return SpecificationTools.should_beLiteral(p.getDefaultValue(), name);
+	}
+
+	/** Ensure that the given feature is an attribute with an initial value.
+	 *
+	 * @param o - the feature to test.
+	 * @param initialValue - the expected literal for the initial value.
+	 * @return the validation status
+	 */
+	public boolean should_haveInitialValue(EObject o, Object initialValue) {
+		if (!(o instanceof Attribute)) {
+			return false;
 		}
-		String literal = s.replace("_", ""); //$NON-NLS-1$//$NON-NLS-2$
-		literal = literal.toLowerCase().replaceFirst("l|f|d|(bi)|(bd)$", ""); //$NON-NLS-1$ //$NON-NLS-2$
-		return literal;
-	}
-
-	/** Ensure that the given number literal is equal to the given value.
-	 *
-	 * @param actual - the number literal to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public XNumberLiteral mustBeEqual(XNumberLiteral actual, Number expected) {
-		assertNotNull("not equal", actual); //$NON-NLS-1$
-		assertEquals("not equal", expected.toString(), cleanNumber(actual.getValue())); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given number literal is equal to the given value.
-	 *
-	 * @param actual - the number literal to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public XNumberLiteral mustBeEqual(XNumberLiteral actual, byte expected) {
-		assertNotNull("not equal", actual); //$NON-NLS-1$
-		assertEquals("not equal", expected, Byte.parseByte(cleanNumber(actual.getValue()))); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given number literal is equal to the given value.
-	 *
-	 * @param actual - the number literal to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public XNumberLiteral mustBeEqual(XNumberLiteral actual, short expected) {
-		assertNotNull("not equal", actual); //$NON-NLS-1$
-		assertEquals("not equal", expected, Short.parseShort(cleanNumber(actual.getValue()))); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given number literal is equal to the given value.
-	 *
-	 * @param actual - the number literal to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public XNumberLiteral mustBeEqual(XNumberLiteral actual, int expected) {
-		assertNotNull("not equal", actual); //$NON-NLS-1$
-		assertNotNull("not equal", actual.getValue()); //$NON-NLS-1$
-		String literal = cleanNumber(actual.getValue());
-		if (literal.startsWith("0x") || literal.startsWith("0X")) { //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals("not equal", expected, Integer.parseInt(literal.substring(2), HEX_BASE)); //$NON-NLS-1$
-		} else {
-			assertEquals("not equal", expected, Integer.parseInt(literal)); //$NON-NLS-1$
+		Attribute p = (Attribute) o;
+		if (initialValue == null) {
+			return p.getInitialValue() == null;
 		}
-		return actual;
-	}
-
-	/** Ensure that the given number literal is equal to the given value.
-	 *
-	 * @param actual - the number literal to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public XNumberLiteral mustBeEqual(XNumberLiteral actual, long expected) {
-		assertNotNull("not equal", actual); //$NON-NLS-1$
-		String literal = cleanNumber(actual.getValue());
-		if (literal.startsWith("0x") || literal.startsWith("0X")) { //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals("not equal", expected, Long.parseLong(literal.substring(2), HEX_BASE)); //$NON-NLS-1$
-		} else {
-			assertEquals("not equal", expected, Long.parseLong(literal)); //$NON-NLS-1$
+		XExpression expr = p.getInitialValue();
+		if ((expr instanceof XFeatureCall) || (expr instanceof XMemberFeatureCall)
+			|| (expr instanceof XConstructorCall)) {
+			return should_call(expr, initialValue.toString());
 		}
-		return actual;
-	}
-
-	/** Ensure that the given number literal is equal to the given value.
-	 *
-	 * @param actual - the number literal to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public XNumberLiteral mustBeEqual(XNumberLiteral actual, float expected) {
-		assertNotNull("not equal", actual); //$NON-NLS-1$
-		assertEquals("not equal", expected, Float.parseFloat(cleanNumber(actual.getValue())), PRECISION); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given number literal is equal to the given value.
-	 *
-	 * @param actual - the number literal to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public XNumberLiteral mustBeEqual(XNumberLiteral actual, double expected) {
-		assertNotNull("not equal", actual); //$NON-NLS-1$
-		assertEquals("not equal", expected, Double.parseDouble(cleanNumber(actual.getValue())), PRECISION); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given type literal is equal to the given type.
-	 *
-	 * @param actual - the type literal to test.
-	 * @param expected - the name of the expected type.
-	 * @return actual
-	 */
-	public XTypeLiteral mustBeEqual(XTypeLiteral actual, String expected) {
-		assertNotNull("not equal", actual); //$NON-NLS-1$
-		assertNotNull("not equal", actual.getType()); //$NON-NLS-1$
-		assertEquals("not equal", expected, actual.getType().getQualifiedName()); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given type literal is equal to the given type.
-	 *
-	 * @param actual - the type literal to test.
-	 * @param expected - the expected type.
-	 * @return actual
-	 */
-	public XTypeLiteral mustBeEqual(XTypeLiteral actual, Class<?> expected) {
-		return mustBeEqual(actual, expected.getName());
-	}
-
-	/** Ensure that the given feature call is refering the given type.
-	 *
-	 * @param actual - the feature call to test.
-	 * @param expected - the expected refered type.
-	 * @return actual
-	 */
-	public XFeatureCall mustBeType(XFeatureCall actual, Class<?> expected) {
-		assertNotNull("null feature call", actual); //$NON-NLS-1$
-		assertTrue("Feature call is not a type literal", actual.isTypeLiteral()); //$NON-NLS-1$
-		assertEquals("Invalid type", expected.getName(), actual.getFeature().getQualifiedName()); //$NON-NLS-1$
-		return actual;
+		if (expr instanceof XCastedExpression) {
+			XCastedExpression e = (XCastedExpression) expr;
+			if (Objects.equals(
+					e.getType().getQualifiedName(),
+					initialValue.toString())) {
+				return true;
+			}
+			return SpecificationTools.should_beLiteral(e.getTarget(), initialValue);
+		}
+		return SpecificationTools.should_beLiteral(p.getInitialValue(), initialValue);
 	}
 
 	/** Ensure that the given feature call is calling the feature with
@@ -790,25 +814,24 @@ public class SARLParser {
 	 *
 	 * @param actual - the feature call to test.
 	 * @param expected - the expected name of the feature.
-	 * @return actual
+	 * @return the validation status
 	 */
-	public XMemberFeatureCall mustCall(XMemberFeatureCall actual, String expected) {
-		assertNotNull("null feature call", actual); //$NON-NLS-1$
-		assertEquals("Invalid type", expected, actual.getFeature().getQualifiedName()); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given feature call is calling the feature with
-	 * the given name.
-	 *
-	 * @param actual - the feature call to test.
-	 * @param expected - the extected name of the feature.
-	 * @return actual
-	 */
-	public XFeatureCall mustCall(XFeatureCall actual, String expected) {
-		assertNotNull("null feature call", actual); //$NON-NLS-1$
-		assertEquals("Invalid type", expected, actual.getFeature().getQualifiedName()); //$NON-NLS-1$
-		return actual;
+	public boolean should_call(EObject actual, String expected) {
+		if (actual instanceof XMemberFeatureCall) {
+			XMemberFeatureCall c = (XMemberFeatureCall) actual;
+			return Objects.equals(expected, c.getFeature().getQualifiedName());
+		}
+		if (actual instanceof XFeatureCall) {
+			XFeatureCall c = (XFeatureCall) actual;
+			return Objects.equals(expected, c.getFeature().getQualifiedName());
+		}
+		if (actual instanceof XConstructorCall) {
+			XConstructorCall c = (XConstructorCall) actual;
+			String consName = c.getConstructor().getQualifiedName() +
+							"." + c.getConstructor().getSimpleName(); //$NON-NLS-1$
+			return Objects.equals(expected, consName);
+		}
+		return false;
 	}
 
 	/** Parse a Xbase expression.

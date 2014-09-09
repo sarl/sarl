@@ -74,10 +74,10 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 		 */
 		fact "Principle of the Application" {
 			// Test the URLs in the introduction of this page.
-			"../reference/GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
-			"%sarlmavenrepository%".mustBeHttpLink
-			"%website%".mustBeHttpLink
-			"./pingpongspace.png".mustBePicture
+			"../reference/GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+			"./pingpongspace.png" should beAccessibleFrom this
+			"%sarlmavenrepository%" should beURL "!file"
+			"%website%" should beURL "!file"
 		}
 
 		/* First, the `Ping` and `Pong` events must be defined.
@@ -254,7 +254,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					// TEXT
 					""
 				)
-				"../reference/AgentReferenceSpec.html".mustBeJnarioLink
+				"../reference/AgentReferenceSpec.html" should beAccessibleFrom this
 			}
 
 			/* Now, it is time to define how the pong agent
@@ -758,7 +758,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 			 */
 			fact "Compile the code" {
 				// Test the URL in the introduction of this section
-				"../gettingstarted/RunSARLAgentInTheEclipseIDESpec.html".mustBeJnarioLink
+				"../gettingstarted/RunSARLAgentInTheEclipseIDESpec.html" should beAccessibleFrom this
 			}
 
 			/* The principle is to run each agent is a different instance of the 

@@ -20,33 +20,47 @@
  */
 package io.sarl.docs.utils;
 
-import static com.google.common.collect.Iterables.contains;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.jnario.lib.Assert.assertTrue;
 
 import java.io.File;
+import java.lang.reflect.Array;
+import java.lang.reflect.Method;
+import java.math.BigInteger;
 import java.net.URL;
-import java.sql.Date;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
-import java.util.ListIterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import junit.framework.AssertionFailedError;
-
-import org.arakhne.afc.vmutil.Caller;
+import org.arakhne.afc.vmutil.ClassLoaderFinder;
 import org.arakhne.afc.vmutil.FileSystem;
-import org.arakhne.afc.vmutil.Resources;
-import org.arakhne.afc.vmutil.URISchemeType;
-import org.eclipse.xtext.util.Arrays;
-import org.eclipse.xtext.xbase.lib.Functions;
-import org.hamcrest.Matcher;
+import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.xbase.XBinaryOperation;
+import org.eclipse.xtext.xbase.XBooleanLiteral;
+import org.eclipse.xtext.xbase.XCollectionLiteral;
+import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XNullLiteral;
+import org.eclipse.xtext.xbase.XNumberLiteral;
+import org.eclipse.xtext.xbase.XSetLiteral;
+import org.eclipse.xtext.xbase.XStringLiteral;
+import org.eclipse.xtext.xbase.XTypeLiteral;
+import org.eclipse.xtext.xbase.lib.Pair;
 
 import com.google.common.io.Files;
+import com.ibm.icu.math.BigDecimal;
 
 
 /** Helper for tests.
@@ -62,610 +76,185 @@ import com.google.common.io.Files;
  */
 public final class SpecificationTools {
 
+	private static final int HEX_RADIX = 16;
+
 	private SpecificationTools() {
 		//
-	}
-
-	/** Replies a path built from the given elements.
-	 *
-	 * @param element1 - first mandatory element.
-	 * @param elements - the rest of the elements of the path.
-	 * @return the path.
-	 */
-	public static String path(String element1, String... elements) {
-		StringBuilder b = new StringBuilder();
-		if (element1 != null && !element1.isEmpty()) {
-			b.append(element1);
-		}
-		if (elements != null) {
-			for (String element : elements) {
-				if (element != null && !element.isEmpty()) {
-					if (b.length() > 0) {
-						b.append(File.separator);
-					}
-					b.append(element);
-				}
-			}
-		}
-		return b.toString();
-	}
-
-	/** Ensure that the given object is matching a predicate.
-	 *
-	 * @param <T> - type of the object.
-	 * @param obj - the object to test.
-	 * @param func - the predicate.
-	 * @return obj
-	 */
-	public static <T> T mustBe(T obj, Functions.Function1<T, Boolean> func) {
-		assertTrue(func.apply(obj));
-		return obj;
-	}
-
-	private static boolean isArray(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		return obj.getClass().isArray();
-	}
-
-	/** Ensure that the given object is equal to another object.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected object.
-	 * @return actual
-	 */
-	public static <T> T mustBe(T actual, Object expected) {
-		if (isArray(actual) && isArray(expected)) {
-			assertArrayEquals("not equal", (Object[]) expected, (Object[]) actual); //$NON-NLS-1$
-		} else {
-			assertEquals("not equal", expected, actual); //$NON-NLS-1$
-		}
-		return actual;
-	}
-
-	/** Ensure that the given type is equals another type.
-	 *
-	 * @param <T> - expected of the object.
-	 * @param actual - the type to test.
-	 * @param expectedType - the expected type.
-	 * @return actual
-	 */
-	public static <T> Class<T> mustBe(Class<T> actual, Class<?> expectedType) {
-		assertEquals("not equal", expectedType, actual); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given object is of the given type.
-	 *
-	 * @param <T> - expected type of the object.
-	 * @param actual - the object to test.
-	 * @param expectedType - the type.
-	 * @return actual
-	 */
-	public static <T> T mustBe(Object actual, Class<T> expectedType) {
-		String msg = "not equal, expected: " + expectedType.getName() + ", actual: "; //$NON-NLS-1$ //$NON-NLS-2$
-		if (actual != null) {
-			msg += actual.getClass().getName();
-		} else {
-			msg += actual;
-		}
-		assertTrue(msg, expectedType.isInstance(actual));
-		return expectedType.cast(actual);
-	}
-
-	/** Ensure that the given object is matching the given predicate.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param matcher - the predicate.
-	 * @return actual
-	 */
-	public static <T> T mustBe(T actual, Matcher<? super T> matcher) {
-		if (matcher == null) {
-			assertNull("not equal", actual); //$NON-NLS-1$
-		} else {
-			assertTrue("not equal", matcher.matches(actual)); //$NON-NLS-1$
-		}
-		return actual;
-	}
-
-	/** Ensure that the given iterable object contains an element equals to the
-	 * given value.
-	 *
-	 * @param <T> - type of the elements in the collection.
-	 * @param <I> - type of the collection.
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return actual
-	 */
-	public static <T, I extends Iterable<T>> I mustContain(I actual, T element) {
-		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		assertTrue(
-				String.format("the following iterable must contain \"%s\": %s", //$NON-NLS-1$
-						element, actual),
-				contains(actual, element));
-		return actual;
-	}
-
-	/** Ensure that the given iterable object contains an element that is
-	 * matching the given predicate.
-	 *
-	 * @param <T> - type of the elements in the collection.
-	 * @param <I> - type of the collection.
-	 * @param collection - the collection to test.
-	 * @param matcher - the predicate.
-	 * @return collection
-	 */
-	public static <T, I extends Iterable<T>> I mustContain(I collection, Matcher<? super T> matcher) {
-		assertNotNull("collection cannot be null", collection); //$NON-NLS-1$
-		assertNotNull("matcher cannot be null", matcher); //$NON-NLS-1$
-		for (T item : collection) {
-			if (matcher.matches(item)) {
-				return collection;
-			}
-		}
-		throw new AssertionFailedError("the collection does not contains an element matching the given critera"); //$NON-NLS-1$
-	}
-
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param <T> - type of the elements in the collection.
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return actual
-	 */
-	public static <T> T[] mustContain(T[] actual, T element) {
-		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		assertTrue(Arrays.contains(actual, element));
-		return actual;
-	}
-
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return actual
-	 */
-	public static boolean[] mustContain(boolean[] actual, boolean element) {
-		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		for (boolean candidate : actual) {
-			if (candidate == element) {
-				return actual;
-			}
-		}
-		fail("The element was not found in the array"); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return actual
-	 */
-	public static char[] mustContain(char[] actual, char element) {
-		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		for (char candidate : actual) {
-			if (candidate == element) {
-				return actual;
-			}
-		}
-		fail("The element was not found in the array"); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return actual
-	 */
-	public static byte[] mustContain(byte[] actual, byte element) {
-		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		for (byte candidate : actual) {
-			if (candidate == element) {
-				return actual;
-			}
-		}
-		fail("The element was not found in the array"); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return actual
-	 */
-	public static short[] mustContain(short[] actual, short element) {
-		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		for (short candidate : actual) {
-			if (candidate == element) {
-				return actual;
-			}
-		}
-		fail("The element was not found in the array"); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return actual
-	 */
-	public static int[] mustContain(int[] actual, int element) {
-		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		for (int candidate : actual) {
-			if (candidate == element) {
-				return actual;
-			}
-		}
-		fail("The element was not found in the array"); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return actual
-	 */
-	public static long[] mustContain(long[] actual, long element) {
-		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		for (long candidate : actual) {
-			if (candidate == element) {
-				return actual;
-			}
-		}
-		fail("The element was not found in the array"); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return actual
-	 */
-	public static float[] mustContain(float[] actual, float element) {
-		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		for (float candidate : actual) {
-			if (candidate == element) {
-				return actual;
-			}
-		}
-		fail("The element was not found in the array"); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return actual
-	 */
-	public static double[] mustContain(double[] actual, double element) {
-		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		for (double candidate : actual) {
-			if (candidate == element) {
-				return actual;
-			}
-		}
-		fail("The element was not found in the array"); //$NON-NLS-1$
-		return actual;
-	}
-
-	/** Ensure that the given string contains a substring.
-	 *
-	 * @param <T> - type of the string.
-	 * @param actual - the string to test.
-	 * @param substring - the expected substring.
-	 * @return actual
-	 */
-	public static <T extends CharSequence> T mustContain(T actual, CharSequence substring) {
-		assertNotNull("actual cannot be null", actual); //$NON-NLS-1$
-		assertTrue(
-				String.format("\"%s\" must contain \"%s\".", //$NON-NLS-1$
-					actual.toString(), substring),
-				actual.toString().contains(substring));
-		return actual;
-	}
-
-	/** Ensure that the given object is a boolean object equals to the given value.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public static <T> T mustBe(T actual, boolean expected) {
-		if (actual instanceof Boolean) {
-			assertEquals(Boolean.valueOf(expected), actual);
-		} else {
-			fail("actual must be a boolean"); //$NON-NLS-1$
-		}
-		return actual;
-	}
-
-	/** Ensure that the given object is a byte equals to the given value.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public static <T> T mustBe(T actual, byte expected) {
-		if (actual instanceof Byte) {
-			assertEquals(Byte.valueOf(expected), actual);
-		} else {
-			fail("actual must be a byte"); //$NON-NLS-1$
-		}
-		return actual;
-	}
-
-	/** Ensure that the given object is a short integer equals to the given value.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public static <T> T mustBe(T actual, short expected) {
-		if (actual instanceof Short) {
-			assertEquals(Short.valueOf(expected), actual);
-		} else {
-			fail("actual must be a short integer"); //$NON-NLS-1$
-		}
-		return actual;
-	}
-
-	/** Ensure that the given object is an integer equals to the given value.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public static <T> T mustBe(T actual, int expected) {
-		if (actual instanceof Integer) {
-			assertEquals(Integer.valueOf(expected), actual);
-		} else {
-			fail("actual must be an integer"); //$NON-NLS-1$
-		}
-		return actual;
-	}
-
-	/** Ensure that the given object is a long integer equals to the given value.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public static <T> T mustBe(T actual, long expected) {
-		if (actual instanceof Long) {
-			assertEquals(Long.valueOf(expected), actual);
-		} else {
-			fail("actual must be a long integer"); //$NON-NLS-1$
-		}
-		return actual;
-	}
-
-	/** Ensure that the given object is a single-precision
-	 * floating point number equals to the given value.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public static <T> T mustBe(T actual, float expected) {
-		if (actual instanceof Float) {
-			assertEquals(Float.valueOf(expected), actual);
-		} else {
-			fail("actual must be a float"); //$NON-NLS-1$
-		}
-		return actual;
-	}
-
-	/** Ensure that the given object is a double-precision
-	 * floating point number equals to the given value.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public static <T> T mustBe(T actual, double expected) {
-		if (actual instanceof Double) {
-			assertEquals(Double.valueOf(expected), actual);
-		} else {
-			fail("actual must be a double"); //$NON-NLS-1$
-		}
-		return actual;
-	}
-
-	/** Ensure that the given object is a character equals to the given value.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public static <T> T mustBe(T actual, char expected) {
-		if (actual instanceof Character) {
-			assertEquals(Character.valueOf(expected), actual);
-		} else {
-			fail("actual must be a character"); //$NON-NLS-1$
-		}
-		return actual;
-	}
-
-	/** Ensure that the given object is a single-precision
-	 * floating point number equals to the given value.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected value.
-	 * @return actual
-	 */
-	public static <T> T mustBe(T actual, String expected) {
-		if (actual != null) {
-			assertEquals(expected.toString(), actual);
-		} else if (expected != null) {
-			fail("actual must be not null"); //$NON-NLS-1$
-		}
-		return actual;
-	}
-
-	/** Ensure that the given string starts with the given substring.
-	 *
-	 * @param <T> - type of the string.
-	 * @param s - the string to test.
-	 * @param substring - the string to be at the beginning.
-	 * @return s
-	 */
-	public static <T extends CharSequence> T mustStartWith(T s, String substring) {
-		assertNotNull("s cannot be null", s); //$NON-NLS-1$
-		assertTrue(
-				String.format("\"%s\" must start with \"%s\".", //$NON-NLS-1$
-					s.toString(), substring),
-				s.toString().startsWith(substring));
-		return s;
-	}
-
-	/** Ensure that the given string ends with the given substring.
-	 *
-	 * @param <T> - type of the string.
-	 * @param s - the string to test.
-	 * @param substring - the string to be at the end.
-	 * @return s
-	 */
-	public static <T extends CharSequence> T mustEndWith(T s, String substring) {
-		assertNotNull("s cannot be null", s); //$NON-NLS-1$
-		assertTrue(
-				String.format("\"%s\" must end with \"%s\".", //$NON-NLS-1$
-					s.toString(), substring),
-				s.toString().endsWith(substring));
-		return s;
-	}
-
-	/** Ensure that the given string does not start with the given substring.
-	 *
-	 * @param <T> - type of the string.
-	 * @param s - the string to test.
-	 * @param substring - the string to be at the beginning.
-	 * @return s
-	 */
-	public static <T extends CharSequence> T mustNotStartWith(T s, String substring) {
-		assertNotNull("s cannot be null", s); //$NON-NLS-1$
-		assertFalse(
-				String.format("\"%s\" must not start with \"%s\".", //$NON-NLS-1$
-					s.toString(), substring),
-				s.toString().startsWith(substring));
-		return s;
-	}
-
-	/** Ensure that the given string does not end with the given substring.
-	 *
-	 * @param <T> - type of the string.
-	 * @param s - the string to test.
-	 * @param substring - the string to be at the end.
-	 * @return s
-	 */
-	public static <T extends CharSequence> T mustNotEndWith(T s, String substring) {
-		assertNotNull("s cannot be null", s); //$NON-NLS-1$
-		assertFalse(
-				String.format("\"%s\" must not end with \"%s\".", //$NON-NLS-1$
-					s.toString(), substring),
-				s.toString().endsWith(substring));
-		return s;
 	}
 
 	/** Ensure that the given caller specification has a valid link
 	 * to another Jnario specification with the given name.
 	 *
-	 * @param referencedLink - URL
-	 * @return refencedLink
+	 * @param url - the url to check.
+	 * @param source - the object that is containing the URL.
+	 * @return the validation result.
 	 */
-	public static String mustBeJnarioLink(String referencedLink) {
-		Class<?> callingSpecification = Caller.getCallerClass();
-		assertNotNull("referencedLink cannot be null", referencedLink); //$NON-NLS-1$
-		assertNotNull("callingSpecification cannot be null", callingSpecification); //$NON-NLS-1$
-		//
-		String ref = referencedLink;
-		if (ref.startsWith("#")) { //$NON-NLS-1$
-			ref = "./" + callingSpecification.getSimpleName() + ".html" + ref; //$NON-NLS-1$ //$NON-NLS-2$
+	public static boolean should_beAccessibleFrom(String url, Object source) {
+		return isJnarioLink(url, source) || isResourceLink(url, source);
+	}
+
+	/**
+	 * Replies the URL of a resource.
+	 * <p>
+	 * You may use Unix-like syntax to write the resource path, ie.
+	 * you may use slashes to separate filenames.
+	 * <p>
+	 * The name of <var>packagename</var> is translated into a resource
+	 * path (by replacing the dots by slashes) and the given path
+	 * is append to. For example, the two following codes are equivalent:<pre><code>
+	 * Resources.getResources(Package.getPackage("org.arakhne.afc"), "/a/b/c/d.png");
+	 * Resources.getResources("org/arakhne/afc/a/b/c/d.png");
+	 * </code></pre>
+	 * <p>
+	 * If the <var>classLoader</var> parameter is <code>null</code>,
+	 * the class loader replied by {@link ClassLoaderFinder} is used.
+	 * If this last is <code>null</code>, the class loader of
+	 * the Resources class is used.
+	 * 
+	 * Copied from https://github.com/gallandarakhneorg/afc/blob/master/core/vmutils/src/main/java/org/arakhne/afc/vmutil/Resources.java
+	 *
+	 * @param classLoader is the research scope. If <code>null</code>,
+	 * the class loader replied by {@link ClassLoaderFinder} is used.
+	 * @param packagename is the package in which the resource should be located.
+	 * @param path is the relative path of the resource in the package. 
+	 * @return the url of the resource or <code>null</code> if the resource was
+	 * not found in class paths.
+	 */
+	private static URL getResource(ClassLoader classLoader, Package packagename, String path) {
+		if (packagename==null || path==null) return null;
+		StringBuilder b = new StringBuilder();
+		b.append(packagename.getName().replaceAll(
+				Pattern.quote("."), //$NON-NLS-1$
+				java.util.regex.Matcher.quoteReplacement("/"))); //$NON-NLS-1$
+		if (!path.startsWith("/")) { //$NON-NLS-1$
+			b.append("/"); //$NON-NLS-1$
+		}
+		b.append(path);
+		return getResource(packagename.getClass().getClassLoader(), b.toString());
+	}
+
+	/**
+	 * Copied from https://github.com/gallandarakhneorg/afc/blob/master/core/vmutils/src/main/java/org/arakhne/afc/vmutil/StandardJREResourceWrapper.java
+	 */
+	private static URL getResource(ClassLoader classLoader, String path) {
+		if (path==null) return null;
+		String resourcePath = path;
+		if (path.startsWith("/")) { //$NON-NLS-1$
+			resourcePath = path.substring(1);
 		}
 
-		String[] fragments = null;
-		if (ref.contains(".html#")) { //$NON-NLS-1$
-			String[] parts = ref.split(java.util.regex.Matcher.quoteReplacement(".html#")); //$NON-NLS-1$
-			assertEquals(
-					String.format("Invalid link format: %s", ref), //$NON-NLS-1$
-					2, parts.length);
-			fragments = parts[1].split(java.util.regex.Matcher.quoteReplacement("_") + "+"); //$NON-NLS-1$ //$NON-NLS-2$
-			StringBuilder b = new StringBuilder();
-			for (String s : fragments) {
-				if (s.length() > 1) {
-					b.append(s.substring(0, 1).toUpperCase() + s.substring(1));
-				} else {
-					b.append(s.toUpperCase());
+		ClassLoader loader = (classLoader==null)
+				? SpecificationTools.class.getClassLoader()
+						: classLoader;
+				assert(loader!=null);
+
+				URL url = loader.getResource(resourcePath);
+
+				if (url==null) {
+					// Try to find in ./resources sub directory
+					url = loader.getResource("resources/" + resourcePath); //$NON-NLS-1$
+				}
+				return url;
+	}
+
+	private static boolean isResourceLink(String url, Object source) {
+		if (source == null || url == null) {
+			return false;
+		}
+		// Check if it is a URL of a file path
+		try {
+			URL fileURL;
+			try {
+				fileURL = new URL(url);
+			} catch (Throwable _) {
+				fileURL = new URL("file:" + url); //$NON-NLS-1$
+			}
+			if ("file".equalsIgnoreCase(fileURL.getProtocol())) { //$NON-NLS-1$
+				// Get local resource
+				URL u = getResource(
+						SpecificationTools.class.getClassLoader(),
+						source.getClass().getPackage(),
+						fileURL.getPath());
+				if (u != null) {
+					return true;
 				}
 			}
-			if (parts[0].endsWith("Spec")) { //$NON-NLS-1$
-				ref = parts[0].substring(0, parts[0].length() - 4)
-						+ b.toString() + "Spec.html"; //$NON-NLS-1$
-			} else {
-				ref = parts[0] + b.toString() + "Spec.html"; //$NON-NLS-1$
-			}
+		} catch (Throwable _) {
+			//
+		}
+		return false;
+	}
+
+	private static boolean isJnarioLink(String url, Object source) {
+		if (source == null || url == null) {
+			return false;
 		}
 		//
-		if (!isJnarioSpec(callingSpecification, ref)) {
-
-			// The specification could be a function of the Java class.
-			if (fragments != null) {
-				StringBuilder operationName = new StringBuilder();
-				for (String fragment : fragments) {
-					if (operationName.length() > 0) {
-						operationName.append(fragment.substring(0, 1).toUpperCase() + fragment.substring(1).toLowerCase());
+		try {
+			String ref = url;
+			if (ref.startsWith("#")) { //$NON-NLS-1$
+				ref = "./" + source.getClass().getSimpleName() + ".html" + ref; //$NON-NLS-1$ //$NON-NLS-2$
+			}
+	
+			String[] fragments = null;
+			if (ref.contains(".html#")) { //$NON-NLS-1$
+				String[] parts = ref.split(java.util.regex.Matcher.quoteReplacement(".html#")); //$NON-NLS-1$
+				assertEquals(
+						String.format("Invalid link format: %s", ref), //$NON-NLS-1$
+						2, parts.length);
+				fragments = parts[1].split(java.util.regex.Matcher.quoteReplacement("_") + "+"); //$NON-NLS-1$ //$NON-NLS-2$
+				StringBuilder b = new StringBuilder();
+				for (String s : fragments) {
+					if (s.length() > 1) {
+						b.append(s.substring(0, 1).toUpperCase() + s.substring(1));
 					} else {
-						operationName.append(fragment.toLowerCase());
+						b.append(s.toUpperCase());
 					}
 				}
-				String operationNameStr = "_" + operationName.toString(); //$NON-NLS-1$
-				try {
-					callingSpecification.getMethod(operationNameStr);
-					return referencedLink;
-				} catch (Throwable _) {
-					// Failure
+				if (parts[0].endsWith("Spec")) { //$NON-NLS-1$
+					ref = parts[0].substring(0, parts[0].length() - 4)
+							+ b.toString() + "Spec.html"; //$NON-NLS-1$
+				} else {
+					ref = parts[0] + b.toString() + "Spec.html"; //$NON-NLS-1$
 				}
 			}
-
-			fail(String.format("The link \"%s\" is not linked to a Jnario specification", referencedLink)); //$NON-NLS-1$
+			//
+			if (!isJnarioSpec(source.getClass(), ref)) {
+	
+				// The specification could be a function of the Java class.
+				if (fragments != null) {
+					StringBuilder operationName = new StringBuilder();
+					for (String fragment : fragments) {
+						if (operationName.length() > 0) {
+							operationName.append(fragment.substring(0, 1).toUpperCase() + fragment.substring(1).toLowerCase());
+						} else {
+							operationName.append(fragment.toLowerCase());
+						}
+					}
+					String operationNameStr = "_" + operationName.toString(); //$NON-NLS-1$
+					try {
+						source.getClass().getMethod(operationNameStr);
+						return true;
+					} catch (Throwable _) {
+						// Failure
+					}
+				}
+	
+				return false;
+			}
+			return true;
+		} catch (Throwable _) {
+			return false;
 		}
-		return referencedLink;
 	}
 
 	private static boolean isJnarioSpec(Class<?> callingSpecification, String reference) {
 		String url = reference;
 		//
 		assertTrue(
-					String.format("\"%s\" must end with \".html\".", //$NON-NLS-1$
-							url.toString(), ".html"), //$NON-NLS-1$
-					url.endsWith(".html")); //$NON-NLS-1$
+				String.format("\"%s\" must end with \".html\".", //$NON-NLS-1$
+						url.toString(), ".html"), //$NON-NLS-1$
+						url.endsWith(".html")); //$NON-NLS-1$
 		//
 		url = url.substring(0, url.length() - 5);
 		File caller = new File(callingSpecification.getName().replaceAll(
@@ -674,142 +263,540 @@ public final class SpecificationTools {
 		String resolvedPath = Files.simplifyPath(resolved.getPath());
 		resolvedPath = resolvedPath.replaceAll(java.util.regex.Matcher.quoteReplacement(File.separator), "."); //$NON-NLS-1$
 		try {
-			Class.forName(resolvedPath);
+			ReflectionUtil.forName(resolvedPath);
 			return true;
 		} catch (Throwable _) {
 			return false;
 		}
 	}
 
-	/** Ensure that the given string is a valid hyper-link.
-	 * The link must start with "http://" and not end with "/".
+	/** Ensure that the iterator replies the expected values in the given order.
 	 *
-	 * @param referencedLink - the string to test.
-	 * @return refencedLink
+	 * @param actual - the iterator to test.
+	 * @param expected - the expected values.
+	 * @return the validation status
 	 */
-	public static String mustBeHttpLink(String referencedLink) {
-		return mustNotEndWith(mustStartWith(referencedLink, "http://"), "/"); //$NON-NLS-1$ //$NON-NLS-2$
+	public static boolean should_iterate(Iterator<?> actual, Object expected) {
+		return should_iterate(actual, expected, true);
 	}
-
-	/** Ensure that the given string is a MAven snapshot version.
+	
+	/** Ensure that the iterator replies the expected values in the given order.
 	 *
-	 * @param version - the version string.
-	 * @return version
+	 * @param actual - the iterator to test.
+	 * @param expected - the expected values.
+	 * @param significantOrder - indicates if the order of the elements is significant.
+	 * @return the validation status
 	 */
-	public static String mustBeSnapshotVersion(String version) {
-		return mustEndWith(version, "-SNAPSHOT"); //$NON-NLS-1$
-	}
-
-	/** Ensure that the given string is not a MAven snapshot version.
-	 *
-	 * @param version - the version string.
-	 * @return version
-	 */
-	public static String mustNotBeSnapshotVersion(String version) {
-		return mustNotEndWith(version, "-SNAPSHOT"); //$NON-NLS-1$
-	}
-
-	/** Ensure that the given caller specification has a valid link
-	 * to a picture with the given name.
-	 *
-	 * @param referencedLink - URL
-	 * @return refencedLink
-	 */
-	public static String mustBePicture(String referencedLink) {
-		Class<?> callingSpecification = Caller.getCallerClass();
-		assertNotNull("referencedLink cannot be null", referencedLink); //$NON-NLS-1$
-		assertNotNull("callingSpecification cannot be null", callingSpecification); //$NON-NLS-1$
-		// Check if it is a URL of a file path
-		URL fileURL = FileSystem.convertStringToURL(referencedLink, true, true);
-		if (fileURL == null) {
-			fail(String.format("The picture '%s' was nout found.", referencedLink)); //$NON-NLS-1$
+	public static boolean should_iterate(Iterator<?> actual, Object expected, boolean significantOrder) {
+		Object obj;
+		Iterator<?> it;
+		if (expected instanceof Iterable<?>) {
+			it = ((Iterable<?>) expected).iterator();
+		} else if (expected instanceof Array) {
+			final Array array = (Array) expected;
+			it = new ArrayIterator(array);
+		} else if (expected instanceof Map<?, ?>) {
+			it = ((Map<?, ?>) expected).entrySet().iterator();
 		} else {
-			if (URISchemeType.FILE.isURL(fileURL)) {
-				// Get local resource
-				URL u = Resources.getResource(callingSpecification, referencedLink);
-				assertNotNull(String.format("The picture '%s' was nout found.", referencedLink), u); //$NON-NLS-1$
+			it = Collections.singleton(expected).iterator();
+		}
+
+		if (significantOrder) {
+			// Significant order
+			Object eObj;
+			while (actual.hasNext()) {
+				obj = actual.next();
+				if (!it.hasNext()) {
+					return false;
+				}
+				eObj = it.next();
+				if (obj instanceof XExpression) {
+					if (!should_beLiteral((XExpression) obj, eObj)) {
+						return false;
+					}
+				} else if (!Objects.equals(obj, eObj)) {
+					return false;
+				}
+			}
+			return !it.hasNext();
+		}
+		
+		// Unsignificant order
+		List<Object> expectedElements = new LinkedList<>();
+		while (it.hasNext()) {
+			expectedElements.add(it.next());
+		}
+		boolean found;
+		while (actual.hasNext()) {
+			obj = actual.next();
+			Iterator<Object> i = expectedElements.iterator();
+			found = false;
+			while (!found && i.hasNext()) {
+				Object eObj = i.next();
+				if (obj instanceof XExpression) {
+					if (should_beLiteral((XExpression) obj, eObj)) {
+						i.remove();
+						found = true;
+					}
+				} else if (obj instanceof JvmIdentifiableElement
+						&& Objects.equals(((JvmIdentifiableElement) obj).getQualifiedName(), eObj)) {
+					i.remove();
+					found = true;
+				} else if (obj instanceof JvmTypeReference
+						&& Objects.equals(((JvmTypeReference) obj).getQualifiedName(), eObj)) {
+					i.remove();
+					found = true;
+				} else if (Objects.equals(obj, eObj)) {
+					i.remove();
+					found = true;
+				}
+			}
+			if (!found) {
+				return false;
 			}
 		}
-		//
-		return referencedLink;
+		return expectedElements.isEmpty();
 	}
 
-	/** Ensure that the given string is a string representation of an integer,
-	 * without sign symbols.
+	/** Ensure that the string has the format of a date.
 	 *
-	 * @param str - the string.
-	 * @return str
+	 * @param actual - the string to parse.
+	 * @param dateFormat - the expected format of the date, as
+	 * described in {@link SimpleDateFormat}. If <code>null</code>, the
+	 * default date format is considered.
+	 * @return the validation status
 	 */
-	public static String mustBeInteger(String str) {
-		assertTrue(
-				String.format("The string \"%s\" is not an integer number.", str), //$NON-NLS-1$
-				Pattern.matches("^[0-9]+$", str)); //$NON-NLS-1$
-		return str;
-	}
-
-	/** Ensure that the given string is a string representation of a date.
-	 * A date has the format <code>yyyy-[m]m-[d]d</code>
-	 *
-	 * @param str - the string.
-	 * @return str
-	 */
-	public static String mustBeDate(String str) {
-		Date d = null;
+	public static boolean should_beDate(String actual, String dateFormat) {
+		if (actual == null || actual.isEmpty()) {
+			return false;
+		}
 		try {
-			d = Date.valueOf(str);
-		} catch (Throwable _) {
-			d = null;
+			DateFormat format;
+			if (dateFormat == null || dateFormat.isEmpty()) {
+				format = DateFormat.getDateInstance();
+			} else {
+				format = new SimpleDateFormat(dateFormat);
+			}
+			return format.parse(actual) != null;
+		} catch (Throwable _)  {
+			//
 		}
-		if (d == null) {
-			fail(String.format("The date \"%s\" has an invalid format.", str)); //$NON-NLS-1$
-		}
-		return str;
+		return false;
 	}
 
-	/** Ensure that the iterator replies the expected values in the given order.
+	/** Ensure that the string has the format of an URL.
 	 *
-	 * @param <T> - the type of the elements in the iterator.
-	 * @param actual - the iterator to test.
-	 * @param expected - the expected values.
-	 * @return actual
+	 * @param actual - the string to parse.
+	 * @param requiredSchemes - is a list of schemes that are supported.
+	 * If a scheme is prefix with the <code>!</code> character (without space),
+	 * then the scheme is not allowed.
+	 * If not given, all the schemes are allowed.
+	 * @return the validation status
 	 */
-	public static <T> Iterator<T> mustContain(Iterator<T> actual, Object[] expected) {
-		Object obj;
-		int index = 0;
-		while (actual.hasNext()) {
-			obj = actual.next();
-			if (index <= expected.length) {
-				assertEquals(expected[index], obj);
-			} else {
-				fail("Unexpected value in the iterator: " + obj); //$NON-NLS-1$
-			}
-			index++;
+	public static boolean should_beURL(String actual, String requiredSchemes) {
+		if (actual == null || actual.isEmpty()) {
+			return false;
 		}
-		assertEquals("Not enough elements in the iterator.", expected.length, index); //$NON-NLS-1$
-		return actual;
+		try {
+			URL u = FileSystem.convertStringToURL(actual, true);
+			if (u == null) {
+				return false;
+			}
+			if (requiredSchemes != null && !requiredSchemes.isEmpty()) {
+				boolean mustHaveScheme = false;
+				for(String s : requiredSchemes.trim().split("\\s*,\\s*")) { //$NON-NLS-1$
+					if (!s.isEmpty()) {
+						if (s.startsWith("!")) { //$NON-NLS-1$
+							if (s.substring(1).equalsIgnoreCase(u.getProtocol())) {
+								return false;
+							}
+						} else {
+							mustHaveScheme = true;
+							if (s.equalsIgnoreCase(u.getProtocol())) {
+								return true;
+							}
+						}
+					}
+				}
+				return !mustHaveScheme;
+			}
+			return true;
+		} catch (Throwable _)  {
+			//
+		}
+		return false;
 	}
 
-	/** Ensure that the iterator replies the expected values in the given order.
+	/** Ensure that the string has the format of a number.
 	 *
-	 * @param <T> - the type of the elements in the iterator.
-	 * @param actual - the iterator to test.
-	 * @param expected - the expected values.
-	 * @return actual
+	 * @param actual - the string to parse.
+	 * @param numberFormat - the expected format of the number, as
+	 * described in {@link DecimalFormat}. If <code>null</code>, the
+	 * default date format is considered.
+	 * @return the validation status
 	 */
-	public static <T> ListIterator<T> mustContain(ListIterator<T> actual, Object[] expected) {
-		Object obj;
-		int index = 0;
-		while (actual.hasNext()) {
-			obj = actual.next();
-			if (index <= expected.length) {
-				assertEquals(expected[index], obj);
-			} else {
-				fail("Unexpected value in the iterator: " + obj); //$NON-NLS-1$
-			}
-			index++;
+	public static boolean should_beNumber(String actual, String numberFormat) {
+		if (actual == null || actual.isEmpty()) {
+			return false;
 		}
-		assertEquals("Not enough elements in the iterator.", expected.length, index); //$NON-NLS-1$
-		return actual;
+		try {
+			NumberFormat format;
+			if (numberFormat == null || numberFormat.isEmpty()) {
+				format = NumberFormat.getNumberInstance();
+			} else {
+				format = new DecimalFormat(numberFormat);
+			}
+			return format.parse(actual) != null;
+		} catch (Throwable _)  {
+			//
+		}
+		return false;
+	}
+
+	/** Assert that two objects are equal.
+	 * 
+	 * @param message - the error message.
+	 * @param expected - the expected value.
+	 * @param actual - the value to test.
+	 */
+	public static void assertEquals(String message, Object expected, Object actual) {
+		assertTrue(message, Objects.equals(expected, actual));
+	}
+
+	/** Ensure that the given string literal is equal to the given value.
+	 *
+	 * @param actual - the string literal to test.
+	 * @param expected - the expected value.
+	 * @return the validation status
+	 */
+	public static boolean _should_be(XStringLiteral actual, Object expected) {
+		if (actual == null) {
+			return false;
+		}
+		String s = (expected == null) ? null : expected.toString();
+		return Objects.equals(s, actual.getValue());
+	}
+
+	/** Ensure that the given boolean literal is equal to the given value.
+	 *
+	 * @param actual - the boolean literal to test.
+	 * @param expected - the expected value.
+	 * @return the validation status
+	 */
+	public static boolean _should_be(XBooleanLiteral actual, Object expected) {
+		if (actual == null) {
+			return false;
+		}
+		Boolean b;
+		if (expected instanceof Boolean) {
+			b = (Boolean) expected;
+		} else {
+			try {
+				b = Boolean.parseBoolean(expected.toString());
+			} catch (Throwable _) {
+				return false;
+			}
+		}
+		return b.booleanValue() == actual.isIsTrue();
+	}
+
+	private static Number cleanNumber(String s) {
+		if (s == null) {
+			return null;
+		}
+		if (s.startsWith("0x") || s.startsWith("0X")) { //$NON-NLS-1$//$NON-NLS-2$
+			return new BigInteger(s.substring(2), HEX_RADIX);
+		}
+		String literal = s.replace("_", ""); //$NON-NLS-1$//$NON-NLS-2$
+		literal = literal.toLowerCase().replaceFirst("l|f|d|(bi)|(bd)$", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		return new BigDecimal(literal);
+	}
+
+	/** Ensure that the given number literal is equal to the given value.
+	 *
+	 * @param actual - the number literal to test.
+	 * @param expected - the expected value.
+	 * @return the validation status
+	 */
+	public static boolean _should_be(XNumberLiteral actual, Object expected) {
+		if (actual == null) {
+			return false;
+		}
+		Number n;
+		if (expected instanceof Number) {
+			n = (Number) expected;
+		} else {
+			try {
+				n = NumberFormat.getInstance().parse(expected.toString());
+			} catch (Throwable _) {
+				return false;
+			}
+		}
+		Number aNumber = cleanNumber(actual.getValue());
+		return n.doubleValue() == aNumber.doubleValue(); 
+	}
+
+	/** Ensure that the given type literal is equal to the given type.
+	 *
+	 * @param actual - the type literal to test.
+	 * @param expected - the name of the expected type.
+	 * @return the validation status
+	 */
+	public static boolean _should_be(XTypeLiteral actual, Object expected) {
+		if (actual == null) {
+			return false;
+		}
+		String fqn;
+		if (expected instanceof Class) {
+			fqn = ((Class<?>) expected).getName();
+		} else {
+			fqn = expected.toString();
+		}
+		return actual.getType() != null
+				&& Objects.equals(fqn, actual.getType().getQualifiedName());
+	}
+
+	/** Ensure that the given type literal is equal to the given list.
+	 *
+	 * @param actual - the type literal to test.
+	 * @param expected - the name of the expected type.
+	 * @return the validation status
+	 */
+	public static boolean _should_be(XCollectionLiteral actual, Object expected) {
+		if (actual == null || actual.getElements() == null) {
+			return false;
+		}
+		return should_iterate(
+				actual.getElements().iterator(),
+				expected, 
+				!(actual instanceof XSetLiteral));
+	}
+
+	/** Ensure that the given type literal is equal to the given type.
+	 *
+	 * @param actual - the type literal to test.
+	 * @param expected - the name of the expected type.
+	 * @return the validation status
+	 */
+	public static boolean should_beLiteral(XExpression actual, Object expected) {
+		if (actual instanceof XNumberLiteral) {
+			return _should_be((XNumberLiteral) actual, expected);
+		}
+		if (actual instanceof XBooleanLiteral) {
+			return _should_be((XBooleanLiteral) actual, expected);
+		}
+		if (actual instanceof XStringLiteral) {
+			return _should_be((XStringLiteral) actual, expected);
+		}
+		if (actual instanceof XTypeLiteral) {
+			return _should_be((XTypeLiteral) actual, expected);
+		}
+		if (actual instanceof XNullLiteral) {
+			return Objects.equals("null", expected); //$NON-NLS-1$
+		}
+		if (actual instanceof XCollectionLiteral) {
+			return _should_be((XCollectionLiteral) actual, expected);
+		}
+		if (actual instanceof XBinaryOperation) {
+			XBinaryOperation op = (XBinaryOperation) actual;
+			if ("operator_mappedTo".equals(op.getFeature().getSimpleName())) { //$NON-NLS-1$
+				Object k, v;
+				if (expected instanceof Pair<?, ?>) {
+					k = ((Pair<?, ?>) expected).getKey();
+					v = ((Pair<?, ?>) expected).getValue();
+				}
+				else if (expected instanceof Entry<?, ?>) {
+					k = ((Entry<?, ?>) expected).getKey();
+					v = ((Entry<?, ?>) expected).getValue();
+				} else {
+					return false;
+				}
+				return should_beLiteral(op.getLeftOperand(), k)
+					&& should_beLiteral(op.getRightOperand(), v);
+			}
+		}
+		return false;
+	}
+
+	/** Ensure that the given type has the given type has the given method.
+	 * 
+	 * @param type - the type to check.
+	 * @param name - the name and prototype, e.g. <code>fct(java.lang.String):int</code>.
+	 * @return the validation status.
+	 */
+	@SuppressWarnings("rawtypes")
+	public static boolean should_haveMethod(Class<?> type, String name) {
+		try {
+			Pattern p = Pattern.compile(
+					"^([_a-zA-Z0-9]+)\\s*" //$NON-NLS-1$
+					+ "(?:\\(\\s*([_a-zA-Z0-9.]+\\s*" //$NON-NLS-1$
+					+ "(?:,\\s*[_a-zA-Z0-9.]+\\s*)*)\\))?" //$NON-NLS-1$
+					+ "(?:\\s*:\\s*([_a-zA-Z0-9.]+))?$"); //$NON-NLS-1$
+			Matcher m = p.matcher(name);
+			if (m.matches()) {
+				String fctName = m.group(1);
+				String paramText;
+				try {
+					paramText = m.group(2).trim();
+				} catch (Throwable _) {
+					paramText = ""; //$NON-NLS-1$
+				}
+				String returnText;
+				try {
+					returnText = m.group(3).trim();
+				} catch (Throwable _) {
+					returnText = ""; //$NON-NLS-1$
+				}
+				String[] params;
+				if (paramText.isEmpty()) {
+					params = new String[0];
+				} else {
+					params = paramText.split("\\s*,\\s*"); //$NON-NLS-1$
+				}
+				Class[] types = new Class[params.length]; 
+				for(int i=0; i<params.length; ++i) {
+					types[i] = ReflectionUtil.forName(params[i]);
+				}
+				Method method = type.getDeclaredMethod(fctName, types);
+				if (method == null) {
+					return false;
+				}
+				if (returnText == null || returnText.isEmpty()) {
+					return void.class.equals(method.getReturnType())
+						|| Void.class.equals(method.getReturnType());
+				}
+				Class<?> rType = ReflectionUtil.forName(returnText);
+				return rType.equals(method.getReturnType());
+			}
+		} catch (Throwable e) {
+			//
+		}
+		return false;
+	}
+
+	/** Ensure that the given type extends specific types.
+	 * 
+	 * @param type - the type to check.
+	 * @param expectedTypes - the qualified names of the expected types, separated by comas.
+	 * @return the validation status.
+	 */
+	public static boolean should_extend(Class<?> type, String expectedTypes) {
+		if (type == null) {
+			return false;
+		}
+		try {
+			Class<?> st = type.getSuperclass();
+			List<Class<?>> types = new LinkedList<>();
+			if (st == null || Object.class.equals(st)) {
+				if (type.isInterface()) {
+					types.addAll(Arrays.asList(type.getInterfaces()));
+				}
+			} else {
+				types.add(st);
+			}
+			//
+			if (expectedTypes == null || expectedTypes.isEmpty()) {
+				return types.isEmpty();
+			}
+			for (String expectedType : expectedTypes.split("\\s*,\\s*")) { //$NON-NLS-1$
+				Class<?> et = ReflectionUtil.forName(expectedType);
+				if (!types.remove(et)) {
+					return false;
+				}
+			}
+			return types.isEmpty();
+		} catch (Throwable e) {
+			//
+		}
+		return false;
+	}
+	
+	/** Ensure that the given string is a valid Maven version number.
+	 * 
+	 * @param actual - the string to test.
+	 * @param allowSnapshot - indicates if the <code>-SNAPSHOT</code> postfix
+	 * is considered as valid.
+	 * @return the validation status.
+	 */
+	public static boolean should_beMavenVersion(String actual, boolean allowSnapshot) {
+		if (actual == null) {
+			return false;
+		}
+		StringBuilder pattern = new StringBuilder("^"); //$NON-NLS-1$
+		pattern.append("[0-9a-zA-Z_-]+(\\.[0-9a-zA-Z_-]+)*"); //$NON-NLS-1$
+		if (allowSnapshot) { //$NON-NLS-1$
+			pattern.append("(?:"); //$NON-NLS-1$
+			pattern.append(Matcher.quoteReplacement("-SNAPSHOT")); //$NON-NLS-1$
+			pattern.append(")?"); //$NON-NLS-1$
+		}
+		pattern.append("$"); //$NON-NLS-1$
+		return Pattern.matches(pattern.toString(), actual);
+	}
+
+	/** Ensure that the given type has the number of members.
+	 * 
+	 * @param type - the type to check.
+	 * @param expectedNbOfElements - the expected number of elements.
+	 * @return the validation status.
+	 */
+	public static boolean should_haveNbMembers(Class<?> type, int expectedNbOfElements) {
+		if (type == null) {
+			return false;
+		}
+		try {
+			int nb = type.getDeclaredConstructors().length
+					+ type.getDeclaredFields().length
+					+ type.getDeclaredMethods().length
+					+ type.getDeclaredAnnotations().length
+					+ type.getDeclaredClasses().length;
+			return nb == expectedNbOfElements;
+		} catch (Throwable e) {
+			//
+		}
+		return false;
+	}
+
+	private static class ArrayIterator implements Iterator<Object> {
+
+		private final Array array;
+		private int index;
+		private Object obj;
+
+		/**
+		 * @param array
+		 */
+		public ArrayIterator(Array array) {
+			this.array = array;
+			searchNext();
+		}
+		private void searchNext() {
+			try {
+				this.obj = Array.get(this.array, this.index);
+				++this.index;
+			} catch (Throwable _) {
+				this.obj = null;
+			}
+		}
+
+		@Override
+		public boolean hasNext() {
+			return this.obj != null;
+		}
+
+		@Override
+		public Object next() {
+			if (this.obj == null) {
+				throw new NoSuchElementException();
+			}
+			Object o = this.obj;
+			searchNext();
+			return o;
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
 	}
 
 }

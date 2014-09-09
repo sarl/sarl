@@ -27,7 +27,7 @@ import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 
-/* <!-- OUTPUT OUTLINE -->
+/* @outline
  *
  * This document describes how to create a simple
  * agent-based application in which agents are
@@ -72,10 +72,10 @@ describe "Agent Communication with the Ping Pong Agents"{
 		 */
 		fact "Principle of the Application" {
 			// Test the URLs in the introduction
-			"../reference/GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
-			"%sarlmavenrepository%".mustBeHttpLink
-			"%website%".mustBeHttpLink
-			"./pingpong.png".mustBePicture
+			"../reference/GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+			"./pingpong.png" should beAccessibleFrom this
+			"%sarlmavenrepository%" should beURL "!file"
+			"%website%" should beURL "!file"
 		}
 
 		/* First, the `Ping` and `Pong` events must be defined.
@@ -183,7 +183,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 					""
 				)
 				//
-				"../reference/AgentReferenceSpec.html".mustBeJnarioLink
+				"../reference/AgentReferenceSpec.html" should beAccessibleFrom this
 			}
 
 			/* Now, it is time to define how the pong agent
@@ -559,7 +559,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 			 */
 			fact "Compile the code" {
 				// Test the URLs in the introduction of the section
-				"../gettingstarted/RunSARLAgentInTheEclipseIDESpec.html".mustBeJnarioLink
+				"../gettingstarted/RunSARLAgentInTheEclipseIDESpec.html" should beAccessibleFrom this
 			}
 
 			/* The principle is to run each agent is a different instance of the 

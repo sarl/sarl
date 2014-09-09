@@ -20,23 +20,16 @@
  */
 package io.sarl.docs.reference
 
-import static org.junit.Assert.*;
 import io.sarl.docs.utils.SARLSpecCreator
-import org.jnario.runner.CreateWith
-import io.sarl.lang.core.Space
 import io.sarl.lang.core.EventSpace
-import java.util.UUID
-import io.sarl.lang.core.Event
-import io.sarl.lang.core.Scope
+import io.sarl.lang.core.Space
 import io.sarl.util.OpenEventSpace
-import io.sarl.lang.core.EventListener
 import io.sarl.util.RestrictedAccessEventSpace
-import java.security.Principal
+import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
-import static extension org.junit.Assert.*
 
-/* <!-- OUTPUT OUTLINE -->
+/* @outline
  *
  * This document describes the features related to the definition of a space in SARL.
  * Before reading this document, it is recommended reading
@@ -86,62 +79,52 @@ import static extension org.junit.Assert.*
  */
 @CreateWith(SARLSpecCreator)
 describe "Space Reference" {
-	
-		def Class<?> mustHaveMethod(Class<?> type, String name, Class<?>... parameters) {
-			try {
-				var m = type.getDeclaredMethod(name, parameters)
-				assertNotNull("Missed "+name+" function in "+type.simpleName, m);
-			} catch( Throwable e ) {
-				fail("Missed "+name+" function in "+type.simpleName)
-			}
-			return type
-		}
-	
-		def Class<?> mustHaveField(Class<?> type, String fieldName, String fieldType) {
-			try {
-				var f = type.getDeclaredField(fieldName)
-				assertNotNull("Missed "+fieldName+" field in "+type.simpleName, f);
-				assertEquals("Invalid field type", fieldType, f.type.name)
-			} catch( Throwable e ) {
-				fail("Missed "+fieldName+" field in "+type.simpleName);
-			}
-			return type
-		}
-
-		def Class<?> mustHaveFeatures(Class<?> type, int numberOfMethods, int numberOfFields) {
-			assertEquals("Invalid number of declared methods", numberOfMethods, type.declaredMethods.length)
-			assertEquals("Invalid number of declared fields", numberOfFields, type.declaredFields.length)
-			return type
-		}
-
-		def Class<?> mustExtend(Class<?> type, String supertype) {
-			if (type.interface) {
-				if (supertype===null) {
-					assertEquals("Invalid super-type", 0, type.interfaces.length)
-				}
-				else {
-					var found = false
-					for(t : type.interfaces) {
-						if (t.name==supertype) {
-							found = true
-						}
-					}
-					if (!found) {
-						fail("Invalid super-type. Expected: "+supertype)
-					}
-				}
-			}
-			else {
-				if (supertype===null) {
-					assertNull("Invalid super-type", type.superclass)
-				}
-				else {
-					assertNotNull("Invalid super-type", type.superclass)
-					assertEquals("Invalid super-type", supertype, type.superclass.name)
-				}
-			}
-			return type
-		}
+		
+//		def Class<?> mustHaveField(Class<?> type, String fieldName, String fieldType) {
+//			try {
+//				var f = type.getDeclaredField(fieldName)
+//				assertNotNull("Missed "+fieldName+" field in "+type.simpleName, f);
+//				assertEquals("Invalid field type", fieldType, f.type.name)
+//			} catch( Throwable e ) {
+//				fail("Missed "+fieldName+" field in "+type.simpleName);
+//			}
+//			return type
+//		}
+//
+//		def Class<?> mustHaveFeatures(Class<?> type, int numberOfMethods, int numberOfFields) {
+//			assertEquals("Invalid number of declared methods", numberOfMethods, type.declaredMethods.length)
+//			assertEquals("Invalid number of declared fields", numberOfFields, type.declaredFields.length)
+//			return type
+//		}
+//
+//		def Class<?> mustExtend(Class<?> type, String supertype) {
+//			if (type.interface) {
+//				if (supertype===null) {
+//					assertEquals("Invalid super-type", 0, type.interfaces.length)
+//				}
+//				else {
+//					var found = false
+//					for(t : type.interfaces) {
+//						if (t.name==supertype) {
+//							found = true
+//						}
+//					}
+//					if (!found) {
+//						fail("Invalid super-type. Expected: "+supertype)
+//					}
+//				}
+//			}
+//			else {
+//				if (supertype===null) {
+//					assertNull("Invalid super-type", type.superclass)
+//				}
+//				else {
+//					assertNotNull("Invalid super-type", type.superclass)
+//					assertEquals("Invalid super-type", supertype, type.superclass.name)
+//				}
+//			}
+//			return type
+//		}
 
 		/* SARL provides a collection of Java interfaces that are representing different
 		 * types of spaces.
@@ -165,14 +148,16 @@ describe "Space Reference" {
 			 */
 			fact "Space" {
 				// Test the URLs from the beginning of the page
-				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
-				"AgentReferenceSpec.html".mustBeJnarioLink
-				"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+				"AgentReferenceSpec.html" should beAccessibleFrom this
+				"BuiltInCapacityReferenceSpec.html" should beAccessibleFrom this
 				//
-				Space.mustExtend(null)
-				Space.mustHaveFeatures(2, 0)
-				Space.mustHaveMethod("getID")
-				Space.mustHaveMethod("getParticipants")
+				typeof(Space) => [
+					it should extend _
+					it should haveNbMembers 2
+					it should haveMethod "getID : io.sarl.lang.core.SpaceID"
+					it should haveMethod "getParticipants : io.sarl.lang.util.SynchronizedSet"
+				]
 			}
 			
 			/* Spaces that are based on event propagation mechanism are defined
@@ -193,11 +178,13 @@ describe "Space Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Event Space" {
-				EventSpace.mustExtend("io.sarl.lang.core.Space")
-				EventSpace.mustHaveFeatures(3, 0)
-				EventSpace.mustHaveMethod("getAddress", UUID)
-				EventSpace.mustHaveMethod("emit", Event, Scope)
-				EventSpace.mustHaveMethod("emit", Event)
+				typeof(EventSpace) => [
+					it should extend "io.sarl.lang.core.Space"
+					it should haveNbMembers(3)
+					it should haveMethod "getAddress(java.util.UUID) : io.sarl.lang.core.Address"
+					it should haveMethod "emit(io.sarl.lang.core.Event, io.sarl.lang.core.Scope)"
+					it should haveMethod "emit(io.sarl.lang.core.Event)"
+				]
 			}
 
 			/* Event spaces that are allowing the agents to be register 
@@ -215,10 +202,12 @@ describe "Space Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Open Event Space" {
-				OpenEventSpace.mustExtend("io.sarl.lang.core.EventSpace")
-				OpenEventSpace.mustHaveFeatures(2, 0)
-				OpenEventSpace.mustHaveMethod("register", EventListener)
-				OpenEventSpace.mustHaveMethod("unregister", EventListener)
+				typeof(OpenEventSpace) => [
+					it should extend "io.sarl.lang.core.EventSpace"
+					it should haveNbMembers(2)
+					it should haveMethod "register(io.sarl.lang.core.EventListener) : io.sarl.lang.core.Address"
+					it should haveMethod "unregister(io.sarl.lang.core.EventListener) : io.sarl.lang.core.Address"
+				]
 			}
 
 			/* When an event space needs to control the registration access,
@@ -237,11 +226,13 @@ describe "Space Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Restricted Access Event Space" {
-				RestrictedAccessEventSpace.mustExtend("io.sarl.lang.core.EventSpace")
-				RestrictedAccessEventSpace.mustHaveFeatures(3, 0)
-				RestrictedAccessEventSpace.mustHaveMethod("register", EventListener, Principal)
-				RestrictedAccessEventSpace.mustHaveMethod("register", EventListener)
-				RestrictedAccessEventSpace.mustHaveMethod("unregister", EventListener)
+				typeof(RestrictedAccessEventSpace) => [
+					it should extend "io.sarl.lang.core.EventSpace"
+					it should haveNbMembers(3)
+					it should haveMethod "register(io.sarl.lang.core.EventListener,java.security.Principal) : io.sarl.lang.core.Address"
+					it should haveMethod "register(io.sarl.lang.core.EventListener) : io.sarl.lang.core.Address"
+					it should haveMethod "unregister(io.sarl.lang.core.EventListener) : io.sarl.lang.core.Address"
+				]
 			}
 
 		}
@@ -274,7 +265,7 @@ describe "Space Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Defining a Space"{
-				"no check"
+				true
 			}
 			
 			/* The definition of the space implementation depends upon
@@ -299,7 +290,7 @@ describe "Space Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Defining a Space Implementation"{
-				"no check"
+				true
 			}
 
 			/* For creating instances of spaces, it is necessary to define
@@ -315,7 +306,7 @@ describe "Space Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Defining a SpaceSpecification"{
-				"no check"
+				true
 			}
 
 		}
@@ -327,20 +318,20 @@ describe "Space Reference" {
 	 * 
 	 * 
 	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * 
+	 * Licensed under the Apache License, Version 2.0;
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
 	 *
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
-		"%sarlversion%".mustStartWith("%sarlspecversion%")
-		assertTrue(
-			"The release status of the specification is invalid.",
-			"%sarlspecreleasestatus%" == "Final Release"
-			|| "%sarlspecreleasestatus%" == "Draft Release")
-		"%sarlspecreleasedate%".mustBeDate
-		"%copyrightdate%".mustBeInteger
-		assertFalse(
-			"The copyrighters' string cannot be empty.",
-			"%copyrighters%".empty || "%copyrighters%".startsWith("%"))
+		"%sarlversion%" should startWith "%sarlspecversion%"
+		("%sarlspecreleasestatus%" == "Final Release"
+			|| "%sarlspecreleasestatus%" == "Draft Release") should be true
+		"%sarlspecreleasedate%" should beDate "YYYY-mm-dd"
+		"%copyrightdate%" should beNumber "0000";
+		("%copyrighters%".empty || "%copyrighters%".startsWith("%")) should be false
 	}
 
 }

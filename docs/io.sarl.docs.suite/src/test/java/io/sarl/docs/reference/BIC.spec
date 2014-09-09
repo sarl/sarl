@@ -26,16 +26,15 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
-import static extension org.junit.Assert.*
 
 /**
+ * @outline
+ *
  * This document describes the built-in capacities in SARL.
  * Before reading this document, it is recommended reading
  * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
  * the [Capacity Reference](CapacityReferenceSpec.html),
  * and the [Skill Reference](SkillReferenceSpec.html).
- * 
- * <!-- OUTPUT OUTLINE -->
  * 
  * A *Capacity* is the specification of a collection of actions. This specification 
  * makes no assumptions about its implementation. It could be used to specify 
@@ -90,11 +89,11 @@ describe "Built-in Capacity Reference" {
 			 */
 			fact "Retrieving a Context"{
 				// Tests URLs from the beginning of the page
-				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
-				"CapacityReferenceSpec.html".mustBeJnarioLink
-				"SkillReferenceSpec.html".mustBeJnarioLink
-				"SpaceReferenceSpec.html".mustBeJnarioLink
-				"./contexts.png".mustBePicture
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+				"CapacityReferenceSpec.html" should beAccessibleFrom this
+				"SkillReferenceSpec.html" should beAccessibleFrom this
+				"SpaceReferenceSpec.html" should beAccessibleFrom this
+				"./contexts.png" should beAccessibleFrom this
 				//
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.ExternalContextAccess
@@ -391,7 +390,7 @@ describe "Built-in Capacity Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Sending an Event in the Default Space"{
-				"EventReferenceSpec.html".mustBeJnarioLink
+				"EventReferenceSpec.html" should beAccessibleFrom this
 				//
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.DefaultContextInteractions
@@ -607,7 +606,7 @@ describe "Built-in Capacity Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Launching a Delayed Task"{
-				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 				//
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.Schedules
@@ -651,7 +650,7 @@ describe "Built-in Capacity Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Launching a Periodic Task"{
-				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 				//
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.Schedules
@@ -744,7 +743,7 @@ describe "Built-in Capacity Reference" {
 			 */
 			fact "Registering a Behavior"{
 				// Test the URL in the introduction of this section
-				"BehaviorReferenceSpec.html".mustBeJnarioLink
+				"BehaviorReferenceSpec.html" should beAccessibleFrom this
 				//
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.Behaviors
@@ -863,8 +862,8 @@ describe "Built-in Capacity Reference" {
 		 * @filter(.*)
 		 */
 		fact "Use of the Built-in Capacities"{
-			"AgentReferenceSpec.html".mustBeJnarioLink
-			"BehaviorReferenceSpec.html".mustBeJnarioLink
+			"AgentReferenceSpec.html" should beAccessibleFrom this
+			"BehaviorReferenceSpec.html" should beAccessibleFrom this
 		}
 		
 	/* Specification: SARL General-purpose Agent-Oriented Programming Language ("Specification")<br/>
@@ -874,20 +873,20 @@ describe "Built-in Capacity Reference" {
 	 * 
 	 * 
 	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * 
+	 * Licensed under the Apache License, Version 2.0;
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
 	 *
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
-		"%sarlversion%".mustStartWith("%sarlspecversion%")
-		assertTrue(
-			"The release status of the specification is invalid.",
-			"%sarlspecreleasestatus%" == "Final Release"
-			|| "%sarlspecreleasestatus%" == "Draft Release")
-		"%sarlspecreleasedate%".mustBeDate
-		"%copyrightdate%".mustBeInteger
-		assertFalse(
-			"The copyrighters' string cannot be empty.",
-			"%copyrighters%".empty || "%copyrighters%".startsWith("%"))
+		"%sarlversion%" should startWith "%sarlspecversion%"
+		("%sarlspecreleasestatus%" == "Final Release"
+			|| "%sarlspecreleasestatus%" == "Draft Release") should be true
+		"%sarlspecreleasedate%" should beDate "YYYY-mm-dd"
+		"%copyrightdate%" should beNumber "0000";
+		("%copyrighters%".empty || "%copyrighters%".startsWith("%")) should be false
 	}
 
 }

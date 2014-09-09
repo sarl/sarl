@@ -23,12 +23,17 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
+import io.sarl.lang.sarl.Action
+import io.sarl.lang.sarl.Agent
+import io.sarl.lang.sarl.Attribute
+import io.sarl.lang.sarl.Capacity
+import io.sarl.lang.sarl.Skill
+import org.eclipse.xtext.xbase.XBooleanLiteral
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
-import static extension org.junit.Assert.*
 
-/** <!-- OUTPUT OUTLINE -->
+/** @outline
  * 
  * This document describes the features related to the definition of an agent in SARL.
  * Before reading this document, it is recommended reading
@@ -84,10 +89,10 @@ describe "Agent Reference"{
 			 */
 			fact "Default Context" {
 				// Test the URLs in the text from the beginning of the page
-				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
-				"SkillReferenceSpec.html".mustBeJnarioLink
-				"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
-				"./contexts.png".mustBePicture
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+				"SkillReferenceSpec.html" should beAccessibleFrom this
+				"BuiltInCapacityReferenceSpec.html" should beAccessibleFrom this
+				"./contexts.png" should beAccessibleFrom this
 			}
 			
 			/* During its lifetime, an agent may join and participate in other contexts
@@ -105,7 +110,7 @@ describe "Agent Reference"{
 			 * @filter(.*) 
 			 */
 			fact "External Contexts" {
-				"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
+				"BuiltInCapacityReferenceSpec.html" should beAccessibleFrom this
 			}
 			
 			/* In 1967, Arthur Koestler coined the term _holon_ as an attempt to
@@ -189,8 +194,8 @@ describe "Agent Reference"{
 			 * @filter(.*) 
 			 */
 			fact "Built-in Capacities" {
-				"./agent.png".mustBePicture
-				"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
+				"./agent.png" should beAccessibleFrom this
+				"BuiltInCapacityReferenceSpec.html" should beAccessibleFrom this
 			}
 
 			/*
@@ -236,10 +241,18 @@ describe "Agent Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.ar")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(1)
-				model.elements.get(0).mustBeAgent("MyAgent", null).mustHaveFeatures(0)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 0
+					it should haveNbElements 1
+				]
+				
+				model.elements.get(0) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 0
+				]
 			}
 			
 			/* The mental state of an agent is composed by the data
@@ -255,7 +268,8 @@ describe "Agent Reference"{
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Agent Attributes"{
-				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+				
 				val model = '''
 				agent MyAgent {
 					// Defining a modifiable element of the mental state
@@ -268,12 +282,33 @@ describe "Agent Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.ar")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(1)
-				var a = model.elements.get(0).mustBeAgent("MyAgent", null).mustHaveFeatures(2)
-				a.features.get(0).mustBeAttribute(true, "mentalStateElement1", "java.lang.String", false)
-				a.features.get(1).mustBeAttribute(false, "mentalStateElement2", "boolean", true)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 0
+					it should haveNbElements 1
+				]
+				
+				var a = (model.elements.get(0) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 2
+				]) as Agent
+
+				a.features.get(0) => [
+					it should beVariable "mentalStateElement1"
+					it should haveType "java.lang.String"
+					(it as Attribute).initialValue should be null
+				]
+
+				a.features.get(1) => [
+					it should beValue "mentalStateElement2"
+					it should haveType "boolean"
+					(it as Attribute).initialValue => [
+						it should be typeof(XBooleanLiteral)
+						it should beLiteral (true as Object)
+					]
+				]
 			}
 
 			/* It is allowed to define actions (methods) in the agent.
@@ -284,7 +319,7 @@ describe "Agent Reference"{
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Agent Actions"{
-				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 				val model = '''
 				agent MyAgent {
 					// Defining an action without parameter nor return type
@@ -301,12 +336,37 @@ describe "Agent Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.ar")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(1)
-				var a = model.elements.get(0).mustBeAgent("MyAgent", null).mustHaveFeatures(2)
-				a.features.get(0).mustBeAction("myAction1", null, 0, false)
-				a.features.get(1).mustBeAction("myAction2", null, 1, true).mustHaveParameter(0, "param", "int", false)
+
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 0
+					it should haveNbElements 1
+				]
+				
+				var a = (model.elements.get(0) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 2
+				]) as Agent
+
+				a.features.get(0) => [
+					it should beAction "myAction1"
+					it should reply _;
+					it should haveNbParameters 0
+					it should beVariadic false
+				]
+
+				a.features.get(1) => [
+					it should beAction "myAction2"
+					it should reply _;
+					it should haveNbParameters 1
+					it should beVariadic true
+					(it as Action).signature.params.get(0) => [
+						it should beParameter "param"
+						it should haveType "int"
+						it should haveDefaultValue _
+					]
+				]
 			}
 	
 			/* In some use cases, it is useful to specialize the definition
@@ -345,13 +405,37 @@ describe "Agent Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.ar")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(2)
-				var a1 = model.elements.get(0).mustBeAgent("MyAgent", null).mustHaveFeatures(1)
-				a1.features.get(0).mustBeAttribute(true, "attr", "java.lang.String", false)
-				var a2 = model.elements.get(1).mustBeAgent("MySubAgent", "io.sarl.docs.reference.ar.MyAgent").mustHaveFeatures(1)
-				a2.features.get(0).mustBeAction("action", null, 0, false)
+
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 0
+					it should haveNbElements 2
+				]
+				
+				var a1 = (model.elements.get(0) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 1
+				]) as Agent
+
+				a1.features.get(0) => [
+					it should beVariable "attr"
+					it should haveType "java.lang.String"
+					it should haveInitialValue _
+				]
+
+				var a2 = (model.elements.get(1) => [
+					it should beAgent "MySubAgent"
+					it should extend "io.sarl.docs.reference.ar.MyAgent"
+					it should haveNbElements 1
+				]) as Agent
+
+				a2.features.get(0) => [
+					it should beAction "action"
+					it should reply _
+					it should haveNbParameters 0
+					it should beVariadic false
+				]
 			}
 
 		}
@@ -410,9 +494,9 @@ describe "Agent Reference"{
 			 */
 			fact "Initialization Handler"{
 				// Test the URL in the introduction of the section
-				"SpaceReferenceSpec.html".mustBeJnarioLink
+				"SpaceReferenceSpec.html" should beAccessibleFrom this
 				// Test the URL in this section
-				"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
+				"BuiltInCapacityReferenceSpec.html" should beAccessibleFrom this
 				//
 				val model = '''
 				agent MyAgent {
@@ -428,12 +512,24 @@ describe "Agent Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.ar")
-				model.mustHaveImports(1)
-				model.mustHaveImport(0, "io.sarl.core.Initialize", false, false, false)
-				model.mustHaveTopElements(1)
-				var a = model.elements.get(0).mustBeAgent("MyAgent", null).mustHaveFeatures(1)
-				a.features.get(0).mustBeBehaviorUnit("io.sarl.core.Initialize", false)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.Initialize"
+					it should haveNbElements 1
+				]
+				
+				var a = (model.elements.get(0) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 1
+				]) as Agent
+
+				a.features.get(0) => [
+					it should beBehaviorUnit "io.sarl.core.Initialize"
+					it should beGuardedWith _
+				]
 			}
 
 			/* Because `Initialize` is an event, the handler in
@@ -465,13 +561,29 @@ describe "Agent Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.ar")
-				model.mustHaveImports(1)
-				model.mustHaveImport(0, "io.sarl.core.Initialize", false, false, false)
-				model.mustHaveTopElements(1)
-				var a = model.elements.get(0).mustBeAgent("MyAgent", null).mustHaveFeatures(2)
-				a.features.get(0).mustBeBehaviorUnit("io.sarl.core.Initialize", true)
-				a.features.get(1).mustBeBehaviorUnit("io.sarl.core.Initialize", true)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.Initialize"
+					it should haveNbElements 1
+				]
+				
+				var a = (model.elements.get(0) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 2
+				]) as Agent
+
+				a.features.get(0) => [
+					it should beBehaviorUnit "io.sarl.core.Initialize"
+					it should beGuardedWith "occurrence.parameters.empty"
+				]
+
+				a.features.get(1) => [
+					it should beBehaviorUnit "io.sarl.core.Initialize"
+					it should beGuardedWith "! occurrence.parameters.empty"
+				]
 			}
 
 			/* The counterpart of `Initialize` is the event
@@ -496,12 +608,24 @@ describe "Agent Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.ar")
-				model.mustHaveImports(1)
-				model.mustHaveImport(0, "io.sarl.core.Destroy", false, false, false)
-				model.mustHaveTopElements(1)
-				var a = model.elements.get(0).mustBeAgent("MyAgent", null).mustHaveFeatures(1)
-				a.features.get(0).mustBeBehaviorUnit("io.sarl.core.Destroy", false)
+
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.Destroy"
+					it should haveNbElements 1
+				]
+				
+				var a = (model.elements.get(0) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 1
+				]) as Agent
+
+				a.features.get(0) => [
+					it should beBehaviorUnit "io.sarl.core.Destroy"
+					it should beGuardedWith _
+				]
 			}
 			/* As for `Initialize`, the handlers of
 			 * the `Destroy` event could be guarded.
@@ -531,14 +655,35 @@ describe "Agent Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.ar")
-				model.mustHaveImports(1)
-				model.mustHaveImport(0, "io.sarl.core.Destroy", false, false, false)
-				model.mustHaveTopElements(1)
-				var a = model.elements.get(0).mustBeAgent("MyAgent", null).mustHaveFeatures(3)
-				a.features.get(0).mustBeAttribute(true, "resource", "java.lang.Object", false)
-				a.features.get(1).mustBeBehaviorUnit("io.sarl.core.Destroy", true)
-				a.features.get(2).mustBeBehaviorUnit("io.sarl.core.Destroy", true)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.Destroy"
+					it should haveNbElements 1
+				]
+				
+				var a = (model.elements.get(0) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 3
+				]) as Agent
+
+				a.features.get(0) => [
+					it should beVariable "resource"
+					it should haveType "java.lang.Object"
+					it should haveInitialValue _
+				]
+
+				a.features.get(1) => [
+					it should beBehaviorUnit "io.sarl.core.Destroy"
+					it should beGuardedWith "resource !== null"
+				]
+
+				a.features.get(2) => [
+					it should beBehaviorUnit "io.sarl.core.Destroy"
+					it should beGuardedWith "resource === null"
+				]
 			}
 
 			/* The reactive behavior of an agent is specified with a collection
@@ -566,12 +711,28 @@ describe "Agent Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.ar")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(2)
-				model.elements.get(0).mustBeEvent("SomethingChanged", null).mustHaveFeatures(0)
-				var a = model.elements.get(1).mustBeAgent("MyAgent", null).mustHaveFeatures(1)
-				a.features.get(0).mustBeBehaviorUnit("io.sarl.docs.reference.ar.SomethingChanged", false)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 0
+					it should haveNbElements 2
+				]
+				
+				model.elements.get(0) => [
+					it should beEvent "SomethingChanged"
+					it should extend _
+					it should haveNbElements 0
+				]
+
+				model.elements.get(1) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 1
+					(it as Agent).features.get(0) => [
+						it should beBehaviorUnit "io.sarl.docs.reference.ar.SomethingChanged"
+						it should beGuardedWith _
+					]
+				]
 			}
 
 			/* When an event is received and the guard of the corresponding
@@ -600,13 +761,32 @@ describe "Agent Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.ar")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(2)
-				model.elements.get(0).mustBeEvent("SomethingChanged", null).mustHaveFeatures(0)
-				var a = model.elements.get(1).mustBeAgent("MyAgent", null).mustHaveFeatures(2)
-				a.features.get(0).mustBeBehaviorUnit("io.sarl.docs.reference.ar.SomethingChanged", false)
-				a.features.get(1).mustBeBehaviorUnit("io.sarl.docs.reference.ar.SomethingChanged", false)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 0
+					it should haveNbElements 2
+				]
+				
+				model.elements.get(0) => [
+					it should beEvent "SomethingChanged"
+					it should extend _
+					it should haveNbElements 0
+				]
+
+				model.elements.get(1) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 2
+					(it as Agent).features.get(0) => [
+						it should beBehaviorUnit "io.sarl.docs.reference.ar.SomethingChanged"
+						it should beGuardedWith _
+					]
+					(it as Agent).features.get(1) => [
+						it should beBehaviorUnit "io.sarl.docs.reference.ar.SomethingChanged"
+						it should beGuardedWith _
+					]
+				]
 			}
 
 			/* A proactive behavior is a part of the global behavior of an agent that the 
@@ -624,7 +804,7 @@ describe "Agent Reference"{
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Pro-active Behaviors"{
-				"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
+				"BuiltInCapacityReferenceSpec.html" should beAccessibleFrom this
 				//
 				val model = '''
 				agent MyAgent {
@@ -642,14 +822,27 @@ describe "Agent Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.ar")
-				model.mustHaveImports(2)
-				model.mustHaveImport(0, "io.sarl.core.Initialize", false, false, false)
-				model.mustHaveImport(1, "io.sarl.core.Schedules", false, false, false)
-				model.mustHaveTopElements(1)
-				var a = model.elements.get(0).mustBeAgent("MyAgent", null).mustHaveFeatures(2)
-				a.features.get(0).mustBeCapacityUses("io.sarl.core.Schedules")
-				a.features.get(1).mustBeBehaviorUnit("io.sarl.core.Initialize", false)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 2
+					it should importClass "io.sarl.core.Initialize"
+					it should importClass "io.sarl.core.Schedules"
+					it should haveNbElements 1
+				]
+				
+				var a = (model.elements.get(0) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 2
+				]) as Agent
+
+				a.features.get(0) should beCapacityUse #["io.sarl.core.Schedules"]
+				
+				a.features.get(1) => [
+					it should beBehaviorUnit "io.sarl.core.Initialize"
+					it should beGuardedWith _
+				]
 			}
 
 		}
@@ -683,8 +876,8 @@ describe "Agent Reference"{
 			 * @filter(.*) 
 			 */
 			fact "Defining a Capacity and a Skill"{
-				"CapacityReferenceSpec.html".mustBeJnarioLink
-				"SkillReferenceSpec.html".mustBeJnarioLink
+				"CapacityReferenceSpec.html" should beAccessibleFrom this
+				"SkillReferenceSpec.html" should beAccessibleFrom this
 			}
 
 			/* When an agent must use a capacity in one of its behaviors,
@@ -723,16 +916,51 @@ describe "Agent Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.ar")
-				model.mustHaveImports(1)
-				model.mustHaveImport(0, "io.sarl.core.Initialize", false, false, false)
-				model.mustHaveTopElements(3)
-				var c = model.elements.get(0).mustBeCapacity("Cap").mustHaveFeatures(1)
-				c.features.get(0).mustBeActionSignature("action", null, 0, false)
-				var s = model.elements.get(1).mustBeSkill("Ski", null, "io.sarl.docs.reference.ar.Cap").mustHaveFeatures(1)
-				s.features.get(0).mustBeAction("action", null, 0, false)
-				var a = model.elements.get(2).mustBeAgent("MyAgent", null).mustHaveFeatures(1)
-				a.features.get(0).mustBeBehaviorUnit("io.sarl.core.Initialize", false)
+
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.Initialize"
+					it should haveNbElements 3
+				]
+				
+				var c = (model.elements.get(0) => [
+					it should beCapacity "Cap"
+					it should extend _
+					it should haveNbElements 1
+				]) as Capacity
+				
+				c.features.get(0) => [
+					it should beActionSignature "action"
+					it should reply _
+					it should haveNbParameters 0
+					it should beVariadic false
+				]
+
+				var s = (model.elements.get(1) => [
+					it should beSkill "Ski"
+					it should extend _
+					it should implement #["io.sarl.docs.reference.ar.Cap"]
+					it should haveNbElements 1
+				]) as Skill
+				
+				s.features.get(0) => [
+					it should beAction "action"
+					it should reply _
+					it should haveNbParameters 0
+					it should beVariadic false
+				]
+
+				var a = (model.elements.get(2) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 1
+				]) as Agent
+				
+				a.features.get(0) => [
+					it should beBehaviorUnit "io.sarl.core.Initialize"
+					it should beGuardedWith _
+				]
 			}
 	
 			/* Because the built-in capacities are supported by the runtime environment,
@@ -747,7 +975,7 @@ describe "Agent Reference"{
 			 * @filter(.*) 
 			 */
 			fact "Giving a Built-in Skill to an Agent" {
-				"no fact to test"
+				true
 			}
 
 			/* After a skill is registered into the agent,
@@ -796,18 +1024,62 @@ describe "Agent Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.ar")
-				model.mustHaveImports(1)
-				model.mustHaveImport(0, "io.sarl.core.Initialize", false, false, false)
-				model.mustHaveTopElements(4)
-				var c = model.elements.get(0).mustBeCapacity("Cap").mustHaveFeatures(1)
-				c.features.get(0).mustBeActionSignature("action", null, 0, false)
-				var s = model.elements.get(1).mustBeSkill("Ski", null, "io.sarl.docs.reference.ar.Cap").mustHaveFeatures(1)
-				s.features.get(0).mustBeAction("action", null, 0, false)
-				model.elements.get(2).mustBeEvent("SomeEvent", null).mustHaveFeatures(0)
-				var a = model.elements.get(3).mustBeAgent("MyAgent", null).mustHaveFeatures(2)
-				a.features.get(0).mustBeBehaviorUnit("io.sarl.core.Initialize", false)
-				a.features.get(1).mustBeBehaviorUnit("io.sarl.docs.reference.ar.SomeEvent", false)
+
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.Initialize"
+					it should haveNbElements 4
+				]
+				
+				var c = (model.elements.get(0) => [
+					it should beCapacity "Cap"
+					it should extend _
+					it should haveNbElements 1
+				]) as Capacity
+				
+				c.features.get(0) => [
+					it should beActionSignature "action"
+					it should reply _
+					it should haveNbParameters 0
+					it should beVariadic false
+				]
+				
+				var s = (model.elements.get(1) => [
+					it should beSkill "Ski"
+					it should extend _
+					it should implement #["io.sarl.docs.reference.ar.Cap"]
+					it should haveNbElements 1
+				]) as Skill
+				
+				s.features.get(0) => [
+					it should beAction "action"
+					it should reply _
+					it should haveNbParameters 0
+					it should beVariadic false
+				]
+
+				model.elements.get(2) => [
+					it should beEvent "SomeEvent"
+					it should extend _
+					it should haveNbElements 0
+				]
+
+				var a = (model.elements.get(3) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 2
+				]) as Agent
+
+				a.features.get(0) => [
+					it should beBehaviorUnit "io.sarl.core.Initialize"
+					it should beGuardedWith _
+				]
+
+				a.features.get(1) => [
+					it should beBehaviorUnit "io.sarl.docs.reference.ar.SomeEvent"
+					it should beGuardedWith _
+				]
 			}
 	
 			/* The built-in capacities are accessible in the same way
@@ -832,13 +1104,30 @@ describe "Agent Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.ar")
-				model.mustHaveImports(1)
-				model.mustHaveImport(0, "io.sarl.core.Lifecycle", false, false, false)
-				model.mustHaveTopElements(2)
-				model.elements.get(0).mustBeEvent("SomeEvent", null).mustHaveFeatures(0)
-				var a = model.elements.get(1).mustBeAgent("MyAgent", null).mustHaveFeatures(1)
-				a.features.get(0).mustBeBehaviorUnit("io.sarl.docs.reference.ar.SomeEvent", false)
+
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.Lifecycle"
+					it should haveNbElements 2
+				]
+				
+				model.elements.get(0) => [
+					it should beEvent "SomeEvent"
+					it should extend _
+					it should haveNbElements 0
+				]
+
+				var a = (model.elements.get(1) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 1
+				]) as Agent
+
+				a.features.get(0) => [
+					it should beBehaviorUnit "io.sarl.docs.reference.ar.SomeEvent"
+					it should beGuardedWith _
+				]
 			}
 
 			/* Invoking a capacity/skill with the getter method is
@@ -863,7 +1152,7 @@ describe "Agent Reference"{
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Using a Capacity with the Extension Methods" {
-				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 				//
 				val model = '''
 				agent MyAgent {
@@ -890,19 +1179,62 @@ describe "Agent Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.ar")
-				model.mustHaveImports(1)
-				model.mustHaveImport(0, "io.sarl.core.Initialize", false, false, false)
-				model.mustHaveTopElements(4)
-				var c = model.elements.get(0).mustBeCapacity("Cap").mustHaveFeatures(1)
-				c.features.get(0).mustBeActionSignature("action", null, 0, false)
-				var s = model.elements.get(1).mustBeSkill("Ski", null, "io.sarl.docs.reference.ar.Cap").mustHaveFeatures(1)
-				s.features.get(0).mustBeAction("action", null, 0, false)
-				model.elements.get(2).mustBeEvent("SomeEvent", null).mustHaveFeatures(0)
-				var a = model.elements.get(3).mustBeAgent("MyAgent", null).mustHaveFeatures(3)
-				a.features.get(0).mustBeCapacityUses("io.sarl.docs.reference.ar.Cap")
-				a.features.get(1).mustBeBehaviorUnit("io.sarl.core.Initialize", false)
-				a.features.get(2).mustBeBehaviorUnit("io.sarl.docs.reference.ar.SomeEvent", false)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.Initialize"
+					it should haveNbElements 4
+				]
+				
+				model.elements.get(0) => [
+					it should beCapacity "Cap"
+					it should extend _
+					it should haveNbElements 1
+					(it as Capacity).features.get(0) => [
+						it should beActionSignature "action"
+						it should reply _
+						it should haveNbParameters 0
+						it should beVariadic false
+					]
+				]
+
+				model.elements.get(1) => [
+					it should beSkill "Ski"
+					it should extend _
+					it should implement #["io.sarl.docs.reference.ar.Cap"]
+					it should haveNbElements 1
+					(it as Skill).features.get(0) => [
+						it should beAction "action"
+						it should reply _
+						it should haveNbParameters 0
+						it should beVariadic false
+					]
+				]
+
+				model.elements.get(2) => [
+					it should beEvent "SomeEvent"
+					it should extend _
+					it should haveNbElements 0
+				]
+
+				var a = (model.elements.get(3) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 3
+				]) as Agent
+
+				a.features.get(0) should beCapacityUse #["io.sarl.docs.reference.ar.Cap"]
+
+				a.features.get(1) => [
+					it should beBehaviorUnit "io.sarl.core.Initialize"
+					it should beGuardedWith _
+				]
+
+				a.features.get(2) => [
+					it should beBehaviorUnit "io.sarl.docs.reference.ar.SomeEvent"
+					it should beGuardedWith _
+				]
 			}
 	
 			/* The built-in capacities are accessible in the same way
@@ -926,16 +1258,35 @@ describe "Agent Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.ar")
-				model.mustHaveImports(1)
-				model.mustHaveImport(0, "io.sarl.core.Lifecycle", false, false, false)
-				model.mustHaveTopElements(2)
-				model.elements.get(0).mustBeEvent("SomeEvent", null).mustHaveFeatures(0)
-				var a = model.elements.get(1).mustBeAgent("MyAgent", null).mustHaveFeatures(2)
-				a.features.get(0).mustBeCapacityUses("io.sarl.core.Lifecycle")
-				a.features.get(1).mustBeBehaviorUnit("io.sarl.docs.reference.ar.SomeEvent", false)			}
 
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.Lifecycle"
+					it should haveNbElements 2
+				]
+				
+				model.elements.get(0) => [
+					it should beEvent "SomeEvent"
+					it should extend _
+					it should haveNbElements 0
+				]
+
+				var a = (model.elements.get(1) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 2
+				]) as Agent
+
+				a.features.get(0) should beCapacityUse #["io.sarl.core.Lifecycle"]
+
+				a.features.get(1) => [
+					it should beBehaviorUnit "io.sarl.docs.reference.ar.SomeEvent"
+					it should beGuardedWith _
+				]
 		}
+		
+	}
 
 	/* Specification: SARL General-purpose Agent-Oriented Programming Language ("Specification")<br/>
 	 * Version: %sarlspecversion%<br/>
@@ -944,19 +1295,20 @@ describe "Agent Reference"{
 	 * 
 	 * 
 	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * 
+	 * Licensed under the Apache License, Version 2.0;
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
 	 *
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
-		"%sarlversion%".mustStartWith("%sarlspecversion%")
-		assertTrue(
-			"The release status of the specification is invalid.",
-			"%sarlspecreleasestatus%" == "Final Release"
-			|| "%sarlspecreleasestatus%" == "Draft Release")
-		"%sarlspecreleasedate%".mustBeDate
-		"%copyrightdate%".mustBeInteger
-		assertFalse(
-			"The copyrighters' string cannot be empty.",
-			"%copyrighters%".empty || "%copyrighters%".startsWith("%"))
+		"%sarlversion%" should startWith "%sarlspecversion%"
+		("%sarlspecreleasestatus%" == "Final Release"
+			|| "%sarlspecreleasestatus%" == "Draft Release") should be true
+		"%sarlspecreleasedate%" should beDate "YYYY-mm-dd"
+		"%copyrightdate%" should beNumber "0000";
+		("%copyrighters%".empty || "%copyrighters%".startsWith("%")) should be false
 	}
+
 }

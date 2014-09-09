@@ -26,9 +26,12 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
-import static extension org.junit.Assert.*
+import io.sarl.lang.sarl.Behavior
+import io.sarl.lang.sarl.Action
+import io.sarl.lang.sarl.Agent
+import io.sarl.lang.sarl.Capacity
 
-/* <!-- OUTPUT OUTLINE -->
+/* @outline
  *
  * This document describes the features related to the definition of a behavior in SARL.
  * Before reading this document, it is recommended reading
@@ -60,8 +63,8 @@ describe "Behavior Reference" {
 			 */
 			fact "Defining an empty behavior"{
 				// Tests the URLs from the beginning of the page
-				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
-				"AgentReferenceSpec.html".mustBeJnarioLink
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+				"AgentReferenceSpec.html" should beAccessibleFrom this
 				//
 				val model = '''
 				behavior MyBehavior {
@@ -71,10 +74,18 @@ describe "Behavior Reference" {
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.br")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(1)
-				model.elements.get(0).mustBeBehavior("MyBehavior", null).mustHaveFeatures(0)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.br"
+					it should haveNbImports 0
+					it should haveNbElements 1
+				]
+				
+				model.elements.get(0) => [
+					it should beBehavior "MyBehavior"
+					it should extend _
+					it should haveNbElements 0
+				]
 			}
 			
 			/* The mental state of an agent is composed by the data
@@ -91,7 +102,7 @@ describe "Behavior Reference" {
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Behavior Attributes"{
-				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 				//
 				val model = '''
 				behavior MyBehavior {
@@ -105,12 +116,30 @@ describe "Behavior Reference" {
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.br")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(1)
-				var b = model.elements.get(0).mustBeBehavior("MyBehavior", null).mustHaveFeatures(2)
-				b.features.get(0).mustBeAttribute(true, "mentalStateElement1", "java.lang.String", false)
-				b.features.get(1).mustBeAttribute(false, "mentalStateElement2", "boolean", true)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.br"
+					it should haveNbImports 0
+					it should haveNbElements 1
+				]
+				
+				var b = (model.elements.get(0) => [
+					it should beBehavior "MyBehavior"
+					it should extend _
+					it should haveNbElements 2
+				]) as Behavior
+				
+				b.features.get(0) => [
+					it should beVariable "mentalStateElement1"
+					it should haveType "java.lang.String"
+					it should haveInitialValue _
+				]
+
+				b.features.get(1) => [
+					it should beValue "mentalStateElement2"
+					it should haveType "boolean"
+					it should haveInitialValue "true"
+				]
 			}
 
 			/* It is allowed to define actions (methods) in the behavior.
@@ -122,7 +151,7 @@ describe "Behavior Reference" {
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Behavior Actions"{
-				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 				//
 				val model = '''
 				behavior MyBehavior {
@@ -140,12 +169,37 @@ describe "Behavior Reference" {
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.br")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(1)
-				var b = model.elements.get(0).mustBeBehavior("MyBehavior", null).mustHaveFeatures(2)
-				b.features.get(0).mustBeAction("myAction1", null, 0, false)
-				b.features.get(1).mustBeAction("myAction2", null, 1, true).mustHaveParameter(0, "param", "int", false)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.br"
+					it should haveNbImports 0
+					it should haveNbElements 1
+				]
+				
+				var b = (model.elements.get(0) => [
+					it should beBehavior "MyBehavior"
+					it should extend _
+					it should haveNbElements 2
+				]) as Behavior
+				
+				b.features.get(0) => [
+					it should beAction "myAction1"
+					it should reply _
+					it should haveNbParameters 0
+					it should beVariadic false
+				]
+
+				b.features.get(1) => [
+					it should beAction "myAction2"
+					it should reply _
+					it should haveNbParameters 1
+					it should beVariadic true
+					(it as Action).signature.params.get(0) => [
+						it should beParameter "param"
+						it should haveType "int"
+						it should haveDefaultValue _
+					]
+				]
 			}
 	
 			/* In some use cases, it is useful to specialize the definition
@@ -184,13 +238,35 @@ describe "Behavior Reference" {
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.br")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(2)
-				var b1 = model.elements.get(0).mustBeBehavior("MyBehavior", null).mustHaveFeatures(1)
-				b1.features.get(0).mustBeAttribute(true, "attr", "java.lang.String", false)
-				var b2 = model.elements.get(1).mustBeBehavior("MySubBehavior", "io.sarl.docs.reference.br.MyBehavior").mustHaveFeatures(1)
-				b2.features.get(0).mustBeAction("action", null, 0, false)
+
+				model => [
+					it should havePackage "io.sarl.docs.reference.br"
+					it should haveNbImports 0
+					it should haveNbElements 2
+				]
+				
+				model.elements.get(0) => [
+					it should beBehavior "MyBehavior"
+					it should extend _
+					it should haveNbElements 1
+					(it as Behavior).features.get(0) => [
+						it should beVariable "attr"
+						it should haveType "java.lang.String"
+						it should haveInitialValue _
+					]
+				]
+				
+				model.elements.get(1) => [
+					it should beBehavior "MySubBehavior"
+					it should extend "io.sarl.docs.reference.br.MyBehavior"
+					it should haveNbElements 1
+					(it as Behavior).features.get(0) => [
+						it should beAction "action"
+						it should reply _
+						it should haveNbParameters 0
+						it should beVariadic false
+					]
+				]
 			}
 
 			/* A behavior is always owned by an agent.
@@ -225,15 +301,31 @@ describe "Behavior Reference" {
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.br")
-				model.mustHaveImports(2)
-				model.mustHaveImport(0, "io.sarl.core.Initialize", false, false, false)
-				model.mustHaveImport(1, "io.sarl.core.Behaviors", false, false, false)
-				model.mustHaveTopElements(2)
-				model.elements.get(0).mustBeBehavior("MyBehavior", null).mustHaveFeatures(0)
-				var b = model.elements.get(1).mustBeAgent("MyAgent", null).mustHaveFeatures(2)
-				b.features.get(0).mustBeCapacityUses("io.sarl.core.Behaviors")
-				b.features.get(1).mustBeBehaviorUnit("io.sarl.core.Initialize", false)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.br"
+					it should haveNbImports 2
+					it should importClass "io.sarl.core.Initialize"
+					it should importClass "io.sarl.core.Behaviors"
+					it should haveNbElements 2
+				]
+				
+				model.elements.get(0) => [
+					it should beBehavior "MyBehavior"
+					it should extend _
+					it should haveNbElements 0
+				]
+				
+				model.elements.get(1) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 2
+					(it as Agent).features.get(0) should beCapacityUse #["io.sarl.core.Behaviors"]
+					(it as Agent).features.get(1) => [
+						it should beBehaviorUnit "io.sarl.core.Initialize"
+						it should beGuardedWith _
+					]
+				]
 			}
 
 		}
@@ -287,7 +379,7 @@ describe "Behavior Reference" {
 			 */
 			fact "Reactive Behavior Units"{
 				// Test the URLs in the introduction of this section
-				"SpaceReferenceSpec.html".mustBeJnarioLink
+				"SpaceReferenceSpec.html" should beAccessibleFrom this
 				//
 				val model = '''
 				behavior MyBehavior {
@@ -301,12 +393,28 @@ describe "Behavior Reference" {
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.br")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(2)
-				model.elements.get(0).mustBeEvent("SomethingChanged", null).mustHaveFeatures(0)
-				var b = model.elements.get(1).mustBeBehavior("MyBehavior", null).mustHaveFeatures(1)
-				b.features.get(0).mustBeBehaviorUnit("io.sarl.docs.reference.br.SomethingChanged", false)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.br"
+					it should haveNbImports 0
+					it should haveNbElements 2
+				]
+				
+				model.elements.get(0) => [
+					it should beEvent "SomethingChanged"
+					it should extend _
+					it should haveNbElements 0
+				]
+				
+				model.elements.get(1) => [
+					it should beBehavior "MyBehavior"
+					it should extend _
+					it should haveNbElements 1
+					(it as Behavior).features.get(0) => [
+						it should beBehaviorUnit "io.sarl.docs.reference.br.SomethingChanged"
+						it should beGuardedWith _
+					]
+				]
 			}
 
 			/* When an event is received and the guard of the corresponding
@@ -335,13 +443,32 @@ describe "Behavior Reference" {
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.br")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(2)
-				model.elements.get(0).mustBeEvent("SomethingChanged", null).mustHaveFeatures(0)
-				var b = model.elements.get(1).mustBeBehavior("MyBehavior", null).mustHaveFeatures(2)
-				b.features.get(0).mustBeBehaviorUnit("io.sarl.docs.reference.br.SomethingChanged", false)
-				b.features.get(1).mustBeBehaviorUnit("io.sarl.docs.reference.br.SomethingChanged", false)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.br"
+					it should haveNbImports 0
+					it should haveNbElements 2
+				]
+				
+				model.elements.get(0) => [
+					it should beEvent "SomethingChanged"
+					it should extend _
+					it should haveNbElements 0
+				]
+				
+				model.elements.get(1) => [
+					it should beBehavior "MyBehavior"
+					it should extend _
+					it should haveNbElements 2
+					(it as Behavior).features.get(0) => [
+						it should beBehaviorUnit "io.sarl.docs.reference.br.SomethingChanged"
+						it should beGuardedWith _
+					]
+					(it as Behavior).features.get(1) => [
+						it should beBehaviorUnit "io.sarl.docs.reference.br.SomethingChanged"
+						it should beGuardedWith _
+					]
+				]
 			}
 
 			/* A proactive behavior is a part of the global behavior of an agent that the 
@@ -359,7 +486,7 @@ describe "Behavior Reference" {
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Pro-active Behavior Units"{
-				"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
+				"BuiltInCapacityReferenceSpec.html" should beAccessibleFrom this
 				//
 				val model = '''
 				behavior MyBehavior {
@@ -377,14 +504,25 @@ describe "Behavior Reference" {
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.br")
-				model.mustHaveImports(2)
-				model.mustHaveImport(0, "io.sarl.core.Initialize", false, false, false)
-				model.mustHaveImport(1, "io.sarl.core.Schedules", false, false, false)
-				model.mustHaveTopElements(1)
-				var b = model.elements.get(0).mustBeBehavior("MyBehavior", null).mustHaveFeatures(2)
-				b.features.get(0).mustBeCapacityUses("io.sarl.core.Schedules")
-				b.features.get(1).mustBeBehaviorUnit("io.sarl.core.Initialize", false)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.br"
+					it should haveNbImports 2
+					it should importClass "io.sarl.core.Initialize"
+					it should importClass "io.sarl.core.Schedules"
+					it should haveNbElements 1
+				]
+				
+				model.elements.get(0) => [
+					it should beBehavior "MyBehavior"
+					it should extend _
+					it should haveNbElements 2
+					(it as Behavior).features.get(0) should beCapacityUse #["io.sarl.core.Schedules"]
+					(it as Behavior).features.get(1) => [
+						it should beBehaviorUnit "io.sarl.core.Initialize"
+						it should beGuardedWith _
+					]
+				]
 			}
 
 		}
@@ -421,8 +559,8 @@ describe "Behavior Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Defining a Capacity and a Skill"{
-				"CapacityReferenceSpec.html".mustBeJnarioLink
-				"SkillReferenceSpec.html".mustBeJnarioLink
+				"CapacityReferenceSpec.html" should beAccessibleFrom this
+				"SkillReferenceSpec.html" should beAccessibleFrom this
 			}
 
 			/* When a behavior must use a capacity,
@@ -488,14 +626,40 @@ describe "Behavior Reference" {
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.br")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(3)
-				var c = model.elements.get(0).mustBeCapacity("Cap").mustHaveFeatures(1)
-				c.features.get(0).mustBeActionSignature("action", null, 0, false)
-				model.elements.get(1).mustBeEvent("SomeEvent", null).mustHaveFeatures(0)
-				var b = model.elements.get(2).mustBeBehavior("MyBehavior", null).mustHaveFeatures(1)
-				b.features.get(0).mustBeBehaviorUnit("io.sarl.docs.reference.br.SomeEvent", false)
+
+				model => [
+					it should havePackage "io.sarl.docs.reference.br"
+					it should haveNbImports 0
+					it should haveNbElements 3
+				]
+				
+				model.elements.get(0) => [
+					it should beCapacity "Cap"
+					it should extend _
+					it should haveNbElements 1
+					(it as Capacity).features.get(0) => [
+						it should beActionSignature "action"
+						it should reply _
+						it should haveNbParameters 0
+						it should beVariadic false
+					]
+				]
+
+				model.elements.get(1) => [
+					it should beEvent "SomeEvent"
+					it should extend _
+					it should haveNbElements 0
+				]
+
+				model.elements.get(2) => [
+					it should beBehavior "MyBehavior"
+					it should extend _
+					it should haveNbElements 1
+					(it as Behavior).features.get(0) => [
+						it should beBehaviorUnit "io.sarl.docs.reference.br.SomeEvent"
+						it should beGuardedWith _
+					]
+				]
 			}
 	
 			/* Invoking a capacity/skill with the getter method is
@@ -520,7 +684,7 @@ describe "Behavior Reference" {
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Using a Capacity with the Extension Methods" {
-				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 				//
 				val model = '''
 				behavior MyBehavior {
@@ -539,15 +703,41 @@ describe "Behavior Reference" {
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.br")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(3)
-				var c = model.elements.get(0).mustBeCapacity("Cap").mustHaveFeatures(1)
-				c.features.get(0).mustBeActionSignature("action", null, 0, false)
-				model.elements.get(1).mustBeEvent("SomeEvent", null).mustHaveFeatures(0)
-				var b = model.elements.get(2).mustBeBehavior("MyBehavior", null).mustHaveFeatures(2)
-				b.features.get(0).mustBeCapacityUses("io.sarl.docs.reference.br.Cap")
-				b.features.get(1).mustBeBehaviorUnit("io.sarl.docs.reference.br.SomeEvent", false)
+
+				model => [
+					it should havePackage "io.sarl.docs.reference.br"
+					it should haveNbImports 0
+					it should haveNbElements 3
+				]
+				
+				model.elements.get(0) => [
+					it should beCapacity "Cap"
+					it should extend _
+					it should haveNbElements 1
+					(it as Capacity).features.get(0) => [
+						it should beActionSignature "action"
+						it should reply _
+						it should haveNbParameters 0
+						it should beVariadic false
+					]
+				]
+
+				model.elements.get(1) => [
+					it should beEvent "SomeEvent"
+					it should extend _
+					it should haveNbElements 0
+				]
+
+				model.elements.get(2) => [
+					it should beBehavior "MyBehavior"
+					it should extend _
+					it should haveNbElements 2
+					(it as Behavior).features.get(0) should beCapacityUse #["io.sarl.docs.reference.br.Cap"]
+					(it as Behavior).features.get(1) => [
+						it should beBehaviorUnit "io.sarl.docs.reference.br.SomeEvent"
+						it should beGuardedWith _
+					]
+				]
 			}
 		
 		}
@@ -559,20 +749,20 @@ describe "Behavior Reference" {
 	 * 
 	 * 
 	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * 
+	 * Licensed under the Apache License, Version 2.0;
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
 	 *
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
-		"%sarlversion%".mustStartWith("%sarlspecversion%")
-		assertTrue(
-			"The release status of the specification is invalid.",
-			"%sarlspecreleasestatus%" == "Final Release"
-			|| "%sarlspecreleasestatus%" == "Draft Release")
-		"%sarlspecreleasedate%".mustBeDate
-		"%copyrightdate%".mustBeInteger
-		assertFalse(
-			"The copyrighters' string cannot be empty.",
-			"%copyrighters%".empty || "%copyrighters%".startsWith("%"))
+		"%sarlversion%" should startWith "%sarlspecversion%"
+		("%sarlspecreleasestatus%" == "Final Release"
+			|| "%sarlspecreleasestatus%" == "Draft Release") should be true
+		"%sarlspecreleasedate%" should beDate "YYYY-mm-dd"
+		"%copyrightdate%" should beNumber "0000";
+		("%copyrighters%".empty || "%copyrighters%".startsWith("%")) should be false
 	}
 
 }

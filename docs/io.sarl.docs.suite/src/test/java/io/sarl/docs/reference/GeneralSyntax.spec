@@ -23,30 +23,21 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
+import io.sarl.lang.sarl.Action
+import io.sarl.lang.sarl.Agent
+import io.sarl.lang.sarl.Constructor
+import io.sarl.lang.sarl.Event
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.util.List
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
 import org.eclipse.xtext.xbase.XBlockExpression
-import org.eclipse.xtext.xbase.XBooleanLiteral
-import org.eclipse.xtext.xbase.XCastedExpression
-import org.eclipse.xtext.xbase.XConstructorCall
-import org.eclipse.xtext.xbase.XFeatureCall
-import org.eclipse.xtext.xbase.XListLiteral
-import org.eclipse.xtext.xbase.XMemberFeatureCall
-import org.eclipse.xtext.xbase.XNullLiteral
-import org.eclipse.xtext.xbase.XNumberLiteral
-import org.eclipse.xtext.xbase.XSetLiteral
-import org.eclipse.xtext.xbase.XStringLiteral
-import org.eclipse.xtext.xbase.XTypeLiteral
 import org.eclipse.xtext.xbase.XbasePackage
 import org.jnario.runner.CreateWith
 
-import static org.junit.Assert.*
-
 import static extension io.sarl.docs.utils.SpecificationTools.*
 
-/* <!-- OUTPUT OUTLINE -->
+/* @outline
  * 
  * This document describes the general syntax of the SARL Language. 
  */
@@ -87,7 +78,7 @@ describe "General Syntax Reference" {
 	 * @filter(.*)
 	 */
 	fact "Java Interoperability" {
-		assertNotNull(typeof(List))
+		typeof(List) should not be _
 	}
 
 	/* In SARL, the names of the features (agents, variables, fields, etc.)
@@ -110,8 +101,10 @@ describe "General Syntax Reference" {
 	 */
 	fact "Name Syntax" {
 		'''package io.sarl.event.ActionEvent'''.parsesWithError
+		
 		var model = '''package io.sarl.^event.ActionEvent'''.parsesSuccessfully
-		model.mustHavePackage("io.sarl.event.ActionEvent")
+		
+		model should havePackage "io.sarl.event.ActionEvent"
 	}
 
 	/* A script is a file in which you must type the SARL code.
@@ -154,10 +147,17 @@ describe "General Syntax Reference" {
 				'''.parsesSuccessfully(
 				// TEXT
 				"agent A {}")
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(0)
+			
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+			
+			model.elements.get(0) => [
+				it should beAgent "A"
+				it should haveNbElements 0
+			]
 		}	 
 		
 		/* The _imports_ part of a SARL script is dedicated to the 
@@ -190,15 +190,20 @@ describe "General Syntax Reference" {
 				// TEXT
 				"agent A {}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustHaveImport(0, "java.util.List", false, false, false)
-			model.mustHaveTopElements(1)
-			model.elements.get(0).mustBeAgent("A", null)
 			
-			model.mustHaveImports(2)
-			model.mustHaveImport(0, "java.util.List", false, false, false)
-			model.mustHaveImport(1, "java.net", false, true, false)
-			model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(0)
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr";
+				it should haveNbImports 2;
+				it should importClass "java.util.List";
+				it should importClassesFrom "java.net";
+				it should haveNbElements 1;
+			]
+			
+			model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 0
+			]
 		}
 	
 		/* Sometimes, it is mandatory to import a class for accessing its
@@ -253,15 +258,31 @@ describe "General Syntax Reference" {
 				// TEXT 
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustHaveImports(3)
-			model.mustHaveImport(0, "java.util.Collection", false, false, false)
-			model.mustHaveImport(1, "java.util.Collections", false, false, false)
-			model.mustHaveImport(2, "java.util.Arrays", true, true, false)
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(1)
-			a.features.get(0).mustBeAction("example", null, 0, false).body.mustBe(XBlockExpression)
+			
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 3
+				it should importClass "java.util.Collection"
+				it should importClass "java.util.Collections"
+				it should importMembers "java.util.Arrays"
+				it should haveNbElements 1
+			]
+			
+			var a = model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 1
+			]
+			
+			var sig = (a as Agent).features.get(0) => [
+				it should beAction "example";
+				it should reply _;
+				it should haveNbParameters 0
+				it should beVariadic false
+			]
+			
 			// Do not test the block content since it should be validated by the Xbase library.
+			(sig as Action).body should be XBlockExpression
 		}	 
 
 		/* A large part of a SARL script contains the definitions of
@@ -295,14 +316,44 @@ describe "General Syntax Reference" {
 				// TEXT
 				""
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(5)
-			model.elements.get(0).mustBeEvent("E", null).mustHaveFeatures(0)
-			model.elements.get(1).mustBeCapacity("C").mustHaveFeatures(0)
-			model.elements.get(2).mustBeSkill("S", null, "io.sarl.docs.reference.gsr.C").mustHaveFeatures(0)
-			model.elements.get(3).mustBeBehavior("B", null).mustHaveFeatures(0)
-			model.elements.get(4).mustBeAgent("A", null).mustHaveFeatures(0)
+			
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 5
+			]
+			
+			model.elements.get(0) => [
+				it should beEvent "E"
+				it should extend _
+				it should haveNbElements 0
+			]
+			
+			model.elements.get(1) => [
+				it should beCapacity "C"
+				it should extend _
+				it should haveNbElements 0
+			]
+			
+			model.elements.get(2) => [
+				it should beSkill "S"
+				it should extend _
+				it should haveNbImplements 1
+				it should implement #["io.sarl.docs.reference.gsr.C"]
+				it should haveNbElements 0
+			]
+			
+			model.elements.get(3) => [
+				it should beBehavior "B"
+				it should extend _
+				it should haveNbElements 0
+			]
+			
+			model.elements.get(4) => [
+				it should be Agent "A"
+				it should extend _
+				it should haveNbElements 0
+			]
 		}	 
 
 	}
@@ -337,15 +388,48 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(5)
-			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XStringLiteral).mustBeEqual("Hello World!")
-			a.features.get(1).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XStringLiteral).mustBeEqual("Hello World!")
-			a.features.get(2).mustBeAttribute(true, "c", null, true).initialValue.mustBe(XStringLiteral).mustBeEqual("Hello \"World!\"")
-			a.features.get(3).mustBeAttribute(true, "d", null, true).initialValue.mustBe(XStringLiteral).mustBeEqual("Hello \"World!\"")
-			a.features.get(4).mustBeAttribute(true, "e", null, true).initialValue.mustBe(XStringLiteral).mustBeEqual("Hello \n			World!")
+			
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+			
+			var a = model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 5
+			]
+
+			(a as Agent).features.get(0) => [
+				it should beVariable "a"
+				it should haveType _;
+				it should haveInitialValue "Hello World!"
+			]
+
+			(a as Agent).features.get(1) => [
+				it should beVariable "b"
+				it should haveType _
+				it should haveInitialValue "Hello World!"
+			]
+
+			(a as Agent).features.get(2) => [
+				it should beVariable "c"
+				it should haveType _
+				it should haveInitialValue "Hello \"World!\""
+			]
+
+			(a as Agent).features.get(3) => [
+				it should beVariable "d"
+				it should haveType _
+				it should haveInitialValue "Hello \"World!\""
+			]
+
+			(a as Agent).features.get(4) => [
+				it should beVariable "e"
+				it should haveType _
+				it should haveInitialValue "Hello \n			World!"
+			]
 		}
 	
 		/* Character literals use the same notation as String literals. 
@@ -366,12 +450,30 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
-			a.features.get(0).mustBeAttribute(true, "a", "char", true).initialValue.mustBe(XStringLiteral).mustBeEqual('a')
-			a.features.get(1).mustBeAttribute(true, "b", "char", true).initialValue.mustBe(XStringLiteral).mustBeEqual('b')
+			
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+			
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 2
+			]) as Agent
+			
+			a.features.get(0) => [
+				it should beVariable "a"
+				it should haveType "char"
+				it should haveInitialValue 'a'
+			]
+			
+			a.features.get(1) => [
+				it should beVariable "b"
+				it should haveType "char"
+				it should haveInitialValue 'b'
+			]
 		}
 			
 		/* SARL supports roughly the same number literals as Java.
@@ -393,15 +495,48 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(5)
-			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(42)
-			a.features.get(1).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(0xbeef)
-			a.features.get(2).mustBeAttribute(true, "c", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(77)
-			a.features.get(3).mustBeAttribute(true, "d", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(0.1)
-			a.features.get(4).mustBeAttribute(true, "e", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(1.0)
+			
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+			
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 5
+			]) as Agent
+			
+			a.features.get(0) => [
+				it should beVariable "a"
+				it should haveType _
+				it should haveInitialValue (42 as Object)
+			]
+			
+			a.features.get(1) => [
+				it should beVariable "b"
+				it should haveType _
+				it should haveInitialValue (0xbeef as Object)
+			]
+
+			a.features.get(2) => [
+				it should beVariable "c"
+				it should haveType _
+				it should haveInitialValue (77 as Object)
+			]
+
+			a.features.get(3) => [
+				it should beVariable "d"
+				it should haveType _
+				it should haveInitialValue (0.1 as Object)
+			]
+
+			a.features.get(4) => [
+				it should beVariable "e"
+				it should haveType _
+				it should haveInitialValue (1.0 as Object)
+			]
 		}
 
 		/* As in Java 7, you can separate digits using `_` for
@@ -418,11 +553,24 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(1)
-			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(12345678l)
+			
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+			
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 1
+			]) as Agent
+			
+			a.features.get(0) => [
+				it should beVariable "a"
+				it should haveType _
+				it should haveInitialValue (12345678l as Object)
+			]
 		}
 
 		/* Post-fixing an integer literal may change its type:
@@ -443,13 +591,36 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(3)
-			a.features.get(0).mustBeAttribute(true, "anInteger", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(1234)
-			a.features.get(1).mustBeAttribute(true, "aLong", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(1234l)
-			a.features.get(2).mustBeAttribute(true, "aBigInteger", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(new BigInteger("1234"))
+			
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 3
+			]) as Agent
+
+			a.features.get(0) => [
+				it should beVariable "anInteger"
+				it should haveType _
+				it should haveInitialValue (1234 as Object)
+			]
+
+			a.features.get(1) => [
+				it should beVariable "aLong"
+				it should haveType _
+				it should haveInitialValue (1234l as Object)
+			]
+
+			a.features.get(2) => [
+				it should beVariable "aBigInteger"
+				it should haveType _
+				it should haveInitialValue new BigInteger("1234")
+			]
 		}
 
 		/* Post-fixing a floating-point literal may change its type:
@@ -473,15 +644,48 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(5)
-			a.features.get(0).mustBeAttribute(true, "aDouble", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(1234.0)
-			a.features.get(1).mustBeAttribute(true, "anotherDouble", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(5678d)
-			a.features.get(2).mustBeAttribute(true, "aFloat", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(1234f)
-			a.features.get(3).mustBeAttribute(true, "anotherFloat", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(5678f)
-			a.features.get(4).mustBeAttribute(true, "aBigDecimal", null, true).initialValue.mustBe(XNumberLiteral).mustBeEqual(new BigDecimal("1234"))
+			
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 5
+			]) as Agent
+
+			a.features.get(0) => [
+				it should beVariable "aDouble"
+				it should haveType _
+				it should haveInitialValue (1234.0 as Object)
+			]
+
+			a.features.get(1) => [
+				it should beVariable "anotherDouble"
+				it should haveType _
+				it should haveInitialValue (5678d as Object)
+			]
+
+			a.features.get(2) => [
+				it should beVariable "aFloat"
+				it should haveType _
+				it should haveInitialValue (1234f as Object)
+			]
+
+			a.features.get(3) => [
+				it should beVariable "anotherFloat"
+				it should haveType _
+				it should haveInitialValue (5678f as Object)
+			]
+
+			a.features.get(4) => [
+				it should beVariable "aBigDecimal"
+				it should haveType _
+				it should haveInitialValue new BigDecimal("1234")
+			]
 		}
 
 		/* There are two boolean literals, `true` and `false`
@@ -499,12 +703,29 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
-			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XBooleanLiteral).mustBeEqual(true)
-			a.features.get(1).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XBooleanLiteral).mustBeEqual(false)
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 2
+			]) as Agent
+
+			a.features.get(0) => [
+				it should beVariable "a"
+				it should haveType _
+				it should haveInitialValue (true as Object)
+			]
+
+			a.features.get(1) => [
+				it should beVariable "b"
+				it should haveType _
+				it should haveInitialValue(false as Object)
+			]
 		}
 	
 		/* The null pointer literal `null` has exactly the same
@@ -521,11 +742,24 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(1)
-			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XNullLiteral)
+
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 1
+			]) as Agent
+
+			a.features.get(0) => [
+				it should beVariable "a"
+				it should haveType _;
+				it should haveInitialValue "null"
+			]
 		}
 	
 		/* The syntax for type literals is generally the plain name of the 
@@ -554,13 +788,36 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(3)
-			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XFeatureCall).mustBeType(String)
-			a.features.get(1).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XTypeLiteral).mustBeEqual(Integer)
-			a.features.get(2).mustBeAttribute(true, "c", null, true).initialValue.mustBe(XMemberFeatureCall).mustCall("java.lang.Class.getDeclaredFields")
+
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 3
+			]) as Agent
+
+			a.features.get(0) => [
+				it should beVariable "a"
+				it should haveType _
+				it should haveInitialValue "java.lang.String"
+			]
+
+			a.features.get(1) => [
+				it should beVariable "b"
+				it should haveType _
+				it should haveInitialValue "java.lang.Integer"
+			]
+
+			a.features.get(2) => [
+				it should beVariable "c"
+				it should haveType _;
+				it should haveInitialValue "java.lang.Class.getDeclaredFields"
+			]
 		}
 	
 	}
@@ -585,12 +842,30 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
-			a.features.get(0).mustBeAttribute(true, "myList", null, true).initialValue.mustBe(XFeatureCall).mustCall("org.eclipse.xtext.xbase.lib.CollectionLiterals.newArrayList")
-			a.features.get(1).mustBeAttribute(true, "myMap", null, true).initialValue.mustBe(XFeatureCall).mustCall("org.eclipse.xtext.xbase.lib.CollectionLiterals.newLinkedHashMap")
+
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 2
+			]) as Agent
+
+			a.features.get(0) => [
+				it should beVariable "myList"
+				it should haveType _
+				it should haveInitialValue "org.eclipse.xtext.xbase.lib.CollectionLiterals.newArrayList"
+			]
+
+			a.features.get(1) => [
+				it should beVariable "myMap"
+				it should haveType _
+				it should haveInitialValue "org.eclipse.xtext.xbase.lib.CollectionLiterals.newLinkedHashMap"
+			]
 		}
 		
 		 /* In addition, SARL supports collection literals to create 
@@ -614,13 +889,36 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(3)
-			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XListLiteral)
-			a.features.get(1).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XSetLiteral)
-			a.features.get(2).mustBeAttribute(true, "c", null, true).initialValue.mustBe(XSetLiteral)
+
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 3
+			]) as Agent
+
+			a.features.get(0) => [
+				it should beVariable "a"
+				it should haveType _
+				it should haveInitialValue #['Hello','World']
+			]
+
+			a.features.get(1) => [
+				it should beVariable "b"
+				it should haveType _
+				it should haveInitialValue #{'Hello','World'}
+			]
+
+			a.features.get(2) => [
+				it should beVariable "c"
+				it should haveType _
+				it should haveInitialValue #{'a' -> 1 ,'b' ->2}
+			]
 		}
 	
 	}
@@ -650,12 +948,30 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
-			a.features.get(0).mustBeAttribute(true, "a", "java.lang.String[]", true).initialValue.mustBe(XFeatureCall).mustCall("org.eclipse.xtext.xbase.lib.ArrayLiterals.newArrayOfSize")
-			a.features.get(1).mustBeAttribute(true, "b", "int[]", true).initialValue.mustBe(XFeatureCall).mustCall("org.eclipse.xtext.xbase.lib.ArrayLiterals.newIntArrayOfSize")
+
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 2
+			]) as Agent
+
+			a.features.get(0) => [
+				it should beVariable "a"
+				it should haveType "java.lang.String[]"
+				it should haveInitialValue "org.eclipse.xtext.xbase.lib.ArrayLiterals.newArrayOfSize"
+			]
+
+			a.features.get(1) => [
+				it should beVariable "b"
+				it should haveType "int[]"
+				it should haveInitialValue "org.eclipse.xtext.xbase.lib.ArrayLiterals.newIntArrayOfSize"
+			]
 		}
 		
 		/* Retrieving and setting values of arrays is done through the extension 
@@ -679,13 +995,36 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(3)
-			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XListLiteral)
-			a.features.get(1).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XMemberFeatureCall).mustCall("java.util.List.get")
-			a.features.get(2).mustBeAttribute(true, "c", null, true).initialValue.mustBe(XMemberFeatureCall).mustCall("org.eclipse.xtext.xbase.lib.ArrayExtensions.length")
+			
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 3
+			]) as Agent
+
+			a.features.get(0) => [
+				it should beVariable "a"
+				it should haveType _
+				it should haveInitialValue #['Hello', 'world', '!']
+			]
+
+			a.features.get(1) => [
+				it should beVariable "b"
+				it should haveType _
+				it should haveInitialValue "java.util.List.get"
+			]
+
+			a.features.get(2) => [
+				it should beVariable "c"
+				it should haveType _
+				it should haveInitialValue"org.eclipse.xtext.xbase.lib.ArrayExtensions.length"
+			]
 		}
 
 		/* Arrays are automatically converted to lists 
@@ -706,13 +1045,31 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustHaveImports(1)
-			model.mustHaveImport(0, "java.util.List", false, false, false)
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
-			a.features.get(0).mustBeAttribute(false, "myArray", "int[]", true).initialValue.mustBe(XListLiteral)
-			a.features.get(1).mustBeAttribute(false, "myList", "java.util.List<java.lang.Integer>", true).initialValue.mustBe(XFeatureCall).mustCall("io.sarl.docs.reference.gsr.A.myArray")
+
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 1
+				it should importClass "java.util.List"
+				it should haveNbElements 1
+			]
+
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 2
+			]) as Agent
+
+			a.features.get(0) => [
+				it should beValue "myArray"
+				it should haveType "int[]"
+				it should haveInitialValue #[1,2,3]
+			]
+
+			a.features.get(1) => [
+				it should beValue "myList"
+				it should haveType "java.util.List<java.lang.Integer>"
+				it should haveInitialValue "io.sarl.docs.reference.gsr.A.myArray"
+			]
 		}
 
 	}
@@ -742,13 +1099,36 @@ describe "General Syntax Reference" {
 			// TEXT
 			"}"
 		)
-		model.mustHavePackage("io.sarl.docs.reference.gsr")
-		model.mustNotHaveImport
-		model.mustHaveTopElements(1)
-		var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(3)
-		a.features.get(0).mustBeAttribute(true, "something", "java.lang.Number", true).initialValue.mustBe(XConstructorCall)
-		a.features.get(1).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XCastedExpression)
-		a.features.get(2).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XCastedExpression)
+
+		model => [
+			it should havePackage "io.sarl.docs.reference.gsr"
+			it should haveNbImports 0
+			it should haveNbElements 1
+		]
+
+		var a = (model.elements.get(0) => [
+			it should beAgent "A"
+			it should extend _
+			it should haveNbElements 3
+		]) as Agent
+
+		a.features.get(0) => [
+			it should beVariable "something"
+			it should haveType "java.lang.Number"
+			it should haveInitialValue "java.lang.Integer.Integer"
+		]
+
+		a.features.get(1) => [
+			it should beVariable "a"
+			it should haveType _
+			it should haveInitialValue "java.lang.Integer"
+		]
+
+		a.features.get(2) => [
+			it should beVariable "b"
+			it should haveType _
+			it should haveInitialValue (56 as Object)
+		]
 	}
 
 	/* SARL supports a collection of operators. Most of them are infix operators,
@@ -782,18 +1162,18 @@ describe "General Syntax Reference" {
 		 * @filter(.*) 
 		 */
 		fact "Arithmetic operators" {
-			"#Operator_Overloading".mustBeJnarioLink
+			"#Operator_Overloading" should beAccessibleFrom this
 			
-			"1 + 2".toInt.mustBe(3)
-			"1 - 2".toInt.mustBe(-1)
-			"1 * 2".toInt.mustBe(2)
-			"4 / 2".toInt.mustBe(2)
-			"3 % 2".toInt.mustBe(1)
-			"3 ** 2".toInt.mustBe(9)
-			"var a : int = 7\na++".toInt.mustBe(7)
-			"var a : int = 7\na++\na".toInt.mustBe(8)
-			"var a : int = 7\na--".toInt.mustBe(7)
-			"var a : int = 7\na--\na".toInt.mustBe(6)
+			"1 + 2".toInt should be 3
+			"1 - 2".toInt should be -1
+			"1 * 2".toInt should be 2
+			"4 / 2".toInt should be 2
+			"3 % 2".toInt should be 1
+			"3 ** 2".toInt should be 9
+			"var a : int = 7\na++".toInt should be 7
+			"var a : int = 7\na++\na".toInt should be 8
+			"var a : int = 7\na--".toInt should be 7
+			"var a : int = 7\na--\na".toInt should be 6
 		}
 
 		/** The comparison operators primitive types are listed below.
@@ -823,28 +1203,28 @@ describe "General Syntax Reference" {
 		 * @filter(.*) 
 		 */
 		fact "Comparison operators on primitive types" {
-			"#Operator_Overloading".mustBeJnarioLink
+			"#Operator_Overloading" should beAccessibleFrom this
 
-			"1 == 2".toBool.mustBe(false)
-			"true == false".toBool.mustBe(false)
+			"1 == 2".toBool should be false
+			"true == false".toBool should be false
 			
-			"1 != 2".toBool.mustBe(true)
-			"true != false".toBool.mustBe(true)
+			"1 != 2".toBool should be true
+			"true != false".toBool should be true
 			
-			"1 === 2".toBool.mustBe(false)
-			"true === false".toBool.mustBe(false)
+			"1 === 2".toBool should be false
+			"true === false".toBool should be false
 			
-			"1 !== 2".toBool.mustBe(true)
-			"true !== false".toBool.mustBe(true)
+			"1 !== 2".toBool should be true
+			"true !== false".toBool should be true
 
-			"1 < 2".toBool.mustBe(true)
-			"1 > 2".toBool.mustBe(false)
-			"1 <= 2".toBool.mustBe(true)
-			"1 >= 2".toBool.mustBe(false)
+			"1 < 2".toBool should be true
+			"1 > 2".toBool should be false
+			"1 <= 2".toBool should be true
+			"1 >= 2".toBool should be false
 
-			"1 <=> 2".toInt.mustBe [ it < 0 ]
-			"2 <=> 1".toInt.mustBe [ it > 0 ]
-			"2 <=> 2".toInt.mustBe [ it == 0 ]
+			"1 <=> 2".toInt should be [ it < 0 ]
+			"2 <=> 1".toInt should be [ it > 0 ]
+			"2 <=> 2".toInt should be [ it == 0 ]
 		}
 
 		/** The comparison operators on objects are listed below.
@@ -878,19 +1258,19 @@ describe "General Syntax Reference" {
 		 * @filter(.*) 
 		 */
 		fact "Comparison operators on objects" {
-			"#Operator_Overloading".mustBeJnarioLink
+			"#Operator_Overloading" should beAccessibleFrom this
 
-			"'a' == 'a'".toBool.mustBe(true)
-			"'a' != 'a'".toBool.mustBe(false)
-			"'a' === 'a'".toBool.mustBe(false)
-			"'a' !== 'a'".toBool.mustBe(true)
-			"'a' < 'a'".toBool.mustBe(false)
-			"'a' <= 'a'".toBool.mustBe(true)
-			"'a' > 'a'".toBool.mustBe(false)
-			"'a' >= 'a'".toBool.mustBe(true)
-			"new Integer(1) <=> new Integer(2)".toInt.mustBe [ it < 0 ]
-			"new Integer(2) <=> new Integer(1)".toInt.mustBe [ it > 0 ]
-			"new Integer(2) <=> new Integer(2)".toInt.mustBe [ it == 0 ]
+			"'a' == 'a'".toBool should be true
+			"'a' != 'a'".toBool should be false
+			"'a' === 'a'".toBool should be false
+			"'a' !== 'a'".toBool should be true
+			"'a' < 'a'".toBool should be false
+			"'a' <= 'a'".toBool should be true
+			"'a' > 'a'".toBool should be false
+			"'a' >= 'a'".toBool should be true
+			"new Integer(1) <=> new Integer(2)".toInt should be [ it < 0 ]
+			"new Integer(2) <=> new Integer(1)".toInt should be [ it > 0 ]
+			"new Integer(2) <=> new Integer(2)".toInt should be [ it == 0 ]
 		}
 
 		/** The boolean operators are listed below.
@@ -914,12 +1294,12 @@ describe "General Syntax Reference" {
 		 * @filter(.*) 
 		 */
 		fact "Boolean Operators" {
-			"#Operator_Overloading".mustBeJnarioLink
+			"#Operator_Overloading" should beAccessibleFrom this
 
-			"true || false".toBool.mustBe(true)
-			"true && false".toBool.mustBe(false)
-			"!true".toBool.mustBe(false)
-			"!false".toBool.mustBe(true)
+			"true || false".toBool should be true
+			"true && false".toBool should be false
+			"!true".toBool should be false
+			"!false".toBool should be true
 		}
 
 		/** The bit operators are listed below.
@@ -946,13 +1326,13 @@ describe "General Syntax Reference" {
 		 * @filter(.*) 
 		 */
 		fact "Bitwise Operators" {
-			"#Operator_Overloading".mustBeJnarioLink
+			"#Operator_Overloading" should beAccessibleFrom this
 
-			"1 << 3".toInt.mustBe(8)
-			"-1 << 3".toInt.mustBe(-8)
+			"1 << 3".toInt should be 8
+			"-1 << 3".toInt should be -8
 
-			"8 >> 3".toInt.mustBe(1)
-			"-8 >> 3".toInt.mustBe(-1)
+			"8 >> 3".toInt should be 1
+			"-8 >> 3".toInt should be -1
 
 			var expr = "1 <<< 3".expression(false)
 			expr.assertError(
@@ -963,8 +1343,8 @@ describe "General Syntax Reference" {
 					XbasePackage.Literals::XBINARY_OPERATION,
 					"org.eclipse.xtext.diagnostics.Diagnostic.Linking")
 
-			"8 >>> 3".toInt.mustBe(1)
-			"-8 >>> 3".toInt.mustBe(536870911)
+			"8 >>> 3".toInt should be 1
+			"-8 >>> 3".toInt should be 536870911
 		}
 
 		/** The string operators are listed below.
@@ -984,11 +1364,11 @@ describe "General Syntax Reference" {
 		 * @filter(.*) 
 		 */
 		fact "String Operators" {
-			"#Operator_Overloading".mustBeJnarioLink
+			"#Operator_Overloading" should beAccessibleFrom this
 
-			"'a' + 'b'".toStr.mustBe("ab")
-			"1 + 'b'".toStr.mustBe("1b")
-			"'a' + 1".toStr.mustBe("a1")
+			"'a' + 'b'".toStr should be "ab"
+			"1 + 'b'".toStr should be "1b"
+			"'a' + 1".toStr should be "a1"
 		}
 
 		/** The collection operators are listed below.
@@ -1013,11 +1393,14 @@ describe "General Syntax Reference" {
 		 * @filter(.*) 
 		 */
 		fact "Collection Operators" {
-			"#Operator_Overloading".mustBeJnarioLink
+			"#Operator_Overloading" should beAccessibleFrom this
 
-			"var c = newArrayList c += 3".toBool.mustBe(true)
-			"var c = newArrayList c -= 3".toBool.mustBe(false)
-			mustBe("4 -> 'a'".to(typeof(Pair)), new Pair(4, 'a'))
+			"var c = newArrayList c += 3".toBool should be true
+			"var c = newArrayList c -= 3".toBool should be false
+
+			var pair = to("4 -> 'a'", typeof(Pair))			
+			pair.key should be 4
+			pair.value should be 'a'
 		}
 
 		/** The assignment operators are listed below.
@@ -1040,12 +1423,12 @@ describe "General Syntax Reference" {
 		 * @filter(.*) 
 		 */
 		fact "Assignments" {
-			"var a : int = 5\na = 6\na".toInt.mustBe(6)
-			"var a : int = 5\na += 6\na".toInt.mustBe(11)
-			"var a : int = 5\na -= 6\na".toInt.mustBe(-1)
-			"var a : int = 5\na *= 6\na".toInt.mustBe(30)
-			"var a : int = 5\na /= 6\na".toInt.mustBe(0)
-			"var a : int = 5\na %= 6\na".toInt.mustBe(5)
+			"var a : int = 5\na = 6\na".toInt should be 6
+			"var a : int = 5\na += 6\na".toInt should be 11
+			"var a : int = 5\na -= 6\na".toInt should be -1
+			"var a : int = 5\na *= 6\na".toInt should be 30
+			"var a : int = 5\na /= 6\na".toInt should be 0
+			"var a : int = 5\na %= 6\na".toInt should be 5
 		}
 
 		/** This section presents a collection of operators that permit
@@ -1082,40 +1465,40 @@ describe "General Syntax Reference" {
 		 * @filter(.*) 
 		 */
 		fact "Range operators" {
-			"#Operator_Overloading".mustBeJnarioLink
+			"#Operator_Overloading" should beAccessibleFrom this
 
 			var r1 = "1 .. 4".to(typeof(IntegerRange))
-			r1.iterator().mustContain( #[1, 2, 3, 4] )
+			r1.iterator() should iterate #[1, 2, 3, 4]
 			r1 = "4 .. 1".to(typeof(IntegerRange))
-			r1.iterator().mustContain( #[4, 3, 2, 1] )
+			r1.iterator() should iterate #[4, 3, 2, 1]
 			
 			var r2 = "5 >.. 1".to(typeof(ExclusiveRange))
-			r2.iterator().mustContain( #[4,3,2,1] )
+			r2.iterator() should iterate #[4,3,2,1]
 			r2 = "0 >.. 0".to(typeof(ExclusiveRange))
-			r2.iterator().mustContain( #[] )
+			r2.iterator() should iterate #[]
 			r2 = "5 >.. -3".to(typeof(ExclusiveRange))
-			r2.iterator().mustContain( #[4,3,2,1,0,-1,-2,-3] )
+			r2.iterator() should iterate #[4,3,2,1,0,-1,-2,-3]
 
 			var r3 = "1 ..< 5".to(typeof(ExclusiveRange))
-			r3.iterator().mustContain( #[1,2,3,4] )
+			r3.iterator() should iterate #[1,2,3,4]
 			r3 = "0 ..< 0".to(typeof(ExclusiveRange))
-			r3.iterator().mustContain( #[] )
+			r3.iterator() should iterate #[]
 			r3 = "-3 ..< 5".to(typeof(ExclusiveRange))
-			r3.iterator().mustContain( #[-3,-2,-1,0,1,2,3,4] )
+			r3.iterator() should iterate #[-3,-2,-1,0,1,2,3,4]
 
 			//
 			// Special cases that have a not-so-easy semantic, from my point of view (SG).
 			//
 			
 			var r4 = "1 >.. 5".to(typeof(ExclusiveRange))
-			r4.iterator().mustContain( #[] ) // not: #[2,3,4,5]
+			r4.iterator() should iterate #[] // not: #[2,3,4,5]
 			r4 = "-3 >.. 5".to(typeof(ExclusiveRange))
-			r4.iterator().mustContain( #[] ) // not: #[-2,-1,0,1,2,3,4,5]
+			r4.iterator() should iterate #[] // not: #[-2,-1,0,1,2,3,4,5]
 			
 			var r5 = "5 ..< 1".to(typeof(ExclusiveRange))
-			r5.iterator().mustContain( #[] ) // not: #[5,4,3,2]
+			r5.iterator() should iterate #[] // not: #[5,4,3,2]
 			r5 = "5 ..< -3".to(typeof(ExclusiveRange))
-			r5.iterator().mustContain( #[] ) // not: #[5,4,3,2,1,0,-1,-2]
+			r5.iterator() should iterate #[] // not: #[5,4,3,2,1,0,-1,-2]
 		}
 
 		/** This section presents a collection of operators that are not
@@ -1152,11 +1535,11 @@ describe "General Syntax Reference" {
 		 * @filter(.*) 
 		 */
 		fact "Other operators" {
-			"#Operator_Overloading".mustBeJnarioLink
+			"#Operator_Overloading" should beAccessibleFrom this
 
-			"null ?: 'a'".toStr.mustBe("a")
+			"null ?: 'a'".toStr should be "a"
 
-			"'b' ?: 'a'".toStr.mustBe("b")
+			"'b' ?: 'a'".toStr should be "b"
 
 			var expr = "1 <> 3".expression(false)
 			expr.assertError(
@@ -1204,14 +1587,42 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
-			var act1 = a.features.get(0).mustBeAction("operator_plus", "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>", 2, false)
-			act1.mustHaveParameter(0, "a", "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>", false)
-			act1.mustHaveParameter(1, "b", "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>", false)
-			a.features.get(1).mustBeAction("example", null, 0, false)
+
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+	
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 2
+			]) as Agent
+	
+			a.features.get(0) => [
+				it should beAction "operator_plus"
+				it should reply "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>"
+				it should haveNbParameters 2
+				it should beVariadic false
+				(it as Action).signature.params.get(0) => [
+					it should beParameter "a"
+					it should haveType "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>"
+					it should haveDefaultValue _
+				]
+				(it as Action).signature.params.get(1) => [
+					it should beParameter "b"
+					it should haveType "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>"
+					it should haveDefaultValue _
+				]
+			]
+
+			a.features.get(1) => [
+				it should beAction "example"
+				it should reply _
+				it should haveNbParameters 0
+				it should beVariadic false
+			]
 		}
 
 	}
@@ -1293,11 +1704,25 @@ describe "General Syntax Reference" {
 				// TEXT
 				"} }"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(1)
-			a.features.get(0).mustBeAction("example", null, 0, false)
+
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+	
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 1
+			]) as Agent
+	
+			a.features.get(0) => [
+				it should beAction "example"
+				it should reply _
+				it should haveNbParameters 0
+				it should beVariadic false
+			]
 		}
 
 		/* The type of the variable itself can either be explicitly declared or it can be 
@@ -1316,12 +1741,30 @@ describe "General Syntax Reference" {
 				agent A {",
 				// TEXT
 				"}")
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
-			a.features.get(0).mustBeAttribute(true, "a", "java.lang.String", true)
-			a.features.get(1).mustBeAttribute(true, "b", null, true)
+
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+	
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 2
+			]) as Agent
+
+			a.features.get(0) => [
+				it should beVariable "a"
+				it should haveType "java.lang.String"
+				it should haveInitialValue "abc"
+			]
+
+			a.features.get(1) => [
+				it should beVariable "b"
+				it should haveType _
+				it should haveInitialValue "abc"
+			]
 		}
 
 	}
@@ -1384,22 +1827,90 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(6)
-			a.features.get(0).mustBeAction("action1", null, 0, false)
-			a.features.get(1).mustBeAction("action2", "int", 0, false)
-			var act1 = a.features.get(2).mustBeAction("action3", null, 1, false)
-			act1.mustHaveParameter(0, "a", "int", false)
-			var act2 = a.features.get(3).mustBeAction("action4", null, 2, false)
-			act2.mustHaveParameter(0, "a", "int", false)
-			act2.mustHaveParameter(1, "b", "java.lang.String", false)
-			var act3 = a.features.get(4).mustBeAction("action5", "double", 1, false)
-			act3.mustHaveParameter(0, "a", "int", false)
-			var act4 = a.features.get(5).mustBeAction("action6", "java.lang.String", 2, false)
-			act4.mustHaveParameter(0, "a", "int", false)
-			act4.mustHaveParameter(1, "b", "java.lang.String", false)
+
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+	
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 6
+			]) as Agent
+
+			a.features.get(0) => [
+				it should beAction "action1"
+				it should reply _
+				it should haveNbParameters 0
+				it should beVariadic false
+			]
+
+			a.features.get(1) => [
+				it should beAction "action2"
+				it should reply "int"
+				it should haveNbParameters 0
+				it should beVariadic false
+			]
+
+			a.features.get(2) => [
+				it should beAction "action3"
+				it should reply _
+				it should haveNbParameters 1
+				it should beVariadic false
+				(it as Action).signature.params.get(0) => [
+					it should beParameter "a"
+					it should haveType "int"
+					it should haveDefaultValue _
+				]
+			]
+
+			a.features.get(3) => [
+				it should beAction "action4"
+				it should reply _
+				it should haveNbParameters 2
+				it should beVariadic false
+				(it as Action).signature.params.get(0) => [
+					it should beParameter "a"
+					it should haveType "int"
+					it should haveDefaultValue _
+				]
+				(it as Action).signature.params.get(1) => [
+					it should beParameter "b"
+					it should haveType "java.lang.String"
+					it should haveDefaultValue _
+				]
+			]
+
+			a.features.get(4) => [
+				it should beAction "action5"
+				it should reply "double"
+				it should haveNbParameters 1
+				it should beVariadic false
+				(it as Action).signature.params.get(0) => [
+					it should beParameter "a"
+					it should haveType "int"
+					it should haveDefaultValue _
+				]
+			]
+
+			a.features.get(5) => [
+				it should beAction "action6"
+				it should reply "java.lang.String"
+				it should haveNbParameters 2
+				it should beVariadic false
+				(it as Action).signature.params.get(0) => [
+					it should beParameter "a"
+					it should haveType "int"
+					it should haveDefaultValue _
+				]
+				(it as Action).signature.params.get(1) => [
+					it should beParameter "b"
+					it should haveType "java.lang.String"
+					it should haveDefaultValue _
+				]
+			]
 		}
 
 		/* A variadic function is a function of indefinite arity: 
@@ -1438,17 +1949,59 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(3)
-			var act1 = a.features.get(0).mustBeAction("action1", null, 1, true)
-			act1.mustHaveParameter(0, "v", "int", false)
-			var act2 = a.features.get(1).mustBeAction("action2", null, 3, true)
-			act2.mustHaveParameter(0, "a", "boolean", false)
-			act2.mustHaveParameter(1, "b", "double", false)
-			act2.mustHaveParameter(2, "c", "int", false)
-			a.features.get(2).mustBeAction("calls", null, 0, false)
+
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+	
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 3
+			]) as Agent
+
+			a.features.get(0) => [
+				it should beAction "action1"
+				it should reply _
+				it should haveNbParameters 1
+				it should beVariadic true
+				(it as Action).signature.params.get(0) => [
+					it should beParameter "v"
+					it should haveType "int"
+					it should haveDefaultValue _
+				]
+			]
+
+			a.features.get(1) => [
+				it should beAction "action2"
+				it should reply _
+				it should haveNbParameters 3
+				it should beVariadic true
+				(it as Action).signature.params.get(0) => [
+					it should beParameter "a"
+					it should haveType "boolean"
+					it should haveDefaultValue _
+				]
+				(it as Action).signature.params.get(1) => [
+					it should beParameter "b"
+					it should haveType "double"
+					it should haveDefaultValue _
+				]
+				(it as Action).signature.params.get(2) => [
+					it should beParameter "c"
+					it should haveType "int"
+					it should haveDefaultValue _
+				]
+			]
+
+			a.features.get(2) => [
+				it should beAction "calls"
+				it should reply _
+				it should haveNbParameters 0
+				it should beVariadic false
+			]
 		}
 
 		/* SARL allows to specify a default value for a formal parameter.
@@ -1495,17 +2048,59 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(3)
-			var act1 = a.features.get(0).mustBeAction("action1", null, 1, false)
-			act1.mustHaveParameter(0, "v", "int", true)
-			var act2 = a.features.get(1).mustBeAction("action2", null, 3, false)
-			act2.mustHaveParameter(0, "a", "boolean", true)
-			act2.mustHaveParameter(1, "b", "double", false)
-			act2.mustHaveParameter(2, "c", "int", true)
-			a.features.get(2).mustBeAction("calls", null, 0, false)
+			
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+	
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 3
+			]) as Agent
+
+			a.features.get(0) => [
+				it should beAction "action1"
+				it should reply _
+				it should haveNbParameters 1
+				it should beVariadic false
+				(it as Action).signature.params.get(0) => [
+					it should beParameter "v"
+					it should haveType "int"
+					it should haveDefaultValue "5"
+				]
+			]
+
+			a.features.get(1) => [
+				it should beAction "action2"
+				it should reply _
+				it should haveNbParameters 3
+				it should beVariadic false
+				(it as Action).signature.params.get(0) => [
+					it should beParameter "a"
+					it should haveType "boolean"
+					it should haveDefaultValue "true"
+				]
+				(it as Action).signature.params.get(1) => [
+					it should beParameter "b"
+					it should haveType "double"
+					it should haveDefaultValue _
+				]
+				(it as Action).signature.params.get(2) => [
+					it should beParameter "c"
+					it should haveType "int"
+					it should haveDefaultValue "7"
+				]
+			]
+
+			a.features.get(2) => [
+				it should beAction "calls"
+				it should reply _
+				it should haveNbParameters 0
+				it should beVariadic false
+			]
 		}
 
 		/* It is possible to mix the variadic parameter and the default values,
@@ -1534,13 +2129,35 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
-			var act1 = a.features.get(0).mustBeAction("action", null, 2, true)
-			act1.mustHaveParameter(0, "v", "int", true)
-			act1.mustHaveParameter(1, "a", "float", false)
+
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+	
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 2
+			]) as Agent
+
+			a.features.get(0) => [
+				it should beAction "action"
+				it should reply _
+				it should haveNbParameters 2
+				it should beVariadic true
+				(it as Action).signature.params.get(0) => [
+					it should beParameter "v"
+					it should haveType "int"
+					it should haveDefaultValue "5"
+				]
+				(it as Action).signature.params.get(1) => [
+					it should beParameter "a"
+					it should haveType "float"
+					it should haveDefaultValue _
+				]
+			]
 		}
 
 	}
@@ -1638,12 +2255,30 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(2)
-			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XMemberFeatureCall).mustCall("java.lang.Integer.TYPE")
-			a.features.get(1).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XMemberFeatureCall).mustCall("java.lang.Integer.TYPE")
+
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+	
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 2
+			]) as Agent
+
+			a.features.get(0) => [
+				it should beVariable "a"
+				it should haveType _
+				it should haveInitialValue "java.lang.Integer.TYPE"
+			]
+
+			a.features.get(1) => [
+				it should beVariable "b"
+				it should haveType _
+				it should haveInitialValue "java.lang.Integer.TYPE"
+			]
 		}
 
 		/* Checking for null references can make code very unreadable. 
@@ -1695,13 +2330,36 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(2)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(1)
-			a.features.get(0).mustBeAction("anAction", null, 0, false)
-			var b = model.elements.get(1).mustBeAgent("B", "io.sarl.docs.reference.gsr.A").mustHaveFeatures(1)
-			b.features.get(0).mustBeAction("anAction", null, 0, false)
+			
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 2
+			]
+	
+			model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 1
+				(it as Agent).features.get(0) => [
+					it should beAction "anAction"
+					it should reply _
+					it should haveNbParameters 0
+					it should beVariadic false
+				]
+			]
+
+			model.elements.get(1) => [
+				it should beAgent "B"
+				it should extend "io.sarl.docs.reference.gsr.A"
+				it should haveNbElements 1
+				(it as Agent).features.get(0) => [
+					it should beAction "anAction"
+					it should reply _
+					it should haveNbParameters 0
+					it should beVariadic false
+				]
+			]
 		}
 
 	}
@@ -1730,14 +2388,37 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustHaveImports(1)
-			model.mustHaveImport(0, "java.util.ArrayList", false, false, false)
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("A", null).mustHaveFeatures(3)
-			a.features.get(0).mustBeAttribute(true, "a", null, true).initialValue.mustBe(XConstructorCall)
-			a.features.get(1).mustBeAttribute(true, "b", null, true).initialValue.mustBe(XConstructorCall)
-			a.features.get(2).mustBeAttribute(true, "c", null, true).initialValue.mustBe(XConstructorCall)
+
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 1
+				it should importClass "java.util.ArrayList"
+				it should haveNbElements 1
+			]
+	
+			var a = (model.elements.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 3
+			]) as Agent
+
+			a.features.get(0) => [
+				it should beVariable "a"
+				it should haveType _
+				it should haveInitialValue "java.lang.Integer.Integer"
+			]
+
+			a.features.get(1) => [
+				it should beVariable "b"
+				it should haveType _
+				it should haveInitialValue "java.util.ArrayList.ArrayList"
+			]
+			
+			a.features.get(2) => [
+				it should beVariable "c"
+				it should haveType _
+				it should haveInitialValue "java.util.ArrayList.ArrayList"
+			]
 		}
 
 		/* In the implementation of a constructor, it is possible to
@@ -1768,14 +2449,40 @@ describe "General Syntax Reference" {
 				// TEXT
 				"}"
 			)
-			model.mustHavePackage("io.sarl.docs.reference.gsr")
-			model.mustHaveImports(1)
-			model.mustHaveImport(0, "io.sarl.lang.core.Address", false, false, false)
-			model.mustHaveTopElements(2)
-			model.elements.get(0).mustBeEvent("E1", null).mustHaveFeatures(0)
-			var e2 = model.elements.get(1).mustBeEvent("E2", "io.sarl.docs.reference.gsr.E1").mustHaveFeatures(2)
-			e2.features.get(0).mustBeConstructor(0, false)
-			e2.features.get(1).mustBeConstructor(1, false).mustHaveParameter(0, "param", "io.sarl.lang.core.Address", false)
+			
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 1
+				it should importClass "io.sarl.lang.core.Address"
+				it should haveNbElements 2
+			]
+	
+			model.elements.get(0) => [
+				it should beEvent "E1"
+				it should extend _
+				it should haveNbElements 0
+			]
+
+			model.elements.get(1) => [
+				it should beEvent "E2"
+				it should extend "io.sarl.docs.reference.gsr.E1"
+				it should haveNbElements 2
+				(it as Event).features.get(0) => [
+					it should beConstructor _
+					it should haveNbParameters 0
+					it should beVariadic false 
+				] 
+				(it as Event).features.get(1) => [
+					it should beConstructor _
+					it should haveNbParameters 1
+					it should beVariadic false
+					(it as Constructor).params.get(0) => [
+						it should beParameter "param"
+						it should haveType "io.sarl.lang.core.Address"
+						it should haveDefaultValue _
+					]
+				] 
+			]
 		}
 
 	}
@@ -2438,20 +3145,20 @@ describe "General Syntax Reference" {
 	 * 
 	 * 
 	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * 
+	 * Licensed under the Apache License, Version 2.0;
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
 	 *
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
-		"%sarlversion%".mustStartWith("%sarlspecversion%")
-		assertTrue(
-			"The release status of the specification is invalid.",
-			"%sarlspecreleasestatus%" == "Final Release"
-			|| "%sarlspecreleasestatus%" == "Draft Release")
-		"%sarlspecreleasedate%".mustBeDate
-		"%copyrightdate%".mustBeInteger
-		assertFalse(
-			"The copyrighters' string cannot be empty.",
-			"%copyrighters%".empty || "%copyrighters%".startsWith("%"))
+		"%sarlversion%" should startWith "%sarlspecversion%"
+		("%sarlspecreleasestatus%" == "Final Release"
+			|| "%sarlspecreleasestatus%" == "Draft Release") should be true
+		"%sarlspecreleasedate%" should beDate "YYYY-mm-dd"
+		"%copyrightdate%" should beNumber "0000";
+		("%copyrighters%".empty || "%copyrighters%".startsWith("%")) should be false
 	}
 
 }

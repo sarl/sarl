@@ -26,7 +26,7 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 /*
- * <!-- OUTPUT OUTLINE -->
+ * @outline
  */
 @CreateWith(SARLSpecCreator)
 describe "Runtime Environment FAQ" {

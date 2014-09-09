@@ -26,9 +26,11 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
-import static extension org.junit.Assert.*
 
-/* <!-- OUTPUT OUTLINE -->
+import io.sarl.lang.sarl.ActionSignature;
+import io.sarl.lang.sarl.Capacity;
+
+/* @outline
  *
  * This document describes how to define capacities in SARL.
  * Before reading this document, it is recommended reading
@@ -76,7 +78,7 @@ describe "Capacity Reference"{
 			 */
 			fact "Capacity Definition"{
 				// Test the URLs from the beginning of this page.
-				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 				//
 				val model = '''
 				capacity Logging {
@@ -90,12 +92,40 @@ describe "Capacity Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.cr")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(1)
-				var c = model.elements.get(0).mustBeCapacity("Logging").mustHaveFeatures(2)
-				c.features.get(0).mustBeActionSignature("info", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				c.features.get(1).mustBeActionSignature("debug", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.cr"
+					it should haveNbImports 0
+					it should haveNbElements 1
+				]
+				
+				model.elements.get(0) => [
+					it should beCapacity "Logging"
+					it should extend _
+					it should haveNbElements 2
+					(it as Capacity).features.get(0) => [
+						it should beActionSignature "info"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						]
+					]
+					(it as Capacity).features.get(1) => [
+						it should beActionSignature "debug"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						]
+					]
+				]
 			}
 		
 			/* In some use cases, it is useful to specialize the definition
@@ -133,14 +163,57 @@ describe "Capacity Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.cr")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(2)
-				var c1 = model.elements.get(0).mustBeCapacity("Logging").mustHaveFeatures(2)
-				c1.features.get(0).mustBeActionSignature("info", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				c1.features.get(1).mustBeActionSignature("debug", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				var c2 = model.elements.get(1).mustBeCapacity("ErrorLogging", "io.sarl.docs.reference.cr.Logging").mustHaveFeatures(1)
-				c2.features.get(0).mustBeActionSignature("error", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
+
+				model => [
+					it should havePackage "io.sarl.docs.reference.cr"
+					it should haveNbImports 0
+					it should haveNbElements 2
+				]
+				
+				model.elements.get(0) => [
+					it should beCapacity "Logging"
+					it should extend _
+					it should haveNbElements 2
+					(it as Capacity).features.get(0) => [
+						it should beActionSignature "info"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						]
+					]
+					(it as Capacity).features.get(1) => [
+						it should beActionSignature "debug"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						]
+					]
+				]
+				
+				model.elements.get(1) => [
+					it should beCapacity "ErrorLogging"
+					it should extend "io.sarl.docs.reference.cr.Logging"
+					it should haveNbElements 1
+					(it as Capacity).features.get(0) => [
+						it should beActionSignature "error"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						]
+					]
+				]
 			}
 
 			/* In some use cases, it is useful to define a capacity by
@@ -166,15 +239,49 @@ describe "Capacity Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.cr")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(3)
-				var c1 = model.elements.get(0).mustBeCapacity("Cap1").mustHaveFeatures(1)
-				c1.features.get(0).mustBeActionSignature("action1", null, 0, false)
-				var c2 = model.elements.get(1).mustBeCapacity("Cap2").mustHaveFeatures(1)
-				c2.features.get(0).mustBeActionSignature("action2", null, 0, false)
-				var c3 = model.elements.get(2).mustBeCapacity("Cap3", "io.sarl.docs.reference.cr.Cap1", "io.sarl.docs.reference.cr.Cap2").mustHaveFeatures(1)
-				c3.features.get(0).mustBeActionSignature("action3", null, 0, false)
+
+
+				model => [
+					it should havePackage "io.sarl.docs.reference.cr"
+					it should haveNbImports 0
+					it should haveNbElements 3
+				]
+				
+				model.elements.get(0) => [
+					it should beCapacity "Cap1"
+					it should extend _
+					it should haveNbElements 1
+					(it as Capacity).features.get(0) => [
+						it should beActionSignature "action1"
+						it should reply _
+						it should haveNbParameters 0
+						it should beVariadic false
+					]
+				]
+
+				model.elements.get(1) => [
+					it should beCapacity "Cap2"
+					it should extend _
+					it should haveNbElements 1
+					(it as Capacity).features.get(0) => [
+						it should beActionSignature "action2"
+						it should reply _
+						it should haveNbParameters 0
+						it should beVariadic false
+					]
+				]
+
+				model.elements.get(2) => [
+					it should beCapacity "Cap3"
+					it should extend #["io.sarl.docs.reference.cr.Cap1", "io.sarl.docs.reference.cr.Cap2"]
+					it should haveNbElements 1
+					(it as Capacity).features.get(0) => [
+						it should beActionSignature "action3"
+						it should reply _
+						it should haveNbParameters 0
+						it should beVariadic false
+					]
+				]
 			}
 
 		}
@@ -194,7 +301,7 @@ describe "Capacity Reference"{
 		 * @filter(.*)
 		 */
 		fact "Built-in Capacities"{
-			"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
+			"BuiltInCapacityReferenceSpec.html" should beAccessibleFrom this
 		}
 
 		/* The use of the capacity is related to the associated [skills](SkillReferenceSpec.html).
@@ -217,9 +324,9 @@ describe "Capacity Reference"{
 		 * @filter(.*)
 		 */
 		fact "Use of the Capacities"{
-			"SkillReferenceSpec.html".mustBeJnarioLink
-			"AgentReferenceSpec.html".mustBeJnarioLink
-			"BehaviorReferenceSpec.html".mustBeJnarioLink
+			"SkillReferenceSpec.html" should beAccessibleFrom this
+			"AgentReferenceSpec.html" should beAccessibleFrom this
+			"BehaviorReferenceSpec.html" should beAccessibleFrom this
 		}
 
 	/* Specification: SARL General-purpose Agent-Oriented Programming Language ("Specification")<br/>
@@ -229,20 +336,20 @@ describe "Capacity Reference"{
 	 * 
 	 * 
 	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * 
+	 * Licensed under the Apache License, Version 2.0;
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
 	 *
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
-		"%sarlversion%".mustStartWith("%sarlspecversion%")
-		assertTrue(
-			"The release status of the specification is invalid.",
-			"%sarlspecreleasestatus%" == "Final Release"
-			|| "%sarlspecreleasestatus%" == "Draft Release")
-		"%sarlspecreleasedate%".mustBeDate
-		"%copyrightdate%".mustBeInteger
-		assertFalse(
-			"The copyrighters' string cannot be empty.",
-			"%copyrighters%".empty || "%copyrighters%".startsWith("%"))
+		"%sarlversion%" should startWith "%sarlspecversion%"
+		("%sarlspecreleasestatus%" == "Final Release"
+			|| "%sarlspecreleasestatus%" == "Draft Release") should be true
+		"%sarlspecreleasedate%" should beDate "YYYY-mm-dd"
+		"%copyrightdate%" should beNumber "0000";
+		("%copyrighters%".empty || "%copyrighters%".startsWith("%")) should be false
 	}
 
 }

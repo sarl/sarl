@@ -23,12 +23,14 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
+import io.sarl.lang.sarl.Agent
+import io.sarl.lang.sarl.Constructor
+import io.sarl.lang.sarl.Event
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
-import static extension org.junit.Assert.*
 
-/* <!-- OUTPUT OUTLINE -->
+/* @outline
  *
  * This document describes how to define events in SARL.
  * Before reading this document, it is recommended reading
@@ -84,9 +86,9 @@ describe "Event Reference"{
 		 */
 		fact "Event vs. Message"{
 			// Test the URLs from the beginning of the page
-			"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
-			"SpaceReferenceSpec.html".mustBeJnarioLink
-			"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
+			"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+			"SpaceReferenceSpec.html" should beAccessibleFrom this
+			"BuiltInCapacityReferenceSpec.html" should beAccessibleFrom this
 		}
 		
 		describe "Defining an Event" {
@@ -116,11 +118,24 @@ describe "Event Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.er")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(2)
-				model.elements.get(0).mustBeEvent("Event1", null).mustHaveFeatures(0)
-				model.elements.get(1).mustBeEvent("Event2", null).mustHaveFeatures(0)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.er"
+					it should haveNbImports 0
+					it should haveNbElements 2
+				]
+				
+				model.elements.get(0) => [
+					it should beEvent "Event1"
+					it should extend _
+					it should haveNbElements 0
+				]
+				
+				model.elements.get(1) => [
+					it should beEvent "Event2"
+					it should extend _
+					it should haveNbElements 0
+				]
 			}
 		
 			/**
@@ -148,7 +163,7 @@ describe "Event Reference"{
 			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 			 */
 			fact "Define an event with attributes"{
-				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 				//
 				val model = '''
 				event MyEvent {
@@ -161,13 +176,33 @@ describe "Event Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.er")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(1)
-				var e = model.elements.get(0).mustBeEvent("MyEvent", null).mustHaveFeatures(3)
-				e.features.get(0).mustBeAttribute(true, "number", "java.lang.Integer", false)
-				e.features.get(1).mustBeAttribute(true, "string", null, true)
-				e.features.get(2).mustBeAttribute(true, "something", null, false)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.er"
+					it should haveNbImports 0
+					it should haveNbElements 1
+				]
+				
+				model.elements.get(0) => [
+					it should beEvent "MyEvent"
+					it should extend _
+					it should haveNbElements 3
+					(it as Event).features.get(0) => [
+						it should beVariable "number"
+						it should haveType "java.lang.Integer"
+						it should haveInitialValue _
+					]
+					(it as Event).features.get(1) => [
+						it should beVariable "string"
+						it should haveType _
+						it should haveInitialValue "abc"
+					]
+					(it as Event).features.get(2) => [
+						it should beVariable "something"
+						it should haveType _
+						it should haveInitialValue _
+					]
+				]
 			}
 			
 			/**
@@ -204,14 +239,39 @@ describe "Event Reference"{
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.er")
-				model.mustHaveImports(1)
-				model.mustHaveImport(0, "io.sarl.lang.core.Agent", false, false, false)
-				model.mustHaveTopElements(1)
-				var e = model.elements.get(0).mustBeEvent("MyEvent", null).mustHaveFeatures(3)
-				e.features.get(0).mustBeAttribute(false, "string", null, true)
-				e.features.get(1).mustBeAttribute(false, "number", "java.lang.Integer", false)
-				e.features.get(2).mustBeConstructor(1, false).mustHaveParameter(0, "nb", "java.lang.Integer", false)
+
+				model => [
+					it should havePackage "io.sarl.docs.reference.er"
+					it should haveNbImports 1
+					it should importClass "io.sarl.lang.core.Agent"
+					it should haveNbElements 1
+				]
+				
+				model.elements.get(0) => [
+					it should beEvent "MyEvent"
+					it should extend _
+					it should haveNbElements 3
+					(it as Event).features.get(0) => [
+						it should beValue "string"
+						it should haveType _
+						it should haveInitialValue "abcd"
+					]
+					(it as Event).features.get(1) => [
+						it should beValue "number"
+						it should haveType "java.lang.Integer"
+						it should haveInitialValue _
+					]
+					(it as Event).features.get(2) => [
+						it should beConstructor _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Constructor).params.get(0) => [
+							it should beParameter "nb"
+							it should haveType "java.lang.Integer"
+							it should haveDefaultValue _
+						]
+					]
+				]
 			}
 			
 			/* In some use cases, it is useful to specialize the definition
@@ -256,13 +316,34 @@ describe "Event Reference"{
 						// TEXT
 						""
 					)
-					model.mustHavePackage("io.sarl.docs.reference.er")
-					model.mustNotHaveImport
-					model.mustHaveTopElements(2)
-					var e1 = model.elements.get(0).mustBeEvent("Event1", null).mustHaveFeatures(1)
-					e1.features.get(0).mustBeAttribute(true, "string", "java.lang.String", false)
-					var e2 = model.elements.get(1).mustBeEvent("Event2", "io.sarl.docs.reference.er.Event1").mustHaveFeatures(1)
-					e2.features.get(0).mustBeAttribute(true, "number", "int", false)
+
+					model => [
+						it should havePackage "io.sarl.docs.reference.er"
+						it should haveNbImports 0
+						it should haveNbElements 2
+					]
+					
+					model.elements.get(0) => [
+						it should beEvent "Event1"
+						it should extend _
+						it should haveNbElements 1
+						(it as Event).features.get(0) => [
+							it should beVariable "string"
+							it should haveType "java.lang.String"
+							it should haveInitialValue _
+						]
+					]
+					
+					model.elements.get(1) => [
+						it should beEvent "Event2"
+						it should extend "io.sarl.docs.reference.er.Event1"
+						it should haveNbElements 1
+						(it as Event).features.get(0) => [
+							it should beVariable "number"
+							it should haveType "int"
+							it should haveInitialValue _
+						]
+					]
 				}
 
 				/*
@@ -290,15 +371,46 @@ describe "Event Reference"{
 						// TEXT
 						"} }"
 					)
-					model.mustHavePackage("io.sarl.docs.reference.er")
-					model.mustNotHaveImport
-					model.mustHaveTopElements(3)
-					var e1 = model.elements.get(0).mustBeEvent("Event1", null).mustHaveFeatures(1)
-					e1.features.get(0).mustBeAttribute(true, "string", "java.lang.String", false)
-					var e2 = model.elements.get(1).mustBeEvent("Event2", "io.sarl.docs.reference.er.Event1").mustHaveFeatures(1)
-					e2.features.get(0).mustBeAttribute(true, "number", "int", false)
-					var a = model.elements.get(2).mustBeAgent("A", null).mustHaveFeatures(1)
-					a.features.get(0).mustBeAction("example", null, 0, false)
+					
+					model => [
+						it should havePackage "io.sarl.docs.reference.er"
+						it should haveNbImports 0
+						it should haveNbElements 3
+					]
+					
+					model.elements.get(0) => [
+						it should beEvent "Event1"
+						it should extend _
+						it should haveNbElements 1
+						(it as Event).features.get(0) => [
+							it should beVariable "string"
+							it should haveType "java.lang.String"
+							it should haveInitialValue _
+						]
+					]
+					
+					model.elements.get(1) => [
+						it should beEvent "Event2"
+						it should extend "io.sarl.docs.reference.er.Event1"
+						it should haveNbElements 1
+						(it as Event).features.get(0) => [
+							it should beVariable "number"
+							it should haveType "int"
+							it should haveInitialValue _
+						]
+					]
+
+					model.elements.get(2) => [
+						it should beAgent "A"
+						it should extend _
+						it should haveNbElements 1
+						(it as Agent).features.get(0) => [
+							it should beAction "example"
+							it should reply _
+							it should haveNbParameters 0
+							it should beVariadic false
+						]
+					]
 				}
 
 			}
@@ -322,8 +434,8 @@ describe "Event Reference"{
 		 * @filter(.*)
 		 */
 		fact "Reserved Events"{
-			"AgentReferenceSpec.html#Behaviors_of_an_Agent".mustBeJnarioLink
-			"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
+			"AgentReferenceSpec.html#Behaviors_of_an_Agent" should beAccessibleFrom this
+			"BuiltInCapacityReferenceSpec.html" should beAccessibleFrom this
 		}
 
 	/* Specification: SARL General-purpose Agent-Oriented Programming Language ("Specification")<br/>
@@ -333,20 +445,20 @@ describe "Event Reference"{
 	 * 
 	 * 
 	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * 
+	 * Licensed under the Apache License, Version 2.0;
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
 	 *
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
-		"%sarlversion%".mustStartWith("%sarlspecversion%")
-		assertTrue(
-			"The release status of the specification is invalid.",
-			"%sarlspecreleasestatus%" == "Final Release"
-			|| "%sarlspecreleasestatus%" == "Draft Release")
-		"%sarlspecreleasedate%".mustBeDate
-		"%copyrightdate%".mustBeInteger
-		assertFalse(
-			"The copyrighters' string cannot be empty.",
-			"%copyrighters%".empty || "%copyrighters%".startsWith("%"))
+		"%sarlversion%" should startWith "%sarlspecversion%"
+		("%sarlspecreleasestatus%" == "Final Release"
+			|| "%sarlspecreleasestatus%" == "Draft Release") should be true
+		"%sarlspecreleasedate%" should beDate "YYYY-mm-dd"
+		"%copyrightdate%" should beNumber "0000";
+		("%copyrighters%".empty || "%copyrighters%".startsWith("%")) should be false
 	}
 
 }

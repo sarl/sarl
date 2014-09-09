@@ -23,11 +23,12 @@ package io.sarl.docs.gettingstarted
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
+import io.sarl.lang.sarl.Agent
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 
-/* <!-- OUTPUT OUTLINE -->
+/* @outline
  * 
  * For running an agent, you must launch this agent on the runtime 
  * environment.
@@ -122,12 +123,23 @@ describe "Run SARL Agent from the Command Line" {
 				// TEXT
 				""
 			)
-			model.mustHavePackage("io.sarl.docs.gettingstarted.runsarlagent")
-			model.mustHaveImports(1)
-			model.mustHaveImport(0, "io.sarl.core.Initialize", false, false, false)
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("MyAgent", null).mustHaveFeatures(1)
-			a.features.get(0).mustBeBehaviorUnit("io.sarl.core.Initialize", false)
+			
+			model => [
+				it should havePackage "io.sarl.docs.gettingstarted.runsarlagent"
+				it should haveNbImports 1
+				it should importClass "io.sarl.core.Initialize"
+				it should haveNbElements 1
+			]
+
+			model.elements.get(0) => [
+				it should beAgent "MyAgent"
+				it should extend _
+				it should haveNbElements 1
+				(it as Agent).features.get(0) => [
+					it should beBehaviorUnit "io.sarl.core.Initialize"
+					it should beGuardedWith _
+				]
+			]
 		}
 
 		/* The Janus platform provides a collection of command line options.
@@ -153,7 +165,7 @@ describe "Run SARL Agent from the Command Line" {
 	 * @filter(.*)
 	 */
 	fact "What's next?" {
-		"../SARLDocumentationSuite.html".mustBeJnarioLink
+		"../SARLDocumentationSuite.html" should beAccessibleFrom this
 	}
 
 }

@@ -23,11 +23,12 @@ package io.sarl.docs.gettingstarted
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
+import io.sarl.lang.sarl.Agent
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 
-/* <!-- OUTPUT OUTLINE -->
+/* @outline
  * 
  * For running an agent, you must launch this agent on the runtime 
  * environment.
@@ -70,7 +71,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * @filter(.*) 
 		 */		
 		fact "Create a Java application configuration" {
-			"EclipseRunConfiguration_0.png".mustBePicture
+			"EclipseRunConfiguration_0.png" should beAccessibleFrom this
 		}
 
 		/* For running your agent with the Janus runtime environment,
@@ -88,8 +89,8 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * @filter(.*) 
 		 */		
 		fact "Add the Janus runtime environment" {
-			"%janusmavenrepository%".mustBeHttpLink
-			"EclipseRunConfiguration_1.png".mustBePicture
+			"%janusmavenrepository%" should beURL "!file"
+			"EclipseRunConfiguration_1.png" should beAccessibleFrom this
 		}
 
 		/* You can go back to the *Main* tab, and enter the *Main class*.
@@ -100,7 +101,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * @filter(.*) 
 		 */		
 		fact "Specify the Janus Boot agent" {
-			"EclipseRunConfiguration_2.png".mustBePicture
+			"EclipseRunConfiguration_2.png" should beAccessibleFrom this
 		}
 
 		/* The last step is the specification of the agent to launch.
@@ -117,7 +118,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * @filter(.*) 
 		 */		
 		fact "Specify the agent to execute" {
-			"EclipseRunConfiguration_3.png".mustBePicture
+			"EclipseRunConfiguration_3.png" should beAccessibleFrom this
 		}
 
 	}
@@ -137,7 +138,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * @filter(.*) 
 		 */		
 		fact "Give parameters to the Agent" {
-			"EclipseRunConfiguration_4.png".mustBePicture
+			"EclipseRunConfiguration_4.png" should beAccessibleFrom this
 		}
 		
 		/* For retrieving the values passed on the command line,
@@ -160,12 +161,23 @@ describe "Run SARL Agent in the Eclipse IDE" {
 				// TEXT
 				""
 			)
-			model.mustHavePackage("io.sarl.docs.gettingstarted.runsarlagent")
-			model.mustHaveImports(1)
-			model.mustHaveImport(0, "io.sarl.core.Initialize", false, false, false)
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("MyAgent", null).mustHaveFeatures(1)
-			a.features.get(0).mustBeBehaviorUnit("io.sarl.core.Initialize", false)
+			
+			model => [
+				it should havePackage "io.sarl.docs.gettingstarted.runsarlagent"
+				it should haveNbImports 1
+				it should importClass "io.sarl.core.Initialize"
+				it should haveNbElements 1
+			]
+			
+			model.elements.get(0) => [
+				it should beAgent "MyAgent"
+				it should extend _
+				it should haveNbElements 1
+				(it as Agent).features.get(0) => [
+					it should beBehaviorUnit "io.sarl.core.Initialize"
+					it should beGuardedWith _
+				]
+			]
 		}
 
 	} 
@@ -179,7 +191,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 	 * @filter(.*)
 	 */
 	fact "What's next?" {
-		"RunSARLAgentFromTheCommandLineSpec.html".mustBeJnarioLink
+		"RunSARLAgentFromTheCommandLineSpec.html" should beAccessibleFrom this
 	}
 
 }

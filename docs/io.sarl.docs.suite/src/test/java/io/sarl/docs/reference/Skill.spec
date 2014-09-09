@@ -23,12 +23,16 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
+import io.sarl.lang.sarl.ActionSignature
+import io.sarl.lang.sarl.Capacity
+import io.sarl.lang.sarl.Skill
+import io.sarl.lang.sarl.Action
+import io.sarl.lang.sarl.Constructor
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
-import static extension org.junit.Assert.*
 
-/* <!-- OUTPUT OUTLINE -->
+/* @outline
  *
  * This document describes how to define skills in SARL.
  * Before reading this document, it is recommended reading
@@ -62,8 +66,8 @@ describe "Skill Reference" {
 			 */
 			fact "Basic Definition"{
 				// Test the URLs from the beginning of the page
-				"GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
-				"CapacityReferenceSpec.html".mustBeJnarioLink
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+				"CapacityReferenceSpec.html" should beAccessibleFrom this
 				//
 				val model = '''
 				skill ConsoleLogging implements Logging {
@@ -85,15 +89,69 @@ describe "Skill Reference" {
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.sr")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(2)
-				var c = model.elements.get(0).mustBeCapacity("Logging").mustHaveFeatures(2)
-				c.features.get(0).mustBeActionSignature("info", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				c.features.get(1).mustBeActionSignature("debug", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				var s = model.elements.get(1).mustBeSkill("ConsoleLogging", null, "io.sarl.docs.reference.sr.Logging").mustHaveFeatures(2)
-				s.features.get(0).mustBeAction("info", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				s.features.get(1).mustBeAction("debug", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.sr"
+					it should haveNbImports 0
+					it should haveNbElements 2
+				]
+				
+				model.elements.get(0) => [
+					it should beCapacity "Logging"
+					it should extend _
+					it should haveNbElements 2
+					(it as Capacity).features.get(0) => [
+						it should beActionSignature "info"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+					(it as Capacity).features.get(1) => [
+						it should beActionSignature "debug"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+				]
+				
+				model.elements.get(1) => [
+					it should beSkill "ConsoleLogging"
+					it should extend _
+					it should implement #["io.sarl.docs.reference.sr.Logging"]
+					it should haveNbElements 2
+					(it as Skill).features.get(0) => [
+						it should beAction "info"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Action).signature.params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+					(it as Skill).features.get(1) => [
+						it should beAction "debug"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Action).signature.params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+				]
 			}
 		
 			/* In several cases, it is useful or mandatory to base the
@@ -132,17 +190,75 @@ describe "Skill Reference" {
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.sr")
-				model.mustHaveImports(1)
-				model.mustHaveImport(0, "java.util.logging.Logger", false, false, false)
-				model.mustHaveTopElements(2)
-				var c = model.elements.get(0).mustBeCapacity("Logging").mustHaveFeatures(2)
-				c.features.get(0).mustBeActionSignature("info", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				c.features.get(1).mustBeActionSignature("debug", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				var s = model.elements.get(1).mustBeSkill("StandardJavaLogging", null, "io.sarl.docs.reference.sr.Logging").mustHaveFeatures(3)
-				s.features.get(0).mustBeAttribute(false, "logger", null, true)
-				s.features.get(1).mustBeAction("info", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				s.features.get(2).mustBeAction("debug", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.sr"
+					it should haveNbImports 1
+					it should importClass "java.util.logging.Logger"
+					it should haveNbElements 2
+				]
+				
+				model.elements.get(0) => [
+					it should beCapacity "Logging"
+					it should extend _
+					it should haveNbElements 2
+					(it as Capacity).features.get(0) => [
+						it should beActionSignature "info"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+					(it as Capacity).features.get(1) => [
+						it should beActionSignature "debug"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+				]
+				
+				model.elements.get(1) => [
+					it should beSkill "StandardJavaLogging"
+					it should extend _
+					it should implement #["io.sarl.docs.reference.sr.Logging"]
+					it should haveNbElements 3
+					(it as Skill).features.get(0) => [
+						it should beValue "logger"
+						it should haveType _
+						it should haveInitialValue "java.util.logging.Logger.getAnonymousLogger"
+					]
+					(it as Skill).features.get(1) => [
+						it should beAction "info"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Action).signature.params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+					(it as Skill).features.get(2) => [
+						it should beAction "debug"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Action).signature.params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+				]
 			}
 
 			/* As for fields, it is possible to declare additional methods in the skill. 
@@ -176,17 +292,81 @@ describe "Skill Reference" {
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.sr")
-				model.mustHaveImports(1)
-				model.mustHaveImport(0, "java.util.logging.Logger", false, false, false)
-				model.mustHaveTopElements(2)
-				var c = model.elements.get(0).mustBeCapacity("Logging").mustHaveFeatures(2)
-				c.features.get(0).mustBeActionSignature("info", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				c.features.get(1).mustBeActionSignature("debug", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				var s = model.elements.get(1).mustBeSkill("MyLogging", null, "io.sarl.docs.reference.sr.Logging").mustHaveFeatures(3)
-				s.features.get(0).mustBeAction("info", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				s.features.get(1).mustBeAction("debug", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				s.features.get(2).mustBeAction("output", null, 1, false).mustHaveParameter(0, "t", "java.lang.String", false)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.sr"
+					it should haveNbImports 1
+					it should importClass "java.util.logging.Logger"
+					it should haveNbElements 2
+				]
+				
+				model.elements.get(0) => [
+					it should beCapacity "Logging"
+					it should extend _
+					it should haveNbElements 2
+					(it as Capacity).features.get(0) => [
+						it should beActionSignature "info"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+					(it as Capacity).features.get(1) => [
+						it should beActionSignature "debug"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+				]
+				
+				model.elements.get(1) => [
+					it should beSkill "MyLogging"
+					it should extend _
+					it should implement #["io.sarl.docs.reference.sr.Logging"]
+					it should haveNbElements 3
+					(it as Skill).features.get(0) => [
+						it should beAction "info"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Action).signature.params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+					(it as Skill).features.get(1) => [
+						it should beAction "debug"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Action).signature.params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+					(it as Skill).features.get(2) => [
+						it should beAction "output"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Action).signature.params.get(0) => [
+							it should beParameter "t"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+				]
 			}
 
 			/* By default, it is not needed to specify a
@@ -233,18 +413,85 @@ describe "Skill Reference" {
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.sr")
-				model.mustHaveImports(1)
-				model.mustHaveImport(0, "java.util.logging.Logger", false, false, false)
-				model.mustHaveTopElements(2)
-				var c = model.elements.get(0).mustBeCapacity("Logging").mustHaveFeatures(2)
-				c.features.get(0).mustBeActionSignature("info", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				c.features.get(1).mustBeActionSignature("debug", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				var s = model.elements.get(1).mustBeSkill("StandardJavaLogging", null, "io.sarl.docs.reference.sr.Logging").mustHaveFeatures(4)
-				s.features.get(0).mustBeAttribute(false, "logger", "java.util.logging.Logger", false)
-				s.features.get(1).mustBeConstructor(1, false).mustHaveParameter(0, "l", "java.util.logging.Logger", false)
-				s.features.get(2).mustBeAction("info", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				s.features.get(3).mustBeAction("debug", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
+
+				model => [
+					it should havePackage "io.sarl.docs.reference.sr"
+					it should haveNbImports 1
+					it should importClass "java.util.logging.Logger"
+					it should haveNbElements 2
+				]
+				
+				model.elements.get(0) => [
+					it should beCapacity "Logging"
+					it should extend _
+					it should haveNbElements 2
+					(it as Capacity).features.get(0) => [
+						it should beActionSignature "info"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+					(it as Capacity).features.get(1) => [
+						it should beActionSignature "debug"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+				]
+				
+				model.elements.get(1) => [
+					it should beSkill "StandardJavaLogging"
+					it should extend _
+					it should implement #["io.sarl.docs.reference.sr.Logging"]
+					it should haveNbElements 4
+					(it as Skill).features.get(0) => [
+						it should beValue "logger"
+						it should haveType "java.util.logging.Logger"
+						it should haveInitialValue _
+					]
+					(it as Skill).features.get(1) => [
+						it should beConstructor _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Constructor).params.get(0) => [
+							it should beParameter "l"
+							it should haveType "java.util.logging.Logger"
+							it should haveDefaultValue _
+						]
+					]
+					(it as Skill).features.get(2) => [
+						it should beAction "info"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Action).signature.params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+					(it as Skill).features.get(3) => [
+						it should beAction "debug"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Action).signature.params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+				]
 			}
 
 			/* In some use cases, it is useful to define a skill by
@@ -292,21 +539,130 @@ describe "Skill Reference" {
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.sr")
-				model.mustNotHaveImport
-				model.mustHaveTopElements(3)
-				var c1 = model.elements.get(0).mustBeCapacity("Logging").mustHaveFeatures(2)
-				c1.features.get(0).mustBeActionSignature("info", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				c1.features.get(1).mustBeActionSignature("debug", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				var c2 = model.elements.get(1).mustBeCapacity("LogReader").mustHaveFeatures(3)
-				c2.features.get(0).mustBeActionSignature("open", "int", 1, false).mustHaveParameter(0, "filename", "java.lang.String", false)
-				c2.features.get(1).mustBeActionSignature("info", null, 1, false).mustHaveParameter(0, "t", "java.lang.String", false)
-				c2.features.get(2).mustBeActionSignature("close", null, 1, false).mustHaveParameter(0, "fid", "int", false)
-				var s = model.elements.get(2).mustBeSkill("MyLogging", null, "io.sarl.docs.reference.sr.Logging", "io.sarl.docs.reference.sr.LogReader").mustHaveFeatures(4)
-				s.features.get(0).mustBeAction("info", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				s.features.get(1).mustBeAction("debug", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				s.features.get(2).mustBeAction("open", "int", 1, false).mustHaveParameter(0, "filename", "java.lang.String", false)
-				s.features.get(3).mustBeAction("close", null, 1, false).mustHaveParameter(0, "fid", "int", false)
+
+				model => [
+					it should havePackage "io.sarl.docs.reference.sr"
+					it should haveNbImports 0
+					it should haveNbElements 3
+				]
+				
+				model.elements.get(0) => [
+					it should beCapacity "Logging"
+					it should extend _
+					it should haveNbElements 2
+					(it as Capacity).features.get(0) => [
+						it should beActionSignature "info"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+					(it as Capacity).features.get(1) => [
+						it should beActionSignature "debug"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+				]
+
+				model.elements.get(1) => [
+					it should beCapacity "LogReader"
+					it should extend _
+					it should haveNbElements 3
+					(it as Capacity).features.get(0) => [
+						it should beActionSignature "open"
+						it should reply "int"
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "filename"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+					(it as Capacity).features.get(1) => [
+						it should beActionSignature "info"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "t"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+					(it as Capacity).features.get(2) => [
+						it should beActionSignature "close"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "fid"
+							it should haveType "int"
+							it should haveDefaultValue _
+						] 
+					]
+				]
+
+				model.elements.get(2) => [
+					it should beSkill "MyLogging"
+					it should extend _
+					it should implement #["io.sarl.docs.reference.sr.Logging", "io.sarl.docs.reference.sr.LogReader"]
+					it should haveNbElements 4
+					(it as Skill).features.get(0) => [
+						it should beAction "info"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Action).signature.params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+					(it as Skill).features.get(1) => [
+						it should beAction "debug"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Action).signature.params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+					(it as Skill).features.get(2) => [
+						it should beAction "open"
+						it should reply "int"
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Action).signature.params.get(0) => [
+							it should beParameter "filename"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+					(it as Skill).features.get(3) => [
+						it should beAction "close"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Action).signature.params.get(0) => [
+							it should beParameter "fid"
+							it should haveType "int"
+							it should haveDefaultValue _
+						] 
+					]
+				]
 			}
 
 			/* In some use cases, it is useful to specialize the definition
@@ -352,18 +708,88 @@ describe "Skill Reference" {
 					// TEXT
 					""
 				)
-				model.mustHavePackage("io.sarl.docs.reference.sr")
-				model.mustHaveImports(1)
-				model.mustHaveImport(0, "io.sarl.lang.core.Capacity", false, false, false)
-				model.mustHaveTopElements(3)
-				var c = model.elements.get(0).mustBeCapacity("Logging").mustHaveFeatures(2)
-				c.features.get(0).mustBeActionSignature("info", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				c.features.get(1).mustBeActionSignature("debug", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				var s1 = model.elements.get(1).mustBeSkill("StandardJavaLogging", null, "io.sarl.docs.reference.sr.Logging").mustHaveFeatures(2)
-				s1.features.get(0).mustBeAction("info", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				s1.features.get(1).mustBeAction("debug", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
-				var s2 = model.elements.get(2).mustBeSkill("ExtendedLogging", "io.sarl.docs.reference.sr.StandardJavaLogging").mustHaveFeatures(1)
-				s2.features.get(0).mustBeAction("info", null, 1, false).mustHaveParameter(0, "text", "java.lang.String", false)
+
+				model => [
+					it should havePackage "io.sarl.docs.reference.sr"
+					it should haveNbImports 1
+					it should importClass "io.sarl.lang.core.Capacity"
+					it should haveNbElements 3
+				]
+				
+				model.elements.get(0) => [
+					it should beCapacity "Logging"
+					it should extend _
+					it should haveNbElements 2
+					(it as Capacity).features.get(0) => [
+						it should beActionSignature "info"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+					(it as Capacity).features.get(1) => [
+						it should beActionSignature "debug"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as ActionSignature).params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+				]
+
+				model.elements.get(1) => [
+					it should beSkill "StandardJavaLogging"
+					it should extend _
+					it should implement #["io.sarl.docs.reference.sr.Logging"]
+					it should haveNbElements 2
+					(it as Skill).features.get(0) => [
+						it should beAction "info"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Action).signature.params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+					(it as Skill).features.get(1) => [
+						it should beAction "debug"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Action).signature.params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+				]
+
+				model.elements.get(2) => [
+					it should beSkill "ExtendedLogging"
+					it should extend "io.sarl.docs.reference.sr.StandardJavaLogging"
+					it should implement _
+					it should haveNbElements 1
+					(it as Skill).features.get(0) => [
+						it should beAction "info"
+						it should reply _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as Action).signature.params.get(0) => [
+							it should beParameter "text"
+							it should haveType "java.lang.String"
+							it should haveDefaultValue _
+						] 
+					]
+				]
 			}
 
 		}
@@ -377,7 +803,7 @@ describe "Skill Reference" {
 		 * @filter(.*)
 		 */
 		fact "Built-in Skills"{
-			"BuiltInCapacityReferenceSpec.html".mustBeJnarioLink
+			"BuiltInCapacityReferenceSpec.html" should beAccessibleFrom this
 		}
 
 		/* Details on the use of the skills may be found in the references of
@@ -389,8 +815,8 @@ describe "Skill Reference" {
 		 * @filter(.*)
 		 */
 		fact "Use of the Skills"{
-			"AgentReferenceSpec.html".mustBeJnarioLink
-			"BehaviorReferenceSpec.html".mustBeJnarioLink
+			"AgentReferenceSpec.html" should beAccessibleFrom this
+			"BehaviorReferenceSpec.html" should beAccessibleFrom this
 		}
 
 	/* Specification: SARL General-purpose Agent-Oriented Programming Language ("Specification")<br/>
@@ -400,20 +826,20 @@ describe "Skill Reference" {
 	 * 
 	 * 
 	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * 
+	 * Licensed under the Apache License, Version 2.0;
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
 	 *
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
-		"%sarlversion%".mustStartWith("%sarlspecversion%")
-		assertTrue(
-			"The release status of the specification is invalid.",
-			"%sarlspecreleasestatus%" == "Final Release"
-			|| "%sarlspecreleasestatus%" == "Draft Release")
-		"%sarlspecreleasedate%".mustBeDate
-		"%copyrightdate%".mustBeInteger
-		assertFalse(
-			"The copyrighters' string cannot be empty.",
-			"%copyrighters%".empty || "%copyrighters%".startsWith("%"))
+		"%sarlversion%" should startWith "%sarlspecversion%"
+		("%sarlspecreleasestatus%" == "Final Release"
+			|| "%sarlspecreleasestatus%" == "Draft Release") should be true
+		"%sarlspecreleasedate%" should beDate "YYYY-mm-dd"
+		"%copyrightdate%" should beNumber "0000";
+		("%copyrighters%".empty || "%copyrighters%".startsWith("%")) should be false
 	}
 
 }

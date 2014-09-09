@@ -20,13 +20,15 @@
  */
 package io.sarl.docs.gettingstarted
 
+import com.google.inject.Inject
+import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import org.jnario.runner.CreateWith
 import io.sarl.eclipse.wizards.newproject.Config
+import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 
-/* <!-- OUTPUT OUTLINE -->
+/* @outline
  *
  * For developing with SARL, you should create a project.
  * This document describes two ways for created SARL projects
@@ -35,6 +37,8 @@ import static extension io.sarl.docs.utils.SpecificationTools.*
 @CreateWith(SARLSpecCreator)
 describe "Create First Project" {
 	
+	@Inject extension SARLParser
+
 	/* For creating a project, you should open your Eclipse and click on
 	 * **File > New > Projects**, and select *SARL Project* in
 	 * the SARL category.
@@ -61,8 +65,8 @@ describe "Create First Project" {
 		 * @filter(.*) 
 		 */
 		fact "Step1: Entering the project information" {
-			"new_sarl_project_screen_1.png".mustBePicture
-			"new_sarl_project_screen_2.png".mustBePicture
+			"new_sarl_project_screen_1.png" should beAccessibleFrom this
+			"new_sarl_project_screen_2.png" should beAccessibleFrom this
 		}
 		 
 		/* The second page of the wizard contains the building settings.
@@ -84,10 +88,10 @@ describe "Create First Project" {
 		 * @filter(.*) 
 		 */
 		fact "Step 2: Configuration of the source folders" {
-			Config.PROJECT_STRUCTURE_PATH.mustContain(path("src","main","java"))
-			Config.PROJECT_STRUCTURE_PATH.mustContain(path("src","main","sarl"))
-			Config.PROJECT_STRUCTURE_PATH.mustContain(path("src","main","generated-sources","xtend"))
-			"new_sarl_project_screen_3.png".mustBePicture
+			Config.PROJECT_STRUCTURE_PATH should contain path("src","main","java")
+			Config.PROJECT_STRUCTURE_PATH should contain path("src","main","sarl")
+			Config.PROJECT_STRUCTURE_PATH should contain path("src","main","generated-sources","xtend")
+			"new_sarl_project_screen_3.png" should beAccessibleFrom this
 		}
 		 
 		/* The *Libraries* tab contains the binary libraries that are required for compiling the
@@ -102,10 +106,10 @@ describe "Create First Project" {
 		 * @filter(.*) 
 		 */
 		 fact "Step 3: Checking if the SARL libraries were found" {
-			Config.SARL_REFERENCE_LIBRARIES.mustContain("io.sarl.lang.core")
-			Config.SARL_REFERENCE_LIBRARIES.mustContain("io.sarl.core")
-			Config.SARL_REFERENCE_LIBRARIES.mustContain("io.sarl.util")
-			"new_sarl_project_screen_4.png".mustBePicture
+			Config.SARL_REFERENCE_LIBRARIES should contain "io.sarl.lang.core"
+			Config.SARL_REFERENCE_LIBRARIES should contain "io.sarl.core"
+			Config.SARL_REFERENCE_LIBRARIES should contain "io.sarl.util"
+			"new_sarl_project_screen_4.png" should beAccessibleFrom this
 		 }
 
 	}
@@ -245,12 +249,13 @@ describe "Create First Project" {
 		 */
 		fact "Edit the Maven configuration" {
 			// Check if the SARL code is generated in the expected folder
-			Config.PROJECT_STRUCTURE_PATH.mustContain(path("src","main","generated-sources","xtend"))
+			Config.PROJECT_STRUCTURE_PATH should contain path("src","main","generated-sources","xtend")
 			// This documentation is valid only for the SNAPSHOT (repository definition)
-			"%sarlversion%".mustBeSnapshotVersion
+			"%sarlversion%" should endWith "-SNAPSHOT"
+			"%sarlversion%" should beMavenVersion true
 			// URLs should not end with a slash
-			"%website%".mustBeHttpLink
-			"%sarlmavenrepository%".mustBeHttpLink
+			"%website%" should beURL "!file"
+			"%sarlmavenrepository%" should beURL "!file"
 		}
 		
 		/* For executing your SARL program, you must select a
@@ -308,10 +313,11 @@ describe "Create First Project" {
 		 */
 		fact "Configuration a runtime environment (optional)" {
 			// This documentation is valid only for the SNAPSHOT (repository definition)
-			"%janusversion%".mustBeSnapshotVersion
+			"%janusversion%" should endWith "-SNAPSHOT"
+			"%janusversion%" should beMavenVersion true
 			// URLs should not end with a slash
-			"%website%".mustBeHttpLink
-			"%janusmavenrepository%".mustBeHttpLink
+			"%website%" should beURL "!file"
+			"%janusmavenrepository%" should beURL "!file"
 		}
 	} 
 	
@@ -323,7 +329,7 @@ describe "Create First Project" {
 	 * @filter(.*)
 	 */
 	fact "What's next?" {
-		"AgentDefinitionIntroductionSpec.html".mustBeJnarioLink
+		"AgentDefinitionIntroductionSpec.html" should beAccessibleFrom this
 	}
 
 }

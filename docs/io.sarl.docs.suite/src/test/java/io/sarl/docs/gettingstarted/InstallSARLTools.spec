@@ -43,7 +43,7 @@ describe "Install SARL Tools" {
 	 */
 	fact "Installation Instructions" {
 		// URLs should not end with a slash
-		"%website%".mustStartWith("http://").mustNotEndWith("/");
+		"%website%" should beURL "!file"
 	} 
 	
 	/*
@@ -54,7 +54,7 @@ describe "Install SARL Tools" {
 	 * @filter(.*) 
 	 */
 	fact "What's next?" {
-		"CreateFirstProjectSpec.html".mustBeJnarioLink
+		"CreateFirstProjectSpec.html" should beAccessibleFrom this
 	}
 
 }

@@ -25,10 +25,10 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
-import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension io.sarl.docs.utils.SpecificationTools.*;
 
 /*
- * <!-- OUTPUT OUTLINE -->
+ * @outline
  */
 @CreateWith(SARLSpecCreator)
 describe "General FAQ on SARL" {
@@ -235,7 +235,7 @@ describe "General FAQ on SARL" {
 			 * @filter(.*) 
 			 */
 			fact "Where are the sources of SARL?" {
-				"%website%".mustBeHttpLink
+				"%website%" should beURL "!file"
 			}
 			
 			/* SARL Core Developers use [Github](https://github.com/sarl/sarl)

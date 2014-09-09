@@ -23,13 +23,15 @@ package io.sarl.docs.gettingstarted
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import org.jnario.runner.CreateWith
+import io.sarl.lang.sarl.Action
+import io.sarl.lang.sarl.Agent
 import org.eclipse.xtext.xbase.XBlockExpression
+import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 
 /**
- * <!-- OUTPUT OUTLINE -->
+ * @outline
  * 
  * To create our first agent, right click on the project and follow 
  * **New > File**.
@@ -56,10 +58,18 @@ describe "Agent Definition Introduction" {
 			// TEXT
 			""
 		)
-		model.mustHavePackage("io.sarl.docs.gettingstarted.agent")
-		model.mustNotHaveImport
-		model.mustHaveTopElements(1)
-		model.elements.get(0).mustBeAgent("MyAgent", null).mustHaveFeatures(0)
+		
+		model => [
+			it should havePackage "io.sarl.docs.gettingstarted.agent"
+			it should haveNbImports 0
+			it should haveNbElements 1
+		]
+		
+		model.elements.get(0) => [
+			it should beAgent "MyAgent"
+			it should extend _
+			it should haveNbElements 0
+		]
 	} 
 	
 	/*
@@ -81,17 +91,31 @@ describe "Agent Definition Introduction" {
 	 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
 	 */
 	fact "Package definition" {
-		"../reference/GeneralSyntaxReferenceSpec.html".mustBeJnarioLink
+		"../reference/GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+		//
 		val model = '''
 			package io.sarl.docs.gettingstarted.^agent
 			agent MyAgent {}
 			agent SecondAgent {}
 		'''.parsesSuccessfully
-		model.mustHavePackage("io.sarl.docs.gettingstarted.agent")
-		model.mustNotHaveImport
-		model.mustHaveTopElements(2)
-		model.elements.get(0).mustBeAgent("MyAgent", null).mustHaveFeatures(0)
-		model.elements.get(1).mustBeAgent("SecondAgent", null).mustHaveFeatures(0)
+
+		model => [
+			it should havePackage "io.sarl.docs.gettingstarted.agent"
+			it should haveNbImports 0
+			it should haveNbElements 2
+		]
+		
+		model.elements.get(0) => [
+			it should beAgent "MyAgent"
+			it should extend _
+			it should haveNbElements 0
+		]
+
+		model.elements.get(1) => [
+			it should beAgent "SecondAgent"
+			it should extend _
+			it should haveNbElements 0
+		]
 	}
 
 	/*
@@ -110,8 +134,8 @@ describe "Agent Definition Introduction" {
 		 */
 		fact "Declare an Event"{
 			// Test the URLs in the header of the section
-			"../reference/EventReferenceSpec.html".mustBeJnarioLink
-			"../reference/AgentReferenceSpec.html".mustBeJnarioLink
+			"../reference/EventReferenceSpec.html" should beAccessibleFrom this
+			"../reference/AgentReferenceSpec.html" should beAccessibleFrom this
 			//
 			var model = '''
 			event MyEvent
@@ -120,10 +144,18 @@ describe "Agent Definition Introduction" {
 				// TEXT
 				""
 			)
-			model.mustHavePackage("io.sarl.docs.gettingstarted.agent")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(1)
-			model.elements.get(0).mustBeEvent("MyEvent", null).mustHaveFeatures(0)
+			
+			model => [
+				it should havePackage "io.sarl.docs.gettingstarted.agent"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+			
+			model.elements.get(0) => [
+				it should beEvent "MyEvent"
+				it should extend _
+				it should haveNbElements 0
+			]
 		}
 		
 
@@ -153,12 +185,28 @@ describe "Agent Definition Introduction" {
 				// TEXT
 				""
 			)
-			model.mustHavePackage("io.sarl.docs.gettingstarted.agent")
-			model.mustNotHaveImport
-			model.mustHaveTopElements(2)
-			model.elements.get(0).mustBeEvent("MyEvent", null).mustHaveFeatures(0)
-			var a = model.elements.get(1).mustBeAgent("MyAgent", null).mustHaveFeatures(1)
-			a.features.get(0).mustBeBehaviorUnit("io.sarl.docs.gettingstarted.agent.MyEvent", false)
+
+			model => [
+				it should havePackage "io.sarl.docs.gettingstarted.agent"
+				it should haveNbImports 0
+				it should haveNbElements 2
+			]
+			
+			model.elements.get(0) => [
+				it should beEvent "MyEvent"
+				it should extend _
+				it should haveNbElements 0
+			]
+
+			model.elements.get(1) => [
+				it should beAgent "MyAgent"
+				it should extend _
+				it should haveNbElements 1
+				(it as Agent).features.get(0) => [
+					it should beBehaviorUnit "io.sarl.docs.gettingstarted.agent.MyEvent"
+					it should beGuardedWith _
+				]
+			]
 		}
 		
 		/*
@@ -199,14 +247,28 @@ describe "Agent Definition Introduction" {
 				// TEXT
 				""
 			)
-			model.mustHavePackage("io.sarl.docs.gettingstarted.agent")
-			model.mustHaveImports(2)
-			model.mustHaveImport(0, "io.sarl.core.Initialize", false, false, false)
-			model.mustHaveImport(1, "io.sarl.core.Destroy", false, false, false)
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("MyAgent", null).mustHaveFeatures(2)
-			a.features.get(0).mustBeBehaviorUnit("io.sarl.core.Initialize", false)
-			a.features.get(1).mustBeBehaviorUnit("io.sarl.core.Destroy", false)
+
+			model => [
+				it should havePackage "io.sarl.docs.gettingstarted.agent"
+				it should haveNbImports 2
+				it should importClass "io.sarl.core.Initialize"
+				it should importClass "io.sarl.core.Destroy"
+				it should haveNbElements 1
+			]
+			
+			model.elements.get(0) => [
+				it should beAgent "MyAgent"
+				it should extend _
+				it should haveNbElements 2
+				(it as Agent).features.get(0) => [
+					it should beBehaviorUnit "io.sarl.core.Initialize"
+					it should beGuardedWith _
+				]
+				(it as Agent).features.get(1) => [
+					it should beBehaviorUnit "io.sarl.core.Destroy"
+					it should beGuardedWith _
+				]
+			]
 		}
 		
 		/*
@@ -241,14 +303,28 @@ describe "Agent Definition Introduction" {
 				// TEXT
 				""
 			)
-			model.mustHavePackage("io.sarl.docs.gettingstarted.agent")
-			model.mustHaveImports(2)
-			model.mustHaveImport(0, "io.sarl.core.Initialize", false, false, false)
-			model.mustHaveImport(1, "io.sarl.core.Destroy", false, false, false)
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("MyAgent", null).mustHaveFeatures(2)
-			a.features.get(0).mustBeBehaviorUnit("io.sarl.core.Initialize", false)
-			a.features.get(1).mustBeBehaviorUnit("io.sarl.core.Destroy", false)
+
+			model => [
+				it should havePackage "io.sarl.docs.gettingstarted.agent"
+				it should haveNbImports 2
+				it should importClass "io.sarl.core.Initialize"
+				it should importClass "io.sarl.core.Destroy"
+				it should haveNbElements 1
+			]
+			
+			model.elements.get(0) => [
+				it should beAgent "MyAgent"
+				it should extend _
+				it should haveNbElements 2
+				(it as Agent).features.get(0) => [
+					it should beBehaviorUnit "io.sarl.core.Initialize"
+					it should beGuardedWith _
+				]
+				(it as Agent).features.get(1) => [
+					it should beBehaviorUnit "io.sarl.core.Destroy"
+					it should beGuardedWith _
+				]
+			]
 		}
 		
 	}
@@ -282,8 +358,8 @@ describe "Agent Definition Introduction" {
 		 */
 		fact "Use the capacity to send an event in the default space"{
 			// Test the URLs in the header of the section
-			"../reference/EventReferenceSpec.html".mustBeJnarioLink
-			"../reference/AgentReferenceSpec.html".mustBeJnarioLink 
+			"../reference/EventReferenceSpec.html" should beAccessibleFrom this
+			"../reference/AgentReferenceSpec.html" should beAccessibleFrom this
 			//
 			val model = '''
 			agent MyAgent {
@@ -295,12 +371,20 @@ describe "Agent Definition Introduction" {
 				// TEXT
 				""
 			)
-			model.mustHavePackage("io.sarl.docs.gettingstarted.agent")
-			model.mustHaveImports(1)
-			model.mustHaveImport(0, "io.sarl.core.DefaultContextInteractions", false, false, false)
-			model.mustHaveTopElements(1)
-			var a = model.elements.get(0).mustBeAgent("MyAgent", null).mustHaveFeatures(1)
-			a.features.get(0).mustBeCapacityUses("io.sarl.core.DefaultContextInteractions")
+
+			model => [
+				it should havePackage "io.sarl.docs.gettingstarted.agent"
+				it should haveNbImports 1
+				it should importClass "io.sarl.core.DefaultContextInteractions"
+				it should haveNbElements 1
+			]
+			
+			model.elements.get(0) => [
+				it should beAgent "MyAgent"
+				it should extend _
+				it should haveNbElements 1
+				(it as Agent).features.get(0) should beCapacityUse "io.sarl.core.DefaultContextInteractions"
+			]
 		}
 		
 		/* 
@@ -332,14 +416,34 @@ describe "Agent Definition Introduction" {
 				// TEXT
 				""
 			)
-			model.mustHavePackage("io.sarl.docs.gettingstarted.agent")
-			model.mustHaveImports(1)
-			model.mustHaveImport(0, "io.sarl.core.DefaultContextInteractions", false, false, false)
-			model.mustHaveTopElements(2)
-			model.elements.get(0).mustBeEvent("MyEvent", null).mustHaveFeatures(0)
-			var a = model.elements.get(1).mustBeAgent("MyAgent", null).mustHaveFeatures(2)
-			a.features.get(0).mustBeCapacityUses("io.sarl.core.DefaultContextInteractions")
-			a.features.get(1).mustBeAction("doSomething", null, 0, false).body.mustBe(XBlockExpression)
+
+
+			model => [
+				it should havePackage "io.sarl.docs.gettingstarted.agent"
+				it should haveNbImports 1
+				it should importClass "io.sarl.core.DefaultContextInteractions"
+				it should haveNbElements 2
+			]
+			
+			model.elements.get(0) => [
+				it should beEvent "MyEvent"
+				it should extend _
+				it should haveNbElements 0
+			]
+
+			model.elements.get(1) => [
+				it should beAgent "MyAgent"
+				it should extend _
+				it should haveNbElements 2
+				(it as Agent).features.get(0) should beCapacityUse "io.sarl.core.DefaultContextInteractions"
+				(it as Agent).features.get(1) => [
+					it should beAction "doSomething"
+					it should reply _
+					it should haveNbParameters 0
+					it should beVariadic false
+					(it as Action).body should be typeof(XBlockExpression)
+				]
+			]
 		}
 
 	}
@@ -353,7 +457,7 @@ describe "Agent Definition Introduction" {
 	 * @filter(.*)
 	 */
 	fact "What's next?" {
-		"RunSARLAgentInTheEclipseIDESpec.html".mustBeJnarioLink
+		"RunSARLAgentInTheEclipseIDESpec.html" should beAccessibleFrom this
 	}
 
 }
