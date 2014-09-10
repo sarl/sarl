@@ -297,21 +297,6 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.jnario</groupId>
-				<artifactId>report</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<sourceDirectory>${project.basedir}/target/generated-test-sources/reports-jnario</sourceDirectory>
-				</configuration>
-			</plugin>
-
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<configuration>
@@ -319,5 +304,38 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.jnario</groupId>
+					<artifactId>report</artifactId>
+					<executions>
+						<execution>
+							<goals>
+								<goal>generate</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<sourceDirectory>${project.basedir}/target/generated-test-sources/reports-jnario</sourceDirectory>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>io.sarl.maven</groupId>
+					<artifactId>io.sarl.maven.docs.generator</artifactId>
+					<version>${project.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>generate</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<sourceDirectory>${project.basedir}/target/generated-test-sources/reports-jnario</sourceDirectory>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 </project>
