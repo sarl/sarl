@@ -552,6 +552,51 @@ describe "Built-in Capacity Reference" {
 					}".parsesSuccessfully
 			}
 
+			/* Some time, it is useful to create an agent with a specific
+			 * identifier. The following function permits to spawn an agent
+			 * with a given identifier in a specific context:
+			 * 
+			 *     def spawnInContextWithID(agentType : Class<? extends Agent>,
+			 *                              agentId : UUID,
+			 *                              context : AgentContext,
+			 *                              params : Object[]) : UUID
+			 * 
+			 *
+			 * This action creates an instance of the given agent type, with
+			 * the given identifier, and launches the agent
+			 * into the given context.
+			 * The parameters are passed to the spawned agent inside
+			 * the `Initialize` event: the `parameters` field.
+			 * 
+			 * This action fires two events:
+			 *
+			 *  * `AgentSpawned` in the default space of the context. The source of the event is the calling agent.
+			 *  * `Initialize` in spawned agent.
+			 *  
+			 * @filter(.*) 
+			 */
+			fact "Spawning an Agent with a specific identifier"{
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Lifecycle
+					import io.sarl.lang.core.AgentContext
+					import io.sarl.lang.core.Agent
+					import java.util.UUID
+					agent A {
+						uses Lifecycle
+						def myaction {
+							var c : AgentContext
+							var aid : UUID
+							var type : Class<? extends Agent>
+							var p1 : Object
+							var p2 : Object
+							type = typeof(A)
+							p1 = new Object
+							p2 = new Object
+							aid = spawnInContextWithID(type, aid, c, #[p1, p2])
+						}
+					}".parsesSuccessfully
+			}
+
 		}
 
 		/* The built-in capacity `Schedules` enables the agent to 

@@ -56,7 +56,20 @@ class VarArgsCompilerTest {
 			   */
 			  @Generated
 			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code>
+			   *                  the agent identifier will be computed randomly.
+			   * 
+			   */
+			  @Generated
+			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  public void myaction(final int... arg) {
@@ -88,7 +101,20 @@ class VarArgsCompilerTest {
 			   */
 			  @Generated
 			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code>
+			   *                  the agent identifier will be computed randomly.
+			   * 
+			   */
+			  @Generated
+			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  public void myaction(final char arg1, final boolean arg2, final int... arg3) {

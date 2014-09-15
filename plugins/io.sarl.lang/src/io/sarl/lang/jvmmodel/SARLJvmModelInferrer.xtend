@@ -465,7 +465,8 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			
 			agent.copyDocumentationTo(it)
 			generateExtendedTypes(agent, typeof(io.sarl.lang.core.Agent))
-			var cons = agent.toConstructor [
+
+			var cons1 = agent.toConstructor [
 				documentation = '''
 					Construct an agent.
 					@param parentID - identifier of the parent. It is the identifer
@@ -473,13 +474,31 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				'''
 				parameters += agent.toParameter('parentID', newTypeRef(typeof(UUID)))
 				body = '''
-					super(parentID);
+					super(parentID, null);
 				'''
 			]
-			cons.annotations += agent.toGeneratedAnnotation
-			members += cons
-			typeExtensions.setSynthetic(cons, true)
+			cons1.annotations += agent.toGeneratedAnnotation
+			members += cons1
+			typeExtensions.setSynthetic(cons1, true)
 			
+			var cons2 = agent.toConstructor [
+				documentation = '''
+					Construct an agent.
+					@param parentID - identifier of the parent. It is the identifer
+					of the parent agent and the enclosing contect, at the same time.
+					@param agentID - identifier of the agent. If <code>null</code>
+					                 the agent identifier will be computed randomly.
+				'''
+				parameters += agent.toParameter('parentID', newTypeRef(typeof(UUID)))
+				parameters += agent.toParameter('agentID', newTypeRef(typeof(UUID)))
+				body = '''
+					super(parentID, agentID);
+				'''
+			]
+			cons2.annotations += agent.toGeneratedAnnotation
+			members += cons2
+			typeExtensions.setSynthetic(cons2, true)
+
 			var behaviorUnitIndex = 1
 			var actionIndex = 1
 			

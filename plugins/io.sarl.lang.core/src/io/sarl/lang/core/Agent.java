@@ -39,7 +39,7 @@ import javax.inject.Inject;
  */
 public class Agent implements Identifiable {
 
-	private final UUID id = UUID.randomUUID();
+	private final UUID id;
 
 	private Map<Class<? extends Capacity>, Skill> capacities = new ConcurrentHashMap<>();
 
@@ -51,7 +51,19 @@ public class Agent implements Identifiable {
 	 * @param parentID - the agent's spawner.
 	 */
 	public Agent(UUID parentID) {
+		this(parentID, null);
+	}
+
+	/**
+	 * Creates a new agent by parent <code>parentID</code>.
+	 *
+	 * @param parentID - the agent's spawner.
+	 * @param agentID - the identifier of the agent, or
+	 *                  <code>null</code> for computing it randomly.
+	 */
+	public Agent(UUID parentID, UUID agentID) {
 		this.parentID = parentID;
+		this.id = ((agentID == null) ? UUID.randomUUID() : agentID);
 	}
 
 	/**

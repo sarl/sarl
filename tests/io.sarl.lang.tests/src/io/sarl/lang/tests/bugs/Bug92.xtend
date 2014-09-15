@@ -159,7 +159,20 @@ class Bug92 {
 			   */
 			  @Generated
 			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code>
+			   *                  the agent identifier will be computed randomly.
+			   * 
+			   */
+			  @Generated
+			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  protected double myDouble = 0d;
@@ -187,7 +200,20 @@ class Bug92 {
 			   */
 			  @Generated
 			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code>
+			   *                  the agent identifier will be computed randomly.
+			   * 
+			   */
+			  @Generated
+			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  protected Double myDouble = Double.valueOf(0d);
@@ -215,7 +241,20 @@ class Bug92 {
 			   */
 			  @Generated
 			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code>
+			   *                  the agent identifier will be computed randomly.
+			   * 
+			   */
+			  @Generated
+			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  protected double myDouble = 0d;
@@ -262,7 +301,20 @@ class Bug92 {
 			   */
 			  @Generated
 			  public DeviceAgent(final java.util.UUID parentID) {
-			    super(parentID);
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code>
+			   *                  the agent identifier will be computed randomly.
+			   * 
+			   */
+			  @Generated
+			  public DeviceAgent(final java.util.UUID parentID, final java.util.UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  @Generated
@@ -294,7 +346,20 @@ class Bug92 {
 			   */
 			  @Generated
 			  public EntityAgent(final java.util.UUID parentID) {
-			    super(parentID);
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code>
+			   *                  the agent identifier will be computed randomly.
+			   * 
+			   */
+			  @Generated
+			  public EntityAgent(final java.util.UUID parentID, final java.util.UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			}
 		'''
@@ -345,7 +410,20 @@ class Bug92 {
 			   */
 			  @Generated
 			  public DeviceAgent(final java.util.UUID parentID) {
-			    super(parentID);
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code>
+			   *                  the agent identifier will be computed randomly.
+			   * 
+			   */
+			  @Generated
+			  public DeviceAgent(final java.util.UUID parentID, final java.util.UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  @Generated
@@ -377,7 +455,20 @@ class Bug92 {
 			   */
 			  @Generated
 			  public EntityAgent(final java.util.UUID parentID) {
-			    super(parentID);
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifer
+			   * of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code>
+			   *                  the agent identifier will be computed randomly.
+			   * 
+			   */
+			  @Generated
+			  public EntityAgent(final java.util.UUID parentID, final java.util.UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			}
 		'''
