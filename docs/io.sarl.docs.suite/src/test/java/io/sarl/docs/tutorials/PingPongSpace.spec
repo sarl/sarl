@@ -106,7 +106,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 						this.index = i
 					}
 				}
-				'''.parsesSuccessfully
+				'''.parseSuccessfully
 			}
 			
 			/* The `Pong` is an event that contains the
@@ -126,7 +126,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 						this.index = i
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpongspace",
 					// TEXT
 					""
@@ -149,7 +149,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 				'''
 				agent PongAgent {
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpongspace",
 					// TEXT
 					""
@@ -195,7 +195,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 						space.register(asEventListener())
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpongspace
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.core.Initialize
@@ -237,7 +237,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					on Ping {
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpongspace
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.core.Behaviors
@@ -318,7 +318,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 						space.emit( evt )
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpongspace
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.core.Behaviors
@@ -391,7 +391,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 							Scopes.addresses( occurrence.source ))
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpongspace
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.core.Behaviors
@@ -444,7 +444,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 						space.register(asEventListener())
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpongspace
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.core.Initialize
@@ -481,7 +481,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					on Pong {
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpongspace
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.core.Behaviors
@@ -536,7 +536,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 						)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpongspace
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.core.Behaviors
@@ -599,7 +599,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 						)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpongspace
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.core.Behaviors
@@ -691,7 +691,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 						)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpongspace
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.core.Behaviors
@@ -849,7 +849,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 							killMe
 						}
 					}
-					'''.parsesSuccessfully(
+					'''.parseSuccessfully(
 						"package io.sarl.docs.tutorials.pingpongspace
 						import io.sarl.core.DefaultContextInteractions
 						import io.sarl.core.Initialize

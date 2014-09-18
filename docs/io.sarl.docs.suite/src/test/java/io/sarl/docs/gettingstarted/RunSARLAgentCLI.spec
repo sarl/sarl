@@ -117,7 +117,7 @@ describe "Run SARL Agent from the Command Line" {
 							+occurrence.parameters)
 					}
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.gettingstarted.runsarlagent
 				import io.sarl.core.Initialize",
 				// TEXT

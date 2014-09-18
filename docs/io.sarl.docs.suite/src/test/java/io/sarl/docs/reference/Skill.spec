@@ -31,6 +31,7 @@ import io.sarl.lang.sarl.Constructor
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.assumeFalse
 
 /* @outline
  *
@@ -78,7 +79,7 @@ describe "Skill Reference" {
 						System.err.println(text)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.sr
 					capacity Logging {
 						// Log an information message
@@ -178,7 +179,7 @@ describe "Skill Reference" {
 						logger.fine(text)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.sr
 					import java.util.logging.Logger
 					capacity Logging {
@@ -280,7 +281,7 @@ describe "Skill Reference" {
 						System.err.println(t)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.sr
 					import java.util.logging.Logger
 					capacity Logging {
@@ -401,7 +402,7 @@ describe "Skill Reference" {
 						logger.fine(text)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.sr
 					import java.util.logging.Logger
 					capacity Logging {
@@ -528,7 +529,7 @@ describe "Skill Reference" {
 					def close(fid : int) {
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.sr
 					capacity Logging {
 						// Log an information message
@@ -690,7 +691,7 @@ describe "Skill Reference" {
 						super.info("INFO: "+text)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.sr
 					import io.sarl.lang.core.Capacity
 					capacity Logging {
@@ -834,6 +835,11 @@ describe "Skill Reference" {
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
+		// The checks are valid only if the macro replacements were done.
+		// The replacements are done by Maven.
+		// So, Eclipse Junit tools do not make the replacements.
+		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+		//
 		"%sarlversion%" should startWith "%sarlspecversion%"
 		("%sarlspecreleasestatus%" == "Final Release"
 			|| "%sarlspecreleasestatus%" == "Draft Release") should be true

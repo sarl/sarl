@@ -65,9 +65,9 @@ import com.ibm.icu.math.BigDecimal;
 
 /** Helper for tests.
  * This class should disappear when the Jnario API will provide
- * the similar features: {@link "https://github.com/sebastianbenz/Jnario/pull/141"}.
+ * the similar features: {@link "https://github.com/sebastianbenz/Jnario/pull/142"}.
  *
- * FIXME: https://github.com/sebastianbenz/Jnario/pull/141
+ * FIXME: https://github.com/sebastianbenz/Jnario/pull/142
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -724,7 +724,7 @@ public final class SpecificationTools {
 		}
 		StringBuilder pattern = new StringBuilder("^"); //$NON-NLS-1$
 		pattern.append("[0-9a-zA-Z_-]+(\\.[0-9a-zA-Z_-]+)*"); //$NON-NLS-1$
-		if (allowSnapshot) { //$NON-NLS-1$
+		if (allowSnapshot) {
 			pattern.append("(?:"); //$NON-NLS-1$
 			pattern.append(Matcher.quoteReplacement("-SNAPSHOT")); //$NON-NLS-1$
 			pattern.append(")?"); //$NON-NLS-1$

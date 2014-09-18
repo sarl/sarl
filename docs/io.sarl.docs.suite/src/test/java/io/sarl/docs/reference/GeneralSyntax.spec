@@ -36,6 +36,7 @@ import org.eclipse.xtext.xbase.XbasePackage
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.assumeFalse
 
 /* @outline
  * 
@@ -100,9 +101,9 @@ describe "General Syntax Reference" {
 	 * @filter(.*)
 	 */
 	fact "Name Syntax" {
-		'''package io.sarl.event.ActionEvent'''.parsesWithError
+		'''package io.sarl.event.ActionEvent'''.parseWithError
 		
-		var model = '''package io.sarl.^event.ActionEvent'''.parsesSuccessfully
+		var model = '''package io.sarl.^event.ActionEvent'''.parseSuccessfully
 		
 		model should havePackage "io.sarl.event.ActionEvent"
 	}
@@ -144,7 +145,7 @@ describe "General Syntax Reference" {
 		fact "Package Declaration" {
 			var model = '''
 				package io.sarl.docs.reference.gsr
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 				// TEXT
 				"agent A {}")
 			
@@ -185,7 +186,7 @@ describe "General Syntax Reference" {
 			var model = '''
 			import java.util.List
 			import java.net.*
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr",
 				// TEXT
 				"agent A {}"
@@ -249,7 +250,7 @@ describe "General Syntax Reference" {
 					// Short hand for calling a static method, when statically imported
 					println( toString(tab) )
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import java.util.Collection
 				import java.util.Collections
@@ -311,7 +312,7 @@ describe "General Syntax Reference" {
 
 			agent A {
 			}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr",
 				// TEXT
 				""
@@ -382,7 +383,7 @@ describe "General Syntax Reference" {
 				var d = "Hello \"World!\""
 				var e = "Hello 
 							World!"
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -444,7 +445,7 @@ describe "General Syntax Reference" {
 			var model = '''
 				var a : char = 'a'
 				var b : char = "b"
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -489,7 +490,7 @@ describe "General Syntax Reference" {
 				var c = 077		// Decimal 77, NOT octal
 				var d = 0.1		// The leading zero must be specified
 				var e = 1.0		// The trailing zero must be specified
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -547,7 +548,7 @@ describe "General Syntax Reference" {
 		fact "Large Numbers"{
 			var model = '''
 				var a = 123_456_78l
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -585,7 +586,7 @@ describe "General Syntax Reference" {
 				var anInteger = 1234
 				var aLong = 1234l
 				var aBigInteger = 1234bi
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -638,7 +639,7 @@ describe "General Syntax Reference" {
 				var aFloat = 1234.0f
 				var anotherFloat = 5678f
 				var aBigDecimal = 1234bd
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -697,7 +698,7 @@ describe "General Syntax Reference" {
 			var model = '''
 				var a = true
 				var b = false
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr			
 				agent A {",
 				// TEXT
@@ -736,7 +737,7 @@ describe "General Syntax Reference" {
 		fact "Null Literals"{
 			var model = '''
 				var a = null
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -782,7 +783,7 @@ describe "General Syntax Reference" {
 				// the variable c contains the list of the fields 
 				// that are declared in the Java type String.class
 				var c = String.getDeclaredFields()
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -836,7 +837,7 @@ describe "General Syntax Reference" {
 			var model = '''
 				var myList = newArrayList('Hello', 'world')
 				var myMap = newLinkedHashMap('a' -> 1, 'b' -> 2)
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -883,7 +884,7 @@ describe "General Syntax Reference" {
 				var b = #{'Hello','World'}
 				// the variable c contains an immutable hash table.
 				var c = #{'a' -> 1 ,'b' ->2}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -942,7 +943,7 @@ describe "General Syntax Reference" {
 				var a : String[] = newArrayOfSize(400)
 				// variable b contains a array of size 200 which contains int values.
 				var b : int[] = newIntArrayOfSize(200)
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -989,7 +990,7 @@ describe "General Syntax Reference" {
 				var b = a.get(1)
 				// variable c contains the size of the array a: 3.
 				var c = a.length
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -1038,7 +1039,7 @@ describe "General Syntax Reference" {
 			var model = '''
 				val myArray : int[] = #[1,2,3]
 				val myList : List<Integer> = myArray
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr			
 				import java.util.List
 				agent A {",
@@ -1093,7 +1094,7 @@ describe "General Syntax Reference" {
 			
 			//Do the convertion from a number literal to an Integer object
 			var b = 56 as Integer
-		'''.parsesSuccessfully(
+		'''.parseSuccessfully(
 			"package io.sarl.docs.reference.gsr		
 			agent A {",
 			// TEXT
@@ -1581,7 +1582,7 @@ describe "General Syntax Reference" {
 					// z2.value == 5
 					println(z2.toString)
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -1649,7 +1650,7 @@ describe "General Syntax Reference" {
 					x
 				}
 			}
-		'''.parsesSuccessfully(
+		'''.parseSuccessfully(
 			"package io.sarl.docs.reference.gsr
 			agent A {
 				var greeting = \"abc\"",
@@ -1697,7 +1698,7 @@ describe "General Syntax Reference" {
 						println("Hi there!")
 						i = i + 1
 					}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					def example {",
@@ -1736,7 +1737,7 @@ describe "General Syntax Reference" {
 				var a : String = "abc"
 				// Inferred type
 				var b = "abc"
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -1821,7 +1822,7 @@ describe "General Syntax Reference" {
 				// Return type: String
 				def action6(a : int, b : String) : String {
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -1943,7 +1944,7 @@ describe "General Syntax Reference" {
 					action2(true, 3.0, 1)
 					action2(true, 3.0, 1, 5)
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -2042,7 +2043,7 @@ describe "General Syntax Reference" {
 					// a == true, b == 9.0, c == 7
 					action2(9.0)
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -2123,7 +2124,7 @@ describe "General Syntax Reference" {
 					// v == 5, a == #[3.5, 6.45]
 					action(3.5f, 6.45f)
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -2203,7 +2204,7 @@ describe "General Syntax Reference" {
 					this.property2 = new Object
 				}
 			}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr",
 				// TEXT
 				""
@@ -2232,7 +2233,7 @@ describe "General Syntax Reference" {
 					return length // translates to 'it.length()'
 				}
 			}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr",
 				// TEXT
 				""
@@ -2249,7 +2250,7 @@ describe "General Syntax Reference" {
 			var model = '''
 				var a = Integer::TYPE
 				var b = Integer.TYPE
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -2296,7 +2297,7 @@ describe "General Syntax Reference" {
 					if (myRef != null) myRef.length()
 					// Second expression, equivalent to the first expression
 					myRef?.length()
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					var myRef = \"abc\"
@@ -2320,7 +2321,7 @@ describe "General Syntax Reference" {
 					// Call the inherited implementation
 					super.anAction
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					def anAction {
@@ -2381,7 +2382,7 @@ describe "General Syntax Reference" {
 				var a = new Integer(345)
 				var b = new ArrayList<Integer>()
 				var c = new ArrayList<Integer>
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import java.util.ArrayList
 				agent A {",
@@ -2441,7 +2442,7 @@ describe "General Syntax Reference" {
 			new (param : Address) {
 				super(param) // Call the inherited constructor with a parameter
 			}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import io.sarl.lang.core.Address
 				event E1
@@ -2526,7 +2527,7 @@ describe "General Syntax Reference" {
 					colors.sort // sort is implemented by Collections#sort(List<T>)
 				}
 			}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr",
 				// TEXT
 				""
@@ -2549,7 +2550,7 @@ describe "General Syntax Reference" {
 				def example : boolean {
 					newArrayList("red").hasOneElement
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import java.util.List
 				agent A {",
@@ -2580,7 +2581,7 @@ describe "General Syntax Reference" {
 					textField.addActionListener([ e : ActionEvent |
 							textField.text = "Something happened!" + e.toString
 						])
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import java.awt.^event.ActionEvent
 				import javax.swing.JTextField
@@ -2605,7 +2606,7 @@ describe "General Syntax Reference" {
 					textField.addActionListener([ e |
 							textField.text = "Something happened!" + e.toString
 						])
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import javax.swing.JTextField
 				agent A {
@@ -2629,7 +2630,7 @@ describe "General Syntax Reference" {
 					textField.addActionListener([
 							textField.text = "Something happened!" + it.toString
 						])
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import javax.swing.JTextField
 				agent A {
@@ -2648,7 +2649,7 @@ describe "General Syntax Reference" {
 					val runnable : Runnable = [ |
 							println("Hello I'm executed!")
 						]
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					def example {",
@@ -2681,7 +2682,7 @@ describe "General Syntax Reference" {
 								]
 					)
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import java.util.List
 				import java.util.Collections
@@ -2707,7 +2708,7 @@ describe "General Syntax Reference" {
 				
 				// Same type of function.
 				var f2 : Function1<? super String,? extends String>
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import org.eclipse.xtext.xbase.lib.Functions.Function1
 				agent A {",
@@ -2729,7 +2730,7 @@ describe "General Syntax Reference" {
 		fact "Classic Syntax"{
 			'''
 					if (e1 !== null) e1 else e2
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					var e1 : Object
@@ -2748,7 +2749,7 @@ describe "General Syntax Reference" {
 		fact "Optional Else Part"{
 			'''
 					if (e1 !== null) e1 /* else null */
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					var e1 : Object
@@ -2769,7 +2770,7 @@ describe "General Syntax Reference" {
 		fact "Inlined If Expression"{
 			'''
 					val name = if (e1 != null) e1 + ' ' + e2 else e2
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					var e1
@@ -2833,7 +2834,7 @@ describe "General Syntax Reference" {
 					default : { }
 					}
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					var myString = \"abc\"",
@@ -2857,7 +2858,7 @@ describe "General Syntax Reference" {
 					String case myString.length==5 : "It's string of length 5."
 					String : "a string."
 					}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					var myString : Object
@@ -2879,7 +2880,7 @@ describe "General Syntax Reference" {
 					case 'some' : println("a string.")
 					default: println("Default")
 					}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					var myString : String
@@ -2917,7 +2918,7 @@ describe "General Syntax Reference" {
 						for (v as String : tab) {
 							println(v)
 						}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 						def example {",
@@ -2940,7 +2941,7 @@ describe "General Syntax Reference" {
 						for (var i = 0; i<123; i++) {
 							println(i)
 						}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 						def example {",
@@ -2961,7 +2962,7 @@ describe "General Syntax Reference" {
 							println(i)
 							i++
 						}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 						def example {",
@@ -2985,7 +2986,7 @@ describe "General Syntax Reference" {
 							i++
 						}
 						while (i<123)
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 						def example {",
@@ -3010,7 +3011,7 @@ describe "General Syntax Reference" {
 		fact "Throwing Exceptions"{
 			'''
 						throw new IllegalArgumentException("explanation")
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 						def example {",
@@ -3039,7 +3040,7 @@ describe "General Syntax Reference" {
 							// or before exiting the function (if an exception was thrown
 							// but not catched).
 						}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 						def example {",
@@ -3065,7 +3066,7 @@ describe "General Syntax Reference" {
 									}
 						println(name)
 					}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import java.io.IOException
 				agent A {",
@@ -3094,7 +3095,7 @@ describe "General Syntax Reference" {
 					synchronized(lock) {
 						println("Hello")
 					}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					def example : Object {",
@@ -3115,7 +3116,7 @@ describe "General Syntax Reference" {
 							"Hello" 
 						}
 					println(name)
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					def example {",
@@ -3153,6 +3154,11 @@ describe "General Syntax Reference" {
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
+		// The checks are valid only if the macro replacements were done.
+		// The replacements are done by Maven.
+		// So, Eclipse Junit tools do not make the replacements.
+		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+		//
 		"%sarlversion%" should startWith "%sarlspecversion%"
 		("%sarlspecreleasestatus%" == "Final Release"
 			|| "%sarlspecreleasestatus%" == "Draft Release") should be true

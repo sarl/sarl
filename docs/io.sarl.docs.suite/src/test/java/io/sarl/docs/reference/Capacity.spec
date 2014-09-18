@@ -26,6 +26,7 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.assumeFalse
 
 import io.sarl.lang.sarl.ActionSignature;
 import io.sarl.lang.sarl.Capacity;
@@ -87,7 +88,7 @@ describe "Capacity Reference"{
 					// Log a debugging message
 					def debug(text : String)
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.cr",
 					// TEXT
 					""
@@ -152,7 +153,7 @@ describe "Capacity Reference"{
 					// Log a error message
 					def error(text : String)
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.cr
 					capacity Logging {
 						// Log an information message
@@ -234,7 +235,7 @@ describe "Capacity Reference"{
 				capacity Cap3 extends Cap1, Cap2 {
 					def action3
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.cr",
 					// TEXT
 					""
@@ -344,6 +345,11 @@ describe "Capacity Reference"{
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
+		// The checks are valid only if the macro replacements were done.
+		// The replacements are done by Maven.
+		// So, Eclipse Junit tools do not make the replacements.
+		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+		//
 		"%sarlversion%" should startWith "%sarlspecversion%"
 		("%sarlspecreleasestatus%" == "Final Release"
 			|| "%sarlspecreleasestatus%" == "Draft Release") should be true

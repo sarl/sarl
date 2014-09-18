@@ -155,7 +155,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 							+occurrence.parameters)
 					}
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.gettingstarted.runsarlagent
 				import io.sarl.core.Initialize",
 				// TEXT

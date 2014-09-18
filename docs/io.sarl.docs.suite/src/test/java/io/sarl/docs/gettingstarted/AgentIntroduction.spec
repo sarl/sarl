@@ -53,7 +53,7 @@ describe "Agent Definition Introduction" {
 		val model = '''
 			agent MyAgent {
 			}
-		'''.parsesSuccessfully(
+		'''.parseSuccessfully(
 			"package io.sarl.docs.gettingstarted.^agent",
 			// TEXT
 			""
@@ -97,7 +97,7 @@ describe "Agent Definition Introduction" {
 			package io.sarl.docs.gettingstarted.^agent
 			agent MyAgent {}
 			agent SecondAgent {}
-		'''.parsesSuccessfully
+		'''.parseSuccessfully
 
 		model => [
 			it should havePackage "io.sarl.docs.gettingstarted.agent"
@@ -139,7 +139,7 @@ describe "Agent Definition Introduction" {
 			//
 			var model = '''
 			event MyEvent
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.gettingstarted.^agent",
 				// TEXT
 				""
@@ -179,7 +179,7 @@ describe "Agent Definition Introduction" {
 					println("Received MyEvent")
 				}
 			} 
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.gettingstarted.^agent
 				event MyEvent",
 				// TEXT
@@ -242,7 +242,7 @@ describe "Agent Definition Introduction" {
 						println("MyAgent destroyed")
 					}
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.gettingstarted.^agent",
 				// TEXT
 				""
@@ -296,7 +296,7 @@ describe "Agent Definition Introduction" {
 						println("MyAgent destroyed")
 					}
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.gettingstarted.^agent
 				import io.sarl.core.Initialize
 				import io.sarl.core.Destroy",
@@ -365,7 +365,7 @@ describe "Agent Definition Introduction" {
 			agent MyAgent {
 				uses DefaultContextInteractions
 			} 
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.gettingstarted.^agent
 				import io.sarl.core.DefaultContextInteractions",
 				// TEXT
@@ -409,7 +409,7 @@ describe "Agent Definition Introduction" {
 					emit(e)
 				}
 			} 
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.gettingstarted.^agent
 				import io.sarl.core.DefaultContextInteractions
 				event MyEvent",

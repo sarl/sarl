@@ -167,7 +167,7 @@ describe "English Auction with Holons"{
 						this.price = price
 					}
 				}
-				'''.parsesSuccessfully
+				'''.parseSuccessfully
 			}
 
 			/* The `Bid` event is the event sent
@@ -184,7 +184,7 @@ describe "English Auction with Holons"{
 						this.value = value
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.holonicauction",
 					// TEXT
 					""
@@ -220,7 +220,7 @@ describe "English Auction with Holons"{
 						maxPrice = random.nextFloat() * 900f + 100f
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.basicholon
 					import java.util.Random
 					import io.sarl.core.Initialize",
@@ -277,7 +277,7 @@ describe "English Auction with Holons"{
 						}
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.basicholon
 					import java.util.Random
 					import io.sarl.core.Initialize
@@ -341,7 +341,7 @@ describe "English Auction with Holons"{
 						}
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.basicholon
 					import java.util.Random
 					import io.sarl.core.Initialize
@@ -411,7 +411,7 @@ describe "English Auction with Holons"{
 						wake(new Price(50))
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.holonicauction
 					import java.util.Random
 					import io.sarl.core.Behaviors
@@ -460,7 +460,7 @@ describe "English Auction with Holons"{
 						wake(new Price(50))
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.holonicauction
 					import java.util.Random
 					import io.sarl.lang.core.Address
@@ -518,7 +518,7 @@ describe "English Auction with Holons"{
 						}
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.holonicauction
 					import java.util.Random
 					import io.sarl.lang.core.Address
@@ -608,7 +608,7 @@ describe "English Auction with Holons"{
 						}
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.holonicauction
 					import java.util.Random
 					import io.sarl.lang.core.Address
@@ -697,7 +697,7 @@ describe "English Auction with Holons"{
 						}
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.holonicauction
 					import java.util.Random
 					import io.sarl.lang.core.Address
@@ -755,7 +755,7 @@ describe "English Auction with Holons"{
 			fact "StopAuction event" {
 				'''
 				event StopAuction
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.holonicauction",
 					// TEXT
 					""
@@ -802,7 +802,7 @@ describe "English Auction with Holons"{
 						killMe
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.basicholon
 					import java.util.Random
 					import io.sarl.core.Initialize
@@ -899,7 +899,7 @@ describe "English Auction with Holons"{
 						}
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.holonicauction
 					import java.util.Random
 					import io.sarl.lang.core.Address

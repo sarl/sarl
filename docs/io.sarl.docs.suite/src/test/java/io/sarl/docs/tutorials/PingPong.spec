@@ -104,7 +104,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 						this.index = i
 					}
 				}
-				'''.parsesSuccessfully
+				'''.parseSuccessfully
 			}
 			
 			/* The `Pong` is an event that contains the
@@ -124,7 +124,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 						this.index = i
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong",
 					// TEXT
 					""
@@ -147,7 +147,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 				'''
 				agent PongAgent {
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong",
 					// TEXT
 					""
@@ -171,7 +171,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 					on Ping {
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong
 					event Ping {
 						val index : int
@@ -227,7 +227,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 						emit( new Pong( occurrence.index ) )
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong
 					import io.sarl.core.DefaultContextInteractions
 					event Ping {
@@ -284,7 +284,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 						)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.util.Scopes
@@ -321,7 +321,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 				'''
 				agent PingAgent {
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong",
 					// TEXT
 					""
@@ -340,7 +340,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 					on Pong {
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong
 					event Pong {
 						val index : int
@@ -376,7 +376,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 						)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.util.Scopes
@@ -421,7 +421,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 						emit( new Ping(0) )
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.core.Initialize
@@ -496,7 +496,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 						]
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.core.Initialize
@@ -650,7 +650,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 							killMe
 						}
 					}
-					'''.parsesSuccessfully(
+					'''.parseSuccessfully(
 						"package io.sarl.docs.tutorials.pingpong
 						import io.sarl.core.DefaultContextInteractions
 						import io.sarl.core.Initialize

@@ -26,6 +26,8 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.assumeFalse
+
 import io.sarl.lang.sarl.Behavior
 import io.sarl.lang.sarl.Action
 import io.sarl.lang.sarl.Agent
@@ -69,7 +71,7 @@ describe "Behavior Reference" {
 				val model = '''
 				behavior MyBehavior {
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br",
 					// TEXT
 					""
@@ -111,7 +113,7 @@ describe "Behavior Reference" {
 					// Defining an unmodifiable element of the mental state
 					val mentalStateElement2 : boolean = true
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br",
 					// TEXT
 					""
@@ -164,7 +166,7 @@ describe "Behavior Reference" {
 						println("params are " + param)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br",
 					// TEXT
 					""
@@ -233,7 +235,7 @@ describe "Behavior Reference" {
 						println(attr)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br",
 					// TEXT
 					""
@@ -293,7 +295,7 @@ describe "Behavior Reference" {
 						registerBehavior(beh)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br
 					import io.sarl.core.Initialize
 					import io.sarl.core.Behaviors
@@ -387,7 +389,7 @@ describe "Behavior Reference" {
 						println("Reactive behavior")
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br
 					event SomethingChanged",
 					// TEXT
@@ -437,7 +439,7 @@ describe "Behavior Reference" {
 						println("Second reactive behavior")
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br
 					event SomethingChanged",
 					// TEXT
@@ -497,7 +499,7 @@ describe "Behavior Reference" {
 						]
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br
 					import io.sarl.core.Initialize
 					import io.sarl.core.Schedules",
@@ -587,7 +589,7 @@ describe "Behavior Reference" {
 						setSkill( Cap, theSkill )
 					}
 				}
-				'''.parsesWithError
+				'''.parseWithError
 			}
 	
 			/* For invoking a function implemented by a skill,
@@ -617,7 +619,7 @@ describe "Behavior Reference" {
 						s.action
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br
 					capacity Cap {
 						def action
@@ -694,7 +696,7 @@ describe "Behavior Reference" {
 						action
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br
 					capacity Cap {
 						def action
@@ -757,6 +759,11 @@ describe "Behavior Reference" {
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
+		// The checks are valid only if the macro replacements were done.
+		// The replacements are done by Maven.
+		// So, Eclipse Junit tools do not make the replacements.
+		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+		//
 		"%sarlversion%" should startWith "%sarlspecversion%"
 		("%sarlspecreleasestatus%" == "Final Release"
 			|| "%sarlspecreleasestatus%" == "Draft Release") should be true

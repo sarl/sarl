@@ -32,6 +32,7 @@ import org.eclipse.xtext.xbase.XBooleanLiteral
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.assumeFalse
 
 /** @outline
  * 
@@ -236,7 +237,7 @@ describe "Agent Reference"{
 				val model = '''
 				agent MyAgent {
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar",
 					// TEXT
 					""
@@ -277,7 +278,7 @@ describe "Agent Reference"{
 					// Defining an unmodifiable element of the mental state
 					val mentalStateElement2 : boolean = true
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar",
 					// TEXT
 					""
@@ -331,7 +332,7 @@ describe "Agent Reference"{
 						println("params are " + param)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar",
 					// TEXT
 					""
@@ -400,7 +401,7 @@ describe "Agent Reference"{
 						println(attr)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar",
 					// TEXT
 					""
@@ -506,7 +507,7 @@ describe "Agent Reference"{
 							+ occurrence.parameters )
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
 					import io.sarl.core.Initialize",
 					// TEXT
@@ -555,7 +556,7 @@ describe "Agent Reference"{
 							+ occurrence.parameters )
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
 					import io.sarl.core.Initialize",
 					// TEXT
@@ -602,7 +603,7 @@ describe "Agent Reference"{
 						println("Destroying the agent")
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
 					import io.sarl.core.Destroy",
 					// TEXT
@@ -649,7 +650,7 @@ describe "Agent Reference"{
 						println("Destroying the agent when there is no resource")
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
 					import io.sarl.core.Destroy",
 					// TEXT
@@ -705,7 +706,7 @@ describe "Agent Reference"{
 						println("Reactive behavior")
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
 					event SomethingChanged",
 					// TEXT
@@ -755,7 +756,7 @@ describe "Agent Reference"{
 						println("Second reactive behavior")
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
 					event SomethingChanged",
 					// TEXT
@@ -815,7 +816,7 @@ describe "Agent Reference"{
 						]
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
 					import io.sarl.core.Initialize
 					import io.sarl.core.Schedules",
@@ -904,7 +905,7 @@ describe "Agent Reference"{
 						setSkill( Cap, theSkill )
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
 					import io.sarl.core.Initialize
 					capacity Cap {
@@ -1011,7 +1012,7 @@ describe "Agent Reference"{
 						s.action
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
 					import io.sarl.core.Initialize
 					capacity Cap {
@@ -1097,7 +1098,7 @@ describe "Agent Reference"{
 						s.killMe
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
 					import io.sarl.core.Lifecycle
 					event SomeEvent",
@@ -1166,7 +1167,7 @@ describe "Agent Reference"{
 						action
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
 					import io.sarl.core.Initialize
 					capacity Cap {
@@ -1251,7 +1252,7 @@ describe "Agent Reference"{
 						killMe
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
 					import io.sarl.core.Lifecycle
 					event SomeEvent",
@@ -1303,6 +1304,11 @@ describe "Agent Reference"{
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
+		// The checks are valid only if the macro replacements were done.
+		// The replacements are done by Maven.
+		// So, Eclipse Junit tools do not make the replacements.
+		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+		//
 		"%sarlversion%" should startWith "%sarlspecversion%"
 		("%sarlspecreleasestatus%" == "Final Release"
 			|| "%sarlspecreleasestatus%" == "Draft Release") should be true

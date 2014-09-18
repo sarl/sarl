@@ -51,7 +51,7 @@ describe "SARL Syntax FAQ" {
 					124.  // Incorrect syntax
 					0.123 // Correct syntax
 					.123  // Incorrect syntax
-				'''.parsesWithError(
+				'''.parseWithError(
 						"package io.sarl.docs.faq.syntax
 						agent A {
 							def action : double {",
@@ -73,7 +73,7 @@ describe "SARL Syntax FAQ" {
 			fact "Why can I put a string in the package name?" {
 				'''
 					package io.sarl.docs.faq.syntax.^agent
-				'''.parsesSuccessfully
+				'''.parseSuccessfully
 			}
 
 			/* __Yes and No__.
@@ -98,7 +98,7 @@ describe "SARL Syntax FAQ" {
 				'''
 					val a : int = 4
 					val b : Object = new Object
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 						"package io.sarl.docs.faq.syntax
 						agent A {",
 						// TEXT
@@ -124,7 +124,7 @@ describe "SARL Syntax FAQ" {
 					var b : List<Integer> = newArrayList(1, 2, 3)
 					
 					a.get(0) == b.get(0)
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 						"package io.sarl.docs.faq.syntax
 						import java.util.List
 						agent A {

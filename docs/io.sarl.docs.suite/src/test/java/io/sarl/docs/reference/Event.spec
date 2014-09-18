@@ -29,6 +29,7 @@ import io.sarl.lang.sarl.Event
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.assumeFalse
 
 /* @outline
  *
@@ -113,7 +114,7 @@ describe "Event Reference"{
 				val model = '''
 				event Event1 {  }
 				event Event2
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.er",
 					// TEXT
 					""
@@ -171,7 +172,7 @@ describe "Event Reference"{
 					var string = "abc"
 					var something
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.er",
 					// TEXT
 					""
@@ -233,7 +234,7 @@ describe "Event Reference"{
 						number = nb
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.er
 					import io.sarl.lang.core.Agent",
 					// TEXT
@@ -311,7 +312,7 @@ describe "Event Reference"{
 					event Event2 extends Event1 {
 						var number : int
 					}
-					'''.parsesSuccessfully(
+					'''.parseSuccessfully(
 						"package io.sarl.docs.reference.er",
 						// TEXT
 						""
@@ -358,7 +359,7 @@ describe "Event Reference"{
 							var e2 = new Event2
 							e2.string = "abc"
 							e2.number = 345
-					'''.parsesSuccessfully(
+					'''.parseSuccessfully(
 						"package io.sarl.docs.reference.er
 						event Event1 {
 							var string : String
@@ -453,6 +454,11 @@ describe "Event Reference"{
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
+		// The checks are valid only if the macro replacements were done.
+		// The replacements are done by Maven.
+		// So, Eclipse Junit tools do not make the replacements.
+		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+		//
 		"%sarlversion%" should startWith "%sarlspecversion%"
 		("%sarlspecreleasestatus%" == "Final Release"
 			|| "%sarlspecreleasestatus%" == "Draft Release") should be true
