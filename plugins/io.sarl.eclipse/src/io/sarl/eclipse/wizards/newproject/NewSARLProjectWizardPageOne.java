@@ -461,7 +461,8 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 			IClasspathEntry classPathEntry = JavaCore.newLibraryEntry(
 					binPath,
 					null,
-					null);
+					null,
+					false); // Not exported
 			classpathEntries.add(classPathEntry);
 		}
 
