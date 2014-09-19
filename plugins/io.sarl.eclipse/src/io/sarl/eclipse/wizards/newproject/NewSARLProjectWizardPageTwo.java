@@ -33,7 +33,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -120,6 +119,8 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 	 * @param mainPage the first page of the wizard
 	 */
 	public NewSARLProjectWizardPageTwo(NewSARLProjectWizardPageOne mainPage) {
+		setPageComplete(false);
+		
 		this.fFirstPage = mainPage;
 		this.fCurrProjectLocation = null;
 		this.fCurrProject = null;
@@ -173,11 +174,38 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 		} catch (InvocationTargetException e) {
 			final String title = NewWizardMessages.NewJavaProjectWizardPageTwo_error_title;
 			final String message = NewWizardMessages.NewJavaProjectWizardPageTwo_error_message;
+			updateStatus(e);
 			ExceptionHandler.handle(e, getShell(), title, message);
 		} catch (InterruptedException e) {
 			// cancel pressed
 		}
 		return null;
+	}
+	
+	/** Update the status of this page according to the given exception.
+	 * 
+	 * @param e - the exception.
+	 */
+	private void updateStatus(Throwable e) {
+		Throwable cause = e;
+		while (cause != null
+			   && (!(cause instanceof CoreException))
+			   && cause.getCause() != null
+			   && cause.getCause() != cause) {
+			cause = cause.getCause();
+		}
+		if (cause instanceof CoreException) {
+			updateStatus(((CoreException) cause).getStatus());
+		} else {
+			String message;
+			if (cause != null) {
+				message = cause.getLocalizedMessage();
+			} else {
+				message = e.getLocalizedMessage();
+			}
+			IStatus status = new StatusInfo(IStatus.ERROR, message);
+			updateStatus(status);
+		}
 	}
 
 	private static URI getRealLocation(String projectName, URI location) {
@@ -304,9 +332,8 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 				List<IClasspathEntry> cpEntries = new ArrayList<>();
 				IWorkspaceRoot root = project.getWorkspace().getRoot();
 
-				IClasspathEntry[] sourceClasspathEntries = this.fFirstPage.getSourceClasspathEntries();
-				for (int i = 0; i < sourceClasspathEntries.length; i++) {
-					IPath path = sourceClasspathEntries[i].getPath();
+				for (IClasspathEntry sourceClasspathEntry : this.fFirstPage.getSourceClasspathEntries()) {
+					IPath path = sourceClasspathEntry.getPath();
 					if (path.segmentCount() > 1) {
 						IFolder folder = root.getFolder(path);
 						CoreUtility.createFolder(
@@ -314,10 +341,10 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 								true, true,
 								new SubProgressMonitor(theMonitor, 1));
 					}
-					cpEntries.add(sourceClasspathEntries[i]);
+					cpEntries.add(sourceClasspathEntry);
 				}
-
-				cpEntries.addAll(Arrays.asList(this.fFirstPage.getDefaultClasspathEntries()));
+				
+				this.fFirstPage.putDefaultClasspathEntriesIn(cpEntries);
 
 				entries = cpEntries.toArray(new IClasspathEntry[cpEntries.size()]);
 
@@ -335,6 +362,24 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 			}
 
 			init(javaProject, outputLocation, entries, false);
+		} catch (CoreException e) {
+			throw e;
+		} catch(Throwable e) {
+			if (e.getCause() instanceof CoreException) {
+				throw (CoreException) e.getCause();
+			}
+			Throwable ee;
+			if (e.getCause() != null && e.getCause() != e) {
+				ee = e.getCause();
+			} else {
+				ee = e;
+			}
+			IStatus status = new Status(
+					IStatus.ERROR,
+					SARLActivator.getInstance().getBundle().getSymbolicName(), 
+					ee.getLocalizedMessage(),
+					e);
+			throw new CoreException(status);
 		} finally {
 			theMonitor.done();
 		}
@@ -566,7 +611,13 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 			String newProjectCompliance = this.fKeepContent ? null : this.fFirstPage.getCompilerCompliance();
 			configureJavaProject(newProjectCompliance, new SubProgressMonitor(monitor, 2));
 
-		} finally {
+		} catch (Throwable e) {
+			if (this.fCurrProject != null) {
+				removeProvisonalProject();
+			}
+			throw e;
+		}
+		finally {
 			monitor.done();
 			this.fCurrProject = null;
 			if (this.fIsAutobuild != null) {
@@ -586,12 +637,15 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 	 */
 	protected IProject createProvisonalProject() {
 		IStatus status = changeToNewProject();
-		if (status != null && !status.isOK()) {
-			ErrorDialog.openError(
-					getShell(),
-					NewWizardMessages.NewJavaProjectWizardPageTwo_error_title,
-					null,
-					status);
+		if (status != null) {
+			updateStatus(status);
+			if (!status.isOK()) {
+				ErrorDialog.openError(
+						getShell(),
+						NewWizardMessages.NewJavaProjectWizardPageTwo_error_title,
+						null,
+						status);
+			}
 		}
 		return this.fCurrProject;
 	}

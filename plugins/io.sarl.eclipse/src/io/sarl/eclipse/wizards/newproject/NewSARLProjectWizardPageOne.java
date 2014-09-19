@@ -20,15 +20,15 @@
  */
 package io.sarl.eclipse.wizards.newproject;
 
+import io.sarl.eclipse.builder.SARLClasspathContainer;
 import io.sarl.eclipse.images.EclipseSARLImages;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,8 +47,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.bidi.StructuredTextTypeHandlerFactory;
+import org.eclipse.jdt.core.IAccessRule;
+import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.eclipse.jdt.internal.corext.util.Messages;
@@ -88,7 +89,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -106,7 +106,6 @@ import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.dialogs.WorkingSetConfigurationBlock;
-import org.osgi.framework.Bundle;
 
 /**
  * The first page of the SARL new project wizard. Most part of the code of this class
@@ -349,95 +348,13 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 		return this.fJREGroup.getSelectedCompilerCompliance();
 	}
 
-	private static IPath computeBundlePath(Bundle bundle, IPath workspaceRoot, IPath platformLocation) {
-		IPath bundlePath;
-		try {
-			URL bundleLocation = new URL(bundle.getLocation());
-			URI bundleFile = new URI(bundleLocation.getFile());
-			bundlePath = URIUtil.toPath(bundleFile);
-		} catch (URISyntaxException | IOException e1) {
-			throw new RuntimeException(e1);
-		}
-
-		// Ensure that the bundle path is absolute (mandatory for beeing a classpath entry)
-		if (!bundlePath.isAbsolute()) {
-			IPath newBundlePath = workspaceRoot.append(bundlePath);
-			if (!newBundlePath.toFile().exists()) {
-				newBundlePath = platformLocation.append(bundlePath);
-			}
-			bundlePath = newBundlePath;
-		}
-		assert (bundlePath.isAbsolute()) : "The bundle path is not absolute: " + bundlePath; //$NON-NLS-1$
-		return bundlePath;
-	}
-
-	private static IPath computeBinaryPathForBundle(IPath bundlePath, IPath workspaceRoot) {
-		// Determine the path from the output folders of the Java projects in the current workspace.
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(bundlePath.lastSegment());
-		IPath newBundlePath = null;
-		try {
-			if (project != null && project.hasNature(JavaCore.NATURE_ID)) {
-				IJavaProject javaProject = JavaCore.create(project);
-				newBundlePath = javaProject.getOutputLocation();
-				if (newBundlePath != null) {
-					newBundlePath = workspaceRoot.append(newBundlePath);
-					// Test if the bundle path exists
-					if (newBundlePath != null && !newBundlePath.toFile().exists()) {
-						newBundlePath = null;
-					}
-				}
-			}
-		} catch (Exception e) {
-			// Ignore the exceptions since they are not useful (hopefully)
-		}
-
-		if (newBundlePath != null) {
-			assert (newBundlePath.isAbsolute()) : "The bundle path is not absolute: " + newBundlePath; //$NON-NLS-1$
-			return newBundlePath;
-		}
-
-		// Detect the binary folder in the bundle.
-		//
-		// TODO: Replace by a dynamic detection based on Jdt API.
-		File localFile = bundlePath.toFile();
-		File binFolder = new File(new File(localFile, "target"), "classes"); //$NON-NLS-1$//$NON-NLS-2$
-		if (binFolder.exists()) {
-			newBundlePath = bundlePath.append("target").append("classes"); //$NON-NLS-1$//$NON-NLS-2$
-		} else {
-			binFolder = new File(localFile, "bin"); //$NON-NLS-1$
-			if (binFolder.exists()) {
-				newBundlePath = bundlePath.append("bin"); //$NON-NLS-1$
-			} else {
-				newBundlePath = bundlePath;
-			}
-		}
-
-		assert (newBundlePath.isAbsolute()) : "The bundle path is not absolute: " + bundlePath; //$NON-NLS-1$
-		return newBundlePath;
-	}
-
 	/**
 	 * Returns the default class path entries to be added on new projects.
 	 * By default this is the JRE container as selected by the user.
 	 *
-	 * @return returns the default class path entries
+	 * @param classpathEntries - the collection in which the classpath entries will be added.
 	 */
-	public IClasspathEntry[] getDefaultClasspathEntries() {
-		List<IClasspathEntry> classpathEntries = new ArrayList<>(Config.SARL_REFERENCE_LIBRARIES.length + 1);
-
-		IPath workspaceRoot;
-		IPath platformLocation;
-
-		try {
-			workspaceRoot = ResourcesPlugin.getWorkspace().getRoot().getLocation();
-			Location location = Platform.getInstallLocation();
-			URI uri = org.eclipse.core.runtime.URIUtil.toURI(location.getURL());
-			platformLocation = URIUtil.toPath(uri);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-
-		// Create the "Referenced Libraries" section
+	public void putDefaultClasspathEntriesIn(Collection<IClasspathEntry> classpathEntries) {
 		IPath newPath = this.fJREGroup.getJREContainerPath();
 		if (newPath != null) {
 			classpathEntries.add(JavaCore.newContainerEntry(newPath));
@@ -445,32 +362,13 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 			IClasspathEntry[] entries = PreferenceConstants.getDefaultJRELibrary();
 			classpathEntries.addAll(Arrays.asList(entries));
 		}
-
-		// Build the reference library list
-		for (String referenceLibrary : Config.SARL_REFERENCE_LIBRARIES) {
-			// Retreive the bundle
-			Bundle bundle = Platform.getBundle(referenceLibrary);
-			if (bundle == null) {
-				throw new RuntimeException("Reference library not found: " + referenceLibrary); //$NON-NLS-1$
-			}
-
-			IPath bundlePath = computeBundlePath(bundle, workspaceRoot, platformLocation);
-			IPath binPath = computeBinaryPathForBundle(bundlePath, workspaceRoot);
-
-			// Create the classpath entry
-			IClasspathEntry classPathEntry = JavaCore.newLibraryEntry(
-					binPath,
-					null,
-					null,
-					false); // Not exported
-			classpathEntries.add(classPathEntry);
-		}
-
-		// Convert
-		IClasspathEntry[] array = new IClasspathEntry[classpathEntries.size()];
-		classpathEntries.toArray(array);
-		classpathEntries.clear();
-		return array;
+		
+		IClasspathEntry sarlClasspathEntry = JavaCore.newContainerEntry(
+				SARLClasspathContainer.CONTAINER_ID,
+				new IAccessRule[0],
+                new IClasspathAttribute[0],
+                true);
+		classpathEntries.add(sarlClasspathEntry);
 	}
 
 	/**
@@ -479,7 +377,7 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 	 *
 	 * @return returns the source class path entries for the new project
 	 */
-	public IClasspathEntry[] getSourceClasspathEntries() {
+	public Iterable<IClasspathEntry> getSourceClasspathEntries() {
 		IPath sourceFolderPath = new Path(getProjectName()).makeAbsolute();
 
 		//		if (this.fLayoutGroup.isSrcBin()) {
@@ -494,11 +392,11 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 		IPath srcMainSarl = new Path(sourceFolderPath + File.separator + Config.PROJECT_STRUCTURE_PATH[3]);
 		IPath srcMainGeneratedSourcesXtend = new Path(sourceFolderPath + File.separator + Config.PROJECT_STRUCTURE_PATH[5]);
 
-		return new IClasspathEntry[] {
+		return Arrays.asList(
 				JavaCore.newSourceEntry(srcMainJava.makeAbsolute()),
 				JavaCore.newSourceEntry(srcMainSarl.makeAbsolute()),
-				JavaCore.newSourceEntry(srcMainGeneratedSourcesXtend.makeAbsolute()),
-		};
+				JavaCore.newSourceEntry(srcMainGeneratedSourcesXtend.makeAbsolute())
+		);
 	}
 
 	/**
