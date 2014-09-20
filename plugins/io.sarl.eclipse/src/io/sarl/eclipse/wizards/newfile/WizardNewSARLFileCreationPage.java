@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.wizards.newfile;
 
-import io.sarl.eclipse.images.EclipseSARLImages;
+import io.sarl.eclipse.util.PluginUtil;
 
 import java.io.InputStream;
 
@@ -58,8 +58,8 @@ public class WizardNewSARLFileCreationPage extends WizardNewFileCreationPage {
 		setTitle(PAGE_TITLE);
 		setDescription(PAGE_DESCRIPTION);
 		setFileExtension(SARL_FILE_EXTENSION);
-		setImageDescriptor(EclipseSARLImages.getImageDescriptor(
-				EclipseSARLImages.NEW_FILE_WIZARD_DIALOG_IMAGE));
+		setImageDescriptor(PluginUtil.getImageDescriptor(
+				PluginUtil.NEW_FILE_WIZARD_DIALOG_IMAGE));
 	}
 
 	private static IPath determinePackageName(IPath path) {

@@ -34,7 +34,7 @@ import java.io.File;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class Config {
+final class Config {
 
 	/** Name of the folder that contains the sources.
 	 */
@@ -79,17 +79,6 @@ public final class Config {
 		SOURCE_FOLDER_NAME + File.separator + MAIN_FOLDER_NAME + File.separator + GENERATED_SOURCE_FOLDER_NAME,
 		// src/main/generated-sources/xtend
 		DEFAULT_GENERATED_SOURCE_FOLDER,
-	};
-
-	/** Names of the reference libraries that are required to compile the SARL
-	 * code and the generated Java code.
-	 */
-	public static final String[] SARL_REFERENCE_LIBRARIES = {
-		"org.eclipse.xtext.xbase.lib", //$NON-NLS-1$
-		"org.eclipse.xtend.lib", //$NON-NLS-1$
-		"io.sarl.lang.core", //$NON-NLS-1$
-		"io.sarl.util", //$NON-NLS-1$
-		"io.sarl.core", //$NON-NLS-1$
 	};
 
 	/**

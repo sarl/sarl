@@ -21,7 +21,7 @@
 package io.sarl.eclipse.wizards.newproject;
 
 import io.sarl.eclipse.builder.SARLClasspathContainer;
-import io.sarl.eclipse.images.EclipseSARLImages;
+import io.sarl.eclipse.util.PluginUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -175,8 +175,8 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 
 		setTitle(SARLProjectNewWizardMessages.SARLProjectNewWizard_WIZARD_PAGE_NAME);
 		setDescription(SARLProjectNewWizardMessages.SARLProjectNewWizard_WIZARD_PAGE_1_DESCRIPTION);
-		setImageDescriptor(EclipseSARLImages.getImageDescriptor(
-				EclipseSARLImages.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
+		setImageDescriptor(PluginUtil.getImageDescriptor(
+				PluginUtil.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
 
 	/**
@@ -362,7 +362,7 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 			IClasspathEntry[] entries = PreferenceConstants.getDefaultJRELibrary();
 			classpathEntries.addAll(Arrays.asList(entries));
 		}
-		
+
 		IClasspathEntry sarlClasspathEntry = JavaCore.newContainerEntry(
 				SARLClasspathContainer.CONTAINER_ID,
 				new IAccessRule[0],

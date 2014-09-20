@@ -41,72 +41,71 @@ import org.eclipse.jdt.internal.core.JavaModelManager;
  * @mavenartifactid $ArtifactId$
  */
 public class SARLClasspathContainerInitializer extends ClasspathContainerInitializer {
-    
+
 	@Override
-    public void initialize(IPath containerPath, IJavaProject project)
-            throws CoreException {
-        IClasspathContainer container = new SARLClasspathContainer(project.getProject());
-        JavaCore.setClasspathContainer(containerPath, 
-        		new IJavaProject[] {project}, 
-        		new IClasspathContainer[] {container}, null);
-    }
+	public void initialize(IPath containerPath, IJavaProject project)
+			throws CoreException {
+		IClasspathContainer container = new SARLClasspathContainer(project.getProject());
+		JavaCore.setClasspathContainer(containerPath,
+				new IJavaProject[] {project},
+				new IClasspathContainer[] {container},
+				null);
+	}
 
-    @Override
-    public boolean canUpdateClasspathContainer(IPath containerPath, IJavaProject project) {
-        // always ok to return classpath container
-        return true;
-    }
+	@Override
+	public boolean canUpdateClasspathContainer(IPath containerPath, IJavaProject project) {
+		// always ok to return classpath container
+		return true;
+	}
 
-    @Override
-    public void requestClasspathContainerUpdate(IPath containerPath, IJavaProject javaProject,
-            IClasspathContainer containerSuggestion) throws CoreException {
-        if (containerSuggestion instanceof SARLClasspathContainer) {
-            ((SARLClasspathContainer) containerSuggestion).reset();
-        }
-        IClasspathContainer scc = JavaCore.getClasspathContainer(SARLClasspathContainer.CONTAINER_ID, javaProject);
-        if (scc instanceof SARLClasspathContainer) {
-            ((SARLClasspathContainer) scc).reset();
-        }
-    }
-    
-    /**
-     * Refresh all the SARL classpath containers.
-     * Should do this if the ~/.groovy/lib directory has changed.
-     * 
-     * @throws JavaModelException
-     */
-    public static void updateAllSARLClasspathContainers() throws JavaModelException {
-        IJavaProject[] projects = JavaModelManager.getJavaModelManager().getJavaModel().getJavaProjects();
-        updateSomeGroovyClasspathContainers(projects);
-    }
-    
-    /**
-     * Refresh the SARL classpath container for the given project.
-     * 
-     * @param project - the project for which the class path container sohuld be updated.
-     * @throws JavaModelException
-     */
-    public static void updateSARLClasspathContainer(IJavaProject project) throws JavaModelException {
-        updateSomeGroovyClasspathContainers(new IJavaProject[] { project });
-    }
-    
+	@Override
+	public void requestClasspathContainerUpdate(IPath containerPath, IJavaProject javaProject,
+			IClasspathContainer containerSuggestion) throws CoreException {
+		if (containerSuggestion instanceof SARLClasspathContainer) {
+			((SARLClasspathContainer) containerSuggestion).reset();
+		}
+		IClasspathContainer scc = JavaCore.getClasspathContainer(SARLClasspathContainer.CONTAINER_ID, javaProject);
+		if (scc instanceof SARLClasspathContainer) {
+			((SARLClasspathContainer) scc).reset();
+		}
+	}
 
-    private static void updateSomeGroovyClasspathContainers(IJavaProject[] projects) throws JavaModelException {
-        List<IJavaProject> affectedProjects = new ArrayList<>(projects.length);
-        List<IClasspathContainer> affectedContainers = new ArrayList<>(projects.length);
-        for (IJavaProject project : projects) {
-            IClasspathContainer scc = JavaCore.getClasspathContainer(SARLClasspathContainer.CONTAINER_ID, project);
-            if (scc instanceof SARLClasspathContainer) {
-                ((SARLClasspathContainer) scc).reset();
-                affectedProjects.add(project);
-                affectedContainers.add(null);
-            }
-        }
-        JavaCore.setClasspathContainer(
-        		SARLClasspathContainer.CONTAINER_ID,
-        		affectedProjects.toArray(new IJavaProject[affectedProjects.size()]), 
-                affectedContainers.toArray(new IClasspathContainer[affectedContainers.size()]),
-                new NullProgressMonitor());
-    }
-    
+	/**
+	 * Refresh all the SARL classpath containers.
+	 *
+	 * @throws JavaModelException if the container cannot be refreshed.
+	 */
+	public static void updateAllSARLClasspathContainers() throws JavaModelException {
+		IJavaProject[] projects = JavaModelManager.getJavaModelManager().getJavaModel().getJavaProjects();
+		updateSomeGroovyClasspathContainers(projects);
+	}
+
+	/**
+	 * Refresh the SARL classpath container for the given project.
+	 *
+	 * @param project - the project for which the class path container sohuld be updated.
+	 * @throws JavaModelException if the container cannot be refreshed.
+	 */
+	public static void updateSARLClasspathContainer(IJavaProject project) throws JavaModelException {
+		updateSomeGroovyClasspathContainers(new IJavaProject[] {project});
+	}
+
+	private static void updateSomeGroovyClasspathContainers(IJavaProject[] projects) throws JavaModelException {
+		List<IJavaProject> affectedProjects = new ArrayList<>(projects.length);
+		List<IClasspathContainer> affectedContainers = new ArrayList<>(projects.length);
+		for (IJavaProject project : projects) {
+			IClasspathContainer scc = JavaCore.getClasspathContainer(SARLClasspathContainer.CONTAINER_ID, project);
+			if (scc instanceof SARLClasspathContainer) {
+				((SARLClasspathContainer) scc).reset();
+				affectedProjects.add(project);
+				affectedContainers.add(null);
+			}
+		}
+		JavaCore.setClasspathContainer(
+				SARLClasspathContainer.CONTAINER_ID,
+				affectedProjects.toArray(new IJavaProject[affectedProjects.size()]),
+				affectedContainers.toArray(new IClasspathContainer[affectedContainers.size()]),
+				new NullProgressMonitor());
+	}
+
 }

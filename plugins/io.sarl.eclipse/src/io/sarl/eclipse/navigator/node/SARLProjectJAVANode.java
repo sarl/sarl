@@ -20,7 +20,6 @@
  */
 package io.sarl.eclipse.navigator.node;
 
-import io.sarl.eclipse.images.EclipseSARLImages;
 import io.sarl.eclipse.navigator.ISARLProjectElement;
 
 import org.eclipse.core.resources.IProject;
@@ -39,7 +38,6 @@ public class SARLProjectJAVANode implements ISARLProjectElement {
 	private static final String NAME = "JAVA"; //$NON-NLS-1$
 
 	private ISARLProjectElement parent;
-	private Image image;
 	private ISARLProjectElement[] children;
 
 	/** Construct a node in a SARL project for Java elements.
@@ -52,11 +50,7 @@ public class SARLProjectJAVANode implements ISARLProjectElement {
 
     @Override
 	public Image getImage() {
-		if (this.image == null) {
-			this.image = EclipseSARLImages.getImage("icons/sarl-project-stored-procedures-16.png"); //$NON-NLS-1$
-		}
-
-		return this.image;
+    	return this.parent.getImage();
 	}
 
     @Override

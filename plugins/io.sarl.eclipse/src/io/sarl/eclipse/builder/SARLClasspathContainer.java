@@ -20,6 +20,8 @@
  */
 package io.sarl.eclipse.builder;
 
+import io.sarl.eclipse.util.PluginUtil;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -50,15 +52,15 @@ import org.osgi.framework.Bundle;
  * @mavenartifactid $ArtifactId$
  */
 public class SARLClasspathContainer implements IClasspathContainer {
-	
+
 	/** Identifier of the container.
 	 */
-    public static final IPath CONTAINER_ID = new Path("SARL_SUPPORT"); //$NON-NLS-1$
+	public static final IPath CONTAINER_ID = new Path(PluginUtil.PLUGIN_ID + ".launching.SARL_SUPPORT"); //$NON-NLS-1$
 
-    /**
-     * Text that is describing the SARL libraries
-     */
-    public static final String DESCRIPTION = "SARL Libraries"; //$NON-NLS-1$
+	/**
+	 * Text that is describing the SARL libraries.
+	 */
+	public static final String DESCRIPTION = "SARL Libraries"; //$NON-NLS-1$
 
 	/** Names of the reference libraries that are required to compile the SARL
 	 * code and the generated Java code.
@@ -73,9 +75,16 @@ public class SARLClasspathContainer implements IClasspathContainer {
 
 	private IClasspathEntry[] entries;
 
-    private IProject project;
-    
-    private static IPath computeBundlePath(Bundle bundle, IProject project) {
+	private IProject project;
+
+	/**
+	 * @param project - the project that container the SARL container.
+	 */
+	public SARLClasspathContainer(IProject project) {
+		this.project = project;
+	}
+
+	private static IPath computeBundlePath(Bundle bundle, IProject project) {
 		IPath bundlePath;
 		try {
 			URL bundleLocation = new URL(bundle.getLocation());
@@ -94,7 +103,7 @@ public class SARLClasspathContainer implements IClasspathContainer {
 	}
 
 	private static IPath computeWorkspaceProjectPathForBundle(IPath bundlePath, IPath workspaceRoot) {
-		// Determine the path from the output folders of the 
+		// Determine the path from the output folders of the
 		// Java projects in the current workspace.
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(bundlePath.lastSegment());
 		IPath newBundlePath = null;
@@ -139,56 +148,49 @@ public class SARLClasspathContainer implements IClasspathContainer {
 		return newBundlePath;
 	}
 
-	/**
-     * @param project - the project that container the SARL container.
-     */
-    public SARLClasspathContainer(IProject project) {
-        this.project = project;
-    }
+	@Override
+	public synchronized IClasspathEntry[] getClasspathEntries() {
+		if (this.entries == null) {
+			try {
+				updateEntries();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return this.entries;
+	}
 
-    @Override
-    public synchronized IClasspathEntry[] getClasspathEntries() {
-    	if (this.entries == null) {
-    		try {
-    			updateEntries();
-    		} catch (Exception e) {
-    			throw new RuntimeException(e);
-    		}
-    	}
-        return this.entries;
-    }
+	/** Reset the container.
+	 */
+	synchronized void reset() {
+		this.entries = null;
+	}
 
-    /** Reset the container.
-     */
-    synchronized void reset() {
-        this.entries = null;
-    }
+	@Override
+	public String getDescription() {
+		//TODO: Use NLS
+		return DESCRIPTION;
+	}
 
-    @Override
-    public String getDescription() {
-    	//TODO: Use NLS
-        return DESCRIPTION;
-    }
+	@Override
+	public int getKind() {
+		return K_SYSTEM;
+	}
 
-    @Override
-    public int getKind() {
-        return K_DEFAULT_SYSTEM;
-    }
+	@Override
+	public IPath getPath() {
+		return CONTAINER_ID;
+	}
 
-    @Override
-    public IPath getPath() {
-        return CONTAINER_ID;
-    }
-    
-    private void updateEntries() throws Exception {
-        List<IClasspathEntry> newEntries = new ArrayList<>();
-        for (String referenceLibrary : SARL_REFERENCE_LIBRARIES) {
+	private void updateEntries() throws Exception {
+		List<IClasspathEntry> newEntries = new ArrayList<>();
+		for (String referenceLibrary : SARL_REFERENCE_LIBRARIES) {
 			// Retreive the bundle
 			Bundle bundle = Platform.getBundle(referenceLibrary);
 			if (bundle == null) {
 				throw new NameNotFoundException("No bundle found for: " + referenceLibrary); //$NON-NLS-1$
 			}
-			
+
 			IPath bundlePath = computeBundlePath(bundle, this.project);
 			IPath binPath = computeWorkspaceProjectPathForBundle(
 					bundlePath,
@@ -202,7 +204,7 @@ public class SARLClasspathContainer implements IClasspathContainer {
 					true);
 			newEntries.add(classPathEntry);
 		}
-        this.entries = newEntries.toArray(new IClasspathEntry[newEntries.size()]);
-    }
-    
+		this.entries = newEntries.toArray(new IClasspathEntry[newEntries.size()]);
+	}
+
 }

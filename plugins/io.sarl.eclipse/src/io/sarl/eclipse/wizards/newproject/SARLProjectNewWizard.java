@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.wizards.newproject;
 
-import io.sarl.eclipse.images.EclipseSARLImages;
+import io.sarl.eclipse.util.PluginUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -90,8 +90,8 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 	 * @param pageTwo - reference to the second page of the wizard.
 	 */
 	public SARLProjectNewWizard(NewSARLProjectWizardPageOne pageOne, NewSARLProjectWizardPageTwo pageTwo) {
-		setDefaultPageImageDescriptor(EclipseSARLImages.getImageDescriptor(
-				EclipseSARLImages.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
+		setDefaultPageImageDescriptor(PluginUtil.getImageDescriptor(
+				PluginUtil.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());
 		setWindowTitle(WIZARD_NAME);
 

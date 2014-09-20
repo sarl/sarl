@@ -61,10 +61,37 @@
   
   <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
       <classpathContainerInitializer
-          id="SARL_SUPPORT"
+          id="io.sarl.eclipse.launching.SARL_SUPPORT"
           class="io.sarl.eclipse.builder.SARLClasspathContainerInitializer"/>
    </extension>
 
+ 	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+        <launchConfigurationType
+              delegate="io.sarl.eclipse.launch.SARLLaunchConfigurationDelegate"
+              delegateDescription="The SARL Application Launcher supports running and debugging SARL applications on compatible platform."
+              delegateName="SARL Launcher"
+              id="io.sarl.eclipse.debug.LaunchConfigType"
+              modes="debug, run"
+              name="SARL Application"
+              public="true"
+              sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
+        </launchConfigurationType>
+    </extension>
+    
+    <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+        <launchConfigurationTypeImage
+            configTypeID="io.sarl.eclipse.debug.LaunchConfigType"
+            icon="icons/sarl_logo_16.png"
+            id="io.sarl.eclipse.debug.LaunchConfigTypeImage" />
+    </extension>
+    
+	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+         <launchConfigurationTabGroup
+            class="io.sarl.eclipse.launch.SARLLaunchConfigurationTabGroup"
+            description="SARL Application"
+            id="io.sarl.eclipse.debug.LaunchConfigTabGroup"
+            type="io.sarl.eclipse.debug.LaunchConfigType" />
+    </extension>
 <!--
 	<extension point="org.eclipse.ui.views">
 		<view
