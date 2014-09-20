@@ -27,6 +27,7 @@ import io.sarl.eclipse.wizards.newproject.Config
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.*
 
 /* @outline
  *
@@ -64,7 +65,7 @@ describe "Create First Project" {
 		 * 
 		 * @filter(.*) 
 		 */
-		fact "Step1: Entering the project information" {
+		fact "Step 1: Entering the project information" {
 			"new_sarl_project_screen_1.png" should beAccessibleFrom this
 			"new_sarl_project_screen_2.png" should beAccessibleFrom this
 		}
@@ -94,24 +95,6 @@ describe "Create First Project" {
 			"new_sarl_project_screen_3.png" should beAccessibleFrom this
 		}
 		 
-		/* The *Libraries* tab contains the binary libraries that are required for compiling the
-		 * SARL code. In this tab, you must find at least the following libraries:
-		 *
-		 * * `io.sarl.lang.core` that provides the base concepts from the SARL language.
-		 * * `io.sarl.core` that provides the build-in capacities and the other SDK classes.
-		 * * `io.sarl.util` that provides the SDK utility classes.
-		 *
-		 * <center><img alt="Source Code Folders" src="new_sarl_project_screen_4.png" width="60%" /></center>
-		 * 
-		 * @filter(.*) 
-		 */
-		 fact "Step 3: Checking if the SARL libraries were found" {
-			Config.SARL_REFERENCE_LIBRARIES should contain "io.sarl.lang.core"
-			Config.SARL_REFERENCE_LIBRARIES should contain "io.sarl.core"
-			Config.SARL_REFERENCE_LIBRARIES should contain "io.sarl.util"
-			"new_sarl_project_screen_4.png" should beAccessibleFrom this
-		 }
-
 	}
 
 	/* For creating a project with both the Maven and SARL natures, you should open your 
@@ -248,6 +231,10 @@ describe "Create First Project" {
 		 * @filter(.*) 
 		 */
 		fact "Edit the Maven configuration" {
+			// The checks are valid only if the macro replacements were done.
+			// The replacements are done by Maven.
+			// So, Eclipse Junit tools do not make the replacements.
+			System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
 			// Check if the SARL code is generated in the expected folder
 			Config.PROJECT_STRUCTURE_PATH should contain path("src","main","generated-sources","xtend")
 			// This documentation is valid only for the SNAPSHOT (repository definition)
@@ -312,6 +299,10 @@ describe "Create First Project" {
 		 * @filter(.*) 
 		 */
 		fact "Configuration a runtime environment (optional)" {
+			// The checks are valid only if the macro replacements were done.
+			// The replacements are done by Maven.
+			// So, Eclipse Junit tools do not make the replacements.
+			System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
 			// This documentation is valid only for the SNAPSHOT (repository definition)
 			"%janusversion%" should endWith "-SNAPSHOT"
 			"%janusversion%" should beMavenVersion true

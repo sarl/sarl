@@ -34,7 +34,7 @@ import java.io.File;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-final class Config {
+public final class Config {
 
 	/** Name of the folder that contains the sources.
 	 */
