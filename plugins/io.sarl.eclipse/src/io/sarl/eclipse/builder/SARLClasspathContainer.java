@@ -60,7 +60,7 @@ public class SARLClasspathContainer implements IClasspathContainer {
 	/**
 	 * Text that is describing the SARL libraries.
 	 */
-	public static final String DESCRIPTION = "SARL Libraries"; //$NON-NLS-1$
+	public static final String DESCRIPTION = Messages.SARLClasspathContainer_0;
 
 	/** Names of the reference libraries that are required to compile the SARL
 	 * code and the generated Java code.
@@ -168,7 +168,6 @@ public class SARLClasspathContainer implements IClasspathContainer {
 
 	@Override
 	public String getDescription() {
-		//TODO: Use NLS
 		return DESCRIPTION;
 	}
 

@@ -18,47 +18,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.wizards.newproject;
+
+package io.sarl.eclipse.wizards.sreinstall;
 
 import org.eclipse.osgi.util.NLS;
 
-/** Messages for the wozard "new SARL project".
- *
- * @author $Author: ngaud$
+/** Localized messages.
+ * 
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-final class SARLProjectNewWizardMessages extends NLS {
-
-	private static final String BUNDLE_NAME = SARLProjectNewWizard.class.getName();
-
-	//CHECKSTYLE:OFF
-
-	/** Name of the wizard.
-	 */
-	public static String SARLProjectNewWizard_WIZARD_NAME;
-
-	/** Description for the first page.
-	 */
-	public static String SARLProjectNewWizard_WIZARD_PAGE_1_DESCRIPTION;
-
-	/** Description for the second page.
-	 */
-	public static String SARLProjectNewWizard_WIZARD_PAGE_2_DESCRIPTION;
-
-	/** Name of the pages.
-	 */
-	public static String SARLProjectNewWizard_WIZARD_PAGE_NAME;
-
-	//CHECKSTYLE:ON
-
+@SuppressWarnings("all")
+public class Messages extends NLS {
+	private static final String BUNDLE_NAME = "io.sarl.eclipse.wizards.sreinstall.messages"; //$NON-NLS-1$
+	public static String SREInstallWizard_0;
+	public static String SREInstallWizard_1;
+	public static String SREInstallWizard_2;
+	public static String SREInstallWizard_3;
+	public static String SREInstallWizard_4;
+	public static String SREInstallWizard_5;
+	public static String StandardSREPage_0;
+	public static String StandardSREPage_1;
+	public static String StandardSREPage_2;
+	public static String StandardSREPage_3;
+	public static String StandardSREPage_4;
+	public static String StandardSREPage_5;
+	public static String StandardSREPage_6;
+	public static String StandardSREPage_7;
 	static {
 		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, SARLProjectNewWizardMessages.class);
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
 	}
 
-	private SARLProjectNewWizardMessages() {
+	private Messages() {
 	}
-
 }

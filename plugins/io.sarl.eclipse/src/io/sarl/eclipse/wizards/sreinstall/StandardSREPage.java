@@ -27,6 +27,7 @@ import io.sarl.eclipse.launch.sre.StandardSREInstall;
 import io.sarl.eclipse.util.PluginUtil;
 
 import java.io.File;
+import java.text.MessageFormat;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -37,7 +38,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.jdt.internal.debug.ui.JavaDebugImages;
-import org.eclipse.jdt.internal.debug.ui.jres.JREMessages;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
@@ -74,7 +74,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 	/**
 	 */
 	public StandardSREPage() {
-		super(JREMessages.StandardVMPage_0);
+		super(""); //$NON-NLS-1$
 		for (int i = 0; i < this.statusForFields.length; i++) {
 			this.statusForFields[i] = Status.OK_STATUS;
 		}
@@ -95,21 +95,17 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// SRE location
-		/// TODO: Use NLS.
-		SWTFactory.createLabel(composite, "SRE Library:", 1); //$NON-NLS-1$
+		SWTFactory.createLabel(composite, Messages.StandardSREPage_0, 1);
 		this.sreLibraryTextField = SWTFactory.createSingleText(composite, 1);
 		this.sreLibraryTextField.setEditable(false);
-		/// TODO: Use NLS.
-		Button folders = SWTFactory.createPushButton(composite, "Browse...", null); //$NON-NLS-1$
+		Button folders = SWTFactory.createPushButton(composite, Messages.StandardSREPage_1, null);
 		GridData data = (GridData) folders.getLayoutData();
 		data.horizontalAlignment = GridData.END;
 		//SRE name
-		/// TODO: Use NLS.
-		SWTFactory.createLabel(composite, "Name:", 1); //$NON-NLS-1$
+		SWTFactory.createLabel(composite, Messages.StandardSREPage_2, 1);
 		this.sreNameTextField = SWTFactory.createSingleText(composite, 2);
 		//SRE main class
-		/// TODO: Use NLS.
-		SWTFactory.createLabel(composite, "Main Class:", 1); //$NON-NLS-1$
+		SWTFactory.createLabel(composite, Messages.StandardSREPage_3, 1);
 		this.sreMainClassTextField = SWTFactory.createSingleText(composite, 2);
 
 		//add the listeners now to prevent them from monkeying with initialized settings
@@ -153,8 +149,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 
 				// XXX: JARFileSelectionDialog may be used for selecting a jar file in the workspace.
 				FileDialog dialog = new FileDialog(getShell(), SWT.OPEN);
-				// TODO: Use NLS.
-				dialog.setText("Select a SARL runtime environment"); //$NON-NLS-1$
+				dialog.setText(Messages.StandardSREPage_4);
 				dialog.setFilterExtensions(new String[] {"*.jar"}); //$NON-NLS-1$
 				if (file.exists()) {
 					dialog.setFileName(file.getAbsolutePath());
@@ -187,15 +182,13 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		IPath path = null;
 
 		if (libraryFile.isEmpty()) {
-			// TODO: Use NLS.
 			s = PluginUtil.createStatus(IStatus.WARNING,
-					"You must enter the location of the SRE library file");  //$NON-NLS-1$
+					Messages.StandardSREPage_5);
 		} else {
 			path = new Path(libraryFile);
 			if (!path.toFile().exists()) {
-				// TODO: Use NLS.
 				s = PluginUtil.createStatus(IStatus.ERROR,
-						"The specified SRE library file was not found");  //$NON-NLS-1$
+						Messages.StandardSREPage_6);
 			} else {
 				final IStatus[] temp = new IStatus[1];
 				final IPath tmpPath = path;
@@ -259,8 +252,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		this.workingCopy.setNotify(false);
 		this.workingCopy.validate();
 		super.setSelection(sre);
-		// TODO: Use NLS.
-		setTitle("Edition of the SRE " + sre.getName()); //$NON-NLS-1$
+		setTitle(MessageFormat.format(Messages.StandardSREPage_7, sre.getName()));
 	}
 
 	@Override

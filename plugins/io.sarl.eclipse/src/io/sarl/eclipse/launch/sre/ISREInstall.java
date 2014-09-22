@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.LibraryLocation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -34,8 +33,6 @@ import org.w3c.dom.Element;
  * A SRE instance holds all parameters specific to a SRE installation.
  * SRE instances can be created and configured dynamically at run-time.
  * This is typically done by the user interactively in the UI.
- *
- * FIXME: Create extension point for SRE (see {@link IVMInstall}.
  *
  * Rather than implementing this interface directly, it is strongly recommended that
  * clients subclass {@link AbstractSREInstall} to be insulated

@@ -70,10 +70,10 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 	/**
 	 * The name of this SARL new project wizard.
 	 */
-	private static final String WIZARD_NAME = SARLProjectNewWizardMessages.SARLProjectNewWizard_WIZARD_NAME;
+	private static final String WIZARD_NAME = Messages.SARLProjectNewWizard_WIZARD_NAME;
 
-	private NewSARLProjectWizardPageOne fFirstPage;
-	private NewSARLProjectWizardPageTwo fSecondPage;
+	private MainProjectPage fFirstPage;
+	private BuildSettingPage fSecondPage;
 
 	private IConfigurationElement fConfigElement;
 
@@ -89,7 +89,7 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 	 * @param pageOne - reference to the first page of the wizard.
 	 * @param pageTwo - reference to the second page of the wizard.
 	 */
-	public SARLProjectNewWizard(NewSARLProjectWizardPageOne pageOne, NewSARLProjectWizardPageTwo pageTwo) {
+	public SARLProjectNewWizard(MainProjectPage pageOne, BuildSettingPage pageTwo) {
 		setDefaultPageImageDescriptor(PluginUtil.getImageDescriptor(
 				PluginUtil.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());
@@ -102,12 +102,12 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 	@Override
 	public void addPages() {
 		if (this.fFirstPage == null) {
-			this.fFirstPage = new NewSARLProjectWizardPageOne();
+			this.fFirstPage = new MainProjectPage();
 		}
 		addPage(this.fFirstPage);
 
 		if (this.fSecondPage == null) {
-			this.fSecondPage = new NewSARLProjectWizardPageTwo(this.fFirstPage);
+			this.fSecondPage = new BuildSettingPage(this.fFirstPage);
 		}
 		addPage(this.fSecondPage);
 

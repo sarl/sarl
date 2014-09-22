@@ -25,6 +25,7 @@ import io.sarl.eclipse.launch.sre.SREException;
 import io.sarl.eclipse.launch.sre.StandardSREInstall;
 import io.sarl.eclipse.util.PluginUtil;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,8 +146,8 @@ public abstract class SREInstallWizard extends Wizard {
 			return standardVMPage;
 		}
 
-		// TODO: Use NLS.
-		throw new SREException("Cannot create a preference page for " + sre.getName()); //$NON-NLS-1$
+		throw new SREException(MessageFormat.format(
+				Messages.SREInstallWizard_5, sre.getName()));
 	}
 
 }

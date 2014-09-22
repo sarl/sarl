@@ -403,7 +403,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					if (feature!==null) {
 						switch feature {
 							RequiredCapacity: {
-								//TODO 
+								//TODO Provide "requires" implementation
 							}
 							BehaviorUnit: {
 								val bMethod = generateBehaviorUnit(feature, behaviorUnitIndex)

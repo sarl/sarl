@@ -23,6 +23,7 @@ package io.sarl.eclipse.launch.config;
 import io.sarl.eclipse.util.PluginUtil;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -47,10 +48,8 @@ import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.internal.debug.ui.actions.ControlAccessibleListener;
 import org.eclipse.jdt.internal.debug.ui.launcher.AbstractJavaMainTab;
 import org.eclipse.jdt.internal.debug.ui.launcher.DebugTypeSelectionDialog;
-import org.eclipse.jdt.internal.debug.ui.launcher.LauncherMessages;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.window.Window;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -98,7 +97,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 
 	@Override
 	public String getName() {
-		return LauncherMessages.JavaMainTab__Main_19;
+		return Messages.MainLaunchConfigurationTab_7;
 	}
 
 	@Override
@@ -107,8 +106,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 		((GridLayout) comp.getLayout()).verticalSpacing = 0;
 		createProjectEditor(comp);
 		createVerticalSpacer(comp, 1);
-		// TODO: Use NLS
-		createAgentNameEditor(comp, "Agent qualified name:"); //$NON-NLS-1$
+		createAgentNameEditor(comp, Messages.MainLaunchConfigurationTab_0);
 		setControl(comp);
 		// TODO: Add help context
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(),
@@ -132,8 +130,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 			}
 		});
 		ControlAccessibleListener.addListener(this.agentNameTextField, group.getText());
-		// TODO: Use NLS.
-		this.agentNameSearchButton = createPushButton(group, "Search...", null); //$NON-NLS-1$
+		this.agentNameSearchButton = createPushButton(group, Messages.MainLaunchConfigurationTab_1, null);
 		this.agentNameSearchButton.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -183,8 +180,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 	protected boolean isValidAgentName() {
 		String name = this.agentNameTextField.getText().trim();
 		if (name.isEmpty()) {
-			// TODO: Use NLS.
-			setErrorMessage("You must specify the name of the agent to launch");  //$NON-NLS-1$
+			setErrorMessage(Messages.MainLaunchConfigurationTab_2);
 			return false;
 		}
 		return true;
@@ -199,8 +195,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 	protected boolean isValidProjectName() {
 		String name = this.fProjText.getText().trim();
 		if (name.isEmpty()) {
-			//TODO: Use NLS. See below for example.
-			setErrorMessage("You must specify the project to launch.");  //$NON-NLS-1$
+			setErrorMessage(Messages.MainLaunchConfigurationTab_3);
 			return false;
 		}
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -208,16 +203,18 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 		if (status.isOK()) {
 			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
 			if (!project.exists()) {
-				setErrorMessage(NLS.bind(LauncherMessages.JavaMainTab_20, new String[] {name}));
+				setErrorMessage(MessageFormat.format(
+						Messages.MainLaunchConfigurationTab_4, name));
 				return false;
 			}
 			if (!project.isOpen()) {
-				setErrorMessage(NLS.bind(LauncherMessages.JavaMainTab_21, new String[] {name}));
+				setErrorMessage(MessageFormat.format(
+						Messages.MainLaunchConfigurationTab_5, name));
 				return false;
 			}
 		} else {
-			setErrorMessage(NLS.bind(LauncherMessages.JavaMainTab_19,
-					new String[]{status.getMessage()}));
+			setErrorMessage(MessageFormat.format(
+					Messages.MainLaunchConfigurationTab_6, status.getMessage()));
 			return false;
 		}
 		return true;
@@ -363,7 +360,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 		IType[] types = searchAgentNames();
 		// Ask to the user
 		DebugTypeSelectionDialog mmsd = new DebugTypeSelectionDialog(getShell(),
-				types, LauncherMessages.JavaMainTab_Choose_Main_Type_11);
+				types, ""); //$NON-NLS-1$
 		if (mmsd.open() == Window.CANCEL) {
 			return;
 		}

@@ -26,6 +26,7 @@ import io.sarl.eclipse.launch.sre.SARLRuntime;
 import io.sarl.eclipse.util.PluginUtil;
 
 import java.io.File;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -37,6 +38,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -179,8 +181,8 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		if (agentName == null) {
 			return null;
 		}
-		// TODO: Do variable subsitution
-		return agentName;
+		return VariablesPlugin.getDefault().getStringVariableManager()
+				.performStringSubstitution(agentName);
 	}
 
 	/**
@@ -195,9 +197,8 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	public String verifyAgentName(ILaunchConfiguration configuration) throws CoreException {
 		String name = getAgentName(configuration);
 		if (name == null) {
-			// TODO: Use NLS.
 			abort(
-					"Unspecified agent name", //$NON-NLS-1$
+					Messages.MainLaunchConfigurationTab_2,
 					null,
 					LaunchConfigurationConstants.ERR_UNSPECIFIED_AGENT_NAME);
 		}
@@ -406,14 +407,14 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		// Retrieve the SARL runtime environment jar file.
 		String runtime = configuration.getAttribute(LaunchConfigurationConstants.ATTR_SARL_RUNTIME_ENVIRONMENT, (String) null);
 		if (runtime == null || runtime.isEmpty()) {
-			// TODO: Use NLS.
-			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR, "Unspecified SARL runtime environment")); //$NON-NLS-1$
+			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR,
+					Messages.SARLLaunchConfigurationDelegate_0));
 		}
 
 		ISREInstall sre = SARLRuntime.getSREFromId(runtime);
 		if (sre == null) {
-			// TODO: Use NLS.
-			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR, "Cannot find the SRE: " + runtime)); //$NON-NLS-1$
+			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR,
+					MessageFormat.format(Messages.RuntimeEnvironmentTab_8, runtime)));
 		}
 
 		verifySREValidity(sre);
@@ -450,10 +451,9 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	@SuppressWarnings("static-method")
 	private void verifySREValidity(ISREInstall sre) throws CoreException {
 		if (!sre.isValidInstallation()) {
-			// TODO: Use NLS.
-			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR,
-					"Invalid installation of the SRE \"" + sre.getName() //$NON-NLS-1$
-					+ "\"")); //$NON-NLS-1$
+			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR, MessageFormat.format(
+					Messages.RuntimeEnvironmentTab_5,
+					sre.getName())));
 		}
 		// Check the SARL version.
 		Bundle bundle = Platform.getBundle("io.sarl.lang"); //$NON-NLS-1$
@@ -463,15 +463,15 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			Version maxVersion = PluginUtil.parseVersion(sre.getMaximalSARLVersion());
 			int cmp = PluginUtil.compareVersionToRange(sarlVersion, minVersion, maxVersion);
 			if (cmp < 0) {
-				// TODO: Use NLS.
-				throw new CoreException(PluginUtil.createStatus(IStatus.ERROR,
-						"Incompatible SRE with SARL " + sarlVersion.toString() //$NON-NLS-1$
-						+ ". Supported min version by SRE: " + minVersion.toString())); //$NON-NLS-1$
+				throw new CoreException(PluginUtil.createStatus(IStatus.ERROR, MessageFormat.format(
+						Messages.RuntimeEnvironmentTab_6,
+						sarlVersion.toString(),
+						minVersion.toString())));
 			} else if (cmp > 0) {
-				// TODO: Use NLS.
-				throw new CoreException(PluginUtil.createStatus(IStatus.ERROR,
-						"Incompatible SRE with SARL " + sarlVersion.toString() //$NON-NLS-1$
-						+ ". Supported max version by SRE: " + maxVersion.toString())); //$NON-NLS-1$
+				throw new CoreException(PluginUtil.createStatus(IStatus.ERROR, MessageFormat.format(
+						Messages.RuntimeEnvironmentTab_7,
+						sarlVersion.toString(),
+						maxVersion.toString())));
 			}
 		}
 	}

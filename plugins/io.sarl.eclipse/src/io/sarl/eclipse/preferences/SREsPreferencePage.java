@@ -27,6 +27,7 @@ import io.sarl.eclipse.util.PluginUtil;
 import io.sarl.eclipse.wizards.sreinstall.AddSREInstallWizard;
 import io.sarl.eclipse.wizards.sreinstall.EditSREInstallWizard;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -36,7 +37,6 @@ import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.internal.ui.SWTFactory;
-import org.eclipse.jdt.internal.debug.ui.jres.JREMessages;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.ui.ISharedImages;
 import org.eclipse.jdt.ui.JavaUI;
@@ -157,16 +157,13 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		layout.marginWidth = 0;
 		parent.setLayout(layout);
 
-		// TODO: Use NLS.
 		SWTFactory.createWrapLabel(parent,
-				"Add, remove, or edit SRE definitions. By default, the checked SRE is " //$NON-NLS-1$
-				+ "used for running SARL projects.", //$NON-NLS-1$
+				Messages.SREsPreferencePage_0,
 				1, 300);
 		SWTFactory.createVerticalSpacer(parent, 1);
 
-		// TODO: Use NLS.
 		SWTFactory.createWrapLabel(parent,
-				"Installed SREs:", //$NON-NLS-1$
+				Messages.SREsPreferencePage_1,
 				1, 300);
 		Composite listComposite = SWTFactory.createComposite(parent, font, 2, 1, GridData.FILL_BOTH);
 
@@ -181,8 +178,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		this.sreTable.setLinesVisible(true);
 
 		TableColumn column = new TableColumn(this.sreTable, SWT.NULL);
-		// TODO: Use NLS.
-		column.setText("Name"); //$NON-NLS-1$
+		column.setText(Messages.SREsPreferencePage_2);
 		column.addSelectionListener(new SelectionAdapter() {
 			@SuppressWarnings("synthetic-access")
 			@Override
@@ -195,8 +191,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		column.setWidth(defaultwidth);
 
 		column = new TableColumn(this.sreTable, SWT.NULL);
-		// TODO: Use NLS.
-		column.setText("Location"); //$NON-NLS-1$
+		column.setText(Messages.SREsPreferencePage_3);
 		column.addSelectionListener(new SelectionAdapter() {
 			@SuppressWarnings("synthetic-access")
 			@Override
@@ -254,8 +249,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 
 		Composite buttons = SWTFactory.createComposite(listComposite, font, 1, 1, GridData.VERTICAL_ALIGN_BEGINNING, 0, 0);
 
-		// TODO: Use NLS.
-		this.addButton = SWTFactory.createPushButton(buttons, "Add...", null);  //$NON-NLS-1$
+		this.addButton = SWTFactory.createPushButton(buttons, Messages.SREsPreferencePage_4, null);
 		this.addButton.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event evt) {
@@ -263,8 +257,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			}
 		});
 
-		// TODO: Use NLS.
-		this.editButton = SWTFactory.createPushButton(buttons, "Edit...", null);  //$NON-NLS-1$
+		this.editButton = SWTFactory.createPushButton(buttons, Messages.SREsPreferencePage_5, null);
 		this.editButton.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event evt) {
@@ -272,8 +265,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			}
 		});
 
-		// TODO: Use NLS.
-		this.copyButton = SWTFactory.createPushButton(buttons, "Duplicate...", null);  //$NON-NLS-1$
+		this.copyButton = SWTFactory.createPushButton(buttons, Messages.SREsPreferencePage_6, null);
 		this.copyButton.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event evt) {
@@ -281,8 +273,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			}
 		});
 
-		// TODO: Use NLS.
-		this.removeButton = SWTFactory.createPushButton(buttons, "Remove", null);  //$NON-NLS-1$
+		this.removeButton = SWTFactory.createPushButton(buttons, Messages.SREsPreferencePage_7, null);
 		this.removeButton.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event evt) {
@@ -497,8 +488,9 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	private boolean verifyValidity(ISREInstall sre, boolean errorMessages) {
 		if (!sre.isValidInstallation()) {
 			if (errorMessages) {
-				// TODO: Use NLS.
-				setErrorMessage("Invalid installation of the SRE \"" + sre.getName() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+				setErrorMessage(MessageFormat.format(
+						io.sarl.eclipse.launch.config.Messages.RuntimeEnvironmentTab_5,
+						sre.getName()));
 			}
 			return false;
 		}
@@ -511,18 +503,18 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			int cmp = PluginUtil.compareVersionToRange(sarlVersion, minVersion, maxVersion);
 			if (cmp < 0) {
 				if (errorMessages) {
-					// TODO: Use NLS.
-					setErrorMessage(
-							"Incompatible SRE with SARL " + sarlVersion.toString() //$NON-NLS-1$
-							+ ". Supported min version by SRE: " + minVersion.toString()); //$NON-NLS-1$
+					setErrorMessage(MessageFormat.format(
+							io.sarl.eclipse.launch.config.Messages.RuntimeEnvironmentTab_6,
+							sarlVersion.toString(),
+							minVersion.toString()));
 				}
 				return false;
 			} else if (cmp > 0) {
 				if (errorMessages) {
-					// TODO: Use NLS.
-					setErrorMessage(
-							"Incompatible SRE with SARL " + sarlVersion.toString() //$NON-NLS-1$
-							+ ". Supported max version by SRE: " + maxVersion.toString()); //$NON-NLS-1$
+					setErrorMessage(MessageFormat.format(
+							io.sarl.eclipse.launch.config.Messages.RuntimeEnvironmentTab_7,
+							sarlVersion.toString(),
+							maxVersion.toString()));
 				}
 				return false;
 			}
@@ -535,13 +527,11 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		setMessage(null);
 		setErrorMessage(null);
 		if (this.sreArray.isEmpty()) {
-			// TODO: Use NLS.
-			setMessage("Cannot find installed SRE. Please install one."); //$NON-NLS-1$
+			setMessage(io.sarl.eclipse.launch.config.Messages.RuntimeEnvironmentTab_9);
 		} else {
 			ISREInstall defaultSRE = getDefaultSRE();
 			if (defaultSRE == null) {
-				// TODO: Use NLS.
-				setErrorMessage("You must specify a default SRE."); //$NON-NLS-1$
+				setErrorMessage(Messages.SREsPreferencePage_8);
 				return false;
 			}
 			if (!verifyValidity(defaultSRE, true)) {
@@ -821,7 +811,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 				switch(columnIndex) {
 				case 0:
 					if (SREsPreferencePage.this.sresList.getChecked(element)) {
-						return NLS.bind(JREMessages.InstalledJREsBlock_7, sre.getName());
+						return NLS.bind("", sre.getName()); //$NON-NLS-1$
 					}
 					return sre.getName();
 				case 1:

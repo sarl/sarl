@@ -101,8 +101,7 @@ public class AgentTypeSearchEngine {
 	@SuppressWarnings("static-method")
 	public IType[] searchAgentTypes(IProgressMonitor progressMonitor, final IJavaSearchScope scope)
 			throws InvocationTargetException  {
-		// TODO: Use NLS.
-		progressMonitor.beginTask("Searching for agent types...", TICKS); //$NON-NLS-1$
+		progressMonitor.beginTask(Messages.AgentTypeSearchEngine_0, TICKS);
 		SearchPattern pattern = SearchPattern.createPattern("io.sarl.lang.core.Agent", //$NON-NLS-1$
 				IJavaSearchConstants.CLASS,
 				IJavaSearchConstants.IMPLEMENTORS,

@@ -32,6 +32,7 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -59,7 +60,6 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.internal.corext.util.Messages;
 import org.eclipse.jdt.internal.ui.dialogs.StatusInfo;
 import org.eclipse.jdt.internal.ui.util.CoreUtility;
 import org.eclipse.jdt.internal.ui.util.ExceptionHandler;
@@ -91,14 +91,14 @@ import com.google.inject.Injector;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage {
+public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 
 	private static final String FILENAME_PROJECT = ".project"; //$NON-NLS-1$
 	private static final String FILENAME_CLASSPATH = ".classpath"; //$NON-NLS-1$
 	private static final int FILE_COPY_BLOCK_SIZE = 8192;
 	private static final int UPDATE_PROJECT_MONITORED_STEPS = 7;
 
-	private final NewSARLProjectWizardPageOne fFirstPage;
+	private final MainProjectPage fFirstPage;
 
 	/** Location of the current project.
 	 * It is <code>null</code> if the location is a platform location.
@@ -118,7 +118,7 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 	 *
 	 * @param mainPage the first page of the wizard
 	 */
-	public NewSARLProjectWizardPageTwo(NewSARLProjectWizardPageOne mainPage) {
+	public BuildSettingPage(MainProjectPage mainPage) {
 		setPageComplete(false);
 
 		this.fFirstPage = mainPage;
@@ -130,8 +130,8 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 		this.fDotClasspathBackup = null;
 		this.fIsAutobuild = null;
 
-		setTitle(SARLProjectNewWizardMessages.SARLProjectNewWizard_WIZARD_PAGE_NAME);
-		setDescription(SARLProjectNewWizardMessages.SARLProjectNewWizard_WIZARD_PAGE_2_DESCRIPTION);
+		setTitle(Messages.SARLProjectNewWizard_WIZARD_PAGE_NAME);
+		setDescription(Messages.SARLProjectNewWizard_WIZARD_PAGE_2_DESCRIPTION);
 		setImageDescriptor(PluginUtil.getImageDescriptor(
 				PluginUtil.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
@@ -266,7 +266,7 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 			} catch (CoreException e) {
 				if (e.getStatus().getCode() == IResourceStatus.FAILED_READ_METADATA) {
 					result = new StatusInfo(
-							IStatus.INFO, Messages.format(
+							IStatus.INFO, MessageFormat.format(
 									NewWizardMessages.NewJavaProjectWizardPageTwo_DeleteCorruptProjectFile_message,
 									e.getLocalizedMessage()));
 
@@ -529,7 +529,7 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 					IStatus.ERROR,
 					JavaUI.ID_PLUGIN,
 					IStatus.ERROR,
-					Messages.format(
+					MessageFormat.format(
 							NewWizardMessages.NewJavaProjectWizardPageTwo_problem_backup,
 							name),
 							e);
@@ -755,8 +755,8 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 		@Override
 		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 			try {
-				if (NewSARLProjectWizardPageTwo.this.fIsAutobuild == null) {
-					NewSARLProjectWizardPageTwo.this.fIsAutobuild =
+				if (BuildSettingPage.this.fIsAutobuild == null) {
+					BuildSettingPage.this.fIsAutobuild =
 							Boolean.valueOf(CoreUtility.setAutoBuilding(false));
 				}
 				this.infoStatus = updateProject(monitor);

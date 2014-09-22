@@ -45,8 +45,7 @@ public class AddSREInstallWizard extends SREInstallWizard {
 	public AddSREInstallWizard(String id, ISREInstall[] currentInstalls) {
 		super(null, currentInstalls);
 		this.id = id;
-		//TODO: Use NLS.
-		setWindowTitle("Add a SRE"); //$NON-NLS-1$
+		setWindowTitle(Messages.SREInstallWizard_3);
 	}
 
 	/** Replies the created SRE.

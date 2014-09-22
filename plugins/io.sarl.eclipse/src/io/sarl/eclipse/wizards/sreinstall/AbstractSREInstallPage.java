@@ -23,6 +23,8 @@ package io.sarl.eclipse.wizards.sreinstall;
 import io.sarl.eclipse.launch.sre.ISREInstall;
 import io.sarl.eclipse.util.PluginUtil;
 
+import java.text.MessageFormat;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
@@ -143,20 +145,17 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 			if (this.originalName == null || this.originalName.isEmpty()) {
 				sev = IStatus.WARNING;
 			}
-			// TODO: Use NLS.
 			this.nameStatus = PluginUtil.createStatus(sev,
-					"You must specify a valid name for the SRE."); //$NON-NLS-1$
+					Messages.SREInstallWizard_0);
 		} else {
 			if (isDuplicateName(newName)) {
-				// TODO: Use NLS.
 				this.nameStatus = PluginUtil.createStatus(IStatus.ERROR,
-						"Duplicate name for the SRE."); //$NON-NLS-1$
+						Messages.SREInstallWizard_1);
 			} else {
 				IStatus s = ResourcesPlugin.getWorkspace().validateName(newName, IResource.FILE);
 				if (!s.isOK()) {
-					//TODO: Use NLS.
 					this.nameStatus = PluginUtil.createStatus(IStatus.ERROR,
-							"Invalid format of the name: " + s.getMessage());  //$NON-NLS-1$
+							MessageFormat.format(Messages.SREInstallWizard_2, s.getMessage()));
 				}
 			}
 		}

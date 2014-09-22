@@ -22,6 +22,8 @@ package io.sarl.eclipse.wizards.sreinstall;
 
 import io.sarl.eclipse.launch.sre.ISREInstall;
 
+import java.text.MessageFormat;
+
 /**
  * Wiazrd for SRE installation.
  *
@@ -42,8 +44,9 @@ public class EditSREInstallWizard extends SREInstallWizard {
 	 */
 	public EditSREInstallWizard(ISREInstall editSRE, ISREInstall[] currentInstalls) {
 		super(editSRE, currentInstalls);
-		//TODO: Use NLS.
-		setWindowTitle("Edit the SRE"); //$NON-NLS-1$
+		String name = editSRE.getName();
+		String title = MessageFormat.format(Messages.SREInstallWizard_4, name);
+		setWindowTitle(title);
 	}
 
 	@Override

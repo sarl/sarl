@@ -27,6 +27,7 @@ import io.sarl.eclipse.launch.sre.SREInstallChangedAdapter;
 import io.sarl.eclipse.preferences.SREsPreferencePage;
 import io.sarl.eclipse.util.PluginUtil;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -87,8 +88,7 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 
 	@Override
 	public String getName() {
-		// TODO: Use NLS.
-		return "Runtime Environment";  //$NON-NLS-1$
+		return Messages.RuntimeEnvironmentTab_0;
 	}
 
 	@Override
@@ -103,10 +103,9 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 		Control[] children = oldComp.getChildren();
 		Composite topComp = SWTFactory.createComposite(
 				parent, parent.getFont(), 1, 1, GridData.FILL_HORIZONTAL);
-		// TODO: Use NLS.
 		createSARLRuntimeEnvironmentEditor(
 				topComp,
-				"SARL runtime environment:"); //$NON-NLS-1$
+				Messages.RuntimeEnvironmentTab_1);
 		for (Control ctl : children) {
 			ctl.setParent(topComp);
 		}
@@ -134,8 +133,7 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 			}
 		});
 		ControlAccessibleListener.addListener(this.runtimeEnvironmentCombo, group.getText());
-		// TODO: Use NLS.
-		this.runtimeEnvironmentSearchButton = createPushButton(group, "Installed SREs...", null); //$NON-NLS-1$
+		this.runtimeEnvironmentSearchButton = createPushButton(group, Messages.RuntimeEnvironmentTab_2, null);
 		this.runtimeEnvironmentSearchButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -317,17 +315,18 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 		if (install instanceof IVMInstall2) {
 			String version = ((IVMInstall2) install).getJavaVersion();
 			if (version == null) {
-				// TODO: Use NLS.
-				setErrorMessage("Unknown version of the JRE " + install.getName()); //$NON-NLS-1$
+				setErrorMessage(MessageFormat.format(
+						Messages.RuntimeEnvironmentTab_3, install.getName()));
 				return false;
 			}
 			Version jreVersion = Version.parseVersion(version);
 			Version minVersion = Version.parseVersion(LaunchConfigurationConstants.MINIMAL_JRE_VERSION);
 			if (jreVersion.compareTo(minVersion) < 0) {
-				// TODO: Use NLS.
-				setErrorMessage("Invalid JRE version for " + install.getName() //$NON-NLS-1$
-						+ ": " + version //$NON-NLS-1$
-						+ "; Required version: " + LaunchConfigurationConstants.MINIMAL_JRE_VERSION); //$NON-NLS-1$
+				setErrorMessage(MessageFormat.format(
+						Messages.RuntimeEnvironmentTab_4,
+						install.getName(),
+						version,
+						LaunchConfigurationConstants.MINIMAL_JRE_VERSION));
 				return false;
 			}
 		}
@@ -337,8 +336,8 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 	private boolean isValid(ISREInstall sre, boolean errorMessages) {
 		if (!sre.isValidInstallation()) {
 			if (errorMessages) {
-				// TODO: Use NLS.
-				setErrorMessage("Invalid installation of the SRE \"" + sre.getName() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+				setErrorMessage(MessageFormat.format(
+						Messages.RuntimeEnvironmentTab_5, sre.getName()));
 			}
 			return false;
 		}
@@ -351,18 +350,18 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 			int cmp = PluginUtil.compareVersionToRange(sarlVersion, minVersion, maxVersion);
 			if (cmp < 0) {
 				if (errorMessages) {
-					// TODO: Use NLS.
-					setErrorMessage(
-							"Incompatible SRE with SARL " + sarlVersion.toString() //$NON-NLS-1$
-							+ ". Supported min version by SRE: " + minVersion.toString()); //$NON-NLS-1$
+					setErrorMessage(MessageFormat.format(
+							Messages.RuntimeEnvironmentTab_6,
+							sarlVersion.toString(),
+							minVersion.toString()));
 				}
 				return false;
 			} else if (cmp > 0) {
 				if (errorMessages) {
-					// TODO: Use NLS.
-					setErrorMessage(
-							"Incompatible SRE with SARL " + sarlVersion.toString() //$NON-NLS-1$
-							+ ". Supported max version by SRE: " + maxVersion.toString()); //$NON-NLS-1$
+					setErrorMessage(MessageFormat.format(
+							Messages.RuntimeEnvironmentTab_7,
+							sarlVersion.toString(),
+							maxVersion.toString()));
 				}
 				return false;
 			}
@@ -378,8 +377,7 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 	protected boolean isValidSARLRuntimeEnvironment(ILaunchConfiguration config) {
 		try {
 			if (this.runtimeEnvironments.isEmpty()) {
-				// TODO: Use NLS.
-				setErrorMessage("Cannot find installed SRE. Please install one."); //$NON-NLS-1$
+				setErrorMessage(Messages.RuntimeEnvironmentTab_9);
 				return false;
 			}
 			String id = config.getAttribute(
@@ -387,8 +385,8 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 					EMPTY_STRING);
 			ISREInstall sre = SARLRuntime.getSREFromId(id);
 			if (sre == null) {
-				// TODO: Use NLS.
-				setErrorMessage("Cannot find the SRE with id: " + id); //$NON-NLS-1$
+				setErrorMessage(MessageFormat.format(
+						Messages.RuntimeEnvironmentTab_8, id));
 				return false;
 			}
 			return isValid(sre, true);
