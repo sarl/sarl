@@ -66,8 +66,8 @@ import org.w3c.dom.NodeList;
 public class StandardSREInstall extends AbstractSREInstall {
 
 	private IPath jarFile;
-	private String vmArguments = EMPTY_STRING;
-	private String programArguments = EMPTY_STRING;
+	private String vmArguments = PluginUtil.EMPTY_STRING;
+	private String programArguments = PluginUtil.EMPTY_STRING;
 
 	private String manifestMainClass;
 	private String manifestName;

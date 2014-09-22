@@ -658,6 +658,7 @@ public final class SARLRuntime {
 	private static void initializeSREs() {
 		ISREInstall[] newSREs = new ISREInstall[0];
 		boolean savePrefs = false;
+		String previousDefault = defaultSREId;
 		LOCK.lock();
 		try {
 			if (platformSREInstalls == null) {
@@ -672,29 +673,22 @@ public final class SARLRuntime {
 				newSREs = new ISREInstall[ALL_SRE_INSTALLS.size()];
 
 				// Verify default SRE is valid
-				ISREInstall oldDefaultSRE = null;
-				ISREInstall newDefaultSRE = null;
+				ISREInstall initDefaultSRE = null;
 				Iterator<ISREInstall> iterator = ALL_SRE_INSTALLS.values().iterator();
 				for (int i = 0; iterator.hasNext(); ++i) {
 					ISREInstall sre = iterator.next();
 					newSREs[i] = sre;
 					if (sre.isValidInstallation()) {
-						if (oldDefaultSRE == null
-							&& (sre.getId().equals(defaultSREId))
-							|| sre.getId().equals(predefinedDefaultId)) {
-							oldDefaultSRE = sre;
-						}
-						if (defaultSREId == null
-								|| sre.getId().equals(defaultSREId)) {
-							newDefaultSRE = sre;
+						if (initDefaultSRE == null
+							&& PluginUtil.equalsString(sre.getId(), predefinedDefaultId)) {
+							initDefaultSRE = sre;
 						}
 					}
 				}
 
-				String oldDefaultId = oldDefaultSRE == null ? null : oldDefaultSRE.getId();
-				String newDefaultId = newDefaultSRE == null ? null : newDefaultSRE.getId();
-				savePrefs = !PluginUtil.equalsString(oldDefaultId, newDefaultId);
-				defaultSREId = newDefaultId;
+				String oldDefaultId = initDefaultSRE == null ? null : initDefaultSRE.getId();
+				defaultSREId = oldDefaultId;
+				savePrefs = true;
 			}
 
 			if (defaultSREId == null || defaultSREId.isEmpty()) {
@@ -732,8 +726,14 @@ public final class SARLRuntime {
 				fireSREAdded(sre);
 			}
 		}
+		
+		if (!PluginUtil.equals(previousDefault, defaultSREId)) {
+			fireDefaultSREChanged(
+					getSREFromId(previousDefault),
+					getSREFromId(defaultSREId));
+		}
 	}
-
+	
 	private static void safeSaveSREConfiguration() {
 		try {
 			saveSREConfiguration(null);

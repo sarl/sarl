@@ -47,6 +47,7 @@ public class Messages extends NLS {
 	public static String StandardSREPage_5;
 	public static String StandardSREPage_6;
 	public static String StandardSREPage_7;
+	public static String StandardSREPage_8;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

@@ -67,6 +67,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 	private Text sreLibraryTextField;
 	private Text sreNameTextField;
 	private Text sreMainClassTextField;
+	private Text sreIdTextField;
 
 	private StandardSREInstall originalSRE;
 	private StandardSREInstall workingCopy;
@@ -107,6 +108,10 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		//SRE main class
 		SWTFactory.createLabel(composite, Messages.StandardSREPage_3, 1);
 		this.sreMainClassTextField = SWTFactory.createSingleText(composite, 2);
+		//SRE Id
+		SWTFactory.createLabel(composite, Messages.StandardSREPage_8, 1);
+		this.sreIdTextField = SWTFactory.createSingleText(composite, 2);
+		this.sreIdTextField.setEditable(false);
 
 		//add the listeners now to prevent them from monkeying with initialized settings
 		this.sreNameTextField.addModifyListener(new ModifyListener() {
@@ -281,6 +286,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		} else {
 			this.sreMainClassTextField.setText(""); //$NON-NLS-1$
 		}
+		this.sreIdTextField.setText(this.workingCopy.getId());
 		validateSREMainClass();
 		validateSREName();
 		validateSRELibrary();

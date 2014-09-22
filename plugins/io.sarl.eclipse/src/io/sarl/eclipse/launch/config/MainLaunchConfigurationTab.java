@@ -155,11 +155,11 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 	 * @param config - the config to load the agent name from
 	 */
 	protected void updateAgentNameFromConfig(ILaunchConfiguration config) {
-		String agentName = EMPTY_STRING;
+		String agentName = PluginUtil.EMPTY_STRING;
 		try {
 			agentName = config.getAttribute(
 					LaunchConfigurationConstants.ATTR_AGENT_NAME,
-					EMPTY_STRING);
+					PluginUtil.EMPTY_STRING);
 		} catch (CoreException ce) {
 			PluginUtil.log(ce);
 		}
@@ -239,7 +239,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 		} else {
 			config.setAttribute(
 					IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME,
-					EMPTY_STRING);
+					PluginUtil.EMPTY_STRING);
 		}
 		initializeAgentName(javaElement, config);
 	}
@@ -279,7 +279,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 		}
 
 		if (name == null) {
-			name = EMPTY_STRING;
+			name = PluginUtil.EMPTY_STRING;
 		}
 
 		return name;

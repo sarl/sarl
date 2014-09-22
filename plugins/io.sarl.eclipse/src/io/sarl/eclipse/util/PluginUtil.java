@@ -47,6 +47,10 @@ import org.osgi.service.prefs.BackingStoreException;
  */
 public final class PluginUtil {
 
+	/** Empty string.
+	 */
+	public static final String EMPTY_STRING = ""; //$NON-NLS-1$
+
 	/** Identifier of the plugin.
 	 */
 	public static final String PLUGIN_ID = "io.sarl.eclipse"; //$NON-NLS-1$

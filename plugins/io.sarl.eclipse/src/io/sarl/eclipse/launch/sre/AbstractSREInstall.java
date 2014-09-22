@@ -44,10 +44,6 @@ import org.osgi.framework.Version;
  */
 public abstract class AbstractSREInstall implements ISREInstall {
 
-	/** Empty string.
-	 */
-	protected static final String EMPTY_STRING = ""; //$NON-NLS-1$
-
 	private String id;
 	private String name;
 	private String minimalSarlVersion;
@@ -75,7 +71,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 	 */
 	protected static String unnullify(String value) {
 		if (value == null) {
-			return EMPTY_STRING;
+			return PluginUtil.EMPTY_STRING;
 		}
 		return value;
 	}
@@ -359,11 +355,11 @@ public abstract class AbstractSREInstall implements ISREInstall {
 	public boolean isValidInstallation() {
 		try {
 			String mainClass = getMainClass();
-			if (mainClass == null || EMPTY_STRING.equals(mainClass)) {
+			if (mainClass == null || PluginUtil.EMPTY_STRING.equals(mainClass)) {
 				return false;
 			}
 			String name = getName();
-			if (name == null || EMPTY_STRING.equals(name)) {
+			if (name == null || PluginUtil.EMPTY_STRING.equals(name)) {
 				return false;
 			}
 			LibraryLocation[] locations = getLibraryLocations();

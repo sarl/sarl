@@ -37,33 +37,32 @@ import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.internal.ui.SWTFactory;
+import org.eclipse.jdt.internal.debug.ui.jres.JREMessages;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.ui.ISharedImages;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.viewers.BaseLabelProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
-import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITableColorProvider;
+import org.eclipse.jface.viewers.ITableFontProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.KeyAdapter;
@@ -72,7 +71,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -153,8 +151,8 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 1;
-		layout.marginHeight = 0;
-		layout.marginWidth = 0;
+		layout.marginHeight = 2;
+		layout.marginWidth = 2;
 		parent.setLayout(layout);
 
 		SWTFactory.createWrapLabel(parent,
@@ -314,6 +312,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		}
 		this.sresList.setInput(this.sreArray);
 		this.sresList.refresh();
+		updateUI();
 	}
 
 	/**
@@ -389,6 +388,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 				this.sresList.setSelection(new StructuredSelection(result));
 				//ensure labels are updated
 				this.sresList.refresh(true);
+				updateUI();
 			}
 		}
 	}
@@ -407,6 +407,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		if (dialog.open() == Window.OK) {
 			this.sresList.setSelection(new StructuredSelection(sre));
 			this.sresList.refresh(true);
+			updateUI();
 		}
 	}
 
@@ -444,6 +445,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			this.sresList.setSelection(selection);
 		}
 		this.sresList.refresh(true);
+		updateUI();
 	}
 
 	/** Remove the selected SREs.
@@ -467,22 +469,44 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 * @param sres - the SREs to remove.
 	 */
 	public void removeSREs(ISREInstall... sres) {
+		ISREInstall defaultSRE = getDefaultSRE();
+		String defaultId = defaultSRE == null ? null : defaultSRE.getId();
+		int defaultIndex = -1;
+		if (defaultId != null) {
+			for (int i = 0; defaultIndex == -1 && i < this.sreTable.getItemCount(); ++i) {
+				if (PluginUtil.equalsString(
+						((ISREInstall) this.sreTable.getItem(i).getData()).getId(),
+						defaultId)) {
+					defaultIndex = i;
+				}
+			}
+		}
+		boolean defaultIsRemoved = false;
 		for (ISREInstall sre : sres) {
-			this.sreArray.remove(sre);
+			if (this.sreArray.remove(sre) && PluginUtil.equalsString(sre.getId(), defaultId)) {
+				defaultIsRemoved = true;
+			}
 		}
 		this.sresList.refresh();
-		IStructuredSelection curr = (IStructuredSelection) getSelection();
-		ISREInstall[] installs = getSREs();
-		if (installs.length < 1) {
-			this.prevSelection = null;
-		}
-		if (curr.size() == 0 && installs.length == 1) {
-			// pick a default VM automatically
-			setSelection(new StructuredSelection(installs[0]));
-		} else {
-			fireSelectionChanged();
+		// Update the default SRE
+		if (defaultIsRemoved) {
+			if (this.sreTable.getItemCount() == 0) {
+				setSelection(null);
+			} else {
+				if (defaultIndex < 0) {
+					defaultIndex = 0;
+				} else if (defaultIndex >= this.sreTable.getItemCount()) {
+					defaultIndex = this.sreTable.getItemCount() - 1;
+				}
+				setSelection(new StructuredSelection(
+						this.sreTable.getItem(defaultIndex).getData()));
+			}
 		}
 		this.sresList.refresh(true);
+		if (defaultIsRemoved) {
+			fireDefaultSREChanged();
+		}
+		updateUI();
 	}
 
 	private boolean verifyValidity(ISREInstall sre, boolean errorMessages) {
@@ -674,7 +698,8 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 				updateUI();
 			}
 			this.sresList.refresh(true);
-			fireSelectionChanged();
+			fireDefaultSREChanged();
+			updateUI();
 		}
 	}
 
@@ -682,8 +707,8 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	public ISelection getSelection() {
 		return new StructuredSelection(this.sresList.getCheckedElements());
 	}
-
-	private void fireSelectionChanged() {
+	
+	private void fireDefaultSREChanged() {
 		SelectionChangedEvent event = new SelectionChangedEvent(this, getSelection());
 		Object[] listeners = this.selectionListeners.getListeners();
 		for (int i = 0; i < listeners.length; i++) {
@@ -793,9 +818,8 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private class SRELabelProvider extends LabelProvider implements ITableLabelProvider, IFontProvider, IColorProvider {
-
-		private Font boldFont;
+	private class SRELabelProvider extends BaseLabelProvider
+	implements ITableLabelProvider, ITableColorProvider, ITableFontProvider {
 
 		/**
 		 */
@@ -803,25 +827,35 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			//
 		}
 
-		@SuppressWarnings("synthetic-access")
 		@Override
-		public String getColumnText(Object element, int columnIndex) {
-			if (element instanceof ISREInstall) {
-				ISREInstall sre = (ISREInstall) element;
-				switch(columnIndex) {
-				case 0:
-					if (SREsPreferencePage.this.sresList.getChecked(element)) {
-						return NLS.bind("", sre.getName()); //$NON-NLS-1$
-					}
-					return sre.getName();
-				case 1:
-					return sre.getLocation();
-				default:
-				}
-			}
-			return element.toString();
+		public Font getFont(Object element, int columnIndex) {
+			return null;
 		}
 
+		@SuppressWarnings("synthetic-access")
+		private boolean isValid(Object element) {
+			if (element instanceof ISREInstall) {
+				ISREInstall sre = (ISREInstall) element;
+				return verifyValidity(sre, false);
+			}
+			return true;
+		}
+		
+		@Override
+		public Color getForeground(Object element, int columnIndex) {
+			if (isValid(element)) {
+				return getControl().getDisplay().getSystemColor(SWT.COLOR_LIST_FOREGROUND);
+			}
+			return getControl().getDisplay().getSystemColor(SWT.COLOR_RED);
+		}
+
+		@Override
+		public Color getBackground(Object element, int columnIndex) {
+			return getControl().getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND);
+		}
+
+		/** {@inheritDoc}
+		 */
 		@Override
 		public Image getColumnImage(Object element, int columnIndex) {
 			if (columnIndex == 0) {
@@ -830,70 +864,26 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			return null;
 		}
 
-		@SuppressWarnings("synthetic-access")
+		/** {@inheritDoc}
+		 */
 		@Override
-		public Font getFont(Object element) {
-			if (SREsPreferencePage.this.sresList.getChecked(element)) {
-				if (this.boldFont == null) {
-					Font dialogFont = JFaceResources.getDialogFont();
-					FontData[] fontData = dialogFont.getFontData();
-					for (int i = 0; i < fontData.length; i++) {
-						FontData data = fontData[i];
-						data.setStyle(SWT.BOLD);
+		public String getColumnText(Object element, int columnIndex) {
+			if (element instanceof ISREInstall) {
+				ISREInstall sre = (ISREInstall) element;
+				switch(columnIndex) {
+				case 0:
+					if (getDefaultSRE() == element) {
+						return MessageFormat.format(
+								JREMessages.InstalledJREsBlock_7,
+								sre.getName());
 					}
-					Display display = getShell().getDisplay();
-					this.boldFont = new Font(display, fontData);
+					return sre.getName();
+				case 1:
+					return sre.getLocation();
+				default:
 				}
-				return this.boldFont;
 			}
-			return null;
-		}
-
-		@Override
-		public void dispose() {
-			if (this.boldFont != null) {
-				this.boldFont.dispose();
-			}
-			super.dispose();
-		}
-
-		@Override
-		public Color getForeground(Object element) {
-			if (isInvalid(element)) {
-				Display display = Display.getCurrent();
-				return display.getSystemColor(SWT.COLOR_RED);
-			}
-			if (isUnmodifiable(element)) {
-				Display display = Display.getCurrent();
-				return display.getSystemColor(SWT.COLOR_INFO_FOREGROUND);
-			}
-			return null;
-		}
-
-		@Override
-		public Color getBackground(Object element) {
-			if (isUnmodifiable(element)) {
-				Display display = Display.getCurrent();
-				return display.getSystemColor(SWT.COLOR_INFO_BACKGROUND);
-			}
-			return null;
-		}
-
-		private boolean isUnmodifiable(Object element) {
-			if (element instanceof ISREInstall) {
-				ISREInstall sre = (ISREInstall) element;
-				return SARLRuntime.isPlatformSRE(sre);
-			}
-			return false;
-		}
-
-		@SuppressWarnings("synthetic-access")
-		private boolean isInvalid(Object element) {
-			if (element instanceof ISREInstall) {
-				ISREInstall sre = (ISREInstall) element;
-				return !verifyValidity(sre, false);
-			}
-			return false;
+			return element == null ? "" : element.toString(); //$NON-NLS-1$
 		}
 
 	} // class SRELabelProvider
@@ -951,6 +941,27 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		public void sreAdded(ISREInstall sre) {
 			if (!SREsPreferencePage.this.sreArray.contains(sre)) {
 				SREsPreferencePage.this.sreArray.add(sre);
+				// Refreshes the SRE listing after a SRE install notification, might not
+				// happen on the UI thread.
+				Display display = Display.getDefault();
+				if (display.getThread().equals(Thread.currentThread())) {
+					SREsPreferencePage.this.sresList.refresh();
+				} else {
+					display.syncExec(new Runnable() {
+						@Override
+						public void run() {
+							SREsPreferencePage.this.sresList.refresh();
+						}
+					});
+				}
+			}
+		}
+		
+		@SuppressWarnings("synthetic-access")
+		@Override
+		public void sreRemoved(ISREInstall sre) {
+			if (SREsPreferencePage.this.sreArray.contains(sre)) {
+				SREsPreferencePage.this.sreArray.remove(sre);
 				// Refreshes the SRE listing after a SRE install notification, might not
 				// happen on the UI thread.
 				Display display = Display.getDefault();
