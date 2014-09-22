@@ -18,7 +18,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launch;
+package io.sarl.eclipse.launch.config;
+
+import io.sarl.eclipse.util.PluginUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -37,7 +39,6 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
-import org.eclipse.jdt.internal.debug.ui.JDIDebugUIPlugin;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
@@ -114,7 +115,7 @@ public class AgentTypeSearchEngine {
 		try {
 			new SearchEngine().search(pattern, participants, scope, collector, searchMonitor);
 		} catch (CoreException ce) {
-			JDIDebugUIPlugin.log(ce);
+			PluginUtil.log(ce);
 		}
 		List<IType> result = collector.getResult();
 		return result.toArray(new IType[result.size()]);

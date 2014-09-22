@@ -1,0 +1,1001 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.eclipse.preferences;
+
+import io.sarl.eclipse.launch.sre.ISREInstall;
+import io.sarl.eclipse.launch.sre.SARLRuntime;
+import io.sarl.eclipse.launch.sre.SREInstallChangedAdapter;
+import io.sarl.eclipse.util.PluginUtil;
+import io.sarl.eclipse.wizards.sreinstall.AddSREInstallWizard;
+import io.sarl.eclipse.wizards.sreinstall.EditSREInstallWizard;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.debug.internal.ui.SWTFactory;
+import org.eclipse.jdt.internal.debug.ui.jres.JREMessages;
+import org.eclipse.jdt.internal.ui.JavaPlugin;
+import org.eclipse.jdt.ui.ISharedImages;
+import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.viewers.CheckStateChangedEvent;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.ICheckStateListener;
+import org.eclipse.jface.viewers.IColorProvider;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.IFontProvider;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.BusyIndicator;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
+
+/** Preference page for the SARL runtime environments.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+public class SREsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage, ISelectionProvider {
+
+	/**
+	 * ID for the page.
+	 */
+	public static final String ID = "io.sarl.eclipse.preferences.SREsPreferencePage"; //$NON-NLS-1$
+
+	private Table sreTable;
+	private CheckboxTableViewer sresList;
+
+	private final InstallListener installListener = new InstallListener();
+
+	/**
+	 * SREs being displayed.
+	 */
+	private final List<ISREInstall> sreArray = new ArrayList<>();
+
+	/**
+	 * Selection listeners (default SRE changes).
+	 */
+	private final ListenerList selectionListeners = new ListenerList();
+
+	/**
+	 * Previous selection.
+	 */
+	private ISelection prevSelection = new StructuredSelection();
+
+	// Action buttons
+	private Button addButton;
+	private Button removeButton;
+	private Button editButton;
+	private Button copyButton;
+
+	private Column sortColumn = Column.NAME;
+
+	/**
+	 * Constructor.
+	 */
+	public SREsPreferencePage() {
+		//
+	}
+
+	@Override
+	public void init(IWorkbench workbench) {
+		//
+	}
+
+	@Override
+	protected Control createContents(Composite parent) {
+		initializeDialogUnits(parent);
+
+		noDefaultAndApplyButton();
+
+		Font font = parent.getFont();
+
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 1;
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		parent.setLayout(layout);
+
+		// TODO: Use NLS.
+		SWTFactory.createWrapLabel(parent,
+				"Add, remove, or edit SRE definitions. By default, the checked SRE is " //$NON-NLS-1$
+				+ "used for running SARL projects.", //$NON-NLS-1$
+				1, 300);
+		SWTFactory.createVerticalSpacer(parent, 1);
+
+		// TODO: Use NLS.
+		SWTFactory.createWrapLabel(parent,
+				"Installed SREs:", //$NON-NLS-1$
+				1, 300);
+		Composite listComposite = SWTFactory.createComposite(parent, font, 2, 1, GridData.FILL_BOTH);
+
+		this.sreTable = new Table(listComposite,
+				SWT.CHECK | SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
+		GridData gd = new GridData(GridData.FILL_BOTH);
+		gd.heightHint = 250;
+		gd.widthHint = 350;
+		this.sreTable.setLayoutData(gd);
+		this.sreTable.setFont(font);
+		this.sreTable.setHeaderVisible(true);
+		this.sreTable.setLinesVisible(true);
+
+		TableColumn column = new TableColumn(this.sreTable, SWT.NULL);
+		// TODO: Use NLS.
+		column.setText("Name"); //$NON-NLS-1$
+		column.addSelectionListener(new SelectionAdapter() {
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				sortByName();
+				SREsPreferencePage.this.sresList.refresh(true);
+			}
+		});
+		int defaultwidth = 350 / 3 + 1;
+		column.setWidth(defaultwidth);
+
+		column = new TableColumn(this.sreTable, SWT.NULL);
+		// TODO: Use NLS.
+		column.setText("Location"); //$NON-NLS-1$
+		column.addSelectionListener(new SelectionAdapter() {
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				sortByLocation();
+				SREsPreferencePage.this.sresList.refresh(true);
+			}
+		});
+		column.setWidth(defaultwidth);
+
+		this.sresList = new CheckboxTableViewer(this.sreTable);
+		this.sresList.setLabelProvider(new SRELabelProvider());
+		this.sresList.setContentProvider(new SREsContentProvider());
+		this.sresList.setUseHashlookup(true);
+
+		this.sresList.addSelectionChangedListener(new ISelectionChangedListener() {
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void selectionChanged(SelectionChangedEvent evt) {
+				enableButtons();
+			}
+		});
+
+		this.sresList.addCheckStateListener(new ICheckStateListener() {
+			@Override
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				if (event.getChecked()) {
+					setDefaultSRE((ISREInstall) event.getElement());
+				} else {
+					setDefaultSRE(null);
+				}
+			}
+		});
+
+		this.sresList.addDoubleClickListener(new IDoubleClickListener() {
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void doubleClick(DoubleClickEvent e) {
+				if (!SREsPreferencePage.this.sresList.getSelection().isEmpty()) {
+					editSRE();
+				}
+			}
+		});
+		this.sreTable.addKeyListener(new KeyAdapter() {
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void keyPressed(KeyEvent event) {
+				if (event.character == SWT.DEL && event.stateMask == 0) {
+					if (SREsPreferencePage.this.removeButton.isEnabled()) {
+						removeSREs();
+					}
+				}
+			}
+		});
+
+		Composite buttons = SWTFactory.createComposite(listComposite, font, 1, 1, GridData.VERTICAL_ALIGN_BEGINNING, 0, 0);
+
+		// TODO: Use NLS.
+		this.addButton = SWTFactory.createPushButton(buttons, "Add...", null);  //$NON-NLS-1$
+		this.addButton.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event evt) {
+				addSRE();
+			}
+		});
+
+		// TODO: Use NLS.
+		this.editButton = SWTFactory.createPushButton(buttons, "Edit...", null);  //$NON-NLS-1$
+		this.editButton.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event evt) {
+				editSRE();
+			}
+		});
+
+		// TODO: Use NLS.
+		this.copyButton = SWTFactory.createPushButton(buttons, "Duplicate...", null);  //$NON-NLS-1$
+		this.copyButton.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event evt) {
+				copySRE();
+			}
+		});
+
+		// TODO: Use NLS.
+		this.removeButton = SWTFactory.createPushButton(buttons, "Remove", null);  //$NON-NLS-1$
+		this.removeButton.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event evt) {
+				removeSREs();
+			}
+		});
+
+		SWTFactory.createVerticalSpacer(listComposite, 1);
+
+		// Populates the SRE table with existing SREs defined in the workspace.
+		ISREInstall[] sres = SARLRuntime.getSREInstalls();
+		for (ISREInstall sre : sres) {
+			sre.validate();
+		}
+		setSREs(sres);
+		setDefaultSRE(SARLRuntime.getDefaultSREInstall());
+
+		// by default, sort by name
+		restoreColumnSettings(JavaPlugin.getDefault().getDialogSettings());
+
+		enableButtons();
+
+		SARLRuntime.addSREInstallChangedListener(this.installListener);
+
+		applyDialogFont(parent);
+		return parent;
+	}
+
+	/**
+	 * Sets the SREs to be displayed in this block.
+	 *
+	 * @param sres - SREs to be displayed
+	 */
+	protected void setSREs(ISREInstall[] sres) {
+		this.sreArray.clear();
+		for (ISREInstall sre : sres) {
+			this.sreArray.add(sre);
+		}
+		this.sresList.setInput(this.sreArray);
+		this.sresList.refresh();
+	}
+
+	/**
+	 * Returns the SREs currently being displayed in this block.
+	 *
+	 * @return the SREs currently being displayed in this block
+	 */
+	public ISREInstall[] getSREs() {
+		return this.sreArray.toArray(new ISREInstall[this.sreArray.size()]);
+	}
+
+	private boolean isDuplicateName(String name) {
+		for (ISREInstall sre : this.sreArray) {
+			if (PluginUtil.equalsString(sre.getName(), name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isDuplicateId(String id) {
+		for (ISREInstall sre : this.sreArray) {
+			if (PluginUtil.equalsString(sre.getId(), id)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private String createUniqueIdentifier() {
+		String id = SARLRuntime.createUniqueIdentifier();
+		while (isDuplicateId(id)) {
+			id = SARLRuntime.createUniqueIdentifier();
+		}
+		return id;
+	}
+
+	/**
+	 * Compares the given name against current names and adds the appropriate numerical
+	 * suffix to ensure that it is unique.
+	 *
+	 * @param name - the name with which to ensure uniqueness.
+	 * @return the unique version of the given name.
+	 */
+	public String createUniqueName(String name) {
+		if (!isDuplicateName(name)) {
+			return name;
+		}
+		if (name.matches(".*\\(\\d*\\)")) { //$NON-NLS-1$
+			int start = name.lastIndexOf('(');
+			int end = name.lastIndexOf(')');
+			String stringInt = name.substring(start + 1, end);
+			int numericValue = Integer.parseInt(stringInt);
+			String newName = name.substring(0, start + 1) + (numericValue + 1) + ")"; //$NON-NLS-1$
+			return createUniqueName(newName);
+		}
+		return createUniqueName(name + " (1)"); //$NON-NLS-1$
+	}
+
+	/** Add a SRE.
+	 */
+	protected void addSRE() {
+		AddSREInstallWizard wizard = new AddSREInstallWizard(
+				createUniqueIdentifier(),
+				this.sreArray.toArray(new ISREInstall[this.sreArray.size()]));
+		WizardDialog dialog = new WizardDialog(getShell(), wizard);
+		if (dialog.open() == Window.OK) {
+			ISREInstall result = wizard.getCreateSRE();
+			if (result != null) {
+				this.sreArray.add(result);
+				//refresh from model
+				this.sresList.refresh();
+				this.sresList.setSelection(new StructuredSelection(result));
+				//ensure labels are updated
+				this.sresList.refresh(true);
+			}
+		}
+	}
+
+	/** Edit the selected SRE.
+	 */
+	protected void editSRE() {
+		IStructuredSelection selection = (IStructuredSelection) this.sresList.getSelection();
+		ISREInstall sre = (ISREInstall) selection.getFirstElement();
+		if (sre == null) {
+			return;
+		}
+		EditSREInstallWizard wizard = new EditSREInstallWizard(
+				sre, this.sreArray.toArray(new ISREInstall[this.sreArray.size()]));
+		WizardDialog dialog = new WizardDialog(getShell(), wizard);
+		if (dialog.open() == Window.OK) {
+			this.sresList.setSelection(new StructuredSelection(sre));
+			this.sresList.refresh(true);
+		}
+	}
+
+	/** Copy the selected SRE.
+	 */
+	@SuppressWarnings("unchecked")
+	protected void copySRE() {
+		IStructuredSelection selection = (IStructuredSelection) this.sresList.getSelection();
+		Iterator<ISREInstall> it = selection.iterator();
+
+		ArrayList<ISREInstall> newEntries = new ArrayList<>();
+		while (it.hasNext()) {
+			ISREInstall selectedSRE = it.next();
+
+			ISREInstall copy = selectedSRE.copy(createUniqueIdentifier());
+			copy.setName(createUniqueName(selectedSRE.getName()));
+
+			EditSREInstallWizard wizard = new EditSREInstallWizard(
+					copy, this.sreArray.toArray(new ISREInstall[this.sreArray.size()]));
+			WizardDialog dialog = new WizardDialog(getShell(), wizard);
+			int dlgResult = dialog.open();
+			if (dlgResult == Window.OK) {
+				newEntries.add(copy);
+			} else {
+				assert (dlgResult == Window.CANCEL);
+				// Canceling one wizard should cancel all subsequent wizards
+				break;
+			}
+		}
+		if (!newEntries.isEmpty()) {
+			this.sreArray.addAll(newEntries);
+			this.sresList.refresh();
+			this.sresList.setSelection(new StructuredSelection(newEntries.toArray()));
+		} else {
+			this.sresList.setSelection(selection);
+		}
+		this.sresList.refresh(true);
+	}
+
+	/** Remove the selected SREs.
+	 */
+	@SuppressWarnings("unchecked")
+	protected void removeSREs() {
+		IStructuredSelection selection = (IStructuredSelection) this.sresList.getSelection();
+		ISREInstall[] vms = new ISREInstall[selection.size()];
+		Iterator<ISREInstall> iter = selection.iterator();
+		int i = 0;
+		while (iter.hasNext()) {
+			vms[i] = iter.next();
+			i++;
+		}
+		removeSREs(vms);
+	}
+
+	/**
+	 * Removes the given SREs from the table.
+	 *
+	 * @param sres - the SREs to remove.
+	 */
+	public void removeSREs(ISREInstall... sres) {
+		for (ISREInstall sre : sres) {
+			this.sreArray.remove(sre);
+		}
+		this.sresList.refresh();
+		IStructuredSelection curr = (IStructuredSelection) getSelection();
+		ISREInstall[] installs = getSREs();
+		if (installs.length < 1) {
+			this.prevSelection = null;
+		}
+		if (curr.size() == 0 && installs.length == 1) {
+			// pick a default VM automatically
+			setSelection(new StructuredSelection(installs[0]));
+		} else {
+			fireSelectionChanged();
+		}
+		this.sresList.refresh(true);
+	}
+
+	private boolean verifyValidity(ISREInstall sre, boolean errorMessages) {
+		if (!sre.isValidInstallation()) {
+			if (errorMessages) {
+				// TODO: Use NLS.
+				setErrorMessage("Invalid installation of the SRE \"" + sre.getName() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			return false;
+		}
+		// Check the SARL version.
+		Bundle bundle = Platform.getBundle("io.sarl.lang"); //$NON-NLS-1$
+		if (bundle != null) {
+			Version sarlVersion = bundle.getVersion();
+			Version minVersion = PluginUtil.parseVersion(sre.getMinimalSARLVersion());
+			Version maxVersion = PluginUtil.parseVersion(sre.getMaximalSARLVersion());
+			int cmp = PluginUtil.compareVersionToRange(sarlVersion, minVersion, maxVersion);
+			if (cmp < 0) {
+				if (errorMessages) {
+					// TODO: Use NLS.
+					setErrorMessage(
+							"Incompatible SRE with SARL " + sarlVersion.toString() //$NON-NLS-1$
+							+ ". Supported min version by SRE: " + minVersion.toString()); //$NON-NLS-1$
+				}
+				return false;
+			} else if (cmp > 0) {
+				if (errorMessages) {
+					// TODO: Use NLS.
+					setErrorMessage(
+							"Incompatible SRE with SARL " + sarlVersion.toString() //$NON-NLS-1$
+							+ ". Supported max version by SRE: " + maxVersion.toString()); //$NON-NLS-1$
+				}
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean isValid() {
+		setMessage(null);
+		setErrorMessage(null);
+		if (this.sreArray.isEmpty()) {
+			// TODO: Use NLS.
+			setMessage("Cannot find installed SRE. Please install one."); //$NON-NLS-1$
+		} else {
+			ISREInstall defaultSRE = getDefaultSRE();
+			if (defaultSRE == null) {
+				// TODO: Use NLS.
+				setErrorMessage("You must specify a default SRE."); //$NON-NLS-1$
+				return false;
+			}
+			if (!verifyValidity(defaultSRE, true)) {
+				return false;
+			}
+		}
+		return super.isValid();
+	}
+
+	@Override
+	public boolean performOk() {
+		final boolean[] canceled = new boolean[] {false};
+		BusyIndicator.showWhile(null, new Runnable() {
+			@Override
+			public void run() {
+				ISREInstall defaultSRE = getDefaultSRE();
+				ISREInstall[] sres = getSREs();
+				NullProgressMonitor monitor = new NullProgressMonitor();
+				try {
+					SARLRuntime.setSREInstalls(sres, monitor);
+					SARLRuntime.setDefaultSREInstall(defaultSRE, monitor, false);
+					SARLRuntime.saveSREConfiguration(monitor);
+					canceled[0] = monitor.isCanceled();
+				} catch (CoreException e) {
+					PluginUtil.log(e);
+					canceled[0] = true;
+				}
+			}
+		});
+
+		if (canceled[0]) {
+			return false;
+		}
+
+		// save column widths
+		IDialogSettings settings = JavaPlugin.getDefault().getDialogSettings();
+		int columnCount = this.sreTable.getColumnCount();
+		for (int i = 0; i < columnCount; i++) {
+			settings.put(ID + ".columnWidth" + i, //$NON-NLS-1$
+					this.sreTable.getColumn(i).getWidth());
+		}
+		settings.put(ID + ".sortColumn", this.sortColumn.name()); //$NON-NLS-1$
+
+		return super.performOk();
+	}
+
+	/**
+	 * Restores the column widths from dialog settings.
+	 *
+	 * @param settings - the settings to read.
+	 */
+	private void restoreColumnWidths(IDialogSettings settings) {
+		int columnCount = this.sreTable.getColumnCount();
+		for (int i = 0; i < columnCount; i++) {
+			int width = -1;
+			try {
+				width = settings.getInt(ID + ".columnWidth" + i); //$NON-NLS-1$
+			} catch (NumberFormatException _) {
+				//
+			}
+
+			if ((width <= 0) || (i == this.sreTable.getColumnCount() - 1)) {
+				this.sreTable.getColumn(i).pack();
+			} else {
+				this.sreTable.getColumn(i).setWidth(width);
+			}
+		}
+	}
+
+	/**
+	 * Restore table settings from the given dialog store using the
+	 * given key.
+	 *
+	 * @param settings - dialog settings store
+	 */
+	private void restoreColumnSettings(IDialogSettings settings) {
+		this.sresList.getTable().layout(true);
+		restoreColumnWidths(settings);
+		this.sortColumn = Column.NAME;
+		try {
+			String columnName = settings.get(ID + ".sortColumn"); //$NON-NLS-1$
+			if (columnName != null && !columnName.isEmpty()) {
+				this.sortColumn = Column.valueOf(columnName);
+				if (this.sortColumn == null) {
+					this.sortColumn = Column.NAME;
+				}
+			}
+		} catch (Throwable e) {
+			//
+		}
+		switch (this.sortColumn) {
+		case NAME:
+			sortByName();
+			break;
+		case LOCATION:
+			sortByLocation();
+			break;
+		default:
+		}
+	}
+
+	@Override
+	public void dispose() {
+		SARLRuntime.removeSREInstallChangedListener(this.installListener);
+		super.dispose();
+	}
+
+	/**
+	 * Sets the default SRE, possible <code>null</code>.
+	 *
+	 * @param sre - the SRE or <code>null</code>
+	 */
+	public void setDefaultSRE(ISREInstall sre) {
+		if (sre == null) {
+			setSelection(new StructuredSelection());
+		} else {
+			setSelection(new StructuredSelection(sre));
+		}
+	}
+
+	private void updateUI() {
+		if (getContainer() != null) {
+			getContainer().updateButtons();
+		}
+		updateApplyButton();
+	}
+
+	@Override
+	public void setSelection(ISelection selection) {
+		if (selection instanceof IStructuredSelection
+				&& !selection.equals(this.prevSelection)) {
+			this.prevSelection = selection;
+			Object sre = ((IStructuredSelection) selection).getFirstElement();
+			if (sre == null) {
+				this.sresList.setCheckedElements(new Object[0]);
+				updateUI();
+			} else {
+				this.sresList.setCheckedElements(new Object[]{sre});
+				this.sresList.reveal(sre);
+				updateUI();
+			}
+			this.sresList.refresh(true);
+			fireSelectionChanged();
+		}
+	}
+
+	@Override
+	public ISelection getSelection() {
+		return new StructuredSelection(this.sresList.getCheckedElements());
+	}
+
+	private void fireSelectionChanged() {
+		SelectionChangedEvent event = new SelectionChangedEvent(this, getSelection());
+		Object[] listeners = this.selectionListeners.getListeners();
+		for (int i = 0; i < listeners.length; i++) {
+			ISelectionChangedListener listener = (ISelectionChangedListener) listeners[i];
+			listener.selectionChanged(event);
+		}
+	}
+
+	@Override
+	public void addSelectionChangedListener(ISelectionChangedListener listener) {
+		this.selectionListeners.add(listener);
+	}
+
+	@Override
+	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+		this.selectionListeners.remove(listener);
+	}
+
+	/**
+	 * Returns the default SRE or <code>null</code> if none.
+	 *
+	 * @return the default SRE or <code>null</code> if none
+	 */
+	public ISREInstall getDefaultSRE() {
+		Object[] objects = this.sresList.getCheckedElements();
+		if (objects.length == 0) {
+			return null;
+		}
+		return (ISREInstall) objects[0];
+	}
+
+	/**
+	 * Enables the buttons based on selected items counts in the viewer.
+	 */
+	@SuppressWarnings("unchecked")
+	private void enableButtons() {
+		IStructuredSelection selection = (IStructuredSelection) this.sresList.getSelection();
+		int selectionCount = selection.size();
+		this.editButton.setEnabled(selectionCount == 1);
+		this.copyButton.setEnabled(selectionCount > 0);
+		if (selectionCount > 0 && selectionCount <= this.sresList.getTable().getItemCount()) {
+			Iterator<ISREInstall> iterator = selection.iterator();
+			while (iterator.hasNext()) {
+				ISREInstall install = iterator.next();
+				if (SARLRuntime.isPlatformSRE(install)) {
+					this.removeButton.setEnabled(false);
+					return;
+				}
+			}
+			this.removeButton.setEnabled(true);
+		} else {
+			this.removeButton.setEnabled(false);
+		}
+	}
+
+	/**
+	 * Sorts by SRE name.
+	 */
+	private void sortByName() {
+		this.sresList.setComparator(new ViewerComparator() {
+			@Override
+			public int compare(Viewer viewer, Object e1, Object e2) {
+				if ((e1 instanceof ISREInstall) && (e2 instanceof ISREInstall)) {
+					ISREInstall left = (ISREInstall) e1;
+					ISREInstall right = (ISREInstall) e2;
+					return left.getName().compareToIgnoreCase(right.getName());
+				}
+				return super.compare(viewer, e1, e2);
+			}
+
+			@Override
+			public boolean isSorterProperty(Object element, String property) {
+				return true;
+			}
+		});
+		this.sortColumn = Column.NAME;
+	}
+
+	/**
+	 * Sorts by VM location.
+	 */
+	private void sortByLocation() {
+		this.sresList.setComparator(new ViewerComparator() {
+			@Override
+			public int compare(Viewer viewer, Object e1, Object e2) {
+				if ((e1 instanceof ISREInstall) && (e2 instanceof ISREInstall)) {
+					ISREInstall left = (ISREInstall) e1;
+					ISREInstall right = (ISREInstall) e2;
+					return left.getLocation().compareToIgnoreCase(right.getLocation());
+				}
+				return super.compare(viewer, e1, e2);
+			}
+
+			@Override
+			public boolean isSorterProperty(Object element, String property) {
+				return true;
+			}
+		});
+		this.sortColumn = Column.LOCATION;
+	}
+
+	/**
+	 * Label provider for installed SREs table.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private class SRELabelProvider extends LabelProvider implements ITableLabelProvider, IFontProvider, IColorProvider {
+
+		private Font boldFont;
+
+		/**
+		 */
+		public SRELabelProvider() {
+			//
+		}
+
+		@SuppressWarnings("synthetic-access")
+		@Override
+		public String getColumnText(Object element, int columnIndex) {
+			if (element instanceof ISREInstall) {
+				ISREInstall sre = (ISREInstall) element;
+				switch(columnIndex) {
+				case 0:
+					if (SREsPreferencePage.this.sresList.getChecked(element)) {
+						return NLS.bind(JREMessages.InstalledJREsBlock_7, sre.getName());
+					}
+					return sre.getName();
+				case 1:
+					return sre.getLocation();
+				default:
+				}
+			}
+			return element.toString();
+		}
+
+		@Override
+		public Image getColumnImage(Object element, int columnIndex) {
+			if (columnIndex == 0) {
+				return JavaUI.getSharedImages().getImage(ISharedImages.IMG_OBJS_LIBRARY);
+			}
+			return null;
+		}
+
+		@SuppressWarnings("synthetic-access")
+		@Override
+		public Font getFont(Object element) {
+			if (SREsPreferencePage.this.sresList.getChecked(element)) {
+				if (this.boldFont == null) {
+					Font dialogFont = JFaceResources.getDialogFont();
+					FontData[] fontData = dialogFont.getFontData();
+					for (int i = 0; i < fontData.length; i++) {
+						FontData data = fontData[i];
+						data.setStyle(SWT.BOLD);
+					}
+					Display display = getShell().getDisplay();
+					this.boldFont = new Font(display, fontData);
+				}
+				return this.boldFont;
+			}
+			return null;
+		}
+
+		@Override
+		public void dispose() {
+			if (this.boldFont != null) {
+				this.boldFont.dispose();
+			}
+			super.dispose();
+		}
+
+		@Override
+		public Color getForeground(Object element) {
+			if (isInvalid(element)) {
+				Display display = Display.getCurrent();
+				return display.getSystemColor(SWT.COLOR_RED);
+			}
+			if (isUnmodifiable(element)) {
+				Display display = Display.getCurrent();
+				return display.getSystemColor(SWT.COLOR_INFO_FOREGROUND);
+			}
+			return null;
+		}
+
+		@Override
+		public Color getBackground(Object element) {
+			if (isUnmodifiable(element)) {
+				Display display = Display.getCurrent();
+				return display.getSystemColor(SWT.COLOR_INFO_BACKGROUND);
+			}
+			return null;
+		}
+
+		private boolean isUnmodifiable(Object element) {
+			if (element instanceof ISREInstall) {
+				ISREInstall sre = (ISREInstall) element;
+				return SARLRuntime.isPlatformSRE(sre);
+			}
+			return false;
+		}
+
+		@SuppressWarnings("synthetic-access")
+		private boolean isInvalid(Object element) {
+			if (element instanceof ISREInstall) {
+				ISREInstall sre = (ISREInstall) element;
+				return !verifyValidity(sre, false);
+			}
+			return false;
+		}
+
+	} // class SRELabelProvider
+
+	/**
+	 * Content provider to show a list of JREs.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private class SREsContentProvider implements IStructuredContentProvider {
+
+		/**
+		 */
+		public SREsContentProvider() {
+			//
+		}
+
+		@SuppressWarnings("synthetic-access")
+		@Override
+		public Object[] getElements(Object input) {
+			return SREsPreferencePage.this.sreArray.toArray();
+		}
+
+		@Override
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+			//
+		}
+
+		@Override
+		public void dispose() {
+			//
+		}
+
+	} // class SREsContentProvider
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private class InstallListener extends SREInstallChangedAdapter {
+
+		/**
+		 */
+		public InstallListener() {
+			//
+		}
+
+		@SuppressWarnings("synthetic-access")
+		@Override
+		public void sreAdded(ISREInstall sre) {
+			if (!SREsPreferencePage.this.sreArray.contains(sre)) {
+				SREsPreferencePage.this.sreArray.add(sre);
+				// Refreshes the SRE listing after a SRE install notification, might not
+				// happen on the UI thread.
+				Display display = Display.getDefault();
+				if (display.getThread().equals(Thread.currentThread())) {
+					SREsPreferencePage.this.sresList.refresh();
+				} else {
+					display.syncExec(new Runnable() {
+						@Override
+						public void run() {
+							SREsPreferencePage.this.sresList.refresh();
+						}
+					});
+				}
+			}
+		}
+
+	} // class InstallListener
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static enum Column {
+
+		/** Name column.
+		 */
+		NAME,
+
+		/** Location column.
+		 */
+		LOCATION;
+
+	} // enum Column
+
+}
+

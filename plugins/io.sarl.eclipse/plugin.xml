@@ -67,7 +67,7 @@
 
  	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
         <launchConfigurationType
-              delegate="io.sarl.eclipse.launch.SARLLaunchConfigurationDelegate"
+              delegate="io.sarl.eclipse.launch.config.SARLLaunchConfigurationDelegate"
               delegateDescription="The SARL Application Launcher supports running and debugging SARL applications on compatible platform."
               delegateName="SARL Launcher"
               id="io.sarl.eclipse.debug.LaunchConfigType"
@@ -87,11 +87,20 @@
     
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
          <launchConfigurationTabGroup
-            class="io.sarl.eclipse.launch.SARLLaunchConfigurationTabGroup"
+            class="io.sarl.eclipse.launch.config.SARLLaunchConfigurationTabGroup"
             description="SARL Application"
             id="io.sarl.eclipse.debug.LaunchConfigTabGroup"
             type="io.sarl.eclipse.debug.LaunchConfigType" />
     </extension>
+ <extension
+       point="org.eclipse.ui.preferencePages">
+    <page
+          category="io.sarl.lang.SARL"
+          class="io.sarl.eclipse.preferences.SREsPreferencePage"
+          id="io.sarl.eclipse.preferences.SREsPreferencePage"
+          name="Installed SREs">
+    </page>
+ </extension>
 <!--
 	<extension point="org.eclipse.ui.views">
 		<view

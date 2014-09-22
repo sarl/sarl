@@ -18,9 +18,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launch;
+package io.sarl.eclipse.launch.config;
 
 import io.sarl.eclipse.builder.SARLClasspathContainer;
+import io.sarl.eclipse.launch.sre.ISREInstall;
+import io.sarl.eclipse.launch.sre.SARLRuntime;
 import io.sarl.eclipse.util.PluginUtil;
 
 import java.io.File;
@@ -34,7 +36,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -52,6 +54,8 @@ import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.xtext.xbase.lib.Pair;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 
 /**
  * Implementation of an eclipse LauncConfigurationDelegate to launch SARL.
@@ -391,38 +395,85 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		}
 	}
 
-	/** Replies the Bootstrap class path for the SARL application.
+	/** Replies the class path for the SARL application.
 	 *
 	 * @param configuration - the configuration that provides the classpath.
 	 * @return the filtered entries.
 	 * @throws CoreException if impossible to get the classpath.
 	 */
-	@SuppressWarnings("static-method")
 	protected IRuntimeClasspathEntry[] computeUnresolvedSARLRuntimeClasspath(
 			ILaunchConfiguration configuration) throws CoreException {
 		// Retrieve the SARL runtime environment jar file.
 		String runtime = configuration.getAttribute(LaunchConfigurationConstants.ATTR_SARL_RUNTIME_ENVIRONMENT, (String) null);
 		if (runtime == null || runtime.isEmpty()) {
+			// TODO: Use NLS.
 			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR, "Unspecified SARL runtime environment")); //$NON-NLS-1$
 		}
-		IClasspathEntry cpEntry = JavaCore.newLibraryEntry(
-				new Path(runtime), null, null);
-		IRuntimeClasspathEntry rtcpEntry = new RuntimeClasspathEntry(cpEntry);
-		// No more a bootstrap library for enabling it to be in the classpath (not the JVM bootstrap).
-		rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
+
+		ISREInstall sre = SARLRuntime.getSREFromId(runtime);
+		if (sre == null) {
+			// TODO: Use NLS.
+			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR, "Cannot find the SRE: " + runtime)); //$NON-NLS-1$
+		}
+
+		verifySREValidity(sre);
+
+		LibraryLocation[] locations = sre.getLibraryLocations();
+		List<IRuntimeClasspathEntry> cpEntries = new ArrayList<>(locations.length);
+		for (int i = 0; i < locations.length; ++i) {
+			LibraryLocation location = locations[i];
+			IClasspathEntry cpEntry = JavaCore.newLibraryEntry(
+					location.getSystemLibraryPath(),
+					location.getSystemLibrarySourcePath(),
+					location.getPackageRootPath());
+			IRuntimeClasspathEntry rtcpEntry = new RuntimeClasspathEntry(cpEntry);
+			// No more a bootstrap library for enabling it to be in the classpath (not the JVM bootstrap).
+			rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
+			cpEntries.add(rtcpEntry);
+		}
+
 		// Get the classpath from the configuration.
 		IRuntimeClasspathEntry[] entries = JavaRuntime.computeUnresolvedRuntimeClasspath(configuration);
 		// Filtering the entries by replacing the "SARL Libraries" with the SARL runtime environment.
 		List<IRuntimeClasspathEntry> filteredEntries = new ArrayList<>();
 		for (IRuntimeClasspathEntry entry : entries) {
 			if (entry.getPath().equals(SARLClasspathContainer.CONTAINER_ID)) {
-				filteredEntries.add(rtcpEntry);
+				filteredEntries.addAll(cpEntries);
 			} else {
 				filteredEntries.add(entry);
 			}
 		}
 		entries = filteredEntries.toArray(new IRuntimeClasspathEntry[filteredEntries.size()]);
 		return entries;
+	}
+
+	@SuppressWarnings("static-method")
+	private void verifySREValidity(ISREInstall sre) throws CoreException {
+		if (!sre.isValidInstallation()) {
+			// TODO: Use NLS.
+			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR,
+					"Invalid installation of the SRE \"" + sre.getName() //$NON-NLS-1$
+					+ "\"")); //$NON-NLS-1$
+		}
+		// Check the SARL version.
+		Bundle bundle = Platform.getBundle("io.sarl.lang"); //$NON-NLS-1$
+		if (bundle != null) {
+			Version sarlVersion = bundle.getVersion();
+			Version minVersion = PluginUtil.parseVersion(sre.getMinimalSARLVersion());
+			Version maxVersion = PluginUtil.parseVersion(sre.getMaximalSARLVersion());
+			int cmp = PluginUtil.compareVersionToRange(sarlVersion, minVersion, maxVersion);
+			if (cmp < 0) {
+				// TODO: Use NLS.
+				throw new CoreException(PluginUtil.createStatus(IStatus.ERROR,
+						"Incompatible SRE with SARL " + sarlVersion.toString() //$NON-NLS-1$
+						+ ". Supported min version by SRE: " + minVersion.toString())); //$NON-NLS-1$
+			} else if (cmp > 0) {
+				// TODO: Use NLS.
+				throw new CoreException(PluginUtil.createStatus(IStatus.ERROR,
+						"Incompatible SRE with SARL " + sarlVersion.toString() //$NON-NLS-1$
+						+ ". Supported max version by SRE: " + maxVersion.toString())); //$NON-NLS-1$
+			}
+		}
 	}
 
 }

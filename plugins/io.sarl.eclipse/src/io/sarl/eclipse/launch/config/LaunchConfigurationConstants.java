@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launch;
+package io.sarl.eclipse.launch.config;
 
 import io.sarl.eclipse.util.PluginUtil;
 
@@ -49,8 +49,7 @@ public final class LaunchConfigurationConstants {
 	public static final String ATTR_AGENT_NAME = PluginUtil.PLUGIN_ID + ".AGENT_NAME"; //$NON-NLS-1$
 
 	/**
-	 * Launch configuration attribute key. The value is the absolute filename
-	 * of the SARL runtime environment to use.
+	 * Launch configuration attribute key. The value is the identifier of the SRE;
 	 */
 	public static final String ATTR_SARL_RUNTIME_ENVIRONMENT = PluginUtil.PLUGIN_ID + ".SARL_RUNTIME_ENVIRONMENT"; //$NON-NLS-1$
 
@@ -59,6 +58,10 @@ public final class LaunchConfigurationConstants {
 	 * specify an agent name to launch.
 	 */
 	public static final int ERR_UNSPECIFIED_AGENT_NAME = 501;
+
+	/** Minimal version of the JRE supported by the SARL launch application.
+	 */
+	public static final String MINIMAL_JRE_VERSION = "1.7"; //$NON-NLS-1$
 
 	private LaunchConfigurationConstants() {
 		//

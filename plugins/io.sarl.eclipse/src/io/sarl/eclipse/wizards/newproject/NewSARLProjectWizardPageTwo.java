@@ -60,7 +60,6 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.corext.util.Messages;
-import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.dialogs.StatusInfo;
 import org.eclipse.jdt.internal.ui.util.CoreUtility;
 import org.eclipse.jdt.internal.ui.util.ExceptionHandler;
@@ -422,7 +421,7 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 				}
 			}
 		} catch (CoreException e) {
-			JavaPlugin.log(e);
+			PluginUtil.log(e);
 		}
 	}
 
@@ -464,7 +463,7 @@ public class NewSARLProjectWizardPageTwo extends JavaCapabilityConfigurationPage
 				deleted.mkdir(EFS.NONE, null);
 			}
 		} catch (CoreException e) {
-			JavaPlugin.log(e);
+			PluginUtil.log(e);
 		}
 	}
 

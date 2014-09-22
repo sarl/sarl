@@ -1483,7 +1483,7 @@ public class NewSARLProjectWizardPageOne extends WizardPage {
 					String canonicalPath = projectLocation.toFile().getCanonicalPath();
 					projectLocation = new Path(canonicalPath);
 				} catch (IOException e) {
-					JavaPlugin.log(e);
+					PluginUtil.log(e);
 				}
 
 				String existingName = projectLocation.lastSegment();

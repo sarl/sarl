@@ -188,9 +188,9 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 		try {
 			addNatures(javaProject.getProject());
 		} catch (JavaModelException e) {
-			JavaPlugin.log(e);
+			PluginUtil.log(e);
 		} catch (CoreException e) {
-			JavaPlugin.log(e);
+			PluginUtil.log(e);
 		}
 
 		return javaProject;

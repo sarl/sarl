@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launch;
+package io.sarl.eclipse.launch.config;
 
 import io.sarl.eclipse.util.PluginUtil;
 
@@ -44,7 +44,6 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
-import org.eclipse.jdt.internal.debug.ui.JDIDebugUIPlugin;
 import org.eclipse.jdt.internal.debug.ui.actions.ControlAccessibleListener;
 import org.eclipse.jdt.internal.debug.ui.launcher.AbstractJavaMainTab;
 import org.eclipse.jdt.internal.debug.ui.launcher.DebugTypeSelectionDialog;
@@ -165,7 +164,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 					LaunchConfigurationConstants.ATTR_AGENT_NAME,
 					EMPTY_STRING);
 		} catch (CoreException ce) {
-			JDIDebugUIPlugin.log(ce);
+			PluginUtil.log(ce);
 		}
 		this.agentNameTextField.setText(agentName);
 	}
@@ -276,9 +275,9 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 					name = types[0].getFullyQualifiedName();
 				}
 			} catch (InterruptedException ie) {
-				JDIDebugUIPlugin.log(ie);
+				PluginUtil.log(ie);
 			} catch (InvocationTargetException ite) {
-				JDIDebugUIPlugin.log(ite);
+				PluginUtil.log(ite);
 			}
 		}
 
@@ -322,7 +321,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 				try {
 					elements = model.getJavaProjects();
 				} catch (JavaModelException e) {
-					JDIDebugUIPlugin.log(e);
+					PluginUtil.log(e);
 				}
 			}
 		} else {
