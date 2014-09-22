@@ -30,7 +30,9 @@ Export-Package: io.sarl.eclipse.builder,
  io.sarl.eclipse.navigator,
  io.sarl.eclipse.navigator.node,
  io.sarl.eclipse.perspectives,
+ io.sarl.eclipse.preferences,
  io.sarl.eclipse.util,
  io.sarl.eclipse.wizards.newfile,
- io.sarl.eclipse.wizards.newproject
+ io.sarl.eclipse.wizards.newproject,
+ io.sarl.eclipse.wizards.sreinstall
 

@@ -573,7 +573,6 @@ public final class SARLRuntime {
 		//		try {
 		//			clearSREConfiguration();
 		//		} catch (CoreException e1) {
-		//			// TODO Auto-generated catch block
 		//			e1.printStackTrace();
 		//		}
 		String rawXml = PluginUtil.getPreferences().get(PREF_SRE_XML, ""); //$NON-NLS-1$

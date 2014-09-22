@@ -48,7 +48,7 @@ public abstract class SREInstallWizard extends Wizard {
 	 * Extension point identifier for contributions of a wizard page that for a ISREInstall
 	 * (value <code>"sreInstallPage"</code>).
 	 */
-	public static final String EXTENSION_POINT_SRE_INSTALL_PAGES = "vsrenstallPages"; //$NON-NLS-1$
+	public static final String EXTENSION_POINT_SRE_INSTALL_PAGES = "sreInstallPages"; //$NON-NLS-1$
 
 	private ISREInstall sre;
 	private String[] names;
@@ -100,8 +100,9 @@ public abstract class SREInstallWizard extends Wizard {
 				PluginUtil.PLUGIN_ID,
 				EXTENSION_POINT_SRE_INSTALL_PAGES);
 		if (sre != null && extensionPoint != null) {
+			IConfigurationElement firstTypeMatching = null;
 			for (IConfigurationElement info : extensionPoint.getConfigurationElements()) {
-				String id = info.getAttribute("sreInstall"); //$NON-NLS-1$
+				String id = info.getAttribute("sreInstallId"); //$NON-NLS-1$
 				if (PluginUtil.equalsString(sre.getId(), id)) {
 					try {
 						AbstractSREInstallPage page = (AbstractSREInstallPage)
@@ -111,6 +112,29 @@ public abstract class SREInstallWizard extends Wizard {
 					} catch (CoreException e) {
 						PluginUtil.log(e);
 					}
+				} else if (firstTypeMatching == null) {
+					String type = info.getAttribute("sreInstallType"); //$NON-NLS-1$
+					if (type != null && !type.isEmpty()) {
+						try {
+							Class<?> cType = Class.forName(type);
+							if (cType.isInstance(sre)) {
+								firstTypeMatching = info;
+							}
+						} catch (Throwable e) {
+							PluginUtil.log(e);
+						}
+					}
+				}
+			}
+			
+			if (firstTypeMatching != null) {
+				try {
+					AbstractSREInstallPage page = (AbstractSREInstallPage)
+							firstTypeMatching.createExecutableExtension("class"); //$NON-NLS-1$
+					page.setExistingNames(this.names);
+					return page;
+				} catch (CoreException e) {
+					PluginUtil.log(e);
 				}
 			}
 		}

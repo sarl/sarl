@@ -2,6 +2,9 @@
 <?eclipse version="3.0"?>
 
 <plugin>
+   <extension-point id="sreInstallations" name="%sreInstallations" schema="schema/sreInstallations.exsd"/>
+   <extension-point id="sreInstallPages" name="%sreInstallPages" schema="schema/sreInstallPages.exsd"/>
+
 	<extension point="org.eclipse.ui.newWizards">
 		<category
 			id="io.sarl.eclipse.category.wizards"
