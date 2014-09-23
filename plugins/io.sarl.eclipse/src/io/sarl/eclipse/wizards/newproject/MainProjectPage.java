@@ -57,7 +57,6 @@ import org.eclipse.jdt.internal.ui.IJavaHelpContextIds;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart;
 import org.eclipse.jdt.internal.ui.preferences.CompliancePreferencePage;
-import org.eclipse.jdt.internal.ui.preferences.NewJavaProjectPreferencePage;
 import org.eclipse.jdt.internal.ui.preferences.PropertyAndPreferencePage;
 import org.eclipse.jdt.internal.ui.viewsupport.BasicElementLabels;
 import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
@@ -127,11 +126,10 @@ public class MainProjectPage extends WizardPage {
 
 	private static final IWorkingSet[] EMPTY_WORKING_SET_ARRAY = new IWorkingSet[0];
 
-	private static final String PAGE_NAME = "NewJavaProjectWizardPageOne"; //$NON-NLS-1$
+	private static final String PAGE_NAME = "MainProjectPage"; //$NON-NLS-1$
 
 	private final NameGroup fNameGroup;
 	private final LocationGroup fLocationGroup;
-	private final LayoutGroup fLayoutGroup;
 	private final JREGroup fJREGroup;
 	private final DetectGroup fDetectGroup;
 	private final Validator fValidator;
@@ -148,13 +146,11 @@ public class MainProjectPage extends WizardPage {
 		this.fNameGroup = new NameGroup();
 		this.fLocationGroup = new LocationGroup();
 		this.fJREGroup = new JREGroup();
-		this.fLayoutGroup = new LayoutGroup();
 		this.fWorkingSetGroup = new WorkingSetGroup();
 		this.fDetectGroup = new DetectGroup();
 
 		// establish connections
 		this.fNameGroup.addObserver(this.fLocationGroup);
-		this.fDetectGroup.addObserver(this.fLayoutGroup);
 		this.fDetectGroup.addObserver(this.fJREGroup);
 		this.fLocationGroup.addObserver(this.fDetectGroup);
 
@@ -173,8 +169,8 @@ public class MainProjectPage extends WizardPage {
 
 		initializeDefaultVM();
 
-		setTitle(Messages.SARLProjectNewWizard_WIZARD_PAGE_NAME);
-		setDescription(Messages.SARLProjectNewWizard_WIZARD_PAGE_1_DESCRIPTION);
+		setTitle(Messages.SARLProjectNewWizard_3);
+		setDescription(Messages.SARLProjectNewWizard_1);
 		setImageDescriptor(PluginUtil.getImageDescriptor(
 				PluginUtil.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
@@ -211,10 +207,6 @@ public class MainProjectPage extends WizardPage {
 
 		Control jreControl = createJRESelectionControl(composite);
 		jreControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		// not necessary
-		// Control layoutControl= createProjectLayoutControl(composite);
-		// layoutControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		Control workingSetControl = createWorkingSetControl(composite);
 		workingSetControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -262,16 +254,6 @@ public class MainProjectPage extends WizardPage {
 	 */
 	protected Control createJRESelectionControl(Composite composite) {
 		return this.fJREGroup.createControl(composite);
-	}
-
-	/**
-	 * Creates the controls for the project layout selection.
-	 *
-	 * @param composite the parent composite
-	 * @return the created control
-	 */
-	protected Control createProjectLayoutControl(Composite composite) {
-		return this.fLayoutGroup.createContent(composite);
 	}
 
 	/**
@@ -380,38 +362,35 @@ public class MainProjectPage extends WizardPage {
 	public Iterable<IClasspathEntry> getSourceClasspathEntries() {
 		IPath sourceFolderPath = new Path(getProjectName()).makeAbsolute();
 
-		//		if (this.fLayoutGroup.isSrcBin()) {
-		//			IPath srcPath = new Path(PreferenceConstants.getPreferenceStore().getString(
-		//					PreferenceConstants.SRCBIN_SRCNAME));
-		//			if (srcPath.segmentCount() > 0) {
-		//				sourceFolderPath = sourceFolderPath.append(srcPath);
-		//			}
-		//		}
-
-		IPath srcMainJava = new Path(sourceFolderPath + File.separator + Config.PROJECT_STRUCTURE_PATH[2]);
-		IPath srcMainSarl = new Path(sourceFolderPath + File.separator + Config.PROJECT_STRUCTURE_PATH[3]);
-		IPath srcMainGeneratedSourcesXtend = new Path(sourceFolderPath + File.separator + Config.PROJECT_STRUCTURE_PATH[5]);
+		IPath srcJava = sourceFolderPath.append(
+				Path.fromPortableString(Config.FOLDER_SOURCE_JAVA));
+		IPath srcSarl = sourceFolderPath.append(
+				Path.fromPortableString(Config.FOLDER_SOURCE_SARL));
+		IPath srcGeneratedSources = sourceFolderPath.append(
+				Path.fromPortableString(Config.FOLDER_SOURCE_GENERATED));
+		IPath srcResources = sourceFolderPath.append(
+				Path.fromPortableString(Config.FOLDER_RESOURCES));
 
 		return Arrays.asList(
-				JavaCore.newSourceEntry(srcMainJava.makeAbsolute()),
-				JavaCore.newSourceEntry(srcMainSarl.makeAbsolute()),
-				JavaCore.newSourceEntry(srcMainGeneratedSourcesXtend.makeAbsolute())
+				JavaCore.newSourceEntry(srcJava.makeAbsolute()),
+				JavaCore.newSourceEntry(srcSarl.makeAbsolute()),
+				JavaCore.newSourceEntry(srcGeneratedSources.makeAbsolute()),
+				JavaCore.newSourceEntry(srcResources.makeAbsolute())
 		);
 	}
 
 	/**
-	 * Returns the source class path entries to be added on new projects. The underlying resource may not exist.
+	 * Returns the source class path entries to be added on new projects.
+	 * The underlying resource may not exist.
 	 *
 	 * @return returns the default class path entries
 	 */
 	public IPath getOutputLocation() {
 		IPath outputLocationPath = new Path(getProjectName()).makeAbsolute();
-		if (this.fLayoutGroup.isSrcBin()) {
-			IPath binPath = new Path(PreferenceConstants.getPreferenceStore().getString(PreferenceConstants.SRCBIN_BINNAME));
-			if (binPath.segmentCount() > 0) {
-				outputLocationPath = outputLocationPath.append(binPath);
-			}
-		}
+
+		outputLocationPath = outputLocationPath.append(
+				Path.fromPortableString(Config.FOLDER_BIN));
+
 		return outputLocationPath;
 	}
 
@@ -728,95 +707,11 @@ public class MainProjectPage extends WizardPage {
 	}
 
 	/**
-	 * Request a project layout.
+	 * @author $Author: ngaud$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
 	 */
-	private final class LayoutGroup implements Observer, SelectionListener {
-
-		private final SelectionButtonDialogField fStdRadio;
-		private final SelectionButtonDialogField fSrcBinRadio;
-		private Group fGroup;
-		private Link fPreferenceLink;
-
-		public LayoutGroup() {
-			this.fStdRadio = new SelectionButtonDialogField(SWT.RADIO);
-			this.fStdRadio.setLabelText(NewWizardMessages.NewJavaProjectWizardPageOne_LayoutGroup_option_oneFolder);
-
-			this.fSrcBinRadio = new SelectionButtonDialogField(SWT.RADIO);
-			this.fSrcBinRadio.setLabelText(NewWizardMessages.NewJavaProjectWizardPageOne_LayoutGroup_option_separateFolders);
-
-			boolean useSrcBin = PreferenceConstants.getPreferenceStore().getBoolean(
-					PreferenceConstants.SRCBIN_FOLDERS_IN_NEWPROJ);
-			this.fSrcBinRadio.setSelection(useSrcBin);
-			this.fStdRadio.setSelection(!useSrcBin);
-		}
-
-		@SuppressWarnings("synthetic-access")
-		public Control createContent(Composite composite) {
-			this.fGroup = new Group(composite, SWT.NONE);
-			this.fGroup.setFont(composite.getFont());
-			this.fGroup.setLayout(initGridLayout(new GridLayout(3, false), true));
-			this.fGroup.setText(NewWizardMessages.NewJavaProjectWizardPageOne_LayoutGroup_title);
-
-			this.fStdRadio.doFillIntoGrid(this.fGroup, 3);
-			LayoutUtil.setHorizontalGrabbing(this.fStdRadio.getSelectionButton(null));
-
-			this.fSrcBinRadio.doFillIntoGrid(this.fGroup, 2);
-
-			this.fPreferenceLink = new Link(this.fGroup, SWT.NONE);
-			this.fPreferenceLink.setText(NewWizardMessages.NewJavaProjectWizardPageOne_LayoutGroup_link_description);
-			this.fPreferenceLink.setLayoutData(new GridData(GridData.END, GridData.END, false, false));
-			this.fPreferenceLink.addSelectionListener(this);
-
-			updateEnableState();
-			return this.fGroup;
-		}
-
-		@Override
-		public void update(Observable o, Object arg) {
-			updateEnableState();
-		}
-
-		@SuppressWarnings("synthetic-access")
-		private void updateEnableState() {
-			if (MainProjectPage.this.fDetectGroup == null) {
-				return;
-			}
-
-			final boolean detect = MainProjectPage.this.fDetectGroup.mustDetect();
-			this.fStdRadio.setEnabled(!detect);
-			this.fSrcBinRadio.setEnabled(!detect);
-			if (this.fPreferenceLink != null) {
-				this.fPreferenceLink.setEnabled(!detect);
-			}
-			if (this.fGroup != null) {
-				this.fGroup.setEnabled(!detect);
-			}
-		}
-
-		/**
-		 * Return <code>true</code> if the user specified to create 'source' and 'bin' folders.
-		 *
-		 * @return returns <code>true</code> if the user specified to create 'source' and 'bin' folders.
-		 */
-		public boolean isSrcBin() {
-			return this.fSrcBinRadio.isSelected();
-		}
-
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			widgetDefaultSelected(e);
-		}
-
-		@SuppressWarnings("synthetic-access")
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-			String id = NewJavaProjectPreferencePage.ID;
-			PreferencesUtil.createPreferenceDialogOn(getShell(), id, new String[] {id}, null).open();
-			MainProjectPage.this.fDetectGroup.handlePossibleJVMChange();
-			MainProjectPage.this.fJREGroup.handlePossibleJVMChange();
-		}
-	}
-
 	private final class JREGroup implements Observer, SelectionListener, IDialogFieldListener {
 
 		private static final String LAST_SELECTED_EE_SETTINGS_KEY =

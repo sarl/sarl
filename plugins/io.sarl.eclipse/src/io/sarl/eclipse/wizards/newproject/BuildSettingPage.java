@@ -130,8 +130,8 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 		this.fDotClasspathBackup = null;
 		this.fIsAutobuild = null;
 
-		setTitle(Messages.SARLProjectNewWizard_WIZARD_PAGE_NAME);
-		setDescription(Messages.SARLProjectNewWizard_WIZARD_PAGE_2_DESCRIPTION);
+		setTitle(Messages.SARLProjectNewWizard_3);
+		setDescription(Messages.SARLProjectNewWizard_2);
 		setImageDescriptor(PluginUtil.getImageDescriptor(
 				PluginUtil.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
@@ -563,19 +563,19 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 		os.flush();
 	}
 
-	private String findGenerationSourcePath() {
+	private IPath findGenerationSourcePath() {
 		IPath projectPath = this.fCurrProject.getFullPath();
 		IPath p;
-		String s;
+		IPath generatedSourceFolder = Path.fromPortableString(Config.FOLDER_SOURCE_GENERATED);
+		IPath deprecatedGeneratedSourceFolder = Path.fromPortableString(Config.FOLDER_SOURCE_GENERATED_XTEXT);
 		for (IClasspathEntry entry : getRawClassPath()) {
 			p = entry.getPath();
 			p = p.removeFirstSegments(p.matchingFirstSegments(projectPath));
-			s = p.toOSString();
-			if (s.endsWith(Config.DEFAULT_GENERATED_SOURCE_FOLDER)) {
-				return s;
+			if (p.equals(generatedSourceFolder)) {
+				return p;
 			}
-			if (s.contains("src-gen") || s.contains("generated")) { //$NON-NLS-1$//$NON-NLS-2$
-				return s;
+			if (p.equals(deprecatedGeneratedSourceFolder)) {
+				return p;
 			}
 		}
 		return null;
@@ -595,9 +595,12 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 				updateProject(new SubProgressMonitor(monitor, 1));
 			}
 
-			String generationFolder = findGenerationSourcePath();
+			IPath generationFolder = findGenerationSourcePath();
 			if (generationFolder != null) {
-
+				
+				//
+				// SARL specific configuration
+				//
 				// Retreive the preference page for the project
 				Injector injector = SARLActivator.getInstance().getInjector(SARLActivator.IO_SARL_LANG_SARL);
 
@@ -617,7 +620,7 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 					String directoryKey = BuilderPreferenceAccess.getKey(
 							projectConfiguration,
 							EclipseOutputConfigurationProvider.OUTPUT_DIRECTORY);
-					preferenceStore.putValue(directoryKey, generationFolder);
+					preferenceStore.putValue(directoryKey, generationFolder.toOSString());
 				}
 			}
 

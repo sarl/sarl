@@ -29,29 +29,15 @@ import org.eclipse.osgi.util.NLS;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-final class Messages extends NLS {
+@SuppressWarnings("all")
+public class Messages extends NLS {
 
 	private static final String BUNDLE_NAME = "io.sarl.eclipse.wizards.newproject.messages"; //$NON-NLS-1$
 
-	//CHECKSTYLE:OFF
-
-	/** Name of the wizard.
-	 */
-	public static String SARLProjectNewWizard_WIZARD_NAME;
-
-	/** Description for the first page.
-	 */
-	public static String SARLProjectNewWizard_WIZARD_PAGE_1_DESCRIPTION;
-
-	/** Description for the second page.
-	 */
-	public static String SARLProjectNewWizard_WIZARD_PAGE_2_DESCRIPTION;
-
-	/** Name of the pages.
-	 */
-	public static String SARLProjectNewWizard_WIZARD_PAGE_NAME;
-
-	//CHECKSTYLE:ON
+	public static String SARLProjectNewWizard_0;
+	public static String SARLProjectNewWizard_1;
+	public static String SARLProjectNewWizard_2;
+	public static String SARLProjectNewWizard_3;
 
 	static {
 		// initialize resource bundle

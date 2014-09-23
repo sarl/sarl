@@ -67,11 +67,6 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
  */
 public class SARLProjectNewWizard extends NewElementWizard implements IExecutableExtension {
 
-	/**
-	 * The name of this SARL new project wizard.
-	 */
-	private static final String WIZARD_NAME = Messages.SARLProjectNewWizard_WIZARD_NAME;
-
 	private MainProjectPage fFirstPage;
 	private BuildSettingPage fSecondPage;
 
@@ -93,7 +88,7 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 		setDefaultPageImageDescriptor(PluginUtil.getImageDescriptor(
 				PluginUtil.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());
-		setWindowTitle(WIZARD_NAME);
+		setWindowTitle(Messages.SARLProjectNewWizard_0);
 
 		this.fFirstPage = pageOne;
 		this.fSecondPage = pageTwo;
