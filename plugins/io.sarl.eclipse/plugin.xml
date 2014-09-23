@@ -31,7 +31,7 @@
 	</extension>
 	
 	<extension
-       id="SARLProjectNature"
+       id="io.sarl.eclipse.SARLProjectNature"
        name="%nature.name"
        point="org.eclipse.core.resources.natures">
 		<runtime>
@@ -71,11 +71,11 @@
  	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
         <launchConfigurationType
               delegate="io.sarl.eclipse.launch.config.SARLLaunchConfigurationDelegate"
-              delegateDescription="The SARL Application Launcher supports running and debugging SARL applications on compatible platform."
-              delegateName="SARL Launcher"
+              delegateDescription="%launch.sarlLauncherDescription"
+              delegateName="%launch.sarlLauncher"
               id="io.sarl.eclipse.debug.LaunchConfigType"
               modes="debug, run"
-              name="SARL Application"
+              name="%launch.sarlApplication"
               public="true"
               sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
         </launchConfigurationType>
@@ -91,7 +91,7 @@
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
          <launchConfigurationTabGroup
             class="io.sarl.eclipse.launch.config.SARLLaunchConfigurationTabGroup"
-            description="SARL Application"
+            description="%launch.sarlApplication"
             id="io.sarl.eclipse.debug.LaunchConfigTabGroup"
             type="io.sarl.eclipse.debug.LaunchConfigType" />
     </extension>
@@ -101,9 +101,29 @@
           category="io.sarl.lang.SARL"
           class="io.sarl.eclipse.preferences.SREsPreferencePage"
           id="io.sarl.eclipse.preferences.SREsPreferencePage"
-          name="Installed SREs">
+          name="%preference.installedSREs">
     </page>
  </extension>
+ <extension
+       point="org.eclipse.ui.propertyPages">
+    <page
+            category="io.sarl.lang.SARL"
+            class="io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage"
+            id="io.sarl.eclipse.properties.SRE"
+            name="%propertyPage.runtimeEnvironment">
+            <keywordReference id="io.sarl.eclipse.keyword_SRE"/>
+            <enabledWhen>
+	            <adapt type="org.eclipse.core.resources.IProject"/>
+			</enabledWhen>
+	        <filter name="projectNature" value="io.sarl.eclipse.SARLProjectNature"/>
+    </page>
+ </extension>
+    <extension
+        point="org.eclipse.ui.keywords">
+        <keyword
+            id="io.sarl.eclipse.keyword_SRE"
+            label="%keyword.sre"/>
+    </extension>
 <!--
 	<extension point="org.eclipse.ui.views">
 		<view

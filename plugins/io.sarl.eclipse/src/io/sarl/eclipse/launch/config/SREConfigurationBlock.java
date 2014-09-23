@@ -27,23 +27,16 @@ import io.sarl.eclipse.launch.sre.SREInstallChangedAdapter;
 import io.sarl.eclipse.preferences.SREsPreferencePage;
 import io.sarl.eclipse.util.PluginUtil;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.internal.ui.SWTFactory;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.internal.debug.ui.actions.ControlAccessibleListener;
-import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
@@ -53,10 +46,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.dialogs.PreferencesUtil;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.Version;
 
 /**
  * Block of widgets that permits to select and
@@ -126,8 +118,10 @@ public class SREConfigurationBlock {
 	 * Creates this block's control in the given control.
 	 *
 	 * @param parent - containing control
+	 * @return the control.
+	 * @see #getControl()
 	 */
-	public void createControl(Composite parent) {
+	public Control createControl(Composite parent) {
 		this.control = SWTFactory.createComposite(
 				parent, parent.getFont(), 1, 1, GridData.FILL_HORIZONTAL);
 		Group group = SWTFactory.createGroup(this.control,
@@ -154,6 +148,8 @@ public class SREConfigurationBlock {
 				handleInstalledSREsButtonSelected();
 			}
 		});
+		
+		return getControl();
 	}
 
 	/**
@@ -241,11 +237,11 @@ public class SREConfigurationBlock {
 		this.runtimeEnvironmentCombo.setEnabled(!this.runtimeEnvironments.isEmpty());
 	}
 
-	/** Initialize the block from the given configuration.
-	 *
-	 * @param configuration - the configuration.
+	/** Initialize the block with the installed JREs.
+	 * The selection and the components states are not updated
+	 * by this function.
 	 */
-	public void initializeFrom(ILaunchConfiguration configuration) {
+	public void initialize() {
 		// Initialize the SRE list
 		this.runtimeEnvironments.clear();
 		ISREInstall[] sres = SARLRuntime.getSREInstalls();
@@ -257,7 +253,7 @@ public class SREConfigurationBlock {
 		});
 		List<String> labels = new ArrayList<>(sres.length);
 		for (int i = 0; i < sres.length; ++i) {
-			if (validate(sres[i]).isOK()) {
+			if (sres[i].getValidity().isOK()) {
 				this.runtimeEnvironments.add(sres[i]);
 				labels.add(sres[i].getName());
 			}
@@ -266,31 +262,6 @@ public class SREConfigurationBlock {
 		// Wait for SRE list updates.
 		this.sreListener = new InstallChange();
 		SARLRuntime.addSREInstallChangedListener(this.sreListener);
-		// Refresh the SRE selection
-		selectSREFromConfig(configuration);
-	}
-
-	/**
-	 * Initialize the given configuration with the SARL runtime environment
-	 * attributes associated to the given element.
-	 *
-	 * @param javaElement - the element from which information may be retrieved.
-	 * @param config - the config to set with the SARL runtime environment.
-	 */
-	@SuppressWarnings("static-method")
-	public void resetSREConfiguration(IJavaElement javaElement, ILaunchConfigurationWorkingCopy config) {
-		ISREInstall defaultSRE = SARLRuntime.getDefaultSREInstall();
-		if (defaultSRE != null) {
-			config.setAttribute(LaunchConfigurationConstants.ATTR_SARL_RUNTIME_ENVIRONMENT,
-					defaultSRE.getId());
-			config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
-					defaultSRE.getMainClass());
-		} else {
-			config.setAttribute(LaunchConfigurationConstants.ATTR_SARL_RUNTIME_ENVIRONMENT,
-					PluginUtil.EMPTY_STRING);
-			config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
-					PluginUtil.EMPTY_STRING);
-		}
 	}
 
 	/** Dispose the block.
@@ -300,24 +271,6 @@ public class SREConfigurationBlock {
 			SARLRuntime.removeSREInstallChangedListener(this.sreListener);
 			this.sreListener = null;
 		}
-	}
-
-	/**
-	 * Loads the SARL runtime environment from the launch configuration's preference store.
-	 *
-	 * @param config - the config to load the runtime environment from
-	 */
-	public void selectSREFromConfig(ILaunchConfiguration config) {
-		String sreId = PluginUtil.EMPTY_STRING;
-		try {
-			sreId = config.getAttribute(
-					LaunchConfigurationConstants.ATTR_SARL_RUNTIME_ENVIRONMENT,
-					PluginUtil.EMPTY_STRING);
-		} catch (CoreException ce) {
-			PluginUtil.log(ce);
-		}
-		ISREInstall sre = SARLRuntime.getSREFromId(sreId);
-		selectSRE(sre);
 	}
 
 	/** Invoked when the user want to search for a SARL runtime environment.
@@ -330,64 +283,17 @@ public class SREConfigurationBlock {
 				null).open();
 	}
 
-	/** Replies if the SARL runtime environment is valid.
-	 *
-	 * @param config - the current configuration.
-	 * @return the validity state.
-	 */
-	protected IStatus validate(ILaunchConfiguration config) {
-		try {
-			if (this.runtimeEnvironments.isEmpty()) {
-				return PluginUtil.createStatus(IStatus.ERROR,
-						Messages.RuntimeEnvironmentTab_9);
-			}
-			String id = config.getAttribute(
-					LaunchConfigurationConstants.ATTR_SARL_RUNTIME_ENVIRONMENT,
-					PluginUtil.EMPTY_STRING);
-			ISREInstall sre = SARLRuntime.getSREFromId(id);
-			if (sre == null) {
-				return PluginUtil.createStatus(IStatus.ERROR, MessageFormat.format(
-						Messages.RuntimeEnvironmentTab_8, id));
-			}
-			return validate(sre);
-		} catch (CoreException e) {
-			return PluginUtil.createStatus(IStatus.ERROR, e);
-		}
-	}
-
-	/** Validate the SRE.
+	/** Validate that the given SRE is valid in the context of the SRE configuration.
 	 *
 	 * @param sre - the SRE.
 	 * @return the state of the validation, never <code>null</code>.
 	 */
-	@SuppressWarnings("static-method")
 	public IStatus validate(ISREInstall sre) {
-		if (!sre.isValidInstallation()) {
-			return PluginUtil.createStatus(IStatus.ERROR, MessageFormat.format(
-					Messages.RuntimeEnvironmentTab_5, sre.getName()));
+		if (this.runtimeEnvironments.isEmpty()) {
+			return PluginUtil.createStatus(IStatus.ERROR,
+					Messages.RuntimeEnvironmentTab_7);
 		}
-		// Check the SARL version.
-		Bundle bundle = Platform.getBundle("io.sarl.lang"); //$NON-NLS-1$
-		if (bundle != null) {
-			Version sarlVersion = bundle.getVersion();
-			Version minVersion = PluginUtil.parseVersion(sre.getMinimalSARLVersion());
-			Version maxVersion = PluginUtil.parseVersion(sre.getMaximalSARLVersion());
-			int cmp = PluginUtil.compareVersionToRange(sarlVersion, minVersion, maxVersion);
-			if (cmp < 0) {
-				return PluginUtil.createStatus(IStatus.ERROR, MessageFormat.format(
-						Messages.RuntimeEnvironmentTab_6,
-						sarlVersion.toString(),
-						minVersion.toString()));
-			}
-			if (cmp > 0) {
-				return PluginUtil.createStatus(IStatus.ERROR, MessageFormat.format(
-							Messages.RuntimeEnvironmentTab_7,
-							sarlVersion.toString(),
-							maxVersion.toString()));
-			}
-			return PluginUtil.createOkStatus();
-		}
-		return PluginUtil.createOkStatus();
+		return sre.getValidity();
 	}
 
 	/**

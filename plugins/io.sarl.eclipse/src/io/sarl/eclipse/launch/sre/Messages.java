@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.launch.config;
+package io.sarl.eclipse.launch.sre;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -32,25 +32,16 @@ import org.eclipse.osgi.util.NLS;
  */
 @SuppressWarnings("all")
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.eclipse.launch.config.messages"; //$NON-NLS-1$
-	public static String AgentTypeSearchEngine_0;
-	public static String MainLaunchConfigurationTab_0;
-	public static String MainLaunchConfigurationTab_1;
-	public static String MainLaunchConfigurationTab_2;
-	public static String MainLaunchConfigurationTab_3;
-	public static String MainLaunchConfigurationTab_4;
-	public static String MainLaunchConfigurationTab_5;
-	public static String MainLaunchConfigurationTab_6;
-	public static String MainLaunchConfigurationTab_7;
-	public static String RuntimeEnvironmentTab_0;
-	public static String RuntimeEnvironmentTab_1;
-	public static String RuntimeEnvironmentTab_2;
-	public static String RuntimeEnvironmentTab_3;
-	public static String RuntimeEnvironmentTab_4;
-	public static String RuntimeEnvironmentTab_5;
-	public static String RuntimeEnvironmentTab_6;
-	public static String RuntimeEnvironmentTab_7;
-	public static String SARLLaunchConfigurationDelegate_0;
+	private static final String BUNDLE_NAME = "io.sarl.eclipse.launch.sre.messages"; //$NON-NLS-1$
+	public static String AbstractSREInstall_0;
+	public static String AbstractSREInstall_1;
+	public static String AbstractSREInstall_2;
+	public static String AbstractSREInstall_3;
+	public static String AbstractSREInstall_4;
+	public static String StandardSREInstall_0;
+	public static String StandardSREInstall_1;
+	public static String StandardSREInstall_2;
+	public static String StandardSREInstall_3;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

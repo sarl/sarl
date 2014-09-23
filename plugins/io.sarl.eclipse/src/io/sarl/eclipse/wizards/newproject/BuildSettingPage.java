@@ -21,7 +21,7 @@
 package io.sarl.eclipse.wizards.newproject;
 
 import io.sarl.eclipse.util.PluginUtil;
-import io.sarl.lang.ui.internal.SARLActivator;
+import io.sarl.lang.ui.preferences.Preferences;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -75,11 +75,8 @@ import org.eclipse.ui.actions.WorkspaceModifyDelegatingOperation;
 import org.eclipse.xtext.builder.EclipseOutputConfigurationProvider;
 import org.eclipse.xtext.builder.preferences.BuilderPreferenceAccess;
 import org.eclipse.xtext.generator.OutputConfiguration;
-import org.eclipse.xtext.ui.editor.preferences.PreferenceStoreAccessImpl;
 import org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock;
 import org.eclipse.xtext.xbase.lib.Pair;
-
-import com.google.inject.Injector;
 
 /**
  * The second page of the SARL new project wizard.
@@ -602,21 +599,15 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 				// SARL specific configuration
 				//
 				// Retreive the preference page for the project
-				Injector injector = SARLActivator.getInstance().getInjector(SARLActivator.IO_SARL_LANG_SARL);
-
-				PreferenceStoreAccessImpl preferenceStoreAccessImpl = injector.getInstance(
-						PreferenceStoreAccessImpl.class);
-				IPreferenceStore preferenceStore = preferenceStoreAccessImpl.getWritablePreferenceStore(
-						this.fCurrProject);
+				
+				IPreferenceStore preferenceStore = Preferences.getPreferencesFor(this.fCurrProject);
 
 				// Force to use a specific configuration.
 				preferenceStore.setValue(OptionsConfigurationBlock.IS_PROJECT_SPECIFIC, true);
 
 				// Initialize the project configurations
-				EclipseOutputConfigurationProvider configurationProvider =
-						injector.getInstance(EclipseOutputConfigurationProvider.class);
 				for (OutputConfiguration projectConfiguration
-						: configurationProvider.getOutputConfigurations(this.fCurrProject)) {
+						: Preferences.getXtextConfigurationsFor(this.fCurrProject)) {
 					String directoryKey = BuilderPreferenceAccess.getKey(
 							projectConfiguration,
 							EclipseOutputConfigurationProvider.OUTPUT_DIRECTORY);

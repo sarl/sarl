@@ -21,10 +21,12 @@
 package io.sarl.eclipse.launch.config;
 
 import io.sarl.eclipse.launch.sre.ISREInstall;
+import io.sarl.eclipse.launch.sre.SARLRuntime;
 import io.sarl.eclipse.util.PluginUtil;
 
 import java.text.MessageFormat;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -97,7 +99,26 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		super.initializeFrom(configuration);
-		this.sreBlock.initializeFrom(configuration);
+		this.sreBlock.initialize();
+		selectSREFromConfig(configuration);
+	}
+
+	/**
+	 * Loads the SARL runtime environment from the launch configuration's preference store.
+	 *
+	 * @param config - the config to load the runtime environment from
+	 */
+	protected void selectSREFromConfig(ILaunchConfiguration config) {
+		String sreId = PluginUtil.EMPTY_STRING;
+		try {
+			sreId = config.getAttribute(
+					LaunchConfigurationConstants.ATTR_SARL_RUNTIME_ENVIRONMENT,
+					PluginUtil.EMPTY_STRING);
+		} catch (CoreException ce) {
+			PluginUtil.log(ce);
+		}
+		ISREInstall sre = SARLRuntime.getSREFromId(sreId);
+		this.sreBlock.selectSRE(sre);
 	}
 
 	@Override
@@ -113,18 +134,44 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 	@Override
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
 		super.activated(workingCopy);
-		this.sreBlock.selectSREFromConfig(workingCopy);
+		selectSREFromConfig(workingCopy);
 	}
 
+	
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		super.setDefaults(config);
-		this.sreBlock.resetSREConfiguration(getContext(), config);
+		ISREInstall defaultSRE = SARLRuntime.getDefaultSREInstall();
+		if (defaultSRE != null) {
+			config.setAttribute(LaunchConfigurationConstants.ATTR_SARL_RUNTIME_ENVIRONMENT,
+					defaultSRE.getId());
+			config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
+					defaultSRE.getMainClass());
+		} else {
+			config.setAttribute(LaunchConfigurationConstants.ATTR_SARL_RUNTIME_ENVIRONMENT,
+					PluginUtil.EMPTY_STRING);
+			config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
+					PluginUtil.EMPTY_STRING);
+		}
 	}
-
+	
 	@Override
 	public boolean isValid(ILaunchConfiguration config) {
-		IStatus status = this.sreBlock.validate(config);
+		IStatus status;
+		try {
+			String id = config.getAttribute(
+					LaunchConfigurationConstants.ATTR_SARL_RUNTIME_ENVIRONMENT,
+					PluginUtil.EMPTY_STRING);
+			ISREInstall sre = SARLRuntime.getSREFromId(id);
+			if (sre == null) {
+				status = PluginUtil.createStatus(IStatus.ERROR, MessageFormat.format(
+						Messages.RuntimeEnvironmentTab_6, id));
+			} else {
+				status = this.sreBlock.validate(sre);
+			}
+		} catch (CoreException e) {
+			status = PluginUtil.createStatus(IStatus.ERROR, e);
+		}
 		if (status.isOK()) {
 			return super.isValid(config) && isValidJREVersion(config);
 		}

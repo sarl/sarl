@@ -120,7 +120,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 			public void modifyText(ModifyEvent e) {
 				StandardSREPage.this.workingCopy.setName(
 						StandardSREPage.this.sreNameTextField.getText());
-				StandardSREPage.this.workingCopy.validate();
+				StandardSREPage.this.workingCopy.revalidate();
 				validateSREName();
 			}
 		});
@@ -131,7 +131,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 				IPath path = Path.fromPortableString(
 						StandardSREPage.this.sreLibraryTextField.getText());
 				StandardSREPage.this.workingCopy.setJarFile(path);
-				StandardSREPage.this.workingCopy.validate();
+				StandardSREPage.this.workingCopy.revalidate();
 				validateSRELibrary();
 				initializeFieldsFromLibraryPath();
 			}
@@ -142,7 +142,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 			public void modifyText(ModifyEvent e) {
 				StandardSREPage.this.workingCopy.setMainClass(
 						StandardSREPage.this.sreMainClassTextField.getText());
-				StandardSREPage.this.workingCopy.validate();
+				StandardSREPage.this.workingCopy.revalidate();
 				validateSREMainClass();
 			}
 		});
@@ -202,7 +202,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 					@Override
 					public void run() {
 						StandardSREPage.this.workingCopy.setJarFile(tmpPath);
-						temp[0] = StandardSREPage.this.workingCopy.validate();
+						temp[0] = StandardSREPage.this.workingCopy.revalidate();
 					}
 				};
 				BusyIndicator.showWhile(getShell().getDisplay(), r);
@@ -255,7 +255,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		this.originalSRE = (StandardSREInstall) sre;
 		this.workingCopy = this.originalSRE.clone();
 		this.workingCopy.setNotify(false);
-		this.workingCopy.validate();
+		this.workingCopy.revalidate();
 		super.setSelection(sre);
 		setTitle(MessageFormat.format(Messages.StandardSREPage_7, sre.getName()));
 	}
@@ -263,7 +263,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 	@Override
 	public ISREInstall createSelection(String id) {
 		StandardSREInstall sre = new StandardSREInstall(id);
-		sre.validate();
+		sre.revalidate();
 		setSelection(sre);
 		return sre;
 	}

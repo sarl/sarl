@@ -284,7 +284,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		// Populates the SRE table with existing SREs defined in the workspace.
 		ISREInstall[] sres = SARLRuntime.getSREInstalls();
 		for (ISREInstall sre : sres) {
-			sre.validate();
+			sre.revalidate();
 		}
 		setSREs(sres);
 		setDefaultSRE(SARLRuntime.getDefaultSREInstall());
@@ -510,7 +510,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	}
 
 	private boolean verifyValidity(ISREInstall sre, boolean errorMessages) {
-		if (!sre.isValidInstallation()) {
+		if (!sre.getValidity().isOK()) {
 			if (errorMessages) {
 				setErrorMessage(MessageFormat.format(
 						io.sarl.eclipse.launch.config.Messages.RuntimeEnvironmentTab_5,
@@ -528,7 +528,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			if (cmp < 0) {
 				if (errorMessages) {
 					setErrorMessage(MessageFormat.format(
-							io.sarl.eclipse.launch.config.Messages.RuntimeEnvironmentTab_6,
+							io.sarl.eclipse.launch.sre.Messages.AbstractSREInstall_0,
 							sarlVersion.toString(),
 							minVersion.toString()));
 				}
@@ -536,7 +536,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			} else if (cmp > 0) {
 				if (errorMessages) {
 					setErrorMessage(MessageFormat.format(
-							io.sarl.eclipse.launch.config.Messages.RuntimeEnvironmentTab_7,
+							io.sarl.eclipse.launch.sre.Messages.AbstractSREInstall_1,
 							sarlVersion.toString(),
 							maxVersion.toString()));
 				}
@@ -551,7 +551,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		setMessage(null);
 		setErrorMessage(null);
 		if (this.sreArray.isEmpty()) {
-			setMessage(io.sarl.eclipse.launch.config.Messages.RuntimeEnvironmentTab_9);
+			setMessage(io.sarl.eclipse.launch.config.Messages.RuntimeEnvironmentTab_7);
 		} else {
 			ISREInstall defaultSRE = getDefaultSRE();
 			if (defaultSRE == null) {

@@ -23,6 +23,7 @@ package io.sarl.eclipse.launch.sre;
 import io.sarl.eclipse.util.PluginUtil;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.jdt.launching.PropertyChangeEvent;
@@ -160,7 +162,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 			// Main class
 			this.manifestMainClass = manifest.getMainAttributes().getValue("Main-Class"); //$NON-NLS-1$
 			if (this.manifestMainClass == null || this.manifestMainClass.isEmpty()) {
-				throw new SREException("Invalid main class for SRE with id " + getId()); //$NON-NLS-1$
+				throw new SREException(Messages.StandardSREInstall_0 + getId());
 			}
 			if (forceSettings || isEmpty(getMainClass())) {
 				setMainClass(this.manifestMainClass);
@@ -168,7 +170,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 			// Get SARL section:
 			Attributes sarlSection = manifest.getAttributes("SARL-Runtime-Environment"); //$NON-NLS-1$
 			if (sarlSection == null) {
-				throw new SREException("SARL runtime environment section not found in the manifest."); //$NON-NLS-1$
+				throw new SREException(Messages.StandardSREInstall_1);
 			}
 			//
 			// SARL version
@@ -252,23 +254,24 @@ public class StandardSREInstall extends AbstractSREInstall {
 		return this.vmArguments;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
-	public boolean isValidInstallation() {
+	public IStatus getValidity() {
+		if (isDirty()) {
+			return revalidate();
+		}
 		try {
 			IPath path = getJarFile();
 			if (path == null) {
-				return false;
+				return PluginUtil.createStatus(IStatus.ERROR, Messages.StandardSREInstall_2);
 			}
 			File file = path.toFile();
 			if (file == null || !file.canRead()) {
-				return false;
+				throw new FileNotFoundException(Messages.StandardSREInstall_3);
 			}
-		} catch (Throwable _) {
-			return false;
+		} catch (Throwable e) {
+			return PluginUtil.createStatus(IStatus.ERROR, e);
 		}
-		return super.isValidInstallation();
+		return super.getValidity();
 	}
 
 	/** {@inheritDoc}

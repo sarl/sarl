@@ -204,7 +204,7 @@ public final class SARLRuntime {
 	 */
 	public static ISREInstall getDefaultSREInstall() {
 		ISREInstall install = getSREFromId(getDefaultSREId());
-		if (install != null && install.isValidInstallation()) {
+		if (install != null && install.getValidity().isOK()) {
 			return install;
 		}
 		// if the default JRE goes missing, re-detect
@@ -678,7 +678,7 @@ public final class SARLRuntime {
 				for (int i = 0; iterator.hasNext(); ++i) {
 					ISREInstall sre = iterator.next();
 					newSREs[i] = sre;
-					if (sre.isValidInstallation()) {
+					if (sre.getValidity().isOK()) {
 						if (initDefaultSRE == null
 							&& PluginUtil.equalsString(sre.getId(), predefinedDefaultId)) {
 							initDefaultSRE = sre;
@@ -700,7 +700,7 @@ public final class SARLRuntime {
 					if (firstSRE == null) {
 						firstSRE = sre;
 					}
-					if (sre.isValidInstallation()) {
+					if (sre.getValidity().isOK()) {
 						firstValidSRE = sre;
 					}
 				}

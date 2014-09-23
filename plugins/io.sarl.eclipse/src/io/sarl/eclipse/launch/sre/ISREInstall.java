@@ -209,12 +209,6 @@ public interface ISREInstall extends Cloneable {
 	 */
 	void setVMSpecificAttributesMap(Map<String, String> attributes);
 
-	/** Replies if the SRE is correctly installed.
-	 *
-	 * @return <code>true</code> if the SRE is correctly installed.
-	 */
-	boolean isValidInstallation();
-
 	/** Replies the XML representation of this SRE installation.
 	 * The XML string could be used to save this SRE installation in
 	 * the preferences.
@@ -236,7 +230,13 @@ public interface ISREInstall extends Cloneable {
 	 *
 	 * @return the validation status.
 	 */
-	IStatus validate();
+	IStatus getValidity();
+
+	/** Force the computation of the installation validity.
+	 *
+	 * @return the validity status.
+	 */
+	IStatus revalidate();
 
 	/**
 	 * Whether this SRE should fire property change notifications.

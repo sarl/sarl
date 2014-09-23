@@ -37,7 +37,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -56,8 +55,6 @@ import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.xtext.xbase.lib.Pair;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.Version;
 
 /**
  * Implementation of an eclipse LauncConfigurationDelegate to launch SARL.
@@ -414,7 +411,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		ISREInstall sre = SARLRuntime.getSREFromId(runtime);
 		if (sre == null) {
 			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR,
-					MessageFormat.format(Messages.RuntimeEnvironmentTab_8, runtime)));
+					MessageFormat.format(Messages.RuntimeEnvironmentTab_6, runtime)));
 		}
 
 		verifySREValidity(sre);
@@ -450,29 +447,10 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 	@SuppressWarnings("static-method")
 	private void verifySREValidity(ISREInstall sre) throws CoreException {
-		if (!sre.isValidInstallation()) {
+		if (!sre.getValidity().isOK()) {
 			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR, MessageFormat.format(
 					Messages.RuntimeEnvironmentTab_5,
 					sre.getName())));
-		}
-		// Check the SARL version.
-		Bundle bundle = Platform.getBundle("io.sarl.lang"); //$NON-NLS-1$
-		if (bundle != null) {
-			Version sarlVersion = bundle.getVersion();
-			Version minVersion = PluginUtil.parseVersion(sre.getMinimalSARLVersion());
-			Version maxVersion = PluginUtil.parseVersion(sre.getMaximalSARLVersion());
-			int cmp = PluginUtil.compareVersionToRange(sarlVersion, minVersion, maxVersion);
-			if (cmp < 0) {
-				throw new CoreException(PluginUtil.createStatus(IStatus.ERROR, MessageFormat.format(
-						Messages.RuntimeEnvironmentTab_6,
-						sarlVersion.toString(),
-						minVersion.toString())));
-			} else if (cmp > 0) {
-				throw new CoreException(PluginUtil.createStatus(IStatus.ERROR, MessageFormat.format(
-						Messages.RuntimeEnvironmentTab_7,
-						sarlVersion.toString(),
-						maxVersion.toString())));
-			}
 		}
 	}
 

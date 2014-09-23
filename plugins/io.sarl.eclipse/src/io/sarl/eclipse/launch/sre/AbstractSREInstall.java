@@ -22,14 +22,17 @@ package io.sarl.eclipse.launch.sre;
 
 import io.sarl.eclipse.util.PluginUtil;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.jdt.launching.PropertyChangeEvent;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
 /**
@@ -130,14 +133,57 @@ public abstract class AbstractSREInstall implements ISREInstall {
 	}
 
 	@Override
-	public IStatus validate() {
+	public IStatus revalidate() {
 		try {
 			setDirty(false);
 			resolveDirtyFields(false);
-			return PluginUtil.createOkStatus();
+			return getValidity();
 		} catch (Throwable e) {
 			return PluginUtil.createStatus(IStatus.ERROR, e);
 		}
+	}
+
+	@Override
+	public IStatus getValidity() {
+		if (isDirty()) {
+			return revalidate();
+		}
+		try {
+			String mainClass = getMainClass();
+			if (mainClass == null || PluginUtil.EMPTY_STRING.equals(mainClass)) {
+				return PluginUtil.createStatus(IStatus.ERROR, Messages.AbstractSREInstall_2);
+			}
+			String name = getName();
+			if (name == null || PluginUtil.EMPTY_STRING.equals(name)) {
+				return PluginUtil.createStatus(IStatus.ERROR, Messages.AbstractSREInstall_3);
+			}
+			LibraryLocation[] locations = getLibraryLocations();
+			if (locations == null || locations.length == 0) {
+				return PluginUtil.createStatus(IStatus.ERROR, Messages.AbstractSREInstall_4);
+			}
+
+			Bundle bundle = Platform.getBundle("io.sarl.lang"); //$NON-NLS-1$
+			if (bundle != null) {
+				Version sarlVersion = bundle.getVersion();
+				Version minVersion = PluginUtil.parseVersion(getMinimalSARLVersion());
+				Version maxVersion = PluginUtil.parseVersion(getMaximalSARLVersion());
+				int cmp = PluginUtil.compareVersionToRange(sarlVersion, minVersion, maxVersion);
+				if (cmp < 0) {
+					return PluginUtil.createStatus(IStatus.ERROR, MessageFormat.format(
+							Messages.AbstractSREInstall_0,
+							sarlVersion.toString(),
+							minVersion.toString()));
+				} else if (cmp > 0) {
+					return PluginUtil.createStatus(IStatus.ERROR, MessageFormat.format(
+							Messages.AbstractSREInstall_1,
+							sarlVersion.toString(),
+							maxVersion.toString()));
+				}
+			}
+		} catch (Throwable e) {
+			return PluginUtil.createStatus(IStatus.ERROR, e);
+		}
+		return PluginUtil.createOkStatus();
 	}
 
 	/** Invoked when the JAR file has changed for updating the other
@@ -348,24 +394,6 @@ public abstract class AbstractSREInstall implements ISREInstall {
 			if (this.notify) {
 				SARLRuntime.fireSREChanged(event);
 			}
-		}
-	}
-
-	@Override
-	public boolean isValidInstallation() {
-		try {
-			String mainClass = getMainClass();
-			if (mainClass == null || PluginUtil.EMPTY_STRING.equals(mainClass)) {
-				return false;
-			}
-			String name = getName();
-			if (name == null || PluginUtil.EMPTY_STRING.equals(name)) {
-				return false;
-			}
-			LibraryLocation[] locations = getLibraryLocations();
-			return locations != null && locations.length > 0;
-		} catch (Throwable _) {
-			return false;
 		}
 	}
 
