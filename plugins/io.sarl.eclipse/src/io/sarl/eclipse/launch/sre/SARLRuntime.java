@@ -726,14 +726,14 @@ public final class SARLRuntime {
 				fireSREAdded(sre);
 			}
 		}
-		
+
 		if (!PluginUtil.equals(previousDefault, defaultSREId)) {
 			fireDefaultSREChanged(
 					getSREFromId(previousDefault),
 					getSREFromId(defaultSREId));
 		}
 	}
-	
+
 	private static void safeSaveSREConfiguration() {
 		try {
 			saveSREConfiguration(null);

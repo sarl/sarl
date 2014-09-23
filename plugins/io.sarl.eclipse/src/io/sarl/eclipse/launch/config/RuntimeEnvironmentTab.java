@@ -50,7 +50,7 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 
 	private SREConfigurationBlock sreBlock;
 	private IPropertyChangeListener listener;
-	
+
 	/**
 	 */
 	public RuntimeEnvironmentTab() {

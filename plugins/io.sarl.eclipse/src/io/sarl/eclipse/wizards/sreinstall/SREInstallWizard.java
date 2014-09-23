@@ -113,21 +113,12 @@ public abstract class SREInstallWizard extends Wizard {
 					} catch (CoreException e) {
 						PluginUtil.log(e);
 					}
-				} else if (firstTypeMatching == null) {
-					String type = info.getAttribute("sreInstallType"); //$NON-NLS-1$
-					if (type != null && !type.isEmpty()) {
-						try {
-							Class<?> cType = Class.forName(type);
-							if (cType.isInstance(sre)) {
-								firstTypeMatching = info;
-							}
-						} catch (Throwable e) {
-							PluginUtil.log(e);
-						}
-					}
+				} else if (firstTypeMatching == null
+						&& isInstance(info.getAttribute("sreInstallType"), sre)) { //$NON-NLS-1$
+					firstTypeMatching = info;
 				}
 			}
-			
+
 			if (firstTypeMatching != null) {
 				try {
 					AbstractSREInstallPage page = (AbstractSREInstallPage)
@@ -148,6 +139,18 @@ public abstract class SREInstallWizard extends Wizard {
 
 		throw new SREException(MessageFormat.format(
 				Messages.SREInstallWizard_5, sre.getName()));
+	}
+
+	private static boolean isInstance(String classname, ISREInstall sre) {
+		if (classname != null && !classname.isEmpty()) {
+			try {
+				Class<?> cType = Class.forName(classname);
+				return cType.isInstance(sre);
+			} catch (Throwable e) {
+				PluginUtil.log(e);
+			}
+		}
+		return false;
 	}
 
 }

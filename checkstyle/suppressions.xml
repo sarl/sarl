@@ -6,6 +6,9 @@
 
 <suppressions>
 
+	<!-- Suppress checking for the NLS files -->
+	<suppress checks="" files="Messages.java"/>
+
 	<suppress checks="DeclarationOrder" files="IssueCodes.java"/>
 
 	<suppress checks="BooleanExpressionComplexity" files="ModelUtil.java"/>
@@ -18,14 +21,14 @@
 
 	<suppress checks="" files="XtextBugFixes438191And438233.java"/>
 
-	<suppress checks="ExecutableStatementCount" files="NewSARLProjectWizardPageOne.java"/>
-	<suppress checks="MagicNumber" files="NewSARLProjectWizardPageOne.java"/>
-	<suppress checks="FileLength" files="NewSARLProjectWizardPageOne.java"/>
-	<suppress checks="ClassDataAbstractionCoupling" files="NewSARLProjectWizardPageOne.java"/>
+	<suppress checks="ExecutableStatementCount" files="MainProjectPage.java"/>
+	<suppress checks="MagicNumber" files="MainProjectPage.java"/>
+	<suppress checks="FileLength" files="MainProjectPage.java"/>
+	<suppress checks="ClassDataAbstractionCoupling" files="MainProjectPage.java"/>
 
-	<suppress checks="CyclomaticComplexity" files="NewSARLProjectWizardPageTwo.java"/>
-	<suppress checks="NPathComplexity" files="NewSARLProjectWizardPageTwo.java"/>
-	<suppress checks="LineLength" files="NewSARLProjectWizardPageTwo.java"/>
+	<suppress checks="CyclomaticComplexity" files="BuildSettingPage.java"/>
+	<suppress checks="NPathComplexity" files="BuildSettingPage.jav"/>
+	<suppress checks="LineLength" files="BuildSettingPage.jav"/>
 
 	<suppress checks="." files="SARLParser.java"/>
 

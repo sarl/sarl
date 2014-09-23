@@ -59,7 +59,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
 /**
- * Block of widgets that permits to select and 
+ * Block of widgets that permits to select and
  * configure a SARL runtime environment.
  *
  * @author $Author: sgalland$
@@ -74,12 +74,12 @@ public class SREConfigurationBlock {
 	public static final String PROPERTY_SRE_CONFIGURATION = "PROPERTY_SRE_CONFIGURATION"; //$NON-NLS-1$
 
 	/**
-	 * This block's control
+	 * This block's control.
 	 */
 	private Composite control;
 
 	/**
-	 * SRE change listeners
+	 * SRE change listeners.
 	 */
 	private final ListenerList listeners = new ListenerList();
 
@@ -96,21 +96,21 @@ public class SREConfigurationBlock {
 	}
 
 	/** Add listener on the changes in the SRE configuration.
-	 * 
+	 *
 	 * @param listener - the listener.
 	 */
 	public void addPropertyChangeListener(IPropertyChangeListener listener) {
 		this.listeners.add(listener);
 	}
-	
+
 	/** Add listener on the changes in the SRE configuration.
-	 * 
+	 *
 	 * @param listener - the listener.
 	 */
 	public void removePropertyChangeListener(IPropertyChangeListener listener) {
 		this.listeners.remove(listener);
 	}
-	
+
 	private void firePropertyChange() {
 		PropertyChangeEvent event = new PropertyChangeEvent(this,
 				PROPERTY_SRE_CONFIGURATION, null,
@@ -124,7 +124,7 @@ public class SREConfigurationBlock {
 
 	/**
 	 * Creates this block's control in the given control.
-	 * 
+	 *
 	 * @param parent - containing control
 	 */
 	public void createControl(Composite parent) {
@@ -157,8 +157,8 @@ public class SREConfigurationBlock {
 	}
 
 	/**
-	 * Returns this block's control
-	 * 
+	 * Returns this block's control.
+	 *
 	 * @return control
 	 */
 	public Composite getControl() {
@@ -190,11 +190,7 @@ public class SREConfigurationBlock {
 				if (selection < 0 || selection >= this.runtimeEnvironments.size()) {
 					// Ensure that there is a selected element
 					selection = indexOf(theSRE);
-					if (selection < 0) {
-						this.runtimeEnvironmentCombo.select(0);
-					} else {
-						this.runtimeEnvironmentCombo.select(selection);
-					}
+					this.runtimeEnvironmentCombo.select((selection < 0) ? 0 : selection);
 					changed = true;
 				}
 			}
@@ -246,7 +242,7 @@ public class SREConfigurationBlock {
 	}
 
 	/** Initialize the block from the given configuration.
-	 * 
+	 *
 	 * @param configuration - the configuration.
 	 */
 	public void initializeFrom(ILaunchConfiguration configuration) {
@@ -360,7 +356,7 @@ public class SREConfigurationBlock {
 	}
 
 	/** Validate the SRE.
-	 * 
+	 *
 	 * @param sre - the SRE.
 	 * @return the state of the validation, never <code>null</code>.
 	 */

@@ -707,7 +707,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	public ISelection getSelection() {
 		return new StructuredSelection(this.sresList.getCheckedElements());
 	}
-	
+
 	private void fireDefaultSREChanged() {
 		SelectionChangedEvent event = new SelectionChangedEvent(this, getSelection());
 		Object[] listeners = this.selectionListeners.getListeners();
@@ -840,7 +840,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			}
 			return true;
 		}
-		
+
 		@Override
 		public Color getForeground(Object element, int columnIndex) {
 			if (isValid(element)) {
@@ -956,7 +956,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 				}
 			}
 		}
-		
+
 		@SuppressWarnings("synthetic-access")
 		@Override
 		public void sreRemoved(ISREInstall sre) {
