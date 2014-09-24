@@ -76,6 +76,7 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking
 
 import static io.sarl.lang.util.ModelUtil.*
+import java.text.MessageFormat
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -183,9 +184,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				
 				if (!hasConstructor) {
 					var op = event.toConstructor [
-						documentation = '''
-							Construct an event. The source of the event is unknown.
-						'''
+						documentation = Messages::SARLJvmModelInferrer_0
 						body = '''
 							super();
 						'''
@@ -196,10 +195,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					//
 					val addrType = newTypeRef(typeof(Address))
 					op = event.toConstructor [
-						documentation = '''
-							Construct an event.
-							@param source - address of the agent that is emitting this event.
-						'''
+						documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_1, 'source')
 						parameters += toParameter('source', addrType)
 						body = '''
 							super(source);
@@ -231,7 +227,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					
 					op = event.toMethod("attributesToString", newTypeRef(typeof(String)))[
 						visibility = JvmVisibility::PROTECTED
-						documentation = '''Returns a String representation of the Event «event.name» attributes only.'''
+						documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_2, event.name)
 						body = [
 							append(
 								'''
@@ -355,10 +351,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				if (!hasConstructor) {
 					val aType = newTypeRef(typeof(io.sarl.lang.core.Agent))
 					var op = skill.toConstructor [
-						documentation = '''
-							Construct a skill.
-							@param owner - agent that is owning this skill. 
-						'''
+						documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_3, 'owner')
 						parameters += skill.toParameter('owner', aType)
 						body = '''
 							super(owner);
@@ -368,9 +361,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					it.members += op
 					typeExtensions.setSynthetic(op, true)
 					op = skill.toConstructor [
-						documentation = '''
-							Construct a skill. The owning agent is unknown. 
-						'''
+						documentation = Messages::SARLJvmModelInferrer_4
 						body = '''
 							super();
 						'''
@@ -438,10 +429,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				if (!hasConstructor) {
 					val aType = newTypeRef(typeof(io.sarl.lang.core.Agent))
 					var op = behavior.toConstructor [
-						documentation = '''
-							Construct a behavior.
-							@param owner - reference to the agent that is owning this behavior.
-						'''
+						documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_5, 'owner')
 						parameters += toParameter('owner', aType)
 						body = '''
 							super(owner);
@@ -467,11 +455,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			generateExtendedTypes(agent, typeof(io.sarl.lang.core.Agent))
 
 			var cons1 = agent.toConstructor [
-				documentation = '''
-					Construct an agent.
-					@param parentID - identifier of the parent. It is the identifer
-					of the parent agent and the enclosing contect, at the same time.
-				'''
+				documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_6, 'parentID')
 				parameters += agent.toParameter('parentID', newTypeRef(typeof(UUID)))
 				body = '''
 					super(parentID, null);
@@ -482,13 +466,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			typeExtensions.setSynthetic(cons1, true)
 			
 			var cons2 = agent.toConstructor [
-				documentation = '''
-					Construct an agent.
-					@param parentID - identifier of the parent. It is the identifer
-					of the parent agent and the enclosing contect, at the same time.
-					@param agentID - identifier of the agent. If <code>null</code>
-					                 the agent identifier will be computed randomly.
-				'''
+				documentation = MessageFormat::format(
+					Messages::SARLJvmModelInferrer_7,
+					'parentID', 'agentID')
 				parameters += agent.toParameter('parentID', newTypeRef(typeof(UUID)))
 				parameters += agent.toParameter('agentID', newTypeRef(typeof(UUID)))
 				body = '''
@@ -580,7 +560,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 								+vId)
 						}
 						else {
-							throw new IllegalStateException("Invalid generation of the default-valued formal parameters")
+							throw new IllegalStateException(Messages::SARLJvmModelInferrer_8)
 						}
 					}
 					
@@ -740,8 +720,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			} else {
 				val guardMethodName = behName + "_Guard"
 				val guardMethod = guard.toMethod(guardMethodName, guard.newTypeRef(Boolean::TYPE)) [
-					documentation = "Ensures that the behavior " + behName + " is called only when the guard " +
-						guard.toString + " is valid"
+					documentation = MessageFormat::format(
+						Messages::SARLJvmModelInferrer_9,
+						behName, guard.toString)
 					parameters += unit.event.toParameter(SARLKeywords::OCCURRENCE, unit.event)
 					body = guard
 				]
@@ -758,7 +739,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			}
 			return behaviorMethod
 		}
-		log.fine("Unable to resolve the event for a behavior unit")
+		log.fine(Messages::SARLJvmModelInferrer_10)
 		return null
 	}
 	
@@ -786,7 +767,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					var name = "___FORMAL_PARAMETER_DEFAULT_VALUE_"+namePostPart
 					// FIXME: Hide these attributes into an inner interface.
 					var field = param.defaultValue.toField(name, paramType) [
-						documentation = "Default value for the parameter "+paramName
+						documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_11, paramName)
 						static = true
 						final = true
 						if (isForInterface) {

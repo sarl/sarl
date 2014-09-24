@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.xtext;bundle-version="[2.6.2,2.7.0)";visibility:=ree
  org.eclipse.xtext.common.types;bundle-version="[2.6.2,2.7.0)",
  org.eclipse.xtext.xbase.lib;bundle-version="[2.6.2,2.7.0)",
  io.sarl.lang.core;bundle-version="0.1.0",
- org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional
+ org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
+ org.eclipse.osgi;bundle-version="3.10.0"
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
