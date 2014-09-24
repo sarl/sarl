@@ -54,6 +54,11 @@ public final class LaunchConfigurationConstants {
 	public static final String ATTR_SARL_RUNTIME_ENVIRONMENT = PluginUtil.PLUGIN_ID + ".SARL_RUNTIME_ENVIRONMENT"; //$NON-NLS-1$
 
 	/**
+	 * Launch configuration attribute key. The value is a boolean that indicates if the system-wide SRE should be used.
+	 */
+	public static final String ATTR_USE_SARL_RUNTIME_ENVIRONMENT = PluginUtil.PLUGIN_ID + ".USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT"; //$NON-NLS-1$
+
+	 /**
 	 * Status code indicating a launch configuration does not
 	 * specify an agent name to launch.
 	 */

@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -41,6 +42,8 @@ import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+
+import com.google.common.base.Strings;
 
 /**
  * Engine for searching agent types in the classpath.
@@ -89,6 +92,30 @@ public class AgentTypeSearchEngine {
 	}
 
 	/**
+	 * Searches for a single agent type in the given scope.
+	 * Valid styles are IJavaElementSearchConstants.CONSIDER_BINARIES and
+	 * IJavaElementSearchConstants.CONSIDER_EXTERNAL_JARS
+	 *
+	 * @param context - the searching context.
+	 * @param scope - the searching scope.
+	 * @param agentName - the name to search for.
+	 * @return the found type or <code>null</code> if the type was not found.
+	 * @throws InvocationTargetException when cannot launch the search.
+	 * @throws InterruptedException when the search is interrupted.
+	 */
+	public IType searchAgentType(IRunnableContext context, final IJavaSearchScope scope, final String agentName)
+			throws InvocationTargetException, InterruptedException  {
+		final IType[] res = new IType[1];
+		context.run(true, true, new IRunnableWithProgress() {
+			@Override
+			public void run(IProgressMonitor pm) throws InvocationTargetException {
+				res[0] = searchAgentType(pm, scope, agentName);
+			}
+		});
+		return res[0];
+	}
+
+	/**
 	 * Searches for all agent types in the given scope.
 	 * Valid styles are IJavaElementSearchConstants.CONSIDER_BINARIES and
 	 * IJavaElementSearchConstants.CONSIDER_EXTERNAL_JARS
@@ -121,6 +148,40 @@ public class AgentTypeSearchEngine {
 	}
 
 	/**
+	 * Searches for a single agent type in the given scope.
+	 * Valid styles are IJavaElementSearchConstants.CONSIDER_BINARIES and
+	 * IJavaElementSearchConstants.CONSIDER_EXTERNAL_JARS
+	 *
+	 * @param progressMonitor - the progression monitor.
+	 * @param scope - the searching scope.
+	 * @param agentName - the name to search for.
+	 * @return the found type or <code>null</code> if the type was not found.
+	 * @throws InvocationTargetException when cannot launch the search.
+	 */
+	@SuppressWarnings("static-method")
+	public IType searchAgentType(IProgressMonitor progressMonitor, final IJavaSearchScope scope, final String agentName)
+			throws InvocationTargetException  {
+		progressMonitor.beginTask(Messages.AgentTypeSearchEngine_0, TICKS);
+		SearchPattern pattern = SearchPattern.createPattern("io.sarl.lang.core.Agent", //$NON-NLS-1$
+				IJavaSearchConstants.CLASS,
+				IJavaSearchConstants.IMPLEMENTORS,
+				SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE);
+		SearchParticipant[] participants = new SearchParticipant[] {
+				SearchEngine.getDefaultSearchParticipant(),
+		};
+		SingleTypeCollector collector = new SingleTypeCollector(agentName);
+		IProgressMonitor searchMonitor = new SubProgressMonitor(progressMonitor, TICKS);
+		try {
+			new SearchEngine().search(pattern, participants, scope, collector, searchMonitor);
+		} catch (CoreException ce) {
+			if (!ce.getStatus().isOK()) {
+				PluginUtil.log(ce.getStatus());
+			}
+		}
+		return collector.getResult();
+	}
+
+	/**
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -149,6 +210,43 @@ public class AgentTypeSearchEngine {
 			if (enclosingElement instanceof IType) {
 				IType curr = (IType) enclosingElement;
 				this.result.add(curr);
+			}
+		}
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class SingleTypeCollector extends SearchRequestor {
+
+		private IType result;
+		private final String agentName;
+
+		/**
+		 * @param agentName - the name to search for.
+		 */
+		public SingleTypeCollector(String agentName) {
+			this.result = null;
+			this.agentName = Strings.nullToEmpty(agentName);
+		}
+
+		public IType getResult() {
+			return this.result;
+		}
+
+		@Override
+		public void acceptSearchMatch(SearchMatch match) throws CoreException {
+			Object enclosingElement = match.getElement();
+			// defensive code
+			if (enclosingElement instanceof IType) {
+				IType curr = (IType) enclosingElement;
+				if (this.agentName.equals(Strings.nullToEmpty(curr.getFullyQualifiedName()))) {
+					this.result = curr;
+					throw new CoreException(PluginUtil.createStatus(IStatus.OK, PluginUtil.EMPTY_STRING));
+				}
 			}
 		}
 	}

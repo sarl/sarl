@@ -62,6 +62,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
+import com.google.common.base.Strings;
+
 /**
  * Class for the main launch configuration tab.
  *
@@ -72,6 +74,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 
+	private volatile String lastAgentNameError;
 	private Text agentNameTextField;
 	private Button agentNameSearchButton;
 	private Image image;
@@ -108,9 +111,6 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 		createVerticalSpacer(comp, 1);
 		createAgentNameEditor(comp, Messages.MainLaunchConfigurationTab_0);
 		setControl(comp);
-		// TODO: Add help context
-		//PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(),
-		//IJavaDebugHelpContextIds.LAUNCH_CONFIGURATION_DIALOG_MAIN_TAB);
 	}
 
 	/**
@@ -126,6 +126,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public void modifyText(ModifyEvent e) {
+				MainLaunchConfigurationTab.this.lastAgentNameError = null;
 				updateLaunchConfigurationDialog();
 			}
 		});
@@ -178,11 +179,25 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 	 * @return the validity state.
 	 */
 	protected boolean isValidAgentName() {
-		String name = this.agentNameTextField.getText().trim();
-		if (name.isEmpty()) {
-			setErrorMessage(Messages.MainLaunchConfigurationTab_2);
+		if (this.lastAgentNameError != null) {
+			boolean isValid = Strings.isNullOrEmpty(this.lastAgentNameError);
+			if (!isValid) {
+				setErrorMessage(this.lastAgentNameError);
+			}
+			return isValid;
+		}
+		String name = this.agentNameTextField.getText();
+		if (Strings.isNullOrEmpty(name)) {
+			this.lastAgentNameError = Messages.MainLaunchConfigurationTab_2;
+			setErrorMessage(this.lastAgentNameError);
 			return false;
 		}
+		if (!isAgentNameDefined(name)) {
+			this.lastAgentNameError = MessageFormat.format(Messages.MainLaunchConfigurationTab_8, name);
+			setErrorMessage(this.lastAgentNameError);
+			return false;
+		}
+		this.lastAgentNameError = PluginUtil.EMPTY_STRING;
 		return true;
 	}
 
@@ -193,8 +208,8 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 	 * @return the validity state.
 	 */
 	protected boolean isValidProjectName() {
-		String name = this.fProjText.getText().trim();
-		if (name.isEmpty()) {
+		String name = this.fProjText.getText();
+		if (Strings.isNullOrEmpty(name)) {
 			setErrorMessage(Messages.MainLaunchConfigurationTab_3);
 			return false;
 		}
@@ -278,11 +293,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 			}
 		}
 
-		if (name == null) {
-			name = PluginUtil.EMPTY_STRING;
-		}
-
-		return name;
+		return Strings.nullToEmpty(name);
 	}
 
 	/**
@@ -351,6 +362,28 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 		} catch (InterruptedException e) {
 			setErrorMessage(e.getMessage());
 			return null;
+		}
+	}
+
+	private boolean isAgentNameDefined(String agentName) {
+		IJavaElement[] elements = extractElementsFromProject();
+		int constraints = IJavaSearchScope.SOURCES;
+		constraints |= IJavaSearchScope.APPLICATION_LIBRARIES;
+		IJavaSearchScope searchScope = SearchEngine.createJavaSearchScope(elements, constraints);
+		AgentTypeSearchEngine engine = new AgentTypeSearchEngine();
+		IType type;
+		try {
+			type = engine.searchAgentType(
+					getLaunchConfigurationDialog(),
+					searchScope,
+					agentName);
+			return type != null;
+		} catch (InvocationTargetException e) {
+			setErrorMessage(e.getMessage());
+			return false;
+		} catch (InterruptedException e) {
+			setErrorMessage(e.getMessage());
+			return false;
 		}
 	}
 

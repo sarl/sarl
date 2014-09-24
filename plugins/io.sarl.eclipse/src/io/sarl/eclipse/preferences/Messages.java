@@ -34,6 +34,7 @@ public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "io.sarl.eclipse.preferences.messages"; //$NON-NLS-1$
 	public static String SREsPreferencePage_0;
 	public static String SREsPreferencePage_1;
+	public static String SREsPreferencePage_10;
 	public static String SREsPreferencePage_2;
 	public static String SREsPreferencePage_3;
 	public static String SREsPreferencePage_4;
@@ -41,6 +42,7 @@ public class Messages extends NLS {
 	public static String SREsPreferencePage_6;
 	public static String SREsPreferencePage_7;
 	public static String SREsPreferencePage_8;
+	public static String SREsPreferencePage_9;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

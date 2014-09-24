@@ -20,12 +20,15 @@
  */
 package io.sarl.eclipse.launch.config;
 
+import io.sarl.eclipse.launch.config.SREConfigurationBlock.SRECompliantProjectProvider;
 import io.sarl.eclipse.launch.sre.ISREInstall;
 import io.sarl.eclipse.launch.sre.SARLRuntime;
 import io.sarl.eclipse.util.PluginUtil;
 
 import java.text.MessageFormat;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -48,7 +51,7 @@ import org.osgi.framework.Version;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class RuntimeEnvironmentTab extends JavaJRETab {
+public class RuntimeEnvironmentTab extends JavaJRETab implements SRECompliantProjectProvider {
 
 	private SREConfigurationBlock sreBlock;
 	private IPropertyChangeListener listener;
@@ -70,11 +73,33 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 	}
 
 	@Override
+	public IProject getSRECompliantProject() {
+		ILaunchConfiguration config = getLaunchConfigurationWorkingCopy();
+		if (config == null) {
+			config = getLaunchConfiguration();
+		}
+		if (config != null) {
+			try {
+				String name = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null);
+				if (name != null && name.length() > 0) {
+					IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
+					if (project.exists()) { 
+						return project;
+					}
+				}
+			} catch (CoreException e) {
+				PluginUtil.log(e);
+			}
+		}
+		return null;
+	}
+
+	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 		Composite oldComp = (Composite) getControl();
 		Control[] children = oldComp.getChildren();
-		this.sreBlock = new SREConfigurationBlock();
+		this.sreBlock = new SREConfigurationBlock(true, this);
 		this.sreBlock.createControl(parent);
 		for (Control ctl : children) {
 			ctl.setParent(this.sreBlock.getControl());
@@ -118,7 +143,28 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 			PluginUtil.log(ce);
 		}
 		ISREInstall sre = SARLRuntime.getSREFromId(sreId);
-		this.sreBlock.selectSRE(sre);
+		boolean notify = this.sreBlock.getNotify();
+		boolean changed;
+		try {
+			this.sreBlock.setNotify(false);
+			changed = this.sreBlock.selectSpecificSRE(sre);
+
+			try {
+				String useWideConfig = config.getAttribute(
+						LaunchConfigurationConstants.ATTR_USE_SARL_RUNTIME_ENVIRONMENT,
+						Boolean.TRUE.toString());
+				if (Boolean.parseBoolean(useWideConfig)) {
+					changed = this.sreBlock.selectSystemWideSRE();
+				}
+			} catch (CoreException ce) {
+				PluginUtil.log(ce);
+			}
+		} finally {
+			this.sreBlock.setNotify(notify);
+		}
+		if (changed) {
+			updateLaunchConfigurationDialog();
+		}
 	}
 
 	@Override
@@ -134,10 +180,11 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 	@Override
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
 		super.activated(workingCopy);
+		this.sreBlock.updateExternalSREButtonLabels();
 		selectSREFromConfig(workingCopy);
 	}
 
-	
+
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		super.setDefaults(config);
@@ -153,8 +200,10 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 			config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
 					PluginUtil.EMPTY_STRING);
 		}
+		config.setAttribute(LaunchConfigurationConstants.ATTR_USE_SARL_RUNTIME_ENVIRONMENT,
+				Boolean.TRUE.toString());
 	}
-	
+
 	@Override
 	public boolean isValid(ILaunchConfiguration config) {
 		IStatus status;
@@ -211,7 +260,7 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		super.performApply(configuration);
-		ISREInstall sre = this.sreBlock.getSelectedSRE();
+		ISREInstall sre = this.sreBlock.getSpecificSRE();
 		if (sre != null) {
 			configuration.setAttribute(
 					LaunchConfigurationConstants.ATTR_SARL_RUNTIME_ENVIRONMENT,
@@ -227,6 +276,9 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 					IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
 					PluginUtil.EMPTY_STRING);
 		}
+		configuration.setAttribute(
+				LaunchConfigurationConstants.ATTR_USE_SARL_RUNTIME_ENVIRONMENT,
+				Boolean.toString(this.sreBlock.isSystemWideDefaultSRE()));
 	}
 
 }

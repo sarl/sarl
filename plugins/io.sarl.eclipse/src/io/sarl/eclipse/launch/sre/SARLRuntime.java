@@ -69,6 +69,9 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
+
 /**
  * The central access point for launching support. This class manages
  * the registered SRE types contributed through the
@@ -170,9 +173,10 @@ public final class SARLRuntime {
 	 * @return the SRE corresponding to the specified Id, or <code>null</code>.
 	 */
 	public static ISREInstall getSREFromId(String id) {
-		if (id == null || id.isEmpty()) {
+		if (Strings.isNullOrEmpty(id)) {
 			return null;
 		}
+		initializeSREs();
 		LOCK.lock();
 		try {
 			return ALL_SRE_INSTALLS.get(id);
@@ -226,6 +230,7 @@ public final class SARLRuntime {
 	 * @throws CoreException if trying to set the default SRE install encounters problems
 	 */
 	public static void setSREInstalls(ISREInstall[] sres, IProgressMonitor monitor) throws CoreException {
+		initializeSREs();
 		String oldDefaultId;
 		String newDefaultId;
 		List<ISREInstall> newElements = new ArrayList<>();
@@ -295,6 +300,7 @@ public final class SARLRuntime {
 	 */
 	public static void setDefaultSREInstall(ISREInstall sre, IProgressMonitor monitor,
 			boolean savePreference) throws CoreException {
+		initializeSREs();
 		ISREInstall previous = null;
 		ISREInstall current = null;
 		LOCK.lock();
@@ -482,6 +488,7 @@ public final class SARLRuntime {
 	 * @throws CoreException if trying to compute the XML for the SRE state encounters a problem.
 	 */
 	public static String getSREsAsXML() throws CoreException {
+		initializeSREs();
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
@@ -514,7 +521,7 @@ public final class SARLRuntime {
 				sre.getAsXML(xmlDocument, sreNode);
 				sresNode.appendChild(sreNode);
 			}
-			if (defaultSREId != null && !defaultSREId.isEmpty()) {
+			if (!Strings.isNullOrEmpty(defaultSREId)) {
 				sresNode.setAttribute("defaultSRE", defaultSREId); //$NON-NLS-1$
 			}
 		} finally {
@@ -552,7 +559,7 @@ public final class SARLRuntime {
 	}
 
 	private static ISREInstall createSRE(String classname, String id) {
-		if (id != null && !id.isEmpty()) {
+		if (!Strings.isNullOrEmpty(id)) {
 			try {
 				Class<? extends ISREInstall> type = Class.forName(classname).asSubclass(ISREInstall.class);
 				Constructor<? extends ISREInstall> cons = type.getConstructor(String.class);
@@ -580,7 +587,7 @@ public final class SARLRuntime {
 		try {
 			Element config = null;
 			// If the preference was found, load SREs from it into memory
-			if (!rawXml.isEmpty()) {
+			if (!Strings.isNullOrEmpty(rawXml)) {
 				config = parseXML(rawXml, true);
 			} else {
 				// Otherwise, look for the old file that previously held the SRE definitions
@@ -668,7 +675,7 @@ public final class SARLRuntime {
 				// Install the SREs from the Eclipse extension points
 				initializeSREExtensions();
 				// install the SREs from the user-defined preferences.
-				String predefinedDefaultId = initializePersistedSREs();
+				String predefinedDefaultId = Strings.nullToEmpty(initializePersistedSREs());
 
 				newSREs = new ISREInstall[ALL_SRE_INSTALLS.size()];
 
@@ -680,7 +687,7 @@ public final class SARLRuntime {
 					newSREs[i] = sre;
 					if (sre.getValidity().isOK()) {
 						if (initDefaultSRE == null
-							&& PluginUtil.equalsString(sre.getId(), predefinedDefaultId)) {
+							&& sre.getId().equals(predefinedDefaultId)) {
 							initDefaultSRE = sre;
 						}
 					}
@@ -691,7 +698,7 @@ public final class SARLRuntime {
 				savePrefs = true;
 			}
 
-			if (defaultSREId == null || defaultSREId.isEmpty()) {
+			if (Strings.isNullOrEmpty(defaultSREId)) {
 				ISREInstall firstSRE = null;
 				ISREInstall firstValidSRE = null;
 				Iterator<ISREInstall> iterator = ALL_SRE_INSTALLS.values().iterator();
@@ -727,7 +734,7 @@ public final class SARLRuntime {
 			}
 		}
 
-		if (!PluginUtil.equals(previousDefault, defaultSREId)) {
+		if (!Objects.equal(previousDefault, defaultSREId)) {
 			fireDefaultSREChanged(
 					getSREFromId(previousDefault),
 					getSREFromId(defaultSREId));
@@ -752,6 +759,36 @@ public final class SARLRuntime {
 			id = String.valueOf(System.currentTimeMillis());
 		} while (getSREFromId(id) != null);
 		return id;
+	}
+	
+	/** Reset the list of the SREs to the default ones (the platform SREs).
+	 * 
+	 * @throws CoreException if a problem occurs during the reset.
+	 */
+	public static void reset() throws CoreException {
+		LOCK.lock();
+		try {
+			// Clear the SRE configuration stored into the preferences.
+			clearSREConfiguration();
+			// Reset the internal data structures.
+			if (platformSREInstalls != null) {
+				ISREInstall previous = getDefaultSREInstall();
+				Map<String, ISREInstall> oldSREs = new HashMap<>(ALL_SRE_INSTALLS);
+				ALL_SRE_INSTALLS.clear();
+				platformSREInstalls = null;
+				defaultSREId = null;
+				
+				// Notify about the removals
+				for(ISREInstall sre : oldSREs.values()) {
+					fireSRERemoved(sre);
+				}
+				fireDefaultSREChanged(previous, null);
+			}
+			// Re-read the data
+			initializeSREs();
+		} finally {
+			LOCK.unlock();
+		}
 	}
 
 }

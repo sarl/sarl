@@ -34,7 +34,7 @@ public class Messages extends NLS {
 
 	private static final String BUNDLE_NAME = "io.sarl.eclipse.wizards.newproject.messages"; //$NON-NLS-1$
 
-	public static String SARLProjectNewWizard_0;
+	public static String MainProjectPage_0;public static String SARLProjectNewWizard_0;
 	public static String SARLProjectNewWizard_1;
 	public static String SARLProjectNewWizard_2;
 	public static String SARLProjectNewWizard_3;

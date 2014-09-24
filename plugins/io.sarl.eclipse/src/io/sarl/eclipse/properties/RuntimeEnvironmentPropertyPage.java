@@ -32,6 +32,9 @@ import org.eclipse.jdt.internal.ui.preferences.PropertyAndPreferencePage;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
+
 /** Property page for selecting the SARL runtime environment
  * associated to this page.
  * 
@@ -58,11 +61,15 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 	 */
 	public static final String PROPERTY_NAME_SRE_INSTALL_ID = "SRE_INSTALL_ID"; //$NON-NLS-1$
 	
+	/** Name of the property that indicates if the system-wide SRE should be used..
+	 */
+	public static final String PROPERTY_NAME_USE_SYSTEM_WIDE_SRE = "USE_SYSTEM_WIDE_SRE"; //$NON-NLS-1$
+
 	/** Name of the property that indicates if the project has specific options.
 	 */
 	public static final String PROPERTY_NAME_HAS_PROJECT_SPECIFIC = "HAS_PROJECT_SPECIFIC"; //$NON-NLS-1$
 
-	private SREConfigurationBlock configurationBlock;
+	private SREConfigurationBlock sreBlock;
 	
 	/**
 	 * Constructor for RuntimeEnvironmentPropertyPage.
@@ -76,17 +83,8 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 	 * @param name - the name.
 	 * @return the qualified name.
 	 */
-	protected static QualifiedName qualify(String name) {
+	public static QualifiedName qualify(String name) {
 		return new QualifiedName(PROPERTY_QUALIFIER, name);
-	}
-
-	/** Create a qualified name with the given name.
-	 * 
-	 * @param name - the name.
-	 * @return the qualified name.
-	 */
-	protected static String nullify(String name) {
-		return (name != null && name.isEmpty()) ? null : name; 
 	}
 
 	@Override
@@ -101,14 +99,28 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 
 	@Override
 	protected Control createPreferenceContent(Composite composite) {
-		this.configurationBlock = new SREConfigurationBlock();
-		Control ctrl = this.configurationBlock.createControl(composite);
-		this.configurationBlock.initialize();
+		this.sreBlock = new SREConfigurationBlock(true, null);
+		Control ctrl = this.sreBlock.createControl(composite);
+		this.sreBlock.initialize();
 		try {
+			String useSystemWide = getProject().getPersistentProperty(
+					qualify(PROPERTY_NAME_USE_SYSTEM_WIDE_SRE));
 			String sreInstallId = getProject().getPersistentProperty(
 					qualify(PROPERTY_NAME_SRE_INSTALL_ID));
-			ISREInstall sre = SARLRuntime.getSREFromId(nullify(sreInstallId));
-			this.configurationBlock.selectSRE(sre);
+			ISREInstall sre = SARLRuntime.getSREFromId(Strings.emptyToNull(sreInstallId));
+			boolean notify = this.sreBlock.getNotify();
+			try {
+				this.sreBlock.setNotify(false);
+				this.sreBlock.selectSpecificSRE(sre);
+				if (Boolean.parseBoolean(Objects.firstNonNull(
+						Strings.emptyToNull(useSystemWide), Boolean.TRUE.toString()))) {
+					this.sreBlock.selectSystemWideSRE();
+				} else {
+					this.sreBlock.selectSpecificSRE();
+				}
+			} finally {
+				this.sreBlock.setNotify(notify);
+			}
 		} catch (CoreException e) {
 			PluginUtil.log(e);
 		}
@@ -149,19 +161,9 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 		return false;
 	}
 
-	//	private void addSeparator(Composite parent) {
-//		Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
-//		GridData gridData = new GridData();
-//		gridData.horizontalAlignment = GridData.FILL;
-//		gridData.grabExcessHorizontalSpace = true;
-//		separator.setLayoutData(gridData);
-//	}
-
 	@Override
 	protected void performDefaults() {
-		if (useProjectSettings()) {
-			this.configurationBlock.selectSRE(null);
-		}
+		this.sreBlock.selectSRE(null);
 		super.performDefaults();
 	}
 
@@ -172,9 +174,13 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 			|| !saveProjectSpecificOptions(getProject(), useProjectSettings())) {
 			return false;
 		}
-		ISREInstall projectSRE = this.configurationBlock.getSelectedSRE();
+		ISREInstall projectSRE = this.sreBlock.getSelectedSRE();
+		boolean isSystemWide = this.sreBlock.isSystemWideDefaultSRE();
 		String id = (projectSRE == null) ? null : projectSRE.getId();
 		try {
+			prj.setPersistentProperty(
+					qualify(PROPERTY_NAME_USE_SYSTEM_WIDE_SRE),
+					Boolean.toString(isSystemWide));
 			prj.setPersistentProperty(
 					qualify(PROPERTY_NAME_SRE_INSTALL_ID),
 					id);

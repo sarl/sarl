@@ -56,6 +56,8 @@ import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.xtext.xbase.lib.Pair;
 
+import com.google.common.base.Strings;
+
 /**
  * Implementation of an eclipse LauncConfigurationDelegate to launch SARL.
  *
@@ -107,7 +109,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 			// Program & VM arguments
 			String pgmArgs = getProgramArguments(configuration);
-			if (pgmArgs != null && !pgmArgs.isEmpty()) {
+			if (!Strings.isNullOrEmpty(pgmArgs)) {
 				pgmArgs = agentName + " " + pgmArgs; //$NON-NLS-1$
 			} else {
 				pgmArgs = agentName;
@@ -402,8 +404,18 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	protected IRuntimeClasspathEntry[] computeUnresolvedSARLRuntimeClasspath(
 			ILaunchConfiguration configuration) throws CoreException {
 		// Retrieve the SARL runtime environment jar file.
-		String runtime = configuration.getAttribute(LaunchConfigurationConstants.ATTR_SARL_RUNTIME_ENVIRONMENT, (String) null);
-		if (runtime == null || runtime.isEmpty()) {
+		String useDefaultSRE = configuration.getAttribute(LaunchConfigurationConstants.ATTR_USE_SARL_RUNTIME_ENVIRONMENT, Boolean.TRUE.toString());
+		String runtime = null;
+		if (Boolean.parseBoolean(useDefaultSRE)) {
+			ISREInstall sre = SARLRuntime.getDefaultSREInstall();
+			if (sre != null) {
+				runtime = sre.getId();
+			}
+		} else  {
+			runtime = configuration.getAttribute(LaunchConfigurationConstants.ATTR_SARL_RUNTIME_ENVIRONMENT, (String) null);
+		}
+
+		if (Strings.isNullOrEmpty(runtime)) {
 			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR,
 					Messages.SARLLaunchConfigurationDelegate_0));
 		}

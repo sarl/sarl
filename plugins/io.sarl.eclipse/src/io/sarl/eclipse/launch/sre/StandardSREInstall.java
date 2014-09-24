@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -42,6 +43,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 
 
 /**
@@ -108,8 +112,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 	 * @param jarFile - the path to the JAR file. Must not be <code>null</code>.
 	 */
 	public void setJarFile(IPath jarFile) {
-		assert (jarFile != null);
-		if (!PluginUtil.equals(jarFile, this.jarFile)) {
+		if (!Objects.equal(jarFile, this.jarFile)) {
 			PropertyChangeEvent event = new PropertyChangeEvent(
 					this, ISREInstallChangedListener.PROPERTY_JAR_FILE,
 					this.jarFile, jarFile);
@@ -133,7 +136,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 	@Override
 	public String getName() {
 		String n = super.getName();
-		if (n == null || n.isEmpty()) {
+		if (Strings.isNullOrEmpty(n)) {
 			IPath p = getJarFile();
 			if (p != null) {
 				n = p.removeFileExtension().lastSegment();
@@ -149,96 +152,103 @@ public class StandardSREInstall extends AbstractSREInstall {
 		return super.getName();
 	}
 
-	private static boolean isEmpty(String s) {
-		return s == null || s.isEmpty();
-	}
-
 	@Override
 	protected void resolveDirtyFields(boolean forceSettings) {
-		assert (this.jarFile != null);
-		try (JarFile jFile = new JarFile(this.jarFile.toFile())) {
-			Manifest manifest = jFile.getManifest();
-			//
-			// Main class
-			this.manifestMainClass = manifest.getMainAttributes().getValue("Main-Class"); //$NON-NLS-1$
-			if (this.manifestMainClass == null || this.manifestMainClass.isEmpty()) {
-				throw new SREException(Messages.StandardSREInstall_0 + getId());
-			}
-			if (forceSettings || isEmpty(getMainClass())) {
-				setMainClass(this.manifestMainClass);
-			}
-			// Get SARL section:
-			Attributes sarlSection = manifest.getAttributes("SARL-Runtime-Environment"); //$NON-NLS-1$
-			if (sarlSection == null) {
-				throw new SREException(Messages.StandardSREInstall_1);
-			}
-			//
-			// SARL version
-			String sarlVersion = sarlSection.getValue("SARL-Spec-Version"); //$NON-NLS-1$
-			String minVersion = null;
-			String maxVersion = null;
-			if (sarlVersion != null && !sarlVersion.isEmpty()) {
-				try {
-					Version sarlVer = Version.parseVersion(sarlVersion);
-					if (sarlVer != null) {
-						minVersion = new Version(sarlVer.getMajor(), sarlVer.getMinor(), 0).toString();
-						maxVersion = new Version(sarlVer.getMajor(), sarlVer.getMinor() + 1, 0).toString();
+		if (this.jarFile != null) {
+			try (JarFile jFile = new JarFile(this.jarFile.toFile())) {
+				Manifest manifest = jFile.getManifest();
+				//
+				// Main class
+				this.manifestMainClass = manifest.getMainAttributes().getValue("Main-Class"); //$NON-NLS-1$
+				if (Strings.isNullOrEmpty(this.manifestMainClass)) {
+					throw new SREException(Messages.StandardSREInstall_0 + getId());
+				}
+				if (forceSettings || Strings.isNullOrEmpty(getMainClass())) {
+					setMainClass(this.manifestMainClass);
+				}
+				// Get SARL section:
+				Attributes sarlSection = manifest.getAttributes("SARL-Runtime-Environment"); //$NON-NLS-1$
+				if (sarlSection == null) {
+					throw new SREException(Messages.StandardSREInstall_1);
+				}
+				//
+				// SARL version
+				String sarlVersion = sarlSection.getValue("SARL-Spec-Version"); //$NON-NLS-1$
+				String minVersion = null;
+				String maxVersion = null;
+				if (!Strings.isNullOrEmpty(sarlVersion)) {
+					try {
+						Version sarlVer = Version.parseVersion(sarlVersion);
+						if (sarlVer != null) {
+							minVersion = new Version(sarlVer.getMajor(), sarlVer.getMinor(), 0).toString();
+							maxVersion = new Version(sarlVer.getMajor(), sarlVer.getMinor() + 1, 0).toString();
+						}
+					} catch (Throwable _) {
+						//
 					}
-				} catch (Throwable _) {
-					//
 				}
-			}
-			if (forceSettings || isEmpty(getMinimalSARLVersion())) {
-				setMinimalSARLVersion(minVersion);
-			}
-			if (forceSettings || isEmpty(getMaximalSARLVersion())) {
-				setMaximalSARLVersion(maxVersion);
-			}
-			//
-			// SRE Name
-			this.manifestName = unnullify(sarlSection.getValue("SRE-Name")); //$NON-NLS-1$
-			if (forceSettings || isEmpty(getNameNoDefault())) {
-				setName(this.manifestName);
-			}
-			//
-			// VM arguments
-			String vmArgs = sarlSection.getValue("VM-Arguments"); //$NON-NLS-1$
-			if (!PluginUtil.equalsString(vmArgs, this.vmArguments)) {
-				PropertyChangeEvent event = new PropertyChangeEvent(
-						this, ISREInstallChangedListener.PROPERTY_VM_ARGUMENTS,
-						this.vmArguments, unnullify(vmArgs));
-				this.vmArguments = unnullify(vmArgs);
-				if (getNotify()) {
-					SARLRuntime.fireSREChanged(event);
+				if (forceSettings || Strings.isNullOrEmpty(getMinimalSARLVersion())) {
+					setMinimalSARLVersion(minVersion);
 				}
-			}
-			//
-			// VM-specific attributes
-			setVMSpecificAttributesMap(null);
-			//
-			// Program arguments
-			String programArgs = sarlSection.getValue("Program-Arguments"); //$NON-NLS-1$
-			if (!PluginUtil.equalsString(programArgs, this.programArguments)) {
-				PropertyChangeEvent event = new PropertyChangeEvent(
-						this, ISREInstallChangedListener.PROPERTY_PROGRAM_ARGUMENTS,
-						this.programArguments, unnullify(programArgs));
-				this.programArguments = unnullify(programArgs);
-				if (getNotify()) {
-					SARLRuntime.fireSREChanged(event);
+				if (forceSettings || Strings.isNullOrEmpty(getMaximalSARLVersion())) {
+					setMaximalSARLVersion(maxVersion);
 				}
+				//
+				// SRE Name
+				this.manifestName = Strings.nullToEmpty(sarlSection.getValue("SRE-Name")); //$NON-NLS-1$
+				if (forceSettings || Strings.isNullOrEmpty(getNameNoDefault())) {
+					setName(this.manifestName);
+				}
+				//
+				// VM arguments
+				String vmArgs = Strings.nullToEmpty(sarlSection.getValue("VM-Arguments")); //$NON-NLS-1$
+				if (!this.vmArguments.equals(vmArgs)) {
+					PropertyChangeEvent event = new PropertyChangeEvent(
+							this, ISREInstallChangedListener.PROPERTY_VM_ARGUMENTS,
+							this.vmArguments, Strings.nullToEmpty(vmArgs));
+					this.vmArguments = vmArgs;
+					if (getNotify()) {
+						SARLRuntime.fireSREChanged(event);
+					}
+				}
+				//
+				// VM-specific attributes
+				setVMSpecificAttributesMap(null);
+				//
+				// Program arguments
+				String programArgs = Strings.nullToEmpty(sarlSection.getValue("Program-Arguments")); //$NON-NLS-1$
+				if (!this.programArguments.equals(programArgs)) {
+					PropertyChangeEvent event = new PropertyChangeEvent(
+							this, ISREInstallChangedListener.PROPERTY_PROGRAM_ARGUMENTS,
+							this.programArguments, programArgs);
+					this.programArguments = programArgs;
+					if (getNotify()) {
+						SARLRuntime.fireSREChanged(event);
+					}
+				}
+				//
+				// Library Location
+				if (forceSettings || getLibraryLocations().length == 0) {
+					List<LibraryLocation> classPath = new ArrayList<>();
+					classPath.add(new LibraryLocation(this.jarFile, Path.EMPTY, Path.EMPTY));
+					String classPathStr = manifest.getMainAttributes().getValue("Class-Path"); //$NON-NLS-1$
+					if (!Strings.isNullOrEmpty(classPathStr)) {
+						for (String cpElement : classPathStr.split(Pattern.quote(File.pathSeparator))) {
+							IPath p = Path.fromPortableString(cpElement);
+							classPath.add(new LibraryLocation(p, Path.EMPTY, Path.EMPTY));
+						}
+					}
+					LibraryLocation[] locations = classPath.toArray(new LibraryLocation[classPath.size()]);
+					setLibraryLocations(locations);
+				}
+			} catch (SREException e) {
+				throw e;
+			} catch (Throwable e) {
+				throw new SREException(e);
 			}
-			//
-			// Library Location
-			if (forceSettings) {
-				LibraryLocation location = new LibraryLocation(this.jarFile, Path.EMPTY, Path.EMPTY);
-				setLibraryLocations(location);
-			}
-		} catch (SREException e) {
-			throw e;
-		} catch (Throwable e) {
-			throw new SREException(e);
+		} else {
+			throw new SREException(Messages.StandardSREInstall_2);
 		}
-
 	}
 
 	@Override
@@ -262,14 +272,14 @@ public class StandardSREInstall extends AbstractSREInstall {
 		try {
 			IPath path = getJarFile();
 			if (path == null) {
-				return PluginUtil.createStatus(IStatus.ERROR, Messages.StandardSREInstall_2);
+				return PluginUtil.createStatus(IStatus.ERROR, CODE_SOURCE, Messages.StandardSREInstall_2);
 			}
 			File file = path.toFile();
 			if (file == null || !file.canRead()) {
 				throw new FileNotFoundException(Messages.StandardSREInstall_3);
 			}
 		} catch (Throwable e) {
-			return PluginUtil.createStatus(IStatus.ERROR, e);
+			return PluginUtil.createStatus(IStatus.ERROR, CODE_GENERAL, e);
 		}
 		return super.getValidity();
 	}
@@ -280,12 +290,12 @@ public class StandardSREInstall extends AbstractSREInstall {
 	public void getAsXML(Document document, Element element) throws IOException {
 		IPath path = getJarFile();
 		element.setAttribute("libraryPath", path.toPortableString()); //$NON-NLS-1$
-		String name = getName();
-		if (!PluginUtil.equalsString(name, this.manifestName)) {
+		String name = Strings.nullToEmpty(getName());
+		if (!name.equals(this.manifestName)) {
 			element.setAttribute("name", name); //$NON-NLS-1$
 		}
-		String mainClass = getMainClass();
-		if (!PluginUtil.equals(mainClass, this.manifestMainClass)) {
+		String mainClass = Strings.nullToEmpty(getMainClass());
+		if (!mainClass.equals(this.manifestMainClass)) {
 			element.setAttribute("mainClass", mainClass); //$NON-NLS-1$
 		}
 		LibraryLocation[] libraries = getLibraryLocations();
@@ -313,11 +323,11 @@ public class StandardSREInstall extends AbstractSREInstall {
 				setJarFile(path);
 
 				String name = element.getAttribute("name"); //$NON-NLS-1$
-				if (name != null && !name.isEmpty()) {
+				if (!Strings.isNullOrEmpty(name)) {
 					setName(name);
 				}
 				String mainClass = element.getAttribute("mainClass"); //$NON-NLS-1$
-				if (mainClass != null && !mainClass.isEmpty()) {
+				if (!Strings.isNullOrEmpty(mainClass)) {
 					setMainClass(mainClass);
 				}
 
@@ -365,7 +375,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 	}
 
 	private static IPath parsePath(String path, IPath defaultPath) {
-		if (path != null && !path.isEmpty()) {
+		if (!Strings.isNullOrEmpty(path)) {
 			try {
 				IPath p = Path.fromPortableString(path);
 				if (p != null) {

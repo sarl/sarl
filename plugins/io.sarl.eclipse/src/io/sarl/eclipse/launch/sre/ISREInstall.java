@@ -45,6 +45,30 @@ import org.w3c.dom.Element;
  */
 public interface ISREInstall extends Cloneable {
 
+	/** Error code for the status that corresponds to an invalid state of the ISREInstall.
+	 */
+	int CODE_GENERAL = 1;
+
+	/** Error code related to the library locations.
+	 */
+	int CODE_LIBRARY_LOCATION = 2;
+	
+	/** Error code related to the required SARL version.
+	 */
+	int CODE_SARL_VERSION = 3;
+
+	/** Error code related to the main class name.
+	 */
+	int CODE_MAIN_CLASS = 4;
+
+	/** Error code related to the name.
+	 */
+	int CODE_NAME = 5;
+
+	/** Error code related to the source file.
+	 */
+	int CODE_SOURCE = 6;
+
 	/** Clone this SRE.
 	 * The clone has the same Id as the cloned object.
 	 *

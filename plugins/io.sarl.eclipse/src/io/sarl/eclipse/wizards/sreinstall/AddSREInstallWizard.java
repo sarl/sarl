@@ -52,7 +52,7 @@ public class AddSREInstallWizard extends SREInstallWizard {
 	 *
 	 * @return the created SRE.
 	 */
-	public ISREInstall getCreateSRE() {
+	public ISREInstall getCreatedSRE() {
 		return this.createdSRE;
 	}
 

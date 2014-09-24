@@ -21,7 +21,7 @@
 package io.sarl.eclipse.wizards.newproject;
 
 import io.sarl.eclipse.util.PluginUtil;
-import io.sarl.lang.ui.preferences.Preferences;
+import io.sarl.lang.ui.preferences.SARLProjectPreferences;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -290,7 +290,7 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 		}
 		return result;
 	}
-
+	
 	private Pair<IClasspathEntry[], IPath> keepExistingBuildPath(IProject project, IProgressMonitor monitor)
 			throws CoreException {
 		IClasspathEntry[] entries = null;
@@ -598,16 +598,16 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 				//
 				// SARL specific configuration
 				//
-				// Retreive the preference page for the project
 				
-				IPreferenceStore preferenceStore = Preferences.getPreferencesFor(this.fCurrProject);
+				// Retreive the SARL preference page for the project
+				IPreferenceStore preferenceStore = SARLProjectPreferences.getPreferencesFor(this.fCurrProject);
 
-				// Force to use a specific configuration.
+				// Force to use a specific configuration for the SARL
 				preferenceStore.setValue(OptionsConfigurationBlock.IS_PROJECT_SPECIFIC, true);
 
 				// Initialize the project configurations
 				for (OutputConfiguration projectConfiguration
-						: Preferences.getXtextConfigurationsFor(this.fCurrProject)) {
+						: SARLProjectPreferences.getXtextConfigurationsFor(this.fCurrProject)) {
 					String directoryKey = BuilderPreferenceAccess.getKey(
 							projectConfiguration,
 							EclipseOutputConfigurationProvider.OUTPUT_DIRECTORY);
@@ -617,7 +617,6 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 
 			String newProjectCompliance = this.fKeepContent ? null : this.fFirstPage.getCompilerCompliance();
 			configureJavaProject(newProjectCompliance, new SubProgressMonitor(monitor, 2));
-
 		} catch (Throwable e) {
 			if (this.fCurrProject != null) {
 				removeProvisonalProject();

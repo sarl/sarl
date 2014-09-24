@@ -36,6 +36,8 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 import org.osgi.service.prefs.BackingStoreException;
 
+import com.google.common.base.Strings;
+
 
 /**
  * Utility functions for the plugin.
@@ -109,11 +111,48 @@ public final class PluginUtil {
 	/** Create a status.
 	 *
 	 * @param severity - the severity level, see {@link IStatus}.
+	 * @param code - the code of the error.
+	 * @param message - the message associated to the status.
+	 * @param cause - the cause of the problem.
+	 * @return the status.
+	 */
+	public static IStatus createStatus(int severity, int code, String message, Throwable cause) {
+		return new Status(severity, PLUGIN_ID, code, message, cause);
+	}
+
+	/** Create a status.
+	 *
+	 * @param severity - the severity level, see {@link IStatus}.
 	 * @param cause - the cause of the problem.
 	 * @return the status.
 	 */
 	public static IStatus createStatus(int severity, Throwable cause) {
-		return createStatus(severity, cause.getLocalizedMessage(), cause);
+		String m = cause.getLocalizedMessage();
+		if (Strings.isNullOrEmpty(m)) {
+			m = cause.getMessage();
+		}
+		if (Strings.isNullOrEmpty(m)) {
+			m = cause.getClass().getSimpleName();
+		}
+		return createStatus(severity, m, cause);
+	}
+
+	/** Create a status.
+	 *
+	 * @param severity - the severity level, see {@link IStatus}.
+	 * @param code - the code of the error.
+	 * @param cause - the cause of the problem.
+	 * @return the status.
+	 */
+	public static IStatus createStatus(int severity, int code, Throwable cause) {
+		String m = cause.getLocalizedMessage();
+		if (Strings.isNullOrEmpty(m)) {
+			m = cause.getMessage();
+		}
+		if (Strings.isNullOrEmpty(m)) {
+			m = cause.getClass().getSimpleName();
+		}
+		return createStatus(severity, code, m, cause);
 	}
 
 	/** Create a ok status.
@@ -131,6 +170,17 @@ public final class PluginUtil {
 	 * @return the status.
 	 */
 	public static IStatus createStatus(int severity, String message) {
+		return new Status(severity, PLUGIN_ID, message);
+	}
+
+	/** Create a status.
+	 *
+	 * @param severity - the severity level, see {@link IStatus}.
+	 * @param code - the code of the error.
+	 * @param message - the message associated to the status.
+	 * @return the status.
+	 */
+	public static IStatus createStatus(int severity, int code, String message) {
 		return new Status(severity, PLUGIN_ID, message);
 	}
 
@@ -249,38 +299,6 @@ public final class PluginUtil {
 		}
 	}
 
-	/** Null-safe equality test.
-	 *
-	 * @param a - the first object.
-	 * @param b - the second object.
-	 * @return <code>true</code> if a is equal to b.
-	 */
-	public static boolean equals(Object a, Object b) {
-		return (a == b)
-			|| (a == null && b == null)
-			|| (a != null && a.equals(b));
-	}
-
-	/** Null-safe equality test between strings.
-	 * Empty string is assumed to be equal to <code>null</code> value.
-	 *
-	 * @param a - the first object.
-	 * @param b - the second object.
-	 * @return <code>true</code> if a is equal to b.
-	 */
-	public static boolean equalsString(String a, String b) {
-		if (a == b) {
-			return true;
-		}
-		if (a == null) {
-			return (b == null || b.isEmpty());
-		}
-		if (b == null) {
-			return a.isEmpty();
-		}
-		return a.equals(b);
-	}
-
 	/** Null-safe comparison.
 	 *
 	 * @param <T> - type of the comparable element.
@@ -310,7 +328,7 @@ public final class PluginUtil {
 	 * @return the version.
 	 */
 	public static Version parseVersion(String version) {
-		if (version != null && !version.isEmpty()) {
+		if (!Strings.isNullOrEmpty(version)) {
 			try {
 				return Version.parseVersion(version);
 			} catch (Throwable _) {

@@ -28,11 +28,12 @@ import java.text.MessageFormat;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
+
+import com.google.common.base.Strings;
 
 /**
  * Abstract implementation of a page for the SRE installation wizard.
@@ -44,17 +45,9 @@ import org.eclipse.jface.wizard.WizardPage;
  */
 public abstract class AbstractSREInstallPage extends WizardPage {
 
-	/**
-	 * Name of the original SRE being edited, or <code>null</code> if none.
-	 */
-	private String originalName;
-
-	/**
-	 * Status of SRE name (to notify of name already in use).
-	 */
-	private IStatus nameStatus = Status.OK_STATUS;
-
 	private String[] existingNames;
+	
+	private IStatus status = PluginUtil.createOkStatus();
 
 	/**
 	 * Constructs a new page with the given page name.
@@ -106,11 +99,7 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 *
 	 * @param sre - the SRE install to edit
 	 */
-	public void setSelection(ISREInstall sre) {
-		if (sre != null) {
-			this.originalName = sre.getNameNoDefault();
-		}
-	}
+	public abstract void initialize(ISREInstall sre);
 
 	/**
 	 * Create a SRE install to be edited.
@@ -120,46 +109,40 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 */
 	public abstract ISREInstall createSelection(String id);
 
-	/** Replies if the name is valid.
-	 *
-	 * @param currentName - the current value for the name.
-	 * @param originalName - the original value for the name.
-	 * @return <code>true</code> if the name is valid.
-	 */
-	@SuppressWarnings("static-method")
-	protected boolean isValidName(String currentName, String originalName) {
-		return currentName != null
-				&& !currentName.isEmpty();
-	}
-
 	/**
-	 * Updates the name status based on the new name. This method should be called
-	 * by the page each time the SRE name changes.
-	 *
-	 * @param newName new name of SRE
+	 * Replies if the name of the SRE is valid against the names of
+	 * the other SRE.
+	 * 
+	 * @param name - the name to validate.
+	 * @return the validation status.
 	 */
-	protected void nameChanged(String newName) {
-		this.nameStatus = Status.OK_STATUS;
-		if (!isValidName(newName, this.originalName)) {
-			int sev = IStatus.ERROR;
-			if (this.originalName == null || this.originalName.isEmpty()) {
-				sev = IStatus.WARNING;
-			}
-			this.nameStatus = PluginUtil.createStatus(sev,
-					Messages.SREInstallWizard_0);
+	protected IStatus validateNameAgainstOtherSREs(String name) {
+		IStatus nameStatus = PluginUtil.createOkStatus();
+		if (isDuplicateName(name)) {
+			nameStatus = PluginUtil.createStatus(IStatus.ERROR,
+					ISREInstall.CODE_NAME,
+					Messages.SREInstallWizard_1);
 		} else {
-			if (isDuplicateName(newName)) {
-				this.nameStatus = PluginUtil.createStatus(IStatus.ERROR,
-						Messages.SREInstallWizard_1);
-			} else {
-				IStatus s = ResourcesPlugin.getWorkspace().validateName(newName, IResource.FILE);
-				if (!s.isOK()) {
-					this.nameStatus = PluginUtil.createStatus(IStatus.ERROR,
-							MessageFormat.format(Messages.SREInstallWizard_2, s.getMessage()));
-				}
+			IStatus s = ResourcesPlugin.getWorkspace().validateName(name, IResource.FILE);
+			if (!s.isOK()) {
+				nameStatus = PluginUtil.createStatus(IStatus.ERROR,
+						ISREInstall.CODE_NAME,
+						MessageFormat.format(Messages.SREInstallWizard_2, s.getMessage()));
 			}
 		}
-		updatePageStatus();
+		return nameStatus;
+	}
+	
+	/** Change the status associated to this page.
+	 * Any previous status is overrided by the given value.
+	 * <p>
+	 * You must call {@link #updatePageStatus()} after
+	 * invoking this methid.
+	 * 
+	 * @param status - the new status.
+	 */
+	protected void setPageStatus(IStatus status) {
+		this.status = status == null ? PluginUtil.createOkStatus() : status;
 	}
 
 	/**
@@ -170,8 +153,9 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 */
 	private boolean isDuplicateName(String name) {
 		if (this.existingNames != null) {
+			String n = Strings.nullToEmpty(name);
 			for (String eName : this.existingNames) {
-				if (PluginUtil.equalsString(name, eName)) {
+				if (n.equals(eName)) {
 					return true;
 				}
 			}
@@ -187,6 +171,9 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 */
 	void setExistingNames(String... names) {
 		this.existingNames = names;
+		for(int i = 0; i < this.existingNames.length; ++i) {
+			this.existingNames[i] = Strings.nullToEmpty(this.existingNames[i]); 
+		}
 	}
 
 	@Override
@@ -195,68 +182,28 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	}
 
 	/**
-	 * Sets this page's message based on the status severity.
-	 *
-	 * @param status status with message and severity.
+	 * Updates the status message on the page, based on the status of the SRE and other
+	 * status provided by the page.
 	 */
-	protected void setStatusMessage(IStatus status) {
-		if (status.isOK()) {
-			setMessage(status.getMessage());
+	protected void updatePageStatus() {
+		if (this.status.isOK()) {
+			setMessage(null, IMessageProvider.NONE);
 		} else {
-			switch (status.getSeverity()) {
+			switch (this.status.getSeverity()) {
 			case IStatus.ERROR:
-				setMessage(status.getMessage(), IMessageProvider.ERROR);
+				setMessage(this.status.getMessage(), IMessageProvider.ERROR);
 				break;
 			case IStatus.INFO:
-				setMessage(status.getMessage(), IMessageProvider.INFORMATION);
+				setMessage(this.status.getMessage(), IMessageProvider.INFORMATION);
 				break;
 			case IStatus.WARNING:
-				setMessage(status.getMessage(), IMessageProvider.WARNING);
+				setMessage(this.status.getMessage(), IMessageProvider.WARNING);
 				break;
 			default:
 				break;
 			}
 		}
+		setPageComplete(this.status.isOK() || this.status.getSeverity() == IStatus.INFO);
 	}
-
-	/**
-	 * Returns the current status of the name being used for the SRE.
-	 *
-	 * @return the status of current SRE name.
-	 */
-	protected IStatus getNameStatus() {
-		return this.nameStatus;
-	}
-
-	/**
-	 * Updates the status message on the page, based on the status of the SRE and other
-	 * status provided by the page.
-	 */
-	protected void updatePageStatus() {
-		IStatus max = Status.OK_STATUS;
-		for (IStatus status : getSREStatus()) {
-			if (status.getSeverity() > max.getSeverity()) {
-				max = status;
-			}
-		}
-		if (this.nameStatus.getSeverity() > max.getSeverity()) {
-			max = this.nameStatus;
-		}
-		if (max.isOK()) {
-			setMessage(null, IMessageProvider.NONE);
-		} else {
-			setStatusMessage(max);
-		}
-		setPageComplete(max.isOK() || max.getSeverity() == IStatus.INFO);
-	}
-
-	/**
-	 * Returns a collection of status messages pertaining to the current edit
-	 * status of the SRE on this page. An empty collection or a collection of
-	 * OK status objects indicates all is well.
-	 *
-	 * @return collection of status objects for this page
-	 */
-	protected abstract IStatus[] getSREStatus();
 
 }

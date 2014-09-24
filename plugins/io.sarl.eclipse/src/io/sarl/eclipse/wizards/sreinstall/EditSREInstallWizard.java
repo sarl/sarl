@@ -52,7 +52,7 @@ public class EditSREInstallWizard extends SREInstallWizard {
 	@Override
 	public void addPages() {
 		this.editPage = getPage(getOriginalSRE());
-		this.editPage.setSelection(getOriginalSRE());
+		this.editPage.initialize(getOriginalSRE());
 		addPage(this.editPage);
 	}
 

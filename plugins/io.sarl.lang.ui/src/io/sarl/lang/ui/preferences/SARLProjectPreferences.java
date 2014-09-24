@@ -39,9 +39,9 @@ import com.google.inject.Injector;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class Preferences {
+public final class SARLProjectPreferences {
 
-	private Preferences() {
+	private SARLProjectPreferences() {
 		//
 	}
 

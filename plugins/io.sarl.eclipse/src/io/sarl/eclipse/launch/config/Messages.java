@@ -42,6 +42,7 @@ public class Messages extends NLS {
 	public static String MainLaunchConfigurationTab_5;
 	public static String MainLaunchConfigurationTab_6;
 	public static String MainLaunchConfigurationTab_7;
+	public static String MainLaunchConfigurationTab_8;
 	public static String RuntimeEnvironmentTab_0;
 	public static String RuntimeEnvironmentTab_1;
 	public static String RuntimeEnvironmentTab_2;
@@ -51,6 +52,12 @@ public class Messages extends NLS {
 	public static String RuntimeEnvironmentTab_6;
 	public static String RuntimeEnvironmentTab_7;
 	public static String SARLLaunchConfigurationDelegate_0;
+	public static String SREConfigurationBlock_0;
+	public static String SREConfigurationBlock_1;
+	public static String SREConfigurationBlock_2;
+	public static String SREConfigurationBlock_3;
+	public static String SREConfigurationBlock_5;
+	public static String SREConfigurationBlock_6;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

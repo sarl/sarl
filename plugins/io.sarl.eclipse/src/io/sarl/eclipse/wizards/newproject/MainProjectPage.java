@@ -21,6 +21,8 @@
 package io.sarl.eclipse.wizards.newproject;
 
 import io.sarl.eclipse.builder.SARLClasspathContainer;
+import io.sarl.eclipse.launch.config.SREConfigurationBlock;
+import io.sarl.eclipse.launch.sre.ISREInstall;
 import io.sarl.eclipse.util.PluginUtil;
 
 import java.io.File;
@@ -130,11 +132,12 @@ public class MainProjectPage extends WizardPage {
 
 	private final NameGroup fNameGroup;
 	private final LocationGroup fLocationGroup;
+	private final SREConfigurationBlock fSREGroup;
 	private final JREGroup fJREGroup;
 	private final DetectGroup fDetectGroup;
 	private final Validator fValidator;
 	private final WorkingSetGroup fWorkingSetGroup;
-
+	
 	/**
 	 * Creates a new {@link MainProjectPage}.
 	 */
@@ -145,6 +148,7 @@ public class MainProjectPage extends WizardPage {
 
 		this.fNameGroup = new NameGroup();
 		this.fLocationGroup = new LocationGroup();
+		this.fSREGroup = new SREConfigurationBlock(Messages.MainProjectPage_0, true, null);
 		this.fJREGroup = new JREGroup();
 		this.fWorkingSetGroup = new WorkingSetGroup();
 		this.fDetectGroup = new DetectGroup();
@@ -161,7 +165,7 @@ public class MainProjectPage extends WizardPage {
 		this.fValidator = new Validator();
 		this.fNameGroup.addObserver(this.fValidator);
 		this.fLocationGroup.addObserver(this.fValidator);
-
+		
 		// initialize defaults
 		setProjectName(""); //$NON-NLS-1$
 		setProjectLocationURI(null);
@@ -174,7 +178,7 @@ public class MainProjectPage extends WizardPage {
 		setImageDescriptor(PluginUtil.getImageDescriptor(
 				PluginUtil.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
-
+	
 	/**
 	 * The wizard owning this page can call this method to initialize the fields from the current selection and active part.
 	 *
@@ -205,6 +209,9 @@ public class MainProjectPage extends WizardPage {
 		Control locationControl = createLocationControl(composite);
 		locationControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
+		Control sreControl = createSRESelectionControl(composite);
+		sreControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
 		Control jreControl = createJRESelectionControl(composite);
 		jreControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
@@ -215,6 +222,10 @@ public class MainProjectPage extends WizardPage {
 		infoControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		setControl(composite);
+		
+		this.fSREGroup.initialize();
+		this.fSREGroup.selectSpecificSRE(null);
+		this.fSREGroup.selectSystemWideSRE();
 	}
 
 	@Override
@@ -257,6 +268,16 @@ public class MainProjectPage extends WizardPage {
 	}
 
 	/**
+	 * Creates the controls for the SRE selection.
+	 *
+	 * @param composite the parent composite
+	 * @return the created control
+	 */
+	protected Control createSRESelectionControl(Composite composite) {
+		return this.fSREGroup.createControl(composite);
+	}
+
+	/**
 	 * Creates the controls for the working set selection.
 	 *
 	 * @param composite the parent composite
@@ -296,6 +317,22 @@ public class MainProjectPage extends WizardPage {
 		}
 
 		this.fNameGroup.setName(name);
+	}
+	
+	/** Replies if the system default SRE must be used for the new project.
+	 * 
+	 * @return <code>true</code> if the system default must be used.
+	 */
+	public boolean isSystemDefaultSRE() {
+		return this.fSREGroup.isSystemWideDefaultSRE();
+	}
+	
+	/** Replies the selected SRE.
+	 * 
+	 * @return the SRE.
+	 */
+	public ISREInstall getSRE() {
+		return this.fSREGroup.getSelectedSRE();
 	}
 
 	/**

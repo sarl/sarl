@@ -35,6 +35,9 @@ import org.eclipse.jdt.launching.PropertyChangeEvent;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
+
 /**
  * Abstract implementation of a SRE install.
  * <p>
@@ -66,19 +69,6 @@ public abstract class AbstractSREInstall implements ISREInstall {
 		this.id = id;
 	}
 
-	/** Ensure that the given value is not <code>null</code>
-	 * but empty instead.
-	 *
-	 * @param value - the value to check.
-	 * @return the correct value.
-	 */
-	protected static String unnullify(String value) {
-		if (value == null) {
-			return PluginUtil.EMPTY_STRING;
-		}
-		return value;
-	}
-
 	@Override
 	public AbstractSREInstall clone() {
 		try {
@@ -99,6 +89,21 @@ public abstract class AbstractSREInstall implements ISREInstall {
 		AbstractSREInstall copy = clone();
 		copy.id = id;
 		return copy;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ISREInstall) {
+			return getId().equals(((ISREInstall) obj).getId());
+		}
+		return false;
+	}
+	
+	/** {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		return getId().hashCode();
 	}
 
 	@Override
@@ -139,7 +144,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 			resolveDirtyFields(false);
 			return getValidity();
 		} catch (Throwable e) {
-			return PluginUtil.createStatus(IStatus.ERROR, e);
+			return PluginUtil.createStatus(IStatus.ERROR, CODE_GENERAL, e);
 		}
 	}
 
@@ -150,16 +155,16 @@ public abstract class AbstractSREInstall implements ISREInstall {
 		}
 		try {
 			String mainClass = getMainClass();
-			if (mainClass == null || PluginUtil.EMPTY_STRING.equals(mainClass)) {
-				return PluginUtil.createStatus(IStatus.ERROR, Messages.AbstractSREInstall_2);
+			if (Strings.isNullOrEmpty(mainClass)) {
+				return PluginUtil.createStatus(IStatus.ERROR, CODE_MAIN_CLASS, Messages.AbstractSREInstall_2);
 			}
 			String name = getName();
-			if (name == null || PluginUtil.EMPTY_STRING.equals(name)) {
-				return PluginUtil.createStatus(IStatus.ERROR, Messages.AbstractSREInstall_3);
+			if (Strings.isNullOrEmpty(name)) {
+				return PluginUtil.createStatus(IStatus.ERROR, CODE_NAME, Messages.AbstractSREInstall_3);
 			}
 			LibraryLocation[] locations = getLibraryLocations();
 			if (locations == null || locations.length == 0) {
-				return PluginUtil.createStatus(IStatus.ERROR, Messages.AbstractSREInstall_4);
+				return PluginUtil.createStatus(IStatus.ERROR, CODE_LIBRARY_LOCATION, Messages.AbstractSREInstall_4);
 			}
 
 			Bundle bundle = Platform.getBundle("io.sarl.lang"); //$NON-NLS-1$
@@ -169,19 +174,23 @@ public abstract class AbstractSREInstall implements ISREInstall {
 				Version maxVersion = PluginUtil.parseVersion(getMaximalSARLVersion());
 				int cmp = PluginUtil.compareVersionToRange(sarlVersion, minVersion, maxVersion);
 				if (cmp < 0) {
-					return PluginUtil.createStatus(IStatus.ERROR, MessageFormat.format(
-							Messages.AbstractSREInstall_0,
-							sarlVersion.toString(),
-							minVersion.toString()));
+					return PluginUtil.createStatus(IStatus.ERROR,
+							CODE_SARL_VERSION,
+							MessageFormat.format(
+								Messages.AbstractSREInstall_0,
+								sarlVersion.toString(),
+								minVersion.toString()));
 				} else if (cmp > 0) {
-					return PluginUtil.createStatus(IStatus.ERROR, MessageFormat.format(
-							Messages.AbstractSREInstall_1,
-							sarlVersion.toString(),
-							maxVersion.toString()));
+					return PluginUtil.createStatus(IStatus.ERROR,
+							CODE_SARL_VERSION,
+							MessageFormat.format(
+								Messages.AbstractSREInstall_1,
+								sarlVersion.toString(),
+								maxVersion.toString()));
 				}
 			}
 		} catch (Throwable e) {
-			return PluginUtil.createStatus(IStatus.ERROR, e);
+			return PluginUtil.createStatus(IStatus.ERROR, CODE_GENERAL, e);
 		}
 		return PluginUtil.createOkStatus();
 	}
@@ -264,10 +273,11 @@ public abstract class AbstractSREInstall implements ISREInstall {
 			setDirty(false);
 			resolveDirtyFields(true);
 		}
-		if (!PluginUtil.equalsString(name, this.name)) {
+		String n = Strings.nullToEmpty(name);
+		if (!name.equals(Strings.nullToEmpty(this.name))) {
 			PropertyChangeEvent event = new PropertyChangeEvent(
-					this, ISREInstallChangedListener.PROPERTY_NAME, this.name, name);
-			this.name = unnullify(name);
+					this, ISREInstallChangedListener.PROPERTY_NAME, this.name, n);
+			this.name = n;
 			if (this.notify) {
 				SARLRuntime.fireSREChanged(event);
 			}
@@ -306,8 +316,8 @@ public abstract class AbstractSREInstall implements ISREInstall {
 			setDirty(false);
 			resolveDirtyFields(true);
 		}
-		String newVersion = version;
-		if (newVersion != null) {
+		String newVersion = Strings.nullToEmpty(version);
+		if (!newVersion.isEmpty()) {
 			// Check version number
 			try {
 				Version.parseVersion(newVersion);
@@ -315,11 +325,11 @@ public abstract class AbstractSREInstall implements ISREInstall {
 				return;
 			}
 		}
-		if (!PluginUtil.equalsString(newVersion, this.minimalSarlVersion)) {
+		if (!newVersion.equals(Strings.nullToEmpty(this.minimalSarlVersion))) {
 			PropertyChangeEvent event = new PropertyChangeEvent(
 					this, ISREInstallChangedListener.PROPERTY_MINIMAL_SARL_VERSION,
 					this.minimalSarlVersion, newVersion);
-			this.minimalSarlVersion = unnullify(newVersion);
+			this.minimalSarlVersion = newVersion;
 			if (this.notify) {
 				SARLRuntime.fireSREChanged(event);
 			}
@@ -332,8 +342,8 @@ public abstract class AbstractSREInstall implements ISREInstall {
 			setDirty(false);
 			resolveDirtyFields(true);
 		}
-		String newVersion = version;
-		if (newVersion != null) {
+		String newVersion = Strings.nullToEmpty(version);
+		if (!newVersion.isEmpty()) {
 			// Check version number
 			try {
 				Version.parseVersion(newVersion);
@@ -341,11 +351,11 @@ public abstract class AbstractSREInstall implements ISREInstall {
 				return;
 			}
 		}
-		if (!PluginUtil.equalsString(newVersion, this.maximalSarlVersion)) {
+		if (!newVersion.equals(Strings.nullToEmpty(this.maximalSarlVersion))) {
 			PropertyChangeEvent event = new PropertyChangeEvent(
 					this, ISREInstallChangedListener.PROPERTY_MAXIMAL_SARL_VERSION,
 					this.maximalSarlVersion, newVersion);
-			this.maximalSarlVersion = unnullify(newVersion);
+			this.maximalSarlVersion = newVersion;
 			if (this.notify) {
 				SARLRuntime.fireSREChanged(event);
 			}
@@ -358,7 +368,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 			setDirty(false);
 			resolveDirtyFields(true);
 		}
-		if (!PluginUtil.equals(attributes, this.attributeMap)) {
+		if (!Objects.equal(attributes, this.attributeMap)) {
 			Map<String , String> o;
 			Map<String , String> n;
 			if (attributes == null) {
@@ -387,10 +397,11 @@ public abstract class AbstractSREInstall implements ISREInstall {
 			setDirty(false);
 			resolveDirtyFields(true);
 		}
-		if (!PluginUtil.equalsString(mainClass, this.mainClass)) {
+		String n = Strings.nullToEmpty(mainClass);
+		if (!n.equals(Strings.nullToEmpty(this.mainClass))) {
 			PropertyChangeEvent event = new PropertyChangeEvent(
-					this, ISREInstallChangedListener.PROPERTY_NAME, this.mainClass, mainClass);
-			this.mainClass = unnullify(mainClass);
+					this, ISREInstallChangedListener.PROPERTY_NAME, this.mainClass, n);
+			this.mainClass = n;
 			if (this.notify) {
 				SARLRuntime.fireSREChanged(event);
 			}

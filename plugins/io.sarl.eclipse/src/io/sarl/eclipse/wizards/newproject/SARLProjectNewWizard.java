@@ -20,6 +20,8 @@
  */
 package io.sarl.eclipse.wizards.newproject;
 
+import io.sarl.eclipse.launch.sre.ISREInstall;
+import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
 import io.sarl.eclipse.util.PluginUtil;
 
 import java.lang.reflect.InvocationTargetException;
@@ -36,6 +38,7 @@ import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
@@ -119,7 +122,13 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 	public boolean performFinish() {
 		boolean res = super.performFinish();
 		if (res) {
-			final IJavaElement newElement = getCreatedElement();
+			final IJavaElement newElement;
+			try {
+				newElement = getCreatedElement();
+			} catch (Throwable e) {
+				handleFinishException(getShell(), new InvocationTargetException(e));
+				return false;
+			}
 
 			IWorkingSet[] workingSets = this.fFirstPage.getWorkingSets();
 			if (workingSets.length > 0) {
@@ -186,6 +195,27 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 			PluginUtil.log(e);
 		} catch (CoreException e) {
 			PluginUtil.log(e);
+		}
+
+		// Set the SRE configuration
+		try {
+			IProject project = javaProject.getProject();
+			ISREInstall sre = this.fFirstPage.getSRE();
+			boolean useDefaultSRE = (sre == null || this.fFirstPage.isSystemDefaultSRE());
+			QualifiedName qn = RuntimeEnvironmentPropertyPage.qualify(
+					RuntimeEnvironmentPropertyPage.PROPERTY_NAME_HAS_PROJECT_SPECIFIC);
+			project.setPersistentProperty(qn, Boolean.toString(!useDefaultSRE));
+			if (!useDefaultSRE) {
+				assert (sre != null);
+				qn = RuntimeEnvironmentPropertyPage.qualify(
+						RuntimeEnvironmentPropertyPage.PROPERTY_NAME_USE_SYSTEM_WIDE_SRE);
+				project.setPersistentProperty(qn, Boolean.FALSE.toString());
+				qn = RuntimeEnvironmentPropertyPage.qualify(
+						RuntimeEnvironmentPropertyPage.PROPERTY_NAME_SRE_INSTALL_ID);
+				project.setPersistentProperty(qn, sre.getId());
+			}
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
 		}
 
 		return javaProject;

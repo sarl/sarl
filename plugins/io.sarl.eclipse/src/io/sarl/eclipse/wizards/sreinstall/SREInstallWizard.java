@@ -35,6 +35,8 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.wizard.Wizard;
 
+import com.google.common.base.Strings;
+
 /**
  * Wiazrd for SRE installation.
  *
@@ -67,8 +69,7 @@ public abstract class SREInstallWizard extends Wizard {
 			ISREInstall install = currentInstalls[i];
 			if (this.sre == null || !install.getId().equals(this.sre.getId())) {
 				String name = install.getNameNoDefault();
-				if (name != null && !name.isEmpty()
-						&& !name.equals(install.getId())) {
+				if (!Strings.isNullOrEmpty(name) && !name.equals(install.getId())) {
 					names.add(name);
 				}
 			}
@@ -104,7 +105,7 @@ public abstract class SREInstallWizard extends Wizard {
 			IConfigurationElement firstTypeMatching = null;
 			for (IConfigurationElement info : extensionPoint.getConfigurationElements()) {
 				String id = info.getAttribute("sreInstallId"); //$NON-NLS-1$
-				if (PluginUtil.equalsString(sre.getId(), id)) {
+				if (sre.getId().equals(Strings.nullToEmpty(id))) {
 					try {
 						AbstractSREInstallPage page = (AbstractSREInstallPage)
 								info.createExecutableExtension("class"); //$NON-NLS-1$
@@ -142,7 +143,7 @@ public abstract class SREInstallWizard extends Wizard {
 	}
 
 	private static boolean isInstance(String classname, ISREInstall sre) {
-		if (classname != null && !classname.isEmpty()) {
+		if (!Strings.isNullOrEmpty(classname)) {
 			try {
 				Class<?> cType = Class.forName(classname);
 				return cType.isInstance(sre);
