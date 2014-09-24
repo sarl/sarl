@@ -261,18 +261,18 @@ class SARLLabelProvider extends XbaseLabelProvider {
 	}
 
 	protected def text(CapacityUses element) {
-		new StyledString("capacity uses", StyledString::QUALIFIER_STYLER)
+		new StyledString(Messages::SARLLabelProvider_0, StyledString::QUALIFIER_STYLER)
 	}
 
 	protected def text(RequiredCapacity element) {
-		new StyledString("required capacities", StyledString::QUALIFIER_STYLER)
+		new StyledString(Messages::SARLLabelProvider_1, StyledString::QUALIFIER_STYLER)
 	}
 
 	protected def text(BehaviorUnit element) {
 		var s = new StyledString("on ", StyledString::DECORATIONS_STYLER)
 		s.append(element.event.humanReadableName)
 		if (element.guard !== null) {
-			s.append(" [guarded]", StyledString::DECORATIONS_STYLER)
+			s.append(Messages::SARLLabelProvider_2, StyledString::DECORATIONS_STYLER)
 		}
 		s
 	}

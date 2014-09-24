@@ -58,9 +58,9 @@ public class SARLFieldOutlineFilter extends AbstractFilterOutlineContribution {
 	}
 	
 	override protected configureAction(Action action) {
-		action.setText("Hide fields")
-	    action.setDescription("Hide fields")
-	    action.setToolTipText("Hide fields")
+		action.setText(Messages::SARLFieldOutlineFilter_0)
+	    action.setDescription(Messages::SARLFieldOutlineFilter_0)
+	    action.setToolTipText(Messages::SARLFieldOutlineFilter_0)
 	    action.setImageDescriptor(imageHelper.getImageDescriptor("hide_fields.png"))
 	}
 	
