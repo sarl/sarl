@@ -284,7 +284,7 @@ class BehaviorParsingTest {
 		mas.assertError(
 			SarlPackage::eINSTANCE.behavior,
 			IssueCodes::INVALID_EXTENDED_TYPE,
-			"Supertype must be a class")
+			"Invalid supertype. Expecting: class")
 	}
 
 	@Test

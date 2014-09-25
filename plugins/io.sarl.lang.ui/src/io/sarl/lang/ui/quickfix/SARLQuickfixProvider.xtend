@@ -523,7 +523,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			val defaultActionName = issue.data.get(1)
 			var msg = MessageFormat::format(
 						Messages::SARLQuickfixProvider_5,
-						Messages::SARLQuickfixProvider_11, capacityName)
+						Messages::SARLQuickfixProvider_12, capacityName)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				remove(element, typeof(Capacity), context)
 			]

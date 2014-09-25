@@ -52,7 +52,6 @@ class EventCompilerTest {
 			public class E1 extends Event {
 			  /**
 			   * Construct an event. The source of the event is unknown.
-			   * 
 			   */
 			  @Generated
 			  public E1() {
@@ -62,7 +61,6 @@ class EventCompilerTest {
 			  /**
 			   * Construct an event.
 			   * @param source - address of the agent that is emitting this event.
-			   * 
 			   */
 			  @Generated
 			  public E1(final Address source) {
@@ -92,7 +90,6 @@ class EventCompilerTest {
 		  
 		  /**
 		   * Construct an event. The source of the event is unknown.
-		   * 
 		   */
 		  @Generated
 		  public E1() {
@@ -102,7 +99,6 @@ class EventCompilerTest {
 		  /**
 		   * Construct an event.
 		   * @param source - address of the agent that is emitting this event.
-		   * 
 		   */
 		  @Generated
 		  public E1(final Address source) {
@@ -139,7 +135,7 @@ class EventCompilerTest {
 		  }
 		  
 		  /**
-		   * Returns a String representation of the Event E1 attributes only.
+		   * Returns a String representation of the E1 event's attributes only.
 		   */
 		  @Generated
 		  protected String attributesToString() {
@@ -164,7 +160,6 @@ class EventCompilerTest {
 		public class E2 extends E1 {
 		  /**
 		   * Construct an event. The source of the event is unknown.
-		   * 
 		   */
 		  @Generated
 		  public E2() {
@@ -174,7 +169,6 @@ class EventCompilerTest {
 		  /**
 		   * Construct an event.
 		   * @param source - address of the agent that is emitting this event.
-		   * 
 		   */
 		  @Generated
 		  public E2(final Address source) {
@@ -252,7 +246,7 @@ class EventCompilerTest {
 			  }
 			  
 			  /**
-			   * Returns a String representation of the Event E1 attributes only.
+			   * Returns a String representation of the E1 event's attributes only.
 			   */
 			  @Generated
 			  protected String attributesToString() {

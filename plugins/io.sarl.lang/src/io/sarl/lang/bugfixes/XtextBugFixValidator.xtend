@@ -39,6 +39,7 @@ import org.eclipse.xtext.xtype.XImportDeclaration
 import org.eclipse.xtext.xtype.XtypePackage
 
 import static io.sarl.lang.util.ModelUtil.hasAnnotation
+import java.text.MessageFormat
 
 /**
  * Implementation of a validator that is fixing several bugs in the Xtext API.
@@ -78,7 +79,7 @@ class XtextBugFixValidator extends AbstractSARLValidator {
 			var String message = null;
 			if (isDeprecatedMember(object)) {
 				// The feature is marked deprecated.
-				message = String::format("The %s %s is deprecated.", typeLabel, objectLabel)
+				message = MessageFormat::format("The {0} {1} is deprecated.", typeLabel, objectLabel)
 			} else {
 				// Search for a deprecated feature in the declaring type hierarchy.
 				var JvmMember deprecatedContainer = null
@@ -99,8 +100,8 @@ class XtextBugFixValidator extends AbstractSARLValidator {
 				if (deprecatedContainer !== null) {
 					// The feature is deprecated by transition: one of its enclosing types
 					// is deprecated.
-					message = String::format(
-							"The %s %s is deprecated because it is defined in a deprecated type.",
+					message = MessageFormat::format(
+							"The {0} {1} is deprecated because it is defined in a deprecated type.",
 							typeLabel, objectLabel)
 				}
 			}

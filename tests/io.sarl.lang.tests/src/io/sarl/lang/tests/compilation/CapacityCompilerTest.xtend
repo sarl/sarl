@@ -58,8 +58,7 @@ class CapacityCompilerTest {
 			  
 			  /**
 			   * Construct a skill.
-			   * @param owner - agent that is owning this skill. 
-			   * 
+			   * @param owner - agent that is owning this skill.
 			   */
 			  @Generated
 			  public S1(final Agent owner) {
@@ -67,8 +66,7 @@ class CapacityCompilerTest {
 			  }
 			  
 			  /**
-			   * Construct a skill. The owning agent is unknown. 
-			   * 
+			   * Construct a skill. The owning agent is unknown.
 			   */
 			  @Generated
 			  public S1() {
@@ -122,8 +120,7 @@ class CapacityCompilerTest {
 			  
 			  /**
 			   * Construct a skill.
-			   * @param owner - agent that is owning this skill. 
-			   * 
+			   * @param owner - agent that is owning this skill.
 			   */
 			  @Generated
 			  public S1(final Agent owner) {
@@ -131,8 +128,7 @@ class CapacityCompilerTest {
 			  }
 			  
 			  /**
-			   * Construct a skill. The owning agent is unknown. 
-			   * 
+			   * Construct a skill. The owning agent is unknown.
 			   */
 			  @Generated
 			  public S1() {
@@ -188,8 +184,7 @@ class CapacityCompilerTest {
 			  
 			  /**
 			   * Construct a skill.
-			   * @param owner - agent that is owning this skill. 
-			   * 
+			   * @param owner - agent that is owning this skill.
 			   */
 			  @Generated
 			  public S1(final Agent owner) {
@@ -197,8 +192,7 @@ class CapacityCompilerTest {
 			  }
 			  
 			  /**
-			   * Construct a skill. The owning agent is unknown. 
-			   * 
+			   * Construct a skill. The owning agent is unknown.
 			   */
 			  @Generated
 			  public S1() {
@@ -218,8 +212,7 @@ class CapacityCompilerTest {
 			  
 			  /**
 			   * Construct a skill.
-			   * @param owner - agent that is owning this skill. 
-			   * 
+			   * @param owner - agent that is owning this skill.
 			   */
 			  @Generated
 			  public S2(final Agent owner) {
@@ -227,8 +220,7 @@ class CapacityCompilerTest {
 			  }
 			  
 			  /**
-			   * Construct a skill. The owning agent is unknown. 
-			   * 
+			   * Construct a skill. The owning agent is unknown.
 			   */
 			  @Generated
 			  public S2() {
@@ -287,8 +279,7 @@ class CapacityCompilerTest {
 			  
 			  /**
 			   * Construct a skill.
-			   * @param owner - agent that is owning this skill. 
-			   * 
+			   * @param owner - agent that is owning this skill.
 			   */
 			  @Generated
 			  public S1(final Agent owner) {
@@ -296,8 +287,7 @@ class CapacityCompilerTest {
 			  }
 			  
 			  /**
-			   * Construct a skill. The owning agent is unknown. 
-			   * 
+			   * Construct a skill. The owning agent is unknown.
 			   */
 			  @Generated
 			  public S1() {
@@ -317,8 +307,7 @@ class CapacityCompilerTest {
 			  
 			  /**
 			   * Construct a skill.
-			   * @param owner - agent that is owning this skill. 
-			   * 
+			   * @param owner - agent that is owning this skill.
 			   */
 			  @Generated
 			  public S2(final Agent owner) {
@@ -326,8 +315,7 @@ class CapacityCompilerTest {
 			  }
 			  
 			  /**
-			   * Construct a skill. The owning agent is unknown. 
-			   * 
+			   * Construct a skill. The owning agent is unknown.
 			   */
 			  @Generated
 			  public S2() {
@@ -379,8 +367,7 @@ class CapacityCompilerTest {
 			  
 			  /**
 			   * Construct a skill.
-			   * @param owner - agent that is owning this skill. 
-			   * 
+			   * @param owner - agent that is owning this skill.
 			   */
 			  @Generated
 			  public S1(final Agent owner) {
@@ -388,8 +375,7 @@ class CapacityCompilerTest {
 			  }
 			  
 			  /**
-			   * Construct a skill. The owning agent is unknown. 
-			   * 
+			   * Construct a skill. The owning agent is unknown.
 			   */
 			  @Generated
 			  public S1() {
@@ -434,8 +420,7 @@ class CapacityCompilerTest {
 			  
 			  /**
 			   * Construct a skill.
-			   * @param owner - agent that is owning this skill. 
-			   * 
+			   * @param owner - agent that is owning this skill.
 			   */
 			  @Generated
 			  public S1(final Agent owner) {
@@ -443,8 +428,7 @@ class CapacityCompilerTest {
 			  }
 			  
 			  /**
-			   * Construct a skill. The owning agent is unknown. 
-			   * 
+			   * Construct a skill. The owning agent is unknown.
 			   */
 			  @Generated
 			  public S1() {
@@ -517,8 +501,7 @@ class CapacityCompilerTest {
 			  
 			  /**
 			   * Construct a skill.
-			   * @param owner - agent that is owning this skill. 
-			   * 
+			   * @param owner - agent that is owning this skill.
 			   */
 			  @Generated
 			  public S1(final Agent owner) {
@@ -526,8 +509,7 @@ class CapacityCompilerTest {
 			  }
 			  
 			  /**
-			   * Construct a skill. The owning agent is unknown. 
-			   * 
+			   * Construct a skill. The owning agent is unknown.
 			   */
 			  @Generated
 			  public S1() {

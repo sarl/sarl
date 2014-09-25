@@ -169,7 +169,7 @@ public class AgentOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		OutlineAsserts a;
 		a = asserts.child(0, "A1"); //$NON-NLS-1$
 		a.numChildren(1);		
-		a.leaf(0, "on Event [guarded]"); //$NON-NLS-1$
+		a.leaf(0, "on Event [true]"); //$NON-NLS-1$
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class AgentOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		a = asserts.child(0, "A1"); //$NON-NLS-1$
 		a.numChildren(2);
 		a.leaf(0, "on Event"); //$NON-NLS-1$
-		a.leaf(1, "on Event [guarded]"); //$NON-NLS-1$
+		a.leaf(1, "on Event [true]"); //$NON-NLS-1$
 	}
 
 	/**
@@ -206,7 +206,7 @@ public class AgentOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		a.numChildren(5);
 		a.leaf(0, "attr : boolean"); //$NON-NLS-1$
 		a.leaf(1, "xyz : int"); //$NON-NLS-1$
-		a.leaf(2, "on Event [guarded]"); //$NON-NLS-1$
+		a.leaf(2, "on Event [true]"); //$NON-NLS-1$
 		a.leaf(3, "fct1(char) : void"); //$NON-NLS-1$
 		a.leaf(4, "fct2() : int"); //$NON-NLS-1$
 	}

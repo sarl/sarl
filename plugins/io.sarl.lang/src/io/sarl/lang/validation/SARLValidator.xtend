@@ -168,7 +168,7 @@ class SARLValidator extends XtextBugFixValidator {
 			var FormalParameter lastParam = feature.params.last()
 			if (lastParam.defaultValue!==null) {
 				error(
-						MessageFormat.format(
+						MessageFormat::format(
 								Messages::SARLValidator_3,
 								lastParam.name), 
 						feature,
@@ -185,7 +185,7 @@ class SARLValidator extends XtextBugFixValidator {
 			var toType = toLightweightTypeReference(rawType, true)
 			var fromType = param.defaultValue.actualType
 			if (!canCast(fromType, toType, true, false, true)) {
-				error(MessageFormat.format(
+				error(MessageFormat::format(
 						Messages::SARLValidator_4,
 						fromType.nameOfTypes, toType.canonicalName),
 						param,
@@ -638,8 +638,8 @@ class SARLValidator extends XtextBugFixValidator {
 						if (first) {
 							first = false
 							error(
-									MessageFormat.format(
-											Messages::SARLValidator_17,
+									MessageFormat::format(
+											Messages::SARLValidator_18,
 											key.toString),
 									element,
 									SarlPackage.Literals.NAMED_ELEMENT__NAME,
@@ -650,8 +650,8 @@ class SARLValidator extends XtextBugFixValidator {
 						else {
 							 // No prototypes, so no quick fix
 							error(
-									MessageFormat.format(
-											Messages::SARLValidator_17,
+									MessageFormat::format(
+											Messages::SARLValidator_18,
 											key.toString),
 									element,
 									SarlPackage.Literals.NAMED_ELEMENT__NAME,
@@ -818,7 +818,7 @@ class SARLValidator extends XtextBugFixValidator {
 			var ref = usedType.toLightweightTypeReference
 			if (ref!==null && !ref.isSubtypeOf(typeof(Capacity))) {
 				error(
-						MessageFormat.format(
+						MessageFormat::format(
 								Messages::SARLValidator_24,
 								usedType.qualifiedName,
 								Messages::SARLValidator_25,
@@ -841,7 +841,7 @@ class SARLValidator extends XtextBugFixValidator {
 			var ref = requiredType.toLightweightTypeReference
 			if (ref!==null && !ref.isSubtypeOf(typeof(Capacity))) {
 				error(
-						MessageFormat.format(
+						MessageFormat::format(
 								Messages::SARLValidator_24,
 								requiredType.qualifiedName,
 								Messages::SARLValidator_25,
@@ -864,7 +864,7 @@ class SARLValidator extends XtextBugFixValidator {
 			var ref = event.toLightweightTypeReference
 			if (ref!==null && !ref.isSubtypeOf(typeof(io.sarl.lang.core.Event))) {
 				error(
-						MessageFormat.format(
+						MessageFormat::format(
 								Messages::SARLValidator_24,
 								event.qualifiedName,
 								Messages::SARLValidator_26,
@@ -941,7 +941,7 @@ class SARLValidator extends XtextBugFixValidator {
 					} else if (inferredSuperType == null
 							|| inferredSuperType.identifier != jvmSuperType.identifier
 							|| inferredType.identifier == jvmSuperType.identifier) {
-						error(MessageFormat.format(Messages::SARLValidator_33,
+						error(MessageFormat::format(Messages::SARLValidator_33,
 								inferredType.qualifiedName),
 								SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
 								superTypeIndex,
@@ -951,7 +951,7 @@ class SARLValidator extends XtextBugFixValidator {
 						success = false
 					}
 				} else {
-					error(MessageFormat.format(Messages::SARLValidator_33,
+					error(MessageFormat::format(Messages::SARLValidator_33,
 							inferredType.qualifiedName),
 							SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
 							superTypeIndex,
@@ -984,7 +984,7 @@ class SARLValidator extends XtextBugFixValidator {
 					msg = Messages::SARLValidator_35
 				}
 				error(
-						String.format(
+						MessageFormat::format(
 								msg,
 								superType.qualifiedName,
 								expectedType.name,
@@ -1002,7 +1002,7 @@ class SARLValidator extends XtextBugFixValidator {
 		}
 		if (nb<mandatoryNumberOfTypes) {
 				error(
-						MessageFormat.format(
+						MessageFormat::format(
 								Messages::SARLValidator_36,
 								expectedType.name,
 								element.name),
@@ -1067,7 +1067,7 @@ class SARLValidator extends XtextBugFixValidator {
 		var ref = event.toLightweightTypeReference
 		if (ref===null || ref.interfaceType || !ref.isSubtypeOf(typeof(io.sarl.lang.core.Event))) {
 			error(
-					MessageFormat.format(
+					MessageFormat::format(
 							Messages::SARLValidator_24,
 							event.qualifiedName,
 							Messages::SARLValidator_26,

@@ -49,6 +49,8 @@ import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 import org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider
 import org.eclipse.xtext.xbase.validation.UIStrings
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils
+import org.eclipse.xtext.util.Strings
 
 /**
  * Provides labels for a EObjects.
@@ -272,9 +274,22 @@ class SARLLabelProvider extends XbaseLabelProvider {
 		var s = new StyledString("on ", StyledString::DECORATIONS_STYLER)
 		s.append(element.event.humanReadableName)
 		if (element.guard !== null) {
-			s.append(Messages::SARLLabelProvider_2, StyledString::DECORATIONS_STYLER)
+			var String txt = null
+			var node = NodeModelUtils::getNode(element.guard);
+			if (node !== null) {
+				txt = node.text.trim
+			}
+			if (Strings::isEmpty(txt)) {
+				txt = "[" + Messages::SARLLabelProvider_2 + "]"
+			} else if (txt.length > 10) {
+				txt = "[" + txt.substring(0, 7) + "...]"
+			} else {
+				txt = "[" + txt + "]"
+			}
+			s.append(" ")
+			s.append(txt, StyledString::DECORATIONS_STYLER)
 		}
-		s
+		return s
 	}
 	
 }

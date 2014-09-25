@@ -401,7 +401,7 @@ class AgentParsingTest {
 		mas.assertError(
 			SarlPackage::eINSTANCE.agent,
 			IssueCodes::INVALID_EXTENDED_TYPE,
-			"Supertype must be a class")
+			"Invalid supertype. Expecting: class")
 	}
 
 	@Test
@@ -443,7 +443,7 @@ class AgentParsingTest {
 		mas.assertError(
 			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
 			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
-			"Invalid type: 'java.lang.String'. Only events are allowed after the keyword 'on'")
+			"Invalid type: 'java.lang.String'. Only events can be used after the keyword 'on'")
 	}
 
 	@Test

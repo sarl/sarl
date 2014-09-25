@@ -171,10 +171,14 @@ public class RuntimeEnvironmentTab extends JavaJRETab implements SRECompliantPro
 	public void dispose() {
 		super.dispose();
 		if (this.listener != null) {
-			this.sreBlock.removePropertyChangeListener(this.listener);
+			if (this.sreBlock != null) {
+				this.sreBlock.removePropertyChangeListener(this.listener);
+			}
 			this.listener = null;
 		}
-		this.sreBlock.dispose();
+		if (this.sreBlock != null) {
+			this.sreBlock.dispose();
+		}
 	}
 
 	@Override
