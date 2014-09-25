@@ -139,9 +139,9 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	public SREsPreferencePage() {
 		//
 	}
-	
+
 	/** Set the error message from the given exception.
-	 * 
+	 *
 	 * @param e - the exception to log.
 	 */
 	public void setErrorMessage(Throwable e) {
@@ -539,7 +539,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		}
 		updateUI();
 	}
-	
+
 	/** Reset the list of the SREs to the platform elements.
 	 */
 	protected void resetSREs() {
@@ -1023,7 +1023,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 				}
 			}
 		}
-		
+
 		/** {@inheritDoc}
 		 */
 		@SuppressWarnings("synthetic-access")
@@ -1048,7 +1048,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 				}
 			}
 		}
-		
+
 		/** {@inheritDoc}
 		 */
 		@Override

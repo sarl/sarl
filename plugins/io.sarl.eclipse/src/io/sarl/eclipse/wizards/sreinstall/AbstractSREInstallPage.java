@@ -46,7 +46,7 @@ import com.google.common.base.Strings;
 public abstract class AbstractSREInstallPage extends WizardPage {
 
 	private String[] existingNames;
-	
+
 	private IStatus status = PluginUtil.createOkStatus();
 
 	/**
@@ -112,7 +112,7 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	/**
 	 * Replies if the name of the SRE is valid against the names of
 	 * the other SRE.
-	 * 
+	 *
 	 * @param name - the name to validate.
 	 * @return the validation status.
 	 */
@@ -132,13 +132,13 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 		}
 		return nameStatus;
 	}
-	
+
 	/** Change the status associated to this page.
 	 * Any previous status is overrided by the given value.
 	 * <p>
 	 * You must call {@link #updatePageStatus()} after
 	 * invoking this methid.
-	 * 
+	 *
 	 * @param status - the new status.
 	 */
 	protected void setPageStatus(IStatus status) {
@@ -171,8 +171,8 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 */
 	void setExistingNames(String... names) {
 		this.existingNames = names;
-		for(int i = 0; i < this.existingNames.length; ++i) {
-			this.existingNames[i] = Strings.nullToEmpty(this.existingNames[i]); 
+		for (int i = 0; i < this.existingNames.length; ++i) {
+			this.existingNames[i] = Strings.nullToEmpty(this.existingNames[i]);
 		}
 	}
 

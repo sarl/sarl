@@ -137,7 +137,7 @@ public class MainProjectPage extends WizardPage {
 	private final DetectGroup fDetectGroup;
 	private final Validator fValidator;
 	private final WorkingSetGroup fWorkingSetGroup;
-	
+
 	/**
 	 * Creates a new {@link MainProjectPage}.
 	 */
@@ -165,7 +165,7 @@ public class MainProjectPage extends WizardPage {
 		this.fValidator = new Validator();
 		this.fNameGroup.addObserver(this.fValidator);
 		this.fLocationGroup.addObserver(this.fValidator);
-		
+
 		// initialize defaults
 		setProjectName(""); //$NON-NLS-1$
 		setProjectLocationURI(null);
@@ -178,7 +178,7 @@ public class MainProjectPage extends WizardPage {
 		setImageDescriptor(PluginUtil.getImageDescriptor(
 				PluginUtil.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
-	
+
 	/**
 	 * The wizard owning this page can call this method to initialize the fields from the current selection and active part.
 	 *
@@ -222,7 +222,7 @@ public class MainProjectPage extends WizardPage {
 		infoControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		setControl(composite);
-		
+
 		this.fSREGroup.initialize();
 		this.fSREGroup.selectSpecificSRE(null);
 		this.fSREGroup.selectSystemWideSRE();
@@ -318,17 +318,17 @@ public class MainProjectPage extends WizardPage {
 
 		this.fNameGroup.setName(name);
 	}
-	
+
 	/** Replies if the system default SRE must be used for the new project.
-	 * 
+	 *
 	 * @return <code>true</code> if the system default must be used.
 	 */
 	public boolean isSystemDefaultSRE() {
 		return this.fSREGroup.isSystemWideDefaultSRE();
 	}
-	
+
 	/** Replies the selected SRE.
-	 * 
+	 *
 	 * @return the SRE.
 	 */
 	public ISREInstall getSRE() {

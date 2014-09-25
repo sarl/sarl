@@ -404,7 +404,9 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	protected IRuntimeClasspathEntry[] computeUnresolvedSARLRuntimeClasspath(
 			ILaunchConfiguration configuration) throws CoreException {
 		// Retrieve the SARL runtime environment jar file.
-		String useDefaultSRE = configuration.getAttribute(LaunchConfigurationConstants.ATTR_USE_SARL_RUNTIME_ENVIRONMENT, Boolean.TRUE.toString());
+		String useDefaultSRE = configuration.getAttribute(
+				LaunchConfigurationConstants.ATTR_USE_SARL_RUNTIME_ENVIRONMENT,
+				Boolean.TRUE.toString());
 		String runtime = null;
 		if (Boolean.parseBoolean(useDefaultSRE)) {
 			ISREInstall sre = SARLRuntime.getDefaultSREInstall();

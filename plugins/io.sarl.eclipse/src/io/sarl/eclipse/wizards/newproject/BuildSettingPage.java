@@ -290,7 +290,7 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 		}
 		return result;
 	}
-	
+
 	private Pair<IClasspathEntry[], IPath> keepExistingBuildPath(IProject project, IProgressMonitor monitor)
 			throws CoreException {
 		IClasspathEntry[] entries = null;
@@ -594,11 +594,11 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 
 			IPath generationFolder = findGenerationSourcePath();
 			if (generationFolder != null) {
-				
+
 				//
 				// SARL specific configuration
 				//
-				
+
 				// Retreive the SARL preference page for the project
 				IPreferenceStore preferenceStore = SARLProjectPreferences.getPreferencesFor(this.fCurrProject);
 

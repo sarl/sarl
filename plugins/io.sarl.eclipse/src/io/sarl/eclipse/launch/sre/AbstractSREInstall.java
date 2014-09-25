@@ -90,7 +90,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 		copy.id = id;
 		return copy;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof ISREInstall) {
@@ -98,7 +98,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 		}
 		return false;
 	}
-	
+
 	/** {@inheritDoc}
 	 */
 	@Override
@@ -153,46 +153,75 @@ public abstract class AbstractSREInstall implements ISREInstall {
 		if (isDirty()) {
 			return revalidate();
 		}
+		IStatus s = null;
 		try {
-			String mainClass = getMainClass();
-			if (Strings.isNullOrEmpty(mainClass)) {
-				return PluginUtil.createStatus(IStatus.ERROR, CODE_MAIN_CLASS, Messages.AbstractSREInstall_2);
-			}
-			String name = getName();
-			if (Strings.isNullOrEmpty(name)) {
-				return PluginUtil.createStatus(IStatus.ERROR, CODE_NAME, Messages.AbstractSREInstall_3);
-			}
-			LibraryLocation[] locations = getLibraryLocations();
-			if (locations == null || locations.length == 0) {
-				return PluginUtil.createStatus(IStatus.ERROR, CODE_LIBRARY_LOCATION, Messages.AbstractSREInstall_4);
-			}
-
-			Bundle bundle = Platform.getBundle("io.sarl.lang"); //$NON-NLS-1$
-			if (bundle != null) {
-				Version sarlVersion = bundle.getVersion();
-				Version minVersion = PluginUtil.parseVersion(getMinimalSARLVersion());
-				Version maxVersion = PluginUtil.parseVersion(getMaximalSARLVersion());
-				int cmp = PluginUtil.compareVersionToRange(sarlVersion, minVersion, maxVersion);
-				if (cmp < 0) {
-					return PluginUtil.createStatus(IStatus.ERROR,
-							CODE_SARL_VERSION,
-							MessageFormat.format(
-								Messages.AbstractSREInstall_0,
-								sarlVersion.toString(),
-								minVersion.toString()));
-				} else if (cmp > 0) {
-					return PluginUtil.createStatus(IStatus.ERROR,
-							CODE_SARL_VERSION,
-							MessageFormat.format(
-								Messages.AbstractSREInstall_1,
-								sarlVersion.toString(),
-								maxVersion.toString()));
+			s = getMainClassValidity();
+			if (s == null) {
+				s = getNameValidity();
+				if (s == null) {
+					s = getLibraryLocationValidity();
+					if (s == null) {
+						s = getSARLVersionValidity();
+					}
 				}
 			}
 		} catch (Throwable e) {
-			return PluginUtil.createStatus(IStatus.ERROR, CODE_GENERAL, e);
+			//
 		}
-		return PluginUtil.createOkStatus();
+		if (s == null) {
+			s = PluginUtil.createOkStatus();
+		}
+		return s;
+	}
+
+	private IStatus getMainClassValidity() {
+		String mainClass = getMainClass();
+		if (Strings.isNullOrEmpty(mainClass)) {
+			return PluginUtil.createStatus(IStatus.ERROR, CODE_MAIN_CLASS, Messages.AbstractSREInstall_2);
+		}
+		return null;
+	}
+
+	private IStatus getNameValidity() {
+		String name = getName();
+		if (Strings.isNullOrEmpty(name)) {
+			return PluginUtil.createStatus(IStatus.ERROR, CODE_NAME, Messages.AbstractSREInstall_3);
+		}
+		return null;
+	}
+
+	private IStatus getLibraryLocationValidity() {
+		LibraryLocation[] locations = getLibraryLocations();
+		if (locations == null || locations.length == 0) {
+			return PluginUtil.createStatus(IStatus.ERROR, CODE_LIBRARY_LOCATION, Messages.AbstractSREInstall_4);
+		}
+		return null;
+	}
+
+	private IStatus getSARLVersionValidity() {
+		Bundle bundle = Platform.getBundle("io.sarl.lang"); //$NON-NLS-1$
+		if (bundle != null) {
+			Version sarlVersion = bundle.getVersion();
+			Version minVersion = PluginUtil.parseVersion(getMinimalSARLVersion());
+			Version maxVersion = PluginUtil.parseVersion(getMaximalSARLVersion());
+			int cmp = PluginUtil.compareVersionToRange(sarlVersion, minVersion, maxVersion);
+			if (cmp < 0) {
+				return PluginUtil.createStatus(IStatus.ERROR,
+						CODE_SARL_VERSION,
+						MessageFormat.format(
+							Messages.AbstractSREInstall_0,
+							sarlVersion.toString(),
+							minVersion.toString()));
+			} else if (cmp > 0) {
+				return PluginUtil.createStatus(IStatus.ERROR,
+						CODE_SARL_VERSION,
+						MessageFormat.format(
+							Messages.AbstractSREInstall_1,
+							sarlVersion.toString(),
+							maxVersion.toString()));
+			}
+		}
+		return null;
 	}
 
 	/** Invoked when the JAR file has changed for updating the other

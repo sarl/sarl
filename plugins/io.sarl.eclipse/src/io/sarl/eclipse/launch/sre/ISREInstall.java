@@ -52,7 +52,7 @@ public interface ISREInstall extends Cloneable {
 	/** Error code related to the library locations.
 	 */
 	int CODE_LIBRARY_LOCATION = 2;
-	
+
 	/** Error code related to the required SARL version.
 	 */
 	int CODE_SARL_VERSION = 3;

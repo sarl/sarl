@@ -33,7 +33,7 @@ import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import com.google.inject.Injector;
 
 /** Utilities related to the preferences on a SARL project.
- *  
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -46,7 +46,7 @@ public final class SARLProjectPreferences {
 	}
 
 	/** Replies the preference store for the given project.
-	 *  
+	 *
 	 * @param project - the project.
 	 * @return the preference store or <code>null</code>.
 	 */
@@ -60,7 +60,7 @@ public final class SARLProjectPreferences {
 	}
 
 	/** Replies the Xtext output configurations related to the given project.
-	 * 
+	 *
 	 * @param project - the project.
 	 * @return the Xtext output configurations.
 	 */

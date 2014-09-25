@@ -37,7 +37,7 @@ import com.google.common.base.Strings;
 
 /** Property page for selecting the SARL runtime environment
  * associated to this page.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -48,7 +48,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 	/** Identifier of the property page.
 	 */
 	public static final String PROPERTY_PAGE_ID = "io.sarl.eclipse.properties.SRE"; //$NON-NLS-1$
-	
+
 	/** Identifier of the preference page.
 	 */
 	public static final String PREFERENCE_PAGE_ID = "io.sarl.eclipse.preferences.SREsPreferencePage"; //$NON-NLS-1$
@@ -56,11 +56,11 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 	/** Identifier of the context of the properties managed by this page.
 	 */
 	public static final String PROPERTY_QUALIFIER = "io.sarl.eclipse.launch.SRE"; //$NON-NLS-1$
-	
+
 	/** Name of the property that contains the SRE install id.
 	 */
 	public static final String PROPERTY_NAME_SRE_INSTALL_ID = "SRE_INSTALL_ID"; //$NON-NLS-1$
-	
+
 	/** Name of the property that indicates if the system-wide SRE should be used..
 	 */
 	public static final String PROPERTY_NAME_USE_SYSTEM_WIDE_SRE = "USE_SYSTEM_WIDE_SRE"; //$NON-NLS-1$
@@ -70,16 +70,16 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 	public static final String PROPERTY_NAME_HAS_PROJECT_SPECIFIC = "HAS_PROJECT_SPECIFIC"; //$NON-NLS-1$
 
 	private SREConfigurationBlock sreBlock;
-	
+
 	/**
 	 * Constructor for RuntimeEnvironmentPropertyPage.
 	 */
 	public RuntimeEnvironmentPropertyPage() {
 		super();
 	}
-	
+
 	/** Create a qualified name with the given name.
-	 * 
+	 *
 	 * @param name - the name.
 	 * @return the qualified name.
 	 */
@@ -141,7 +141,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 
 	/** Save the flag that indicates if the specific project options must be
 	 * used.
-	 * 
+	 *
 	 * @param project - the project.
 	 * @param useSpecificOptions - indicates if the specifi options must be used.
 	 * @return <code>true</code> if the property was saved successfully.

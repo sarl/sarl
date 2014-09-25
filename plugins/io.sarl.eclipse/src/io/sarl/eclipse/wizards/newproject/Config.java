@@ -35,15 +35,15 @@ package io.sarl.eclipse.wizards.newproject;
  */
 public final class Config {
 
-	/** Path of the Java source files
+	/** Path of the Java source files.
 	 */
 	public static final String FOLDER_SOURCE_JAVA = "src/main/java"; //$NON-NLS-1$
 
-	/** Path of the SARL source files
+	/** Path of the SARL source files.
 	 */
 	public static final String FOLDER_SOURCE_SARL = "src/main/sarl"; //$NON-NLS-1$
 
-	/** Path of the generated source files
+	/** Path of the generated source files.
 	 */
 	public static final String FOLDER_SOURCE_GENERATED = "src/main/generated-sources/xtend"; //$NON-NLS-1$
 
@@ -52,11 +52,11 @@ public final class Config {
 	 */
 	public static final String FOLDER_SOURCE_GENERATED_XTEXT = "src-gen"; //$NON-NLS-1$
 
-	/** Path of the resource files
+	/** Path of the resource files.
 	 */
 	public static final String FOLDER_RESOURCES = "src/main/resources"; //$NON-NLS-1$
 
-	/** Path of the binary files
+	/** Path of the binary files.
 	 */
 	public static final String FOLDER_BIN = "target/classes"; //$NON-NLS-1$
 

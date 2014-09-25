@@ -83,25 +83,25 @@ public class SREConfigurationBlock {
 	private final ListenerList listeners = new ListenerList();
 
 	private final String title;
-	
+
 	private ISREInstallChangedListener sreListener;
 
 	private final boolean enableSystemWideSelector;
 	private final SRECompliantProjectProvider projectProvider;
-	
+
 	private Button systemSREButton;
 	private Button projectSREButton;
 	private Button specificSREButton;
-	
+
 	private final List<ISREInstall> runtimeEnvironments = new ArrayList<>();
 	private Combo runtimeEnvironmentCombo;
 	private Button runtimeEnvironmentSearchButton;
-	
+
 	private boolean notify = true;
 
 	/**
 	 * @param enableSystemWideSelector - indicates if the system-wide configuration selector must be enabled.
-	 * @param projectProvider - the provider of a project that may give SRE configuration. 
+	 * @param projectProvider - the provider of a project that may give SRE configuration.
 	 */
 	public SREConfigurationBlock(boolean enableSystemWideSelector, SRECompliantProjectProvider projectProvider) {
 		this(null, enableSystemWideSelector, projectProvider);
@@ -110,7 +110,7 @@ public class SREConfigurationBlock {
 	/**
 	 * @param title - the title of the group.
 	 * @param enableSystemWideSelector - indicates if the system-wide configuration selector must be enabled.
-	 * @param projectProvider - the provider of a project that may give SRE configuration. 
+	 * @param projectProvider - the provider of a project that may give SRE configuration.
 	 */
 	public SREConfigurationBlock(String title, boolean enableSystemWideSelector, SRECompliantProjectProvider projectProvider) {
 		this.title = title;
@@ -119,21 +119,21 @@ public class SREConfigurationBlock {
 	}
 
 	/** Change the event notification flag.
-	 * 
-	 * @param notify - <code>true</code> for notifying the events. 
+	 *
+	 * @param notify - <code>true</code> for notifying the events.
 	 */
 	public void setNotify(boolean notify) {
 		this.notify = notify;
 	}
-	
+
 	/** Replies if the events are notified.
-	 * 
+	 *
 	 * @return <code>true</code> if the events are notified.
 	 */
 	public boolean getNotify() {
 		return this.notify;
 	}
-	
+
 	/** Add listener on the changes in the SRE configuration.
 	 *
 	 * @param listener - the listener.
@@ -162,33 +162,34 @@ public class SREConfigurationBlock {
 			}
 		}
 	}
-	
+
 	private ISREInstall retreiveProjectSRE() {
 		try {
-			if (this.projectProvider != null) {
-				IProject prj = this.projectProvider.getSRECompliantProject();
-				if (prj != null) {
-					ISREInstall sre = null;
-					QualifiedName propertyName = RuntimeEnvironmentPropertyPage.qualify(
-							RuntimeEnvironmentPropertyPage.PROPERTY_NAME_HAS_PROJECT_SPECIFIC);
-					if (Boolean.parseBoolean(Objects.firstNonNull(
-							prj.getPersistentProperty(propertyName), Boolean.FALSE.toString()))) {
+			if (this.projectProvider == null) {
+				return null;
+			}
+			IProject prj = this.projectProvider.getSRECompliantProject();
+			if (prj != null) {
+				ISREInstall sre = null;
+				QualifiedName propertyName = RuntimeEnvironmentPropertyPage.qualify(
+						RuntimeEnvironmentPropertyPage.PROPERTY_NAME_HAS_PROJECT_SPECIFIC);
+				if (Boolean.parseBoolean(Objects.firstNonNull(
+						prj.getPersistentProperty(propertyName), Boolean.FALSE.toString()))) {
+					propertyName = RuntimeEnvironmentPropertyPage.qualify(
+							RuntimeEnvironmentPropertyPage.PROPERTY_NAME_USE_SYSTEM_WIDE_SRE);
+					boolean useWideConfig = Boolean.parseBoolean(Objects.firstNonNull(
+							prj.getPersistentProperty(propertyName), Boolean.FALSE.toString()));
+					if (!useWideConfig) {
 						propertyName = RuntimeEnvironmentPropertyPage.qualify(
-								RuntimeEnvironmentPropertyPage.PROPERTY_NAME_USE_SYSTEM_WIDE_SRE);
-						boolean useWideConfig = Boolean.parseBoolean(Objects.firstNonNull(
-								prj.getPersistentProperty(propertyName), Boolean.FALSE.toString()));
-						if (!useWideConfig) {
-							propertyName = RuntimeEnvironmentPropertyPage.qualify(
-									RuntimeEnvironmentPropertyPage.PROPERTY_NAME_SRE_INSTALL_ID);
-							String projectSREId = Strings.nullToEmpty(prj.getPersistentProperty(propertyName));
-							sre = SARLRuntime.getSREFromId(projectSREId);
-						}
+								RuntimeEnvironmentPropertyPage.PROPERTY_NAME_SRE_INSTALL_ID);
+						String projectSREId = Strings.nullToEmpty(prj.getPersistentProperty(propertyName));
+						sre = SARLRuntime.getSREFromId(projectSREId);
 					}
-					if (sre == null) {
-						sre = SARLRuntime.getDefaultSREInstall();
-					}
-					return sre;
 				}
+				if (sre == null) {
+					sre = SARLRuntime.getDefaultSREInstall();
+				}
+				return sre;
 			}
 		} catch (CoreException _) {
 			//
@@ -208,7 +209,7 @@ public class SREConfigurationBlock {
 		}
 		handleSystemWideConfigurationSelected();
 	}
-	
+
 	private void doProjectSREButtonClick() {
 		if (this.specificSREButton != null) {
 			this.specificSREButton.setSelection(false);
@@ -235,6 +236,72 @@ public class SREConfigurationBlock {
 		handleSpecificConfigurationSelected();
 	}
 
+	private void createSystemWideSelector(Group parent) {
+		if (this.enableSystemWideSelector) {
+			ISREInstall wideSystemSRE = SARLRuntime.getDefaultSREInstall();
+			String wideSystemSRELabel;
+			if (wideSystemSRE == null) {
+				wideSystemSRELabel = Messages.SREConfigurationBlock_0;
+			} else {
+				wideSystemSRELabel = wideSystemSRE.getName();
+			}
+			this.systemSREButton = SWTFactory.createRadioButton(parent,
+					MessageFormat.format(
+							Messages.SREConfigurationBlock_1, wideSystemSRELabel), 3);
+			this.systemSREButton.addSelectionListener(new SelectionAdapter() {
+				@SuppressWarnings("synthetic-access")
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					if (SREConfigurationBlock.this.systemSREButton.getSelection()) {
+						handleSystemWideConfigurationSelected();
+					}
+				}
+			});
+		}
+	}
+
+	private void createSRESelector(Group parent) {
+		this.runtimeEnvironmentCombo = SWTFactory.createCombo(
+				parent,
+				SWT.DROP_DOWN | SWT.READ_ONLY,
+				1,
+				new String[0]);
+		this.runtimeEnvironmentCombo.addSelectionListener(new SelectionAdapter() {
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				firePropertyChange();
+			}
+		});
+		ControlAccessibleListener.addListener(this.runtimeEnvironmentCombo, parent.getText());
+
+		this.runtimeEnvironmentSearchButton = SWTFactory.createPushButton(
+				parent, Messages.RuntimeEnvironmentTab_2, null);
+		this.runtimeEnvironmentSearchButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				handleInstalledSREsButtonSelected();
+			}
+		});
+	}
+
+	private void createProjectSelector(Group parent) {
+		if (this.projectProvider != null) {
+			this.projectSREButton = SWTFactory.createRadioButton(parent,
+					MessageFormat.format(
+							Messages.SREConfigurationBlock_3, Messages.SREConfigurationBlock_0), 3);
+			this.projectSREButton.addSelectionListener(new SelectionAdapter() {
+				@SuppressWarnings("synthetic-access")
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					if (SREConfigurationBlock.this.projectSREButton.getSelection()) {
+						handleProjectConfigurationSelected();
+					}
+				}
+			});
+		}
+	}
+
 	/**
 	 * Creates this block's control in the given control.
 	 *
@@ -245,35 +312,16 @@ public class SREConfigurationBlock {
 	public Control createControl(Composite parent) {
 		this.control = SWTFactory.createComposite(
 				parent, parent.getFont(), 1, 1, GridData.FILL_HORIZONTAL);
-		
+
 		int nColumns = this.enableSystemWideSelector ? 3 : 2;
 		Group group = SWTFactory.createGroup(this.control,
 				Objects.firstNonNull(this.title, Messages.RuntimeEnvironmentTab_1),
 				nColumns, 1, GridData.FILL_HORIZONTAL);
 
 		if (this.enableSystemWideSelector || this.projectProvider != null) {
-			if (this.enableSystemWideSelector) {
-				ISREInstall wideSystemSRE = SARLRuntime.getDefaultSREInstall();
-				String wideSystemSRELabel;
-				if (wideSystemSRE == null) {
-					wideSystemSRELabel = Messages.SREConfigurationBlock_0;
-				} else {
-					wideSystemSRELabel = wideSystemSRE.getName();
-				}
-				this.systemSREButton = SWTFactory.createRadioButton(group,
-						MessageFormat.format(
-								Messages.SREConfigurationBlock_1, wideSystemSRELabel), 3);
-				this.systemSREButton.addSelectionListener(new SelectionAdapter() {
-					@SuppressWarnings("synthetic-access")
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						if (SREConfigurationBlock.this.systemSREButton.getSelection()) {
-							handleSystemWideConfigurationSelected();
-						}
-					}
-				});
-			}
-			
+			createSystemWideSelector(group);
+			createProjectSelector(group);
+
 			if (this.projectProvider != null) {
 				this.projectSREButton = SWTFactory.createRadioButton(group,
 						MessageFormat.format(
@@ -288,7 +336,7 @@ public class SREConfigurationBlock {
 					}
 				});
 			}
-			
+
 			this.specificSREButton = SWTFactory.createRadioButton(group,
 					Messages.SREConfigurationBlock_2, 1);
 			this.specificSREButton.addSelectionListener(new SelectionAdapter() {
@@ -305,33 +353,12 @@ public class SREConfigurationBlock {
 			this.projectSREButton = null;
 			this.specificSREButton = null;
 		}
-		
-		this.runtimeEnvironmentCombo = SWTFactory.createCombo(
-				group,
-				SWT.DROP_DOWN | SWT.READ_ONLY,
-				1,
-				new String[0]);
-		this.runtimeEnvironmentCombo.addSelectionListener(new SelectionAdapter() {
-			@SuppressWarnings("synthetic-access")
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				firePropertyChange();
-			}
-		});
-		ControlAccessibleListener.addListener(this.runtimeEnvironmentCombo, group.getText());
-		
-		this.runtimeEnvironmentSearchButton = SWTFactory.createPushButton(
-				group, Messages.RuntimeEnvironmentTab_2, null);
-		this.runtimeEnvironmentSearchButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				handleInstalledSREsButtonSelected();
-			}
-		});
-		
+
+		createSRESelector(group);
+
 		return getControl();
 	}
-	
+
 	/** Update the label of the "system-wide" and "project" configuration buttons.
 	 */
 	public void updateExternalSREButtonLabels() {
@@ -493,7 +520,7 @@ public class SREConfigurationBlock {
 	}
 
 	/** Replies if the user has selected the default system-wide SRE.
-	 * 
+	 *
 	 * @return <code>true</code> if the user has selected the default
 	 * system-wide SRE.
 	 * @see #getSelectedSRE()
@@ -503,7 +530,7 @@ public class SREConfigurationBlock {
 	}
 
 	/** Replies if the user has selected the project SRE.
-	 * 
+	 *
 	 * @return <code>true</code> if the user has selected the project SRE.
 	 * @see #getSelectedSRE()
 	 */
@@ -576,10 +603,10 @@ public class SREConfigurationBlock {
 			}
 		}
 		this.runtimeEnvironmentCombo.setItems(labels.toArray(new String[labels.size()]));
-		
+
 		// Reset the labels of the external SRE configurations
 		updateExternalSREButtonLabels();
-		
+
 		// Initialize the type of configuration
 		if (this.enableSystemWideSelector) {
 			this.specificSREButton.setSelection(false);
@@ -594,14 +621,14 @@ public class SREConfigurationBlock {
 			}
 			this.projectSREButton.setSelection(true);
 		}
-		
+
 		// Wait for SRE list updates.
 		this.sreListener = new InstallChange();
 		SARLRuntime.addSREInstallChangedListener(this.sreListener);
-		
+
 		updateEnableState();
 	}
-	
+
 	/** Dispose the block.
 	 */
 	public void dispose() {
@@ -648,24 +675,27 @@ public class SREConfigurationBlock {
 	 * @return the state of the validation, never <code>null</code>.
 	 */
 	public IStatus validate(ISREInstall sre) {
+		IStatus status;
 		if (this.enableSystemWideSelector && this.systemSREButton.getSelection()) {
 			if (SARLRuntime.getDefaultSREInstall() == null) {
-				return PluginUtil.createStatus(IStatus.ERROR, Messages.SREConfigurationBlock_5);
+				status = PluginUtil.createStatus(IStatus.ERROR, Messages.SREConfigurationBlock_5);
+			} else {
+				status = PluginUtil.createOkStatus();
 			}
-			return PluginUtil.createOkStatus();
-		}
-		if (this.projectProvider != null && this.projectSREButton.getSelection()) {
+		} else if (this.projectProvider != null && this.projectSREButton.getSelection()) {
 			if (null == null) {
-				return PluginUtil.createStatus(IStatus.ERROR,
-						Messages.SREConfigurationBlock_6);
+				status = PluginUtil.createStatus(IStatus.ERROR,
+							Messages.SREConfigurationBlock_6);
+			} else {
+				status = PluginUtil.createOkStatus();
 			}
-			return PluginUtil.createOkStatus();
-		}
-		if (this.runtimeEnvironments.isEmpty()) {
-			return PluginUtil.createStatus(IStatus.ERROR,
+		} else if (this.runtimeEnvironments.isEmpty()) {
+			status = PluginUtil.createStatus(IStatus.ERROR,
 					Messages.RuntimeEnvironmentTab_7);
+		} else {
+			status = sre.getValidity();
 		}
-		return sre.getValidity();
+		return status;
 	}
 
 	/**
@@ -700,21 +730,24 @@ public class SREConfigurationBlock {
 		@SuppressWarnings("synthetic-access")
 		@Override
 		public void sreChanged(org.eclipse.jdt.launching.PropertyChangeEvent event) {
-			if (PROPERTY_NAME.equals(event.getProperty())) {
-				ISREInstall sre = (ISREInstall) event.getSource();
-				if (indexOf(sre) >= 0) {
-					SREConfigurationBlock.this.runtimeEnvironmentCombo.setItems(getSRELabels());
-					int index = SREConfigurationBlock.this.runtimeEnvironmentCombo.getSelectionIndex();
+			if (!PROPERTY_NAME.equals(event.getProperty())) {
+				return;
+			}
+			ISREInstall sre = (ISREInstall) event.getSource();
+			if (indexOf(sre) >= 0) {
+				SREConfigurationBlock.this.runtimeEnvironmentCombo.setItems(getSRELabels());
+				// Update the selection
+				int index = SREConfigurationBlock.this.runtimeEnvironmentCombo.getSelectionIndex();
+				if (index < 0) {
+					index = indexOf(sre);
 					if (index < 0) {
-						index = indexOf(sre);
-						if (index < 0) {
-							index = SREConfigurationBlock.this.runtimeEnvironmentCombo.getItemCount() - 1;
-						}
-						SREConfigurationBlock.this.runtimeEnvironmentCombo.select(index);
+						index = SREConfigurationBlock.this.runtimeEnvironmentCombo.getItemCount() - 1;
 					}
-					if (sre == SARLRuntime.getDefaultSREInstall()) {
-						updateExternalSREButtonLabels();
-					}
+					SREConfigurationBlock.this.runtimeEnvironmentCombo.select(index);
+				}
+				// Update the enabling state
+				if (sre == SARLRuntime.getDefaultSREInstall()) {
+					updateExternalSREButtonLabels();
 				}
 			}
 		}
@@ -745,20 +778,20 @@ public class SREConfigurationBlock {
 	/** The objects that are implementing this interface are able to
 	 * provide a project to the {@link SREConfigurationBlock}.
 	 * This project is used for managing the SRE configuration.
-	 * 
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static interface SRECompliantProjectProvider {
-		
+	public interface SRECompliantProjectProvider {
+
 		/** Replies the project that may provide a SRE configuration.
-		 * 
+		 *
 		 * @return the project.
 		 */
 		IProject getSRECompliantProject();
-		
+
 	}
-	
+
 }

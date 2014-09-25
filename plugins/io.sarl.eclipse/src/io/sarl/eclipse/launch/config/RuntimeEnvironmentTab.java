@@ -80,10 +80,10 @@ public class RuntimeEnvironmentTab extends JavaJRETab implements SRECompliantPro
 		}
 		if (config != null) {
 			try {
-				String name = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null);
+				String name = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String) null);
 				if (name != null && name.length() > 0) {
 					IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
-					if (project.exists()) { 
+					if (project.exists()) {
 						return project;
 					}
 				}

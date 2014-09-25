@@ -760,9 +760,9 @@ public final class SARLRuntime {
 		} while (getSREFromId(id) != null);
 		return id;
 	}
-	
+
 	/** Reset the list of the SREs to the default ones (the platform SREs).
-	 * 
+	 *
 	 * @throws CoreException if a problem occurs during the reset.
 	 */
 	public static void reset() throws CoreException {
@@ -777,9 +777,9 @@ public final class SARLRuntime {
 				ALL_SRE_INSTALLS.clear();
 				platformSREInstalls = null;
 				defaultSREId = null;
-				
+
 				// Notify about the removals
-				for(ISREInstall sre : oldSREs.values()) {
+				for (ISREInstall sre : oldSREs.values()) {
 					fireSRERemoved(sre);
 				}
 				fireDefaultSREChanged(previous, null);

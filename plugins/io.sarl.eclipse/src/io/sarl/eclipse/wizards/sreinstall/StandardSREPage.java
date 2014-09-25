@@ -67,7 +67,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 	private Text sreNameTextField;
 	private Text sreMainClassTextField;
 	private Text sreIdTextField;
-	
+
 	private StandardSREInstall originalSRE;
 	private StandardSREInstall workingCopy;
 
@@ -169,7 +169,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		updatePageStatus();
 		initializeFields();
 	}
-	
+
 	private void setSRELibraryPath(IPath path) {
 		StandardSREPage.this.workingCopy.setJarFile(path);
 		if (path != null) {
@@ -233,7 +233,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		//
 		this.sreIdTextField.setText(this.workingCopy.getId());
 	}
-	
+
 	private IStatus validate() {
 		IStatus s = this.workingCopy.revalidate();
 		if (s.isOK()) {
