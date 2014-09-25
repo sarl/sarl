@@ -7,3 +7,4 @@ Bundle-Name: %Bundle-Name
 Require-Bundle: org.junit;bundle-version="4.11.0",
  io.sarl.lang.core;bundle-version="0.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: io.sarl.util

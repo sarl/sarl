@@ -25,6 +25,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: io.sarl.lang.ui,
  io.sarl.lang.ui.bugfixes,
  io.sarl.lang.ui.contentassist,
+ io.sarl.lang.ui.contentassist.antlr,
+ io.sarl.lang.ui.contentassist.antlr.internal,
  io.sarl.lang.ui.highlighting,
  io.sarl.lang.ui.images,
  io.sarl.lang.ui.internal,

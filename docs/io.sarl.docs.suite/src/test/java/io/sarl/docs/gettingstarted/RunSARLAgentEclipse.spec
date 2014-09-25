@@ -95,16 +95,15 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		}
 
 		/* For running your agent, you must specify a SARL runtime environment.
-		 * In this tutorial, we assume that you want to use the Janus platform.
+		 * In this tutorial, we assume that you want to use the [Janus platform](http://www.janusproject.io).
 		 *
-		 * First, **you must download the
+		 * First, **you could download the
 		 * <a href="%janusmavenrepository%/last-janus-release.jar">Janus runtime environment</a>**.
 		 *
-		 * For adding the downloaded file of Janus, you add a **SARL runtime environment** in
-		 * the *Runtime environment* tab. You should click on the **Browse** button for
-		 * selecting the Jar file of your runtime environment.
-		 * After adding the Janus JAR file, you obtain a
-		 * dialog box similar to:
+		 * For adding the down-loaded file of Janus, you add a **SARL runtime environment** (or SRE) in
+		 * the *Runtime environment* tab. You should click on the **Installed SREs** button for
+		 * managing the installed runtime environments (or open the corresponding preference page).
+		 * After adding the Janus JAR file, you obtain a dialog box similar to:
 		 *
 		 *
 		 * <center><img alt="Add Janus" src="EclipseRunConfiguration_0_2.png" width="60%" /></center>
@@ -126,8 +125,8 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * are put in the `parameters` attribute of the `Initialize` event.
 		 * This event is fired when the launched agent is started.
 		 * 
-		 * The following example gives the values `FirstParam` and
-		 * `SecondParam` to the launched agent:
+		 * The following example gives the values `First`, `Argument`,
+		 * `Second`, and `Argument` to the launched agent:
 		 *
 		 *
 		 * <center><img alt="Program Arguments" src="EclipseRunConfiguration_0_3.png" width="60%" /></center>

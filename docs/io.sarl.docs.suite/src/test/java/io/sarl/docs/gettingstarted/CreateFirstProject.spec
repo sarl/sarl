@@ -92,9 +92,11 @@ describe "Create First Project" {
 		 * @filter(.*) 
 		 */
 		fact "Step 2: Configuration of the source folders" {
-			Config.PROJECT_STRUCTURE_PATH should contain path("src","main","java")
-			Config.PROJECT_STRUCTURE_PATH should contain path("src","main","sarl")
-			Config.PROJECT_STRUCTURE_PATH should contain path("src","main","generated-sources","xtend")
+			Config::FOLDER_SOURCE_JAVA should be "src/main/java"
+			Config::FOLDER_SOURCE_SARL should be "src/main/sarl"
+			Config::FOLDER_SOURCE_GENERATED should be "src/main/generated-sources/xtend"
+			Config::FOLDER_RESOURCES should be "src/main/resources"
+			Config::FOLDER_BIN should be "target/classes"
 			"new_sarl_project_screen_3.png" should beAccessibleFrom this
 		}
 		 
@@ -234,12 +236,12 @@ describe "Create First Project" {
 		 * @filter(.*) 
 		 */
 		fact "Edit the Maven configuration" {
+			// Check if the SARL code is generated in the expected folder
+			Config::FOLDER_SOURCE_GENERATED should be "src/main/generated-sources/xtend"
 			// The checks are valid only if the macro replacements were done.
 			// The replacements are done by Maven.
 			// So, Eclipse Junit tools do not make the replacements.
 			System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
-			// Check if the SARL code is generated in the expected folder
-			Config.PROJECT_STRUCTURE_PATH should contain path("src","main","generated-sources","xtend")
 			// This documentation is valid only for the SNAPSHOT (repository definition)
 			"%sarlversion%" should endWith "-SNAPSHOT"
 			"%sarlversion%" should beMavenVersion true
