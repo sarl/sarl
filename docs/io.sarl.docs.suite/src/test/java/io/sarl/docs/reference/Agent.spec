@@ -56,7 +56,8 @@ describe "Agent Reference"{
 		 * 
 		 * The following figure illustrates the position of an agent (at the center
 		 * of the figure) in different contexts. The details are discussed below. 
-		 * <center><img src="./contexts.png"/></center>
+		 *
+		 * ![Contexts](./contexts.png)
 		 */		
 		describe "Where is living an agent?" {
 			
@@ -177,7 +178,7 @@ describe "Agent Reference"{
 		
 		/* The architecture of an agent is illustrated by the following figure.
 		 * 
-		 * <center><img src="./agent.png"/></center>
+		 * ![Agent](./agent.png)
 		 */
 		describe "Open Architecture of an Agent" {
 			

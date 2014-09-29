@@ -60,7 +60,7 @@ import static extension org.junit.Assume.assumeFalse
  * The agents are represented by stylized humans, the contexts by the blue boxes,
  * and the spaces by the small color boxes in the contexts.
  * 
- * <center><img src="./contexts.png"/></center>
+ * ![Contexts](./contexts.png)
  */
 @CreateWith(SARLSpecCreator)
 describe "Built-in Capacity Reference" {

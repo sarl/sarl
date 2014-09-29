@@ -63,7 +63,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * application. You obtain a page similar to:
 		 *
 		 *
-		 * <center><img alt="SARL Application" src="EclipseRunConfiguration_0_0.png" width="60%" /></center>
+		 * ![SARL Application](./EclipseRunConfiguration_0_0.png)
 		 *
 		 * 
 		 * Change the *name* of the run configuration, and select the *project*, which
@@ -86,7 +86,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * the *Main* tab. You must enter the fully qualified name
 		 * of the agent that must be launched. 
 		 *
-		 * <center><img alt="Agent to Launch" src="EclipseRunConfiguration_0_1.png" width="60%" /></center>
+		 * ![Agent to Launch](./EclipseRunConfiguration_0_1.png)
 		 *
 		 * @filter(.*) 
 		 */		
@@ -98,7 +98,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * In this tutorial, we assume that you want to use the [Janus platform](http://www.janusproject.io).
 		 *
 		 * First, **you could download the
-		 * <a href="%janusmavenrepository%/last-janus-release.jar">Janus runtime environment</a>**.
+		 * [Janus runtime environment](%janusmavenrepository%/last-janus-release.jar)**.
 		 *
 		 * For adding the down-loaded file of Janus, you add a **SARL runtime environment** (or SRE) in
 		 * the *Runtime environment* tab. You should click on the **Installed SREs** button for
@@ -106,7 +106,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * After adding the Janus JAR file, you obtain a dialog box similar to:
 		 *
 		 *
-		 * <center><img alt="Add Janus" src="EclipseRunConfiguration_0_2.png" width="60%" /></center>
+		 * ![Add Janus](./EclipseRunConfiguration_0_2.png)
 		 *
 		 * @filter(.*) 
 		 */		
@@ -129,7 +129,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * `Second`, and `Argument` to the launched agent:
 		 *
 		 *
-		 * <center><img alt="Program Arguments" src="EclipseRunConfiguration_0_3.png" width="60%" /></center>
+		 * ![Program Arguments](./EclipseRunConfiguration_0_3.png]
 		 *
 		 * 
 		 * @filter(.*) 
@@ -150,7 +150,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * Application. You obtain a page similar to:
 		 *
 		 *
-		 * <center><img alt="Java Application" src="EclipseRunConfiguration_1_0.png" width="60%" /></center>
+		 * ![Java Application](./EclipseRunConfiguration_1_0.png)
 		 *
 		 * 
 		 * Change the *name* of the run configuration, and select the *project*, which
@@ -166,14 +166,14 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * you must add the Janus library in the class path.
 		 *
 		 * First, **you must download the
-		 * <a href="%janusmavenrepository%/last-janus-release.jar">Janus runtime environment</a>**.
+		 * [Janus runtime environment](%janusmavenrepository%/last-janus-release.jar)**.
 		 *
 		 * For adding the downloaded file of Janus, you must **add an external JAR** in
 		 * the *Classpath* tab. After adding the Janus JAR file, you obtain a
 		 * dialog box similar to:
 		 *
 		 *
-		 * <center><img alt="Add Janus" src="EclipseRunConfiguration_1_1.png" width="60%" /></center>
+		 * ![Add Janus](./EclipseRunConfiguration_1_1.png)
 		 *
 		 *
 		 * @filter(.*) 
@@ -192,7 +192,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * The main class **must always be** `io.janusproject.Boot`.
 		 *
 		 *
-		 * <center><img alt="Janus Boot Class" src="EclipseRunConfiguration_1_2.png" width="60%" /></center>
+		 * ![Janus Boot Class](./EclipseRunConfiguration_1_2.png)
 		 *
 		 *
 		 * @filter(.*) 
@@ -211,7 +211,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * of the agent that must be launched. 
 		 *
 		 *
-		 * <center><img alt="Agent to Launch" src="EclipseRunConfiguration_1_3.png" width="60%" /></center>
+		 * ![Agent to Launch](./EclipseRunConfiguration_1_3.png)
 		 *
 		 *
 		 * @filter(.*) 
@@ -229,7 +229,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * `SecondParam` to the launched agent:
 		 *
 		 *
-		 * <center><img alt="Program Arguments" src="EclipseRunConfiguration_1_4.png" width="60%" /></center>
+		 * ![Program Arguments](./EclipseRunConfiguration_1_4.png)
 		 *
 		 * 
 		 * @filter(.*) 

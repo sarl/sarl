@@ -44,7 +44,7 @@ describe "Create First Project" {
 	 * **File > New > Projects**, and select *SARL Project* in
 	 * the SARL category.
 	 *
-	 * <center><img alt="Select the SARL Project Type" src="new_sarl_project_screen_1.png" width="60%" /></center>
+	 * ![Select the SARL Project Type](./new_sarl_project_screen_1.png)
 	 *
 	 *
 	 * After clicking on **Next**, the wizard is displaying the first page for creating a SARL project.
@@ -54,7 +54,8 @@ describe "Create First Project" {
 		/* You must enter the name of your project. You could change the standard SARL and Java environment
 		 * configurations as well.
 		 * 
-		 * <center><img alt="Enter the Project Information" src="new_sarl_project_screen_2.png" width="60%" /></center>
+		 *
+		 * ![Enter the Project Information](./new_sarl_project_screen_2.png)
 		 *
 		 *
 		 * Then you could click on **Next** for continuing the edition of the project's properties, or
@@ -66,8 +67,8 @@ describe "Create First Project" {
 		 * @filter(.*) 
 		 */
 		fact "Step 1: Entering the project information" {
-			"new_sarl_project_screen_1.png" should beAccessibleFrom this
-			"new_sarl_project_screen_2.png" should beAccessibleFrom this
+			"./new_sarl_project_screen_1.png" should beAccessibleFrom this
+			"./new_sarl_project_screen_2.png" should beAccessibleFrom this
 		}
 		 
 		/* The second page of the wizard contains the building settings.
@@ -87,7 +88,7 @@ describe "Create First Project" {
 		 * conventions of a Maven-based project (described below). In this way, you will be able to 
 		 * turn the Maven nature on your SARL project on/off.</note>
 		 *
-		 * <center><img alt="Source Code Folders" src="new_sarl_project_screen_3.png" width="60%" /></center>
+		 * ![Source Code Folders](./new_sarl_project_screen_3.png)
 		 * 
 		 * @filter(.*) 
 		 */
@@ -97,7 +98,7 @@ describe "Create First Project" {
 			Config::FOLDER_SOURCE_GENERATED should be "src/main/generated-sources/xtend"
 			Config::FOLDER_RESOURCES should be "src/main/resources"
 			Config::FOLDER_BIN should be "target/classes"
-			"new_sarl_project_screen_3.png" should beAccessibleFrom this
+			"./new_sarl_project_screen_3.png" should beAccessibleFrom this
 		}
 		 
 	}

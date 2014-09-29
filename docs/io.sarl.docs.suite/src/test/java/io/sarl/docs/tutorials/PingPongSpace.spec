@@ -68,7 +68,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 		 * These messages contain an integer number that
 		 * indicates the number of the event.
 		 * 
-		 * <center><img src="./pingpongspace.png"/></center>
+		 * ![Ping-Pong Example](./pingpongspace.png)
 		 *
 		 * @filter(.*)
 		 */
