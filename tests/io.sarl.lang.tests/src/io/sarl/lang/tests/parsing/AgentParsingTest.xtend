@@ -113,22 +113,6 @@ class AgentParsingTest {
 	}
 
 	@Test
-	def constAttributesMustHaveIniatlizer() {
-		val mas = '''
-			
-			agent A1 {
-				val name : String = "Hello"
-				val number : Integer
-			}
-		'''.parse
-		mas.assertError(
-			SarlPackage::eINSTANCE.attribute,
-			org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION,
-			"The blank final field 'number' may not have been initialized"
-		)
-	}
-
-	@Test
 	def capacityMustBeDeclaredBeforeUse() {
 		val mas = '''
 			agent A1 {
@@ -262,7 +246,7 @@ class AgentParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.attribute,
+			TypesPackage::eINSTANCE.jvmConstructor,
 			org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION,
 			"The blank final field 'field2' may not have been initialized")
 	}

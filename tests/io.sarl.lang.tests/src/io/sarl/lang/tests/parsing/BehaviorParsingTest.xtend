@@ -27,6 +27,7 @@ import org.eclipse.xtext.junit4.validation.ValidationTestHelper
 import org.eclipse.xtext.xbase.XbasePackage
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.eclipse.xtext.common.types.TypesPackage
 
 /**
  * @author $Author: sgalland$
@@ -145,7 +146,7 @@ class BehaviorParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.attribute,
+			TypesPackage::eINSTANCE.jvmConstructor,
 			org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION,
 			"The blank final field 'field2' may not have been initialized")
 	}

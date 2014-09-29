@@ -789,10 +789,11 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = T__45;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:43:7: ( ',' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:43:9: ','
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:43:7: ( 'extends' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:43:9: 'extends'
             {
-            match(','); 
+            match("extends"); 
+
 
             }
 
@@ -809,10 +810,10 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = T__46;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:44:7: ( 'extends' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:44:9: 'extends'
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:44:7: ( 'static' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:44:9: 'static'
             {
-            match("extends"); 
+            match("static"); 
 
 
             }
@@ -830,10 +831,10 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = T__47;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:45:7: ( 'static' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:45:9: 'static'
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:45:7: ( 'import' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:45:9: 'import'
             {
-            match("static"); 
+            match("import"); 
 
 
             }
@@ -851,10 +852,10 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = T__48;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:46:7: ( 'import' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:46:9: 'import'
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:46:7: ( 'extension' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:46:9: 'extension'
             {
-            match("import"); 
+            match("extension"); 
 
 
             }
@@ -872,10 +873,10 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = T__49;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:47:7: ( 'extension' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:47:9: 'extension'
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:47:7: ( 'super' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:47:9: 'super'
             {
-            match("extension"); 
+            match("super"); 
 
 
             }
@@ -893,10 +894,10 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = T__50;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:48:7: ( 'super' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:48:9: 'super'
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:48:7: ( 'false' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:48:9: 'false'
             {
-            match("super"); 
+            match("false"); 
 
 
             }
@@ -914,10 +915,10 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = T__51;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:49:7: ( 'false' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:49:9: 'false'
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:49:7: ( 'package' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:49:9: 'package'
             {
-            match("false"); 
+            match("package"); 
 
 
             }
@@ -935,11 +936,10 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = T__52;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:50:7: ( 'package' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:50:9: 'package'
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:50:7: ( ';' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:50:9: ';'
             {
-            match("package"); 
-
+            match(';'); 
 
             }
 
@@ -956,10 +956,11 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = T__53;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:51:7: ( ';' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:51:9: ';'
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:51:7: ( 'event' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:51:9: 'event'
             {
-            match(';'); 
+            match("event"); 
+
 
             }
 
@@ -976,11 +977,10 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = T__54;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:52:7: ( 'event' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:52:9: 'event'
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:52:7: ( '{' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:52:9: '{'
             {
-            match("event"); 
-
+            match('{'); 
 
             }
 
@@ -997,10 +997,10 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = T__55;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:53:7: ( '{' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:53:9: '{'
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:53:7: ( '}' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:53:9: '}'
             {
-            match('{'); 
+            match('}'); 
 
             }
 
@@ -1017,10 +1017,11 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = T__56;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:54:7: ( '}' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:54:9: '}'
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:54:7: ( 'capacity' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:54:9: 'capacity'
             {
-            match('}'); 
+            match("capacity"); 
+
 
             }
 
@@ -1037,11 +1038,10 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = T__57;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:55:7: ( 'capacity' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:55:9: 'capacity'
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:55:7: ( ',' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:55:9: ','
             {
-            match("capacity"); 
-
+            match(','); 
 
             }
 
@@ -1910,10 +1910,10 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_HEX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24922:10: ( ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )? )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24922:12: ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25658:10: ( ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )? )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25658:12: ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24922:12: ( '0x' | '0X' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25658:12: ( '0x' | '0X' )
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -1941,7 +1941,7 @@ public class InternalSARLLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24922:13: '0x'
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25658:13: '0x'
                     {
                     match("0x"); 
 
@@ -1949,7 +1949,7 @@ public class InternalSARLLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24922:18: '0X'
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25658:18: '0X'
                     {
                     match("0X"); 
 
@@ -1959,7 +1959,7 @@ public class InternalSARLLexer extends Lexer {
 
             }
 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24922:24: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25658:24: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+
             int cnt2=0;
             loop2:
             do {
@@ -1997,7 +1997,7 @@ public class InternalSARLLexer extends Lexer {
                 cnt2++;
             } while (true);
 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24922:58: ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25658:58: ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -2006,10 +2006,10 @@ public class InternalSARLLexer extends Lexer {
             }
             switch (alt4) {
                 case 1 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24922:59: '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25658:59: '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
                     {
                     match('#'); 
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24922:63: ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25658:63: ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
                     int alt3=2;
                     int LA3_0 = input.LA(1);
 
@@ -2027,7 +2027,7 @@ public class InternalSARLLexer extends Lexer {
                     }
                     switch (alt3) {
                         case 1 :
-                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24922:64: ( 'b' | 'B' ) ( 'i' | 'I' )
+                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25658:64: ( 'b' | 'B' ) ( 'i' | 'I' )
                             {
                             if ( input.LA(1)=='B'||input.LA(1)=='b' ) {
                                 input.consume();
@@ -2051,7 +2051,7 @@ public class InternalSARLLexer extends Lexer {
                             }
                             break;
                         case 2 :
-                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24922:84: ( 'l' | 'L' )
+                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25658:84: ( 'l' | 'L' )
                             {
                             if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
                                 input.consume();
@@ -2090,11 +2090,11 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24924:10: ( '0' .. '9' ( '0' .. '9' | '_' )* )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24924:12: '0' .. '9' ( '0' .. '9' | '_' )*
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25660:10: ( '0' .. '9' ( '0' .. '9' | '_' )* )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25660:12: '0' .. '9' ( '0' .. '9' | '_' )*
             {
             matchRange('0','9'); 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24924:21: ( '0' .. '9' | '_' )*
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25660:21: ( '0' .. '9' | '_' )*
             loop5:
             do {
                 int alt5=2;
@@ -2143,11 +2143,11 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_DECIMAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24926:14: ( RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )? )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24926:16: RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25662:14: ( RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )? )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25662:16: RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
             {
             mRULE_INT(); 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24926:25: ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )?
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25662:25: ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )?
             int alt7=2;
             int LA7_0 = input.LA(1);
 
@@ -2156,7 +2156,7 @@ public class InternalSARLLexer extends Lexer {
             }
             switch (alt7) {
                 case 1 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24926:26: ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25662:26: ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT
                     {
                     if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                         input.consume();
@@ -2167,7 +2167,7 @@ public class InternalSARLLexer extends Lexer {
                         recover(mse);
                         throw mse;}
 
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24926:36: ( '+' | '-' )?
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25662:36: ( '+' | '-' )?
                     int alt6=2;
                     int LA6_0 = input.LA(1);
 
@@ -2200,7 +2200,7 @@ public class InternalSARLLexer extends Lexer {
 
             }
 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24926:58: ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25662:58: ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
             int alt8=3;
             int LA8_0 = input.LA(1);
 
@@ -2212,7 +2212,7 @@ public class InternalSARLLexer extends Lexer {
             }
             switch (alt8) {
                 case 1 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24926:59: ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25662:59: ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' )
                     {
                     if ( input.LA(1)=='B'||input.LA(1)=='b' ) {
                         input.consume();
@@ -2236,7 +2236,7 @@ public class InternalSARLLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24926:87: ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25662:87: ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' )
                     {
                     if ( input.LA(1)=='D'||input.LA(1)=='F'||input.LA(1)=='L'||input.LA(1)=='d'||input.LA(1)=='f'||input.LA(1)=='l' ) {
                         input.consume();
@@ -2269,10 +2269,10 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24928:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )* )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24928:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25664:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )* )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25664:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24928:11: ( '^' )?
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25664:11: ( '^' )?
             int alt9=2;
             int LA9_0 = input.LA(1);
 
@@ -2281,7 +2281,7 @@ public class InternalSARLLexer extends Lexer {
             }
             switch (alt9) {
                 case 1 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24928:11: '^'
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25664:11: '^'
                     {
                     match('^'); 
 
@@ -2299,7 +2299,7 @@ public class InternalSARLLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24928:44: ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25664:44: ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
             loop10:
             do {
                 int alt10=2;
@@ -2348,31 +2348,31 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24930:13: ( ( '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24930:15: ( '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25666:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25666:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24930:15: ( '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
-            int alt13=2;
-            int LA13_0 = input.LA(1);
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25666:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
+            int alt15=2;
+            int LA15_0 = input.LA(1);
 
-            if ( (LA13_0=='\"') ) {
-                alt13=1;
+            if ( (LA15_0=='\"') ) {
+                alt15=1;
             }
-            else if ( (LA13_0=='\'') ) {
-                alt13=2;
+            else if ( (LA15_0=='\'') ) {
+                alt15=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 13, 0, input);
+                    new NoViableAltException("", 15, 0, input);
 
                 throw nvae;
             }
-            switch (alt13) {
+            switch (alt15) {
                 case 1 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24930:16: '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25666:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )?
                     {
                     match('\"'); 
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24930:20: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )*
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25666:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
                     loop11:
                     do {
                         int alt11=3;
@@ -2388,23 +2388,15 @@ public class InternalSARLLexer extends Lexer {
 
                         switch (alt11) {
                     	case 1 :
-                    	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24930:21: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' )
+                    	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25666:21: '\\\\' .
                     	    {
                     	    match('\\'); 
-                    	    if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||(input.LA(1)>='t' && input.LA(1)<='u') ) {
-                    	        input.consume();
-
-                    	    }
-                    	    else {
-                    	        MismatchedSetException mse = new MismatchedSetException(null,input);
-                    	        recover(mse);
-                    	        throw mse;}
-
+                    	    matchAny(); 
 
                     	    }
                     	    break;
                     	case 2 :
-                    	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24930:66: ~ ( ( '\\\\' | '\"' ) )
+                    	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25666:28: ~ ( ( '\\\\' | '\"' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -2424,47 +2416,56 @@ public class InternalSARLLexer extends Lexer {
                         }
                     } while (true);
 
-                    match('\"'); 
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25666:44: ( '\"' )?
+                    int alt12=2;
+                    int LA12_0 = input.LA(1);
+
+                    if ( (LA12_0=='\"') ) {
+                        alt12=1;
+                    }
+                    switch (alt12) {
+                        case 1 :
+                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25666:44: '\"'
+                            {
+                            match('\"'); 
+
+                            }
+                            break;
+
+                    }
+
 
                     }
                     break;
                 case 2 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24930:86: '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\''
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25666:49: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )?
                     {
                     match('\''); 
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24930:91: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )*
-                    loop12:
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25666:54: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
+                    loop13:
                     do {
-                        int alt12=3;
-                        int LA12_0 = input.LA(1);
+                        int alt13=3;
+                        int LA13_0 = input.LA(1);
 
-                        if ( (LA12_0=='\\') ) {
-                            alt12=1;
+                        if ( (LA13_0=='\\') ) {
+                            alt13=1;
                         }
-                        else if ( ((LA12_0>='\u0000' && LA12_0<='&')||(LA12_0>='(' && LA12_0<='[')||(LA12_0>=']' && LA12_0<='\uFFFF')) ) {
-                            alt12=2;
+                        else if ( ((LA13_0>='\u0000' && LA13_0<='&')||(LA13_0>='(' && LA13_0<='[')||(LA13_0>=']' && LA13_0<='\uFFFF')) ) {
+                            alt13=2;
                         }
 
 
-                        switch (alt12) {
+                        switch (alt13) {
                     	case 1 :
-                    	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24930:92: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' )
+                    	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25666:55: '\\\\' .
                     	    {
                     	    match('\\'); 
-                    	    if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||(input.LA(1)>='t' && input.LA(1)<='u') ) {
-                    	        input.consume();
-
-                    	    }
-                    	    else {
-                    	        MismatchedSetException mse = new MismatchedSetException(null,input);
-                    	        recover(mse);
-                    	        throw mse;}
-
+                    	    matchAny(); 
 
                     	    }
                     	    break;
                     	case 2 :
-                    	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24930:137: ~ ( ( '\\\\' | '\\'' ) )
+                    	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25666:62: ~ ( ( '\\\\' | '\\'' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -2480,11 +2481,28 @@ public class InternalSARLLexer extends Lexer {
                     	    break;
 
                     	default :
-                    	    break loop12;
+                    	    break loop13;
                         }
                     } while (true);
 
-                    match('\''); 
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25666:79: ( '\\'' )?
+                    int alt14=2;
+                    int LA14_0 = input.LA(1);
+
+                    if ( (LA14_0=='\'') ) {
+                        alt14=1;
+                    }
+                    switch (alt14) {
+                        case 1 :
+                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25666:79: '\\''
+                            {
+                            match('\''); 
+
+                            }
+                            break;
+
+                    }
+
 
                     }
                     break;
@@ -2507,37 +2525,37 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_ML_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24932:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24932:19: '/*' ( options {greedy=false; } : . )* '*/'
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25668:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25668:19: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24932:24: ( options {greedy=false; } : . )*
-            loop14:
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25668:24: ( options {greedy=false; } : . )*
+            loop16:
             do {
-                int alt14=2;
-                int LA14_0 = input.LA(1);
+                int alt16=2;
+                int LA16_0 = input.LA(1);
 
-                if ( (LA14_0=='*') ) {
-                    int LA14_1 = input.LA(2);
+                if ( (LA16_0=='*') ) {
+                    int LA16_1 = input.LA(2);
 
-                    if ( (LA14_1=='/') ) {
-                        alt14=2;
+                    if ( (LA16_1=='/') ) {
+                        alt16=2;
                     }
-                    else if ( ((LA14_1>='\u0000' && LA14_1<='.')||(LA14_1>='0' && LA14_1<='\uFFFF')) ) {
-                        alt14=1;
+                    else if ( ((LA16_1>='\u0000' && LA16_1<='.')||(LA16_1>='0' && LA16_1<='\uFFFF')) ) {
+                        alt16=1;
                     }
 
 
                 }
-                else if ( ((LA14_0>='\u0000' && LA14_0<=')')||(LA14_0>='+' && LA14_0<='\uFFFF')) ) {
-                    alt14=1;
+                else if ( ((LA16_0>='\u0000' && LA16_0<=')')||(LA16_0>='+' && LA16_0<='\uFFFF')) ) {
+                    alt16=1;
                 }
 
 
-                switch (alt14) {
+                switch (alt16) {
             	case 1 :
-            	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24932:52: .
+            	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25668:52: .
             	    {
             	    matchAny(); 
 
@@ -2545,7 +2563,7 @@ public class InternalSARLLexer extends Lexer {
             	    break;
 
             	default :
-            	    break loop14;
+            	    break loop16;
                 }
             } while (true);
 
@@ -2567,25 +2585,25 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24934:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24934:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25670:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25670:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
             {
             match("//"); 
 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24934:24: (~ ( ( '\\n' | '\\r' ) ) )*
-            loop15:
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25670:24: (~ ( ( '\\n' | '\\r' ) ) )*
+            loop17:
             do {
-                int alt15=2;
-                int LA15_0 = input.LA(1);
+                int alt17=2;
+                int LA17_0 = input.LA(1);
 
-                if ( ((LA15_0>='\u0000' && LA15_0<='\t')||(LA15_0>='\u000B' && LA15_0<='\f')||(LA15_0>='\u000E' && LA15_0<='\uFFFF')) ) {
-                    alt15=1;
+                if ( ((LA17_0>='\u0000' && LA17_0<='\t')||(LA17_0>='\u000B' && LA17_0<='\f')||(LA17_0>='\u000E' && LA17_0<='\uFFFF')) ) {
+                    alt17=1;
                 }
 
 
-                switch (alt15) {
+                switch (alt17) {
             	case 1 :
-            	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24934:24: ~ ( ( '\\n' | '\\r' ) )
+            	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25670:24: ~ ( ( '\\n' | '\\r' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -2601,31 +2619,31 @@ public class InternalSARLLexer extends Lexer {
             	    break;
 
             	default :
-            	    break loop15;
+            	    break loop17;
                 }
             } while (true);
 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24934:40: ( ( '\\r' )? '\\n' )?
-            int alt17=2;
-            int LA17_0 = input.LA(1);
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25670:40: ( ( '\\r' )? '\\n' )?
+            int alt19=2;
+            int LA19_0 = input.LA(1);
 
-            if ( (LA17_0=='\n'||LA17_0=='\r') ) {
-                alt17=1;
+            if ( (LA19_0=='\n'||LA19_0=='\r') ) {
+                alt19=1;
             }
-            switch (alt17) {
+            switch (alt19) {
                 case 1 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24934:41: ( '\\r' )? '\\n'
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25670:41: ( '\\r' )? '\\n'
                     {
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24934:41: ( '\\r' )?
-                    int alt16=2;
-                    int LA16_0 = input.LA(1);
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25670:41: ( '\\r' )?
+                    int alt18=2;
+                    int LA18_0 = input.LA(1);
 
-                    if ( (LA16_0=='\r') ) {
-                        alt16=1;
+                    if ( (LA18_0=='\r') ) {
+                        alt18=1;
                     }
-                    switch (alt16) {
+                    switch (alt18) {
                         case 1 :
-                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24934:41: '\\r'
+                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25670:41: '\\r'
                             {
                             match('\r'); 
 
@@ -2657,22 +2675,22 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24936:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24936:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25672:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25672:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24936:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
-            int cnt18=0;
-            loop18:
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25672:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            int cnt20=0;
+            loop20:
             do {
-                int alt18=2;
-                int LA18_0 = input.LA(1);
+                int alt20=2;
+                int LA20_0 = input.LA(1);
 
-                if ( ((LA18_0>='\t' && LA18_0<='\n')||LA18_0=='\r'||LA18_0==' ') ) {
-                    alt18=1;
+                if ( ((LA20_0>='\t' && LA20_0<='\n')||LA20_0=='\r'||LA20_0==' ') ) {
+                    alt20=1;
                 }
 
 
-                switch (alt18) {
+                switch (alt20) {
             	case 1 :
             	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:
             	    {
@@ -2690,12 +2708,12 @@ public class InternalSARLLexer extends Lexer {
             	    break;
 
             	default :
-            	    if ( cnt18 >= 1 ) break loop18;
+            	    if ( cnt20 >= 1 ) break loop20;
                         EarlyExitException eee =
-                            new EarlyExitException(18, input);
+                            new EarlyExitException(20, input);
                         throw eee;
                 }
-                cnt18++;
+                cnt20++;
             } while (true);
 
 
@@ -2714,8 +2732,8 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_ANY_OTHER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24938:16: ( . )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:24938:18: .
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25674:16: ( . )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:25674:18: .
             {
             matchAny(); 
 
@@ -2731,9 +2749,9 @@ public class InternalSARLLexer extends Lexer {
 
     public void mTokens() throws RecognitionException {
         // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:1:8: ( T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | T__74 | T__75 | T__76 | T__77 | T__78 | T__79 | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_ID | RULE_STRING | RULE_ML_COMMENT | RULE_SL_COMMENT | RULE_WS | RULE_ANY_OTHER )
-        int alt19=95;
-        alt19 = dfa19.predict(input);
-        switch (alt19) {
+        int alt21=95;
+        alt21 = dfa21.predict(input);
+        switch (alt21) {
             case 1 :
                 // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:1:10: T__13
                 {
@@ -3405,101 +3423,21 @@ public class InternalSARLLexer extends Lexer {
     }
 
 
-    protected DFA19 dfa19 = new DFA19(this);
-    static final String DFA19_eotS =
-        "\1\uffff\1\62\1\65\1\67\1\71\1\73\1\76\1\102\1\106\1\110\1\112\1"+
-        "\114\1\116\1\120\1\123\1\uffff\5\73\3\uffff\3\73\1\154\3\73\2\uffff"+
-        "\1\73\2\uffff\1\73\1\uffff\2\73\2\176\1\57\1\uffff\2\57\5\uffff"+
-        "\1\u0084\6\uffff\1\73\16\uffff\1\u0088\5\uffff\1\u008a\5\uffff\12"+
-        "\73\1\u0095\4\73\3\uffff\2\73\1\u009f\1\73\2\uffff\2\73\1\u00a4"+
-        "\2\uffff\2\73\2\uffff\1\73\1\u00a8\1\uffff\4\73\2\uffff\1\176\5"+
-        "\uffff\1\u00ae\1\u00af\4\uffff\12\73\1\uffff\3\73\1\u00be\5\73\1"+
-        "\uffff\4\73\1\uffff\1\u00c8\1\73\1\u00cb\1\uffff\3\73\1\u00cf\1"+
-        "\73\2\uffff\2\73\1\u00d3\13\73\1\uffff\2\73\1\u00e1\3\73\1\u00e5"+
-        "\2\73\1\uffff\1\u00e8\1\73\1\uffff\3\73\1\uffff\1\u00ed\1\73\1\u00f0"+
-        "\1\uffff\1\73\1\u00f2\1\u00f3\5\73\1\u00f9\1\u00fa\3\73\1\uffff"+
-        "\1\u00fe\1\u00ff\1\73\1\uffff\2\73\1\uffff\1\73\1\u0104\1\73\1\u0106"+
-        "\1\uffff\2\73\1\uffff\1\u0109\2\uffff\1\u010a\1\73\1\u010c\2\73"+
-        "\2\uffff\3\73\2\uffff\2\73\1\u0114\1\73\1\uffff\1\u0116\1\uffff"+
-        "\1\u0117\1\73\2\uffff\1\73\1\uffff\2\73\1\u011c\1\u011d\3\73\1\uffff"+
-        "\1\u0121\2\uffff\4\73\2\uffff\1\u0126\1\u0127\1\u0128\1\uffff\1"+
-        "\u0129\3\73\4\uffff\1\73\1\u012e\1\u012f\1\73\2\uffff\1\u0131\1"+
-        "\uffff";
-    static final String DFA19_eofS =
+    protected DFA21 dfa21 = new DFA21(this);
+    static final String DFA21_eotS =
+        "\1\uffff\1\62\1\65\1\67\1\71\1\73\1\76\1\102\1\106\1\110\1\112\1\114\1\116\1\120\1\123\5\73\3\uffff\1\73\1\uffff\2\73\1\154\3\73\2\uffff\1\73\2\uffff\1\73\1\uffff\2\73\2\176\1\57\10\uffff\1\u0084\6\uffff\1\73\16\uffff\1\u0088\5\uffff\1\u008a\4\uffff\12\73\1\u0095\4\73\3\uffff\1\73\1\uffff\1\73\1\u009f\1\73\2\uffff\2\73\1\u00a4\2\uffff\2\73\2\uffff\1\73\1\u00a8\1\uffff\4\73\2\uffff\1\176\5\uffff\1\u00ae\1\u00af\4\uffff\12\73\1\uffff\3\73\1\u00be\5\73\1\uffff\4\73\1\uffff\1\u00c8\1\73\1\u00cb\1\uffff\3\73\1\u00cf\1\73\2\uffff\2\73\1\u00d3\13\73\1\uffff\2\73\1\u00e1\3\73\1\u00e5\2\73\1\uffff\1\u00e8\1\73\1\uffff\3\73\1\uffff\1\u00ed\1\73\1\u00f0\1\uffff\1\73\1\u00f2\1\u00f3\5\73\1\u00f9\1\u00fa\3\73\1\uffff\1\u00fe\1\u00ff\1\73\1\uffff\2\73\1\uffff\1\73\1\u0104\1\73\1\u0106\1\uffff\2\73\1\uffff\1\u0109\2\uffff\1\u010a\1\73\1\u010c\2\73\2\uffff\3\73\2\uffff\2\73\1\u0114\1\73\1\uffff\1\u0116\1\uffff\1\u0117\1\73\2\uffff\1\73\1\uffff\2\73\1\u011c\1\u011d\3\73\1\uffff\1\u0121\2\uffff\4\73\2\uffff\1\u0126\1\u0127\1\u0128\1\uffff\1\u0129\3\73\4\uffff\1\73\1\u012e\1\u012f\1\73\2\uffff\1\u0131\1\uffff";
+    static final String DFA21_eofS =
         "\u0132\uffff";
-    static final String DFA19_minS =
-        "\1\0\1\52\1\75\1\174\1\46\1\141\1\53\1\55\1\52\3\75\1\76\2\56\1"+
-        "\uffff\1\154\1\153\1\146\2\141\3\uffff\1\141\1\147\1\145\1\72\1"+
-        "\163\1\145\1\156\2\uffff\1\145\2\uffff\1\145\1\uffff\2\150\2\60"+
-        "\1\44\1\uffff\2\0\5\uffff\1\75\6\uffff\1\154\16\uffff\1\75\5\uffff"+
-        "\1\74\5\uffff\1\164\1\145\1\163\1\141\1\160\2\151\1\156\1\160\1"+
-        "\163\1\44\1\154\1\156\1\162\1\143\3\uffff\1\160\1\145\1\44\1\150"+
-        "\2\uffff\1\145\1\161\1\44\2\uffff\1\167\1\154\2\uffff\1\146\1\44"+
-        "\1\uffff\1\151\1\160\1\162\1\165\2\uffff\1\60\5\uffff\2\44\4\uffff"+
-        "\1\145\1\156\1\145\1\164\1\145\1\154\1\164\1\143\1\154\1\164\1\uffff"+
-        "\1\163\1\145\1\141\1\44\1\153\1\141\1\145\1\143\1\156\1\uffff\1"+
-        "\141\1\163\2\165\1\uffff\1\44\1\154\1\44\1\uffff\1\154\1\145\1\157"+
-        "\1\44\1\145\2\uffff\1\156\1\164\1\44\1\151\1\162\1\154\1\143\1\150"+
-        "\1\162\1\145\1\141\1\145\1\163\1\154\1\uffff\1\141\1\143\1\44\1"+
-        "\150\1\164\1\166\1\44\1\151\1\162\1\uffff\1\44\1\165\1\uffff\1\145"+
-        "\1\157\1\167\1\uffff\1\44\1\144\1\44\1\uffff\1\143\2\44\1\150\1"+
-        "\162\1\164\1\155\1\156\2\44\1\154\1\147\1\151\1\uffff\2\44\1\151"+
-        "\1\uffff\1\162\1\156\1\uffff\1\154\1\44\1\146\1\44\1\uffff\1\163"+
-        "\1\151\1\uffff\1\44\2\uffff\1\44\1\157\1\44\1\145\1\143\2\uffff"+
-        "\1\171\1\145\1\164\2\uffff\1\157\1\145\1\44\1\164\1\uffff\1\44\1"+
-        "\uffff\1\44\1\157\2\uffff\1\156\1\uffff\1\156\1\145\2\44\1\171\1"+
-        "\162\1\163\1\uffff\1\44\2\uffff\1\156\1\151\1\164\1\157\2\uffff"+
-        "\3\44\1\uffff\1\44\1\172\1\163\1\146\4\uffff\1\145\2\44\1\144\2"+
-        "\uffff\1\44\1\uffff";
-    static final String DFA19_maxS =
-        "\1\uffff\1\75\1\76\1\174\1\46\1\141\1\75\1\76\4\75\1\76\1\56\1\72"+
-        "\1\uffff\1\170\1\171\1\156\1\157\1\141\3\uffff\1\141\1\163\1\145"+
-        "\1\72\1\163\1\145\1\156\2\uffff\1\165\2\uffff\1\157\1\uffff\1\150"+
-        "\1\171\1\170\1\154\1\172\1\uffff\2\uffff\5\uffff\1\75\6\uffff\1"+
-        "\162\16\uffff\1\75\5\uffff\1\74\5\uffff\1\164\1\145\1\163\1\141"+
-        "\1\160\2\151\1\156\1\160\1\163\1\172\1\154\2\162\1\143\3\uffff\1"+
-        "\164\1\145\1\172\1\150\2\uffff\1\145\1\164\1\172\2\uffff\1\167\1"+
-        "\154\2\uffff\1\146\1\172\1\uffff\1\151\1\160\1\162\1\171\2\uffff"+
-        "\1\154\5\uffff\2\172\4\uffff\1\145\1\156\1\145\1\164\1\145\1\154"+
-        "\1\164\1\143\1\157\1\164\1\uffff\1\163\1\145\1\141\1\172\1\153\1"+
-        "\141\1\145\1\143\1\156\1\uffff\1\141\1\163\2\165\1\uffff\1\172\1"+
-        "\154\1\172\1\uffff\1\154\1\145\1\157\1\172\1\145\2\uffff\1\156\1"+
-        "\164\1\172\1\151\1\162\1\154\1\143\1\150\1\162\1\145\1\141\1\145"+
-        "\1\163\1\154\1\uffff\1\141\1\143\1\172\1\150\1\164\1\166\1\172\1"+
-        "\151\1\162\1\uffff\1\172\1\165\1\uffff\1\145\1\157\1\167\1\uffff"+
-        "\1\172\1\163\1\172\1\uffff\1\143\2\172\1\150\1\162\1\164\1\155\1"+
-        "\156\2\172\1\154\1\147\1\151\1\uffff\2\172\1\151\1\uffff\1\162\1"+
-        "\156\1\uffff\1\154\1\172\1\146\1\172\1\uffff\1\163\1\151\1\uffff"+
-        "\1\172\2\uffff\1\172\1\157\1\172\1\145\1\143\2\uffff\1\171\1\145"+
-        "\1\164\2\uffff\1\157\1\145\1\172\1\164\1\uffff\1\172\1\uffff\1\172"+
-        "\1\157\2\uffff\1\156\1\uffff\1\156\1\145\2\172\1\171\1\162\1\163"+
-        "\1\uffff\1\172\2\uffff\1\156\1\151\1\164\1\157\2\uffff\3\172\1\uffff"+
-        "\2\172\1\163\1\146\4\uffff\1\145\2\172\1\144\2\uffff\1\172\1\uffff";
-    static final String DFA19_acceptS =
-        "\17\uffff\1\41\5\uffff\1\51\1\53\1\54\7\uffff\1\66\1\67\1\uffff"+
-        "\1\71\1\72\1\uffff\1\100\5\uffff\1\132\2\uffff\1\136\1\137\1\10"+
-        "\1\32\1\1\1\uffff\1\25\1\2\1\3\1\125\1\4\1\121\1\uffff\1\132\1\6"+
-        "\1\36\1\30\1\7\1\22\1\37\1\31\1\11\1\134\1\135\1\33\1\12\1\34\1"+
-        "\uffff\1\35\1\17\1\20\1\26\1\21\1\uffff\1\40\1\27\1\124\1\120\1"+
-        "\41\17\uffff\1\51\1\53\1\54\4\uffff\1\123\1\62\3\uffff\1\66\1\67"+
-        "\2\uffff\1\71\1\72\2\uffff\1\100\4\uffff\1\127\1\130\1\uffff\1\131"+
-        "\1\133\1\136\1\15\1\13\2\uffff\1\16\1\14\1\23\1\24\12\uffff\1\101"+
-        "\11\uffff\1\75\4\uffff\1\65\3\uffff\1\107\5\uffff\1\5\1\122\16\uffff"+
-        "\1\76\11\uffff\1\70\2\uffff\1\73\3\uffff\1\114\3\uffff\1\102\15"+
-        "\uffff\1\105\3\uffff\1\63\2\uffff\1\110\4\uffff\1\126\2\uffff\1"+
-        "\52\1\uffff\1\46\1\60\5\uffff\1\47\1\74\3\uffff\1\117\1\56\4\uffff"+
-        "\1\106\1\uffff\1\112\2\uffff\1\43\1\103\1\uffff\1\44\7\uffff\1\113"+
-        "\1\uffff\1\111\1\42\4\uffff\1\115\1\50\3\uffff\1\104\4\uffff\1\55"+
-        "\1\57\1\64\1\45\4\uffff\1\61\1\77\1\uffff\1\116";
-    static final String DFA19_specialS =
-        "\1\2\53\uffff\1\1\1\0\u0104\uffff}>";
-    static final String[] DFA19_transitionS = {
-            "\11\57\2\56\2\57\1\56\22\57\1\56\1\12\1\54\1\45\1\53\1\11\1"+
-            "\4\1\55\1\42\1\43\1\1\1\6\1\17\1\7\1\15\1\10\1\50\11\51\1\33"+
-            "\1\25\1\14\1\2\1\13\1\16\1\57\32\53\1\37\1\57\1\40\1\52\1\53"+
-            "\1\57\1\31\1\32\1\30\1\44\1\20\1\23\2\53\1\22\4\53\1\41\1\36"+
-            "\1\24\1\53\1\35\1\21\1\47\1\34\1\5\1\46\3\53\1\26\1\3\1\27\uff82"+
-            "\57",
+    static final String DFA21_minS =
+        "\1\0\1\52\1\75\1\174\1\46\1\141\1\53\1\55\1\52\3\75\1\76\2\56\1\154\1\153\1\146\2\141\3\uffff\1\141\1\uffff\1\147\1\145\1\72\1\163\1\145\1\156\2\uffff\1\145\2\uffff\1\145\1\uffff\2\150\2\60\1\44\10\uffff\1\75\6\uffff\1\154\16\uffff\1\75\5\uffff\1\74\4\uffff\1\164\1\145\1\163\1\141\1\160\2\151\1\156\1\160\1\163\1\44\1\154\1\156\1\162\1\143\3\uffff\1\160\1\uffff\1\145\1\44\1\150\2\uffff\1\145\1\161\1\44\2\uffff\1\167\1\154\2\uffff\1\146\1\44\1\uffff\1\151\1\160\1\162\1\165\2\uffff\1\60\5\uffff\2\44\4\uffff\1\145\1\156\1\145\1\164\1\145\1\154\1\164\1\143\1\154\1\164\1\uffff\1\163\1\145\1\141\1\44\1\153\1\141\1\145\1\143\1\156\1\uffff\1\141\1\163\2\165\1\uffff\1\44\1\154\1\44\1\uffff\1\154\1\145\1\157\1\44\1\145\2\uffff\1\156\1\164\1\44\1\151\1\162\1\154\1\143\1\150\1\162\1\145\1\141\1\145\1\163\1\154\1\uffff\1\141\1\143\1\44\1\150\1\164\1\166\1\44\1\151\1\162\1\uffff\1\44\1\165\1\uffff\1\145\1\157\1\167\1\uffff\1\44\1\144\1\44\1\uffff\1\143\2\44\1\150\1\162\1\164\1\155\1\156\2\44\1\154\1\147\1\151\1\uffff\2\44\1\151\1\uffff\1\162\1\156\1\uffff\1\154\1\44\1\146\1\44\1\uffff\1\163\1\151\1\uffff\1\44\2\uffff\1\44\1\157\1\44\1\145\1\143\2\uffff\1\171\1\145\1\164\2\uffff\1\157\1\145\1\44\1\164\1\uffff\1\44\1\uffff\1\44\1\157\2\uffff\1\156\1\uffff\1\156\1\145\2\44\1\171\1\162\1\163\1\uffff\1\44\2\uffff\1\156\1\151\1\164\1\157\2\uffff\3\44\1\uffff\1\44\1\172\1\163\1\146\4\uffff\1\145\2\44\1\144\2\uffff\1\44\1\uffff";
+    static final String DFA21_maxS =
+        "\1\uffff\1\75\1\76\1\174\1\46\1\141\1\75\1\76\4\75\1\76\1\56\1\72\1\170\1\171\1\156\1\157\1\141\3\uffff\1\141\1\uffff\1\163\1\145\1\72\1\163\1\145\1\156\2\uffff\1\165\2\uffff\1\157\1\uffff\1\150\1\171\1\170\1\154\1\172\10\uffff\1\75\6\uffff\1\162\16\uffff\1\75\5\uffff\1\74\4\uffff\1\164\1\145\1\163\1\141\1\160\2\151\1\156\1\160\1\163\1\172\1\154\2\162\1\143\3\uffff\1\164\1\uffff\1\145\1\172\1\150\2\uffff\1\145\1\164\1\172\2\uffff\1\167\1\154\2\uffff\1\146\1\172\1\uffff\1\151\1\160\1\162\1\171\2\uffff\1\154\5\uffff\2\172\4\uffff\1\145\1\156\1\145\1\164\1\145\1\154\1\164\1\143\1\157\1\164\1\uffff\1\163\1\145\1\141\1\172\1\153\1\141\1\145\1\143\1\156\1\uffff\1\141\1\163\2\165\1\uffff\1\172\1\154\1\172\1\uffff\1\154\1\145\1\157\1\172\1\145\2\uffff\1\156\1\164\1\172\1\151\1\162\1\154\1\143\1\150\1\162\1\145\1\141\1\145\1\163\1\154\1\uffff\1\141\1\143\1\172\1\150\1\164\1\166\1\172\1\151\1\162\1\uffff\1\172\1\165\1\uffff\1\145\1\157\1\167\1\uffff\1\172\1\163\1\172\1\uffff\1\143\2\172\1\150\1\162\1\164\1\155\1\156\2\172\1\154\1\147\1\151\1\uffff\2\172\1\151\1\uffff\1\162\1\156\1\uffff\1\154\1\172\1\146\1\172\1\uffff\1\163\1\151\1\uffff\1\172\2\uffff\1\172\1\157\1\172\1\145\1\143\2\uffff\1\171\1\145\1\164\2\uffff\1\157\1\145\1\172\1\164\1\uffff\1\172\1\uffff\1\172\1\157\2\uffff\1\156\1\uffff\1\156\1\145\2\172\1\171\1\162\1\163\1\uffff\1\172\2\uffff\1\156\1\151\1\164\1\157\2\uffff\3\172\1\uffff\2\172\1\163\1\146\4\uffff\1\145\2\172\1\144\2\uffff\1\172\1\uffff";
+    static final String DFA21_acceptS =
+        "\24\uffff\1\50\1\52\1\53\1\uffff\1\55\6\uffff\1\66\1\67\1\uffff\1\71\1\72\1\uffff\1\100\5\uffff\1\132\2\133\1\136\1\137\1\10\1\32\1\1\1\uffff\1\25\1\2\1\3\1\125\1\4\1\121\1\uffff\1\132\1\6\1\36\1\30\1\7\1\22\1\37\1\31\1\11\1\134\1\135\1\33\1\12\1\34\1\uffff\1\35\1\17\1\20\1\26\1\21\1\uffff\1\40\1\27\1\124\1\120\17\uffff\1\50\1\52\1\53\1\uffff\1\55\3\uffff\1\123\1\62\3\uffff\1\66\1\67\2\uffff\1\71\1\72\2\uffff\1\100\4\uffff\1\127\1\130\1\uffff\1\131\1\133\1\136\1\15\1\13\2\uffff\1\16\1\14\1\23\1\24\12\uffff\1\101\11\uffff\1\75\4\uffff\1\65\3\uffff\1\107\5\uffff\1\5\1\122\16\uffff\1\76\11\uffff\1\70\2\uffff\1\73\3\uffff\1\114\3\uffff\1\102\15\uffff\1\105\3\uffff\1\63\2\uffff\1\110\4\uffff\1\126\2\uffff\1\51\1\uffff\1\45\1\60\5\uffff\1\46\1\74\3\uffff\1\117\1\56\4\uffff\1\106\1\uffff\1\112\2\uffff\1\42\1\103\1\uffff\1\43\7\uffff\1\113\1\uffff\1\111\1\41\4\uffff\1\115\1\47\3\uffff\1\104\4\uffff\1\54\1\57\1\64\1\44\4\uffff\1\61\1\77\1\uffff\1\116";
+    static final String DFA21_specialS =
+        "\1\0\u0131\uffff}>";
+    static final String[] DFA21_transitionS = {
+            "\11\57\2\56\2\57\1\56\22\57\1\56\1\12\1\54\1\45\1\53\1\11\1\4\1\55\1\42\1\43\1\1\1\6\1\30\1\7\1\15\1\10\1\50\11\51\1\33\1\24\1\14\1\2\1\13\1\16\1\57\32\53\1\37\1\57\1\40\1\52\1\53\1\57\1\31\1\32\1\27\1\44\1\17\1\22\2\53\1\21\4\53\1\41\1\36\1\23\1\53\1\35\1\20\1\47\1\34\1\5\1\46\3\53\1\25\1\3\1\26\uff82\57",
             "\1\61\22\uffff\1\60",
             "\1\63\1\64",
             "\1\66",
@@ -3514,16 +3452,16 @@ public class InternalSARLLexer extends Lexer {
             "\1\115",
             "\1\117",
             "\1\122\13\uffff\1\121",
-            "",
-            "\1\127\11\uffff\1\126\1\uffff\1\125",
-            "\1\132\10\uffff\1\130\1\131\1\uffff\1\133\1\uffff\1\134",
-            "\1\137\6\uffff\1\135\1\136",
-            "\1\140\7\uffff\1\141\5\uffff\1\142",
-            "\1\143",
-            "",
+            "\1\126\11\uffff\1\125\1\uffff\1\124",
+            "\1\131\10\uffff\1\127\1\130\1\uffff\1\132\1\uffff\1\133",
+            "\1\136\6\uffff\1\134\1\135",
+            "\1\137\7\uffff\1\140\5\uffff\1\141",
+            "\1\142",
             "",
             "",
-            "\1\147",
+            "",
+            "\1\146",
+            "",
             "\1\150\13\uffff\1\151",
             "\1\152",
             "\1\153",
@@ -3539,15 +3477,12 @@ public class InternalSARLLexer extends Lexer {
             "",
             "\1\171",
             "\1\173\11\uffff\1\174\6\uffff\1\172",
-            "\12\177\10\uffff\1\u0080\1\uffff\3\u0080\5\uffff\1\u0080\13"+
-            "\uffff\1\175\6\uffff\1\177\2\uffff\1\u0080\1\uffff\3\u0080\5"+
-            "\uffff\1\u0080\13\uffff\1\175",
-            "\12\177\10\uffff\1\u0080\1\uffff\3\u0080\5\uffff\1\u0080\22"+
-            "\uffff\1\177\2\uffff\1\u0080\1\uffff\3\u0080\5\uffff\1\u0080",
+            "\12\177\10\uffff\1\u0080\1\uffff\3\u0080\5\uffff\1\u0080\13\uffff\1\175\6\uffff\1\177\2\uffff\1\u0080\1\uffff\3\u0080\5\uffff\1\u0080\13\uffff\1\175",
+            "\12\177\10\uffff\1\u0080\1\uffff\3\u0080\5\uffff\1\u0080\22\uffff\1\177\2\uffff\1\u0080\1\uffff\3\u0080\5\uffff\1\u0080",
             "\1\73\34\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "",
-            "\0\u0081",
-            "\0\u0081",
+            "",
+            "",
             "",
             "",
             "",
@@ -3586,7 +3521,6 @@ public class InternalSARLLexer extends Lexer {
             "",
             "",
             "",
-            "",
             "\1\u008b",
             "\1\u008c",
             "\1\u008d",
@@ -3597,8 +3531,7 @@ public class InternalSARLLexer extends Lexer {
             "\1\u0092",
             "\1\u0093",
             "\1\u0094",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u0096",
             "\1\u0098\3\uffff\1\u0097",
             "\1\u0099",
@@ -3607,16 +3540,15 @@ public class InternalSARLLexer extends Lexer {
             "",
             "",
             "\1\u009b\2\uffff\1\u009c\1\u009d",
+            "",
             "\1\u009e",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u00a0",
             "",
             "",
             "\1\u00a1",
             "\1\u00a2\2\uffff\1\u00a3",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "",
             "",
             "\1\u00a5",
@@ -3624,8 +3556,7 @@ public class InternalSARLLexer extends Lexer {
             "",
             "",
             "\1\u00a7",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "",
             "\1\u00a9",
             "\1\u00aa",
@@ -3633,17 +3564,14 @@ public class InternalSARLLexer extends Lexer {
             "\1\u00ad\3\uffff\1\u00ac",
             "",
             "",
-            "\12\177\10\uffff\1\u0080\1\uffff\3\u0080\5\uffff\1\u0080\22"+
-            "\uffff\1\177\2\uffff\1\u0080\1\uffff\3\u0080\5\uffff\1\u0080",
+            "\12\177\10\uffff\1\u0080\1\uffff\3\u0080\5\uffff\1\u0080\22\uffff\1\177\2\uffff\1\u0080\1\uffff\3\u0080\5\uffff\1\u0080",
             "",
             "",
             "",
             "",
             "",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "",
             "",
             "",
@@ -3662,8 +3590,7 @@ public class InternalSARLLexer extends Lexer {
             "\1\u00bb",
             "\1\u00bc",
             "\1\u00bd",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u00bf",
             "\1\u00c0",
             "\1\u00c1",
@@ -3675,24 +3602,20 @@ public class InternalSARLLexer extends Lexer {
             "\1\u00c6",
             "\1\u00c7",
             "",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u00c9",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\1\u00ca"+
-            "\31\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\1\u00ca\31\73",
             "",
             "\1\u00cc",
             "\1\u00cd",
             "\1\u00ce",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u00d0",
             "",
             "",
             "\1\u00d1",
             "\1\u00d2",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u00d4",
             "\1\u00d5",
             "\1\u00d6",
@@ -3707,76 +3630,60 @@ public class InternalSARLLexer extends Lexer {
             "",
             "\1\u00df",
             "\1\u00e0",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u00e2",
             "\1\u00e3",
             "\1\u00e4",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u00e6",
             "\1\u00e7",
             "",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u00e9",
             "",
             "\1\u00ea",
             "\1\u00eb",
             "\1\u00ec",
             "",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u00ee\16\uffff\1\u00ef",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "",
             "\1\u00f1",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u00f4",
             "\1\u00f5",
             "\1\u00f6",
             "\1\u00f7",
             "\1\u00f8",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u00fb",
             "\1\u00fc",
             "\1\u00fd",
             "",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u0100",
             "",
             "\1\u0101",
             "\1\u0102",
             "",
             "\1\u0103",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u0105",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "",
             "\1\u0107",
             "\1\u0108",
             "",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "",
             "",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u010b",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u010d",
             "\1\u010e",
             "",
@@ -3788,15 +3695,12 @@ public class InternalSARLLexer extends Lexer {
             "",
             "\1\u0112",
             "\1\u0113",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u0115",
             "",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u0118",
             "",
             "",
@@ -3804,16 +3708,13 @@ public class InternalSARLLexer extends Lexer {
             "",
             "\1\u011a",
             "\1\u011b",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u011e",
             "\1\u011f",
             "\1\u0120",
             "",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "",
             "",
             "\1\u0122",
@@ -3822,15 +3723,11 @@ public class InternalSARLLexer extends Lexer {
             "\1\u0125",
             "",
             "",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u012a",
             "\1\u012b",
             "\1\u012c",
@@ -3839,46 +3736,43 @@ public class InternalSARLLexer extends Lexer {
             "",
             "",
             "\1\u012d",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             "\1\u0130",
             "",
             "",
-            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32"+
-            "\73",
+            "\1\73\13\uffff\12\73\7\uffff\32\73\4\uffff\1\73\1\uffff\32\73",
             ""
     };
 
-    static final short[] DFA19_eot = DFA.unpackEncodedString(DFA19_eotS);
-    static final short[] DFA19_eof = DFA.unpackEncodedString(DFA19_eofS);
-    static final char[] DFA19_min = DFA.unpackEncodedStringToUnsignedChars(DFA19_minS);
-    static final char[] DFA19_max = DFA.unpackEncodedStringToUnsignedChars(DFA19_maxS);
-    static final short[] DFA19_accept = DFA.unpackEncodedString(DFA19_acceptS);
-    static final short[] DFA19_special = DFA.unpackEncodedString(DFA19_specialS);
-    static final short[][] DFA19_transition;
+    static final short[] DFA21_eot = DFA.unpackEncodedString(DFA21_eotS);
+    static final short[] DFA21_eof = DFA.unpackEncodedString(DFA21_eofS);
+    static final char[] DFA21_min = DFA.unpackEncodedStringToUnsignedChars(DFA21_minS);
+    static final char[] DFA21_max = DFA.unpackEncodedStringToUnsignedChars(DFA21_maxS);
+    static final short[] DFA21_accept = DFA.unpackEncodedString(DFA21_acceptS);
+    static final short[] DFA21_special = DFA.unpackEncodedString(DFA21_specialS);
+    static final short[][] DFA21_transition;
 
     static {
-        int numStates = DFA19_transitionS.length;
-        DFA19_transition = new short[numStates][];
+        int numStates = DFA21_transitionS.length;
+        DFA21_transition = new short[numStates][];
         for (int i=0; i<numStates; i++) {
-            DFA19_transition[i] = DFA.unpackEncodedString(DFA19_transitionS[i]);
+            DFA21_transition[i] = DFA.unpackEncodedString(DFA21_transitionS[i]);
         }
     }
 
-    class DFA19 extends DFA {
+    class DFA21 extends DFA {
 
-        public DFA19(BaseRecognizer recognizer) {
+        public DFA21(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 19;
-            this.eot = DFA19_eot;
-            this.eof = DFA19_eof;
-            this.min = DFA19_min;
-            this.max = DFA19_max;
-            this.accept = DFA19_accept;
-            this.special = DFA19_special;
-            this.transition = DFA19_transition;
+            this.decisionNumber = 21;
+            this.eot = DFA21_eot;
+            this.eof = DFA21_eof;
+            this.min = DFA21_min;
+            this.max = DFA21_max;
+            this.accept = DFA21_accept;
+            this.special = DFA21_special;
+            this.transition = DFA21_transition;
         }
         public String getDescription() {
             return "1:1: Tokens : ( T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | T__74 | T__75 | T__76 | T__77 | T__78 | T__79 | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_ID | RULE_STRING | RULE_ML_COMMENT | RULE_SL_COMMENT | RULE_WS | RULE_ANY_OTHER );";
@@ -3888,128 +3782,108 @@ public class InternalSARLLexer extends Lexer {
         	int _s = s;
             switch ( s ) {
                     case 0 : 
-                        int LA19_45 = input.LA(1);
+                        int LA21_0 = input.LA(1);
 
                         s = -1;
-                        if ( ((LA19_45>='\u0000' && LA19_45<='\uFFFF')) ) {s = 129;}
+                        if ( (LA21_0=='*') ) {s = 1;}
 
-                        else s = 47;
+                        else if ( (LA21_0=='=') ) {s = 2;}
 
-                        if ( s>=0 ) return s;
-                        break;
-                    case 1 : 
-                        int LA19_44 = input.LA(1);
+                        else if ( (LA21_0=='|') ) {s = 3;}
 
-                        s = -1;
-                        if ( ((LA19_44>='\u0000' && LA19_44<='\uFFFF')) ) {s = 129;}
+                        else if ( (LA21_0=='&') ) {s = 4;}
 
-                        else s = 47;
+                        else if ( (LA21_0=='v') ) {s = 5;}
 
-                        if ( s>=0 ) return s;
-                        break;
-                    case 2 : 
-                        int LA19_0 = input.LA(1);
+                        else if ( (LA21_0=='+') ) {s = 6;}
 
-                        s = -1;
-                        if ( (LA19_0=='*') ) {s = 1;}
+                        else if ( (LA21_0=='-') ) {s = 7;}
 
-                        else if ( (LA19_0=='=') ) {s = 2;}
+                        else if ( (LA21_0=='/') ) {s = 8;}
 
-                        else if ( (LA19_0=='|') ) {s = 3;}
+                        else if ( (LA21_0=='%') ) {s = 9;}
 
-                        else if ( (LA19_0=='&') ) {s = 4;}
+                        else if ( (LA21_0=='!') ) {s = 10;}
 
-                        else if ( (LA19_0=='v') ) {s = 5;}
+                        else if ( (LA21_0=='>') ) {s = 11;}
 
-                        else if ( (LA19_0=='+') ) {s = 6;}
+                        else if ( (LA21_0=='<') ) {s = 12;}
 
-                        else if ( (LA19_0=='-') ) {s = 7;}
+                        else if ( (LA21_0=='.') ) {s = 13;}
 
-                        else if ( (LA19_0=='/') ) {s = 8;}
+                        else if ( (LA21_0=='?') ) {s = 14;}
 
-                        else if ( (LA19_0=='%') ) {s = 9;}
+                        else if ( (LA21_0=='e') ) {s = 15;}
 
-                        else if ( (LA19_0=='!') ) {s = 10;}
+                        else if ( (LA21_0=='s') ) {s = 16;}
 
-                        else if ( (LA19_0=='>') ) {s = 11;}
+                        else if ( (LA21_0=='i') ) {s = 17;}
 
-                        else if ( (LA19_0=='<') ) {s = 12;}
+                        else if ( (LA21_0=='f') ) {s = 18;}
 
-                        else if ( (LA19_0=='.') ) {s = 13;}
+                        else if ( (LA21_0=='p') ) {s = 19;}
 
-                        else if ( (LA19_0=='?') ) {s = 14;}
+                        else if ( (LA21_0==';') ) {s = 20;}
 
-                        else if ( (LA19_0==',') ) {s = 15;}
+                        else if ( (LA21_0=='{') ) {s = 21;}
 
-                        else if ( (LA19_0=='e') ) {s = 16;}
+                        else if ( (LA21_0=='}') ) {s = 22;}
 
-                        else if ( (LA19_0=='s') ) {s = 17;}
+                        else if ( (LA21_0=='c') ) {s = 23;}
 
-                        else if ( (LA19_0=='i') ) {s = 18;}
+                        else if ( (LA21_0==',') ) {s = 24;}
 
-                        else if ( (LA19_0=='f') ) {s = 19;}
+                        else if ( (LA21_0=='a') ) {s = 25;}
 
-                        else if ( (LA19_0=='p') ) {s = 20;}
+                        else if ( (LA21_0=='b') ) {s = 26;}
 
-                        else if ( (LA19_0==';') ) {s = 21;}
+                        else if ( (LA21_0==':') ) {s = 27;}
 
-                        else if ( (LA19_0=='{') ) {s = 22;}
+                        else if ( (LA21_0=='u') ) {s = 28;}
 
-                        else if ( (LA19_0=='}') ) {s = 23;}
+                        else if ( (LA21_0=='r') ) {s = 29;}
 
-                        else if ( (LA19_0=='c') ) {s = 24;}
+                        else if ( (LA21_0=='o') ) {s = 30;}
 
-                        else if ( (LA19_0=='a') ) {s = 25;}
+                        else if ( (LA21_0=='[') ) {s = 31;}
 
-                        else if ( (LA19_0=='b') ) {s = 26;}
+                        else if ( (LA21_0==']') ) {s = 32;}
 
-                        else if ( (LA19_0==':') ) {s = 27;}
+                        else if ( (LA21_0=='n') ) {s = 33;}
 
-                        else if ( (LA19_0=='u') ) {s = 28;}
+                        else if ( (LA21_0=='(') ) {s = 34;}
 
-                        else if ( (LA19_0=='r') ) {s = 29;}
+                        else if ( (LA21_0==')') ) {s = 35;}
 
-                        else if ( (LA19_0=='o') ) {s = 30;}
+                        else if ( (LA21_0=='d') ) {s = 36;}
 
-                        else if ( (LA19_0=='[') ) {s = 31;}
+                        else if ( (LA21_0=='#') ) {s = 37;}
 
-                        else if ( (LA19_0==']') ) {s = 32;}
+                        else if ( (LA21_0=='w') ) {s = 38;}
 
-                        else if ( (LA19_0=='n') ) {s = 33;}
+                        else if ( (LA21_0=='t') ) {s = 39;}
 
-                        else if ( (LA19_0=='(') ) {s = 34;}
+                        else if ( (LA21_0=='0') ) {s = 40;}
 
-                        else if ( (LA19_0==')') ) {s = 35;}
+                        else if ( ((LA21_0>='1' && LA21_0<='9')) ) {s = 41;}
 
-                        else if ( (LA19_0=='d') ) {s = 36;}
+                        else if ( (LA21_0=='^') ) {s = 42;}
 
-                        else if ( (LA19_0=='#') ) {s = 37;}
+                        else if ( (LA21_0=='$'||(LA21_0>='A' && LA21_0<='Z')||LA21_0=='_'||(LA21_0>='g' && LA21_0<='h')||(LA21_0>='j' && LA21_0<='m')||LA21_0=='q'||(LA21_0>='x' && LA21_0<='z')) ) {s = 43;}
 
-                        else if ( (LA19_0=='w') ) {s = 38;}
+                        else if ( (LA21_0=='\"') ) {s = 44;}
 
-                        else if ( (LA19_0=='t') ) {s = 39;}
+                        else if ( (LA21_0=='\'') ) {s = 45;}
 
-                        else if ( (LA19_0=='0') ) {s = 40;}
+                        else if ( ((LA21_0>='\t' && LA21_0<='\n')||LA21_0=='\r'||LA21_0==' ') ) {s = 46;}
 
-                        else if ( ((LA19_0>='1' && LA19_0<='9')) ) {s = 41;}
-
-                        else if ( (LA19_0=='^') ) {s = 42;}
-
-                        else if ( (LA19_0=='$'||(LA19_0>='A' && LA19_0<='Z')||LA19_0=='_'||(LA19_0>='g' && LA19_0<='h')||(LA19_0>='j' && LA19_0<='m')||LA19_0=='q'||(LA19_0>='x' && LA19_0<='z')) ) {s = 43;}
-
-                        else if ( (LA19_0=='\"') ) {s = 44;}
-
-                        else if ( (LA19_0=='\'') ) {s = 45;}
-
-                        else if ( ((LA19_0>='\t' && LA19_0<='\n')||LA19_0=='\r'||LA19_0==' ') ) {s = 46;}
-
-                        else if ( ((LA19_0>='\u0000' && LA19_0<='\b')||(LA19_0>='\u000B' && LA19_0<='\f')||(LA19_0>='\u000E' && LA19_0<='\u001F')||LA19_0=='@'||LA19_0=='\\'||LA19_0=='`'||(LA19_0>='~' && LA19_0<='\uFFFF')) ) {s = 47;}
+                        else if ( ((LA21_0>='\u0000' && LA21_0<='\b')||(LA21_0>='\u000B' && LA21_0<='\f')||(LA21_0>='\u000E' && LA21_0<='\u001F')||LA21_0=='@'||LA21_0=='\\'||LA21_0=='`'||(LA21_0>='~' && LA21_0<='\uFFFF')) ) {s = 47;}
 
                         if ( s>=0 ) return s;
                         break;
             }
             NoViableAltException nvae =
-                new NoViableAltException(getDescription(), 19, _s, input);
+                new NoViableAltException(getDescription(), 21, _s, input);
             error(nvae);
             throw nvae;
         }

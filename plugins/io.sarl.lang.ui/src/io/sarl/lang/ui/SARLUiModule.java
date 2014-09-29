@@ -20,7 +20,6 @@
  */
 package io.sarl.lang.ui;
 
-import io.sarl.lang.ui.bugfixes.XtextBugFixes438191And438233;
 import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
 import io.sarl.lang.ui.outline.SARLBehaviorUnitOutlineFilter;
 import io.sarl.lang.ui.outline.SARLFieldOutlineFilter;
@@ -34,6 +33,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.xtext.ui.editor.outline.actions.IOutlineContribution;
 import org.eclipse.xtext.ui.editor.outline.impl.OutlineFilterAndSorter.IComparator;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.ISemanticHighlightingCalculator;
+import org.eclipse.xtext.xbase.ui.contentassist.ImportingTypesProposalProvider;
 
 import com.google.inject.Binder;
 import com.google.inject.name.Names;
@@ -104,7 +104,7 @@ public class SARLUiModule extends AbstractSARLUiModule {
 
 	@Override
 	public Class<? extends org.eclipse.xtext.common.types.xtext.ui.ITypesProposalProvider> bindITypesProposalProvider() {
-		return XtextBugFixes438191And438233.class;
+		return ImportingTypesProposalProvider.class;
 	}
 
 }

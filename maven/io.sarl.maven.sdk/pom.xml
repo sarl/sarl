@@ -36,5 +36,10 @@
 			<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
 			<version>${xtext.version}</version>
 		</dependency>
+ 		<dependency> 
+ 			<groupId>org.eclipse</groupId> 
+ 			<artifactId>osgi</artifactId> 
+			<version>3.10.0-v20140606-1445</version>
+ 		</dependency> 
 	</dependencies>
 </project>

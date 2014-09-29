@@ -26,6 +26,7 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*;
+import static extension org.junit.Assume.assumeFalse
 
 /*
  * @outline
@@ -218,7 +219,12 @@ describe "General FAQ on SARL" {
 			 * @filter(.*) 
 			 */
 			fact "What is the version of the Java virtual machine to install?" {
-				true
+				// The checks are valid only if the macro replacements were done.
+				// The replacements are done by Maven.
+				// So, Eclipse Junit tools do not make the replacements.
+				System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+				//
+				"%compilerlevel%" should beMavenVersion false
 			}
 
 		}
@@ -235,6 +241,11 @@ describe "General FAQ on SARL" {
 			 * @filter(.*) 
 			 */
 			fact "Where are the sources of SARL?" {
+				// The checks are valid only if the macro replacements were done.
+				// The replacements are done by Maven.
+				// So, Eclipse Junit tools do not make the replacements.
+				System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+				//
 				"%website%" should beURL "!file"
 			}
 			

@@ -22,8 +22,8 @@ package io.sarl.lang.validation
 
 import com.google.common.collect.Lists
 import com.google.inject.Inject
+import io.sarl.lang.SARLConstants
 import io.sarl.lang.SARLKeywords
-import io.sarl.lang.bugfixes.XtextBugFixValidator
 import io.sarl.lang.core.Capacity
 import io.sarl.lang.sarl.Action
 import io.sarl.lang.sarl.ActionSignature
@@ -48,6 +48,7 @@ import io.sarl.lang.signature.ActionNameKey
 import io.sarl.lang.signature.ActionSignatureProvider
 import io.sarl.lang.signature.SignatureKey
 import io.sarl.lang.util.ModelUtil
+import java.text.MessageFormat
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
@@ -69,8 +70,6 @@ import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 
 import static io.sarl.lang.util.ModelUtil.*
-import java.text.MessageFormat
-import io.sarl.lang.SARLConstants
 
 /**
  * Validator for the SARL elements.
@@ -87,7 +86,7 @@ import io.sarl.lang.SARLConstants
  * @mavenartifactid $ArtifactId$
  * @see "http://www.eclipse.org/Xtext/documentation.html#validation"
  */
-class SARLValidator extends XtextBugFixValidator {
+class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private ILogicalContainerProvider logicalContainerProvider
@@ -416,6 +415,18 @@ class SARLValidator extends XtextBugFixValidator {
 						), 
 				sarlElement,
 				SarlPackage.Literals.ATTRIBUTE__NAME,
+				ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+				org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION)
+	}
+	
+	protected override reportUninitializedField(JvmField field, JvmConstructor constructor) {
+		error(
+				MessageFormat::format(
+						Messages::SARLValidator_38,
+						field.simpleName,
+						constructor.toString), 
+				constructor,
+				null,
 				ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 				org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION)
 	}

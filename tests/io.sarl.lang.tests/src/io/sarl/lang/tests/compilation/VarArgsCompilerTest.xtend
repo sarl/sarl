@@ -313,7 +313,7 @@ class VarArgsCompilerTest {
 		'''.assertCompilesTo('''
 			MULTIPLE FILES WERE GENERATED
 			
-			File 1 : C1.java
+			File 1 : /myProject/src-gen/C1.java
 			
 			import io.sarl.lang.core.Capacity;
 			
@@ -321,7 +321,7 @@ class VarArgsCompilerTest {
 			public interface C1 extends Capacity {
 			}
 			
-			File 2 : S1.java
+			File 2 : /myProject/src-gen/S1.java
 			
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
@@ -366,7 +366,7 @@ class VarArgsCompilerTest {
 		'''.assertCompilesTo('''
 			MULTIPLE FILES WERE GENERATED
 			
-			File 1 : C1.java
+			File 1 : /myProject/src-gen/C1.java
 			
 			import io.sarl.lang.core.Capacity;
 			
@@ -374,7 +374,7 @@ class VarArgsCompilerTest {
 			public interface C1 extends Capacity {
 			}
 			
-			File 2 : S1.java
+			File 2 : /myProject/src-gen/S1.java
 			
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
@@ -419,7 +419,7 @@ class VarArgsCompilerTest {
 		'''.assertCompilesTo('''
 			MULTIPLE FILES WERE GENERATED
 			
-			File 1 : C1.java
+			File 1 : /myProject/src-gen/C1.java
 			
 			import io.sarl.lang.core.Capacity;
 			
@@ -427,7 +427,7 @@ class VarArgsCompilerTest {
 			public interface C1 extends Capacity {
 			}
 			
-			File 2 : S1.java
+			File 2 : /myProject/src-gen/S1.java
 			
 			import io.sarl.lang.core.Skill;
 			
@@ -453,7 +453,7 @@ class VarArgsCompilerTest {
 		'''.assertCompilesTo('''
 			MULTIPLE FILES WERE GENERATED
 			
-			File 1 : C1.java
+			File 1 : /myProject/src-gen/C1.java
 			
 			import io.sarl.lang.core.Capacity;
 			
@@ -461,7 +461,7 @@ class VarArgsCompilerTest {
 			public interface C1 extends Capacity {
 			}
 			
-			File 2 : S1.java
+			File 2 : /myProject/src-gen/S1.java
 			
 			import io.sarl.lang.core.Skill;
 			

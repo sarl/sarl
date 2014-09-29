@@ -20,11 +20,10 @@
  */
 package io.sarl.lang.validation;
 
-import io.sarl.lang.bugfixes.XtextBugfixConfigurableIssueCodesProvider;
-
 import org.eclipse.xtext.preferences.PreferenceKey;
 import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.validation.SeverityConverter;
+import org.eclipse.xtext.xbase.validation.XbaseConfigurableIssueCodes;
 
 /**
  * Provider of issues that could be configured by the user.
@@ -34,7 +33,7 @@ import org.eclipse.xtext.validation.SeverityConverter;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLConfigurableIssueCodesProvider extends XtextBugfixConfigurableIssueCodesProvider {
+public class SARLConfigurableIssueCodesProvider extends XbaseConfigurableIssueCodes {
 
 	/** Construct a provider of issue codes for Xtext tools.
 	 */

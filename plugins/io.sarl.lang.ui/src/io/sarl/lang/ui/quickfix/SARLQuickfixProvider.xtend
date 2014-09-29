@@ -65,8 +65,10 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	protected def void removeBackwardWithSpaces(Issue issue, IXtextDocument document) {
 		// Skip spaces before the identifier until the coma
 		var index = issue.offset - 1
-		while (Character::isWhitespace(document.getChar(index))) {
+		var char c = document.getChar(index)
+		while (Character::isWhitespace(c)) {
 			index--
+			c = document.getChar(index)
 		}
 		
 		var delta = issue.offset - index - 1
@@ -80,17 +82,21 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	protected def boolean removeBackwardUntilSeparator(int offset, int length, IXtextDocument document, String separator) {
 		// Skip spaces before the identifier until the coma
 		var index = offset - 1
-		while (Character::isWhitespace(document.getChar(index))) {
+		var char c = document.getChar(index)
+		while (Character::isWhitespace(c)) {
 			index--
+			c = document.getChar(index)
 		}
 		
 		// Test if it previous non-space character is the separator
 		var boolean foundSeparator = (document.getChar(index)==separator.charAt(0))
 		if (foundSeparator) {
 			index--
+			c = document.getChar(index)
 			// Skip the previous spaces
-			while (Character::isWhitespace(document.getChar(index))) {
+			while (Character::isWhitespace(c)) {
 				index--
+				c = document.getChar(index)
 			}
 
 			var delta = offset - index - 1
@@ -103,17 +109,21 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	protected def boolean removeForwardUntilSeparator(Issue issue, IXtextDocument document, String separator) {
 		// Skip spaces after the identifier until the coma
 		var index = issue.offset + issue.length
-		while (Character::isWhitespace(document.getChar(index))) {
+		var char c = document.getChar(index)
+		while (Character::isWhitespace(c)) {
 			index++
+			c = document.getChar(index)
 		}
 		
 		// Test if it next non-space character is the separator
 		var boolean foundSeparator = (document.getChar(index)==separator.charAt(0))
 		if (foundSeparator) {
 			index++
+			c = document.getChar(index)
 			// Skip the previous spaces
-			while (Character::isWhitespace(document.getChar(index))) {
+			while (Character::isWhitespace(c)) {
 				index++
+				c = document.getChar(index)
 			}
 
 			var newLength = index - issue.offset
@@ -126,18 +136,22 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	private def removeBackwardWithInheritingKeyword(Issue issue, IXtextDocument document) {
 		// Skip spaces before the identifier
 		var index = issue.offset - 1
-		while (Character::isWhitespace(document.getChar(index))) {
+		var char c = document.getChar(index)
+		while (Character::isWhitespace(c)) {
 			index--
+			c = document.getChar(index)
 		}
 		
 		// Skip non-spaces before the identifier
-		while (!Character::isWhitespace(document.getChar(index))) {
+		while (!Character::isWhitespace(c)) {
 			index--
+			c = document.getChar(index)
 		}
 		
 		// Skip spaces before the previous keyword
-		while (Character::isWhitespace(document.getChar(index))) {
+		while (Character::isWhitespace(c)) {
 			index--
+			c = document.getChar(index)
 		}
 		
 		var delta = issue.offset - index - 1
@@ -150,17 +164,21 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		
 		// Skip spaces before the identifier until the separator
 		var index = offset - 1
-		while (Character::isWhitespace(document.getChar(index))) {
+		var char c = document.getChar(index)
+		while (Character::isWhitespace(c)) {
 			index--
+			c = document.getChar(index)
 		}
 		
 		// Test if it previous non-space character is the separator
 		var boolean foundSeparator = (document.getChar(index)==beginSeparator.charAt(0))
 		if (foundSeparator) {
 			index--
+			c = document.getChar(index)
 			// Skip the previous spaces
-			while (Character::isWhitespace(document.getChar(index))) {
+			while (Character::isWhitespace(c)) {
 				index--
+				c = document.getChar(index)
 			}
 
 			length = length + (offset - index - 1)
@@ -168,15 +186,17 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			
 			// Skip spaces after the identifier until the separator
 			index = offset + length
-			while (Character::isWhitespace(document.getChar(index))) {
+			c = document.getChar(index)
+			while (Character::isWhitespace(c)) {
 				index++
+				c = document.getChar(index)
 			}
 			
 			// Test if it next non-space character is the separator
 			foundSeparator = (document.getChar(index)==endSeparator.charAt(0))
 			if (foundSeparator) {
 				index++
-	
+
 				length = index - offset
 				document.replace(offset, length, "")
 			}
@@ -203,8 +223,10 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	
 	protected def int getSpaceSize(IXtextDocument document, int offset) {
 		var size = 0
-		while (Character::isWhitespace(document.getChar(offset + size))) {
+		var char c = document.getChar(offset + size)
+		while (Character::isWhitespace(c)) {
 			size++
+			c = document.getChar(offset + size)
 		}
 		return size
 	}

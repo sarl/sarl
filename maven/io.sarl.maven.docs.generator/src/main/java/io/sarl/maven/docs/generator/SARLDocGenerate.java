@@ -105,7 +105,7 @@ public class SARLDocGenerate extends XtendTestCompile {
 	/**
 	 * The project itself. This parameter is set by maven.
 	 *
-	 * @parameter expression="${project}"
+	 * @parameter project="${project}"
 	 * @required
 	 */
 	private MavenProject hiddenProjectReference;
