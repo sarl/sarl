@@ -37,7 +37,7 @@
 		<tycho.version>0.21.0</tycho.version>
 		<xtext.version>2.7.2</xtext.version>
 		<afc.version>11.0</afc.version>
-		<!-- Names to put after all the copyright notices (used in documentation) -->
+		<guava.version>17.0</guava.version>
 		<copyrighters>Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND</copyrighters>
 		<!-- Version of the Jnario components -->
 		<jnario.version>1.0.0</jnario.version>

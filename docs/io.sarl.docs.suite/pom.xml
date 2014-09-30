@@ -23,65 +23,63 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>vmutils</artifactId>
+			<version>${afc.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.maven.sdk</artifactId>
+			<version>${project.version}</version>
 			<type>pom</type>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>io.sarl.lang</groupId>
 			<artifactId>io.sarl.lang</artifactId>
+			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>io.sarl.lang</groupId>
 			<artifactId>io.sarl.lang.tests</artifactId>
+			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>io.sarl</groupId>
 			<artifactId>io.sarl.eclipse</artifactId>
+			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.eclipse.xtend</groupId>
-			<artifactId>org.eclipse.xtend.lib</artifactId>
+			<artifactId>org.eclipse.xtend.core</artifactId>
+			<version>${xtext.version}</version>
 			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.eclipse</groupId>
-			<artifactId>osgi</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.xtext</groupId>
-			<artifactId>org.eclipse.xtext</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.xtext</groupId>
-			<artifactId>org.eclipse.xtext.xbase</artifactId>
-			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.jnario</groupId>
-			<artifactId>org.jnario.lib</artifactId>
+			<artifactId>org.jnario.standalone</artifactId>
+			<version>${jnario.version}</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 	<build>
