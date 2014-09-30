@@ -49,6 +49,7 @@ class ArgDefaultValueCompilerTest {
 			import io.sarl.lang.annotation.DefaultValueUse;
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
@@ -57,7 +58,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param parentID - identifier of the parent. It is the identifer of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
+			  public A1(final UUID parentID) {
 			    super(parentID, null);
 			  }
 			  
@@ -67,7 +68,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
 			  
@@ -104,6 +105,7 @@ class ArgDefaultValueCompilerTest {
 			import io.sarl.lang.annotation.DefaultValueUse;
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
@@ -112,7 +114,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param parentID - identifier of the parent. It is the identifer of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
+			  public A1(final UUID parentID) {
 			    super(parentID, null);
 			  }
 			  
@@ -122,7 +124,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
 			  
@@ -159,6 +161,7 @@ class ArgDefaultValueCompilerTest {
 			import io.sarl.lang.annotation.DefaultValueUse;
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
@@ -167,7 +170,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param parentID - identifier of the parent. It is the identifer of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
+			  public A1(final UUID parentID) {
 			    super(parentID, null);
 			  }
 			  
@@ -177,7 +180,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
 			  
@@ -214,6 +217,7 @@ class ArgDefaultValueCompilerTest {
 			import io.sarl.lang.annotation.DefaultValueUse;
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
@@ -222,7 +226,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param parentID - identifier of the parent. It is the identifer of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
+			  public A1(final UUID parentID) {
 			    super(parentID, null);
 			  }
 			  
@@ -232,7 +236,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
 			  
@@ -269,6 +273,7 @@ class ArgDefaultValueCompilerTest {
 			import io.sarl.lang.annotation.DefaultValueUse;
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
@@ -277,7 +282,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param parentID - identifier of the parent. It is the identifer of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
+			  public A1(final UUID parentID) {
 			    super(parentID, null);
 			  }
 			  
@@ -287,7 +292,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
 			  
@@ -324,6 +329,7 @@ class ArgDefaultValueCompilerTest {
 			import io.sarl.lang.annotation.DefaultValueUse;
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
@@ -332,7 +338,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param parentID - identifier of the parent. It is the identifer of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
+			  public A1(final UUID parentID) {
 			    super(parentID, null);
 			  }
 			  
@@ -342,7 +348,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
 			  
@@ -379,6 +385,7 @@ class ArgDefaultValueCompilerTest {
 			import io.sarl.lang.annotation.DefaultValueUse;
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
@@ -387,7 +394,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param parentID - identifier of the parent. It is the identifer of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
+			  public A1(final UUID parentID) {
 			    super(parentID, null);
 			  }
 			  
@@ -397,7 +404,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
 			  
@@ -434,6 +441,7 @@ class ArgDefaultValueCompilerTest {
 			import io.sarl.lang.annotation.DefaultValueUse;
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
@@ -442,7 +450,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param parentID - identifier of the parent. It is the identifer of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
+			  public A1(final UUID parentID) {
 			    super(parentID, null);
 			  }
 			  
@@ -452,7 +460,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
 			  
@@ -489,6 +497,7 @@ class ArgDefaultValueCompilerTest {
 			import io.sarl.lang.annotation.DefaultValueUse;
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
@@ -497,7 +506,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param parentID - identifier of the parent. It is the identifer of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
+			  public A1(final UUID parentID) {
 			    super(parentID, null);
 			  }
 			  
@@ -507,7 +516,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
 			  
@@ -544,6 +553,7 @@ class ArgDefaultValueCompilerTest {
 			import io.sarl.lang.annotation.DefaultValueUse;
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
@@ -552,7 +562,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param parentID - identifier of the parent. It is the identifer of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
+			  public A1(final UUID parentID) {
 			    super(parentID, null);
 			  }
 			  
@@ -562,7 +572,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
 			  
@@ -599,6 +609,7 @@ class ArgDefaultValueCompilerTest {
 			import io.sarl.lang.annotation.DefaultValueUse;
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
@@ -607,7 +618,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param parentID - identifier of the parent. It is the identifer of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
+			  public A1(final UUID parentID) {
 			    super(parentID, null);
 			  }
 			  
@@ -617,7 +628,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
 			  
@@ -654,6 +665,7 @@ class ArgDefaultValueCompilerTest {
 			import io.sarl.lang.annotation.DefaultValueUse;
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
@@ -662,7 +674,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param parentID - identifier of the parent. It is the identifer of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
+			  public A1(final UUID parentID) {
 			    super(parentID, null);
 			  }
 			  
@@ -672,7 +684,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
 			  
@@ -709,6 +721,7 @@ class ArgDefaultValueCompilerTest {
 			import io.sarl.lang.annotation.DefaultValueUse;
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
@@ -717,7 +730,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param parentID - identifier of the parent. It is the identifer of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
+			  public A1(final UUID parentID) {
 			    super(parentID, null);
 			  }
 			  
@@ -727,7 +740,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
 			  
@@ -780,6 +793,7 @@ class ArgDefaultValueCompilerTest {
 			import io.sarl.lang.annotation.DefaultValueUse;
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
@@ -788,7 +802,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param parentID - identifier of the parent. It is the identifer of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
+			  public A1(final UUID parentID) {
 			    super(parentID, null);
 			  }
 			  
@@ -798,7 +812,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
 			  
@@ -835,6 +849,7 @@ class ArgDefaultValueCompilerTest {
 			import io.sarl.lang.annotation.DefaultValueUse;
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
@@ -843,7 +858,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param parentID - identifier of the parent. It is the identifer of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
+			  public A1(final UUID parentID) {
 			    super(parentID, null);
 			  }
 			  
@@ -853,7 +868,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
 			  
@@ -890,6 +905,7 @@ class ArgDefaultValueCompilerTest {
 			import io.sarl.lang.annotation.DefaultValueUse;
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
@@ -898,7 +914,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param parentID - identifier of the parent. It is the identifer of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
+			  public A1(final UUID parentID) {
 			    super(parentID, null);
 			  }
 			  
@@ -908,7 +924,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
 			  
@@ -956,6 +972,7 @@ class ArgDefaultValueCompilerTest {
 			import io.sarl.lang.annotation.DefaultValueUse;
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
@@ -964,7 +981,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param parentID - identifier of the parent. It is the identifer of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
+			  public A1(final UUID parentID) {
 			    super(parentID, null);
 			  }
 			  
@@ -974,7 +991,7 @@ class ArgDefaultValueCompilerTest {
 			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID, final java.util.UUID agentID) {
+			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
 			  

@@ -52,6 +52,8 @@ import org.eclipse.xtext.xbase.services.XtypeGrammarAccess.XImportDeclarationEle
  * on how and when to use it 
  * 
  * Also see {@code org.eclipse.xtext.xtext.XtextFormattingTokenSerializer} as an example
+ * 
+ * FIXME: This formatter may extend the Xtend formatter.
  */
 class SARLFormatter extends XbaseFormatter {
 

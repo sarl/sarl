@@ -49,11 +49,13 @@ import io.sarl.lang.signature.ActionSignatureProvider
 import io.sarl.lang.signature.InferredStandardParameter
 import io.sarl.lang.signature.InferredValuedParameter
 import io.sarl.lang.signature.SignatureKey
+import java.text.MessageFormat
 import java.util.List
 import java.util.Map
 import java.util.UUID
 import java.util.logging.Logger
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.common.types.JvmConstructor
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmExecutable
 import org.eclipse.xtext.common.types.JvmField
@@ -68,7 +70,6 @@ import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.compiler.XbaseCompiler
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
-import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor.IPostIndexingInitializing
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypeExtensions
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
@@ -76,8 +77,6 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking
 
 import static io.sarl.lang.util.ModelUtil.*
-import java.text.MessageFormat
-import org.eclipse.xtext.common.types.JvmConstructor
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -112,11 +111,6 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	
 	@Inject private JvmTypeExtensions typeExtensions;
 
-	protected def toGeneratedAnnotation(EObject o) {
-		o.toAnnotation(typeof(Generated))
-	}
-	
-
 	/**
 	 * The dispatch method {@code infer} is called for each instance of the
 	 * given element's type that is contained in a resource.
@@ -132,10 +126,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 *            get attached to the current resource. The acceptor's
 	 *            {@link IJvmDeclaredTypeAcceptor#accept(org.eclipse.xtext.common.types.JvmDeclaredType)
 	 *            accept(..)} method takes the constructed empty type for the
-	 *            pre-indexing phase. This one is further initialized in the
-	 *            indexing phase using the closure you pass to the returned
-	 *            {@link IPostIndexingInitializing#initializeLater(org.eclipse.xtext.xbase.lib.Procedures.Procedure1)
-	 *            initializeLater(..)}.
+	 *            pre-indexing phase.
 	 * @param isPreIndexingPhase
 	 *            whether the method is called in a pre-indexing phase, i.e.
 	 *            when the global index is not yet fully updated. You must not
@@ -147,7 +138,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		if (qn===null) {
 			return
 		}
-		acceptor.accept(event.toClass(qn)).initializeLater(
+		acceptor.accept(event.toClass(qn))
 			[
 				// Reset the action registry
 				sarlSignatureProvider.resetSignatures(it)
@@ -190,11 +181,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							super();
 						'''
 					]
-					op.annotations += toGeneratedAnnotation
+					op.annotations += annotationRef(typeof(Generated))
 					typeExtensions.setSynthetic(op, true);
 					members += op
 					//
-					val addrType = newTypeRef(typeof(Address))
+					val addrType = typeRef(typeof(Address))
 					op = event.toConstructor [
 						documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_1, 'source')
 						parameters += toParameter('source', addrType)
@@ -202,7 +193,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							super(source);
 						'''
 					]
-					op.annotations += toGeneratedAnnotation
+					op.annotations += annotationRef(typeof(Generated))
 					typeExtensions.setSynthetic(op, true);
 					members += op
 				}
@@ -212,21 +203,21 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					val JvmField[] tab = jvmFields // single translation to the array
  					var elementType = event.toClass(event.fullyQualifiedName)
  					
-					var op = toEqualsMethod(event, elementType, true, tab)
+					var op = toEqualsMethod(event, elementType, tab)
  					if (op!==null) {
-						op.annotations += toGeneratedAnnotation
+						op.annotations += annotationRef(typeof(Generated))
 						typeExtensions.setSynthetic(op, true);
 						members += op
 					}
 					
-					op = toHashCodeMethod(event, true, tab)
+					op = toHashCodeMethod(event, tab)
 					if (op!==null) {
-						op.annotations += toGeneratedAnnotation
+						op.annotations += annotationRef(typeof(Generated))
 						typeExtensions.setSynthetic(op, true);
 						members += op
 					}
 					
-					op = event.toMethod("attributesToString", newTypeRef(typeof(String)))[
+					op = event.toMethod("attributesToString", typeRef(typeof(String)))[
 						visibility = JvmVisibility::PROTECTED
 						documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_2, event.name)
 						body = [
@@ -240,25 +231,25 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						]
 					]
 					if (op!==null) {
-						op.annotations += toGeneratedAnnotation
+						op.annotations += annotationRef(typeof(Generated))
 						typeExtensions.setSynthetic(op, true);
 						members += op
 					}
 				}
 
 				val serialValue = serial
-				val serialField = event.toField("serialVersionUID", newTypeRef(typeof(long))) [
+				val serialField = event.toField("serialVersionUID", typeRef(typeof(long))) [
 					visibility = JvmVisibility::PRIVATE
 					final = true
 					static = true
 					initializer = [append(serialValue+"L")]
 				]
-				serialField.annotations += toGeneratedAnnotation
+				serialField.annotations += annotationRef(typeof(Generated))
 				typeExtensions.setSynthetic(serialField, true);
 				members += serialField
 				readAndWriteTracking.markInitialized(serialField, null)
 
-			])
+			]
 	}
 
 	def dispatch void infer(Capacity capacity, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
@@ -266,7 +257,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		if (qn===null) {
 			return
 		}
-		acceptor.accept(capacity.toInterface(qn.toString, null)).initializeLater(
+		acceptor.accept(capacity.toInterface(qn.toString, null))
 			[
 				// Reset the action registry
 				sarlSignatureProvider.resetSignatures(it)
@@ -282,7 +273,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						}
 					}
 				}
-			])
+			]
 	}
 
 	def dispatch void infer(Skill skill, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
@@ -290,7 +281,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		if (qn===null) {
 			return
 		}
-		acceptor.accept(skill.toClass(qn)).initializeLater(
+		acceptor.accept(skill.toClass(qn))
 			[
 				// Reset the action registry
 				sarlSignatureProvider.resetSignatures(it)
@@ -350,7 +341,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				actionIndex = generateMissedFunction(skill, actionIndex, operationsToImplement, overridableOperations)
 								
 				if (!hasConstructor) {
-					val aType = newTypeRef(typeof(io.sarl.lang.core.Agent))
+					val aType = typeRef(typeof(io.sarl.lang.core.Agent))
 					var op = skill.toConstructor [
 						documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_3, 'owner')
 						parameters += skill.toParameter('owner', aType)
@@ -358,7 +349,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							super(owner);
 						'''
 					]
-					op.annotations += toGeneratedAnnotation
+					op.annotations += annotationRef(typeof(Generated))
 					it.members += op
 					typeExtensions.setSynthetic(op, true)
 					op = skill.toConstructor [
@@ -367,11 +358,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							super();
 						'''
 					]
-					op.annotations += toGeneratedAnnotation
+					op.annotations += annotationRef(typeof(Generated))
 					it.members += op
 					typeExtensions.setSynthetic(op, true)
 				}
-			])
+			]
 	}
 
 	def dispatch void infer(Behavior behavior, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
@@ -379,7 +370,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		if (qn===null) {
 			return
 		}
-		acceptor.accept(behavior.toClass(qn)).initializeLater(
+		acceptor.accept(behavior.toClass(qn))
 			[
 				// Reset the action registry
 				sarlSignatureProvider.resetSignatures(it)
@@ -428,7 +419,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				}
 				
 				if (!hasConstructor) {
-					val aType = newTypeRef(typeof(io.sarl.lang.core.Agent))
+					val aType = typeRef(typeof(io.sarl.lang.core.Agent))
 					var op = behavior.toConstructor [
 						documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_5, 'owner')
 						parameters += toParameter('owner', aType)
@@ -436,11 +427,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							super(owner);
 						'''
 					]
-					op.annotations += toGeneratedAnnotation
+					op.annotations += annotationRef(typeof(Generated))
 					members +=  op
 					typeExtensions.setSynthetic(op, true);
 				}
-			])
+			]
 	}
 
 	def dispatch void infer(Agent agent, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
@@ -448,7 +439,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		if (qn===null) {
 			return
 		}
-		acceptor.accept(agent.toClass(qn)).initializeLater [
+		acceptor.accept(agent.toClass(qn)) [
 			// Reset the action registry
 			sarlSignatureProvider.resetSignatures(it)
 			
@@ -457,12 +448,12 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 
 			var cons1 = agent.toConstructor [
 				documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_6, 'parentID')
-				parameters += agent.toParameter('parentID', newTypeRef(typeof(UUID)))
+				parameters += agent.toParameter('parentID', typeRef(typeof(UUID)))
 				body = '''
 					super(parentID, null);
 				'''
 			]
-			cons1.annotations += agent.toGeneratedAnnotation
+			cons1.annotations += annotationRef(typeof(Generated))
 			members += cons1
 			typeExtensions.setSynthetic(cons1, true)
 			
@@ -470,13 +461,13 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				documentation = MessageFormat::format(
 					Messages::SARLJvmModelInferrer_7,
 					'parentID', 'agentID')
-				parameters += agent.toParameter('parentID', newTypeRef(typeof(UUID)))
-				parameters += agent.toParameter('agentID', newTypeRef(typeof(UUID)))
+				parameters += agent.toParameter('parentID', typeRef(typeof(UUID)))
+				parameters += agent.toParameter('agentID', typeRef(typeof(UUID)))
 				body = '''
 					super(parentID, agentID);
 				'''
 			]
-			cons2.annotations += agent.toGeneratedAnnotation
+			cons2.annotations += annotationRef(typeof(Generated))
 			members += cons2
 			typeExtensions.setSynthetic(cons2, true)
 
@@ -575,7 +566,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							append(");")
 						] //(new CallingFunctionGenerator(originalOperation.simpleName, args))
 					}
-					op.annotations += owner.toAnnotation(typeof(DefaultValueUse), originalSignature)
+					op.annotations += annotationRef(typeof(DefaultValueUse), originalSignature)
 					output.members += op				
 					actIndex++
 				}
@@ -597,7 +588,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			}
 		}
 		if (owner.superTypes.empty) {
-			var type = element.newTypeRef(defaultType)
+			var type = typeRef(defaultType)
 			owner.superTypes += type
 			serial = serial + type.identifier.hashCode
 		}
@@ -674,7 +665,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 								append(");")
 							]
 						]
-						op.annotations += context.toGeneratedAnnotation
+						op.annotations += annotationRef(typeof(Generated))
 						owner.members += op
 						// 
 						if (operationsToImplement!==null) operationsToImplement.remove(entry.key)
@@ -706,12 +697,12 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				}
 			}
 
-			val voidType = unit.newTypeRef(Void::TYPE)
+			val voidType = typeRef(Void::TYPE)
 			val behName = "_handle_" + unit.event.simpleName + "_" + index
 			
 			val behaviorMethod = unit.toMethod(behName, voidType) [
 				unit.copyDocumentationTo(it)
-				annotations += unit.toAnnotation(typeof(Percept))
+				annotations += annotationRef(typeof(Percept))
 				parameters +=
 					unit.event.toParameter(SARLKeywords::OCCURRENCE, unit.event)
 			]
@@ -720,7 +711,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				behaviorMethod.body = unit.body
 			} else {
 				val guardMethodName = behName + "_Guard"
-				val guardMethod = guard.toMethod(guardMethodName, guard.newTypeRef(Boolean::TYPE)) [
+				val guardMethod = guard.toMethod(guardMethodName, typeRef(Boolean::TYPE)) [
 					documentation = MessageFormat::format(
 						Messages::SARLJvmModelInferrer_9,
 						behName, guard.toString)
@@ -779,14 +770,14 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						}
 						initializer = param.defaultValue
 					]
-					field.annotations += param.toGeneratedAnnotation
+					field.annotations += annotationRef(typeof(Generated))
 					actionContainer.members += field
 					if (owner instanceof JvmConstructor) {
 						readAndWriteTracking.markInitialized(field, owner)
 					} else {
 						readAndWriteTracking.markInitialized(field, null)
 					}
-					var annot = param.toAnnotation(typeof(DefaultValue), namePostPart)
+					var annot = annotationRef(typeof(DefaultValue), namePostPart)
 					lastParam.annotations += annot
 				}
 				
@@ -800,7 +791,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			lastParam.parameterType = lastParam.parameterType.addArrayTypeDimension
 		}
 		if (hasDefaultValue) {
-			owner.annotations += sourceElement.toAnnotation(typeof(DefaultValueSource))
+			owner.annotations += annotationRef(typeof(DefaultValueSource))
 		}
 		return parameterTypes
 	}
@@ -849,7 +840,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			
 		var returnType = signature.type
 		if (returnType == null) {
-			returnType = signature.newTypeRef(Void::TYPE)
+			returnType = typeRef(Void::TYPE)
 		}
 		
 		val actionKey = sarlSignatureProvider.createFunctionID(owner, signature.name)
@@ -905,7 +896,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							append(");")
 						]
 					}
-					annotations += signature.toAnnotation(
+					annotations += annotationRef(
 						typeof(DefaultValueUse), 
 						otherSignatures.formalParameterKey.toString
 					)
@@ -953,7 +944,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					append(args.join(", "))
 					append(");")
 				]
-				annotations += constructor.toAnnotation(
+				annotations += annotationRef(
 					typeof(DefaultValueUse),
 					otherSignatures.formalParameterKey.toString
 				)
@@ -963,5 +954,118 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		
 		return otherSignatures.formalParameterKey
 	}
-			
+
+	/** Generate the "equals()" operation.
+	 * This function was deprecated in Xbase, and should be provided by DSL
+	 * providers now.
+	 */
+	protected def JvmOperation toEqualsMethod(
+									EObject sourceElement, 
+									JvmDeclaredType declaredType,
+									JvmField... jvmFields) {
+		if (sourceElement === null || declaredType === null) {
+			return null
+		}
+		var result = toMethod(sourceElement, "equals", typeRef(Boolean.TYPE), null)
+		if (result === null) {
+			return null
+		}
+		result.annotations += annotationRef(typeof(Override))
+		result.parameters +=
+				toParameter(sourceElement, "obj",
+				typeRef(typeof(Object)))
+		result.body = [
+				append("if (this == obj)").increaseIndentation
+				newLine.append("return true;").decreaseIndentation
+				newLine.append("if (obj == null)").increaseIndentation
+				newLine.append("return false;").decreaseIndentation
+				newLine.append("if (getClass() != obj.getClass())").increaseIndentation
+				newLine.append("return false;").decreaseIndentation
+				newLine.append("if (!super.equals(obj))").increaseIndentation
+				newLine.append("return false;").decreaseIndentation
+				newLine.append(declaredType.simpleName + " other = (" + declaredType.simpleName + ") obj;")
+				for (JvmField field : jvmFields) {
+					var typeName = field.type.identifier
+					switch(typeName) {
+					case Boolean.TYPE.name,
+					case Integer.TYPE.name,
+					case Long.TYPE.name,
+					case Character.TYPE.name,
+					case Byte.TYPE.name,
+					case Short.TYPE.name: {
+						newLine.append("if (other." + field.simpleName +" != this." + field.simpleName + ")").increaseIndentation
+						newLine.append("return false;").decreaseIndentation
+					}
+					case Double.TYPE.name: {
+						newLine.append("if (Double.doubleToLongBits(other." + field.simpleName +") != Double.doubleToLongBits(this." + field.simpleName + "))").increaseIndentation
+						newLine.append("return false;").decreaseIndentation
+					}
+					case Float.TYPE.name: {
+						newLine.append("if (Float.floatToIntBits(other." + field.simpleName +") != Float.floatToIntBits(this." + field.simpleName + "))").increaseIndentation
+						newLine.append("return false;").decreaseIndentation
+					}
+					default: {
+						newLine.append("if (this." + field.simpleName +" == null) {").increaseIndentation
+						newLine.append("if (other." + field.simpleName +" != null)").increaseIndentation
+						newLine.append("return false;").decreaseIndentation
+						decreaseIndentation
+						newLine.append("} else if (!this."+ field.simpleName +".equals(other."+ field.simpleName +"))").increaseIndentation
+						newLine.append("return false;").decreaseIndentation
+					}
+					}
+				}
+				newLine.append("return true;")
+			]
+		return result;
+	}
+
+	/** Generate the "hashCode()" operation.
+	 * This function was deprecated in Xbase, and should be provided by DSL
+	 * providers now.
+	 */
+	protected def JvmOperation toHashCodeMethod(
+								EObject sourceElement,
+								JvmField... jvmFields) {
+		if (sourceElement === null) {
+			return null
+		}
+		var result = toMethod(sourceElement, "hashCode", typeRef(Integer.TYPE), null)
+		if (result === null) {
+			return null
+		}
+		result.annotations += annotationRef(typeof(Override))
+		result.body = [
+				append("final int prime = 31;")
+				newLine.append("int result = super.hashCode();")
+				for (JvmField field : jvmFields) {
+					var typeName = field.type.identifier
+					switch(typeName) {
+					case Boolean.TYPE.name: {
+						newLine.append("result = prime * result + (this." + field.simpleName + " ? 1231 : 1237);")
+					}
+					case Integer.TYPE.name,
+					case Character.TYPE.name,
+					case Character.TYPE.name,
+					case Short.TYPE.name: {
+						newLine.append("result = prime * result + this." + field.simpleName + ";")
+					}
+					case Long.TYPE.name: {
+						newLine.append("result = prime * result + (int) (this." + field.simpleName + " ^ (this." + field.simpleName + " >>> 32));")
+					}
+					case Float.TYPE.name: {
+						newLine.append("result = prime * result + Float.floatToIntBits(this." + field.simpleName +");")
+					}
+					case Double.TYPE.name: {
+						newLine.append("result = prime * result + (int) (Double.doubleToLongBits(this." + field.simpleName + ") ^ (Double.doubleToLongBits(this." + field.simpleName + ") >>> 32));")
+					}
+					default: {
+						newLine.append("result = prime * result + ((this." + field.simpleName +"== null) ? 0 : this." + field.simpleName + ".hashCode());")
+					}
+					}
+				}
+				newLine.append("return result;")
+			]
+		return result
+	}
+
 }
