@@ -78,7 +78,7 @@ public class SARLDocGenerate extends XtendTestCompile {
 	 * @parameter default-value="${basedir}/target/jnario-doc"
 	 * @required
 	 */
-	private String docOutputDirectory;
+	protected String docOutputDirectory;
 
 	/**
 	 * Location of the generated JUnit XML reports.
@@ -86,50 +86,54 @@ public class SARLDocGenerate extends XtendTestCompile {
 	 * @parameter default-value="${basedir}/target/surefire-reports"
 	 * @required
 	 */
-	private String reportsDirectory;
+	protected String reportsDirectory;
 
 	/**
 	 * Location of the generated JUnit XML reports.
 	 *
 	 * @parameter
 	 */
-	private String sourceDirectory;
+	protected String sourceDirectory;
 
 	/**
 	 * Location of the generated JUnit XML reports.
 	 *
 	 * @parameter default-value="true"
 	 */
-	private boolean sectionNumbering;
+	protected boolean sectionNumbering;
 
 	/**
 	 * The project itself. This parameter is set by maven.
 	 *
-	 * @parameter project="${project}"
+	 * @parameter property="project"
 	 * @required
 	 */
-	private MavenProject hiddenProjectReference;
+	@SuppressWarnings("hiding")
+	protected MavenProject project;
 
 	/**
 	 * Set this to true to skip compiling Xtend sources.
 	 *
-	 * @parameter default-value="false" expression="${skipXtend}"
+	 * @parameter default-value="false" property="skipXtend"
 	 */
-	private boolean hiddenSkipXtendFlag;
+	@SuppressWarnings("hiding")
+	protected boolean skipXtend;
 
 	/**
 	 * Xtend-File encoding argument for the compiler.
 	 *
-	 * @parameter expression="${encoding}" default-value="${project.build.sourceEncoding}"
+	 * @parameter property="encoding" default-value="${project.build.sourceEncoding}"
 	 */
-	private String hiddenEncodingSpecification;
+	@SuppressWarnings("hiding")
+	protected String encoding;
 
 	/**
 	 * Set this to false to suppress the creation of *._trace files.
 	 *
-	 * @parameter default-value="true" expression="${writeTraceFiles}"
+	 * @parameter default-value="true" property="writeTraceFiles"
 	 */
-	private boolean hiddenWriteTraceFilesFlag;
+	@SuppressWarnings("hiding")
+	protected boolean writeTraceFiles;
 
 	@Inject
 	private RuntimeWorkspaceConfigProvider workspaceConfigProvider;
@@ -139,10 +143,10 @@ public class SARLDocGenerate extends XtendTestCompile {
 	@Override
 	protected void internalExecute() throws MojoExecutionException {
 		// Only for injecting the attributes from Maven.
-		this.project = this.hiddenProjectReference;
-		this.skipXtend = this.hiddenSkipXtendFlag;
-		this.encoding = this.hiddenEncodingSpecification;
-		this.writeTraceFiles = this.hiddenWriteTraceFilesFlag;
+		super.project = this.project;
+		super.skipXtend = this.skipXtend;
+		super.encoding = this.encoding;
+		super.writeTraceFiles = this.writeTraceFiles;
 
 		getLog().debug("Set section numbering: " + Boolean.toString(this.sectionNumbering)); //$NON-NLS-1$
 		MavenConfig.setSectionNumbering(this.sectionNumbering);
