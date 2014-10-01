@@ -108,7 +108,7 @@ describe "Event Reference"{
 			 * The first event is defined with the "empty block" syntax.
 			 * The second event is defined with the "nothing" syntax.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Define an empty event"{
 				val model = '''
@@ -161,7 +161,7 @@ describe "Event Reference"{
 			 * <note> Because of the use of 
 			 * the `var` keyword, the values of the attributes can be modified.</note>
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Define an event with attributes"{
 				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
@@ -222,7 +222,7 @@ describe "Event Reference"{
 			 * This value could be specified at the end of the `val`
 			 * directive, or by specifying a constructor.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Define an event with value attributes"{
 				val model = '''
@@ -302,7 +302,7 @@ describe "Event Reference"{
 			describe "Extending Events"{
 
 				/*
-				 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+				 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 				 */				
 				fact "Declaration" {
 					val model = '''
@@ -348,7 +348,7 @@ describe "Event Reference"{
 				}
 
 				/*
-				 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+				 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 				 */				
 				fact "Use" {
 					val model = '''

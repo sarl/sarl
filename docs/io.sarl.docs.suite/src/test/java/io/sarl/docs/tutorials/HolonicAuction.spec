@@ -156,7 +156,7 @@ describe "English Auction with Holons"{
 			 * bidder that the price has changed.
 			 * This event contains the new price.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */			
 			fact "Price event" {
 				'''
@@ -174,7 +174,7 @@ describe "English Auction with Holons"{
 			 * by a bidder to the auctioneer.
 			 * This event contains the value of the bid.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */			
 			fact "Playing event" {
 				'''
@@ -208,7 +208,7 @@ describe "English Auction with Holons"{
 			 * The bidder selects the maximum price
 			 * between 100 and 1000 randomly.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Initial definition" {
 				'''
@@ -253,7 +253,7 @@ describe "English Auction with Holons"{
 			 * other sub-agents will receive this event. 
 			 * </cautionnote>
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Bidding" {
 				'''
@@ -315,7 +315,7 @@ describe "English Auction with Holons"{
 			 * Below, we update the bidding behavior by creating
 			 * a scope, and providing it to the `emit` function.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Restrict the bid to the auctioneer" {
 				'''
@@ -394,7 +394,7 @@ describe "English Auction with Holons"{
 			 * The `wake` function is supporting this interaction.
 			 * </importantnote>
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Initial definition" {
 				'''
@@ -439,7 +439,7 @@ describe "English Auction with Holons"{
 			 * which provides the `getInnerContext` function.
 			 * Below, we create the three bidders. 
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Create the bidders" {
 				'''
@@ -490,7 +490,7 @@ describe "English Auction with Holons"{
 			 * the current price, the source of the `Bid` event
 			 * becomes the new potential winner. 
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Receive the bids" {
 				'''
@@ -563,7 +563,7 @@ describe "English Auction with Holons"{
 			 * To delay the task executor about the first ten seconds,
 			 * we use the `in` function provided by the capacity.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Stop the auction" {
 				'''
@@ -648,7 +648,7 @@ describe "English Auction with Holons"{
 			 * same Object (the argument of the operator) cannot be
 			 * executed in parallel by different threads.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Synchronize the operations" {
 				'''
@@ -750,7 +750,7 @@ describe "English Auction with Holons"{
 			 * We introduce the `StopAuction` event that
 			 * is used for this particular notification task.
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */			
 			fact "StopAuction event" {
 				'''
@@ -770,7 +770,7 @@ describe "English Auction with Holons"{
 			 * This function is provided by the `Lifecycle`
 			 * capacity.
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */			
 			fact "Kill the bidder" {
 				'''
@@ -842,7 +842,7 @@ describe "English Auction with Holons"{
 			 * `cancel` function is invoked on the periodic task
 			 * to stop its execution.
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */			
 			fact "Kill the auctioneer" {
 				'''

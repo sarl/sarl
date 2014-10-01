@@ -63,7 +63,7 @@ describe "Skill Reference" {
 			 * Note that all the actions defined in the implemented capacity must
 			 * have a definition (with a body) in the skill.
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Basic Definition"{
 				// Test the URLs from the beginning of the page
@@ -165,7 +165,7 @@ describe "Skill Reference" {
 			 * of the Java logger is created and stored into a field
 			 * of the skill.
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Field Definition" {
 				val model = '''
@@ -264,7 +264,7 @@ describe "Skill Reference" {
 
 			/* As for fields, it is possible to declare additional methods in the skill. 
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Action Definition" {
 				val model = '''
@@ -381,7 +381,7 @@ describe "Skill Reference" {
 			 *  * The default constructor: `def Skill()`
 			 *  * The constructor with owner: `def Skill(owner : Agent)`
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Constructor Definition" {
 				val model = '''
@@ -505,7 +505,7 @@ describe "Skill Reference" {
 			 * If two implemented capacities has the same action signature,
 			 * it must be implemented only once time in the skill.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Multiple Capacity Implementation"{
 				val model = '''
@@ -682,7 +682,7 @@ describe "Skill Reference" {
 			 * In the following code, the `StandardJavaLogging` skill (defined
 			 * previously) is extended for changing the output of the info.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Extending a Skill"{
 				val model = '''

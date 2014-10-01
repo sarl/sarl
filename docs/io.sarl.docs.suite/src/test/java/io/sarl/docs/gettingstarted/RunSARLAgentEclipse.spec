@@ -129,7 +129,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * `Second`, and `Argument` to the launched agent:
 		 *
 		 *
-		 * ![Program Arguments](./EclipseRunConfiguration_0_3.png]
+		 * ![Program Arguments](./EclipseRunConfiguration_0_3.png)
 		 *
 		 * 
 		 * @filter(.*) 
@@ -244,7 +244,7 @@ describe "Run SARL Agent in the Eclipse IDE" {
 	 * you must handle the `Initialize` event, as illustrated
 	 * by the following example:
 	 * 
-	 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+	 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 	 */
 	fact "Retrieve the Command Line Parameters in the Agent" {
 		val model = '''

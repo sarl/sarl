@@ -232,7 +232,7 @@ describe "Agent Reference"{
 			 * Basically, this agent does nothing, and does not react
 			 * on events. 
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Defining an empty agent"{
 				val model = '''
@@ -267,7 +267,7 @@ describe "Agent Reference"{
 			 * keyword), or unmodifiable (when declared with the `val`
 			 * keyword).
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Agent Attributes"{
 				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
@@ -318,7 +318,7 @@ describe "Agent Reference"{
 			 * 
 			 * The example below illustrates the creation of two actions in the agent.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Agent Actions"{
 				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
@@ -390,7 +390,7 @@ describe "Agent Reference"{
 			 * of the first agent. It contains a function named
 			 * `action`, which is displaying the inherited attribute.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Extending an Agent" {
 				val model = '''
@@ -492,7 +492,7 @@ describe "Agent Reference"{
 			 * function (as specified in the 
 			 * [built-in capacities](BuiltInCapacityReferenceSpec.html)).
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Initialization Handler"{
 				// Test the URL in the introduction of the section
@@ -544,7 +544,7 @@ describe "Agent Reference"{
 			 * no parameter. The second event handler is executed
 			 * when the event has at least one parameter.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Guarded Initialization Handler"{
 				val model = '''
@@ -595,7 +595,7 @@ describe "Agent Reference"{
 			 *     event Destroy
 			 *
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Destruction Handler" {
 				val model = '''
@@ -638,7 +638,7 @@ describe "Agent Reference"{
 			 * field. The second event handler is executed
 			 * when there is no resource.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Guarded Destruction Handler" {
 				val model = '''
@@ -698,7 +698,7 @@ describe "Agent Reference"{
 			 * 
 			 * As for all the event handlers, it could be guarded by a predicate.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Reactive Behaviors"{
 				val model = '''
@@ -745,7 +745,7 @@ describe "Agent Reference"{
 			 * In the following example, the two handlers for the
 			 * `SomethingChanged` event are executed in parallel.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Parallel Execution of the Reactive Behaviors"{
 				val model = '''
@@ -803,7 +803,7 @@ describe "Agent Reference"{
 			 * In the following example, the agent execute its proactive behavior
 			 * every second.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Pro-active Behaviors"{
 				"BuiltInCapacityReferenceSpec.html" should beAccessibleFrom this
@@ -896,7 +896,7 @@ describe "Agent Reference"{
 			 * When the function `setSkill` is returning, the agent
 			 * becomes able to use the skill.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Giving a Skill to an Agent" {
 				val model = '''
@@ -997,7 +997,7 @@ describe "Agent Reference"{
 			 * You should prefer the use of the extension methods (see below).  
 			 * </note>
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Using a Capacity with the Getters" {
 				val model = '''
@@ -1087,7 +1087,7 @@ describe "Agent Reference"{
 			/* The built-in capacities are accessible in the same way
 			 * as the other capacities, with the getters.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Using a Built-in Capacity with the Getters" {
 				val model = '''
@@ -1151,7 +1151,7 @@ describe "Agent Reference"{
 			 * This action is defined in the `Cap`
 			 * capacity. 
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Using a Capacity with the Extension Methods" {
 				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
@@ -1242,7 +1242,7 @@ describe "Agent Reference"{
 			/* The built-in capacities are accessible in the same way
 			 * as the other capacities, with the extension methods.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Using a Built-in Capacity with the Extension Methods" {
 				val model = '''

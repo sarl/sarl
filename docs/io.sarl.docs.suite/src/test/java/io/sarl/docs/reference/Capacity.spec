@@ -75,7 +75,7 @@ describe "Capacity Reference"{
 			 * <note> Defining a capacity 
 			 * without action inside is a symptom of a design problem.</note>
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Capacity Definition"{
 				// Test the URLs from the beginning of this page.
@@ -145,7 +145,7 @@ describe "Capacity Reference"{
 			 * In the following code, the `Logging` capacity (defined
 			 * previously) is extended for enabling the output of error messages.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Extending a Capacity"{
 				val model = '''
@@ -222,7 +222,7 @@ describe "Capacity Reference"{
 			 * Below, the `Cap3` capacity is defined as an extension of the capacities
 			 * `Cap1` and `Cap2`.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Extending Multiple Capacities"{
 				val model = '''

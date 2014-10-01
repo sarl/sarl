@@ -61,7 +61,7 @@ describe "Behavior Reference" {
 			 * Basically, this behavior does nothing, and does not react
 			 * on events. 
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Defining an empty behavior"{
 				// Tests the URLs from the beginning of the page
@@ -101,7 +101,7 @@ describe "Behavior Reference" {
 			 * keyword), or unmodifiable (when declared with the `val`
 			 * keyword).
 			 *
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Behavior Attributes"{
 				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
@@ -150,7 +150,7 @@ describe "Behavior Reference" {
 			 * 
 			 * The example below illustrates the creation of type actions.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Behavior Actions"{
 				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
@@ -223,7 +223,7 @@ describe "Behavior Reference" {
 			 * of the first behavior. It contains a function named
 			 * `action`, which is displaying the inherited attribute.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Extending a Behavior" {
 				val model = '''
@@ -280,7 +280,7 @@ describe "Behavior Reference" {
 			 * This new behavior is then registered into the agent for enabling 
 			 * the reception of the events in the behavior.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Instancing and Use of a Behavior" {
 				val model = '''
@@ -377,7 +377,7 @@ describe "Behavior Reference" {
 			 * 
 			 * As for all the event handlers, it could be guarded by a predicate.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Reactive Behavior Units"{
 				// Test the URLs in the introduction of this section
@@ -427,7 +427,7 @@ describe "Behavior Reference" {
 			 * In the following example, the two handlers for the
 			 * `SomethingChanged` event are executed in parallel.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Parallel Execution of the Reactive Behavior Units"{
 				val model = '''
@@ -485,7 +485,7 @@ describe "Behavior Reference" {
 			 * In the following example, the agent execute its proactive behavior
 			 * every second.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Pro-active Behavior Units"{
 				"BuiltInCapacityReferenceSpec.html" should beAccessibleFrom this
@@ -607,7 +607,7 @@ describe "Behavior Reference" {
 			 * You should prefer the use of the extension methods (see below).
 			 * </note>
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Using a Capacity with the Getters" {
 				val model = '''
@@ -683,7 +683,7 @@ describe "Behavior Reference" {
 			 * This action is defined in the `Cap`
 			 * capacity. 
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Using a Capacity with the Extension Methods" {
 				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this

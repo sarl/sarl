@@ -107,7 +107,7 @@ describe "Run SARL Agent from the Command Line" {
 		 * you must handle the `Initialize` event, as illustrated
 		 * by the following example:
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Retrieve the Command Line Parameters in the Agent" {
 			val model = '''

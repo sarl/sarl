@@ -68,7 +68,7 @@ describe "SARL Syntax FAQ" {
 			 * to obtain a package name with one of its components
 			 * equals to a SARL keyword:
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Why can I put a string in the package name?" {
 				'''
@@ -92,7 +92,7 @@ describe "SARL Syntax FAQ" {
 			 * referred object is not. Consequently, it is still
 			 * possible to call the setters of `b`. 
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Is the 'val' keyword defining a constant?" {
 				'''
@@ -116,7 +116,7 @@ describe "SARL Syntax FAQ" {
 			 * Consequently, retrieving the values of the array must
 			 * be done with `get(int)`.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Why cannot use the syntax 'a[0]' for arrays?" {
 				'''
