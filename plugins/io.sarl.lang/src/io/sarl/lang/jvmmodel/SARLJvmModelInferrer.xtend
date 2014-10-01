@@ -188,7 +188,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					val addrType = typeRef(typeof(Address))
 					op = event.toConstructor [
 						documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_1, 'source')
-						parameters += toParameter('source', addrType)
+						parameters += event.toParameter('source', addrType)
 						body = '''
 							super(source);
 						'''
@@ -422,7 +422,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					val aType = typeRef(typeof(io.sarl.lang.core.Agent))
 					var op = behavior.toConstructor [
 						documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_5, 'owner')
-						parameters += toParameter('owner', aType)
+						parameters += behavior.toParameter('owner', aType)
 						body = '''
 							super(owner);
 						'''
@@ -542,7 +542,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						}
 						if (oparam!==null && oparam.simpleName==param.simpleName) {
 							args += oparam.simpleName
-							op.parameters += param.toParameter(oparam.simpleName, oparam.parameterType)
+							op.parameters += owner.toParameter(oparam.simpleName, oparam.parameterType)
 							oparam = null
 						}
 						else if (vId!==null && !vId.empty) {
@@ -647,8 +647,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							visibility = JvmVisibility::PROTECTED
 							val args = newArrayList
 							for(param : entry.value.parameters) {
-								var sarlElement = services.jvmModelAssociations.getPrimarySourceElement(param)
-								parameters += sarlElement.toParameter(param.simpleName, param.parameterType)
+								parameters += context.toParameter(param.simpleName, param.parameterType)
 								args += param.simpleName
 							}
 							varArgs = entry.value.varArgs
@@ -704,7 +703,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				unit.copyDocumentationTo(it)
 				annotations += annotationRef(typeof(Percept))
 				parameters +=
-					unit.event.toParameter(SARLKeywords::OCCURRENCE, unit.event)
+					unit.toParameter(SARLKeywords::OCCURRENCE, unit.event)
 			]
 						
 			if (isTrueGuard) {
@@ -715,7 +714,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					documentation = MessageFormat::format(
 						Messages::SARLJvmModelInferrer_9,
 						behName, guard.toString)
-					parameters += unit.event.toParameter(SARLKeywords::OCCURRENCE, unit.event)
+					parameters += unit.toParameter(SARLKeywords::OCCURRENCE, unit.event)
 					body = guard
 				]
 	
