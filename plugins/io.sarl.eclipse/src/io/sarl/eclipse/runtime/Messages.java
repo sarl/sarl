@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.launch.sre;
+package io.sarl.eclipse.runtime;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -32,7 +32,7 @@ import org.eclipse.osgi.util.NLS;
  */
 @SuppressWarnings("all")
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.eclipse.launch.sre.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "io.sarl.eclipse.runtime.messages"; //$NON-NLS-1$
 	public static String AbstractSREInstall_0;
 	public static String AbstractSREInstall_1;
 	public static String AbstractSREInstall_2;

@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.wizards.sreinstall;
 
-import io.sarl.eclipse.launch.sre.ISREInstall;
+import io.sarl.eclipse.runtime.ISREInstall;
 
 /**
  * Wizard for SRE installation.

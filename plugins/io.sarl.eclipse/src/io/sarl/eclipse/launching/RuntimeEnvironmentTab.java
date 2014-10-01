@@ -18,11 +18,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launch.config;
+package io.sarl.eclipse.launching;
 
-import io.sarl.eclipse.launch.config.SREConfigurationBlock.SRECompliantProjectProvider;
-import io.sarl.eclipse.launch.sre.ISREInstall;
-import io.sarl.eclipse.launch.sre.SARLRuntime;
+import io.sarl.eclipse.launching.SREConfigurationBlock.SRECompliantProjectProvider;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.util.PluginUtil;
 
 import java.text.MessageFormat;

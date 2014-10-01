@@ -20,9 +20,9 @@
  */
 package io.sarl.eclipse.preferences;
 
-import io.sarl.eclipse.launch.sre.ISREInstall;
-import io.sarl.eclipse.launch.sre.ISREInstallChangedListener;
-import io.sarl.eclipse.launch.sre.SARLRuntime;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.ISREInstallChangedListener;
+import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.util.PluginUtil;
 import io.sarl.eclipse.wizards.sreinstall.AddSREInstallWizard;
 import io.sarl.eclipse.wizards.sreinstall.EditSREInstallWizard;
@@ -554,7 +554,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		if (!sre.getValidity().isOK()) {
 			if (errorMessages) {
 				setErrorMessage(MessageFormat.format(
-						io.sarl.eclipse.launch.config.Messages.RuntimeEnvironmentTab_5,
+						io.sarl.eclipse.launching.Messages.RuntimeEnvironmentTab_5,
 						sre.getName()));
 			}
 			return false;
@@ -569,7 +569,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			if (cmp < 0) {
 				if (errorMessages) {
 					setErrorMessage(MessageFormat.format(
-							io.sarl.eclipse.launch.sre.Messages.AbstractSREInstall_0,
+							io.sarl.eclipse.runtime.Messages.AbstractSREInstall_0,
 							sarlVersion.toString(),
 							minVersion.toString()));
 				}
@@ -577,7 +577,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			} else if (cmp > 0) {
 				if (errorMessages) {
 					setErrorMessage(MessageFormat.format(
-							io.sarl.eclipse.launch.sre.Messages.AbstractSREInstall_1,
+							io.sarl.eclipse.runtime.Messages.AbstractSREInstall_1,
 							sarlVersion.toString(),
 							maxVersion.toString()));
 				}
@@ -592,7 +592,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		setMessage(null);
 		setErrorMessage((String) null);
 		if (this.sreArray.isEmpty()) {
-			setMessage(io.sarl.eclipse.launch.config.Messages.RuntimeEnvironmentTab_7);
+			setMessage(io.sarl.eclipse.launching.Messages.RuntimeEnvironmentTab_7);
 		} else {
 			ISREInstall defaultSRE = getDefaultSRE();
 			if (defaultSRE == null) {

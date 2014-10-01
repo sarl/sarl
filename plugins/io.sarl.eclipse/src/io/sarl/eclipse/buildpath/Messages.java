@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.builder;
+package io.sarl.eclipse.buildpath;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -32,8 +32,11 @@ import org.eclipse.osgi.util.NLS;
  */
 @SuppressWarnings("all")
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.eclipse.builder.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "io.sarl.eclipse.buildpath.messages"; //$NON-NLS-1$
 	public static String SARLClasspathContainer_0;
+	public static String SARLClasspathContainerInitializer_0;
+	public static String SARLContainerWizardPage_0;
+	public static String SARLContainerWizardPage_1;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

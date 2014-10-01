@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.launch.config;
+package io.sarl.eclipse.launching;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -32,7 +32,7 @@ import org.eclipse.osgi.util.NLS;
  */
 @SuppressWarnings("all")
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.eclipse.launch.config.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "io.sarl.eclipse.launching.messages"; //$NON-NLS-1$
 	public static String AgentTypeSearchEngine_0;
 	public static String MainLaunchConfigurationTab_0;
 	public static String MainLaunchConfigurationTab_1;

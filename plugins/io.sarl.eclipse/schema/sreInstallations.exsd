@@ -55,7 +55,7 @@
                   Fully qualified name of the type of the SARL Runtime Environment installation.
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":io.sarl.eclipse.launch.sre.ISREInstall"/>
+                  <meta.attribute kind="java" basedOn=":io.sarl.eclipse.runtime.ISREInstall"/>
                </appInfo>
             </annotation>
          </attribute>

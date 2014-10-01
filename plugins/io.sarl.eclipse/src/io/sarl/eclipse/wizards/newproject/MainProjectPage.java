@@ -20,9 +20,9 @@
  */
 package io.sarl.eclipse.wizards.newproject;
 
-import io.sarl.eclipse.builder.SARLClasspathContainer;
-import io.sarl.eclipse.launch.config.SREConfigurationBlock;
-import io.sarl.eclipse.launch.sre.ISREInstall;
+import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
+import io.sarl.eclipse.launching.SREConfigurationBlock;
+import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.util.PluginUtil;
 
 import java.io.File;
@@ -383,7 +383,7 @@ public class MainProjectPage extends WizardPage {
 		}
 
 		IClasspathEntry sarlClasspathEntry = JavaCore.newContainerEntry(
-				SARLClasspathContainer.CONTAINER_ID,
+				SARLClasspathContainerInitializer.CONTAINER_ID,
 				new IAccessRule[0],
                 new IClasspathAttribute[0],
                 true);

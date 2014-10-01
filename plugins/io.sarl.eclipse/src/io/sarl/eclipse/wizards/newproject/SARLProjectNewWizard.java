@@ -20,8 +20,8 @@
  */
 package io.sarl.eclipse.wizards.newproject;
 
-import io.sarl.eclipse.launch.sre.ISREInstall;
 import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
+import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.util.PluginUtil;
 
 import java.lang.reflect.InvocationTargetException;

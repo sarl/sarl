@@ -3,7 +3,7 @@
 <schema targetNamespace="io.sarl.eclipse" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="io.sarl.eclipse" id="sreInstallations" name="%sreInstallations"/>
+         <meta.schema plugin="io.sarl.eclipse" id="sreInstallPages" name="%sreInstallPages"/>
       </appInfo>
       <documentation>
          Provide the description of an installed SARL Runtime Environment.
@@ -65,7 +65,7 @@
                   Fully qualified name of the SARL runtime environment installation for which the page is provided. At least one of &lt;code&gt;sreInstallType&lt;/code&gt; and &lt;code&gt;sreInstallId&lt;/code&gt; must be provided for contributed to the configuration wizard of the SARL runtime environment.
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":io.sarl.eclipse.launch.sre.ISREInstall"/>
+                  <meta.attribute kind="java" basedOn=":io.sarl.eclipse.runtime.ISREInstall"/>
                </appInfo>
             </annotation>
          </attribute>

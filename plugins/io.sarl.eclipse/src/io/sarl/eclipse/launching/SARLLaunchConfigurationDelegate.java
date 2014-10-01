@@ -18,11 +18,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launch.config;
+package io.sarl.eclipse.launching;
 
-import io.sarl.eclipse.builder.SARLClasspathContainer;
-import io.sarl.eclipse.launch.sre.ISREInstall;
-import io.sarl.eclipse.launch.sre.SARLRuntime;
+import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.util.PluginUtil;
 
 import java.io.File;
@@ -449,7 +449,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		// Filtering the entries by replacing the "SARL Libraries" with the SARL runtime environment.
 		List<IRuntimeClasspathEntry> filteredEntries = new ArrayList<>();
 		for (IRuntimeClasspathEntry entry : entries) {
-			if (entry.getPath().equals(SARLClasspathContainer.CONTAINER_ID)) {
+			if (entry.getPath().equals(SARLClasspathContainerInitializer.CONTAINER_ID)) {
 				filteredEntries.addAll(cpEntries);
 			} else {
 				filteredEntries.add(entry);

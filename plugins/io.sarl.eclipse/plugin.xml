@@ -64,12 +64,21 @@
   <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
       <classpathContainerInitializer
           id="io.sarl.eclipse.launching.SARL_SUPPORT"
-          class="io.sarl.eclipse.builder.SARLClasspathContainerInitializer"/>
+          class="io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer"/>
+   </extension>
+
+	<extension
+         point="org.eclipse.jdt.ui.classpathContainerPage">
+      <classpathContainerPage
+            name="%classpathContainerPage.name"
+            class="io.sarl.eclipse.buildpath.SARLContainerWizardPage"
+            id="io.sarl.eclipse.launching.SARL_SUPPORT">
+      </classpathContainerPage>
    </extension>
 
  	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
         <launchConfigurationType
-              delegate="io.sarl.eclipse.launch.config.SARLLaunchConfigurationDelegate"
+              delegate="io.sarl.eclipse.launching.SARLLaunchConfigurationDelegate"
               delegateDescription="%launch.sarlLauncherDescription"
               delegateName="%launch.sarlLauncher"
               id="io.sarl.eclipse.debug.LaunchConfigType"
@@ -89,7 +98,7 @@
     
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
          <launchConfigurationTabGroup
-            class="io.sarl.eclipse.launch.config.SARLLaunchConfigurationTabGroup"
+            class="io.sarl.eclipse.launching.SARLLaunchConfigurationTabGroup"
             description="%launch.sarlApplication"
             id="io.sarl.eclipse.debug.LaunchConfigTabGroup"
             type="io.sarl.eclipse.debug.LaunchConfigType" />

@@ -20,10 +20,10 @@
  */
 package io.sarl.eclipse.wizards.sreinstall;
 
-import io.sarl.eclipse.launch.sre.ISREInstall;
-import io.sarl.eclipse.launch.sre.SARLRuntime;
-import io.sarl.eclipse.launch.sre.SREException;
-import io.sarl.eclipse.launch.sre.StandardSREInstall;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.eclipse.runtime.SREException;
+import io.sarl.eclipse.runtime.StandardSREInstall;
 import io.sarl.eclipse.util.PluginUtil;
 
 import java.io.File;

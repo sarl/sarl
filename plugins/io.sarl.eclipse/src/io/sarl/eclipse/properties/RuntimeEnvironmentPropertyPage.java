@@ -20,9 +20,9 @@
  */
 package io.sarl.eclipse.properties;
 
-import io.sarl.eclipse.launch.config.SREConfigurationBlock;
-import io.sarl.eclipse.launch.sre.ISREInstall;
-import io.sarl.eclipse.launch.sre.SARLRuntime;
+import io.sarl.eclipse.launching.SREConfigurationBlock;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.util.PluginUtil;
 
 import org.eclipse.core.resources.IProject;
