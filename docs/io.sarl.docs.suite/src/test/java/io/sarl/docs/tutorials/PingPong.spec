@@ -26,6 +26,7 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.*
 
 /* @outline
  *
@@ -74,6 +75,11 @@ describe "Agent Communication with the Ping Pong Agents"{
 			// Test the URLs in the introduction
 			"../reference/GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 			"./pingpong.png" should beAccessibleFrom this
+			// The checks are valid only if the macro replacements were done.
+			// The replacements are done by Maven.
+			// So, Eclipse Junit tools do not make the replacements.
+			System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+			//
 			"%sarlmavenrepository%" should beURL "!file"
 			"%website%" should beURL "!file"
 		}
