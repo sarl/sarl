@@ -116,8 +116,6 @@ import org.eclipse.ui.dialogs.WorkingSetConfigurationBlock;
  * the source folder of the project
  * {@link MainProjectPage#getSourceClasspathEntries()}
  *
- * TODO Re-add the wizard page for selecting the SRE and the JRE.
- *
  * @author $Author: ngaud$
  * @author $Author: sgalland$
  * @version $FullVersion$
