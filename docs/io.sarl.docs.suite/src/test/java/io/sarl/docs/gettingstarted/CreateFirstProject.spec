@@ -207,6 +207,10 @@ describe "Create First Project" {
 		 *                       <artifactId>io.sarl.lang.core</artifactId>
 		 *                       <version>${sarl.version}</version>
 		 *                    </dependency>
+		 *                    <dependency>
+		 *                       <groupId>org.eclipse</groupId>
+		 *                       <artifactId>osgi</artifactId>
+		 *                    </dependency>
 		 *                 </dependencies>
 		 *              </plugin>
 		 *           </plugins>
