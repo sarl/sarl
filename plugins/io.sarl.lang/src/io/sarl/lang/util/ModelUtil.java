@@ -45,9 +45,9 @@ import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument;
-import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
-import org.eclipse.xtext.xbase.typesystem.references.OwnedConverter;
+import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
+import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 import com.ibm.icu.util.VersionInfo;
@@ -437,9 +437,9 @@ public final class ModelUtil {
 		if (typeRef == null) {
 			return null;
 		}
-		OwnedConverter converter = new OwnedConverter(new StandardTypeReferenceOwner(
-				services, typeRef), keepUnboundWildcardInformation);
-		LightweightTypeReference reference = converter.toLightweightReference(typeRef);
+		StandardTypeReferenceOwner owner = new StandardTypeReferenceOwner(services, typeRef);
+		LightweightTypeReferenceFactory factory = new LightweightTypeReferenceFactory(owner, keepUnboundWildcardInformation);
+		LightweightTypeReference reference = factory.toLightweightReference(typeRef);
 		return reference;
 	}
 

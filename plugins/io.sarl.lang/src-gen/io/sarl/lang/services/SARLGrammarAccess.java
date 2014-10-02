@@ -1578,48 +1578,80 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	
-	private SarlScriptElements pSarlScript;
-	private TopElementElements pTopElement;
-	private NamedElementElements pNamedElement;
-	private FeatureContainerElements pFeatureContainer;
-	private FeatureElements pFeature;
-	private ParameterizedFeatureElements pParameterizedFeature;
-	private InheritingElementElements pInheritingElement;
-	private ImplementingElementElements pImplementingElement;
-	private EventElements pEvent;
-	private CapacityElements pCapacity;
-	private AgentElements pAgent;
-	private BehaviorElements pBehavior;
-	private SkillElements pSkill;
-	private EventFeatureElements pEventFeature;
-	private AgentFeatureElements pAgentFeature;
-	private BehaviorFeatureElements pBehaviorFeature;
-	private SkillFeatureElements pSkillFeature;
-	private AttributeElements pAttribute;
-	private CapacityUsesElements pCapacityUses;
-	private RequiredCapacityElements pRequiredCapacity;
-	private BehaviorUnitElements pBehaviorUnit;
-	private ActionElements pAction;
-	private VarArgTokenElements pVarArgToken;
-	private ConstructorElements pConstructor;
-	private ActionSignatureElements pActionSignature;
-	private FormalParameterElements pFormalParameter;
-	private DefaultParameterValueElements pDefaultParameterValue;
-	private XVariableDeclarationElements pXVariableDeclaration;
-	private JvmFormalParameterElements pJvmFormalParameter;
-	private FullJvmFormalParameterElements pFullJvmFormalParameter;
-	private XXLoopFormalParameterElements pXXLoopFormalParameter;
-	private XForLoopExpressionElements pXForLoopExpression;
+	private final SarlScriptElements pSarlScript;
+	private final TopElementElements pTopElement;
+	private final NamedElementElements pNamedElement;
+	private final FeatureContainerElements pFeatureContainer;
+	private final FeatureElements pFeature;
+	private final ParameterizedFeatureElements pParameterizedFeature;
+	private final InheritingElementElements pInheritingElement;
+	private final ImplementingElementElements pImplementingElement;
+	private final EventElements pEvent;
+	private final CapacityElements pCapacity;
+	private final AgentElements pAgent;
+	private final BehaviorElements pBehavior;
+	private final SkillElements pSkill;
+	private final EventFeatureElements pEventFeature;
+	private final AgentFeatureElements pAgentFeature;
+	private final BehaviorFeatureElements pBehaviorFeature;
+	private final SkillFeatureElements pSkillFeature;
+	private final AttributeElements pAttribute;
+	private final CapacityUsesElements pCapacityUses;
+	private final RequiredCapacityElements pRequiredCapacity;
+	private final BehaviorUnitElements pBehaviorUnit;
+	private final ActionElements pAction;
+	private final VarArgTokenElements pVarArgToken;
+	private final ConstructorElements pConstructor;
+	private final ActionSignatureElements pActionSignature;
+	private final FormalParameterElements pFormalParameter;
+	private final DefaultParameterValueElements pDefaultParameterValue;
+	private final XVariableDeclarationElements pXVariableDeclaration;
+	private final JvmFormalParameterElements pJvmFormalParameter;
+	private final FullJvmFormalParameterElements pFullJvmFormalParameter;
+	private final XXLoopFormalParameterElements pXXLoopFormalParameter;
+	private final XForLoopExpressionElements pXForLoopExpression;
 	
 	private final Grammar grammar;
 
-	private XbaseGrammarAccess gaXbase;
+	private final XbaseGrammarAccess gaXbase;
 
 	@Inject
 	public SARLGrammarAccess(GrammarProvider grammarProvider,
 		XbaseGrammarAccess gaXbase) {
 		this.grammar = internalFindGrammar(grammarProvider);
 		this.gaXbase = gaXbase;
+		this.pSarlScript = new SarlScriptElements();
+		this.pTopElement = new TopElementElements();
+		this.pNamedElement = new NamedElementElements();
+		this.pFeatureContainer = new FeatureContainerElements();
+		this.pFeature = new FeatureElements();
+		this.pParameterizedFeature = new ParameterizedFeatureElements();
+		this.pInheritingElement = new InheritingElementElements();
+		this.pImplementingElement = new ImplementingElementElements();
+		this.pEvent = new EventElements();
+		this.pCapacity = new CapacityElements();
+		this.pAgent = new AgentElements();
+		this.pBehavior = new BehaviorElements();
+		this.pSkill = new SkillElements();
+		this.pEventFeature = new EventFeatureElements();
+		this.pAgentFeature = new AgentFeatureElements();
+		this.pBehaviorFeature = new BehaviorFeatureElements();
+		this.pSkillFeature = new SkillFeatureElements();
+		this.pAttribute = new AttributeElements();
+		this.pCapacityUses = new CapacityUsesElements();
+		this.pRequiredCapacity = new RequiredCapacityElements();
+		this.pBehaviorUnit = new BehaviorUnitElements();
+		this.pAction = new ActionElements();
+		this.pVarArgToken = new VarArgTokenElements();
+		this.pConstructor = new ConstructorElements();
+		this.pActionSignature = new ActionSignatureElements();
+		this.pFormalParameter = new FormalParameterElements();
+		this.pDefaultParameterValue = new DefaultParameterValueElements();
+		this.pXVariableDeclaration = new XVariableDeclarationElements();
+		this.pJvmFormalParameter = new JvmFormalParameterElements();
+		this.pFullJvmFormalParameter = new FullJvmFormalParameterElements();
+		this.pXXLoopFormalParameter = new XXLoopFormalParameterElements();
+		this.pXForLoopExpression = new XForLoopExpressionElements();
 	}
 	
 	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
@@ -1652,7 +1684,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//SarlScript:
 	//	("package" name=QualifiedName ";"?)? importSection=XImportSection? elements+=TopElement*;
 	public SarlScriptElements getSarlScriptAccess() {
-		return (pSarlScript != null) ? pSarlScript : (pSarlScript = new SarlScriptElements());
+		return pSarlScript;
 	}
 	
 	public ParserRule getSarlScriptRule() {
@@ -1662,7 +1694,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//TopElement:
 	//	Event | Capacity | Agent | Behavior | Skill;
 	public TopElementElements getTopElementAccess() {
-		return (pTopElement != null) ? pTopElement : (pTopElement = new TopElementElements());
+		return pTopElement;
 	}
 	
 	public ParserRule getTopElementRule() {
@@ -1676,7 +1708,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//NamedElement:
 	//	name=ValidID;
 	public NamedElementElements getNamedElementAccess() {
-		return (pNamedElement != null) ? pNamedElement : (pNamedElement = new NamedElementElements());
+		return pNamedElement;
 	}
 	
 	public ParserRule getNamedElementRule() {
@@ -1690,7 +1722,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//FeatureContainer returns NamedElement:
 	//	{FeatureContainer} features+=Feature;
 	public FeatureContainerElements getFeatureContainerAccess() {
-		return (pFeatureContainer != null) ? pFeatureContainer : (pFeatureContainer = new FeatureContainerElements());
+		return pFeatureContainer;
 	}
 	
 	public ParserRule getFeatureContainerRule() {
@@ -1704,7 +1736,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//Feature:
 	//	{Feature};
 	public FeatureElements getFeatureAccess() {
-		return (pFeature != null) ? pFeature : (pFeature = new FeatureElements());
+		return pFeature;
 	}
 	
 	public ParserRule getFeatureRule() {
@@ -1718,7 +1750,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//ParameterizedFeature returns Feature:
 	//	{ParameterizedFeature} params+=FormalParameter varargs?=ID;
 	public ParameterizedFeatureElements getParameterizedFeatureAccess() {
-		return (pParameterizedFeature != null) ? pParameterizedFeature : (pParameterizedFeature = new ParameterizedFeatureElements());
+		return pParameterizedFeature;
 	}
 	
 	public ParserRule getParameterizedFeatureRule() {
@@ -1732,7 +1764,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//InheritingElement returns FeatureContainer:
 	//	{InheritingElement} superTypes+=JvmParameterizedTypeReference;
 	public InheritingElementElements getInheritingElementAccess() {
-		return (pInheritingElement != null) ? pInheritingElement : (pInheritingElement = new InheritingElementElements());
+		return pInheritingElement;
 	}
 	
 	public ParserRule getInheritingElementRule() {
@@ -1746,7 +1778,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//ImplementingElement returns InheritingElement:
 	//	{ImplementingElement} implementedTypes+=JvmParameterizedTypeReference;
 	public ImplementingElementElements getImplementingElementAccess() {
-		return (pImplementingElement != null) ? pImplementingElement : (pImplementingElement = new ImplementingElementElements());
+		return pImplementingElement;
 	}
 	
 	public ParserRule getImplementingElementRule() {
@@ -1757,7 +1789,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//	{Event} "event" name=ValidID ("extends" superTypes+=JvmParameterizedTypeReference)? ("{" features+=EventFeature*
 	//	"}")?;
 	public EventElements getEventAccess() {
-		return (pEvent != null) ? pEvent : (pEvent = new EventElements());
+		return pEvent;
 	}
 	
 	public ParserRule getEventRule() {
@@ -1768,7 +1800,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//	{Capacity} "capacity" name=ValidID ("extends" superTypes+=JvmParameterizedTypeReference (","
 	//	superTypes+=JvmParameterizedTypeReference)*)? "{" features+=ActionSignature* "}";
 	public CapacityElements getCapacityAccess() {
-		return (pCapacity != null) ? pCapacity : (pCapacity = new CapacityElements());
+		return pCapacity;
 	}
 	
 	public ParserRule getCapacityRule() {
@@ -1778,7 +1810,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//Agent returns InheritingElement:
 	//	{Agent} "agent" name=ValidID ("extends" superTypes+=JvmParameterizedTypeReference)? "{" features+=AgentFeature* "}";
 	public AgentElements getAgentAccess() {
-		return (pAgent != null) ? pAgent : (pAgent = new AgentElements());
+		return pAgent;
 	}
 	
 	public ParserRule getAgentRule() {
@@ -1789,7 +1821,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//	{Behavior} "behavior" name=ValidID ("extends" superTypes+=JvmParameterizedTypeReference)? "{"
 	//	features+=BehaviorFeature* "}";
 	public BehaviorElements getBehaviorAccess() {
-		return (pBehavior != null) ? pBehavior : (pBehavior = new BehaviorElements());
+		return pBehavior;
 	}
 	
 	public ParserRule getBehaviorRule() {
@@ -1801,7 +1833,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//	implementedTypes+=JvmParameterizedTypeReference ("," implementedTypes+=JvmParameterizedTypeReference)*)?) "{"
 	//	features+=SkillFeature* "}";
 	public SkillElements getSkillAccess() {
-		return (pSkill != null) ? pSkill : (pSkill = new SkillElements());
+		return pSkill;
 	}
 	
 	public ParserRule getSkillRule() {
@@ -1811,7 +1843,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//EventFeature:
 	//	Attribute | Constructor;
 	public EventFeatureElements getEventFeatureAccess() {
-		return (pEventFeature != null) ? pEventFeature : (pEventFeature = new EventFeatureElements());
+		return pEventFeature;
 	}
 	
 	public ParserRule getEventFeatureRule() {
@@ -1821,7 +1853,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//AgentFeature:
 	//	Attribute | BehaviorUnit | Action | CapacityUses | RequiredCapacity;
 	public AgentFeatureElements getAgentFeatureAccess() {
-		return (pAgentFeature != null) ? pAgentFeature : (pAgentFeature = new AgentFeatureElements());
+		return pAgentFeature;
 	}
 	
 	public ParserRule getAgentFeatureRule() {
@@ -1831,7 +1863,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//BehaviorFeature:
 	//	Attribute | BehaviorUnit | Action | CapacityUses | RequiredCapacity | Constructor;
 	public BehaviorFeatureElements getBehaviorFeatureAccess() {
-		return (pBehaviorFeature != null) ? pBehaviorFeature : (pBehaviorFeature = new BehaviorFeatureElements());
+		return pBehaviorFeature;
 	}
 	
 	public ParserRule getBehaviorFeatureRule() {
@@ -1841,7 +1873,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//SkillFeature:
 	//	Attribute | Action | RequiredCapacity | Constructor | CapacityUses;
 	public SkillFeatureElements getSkillFeatureAccess() {
-		return (pSkillFeature != null) ? pSkillFeature : (pSkillFeature = new SkillFeatureElements());
+		return pSkillFeature;
 	}
 	
 	public ParserRule getSkillFeatureRule() {
@@ -1852,7 +1884,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//	{Attribute} (writeable?="var" | "val") (=> (name=ValidID ":" type=JvmTypeReference) | name=ValidID) ("="
 	//	initialValue=XExpression)? ";"?;
 	public AttributeElements getAttributeAccess() {
-		return (pAttribute != null) ? pAttribute : (pAttribute = new AttributeElements());
+		return pAttribute;
 	}
 	
 	public ParserRule getAttributeRule() {
@@ -1863,7 +1895,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//	{CapacityUses} "uses" capacitiesUsed+=JvmParameterizedTypeReference (","
 	//	capacitiesUsed+=JvmParameterizedTypeReference)* ";"?;
 	public CapacityUsesElements getCapacityUsesAccess() {
-		return (pCapacityUses != null) ? pCapacityUses : (pCapacityUses = new CapacityUsesElements());
+		return pCapacityUses;
 	}
 	
 	public ParserRule getCapacityUsesRule() {
@@ -1874,7 +1906,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//	{RequiredCapacity} "requires" requiredCapacities+=JvmParameterizedTypeReference (","
 	//	requiredCapacities+=JvmParameterizedTypeReference)* ";"?;
 	public RequiredCapacityElements getRequiredCapacityAccess() {
-		return (pRequiredCapacity != null) ? pRequiredCapacity : (pRequiredCapacity = new RequiredCapacityElements());
+		return pRequiredCapacity;
 	}
 	
 	public ParserRule getRequiredCapacityRule() {
@@ -1884,7 +1916,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//BehaviorUnit returns Feature:
 	//	{BehaviorUnit} "on" event=JvmParameterizedTypeReference ("[" guard=XExpression "]")? body=XBlockExpression;
 	public BehaviorUnitElements getBehaviorUnitAccess() {
-		return (pBehaviorUnit != null) ? pBehaviorUnit : (pBehaviorUnit = new BehaviorUnitElements());
+		return pBehaviorUnit;
 	}
 	
 	public ParserRule getBehaviorUnitRule() {
@@ -1894,7 +1926,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//Action returns Feature:
 	//	{Action} signature=ActionSignature body=XBlockExpression;
 	public ActionElements getActionAccess() {
-		return (pAction != null) ? pAction : (pAction = new ActionElements());
+		return pAction;
 	}
 	
 	public ParserRule getActionRule() {
@@ -1904,7 +1936,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//VarArgToken:
 	//	"*";
 	public VarArgTokenElements getVarArgTokenAccess() {
-		return (pVarArgToken != null) ? pVarArgToken : (pVarArgToken = new VarArgTokenElements());
+		return pVarArgToken;
 	}
 	
 	public ParserRule getVarArgTokenRule() {
@@ -1915,7 +1947,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//	{Constructor} "new" ("(" (params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken?)? ")")?
 	//	body=XBlockExpression;
 	public ConstructorElements getConstructorAccess() {
-		return (pConstructor != null) ? pConstructor : (pConstructor = new ConstructorElements());
+		return pConstructor;
 	}
 	
 	public ParserRule getConstructorRule() {
@@ -1927,7 +1959,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//	varargs?=VarArgToken?)? ")")? (":" type=JvmTypeReference)? ("fires" firedEvents+=JvmParameterizedTypeReference (","
 	//	firedEvents+=JvmParameterizedTypeReference)*)?;
 	public ActionSignatureElements getActionSignatureAccess() {
-		return (pActionSignature != null) ? pActionSignature : (pActionSignature = new ActionSignatureElements());
+		return pActionSignature;
 	}
 	
 	public ParserRule getActionSignatureRule() {
@@ -1937,7 +1969,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//FormalParameter:
 	//	name=ValidID ":" parameterType=JvmTypeReference ("=" defaultValue=DefaultParameterValue)?;
 	public FormalParameterElements getFormalParameterAccess() {
-		return (pFormalParameter != null) ? pFormalParameter : (pFormalParameter = new FormalParameterElements());
+		return pFormalParameter;
 	}
 	
 	public ParserRule getFormalParameterRule() {
@@ -1947,7 +1979,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//DefaultParameterValue returns xbase::XExpression:
 	//	XLiteral;
 	public DefaultParameterValueElements getDefaultParameterValueAccess() {
-		return (pDefaultParameterValue != null) ? pDefaultParameterValue : (pDefaultParameterValue = new DefaultParameterValueElements());
+		return pDefaultParameterValue;
 	}
 	
 	public ParserRule getDefaultParameterValueRule() {
@@ -1960,7 +1992,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//	{xbase::XVariableDeclaration} (writeable?="var" | "val") (=> (name=ValidID ":" type=JvmTypeReference) | name=ValidID)
 	//	("=" right=XExpression)?;
 	public XVariableDeclarationElements getXVariableDeclarationAccess() {
-		return (pXVariableDeclaration != null) ? pXVariableDeclaration : (pXVariableDeclaration = new XVariableDeclarationElements());
+		return pXVariableDeclaration;
 	}
 	
 	public ParserRule getXVariableDeclarationRule() {
@@ -1970,7 +2002,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//JvmFormalParameter returns jvm::JvmFormalParameter:
 	//	{jvm::JvmFormalParameter} name=ValidID (":" parameterType=JvmTypeReference)?;
 	public JvmFormalParameterElements getJvmFormalParameterAccess() {
-		return (pJvmFormalParameter != null) ? pJvmFormalParameter : (pJvmFormalParameter = new JvmFormalParameterElements());
+		return pJvmFormalParameter;
 	}
 	
 	public ParserRule getJvmFormalParameterRule() {
@@ -1980,7 +2012,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//FullJvmFormalParameter returns jvm::JvmFormalParameter:
 	//	{jvm::JvmFormalParameter} name=ValidID ":" parameterType=JvmTypeReference;
 	public FullJvmFormalParameterElements getFullJvmFormalParameterAccess() {
-		return (pFullJvmFormalParameter != null) ? pFullJvmFormalParameter : (pFullJvmFormalParameter = new FullJvmFormalParameterElements());
+		return pFullJvmFormalParameter;
 	}
 	
 	public ParserRule getFullJvmFormalParameterRule() {
@@ -1992,7 +2024,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//XXLoopFormalParameter returns jvm::JvmFormalParameter:
 	//	{jvm::JvmFormalParameter} name=ValidID ("as" parameterType=JvmTypeReference)?;
 	public XXLoopFormalParameterElements getXXLoopFormalParameterAccess() {
-		return (pXXLoopFormalParameter != null) ? pXXLoopFormalParameter : (pXXLoopFormalParameter = new XXLoopFormalParameterElements());
+		return pXXLoopFormalParameter;
 	}
 	
 	public ParserRule getXXLoopFormalParameterRule() {
@@ -2003,7 +2035,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//	=> ({xbase::XForLoopExpression} "for" "(" declaredParam=XXLoopFormalParameter ":") forExpression=XExpression ")"
 	//	eachExpression=XExpression;
 	public XForLoopExpressionElements getXForLoopExpressionAccess() {
-		return (pXForLoopExpression != null) ? pXForLoopExpression : (pXForLoopExpression = new XForLoopExpressionElements());
+		return pXForLoopExpression;
 	}
 	
 	public ParserRule getXForLoopExpressionRule() {
@@ -2382,7 +2414,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//XCasePart:
-	//	{XCasePart} typeGuard=JvmTypeReference? ("case" case=XExpression)? (":" then=XExpression | ",");
+	//	{XCasePart} typeGuard=JvmTypeReference? ("case" case=XExpression)? (":" then=XExpression | fallThrough?=",");
 	public XbaseGrammarAccess.XCasePartElements getXCasePartAccess() {
 		return gaXbase.getXCasePartAccess();
 	}
@@ -2672,8 +2704,9 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//JvmParameterizedTypeReference:
-	//	type=[JvmType|QualifiedName] ("<" arguments+=JvmArgumentTypeReference ("," arguments+=JvmArgumentTypeReference)*
-	//	">")?;
+	//	type=[JvmType|QualifiedName] ("<" arguments+=JvmArgumentTypeReference ("," arguments+=JvmArgumentTypeReference)* ">"
+	//	(=> ({JvmInnerTypeReference.outer=current} ".") type=[JvmType|ValidID] ("<" arguments+=JvmArgumentTypeReference (","
+	//	arguments+=JvmArgumentTypeReference)* ">")?)*)?;
 	public XtypeGrammarAccess.JvmParameterizedTypeReferenceElements getJvmParameterizedTypeReferenceAccess() {
 		return gaXbase.getJvmParameterizedTypeReferenceAccess();
 	}
@@ -2693,7 +2726,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//JvmWildcardTypeReference:
-	//	{JvmWildcardTypeReference} "?" (constraints+=JvmUpperBound | constraints+=JvmLowerBound)?;
+	//	{JvmWildcardTypeReference} "?" (constraints+=JvmUpperBound constraints+=JvmUpperBoundAnded* |
+	//	constraints+=JvmLowerBound constraints+=JvmLowerBoundAnded*)?;
 	public XtypeGrammarAccess.JvmWildcardTypeReferenceElements getJvmWildcardTypeReferenceAccess() {
 		return gaXbase.getJvmWildcardTypeReferenceAccess();
 	}
@@ -2730,6 +2764,16 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getJvmLowerBoundRule() {
 		return getJvmLowerBoundAccess().getRule();
+	}
+
+	//JvmLowerBoundAnded returns JvmLowerBound:
+	//	"&" typeReference=JvmTypeReference;
+	public XtypeGrammarAccess.JvmLowerBoundAndedElements getJvmLowerBoundAndedAccess() {
+		return gaXbase.getJvmLowerBoundAndedAccess();
+	}
+	
+	public ParserRule getJvmLowerBoundAndedRule() {
+		return getJvmLowerBoundAndedAccess().getRule();
 	}
 
 	//JvmTypeParameter:
@@ -2801,8 +2845,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	} 
 
 	//terminal STRING:
-	//	"\"" ("\\" ("b" | "t" | "n" | "f" | "r" | "u" | "\"" | "\'" | "\\") | !("\\" | "\""))* "\"" | "\'" ("\\" ("b" | "t" |
-	//	"n" | "f" | "r" | "u" | "\"" | "\'" | "\\") | !("\\" | "\'"))* "\'";
+	//	"\"" ("\\" . / * ('b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\') * / | !("\\" | "\""))* "\""? | "\'" ("\\" .
+	//	/ * ('b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\') * / | !("\\" | "\'"))* "\'"?;
 	public TerminalRule getSTRINGRule() {
 		return gaXbase.getSTRINGRule();
 	} 

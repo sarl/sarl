@@ -26,6 +26,7 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.assumeFalse
 
 import io.sarl.lang.sarl.ActionSignature;
 import io.sarl.lang.sarl.Capacity;
@@ -74,7 +75,7 @@ describe "Capacity Reference"{
 			 * <note> Defining a capacity 
 			 * without action inside is a symptom of a design problem.</note>
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Capacity Definition"{
 				// Test the URLs from the beginning of this page.
@@ -87,7 +88,7 @@ describe "Capacity Reference"{
 					// Log a debugging message
 					def debug(text : String)
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.cr",
 					// TEXT
 					""
@@ -144,7 +145,7 @@ describe "Capacity Reference"{
 			 * In the following code, the `Logging` capacity (defined
 			 * previously) is extended for enabling the output of error messages.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Extending a Capacity"{
 				val model = '''
@@ -152,7 +153,7 @@ describe "Capacity Reference"{
 					// Log a error message
 					def error(text : String)
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.cr
 					capacity Logging {
 						// Log an information message
@@ -221,7 +222,7 @@ describe "Capacity Reference"{
 			 * Below, the `Cap3` capacity is defined as an extension of the capacities
 			 * `Cap1` and `Cap2`.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Extending Multiple Capacities"{
 				val model = '''
@@ -234,7 +235,7 @@ describe "Capacity Reference"{
 				capacity Cap3 extends Cap1, Cap2 {
 					def action3
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.cr",
 					// TEXT
 					""
@@ -344,6 +345,11 @@ describe "Capacity Reference"{
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
+		// The checks are valid only if the macro replacements were done.
+		// The replacements are done by Maven.
+		// So, Eclipse Junit tools do not make the replacements.
+		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+		//
 		"%sarlversion%" should startWith "%sarlspecversion%"
 		("%sarlspecreleasestatus%" == "Final Release"
 			|| "%sarlspecreleasestatus%" == "Draft Release") should be true

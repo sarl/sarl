@@ -15,27 +15,36 @@
 	<packaging>pom</packaging>
 
 	<description>SARL is a general-purpose agent-oriented language.
-
-SARL aims at providing the fundamental abstractions for dealing with concurrency, distribution, interaction, decentralization, reactivity, autonomy and dynamic reconfiguration. These high-level features are now considered as the major requirements for an easy and practical implementation of modern complex software applications. We are convinced that the agent-oriented paradigm holds the keys to effectively meet this challenge.</description>
+	SARL aims at providing the fundamental abstractions for dealing with concurrency,
+	distribution, interaction, decentralization, reactivity, autonomy and dynamic
+	reconfiguration.</description>
 
 	<!-- ======================================= -->
 	<!-- ==== Main properties === -->
 	<!-- ======================================= -->
 
 	<properties>
+		<!-- Year of the release of SARL (used in License management and documentation) -->
 		<year>2014</year>
+		<!-- URL of the SARL project (use in POM and documentation) -->
+		<sarl.url>http://www.sarl.io</sarl.url>
+		<!-- Default encoding of the source files -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- JRE Configuration -->
 		<compiler.level>1.7</compiler.level>
 		<jre.environment>JavaSE-1.7</jre.environment>
+		<!-- Versions of major transversal dependencies -->
 		<tycho.version>0.21.0</tycho.version>
-		<xtext.version>2.6.2</xtext.version>
+		<xtext.version>2.7.2</xtext.version>
+		<afc.version>11.0</afc.version>
+		<guava.version>17.0</guava.version>
+		<copyrighters>Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND</copyrighters>
+		<!-- Version of the Jnario components -->
 		<jnario.version>1.0.0</jnario.version>
 		<jnario.report.version>1.0.1</jnario.report.version>
-		<afc.version>11.0</afc.version>
-		<copyrighters>Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND</copyrighters>
-		<sarl.url>http://www.sarl.io</sarl.url>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- The follow properties are required for the documentation -->
+		<!-- Version of the Janus platform (used in documentation) -->
 		<janus.version>2.0.1.0-SNAPSHOT</janus.version>
+		<!-- URL of the Maven repositories of SARL and Janus (use in POM and documentation) -->
 		<sarl.maven.repository.url>http://maven.sarl.io</sarl.maven.repository.url>
 		<janus.maven.repository.url>http://maven.janusproject.io</janus.maven.repository.url>
 	</properties>
@@ -45,14 +54,17 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 	<!-- ======================================= -->
 
 	<modules>
-		<!-- SARL Language compiler and IDE: Eclipse project structure -->
+		<!-- Eclipse features for SARL (SDK and IDE contributions) -->
 		<module>features</module>
+		<!-- Eclipse plugins -->
 		<module>plugins</module>
+		<!-- Testing suite -->
 		<module>tests</module>
+		<!-- Definition of the Eclipse platform, the products and the update sites -->
 		<module>releng</module>
-		<!-- SARL Maven Contributions -->
+		<!-- Maven plugins and artifacts dedicated to SARL -->
 		<module>maven</module>
-		<!-- SARL Language Documentation -->
+		<!-- Documentation of SARL -->
 		<module>docs</module>
 	</modules>
 
@@ -62,7 +74,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 
 	<organization>
 		<name>SARL Consortium</name>
-		<url>http://www.sarl.io/</url>
+		<url>${sarl.url}</url>
 	</organization>
 
 	<licenses>
@@ -104,7 +116,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 				<plugin>
 					<groupId>org.apache.felix</groupId>
 					<artifactId>maven-bundle-plugin</artifactId>
-					<version>2.5.0</version>
+					<version>2.5.3</version>
 				</plugin>
 
 				<plugin>
@@ -221,7 +233,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.9.1</version>
+					<version>2.10</version>
 				</plugin>
 
 				<plugin>
@@ -233,7 +245,7 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>1.9</version>
+					<version>1.9.1</version>
 				</plugin>
 
 				<plugin>
@@ -748,11 +760,11 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
 			<id>srodriguez</id>
 			<name>Sebastian Rodriguez</name>
 			<email>srodriguez@citat.org.ar</email>
-			<url>http://citat.org.ar/members/sebastian-rodriguez/</url>
+			<url>http://gitia.org/members/sebastian-rodriguez/</url>
 			<organization>
 				Grupo de Investigaci&amp;oacute;n en Tecnolog&amp;iacute;as Inform&amp;aacute;ticas Avanzadas de Tucum&amp;aacute;n
 			</organization>
-			<organizationUrl>http://citat.org.ar/</organizationUrl>
+			<organizationUrl>http://gitia.org/</organizationUrl>
 			<roles>
 				<role>Co-founder</role>
 				<role>Architect</role>

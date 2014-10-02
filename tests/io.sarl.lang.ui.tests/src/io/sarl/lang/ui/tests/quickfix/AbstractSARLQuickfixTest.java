@@ -583,6 +583,11 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSARLUiTestCase {
 		}
 
 		@Override
+		public <T> T priorityReadOnly(IUnitOfWork<T, XtextResource> work) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
 		public <T> T modify(IUnitOfWork<T, XtextResource> work) {
 			try {
 				return work.exec(this.resource);

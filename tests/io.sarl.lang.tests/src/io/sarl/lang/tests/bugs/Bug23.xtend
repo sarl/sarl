@@ -79,7 +79,6 @@ class Bug23 {
 		  
 		  /**
 		   * Construct an event. The source of the event is unknown.
-		   * 
 		   */
 		  @Generated
 		  public MyAgentSpawned() {
@@ -89,7 +88,6 @@ class Bug23 {
 		  /**
 		   * Construct an event.
 		   * @param source - address of the agent that is emitting this event.
-		   * 
 		   */
 		  @Generated
 		  public MyAgentSpawned(final Address source) {
@@ -126,7 +124,7 @@ class Bug23 {
 		  }
 		  
 		  /**
-		   * Returns a String representation of the Event MyAgentSpawned attributes only.
+		   * Returns a String representation of the MyAgentSpawned event's attributes only.
 		   */
 		  @Generated
 		  protected String attributesToString() {

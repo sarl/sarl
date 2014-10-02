@@ -26,6 +26,7 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.*;
 
 /* <!-- OUTPUT OUTLINE -->
  *
@@ -90,6 +91,11 @@ describe "English Auction with Holons"{
 			// Test the URLs in the introduction of this page.
 			"../reference/GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 			"../reference/AgentReferenceSpec.html" should beAccessibleFrom this
+			// The checks are valid only if the macro replacements were done.
+			// The replacements are done by Maven.
+			// So, Eclipse Junit tools do not make the replacements.
+			System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+			//
 			"%sarlmavenrepository%" should beURL "!file"
 			"%website%" should beURL "!file"
 		}
@@ -110,7 +116,7 @@ describe "English Auction with Holons"{
 		 * __By a design choice, the bidders are sub-agents of
 		 * the auctioneer agent.__
 		 * 
-		 * <center><img src="./holonic_auction.png"/></center>
+		 * ![Holonic Auction](./holonic_auction.png)
 		 *
 		 * @filter(.*)
 		 */
@@ -126,7 +132,7 @@ describe "English Auction with Holons"{
 		 * Each agent defines its own context, called the inner context,
 		 * where other agents can live. Therefore, every agent can be seen 
 		 * as a part of a larger
-		 * <a href="http://en.wikipedia.org/wiki/Holon_(philosophy)">holon</a>,
+		 * [holon](http://en.wikipedia.org/wiki/Holon_(philosophy)),
 		 * __and__ at the same time be composed 
 		 * by other agents that exist in its _inner context_. 
 		 * 
@@ -156,7 +162,7 @@ describe "English Auction with Holons"{
 			 * bidder that the price has changed.
 			 * This event contains the new price.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */			
 			fact "Price event" {
 				'''
@@ -167,14 +173,14 @@ describe "English Auction with Holons"{
 						this.price = price
 					}
 				}
-				'''.parsesSuccessfully
+				'''.parseSuccessfully
 			}
 
 			/* The `Bid` event is the event sent
 			 * by a bidder to the auctioneer.
 			 * This event contains the value of the bid.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */			
 			fact "Playing event" {
 				'''
@@ -184,7 +190,7 @@ describe "English Auction with Holons"{
 						this.value = value
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.holonicauction",
 					// TEXT
 					""
@@ -208,7 +214,7 @@ describe "English Auction with Holons"{
 			 * The bidder selects the maximum price
 			 * between 100 and 1000 randomly.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Initial definition" {
 				'''
@@ -220,7 +226,7 @@ describe "English Auction with Holons"{
 						maxPrice = random.nextFloat() * 900f + 100f
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.basicholon
 					import java.util.Random
 					import io.sarl.core.Initialize",
@@ -253,7 +259,7 @@ describe "English Auction with Holons"{
 			 * other sub-agents will receive this event. 
 			 * </cautionnote>
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Bidding" {
 				'''
@@ -277,7 +283,7 @@ describe "English Auction with Holons"{
 						}
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.basicholon
 					import java.util.Random
 					import io.sarl.core.Initialize
@@ -315,7 +321,7 @@ describe "English Auction with Holons"{
 			 * Below, we update the bidding behavior by creating
 			 * a scope, and providing it to the `emit` function.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Restrict the bid to the auctioneer" {
 				'''
@@ -341,7 +347,7 @@ describe "English Auction with Holons"{
 						}
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.basicholon
 					import java.util.Random
 					import io.sarl.core.Initialize
@@ -394,7 +400,7 @@ describe "English Auction with Holons"{
 			 * The `wake` function is supporting this interaction.
 			 * </importantnote>
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Initial definition" {
 				'''
@@ -411,7 +417,7 @@ describe "English Auction with Holons"{
 						wake(new Price(50))
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.holonicauction
 					import java.util.Random
 					import io.sarl.core.Behaviors
@@ -439,7 +445,7 @@ describe "English Auction with Holons"{
 			 * which provides the `getInnerContext` function.
 			 * Below, we create the three bidders. 
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Create the bidders" {
 				'''
@@ -460,7 +466,7 @@ describe "English Auction with Holons"{
 						wake(new Price(50))
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.holonicauction
 					import java.util.Random
 					import io.sarl.lang.core.Address
@@ -490,7 +496,7 @@ describe "English Auction with Holons"{
 			 * the current price, the source of the `Bid` event
 			 * becomes the new potential winner. 
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Receive the bids" {
 				'''
@@ -518,7 +524,7 @@ describe "English Auction with Holons"{
 						}
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.holonicauction
 					import java.util.Random
 					import io.sarl.lang.core.Address
@@ -563,7 +569,7 @@ describe "English Auction with Holons"{
 			 * To delay the task executor about the first ten seconds,
 			 * we use the `in` function provided by the capacity.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Stop the auction" {
 				'''
@@ -608,7 +614,7 @@ describe "English Auction with Holons"{
 						}
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.holonicauction
 					import java.util.Random
 					import io.sarl.lang.core.Address
@@ -648,7 +654,7 @@ describe "English Auction with Holons"{
 			 * same Object (the argument of the operator) cannot be
 			 * executed in parallel by different threads.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Synchronize the operations" {
 				'''
@@ -697,7 +703,7 @@ describe "English Auction with Holons"{
 						}
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.holonicauction
 					import java.util.Random
 					import io.sarl.lang.core.Address
@@ -750,12 +756,12 @@ describe "English Auction with Holons"{
 			 * We introduce the `StopAuction` event that
 			 * is used for this particular notification task.
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */			
 			fact "StopAuction event" {
 				'''
 				event StopAuction
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.holonicauction",
 					// TEXT
 					""
@@ -770,7 +776,7 @@ describe "English Auction with Holons"{
 			 * This function is provided by the `Lifecycle`
 			 * capacity.
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */			
 			fact "Kill the bidder" {
 				'''
@@ -802,7 +808,7 @@ describe "English Auction with Holons"{
 						killMe
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.basicholon
 					import java.util.Random
 					import io.sarl.core.Initialize
@@ -842,7 +848,7 @@ describe "English Auction with Holons"{
 			 * `cancel` function is invoked on the periodic task
 			 * to stop its execution.
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */			
 			fact "Kill the auctioneer" {
 				'''
@@ -899,7 +905,7 @@ describe "English Auction with Holons"{
 						}
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.holonicauction
 					import java.util.Random
 					import io.sarl.lang.core.Address

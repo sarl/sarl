@@ -20,6 +20,8 @@
  */
 package io.sarl.docs.reference
 
+import com.google.inject.Inject
+import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Space
@@ -28,6 +30,7 @@ import io.sarl.util.RestrictedAccessEventSpace
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.assumeFalse
 
 /* @outline
  *
@@ -80,51 +83,7 @@ import static extension io.sarl.docs.utils.SpecificationTools.*
 @CreateWith(SARLSpecCreator)
 describe "Space Reference" {
 		
-//		def Class<?> mustHaveField(Class<?> type, String fieldName, String fieldType) {
-//			try {
-//				var f = type.getDeclaredField(fieldName)
-//				assertNotNull("Missed "+fieldName+" field in "+type.simpleName, f);
-//				assertEquals("Invalid field type", fieldType, f.type.name)
-//			} catch( Throwable e ) {
-//				fail("Missed "+fieldName+" field in "+type.simpleName);
-//			}
-//			return type
-//		}
-//
-//		def Class<?> mustHaveFeatures(Class<?> type, int numberOfMethods, int numberOfFields) {
-//			assertEquals("Invalid number of declared methods", numberOfMethods, type.declaredMethods.length)
-//			assertEquals("Invalid number of declared fields", numberOfFields, type.declaredFields.length)
-//			return type
-//		}
-//
-//		def Class<?> mustExtend(Class<?> type, String supertype) {
-//			if (type.interface) {
-//				if (supertype===null) {
-//					assertEquals("Invalid super-type", 0, type.interfaces.length)
-//				}
-//				else {
-//					var found = false
-//					for(t : type.interfaces) {
-//						if (t.name==supertype) {
-//							found = true
-//						}
-//					}
-//					if (!found) {
-//						fail("Invalid super-type. Expected: "+supertype)
-//					}
-//				}
-//			}
-//			else {
-//				if (supertype===null) {
-//					assertNull("Invalid super-type", type.superclass)
-//				}
-//				else {
-//					assertNotNull("Invalid super-type", type.superclass)
-//					assertEquals("Invalid super-type", supertype, type.superclass.name)
-//				}
-//			}
-//			return type
-//		}
+		@Inject extension SARLParser
 
 		/* SARL provides a collection of Java interfaces that are representing different
 		 * types of spaces.
@@ -172,7 +131,7 @@ describe "Space Reference" {
 			 * 
 			 * The `getAddress` function replies the address in the space
 			 * of the agent that has the given identifier.
-			 * The `emit` functions permits put an event in
+			 * The `emit` functions permits fire of an event in
 			 * the space.
 			 *  
 			 * @filter(.*) 
@@ -238,13 +197,19 @@ describe "Space Reference" {
 		}
 	
 		/* The definition of a new space must be done with
-		 * the Java language.
+		 * the [Xtend](https://www.eclipse.org/xtend/) or the Java language.
+		 * In the rest of this documentation, we use the Xtend language.
+		 * It is an object-oriented language with a syntax close to the
+		 * one of SARL.
 		 * 
 		 * For defining a space, three steps must be followed:
 		 * 
 		 *  * Definition of the interface of the space;
 		 *  * Implementation of the space on a specific runtime environment;
 		 *  * Definition of the space specification.
+		 * 
+		 * In the rest of this section, we use the example of the definition
+		 * of a physic space: a space in which objects are located. 
 		 */
 		describe "Defining a Space" {
 
@@ -255,53 +220,167 @@ describe "Space Reference" {
 			 * The new space type must extend one of the predefined types.
 			 * In the following example, the new space is related to
 			 * the physic environment in which the agents may evolve.
-			 * This space permits to move an object.
 			 * 
-			 *      public interface PhysicSpace extends Space {
-			 * 		    public void moveObject(UUID identifier, float x, float y, float z);
+			 *      interface PhysicSpace extends Space {
+			 * 		    def moveObject(UUID identifier, float x, float y, float z)
+			 * 		    def bindBody(EventListener agent)
+			 * 		    def unbindBody(EventListener agent)
 			 *      }
 			 *
+			 * This space permits to move an object (including the physical
+			 * representation of the agent, its body).
+			 * Additionally, the space gives to the agent the ability to be binded
+			 * to its body, and to release the control of its body.
+			 * The `EventListener` type is the event listening mechanism associated
+			 * to the agent. It may be obtained with the `Behaviors` built-in capacity
+			 * (see the corresponding
+			 * [built-in capacity reference](./BuiltInCapacityReferenceBehaviorsSpec.html)
+			 * for details).
 			 * 
 			 * @filter(.*) 
 			 */
 			fact "Defining a Space"{
-				true
+				"./BuiltInCapacityReferenceBehaviorsSpec.html" should beAccessibleFrom this
 			}
 			
 			/* The definition of the space implementation depends upon
-			 * the runtime environment. Below, the implementation
+			 * the runtime environment.
+			 * 
+			 * <caution>This section of the space reference document may evolved
+			 * in future releases of SARL. Please activate the "deprecated feature
+			 * use" warning in your Java compilation configuration for ensuring
+			 * that you will be notified about any major changes on this part of
+			 * the API.</caution>
+			 * 
+			 * Below, the implementation
 			 * extends one of the abstract classes provided by the
 			 * [Janus Platform](http://www.janusproject.io).
 			 * 
-			 *      public class PhysicSpaceImpl extends AbstractSpace implements PhysicSpace {
-			 * 		    private Map<UUID,PhysicObject> entities = new TreeMap<>();
-			 * 		    public PhysicSpaceImpl(UUID id) {
-			 * 			    super(id);
+			 *      class PhysicSpaceImpl extends AbstractSpace implements PhysicSpace {
+			 * 		    val Map<UUID,PhysicObject> entities = newTreeMap
+			 * 		    new(UUID id) {
+			 * 			    super(id)
 			 * 		    }
-			 * 		    public void moveObject(UUID identifier, float x, float y, float z) {
-			 * 			    PhysicObject o = this.entities.get(identifier);
-			 * 			    if (identifier!=null) {
-			 * 				    o.move(x, y, z);
+			 * 		    def moveObject(UUID identifier, float x, float y, float z) {
+			 * 			    synchronized (this.entities) {
+			 *					PhysicObject o = this.entities.get(identifier)
+			 * 			    	if (o !== null) {
+			 * 				    	o.move(x, y, z)
+			 * 			    	}
+			 * 				}
+			 * 		    }
+			 * 			def bindBody(EventListener listener) {
+			 * 				synchronized (this.entities) {
+			 *					entities.put(listener.ID, new PhysicObject)
+			 * 				}
+			 * 			}
+			 * 			def unbindBody(EventListener listener) {
+			 * 				synchronized (this.entities) {
+			 *					entities.remove(listener.ID)
+			 * 				}
+			 * 			}
+			 *      }
+			 * 
+			 * The physic space contains a collection of objects, namely `entities`.
+			 * Each object is identified by an UUID.
+			 * It is assumed that the `PhysicObject` class provides a method for moving it:
+			 * `move(float, float, float)`.
+			 * When an agent wants to move an object by calling the `moveObject` method,
+			 * the space is retrieving the instance of this object in the `entities`, and
+			 * move it. 
+			 * 
+			 * <important>The previous implementation has a major problem: it does not permit
+			 * to distribute the information and the interaction objects over a computer network. The space is
+			 * the support of the interaction. Consequently, it should provide the mechanisms for
+			 * routing the events to all the agents other the computer network.</important>
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Basic Implementation"{
+				true
+			}
+
+			/* As described in the previous section, the space implementation
+			 * should route the information among the agents over a computer
+			 * network.
+			 * 
+			 * <caution>This section of the space reference document may evolved
+			 * in future releases of SARL. Please activate the "deprecated feature
+			 * use" warning in your Java compilation configuration for ensuring
+			 * that you will be notified about any major changes on this part of
+			 * the API.</caution>
+			 * 
+			 * Below, the implementation
+			 * extends one of the abstract classes provided by the
+			 * [Janus Platform](http://www.janusproject.io).
+			 * 
+			 *      class NetworkPhysicSpaceImpl extends AbstractEventSpace implements PhysicSpace {
+			 * 			val Map<UUID,PhysicObject> entities;
+			 *			public new(SpaceID id, DistributedDataStructureService factory) {
+			 *				super(id, factory)
+			 * 				this.entities = factory.getMap(id.toString + "-physicObjects")
+			 *			}
+			 *			def bindBody(EventListener entity) {
+			 * 				this.entities.put(entity.ID, new PhysicObject)
+			 *				Address a = new Address(ID, entity.ID)
+			 *				synchronized (this.participants) {
+			 *					return this.participants.registerParticipant(a, entity)
+			 *				}
+			 *			}
+			 *			def unbindBody(EventListener entity) {
+			 *				synchronized (this.participants) {
+			 *					return this.participants.unregisterParticipant(entity)
+			 *				}
+			 * 				this.entities.remove(entity.ID)
+			 *			}
+			 * 		    def moveObject(UUID identifier, float x, float y, float z) {
+			 * 			    PhysicObject o = this.entities.remove(identifier)
+			 * 			    if (o !== null) {
+			 * 				    o.move(x, y, z)
+			 * 					this.entities.put(identifier, o)
 			 * 			    }
 			 * 		    }
 			 *      }
 			 * 
+			 * <important>The collection of the physic objects is a distributed
+			 * map over the computer network. It means that each node
+			 * of the platform has a direct access to the objects' instances.
+			 * If whose to say that is implementation may face some problems,
+			 * such as the serialization of the physic objects, and the scalability
+			 * of the distributed map.</important>
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Defining a Space Implementation"{
+			fact "Basic Network Support"{
 				true
 			}
 
 			/* For creating instances of spaces, it is necessary to define
 			 * a space specification.
+			 * This specification may create the space instance according to rules, or
+			 * provide information and rules to the spaces.
 			 * 
-			 *     public class PhysicSpaceSpecification implements SpaceSpecification<PhysicSpace> {
-			 *         public PhysicSpace create(SpaceID id, Object... params) {
-			 * 	           return new PhysicSpace(id);
+			 *     class PhysicSpaceSpecification implements SpaceSpecification<PhysicSpace> {
+			 *         def PhysicSpace create(SpaceID id, Object... params) {
+			 * 	           return new PhysicSpaceImpl(id)
 			 * 	       }
 			 *     }
+			 * 
+			 * The example above is the specification related to the first implementation
+			 * of the PhysicSpace.
 			 *
+			 *     class NetworkPhysicSpaceSpecification implements SpaceSpecification<PhysicSpace> {
+			 * 	       @Inject
+			 * 		   var DistributedDataStructureService factory;
+			 * 
+			 *         def PhysicSpace create(SpaceID id, Object... params) {
+			 * 	           return new NetworkPhysicSpaceImpl(id, factory)
+			 * 	       }
+			 *     }
+			 * 
+			 * The example above is the specification that permits to create a physic space
+			 * with networking. It retrieves by injection the factory of distributed data structures
+			 * provided by the Janus platform.
 			 * 
 			 * @filter(.*) 
 			 */
@@ -326,6 +405,11 @@ describe "Space Reference" {
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
+		// The checks are valid only if the macro replacements were done.
+		// The replacements are done by Maven.
+		// So, Eclipse Junit tools do not make the replacements.
+		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+		//
 		"%sarlversion%" should startWith "%sarlspecversion%"
 		("%sarlspecreleasestatus%" == "Final Release"
 			|| "%sarlspecreleasestatus%" == "Draft Release") should be true

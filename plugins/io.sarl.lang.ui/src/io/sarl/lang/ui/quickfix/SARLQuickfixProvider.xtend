@@ -46,6 +46,7 @@ import org.eclipse.xtext.util.Strings
 import org.eclipse.xtext.validation.Issue
 import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable
 import org.eclipse.xtext.xbase.ui.quickfix.XbaseQuickfixProvider
+import java.text.MessageFormat
 
 /**
  * Custom quickfixes.
@@ -64,8 +65,10 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	protected def void removeBackwardWithSpaces(Issue issue, IXtextDocument document) {
 		// Skip spaces before the identifier until the coma
 		var index = issue.offset - 1
-		while (Character::isWhitespace(document.getChar(index))) {
+		var char c = document.getChar(index)
+		while (Character::isWhitespace(c)) {
 			index--
+			c = document.getChar(index)
 		}
 		
 		var delta = issue.offset - index - 1
@@ -79,17 +82,21 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	protected def boolean removeBackwardUntilSeparator(int offset, int length, IXtextDocument document, String separator) {
 		// Skip spaces before the identifier until the coma
 		var index = offset - 1
-		while (Character::isWhitespace(document.getChar(index))) {
+		var char c = document.getChar(index)
+		while (Character::isWhitespace(c)) {
 			index--
+			c = document.getChar(index)
 		}
 		
 		// Test if it previous non-space character is the separator
 		var boolean foundSeparator = (document.getChar(index)==separator.charAt(0))
 		if (foundSeparator) {
 			index--
+			c = document.getChar(index)
 			// Skip the previous spaces
-			while (Character::isWhitespace(document.getChar(index))) {
+			while (Character::isWhitespace(c)) {
 				index--
+				c = document.getChar(index)
 			}
 
 			var delta = offset - index - 1
@@ -102,17 +109,21 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	protected def boolean removeForwardUntilSeparator(Issue issue, IXtextDocument document, String separator) {
 		// Skip spaces after the identifier until the coma
 		var index = issue.offset + issue.length
-		while (Character::isWhitespace(document.getChar(index))) {
+		var char c = document.getChar(index)
+		while (Character::isWhitespace(c)) {
 			index++
+			c = document.getChar(index)
 		}
 		
 		// Test if it next non-space character is the separator
 		var boolean foundSeparator = (document.getChar(index)==separator.charAt(0))
 		if (foundSeparator) {
 			index++
+			c = document.getChar(index)
 			// Skip the previous spaces
-			while (Character::isWhitespace(document.getChar(index))) {
+			while (Character::isWhitespace(c)) {
 				index++
+				c = document.getChar(index)
 			}
 
 			var newLength = index - issue.offset
@@ -125,18 +136,22 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	private def removeBackwardWithInheritingKeyword(Issue issue, IXtextDocument document) {
 		// Skip spaces before the identifier
 		var index = issue.offset - 1
-		while (Character::isWhitespace(document.getChar(index))) {
+		var char c = document.getChar(index)
+		while (Character::isWhitespace(c)) {
 			index--
+			c = document.getChar(index)
 		}
 		
 		// Skip non-spaces before the identifier
-		while (!Character::isWhitespace(document.getChar(index))) {
+		while (!Character::isWhitespace(c)) {
 			index--
+			c = document.getChar(index)
 		}
 		
 		// Skip spaces before the previous keyword
-		while (Character::isWhitespace(document.getChar(index))) {
+		while (Character::isWhitespace(c)) {
 			index--
+			c = document.getChar(index)
 		}
 		
 		var delta = issue.offset - index - 1
@@ -149,17 +164,21 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		
 		// Skip spaces before the identifier until the separator
 		var index = offset - 1
-		while (Character::isWhitespace(document.getChar(index))) {
+		var char c = document.getChar(index)
+		while (Character::isWhitespace(c)) {
 			index--
+			c = document.getChar(index)
 		}
 		
 		// Test if it previous non-space character is the separator
 		var boolean foundSeparator = (document.getChar(index)==beginSeparator.charAt(0))
 		if (foundSeparator) {
 			index--
+			c = document.getChar(index)
 			// Skip the previous spaces
-			while (Character::isWhitespace(document.getChar(index))) {
+			while (Character::isWhitespace(c)) {
 				index--
+				c = document.getChar(index)
 			}
 
 			length = length + (offset - index - 1)
@@ -167,15 +186,17 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			
 			// Skip spaces after the identifier until the separator
 			index = offset + length
-			while (Character::isWhitespace(document.getChar(index))) {
+			c = document.getChar(index)
+			while (Character::isWhitespace(c)) {
 				index++
+				c = document.getChar(index)
 			}
 			
 			// Test if it next non-space character is the separator
 			foundSeparator = (document.getChar(index)==endSeparator.charAt(0))
 			if (foundSeparator) {
 				index++
-	
+
 				length = index - offset
 				document.replace(offset, length, "")
 			}
@@ -202,8 +223,10 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	
 	protected def int getSpaceSize(IXtextDocument document, int offset) {
 		var size = 0
-		while (Character::isWhitespace(document.getChar(offset + size))) {
+		var char c = document.getChar(offset + size)
+		while (Character::isWhitespace(c)) {
 			size++
+			c = document.getChar(offset + size)
 		}
 		return size
 	}
@@ -220,7 +243,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	def fixPackageName(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==1) {
 			val expectedPackage = issue.data.get(0)
-			var msg = String::format("Change package declaration to '%s'", expectedPackage)
+			var msg = MessageFormat::format(Messages::SARLQuickfixProvider_0, expectedPackage)
 			acceptor.accept(issue, msg, msg, null)
 				[ element, context |
 					(element as SarlScript).name = if (""==expectedPackage) null else expectedPackage
@@ -232,7 +255,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	def fixDuplicateTopElements(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==1) {
 			val duplicateName = issue.data.get(0).qualifiedName
-			var msg = String::format("Remove the duplicate definition of '%s'", duplicateName.lastSegment)
+			var msg = MessageFormat::format(Messages::SARLQuickfixProvider_1, duplicateName.lastSegment)
 			acceptor.accept(issue, msg, msg, null)
 				[ element, context |
 					remove(element, typeof(TopElement), context)
@@ -244,7 +267,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	def fixDuplicateAttribute(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==1) {
 			val duplicateName = issue.data.get(0).qualifiedName
-			var msg = String::format("Remove the duplicate field '%s'", duplicateName.lastSegment)
+			var msg = MessageFormat::format(Messages::SARLQuickfixProvider_2, duplicateName.lastSegment)
 			acceptor.accept(issue, msg, msg, null)
 				[ element, context |
 					remove(element, typeof(Attribute), context)
@@ -256,7 +279,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	def fixDuplicateMethod(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==1) {
 			val duplicateName = issue.data.get(0)
-			var msg = String::format("Remove the duplicate method '%s'", duplicateName)
+			var msg = MessageFormat::format(Messages::SARLQuickfixProvider_3, duplicateName)
 			acceptor.accept(issue, msg, msg, null)
 				[ element, context |
 					removeExecutableFeature(element, context)
@@ -286,14 +309,14 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			val invalidName = issue.data.get(1)
 			for (var i = 2; i < issue.data.length; i++) {
 				val validName = issue.data.get(i)
-				var msg = String::format("Rename the %s '%s' to '%s'",
+				var msg = MessageFormat::format(Messages::SARLQuickfixProvider_4,
 					type, invalidName, validName)
 				acceptor.accept(issue, msg, msg, null)
 					[ context |
 						context.xtextDocument.replace(issue.offset, issue.length, validName);
 					]
 			}			
-			var msg = String::format("Remove the %s '%s'", type, invalidName)
+			var msg = MessageFormat::format(Messages::SARLQuickfixProvider_5, type, invalidName)
 			if (type=="attribute") {
 				acceptor.accept(issue, msg, msg, null)
 					[ element, context |
@@ -314,7 +337,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		if (issue.data!=null && issue.data.length==2) {
 			val redundantName = issue.data.get(0)
 			val mode = issue.data.get(1)
-			var msg = String::format("Remove the redundant feature '%s'", redundantName)
+			var msg = MessageFormat::format(Messages::SARLQuickfixProvider_6, redundantName)
 			var ISemanticModification fct
 			switch(mode) {
 				case "pre": {
@@ -350,11 +373,15 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		if (issue.data!=null && issue.data.length==2) {
 			val redundantName = issue.data.get(0)
 			val newName = issue.data.get(1)
-			var msg = String::format("Remove the field '%s'", redundantName)
+			var msg = MessageFormat::format(
+				Messages::SARLQuickfixProvider_5,
+				Messages::SARLQuickfixProvider_7, redundantName)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				remove(element, typeof(Attribute), context)
 			]
-			msg = String::format("Rename the field '%s' to '%s'", redundantName, newName)
+			msg = MessageFormat::format(
+				Messages::SARLQuickfixProvider_4,
+				Messages::SARLQuickfixProvider_7, redundantName, newName)
 			acceptor.accept(issue, msg, msg, null) [ context |
 				var document = context.xtextDocument
 				document.replace(issue.offset, issue.length, newName)
@@ -366,7 +393,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	def fixOverriddenFinal(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==1) {
 			val signature = issue.data.get(0)
-			var msg = String::format("Remove the action '%s'", signature)
+			var msg = MessageFormat::format(
+				Messages::SARLQuickfixProvider_5,
+				Messages::SARLQuickfixProvider_8, signature)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				removeExecutableFeature(element, context)
 			]
@@ -376,7 +405,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	@Fix(IssueCodes::DISCOURAGED_BOOLEAN_EXPRESSION)
 	def fixDiscouragedBooleanExpression(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==0) {
-			var msg = "Remove the guard"
+			var msg = Messages::SARLQuickfixProvider_9
 			acceptor.accept(issue, msg, msg, null) [ context |
 				var document = context.xtextDocument
 				removeBetweenSeparators(issue, document, '[', ']')
@@ -388,7 +417,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	def fixUnreachableBehaviorUnit(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==1) {
 			val eventName = issue.data.get(0)
-			var msg = String::format("Remove the behavior unit on '%s'", eventName)
+			var msg = MessageFormat::format(Messages::SARLQuickfixProvider_10, eventName)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				remove(element, typeof(BehaviorUnit), context)
 			]
@@ -399,7 +428,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	def fixInvalidCapacityType(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==1) {
 			val typeName = issue.data.get(0)
-			var msg = String::format("Remove the type '%s'", typeName)
+			var msg = MessageFormat::format(
+						Messages::SARLQuickfixProvider_5,
+						Messages::SARLQuickfixProvider_11, typeName)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				var document = context.xtextDocument
 				var sep = ','
@@ -416,7 +447,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	def fixInvalidFiringEventType(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==1) {
 			val typeName = issue.data.get(0)
-			var msg = String::format("Remove the type '%s'", typeName)
+			var msg = MessageFormat::format(
+						Messages::SARLQuickfixProvider_5,
+						Messages::SARLQuickfixProvider_11, typeName)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				var document = context.xtextDocument
 				var sep = ','
@@ -433,7 +466,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	def fixInvalidImplementedType(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==1) {
 			val typeName = issue.data.get(0)
-			var msg = String::format("Remove the type '%s'", typeName)
+			var msg = MessageFormat::format(
+						Messages::SARLQuickfixProvider_5,
+						Messages::SARLQuickfixProvider_11, typeName)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				var document = context.xtextDocument
 				var sep = ','
@@ -450,7 +485,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	def fixInvalidExtendedType(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==2) {
 			val superTypeName = issue.data.get(1).qualifiedName
-			var msg = String::format("Remove the type '%s'", superTypeName.lastSegment)
+			var msg = MessageFormat::format(
+						Messages::SARLQuickfixProvider_5,
+						Messages::SARLQuickfixProvider_11, superTypeName.lastSegment)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				var document = context.xtextDocument
 				var sep = ','
@@ -467,7 +504,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	def fixInconsistentTypeHierarchy(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==2) {
 			val superTypeName = issue.data.get(1).qualifiedName
-			var msg = String::format("Remove the type '%s'", superTypeName.lastSegment)
+			var msg = MessageFormat::format(
+						Messages::SARLQuickfixProvider_5,
+						Messages::SARLQuickfixProvider_11, superTypeName.lastSegment)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				var document = context.xtextDocument
 				var sep = ','
@@ -484,7 +523,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	def fixOverriddenFinalType(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==1) {
 			val typeName = issue.data.get(0)
-			var msg = String::format("Remove the type '%s'", typeName)
+			var msg = MessageFormat::format(
+						Messages::SARLQuickfixProvider_5,
+						Messages::SARLQuickfixProvider_11, typeName)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				var document = context.xtextDocument
 				var sep = ','
@@ -502,11 +543,15 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		if (issue.data!=null && issue.data.length==2) {
 			val capacityName = issue.data.get(0)
 			val defaultActionName = issue.data.get(1)
-			var msg = String::format("Remove the capacity '%s'", capacityName)
+			var msg = MessageFormat::format(
+						Messages::SARLQuickfixProvider_5,
+						Messages::SARLQuickfixProvider_12, capacityName)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				remove(element, typeof(Capacity), context)
 			]
-			msg = String::format("Add the action '%s'", defaultActionName)
+			msg = MessageFormat::format(
+						Messages::SARLQuickfixProvider_13,
+						Messages::SARLQuickfixProvider_8, defaultActionName)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				var container = EcoreUtil2.getContainerOfType(element, typeof(FeatureContainer))
 				if (container!==null) {
@@ -536,11 +581,11 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			val methods = newTreeMap(null)
 			for(var i=0; i<issue.data.size; i+=2) {
 				var meth = issue.data.get(i)
-				lines += String::format("- %s\n", meth)
+				lines += MessageFormat::format(Messages::SARLQuickfixProvider_14, meth)
 				methods.put(meth, issue.data.get(i+1))
 			}
-			val description = String::format("Add the following unimplemented actions:\n%s", lines)
-			acceptor.accept(issue, "Add unimplemented actions", description, null) [ element, context |
+			val description = MessageFormat::format(Messages::SARLQuickfixProvider_15, lines)
+			acceptor.accept(issue, Messages::SARLQuickfixProvider_16, description, null) [ element, context |
 				var container = EcoreUtil2.getContainerOfType(element, typeof(FeatureContainer))
 				if (container!==null) {
 					var insertOffset = getInsertOffset(container)
@@ -554,7 +599,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 					for(meth : methods.entrySet) {
 						appendable.newLine().append(meth.key).append(" {")
 						appendable.increaseIndentation()
-						appendable.newLine().append("// TODO: Auto-generated action.")
+						appendable.newLine().append("// TODO: ").append(Messages::SARLQuickfixProvider_17)
 						var value = meth.value
 						if (value!==null && value!="") {
 							appendable.newLine().append(value)
@@ -574,7 +619,10 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	def fixIncompatibleReturnType(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (issue.data!=null && issue.data.length==2) {
 			val expectedType = issue.data.get(1)
-			var msg = String::format("Replace the type by '%s'", expectedType)
+			var msg = MessageFormat::format(
+						Messages::SARLQuickfixProvider_18,
+						Messages::SARLQuickfixProvider_11,
+						expectedType)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				var document = context.xtextDocument
 				document.replace(issue.offset, issue.length, expectedType)
@@ -585,12 +633,12 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	@Fix(IssueCodes.INVALID_USE_OF_VAR_ARG)
 	def fixNoDefaultValueForVariadicParameter(Issue issue, IssueResolutionAcceptor acceptor) {
 		var String msg
-		msg = "Remove the variadic parameter"
+		msg = Messages::SARLQuickfixProvider_19
 		acceptor.accept(issue, msg, msg, null) [ element, context |
 			var document = context.xtextDocument
 			removeBackwardWithSpaces(issue, document)
 		]
-		msg = "Remove the default value"
+		msg = Messages::SARLQuickfixProvider_20
 		acceptor.accept(issue, msg, msg, null) [ element, context |
 			var container = EcoreUtil2.getContainerOfType(element, typeof(ParameterizedFeature))
 			if (container!==null && !container.params.empty) {

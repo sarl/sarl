@@ -37,6 +37,7 @@ import org.eclipse.core.resources.IFile
 import org.eclipse.jdt.core.JavaCore
 import org.eclipse.jdt.core.JavaModelException
 import java.util.logging.Level
+import java.text.MessageFormat
 
 /** Validator based on the Eclipse UI.
  * 
@@ -72,7 +73,7 @@ public class SARLUIValidator extends XbaseUIValidator {
 				!((isEmpty(expectedPackage) && declaredPackage === null) || 
 					expectedPackage.equals(declaredPackage))) {
 				addIssue(
-					String.format("The declared package '%s' does not match the expected package '%s'",
+					MessageFormat::format(Messages::SARLUIValidator_0,
 						notNull(declaredPackage),
 						notNull(expectedPackage)
 					),
@@ -115,7 +116,7 @@ public class SARLUIValidator extends XbaseUIValidator {
 						}
 					}
 					catch(JavaModelException e) {
-						log.log(Level::SEVERE, "Error resolving expected path for SarlScript", e); //$NON-NLS-1$
+						log.log(Level::SEVERE, Messages::SARLUIValidator_1, e); //$NON-NLS-1$
 					}
 				}
 			}

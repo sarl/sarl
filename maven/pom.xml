@@ -16,4 +16,9 @@
 		<module>io.sarl.maven.docs.generator</module>
 	</modules>
 
+	<dependencyManagement>
+		<!-- The dependencies are inside the submodules for avoiding to propagate 
+			the dependency information outside a specific module -->
+	</dependencyManagement>
+
 </project>

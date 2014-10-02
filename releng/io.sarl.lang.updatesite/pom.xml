@@ -31,6 +31,46 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-linux32-root-files</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/products/io.sarl.lang.product/linux/gtk/x86_64</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/rootfiles/linux</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-linux64-root-files</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/products/io.sarl.lang.product/linux/gtk/x86</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/rootfiles/linux</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<profiles>

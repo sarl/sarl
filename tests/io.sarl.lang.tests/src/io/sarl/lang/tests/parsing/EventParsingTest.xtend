@@ -27,6 +27,7 @@ import org.eclipse.xtext.junit4.validation.ValidationTestHelper
 import org.eclipse.xtext.xbase.XbasePackage
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.eclipse.xtext.common.types.TypesPackage
 
 /**
  * @author $Author: sgalland$
@@ -49,7 +50,7 @@ class EventParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.attribute,
+			TypesPackage::eINSTANCE.jvmConstructor,
 			org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION,
 			"The blank final field 'field2' may not have been initialized")
 	}
@@ -153,7 +154,7 @@ class EventParsingTest {
 		mas.assertError(
 			SarlPackage::eINSTANCE.event,
 			IssueCodes::INVALID_EXTENDED_TYPE,
-			"Supertype must be a class")
+			"Invalid supertype. Expecting: class")
 	}
 
 	@Test

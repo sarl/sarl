@@ -44,16 +44,16 @@ describe "Agent Definition Introduction" {
 	
 	@Inject extension SARLParser
 
-	/*
+	/**
 	 * Agents are defined using the `agent` keyword.
 	 * 
-	 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+	 * @filter(.* = '''|'''|.parseSuccessfully.*)
 	 */
 	fact "Basic agent definition" {
 		val model = '''
 			agent MyAgent {
 			}
-		'''.parsesSuccessfully(
+		'''.parseSuccessfully(
 			"package io.sarl.docs.gettingstarted.^agent",
 			// TEXT
 			""
@@ -88,7 +88,7 @@ describe "Agent Definition Introduction" {
 	 * Therefore FirstAgent and SecondAgent belong to the same package 
 	 * (i.e. `io.sarl.docs.gettingstarted.agent`).</importantnote>
 	 * 
-	 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+	 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 	 */
 	fact "Package definition" {
 		"../reference/GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
@@ -97,7 +97,7 @@ describe "Agent Definition Introduction" {
 			package io.sarl.docs.gettingstarted.^agent
 			agent MyAgent {}
 			agent SecondAgent {}
-		'''.parsesSuccessfully
+		'''.parseSuccessfully
 
 		model => [
 			it should havePackage "io.sarl.docs.gettingstarted.agent"
@@ -130,7 +130,7 @@ describe "Agent Definition Introduction" {
 		 * To declare a new event use the `event` keyword.
 		 * The following code defines a new event `MyEvent`.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+		 * @filter(.* = '''|'''|.parseSuccessfully.*)
 		 */
 		fact "Declare an Event"{
 			// Test the URLs in the header of the section
@@ -139,7 +139,7 @@ describe "Agent Definition Introduction" {
 			//
 			var model = '''
 			event MyEvent
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.gettingstarted.^agent",
 				// TEXT
 				""
@@ -170,7 +170,7 @@ describe "Agent Definition Introduction" {
 		 *  <note>`println` is a shortcut for the Java function
 		 * `System.out.println`.</note>
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Define an agent Perceptions"{
 			val model = '''
@@ -179,7 +179,7 @@ describe "Agent Definition Introduction" {
 					println("Received MyEvent")
 				}
 			} 
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.gettingstarted.^agent
 				event MyEvent",
 				// TEXT
@@ -225,7 +225,7 @@ describe "Agent Definition Introduction" {
 		 * receive a `Destroy` Event. The purpose of this event is to 
 		 * release any system resource properly.
 		 *
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Lifecycle events" {
 			val model = '''
@@ -242,7 +242,7 @@ describe "Agent Definition Introduction" {
 						println("MyAgent destroyed")
 					}
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.gettingstarted.^agent",
 				// TEXT
 				""
@@ -280,7 +280,7 @@ describe "Agent Definition Introduction" {
 		 * In the case of an Initialize events you can access the arguments 
 		 * for the agent spawn using `occurrence.parameters`
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Accessing the event's occurrence" {
 			val model = '''
@@ -296,7 +296,7 @@ describe "Agent Definition Introduction" {
 						println("MyAgent destroyed")
 					}
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.gettingstarted.^agent
 				import io.sarl.core.Initialize
 				import io.sarl.core.Destroy",
@@ -354,7 +354,7 @@ describe "Agent Definition Introduction" {
 		 * Below, we define an agent that is used this
 		 * capacity.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Use the capacity to send an event in the default space"{
 			// Test the URLs in the header of the section
@@ -365,7 +365,7 @@ describe "Agent Definition Introduction" {
 			agent MyAgent {
 				uses DefaultContextInteractions
 			} 
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.gettingstarted.^agent
 				import io.sarl.core.DefaultContextInteractions",
 				// TEXT
@@ -398,7 +398,7 @@ describe "Agent Definition Introduction" {
 		 * sent into the default space with the function
 		 * `emit(Event)`.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Send an event in the default space"{
 			val model = '''
@@ -409,7 +409,7 @@ describe "Agent Definition Introduction" {
 					emit(e)
 				}
 			} 
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.gettingstarted.^agent
 				import io.sarl.core.DefaultContextInteractions
 				event MyEvent",

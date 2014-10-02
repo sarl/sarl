@@ -21,6 +21,7 @@
 package io.sarl.eclipse.navigator;
 
 import io.sarl.eclipse.navigator.node.SARLProjectParent;
+import io.sarl.eclipse.util.PluginUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +31,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.osgi.service.log.LogService;
-
-import com.google.inject.Inject;
 
 /**
  * SARL custom project navigator content provider.
@@ -47,8 +45,6 @@ public class ContentProvider implements ITreeContentProvider {
 	private static final Object[] NO_CHILDREN = {};
 
 	private ISARLProjectElement[] sarlProjectParents;
-
-	@Inject private LogService logger;
 
 	@Override
 	public Object[] getChildren(Object parentElement) {
@@ -70,7 +66,7 @@ public class ContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object getParent(Object element) {
-		this.logger.log(LogService.LOG_DEBUG,
+		PluginUtil.logDebugMessage(
 				"ContentProvider.getParent: " //$NON-NLS-1$
 				+ element.getClass().getName());
 		Object parent = null;
@@ -101,19 +97,19 @@ public class ContentProvider implements ITreeContentProvider {
 
 	@Override
 	public void dispose() {
-		this.logger.log(LogService.LOG_DEBUG, "ContentProvider.dispose"); //$NON-NLS-1$
+		PluginUtil.logDebugMessage("ContentProvider.dispose"); //$NON-NLS-1$
 	}
 
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		if (oldInput != null && newInput != null) {
-			this.logger.log(LogService.LOG_DEBUG,
+			PluginUtil.logDebugMessage(
 					"ContentProvider.inputChanged: old: " //$NON-NLS-1$
 					+ oldInput.getClass().getName()
 					+ " new: " //$NON-NLS-1$
 					+ newInput.getClass().getName());
 		} else {
-			this.logger.log(LogService.LOG_DEBUG,
+			PluginUtil.logDebugMessage(
 					"ContentProvider.inputChanged"); //$NON-NLS-1$
 		}
 	}

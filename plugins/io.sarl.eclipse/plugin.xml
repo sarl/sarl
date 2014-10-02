@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 
 <plugin>
+   <extension-point id="sreInstallations" name="%sreInstallations" schema="schema/sreInstallations.exsd"/>
+   <extension-point id="sreInstallPages" name="%sreInstallPages" schema="schema/sreInstallPages.exsd"/>
+
 	<extension point="org.eclipse.ui.newWizards">
 		<category
 			id="io.sarl.eclipse.category.wizards"
@@ -45,6 +47,91 @@
            natureId="io.sarl.eclipse.SARLProjectNature">
      </image>
   </extension>
+
+  <extension
+        id="io.sarl.eclipse.contenttype"
+        point="org.eclipse.core.contenttype.contentTypes">
+     <content-type
+           base-type="org.eclipse.core.runtime.text"
+           default-charset="UTF-8"
+           file-extensions="sarl, SARL, Sarl"
+           id="io.sarl.eclipse.contenttype.sarl"
+           name="%content-type.name"
+           priority="normal">
+     </content-type>
+  </extension>
+  
+  <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
+      <classpathContainerInitializer
+          id="io.sarl.eclipse.launching.SARL_SUPPORT"
+          class="io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer"/>
+   </extension>
+
+	<extension
+         point="org.eclipse.jdt.ui.classpathContainerPage">
+      <classpathContainerPage
+            name="%classpathContainerPage.name"
+            class="io.sarl.eclipse.buildpath.SARLContainerWizardPage"
+            id="io.sarl.eclipse.launching.SARL_SUPPORT">
+      </classpathContainerPage>
+   </extension>
+
+ 	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+        <launchConfigurationType
+              delegate="io.sarl.eclipse.launching.SARLLaunchConfigurationDelegate"
+              delegateDescription="%launch.sarlLauncherDescription"
+              delegateName="%launch.sarlLauncher"
+              id="io.sarl.eclipse.debug.LaunchConfigType"
+              modes="debug, run"
+              name="%launch.sarlApplication"
+              public="true"
+              sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
+        </launchConfigurationType>
+    </extension>
+    
+    <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+        <launchConfigurationTypeImage
+            configTypeID="io.sarl.eclipse.debug.LaunchConfigType"
+            icon="icons/sarl_logo_16.png"
+            id="io.sarl.eclipse.debug.LaunchConfigTypeImage" />
+    </extension>
+    
+	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+         <launchConfigurationTabGroup
+            class="io.sarl.eclipse.launching.SARLLaunchConfigurationTabGroup"
+            description="%launch.sarlApplication"
+            id="io.sarl.eclipse.debug.LaunchConfigTabGroup"
+            type="io.sarl.eclipse.debug.LaunchConfigType" />
+    </extension>
+ <extension
+       point="org.eclipse.ui.preferencePages">
+    <page
+          category="io.sarl.lang.SARL"
+          class="io.sarl.eclipse.preferences.SREsPreferencePage"
+          id="io.sarl.eclipse.preferences.SREsPreferencePage"
+          name="%preference.installedSREs">
+    </page>
+ </extension>
+ <extension
+       point="org.eclipse.ui.propertyPages">
+    <page
+            category="io.sarl.lang.SARL"
+            class="io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage"
+            id="io.sarl.eclipse.properties.SRE"
+            name="%propertyPage.runtimeEnvironment">
+            <keywordReference id="io.sarl.eclipse.keyword_SRE"/>
+            <enabledWhen>
+	            <adapt type="org.eclipse.core.resources.IProject"/>
+			</enabledWhen>
+	        <filter name="projectNature" value="io.sarl.eclipse.SARLProjectNature"/>
+    </page>
+ </extension>
+    <extension
+        point="org.eclipse.ui.keywords">
+        <keyword
+            id="io.sarl.eclipse.keyword_SRE"
+            label="%keyword.sre"/>
+    </extension>
 <!--
 	<extension point="org.eclipse.ui.views">
 		<view
@@ -114,17 +201,5 @@
 		</perspectiveExtension> 
  	</extension>
  	-->
-  <extension
-        id="io.sarl.eclipse.contenttype"
-        point="org.eclipse.core.contenttype.contentTypes">
-     <content-type
-           base-type="org.eclipse.core.runtime.text"
-           default-charset="UTF-8"
-           file-extensions="sarl, SARL, Sarl"
-           id="io.sarl.eclipse.contenttype.sarl"
-           name="%content-type.name"
-           priority="normal">
-     </content-type>
-  </extension>
 
 </plugin>

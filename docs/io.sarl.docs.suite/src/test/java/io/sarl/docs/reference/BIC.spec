@@ -26,6 +26,7 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.assumeFalse
 
 /**
  * @outline
@@ -59,7 +60,7 @@ import static extension io.sarl.docs.utils.SpecificationTools.*
  * The agents are represented by stylized humans, the contexts by the blue boxes,
  * and the spaces by the small color boxes in the contexts.
  * 
- * <center><img src="./contexts.png"/></center>
+ * ![Contexts](./contexts.png)
  */
 @CreateWith(SARLSpecCreator)
 describe "Built-in Capacity Reference" {
@@ -107,7 +108,7 @@ describe "Built-in Capacity Reference" {
 							id = UUID::randomUUID
 							c = getContext(id)
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 			
 			/* The following function enables an agent to retrieve
@@ -131,7 +132,7 @@ describe "Built-in Capacity Reference" {
 							var c : SynchronizedCollection<AgentContext>
 							c = getAllContexts
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 			
 			/* Agents must be able to join a new parent context.
@@ -174,7 +175,7 @@ describe "Built-in Capacity Reference" {
 							ids = UUID::randomUUID
 							join(idc, ids)
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 
 			/* When an agent wants to leave a context, it must invoke:
@@ -200,7 +201,7 @@ describe "Built-in Capacity Reference" {
 							idc = UUID::randomUUID
 							leave(idc)
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 		
 		}
@@ -230,7 +231,7 @@ describe "Built-in Capacity Reference" {
 							var c : AgentContext
 							c = getInnerContext
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 
 			/* For retrieving information on the member agents of the current agent,
@@ -274,7 +275,7 @@ describe "Built-in Capacity Reference" {
 							n = getMemberAgentCount
 							m = getMemberAgents
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 
 		}
@@ -330,7 +331,7 @@ describe "Built-in Capacity Reference" {
 							e = getDefaultSpace
 							a = getDefaultAddress
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
   
 			/* Many time, it is useful for agent to create a new agent
@@ -368,7 +369,7 @@ describe "Built-in Capacity Reference" {
 							p2 = new Object
 							aid = spawn(type, #[p1, p2])
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 
 			/* The core mechanism for information exchanges among agents is
@@ -402,7 +403,7 @@ describe "Built-in Capacity Reference" {
 							e = new E
 							emit(e)
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 
 			/* The previous sending function assumes that there is no
@@ -460,7 +461,7 @@ describe "Built-in Capacity Reference" {
 							emit(e, Scopes::allParticipants)
 							emit(e, Scopes::addresses(a1, a2))
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 
 		}
@@ -507,7 +508,7 @@ describe "Built-in Capacity Reference" {
 						def myaction {
 							killMe
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 
 			/* Many time, it is useful for an agent to create a new agent
@@ -549,7 +550,52 @@ describe "Built-in Capacity Reference" {
 							p2 = new Object
 							aid = spawnInContext(type, c, #[p1, p2])
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
+			}
+
+			/* Some time, it is useful to create an agent with a specific
+			 * identifier. The following function permits to spawn an agent
+			 * with a given identifier in a specific context:
+			 * 
+			 *     def spawnInContextWithID(agentType : Class<? extends Agent>,
+			 *                              agentId : UUID,
+			 *                              context : AgentContext,
+			 *                              params : Object[]) : UUID
+			 * 
+			 *
+			 * This action creates an instance of the given agent type, with
+			 * the given identifier, and launches the agent
+			 * into the given context.
+			 * The parameters are passed to the spawned agent inside
+			 * the `Initialize` event: the `parameters` field.
+			 * 
+			 * This action fires two events:
+			 *
+			 *  * `AgentSpawned` in the default space of the context. The source of the event is the calling agent.
+			 *  * `Initialize` in spawned agent.
+			 *  
+			 * @filter(.*) 
+			 */
+			fact "Spawning an Agent with a specific identifier"{
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Lifecycle
+					import io.sarl.lang.core.AgentContext
+					import io.sarl.lang.core.Agent
+					import java.util.UUID
+					agent A {
+						uses Lifecycle
+						def myaction {
+							var c : AgentContext
+							var aid : UUID
+							var type : Class<? extends Agent>
+							var p1 : Object
+							var p2 : Object
+							type = typeof(A)
+							p1 = new Object
+							p2 = new Object
+							aid = spawnInContextWithID(type, aid, c, #[p1, p2])
+						}
+					}".parseSuccessfully
 			}
 
 		}
@@ -580,7 +626,7 @@ describe "Built-in Capacity Reference" {
 							n = \"abc\"
 							t = task(n)
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 
 			/* For running a task in a given delay, the following functions are
@@ -624,7 +670,7 @@ describe "Built-in Capacity Reference" {
 								println(a)
 							]
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 
 			/* For running a periodic task, the following functions are
@@ -668,7 +714,7 @@ describe "Built-in Capacity Reference" {
 								println(a)
 							]
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 
 			/* It may be useful to cancel a running task, e.g. a
@@ -711,7 +757,7 @@ describe "Built-in Capacity Reference" {
 							t2.cancel(true)
 							t3.cancel(false)
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 
 		}
@@ -758,7 +804,7 @@ describe "Built-in Capacity Reference" {
 							b = new B(this)
 							c = registerBehavior(b)
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 
 			/* Assuming that a behavior was already registered,
@@ -789,7 +835,7 @@ describe "Built-in Capacity Reference" {
 							b = new B(this)
 							c = unregisterBehavior(b)
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 
 			/* A behavior is executed through its event handlers.
@@ -822,7 +868,7 @@ describe "Built-in Capacity Reference" {
 							e = new E
 							wake(e)
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 
 			/* Sometimes, it is useful or mandatory for an agent to listen on the
@@ -848,7 +894,7 @@ describe "Built-in Capacity Reference" {
 							var l : EventListener
 							l = asEventListener
 						}
-					}".parsesSuccessfully
+					}".parseSuccessfully
 			}
 
   		}
@@ -881,6 +927,11 @@ describe "Built-in Capacity Reference" {
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
+		// The checks are valid only if the macro replacements were done.
+		// The replacements are done by Maven.
+		// So, Eclipse Junit tools do not make the replacements.
+		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+		//
 		"%sarlversion%" should startWith "%sarlspecversion%"
 		("%sarlspecreleasestatus%" == "Final Release"
 			|| "%sarlspecreleasestatus%" == "Draft Release") should be true

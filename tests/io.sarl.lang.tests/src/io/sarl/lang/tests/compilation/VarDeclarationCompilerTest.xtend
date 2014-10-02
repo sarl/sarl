@@ -47,18 +47,27 @@ class VarDeclarationCompilerTest {
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			import java.util.List;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
 			   * Construct an agent.
-			   * @param parentID - identifier of the parent. It is the identifer
-			   * of the parent agent and the enclosing contect, at the same time.
-			   * 
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
+			  public A1(final UUID parentID) {
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
+			   */
+			  @Generated
+			  public A1(final UUID parentID, final UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  protected List<Integer> list;
@@ -88,18 +97,27 @@ class VarDeclarationCompilerTest {
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			import java.util.List;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
 			   * Construct an agent.
-			   * @param parentID - identifier of the parent. It is the identifer
-			   * of the parent agent and the enclosing contect, at the same time.
-			   * 
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
+			  public A1(final UUID parentID) {
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
+			   */
+			  @Generated
+			  public A1(final UUID parentID, final UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  public void myaction() {
@@ -127,18 +145,27 @@ class VarDeclarationCompilerTest {
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			import java.util.List;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
 			   * Construct an agent.
-			   * @param parentID - identifier of the parent. It is the identifer
-			   * of the parent agent and the enclosing contect, at the same time.
-			   * 
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
+			  public A1(final UUID parentID) {
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
+			   */
+			  @Generated
+			  public A1(final UUID parentID, final UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  protected final List<Integer> list = null;
@@ -164,18 +191,27 @@ class VarDeclarationCompilerTest {
 		'''.assertCompilesTo('''
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
 			   * Construct an agent.
-			   * @param parentID - identifier of the parent. It is the identifer
-			   * of the parent agent and the enclosing contect, at the same time.
-			   * 
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
+			  public A1(final UUID parentID) {
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
+			   */
+			  @Generated
+			  public A1(final UUID parentID, final UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  public void myaction() {
@@ -204,18 +240,27 @@ class VarDeclarationCompilerTest {
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			import java.util.List;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
 			   * Construct an agent.
-			   * @param parentID - identifier of the parent. It is the identifer
-			   * of the parent agent and the enclosing contect, at the same time.
-			   * 
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
+			  public A1(final UUID parentID) {
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
+			   */
+			  @Generated
+			  public A1(final UUID parentID, final UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  protected List<Integer> list;
@@ -245,18 +290,27 @@ class VarDeclarationCompilerTest {
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
 			import java.util.List;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
 			   * Construct an agent.
-			   * @param parentID - identifier of the parent. It is the identifer
-			   * of the parent agent and the enclosing contect, at the same time.
-			   * 
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
+			  public A1(final UUID parentID) {
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
+			   */
+			  @Generated
+			  public A1(final UUID parentID, final UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  protected List<Integer> list;
@@ -286,19 +340,28 @@ class VarDeclarationCompilerTest {
 		'''.assertCompilesTo('''
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			import org.eclipse.xtext.xbase.lib.Exceptions;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
 			   * Construct an agent.
-			   * @param parentID - identifier of the parent. It is the identifer
-			   * of the parent agent and the enclosing contect, at the same time.
-			   * 
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
+			  public A1(final UUID parentID) {
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
+			   */
+			  @Generated
+			  public A1(final UUID parentID, final UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  public void myaction() {
@@ -336,19 +399,28 @@ class VarDeclarationCompilerTest {
 		'''.assertCompilesTo('''
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			import org.eclipse.xtext.xbase.lib.Exceptions;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
 			   * Construct an agent.
-			   * @param parentID - identifier of the parent. It is the identifer
-			   * of the parent agent and the enclosing contect, at the same time.
-			   * 
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
+			  public A1(final UUID parentID) {
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
+			   */
+			  @Generated
+			  public A1(final UUID parentID, final UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  public void myaction() {
@@ -386,19 +458,28 @@ class VarDeclarationCompilerTest {
 		'''.assertCompilesTo('''
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			import org.eclipse.xtext.xbase.lib.Functions.Function2;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
 			   * Construct an agent.
-			   * @param parentID - identifier of the parent. It is the identifer
-			   * of the parent agent and the enclosing contect, at the same time.
-			   * 
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
+			  public A1(final UUID parentID) {
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
+			   */
+			  @Generated
+			  public A1(final UUID parentID, final UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  public float mycall(final int a, final Function2<? super Float, ? super Integer, ? extends Float> f) {

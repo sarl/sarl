@@ -20,7 +20,9 @@
  */
 package io.sarl.eclipse.wizards.newproject;
 
-import io.sarl.eclipse.images.EclipseSARLImages;
+import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.util.PluginUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
@@ -67,13 +70,8 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
  */
 public class SARLProjectNewWizard extends NewElementWizard implements IExecutableExtension {
 
-	/**
-	 * The name of this SARL new project wizard.
-	 */
-	private static final String WIZARD_NAME = SARLProjectNewWizardMessages.SARLProjectNewWizard_WIZARD_NAME;
-
-	private NewSARLProjectWizardPageOne fFirstPage;
-	private NewSARLProjectWizardPageTwo fSecondPage;
+	private MainProjectPage fFirstPage;
+	private BuildSettingPage fSecondPage;
 
 	private IConfigurationElement fConfigElement;
 
@@ -89,11 +87,11 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 	 * @param pageOne - reference to the first page of the wizard.
 	 * @param pageTwo - reference to the second page of the wizard.
 	 */
-	public SARLProjectNewWizard(NewSARLProjectWizardPageOne pageOne, NewSARLProjectWizardPageTwo pageTwo) {
-		setDefaultPageImageDescriptor(EclipseSARLImages.getImageDescriptor(
-				EclipseSARLImages.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
+	public SARLProjectNewWizard(MainProjectPage pageOne, BuildSettingPage pageTwo) {
+		setDefaultPageImageDescriptor(PluginUtil.getImageDescriptor(
+				PluginUtil.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());
-		setWindowTitle(WIZARD_NAME);
+		setWindowTitle(Messages.SARLProjectNewWizard_0);
 
 		this.fFirstPage = pageOne;
 		this.fSecondPage = pageTwo;
@@ -102,12 +100,12 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 	@Override
 	public void addPages() {
 		if (this.fFirstPage == null) {
-			this.fFirstPage = new NewSARLProjectWizardPageOne();
+			this.fFirstPage = new MainProjectPage();
 		}
 		addPage(this.fFirstPage);
 
 		if (this.fSecondPage == null) {
-			this.fSecondPage = new NewSARLProjectWizardPageTwo(this.fFirstPage);
+			this.fSecondPage = new BuildSettingPage(this.fFirstPage);
 		}
 		addPage(this.fSecondPage);
 
@@ -124,7 +122,13 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 	public boolean performFinish() {
 		boolean res = super.performFinish();
 		if (res) {
-			final IJavaElement newElement = getCreatedElement();
+			final IJavaElement newElement;
+			try {
+				newElement = getCreatedElement();
+			} catch (Throwable e) {
+				handleFinishException(getShell(), new InvocationTargetException(e));
+				return false;
+			}
 
 			IWorkingSet[] workingSets = this.fFirstPage.getWorkingSets();
 			if (workingSets.length > 0) {
@@ -188,9 +192,30 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 		try {
 			addNatures(javaProject.getProject());
 		} catch (JavaModelException e) {
-			JavaPlugin.log(e);
+			PluginUtil.log(e);
 		} catch (CoreException e) {
-			JavaPlugin.log(e);
+			PluginUtil.log(e);
+		}
+
+		// Set the SRE configuration
+		try {
+			IProject project = javaProject.getProject();
+			ISREInstall sre = this.fFirstPage.getSRE();
+			boolean useDefaultSRE = (sre == null || this.fFirstPage.isSystemDefaultSRE());
+			QualifiedName qn = RuntimeEnvironmentPropertyPage.qualify(
+					RuntimeEnvironmentPropertyPage.PROPERTY_NAME_HAS_PROJECT_SPECIFIC);
+			project.setPersistentProperty(qn, Boolean.toString(!useDefaultSRE));
+			if (!useDefaultSRE) {
+				assert (sre != null);
+				qn = RuntimeEnvironmentPropertyPage.qualify(
+						RuntimeEnvironmentPropertyPage.PROPERTY_NAME_USE_SYSTEM_WIDE_SRE);
+				project.setPersistentProperty(qn, Boolean.FALSE.toString());
+				qn = RuntimeEnvironmentPropertyPage.qualify(
+						RuntimeEnvironmentPropertyPage.PROPERTY_NAME_SRE_INSTALL_ID);
+				project.setPersistentProperty(qn, sre.getId());
+			}
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
 		}
 
 		return javaProject;

@@ -43,6 +43,9 @@ bin
 # Maven
 target
 
+# Checkstyle
+.checkstyle
+
 # Compiled files
 *.class
 *.o

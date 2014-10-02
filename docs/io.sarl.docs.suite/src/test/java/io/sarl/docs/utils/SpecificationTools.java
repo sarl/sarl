@@ -24,6 +24,7 @@ import static org.jnario.lib.Assert.assertTrue;
 
 import java.io.File;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.net.URL;
@@ -65,9 +66,9 @@ import com.ibm.icu.math.BigDecimal;
 
 /** Helper for tests.
  * This class should disappear when the Jnario API will provide
- * the similar features: {@link "https://github.com/sebastianbenz/Jnario/pull/141"}.
+ * the similar features: {@link "https://github.com/sebastianbenz/Jnario/pull/142"}.
  *
- * FIXME: https://github.com/sebastianbenz/Jnario/pull/141
+ * FIXME: https://github.com/sebastianbenz/Jnario/pull/142
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -618,7 +619,13 @@ public final class SpecificationTools {
 		return false;
 	}
 
-	/** Ensure that the given type has the given type has the given method.
+	/** Ensure that the given type has the given method.
+	 * The format of the name may be: <ul>
+	 * <li>ID</li>
+	 * <li>ID(TYPE, TYPE...)</li>
+	 * <li>ID : TYPE</li>
+	 * <li>ID(TYPE, TYPE...) : TYPE</li>
+	 * </ul>
 	 * 
 	 * @param type - the type to check.
 	 * @param name - the name and prototype, e.g. <code>fct(java.lang.String):int</code>.
@@ -667,6 +674,46 @@ public final class SpecificationTools {
 				}
 				Class<?> rType = ReflectionUtil.forName(returnText);
 				return rType.equals(method.getReturnType());
+			}
+		} catch (Throwable e) {
+			//
+		}
+		return false;
+	}
+
+	/** Ensure that the given type has the given type has the given method.
+	 * The format of the name may be: <ul>
+	 * <li>ID</li>
+	 * <li>ID : TYPE</li>
+	 * </ul>
+	 * 
+	 * @param type - the type to check.
+	 * @param name - the name and prototype, e.g. <code>x:int</code>.
+	 * @return the validation status.
+	 */
+	public static boolean should_haveField(Class<?> type, String name) {
+		try {
+			Pattern p = Pattern.compile(
+					"^([_a-zA-Z0-9]+)\\s*" //$NON-NLS-1$
+					+ "(?:\\s*:\\s*([_a-zA-Z0-9.]+))?$"); //$NON-NLS-1$
+			Matcher m = p.matcher(name);
+			if (m.matches()) {
+				String fieldName = m.group(1);
+				String fieldType;
+				try {
+					fieldType = m.group(2).trim();
+				} catch (Throwable _) {
+					fieldType = ""; //$NON-NLS-1$
+				}
+				Field field = type.getDeclaredField(fieldName);
+				if (field == null) {
+					return false;
+				}
+				if (fieldType != null && !fieldType.isEmpty()) {
+					Class<?> rType = ReflectionUtil.forName(fieldType);
+					return rType.equals(field.getType());
+				}
+				return true;
 			}
 		} catch (Throwable e) {
 			//
@@ -724,7 +771,7 @@ public final class SpecificationTools {
 		}
 		StringBuilder pattern = new StringBuilder("^"); //$NON-NLS-1$
 		pattern.append("[0-9a-zA-Z_-]+(\\.[0-9a-zA-Z_-]+)*"); //$NON-NLS-1$
-		if (allowSnapshot) { //$NON-NLS-1$
+		if (allowSnapshot) {
 			pattern.append("(?:"); //$NON-NLS-1$
 			pattern.append(Matcher.quoteReplacement("-SNAPSHOT")); //$NON-NLS-1$
 			pattern.append(")?"); //$NON-NLS-1$

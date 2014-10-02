@@ -654,7 +654,67 @@ public class SARLLabelProviderTest extends AbstractSARLUiTestCase {
 		assertTrue(feature instanceof BehaviorUnit);
 		Object text = this.provider.getText(feature);
 		assertNotNull(text);
-		assertEquals("on E1 [guarded]", text); //$NON-NLS-1$
+		assertEquals("on E1 [true]", text); //$NON-NLS-1$
+	}
+
+	/**
+	 * @throws Exception
+	 */
+	@Test
+	public void getTextBehaviorUnit_2() throws Exception {
+		Agent agent = this.helper.createSARLTopElement(
+				filename("textBehaviorUnit2"), //$NON-NLS-1$
+				Agent.class, 1,
+				PACKAGE_STATEMENT
+			+ "event E1 { }\n" //$NON-NLS-1$
+			+ "agent A1 { on E1 [ 3 > 5 ] { } }"); //$NON-NLS-1$
+		this.validator.assertNoErrors(agent);
+		Object feature = agent.getFeatures().get(0);
+		assertNotNull(feature);
+		assertTrue(feature instanceof BehaviorUnit);
+		Object text = this.provider.getText(feature);
+		assertNotNull(text);
+		assertEquals("on E1 [3 > 5]", text); //$NON-NLS-1$
+	}
+
+	/**
+	 * @throws Exception
+	 */
+	@Test
+	public void getTextBehaviorUnit_3() throws Exception {
+		Agent agent = this.helper.createSARLTopElement(
+				filename("textBehaviorUnit3"), //$NON-NLS-1$
+				Agent.class, 1,
+				PACKAGE_STATEMENT
+			+ "event E1 { }\n" //$NON-NLS-1$
+			+ "agent A1 { on E1 [ 3 <=5 ] { } }"); //$NON-NLS-1$
+		this.validator.assertNoErrors(agent);
+		Object feature = agent.getFeatures().get(0);
+		assertNotNull(feature);
+		assertTrue(feature instanceof BehaviorUnit);
+		Object text = this.provider.getText(feature);
+		assertNotNull(text);
+		assertEquals("on E1 [3 <=5]", text); //$NON-NLS-1$
+	}
+
+	/**
+	 * @throws Exception
+	 */
+	@Test
+	public void getTextBehaviorUnit_4() throws Exception {
+		Agent agent = this.helper.createSARLTopElement(
+				filename("textBehaviorUnit4"), //$NON-NLS-1$
+				Agent.class, 1,
+				PACKAGE_STATEMENT
+			+ "event E1 { }\n" //$NON-NLS-1$
+			+ "agent A1 { on E1 [ 1+2+3+4+5+6+7+8+9+10 < 100 ] { } }"); //$NON-NLS-1$
+		this.validator.assertNoErrors(agent);
+		Object feature = agent.getFeatures().get(0);
+		assertNotNull(feature);
+		assertTrue(feature instanceof BehaviorUnit);
+		Object text = this.provider.getText(feature);
+		assertNotNull(text);
+		assertEquals("on E1 [1+2+3+4...]", text); //$NON-NLS-1$
 	}
 
 }

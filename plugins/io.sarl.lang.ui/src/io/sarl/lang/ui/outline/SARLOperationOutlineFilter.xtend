@@ -60,9 +60,9 @@ public class SARLOperationOutlineFilter extends AbstractFilterOutlineContributio
 	}
 	
 	override protected configureAction(Action action) {
-		action.setText("Hide operations")
-	    action.setDescription("Hide constructors and actions")
-	    action.setToolTipText("Hide constructors and actions")
+		action.setText(Messages::SARLOperationOutlineFilter_0)
+	    action.setDescription(Messages::SARLOperationOutlineFilter_0)
+	    action.setToolTipText(Messages::SARLOperationOutlineFilter_0)
 	    action.setImageDescriptor(imageHelper.getImageDescriptor("hide_operations.png"))
 	}
 	

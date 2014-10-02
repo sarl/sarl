@@ -218,7 +218,7 @@ class VarDeclarationParsingTest {
 		mas.assertError(
 			XbasePackage.eINSTANCE.XFeatureCall,
 			Diagnostic::SYNTAX_DIAGNOSTIC,
-			"missing ';' at 'i'")
+			"missing ')' at 'i'")
 	}
 
 	@Test

@@ -31,6 +31,7 @@ import io.sarl.lang.sarl.Constructor
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.assumeFalse
 
 /* @outline
  *
@@ -62,7 +63,7 @@ describe "Skill Reference" {
 			 * Note that all the actions defined in the implemented capacity must
 			 * have a definition (with a body) in the skill.
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Basic Definition"{
 				// Test the URLs from the beginning of the page
@@ -78,7 +79,7 @@ describe "Skill Reference" {
 						System.err.println(text)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.sr
 					capacity Logging {
 						// Log an information message
@@ -164,7 +165,7 @@ describe "Skill Reference" {
 			 * of the Java logger is created and stored into a field
 			 * of the skill.
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Field Definition" {
 				val model = '''
@@ -178,7 +179,7 @@ describe "Skill Reference" {
 						logger.fine(text)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.sr
 					import java.util.logging.Logger
 					capacity Logging {
@@ -263,7 +264,7 @@ describe "Skill Reference" {
 
 			/* As for fields, it is possible to declare additional methods in the skill. 
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Action Definition" {
 				val model = '''
@@ -280,7 +281,7 @@ describe "Skill Reference" {
 						System.err.println(t)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.sr
 					import java.util.logging.Logger
 					capacity Logging {
@@ -380,7 +381,7 @@ describe "Skill Reference" {
 			 *  * The default constructor: `def Skill()`
 			 *  * The constructor with owner: `def Skill(owner : Agent)`
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Constructor Definition" {
 				val model = '''
@@ -401,7 +402,7 @@ describe "Skill Reference" {
 						logger.fine(text)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.sr
 					import java.util.logging.Logger
 					capacity Logging {
@@ -504,7 +505,7 @@ describe "Skill Reference" {
 			 * If two implemented capacities has the same action signature,
 			 * it must be implemented only once time in the skill.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Multiple Capacity Implementation"{
 				val model = '''
@@ -528,7 +529,7 @@ describe "Skill Reference" {
 					def close(fid : int) {
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.sr
 					capacity Logging {
 						// Log an information message
@@ -681,7 +682,7 @@ describe "Skill Reference" {
 			 * In the following code, the `StandardJavaLogging` skill (defined
 			 * previously) is extended for changing the output of the info.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Extending a Skill"{
 				val model = '''
@@ -690,7 +691,7 @@ describe "Skill Reference" {
 						super.info("INFO: "+text)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.sr
 					import io.sarl.lang.core.Capacity
 					capacity Logging {
@@ -834,6 +835,11 @@ describe "Skill Reference" {
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
+		// The checks are valid only if the macro replacements were done.
+		// The replacements are done by Maven.
+		// So, Eclipse Junit tools do not make the replacements.
+		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+		//
 		"%sarlversion%" should startWith "%sarlspecversion%"
 		("%sarlspecreleasestatus%" == "Final Release"
 			|| "%sarlspecreleasestatus%" == "Draft Release") should be true

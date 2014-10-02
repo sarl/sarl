@@ -58,9 +58,9 @@ public class SARLBehaviorUnitOutlineFilter extends AbstractFilterOutlineContribu
 	}
 	
 	override protected configureAction(Action action) {
-		action.setText("Hide behavior units")
-	    action.setDescription("Hide behavior units")
-	    action.setToolTipText("Hide behavior units")
+		action.setText(Messages::SARLBehaviorUnitOutlineFilter_0)
+	    action.setDescription(Messages::SARLBehaviorUnitOutlineFilter_0)
+	    action.setToolTipText(Messages::SARLBehaviorUnitOutlineFilter_0)
 	    action.setImageDescriptor(imageHelper.getImageDescriptor("hide_behavior_units.png"))
 	}
 	

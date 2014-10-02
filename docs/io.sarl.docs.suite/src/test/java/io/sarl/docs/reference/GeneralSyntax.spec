@@ -36,6 +36,7 @@ import org.eclipse.xtext.xbase.XbasePackage
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.assumeFalse
 
 /* @outline
  * 
@@ -100,9 +101,9 @@ describe "General Syntax Reference" {
 	 * @filter(.*)
 	 */
 	fact "Name Syntax" {
-		'''package io.sarl.event.ActionEvent'''.parsesWithError
+		'''package io.sarl.event.ActionEvent'''.parseWithError
 		
-		var model = '''package io.sarl.^event.ActionEvent'''.parsesSuccessfully
+		var model = '''package io.sarl.^event.ActionEvent'''.parseSuccessfully
 		
 		model should havePackage "io.sarl.event.ActionEvent"
 	}
@@ -139,12 +140,12 @@ describe "General Syntax Reference" {
 		 * It is recommended in the SARL Best Practices to specify a package's
 		 * name.</note> 
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Package Declaration" {
 			var model = '''
 				package io.sarl.docs.reference.gsr
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 				// TEXT
 				"agent A {}")
 			
@@ -179,13 +180,13 @@ describe "General Syntax Reference" {
 		 * an example of the inclusion of all the classes defined in
 		 * `java.net`.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Import Directive" {
 			var model = '''
 			import java.util.List
 			import java.net.*
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr",
 				// TEXT
 				"agent A {}"
@@ -235,7 +236,7 @@ describe "General Syntax Reference" {
 		 * it is possible to invoke one of them by typing its
 		 * name, as the call to `toString(int[])` below.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Static Import Directive" {
 			var model = '''
@@ -249,7 +250,7 @@ describe "General Syntax Reference" {
 					// Short hand for calling a static method, when statically imported
 					println( toString(tab) )
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import java.util.Collection
 				import java.util.Collections
@@ -293,7 +294,7 @@ describe "General Syntax Reference" {
 		 * All these top-level features are documented in their own
 		 * reference document.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Top-Level Features" {
 			var model = '''
@@ -311,7 +312,7 @@ describe "General Syntax Reference" {
 
 			agent A {
 			}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr",
 				// TEXT
 				""
@@ -372,7 +373,7 @@ describe "General Syntax Reference" {
 		 * notation.
 		 * Contrary to Java, strings can span multiple lines.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "String Literals"{
 			var model = '''
@@ -382,7 +383,7 @@ describe "General Syntax Reference" {
 				var d = "Hello \"World!\""
 				var e = "Hello 
 							World!"
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -438,13 +439,13 @@ describe "General Syntax Reference" {
 		 * the compiler will treat the literal as a value 
 		 * or instance.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Character Literals"{
 			var model = '''
 				var a : char = 'a'
 				var b : char = "b"
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -480,7 +481,7 @@ describe "General Syntax Reference" {
 		 * There are two exceptions: there is no notation for specifying octal numbers, and 
 		 * if you put the dot character in a number, you must specify the fractional and mantissa parts.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Number Literals"{
 			var model = '''
@@ -489,7 +490,7 @@ describe "General Syntax Reference" {
 				var c = 077		// Decimal 77, NOT octal
 				var d = 0.1		// The leading zero must be specified
 				var e = 1.0		// The trailing zero must be specified
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -542,12 +543,12 @@ describe "General Syntax Reference" {
 		/* As in Java 7, you can separate digits using `_` for
 		 * better readability of large numbers.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Large Numbers"{
 			var model = '''
 				var a = 123_456_78l
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -578,14 +579,14 @@ describe "General Syntax Reference" {
 		 * suffix `L` is for `long`, and
 		 * suffix `BI` is for `BigInteger`. 
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Integer suffixes"{
 			var model = '''
 				var anInteger = 1234
 				var aLong = 1234l
 				var aBigInteger = 1234bi
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -629,7 +630,7 @@ describe "General Syntax Reference" {
 		 * suffix `F` is for `float`, and
 		 * suffix `BD` is for `BigDecimal`. 
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Floating-point-value suffixes"{
 			var model = '''
@@ -638,7 +639,7 @@ describe "General Syntax Reference" {
 				var aFloat = 1234.0f
 				var anotherFloat = 5678f
 				var aBigDecimal = 1234bd
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -691,13 +692,13 @@ describe "General Syntax Reference" {
 		/* There are two boolean literals, `true` and `false`
 		 * which correspond to their Java counterpart of type `boolean`.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Boolean Literals"{
 			var model = '''
 				var a = true
 				var b = false
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr			
 				agent A {",
 				// TEXT
@@ -731,12 +732,12 @@ describe "General Syntax Reference" {
 		/* The null pointer literal `null` has exactly the same
 		 * semantics as in Java.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Null Literals"{
 			var model = '''
 				var a = null
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -771,7 +772,7 @@ describe "General Syntax Reference" {
 		 * Consequently it is possible to access the members of a type 
 		 * reflectively by using its plain name.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Type Literals"{
 			var model = '''
@@ -782,7 +783,7 @@ describe "General Syntax Reference" {
 				// the variable c contains the list of the fields 
 				// that are declared in the Java type String.class
 				var c = String.getDeclaredFields()
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -830,13 +831,13 @@ describe "General Syntax Reference" {
 		* `CollectionLiterals` are automatically imported.
 		* They permit to create instances of the collections from the JDK.
 		* 
-		* @filter(.* = '''|'''|.parsesSuccessfully.*)
+		* @filter(.* = '''|'''|.parseSuccessfully.*)
 		*/
 		fact "Collection Creation"{
 			var model = '''
 				var myList = newArrayList('Hello', 'world')
 				var myMap = newLinkedHashMap('a' -> 1, 'b' -> 2)
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -873,7 +874,7 @@ describe "General Syntax Reference" {
 		* target type. There are three types of immutable
 		* collections: array, set, and hash table.
 		* 
-		* @filter(.* = '''|'''|.parsesSuccessfully.*)
+		* @filter(.* = '''|'''|.parseSuccessfully.*)
 		*/
 		fact "Immutable Collections"{
 			var model = '''
@@ -883,7 +884,7 @@ describe "General Syntax Reference" {
 				var b = #{'Hello','World'}
 				// the variable c contains an immutable hash table.
 				var c = #{'a' -> 1 ,'b' ->2}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -934,7 +935,7 @@ describe "General Syntax Reference" {
 		 * such as `ArrayLiterals.newArrayOfSize(int)` for
 		 * creating array literals.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */		
 		fact "Array Creation"{
 			var model = '''
@@ -942,7 +943,7 @@ describe "General Syntax Reference" {
 				var a : String[] = newArrayOfSize(400)
 				// variable b contains a array of size 200 which contains int values.
 				var b : int[] = newIntArrayOfSize(200)
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -980,7 +981,7 @@ describe "General Syntax Reference" {
 		 * 
 		 * The method `length` is available for retrieving the size of the array.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */		
 		fact "Array Getter and Setter"{
 			var model = '''
@@ -989,7 +990,7 @@ describe "General Syntax Reference" {
 				var b = a.get(1)
 				// variable c contains the size of the array a: 3.
 				var c = a.length
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -1032,13 +1033,13 @@ describe "General Syntax Reference" {
 		 * provided by Java, between the primitives and their respective object
 		 * types.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */		
 		fact "Array to List"{
 			var model = '''
 				val myArray : int[] = #[1,2,3]
 				val myList : List<Integer> = myArray
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr			
 				import java.util.List
 				agent A {",
@@ -1081,7 +1082,7 @@ describe "General Syntax Reference" {
 	 * The conformance rules for type casts are defined in the
 	 * [Java Language Specification](http://docs.oracle.com/javase/specs/jls/se5.0/html/conversions.html#5.5).
 	 * 
-	 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+	 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 	 */
 	fact "Type Cast" {
 		var model = '''
@@ -1093,7 +1094,7 @@ describe "General Syntax Reference" {
 			
 			//Do the convertion from a number literal to an Integer object
 			var b = 56 as Integer
-		'''.parsesSuccessfully(
+		'''.parseSuccessfully(
 			"package io.sarl.docs.reference.gsr		
 			agent A {",
 			// TEXT
@@ -1450,14 +1451,14 @@ describe "General Syntax Reference" {
 		 *                            b (inclusive).<br/><code>5&gt;..1</code> is the range from 4 to 1 with
 		 *                            5 &gt; x &gt;= 1.<br/>
 		 *                            <code>1&gt;..5</code> is the empty range since the constraint is wrong 1 &gt; x &gt;= 5.<br/>
-		 *                            See <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258">Xtext</a> for
+		 *                            See [Xtext](https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258)" for
 		 *                            discussion on the operational semantics of this operator.<br/>The type of this expression
 		 *                            is ExclusiveRange.</td></tr>
 		 * <tr><td>a ..&lt; b</td><td>operator_doubleDotLessThan</td><td>Create a list of integer values from a (inclusive) to
 		 *                            b (exclusive).<br/><code>1..&lt;5</code> is the range from 1 to 5 with
 		 *                            1 &lt;= x &lt; 5.<br/>
 		 *                            <code>5..&lt;1</code> is the empty range since the constraint is wrong 5 &lt;= x &lt; 1.<br/>
-		 *                            See <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258">Xtext</a> for
+		 *                            See [Xtext](https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258") for
 		 *                            discussion on the operational semantics of this operator.<br/>The type of this expression
 		 *                            is ExclusiveRange.</td></tr>
 		 * </tbody></table>
@@ -1560,7 +1561,7 @@ describe "General Syntax Reference" {
 		 * In the example, the addition of two pairs (a,b) and (c,d)
 		 * gives the pair (a,d).
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Operator Overloading"{
 			var model = '''
@@ -1581,7 +1582,7 @@ describe "General Syntax Reference" {
 					// z2.value == 5
 					println(z2.toString)
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -1635,7 +1636,7 @@ describe "General Syntax Reference" {
 	 * 
 	 * A block expression is surrounded by curly braces. The expressions in a block can be terminated by an optional semicolon.
 	 * 
-	 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+	 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 	 */
 	fact "Blocks" {
 		'''
@@ -1649,7 +1650,7 @@ describe "General Syntax Reference" {
 					x
 				}
 			}
-		'''.parsesSuccessfully(
+		'''.parseSuccessfully(
 			"package io.sarl.docs.reference.gsr
 			agent A {
 				var greeting = \"abc\"",
@@ -1687,7 +1688,7 @@ describe "General Syntax Reference" {
 		 * Fields declared outside a lambda expression using the `var` keyword
 		 * or the `val` keyword are accessible from within the lambda expressions.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Variable vs. Value Declaration"{
 			var model = '''
@@ -1697,7 +1698,7 @@ describe "General Syntax Reference" {
 						println("Hi there!")
 						i = i + 1
 					}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					def example {",
@@ -1728,7 +1729,7 @@ describe "General Syntax Reference" {
 		/* The type of the variable itself can either be explicitly declared or it can be 
 		 * inferred from the initializer expression.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Typing"{
 			var model = '''
@@ -1736,7 +1737,7 @@ describe "General Syntax Reference" {
 				var a : String = "abc"
 				// Inferred type
 				var b = "abc"
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -1789,7 +1790,7 @@ describe "General Syntax Reference" {
 		 * 
 		 * The following code gives examples of function declarations:
 		 *
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Standard Declarations"{
 			var model = '''
@@ -1821,7 +1822,7 @@ describe "General Syntax Reference" {
 				// Return type: String
 				def action6(a : int, b : String) : String {
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -1924,7 +1925,7 @@ describe "General Syntax Reference" {
 		 * In other languages, such as Java and C++, the variadic
 		 * operator is `...`
 		 *
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Variadic Function"{
 			var model = '''
@@ -1943,7 +1944,7 @@ describe "General Syntax Reference" {
 					action2(true, 3.0, 1)
 					action2(true, 3.0, 1, 5)
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -2017,7 +2018,7 @@ describe "General Syntax Reference" {
 		 * difference with the default values in the C++ language for instance. 
 		 * </importantnote>
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Default Value for the Formal Parameters"{
 			var model = '''
@@ -2042,7 +2043,7 @@ describe "General Syntax Reference" {
 					// a == true, b == 9.0, c == 7
 					action2(9.0)
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -2106,7 +2107,7 @@ describe "General Syntax Reference" {
 		/* It is possible to mix the variadic parameter and the default values,
 		 * except that the variadic parameter cannot have a default value. 
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Mixing Variadic Parameter and Default Values"{
 			var model = '''
@@ -2123,7 +2124,7 @@ describe "General Syntax Reference" {
 					// v == 5, a == #[3.5, 6.45]
 					action(3.5f, 6.45f)
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -2172,7 +2173,7 @@ describe "General Syntax Reference" {
 		 * the name and zero parameters accessible, a simple name binds to a 
 		 * corresponding Java-Bean getter method if available:
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Property Access"{
 			'''
@@ -2203,7 +2204,7 @@ describe "General Syntax Reference" {
 					this.property2 = new Object
 				}
 			}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr",
 				// TEXT
 				""
@@ -2219,7 +2220,7 @@ describe "General Syntax Reference" {
 		 * be shadowed. This is especially useful when used together with lambda
 		 * expressions.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Implicit Variables this and it"{
 			'''
@@ -2232,7 +2233,7 @@ describe "General Syntax Reference" {
 					return length // translates to 'it.length()'
 				}
 			}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr",
 				// TEXT
 				""
@@ -2243,13 +2244,13 @@ describe "General Syntax Reference" {
 		 * Java syntax or the more explicit double colon `::`. 
 		 * That means, the following expressions are pairwise equivalent:
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Static Access"{
 			var model = '''
 				var a = Integer::TYPE
 				var b = Integer.TYPE
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {",
 				// TEXT
@@ -2288,7 +2289,7 @@ describe "General Syntax Reference" {
 		 * SARL supports the safe navigation operator `?`. to make such code
 		 * better readable.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Null-Safe Feature Call"{
 			'''
@@ -2296,7 +2297,7 @@ describe "General Syntax Reference" {
 					if (myRef != null) myRef.length()
 					// Second expression, equivalent to the first expression
 					myRef?.length()
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					var myRef = \"abc\"
@@ -2312,7 +2313,7 @@ describe "General Syntax Reference" {
 		 * permits invoking the inherited implementation of the method from
 		 * the overriding method.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Inherited Method"{
 			var model = '''
@@ -2320,7 +2321,7 @@ describe "General Syntax Reference" {
 					// Call the inherited implementation
 					super.anAction
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					def anAction {
@@ -2374,14 +2375,14 @@ describe "General Syntax Reference" {
 		 * If type arguments are omitted, they will be inferred from the current context similar to Java's 
 		 * diamond operator on generic method and constructor call.
 		 *  
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Instance Creation" {
 			var model = '''
 				var a = new Integer(345)
 				var b = new ArrayList<Integer>()
 				var c = new ArrayList<Integer>
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import java.util.ArrayList
 				agent A {",
@@ -2431,7 +2432,7 @@ describe "General Syntax Reference" {
 		 * Indeed, in some cases, typing `super` causes no side-effect that is an error.
 		 * </importantnote>
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Inherited Constructor" {
 			var model = '''
@@ -2441,7 +2442,7 @@ describe "General Syntax Reference" {
 			new (param : Address) {
 				super(param) // Call the inherited constructor with a parameter
 			}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import io.sarl.lang.core.Address
 				event E1
@@ -2515,7 +2516,7 @@ describe "General Syntax Reference" {
 		 * You can import static methods as extensions, directly call the 
 		 * imported static methods on our list objects:
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Import Static Extension Methods"{
 			'''
@@ -2526,7 +2527,7 @@ describe "General Syntax Reference" {
 					colors.sort // sort is implemented by Collections#sort(List<T>)
 				}
 			}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr",
 				// TEXT
 				""
@@ -2537,7 +2538,7 @@ describe "General Syntax Reference" {
 		 * All visible non-static methods of the current class and its super 
 		 * types are automatically available as extensions.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Local extension methods."{
 			'''
@@ -2549,7 +2550,7 @@ describe "General Syntax Reference" {
 				def example : boolean {
 					newArrayList("red").hasOneElement
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import java.util.List
 				agent A {",
@@ -2570,7 +2571,7 @@ describe "General Syntax Reference" {
 		 * A lambda expression is surrounded by square brackets (inspired from Smalltalk).
 		 * Lambda expression like a method declares parameters. 
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Basic Definition"{
 			'''
@@ -2580,7 +2581,7 @@ describe "General Syntax Reference" {
 					textField.addActionListener([ e : ActionEvent |
 							textField.text = "Something happened!" + e.toString
 						])
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import java.awt.^event.ActionEvent
 				import javax.swing.JTextField
@@ -2595,7 +2596,7 @@ describe "General Syntax Reference" {
 		 *
 		 * You do not have to specify the type explicitly because it can be inferred from the context.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Inferred Parameter Type"{
 			'''
@@ -2605,7 +2606,7 @@ describe "General Syntax Reference" {
 					textField.addActionListener([ e |
 							textField.text = "Something happened!" + e.toString
 						])
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import javax.swing.JTextField
 				agent A {
@@ -2619,7 +2620,7 @@ describe "General Syntax Reference" {
 		 * for these parameters, which is to leave the declaration including the vertical bar out. 
 		 * The name of the single parameter becomes `it`.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Implicit Parameters: it"{
 			'''
@@ -2629,7 +2630,7 @@ describe "General Syntax Reference" {
 					textField.addActionListener([
 							textField.text = "Something happened!" + it.toString
 						])
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import javax.swing.JTextField
 				agent A {
@@ -2641,14 +2642,14 @@ describe "General Syntax Reference" {
 
 		/* A lambda expression with zero arguments is written like this (note the bar after the opening bracket):
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Empty List of Parameters"{
 			'''
 					val runnable : Runnable = [ |
 							println("Hello I'm executed!")
 						]
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					def example {",
@@ -2663,7 +2664,7 @@ describe "General Syntax Reference" {
 		 * For instance if you want to sort some strings by their length, you could write
 		 * the following two codes.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Lambda as the Last Parameter of a Method"{
 			'''
@@ -2681,7 +2682,7 @@ describe "General Syntax Reference" {
 								]
 					)
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import java.util.List
 				import java.util.Collections
@@ -2697,7 +2698,7 @@ describe "General Syntax Reference" {
 		 * 
 		 * The syntax for specifying the type of a lambda is: `(parameter types) => return type`
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Typing"{
 			'''
@@ -2707,7 +2708,7 @@ describe "General Syntax Reference" {
 				
 				// Same type of function.
 				var f2 : Function1<? super String,? extends String>
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import org.eclipse.xtext.xbase.lib.Functions.Function1
 				agent A {",
@@ -2724,12 +2725,12 @@ describe "General Syntax Reference" {
 		/* Results in either the value e1 or e2 depending on whether the predicate p evaluates to 
 		 * `true` or `false`.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Classic Syntax"{
 			'''
 					if (e1 !== null) e1 else e2
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					var e1 : Object
@@ -2743,12 +2744,12 @@ describe "General Syntax Reference" {
 		/* The else part is optional, which is a shorthand for an else branch that returns the 
 		 * default value of the current type.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Optional Else Part"{
 			'''
 					if (e1 !== null) e1 /* else null */
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					var e1 : Object
@@ -2764,12 +2765,12 @@ describe "General Syntax Reference" {
 		 * because it is an expression and returns a value. 
 		 * Consequently, you can use if expressions deeply nested within expressions:
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Inlined If Expression"{
 			'''
 					val name = if (e1 != null) e1 + ' ' + e2 else e2
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					var e1
@@ -2807,7 +2808,7 @@ describe "General Syntax Reference" {
 		 * A case must contains an expression. If you want to do nothing
 		 * for a given case, put an empty block.</importantnote>
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Cases"{
 			'''
@@ -2833,7 +2834,7 @@ describe "General Syntax Reference" {
 					default : { }
 					}
 				}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					var myString = \"abc\"",
@@ -2849,7 +2850,7 @@ describe "General Syntax Reference" {
 		 * If the switch value is a field, parameter or variable, it is automatically casted 
 		 * to the given type within the predicate and the case body.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Type Guards"{
 			'''
@@ -2857,7 +2858,7 @@ describe "General Syntax Reference" {
 					String case myString.length==5 : "It's string of length 5."
 					String : "a string."
 					}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					var myString : Object
@@ -2870,7 +2871,7 @@ describe "General Syntax Reference" {
 		/* You can have multiple type guards and cases separated with a comma, to
 		 * have all of them share the same then part.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Fall Through"{
 			'''
@@ -2879,7 +2880,7 @@ describe "General Syntax Reference" {
 					case 'some' : println("a string.")
 					default: println("Default")
 					}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					var myString : String
@@ -2904,7 +2905,7 @@ describe "General Syntax Reference" {
 		 * variable can be inferred from the 
 		 * iterable or array that is processed.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "For Loop"{
 			'''
@@ -2917,7 +2918,7 @@ describe "General Syntax Reference" {
 						for (v as String : tab) {
 							println(v)
 						}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 						def example {",
@@ -2933,14 +2934,14 @@ describe "General Syntax Reference" {
 		 * is executed instead of the init-expression. This happens until the predicate
 		 * returns `false`. The type of a for loop is `void`.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Traditional Java For Loop" {
 			'''
 						for (var i = 0; i<123; i++) {
 							println(i)
 						}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 						def example {",
@@ -2952,7 +2953,7 @@ describe "General Syntax Reference" {
 		/* A while loop is used to execute a certain expression unless the predicate is evaluated 
 		 * to `false`. The type of a while loop is `void`.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "While Loop" {
 			'''
@@ -2961,7 +2962,7 @@ describe "General Syntax Reference" {
 							println(i)
 							i++
 						}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 						def example {",
@@ -2975,7 +2976,7 @@ describe "General Syntax Reference" {
 		 * executing the block once before evaluating the predicate for the first time. 
 		 * The type of a while loop is `void`.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Do-While Loop" {
 			'''
@@ -2985,7 +2986,7 @@ describe "General Syntax Reference" {
 							i++
 						}
 						while (i<123)
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 						def example {",
@@ -3005,12 +3006,12 @@ describe "General Syntax Reference" {
 		 * and syntax as in Java see 
 		 * [Java Language Specification](http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html#jls-14.18)). 
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Throwing Exceptions"{
 			'''
 						throw new IllegalArgumentException("explanation")
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 						def example {",
@@ -3023,7 +3024,7 @@ describe "General Syntax Reference" {
 		 * Checked exceptions are treated like runtime exceptions and only optionally 
 		 * validated. You can, but do not have to, catch them as they will be silently thrown. 
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Try, Catch, Finally"{
 			'''
@@ -3039,7 +3040,7 @@ describe "General Syntax Reference" {
 							// or before exiting the function (if an exception was thrown
 							// but not catched).
 						}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 						def example {",
@@ -3052,7 +3053,7 @@ describe "General Syntax Reference" {
 		 * write code like the following and do not have to rely on
 		 * non-final variables: 
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Try-Catch as an Expression"{
 			'''
@@ -3065,7 +3066,7 @@ describe "General Syntax Reference" {
 									}
 						println(name)
 					}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				import java.io.IOException
 				agent A {",
@@ -3086,7 +3087,7 @@ describe "General Syntax Reference" {
 
 		/* The synchronization statement can be used as in Java:
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */		
 		fact "Classic Syntax" {
 			'''
@@ -3094,7 +3095,7 @@ describe "General Syntax Reference" {
 					synchronized(lock) {
 						println("Hello")
 					}
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					def example : Object {",
@@ -3106,7 +3107,7 @@ describe "General Syntax Reference" {
 		/* Because the synchronization keyword is related to an expression,
 		 * it is possible to write synchronized code inside another expression.
 		 * 
-		 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */		
 		fact "Expression Syntax" {
 			'''
@@ -3115,7 +3116,7 @@ describe "General Syntax Reference" {
 							"Hello" 
 						}
 					println(name)
-			'''.parsesSuccessfully(
+			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					def example {",
@@ -3153,6 +3154,11 @@ describe "General Syntax Reference" {
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
+		// The checks are valid only if the macro replacements were done.
+		// The replacements are done by Maven.
+		// So, Eclipse Junit tools do not make the replacements.
+		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+		//
 		"%sarlversion%" should startWith "%sarlspecversion%"
 		("%sarlspecreleasestatus%" == "Final Release"
 			|| "%sarlspecreleasestatus%" == "Draft Release") should be true

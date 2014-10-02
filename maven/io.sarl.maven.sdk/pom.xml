@@ -20,21 +20,49 @@
 			<groupId>io.sarl.lang</groupId>
 			<artifactId>io.sarl.lang.core</artifactId>
 			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>io.sarl</groupId>
 			<artifactId>io.sarl.core</artifactId>
 			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>io.sarl</groupId>
 			<artifactId>io.sarl.util</artifactId>
 			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.xtext</groupId>
 			<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
 			<version>${xtext.version}</version>
 		</dependency>
+ 		<dependency> 
+ 			<groupId>org.eclipse</groupId> 
+ 			<artifactId>osgi</artifactId> 
+			<version>3.10.0-v20140606-1445</version>
+ 		</dependency> 
+ 		<dependency> 
+ 			<groupId>com.google.guava</groupId> 
+ 			<artifactId>guava</artifactId> 
+			<version>${guava.version}</version>
+ 		</dependency> 
 	</dependencies>
 </project>

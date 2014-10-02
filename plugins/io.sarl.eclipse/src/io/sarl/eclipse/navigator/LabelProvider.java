@@ -20,12 +20,11 @@
  */
 package io.sarl.eclipse.navigator;
 
+import io.sarl.eclipse.util.PluginUtil;
+
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.swt.graphics.Image;
-import org.osgi.service.log.LogService;
-
-import com.google.inject.Inject;
 
 /**
  * SARL custom project navigator label provider.
@@ -36,8 +35,6 @@ import com.google.inject.Inject;
  * @mavenartifactid $ArtifactId$
  */
 public class LabelProvider implements ILabelProvider {
-
-	@Inject private LogService logger;
 
 	@Override
 	public Image getImage(Object element) {
@@ -62,26 +59,25 @@ public class LabelProvider implements ILabelProvider {
 
 	@Override
 	public void addListener(ILabelProviderListener listener) {
-		this.logger.log(LogService.LOG_DEBUG,
+		PluginUtil.logDebugMessage(
 				"LabelProvider.addListener: " + listener.getClass().getName()); //$NON-NLS-1$
 	}
 
 	@Override
 	public void dispose() {
-		this.logger.log(LogService.LOG_DEBUG,
-				"LabelProvider.dispose"); //$NON-NLS-1$
+		PluginUtil.logDebugMessage("LabelProvider.dispose"); //$NON-NLS-1$
 	}
 
 	@Override
 	public boolean isLabelProperty(Object element, String property) {
-		this.logger.log(LogService.LOG_DEBUG,
+		PluginUtil.logDebugMessage(
 				"LabelProvider.isLabelProperty: " + element.getClass().getName()); //$NON-NLS-1$
 		return false;
 	}
 
 	@Override
 	public void removeListener(ILabelProviderListener listener) {
-		this.logger.log(LogService.LOG_DEBUG,
+		PluginUtil.logDebugMessage(
 				"LabelProvider.removeListener: " + listener.getClass().getName()); //$NON-NLS-1$
 	}
 

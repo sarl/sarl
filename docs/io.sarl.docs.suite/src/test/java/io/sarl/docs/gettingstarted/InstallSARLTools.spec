@@ -24,6 +24,7 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.*
 
 /*
  * There are two easy ways to get SARL up and running.
@@ -42,6 +43,10 @@ describe "Install SARL Tools" {
 	 * @filter(.*) 
 	 */
 	fact "Installation Instructions" {
+		// The checks are valid only if the macro replacements were done.
+		// The replacements are done by Maven.
+		// So, Eclipse Junit tools do not make the replacements.
+		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
 		// URLs should not end with a slash
 		"%website%" should beURL "!file"
 	} 

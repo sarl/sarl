@@ -51,7 +51,7 @@ describe "SARL Syntax FAQ" {
 					124.  // Incorrect syntax
 					0.123 // Correct syntax
 					.123  // Incorrect syntax
-				'''.parsesWithError(
+				'''.parseWithError(
 						"package io.sarl.docs.faq.syntax
 						agent A {
 							def action : double {",
@@ -68,12 +68,12 @@ describe "SARL Syntax FAQ" {
 			 * to obtain a package name with one of its components
 			 * equals to a SARL keyword:
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Why can I put a string in the package name?" {
 				'''
 					package io.sarl.docs.faq.syntax.^agent
-				'''.parsesSuccessfully
+				'''.parseSuccessfully
 			}
 
 			/* __Yes and No__.
@@ -92,13 +92,13 @@ describe "SARL Syntax FAQ" {
 			 * referred object is not. Consequently, it is still
 			 * possible to call the setters of `b`. 
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Is the 'val' keyword defining a constant?" {
 				'''
 					val a : int = 4
 					val b : Object = new Object
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 						"package io.sarl.docs.faq.syntax
 						agent A {",
 						// TEXT
@@ -116,7 +116,7 @@ describe "SARL Syntax FAQ" {
 			 * Consequently, retrieving the values of the array must
 			 * be done with `get(int)`.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Why cannot use the syntax 'a[0]' for arrays?" {
 				'''
@@ -124,7 +124,7 @@ describe "SARL Syntax FAQ" {
 					var b : List<Integer> = newArrayList(1, 2, 3)
 					
 					a.get(0) == b.get(0)
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 						"package io.sarl.docs.faq.syntax
 						import java.util.List
 						agent A {

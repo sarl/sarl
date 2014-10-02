@@ -29,6 +29,7 @@ import io.sarl.lang.sarl.Event
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.assumeFalse
 
 /* @outline
  *
@@ -107,13 +108,13 @@ describe "Event Reference"{
 			 * The first event is defined with the "empty block" syntax.
 			 * The second event is defined with the "nothing" syntax.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Define an empty event"{
 				val model = '''
 				event Event1 {  }
 				event Event2
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.er",
 					// TEXT
 					""
@@ -160,7 +161,7 @@ describe "Event Reference"{
 			 * <note> Because of the use of 
 			 * the `var` keyword, the values of the attributes can be modified.</note>
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Define an event with attributes"{
 				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
@@ -171,7 +172,7 @@ describe "Event Reference"{
 					var string = "abc"
 					var something
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.er",
 					// TEXT
 					""
@@ -221,7 +222,7 @@ describe "Event Reference"{
 			 * This value could be specified at the end of the `val`
 			 * directive, or by specifying a constructor.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Define an event with value attributes"{
 				val model = '''
@@ -233,7 +234,7 @@ describe "Event Reference"{
 						number = nb
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.er
 					import io.sarl.lang.core.Agent",
 					// TEXT
@@ -301,7 +302,7 @@ describe "Event Reference"{
 			describe "Extending Events"{
 
 				/*
-				 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+				 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 				 */				
 				fact "Declaration" {
 					val model = '''
@@ -311,7 +312,7 @@ describe "Event Reference"{
 					event Event2 extends Event1 {
 						var number : int
 					}
-					'''.parsesSuccessfully(
+					'''.parseSuccessfully(
 						"package io.sarl.docs.reference.er",
 						// TEXT
 						""
@@ -347,7 +348,7 @@ describe "Event Reference"{
 				}
 
 				/*
-				 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+				 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 				 */				
 				fact "Use" {
 					val model = '''
@@ -358,7 +359,7 @@ describe "Event Reference"{
 							var e2 = new Event2
 							e2.string = "abc"
 							e2.number = 345
-					'''.parsesSuccessfully(
+					'''.parseSuccessfully(
 						"package io.sarl.docs.reference.er
 						event Event1 {
 							var string : String
@@ -453,6 +454,11 @@ describe "Event Reference"{
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
+		// The checks are valid only if the macro replacements were done.
+		// The replacements are done by Maven.
+		// So, Eclipse Junit tools do not make the replacements.
+		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+		//
 		"%sarlversion%" should startWith "%sarlspecversion%"
 		("%sarlspecreleasestatus%" == "Final Release"
 			|| "%sarlspecreleasestatus%" == "Draft Release") should be true

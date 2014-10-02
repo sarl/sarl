@@ -164,7 +164,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.attribute,
+			TypesPackage::eINSTANCE.jvmConstructor,
 			org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION,
 			"The blank final field 'field2' may not have been initialized")
 	}
@@ -538,7 +538,7 @@ class CapacityParsingTest {
 		mas.assertError(
 			SarlPackage::eINSTANCE.capacity,
 			IssueCodes::INVALID_EXTENDED_TYPE,
-			"Supertype must be an interface")
+			"Invalid supertype. Expecting: interface")
 	}
 
 	@Test
@@ -554,7 +554,7 @@ class CapacityParsingTest {
 		mas.assertError(
 			SarlPackage::eINSTANCE.capacity,
 			IssueCodes::INVALID_EXTENDED_TYPE,
-			"Supertype must be an interface")
+			"Invalid supertype. Expecting: interface")
 	}
 
 	@Test
@@ -570,7 +570,7 @@ class CapacityParsingTest {
 		mas.assertError(
 			SarlPackage::eINSTANCE.capacity,
 			IssueCodes::INVALID_EXTENDED_TYPE,
-			"Supertype must be an interface")
+			"Invalid supertype. Expecting: interface")
 	}
 
 	@Test
@@ -588,7 +588,7 @@ class CapacityParsingTest {
 		mas.assertError(
 			SarlPackage::eINSTANCE.capacity,
 			IssueCodes::INVALID_EXTENDED_TYPE,
-			"Supertype must be an interface.")
+			"Invalid supertype. Expecting: interface")
 	}
 
 	@Test
@@ -606,7 +606,7 @@ class CapacityParsingTest {
 		mas.assertError(
 			SarlPackage::eINSTANCE.capacity,
 			IssueCodes::INVALID_EXTENDED_TYPE,
-			"Supertype must be an interface.")
+			"Invalid supertype. Expecting: interface")
 	}
 
 	@Test
@@ -624,7 +624,7 @@ class CapacityParsingTest {
 		mas.assertError(
 			SarlPackage::eINSTANCE.capacity,
 			IssueCodes::INVALID_EXTENDED_TYPE,
-			"Supertype must be an interface.")
+			"Invalid supertype. Expecting: interface")
 	}
 
 	@Test
@@ -825,7 +825,7 @@ class CapacityParsingTest {
 		mas.assertError(
 			SarlPackage::eINSTANCE.skill,
 			IssueCodes::INVALID_EXTENDED_TYPE,
-			"Supertype must be a class")
+			"Invalid supertype. Expecting: class")
 	}
 
 	@Test

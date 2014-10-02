@@ -74,7 +74,7 @@ class DataTypeParsingTest {
 		mas.assertError(
 			SarlPackage::eINSTANCE.agent,
 			Diagnostic::SYNTAX_DIAGNOSTIC,
-			"no viable alternative at input '}'")
+			"extraneous input '.' expecting '}'")
 	}
 
 	@Test

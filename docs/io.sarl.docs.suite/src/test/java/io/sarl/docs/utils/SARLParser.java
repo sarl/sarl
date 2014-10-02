@@ -139,7 +139,7 @@ public class SARLParser {
 	 * @return the SARL model.
 	 * @throws Exception - on parsing error.
 	 */
-	public SarlScript parsesSuccessfully(CharSequence text) throws Exception {
+	public SarlScript parseSuccessfully(CharSequence text) throws Exception {
 		SarlScript model = parse(text);
 		this.validationTestHelper.assertNoErrors(model);
 		return model;
@@ -150,7 +150,7 @@ public class SARLParser {
 	 * @param text - the SARL code.
 	 * @throws Exception - on parsing error.
 	 */
-	public void parsesWithError(CharSequence text) throws Exception {
+	public void parseWithError(CharSequence text) throws Exception {
 		SarlScript model = parse(text);
 
 		List<Issue> validate = this.validationTestHelper.validate(model);
@@ -167,7 +167,7 @@ public class SARLParser {
 
 	/** Expect a correct SARL code.
 	 * <p>
-	 * Contatenation of the two parameters and parse the result
+	 * Concatenation of the two parameters and parse the result
 	 * as a SARL code.
 	 *
 	 * @param outputText - main part of the code.
@@ -175,13 +175,13 @@ public class SARLParser {
 	 * @return the SARL model.
 	 * @throws Exception - on parsing error.
 	 */
-	public SarlScript parsesSuccessfully(CharSequence outputText, CharSequence postfix) throws Exception {
+	public SarlScript parseSuccessfully(CharSequence outputText, CharSequence postfix) throws Exception {
 		StringBuilder b = new StringBuilder(outputText);
 		if (postfix != null && postfix.length() > 0) {
 			b.append("\n"); //$NON-NLS-1$
 			b.append(postfix);
 		}
-		return parsesSuccessfully(b.toString());
+		return parseSuccessfully(b.toString());
 	}
 
 	/** Expect an incorrect SARL code.
@@ -193,18 +193,18 @@ public class SARLParser {
 	 * @param postfix - the postfix code.
 	 * @throws Exception - on parsing error.
 	 */
-	public void parsesWithError(CharSequence outputText, CharSequence postfix) throws Exception {
+	public void parseWithError(CharSequence outputText, CharSequence postfix) throws Exception {
 		StringBuilder b = new StringBuilder(outputText);
 		if (postfix != null && postfix.length() > 0) {
 			b.append("\n"); //$NON-NLS-1$
 			b.append(postfix);
 		}
-		parsesWithError(b.toString());
+		parseWithError(b.toString());
 	}
 
 	/** Expect a correct SARL code.
 	 * <p>
-	 * Contatenation of the three parameters and parse the result
+	 * Concatenation of the three parameters and parse the result
 	 * as a SARL code.
 	 *
 	 * @param outputText - main part of the code.
@@ -213,7 +213,7 @@ public class SARLParser {
 	 * @return the SARL model.
 	 * @throws Exception - on parsing error.
 	 */
-	public SarlScript parsesSuccessfully(CharSequence outputText, CharSequence prefix, CharSequence postfix) throws Exception {
+	public SarlScript parseSuccessfully(CharSequence outputText, CharSequence prefix, CharSequence postfix) throws Exception {
 		StringBuilder b = new StringBuilder();
 		if (prefix != null && prefix.length() > 0) {
 			b.append(prefix);
@@ -224,12 +224,12 @@ public class SARLParser {
 			b.append("\n"); //$NON-NLS-1$
 			b.append(postfix);
 		}
-		return parsesSuccessfully(b.toString());
+		return parseSuccessfully(b.toString());
 	}
 
 	/** Expect an incorrect SARL code.
 	 * <p>
-	 * Contatenation of the three parameters and parse the result
+	 * Concatenation of the three parameters and parse the result
 	 * as a SARL code.
 	 *
 	 * @param outputText - main part of the code.
@@ -237,7 +237,7 @@ public class SARLParser {
 	 * @param postfix - the postfix code.
 	 * @throws Exception - on parsing error.
 	 */
-	public void parsesWithError(CharSequence outputText, CharSequence prefix, CharSequence postfix) throws Exception {
+	public void parseWithError(CharSequence outputText, CharSequence prefix, CharSequence postfix) throws Exception {
 		StringBuilder b = new StringBuilder();
 		if (prefix != null && prefix.length() > 0) {
 			b.append(prefix);
@@ -248,7 +248,7 @@ public class SARLParser {
 			b.append("\n"); //$NON-NLS-1$
 			b.append(postfix);
 		}
-		parsesWithError(b.toString());
+		parseWithError(b.toString());
 	}
 
 	private ResourceSet getResourceSetWithDefaultModels() {

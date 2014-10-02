@@ -26,6 +26,8 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.assumeFalse
+
 import io.sarl.lang.sarl.Behavior
 import io.sarl.lang.sarl.Action
 import io.sarl.lang.sarl.Agent
@@ -59,7 +61,7 @@ describe "Behavior Reference" {
 			 * Basically, this behavior does nothing, and does not react
 			 * on events. 
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Defining an empty behavior"{
 				// Tests the URLs from the beginning of the page
@@ -69,7 +71,7 @@ describe "Behavior Reference" {
 				val model = '''
 				behavior MyBehavior {
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br",
 					// TEXT
 					""
@@ -99,7 +101,7 @@ describe "Behavior Reference" {
 			 * keyword), or unmodifiable (when declared with the `val`
 			 * keyword).
 			 *
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Behavior Attributes"{
 				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
@@ -111,7 +113,7 @@ describe "Behavior Reference" {
 					// Defining an unmodifiable element of the mental state
 					val mentalStateElement2 : boolean = true
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br",
 					// TEXT
 					""
@@ -148,7 +150,7 @@ describe "Behavior Reference" {
 			 * 
 			 * The example below illustrates the creation of type actions.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Behavior Actions"{
 				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
@@ -164,7 +166,7 @@ describe "Behavior Reference" {
 						println("params are " + param)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br",
 					// TEXT
 					""
@@ -221,7 +223,7 @@ describe "Behavior Reference" {
 			 * of the first behavior. It contains a function named
 			 * `action`, which is displaying the inherited attribute.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Extending a Behavior" {
 				val model = '''
@@ -233,7 +235,7 @@ describe "Behavior Reference" {
 						println(attr)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br",
 					// TEXT
 					""
@@ -278,7 +280,7 @@ describe "Behavior Reference" {
 			 * This new behavior is then registered into the agent for enabling 
 			 * the reception of the events in the behavior.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Instancing and Use of a Behavior" {
 				val model = '''
@@ -293,7 +295,7 @@ describe "Behavior Reference" {
 						registerBehavior(beh)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br
 					import io.sarl.core.Initialize
 					import io.sarl.core.Behaviors
@@ -375,7 +377,7 @@ describe "Behavior Reference" {
 			 * 
 			 * As for all the event handlers, it could be guarded by a predicate.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Reactive Behavior Units"{
 				// Test the URLs in the introduction of this section
@@ -387,7 +389,7 @@ describe "Behavior Reference" {
 						println("Reactive behavior")
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br
 					event SomethingChanged",
 					// TEXT
@@ -425,7 +427,7 @@ describe "Behavior Reference" {
 			 * In the following example, the two handlers for the
 			 * `SomethingChanged` event are executed in parallel.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Parallel Execution of the Reactive Behavior Units"{
 				val model = '''
@@ -437,7 +439,7 @@ describe "Behavior Reference" {
 						println("Second reactive behavior")
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br
 					event SomethingChanged",
 					// TEXT
@@ -483,7 +485,7 @@ describe "Behavior Reference" {
 			 * In the following example, the agent execute its proactive behavior
 			 * every second.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Pro-active Behavior Units"{
 				"BuiltInCapacityReferenceSpec.html" should beAccessibleFrom this
@@ -497,7 +499,7 @@ describe "Behavior Reference" {
 						]
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br
 					import io.sarl.core.Initialize
 					import io.sarl.core.Schedules",
@@ -587,7 +589,7 @@ describe "Behavior Reference" {
 						setSkill( Cap, theSkill )
 					}
 				}
-				'''.parsesWithError
+				'''.parseWithError
 			}
 	
 			/* For invoking a function implemented by a skill,
@@ -605,7 +607,7 @@ describe "Behavior Reference" {
 			 * You should prefer the use of the extension methods (see below).
 			 * </note>
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Using a Capacity with the Getters" {
 				val model = '''
@@ -617,7 +619,7 @@ describe "Behavior Reference" {
 						s.action
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br
 					capacity Cap {
 						def action
@@ -681,7 +683,7 @@ describe "Behavior Reference" {
 			 * This action is defined in the `Cap`
 			 * capacity. 
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*) 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			fact "Using a Capacity with the Extension Methods" {
 				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
@@ -694,7 +696,7 @@ describe "Behavior Reference" {
 						action
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br
 					capacity Cap {
 						def action
@@ -757,6 +759,11 @@ describe "Behavior Reference" {
 	 * @filter(.*) 
 	 */
 	fact "Legal Notice" {
+		// The checks are valid only if the macro replacements were done.
+		// The replacements are done by Maven.
+		// So, Eclipse Junit tools do not make the replacements.
+		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+		//
 		"%sarlversion%" should startWith "%sarlspecversion%"
 		("%sarlspecreleasestatus%" == "Final Release"
 			|| "%sarlspecreleasestatus%" == "Draft Release") should be true

@@ -26,6 +26,7 @@ import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.*
 
 /* @outline
  *
@@ -66,7 +67,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 		 * These messages contain an integer number that
 		 * indicates the number of the event.
 		 * 
-		 * <center><img src="./pingpong.png"/></center>
+		 * ![Ping-Pong Example](./pingpong.png)
 		 * 
 		 * @filter(.*)
 		 */
@@ -74,6 +75,11 @@ describe "Agent Communication with the Ping Pong Agents"{
 			// Test the URLs in the introduction
 			"../reference/GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 			"./pingpong.png" should beAccessibleFrom this
+			// The checks are valid only if the macro replacements were done.
+			// The replacements are done by Maven.
+			// So, Eclipse Junit tools do not make the replacements.
+			System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+			//
 			"%sarlmavenrepository%" should beURL "!file"
 			"%website%" should beURL "!file"
 		}
@@ -93,7 +99,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 			 * For setting the value of the `index` value,
 			 * it is mandatory to define a constructor. 
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */			
 			fact "Ping Event" {
 				'''
@@ -104,7 +110,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 						this.index = i
 					}
 				}
-				'''.parsesSuccessfully
+				'''.parseSuccessfully
 			}
 			
 			/* The `Pong` is an event that contains the
@@ -114,7 +120,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 			 * The `index` attribute is also a _value_, and
 			 * it must be set in a constructor. 
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */			
 			fact "Pong Event" {
 				'''
@@ -124,7 +130,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 						this.index = i
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong",
 					// TEXT
 					""
@@ -141,13 +147,13 @@ describe "Agent Communication with the Ping Pong Agents"{
 
 			/* The initial definition of the pong agent is:
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "First definition" {
 				'''
 				agent PongAgent {
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong",
 					// TEXT
 					""
@@ -163,7 +169,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 			 * This handler will be invoked by the runtime environment
 			 * each time the agent is receiving a `Ping` event.
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Handling the Ping event" {
 				'''
@@ -171,7 +177,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 					on Ping {
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong
 					event Ping {
 						val index : int
@@ -217,7 +223,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 			 * event is built with the index argument
 			 * stored in the received `Ping` event.
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Replying to Ping with a Pong" {
 				'''
@@ -227,7 +233,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 						emit( new Pong( occurrence.index ) )
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong
 					import io.sarl.core.DefaultContextInteractions
 					event Ping {
@@ -271,7 +277,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 			 * In the following code, the scope permits to
 			 * restrict to the initial sender of the `Ping` event. 
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Restricting the scope of the Pong event" {
 				'''
@@ -284,7 +290,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 						)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.util.Scopes
@@ -315,13 +321,13 @@ describe "Agent Communication with the Ping Pong Agents"{
 
 			/* The initial definition of the ping agent is:
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "First definition" {
 				'''
 				agent PingAgent {
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong",
 					// TEXT
 					""
@@ -332,7 +338,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 			 * For that, a "behavior unit" must be defined in the
 			 * agent.
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Handling the Pong event" {
 				'''
@@ -340,7 +346,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 					on Pong {
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong
 					event Pong {
 						val index : int
@@ -363,7 +369,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 			 * restricted to the sender of the
 			 * `Pong` event.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Re-sending a Ping when receiving a Pong" {
 				'''
@@ -376,7 +382,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 						)
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.util.Scopes
@@ -405,7 +411,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 			 * is started, i.e. when the agent is
 			 * receiving the `Initialize` event.
 			 * 
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Sending the first Ping" {
 				'''
@@ -421,7 +427,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 						emit( new Ping(0) )
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.core.Initialize
@@ -474,7 +480,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 			 * If not, the agent is sending the initial
 			 * `Ping` event, and stopping the periodic task.
 			 *  
-			 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Delaying the sending of the first Ping" {
 				'''
@@ -496,7 +502,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 						]
 					}
 				}
-				'''.parsesSuccessfully(
+				'''.parseSuccessfully(
 					"package io.sarl.docs.tutorials.pingpong
 					import io.sarl.core.DefaultContextInteractions
 					import io.sarl.core.Initialize
@@ -638,7 +644,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 				 * it is killing itself. This is done with the `killMe`
 				 * function, which is provided by the `Lifecycle` capacity.
 				 *  
-				 * @filter(.* = '''|'''|.parsesSuccessfully.*)
+				 * @filter(.* = '''|'''|.parseSuccessfully.*)
 				 */
 				fact "Defining the Boot agent" {
 					'''
@@ -650,7 +656,7 @@ describe "Agent Communication with the Ping Pong Agents"{
 							killMe
 						}
 					}
-					'''.parsesSuccessfully(
+					'''.parseSuccessfully(
 						"package io.sarl.docs.tutorials.pingpong
 						import io.sarl.core.DefaultContextInteractions
 						import io.sarl.core.Initialize

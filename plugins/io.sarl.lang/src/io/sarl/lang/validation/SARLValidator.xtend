@@ -22,8 +22,8 @@ package io.sarl.lang.validation
 
 import com.google.common.collect.Lists
 import com.google.inject.Inject
+import io.sarl.lang.SARLConstants
 import io.sarl.lang.SARLKeywords
-import io.sarl.lang.bugfixes.XtextBugFixValidator
 import io.sarl.lang.core.Capacity
 import io.sarl.lang.sarl.Action
 import io.sarl.lang.sarl.ActionSignature
@@ -48,6 +48,7 @@ import io.sarl.lang.signature.ActionNameKey
 import io.sarl.lang.signature.ActionSignatureProvider
 import io.sarl.lang.signature.SignatureKey
 import io.sarl.lang.util.ModelUtil
+import java.text.MessageFormat
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
@@ -85,7 +86,7 @@ import static io.sarl.lang.util.ModelUtil.*
  * @mavenartifactid $ArtifactId$
  * @see "http://www.eclipse.org/Xtext/documentation.html#validation"
  */
-class SARLValidator extends XtextBugFixValidator {
+class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private ILogicalContainerProvider logicalContainerProvider
@@ -102,11 +103,11 @@ class SARLValidator extends XtextBugFixValidator {
 		var typeReferences = services.typeReferences;
 
 		var version = System.getProperty("java.specification.version"); //$NON-NLS-1$
-				
+		
 		if (version==null || version.empty ||
-			compareVersions(version, "1.7")<0) {
+			compareVersions(version, SARLConstants::MINIMAL_JDK_VERSION)<0) {
 			error(
-				"Couldn't find a JDK 1.7 or higher on the project's classpath.",
+				MessageFormat::format(Messages::SARLValidator_0, SARLConstants::MINIMAL_JDK_VERSION),
 				sarlScript,
 				null,
 				IssueCodes::JDK_NOT_ON_CLASSPATH);
@@ -114,7 +115,7 @@ class SARLValidator extends XtextBugFixValidator {
 
 		if (typeReferences.findDeclaredType(ReassignFirstArgument, sarlScript) == null) {
 			error(
-				"Couldn't find the mandatory library 'org.eclipse.xtext.xbase.lib' 2.6.0 or higher on the project's classpath.",
+				MessageFormat::format(Messages::SARLValidator_1, SARLConstants::MINIMAL_XBASE_VERSION),
 				sarlScript,
 				null,
 				IssueCodes::XBASE_LIB_NOT_ON_CLASSPATH)
@@ -140,8 +141,8 @@ class SARLValidator extends XtextBugFixValidator {
 				// Check in the local file
 				if (names.contains(featureName)) {
 					error(
-							String.format(
-									"Duplicate definition of the type '%s'",
+							MessageFormat::format(
+									Messages::SARLValidator_2,
 									featureName.toString), 
 							feature,
 							SarlPackage.Literals::NAMED_ELEMENT__NAME,
@@ -166,8 +167,8 @@ class SARLValidator extends XtextBugFixValidator {
 			var FormalParameter lastParam = feature.params.last()
 			if (lastParam.defaultValue!==null) {
 				error(
-						String.format(
-								"A default value cannot be declared for the variadic formal parameter '%s'.",
+						MessageFormat::format(
+								Messages::SARLValidator_3,
 								lastParam.name), 
 						feature,
 						SarlPackage.Literals::PARAMETERIZED_FEATURE__VARARGS,
@@ -183,7 +184,8 @@ class SARLValidator extends XtextBugFixValidator {
 			var toType = toLightweightTypeReference(rawType, true)
 			var fromType = param.defaultValue.actualType
 			if (!canCast(fromType, toType, true, false, true)) {
-				error(String.format("Type mismatch: cannot convert from %s to %s",
+				error(MessageFormat::format(
+						Messages::SARLValidator_4,
 						fromType.nameOfTypes, toType.canonicalName),
 						param,
 						SarlPackage.Literals::FORMAL_PARAMETER__DEFAULT_VALUE,
@@ -194,7 +196,7 @@ class SARLValidator extends XtextBugFixValidator {
 			}
 		}
 		else {
-				error("Illegal syntax",
+				error(Messages::SARLValidator_5,
 						param,
 						SarlPackage.Literals::FORMAL_PARAMETER__DEFAULT_VALUE,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -264,8 +266,9 @@ class SARLValidator extends XtextBugFixValidator {
 				if (feature instanceof Attribute) {
 					if (!localFields.add(feature.name)) {
 						error(
-								String.format(
-										"Duplicate field in '%s': %s",
+								MessageFormat::format(
+										Messages::SARLValidator_6,
+										Messages::SARLValidator_7,
 										featureContainer.name,
 										feature.name
 										), 
@@ -284,8 +287,9 @@ class SARLValidator extends XtextBugFixValidator {
 						if (!localFunctions.add(key.toActionKey(name))) {
 							var funcName = name+"("+sig.toString()+")"
 							error(
-									String.format(
-											"Duplicate action in '%s': %s",
+									MessageFormat::format(
+											Messages::SARLValidator_6,
+											Messages::SARLValidator_8,
 											featureContainer.name,
 											funcName
 											), 
@@ -310,15 +314,15 @@ class SARLValidator extends XtextBugFixValidator {
 			var validName1 = ModelUtil::fixHiddenAction(action.name)
 			var validName2 = ModelUtil::removeHiddenAction(action.name)
 			error(
-					String.format(
-							"Invalid action name '%s'. You must not give to an action a name that is starting with '_handle_'. This prefix is reserved by the SARL compiler.",
+					MessageFormat::format(
+							Messages::SARLValidator_9,
 							action.name
 							), 
 					action,
 					SarlPackage.Literals::ACTION_SIGNATURE__NAME,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					IssueCodes::INVALID_MEMBER_NAME,
-					"action", action.name, validName1, validName2)
+					Messages::SARLValidator_8, action.name, validName1, validName2)
 		}
 	}
 
@@ -330,15 +334,15 @@ class SARLValidator extends XtextBugFixValidator {
 		if (isHiddenAttribute(attribute.name)) {
 			var validName = ModelUtil::fixHiddenAttribute(attribute.name)
 			error(
-					String.format(
-							"Invalid attribute name '%s'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.",
+					MessageFormat::format(
+							Messages::SARLValidator_10,
 							attribute.name
 							), 
 					attribute,
 					SarlPackage.Literals::ATTRIBUTE__NAME,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					IssueCodes::INVALID_MEMBER_NAME,
-					"attribute", attribute.name, validName)
+					Messages::SARLValidator_11, attribute.name, validName)
 		}
 	}
 
@@ -405,12 +409,24 @@ class SARLValidator extends XtextBugFixValidator {
 	protected override reportUninitializedField(JvmField field) {
 		var sarlElement = services.jvmModelAssociations.getPrimarySourceElement(field)
 		error(
-				String.format(
-						"The blank final field '%s' may not have been initialized.",
+				MessageFormat::format(
+						Messages::SARLValidator_12,
 						field.simpleName
 						), 
 				sarlElement,
 				SarlPackage.Literals.ATTRIBUTE__NAME,
+				ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+				org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION)
+	}
+	
+	protected override reportUninitializedField(JvmField field, JvmConstructor constructor) {
+		error(
+				MessageFormat::format(
+						Messages::SARLValidator_38,
+						field.simpleName,
+						constructor.toString), 
+				constructor,
+				null,
 				ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 				org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION)
 	}
@@ -425,8 +441,8 @@ class SARLValidator extends XtextBugFixValidator {
 		for(previousInterface : knownInterfaces) {
 			if (memberOfTypeHierarchy(previousInterface, lightweightInterfaceReference)) {
 				error(
-						String.format(
-								"Duplicate implemented feature '%s'.",
+						MessageFormat::format(
+								Messages::SARLValidator_13,
 								lightweightInterfaceReference.canonicalName),
 						element,
 						structuralElement,
@@ -438,8 +454,8 @@ class SARLValidator extends XtextBugFixValidator {
 			}
 			else if (memberOfTypeHierarchy(lightweightInterfaceReference, previousInterface)) {
 				error(
-						String.format(
-								"Duplicate implemented feature '%s'.",
+						MessageFormat::format(
+								Messages::SARLValidator_13,
 								previousInterface.canonicalName),
 						element,
 						structuralElement,
@@ -472,8 +488,8 @@ class SARLValidator extends XtextBugFixValidator {
 						var lightweightSuperType = superType.toLightweightTypeReference
 						if (memberOfTypeHierarchy(lightweightSuperType, lightweightInterfaceReference)) {
 							addIssue(
-									String.format(
-											"The feature '%s' is already implemented by the super-type '%s'.",
+									MessageFormat::format(
+											Messages::SARLValidator_14,
 											lightweightInterfaceReference.canonicalName,
 											lightweightSuperType.canonicalName),
 									element,
@@ -537,8 +553,8 @@ class SARLValidator extends XtextBugFixValidator {
 									newName = feature.name+Integer::toString(nameIndex)
 								}
 								addIssue(
-										String.format(
-												"The field '%s' in '%s' is hidding the inherited field '%s'.",
+										MessageFormat::format(
+												Messages::SARLValidator_15,
 												feature.name, jvmElement.qualifiedName,
 												inheritedField.qualifiedName),
 										feature,
@@ -557,8 +573,8 @@ class SARLValidator extends XtextBugFixValidator {
 					var actionKey = this.sarlSignatureProvider.createActionID(signature.name, sig)
 					if (finalOperations.containsKey(actionKey)) {
 						error(
-								String.format(
-										"Cannot override the operation %s, which is declared a final in the super type.",
+								MessageFormat::format(
+										Messages::SARLValidator_16,
 										actionKey.toString),
 								signature,
 								SarlPackage.Literals.ACTION_SIGNATURE__NAME,
@@ -573,8 +589,8 @@ class SARLValidator extends XtextBugFixValidator {
 							var inheritedReturnType = implementableFunction.returnType?.toLightweightTypeReference
 							if (!canCast(currentReturnType, inheritedReturnType, false, true, true)) {
 								error(
-										String.format(
-												"Incompatible return type between '%s' and '%s' for %s.",
+										MessageFormat::format(
+												Messages::SARLValidator_17,
 												currentReturnType.canonicalTypeName,
 												inheritedReturnType.canonicalTypeName,
 												actionKey.toString),
@@ -593,8 +609,8 @@ class SARLValidator extends XtextBugFixValidator {
 								var inheritedReturnType = superOperation.returnType?.toLightweightTypeReference
 								if (!canCast(currentReturnType, inheritedReturnType, false, true, true)) {
 									error(
-											String.format(
-													"Incompatible return type between '%s' and '%s' for %s.",
+											MessageFormat::format(
+													Messages::SARLValidator_17,
 													currentReturnType.canonicalTypeName,
 													inheritedReturnType.canonicalTypeName,
 													actionKey.toString),
@@ -633,8 +649,8 @@ class SARLValidator extends XtextBugFixValidator {
 						if (first) {
 							first = false
 							error(
-									String.format(
-											"The operation %s must be implemented.",
+									MessageFormat::format(
+											Messages::SARLValidator_18,
 											key.toString),
 									element,
 									SarlPackage.Literals.NAMED_ELEMENT__NAME,
@@ -645,8 +661,8 @@ class SARLValidator extends XtextBugFixValidator {
 						else {
 							 // No prototypes, so no quick fix
 							error(
-									String.format(
-											"The operation %s must be implemented.",
+									MessageFormat::format(
+											Messages::SARLValidator_18,
 											key.toString),
 									element,
 									SarlPackage.Literals.NAMED_ELEMENT__NAME,
@@ -707,7 +723,7 @@ class SARLValidator extends XtextBugFixValidator {
 					}
 					if (invokeDefaultConstructor && !superConstructors.containsKey(voidKey)) {
 						error(
-								"Undefined default constructor in the super-type.",
+								Messages::SARLValidator_19,
 								feature,
 								SarlPackage.Literals.CONSTRUCTOR__BODY,
 								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -720,7 +736,8 @@ class SARLValidator extends XtextBugFixValidator {
 				for(defaultSignature : defaultSignatures) {
 					if (!superConstructors.containsKey(defaultSignature)) {
 						error(
-								String::format("The constructor %s is undefined.",
+								MessageFormat::format(
+									Messages::SARLValidator_20,
 									 this.sarlSignatureProvider.createActionID(
 									 	supertype.simpleName,
 									 	defaultSignature)
@@ -771,7 +788,7 @@ class SARLValidator extends XtextBugFixValidator {
 			if (guard instanceof XBooleanLiteral) {
 				if (guard.isTrue) {
 					if (!IssueCodes::DISCOURAGED_BOOLEAN_EXPRESSION.ignored) {
-						addIssue("Discouraged boolean value. The guard is always true.",
+						addIssue(Messages::SARLValidator_21,
 								guard,
 								null,
 								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -780,7 +797,7 @@ class SARLValidator extends XtextBugFixValidator {
 				}
 				else {
 					if (!IssueCodes::UNREACHABLE_BEHAVIOR_UNIT.ignored) {
-						addIssue("Dead code. The guard is always false.",
+						addIssue(Messages::SARLValidator_22,
 								behaviorUnit,
 								null,
 								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -793,7 +810,7 @@ class SARLValidator extends XtextBugFixValidator {
 
 			var fromType = guard.actualType
 			if (!fromType.isAssignableFrom(Boolean::TYPE)) {
-				error(String.format("Type mismatch: cannot convert from %s to %s",
+				error(MessageFormat::format(Messages::SARLValidator_23,
 						fromType.nameOfTypes, boolean.name),
 						behaviorUnit.guard,
 						null,
@@ -812,9 +829,10 @@ class SARLValidator extends XtextBugFixValidator {
 			var ref = usedType.toLightweightTypeReference
 			if (ref!==null && !ref.isSubtypeOf(typeof(Capacity))) {
 				error(
-						String.format(
-								"Invalid type: '%s'. Only capacities can be used after the keyword '%s'.",
+						MessageFormat::format(
+								Messages::SARLValidator_24,
 								usedType.qualifiedName,
+								Messages::SARLValidator_25,
 								SARLKeywords::USES),
 						usedType,
 						null,
@@ -834,9 +852,10 @@ class SARLValidator extends XtextBugFixValidator {
 			var ref = requiredType.toLightweightTypeReference
 			if (ref!==null && !ref.isSubtypeOf(typeof(Capacity))) {
 				error(
-						String.format(
-								"Invalid type: '%s'. Only capacities can be used after the keyword '%s'.",
+						MessageFormat::format(
+								Messages::SARLValidator_24,
 								requiredType.qualifiedName,
+								Messages::SARLValidator_25,
 								SARLKeywords::REQUIRES),
 						requiredType,
 						null,
@@ -856,9 +875,10 @@ class SARLValidator extends XtextBugFixValidator {
 			var ref = event.toLightweightTypeReference
 			if (ref!==null && !ref.isSubtypeOf(typeof(io.sarl.lang.core.Event))) {
 				error(
-						String.format(
-								"Invalid type: '%s'. Only events can be used after the keyword '%s'.",
+						MessageFormat::format(
+								Messages::SARLValidator_24,
 								event.qualifiedName,
+								Messages::SARLValidator_26,
 								SARLKeywords::FIRES),
 						event,
 						null,
@@ -886,14 +906,16 @@ class SARLValidator extends XtextBugFixValidator {
 					if (!(jvmSuperType instanceof JvmGenericType)
 						|| (isExpectingInterface !== (jvmSuperType as JvmGenericType).interface)) {
 						if (isExpectingInterface) {
-							error("Supertype must be an interface.",
+							error(
+								MessageFormat::format(Messages::SARLValidator_27, Messages::SARLValidator_28),
 								SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
 								superTypeIndex,
 								IssueCodes::INVALID_EXTENDED_TYPE,
 								inferredType.identifier,
 								jvmSuperType.identifier)
 						} else {
-							error("Supertype must be a class.",
+							error(
+								MessageFormat::format(Messages::SARLValidator_27, Messages::SARLValidator_29),
 								SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
 								superTypeIndex,
 								IssueCodes::INVALID_EXTENDED_TYPE,
@@ -902,7 +924,7 @@ class SARLValidator extends XtextBugFixValidator {
 						}
 						success = false
 					} else if (lighweightSuperType.final) {
-						error("Attempt to override final class.",
+						error(Messages::SARLValidator_30,
 							SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
 							superTypeIndex,
 							IssueCodes::OVERRIDDEN_FINAL_TYPE,
@@ -912,14 +934,14 @@ class SARLValidator extends XtextBugFixValidator {
 					} else if (!lighweightSuperType.isSubtypeOf(expectedType)
 						|| ((onlySubTypes) && (lighweightSuperType.isType(expectedType)))) {
 						if (onlySubTypes) {
-							error(String::format("Supertype must be a subtype of '%s'.", expectedType.name),
+							error(MessageFormat::format(Messages::SARLValidator_31, expectedType.name),
 								SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
 								superTypeIndex,
 								IssueCodes::INVALID_EXTENDED_TYPE,
 								inferredType.identifier,
 								jvmSuperType.identifier)
 						} else {
-							error(String::format("Supertype must be of type '%s'.", expectedType.name),
+							error(MessageFormat::format(Messages::SARLValidator_32, expectedType.name),
 								SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
 								superTypeIndex,
 								IssueCodes::INVALID_EXTENDED_TYPE,
@@ -930,7 +952,7 @@ class SARLValidator extends XtextBugFixValidator {
 					} else if (inferredSuperType == null
 							|| inferredSuperType.identifier != jvmSuperType.identifier
 							|| inferredType.identifier == jvmSuperType.identifier) {
-						error(String.format("The inheritance hierarchy of '%s' is inconsistent.",
+						error(MessageFormat::format(Messages::SARLValidator_33,
 								inferredType.qualifiedName),
 								SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
 								superTypeIndex,
@@ -940,7 +962,7 @@ class SARLValidator extends XtextBugFixValidator {
 						success = false
 					}
 				} else {
-					error(String.format("The inheritance hierarchy of '%s' is inconsistent.",
+					error(MessageFormat::format(Messages::SARLValidator_33,
 							inferredType.qualifiedName),
 							SarlPackage.Literals::INHERITING_ELEMENT__SUPER_TYPES,
 							superTypeIndex,
@@ -967,13 +989,13 @@ class SARLValidator extends XtextBugFixValidator {
 				|| (onlySubTypes && ref.isType(expectedType)))) {
 				var String msg
 				if (onlySubTypes) {
-					msg = "Invalid implemented type: '%s'. Only subtypes of '%s' are allowed for '%s'."
+					msg = Messages::SARLValidator_34
 				}
 				else {
-					msg = "Invalid implemented type: '%s'. Only the type '%s' and one of its subtypes are allowed for '%s'."
+					msg = Messages::SARLValidator_35
 				}
 				error(
-						String.format(
+						MessageFormat::format(
 								msg,
 								superType.qualifiedName,
 								expectedType.name,
@@ -991,8 +1013,8 @@ class SARLValidator extends XtextBugFixValidator {
 		}
 		if (nb<mandatoryNumberOfTypes) {
 				error(
-						String.format(
-								"Missing implemented type '%s' for '%s'.",
+						MessageFormat::format(
+								Messages::SARLValidator_36,
 								expectedType.name,
 								element.name),
 						element,
@@ -1056,9 +1078,10 @@ class SARLValidator extends XtextBugFixValidator {
 		var ref = event.toLightweightTypeReference
 		if (ref===null || ref.interfaceType || !ref.isSubtypeOf(typeof(io.sarl.lang.core.Event))) {
 			error(
-					String.format(
-							"Invalid type: '%s'. Only events are allowed after the keyword '%s'.",
+					MessageFormat::format(
+							Messages::SARLValidator_24,
 							event.qualifiedName,
+							Messages::SARLValidator_26,
 							SARLKeywords.ON),
 					event,
 					null,
@@ -1074,7 +1097,7 @@ class SARLValidator extends XtextBugFixValidator {
 	public def checkCapacityFeatures(io.sarl.lang.sarl.Capacity capacity) {
 		if (capacity.features.empty) {
 			if (!IssueCodes::DISCOURAGED_CAPACITY_DEFINITION.ignored) {
-				addIssue("Discouraged capacity definition. A capacity without actions defined inside is not useful since it cannot be called by an agent or a behavior.",
+				addIssue(Messages::SARLValidator_37,
 						capacity,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,

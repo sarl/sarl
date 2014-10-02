@@ -45,18 +45,27 @@ class VarArgsCompilerTest {
 		'''.assertCompilesTo('''
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
 			   * Construct an agent.
-			   * @param parentID - identifier of the parent. It is the identifer
-			   * of the parent agent and the enclosing contect, at the same time.
-			   * 
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
+			  public A1(final UUID parentID) {
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
+			   */
+			  @Generated
+			  public A1(final UUID parentID, final UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  public void myaction(final int... arg) {
@@ -77,18 +86,27 @@ class VarArgsCompilerTest {
 		'''.assertCompilesTo('''
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
 			   * Construct an agent.
-			   * @param parentID - identifier of the parent. It is the identifer
-			   * of the parent agent and the enclosing contect, at the same time.
-			   * 
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
 			  @Generated
-			  public A1(final java.util.UUID parentID) {
-			    super(parentID);
+			  public A1(final UUID parentID) {
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
+			   */
+			  @Generated
+			  public A1(final UUID parentID, final UUID agentID) {
+			    super(parentID, agentID);
 			  }
 			  
 			  public void myaction(final char arg1, final boolean arg2, final int... arg3) {
@@ -120,7 +138,6 @@ class VarArgsCompilerTest {
 			  /**
 			   * Construct a behavior.
 			   * @param owner - reference to the agent that is owning this behavior.
-			   * 
 			   */
 			  @Generated
 			  public B1(final Agent owner) {
@@ -152,7 +169,6 @@ class VarArgsCompilerTest {
 			  /**
 			   * Construct a behavior.
 			   * @param owner - reference to the agent that is owning this behavior.
-			   * 
 			   */
 			  @Generated
 			  public B1(final Agent owner) {
@@ -299,7 +315,7 @@ class VarArgsCompilerTest {
 		'''.assertCompilesTo('''
 			MULTIPLE FILES WERE GENERATED
 			
-			File 1 : C1.java
+			File 1 : /myProject/src-gen/C1.java
 			
 			import io.sarl.lang.core.Capacity;
 			
@@ -307,7 +323,7 @@ class VarArgsCompilerTest {
 			public interface C1 extends Capacity {
 			}
 			
-			File 2 : S1.java
+			File 2 : /myProject/src-gen/S1.java
 			
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
@@ -321,8 +337,7 @@ class VarArgsCompilerTest {
 			  
 			  /**
 			   * Construct a skill.
-			   * @param owner - agent that is owning this skill. 
-			   * 
+			   * @param owner - agent that is owning this skill.
 			   */
 			  @Generated
 			  public S1(final Agent owner) {
@@ -330,8 +345,7 @@ class VarArgsCompilerTest {
 			  }
 			  
 			  /**
-			   * Construct a skill. The owning agent is unknown. 
-			   * 
+			   * Construct a skill. The owning agent is unknown.
 			   */
 			  @Generated
 			  public S1() {
@@ -354,7 +368,7 @@ class VarArgsCompilerTest {
 		'''.assertCompilesTo('''
 			MULTIPLE FILES WERE GENERATED
 			
-			File 1 : C1.java
+			File 1 : /myProject/src-gen/C1.java
 			
 			import io.sarl.lang.core.Capacity;
 			
@@ -362,7 +376,7 @@ class VarArgsCompilerTest {
 			public interface C1 extends Capacity {
 			}
 			
-			File 2 : S1.java
+			File 2 : /myProject/src-gen/S1.java
 			
 			import io.sarl.lang.annotation.Generated;
 			import io.sarl.lang.core.Agent;
@@ -376,8 +390,7 @@ class VarArgsCompilerTest {
 			  
 			  /**
 			   * Construct a skill.
-			   * @param owner - agent that is owning this skill. 
-			   * 
+			   * @param owner - agent that is owning this skill.
 			   */
 			  @Generated
 			  public S1(final Agent owner) {
@@ -385,8 +398,7 @@ class VarArgsCompilerTest {
 			  }
 			  
 			  /**
-			   * Construct a skill. The owning agent is unknown. 
-			   * 
+			   * Construct a skill. The owning agent is unknown.
 			   */
 			  @Generated
 			  public S1() {
@@ -409,7 +421,7 @@ class VarArgsCompilerTest {
 		'''.assertCompilesTo('''
 			MULTIPLE FILES WERE GENERATED
 			
-			File 1 : C1.java
+			File 1 : /myProject/src-gen/C1.java
 			
 			import io.sarl.lang.core.Capacity;
 			
@@ -417,7 +429,7 @@ class VarArgsCompilerTest {
 			public interface C1 extends Capacity {
 			}
 			
-			File 2 : S1.java
+			File 2 : /myProject/src-gen/S1.java
 			
 			import io.sarl.lang.core.Skill;
 			
@@ -443,7 +455,7 @@ class VarArgsCompilerTest {
 		'''.assertCompilesTo('''
 			MULTIPLE FILES WERE GENERATED
 			
-			File 1 : C1.java
+			File 1 : /myProject/src-gen/C1.java
 			
 			import io.sarl.lang.core.Capacity;
 			
@@ -451,7 +463,7 @@ class VarArgsCompilerTest {
 			public interface C1 extends Capacity {
 			}
 			
-			File 2 : S1.java
+			File 2 : /myProject/src-gen/S1.java
 			
 			import io.sarl.lang.core.Skill;
 			

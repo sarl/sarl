@@ -113,22 +113,6 @@ class AgentParsingTest {
 	}
 
 	@Test
-	def constAttributesMustHaveIniatlizer() {
-		val mas = '''
-			
-			agent A1 {
-				val name : String = "Hello"
-				val number : Integer
-			}
-		'''.parse
-		mas.assertError(
-			SarlPackage::eINSTANCE.attribute,
-			org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION,
-			"The blank final field 'number' may not have been initialized"
-		)
-	}
-
-	@Test
 	def capacityMustBeDeclaredBeforeUse() {
 		val mas = '''
 			agent A1 {
@@ -262,7 +246,7 @@ class AgentParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.attribute,
+			TypesPackage::eINSTANCE.jvmConstructor,
 			org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_INITIALIZATION,
 			"The blank final field 'field2' may not have been initialized")
 	}
@@ -401,7 +385,7 @@ class AgentParsingTest {
 		mas.assertError(
 			SarlPackage::eINSTANCE.agent,
 			IssueCodes::INVALID_EXTENDED_TYPE,
-			"Supertype must be a class")
+			"Invalid supertype. Expecting: class")
 	}
 
 	@Test
@@ -443,7 +427,7 @@ class AgentParsingTest {
 		mas.assertError(
 			TypesPackage::eINSTANCE.jvmParameterizedTypeReference,
 			org.eclipse.xtext.xbase.validation.IssueCodes::TYPE_BOUNDS_MISMATCH,
-			"Invalid type: 'java.lang.String'. Only events are allowed after the keyword 'on'")
+			"Invalid type: 'java.lang.String'. Only events can be used after the keyword 'on'")
 	}
 
 	@Test
