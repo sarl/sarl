@@ -18,13 +18,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launching;
+package io.sarl.eclipse.runtime;
 
 import io.sarl.eclipse.preferences.SREsPreferencePage;
 import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
-import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.runtime.ISREInstallChangedListener;
-import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.util.PluginUtil;
 
 import java.text.MessageFormat;
@@ -276,7 +273,7 @@ public class SREConfigurationBlock {
 		ControlAccessibleListener.addListener(this.runtimeEnvironmentCombo, parent.getText());
 
 		this.runtimeEnvironmentSearchButton = SWTFactory.createPushButton(
-				parent, Messages.RuntimeEnvironmentTab_2, null);
+				parent, Messages.SREConfigurationBlock_4, null);
 		this.runtimeEnvironmentSearchButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -315,7 +312,7 @@ public class SREConfigurationBlock {
 
 		int nColumns = this.enableSystemWideSelector ? 3 : 2;
 		Group group = SWTFactory.createGroup(this.control,
-				Objects.firstNonNull(this.title, Messages.RuntimeEnvironmentTab_1),
+				Objects.firstNonNull(this.title, Messages.SREConfigurationBlock_7),
 				nColumns, 1, GridData.FILL_HORIZONTAL);
 
 		if (this.enableSystemWideSelector || this.projectProvider != null) {
@@ -691,7 +688,7 @@ public class SREConfigurationBlock {
 			}
 		} else if (this.runtimeEnvironments.isEmpty()) {
 			status = PluginUtil.createStatus(IStatus.ERROR,
-					Messages.RuntimeEnvironmentTab_7);
+					Messages.SREConfigurationBlock_8);
 		} else {
 			status = sre.getValidity();
 		}

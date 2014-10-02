@@ -21,8 +21,8 @@
 package io.sarl.eclipse.wizards.newproject;
 
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
-import io.sarl.eclipse.launching.SREConfigurationBlock;
 import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.SREConfigurationBlock;
 import io.sarl.eclipse.util.PluginUtil;
 
 import java.io.File;

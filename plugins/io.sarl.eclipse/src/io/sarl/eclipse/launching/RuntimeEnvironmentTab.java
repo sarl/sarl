@@ -20,9 +20,10 @@
  */
 package io.sarl.eclipse.launching;
 
-import io.sarl.eclipse.launching.SREConfigurationBlock.SRECompliantProjectProvider;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.eclipse.runtime.SREConfigurationBlock;
+import io.sarl.eclipse.runtime.SREConfigurationBlock.SRECompliantProjectProvider;
 import io.sarl.eclipse.util.PluginUtil;
 
 import java.text.MessageFormat;

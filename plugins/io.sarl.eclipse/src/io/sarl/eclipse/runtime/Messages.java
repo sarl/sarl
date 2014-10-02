@@ -42,6 +42,15 @@ public class Messages extends NLS {
 	public static String StandardSREInstall_1;
 	public static String StandardSREInstall_2;
 	public static String StandardSREInstall_3;
+	public static String SREConfigurationBlock_0;
+	public static String SREConfigurationBlock_1;
+	public static String SREConfigurationBlock_2;
+	public static String SREConfigurationBlock_3;
+	public static String SREConfigurationBlock_4;
+	public static String SREConfigurationBlock_5;
+	public static String SREConfigurationBlock_6;
+	public static String SREConfigurationBlock_7;
+	public static String SREConfigurationBlock_8;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

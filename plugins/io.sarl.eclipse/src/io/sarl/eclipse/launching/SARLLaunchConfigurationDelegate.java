@@ -53,7 +53,6 @@ import org.eclipse.jdt.launching.IVMRunner;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.xtext.xbase.lib.Pair;
 
 import com.google.common.base.Strings;
@@ -84,8 +83,10 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			progressMonitor = monitor;
 		}
 
-		progressMonitor.beginTask(NLS.bind("{0}...", //$NON-NLS-1$
-				new String[] {configuration.getName()}), 3);
+		progressMonitor.beginTask(
+				MessageFormat.format(Messages.SARLLaunchConfigurationDelegate_1,
+				configuration.getName()),
+				3);
 		// check for cancellation
 		if (progressMonitor.isCanceled()) {
 			return;
@@ -390,8 +391,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		} else if (allStandard) {
 			return null;
 		} else {
-			return bootEntries
-					.toArray(new String[bootEntries.size()]);
+			return bootEntries.toArray(new String[bootEntries.size()]);
 		}
 	}
 
@@ -401,7 +401,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 * @return the filtered entries.
 	 * @throws CoreException if impossible to get the classpath.
 	 */
-	protected IRuntimeClasspathEntry[] computeUnresolvedSARLRuntimeClasspath(
+	private static IRuntimeClasspathEntry[] computeUnresolvedSARLRuntimeClasspath(
 			ILaunchConfiguration configuration) throws CoreException {
 		// Retrieve the SARL runtime environment jar file.
 		String useDefaultSRE = configuration.getAttribute(
@@ -423,12 +423,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		}
 
 		ISREInstall sre = SARLRuntime.getSREFromId(runtime);
-		if (sre == null) {
-			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR,
-					MessageFormat.format(Messages.RuntimeEnvironmentTab_6, runtime)));
-		}
-
-		verifySREValidity(sre);
+		verifySREValidity(sre, runtime);
 
 		LibraryLocation[] locations = sre.getLibraryLocations();
 		List<IRuntimeClasspathEntry> cpEntries = new ArrayList<>(locations.length);
@@ -459,8 +454,11 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		return entries;
 	}
 
-	@SuppressWarnings("static-method")
-	private void verifySREValidity(ISREInstall sre) throws CoreException {
+	private static void verifySREValidity(ISREInstall sre, String runtime) throws CoreException {
+		if (sre == null) {
+			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR,
+					MessageFormat.format(Messages.RuntimeEnvironmentTab_6, runtime)));
+		}
 		if (!sre.getValidity().isOK()) {
 			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR, MessageFormat.format(
 					Messages.RuntimeEnvironmentTab_5,
