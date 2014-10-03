@@ -132,86 +132,15 @@ describe "Create First Project" {
 		 *           <plugins>
 		 *              ...
 		 *              <plugin>
-		 *                 <groupId>org.codehaus.mojo</groupId>
-		 *                 <artifactId>build-helper-maven-plugin</artifactId>
-		 *                 <executions>
-		 *                    <execution>
-		 *                       <goals>
-		 *                          <goal>add-source</goal>
-		 *                       </goals>
-		 *                       <configuration>
-		 *                          <sources>
-		 *                             <source>src/main/sarl</source>
-		 *                             <source>src/main/generated-sources/xtend/</source>
-		 *                             <source>src/test/generated-sources/xtend/</source>
-		 *                          </sources>
-		 *                       </configuration>
-		 *                    </execution>
-		 *                 </executions>
-		 *              </plugin>
-		 *              <plugin>
-		 *                 <groupId>org.apache.maven.plugins</groupId>
-		 *                 <artifactId>maven-clean-plugin</artifactId>
-		 *                 <executions>
-		 *                    <execution>
-		 *                       <phase>clean</phase>
-		 *                       <goals>
-		 *                          <goal>clean</goal>
-		 *                       </goals>
-		 *                       <configuration>
-		 *                          <filesets>
-		 *                             <fileset>
-		 *                                <directory>src/main/generated-sources/xtend</directory>
-		 *                             </fileset>
-		 *                             <fileset>
-		 *                                <directory>src/test/generated-sources/xtend</directory>
-		 *                             </fileset>
-		 *                          </filesets>
-		 *                       </configuration>
-		 *                    </execution>
-		 *                 </executions>
-		 *              </plugin>
-		 *              <plugin>
-		 *                 <groupId>org.eclipse.xtext</groupId>
-		 *                 <artifactId>xtext-maven-plugin</artifactId>
-		 *                 <executions>
-		 *                    <execution>
-		 *                       <goals>
-		 *                          <goal>generate</goal>
-		 *                       </goals>
-		 *                    </execution>
-		 *                 </executions>
+		 *                 <groupId>io.sarl.maven</groupId>
+		 *                 <artifactId>sarl-maven-plugin</artifactId>
+		 *                 <version>${sarl.version}</version>
+		 *                 <extensions>true</extensions>
 		 *                 <configuration>
-		 *                    <compilerSourceLevel>%compilerlevel%</compilerSourceLevel>
-		 *                    <compilerTargetLevel>%compilerlevel%</compilerTargetLevel>
+		 *                    <source>%compilerlevel%</source>
+		 *                    <target>%compilerlevel%</target>
 		 *                    <encoding>%encoding%</encoding>
-		 *                    <languages>
-		 *                       <language>
-		 *                          <setup>io.sarl.lang.SARLStandaloneSetup</setup>
-		 *                          <outputConfigurations>
-		 *                             <outputConfiguration>
-		 *                                <outputDirectory>src/main/generated-sources/xtend/</outputDirectory>
-		 *                             </outputConfiguration>
-		 *                          </outputConfigurations>
-		 *                       </language>
-		 *                    </languages>
 		 *                 </configuration>
-		 *                 <dependencies>
-		 *                    <dependency>
-		 *                       <groupId>io.sarl.lang</groupId>
-		 *                       <artifactId>io.sarl.lang</artifactId>
-		 *                       <version>${sarl.version}</version>
-		 *                    </dependency>
-		 *                    <dependency>
-		 *                       <groupId>io.sarl.lang</groupId>
-		 *                       <artifactId>io.sarl.lang.core</artifactId>
-		 *                       <version>${sarl.version}</version>
-		 *                    </dependency>
-		 *                    <dependency>
-		 *                       <groupId>org.eclipse</groupId>
-		 *                       <artifactId>osgi</artifactId>
-		 *                    </dependency>
-		 *                 </dependencies>
 		 *              </plugin>
 		 *           </plugins>
 		 *        </build>
@@ -220,7 +149,7 @@ describe "Create First Project" {
 		 *           ...
 		 *           <dependency>
 		 *              <groupId>io.sarl.maven</groupId>
-		 *              <artifactId>io.sarl.maven</artifactId>
+		 *              <artifactId>io.sarl.maven.sdk</artifactId>
 		 *              <version>${sarl.version}</version>
 		 *           </dependency>
 		 *           ...
@@ -233,10 +162,39 @@ describe "Create First Project" {
 		 *           <repository>
 		 *              <id>sarl-repository</id>
 		 *              <url>%sarlmavenrepository%</url>
+		 *              <snapshots>
+		 *                 <enabled>true</enabled>
+		 *              </snapshots>
+		 *              <releases>
+		 *                 <enabled>true</enabled>
+		 *              </releases>
 		 *           </repository>
 		 *        </repositories>
+		 *        <pluginRepositories>
+		 *           ...
+		 *           <!-- The following repositories are needed until the
+		 *                SARL is released on the Maven Central -->
+		 *           <pluginRepository>
+		 *              <id>sarl-repository</id>
+		 *              <url>%sarlmavenrepository%</url>
+		 *              <snapshots>
+		 *                 <enabled>true</enabled>
+		 *              </snapshots>
+		 *              <releases>
+		 *                 <enabled>true</enabled>
+		 *              </releases>
+		 *           </pluginRepository>
+		 *        </pluginRepositories>
 		 *        ...
 		 *     </project>
+		 * 
+		 * The Maven configuration is based on the use of `sarl-maven-plugin`.
+		 * This plugin is in charge of compiling the SARL and the Java files.
+		 * 
+		 * <important>You must set the `extensions` tag to true for the 
+		 * `sarl-maven-plugin` plugin. If you missed to set it, the plugin
+		 * will not able to be integrated in the Maven life-cycle. The
+		 * consequence will be that only the Java compiler will be invoked.</important>
 		 * 
 		 * @filter(.*) 
 		 */
@@ -291,6 +249,17 @@ describe "Create First Project" {
 		 *              <artifactId>io.janusproject.kernel</artifactId>
 		 *              <version>${janus.version}</version>
 		 *           </dependency>
+		 *           <dependency>
+		 *              <groupId>io.sarl.maven</groupId>
+		 *              <artifactId>io.sarl.maven.sdk</artifactId>
+		 *              <version>${sarl.version}</version>
+		 *              <exclusions>
+		 *                 <exclusion>
+		 *                    <groupId>com.google.guava</groupId>
+		 *                    <artifactId>guava</artifactId>
+		 *                 </exclusion>
+		 *              </exclusions>
+		 *           </dependency>
 		 *           ...
 		 *        </dependencies>
 		 *        ...
@@ -301,10 +270,24 @@ describe "Create First Project" {
 		 *           <repository>
 		 *              <id>janus-repository</id>
 		 *              <url>%janusmavenrepository%</url>
+		 *              <snapshots>
+		 *                 <enabled>true</enabled>
+		 *              </snapshots>
+		 *              <releases>
+		 *                 <enabled>true</enabled>
+		 *              </releases>
 		 *           </repository>
 		 *        </repositories>
 		 *        ...
 		 *     </project>
+		 * 
+		 * <important>If you want to have the dependencies to both 
+		 * `io.sarl.maven.sdk` and `io.janusproject.kernel` in your
+		 * POM file, you must be sure that the imported version
+		 * of the Google Guava library is the one provided by the Janus
+		 * platform. For ensuring this, you must exclude the Guava
+		 * library from the transitive dependencies of
+		 * `io.sarl.maven.sdk`</important>
 		 * 
 		 * @filter(.*) 
 		 */
