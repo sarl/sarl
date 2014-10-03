@@ -40,7 +40,7 @@ public class CleanMojo extends AbstractSarlMojo {
 	private static final String CLEAN_GROUP_ID = "org.apache.maven.plugins"; //$NON-NLS-1$
 	private static final String CLEAN_ARTIFACT_ID = "maven-clean-plugin"; //$NON-NLS-1$
 	private static final String CLEAN_MOJO = "clean"; //$NON-NLS-1$
-	
+
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		String version = getPluginVersionFromDependencies(CLEAN_GROUP_ID, CLEAN_ARTIFACT_ID);

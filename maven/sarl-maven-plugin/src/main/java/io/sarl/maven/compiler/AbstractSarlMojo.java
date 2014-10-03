@@ -105,7 +105,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	protected BuildPluginManager buildPluginManager;
 
 	/** Extract the value from the hard-coded configuration.
-	 * 
+	 *
 	 * @param key - the key of the configuration entry.
 	 * @return the value.
 	 * @throws MojoExecutionException on error.
@@ -117,8 +117,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 					"io/sarl/maven/compiler/config", //$NON-NLS-1$
 					java.util.Locale.getDefault(),
 					getClass().getClassLoader());
-		}
-		catch (MissingResourceException e) {
+		} catch (MissingResourceException e) {
 			throw new MojoExecutionException(e.getLocalizedMessage(), e);
 		}
 		String value = resource.getString(key);
@@ -130,7 +129,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 
 	/** Replies the version of the given plugin that is specified in the POM of the
 	 * plugin in which this mojo is located.
-	 * 
+	 *
 	 * @param groupId - the identifier of the group.
 	 * @param artifactId - thidentifier of the artifact.
 	 * @return the version, never <code>null</code>
@@ -139,7 +138,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	protected String getPluginVersionFromDependencies(String groupId, String artifactId) throws MojoExecutionException {
 		String key = ArtifactUtils.versionlessKey(groupId, artifactId);
 		PluginDescriptor currentPlugin = (PluginDescriptor) getPluginContext().get("pluginDescriptor"); //$NON-NLS-1$
-		for(ComponentDependency dep : currentPlugin.getDependencies()) {
+		for (ComponentDependency dep : currentPlugin.getDependencies()) {
 			if (groupId.equals(dep.getGroupId())
 					&& artifactId.equals(dep.getArtifactId())) {
 				String version = dep.getVersion();
@@ -181,7 +180,8 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 					Collections.<RemoteRepository>emptyList(),
 					this.session.getRepositorySession());
 			if (pluginDescriptor == null) {
-				throw new MojoExecutionException("Could not find the plugin '" + plugin.getId() + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+				throw new MojoExecutionException("Could not find the plugin '" //$NON-NLS-1$
+						+ plugin.getId() + "'"); //$NON-NLS-1$
 			}
 			MojoDescriptor mojoDescriptor = pluginDescriptor.getMojo(goal);
 			if (mojoDescriptor == null) {
@@ -236,7 +236,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	}
 
 	/** Convert an artifact to a dependency.
-	 * 
+	 *
 	 * @param artifact - the artifact to convert.
 	 * @return the result of the conversion.
 	 */

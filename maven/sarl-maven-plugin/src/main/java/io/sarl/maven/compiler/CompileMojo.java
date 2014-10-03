@@ -87,7 +87,7 @@ public class CompileMojo extends AbstractSarlMojo {
 		compileSARL();
 		compileJava();
 	}
-	
+
 	private Dependency[] extractXtextDependencies() throws MojoExecutionException {
 		List<Dependency> deps = new ArrayList<>();
 
@@ -101,14 +101,14 @@ public class CompileMojo extends AbstractSarlMojo {
 		}
 		langArtifact = this.session.getLocalRepository().find(langArtifact);
 		deps.add(toDependency(langArtifact));
-		
+
 		String sdkKey = ArtifactUtils.versionlessKey(SARL_SDK_GROUP_ID, SARL_SDK_ARTIFACT_ID);
 		Artifact sdkArtifact = artifacts.get(sdkKey);
 		if (sdkArtifact == null) {
 			throw new MojoExecutionException("Cannot find the artifact " + sdkKey); //$NON-NLS-1$
 		}
 		sdkArtifact = this.session.getLocalRepository().find(sdkArtifact);
-		
+
 		File pomFile = sdkArtifact.getFile();
 		if (pomFile != null && pomFile.canRead()) {
 			try (FileInputStream is = new FileInputStream(pomFile)) {
