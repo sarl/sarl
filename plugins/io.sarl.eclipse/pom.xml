@@ -12,7 +12,7 @@
 	</parent>
 	
 	<properties>
-		<!-- needed for checkstyle/findbugs -->
+		<!-- needed for checkstyle/findbugs and other plugins -->
 		<main.basedir>${project.basedir}/../..</main.basedir>
 	</properties>
 

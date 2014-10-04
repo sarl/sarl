@@ -13,22 +13,39 @@
 	<packaging>maven-plugin</packaging>
 
 	<properties>
-		<!-- needed for checkstyle/findbugs -->
+		<!-- needed for checkstyle/findbugs and other plugins -->
 		<main.basedir>${project.basedir}/../..</main.basedir>
+		<!-- Needed for replacements in config.properties -->
+		<dependency.xtext-compiler.groupId>org.eclipse.xtext</dependency.xtext-compiler.groupId>
+		<dependency.xtext-compiler.artifactId>xtext-maven-plugin</dependency.xtext-compiler.artifactId>
+		<dependency.xtext-compiler.mojo>generate</dependency.xtext-compiler.mojo>
+		<dependency.xtext-compiler.dependencies>
+			io.sarl.lang:io.sarl.lang|io.sarl.lang:io.sarl.lang.core|org.eclipse:osgi
+		</dependency.xtext-compiler.dependencies>
+		<dependency.java-compiler.groupId>org.apache.maven.plugins</dependency.java-compiler.groupId>
+		<dependency.java-compiler.artifactId>maven-compiler-plugin</dependency.java-compiler.artifactId>
+		<dependency.java-compiler.mojo>compile</dependency.java-compiler.mojo>
+		<dependency.cleaner.groupId>org.apache.maven.plugins</dependency.cleaner.groupId>
+		<dependency.cleaner.artifactId>maven-clean-plugin</dependency.cleaner.artifactId>
+		<dependency.cleaner.mojo>clean</dependency.cleaner.mojo>
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>io.sarl.maven</groupId>
-			<artifactId>io.sarl.maven.sdk</artifactId>
-			<version>${project.version}</version>
-			<type>pom</type>
-		</dependency>
 		<dependency>
 			<groupId>io.sarl.lang</groupId>
 			<artifactId>io.sarl.lang</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>io.sarl.lang</groupId>
+			<artifactId>io.sarl.lang.core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+ 		<dependency> 
+ 			<groupId>org.eclipse</groupId> 
+ 			<artifactId>osgi</artifactId> 
+			<version>${osgi.nls.version}</version>
+ 		</dependency> 
 		<dependency>
 			<groupId>org.eclipse.xtext</groupId>
 			<artifactId>xtext-maven-plugin</artifactId>
@@ -50,25 +67,27 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-plugin-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>generated-helpmojo</id>
-						<goals>
-							<goal>helpmojo</goal>
-						</goals>
-					</execution>
-				</executions>
 				<configuration>
 					<goalPrefix>sarl</goalPrefix>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<sourceDirectory>src/main/java</sourceDirectory>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

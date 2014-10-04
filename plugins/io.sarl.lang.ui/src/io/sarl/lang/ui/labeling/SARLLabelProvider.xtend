@@ -81,6 +81,30 @@ class SARLLabelProvider extends XbaseLabelProvider {
 			new StyledString("Object")
 		} else {
 			var name = uiStrings.referenceToString(reference, "Object")
+			//
+			// FIXME: https://bugs.eclipse.org/bugs/show_bug.cgi?id=443131
+			var type = reference.getType()
+			if (type !== null && type.eIsProxy() && reference.eResource() != null) {
+				// This case occurs when the reference is unknown:
+				// the found "name" is the fully qualified name of the type.
+				// So we should extract the simple name
+				var index = name.length - 1
+				val char dot = '.'
+				val char doll = '$'
+				val char dies = '#'
+				var char ch
+				while (index >= 0) {
+					ch = name.charAt(index)
+					if (ch === dot || ch === doll || ch === dies) {
+						name = name.substring(index + 1)
+						index = -1 // break the loop
+					} else {
+						index--
+					}
+				}
+			}
+			// END OF FIX
+			//
 			return name.convertToStyledString
 		}
 	}

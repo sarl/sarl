@@ -3,9 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>io.sarl</groupId>
-		<artifactId>io.sarl</artifactId>
+		<artifactId>io.sarl.tycho-parent</artifactId>
 		<version>0.1.0-SNAPSHOT</version>
+		<relativePath>../tycho-parent</relativePath>
 	</parent>
+
 	<artifactId>io.sarl.tests</artifactId>
 	<packaging>pom</packaging>
 	<name>Tests Parent</name>
@@ -18,23 +20,33 @@
 		<module>io.sarl.core.tests</module>
 	</modules>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-api-mockito</artifactId>
-			<version>1.5.6</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-module-junit4</artifactId>
-			<version>1.5.6</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+	<!-- ======================================= -->
+	<!-- ==== Plugins Dependency Management === -->
+	<!-- ======================================= -->
 
 	<dependencyManagement>
+		<!-- The other dependencies are inside the submodules for avoiding to propagate 
+			the dependency information outside a specific module -->
+
 		<dependencies>
+			<dependency>
+				<groupId>org.powermock</groupId>
+				<artifactId>powermock-api-mockito</artifactId>
+				<version>1.5.6</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.powermock</groupId>
+				<artifactId>powermock-module-junit4</artifactId>
+				<version>1.5.6</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+				<version>${xtext.version}</version>
+				<scope>test</scope>
+			</dependency>
 			<dependency>
 				<groupId>io.sarl.lang</groupId>
 				<artifactId>io.sarl.lang.core</artifactId>
@@ -59,12 +71,17 @@
 				<version>${project.version}</version>
 				<scope>test</scope>
 			</dependency>
-			<dependency>
-				<groupId>org.eclipse.xtext</groupId>
-				<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
-				<version>${xtext.version}</version>
-				<scope>test</scope>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<!-- ======================================= -->
+	<!-- ==== Plugins Building Management === -->
+	<!-- ======================================= -->
+
+	<build>
+		<!-- The build configurations are inside the submodules
+		     for avoiding to propagate the information outside a
+		     specific module -->
+	</build>
+
 </project>

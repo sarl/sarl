@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
@@ -24,6 +23,13 @@
 	<!-- ======================================= -->
 
 	<properties>
+		<!-- Version of the Xtext API -->
+		<xtext.version>2.7.2</xtext.version>
+		<!-- Version of the Jnario API -->
+		<jnario.version>1.0.0</jnario.version>
+		<jnario.report.version>1.0.1</jnario.report.version>
+		<!-- Version of the OSGi module that provides the NLS -->
+		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
 		<!-- Year of the release of SARL (used in License management and documentation) -->
 		<year>2014</year>
 		<!-- URL of the SARL project (use in POM and documentation) -->
@@ -32,21 +38,16 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- JRE Configuration -->
 		<compiler.level>1.7</compiler.level>
-		<jre.environment>JavaSE-1.7</jre.environment>
-		<!-- Versions of major transversal dependencies -->
-		<tycho.version>0.21.0</tycho.version>
-		<xtext.version>2.7.2</xtext.version>
-		<afc.version>11.0</afc.version>
-		<guava.version>17.0</guava.version>
-		<copyrighters>Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND</copyrighters>
-		<!-- Version of the Jnario components -->
-		<jnario.version>1.0.0</jnario.version>
-		<jnario.report.version>1.0.1</jnario.report.version>
-		<!-- Version of the Janus platform (used in documentation) -->
-		<janus.version>2.0.1.0-SNAPSHOT</janus.version>
-		<!-- URL of the Maven repositories of SARL and Janus (use in POM and documentation) -->
+		<!-- Path to the root directory  -->
+		<main.basedir>${project.basedir}</main.basedir>
+		<!-- String to put after the copyright sign  -->
+		<copyrighters>Sebastian RODRIGUEZ, Nicolas GAUD, St&amp;eacute;phane GALLAND</copyrighters>
+		<!-- URL of the Maven repositories of SARL (use in POM and documentation) -->
 		<sarl.maven.repository.url>http://maven.sarl.io</sarl.maven.repository.url>
-		<janus.maven.repository.url>http://maven.janusproject.io</janus.maven.repository.url>
+		<!-- Local path to the Maven repository -->
+		<local.maven.repository.path>file:///var/www/sarl-maven-repository/</local.maven.repository.path>
+		<!-- Local path to the P2 repository -->
+		<local.p2.repository.path>file:///var/www/sarl-p2-repository/</local.p2.repository.path>
 	</properties>
 
 	<!-- ======================================= -->
@@ -54,6 +55,8 @@
 	<!-- ======================================= -->
 
 	<modules>
+		<!-- Parent configuration for tycho modules -->
+		<module>tycho-parent</module>
 		<!-- Eclipse features for SARL (SDK and IDE contributions) -->
 		<module>features</module>
 		<!-- Eclipse plugins -->
@@ -80,7 +83,7 @@
 	<licenses>
 		<license>
 			<name>Apache License, Version 2.0</name>
-			<url>ttp://www.apache.org/licenses/LICENSE-2.0</url>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
@@ -96,33 +99,49 @@
 	</dependencyManagement>
 
 	<!-- ======================================= -->
-	<!-- ==== Plugins Dependency Management === -->
+	<!-- ==== Plugins Building Management === -->
 	<!-- ======================================= -->
 
 	<build>
-
 		<pluginManagement>
+			<!-- The other plugin configurations are inside the submodules
+			     for avoiding to propagate the information outside a
+			     specific module -->
+
 			<plugins>
 				<plugin>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.5</version>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.1</version>
+					<configuration>
+						<source>${compiler.level}</source>
+						<target>${compiler.level}</target>
+						<encoding>${project.build.sourceEncoding}</encoding>
+					</configuration>
 				</plugin>
 
 				<plugin>
-					<artifactId>maven-resources-plugin</artifactId>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.10.1</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>1.9.1</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
 					<version>2.6</version>
 				</plugin>
 
 				<plugin>
-					<groupId>org.apache.felix</groupId>
-					<artifactId>maven-bundle-plugin</artifactId>
-					<version>2.5.3</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.jasig.maven</groupId>
-					<artifactId>maven-notice-plugin</artifactId>
-					<version>1.0.6.1</version>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.7</version>
 				</plugin>
 
 				<plugin>
@@ -132,14 +151,50 @@
 				</plugin>
 
 				<plugin>
+					<groupId>org.codehaus.gmaven</groupId>
+					<artifactId>groovy-maven-plugin</artifactId>
+					<version>2.0</version>
+				</plugin>
+
+				<plugin>
 					<groupId>com.google.code.maven-replacer-plugin</groupId>
 					<artifactId>replacer</artifactId>
 					<version>1.5.3</version>
 				</plugin>
 
-				<!-- xtend-maven-plugin is in pluginManagement instead of in plugins 
-					so that it doesn't run before the exec-maven-plugin's *.mwe2 gen; this way 
-					we can list it after. -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.17</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>2.13</version>
+					<executions>
+						<execution>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>checkstyle</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<configLocation>${main.basedir}/checkstyle/checkstyle.xml</configLocation>
+						<suppressionsLocation>${main.basedir}/checkstyle/suppressions.xml</suppressionsLocation>
+						<headerLocation>${main.basedir}/checkstyle/ClassHeader.txt</headerLocation>
+						<enableRSS>false</enableRSS>
+						<linkXRef>false</linkXRef>
+						<consoleOutput>true</consoleOutput>
+						<failsOnError>true</failsOnError>
+						<failOnViolation>true</failOnViolation>
+						<includeTestSourceDirectory>false</includeTestSourceDirectory>
+						<enableRulesSummary>true</enableRulesSummary>
+						<propertyExpansion>main.basedir=${main.basedir}</propertyExpansion>
+					</configuration>
+				</plugin>
+
 				<plugin>
 					<groupId>org.eclipse.xtend</groupId>
 					<artifactId>xtend-maven-plugin</artifactId>
@@ -174,153 +229,8 @@
 					</configuration>
 				</plugin>
 
-				<plugin>
-					<groupId>org.eclipse.tycho</groupId>
-					<artifactId>tycho-compiler-plugin</artifactId>
-					<version>${tycho.version}</version>
-					<configuration>
-						<encoding>${project.build.sourceEncoding}</encoding>
-						<showDeprecation>false</showDeprecation>
-						<showWarnings>false</showWarnings>
-						<source>${compiler.level}</source>
-						<target>${compiler.level}</target>
-					</configuration>
-				</plugin>
-
-				<plugin>
-					<groupId>org.eclipse.tycho</groupId>
-					<artifactId>tycho-maven-plugin</artifactId>
-					<version>${tycho.version}</version>
-					<extensions>true</extensions>
-				</plugin>
-
-				<plugin>
-					<groupId>org.eclipse.tycho</groupId>
-					<artifactId>tycho-surefire-plugin</artifactId>
-					<version>${tycho.version}</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.eclipse.tycho</groupId>
-					<artifactId>tycho-p2-director-plugin</artifactId>
-					<version>${tycho.version}</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.eclipse.tycho</groupId>
-					<artifactId>target-platform-configuration</artifactId>
-					<version>${tycho.version}</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>license-maven-plugin</artifactId>
-					<version>1.7</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.1</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.codehaus.gmaven</groupId>
-					<artifactId>groovy-maven-plugin</artifactId>
-					<version>2.0</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-clean-plugin</artifactId>
-					<version>2.5</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>1.9.1</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-plugin-plugin</artifactId>
-					<version>3.3</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>2.3</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.jnario</groupId>
-					<artifactId>report</artifactId>
-					<version>${jnario.report.version}</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.jnario</groupId>
-					<artifactId>jnario-maven-plugin</artifactId>
-					<version>${jnario.version}</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.17</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-gpg-plugin</artifactId>
-					<version>1.5</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.arakhne.afc.maven</groupId>
-					<artifactId>tag-replacer</artifactId>
-					<version>${afc.version}</version>
-				</plugin>
-
-				<!-- Configure the checkstyle plugin. This plugin must be activated module 
-					per module in the module's pom files. -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>2.12.1</version>
-					<executions>
-						<execution>
-							<phase>prepare-package</phase>
-							<goals>
-								<goal>checkstyle</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<configLocation>${main.basedir}/checkstyle/checkstyle.xml</configLocation>
-						<suppressionsLocation>${main.basedir}/checkstyle/suppressions.xml</suppressionsLocation>
-						<headerLocation>${main.basedir}/checkstyle/ClassHeader.txt</headerLocation>
-						<enableRSS>false</enableRSS>
-						<linkXRef>false</linkXRef>
-						<consoleOutput>true</consoleOutput>
-						<failsOnError>true</failsOnError>
-						<failOnViolation>true</failOnViolation>
-						<includeTestSourceDirectory>false</includeTestSourceDirectory>
-						<enableRulesSummary>true</enableRulesSummary>
-						<propertyExpansion>main.basedir=${main.basedir}</propertyExpansion>
-					</configuration>
-				</plugin>
-
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
+				<!-- This plugin's configuration is used to store Eclipse m2e settings only.
+				     It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -330,118 +240,36 @@
 							<pluginExecutions>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>org.codehaus.mojo</groupId>
-										<artifactId>license-maven-plugin</artifactId>
-										<versionRange>[1.2,)</versionRange>
-										<goals>
-											<goal>check-file-header</goal>
-											<goal>update-project-license</goal>
-											<goal>update-file-header</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-dependency-plugin</artifactId>
-										<versionRange>[2.4,)</versionRange>
-										<goals>
-											<goal>properties</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-changes-plugin</artifactId>
-										<versionRange>[2.7,)</versionRange>
-										<goals>
-											<goal>announcement-generate</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-assembly-plugin</artifactId>
-										<versionRange>[2.2.1,)</versionRange>
-										<goals>
-											<goal>single</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-								<!--<pluginExecution> <pluginExecutionFilter> <groupId>org.jnario</groupId> 
-									<artifactId> jnario-maven-plugin </artifactId> <versionRange> [0.7.1,) </versionRange> 
-									<goals> <goal>testCompile</goal> <goal> xtend-test-install-debug-info </goal> 
-									</goals> </pluginExecutionFilter> <action> <ignore/> </action> </pluginExecution> -->
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.codehaus.mojo</groupId>
-										<artifactId>exec-maven-plugin</artifactId>
-										<versionRange>[1.2.1,)</versionRange>
-										<goals>
-											<goal>java</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.eclipse.xtext</groupId>
-										<artifactId>xtext-maven-plugin</artifactId>
-										<versionRange>[2.2.0,)</versionRange>
-										<goals>
-											<goal>compile</goal>
-											<goal>testCompile</goal>
-											<goal>generate</goal>
-											<goal>generate-sources</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>com.google.code.maven-replacer-plugin</groupId>
-										<artifactId>replacer</artifactId>
-										<versionRange>[0.1.0,)</versionRange>
+										<groupId>
+											com.google.code.maven-replacer-plugin
+										</groupId>
+										<artifactId>
+											replacer
+										</artifactId>
+										<versionRange>
+											[1.5.3,)
+										</versionRange>
 										<goals>
 											<goal>replace</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore />
+										<ignore></ignore>
 									</action>
 								</pluginExecution>
 								<pluginExecution>
 									<pluginExecutionFilter>
 										<groupId>
-											org.apache.maven.plugins
+											org.codehaus.gmaven
 										</groupId>
 										<artifactId>
-											maven-plugin-plugin
+											groovy-maven-plugin
 										</artifactId>
 										<versionRange>
-											[3.3,)
+											[2.0,)
 										</versionRange>
 										<goals>
-											<goal>helpmojo</goal>
-											<goal>descriptor</goal>
+											<goal>execute</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
@@ -452,129 +280,14 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
-
 			</plugins>
 		</pluginManagement>
 
-
 		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-maven-plugin</artifactId>
-				<extensions>true</extensions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>target-platform-configuration</artifactId>
-				<configuration>
-					<resolver>p2</resolver>
-					<pomDependencies>consider</pomDependencies>
-					<executionEnvironment>${jre.environment}</executionEnvironment>
-					<environments>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86_64</arch>
-						</environment>
-					</environments>
-					<target>
-						<artifact>
-							<groupId>io.sarl</groupId>
-							<artifactId>io.sarl.lang.targetplatform</artifactId>
-							<version>${project.version}</version>
-						</artifact>
-					</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<encoding>${project.build.sourceEncoding}</encoding>
-							<outputDirectory>${basedir}/target/classes/META-INF</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}</directory>
-									<filtering>true</filtering>
-									<includes>
-										<include>**/NOTICE</include>
-										<include>**/LICENSE</include>
-									</includes>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.jasig.maven</groupId>
-				<artifactId>maven-notice-plugin</artifactId>
-				<configuration>
-					<generateChildNotices>true</generateChildNotices>
-					<noticeTemplate>licenses/NOTICE.template</noticeTemplate>
-					<licenseMapping>
-						<param>licenses/license-mappings-sarl.xml</param>
-						<param>licenses/license-mappings.xml</param>
-					</licenseMapping>
-					<!-- <outputDir>src/main/resources/META-INF/</outputDir> -->
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>check</goal>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>${compiler.level}</source>
-					<target>${compiler.level}</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
-			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>2.3</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -587,34 +300,56 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<configuration>
-					<verbose>false</verbose>
-					<addSvnKeyWords>false</addSvnKeyWords>
-					<copyrightOwners>${copyrighters}</copyrightOwners>
-				</configuration>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>first</id>
+						<id>copy-license-resources</id>
+						<phase>validate</phase>
 						<goals>
-							<goal>update-file-header</goal>
+							<goal>copy-resources</goal>
 						</goals>
-						<phase>process-sources</phase>
 						<configuration>
-							<licenseName>apache_v2</licenseName>
-							<includes>
-								<include>*.java</include>
-								<include>*.xml</include>
-							</includes>
-							<excludes>
-								<exclude>*.png</exclude>
-								<exclude>*.txt</exclude>
-								<exclude>NOTICE</exclude>
-								<exclude>**/NOTICE.expected</exclude>
-								<exclude>**/NOTICE.template</exclude>
-								<exclude>LICENSE</exclude>
-							</excludes>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<outputDirectory>${project.basedir}/target/classes/META-INF</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.basedir}</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>NOTICE</include>
+									</includes>
+								</resource>
+<!-- 								<resource> -->
+<!-- 									<directory>${main.basedir}/licenses</directory> -->
+<!-- 									<filtering>false</filtering> -->
+<!-- 									<includes> -->
+<!-- 										<include>LICENSE</include> -->
+<!-- 									</includes> -->
+<!-- 								</resource> -->
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jasig.maven</groupId>
+				<artifactId>maven-notice-plugin</artifactId>
+				<version>1.0.6.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<generateChildNotices>true</generateChildNotices>
+							<noticeTemplate>${main.basedir}/licenses/NOTICE.template</noticeTemplate>
+							<licenseMapping>
+								<param>${main.basedir}/licenses/license-mappings-sarl.xml</param>
+								<param>${main.basedir}/licenses/license-mappings.xml</param>
+							</licenseMapping>
 						</configuration>
 					</execution>
 				</executions>
@@ -625,6 +360,7 @@
 				<artifactId>maven-clean-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>clean-temp-workspace</id>
 						<phase>clean</phase>
 						<goals>
 							<goal>clean</goal>
@@ -657,8 +393,16 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
 						<configuration>
-							<sourcepath>${basedir}/src/;${basedir}/src-gen;${basedir}/xtend-gen;</sourcepath>
+							<sourcepath>${project.basedir}/src/;${project.basedir}/src-gen;${project.basedir}/xtend-gen;</sourcepath>
 							<docencoding>${project.build.sourceEncoding}</docencoding>
 							<encoding>${project.build.sourceEncoding}</encoding>
 							<charset>${project.build.sourceEncoding}</charset>
@@ -707,18 +451,11 @@
 								</tag>
 							</tags>
 						</configuration>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.5</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
@@ -728,12 +465,11 @@
 								</goals>
 							</execution>
 						</executions>
-						<configuration>
-						</configuration>
 					</plugin>
 					<plugin>
 						<groupId>org.arakhne.afc.maven</groupId>
 						<artifactId>tag-replacer</artifactId>
+						<version>11.0</version>
 						<executions>
 							<execution>
 								<id>update-source-tags</id>
@@ -743,8 +479,6 @@
 								</goals>
 							</execution>
 						</executions>
-						<configuration>
-						</configuration>
 					</plugin>
 				</plugins>
 			</build>
@@ -802,6 +536,7 @@
 			</organization>
 			<organizationUrl>http://www.multiagent.fr</organizationUrl>
 			<roles>
+				<role>Co-founder</role>
 				<role>Architect</role>
 				<role>Developer</role>
 			</roles>
@@ -811,24 +546,6 @@
 	<!-- ===================== -->
 	<!-- ==== Repositories === -->
 	<!-- ===================== -->
-
-	<repositories>
-		<repository>
-			<id>org.eclipse.ide.luna</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/luna</url>
-		</repository>
-		<repository>
-			<id>org.eclipse.xtext.update.lastest</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/</url>
-		</repository>
-		<repository>
-			<id>com.googlecode.powermock-osgi</id>
-			<layout>p2</layout>
-			<url>http://powermock-osgi.googlecode.com/svn/updateSite/1.5.4.1</url>
-		</repository>
-	</repositories>
 
 	<!--  The following definition is usefull for retreiving the
 	      SARL Maven plugins since they are not yet available on
@@ -847,11 +564,11 @@
 	<distributionManagement>
 		<repository>
 			<id>local-release-repository</id>
-			<url>file:///var/www/sarl-maven-repository/</url>
+			<url>${local.maven.repository.path}</url>
 		</repository>
 		<snapshotRepository>
 			<id>local-snapshot-repository</id>
-			<url>file:///var/www/sarl-maven-repository/</url>
+			<url>${local.maven.repository.path}</url>
 		</snapshotRepository>
 	</distributionManagement>
 

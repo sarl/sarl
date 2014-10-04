@@ -1,4 +1,0 @@
-Feature names:
-- Eclipse Project SDK
-- Equinox Target Components
-- Maven Integration for Eclipse

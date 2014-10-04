@@ -23,13 +23,19 @@ package io.sarl.maven.compiler;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.ArtifactUtils;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
@@ -250,6 +256,49 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 		result.setType(artifact.getType());
 		result.setVersion(artifact.getVersion());
 		return result;
+	}
+
+	/** Extract the dependencies that are declared for a Maven plugin.
+	 * This function reads the list of the dependencies in the configuration
+	 * resource file with {@link #getConfig(String)}.
+	 * The key given to {@link #getConfig(String)} is
+	 * <code>&lt;configurationKeyPrefix&gt;.dependencies</code>.
+	 *
+	 * @param configurationKeyPrefix - the string that is the prefix in the configuration file.
+	 * @return the list of the dependencies.
+	 * @throws MojoExecutionException if something cannot be done when extracting the dependencies.
+	 */
+	protected Dependency[] getDependenciesFor(String configurationKeyPrefix) throws MojoExecutionException {
+		List<Dependency> dependencies = new ArrayList<>();
+
+		PluginDescriptor currentPlugin = (PluginDescriptor) getPluginContext().get("pluginDescriptor"); //$NON-NLS-1$
+		Map<String, Artifact> artifacts = currentPlugin.getArtifactMap();
+
+		String rawDependencies = getConfig(configurationKeyPrefix + ".dependencies"); //$NON-NLS-1$
+
+		ArtifactRepository repository = this.session.getLocalRepository();
+
+		Pattern pattern = Pattern.compile(
+				"^[ \t\n\r]*([^: \t\n\t]+)[ \t\n\r]*:[ \t\n\r]*([^: \t\n\t]+)[ \t\n\r]*$"); //$NON-NLS-1$
+
+		for (String dependencyId : rawDependencies.split("[;|,]+")) { //$NON-NLS-1$
+			Matcher matcher = pattern.matcher(dependencyId);
+			if (matcher != null && matcher.matches()) {
+				String dependencyGroupId = matcher.group(1);
+				String dependencyArtifactId = matcher.group(2);
+				String dependencyKey = ArtifactUtils.versionlessKey(dependencyGroupId, dependencyArtifactId);
+				Artifact dependencyArtifact = artifacts.get(dependencyKey);
+				if (dependencyArtifact == null) {
+					throw new MojoExecutionException("Cannot find the artifact " + dependencyKey); //$NON-NLS-1$
+				}
+				dependencyArtifact = repository.find(dependencyArtifact);
+				dependencies.add(toDependency(dependencyArtifact));
+			}
+		}
+
+		Dependency[] dependencyArray = new Dependency[dependencies.size()];
+		dependencies.toArray(dependencyArray);
+		return dependencyArray;
 	}
 
 }

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>io.sarl</groupId>
+		<artifactId>io.sarl</artifactId>
+		<version>0.1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>io.sarl.tycho-parent</artifactId>
+	<name>Tycho Module Parent</name>
+	<packaging>pom</packaging>
+
+	<!-- ======================================= -->
+	<!-- ==== Main properties === -->
+	<!-- ======================================= -->
+
+	<properties>
+		<tycho.version>0.21.0</tycho.version>
+		<xtext.version>2.7.2</xtext.version>
+		<jre.environment>JavaSE-1.7</jre.environment>
+	</properties>
+
+	<!-- ======================================= -->
+	<!-- ==== Dependency Management === -->
+	<!-- ======================================= -->
+
+	<dependencyManagement>
+		<!-- SHOULD BE EMPTY -->
+	</dependencyManagement>
+
+	<!-- ======================================= -->
+	<!-- ==== Plugins Dependency Management === -->
+	<!-- ======================================= -->
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<extensions>true</extensions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<resolver>p2</resolver>
+					<pomDependencies>consider</pomDependencies>
+					<executionEnvironment>${jre.environment}</executionEnvironment>
+					<environments>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+					<target>
+						<artifact>
+							<groupId>io.sarl</groupId>
+							<artifactId>io.sarl.lang.targetplatform</artifactId>
+							<version>${project.version}</version>
+						</artifact>
+					</target>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-surefire-plugin</artifactId>
+					<version>${tycho.version}</version>
+					<configuration>
+						<useUIHarness>true</useUIHarness>
+						<useUIThread>false</useUIThread>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-p2-director-plugin</artifactId>
+					<version>${tycho.version}</version>
+					<executions>
+						<execution>
+							<!-- install the product using the p2 director -->
+							<id>materialize-products</id>
+							<goals>
+								<goal>materialize-products</goal>
+							</goals>
+						</execution>
+						<execution>
+							<!-- create zip file with the installed product -->
+							<id>archive-products</id>
+							<goals>
+								<goal>archive-products</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+	</build>
+
+	<!-- ===================== -->
+	<!-- ==== Repositories === -->
+	<!-- ===================== -->
+
+	<repositories>
+		<repository>
+			<id>org.eclipse.ide.luna</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/luna</url>
+		</repository>
+		<repository>
+			<id>org.eclipse.xtext.update.lastest</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/</url>
+		</repository>
+		<repository>
+			<id>com.googlecode.powermock-osgi</id>
+			<layout>p2</layout>
+			<url>http://powermock-osgi.googlecode.com/svn/updateSite/1.5.4.1</url>
+		</repository>
+	</repositories>
+
+</project>

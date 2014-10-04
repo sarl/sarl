@@ -1,21 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>io.sarl.maven</groupId>
 		<artifactId>io.sarl.maven</artifactId>
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
 
-	<packaging>pom</packaging>
-
 	<artifactId>io.sarl.maven.sdk</artifactId>
-
+	<packaging>pom</packaging>
 	<name>SDK for Maven</name>
 	<description>Provides all necessary dependencies to develop a MAS using SARL.</description>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>io.sarl.lang</groupId>
 			<artifactId>io.sarl.lang.core</artifactId>
@@ -57,12 +55,12 @@
  		<dependency> 
  			<groupId>org.eclipse</groupId> 
  			<artifactId>osgi</artifactId> 
-			<version>3.10.0-v20140606-1445</version>
+			<version>${osgi.nls.version}</version>
  		</dependency> 
  		<dependency> 
  			<groupId>com.google.guava</groupId> 
  			<artifactId>guava</artifactId> 
-			<version>${guava.version}</version>
+			<version>17.0</version>
  		</dependency> 
 	</dependencies>
 </project>

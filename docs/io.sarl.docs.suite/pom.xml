@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<artifactId>io.sarl.docs</artifactId>
 		<groupId>io.sarl</groupId>
@@ -11,11 +12,10 @@
 	<groupId>io.sarl.docs</groupId>
 	<artifactId>io.sarl.docs.suite</artifactId>
 	<packaging>jar</packaging>
-
 	<name>Documentation Suite</name>
 
 	<properties>
-		<!-- needed for checkstyle/findbugs -->
+		<!-- needed for checkstyle/findbugs and other plugins -->
 		<main.basedir>${project.basedir}/../..</main.basedir>
 	</properties>
 
@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>vmutils</artifactId>
-			<version>${afc.version}</version>
+			<version>11.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -276,6 +276,7 @@
 			<plugin>
 				<groupId>org.jnario</groupId>
 				<artifactId>jnario-maven-plugin</artifactId>
+				<version>${jnario.version}</version>
 				<executions>
 					<execution>
 						<phase>generate-test-sources</phase>
@@ -307,11 +308,13 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.jnario</groupId>
 					<artifactId>report</artifactId>
+					<version>${jnario.report.version}</version>
 					<executions>
 						<execution>
 							<goals>
@@ -336,6 +339,37 @@
 					</executions>
 					<configuration>
 						<sourceDirectory>${project.basedir}/target/generated-test-sources/reports-jnario</sourceDirectory>
+					</configuration>
+				</plugin>
+				
+				<!-- This plugin's configuration is used to store Eclipse m2e settings only.
+				     It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.jnario</groupId>
+										<artifactId>
+											jnario-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.0.0,)
+										</versionRange>
+										<goals>
+											<goal>testCompile</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
 			</plugins>

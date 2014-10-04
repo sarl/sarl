@@ -14,15 +14,24 @@
 
 	<name>Language UI Library Tests</name>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
-				<configuration>
-					<useUIHarness>true</useUIHarness>
-					<useUIThread>false</useUIThread>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
