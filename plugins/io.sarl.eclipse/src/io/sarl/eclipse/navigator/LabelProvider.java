@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.navigator;
 
-import io.sarl.eclipse.util.PluginUtil;
+import io.sarl.eclipse.SARLEclipsePlugin;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -59,25 +59,25 @@ public class LabelProvider implements ILabelProvider {
 
 	@Override
 	public void addListener(ILabelProviderListener listener) {
-		PluginUtil.logDebugMessage(
+		SARLEclipsePlugin.logDebugMessage(
 				"LabelProvider.addListener: " + listener.getClass().getName()); //$NON-NLS-1$
 	}
 
 	@Override
 	public void dispose() {
-		PluginUtil.logDebugMessage("LabelProvider.dispose"); //$NON-NLS-1$
+		SARLEclipsePlugin.logDebugMessage("LabelProvider.dispose"); //$NON-NLS-1$
 	}
 
 	@Override
 	public boolean isLabelProperty(Object element, String property) {
-		PluginUtil.logDebugMessage(
+		SARLEclipsePlugin.logDebugMessage(
 				"LabelProvider.isLabelProperty: " + element.getClass().getName()); //$NON-NLS-1$
 		return false;
 	}
 
 	@Override
 	public void removeListener(ILabelProviderListener listener) {
-		PluginUtil.logDebugMessage(
+		SARLEclipsePlugin.logDebugMessage(
 				"LabelProvider.removeListener: " + listener.getClass().getName()); //$NON-NLS-1$
 	}
 

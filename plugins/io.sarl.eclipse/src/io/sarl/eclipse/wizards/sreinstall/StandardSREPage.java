@@ -20,11 +20,11 @@
  */
 package io.sarl.eclipse.wizards.sreinstall;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.runtime.SREException;
 import io.sarl.eclipse.runtime.StandardSREInstall;
-import io.sarl.eclipse.util.PluginUtil;
 
 import java.io.File;
 import java.text.MessageFormat;
@@ -74,7 +74,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 	/**
 	 */
 	public StandardSREPage() {
-		super(PluginUtil.EMPTY_STRING);
+		super(SARLEclipsePlugin.EMPTY_STRING);
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		if (path != null) {
 			this.sreLibraryTextField.setText(path.removeTrailingSeparator().lastSegment());
 		} else {
-			this.sreLibraryTextField.setText(PluginUtil.EMPTY_STRING);
+			this.sreLibraryTextField.setText(SARLEclipsePlugin.EMPTY_STRING);
 		}
 		setPageStatus(validate());
 		this.sreNameTextField.setText(this.workingCopy.getName());
@@ -222,7 +222,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		if (path != null) {
 			this.sreLibraryTextField.setText(path.removeTrailingSeparator().lastSegment());
 		} else {
-			this.sreLibraryTextField.setText(PluginUtil.EMPTY_STRING);
+			this.sreLibraryTextField.setText(SARLEclipsePlugin.EMPTY_STRING);
 		}
 		//
 		String name = this.workingCopy.getNameNoDefault();

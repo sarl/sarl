@@ -20,10 +20,10 @@
  */
 package io.sarl.eclipse.wizards.sreinstall;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SREException;
 import io.sarl.eclipse.runtime.StandardSREInstall;
-import io.sarl.eclipse.util.PluginUtil;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -99,7 +99,7 @@ public abstract class SREInstallWizard extends Wizard {
 	 */
 	public AbstractSREInstallPage getPage(ISREInstall sre) {
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-				PluginUtil.PLUGIN_ID,
+				SARLEclipsePlugin.PLUGIN_ID,
 				EXTENSION_POINT_SRE_INSTALL_PAGES);
 		if (sre != null && extensionPoint != null) {
 			IConfigurationElement firstTypeMatching = null;
@@ -112,7 +112,7 @@ public abstract class SREInstallWizard extends Wizard {
 						page.setExistingNames(this.names);
 						return page;
 					} catch (CoreException e) {
-						PluginUtil.log(e);
+						SARLEclipsePlugin.log(e);
 					}
 				} else if (firstTypeMatching == null
 						&& isInstance(info.getAttribute("sreInstallType"), sre)) { //$NON-NLS-1$
@@ -127,7 +127,7 @@ public abstract class SREInstallWizard extends Wizard {
 					page.setExistingNames(this.names);
 					return page;
 				} catch (CoreException e) {
-					PluginUtil.log(e);
+					SARLEclipsePlugin.log(e);
 				}
 			}
 		}
@@ -148,7 +148,7 @@ public abstract class SREInstallWizard extends Wizard {
 				Class<?> cType = Class.forName(classname);
 				return cType.isInstance(sre);
 			} catch (Throwable e) {
-				PluginUtil.log(e);
+				SARLEclipsePlugin.log(e);
 			}
 		}
 		return false;

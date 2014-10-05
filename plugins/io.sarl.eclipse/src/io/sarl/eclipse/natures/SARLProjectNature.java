@@ -35,11 +35,6 @@ import org.eclipse.core.runtime.CoreException;
  */
 public class SARLProjectNature implements IProjectNature {
 
-	/**
-	 * ID of this nature.
-	 */
-	public static final String NATURE_ID = "io.sarl.eclipse.SARLProjectNature"; //$NON-NLS-1$
-
 	private IProject project;
 
 	@Override

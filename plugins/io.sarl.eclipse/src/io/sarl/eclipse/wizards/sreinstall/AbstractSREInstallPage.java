@@ -20,8 +20,8 @@
  */
 package io.sarl.eclipse.wizards.sreinstall;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.util.PluginUtil;
 
 import java.text.MessageFormat;
 
@@ -47,7 +47,7 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 
 	private String[] existingNames;
 
-	private IStatus status = PluginUtil.createOkStatus();
+	private IStatus status = SARLEclipsePlugin.createOkStatus();
 
 	/**
 	 * Constructs a new page with the given page name.
@@ -117,15 +117,15 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 * @return the validation status.
 	 */
 	protected IStatus validateNameAgainstOtherSREs(String name) {
-		IStatus nameStatus = PluginUtil.createOkStatus();
+		IStatus nameStatus = SARLEclipsePlugin.createOkStatus();
 		if (isDuplicateName(name)) {
-			nameStatus = PluginUtil.createStatus(IStatus.ERROR,
+			nameStatus = SARLEclipsePlugin.createStatus(IStatus.ERROR,
 					ISREInstall.CODE_NAME,
 					Messages.SREInstallWizard_1);
 		} else {
 			IStatus s = ResourcesPlugin.getWorkspace().validateName(name, IResource.FILE);
 			if (!s.isOK()) {
-				nameStatus = PluginUtil.createStatus(IStatus.ERROR,
+				nameStatus = SARLEclipsePlugin.createStatus(IStatus.ERROR,
 						ISREInstall.CODE_NAME,
 						MessageFormat.format(Messages.SREInstallWizard_2, s.getMessage()));
 			}
@@ -142,7 +142,7 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 * @param status - the new status.
 	 */
 	protected void setPageStatus(IStatus status) {
-		this.status = status == null ? PluginUtil.createOkStatus() : status;
+		this.status = status == null ? SARLEclipsePlugin.createOkStatus() : status;
 	}
 
 	/**

@@ -20,7 +20,8 @@
  */
 package io.sarl.eclipse.wizards.newproject;
 
-import io.sarl.eclipse.util.PluginUtil;
+import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.lang.ui.preferences.SARLProjectPreferences;
 
 import java.io.File;
@@ -70,12 +71,7 @@ import org.eclipse.jdt.ui.wizards.JavaCapabilityConfigurationPage;
 import org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageTwo;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.actions.WorkspaceModifyDelegatingOperation;
-import org.eclipse.xtext.builder.EclipseOutputConfigurationProvider;
-import org.eclipse.xtext.builder.preferences.BuilderPreferenceAccess;
-import org.eclipse.xtext.generator.OutputConfiguration;
-import org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock;
 import org.eclipse.xtext.xbase.lib.Pair;
 
 /**
@@ -129,8 +125,8 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 
 		setTitle(Messages.SARLProjectNewWizard_3);
 		setDescription(Messages.SARLProjectNewWizard_2);
-		setImageDescriptor(PluginUtil.getImageDescriptor(
-				PluginUtil.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
+		setImageDescriptor(SARLEclipsePlugin.getImageDescriptor(
+				SARLConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
 
 	@Override
@@ -389,7 +385,7 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 			} else {
 				ee = e;
 			}
-			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR, ee));
+			throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.ERROR, ee));
 		} finally {
 			theMonitor.done();
 		}
@@ -418,7 +414,7 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 				}
 			}
 		} catch (CoreException e) {
-			PluginUtil.log(e);
+			SARLEclipsePlugin.log(e);
 		}
 	}
 
@@ -460,7 +456,7 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 				deleted.mkdir(EFS.NONE, null);
 			}
 		} catch (CoreException e) {
-			PluginUtil.log(e);
+			SARLEclipsePlugin.log(e);
 		}
 	}
 
@@ -563,8 +559,8 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 	private IPath findGenerationSourcePath() {
 		IPath projectPath = this.fCurrProject.getFullPath();
 		IPath p;
-		IPath generatedSourceFolder = Path.fromPortableString(Config.FOLDER_SOURCE_GENERATED);
-		IPath deprecatedGeneratedSourceFolder = Path.fromPortableString(Config.FOLDER_SOURCE_GENERATED_XTEXT);
+		IPath generatedSourceFolder = Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED);
+		IPath deprecatedGeneratedSourceFolder = Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED_XTEXT);
 		for (IClasspathEntry entry : getRawClassPath()) {
 			p = entry.getPath();
 			p = p.removeFirstSegments(p.matchingFirstSegments(projectPath));
@@ -594,25 +590,11 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 
 			IPath generationFolder = findGenerationSourcePath();
 			if (generationFolder != null) {
-
-				//
-				// SARL specific configuration
-				//
-
-				// Retreive the SARL preference page for the project
-				IPreferenceStore preferenceStore = SARLProjectPreferences.getPreferencesFor(this.fCurrProject);
-
-				// Force to use a specific configuration for the SARL
-				preferenceStore.setValue(OptionsConfigurationBlock.IS_PROJECT_SPECIFIC, true);
-
-				// Initialize the project configurations
-				for (OutputConfiguration projectConfiguration
-						: SARLProjectPreferences.getXtextConfigurationsFor(this.fCurrProject)) {
-					String directoryKey = BuilderPreferenceAccess.getKey(
-							projectConfiguration,
-							EclipseOutputConfigurationProvider.OUTPUT_DIRECTORY);
-					preferenceStore.putValue(directoryKey, generationFolder.toOSString());
-				}
+				SARLProjectPreferences.setSpecificSARLConfigurationFor(
+						this.fCurrProject, generationFolder);
+			} else {
+				SARLProjectPreferences.setSystemSARLConfigurationFor(
+						this.fCurrProject);
 			}
 
 			String newProjectCompliance = this.fKeepContent ? null : this.fFirstPage.getCompilerCompliance();

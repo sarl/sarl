@@ -20,9 +20,10 @@
  */
 package io.sarl.eclipse.wizards.newproject;
 
+import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
 import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.util.PluginUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -88,8 +89,8 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 	 * @param pageTwo - reference to the second page of the wizard.
 	 */
 	public SARLProjectNewWizard(MainProjectPage pageOne, BuildSettingPage pageTwo) {
-		setDefaultPageImageDescriptor(PluginUtil.getImageDescriptor(
-				PluginUtil.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
+		setDefaultPageImageDescriptor(SARLEclipsePlugin.getImageDescriptor(
+				SARLConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());
 		setWindowTitle(Messages.SARLProjectNewWizard_0);
 
@@ -192,9 +193,9 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 		try {
 			addNatures(javaProject.getProject());
 		} catch (JavaModelException e) {
-			PluginUtil.log(e);
+			SARLEclipsePlugin.log(e);
 		} catch (CoreException e) {
-			PluginUtil.log(e);
+			SARLEclipsePlugin.log(e);
 		}
 
 		// Set the SRE configuration
@@ -224,8 +225,8 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 	private static void addNatures(IProject project) throws CoreException {
 		final IProjectDescription description = project.getDescription();
 		final List<String> natures = new ArrayList<>(Arrays.asList(description.getNatureIds()));
-		natures.add(0, io.sarl.eclipse.natures.SARLProjectNature.NATURE_ID);
-		natures.add(1, Config.XTEXT_NATURE_ID);
+		natures.add(0, SARLConfig.NATURE_ID);
+		natures.add(1, SARLConfig.XTEXT_NATURE_ID);
 		// natures.add(2, JavaCore.NATURE_ID); not necessary since the project is already a java project
 
 		final String[] newNatures = natures.toArray(new String[natures.size()]);
@@ -238,7 +239,7 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 			project.setDescription(description, monitor);
 		} else {
 			JavaPlugin.logErrorStatus(
-					"Cannot associate one of the SARL or Xtext natures to the project", //$NON-NLS-1$
+					Messages.SARLProjectNewWizard_4,
 					status);
 		}
 	}

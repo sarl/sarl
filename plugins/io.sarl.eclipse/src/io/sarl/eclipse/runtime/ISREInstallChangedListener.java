@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.runtime;
 
-import io.sarl.eclipse.util.PluginUtil;
+import io.sarl.eclipse.SARLEclipsePlugin;
 
 import java.util.EventListener;
 
@@ -43,50 +43,50 @@ public interface ISREInstallChangedListener extends EventListener {
 	 * Property constant indicating the name associated
 	 * with a SRE install has changed.
 	 */
-	String PROPERTY_NAME = PluginUtil.PLUGIN_ID + ".PROPERTY_NAME"; //$NON-NLS-1$
+	String PROPERTY_NAME = SARLEclipsePlugin.PLUGIN_ID + ".PROPERTY_NAME"; //$NON-NLS-1$
 
 	/**
 	 * Property constant indicating the minimal SARL version associated
 	 * with a SRE install has changed.
 	 */
-	String PROPERTY_MINIMAL_SARL_VERSION = PluginUtil.PLUGIN_ID
+	String PROPERTY_MINIMAL_SARL_VERSION = SARLEclipsePlugin.PLUGIN_ID
 			+ ".PROPERTY_MINIMAL_SARL_VERSION"; //$NON-NLS-1$
 
 	/**
 	 * Property constant indicating the maximal SARL version associated
 	 * with a SRE install has changed.
 	 */
-	String PROPERTY_MAXIMAL_SARL_VERSION = PluginUtil.PLUGIN_ID
+	String PROPERTY_MAXIMAL_SARL_VERSION = SARLEclipsePlugin.PLUGIN_ID
 			+ ".PROPERTY_MAXIMAL_SARL_VERSION"; //$NON-NLS-1$
 
 	/**
 	 * Property constant indicating the libraries in the SRE.
 	 */
-	String PROPERTY_LIBRARY_LOCATIONS = PluginUtil.PLUGIN_ID
+	String PROPERTY_LIBRARY_LOCATIONS = SARLEclipsePlugin.PLUGIN_ID
 			+ ".PROPERTY_LIBRARY_LOCATIONS"; //$NON-NLS-1$
 
 	/**
 	 * Property constant indicating the VM-specific attributes.
 	 */
-	String PROPERTY_VM_ATTRIBUTES = PluginUtil.PLUGIN_ID
+	String PROPERTY_VM_ATTRIBUTES = SARLEclipsePlugin.PLUGIN_ID
 			+ ".PROPERTY_VM_ATTRIBUTES"; //$NON-NLS-1$
 
 	/**
 	 * Property constant indicating the associated JAR file.
 	 */
-	String PROPERTY_JAR_FILE = PluginUtil.PLUGIN_ID
+	String PROPERTY_JAR_FILE = SARLEclipsePlugin.PLUGIN_ID
 			+ ".PROPERTY_JAR_FILE"; //$NON-NLS-1$
 
 	/**
 	 * Property constant indicating the arguments for the VM.
 	 */
-	String PROPERTY_VM_ARGUMENTS = PluginUtil.PLUGIN_ID
+	String PROPERTY_VM_ARGUMENTS = SARLEclipsePlugin.PLUGIN_ID
 			+ ".PROPERTY_VM_ARGUMENTS"; //$NON-NLS-1$
 
 	/**
 	 * Property constant indicating the arguments for the program.
 	 */
-	String PROPERTY_PROGRAM_ARGUMENTS = PluginUtil.PLUGIN_ID
+	String PROPERTY_PROGRAM_ARGUMENTS = SARLEclipsePlugin.PLUGIN_ID
 			+ ".PROPERTY_PROGRAM_ARGUMENTS"; //$NON-NLS-1$
 
 	/**

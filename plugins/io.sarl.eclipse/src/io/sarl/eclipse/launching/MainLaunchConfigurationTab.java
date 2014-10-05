@@ -20,7 +20,8 @@
  */
 package io.sarl.eclipse.launching;
 
-import io.sarl.eclipse.util.PluginUtil;
+import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
@@ -88,7 +89,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 	@Override
 	public Image getImage() {
 		if (this.image == null) {
-			this.image = PluginUtil.getImage(PluginUtil.SARL_LOGO_IMAGE);
+			this.image = SARLEclipsePlugin.getImage(SARLConfig.SARL_LOGO_IMAGE);
 		}
 		return this.image;
 	}
@@ -156,13 +157,13 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 	 * @param config - the config to load the agent name from
 	 */
 	protected void updateAgentNameFromConfig(ILaunchConfiguration config) {
-		String agentName = PluginUtil.EMPTY_STRING;
+		String agentName = SARLEclipsePlugin.EMPTY_STRING;
 		try {
 			agentName = config.getAttribute(
-					LaunchConfigurationConstants.ATTR_AGENT_NAME,
-					PluginUtil.EMPTY_STRING);
+					SARLConfig.ATTR_AGENT_NAME,
+					SARLEclipsePlugin.EMPTY_STRING);
 		} catch (CoreException ce) {
-			PluginUtil.log(ce);
+			SARLEclipsePlugin.log(ce);
 		}
 		this.agentNameTextField.setText(agentName);
 	}
@@ -197,7 +198,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 			setErrorMessage(this.lastAgentNameError);
 			return false;
 		}
-		this.lastAgentNameError = PluginUtil.EMPTY_STRING;
+		this.lastAgentNameError = SARLEclipsePlugin.EMPTY_STRING;
 		return true;
 	}
 
@@ -241,7 +242,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 				IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME,
 				this.fProjText.getText().trim());
 		config.setAttribute(
-				LaunchConfigurationConstants.ATTR_AGENT_NAME,
+				SARLConfig.ATTR_AGENT_NAME,
 				this.agentNameTextField.getText().trim());
 		mapResources(config);
 	}
@@ -254,7 +255,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 		} else {
 			config.setAttribute(
 					IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME,
-					PluginUtil.EMPTY_STRING);
+					SARLEclipsePlugin.EMPTY_STRING);
 		}
 		initializeAgentName(javaElement, config);
 	}
@@ -287,9 +288,9 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 					name = types[0].getFullyQualifiedName();
 				}
 			} catch (InterruptedException ie) {
-				PluginUtil.log(ie);
+				SARLEclipsePlugin.log(ie);
 			} catch (InvocationTargetException ite) {
-				PluginUtil.log(ite);
+				SARLEclipsePlugin.log(ite);
 			}
 		}
 
@@ -307,7 +308,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 		String name = extractNameFromJavaElement(javaElement);
 
 		// Set the attribute
-		config.setAttribute(LaunchConfigurationConstants.ATTR_AGENT_NAME, name);
+		config.setAttribute(SARLConfig.ATTR_AGENT_NAME, name);
 
 		// Rename the launch configuration
 		if (name.length() > 0) {
@@ -329,7 +330,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 				try {
 					elements = model.getJavaProjects();
 				} catch (JavaModelException e) {
-					PluginUtil.log(e);
+					SARLEclipsePlugin.log(e);
 				}
 			}
 		} else {

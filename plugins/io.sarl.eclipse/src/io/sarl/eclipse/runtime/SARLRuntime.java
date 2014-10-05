@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.runtime;
 
-import io.sarl.eclipse.util.PluginUtil;
+import io.sarl.eclipse.SARLEclipsePlugin;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -97,7 +97,7 @@ public final class SARLRuntime {
 	/**
 	 * Preference key for the String of XML that defines all installed SREs.
 	 */
-	public static final String PREF_SRE_XML = PluginUtil.PLUGIN_ID + ".runtime.PREF_SRE_XML"; //$NON-NLS-1$
+	public static final String PREF_SRE_XML = SARLEclipsePlugin.PLUGIN_ID + ".runtime.PREF_SRE_XML"; //$NON-NLS-1$
 
 	/**
 	 * SRE change listeners.
@@ -385,8 +385,8 @@ public final class SARLRuntime {
 	 * @throws CoreException if trying to save the current state of SREs encounters a problem
 	 */
 	public static void saveSREConfiguration(IProgressMonitor monitor) throws CoreException {
-		PluginUtil.getPreferences().put(PREF_SRE_XML, getSREsAsXML());
-		PluginUtil.savePreferences();
+		SARLEclipsePlugin.getPreferences().put(PREF_SRE_XML, getSREsAsXML());
+		SARLEclipsePlugin.savePreferences();
 	}
 
 	/**
@@ -395,18 +395,18 @@ public final class SARLRuntime {
 	 * @throws CoreException if trying to save the current state of SREs encounters a problem
 	 */
 	public static void clearSREConfiguration() throws CoreException {
-		PluginUtil.getPreferences().remove(PREF_SRE_XML);
-		PluginUtil.savePreferences();
+		SARLEclipsePlugin.getPreferences().remove(PREF_SRE_XML);
+		SARLEclipsePlugin.savePreferences();
 	}
 
 	/**
 	 * Initializes SRE extensions.
 	 */
 	private static void initializeSREExtensions() {
-		MultiStatus status = new MultiStatus(PluginUtil.PLUGIN_ID,
+		MultiStatus status = new MultiStatus(SARLEclipsePlugin.PLUGIN_ID,
 				IStatus.OK, "Exceptions occurred", null);  //$NON-NLS-1$
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-				PluginUtil.PLUGIN_ID, EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT);
+				SARLEclipsePlugin.PLUGIN_ID, EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT);
 		if (extensionPoint != null) {
 			Object obj;
 			for (IConfigurationElement element : extensionPoint.getConfigurationElements()) {
@@ -417,7 +417,7 @@ public final class SARLRuntime {
 						platformSREInstalls.add(sre.getId());
 						ALL_SRE_INSTALLS.put(sre.getId(), sre);
 					} else {
-						PluginUtil.logErrorMessage(
+						SARLEclipsePlugin.logErrorMessage(
 								"Cannot instance extension point: " + element.getName()); //$NON-NLS-1$
 					}
 				} catch (CoreException e) {
@@ -426,7 +426,7 @@ public final class SARLRuntime {
 			}
 			if (!status.isOK()) {
 				//only happens on a CoreException
-				PluginUtil.log(status);
+				SARLEclipsePlugin.log(status);
 			}
 		}
 	}
@@ -461,7 +461,7 @@ public final class SARLRuntime {
 				return new String(baos.toByteArray());
 			}
 		} catch (Throwable e) {
-			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR, e));
+			throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.ERROR, e));
 		}
 	}
 
@@ -477,7 +477,7 @@ public final class SARLRuntime {
 			Element root = parseXML(xml, false);
 			sre.setFromXML(root);
 		} catch (Throwable e) {
-			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR, e));
+			throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.ERROR, e));
 		}
 	}
 
@@ -505,7 +505,7 @@ public final class SARLRuntime {
 				return new String(baos.toByteArray());
 			}
 		} catch (Throwable e) {
-			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR, e));
+			throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.ERROR, e));
 		}
 	}
 
@@ -582,7 +582,7 @@ public final class SARLRuntime {
 		//		} catch (CoreException e1) {
 		//			e1.printStackTrace();
 		//		}
-		String rawXml = PluginUtil.getPreferences().get(PREF_SRE_XML, ""); //$NON-NLS-1$
+		String rawXml = SARLEclipsePlugin.getPreferences().get(PREF_SRE_XML, ""); //$NON-NLS-1$
 
 		try {
 			Element config = null;
@@ -591,7 +591,7 @@ public final class SARLRuntime {
 				config = parseXML(rawXml, true);
 			} else {
 				// Otherwise, look for the old file that previously held the SRE definitions
-				IPath stateLocation = PluginUtil.getStateLocation();
+				IPath stateLocation = SARLEclipsePlugin.getDefault().getStateLocation();
 				IPath stateFile = stateLocation.append("sreConfiguration.xml"); //$NON-NLS-1$
 				File file = stateFile.toFile();
 				if (file.exists()) {
@@ -601,7 +601,7 @@ public final class SARLRuntime {
 					try (InputStream fileInputStream = new BufferedInputStream(new FileInputStream(file))) {
 						config = parseXML(fileInputStream, true);
 					} catch (IOException e) {
-						PluginUtil.log(e);
+						SARLEclipsePlugin.log(e);
 					}
 				}
 			}
@@ -624,7 +624,7 @@ public final class SARLRuntime {
 									try {
 										sre.setFromXML(element);
 									} catch (IOException e) {
-										PluginUtil.log(e);
+										SARLEclipsePlugin.log(e);
 									}
 									ALL_SRE_INSTALLS.put(id, sre);
 									if (isPlatform) {
@@ -639,19 +639,19 @@ public final class SARLRuntime {
 									try {
 										sre.setFromXML(element);
 									} catch (IOException e) {
-										PluginUtil.log(e);
+										SARLEclipsePlugin.log(e);
 									}
 								}
 							}
 						}
 					} catch (IOException e) {
-						PluginUtil.log(e);
+						SARLEclipsePlugin.log(e);
 					}
 				}
 				return defaultId;
 			}
 		} catch (IOException e) {
-			PluginUtil.log(e);
+			SARLEclipsePlugin.log(e);
 		}
 		return null;
 	}
@@ -745,7 +745,7 @@ public final class SARLRuntime {
 		try {
 			saveSREConfiguration(null);
 		} catch (CoreException e) {
-			PluginUtil.log(e);
+			SARLEclipsePlugin.log(e);
 		}
 	}
 

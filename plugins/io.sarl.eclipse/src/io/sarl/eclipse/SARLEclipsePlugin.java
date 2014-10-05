@@ -18,13 +18,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.util;
+package io.sarl.eclipse;
 
-import org.eclipse.core.internal.runtime.InternalPlatform;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.ILog;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -32,7 +30,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.internal.debug.Debug;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -47,7 +44,7 @@ import com.google.common.base.Strings;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class PluginUtil {
+public final class SARLEclipsePlugin extends Plugin {
 
 	/** Empty string.
 	 */
@@ -57,26 +54,20 @@ public final class PluginUtil {
 	 */
 	public static final String PLUGIN_ID = "io.sarl.eclipse"; //$NON-NLS-1$
 
-	/** Filename of the image that may be used at
-	 * the top of the wiazrd dialog when creating new SARL project.
-	 */
-	public static final String NEW_PROJECT_WIZARD_DIALOG_IMAGE = "icons/sarl_new_project_dialog.png"; //$NON-NLS-1$
+	private static SARLEclipsePlugin instance;
 
-	/** Filename of the image that may be used at
-	 * the top of the wiazrd dialog when creating new SARL file.
+	/**
 	 */
-	public static final String NEW_FILE_WIZARD_DIALOG_IMAGE = "icons/sarl_new_file_dialog.png"; //$NON-NLS-1$
+	public SARLEclipsePlugin() {
+		instance = this;
+	}
 
-	/** Filename of the image that may be used for representing a SARL project.
+	/** Replies the instance of the plugin.
+	 *
+	 * @return the default plugin instance.
 	 */
-	public static final String SARL_PROJECT_IMAGE = "icons/sarl_project_16.png"; //$NON-NLS-1$
-
-	/** Filename of the image that is the SARL logo with an icon size (16x16).
-	 */
-	public static final String SARL_LOGO_IMAGE = "icons/sarl_logo_16.png"; //$NON-NLS-1$
-
-	private PluginUtil() {
-		//
+	public static SARLEclipsePlugin getDefault() {
+		return instance;
 	}
 
 	/** Replies the image stored in the current Eclipse plugin.
@@ -94,7 +85,7 @@ public final class PluginUtil {
 	 * @return the image descriptor.
 	 */
 	public static ImageDescriptor getImageDescriptor(String imagePath) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin(PluginUtil.PLUGIN_ID, imagePath);
+		return AbstractUIPlugin.imageDescriptorFromPlugin(SARLEclipsePlugin.PLUGIN_ID, imagePath);
 	}
 
 	/** Create a status.
@@ -184,40 +175,13 @@ public final class PluginUtil {
 		return new Status(severity, PLUGIN_ID, message);
 	}
 
-	/** Replies the bundle of the plugin.
-	 *
-	 * @return the bundle.
-	 */
-	public static Bundle getBundle() {
-		InternalPlatform platform = InternalPlatform.getDefault();
-		return platform.getBundle(PLUGIN_ID);
-	}
-
-	/** Returns the read/write location in which the given bundle can manage private state.
-	 *
-	 * @return the state location.
-	 */
-	public static IPath getStateLocation() {
-		InternalPlatform platform = InternalPlatform.getDefault();
-		return platform.getStateLocation(getBundle());
-	}
-
-	/** Replies the logger of the plugin.
-	 *
-	 * @return the logger.
-	 */
-	public static ILog getLog() {
-		InternalPlatform platform = InternalPlatform.getDefault();
-		return platform.getLog(getBundle());
-	}
-
 	/**
 	 * Logs the specified status with this plug-in's log.
 	 *
 	 * @param status status to log
 	 */
 	public static void log(IStatus status) {
-		getLog().log(status);
+		getDefault().getLog().log(status);
 	}
 
 	/**

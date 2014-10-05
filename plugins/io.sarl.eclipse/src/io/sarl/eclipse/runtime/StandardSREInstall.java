@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.runtime;
 
-import io.sarl.eclipse.util.PluginUtil;
+import io.sarl.eclipse.SARLEclipsePlugin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -72,8 +72,8 @@ import com.google.common.base.Strings;
 public class StandardSREInstall extends AbstractSREInstall {
 
 	private IPath jarFile;
-	private String vmArguments = PluginUtil.EMPTY_STRING;
-	private String programArguments = PluginUtil.EMPTY_STRING;
+	private String vmArguments = SARLEclipsePlugin.EMPTY_STRING;
+	private String programArguments = SARLEclipsePlugin.EMPTY_STRING;
 
 	private String manifestMainClass;
 	private String manifestName;
@@ -272,14 +272,14 @@ public class StandardSREInstall extends AbstractSREInstall {
 		try {
 			IPath path = getJarFile();
 			if (path == null) {
-				return PluginUtil.createStatus(IStatus.ERROR, CODE_SOURCE, Messages.StandardSREInstall_2);
+				return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_SOURCE, Messages.StandardSREInstall_2);
 			}
 			File file = path.toFile();
 			if (file == null || !file.canRead()) {
 				throw new FileNotFoundException(Messages.StandardSREInstall_3);
 			}
 		} catch (Throwable e) {
-			return PluginUtil.createStatus(IStatus.ERROR, CODE_GENERAL, e);
+			return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_GENERAL, e);
 		}
 		return super.getValidity();
 	}
@@ -356,7 +356,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 									javadoc);
 							locations.add(location);
 						} else {
-							PluginUtil.logErrorMessage("Invalid XML format for the SRE " + getId()); //$NON-NLS-1$
+							SARLEclipsePlugin.logErrorMessage("Invalid XML format for the SRE " + getId()); //$NON-NLS-1$
 						}
 					}
 				}

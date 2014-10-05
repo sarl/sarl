@@ -20,10 +20,11 @@
  */
 package io.sarl.eclipse.wizards.newproject;
 
+import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SREConfigurationBlock;
-import io.sarl.eclipse.util.PluginUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -173,8 +174,8 @@ public class MainProjectPage extends WizardPage {
 
 		setTitle(Messages.SARLProjectNewWizard_3);
 		setDescription(Messages.SARLProjectNewWizard_1);
-		setImageDescriptor(PluginUtil.getImageDescriptor(
-				PluginUtil.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
+		setImageDescriptor(SARLEclipsePlugin.getImageDescriptor(
+				SARLConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
 
 	/**
@@ -398,13 +399,13 @@ public class MainProjectPage extends WizardPage {
 		IPath sourceFolderPath = new Path(getProjectName()).makeAbsolute();
 
 		IPath srcJava = sourceFolderPath.append(
-				Path.fromPortableString(Config.FOLDER_SOURCE_JAVA));
+				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_JAVA));
 		IPath srcSarl = sourceFolderPath.append(
-				Path.fromPortableString(Config.FOLDER_SOURCE_SARL));
+				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_SARL));
 		IPath srcGeneratedSources = sourceFolderPath.append(
-				Path.fromPortableString(Config.FOLDER_SOURCE_GENERATED));
+				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED));
 		IPath srcResources = sourceFolderPath.append(
-				Path.fromPortableString(Config.FOLDER_RESOURCES));
+				Path.fromPortableString(SARLConfig.FOLDER_RESOURCES));
 
 		return Arrays.asList(
 				JavaCore.newSourceEntry(srcJava.makeAbsolute()),
@@ -424,7 +425,7 @@ public class MainProjectPage extends WizardPage {
 		IPath outputLocationPath = new Path(getProjectName()).makeAbsolute();
 
 		outputLocationPath = outputLocationPath.append(
-				Path.fromPortableString(Config.FOLDER_BIN));
+				Path.fromPortableString(SARLConfig.FOLDER_BIN));
 
 		return outputLocationPath;
 	}
@@ -1409,7 +1410,7 @@ public class MainProjectPage extends WizardPage {
 					String canonicalPath = projectLocation.toFile().getCanonicalPath();
 					projectLocation = new Path(canonicalPath);
 				} catch (IOException e) {
-					PluginUtil.log(e);
+					SARLEclipsePlugin.log(e);
 				}
 
 				String existingName = projectLocation.lastSegment();

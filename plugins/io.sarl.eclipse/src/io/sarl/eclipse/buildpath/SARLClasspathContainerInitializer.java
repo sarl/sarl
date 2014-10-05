@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.buildpath;
 
-import io.sarl.eclipse.util.PluginUtil;
+import io.sarl.eclipse.SARLEclipsePlugin;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -44,7 +44,7 @@ public class SARLClasspathContainerInitializer extends ClasspathContainerInitial
 
 	/** Identifier of the container.
 	 */
-	public static final IPath CONTAINER_ID = new Path(PluginUtil.PLUGIN_ID + ".launching.SARL_SUPPORT"); //$NON-NLS-1$
+	public static final IPath CONTAINER_ID = new Path(SARLEclipsePlugin.PLUGIN_ID + ".launching.SARL_SUPPORT"); //$NON-NLS-1$
 
 	@Override
 	public void initialize(IPath containerPath, IJavaProject project)
@@ -83,9 +83,9 @@ public class SARLClasspathContainerInitializer extends ClasspathContainerInitial
 							new IClasspathContainer[] {containerSuggestion},
 							monitor);
 				} catch (CoreException ex) {
-					return PluginUtil.createStatus(IStatus.ERROR, ex);
+					return SARLEclipsePlugin.createStatus(IStatus.ERROR, ex);
 				}
-				return PluginUtil.createOkStatus();
+				return SARLEclipsePlugin.createOkStatus();
 			}
 		};
 		job.schedule();

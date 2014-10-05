@@ -20,9 +20,9 @@
  */
 package io.sarl.eclipse.runtime;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.preferences.SREsPreferencePage;
 import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
-import io.sarl.eclipse.util.PluginUtil;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -675,19 +675,19 @@ public class SREConfigurationBlock {
 		IStatus status;
 		if (this.enableSystemWideSelector && this.systemSREButton.getSelection()) {
 			if (SARLRuntime.getDefaultSREInstall() == null) {
-				status = PluginUtil.createStatus(IStatus.ERROR, Messages.SREConfigurationBlock_5);
+				status = SARLEclipsePlugin.createStatus(IStatus.ERROR, Messages.SREConfigurationBlock_5);
 			} else {
-				status = PluginUtil.createOkStatus();
+				status = SARLEclipsePlugin.createOkStatus();
 			}
 		} else if (this.projectProvider != null && this.projectSREButton.getSelection()) {
 			if (null == null) {
-				status = PluginUtil.createStatus(IStatus.ERROR,
+				status = SARLEclipsePlugin.createStatus(IStatus.ERROR,
 							Messages.SREConfigurationBlock_6);
 			} else {
-				status = PluginUtil.createOkStatus();
+				status = SARLEclipsePlugin.createOkStatus();
 			}
 		} else if (this.runtimeEnvironments.isEmpty()) {
-			status = PluginUtil.createStatus(IStatus.ERROR,
+			status = SARLEclipsePlugin.createStatus(IStatus.ERROR,
 					Messages.SREConfigurationBlock_8);
 		} else {
 			status = sre.getValidity();

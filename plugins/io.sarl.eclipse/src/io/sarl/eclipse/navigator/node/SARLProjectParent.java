@@ -20,9 +20,10 @@
  */
 package io.sarl.eclipse.navigator.node;
 
+import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.navigator.ISARLProjectElement;
 import io.sarl.eclipse.navigator.SARLProjectNavigator;
-import io.sarl.eclipse.util.PluginUtil;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.swt.graphics.Image;
@@ -58,7 +59,7 @@ public class SARLProjectParent implements ISARLProjectElement {
 	@Override
 	public Image getImage() {
 		if (this.image == null) {
-			this.image = PluginUtil.getImage(PluginUtil.SARL_PROJECT_IMAGE);
+			this.image = SARLEclipsePlugin.getImage(SARLConfig.SARL_PROJECT_IMAGE);
 		}
 		return this.image;
 	}

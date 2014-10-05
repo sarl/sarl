@@ -20,10 +20,11 @@
  */
 package io.sarl.eclipse.launching;
 
+import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SARLRuntime;
-import io.sarl.eclipse.util.PluginUtil;
 
 import java.io.File;
 import java.text.MessageFormat;
@@ -176,7 +177,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	@SuppressWarnings("static-method")
 	public String getAgentName(ILaunchConfiguration configuration) throws CoreException {
 		String agentName = configuration.getAttribute(
-				LaunchConfigurationConstants.ATTR_AGENT_NAME,
+				SARLConfig.ATTR_AGENT_NAME,
 				(String) null);
 		if (agentName == null) {
 			return null;
@@ -200,7 +201,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			abort(
 					Messages.MainLaunchConfigurationTab_2,
 					null,
-					LaunchConfigurationConstants.ERR_UNSPECIFIED_AGENT_NAME);
+					SARLConfig.ERR_UNSPECIFIED_AGENT_NAME);
 		}
 		return name;
 	}
@@ -405,7 +406,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			ILaunchConfiguration configuration) throws CoreException {
 		// Retrieve the SARL runtime environment jar file.
 		String useDefaultSRE = configuration.getAttribute(
-				LaunchConfigurationConstants.ATTR_USE_SARL_RUNTIME_ENVIRONMENT,
+				SARLConfig.ATTR_USE_SARL_RUNTIME_ENVIRONMENT,
 				Boolean.TRUE.toString());
 		String runtime = null;
 		if (Boolean.parseBoolean(useDefaultSRE)) {
@@ -414,11 +415,11 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 				runtime = sre.getId();
 			}
 		} else  {
-			runtime = configuration.getAttribute(LaunchConfigurationConstants.ATTR_SARL_RUNTIME_ENVIRONMENT, (String) null);
+			runtime = configuration.getAttribute(SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT, (String) null);
 		}
 
 		if (Strings.isNullOrEmpty(runtime)) {
-			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR,
+			throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.ERROR,
 					Messages.SARLLaunchConfigurationDelegate_0));
 		}
 
@@ -456,11 +457,11 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 	private static void verifySREValidity(ISREInstall sre, String runtime) throws CoreException {
 		if (sre == null) {
-			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR,
+			throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.ERROR,
 					MessageFormat.format(Messages.RuntimeEnvironmentTab_6, runtime)));
 		}
 		if (!sre.getValidity().isOK()) {
-			throw new CoreException(PluginUtil.createStatus(IStatus.ERROR, MessageFormat.format(
+			throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.ERROR, MessageFormat.format(
 					Messages.RuntimeEnvironmentTab_5,
 					sre.getName())));
 		}

@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.launching;
 
-import io.sarl.eclipse.util.PluginUtil;
+import io.sarl.eclipse.SARLEclipsePlugin;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -141,7 +141,7 @@ public class AgentTypeSearchEngine {
 		try {
 			new SearchEngine().search(pattern, participants, scope, collector, searchMonitor);
 		} catch (CoreException ce) {
-			PluginUtil.log(ce);
+			SARLEclipsePlugin.log(ce);
 		}
 		List<IType> result = collector.getResult();
 		return result.toArray(new IType[result.size()]);
@@ -175,7 +175,7 @@ public class AgentTypeSearchEngine {
 			new SearchEngine().search(pattern, participants, scope, collector, searchMonitor);
 		} catch (CoreException ce) {
 			if (!ce.getStatus().isOK()) {
-				PluginUtil.log(ce.getStatus());
+				SARLEclipsePlugin.log(ce.getStatus());
 			}
 		}
 		return collector.getResult();
@@ -245,7 +245,7 @@ public class AgentTypeSearchEngine {
 				IType curr = (IType) enclosingElement;
 				if (this.agentName.equals(Strings.nullToEmpty(curr.getFullyQualifiedName()))) {
 					this.result = curr;
-					throw new CoreException(PluginUtil.createStatus(IStatus.OK, PluginUtil.EMPTY_STRING));
+					throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.OK, SARLEclipsePlugin.EMPTY_STRING));
 				}
 			}
 		}

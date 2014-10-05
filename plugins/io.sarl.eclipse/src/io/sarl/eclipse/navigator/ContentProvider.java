@@ -20,8 +20,9 @@
  */
 package io.sarl.eclipse.navigator;
 
+import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.navigator.node.SARLProjectParent;
-import io.sarl.eclipse.util.PluginUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,7 @@ public class ContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object getParent(Object element) {
-		PluginUtil.logDebugMessage(
+		SARLEclipsePlugin.logDebugMessage(
 				"ContentProvider.getParent: " //$NON-NLS-1$
 				+ element.getClass().getName());
 		Object parent = null;
@@ -97,19 +98,19 @@ public class ContentProvider implements ITreeContentProvider {
 
 	@Override
 	public void dispose() {
-		PluginUtil.logDebugMessage("ContentProvider.dispose"); //$NON-NLS-1$
+		SARLEclipsePlugin.logDebugMessage("ContentProvider.dispose"); //$NON-NLS-1$
 	}
 
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		if (oldInput != null && newInput != null) {
-			PluginUtil.logDebugMessage(
+			SARLEclipsePlugin.logDebugMessage(
 					"ContentProvider.inputChanged: old: " //$NON-NLS-1$
 					+ oldInput.getClass().getName()
 					+ " new: " //$NON-NLS-1$
 					+ newInput.getClass().getName());
 		} else {
-			PluginUtil.logDebugMessage(
+			SARLEclipsePlugin.logDebugMessage(
 					"ContentProvider.inputChanged"); //$NON-NLS-1$
 		}
 	}
@@ -120,7 +121,7 @@ public class ContentProvider implements ITreeContentProvider {
 		List<SARLProjectParent> list = new ArrayList<>();
 		for (int i = 0; i < projects.length; i++) {
 			try {
-				if (projects[i].getNature(io.sarl.eclipse.natures.SARLProjectNature.NATURE_ID) != null) {
+				if (projects[i].getNature(SARLConfig.NATURE_ID) != null) {
 					list.add(new SARLProjectParent(projects[i]));
 				}
 			} catch (CoreException e) {

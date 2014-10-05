@@ -20,10 +20,10 @@
  */
 package io.sarl.eclipse.properties;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.runtime.SREConfigurationBlock;
-import io.sarl.eclipse.util.PluginUtil;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -122,7 +122,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 				this.sreBlock.setNotify(notify);
 			}
 		} catch (CoreException e) {
-			PluginUtil.log(e);
+			SARLEclipsePlugin.log(e);
 		}
 		return ctrl;
 	}
@@ -134,7 +134,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 					qualify(PROPERTY_NAME_HAS_PROJECT_SPECIFIC));
 			return Boolean.parseBoolean(value);
 		} catch (CoreException e) {
-			PluginUtil.log(e);
+			SARLEclipsePlugin.log(e);
 		}
 		return false;
 	}
@@ -155,7 +155,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 						Boolean.toString(useSpecificOptions));
 				return true;
 			} catch (CoreException e) {
-				PluginUtil.log(e);
+				SARLEclipsePlugin.log(e);
 			}
 		}
 		return false;
@@ -186,7 +186,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 					id);
 			return true;
 		} catch (CoreException e) {
-			PluginUtil.log(e);
+			SARLEclipsePlugin.log(e);
 		}
 		return false;
 	}

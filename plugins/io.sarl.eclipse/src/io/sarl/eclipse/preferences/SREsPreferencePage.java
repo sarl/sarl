@@ -20,10 +20,10 @@
  */
 package io.sarl.eclipse.preferences;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.ISREInstallChangedListener;
 import io.sarl.eclipse.runtime.SARLRuntime;
-import io.sarl.eclipse.util.PluginUtil;
 import io.sarl.eclipse.wizards.sreinstall.AddSREInstallWizard;
 import io.sarl.eclipse.wizards.sreinstall.EditSREInstallWizard;
 
@@ -563,9 +563,9 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		Bundle bundle = Platform.getBundle("io.sarl.lang"); //$NON-NLS-1$
 		if (bundle != null) {
 			Version sarlVersion = bundle.getVersion();
-			Version minVersion = PluginUtil.parseVersion(sre.getMinimalSARLVersion());
-			Version maxVersion = PluginUtil.parseVersion(sre.getMaximalSARLVersion());
-			int cmp = PluginUtil.compareVersionToRange(sarlVersion, minVersion, maxVersion);
+			Version minVersion = SARLEclipsePlugin.parseVersion(sre.getMinimalSARLVersion());
+			Version maxVersion = SARLEclipsePlugin.parseVersion(sre.getMaximalSARLVersion());
+			int cmp = SARLEclipsePlugin.compareVersionToRange(sarlVersion, minVersion, maxVersion);
 			if (cmp < 0) {
 				if (errorMessages) {
 					setErrorMessage(MessageFormat.format(
