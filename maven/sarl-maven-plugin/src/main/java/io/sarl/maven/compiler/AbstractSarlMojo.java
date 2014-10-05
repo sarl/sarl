@@ -25,40 +25,27 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.ArtifactUtils;
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.BuildPluginManager;
-import org.apache.maven.plugin.InvalidPluginDescriptorException;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.PluginConfigurationException;
-import org.apache.maven.plugin.PluginDescriptorParsingException;
-import org.apache.maven.plugin.PluginManagerException;
-import org.apache.maven.plugin.PluginNotFoundException;
-import org.apache.maven.plugin.PluginResolutionException;
 import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
-import org.codehaus.plexus.component.repository.ComponentDependency;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.Xpp3DomUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import org.eclipse.aether.repository.RemoteRepository;
 
 /** Abstract mojo for compiling SARL.
  *
@@ -85,6 +72,10 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 */
 	protected static final String DEFAULT_TEST_OUTPUT = "src/test/generated-sources/xtend"; //$NON-NLS-1$
 
+	/** The tool that permits to access to Maven features.
+	 */
+	protected MavenHelper mavenHelper;
+
 	/**
 	 * The current Maven session.
 	 *
@@ -92,7 +83,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @required
 	 * @readonly
 	 */
-	protected MavenSession session;
+	private MavenSession session;
 
 	/**
 	 * The Build PluginManager component.
@@ -100,7 +91,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @component
 	 * @required
 	 */
-	protected BuildPluginManager buildPluginManager;
+	private BuildPluginManager buildPluginManager;
 
 	/**
 	 * @parameter property="output"
@@ -121,6 +112,21 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @parameter property="testInput"
 	 */
 	private File testInput;
+
+	@Override
+	public final void execute() throws MojoExecutionException, MojoFailureException {
+		this.mavenHelper = new MavenHelper(this.session, this.buildPluginManager, getLog());
+		executeMojo();
+	}
+
+	/** Execute the mojo.
+	 *
+	 * @throws MojoExecutionException if an unexpected problem occurs. Throwing this
+	 * exception causes a "BUILD ERROR" message to be displayed.
+	 * @throws MojoFailureException if an expected problem (such as a compilation failure)
+	 * occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed.
+	 */
+	protected abstract void executeMojo() throws MojoExecutionException, MojoFailureException;
 
 	/** Replies the input folder.
 	 *
@@ -154,53 +160,6 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 		return (this.testOutput == null) ? new File(DEFAULT_TEST_OUTPUT) : this.testOutput;
 	}
 
-	/** Extract the value from the hard-coded configuration.
-	 *
-	 * @param key - the key of the configuration entry.
-	 * @return the value.
-	 * @throws MojoExecutionException on error.
-	 */
-	protected String getConfig(String key) throws MojoExecutionException {
-		ResourceBundle resource = null;
-		try {
-			resource = ResourceBundle.getBundle(
-					"io/sarl/maven/compiler/config", //$NON-NLS-1$
-					java.util.Locale.getDefault(),
-					getClass().getClassLoader());
-		} catch (MissingResourceException e) {
-			throw new MojoExecutionException(e.getLocalizedMessage(), e);
-		}
-		String value = resource.getString(key);
-		if (value == null || value.isEmpty()) {
-			throw new MojoExecutionException("Cannot find the configuration entry: " + key); //$NON-NLS-1$
-		}
-		return value;
-	}
-
-	/** Replies the version of the given plugin that is specified in the POM of the
-	 * plugin in which this mojo is located.
-	 *
-	 * @param groupId - the identifier of the group.
-	 * @param artifactId - thidentifier of the artifact.
-	 * @return the version, never <code>null</code>
-	 * @throws MojoExecutionException if the plugin was not found.
-	 */
-	protected String getPluginVersionFromDependencies(String groupId, String artifactId) throws MojoExecutionException {
-		String key = ArtifactUtils.versionlessKey(groupId, artifactId);
-		PluginDescriptor currentPlugin = (PluginDescriptor) getPluginContext().get("pluginDescriptor"); //$NON-NLS-1$
-		for (ComponentDependency dep : currentPlugin.getDependencies()) {
-			if (groupId.equals(dep.getGroupId())
-					&& artifactId.equals(dep.getArtifactId())) {
-				String version = dep.getVersion();
-				if (version != null && !version.isEmpty()) {
-					return version;
-				}
-				throw new MojoExecutionException("Cannot determine the version for the plugin " + key); //$NON-NLS-1$
-			}
-		}
-		throw new MojoExecutionException("Cannot find the plugin " + key); //$NON-NLS-1$
-	}
-
 	/** Execute another MOJO.
 	 *
 	 * @param groupId - identifier of the MOJO plugin group.
@@ -210,67 +169,56 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @param configuration - the XML code for the configuration.
 	 * @param dependencies - the dependencies of the plugin.
 	 * @throws MojoExecutionException when cannot run the MOJO.
+	 * @throws MojoFailureException when the build failed.
 	 */
-	protected void executeDelegate(
+	protected void executeMojo(
 			String groupId, String artifactId,
 			String version, String goal,
 			String configuration,
-			Dependency... dependencies) throws MojoExecutionException {
-		try {
-			Plugin plugin = new Plugin();
-			plugin.setArtifactId(artifactId);
-			plugin.setGroupId(groupId);
-			plugin.setVersion(version);
-			plugin.setDependencies(Arrays.asList(dependencies));
+			Dependency... dependencies) throws MojoExecutionException, MojoFailureException {
+		Plugin plugin = new Plugin();
+		plugin.setArtifactId(artifactId);
+		plugin.setGroupId(groupId);
+		plugin.setVersion(version);
+		plugin.setDependencies(Arrays.asList(dependencies));
 
-			getLog().debug("Launching " + plugin.getId()); //$NON-NLS-1$
+		getLog().debug("Launching " + plugin.getId()); //$NON-NLS-1$
 
-			PluginDescriptor pluginDescriptor = this.buildPluginManager.loadPlugin(
-					plugin,
-					Collections.<RemoteRepository>emptyList(),
-					this.session.getRepositorySession());
-			if (pluginDescriptor == null) {
-				throw new MojoExecutionException("Could not find the plugin '" //$NON-NLS-1$
-						+ plugin.getId() + "'"); //$NON-NLS-1$
-			}
-			MojoDescriptor mojoDescriptor = pluginDescriptor.getMojo(goal);
-			if (mojoDescriptor == null) {
-				throw new MojoExecutionException("Could not find the goal '" + goal + "'"); //$NON-NLS-1$ //$NON-NLS-2$
-			}
+		PluginDescriptor pluginDescriptor = this.mavenHelper.loadPlugin(plugin);
+		if (pluginDescriptor == null) {
+			throw new MojoExecutionException("Could not find the plugin '" //$NON-NLS-1$
+					+ plugin.getId() + "'"); //$NON-NLS-1$
+		}
+		MojoDescriptor mojoDescriptor = pluginDescriptor.getMojo(goal);
+		if (mojoDescriptor == null) {
+			throw new MojoExecutionException("Could not find the goal '" + goal + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 
-			Xpp3Dom mojoXml = toXpp3Dom(mojoDescriptor.getMojoConfiguration());
-			Xpp3Dom configurationXml = null;
-			if (configuration != null && !configuration.isEmpty()) {
-				try (StringReader sr = new StringReader(configuration)) {
-					try {
-						configurationXml = Xpp3DomBuilder.build(sr);
-					} catch (XmlPullParserException | IOException e) {
-						getLog().debug(e);
-					}
+		Xpp3Dom mojoXml = toXpp3Dom(mojoDescriptor.getMojoConfiguration());
+		Xpp3Dom configurationXml = null;
+		if (configuration != null && !configuration.isEmpty()) {
+			try (StringReader sr = new StringReader(configuration)) {
+				try {
+					configurationXml = Xpp3DomBuilder.build(sr);
+				} catch (XmlPullParserException | IOException e) {
+					getLog().debug(e);
 				}
 			}
-			if (configurationXml != null) {
-				configurationXml = Xpp3DomUtils.mergeXpp3Dom(
-						configurationXml,
-						mojoXml);
-			} else {
-				configurationXml = mojoXml;
-			}
-
-			getLog().debug("Configuration for " + plugin.getId() //$NON-NLS-1$
-					+ "\n" + configurationXml.toString()); //$NON-NLS-1$
-
-			MojoExecution execution = new MojoExecution(mojoDescriptor, configurationXml);
-
-			this.buildPluginManager.executeMojo(this.session, execution);
-
-		} catch (PluginNotFoundException | PluginResolutionException
-				| PluginDescriptorParsingException
-				| InvalidPluginDescriptorException
-				| MojoFailureException | PluginConfigurationException
-				| PluginManagerException e) {
-			throw new MojoExecutionException(e.getLocalizedMessage(), e);
 		}
+		if (configurationXml != null) {
+			configurationXml = Xpp3DomUtils.mergeXpp3Dom(
+					configurationXml,
+					mojoXml);
+		} else {
+			configurationXml = mojoXml;
+		}
+
+		getLog().debug("Configuration for " + plugin.getId() //$NON-NLS-1$
+				+ "\n" + configurationXml.toString()); //$NON-NLS-1$
+
+		MojoExecution execution = new MojoExecution(mojoDescriptor, configurationXml);
+
+		this.mavenHelper.executeMojo(execution);
 	}
 
 	private Xpp3Dom toXpp3Dom(PlexusConfiguration config) {
@@ -285,45 +233,25 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 		return result;
 	}
 
-	/** Convert an artifact to a dependency.
-	 *
-	 * @param artifact - the artifact to convert.
-	 * @return the result of the conversion.
-	 */
-	protected static Dependency toDependency(Artifact artifact) {
-		Dependency result = new Dependency();
-		result.setArtifactId(artifact.getArtifactId());
-		result.setClassifier(artifact.getClassifier());
-		result.setGroupId(artifact.getGroupId());
-		result.setOptional(artifact.isOptional());
-		result.setScope(artifact.getScope());
-		result.setType(artifact.getType());
-		result.setVersion(artifact.getVersion());
-		return result;
-	}
-
 	/** Extract the dependencies that are declared for a Maven plugin.
 	 * This function reads the list of the dependencies in the configuration
-	 * resource file with {@link #getConfig(String)}.
-	 * The key given to {@link #getConfig(String)} is
+	 * resource file with {@link MavenHelper#getConfig(String)}.
+	 * The key given to {@link MavenHelper#getConfig(String)} is
 	 * <code>&lt;configurationKeyPrefix&gt;.dependencies</code>.
 	 *
 	 * @param configurationKeyPrefix - the string that is the prefix in the configuration file.
+	 * @param mojoGoal - name of the mojo goal.
 	 * @return the list of the dependencies.
 	 * @throws MojoExecutionException if something cannot be done when extracting the dependencies.
 	 */
-	protected Dependency[] getDependenciesFor(String configurationKeyPrefix) throws MojoExecutionException {
+	protected static Dependency[] getDependenciesFor(String configurationKeyPrefix,
+			String mojoGoal) throws MojoExecutionException {
 		List<Dependency> dependencies = new ArrayList<>();
-
-		PluginDescriptor currentPlugin = (PluginDescriptor) getPluginContext().get("pluginDescriptor"); //$NON-NLS-1$
-		Map<String, Artifact> artifacts = currentPlugin.getArtifactMap();
-
-		String rawDependencies = getConfig(configurationKeyPrefix + ".dependencies"); //$NON-NLS-1$
-
-		ArtifactRepository repository = this.session.getLocalRepository();
-
 		Pattern pattern = Pattern.compile(
 				"^[ \t\n\r]*([^: \t\n\t]+)[ \t\n\r]*:[ \t\n\r]*([^: \t\n\t]+)[ \t\n\r]*$"); //$NON-NLS-1$
+		String rawDependencies = MavenHelper.getConfig(configurationKeyPrefix + ".dependencies"); //$NON-NLS-1$
+
+		Map<String, Dependency> pomDependencies = MavenHelper.getPluginDependencies(mojoGoal);
 
 		for (String dependencyId : rawDependencies.split("[;|,]+")) { //$NON-NLS-1$
 			Matcher matcher = pattern.matcher(dependencyId);
@@ -331,12 +259,11 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 				String dependencyGroupId = matcher.group(1);
 				String dependencyArtifactId = matcher.group(2);
 				String dependencyKey = ArtifactUtils.versionlessKey(dependencyGroupId, dependencyArtifactId);
-				Artifact dependencyArtifact = artifacts.get(dependencyKey);
-				if (dependencyArtifact == null) {
+				Dependency dependencyObject = pomDependencies.get(dependencyKey);
+				if (dependencyObject == null) {
 					throw new MojoExecutionException("Cannot find the artifact " + dependencyKey); //$NON-NLS-1$
 				}
-				dependencyArtifact = repository.find(dependencyArtifact);
-				dependencies.add(toDependency(dependencyArtifact));
+				dependencies.add(dependencyObject);
 			}
 		}
 

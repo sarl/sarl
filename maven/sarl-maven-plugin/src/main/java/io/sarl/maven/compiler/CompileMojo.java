@@ -57,7 +57,7 @@ public class CompileMojo extends AbstractSarlMojo {
 	protected String encoding;
 
 	@Override
-	public void execute() throws MojoExecutionException, MojoFailureException {
+	public void executeMojo() throws MojoExecutionException, MojoFailureException {
 		if (this.target == null) {
 			this.target = this.source;
 		}
@@ -65,17 +65,17 @@ public class CompileMojo extends AbstractSarlMojo {
 		compileJava();
 	}
 
-	private void compileSARL() throws MojoExecutionException {
+	private void compileSARL() throws MojoExecutionException, MojoFailureException {
 		getLog().info("Compiling SARL to Java..."); //$NON-NLS-1$
-		String xtextGroupId = getConfig("xtext-compiler.groupId"); //$NON-NLS-1$
-		String xtextArtifactId = getConfig("xtext-compiler.artifactId"); //$NON-NLS-1$
-		String xtextVersion = getPluginVersionFromDependencies(xtextGroupId, xtextArtifactId);
-		String xtextMojo = getConfig("xtext-compiler.mojo"); //$NON-NLS-1$
-		Dependency[] dependencies = getDependenciesFor("xtext-compiler"); //$NON-NLS-1$
-		executeDelegate(
+		String xtextGroupId = MavenHelper.getConfig("xtext-compiler.groupId"); //$NON-NLS-1$
+		String xtextArtifactId = MavenHelper.getConfig("xtext-compiler.artifactId"); //$NON-NLS-1$
+		String xtextVersion = this.mavenHelper.getPluginDependencyVersion(xtextGroupId, xtextArtifactId, "compile"); //$NON-NLS-1$
+		String xtextMojo = MavenHelper.getConfig("xtext-compiler.mojo"); //$NON-NLS-1$
+		Dependency[] dependencies = getDependenciesFor("xtext-compiler", "compile"); //$NON-NLS-1$ //$NON-NLS-2$
+		executeMojo(
 				xtextGroupId, xtextArtifactId, xtextVersion, xtextMojo,
 				MessageFormat.format(
-						getConfig("xtext-compiler.configuration"), //$NON-NLS-1$
+						MavenHelper.getConfig("xtext-compiler.configuration"), //$NON-NLS-1$
 						this.source,
 						this.target,
 						this.encoding,
@@ -83,16 +83,17 @@ public class CompileMojo extends AbstractSarlMojo {
 				dependencies);
 	}
 
-	private void compileJava() throws MojoExecutionException {
+	private void compileJava() throws MojoExecutionException, MojoFailureException {
 		getLog().info("Compiling Java files..."); //$NON-NLS-1$
-		String javaGroupId = getConfig("java-compiler.groupId"); //$NON-NLS-1$
-		String javaArtifactId = getConfig("java-compiler.artifactId"); //$NON-NLS-1$
-		String javaVersion = getPluginVersionFromDependencies(javaGroupId, javaArtifactId);
-		String javaMojo = getConfig("java-compiler.mojo"); //$NON-NLS-1$
-		executeDelegate(
+		String javaGroupId = MavenHelper.getConfig("java-compiler.groupId"); //$NON-NLS-1$
+		String javaArtifactId = MavenHelper.getConfig("java-compiler.artifactId"); //$NON-NLS-1$
+		String javaVersion = this.mavenHelper.getPluginDependencyVersion(
+				javaGroupId, javaArtifactId, "compile"); //$NON-NLS-1$
+		String javaMojo = MavenHelper.getConfig("java-compiler.mojo"); //$NON-NLS-1$
+		executeMojo(
 				javaGroupId, javaArtifactId, javaVersion, javaMojo,
 				MessageFormat.format(
-						getConfig("java-compiler.configuration"), //$NON-NLS-1$
+						MavenHelper.getConfig("java-compiler.configuration"), //$NON-NLS-1$
 						this.source,
 						this.target,
 						this.encoding));

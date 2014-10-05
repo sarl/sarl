@@ -68,5 +68,7 @@
 
 	<suppress checks="NPathComplexity" files="SARLConfiguration.java"/>
 
+	<suppress checks="" files="MavenHelper.java"/>
+
 </suppressions>
 

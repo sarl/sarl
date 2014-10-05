@@ -38,16 +38,16 @@ import org.apache.maven.plugin.MojoFailureException;
 public class InitializeMojo extends AbstractSarlMojo {
 
 	@Override
-	public void execute() throws MojoExecutionException, MojoFailureException {
+	public void executeMojo() throws MojoExecutionException, MojoFailureException {
 		for (File f : new File[] {getInput(), getOutput()}) {
 			String absPath = f.getAbsolutePath();
 			getLog().debug("*** SARL *** Adding SARL source folders: " + absPath); //$NON-NLS-1$
-			this.session.getCurrentProject().addCompileSourceRoot(absPath);
+			this.mavenHelper.getSession().getCurrentProject().addCompileSourceRoot(absPath);
 		}
 		for (File f : new File[] {getTestInput(), getTestOutput()}) {
 			String absPath = f.getAbsolutePath();
 			getLog().debug("*** SARL *** Adding SARL test source folders: " + absPath); //$NON-NLS-1$
-			this.session.getCurrentProject().addTestCompileSourceRoot(absPath);
+			this.mavenHelper.getSession().getCurrentProject().addTestCompileSourceRoot(absPath);
 		}
 	}
 
