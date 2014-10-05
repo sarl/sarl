@@ -23,11 +23,11 @@ package io.sarl.docs.gettingstarted
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import io.sarl.eclipse.wizards.newproject.Config
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.*
+import io.sarl.eclipse.SARLConfig
 
 /* @outline
  *
@@ -93,11 +93,11 @@ describe "Create First Project" {
 		 * @filter(.*) 
 		 */
 		fact "Step 2: Configuration of the source folders" {
-			Config::FOLDER_SOURCE_JAVA should be "src/main/java"
-			Config::FOLDER_SOURCE_SARL should be "src/main/sarl"
-			Config::FOLDER_SOURCE_GENERATED should be "src/main/generated-sources/xtend"
-			Config::FOLDER_RESOURCES should be "src/main/resources"
-			Config::FOLDER_BIN should be "target/classes"
+			SARLConfig::FOLDER_SOURCE_JAVA should be "src/main/java"
+			SARLConfig::FOLDER_SOURCE_SARL should be "src/main/sarl"
+			SARLConfig::FOLDER_SOURCE_GENERATED should be "src/main/generated-sources/xtend"
+			SARLConfig::FOLDER_RESOURCES should be "src/main/resources"
+			SARLConfig::FOLDER_BIN should be "target/classes"
 			"./new_sarl_project_screen_3.png" should beAccessibleFrom this
 		}
 		 
@@ -200,7 +200,7 @@ describe "Create First Project" {
 		 */
 		fact "Edit the Maven configuration" {
 			// Check if the SARL code is generated in the expected folder
-			Config::FOLDER_SOURCE_GENERATED should be "src/main/generated-sources/xtend"
+			SARLConfig::FOLDER_SOURCE_GENERATED should be "src/main/generated-sources/xtend"
 			// The checks are valid only if the macro replacements were done.
 			// The replacements are done by Maven.
 			// So, Eclipse Junit tools do not make the replacements.

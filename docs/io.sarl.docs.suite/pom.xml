@@ -17,6 +17,8 @@
 	<properties>
 		<!-- needed for checkstyle/findbugs and other plugins -->
 		<main.basedir>${project.basedir}/../..</main.basedir>
+		<!-- URL of the maven repository of Janus -->
+		<janus.maven.repository.url>http://maven.janusproject.io</janus.maven.repository.url>
 	</properties>
 
 	<dependencies>
@@ -145,10 +147,12 @@
 						<configuration>
 							<source>
 								snapshotTag = "-SNAPSHOT"
+								endOfVersion = ""
 								if (project.version.endsWith(snapshotTag)) {
 									len = project.version.size() - snapshotTag.size()
 									version = project.version.substring(0,len)
 									project.properties.sarlspecificationreleasestatus = "Draft Release"
+									endOfVersion = snapshotTag
 								}
 								else {
 									version = project.version
@@ -158,6 +162,7 @@
 								project.properties.sarlspecificationreleaseversion = versionFields[0]+"."+versionFields[1]
 								project.properties.sarlspecificationreleasedate =
 									(new java.text.SimpleDateFormat("yyyy-MM-dd")).format(new java.util.Date())
+								project.properties.janusversion = "2."+project.properties.sarlspecificationreleaseversion+".0"+endOfVersion
 							</source>
 						</configuration>
 					</execution>
@@ -227,7 +232,7 @@
 						</replacement>
 						<replacement>
 							<token>%janusversion%</token>
-							<value>${janus.version}</value>
+							<value>${janusversion}</value>
 						</replacement>
 						<replacement>
 							<token>%xtextversion%</token>
