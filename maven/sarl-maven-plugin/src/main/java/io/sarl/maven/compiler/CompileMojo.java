@@ -79,7 +79,7 @@ public class CompileMojo extends AbstractSarlMojo {
 						this.source,
 						this.target,
 						this.encoding,
-						this.output),
+						getOutput()),
 				dependencies);
 	}
 

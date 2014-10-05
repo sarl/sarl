@@ -69,35 +69,27 @@ import org.eclipse.aether.repository.RemoteRepository;
  */
 public abstract class AbstractSarlMojo extends AbstractMojo {
 
-	/**
-	 * @parameter property="output" default-value="src/main/generated-sources/xtend/"
-	 * @required
+	/** Default input folder.
 	 */
-	protected File output;
+	protected static final String DEFAULT_INPUT = "src/main/sarl"; //$NON-NLS-1$
 
-	/**
-	 * @parameter property="input" default-value="src/main/sarl/"
-	 * @required
+	/** Default output folder.
 	 */
-	protected File input;
+	protected static final String DEFAULT_OUTPUT = "src/main/generated-sources/xtend"; //$NON-NLS-1$
 
-	/**
-	 * @parameter property="testOutput" default-value="src/test/generated-sources/xtend/"
-	 * @required
+	/** Default test input folder.
 	 */
-	protected File testOutput;
+	protected static final String DEFAULT_TEST_INPUT = "src/test/sarl"; //$NON-NLS-1$
 
-	/**
-	 * @parameter property="testInput" default-value="src/test/sarl/"
-	 * @required
+	/** Default test output folder.
 	 */
-	protected File testInput;
+	protected static final String DEFAULT_TEST_OUTPUT = "src/test/generated-sources/xtend"; //$NON-NLS-1$
 
 	/**
 	 * The current Maven session.
 	 *
 	 * @parameter default-value="${session}"
-	 * @parameter required
+	 * @required
 	 * @readonly
 	 */
 	protected MavenSession session;
@@ -109,6 +101,59 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @required
 	 */
 	protected BuildPluginManager buildPluginManager;
+
+	/**
+	 * @parameter property="output"
+	 */
+	private File output;
+
+	/**
+	 * @parameter property="input"
+	 */
+	private File input;
+
+	/**
+	 * @parameter property="testOutput"
+	 */
+	private File testOutput;
+
+	/**
+	 * @parameter property="testInput"
+	 * @required
+	 */
+	private File testInput;
+
+	/** Replies the input folder.
+	 *
+	 * @return the input folder.
+	 */
+	protected File getInput() {
+		return (this.input == null) ? new File(DEFAULT_INPUT) : this.input;
+	}
+
+	/** Replies the output folder.
+	 *
+	 * @return the output folder.
+	 */
+	protected File getOutput() {
+		return (this.output == null) ? new File(DEFAULT_OUTPUT) : this.output;
+	}
+
+	/** Replies the test input folder.
+	 *
+	 * @return the test input folder.
+	 */
+	protected File getTestInput() {
+		return (this.testInput == null) ? new File(DEFAULT_TEST_INPUT) : this.testInput;
+	}
+
+	/** Replies the test output folder.
+	 *
+	 * @return the test output folder.
+	 */
+	protected File getTestOutput() {
+		return (this.testOutput == null) ? new File(DEFAULT_TEST_OUTPUT) : this.testOutput;
+	}
 
 	/** Extract the value from the hard-coded configuration.
 	 *

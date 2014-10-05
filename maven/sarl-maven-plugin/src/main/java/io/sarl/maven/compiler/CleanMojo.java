@@ -47,8 +47,8 @@ public class CleanMojo extends AbstractSarlMojo {
 				cleanerGroupId, cleanerArtifactId, cleanerVersion, cleanerMojo,
 				MessageFormat.format(
 						getConfig("cleaner.configuration"), //$NON-NLS-1$
-						this.output.getAbsolutePath(),
-						this.testOutput.getAbsolutePath()));
+						getOutput().getAbsolutePath(),
+						getTestOutput().getAbsolutePath()));
 	}
 
 }

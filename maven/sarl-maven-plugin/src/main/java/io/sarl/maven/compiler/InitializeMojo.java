@@ -39,19 +39,15 @@ public class InitializeMojo extends AbstractSarlMojo {
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		for (File f : new File[] {this.input, this.output}) {
+		for (File f : new File[] {getInput(), getOutput()}) {
 			String absPath = f.getAbsolutePath();
-			if (!this.session.getCurrentProject().getCompileSourceRoots().contains(absPath)) {
-				getLog().debug("*** SARL *** Adding SARL source folders: " + absPath); //$NON-NLS-1$
-				this.session.getCurrentProject().addCompileSourceRoot(absPath);
-			}
+			getLog().debug("*** SARL *** Adding SARL source folders: " + absPath); //$NON-NLS-1$
+			this.session.getCurrentProject().addCompileSourceRoot(absPath);
 		}
-		for (File f : new File[] {this.testInput, this.testOutput}) {
+		for (File f : new File[] {getTestInput(), getTestOutput()}) {
 			String absPath = f.getAbsolutePath();
-			if (!this.session.getCurrentProject().getTestCompileSourceRoots().contains(absPath)) {
-				getLog().debug("*** SARL *** Adding SARL test source folders: " + absPath); //$NON-NLS-1$
-				this.session.getCurrentProject().addTestCompileSourceRoot(absPath);
-			}
+			getLog().debug("*** SARL *** Adding SARL test source folders: " + absPath); //$NON-NLS-1$
+			this.session.getCurrentProject().addTestCompileSourceRoot(absPath);
 		}
 	}
 
