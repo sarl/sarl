@@ -66,5 +66,7 @@
 	<suppress checks="MethodCount" files="SREConfigurationBlock.java"/>
 	<suppress checks="NPathComplexity" files="SREConfigurationBlock.java"/>
 
+	<suppress checks="NPathComplexity" files="SARLConfiguration.java"/>
+
 </suppressions>
 

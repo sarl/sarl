@@ -20,6 +20,7 @@
 		<module>io.sarl.core</module>
 		<module>io.sarl.util</module>
 		<module>io.sarl.eclipse</module>
+		<module>io.sarl.m2e</module>
 	</modules>
 
 	<!-- ======================================= -->

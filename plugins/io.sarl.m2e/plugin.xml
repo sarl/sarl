@@ -1,0 +1,15 @@
+<?eclipse version="3.0"?>
+
+<plugin>
+   <extension
+         point="org.eclipse.m2e.core.lifecycleMappingMetadataSource">
+   </extension>
+   <extension
+        point="org.eclipse.m2e.core.projectConfigurators">
+     <configurator
+           class="io.sarl.m2e.SARLProjectConfigurator"
+           id="io.sarl.m2e.sarlConfigurator"
+           name="SARL Project Configurator">
+     </configurator>
+  </extension>
+</plugin>
