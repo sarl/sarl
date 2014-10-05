@@ -119,7 +119,6 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 
 	/**
 	 * @parameter property="testInput"
-	 * @required
 	 */
 	private File testInput;
 
