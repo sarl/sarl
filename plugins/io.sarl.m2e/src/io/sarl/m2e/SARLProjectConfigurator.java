@@ -133,7 +133,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		assertHasNature(facade.getProject(), SARLConfig.NATURE_ID);
 
 		String encoding = config.getEncoding();
-		
+
 		IClasspathEntryDescriptor descriptor;
 
 		// Add the source folders
@@ -146,7 +146,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		if (encoding != null && inputFolder != null && inputFolder.exists()) {
 			inputFolder.setDefaultCharset(encoding, monitor);
 		}
-		
+
 		IPath outputPath = makeFullPath(facade, config.getOutput());
 		descriptor = classpath.addSourceEntry(
 				outputPath,

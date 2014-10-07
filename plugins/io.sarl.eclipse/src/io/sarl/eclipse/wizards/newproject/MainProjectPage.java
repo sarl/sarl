@@ -402,11 +402,11 @@ public class MainProjectPage extends WizardPage {
 		IPath srcJava = sourceFolderPath.append(
 				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_JAVA));
 		IClasspathEntry srcJavaEntry = JavaCore.newSourceEntry(srcJava.makeAbsolute());
-		
+
 		IPath srcSarl = sourceFolderPath.append(
 				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_SARL));
 		IClasspathEntry srcSarlEntry = JavaCore.newSourceEntry(srcSarl.makeAbsolute());
-				
+
 		IPath srcGeneratedSources = sourceFolderPath.append(
 				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED));
 		IClasspathAttribute attr = JavaCore.newClasspathAttribute(
@@ -418,7 +418,7 @@ public class MainProjectPage extends WizardPage {
 				ClasspathEntry.EXCLUDE_NONE,
 				null /*output location*/,
 				new IClasspathAttribute[] {attr});
-		
+
 		IPath srcResources = sourceFolderPath.append(
 				Path.fromPortableString(SARLConfig.FOLDER_RESOURCES));
 		IClasspathEntry srcResourcesEntry = JavaCore.newSourceEntry(srcResources.makeAbsolute());
