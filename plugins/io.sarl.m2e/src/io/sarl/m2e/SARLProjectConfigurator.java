@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -44,6 +45,7 @@ import org.eclipse.m2e.core.project.MavenProjectUtils;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
+import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
 import org.eclipse.m2e.jdt.internal.ClasspathDescriptor;
 import org.osgi.framework.Version;
@@ -57,7 +59,7 @@ import org.osgi.framework.Version;
  */
 public class SARLProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
 
-	/** Invoked to add the preferences dedicated to SARL.
+	/** Invoked to add the preferences dedicated to SARL, JRE, etc.
 	 *
 	 * @param facade - the Maven face.
 	 * @param config - the configuration.
@@ -65,10 +67,11 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 * @throws CoreException if cannot add the source folders.
 	 */
 	@SuppressWarnings("static-method")
-	protected void addSarlPreferences(
+	protected void addPreferences(
 			IMavenProjectFacade facade, SARLConfiguration config,
 			IProgressMonitor monitor) throws CoreException {
 		IPath outputPath = makeProjectRelativePath(facade, config.getOutput());
+		// Set the SARL preferences
 		SARLProjectPreferences.setSpecificSARLConfigurationFor(
 				facade.getProject(), outputPath);
 	}
@@ -130,6 +133,8 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		assertHasNature(facade.getProject(), SARLConfig.NATURE_ID);
 
 		String encoding = config.getEncoding();
+		
+		IClasspathEntryDescriptor descriptor;
 
 		// Add the source folders
 		IPath inputPath = makeFullPath(facade, config.getInput());
@@ -141,11 +146,13 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		if (encoding != null && inputFolder != null && inputFolder.exists()) {
 			inputFolder.setDefaultCharset(encoding, monitor);
 		}
+		
 		IPath outputPath = makeFullPath(facade, config.getOutput());
-		classpath.addSourceEntry(
+		descriptor = classpath.addSourceEntry(
 				outputPath,
 				facade.getOutputLocation(),
 				true);
+		descriptor.setClasspathAttribute(IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS, Boolean.TRUE.toString());
 		IFolder outputFolder = makeFolder(facade, outputPath);
 		if (encoding != null && outputFolder != null && outputFolder.exists()) {
 			outputFolder.setDefaultCharset(encoding, monitor);
@@ -163,10 +170,11 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		}
 
 		IPath testOutputPath = makeFullPath(facade, config.getTestOutput());
-		classpath.addSourceEntry(
+		descriptor = classpath.addSourceEntry(
 				testOutputPath,
 				facade.getOutputLocation(),
 				true);
+		descriptor.setClasspathAttribute(IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS, Boolean.TRUE.toString());
 		IFolder testOutputFolder = makeFolder(facade, testOutputPath);
 		if (encoding != null && testOutputFolder != null && testOutputFolder.exists()) {
 			testOutputFolder.setDefaultCharset(encoding, monitor);
@@ -379,7 +387,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		SARLConfiguration config = readConfiguration(request, monitor);
 		removeSarlLibraries(classpath);
 		addSourceFolders(request.getMavenProjectFacade(), config, classpath, monitor);
-		addSarlPreferences(request.getMavenProjectFacade(), config, monitor);
+		addPreferences(request.getMavenProjectFacade(), config, monitor);
 	}
 
 }
