@@ -11,7 +11,7 @@
 		</category>
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
-		        class="io.sarl.eclipse.wizards.newproject.SARLProjectNewWizard"
+		        class="io.sarl.eclipse.wizards.newproject.SARLProjectCreationWizard"
 		        finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
 		        icon="icons/sarl_new_project_16.png"
 		        id="io.sarl.eclipse.wizard.new.sarl"

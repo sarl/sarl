@@ -69,7 +69,7 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLProjectNewWizard extends NewElementWizard implements IExecutableExtension {
+public class SARLProjectCreationWizard extends NewElementWizard implements IExecutableExtension {
 
 	private MainProjectPage fFirstPage;
 	private BuildSettingPage fSecondPage;
@@ -78,7 +78,7 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 
 	/** Construct a new wizard for creating a SARL project.
 	 */
-	public SARLProjectNewWizard() {
+	public SARLProjectCreationWizard() {
 		this(null, null);
 	}
 
@@ -88,7 +88,7 @@ public class SARLProjectNewWizard extends NewElementWizard implements IExecutabl
 	 * @param pageOne - reference to the first page of the wizard.
 	 * @param pageTwo - reference to the second page of the wizard.
 	 */
-	public SARLProjectNewWizard(MainProjectPage pageOne, BuildSettingPage pageTwo) {
+	public SARLProjectCreationWizard(MainProjectPage pageOne, BuildSettingPage pageTwo) {
 		setDefaultPageImageDescriptor(SARLEclipsePlugin.getImageDescriptor(
 				SARLConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());

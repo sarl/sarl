@@ -55,6 +55,7 @@ import org.eclipse.jdt.core.IAccessRule;
 import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.internal.core.ClasspathEntry;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.eclipse.jdt.internal.ui.IJavaHelpContextIds;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
@@ -400,18 +401,33 @@ public class MainProjectPage extends WizardPage {
 
 		IPath srcJava = sourceFolderPath.append(
 				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_JAVA));
+		IClasspathEntry srcJavaEntry = JavaCore.newSourceEntry(srcJava.makeAbsolute());
+		
 		IPath srcSarl = sourceFolderPath.append(
 				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_SARL));
+		IClasspathEntry srcSarlEntry = JavaCore.newSourceEntry(srcSarl.makeAbsolute());
+				
 		IPath srcGeneratedSources = sourceFolderPath.append(
 				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED));
+		IClasspathAttribute attr = JavaCore.newClasspathAttribute(
+				IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS,
+				Boolean.TRUE.toString());
+		IClasspathEntry srcGeneratedSourcesEntry = JavaCore.newSourceEntry(
+				srcGeneratedSources.makeAbsolute(),
+				ClasspathEntry.INCLUDE_ALL,
+				ClasspathEntry.EXCLUDE_NONE,
+				null /*output location*/,
+				new IClasspathAttribute[] {attr});
+		
 		IPath srcResources = sourceFolderPath.append(
 				Path.fromPortableString(SARLConfig.FOLDER_RESOURCES));
+		IClasspathEntry srcResourcesEntry = JavaCore.newSourceEntry(srcResources.makeAbsolute());
 
 		return Arrays.asList(
-				JavaCore.newSourceEntry(srcJava.makeAbsolute()),
-				JavaCore.newSourceEntry(srcSarl.makeAbsolute()),
-				JavaCore.newSourceEntry(srcGeneratedSources.makeAbsolute()),
-				JavaCore.newSourceEntry(srcResources.makeAbsolute())
+				srcJavaEntry,
+				srcSarlEntry,
+				srcGeneratedSourcesEntry,
+				srcResourcesEntry
 		);
 	}
 
