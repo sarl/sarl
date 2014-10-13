@@ -228,9 +228,7 @@ describe "General Syntax Reference" {
 		 * one or more functions (with the wildcard character).
 		 * In the example below, all the functions defined in
 		 * `java.util.Arrays` are imported.
-		 * 
-		 *     import static java.util.Arrays.*
-		 * 
+		 * <pre><code>import static java.util.Arrays.*</code></pre>
 		 * 
 		 * Then,
 		 * it is possible to invoke one of them by typing its
@@ -1411,7 +1409,7 @@ describe "General Syntax Reference" {
 		 * They work automatically when the corresponding infix operator is declared.
 		 * 
 		 * <table><thead>
-		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * <tr><td>Operator</td><td>Operator Semantic</td></tr>
 		 * </thead><tbody>
 		 * <tr><td>a = b</td><td>Set the variable a with the value of b.</td></tr>
 		 * <tr><td>a += b</td><td>Equivalent to: <code>a = a + b</code></td></tr>

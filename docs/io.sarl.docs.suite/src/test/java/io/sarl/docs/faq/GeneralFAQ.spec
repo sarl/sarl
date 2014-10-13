@@ -156,7 +156,7 @@ describe "General FAQ on SARL" {
 			 * 
 			 * We can make a parallel with the Java universe:
 			 * <center>
-			 * <table class="table-bordered" width="80%">
+			 * <table>
 			 * <thead>
 			 * <tr><th></th><th>SARL Universe</th><th>Java Universe</th></tr>
 			 * </thead>
