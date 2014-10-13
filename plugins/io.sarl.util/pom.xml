@@ -22,6 +22,9 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<sourceDirectory>src/main/java</sourceDirectory>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
