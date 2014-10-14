@@ -155,37 +155,6 @@ describe "Create First Project" {
 		 *           ...
 		 *        </dependencies>
 		 *        ...
-		 *        <repositories>
-		 *           ...
-		 *           <!-- The following repositories are needed until the
-		 *                SARL is released on the Maven Central -->
-		 *           <repository>
-		 *              <id>sarl-repository</id>
-		 *              <url>%sarlmavenrepository%</url>
-		 *              <snapshots>
-		 *                 <enabled>true</enabled>
-		 *              </snapshots>
-		 *              <releases>
-		 *                 <enabled>true</enabled>
-		 *              </releases>
-		 *           </repository>
-		 *        </repositories>
-		 *        <pluginRepositories>
-		 *           ...
-		 *           <!-- The following repositories are needed until the
-		 *                SARL is released on the Maven Central -->
-		 *           <pluginRepository>
-		 *              <id>sarl-repository</id>
-		 *              <url>%sarlmavenrepository%</url>
-		 *              <snapshots>
-		 *                 <enabled>true</enabled>
-		 *              </snapshots>
-		 *              <releases>
-		 *                 <enabled>true</enabled>
-		 *              </releases>
-		 *           </pluginRepository>
-		 *        </pluginRepositories>
-		 *        ...
 		 *     </project>
 		 * 
 		 * The Maven configuration is based on the use of `sarl-maven-plugin`.
@@ -205,9 +174,6 @@ describe "Create First Project" {
 			// The replacements are done by Maven.
 			// So, Eclipse Junit tools do not make the replacements.
 			System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
-			// This documentation is valid only for the SNAPSHOT (repository definition)
-			"%sarlversion%" should endWith "-SNAPSHOT"
-			"%sarlversion%" should beMavenVersion true
 			// URLs should not end with a slash
 			"%website%" should beURL "!file"
 			"%sarlmavenrepository%" should beURL "!file"
@@ -263,22 +229,6 @@ describe "Create First Project" {
 		 *           ...
 		 *        </dependencies>
 		 *        ...
-		 *        <repositories>
-		 *           ...
-		 *           <!-- The following repositories are needed until the
-		 *                Janus is released on the Maven Central -->
-		 *           <repository>
-		 *              <id>janus-repository</id>
-		 *              <url>%janusmavenrepository%</url>
-		 *              <snapshots>
-		 *                 <enabled>true</enabled>
-		 *              </snapshots>
-		 *              <releases>
-		 *                 <enabled>true</enabled>
-		 *              </releases>
-		 *           </repository>
-		 *        </repositories>
-		 *        ...
 		 *     </project>
 		 * 
 		 * <important>If you want to have the dependencies to both 
@@ -296,9 +246,6 @@ describe "Create First Project" {
 			// The replacements are done by Maven.
 			// So, Eclipse Junit tools do not make the replacements.
 			System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
-			// This documentation is valid only for the SNAPSHOT (repository definition)
-			"%janusversion%" should endWith "-SNAPSHOT"
-			"%janusversion%" should beMavenVersion true
 			// URLs should not end with a slash
 			"%website%" should beURL "!file"
 			"%janusmavenrepository%" should beURL "!file"

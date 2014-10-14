@@ -26,6 +26,7 @@ The steps for releasing SARL are:
 
 6) Commit and push to Github:
 
+    $> git commit
     $> git push --all
 
 7) On Hudson, launch a build for updating the maven repositories and the Eclipse update sites.
@@ -48,6 +49,7 @@ The steps for releasing SARL are:
 
 13) Commit and push to Github:
 
+    $> git commit
     $> git push --all
 
 14) On Hudson, launch a build for updating the maven repositories and the Eclipse update sites.
