@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/io.sarl.lang.sdk_0.1.0.qualifier.jar" id="io.sarl.lang.sdk" version="0.1.0.qualifier">
+   <feature url="features/io.sarl.lang.sdk_0.1.0.jar" id="io.sarl.lang.sdk" version="0.1.0">
       <category name="io.sarl"/>
    </feature>
-   <feature url="features/io.sarl.sdk_0.1.0.qualifier.jar" id="io.sarl.sdk" version="0.1.0.qualifier">
+   <feature url="features/io.sarl.sdk_0.1.0.jar" id="io.sarl.sdk" version="0.1.0">
       <category name="io.sarl"/>
    </feature>
    <category-def name="io.sarl" label="SARL Language">

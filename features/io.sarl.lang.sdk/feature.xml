@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.lang.sdk"
       label="SARL Language Definition"
-      version="0.1.0.qualifier"
+      version="0.1.0"
       plugin="io.sarl.lang.ui">
 
    <description url="http://www.sarl.io/about/">

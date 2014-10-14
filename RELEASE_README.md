@@ -6,7 +6,11 @@ The steps for releasing SARL are:
 
 1) Remove "-SNAPSHOT" in all the poms.
 
-2) Update the versions in the Eclipse plugins.
+2) Update the versions in the Eclipse configurations:
+   a) Remove ".qualifier" in the MANIFEST.MF files  (in Bundle-Version).
+   b) Remove ".qualifier" in the feature.xml files (in root tag).
+   c) Remove ".qualifier" in the *.product files (in root tag and feature tag).
+   d) Remove ".qualifier" in the category.xml files (in feature tags, url and version).
 
 3) Compiling locally without error.
 
@@ -36,7 +40,7 @@ The steps for releasing SARL are:
 
 10) Commit and push the website Gits.
 
-11) Add "-SNAPSHOT" in all the poms.
+11) Revert steps 1 and 2.
 
 12) Compiling locally without error.
 
