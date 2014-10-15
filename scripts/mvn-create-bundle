@@ -74,25 +74,30 @@ then
 		do
 			cd "$TARGET"
 			ARTIFACTNAME=`ls -1 *.pom 2>/dev/null`
-			ARTIFACTNAME=`basename "$ARTIFACTNAME" .pom`
-			BUNDLENAME="$ARTIFACTNAME-bundle.jar"
-			SIGNS=`ls *.asc 2>/dev/null`
-			if [ -z "$SIGNS" ]
+			if [ -z "$ARTIFACTNAME" ]
 			then
-				echo "Skipping $BUNDLENAME"
+					echo "No artifact in $TARGET"
 			else
-				echo -n "Creating $BUNDLENAME..."
-				rm -f "$BUNDLENAME"
-				FILES=""
-				for FILE in *.asc *.pom *.jar *.apklib
-				do
-					if [ -f "$FILE" ]
-					then
-						FILES="$FILES $FILE"
-					fi
-				done
-				jar cf "$BUNDLENAME" $FILES
-				echo "done"
+				ARTIFACTNAME=`basename "$ARTIFACTNAME" .pom`
+				BUNDLENAME="$ARTIFACTNAME-bundle.jar"
+				SIGNS=`ls *.asc 2>/dev/null`
+				if [ -z "$SIGNS" ]
+				then
+					echo "Skipping $BUNDLENAME"
+				else
+					echo -n "Creating $BUNDLENAME..."
+					rm -f "$BUNDLENAME"
+					FILES=""
+					for FILE in *.asc *.pom *.jar *.apklib
+					do
+						if [ -f "$FILE" ]
+						then
+							FILES="$FILES $FILE"
+						fi
+					done
+					jar cf "$BUNDLENAME" $FILES
+					echo "done"
+				fi
 			fi
 			cd "$CDIR"
 		done
