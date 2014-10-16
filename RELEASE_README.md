@@ -34,28 +34,30 @@ The steps for releasing SARL are:
 
 8) Updload the Maven Bundle on Maven Central with [http://oss.sonatype.org](http://oss.sonatype.org)
 
-9) Update the SARL website:
+9) Create the "Changes" page for the webiste.
+
+10) Update the SARL website:
 
     $> cd path/to/sarl-site
     $> rake build_full
     $> rake transfer
 
-10) Commit and push the website Gits.
+11) Commit and push the website Gits.
 
-11) Close the milestones on Github.
+12) Close the milestones on Github.
 
-12) Revert steps 1 and 2.
+13) Revert steps 1 and 2.
 
-13) Compiling locally without error.
+14) Compiling locally without error.
 
     $> mvn clean install
 
-14) Commit and push to Github:
+15) Commit and push to Github:
 
     $> git commit
     $> git push --all
 
-15) On Hudson, launch a build for updating the maven repositories and the Eclipse update sites.
+16) On Hudson, launch a build for updating the maven repositories and the Eclipse update sites.
 
-16) Announce the new version on the mailing lists.
+17) Announce the new version on the mailing lists.
 

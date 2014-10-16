@@ -570,20 +570,6 @@
 		</developer>
 	</developers>
 
-	<!-- ===================== -->
-	<!-- ==== Repositories === -->
-	<!-- ===================== -->
-
-	<!--  The following definition is usefull for retreiving the
-	      SARL Maven plugins since they are not yet available on
-	      Central -->	
-	<pluginRepositories>
-		<pluginRepository>
-			<id>io.sarl.maven</id>
-			<url>${sarl.maven.repository.url}</url>
-		</pluginRepository>
-	</pluginRepositories>
-
 	<!-- =================== -->
 	<!-- ==== Deployment === -->
 	<!-- =================== -->
