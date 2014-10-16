@@ -88,7 +88,7 @@ then
 					echo -n "Creating $BUNDLENAME..."
 					rm -f "$BUNDLENAME"
 					FILES=""
-					for FILE in *.asc *.pom *.jar *.apklib
+					for FILE in *.pom *.pom.asc *.jar *.jar.asc *.apklib *.apklib.asc
 					do
 						if [ -f "$FILE" ]
 						then
