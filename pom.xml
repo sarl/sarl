@@ -5,7 +5,7 @@
 
 	<groupId>io.sarl</groupId>
 	<artifactId>io.sarl</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.1.0</version>
 
 	<name>SARL Agent Oriented Programming Language</name>
 	<url>${sarl.url}</url>
@@ -23,6 +23,11 @@
 	<!-- ======================================= -->
 
 	<properties>
+		<!-- Build ID (used in Eclipse about) -->
+		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+		<buildId>${maven.build.timestamp}</buildId>
+		<!-- Version of the Xtext API -->
+		<xtext.version>2.7.2</xtext.version>
 		<!-- Version of the Xtext API -->
 		<xtext.version>2.7.2</xtext.version>
 		<!-- Version of the Jnario API -->
@@ -30,9 +35,9 @@
 		<jnario.report.version>1.0.1</jnario.report.version>
 		<!-- Version of the OSGi module that provides the NLS -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
-		<!-- Year of the release of SARL (used in License management and documentation) -->
+		<!-- Year of the release of SARL (used in Eclipse about, license management and documentation) -->
 		<year>2014</year>
-		<!-- URL of the SARL project (use in POM and documentation) -->
+		<!-- URL of the SARL project (use in POM, Eclipse about and documentation) -->
 		<sarl.url>http://www.sarl.io</sarl.url>
 		<!-- Default encoding of the source files -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -41,7 +46,7 @@
 		<!-- Path to the root directory  -->
 		<main.basedir>${project.basedir}</main.basedir>
 		<!-- String to put after the copyright sign  -->
-		<copyrighters>Sebastian RODRIGUEZ, Nicolas GAUD, St&amp;eacute;phane GALLAND</copyrighters>
+		<copyrighters>Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND</copyrighters>
 		<!-- URL of the Maven repositories of SARL (use in POM and documentation) -->
 		<sarl.maven.repository.url>http://maven.sarl.io</sarl.maven.repository.url>
 		<!-- Local path to the Maven repository -->
@@ -49,27 +54,6 @@
 		<!-- Local path to the P2 repository -->
 		<local.p2.repository.path>file:///var/www/sarl-p2-repository/</local.p2.repository.path>
 	</properties>
-
-	<!-- ======================================= -->
-	<!-- ==== Modules' configuration === -->
-	<!-- ======================================= -->
-
-	<modules>
-		<!-- Parent configuration for tycho modules -->
-		<module>tycho-parent</module>
-		<!-- Eclipse features for SARL (SDK and IDE contributions) -->
-		<module>features</module>
-		<!-- Eclipse plugins -->
-		<module>plugins</module>
-		<!-- Testing suite -->
-		<module>tests</module>
-		<!-- Definition of the Eclipse platform, the products and the update sites -->
-		<module>releng</module>
-		<!-- Maven plugins and artifacts dedicated to SARL -->
-		<module>maven</module>
-		<!-- Documentation of SARL -->
-		<module>docs</module>
-	</modules>
 
 	<!-- ======================================= -->
 	<!-- ==== Organization and License details === -->
@@ -145,6 +129,12 @@
 				</plugin>
 
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.8.2</version>
+				</plugin>
+
+				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>wagon-maven-plugin</artifactId>
 					<version>1.0-beta-5</version>
@@ -171,12 +161,12 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>2.13</version>
+					<version>2.12.1</version>
 					<executions>
 						<execution>
-							<phase>prepare-package</phase>
+							<phase>process-sources</phase>
 							<goals>
-								<goal>checkstyle</goal>
+								<goal>check</goal>
 							</goals>
 						</execution>
 					</executions>
@@ -189,7 +179,9 @@
 						<consoleOutput>true</consoleOutput>
 						<failsOnError>true</failsOnError>
 						<failOnViolation>true</failOnViolation>
+						<includeResources>false</includeResources>
 						<includeTestSourceDirectory>false</includeTestSourceDirectory>
+						<includeTestResources>false</includeTestResources>
 						<enableRulesSummary>true</enableRulesSummary>
 						<propertyExpansion>main.basedir=${main.basedir}</propertyExpansion>
 					</configuration>
@@ -240,15 +232,9 @@
 							<pluginExecutions>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>
-											com.google.code.maven-replacer-plugin
-										</groupId>
-										<artifactId>
-											replacer
-										</artifactId>
-										<versionRange>
-											[1.5.3,)
-										</versionRange>
+										<groupId>com.google.code.maven-replacer-plugin</groupId>
+										<artifactId>replacer</artifactId>
+										<versionRange>[1.5.3,)</versionRange>
 										<goals>
 											<goal>replace</goal>
 										</goals>
@@ -259,17 +245,24 @@
 								</pluginExecution>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>
-											org.codehaus.gmaven
-										</groupId>
-										<artifactId>
-											groovy-maven-plugin
-										</artifactId>
-										<versionRange>
-											[2.0,)
-										</versionRange>
+										<groupId>org.codehaus.gmaven</groupId>
+										<artifactId>groovy-maven-plugin</artifactId>
+										<versionRange>[2.0,)</versionRange>
 										<goals>
 											<goal>execute</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-checkstyle-plugin</artifactId>
+										<versionRange>[2.12.1,)</versionRange>
+										<goals>
+											<goal>check</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
@@ -379,7 +372,33 @@
 		</plugins>
 	</build>
 
+	<!-- ======================================= -->
+	<!-- ==== Profile configuration === -->
+	<!-- ======================================= -->
+
 	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<!-- Parent configuration for tycho modules -->
+				<module>tycho-parent</module>
+				<!-- Eclipse features for SARL (SDK and IDE contributions) -->
+				<module>features</module>
+				<!-- Eclipse plugins -->
+				<module>plugins</module>
+				<!-- Testing suite -->
+				<module>tests</module>
+				<!-- Definition of the Eclipse platform, the products and the update sites -->
+				<module>releng</module>
+				<!-- Maven plugins and artifacts dedicated to SARL -->
+				<module>maven</module>
+				<!-- Documentation of SARL -->
+				<module>docs</module>
+			</modules>
+		</profile>
 		<profile>
 			<id>release-tasks</id>
 			<activation>
@@ -388,6 +407,14 @@
 					<value>true</value>
 				</property>
 			</activation>
+			<modules>
+				<!-- Parent configuration for tycho modules -->
+				<module>tycho-parent</module>
+				<!-- Eclipse plugins -->
+				<module>plugins</module>
+				<!-- Maven plugins and artifacts dedicated to SARL -->
+				<module>maven</module>
+			</modules>
 			<build>
 				<plugins>
 					<plugin>
