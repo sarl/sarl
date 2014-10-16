@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="SARL Eclipse IDE" uid="io.sarl.lang.product" id="org.eclipse.platform.ide" application="org.eclipse.ui.ide.workbench" version="0.1.0" useFeatures="true" includeLaunchers="true">
+<product name="SARL Eclipse IDE" uid="io.sarl.lang.product" id="org.eclipse.platform.ide" application="org.eclipse.ui.ide.workbench" version="0.2.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="eclipse_lg.png"/>
@@ -250,8 +250,8 @@
    </plugins>
 
    <features>
-      <feature id="io.sarl.lang.sdk" version="0.1.0"/>
-      <feature id="io.sarl.sdk" version="0.1.0"/>
+      <feature id="io.sarl.lang.sdk" version="0.2.0.qualifier"/>
+      <feature id="io.sarl.sdk" version="0.2.0.qualifier"/>
       <feature id="org.eclipse.xtend.sdk" version="2.7.2.v201409160908"/>
       <feature id="org.eclipse.xtext.redist" version="2.7.2.v201409160908"/>
       <feature id="org.eclipse.xtext.runtime" version="2.7.2.v201409160908"/>

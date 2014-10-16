@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.lang.sdk"
       label="SARL Language Definition"
-      version="0.1.0"
+      version="0.2.0.qualifier"
       plugin="io.sarl.lang.ui">
 
    <description url="http://www.sarl.io/about/">
@@ -223,10 +223,11 @@ integrated tools for the Eclipse IDE.
    </url>
 
    <requires>
-      <import plugin="io.sarl.lang.core" version="0.1.0" match="equivalent"/>
+      <import plugin="io.sarl.lang.core" version="0.2.0" match="equivalent"/>
       <import plugin="org.eclipse.osgi" version="3.10.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.7.2" match="equivalent"/>
-      <import plugin="io.sarl.lang" version="0.1.0" match="equivalent"/>
+      <import plugin="io.sarl.lang" version="0.2.0" match="equivalent"/>
+      <import plugin="io.sarl.lang.ui" version="0.2.0" match="equivalent"/>
       <import plugin="org.eclipse.xtext.ui" version="2.7.2" match="equivalent"/>
       <import plugin="org.eclipse.xtext.ui.shared" version="2.7.2" match="equivalent"/>
       <import plugin="org.eclipse.xtext.xbase.ui" version="2.7.2" match="equivalent"/>
