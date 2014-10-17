@@ -211,10 +211,10 @@ public final class SARLRuntime {
 		if (install != null && install.getValidity().isOK()) {
 			return install;
 		}
-		// if the default JRE goes missing, re-detect
+		// if the default SRE goes missing, re-detect
 		LOCK.lock();
 		try {
-			defaultSREId = null;
+			//defaultSREId = null;
 			initializeSREs();
 		} finally {
 			LOCK.unlock();
