@@ -128,12 +128,25 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 */
 	protected abstract void executeMojo() throws MojoExecutionException, MojoFailureException;
 
+	/** Make absolute the given filename, relatively to the project's folder.
+	 *
+	 * @param file - the file to convert.
+	 * @return the absolute filename.
+	 */
+	protected File makeAbsolute(File file) {
+		if (!file.isAbsolute()) {
+			File basedir = this.mavenHelper.getSession().getCurrentProject().getBasedir();
+			return new File(basedir, file.getPath()).getAbsoluteFile();
+		}
+		return file;
+	}
+
 	/** Replies the input folder.
 	 *
 	 * @return the input folder.
 	 */
 	protected File getInput() {
-		return (this.input == null) ? new File(DEFAULT_INPUT) : this.input;
+		return makeAbsolute((this.input == null) ? new File(DEFAULT_INPUT) : this.input);
 	}
 
 	/** Replies the output folder.
@@ -141,7 +154,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @return the output folder.
 	 */
 	protected File getOutput() {
-		return (this.output == null) ? new File(DEFAULT_OUTPUT) : this.output;
+		return makeAbsolute((this.output == null) ? new File(DEFAULT_OUTPUT) : this.output);
 	}
 
 	/** Replies the test input folder.
@@ -149,7 +162,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @return the test input folder.
 	 */
 	protected File getTestInput() {
-		return (this.testInput == null) ? new File(DEFAULT_TEST_INPUT) : this.testInput;
+		return makeAbsolute((this.testInput == null) ? new File(DEFAULT_TEST_INPUT) : this.testInput);
 	}
 
 	/** Replies the test output folder.
@@ -157,7 +170,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @return the test output folder.
 	 */
 	protected File getTestOutput() {
-		return (this.testOutput == null) ? new File(DEFAULT_TEST_OUTPUT) : this.testOutput;
+		return makeAbsolute((this.testOutput == null) ? new File(DEFAULT_TEST_OUTPUT) : this.testOutput);
 	}
 
 	/** Execute another MOJO.
