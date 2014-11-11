@@ -188,7 +188,7 @@ public final class SARLRuntime {
 	/**
 	 * Returns the default SRE id determined during the initialization of the SRE types.
 	 *
-	 * @return the id of the default SRE
+	 * @return the id of the default SRE, or <code>null</code> if none.
 	 */
 	private static String getDefaultSREId() {
 		LOCK.lock();
@@ -308,7 +308,7 @@ public final class SARLRuntime {
 			if (defaultSREId != null) {
 				previous = getSREFromId(defaultSREId);
 			}
-			defaultSREId = sre.getId();
+			defaultSREId = ((sre == null) ? null : sre.getId());
 			if (savePreference) {
 				saveSREConfiguration(monitor);
 			}

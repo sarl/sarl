@@ -139,6 +139,30 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	public SREsPreferencePage() {
 		//
 	}
+	
+	/** Refresh the UI list of SRE.
+	 * 
+	 */
+	protected void refreshSREListUI() {
+		// Refreshes the SRE listing after a SRE install notification, might not
+		// happen on the UI thread.
+		Display display = Display.getDefault();
+		if (display.getThread().equals(Thread.currentThread())) {
+			if (!this.sresList.isBusy()) {
+				this.sresList.refresh();
+			}
+		} else {
+			display.syncExec(new Runnable() {
+				@SuppressWarnings("synthetic-access")
+				@Override
+				public void run() {
+					if (!SREsPreferencePage.this.sresList.isBusy()) {
+						SREsPreferencePage.this.sresList.refresh();
+					}
+				}
+			});
+		}
+	}
 
 	/** Set the error message from the given exception.
 	 *
@@ -340,7 +364,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			this.sreArray.add(sre);
 		}
 		this.sresList.setInput(this.sreArray);
-		this.sresList.refresh();
+		refreshSREListUI();
 		updateUI();
 	}
 
@@ -415,11 +439,17 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			if (result != null) {
 				this.sreArray.add(result);
 				//refresh from model
-				this.sresList.refresh();
+				refreshSREListUI();
 				this.sresList.setSelection(new StructuredSelection(result));
 				//ensure labels are updated
-				this.sresList.refresh(true);
+				if (!this.sresList.isBusy()) {
+					this.sresList.refresh(true);
+				}
 				updateUI();
+				// Autoselect the default SRE
+				if (getDefaultSRE() == null) {
+					setDefaultSRE(result);
+				}
 			}
 		}
 	}
@@ -470,7 +500,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		}
 		if (!newEntries.isEmpty()) {
 			this.sreArray.addAll(newEntries);
-			this.sresList.refresh();
+			refreshSREListUI();
 			this.sresList.setSelection(new StructuredSelection(newEntries.toArray()));
 		} else {
 			this.sresList.setSelection(selection);
@@ -518,7 +548,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 				defaultIsRemoved = true;
 			}
 		}
-		this.sresList.refresh();
+		refreshSREListUI();
 		// Update the default SRE
 		if (defaultIsRemoved) {
 			if (this.sreTable.getItemCount() == 0) {
@@ -987,19 +1017,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		public void sreAdded(ISREInstall sre) {
 			if (!SREsPreferencePage.this.sreArray.contains(sre)) {
 				SREsPreferencePage.this.sreArray.add(sre);
-				// Refreshes the SRE listing after a SRE install notification, might not
-				// happen on the UI thread.
-				Display display = Display.getDefault();
-				if (display.getThread().equals(Thread.currentThread())) {
-					SREsPreferencePage.this.sresList.refresh();
-				} else {
-					display.syncExec(new Runnable() {
-						@Override
-						public void run() {
-							SREsPreferencePage.this.sresList.refresh();
-						}
-					});
-				}
+				refreshSREListUI();
 			}
 		}
 
@@ -1008,19 +1026,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		public void sreRemoved(ISREInstall sre) {
 			if (SREsPreferencePage.this.sreArray.contains(sre)) {
 				SREsPreferencePage.this.sreArray.remove(sre);
-				// Refreshes the SRE listing after a SRE install notification, might not
-				// happen on the UI thread.
-				Display display = Display.getDefault();
-				if (display.getThread().equals(Thread.currentThread())) {
-					SREsPreferencePage.this.sresList.refresh();
-				} else {
-					display.syncExec(new Runnable() {
-						@Override
-						public void run() {
-							SREsPreferencePage.this.sresList.refresh();
-						}
-					});
-				}
+				refreshSREListUI();
 			}
 		}
 
@@ -1032,19 +1038,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			if (ISREInstallChangedListener.PROPERTY_NAME.equals(event.getProperty())) {
 				ISREInstall sre = (ISREInstall) event.getSource();
 				if (SREsPreferencePage.this.sreArray.contains(sre)) {
-					// Refreshes the SRE listing after a SRE install notification, might not
-					// happen on the UI thread.
-					Display display = Display.getDefault();
-					if (display.getThread().equals(Thread.currentThread())) {
-						SREsPreferencePage.this.sresList.refresh();
-					} else {
-						display.syncExec(new Runnable() {
-							@Override
-							public void run() {
-								SREsPreferencePage.this.sresList.refresh();
-							}
-						});
-					}
+					refreshSREListUI();
 				}
 			}
 		}
