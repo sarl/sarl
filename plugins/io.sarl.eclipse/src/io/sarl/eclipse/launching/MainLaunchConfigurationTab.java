@@ -31,25 +31,21 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.internal.ui.SWTFactory;
-import org.eclipse.jdt.core.IClassFile;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaModel;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
-import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.internal.debug.ui.actions.ControlAccessibleListener;
 import org.eclipse.jdt.internal.debug.ui.launcher.AbstractJavaMainTab;
 import org.eclipse.jdt.internal.debug.ui.launcher.DebugTypeSelectionDialog;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -260,41 +256,30 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 		initializeAgentName(javaElement, config);
 	}
 
-	private String extractNameFromJavaElement(IJavaElement javaElement) {
-		String name = null;
-		IJavaElement jElement = javaElement;
-
-		if (jElement instanceof IMember) {
-			IMember member = (IMember) jElement;
-			if (member.isBinary()) {
-				jElement = member.getClassFile();
-			} else {
-				jElement = member.getCompilationUnit();
-			}
-		}
-
-		// Search for the agent name
-		if (jElement instanceof ICompilationUnit || jElement instanceof IClassFile) {
-			try {
-				IJavaSearchScope scope = SearchEngine.createJavaSearchScope(
-						new IJavaElement[] {jElement},
-						false);
-				AgentTypeSearchEngine engine = new AgentTypeSearchEngine();
-				IType[] types = engine.searchAgentTypes(
-						getLaunchConfigurationDialog(),
-						scope);
-				if (types != null && (types.length > 0)) {
-					// Simply grab the first main type found in the searched element
-					name = types[0].getFullyQualifiedName();
+	private String extractNameFromJavaElement(final IJavaElement javaElement) {
+		final String[] name = new String[1];
+		try {
+			getLaunchConfigurationDialog().run(true, true, new IRunnableWithProgress() {
+				@SuppressWarnings("synthetic-access")
+				@Override
+				public void run(IProgressMonitor pm) throws InvocationTargetException {
+					try {
+						IJavaProject javaProject = javaElement.getJavaProject();
+						IType agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
+						IType[] types = agentType.newTypeHierarchy(pm).getAllSubtypes(agentType);
+						if (types != null && types.length > 0) {
+							name[0] = types[0].getFullyQualifiedName();
+						}
+					} catch (JavaModelException e) {
+						setErrorMessage(e.getLocalizedMessage());
+					}
 				}
-			} catch (InterruptedException ie) {
-				SARLEclipsePlugin.log(ie);
-			} catch (InvocationTargetException ite) {
-				SARLEclipsePlugin.log(ite);
-			}
+			});
+		} catch (Exception e) {
+			setErrorMessage(e.getLocalizedMessage());
 		}
 
-		return Strings.nullToEmpty(name);
+		return Strings.nullToEmpty(name[0]);
 	}
 
 	/**
@@ -321,71 +306,65 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 		}
 	}
 
-	private IJavaElement[] extractElementsFromProject() {
-		IJavaProject project = getJavaProject();
-		IJavaElement[] elements = null;
-		if ((project == null) || !project.exists()) {
-			IJavaModel model = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot());
-			if (model != null) {
-				try {
-					elements = model.getJavaProjects();
-				} catch (JavaModelException e) {
-					SARLEclipsePlugin.log(e);
-				}
-			}
-		} else {
-			elements = new IJavaElement[] {project};
-		}
-		if (elements == null) {
-			elements = new IJavaElement[]{};
-		}
-		return elements;
-	}
-
 	private IType[] searchAgentNames() {
-		IJavaElement[] elements = extractElementsFromProject();
-		int constraints = IJavaSearchScope.SOURCES;
-		constraints |= IJavaSearchScope.APPLICATION_LIBRARIES;
-		IJavaSearchScope searchScope = SearchEngine.createJavaSearchScope(elements, constraints);
-		AgentTypeSearchEngine engine = new AgentTypeSearchEngine();
-		IType[] types;
-		try {
-			types = engine.searchAgentTypes(
-					getLaunchConfigurationDialog(),
-					searchScope);
-			if (types == null) {
-				types = new IType[0];
+		final IType[][] res = new IType[1][];
+		res[0] = new IType[0];
+		final String projectName = this.fProjText.getText();
+		IStatus status = ResourcesPlugin.getWorkspace().validateName(projectName, IResource.PROJECT);
+		if (status.isOK()) {
+			try {
+				getLaunchConfigurationDialog().run(true, true, new IRunnableWithProgress() {
+					@SuppressWarnings("synthetic-access")
+					@Override
+					public void run(IProgressMonitor pm) throws InvocationTargetException {
+						try {
+							IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+							IJavaProject javaProject = JavaCore.create(project);
+							IType agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
+							res[0] = agentType.newTypeHierarchy(pm).getAllSubtypes(agentType);
+						} catch (JavaModelException e) {
+							setErrorMessage(e.getLocalizedMessage());
+						}
+					}
+				});
+			} catch (Exception e) {
+				setErrorMessage(e.getLocalizedMessage());
 			}
-			return types;
-		} catch (InvocationTargetException e) {
-			setErrorMessage(e.getMessage());
-			return null;
-		} catch (InterruptedException e) {
-			setErrorMessage(e.getMessage());
-			return null;
 		}
+		return res[0];
 	}
 
-	private boolean isAgentNameDefined(String agentName) {
-		IJavaElement[] elements = extractElementsFromProject();
-		int constraints = IJavaSearchScope.SOURCES;
-		constraints |= IJavaSearchScope.APPLICATION_LIBRARIES;
-		IJavaSearchScope searchScope = SearchEngine.createJavaSearchScope(elements, constraints);
-		AgentTypeSearchEngine engine = new AgentTypeSearchEngine();
-		IType type;
-		try {
-			type = engine.searchAgentType(
-					getLaunchConfigurationDialog(),
-					searchScope,
-					agentName);
-			return type != null;
-		} catch (InvocationTargetException e) {
-			setErrorMessage(e.getMessage());
-			return false;
-		} catch (InterruptedException e) {
-			setErrorMessage(e.getMessage());
-			return false;
+	private boolean isAgentNameDefined(final String agentName) {
+		final String projectName = this.fProjText.getText();
+		IStatus status = ResourcesPlugin.getWorkspace().validateName(projectName, IResource.PROJECT);
+		if (status.isOK()) {
+			try {
+				final boolean[] res = new boolean[1];
+				getLaunchConfigurationDialog().run(true, true, new IRunnableWithProgress() {
+					@SuppressWarnings("synthetic-access")
+					@Override
+					public void run(IProgressMonitor pm) throws InvocationTargetException {
+						try {
+							IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+							IJavaProject javaProject = JavaCore.create(project);
+							IType agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
+							if (agentType != null) {
+								IType type = javaProject.findType(agentName);
+								if (type != null) {
+									res[0] = type.newSupertypeHierarchy(pm).contains(agentType);
+								}
+							}
+						} catch (JavaModelException e) {
+							setErrorMessage(e.getLocalizedMessage());
+						}
+					}
+				});
+				return res[0];
+			} catch (Exception _) {
+				//
+			}
 		}
+		return false;
 	}
 
 	/** Invoked when the search button for the agent agent was clocked.
