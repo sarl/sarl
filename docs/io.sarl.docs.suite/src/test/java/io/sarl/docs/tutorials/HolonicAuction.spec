@@ -219,7 +219,7 @@ describe "English Auction with Holons"{
 			fact "Initial definition" {
 				'''
 				agent Bidder {
-					val random = new Random()
+					val random = new Random
 					var maxPrice : float
 					
 					on Initialize {
@@ -264,8 +264,9 @@ describe "English Auction with Holons"{
 			fact "Bidding" {
 				'''
 				agent Bidder {
-					val random = new Random()
+					val random = new Random
 					var maxPrice : float
+					var myLastBid : float
 					
 					on Initialize {
 						maxPrice = random.nextFloat() * 900f + 100f
@@ -274,11 +275,22 @@ describe "English Auction with Holons"{
 					uses DefaultContextInteractions
 				
 					on Price {
-						var priceIncrease = random.nextFloat() * 50f
-						if (priceIncrease > 0) {
-							var newPrice = occurrence.price + priceIncrease
-							if (newPrice <= maxPrice) {
-								emit(new Bid(newPrice))
+						if(occurrence.price == myLastBid) {
+							println("I do not bet, I am the winner with :" + myLastBid)
+						} else {
+							if(occurrence.price < maxPrice) {
+								var priceIncrease = random.nextFloat() * 50f
+								if (priceIncrease > 0) {
+									var newPrice = occurrence.price + priceIncrease
+									if (newPrice <= maxPrice) {
+										emit(new Bid(newPrice))
+										myLastBid = newPrice
+									} else {
+										println(" I give up, this is beyond my resources : " + myLastBid)
+									}
+								}
+							} else {
+								println("I dropped to " + myLastBid)
 							}
 						}
 					}
@@ -326,8 +338,9 @@ describe "English Auction with Holons"{
 			fact "Restrict the bid to the auctioneer" {
 				'''
 				agent Bidder {
-					val random = new Random()
+					val random = new Random
 					var maxPrice : float
+					var myLastBid : float
 					
 					on Initialize {
 						maxPrice = random.nextFloat() * 900f + 100f
@@ -336,13 +349,24 @@ describe "English Auction with Holons"{
 					uses DefaultContextInteractions
 				
 					on Price {
-						var priceIncrease = random.nextFloat() * 50f
-						if (priceIncrease > 0) {
-							var newPrice = occurrence.price + priceIncrease
-							if (newPrice <= maxPrice) {
-								var superScope = Scopes.addresses(
-									defaultSpace.getAddress(defaultContext.ID))
-								emit(new Bid(newPrice), superScope)
+						if(occurrence.price == myLastBid) {
+							println("I do not bet, I am the winner with :" + myLastBid)
+						} else {
+							if(occurrence.price < maxPrice) {
+								var priceIncrease = random.nextFloat() * 50f
+								if (priceIncrease > 0) {
+									var newPrice = occurrence.price + priceIncrease
+									if (newPrice <= maxPrice) {
+										var superScope = Scopes.addresses(
+											defaultSpace.getAddress(defaultContext.ID))
+										emit(new Bid(newPrice), superScope)
+										myLastBid = newPrice
+									} else {
+										println(" I give up, this is beyond my resources : " + myLastBid)
+									}
+								}
+							} else {
+								println("I dropped to " + myLastBid)
 							}
 						}
 					}
