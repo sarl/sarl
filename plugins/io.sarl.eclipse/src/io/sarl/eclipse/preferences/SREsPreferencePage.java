@@ -139,9 +139,9 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	public SREsPreferencePage() {
 		//
 	}
-	
+
 	/** Refresh the UI list of SRE.
-	 * 
+	 *
 	 */
 	protected void refreshSREListUI() {
 		// Refreshes the SRE listing after a SRE install notification, might not

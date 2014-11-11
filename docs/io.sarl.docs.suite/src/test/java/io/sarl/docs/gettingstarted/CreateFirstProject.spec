@@ -151,6 +151,7 @@ describe "Create First Project" {
 		 *              <groupId>io.sarl.maven</groupId>
 		 *              <artifactId>io.sarl.maven.sdk</artifactId>
 		 *              <version>${sarl.version}</version>
+		 *              <type>pom</type>
 		 *           </dependency>
 		 *           ...
 		 *        </dependencies>
@@ -219,6 +220,7 @@ describe "Create First Project" {
 		 *              <groupId>io.sarl.maven</groupId>
 		 *              <artifactId>io.sarl.maven.sdk</artifactId>
 		 *              <version>${sarl.version}</version>
+		 *              <type>pom</type>
 		 *              <exclusions>
 		 *                 <exclusion>
 		 *                    <groupId>com.google.guava</groupId>
