@@ -315,13 +315,31 @@ public final class SARLEclipsePlugin extends Plugin {
 		if (version == null) {
 			return Integer.MIN_VALUE;
 		}
-		if (minVersion != null && version.compareTo(minVersion) < 0) {
+		if (minVersion != null && compareVersionsNoQualifier(version, minVersion) < 0) {
 			return -1;
 		}
-		if (maxVersion != null && version.compareTo(maxVersion) >= 0) {
+		if (maxVersion != null && compareVersionsNoQualifier(version, maxVersion) >= 0) {
 			return 1;
 		}
 		return 0;
+	}
+
+	private static int compareVersionsNoQualifier(Version a, Version b) {
+		if (a == b) {
+			return 0;
+		}
+
+		int result = a.getMajor() - b.getMajor();
+		if (result != 0) {
+			return result;
+		}
+
+		result = a.getMinor() - b.getMinor();
+		if (result != 0) {
+			return result;
+		}
+
+		return a.getMicro() - b.getMicro();
 	}
 
 }

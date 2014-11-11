@@ -131,33 +131,9 @@ public class StandardSREPage extends AbstractSREInstallPage {
 			}
 		});
 		folders.addSelectionListener(new SelectionAdapter() {
-			@SuppressWarnings("synthetic-access")
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				File file;
-				if (StandardSREPage.this.workingCopy.getJarFile() != null) {
-					file = StandardSREPage.this.workingCopy.getJarFile().toFile();
-				} else {
-					file = null;
-				}
-
-				// XXX: JARFileSelectionDialog may be used for selecting a jar file in the workspace.
-				FileDialog dialog = new FileDialog(getShell(), SWT.OPEN);
-				dialog.setText(Messages.StandardSREPage_4);
-				dialog.setFilterExtensions(new String[] {"*.jar"}); //$NON-NLS-1$
-				if (file != null && file.exists()) {
-					dialog.setFileName(file.getAbsolutePath());
-				}
-				String selectedFile = dialog.open();
-				if (selectedFile != null) {
-					IPath path = Path.fromOSString(selectedFile);
-					IWorkspace workspace = ResourcesPlugin.getWorkspace();
-					IPath workspaceLocation = workspace.getRoot().getLocation();
-					if (workspaceLocation.isPrefixOf(path)) {
-						path = workspaceLocation.makeRelativeTo(workspaceLocation);
-					}
-					setSRELibraryPath(path);
-				}
+				selectSRE();
 			}
 		});
 		Dialog.applyDialogFont(composite);
@@ -168,6 +144,35 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		setPageStatus(validate());
 		updatePageStatus();
 		initializeFields();
+	}
+
+	/** Ask to the user to selected the SRE.
+	 */
+	protected void selectSRE() {
+		File file;
+		if (StandardSREPage.this.workingCopy.getJarFile() != null) {
+			file = StandardSREPage.this.workingCopy.getJarFile().toFile();
+		} else {
+			file = null;
+		}
+
+		FileDialog dialog = new FileDialog(getShell(), SWT.OPEN);
+		dialog.setText(Messages.StandardSREPage_4);
+		dialog.setFilterExtensions(new String[] {"*.jar"}); //$NON-NLS-1$
+		if (file != null && file.exists()) {
+			dialog.setFileName(file.getAbsolutePath());
+		}
+		String selectedFile = dialog.open();
+		if (selectedFile != null) {
+			file = new File(selectedFile);
+			IPath path = Path.fromOSString(file.getAbsolutePath());
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			IPath workspaceLocation = workspace.getRoot().getLocation();
+			if (workspaceLocation.isPrefixOf(path)) {
+				path = workspaceLocation.makeRelativeTo(workspaceLocation);
+			}
+			setSRELibraryPath(path);
+		}
 	}
 
 	private void setSRELibraryPath(IPath path) {
