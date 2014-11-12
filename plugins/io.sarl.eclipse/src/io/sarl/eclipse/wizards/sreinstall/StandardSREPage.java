@@ -164,28 +164,21 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		}
 		String selectedFile = dialog.open();
 		if (selectedFile != null) {
-			file = new File(selectedFile);
-			IPath path = Path.fromOSString(file.getAbsolutePath());
+			IPath path = Path.fromOSString(selectedFile);
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			IPath workspaceLocation = workspace.getRoot().getLocation();
 			if (workspaceLocation.isPrefixOf(path)) {
 				path = workspaceLocation.makeRelativeTo(workspaceLocation);
 			}
-			setSRELibraryPath(path);
+			//
+			createWorkingCopy();
+			this.workingCopy.setJarFile(path);
+			IStatus status = validate();
+			//
+			initializeFields();
+			setPageStatus(status);
+			updatePageStatus();
 		}
-	}
-
-	private void setSRELibraryPath(IPath path) {
-		StandardSREPage.this.workingCopy.setJarFile(path);
-		if (path != null) {
-			this.sreLibraryTextField.setText(path.removeTrailingSeparator().lastSegment());
-		} else {
-			this.sreLibraryTextField.setText(SARLEclipsePlugin.EMPTY_STRING);
-		}
-		setPageStatus(validate());
-		this.sreNameTextField.setText(this.workingCopy.getName());
-		this.sreMainClassTextField.setText(this.workingCopy.getMainClass());
-		updatePageStatus();
 	}
 
 	@Override
@@ -207,6 +200,12 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		}
 		setTitle(MessageFormat.format(Messages.StandardSREPage_7, sre.getName()));
 		this.originalSRE = (StandardSREInstall) sre;
+		createWorkingCopy();
+	}
+
+	/** Create a new instance of the working copy.
+	 */
+	protected void createWorkingCopy() {
 		this.workingCopy = this.originalSRE.clone();
 		this.workingCopy.setNotify(false);
 	}
