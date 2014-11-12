@@ -59,6 +59,7 @@ import org.eclipse.xtext.xbase.XSetLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.lib.Pair;
+import org.osgi.framework.Version;
 
 import com.google.common.io.Files;
 import com.ibm.icu.math.BigDecimal;
@@ -196,7 +197,7 @@ public final class SpecificationTools {
 			if (ref.startsWith("#")) { //$NON-NLS-1$
 				ref = "./" + source.getClass().getSimpleName() + ".html" + ref; //$NON-NLS-1$ //$NON-NLS-2$
 			}
-	
+
 			String[] fragments = null;
 			if (ref.contains(".html#")) { //$NON-NLS-1$
 				String[] parts = ref.split(java.util.regex.Matcher.quoteReplacement(".html#")); //$NON-NLS-1$
@@ -221,7 +222,7 @@ public final class SpecificationTools {
 			}
 			//
 			if (!isJnarioSpec(source.getClass(), ref)) {
-	
+
 				// The specification could be a function of the Java class.
 				if (fragments != null) {
 					StringBuilder operationName = new StringBuilder();
@@ -240,7 +241,7 @@ public final class SpecificationTools {
 						// Failure
 					}
 				}
-	
+
 				return false;
 			}
 			return true;
@@ -280,7 +281,7 @@ public final class SpecificationTools {
 	public static boolean should_iterate(Iterator<?> actual, Object expected) {
 		return should_iterate(actual, expected, true);
 	}
-	
+
 	/** Ensure that the iterator replies the expected values in the given order.
 	 *
 	 * @param actual - the iterator to test.
@@ -321,7 +322,7 @@ public final class SpecificationTools {
 			}
 			return !it.hasNext();
 		}
-		
+
 		// Unsignificant order
 		List<Object> expectedElements = new LinkedList<>();
 		while (it.hasNext()) {
@@ -613,7 +614,7 @@ public final class SpecificationTools {
 					return false;
 				}
 				return should_beLiteral(op.getLeftOperand(), k)
-					&& should_beLiteral(op.getRightOperand(), v);
+						&& should_beLiteral(op.getRightOperand(), v);
 			}
 		}
 		return false;
@@ -670,7 +671,7 @@ public final class SpecificationTools {
 				}
 				if (returnText == null || returnText.isEmpty()) {
 					return void.class.equals(method.getReturnType())
-						|| Void.class.equals(method.getReturnType());
+							|| Void.class.equals(method.getReturnType());
 				}
 				Class<?> rType = ReflectionUtil.forName(returnText);
 				return rType.equals(method.getReturnType());
@@ -757,7 +758,7 @@ public final class SpecificationTools {
 		}
 		return false;
 	}
-	
+
 	/** Ensure that the given string is a valid Maven version number.
 	 * 
 	 * @param actual - the string to test.
@@ -778,6 +779,70 @@ public final class SpecificationTools {
 		}
 		pattern.append("$"); //$NON-NLS-1$
 		return Pattern.matches(pattern.toString(), actual);
+	}
+	
+	private static Version parseJavaVersion(String version, Version defaultVersion) {
+		try {
+			Pattern pattern = Pattern.compile("^([0-9]+)(?:\\.([0-9]+)(?:\\.([0-9]+))?)?"); //$NON-NLS-1$
+			Matcher matcher = pattern.matcher(version);
+			if (matcher.find()) {
+				int major = Integer.parseInt(matcher.group(1));
+				int minor = 0;
+				String g = matcher.group(2);
+				if (g != null && !g.isEmpty()) {
+					try {
+						minor = Integer.parseInt(g);
+					} catch (Exception _) {
+						//
+					}
+				}
+				int micro = 0;
+				g = matcher.group(3);
+				if (g != null && !g.isEmpty()) {
+					try {
+						micro = Integer.parseInt(g);
+					} catch (Exception _) {
+						//
+					}
+				}
+				return new Version(major, minor, micro);
+			}
+			if (version != null && !version.isEmpty()) {
+				Version v = Version.valueOf(version);
+				if (v != null) {
+					return v;
+				}
+			}			
+		} catch (Exception _) {
+			//
+		}
+		return defaultVersion;
+	}
+
+	/** Ensure that the version of the current Java specification is in 
+	 * the range given by the minVersion (inclusive) and maxVersion (exclusive).
+	 * If the maxVersion is not given and minVersion is <code>a.b.c</code>, 
+	 * then maxVersion is <code>a.b+1.0</code>.
+	 *
+	 * @param minVersion - the minimal version.
+	 * @param maxVersion - the maximal version.
+	 * @return the validation status.
+	 */
+	public static boolean should_beJavaRange(String minVersion, String maxVersion) {
+		if (minVersion != null) {
+			Version minV = parseJavaVersion(minVersion, null);
+			if (minV != null) {
+				Version maxV = parseJavaVersion(maxVersion, null);
+				if (maxV == null) {
+					maxV = new Version(minV.getMajor(), minV.getMinor() + 1, 0);
+				}
+				Version jreV = parseJavaVersion(System.getProperty("java.version"), null); //$NON-NLS-1$
+				if (jreV != null) {
+					return jreV.compareTo(minV) >= 0 && jreV.compareTo(maxV) < 0;
+				}
+			}
+		}
+		return false;
 	}
 
 	/** Ensure that the given type has the number of members.

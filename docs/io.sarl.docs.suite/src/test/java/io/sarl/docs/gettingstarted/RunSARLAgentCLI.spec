@@ -33,7 +33,7 @@ import static extension io.sarl.docs.utils.SpecificationTools.*
  * For running an agent, you must launch this agent on the runtime 
  * environment.
  * This document explains how to launch an agent on
- * the [Janus platform](http://www.janusproject.io).
+ * the [Janus platform](http://www.janusproject.io) from the command line.
  */
 @CreateWith(SARLSpecCreator)
 describe "Run SARL Agent from the Command Line" {
@@ -154,18 +154,18 @@ describe "Run SARL Agent from the Command Line" {
 			true
 		}
 
-	} 
-
+	}
+	 
 	/*
-	 * Now, you are ready for developing agents with the SARL language.
-	 * Please read the rest of the documentation for obtaining more details.
+	 * In the next section, we will learn how to launch your SARL project from
+	 * a Java program.
 	 * 
-	 * [Next>](../SARLDocumentationSuite.html)
+	 * [Next>](RunSARLAgentFromAJavaProgramSpec.html)
 	 * 
 	 * @filter(.*)
 	 */
 	fact "What's next?" {
-		"../SARLDocumentationSuite.html" should beAccessibleFrom this
+		"./RunSARLAgentFromAJavaProgramSpec.html" should beAccessibleFrom this
 	}
 
 }

@@ -119,7 +119,7 @@ describe "General FAQ on SARL" {
 			 * @filter(.*) 
 			 */
 			fact "Could I use SARL to make organizational software?" {
-				true
+				"http://www.aspecs.org/CRIO" should beURL _
 			}
 
 			/* __Yes and No__.
@@ -136,7 +136,8 @@ describe "General FAQ on SARL" {
 			 * @filter(.*) 
 			 */
 			fact "Is SARL an object-oriented programming language?" {
-				true
+				"https://wiki.eclipse.org/Xbase" should beURL _
+				"http://www.eclipse.org/Xtext" should beURL _
 			}
 
 			/* __Yes__.
@@ -147,7 +148,7 @@ describe "General FAQ on SARL" {
 			 * @filter(.*) 
 			 */
 			fact "May I use my Java classes in SARL?" {
-				true
+				typeof(Integer) should not be null
 			}
 
 			/* SARL is a general-purpose agent-oriented language.
@@ -181,7 +182,7 @@ describe "General FAQ on SARL" {
 			 * @filter(.*) 
 			 */
 			fact "Where can I found information on the release planning of SARL?" {
-				true
+				"https://github.com/sarl/sarl/milestones" should beURL _
 			}
 
 			/* If you cannot find an answer to your question in
@@ -193,7 +194,8 @@ describe "General FAQ on SARL" {
 			 * @filter(.*) 
 			 */
 			fact "Where can I ask my question?" {
-				true
+				"https://github.com/sarl/sarl/issues" should beURL _
+				"https://github.com/sarl/sarl/issues/new" should beURL _
 			}
 
 		}
@@ -213,7 +215,7 @@ describe "General FAQ on SARL" {
 			}
 
 			/* SARL requires the JRE and the JDK %compilerlevel% or higher to run and compile.
-			 * Note that if you plan to create Android applications, you must 
+			 * Note that if you plan to create Android applications, you should
 			 * configure your JDK to produce 1.6 class files from %compilerlevel% Java code. 
 			 * 
 			 * @filter(.*) 
@@ -225,6 +227,7 @@ describe "General FAQ on SARL" {
 				System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
 				//
 				"%compilerlevel%" should beMavenVersion false
+				"%compilerlevel%" should beJavaRange _
 			}
 
 		}
@@ -256,7 +259,8 @@ describe "General FAQ on SARL" {
 			 * @filter(.*) 
 			 */
 			fact "How can I obtain the current issues?" {
-				true
+				"https://github.com/sarl/sarl" should beURL _
+				"https://github.com/sarl/sarl/issues" should beURL _
 			}
 
 			/* You must submit your issue on 
@@ -265,7 +269,7 @@ describe "General FAQ on SARL" {
 			 * @filter(.*) 
 			 */
 			fact "How can I report a problem or a bug in SARL components?" {
-				true
+				"https://github.com/sarl/sarl/issues/new" should beURL _
 			}
 
 		}

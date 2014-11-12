@@ -25,6 +25,9 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
+import static extension io.sarl.docs.utils.SpecificationTools.*;
+import static extension org.junit.Assume.assumeFalse
+
 /*
  * @outline
  */
@@ -57,7 +60,7 @@ describe "Runtime Environment FAQ" {
 			 * @filter(.*) 
 			 */
 			fact "What is Janus?" {
-				true
+				"http://www.janusproject.io" should beURL _
 			}
 
 			/* If you cannot find an answer to your question in
@@ -70,7 +73,9 @@ describe "Runtime Environment FAQ" {
 			 * @filter(.*) 
 			 */
 			fact "Where can I ask my question?" {
-				true
+				"https://github.com/sarl/sarl/issues" should beURL _
+				"https://github.com/janus-project/janusproject/issues" should beURL _
+				"https://github.com/janus-project/janusproject/issues/new" should beURL _
 			}
 
 			/* The release planning of Janus is detailed on the
@@ -83,7 +88,8 @@ describe "Runtime Environment FAQ" {
 			 * @filter(.*) 
 			 */
 			fact "Where can I found information on the release planning of Janus?" {
-				true
+				"https://github.com/janus-project/janusproject/milestones" should beURL _
+				"https://github.com/sarl/sarl/milestones" should beURL _
 			}
 
 		}
@@ -94,23 +100,50 @@ describe "Runtime Environment FAQ" {
 
 			/* The [Janus runtime platform](http://www.janusproject.io)
 			 * is a Java application. Every operating system which has 
-			 * a compatible Java Virtual Machine (at least with the 1.7
+			 * a compatible Java Virtual Machine (at least with the %compilerlevel%
 			 * standard) with Janus may be used to run it. 
 			 * 
 			 * @filter(.*) 
 			 */
 			fact "Does my operating system is compatible with Janus?" {
-				true
+				"http://www.janusproject.io" should beURL _
+				// The checks are valid only if the macro replacements were done.
+				// The replacements are done by Maven.
+				// So, Eclipse Junit tools do not make the replacements.
+				System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+				//
+				"%compilerlevel%" should beMavenVersion false
+				"%compilerlevel%" should beJavaRange _
 			}
 
-			/* Janus requires the JRE and the JDK 1.7 or higher to run and compile.
+			/* Janus requires the JRE and the JDK %compilerlevel% or higher to run and compile.
 			 * Note that if you plan to create Android applications, you must 
-			 * configure your JDK to produce 1.6 class files from 1.7 Java code. 
+			 * configure your JDK to produce 1.6 class files from %compilerlevel% Java code. 
 			 * 
 			 * @filter(.*) 
 			 */
 			fact "What is the version of the Java virtual machine to install?" {
-				true
+				// The checks are valid only if the macro replacements were done.
+				// The replacements are done by Maven.
+				// So, Eclipse Junit tools do not make the replacements.
+				System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+				//
+				"%compilerlevel%" should beMavenVersion false
+				"%compilerlevel%" should beJavaRange _
+			}
+
+			/* Three methods are available for launching one or more agents in the Janus platform:<ul>
+			 * <li>[From the command line](../gettingstarted/RunSARLAgentFromTheCommandLineSpec.html).</li>
+			 * <li>[Inside the Eclipse IDE](../gettingstarted/RunSARLAgentInTheEclipseIDESpec.html).</li>
+			 * <li>[From a Java program](../gettingstarted/RunSARLAgentFromAJavaProgramSpec.html).</li>
+			 * </ul>
+			 *
+			 * @filter(.*) 
+			 */
+			fact "How to launch an agent in Janus?" {
+				"../gettingstarted/RunSARLAgentFromTheCommandLineSpec.html" should beAccessibleFrom this
+				"../gettingstarted/RunSARLAgentInTheEclipseIDESpec.html" should beAccessibleFrom this
+				"../gettingstarted/RunSARLAgentFromAJavaProgramSpec.html" should beAccessibleFrom this
 			}
 
 		}
@@ -127,7 +160,8 @@ describe "Runtime Environment FAQ" {
 			 * @filter(.*) 
 			 */
 			fact "Where are the sources of Janus?" {
-				true
+				"https://github.com/janus-project/janusproject" should beURL _
+				"http://www.janusproject.io" should beURL _
 			}
 			
 			/* Janus Core Developers use [Github](https://github.com/janus-project/janusproject)
@@ -137,7 +171,8 @@ describe "Runtime Environment FAQ" {
 			 * @filter(.*) 
 			 */
 			fact "How can I obtain the current issues?" {
-				true
+				"https://github.com/janus-project/janusproject" should beURL _
+				"https://github.com/janus-project/janusproject/issues" should beURL _
 			}
 
 			/* You must submit your issue on 
@@ -146,7 +181,7 @@ describe "Runtime Environment FAQ" {
 			 * @filter(.*) 
 			 */
 			fact "How can I report a problem or a bug in Janus components?" {
-				true
+				"https://github.com/janus-project/janusproject/issues/new" should beURL _
 			}
 
 		}
@@ -166,7 +201,7 @@ describe "Runtime Environment FAQ" {
 			 * @filter(.*) 
 			 */
 			fact "Are events received in the same order than when they are sent?" {
-				true
+				"http://www.janusproject.io" should beURL _
 			}
 
 			/* __No__.

@@ -34,7 +34,7 @@ import static extension org.junit.Assume.*
  * For running an agent, you must launch this agent on the runtime 
  * environment.
  * This document explains how to launch an agent on
- * the [Janus platform](http://www.janusproject.io).
+ * the [Janus platform](http://www.janusproject.io) inside the Eclipse IDE.
  *
  * Two major methods are available for launching a SARL application:
  * 
@@ -280,8 +280,8 @@ describe "Run SARL Agent in the Eclipse IDE" {
 	}
 
 	/*
-	 * In the next section, we will learn how to launch your SARL project inside
-	 * the Eclipse IDE.
+	 * In the next section, we will learn how to launch your SARL project from
+	 * the command line.
 	 * 
 	 * [Next>](RunSARLAgentFromTheCommandLineSpec.html)
 	 * 

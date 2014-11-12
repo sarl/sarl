@@ -34,6 +34,7 @@ import io.sarl.docs.tutorials.*
 - "Agent Definition Introduction"
 - "Run SARL Agent in the Eclipse IDE"
 - "Run SARL Agent from the Command Line"
+- "Run SARL Agent from a Java Program"
 
 ##Frequently Asked Questions  (FAQ)
 
