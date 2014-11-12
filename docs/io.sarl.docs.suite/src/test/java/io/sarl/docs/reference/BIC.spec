@@ -67,6 +67,173 @@ describe "Built-in Capacity Reference" {
 
 		@Inject extension SARLParser
 
+		/* The built-in capacity `Logging` provides tools for printing
+		 * messages in the log associated to the agent.
+		 */
+		describe "Logging" {
+			
+			/* For printing an error or a warning message, the two following functions
+			 * are provided:
+			 * 
+			 *     def error(message : Object, exception : Throwable = null)
+			 *     def warning(message : Object, exception : Throwable = null)
+			 *
+			 * 
+			 * The `message` parameter is converted to a string for obtaining the
+			 * message to output.
+			 * The `exception` parameter may be given for printing an exception that
+			 * is the cause of the logging action.
+			 *  
+			 * @filter(.*) 
+			 */
+			fact "Print an error or a warning message" {
+				// Tests URLs from the beginning of the page
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+				"CapacityReferenceSpec.html" should beAccessibleFrom this
+				"SkillReferenceSpec.html" should beAccessibleFrom this
+				"SpaceReferenceSpec.html" should beAccessibleFrom this
+				"./contexts.png" should beAccessibleFrom this
+				//
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Logging
+					agent A {
+						uses Logging
+						def myaction {
+							error(\"mymessage\")
+							error(\"mymessage\", new Exception)
+							warning(\"mymessage\")
+							warning(\"mymessage\", new Exception)
+						}
+					}".parseSuccessfully
+			}
+
+			/* For printing an information message, the two following functions
+			 * are provided:
+			 * 
+			 *     def info(message : Object)
+			 *     def println(message : Object)
+			 *
+			 * 
+			 * The `message` parameter is converted to a string for obtaining the
+			 * message to output.
+			 * There is no difference between these two functions.
+			 * The function `println` is provided for backward compatibility, and
+			 * will be deprecated in further versions of the capacity.
+			 *  
+			 * @filter(.*) 
+			 */
+			fact "Print an information message" {
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Logging
+					agent A {
+						uses Logging
+						def myaction {
+							info(\"mymessage\")
+							println(\"mymessage\")
+						}
+					}".parseSuccessfully
+			}
+
+			/* For printing a debugging message, the following function
+			 * is provided:
+			 * 
+			 *     def debug(message : Object)
+			 *
+			 * 
+			 * The `message` parameter is converted to a string for obtaining the
+			 * message to output.
+			 *  
+			 * @filter(.*) 
+			 */
+			fact "Print a debugging message" {
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Logging
+					agent A {
+						uses Logging
+						def myaction {
+							debug(\"mymessage\")
+						}
+					}".parseSuccessfully
+			}
+
+			/* The printable messages are associated to a level of logging (error, warning, info, debug).
+			 * If a message is given to the logging system, and the current output level is lower
+			 * than the message's level, then the message is not output.
+			 * 
+			 * For retrieving the current logging level, the following function is provided:
+			 * 
+			 *     def getLogLevel : int
+			 *
+			 * 
+			 * The replied value is 0 when no message is printed, 1 if only error messages
+			 * are printed, 2 for error and warning messages, etc.
+			 * 
+			 * For changing the current logging level, the following function is provided:
+			 * 
+			 *     def setLogLevel(level : int)
+			 *  
+			 *  
+			 * @filter(.*) 
+			 */
+			fact "Retrieve and change the logging level" {
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Logging
+					agent A {
+						uses Logging
+						def myaction {
+							var l = getLogLevel
+							setLogLevel( l + 1 )
+						}
+					}".parseSuccessfully
+			}
+
+			/* The following functions permits testing if a specific logging level is
+			 * enabled:
+			 * 
+			 *     def isErrorLogEnabled : boolean
+			 *     def isWarningLogEnabled : boolean
+			 *     def isInfoLogEnabled : boolean
+			 *     def isDebugLogEnabled : boolean
+			 *
+			 * @filter(.*) 
+			 */
+			fact "Testing the logging level" {
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Logging
+					agent A {
+						uses Logging
+						def myaction {
+							isErrorLogEnabled
+							isWarningLogEnabled
+							isInfoLogEnabled
+							isDebugLogEnabled
+						}
+					}".parseSuccessfully
+			}
+
+			/* By default, the logging message contains the identifier of the agent
+			 * associated to the `Logging` capacity.
+			 * 
+			 * Sometimes, it is helpful to change the printed name of the agent.
+			 * The following function gives the opportunity to change this name.
+			 * 
+			 *     def setLoggingName(name : String)
+			 *
+			 * @filter(.*) 
+			 */
+			fact "Change the name of the logger" {
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Logging
+					agent A {
+						uses Logging
+						def myaction {
+							setLoggingName(\"toto\")
+						}
+					}".parseSuccessfully
+			}
+
+		}
+
 		/* The built-in capacity `ExternalContextAccess` provides access to the 
 		 * [context](SpaceReferenceSpec.html) that the agent is a part of, and actions
 		 * required to join new [contexts](SpaceReferenceSpec.html), and leave them.
@@ -89,13 +256,6 @@ describe "Built-in Capacity Reference" {
 			 * @filter(.*) 
 			 */
 			fact "Retrieving a Context"{
-				// Tests URLs from the beginning of the page
-				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
-				"CapacityReferenceSpec.html" should beAccessibleFrom this
-				"SkillReferenceSpec.html" should beAccessibleFrom this
-				"SpaceReferenceSpec.html" should beAccessibleFrom this
-				"./contexts.png" should beAccessibleFrom this
-				//
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.ExternalContextAccess
 					import io.sarl.lang.core.AgentContext
@@ -655,11 +815,12 @@ describe "Built-in Capacity Reference" {
 				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 				//
 				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Logging
 					import io.sarl.core.Schedules
 					import io.sarl.core.AgentTask
 					import io.sarl.lang.core.Agent
 					agent A {
-						uses Schedules
+						uses Schedules, Logging
 						def myaction {
 							var t1 : AgentTask
 							var t2 : AgentTask
@@ -699,11 +860,12 @@ describe "Built-in Capacity Reference" {
 				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 				//
 				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Logging
 					import io.sarl.core.Schedules
 					import io.sarl.core.AgentTask
 					import io.sarl.lang.core.Agent
 					agent A {
-						uses Schedules
+						uses Schedules, Logging
 						def myaction {
 							var t1 : AgentTask
 							var t2 : AgentTask

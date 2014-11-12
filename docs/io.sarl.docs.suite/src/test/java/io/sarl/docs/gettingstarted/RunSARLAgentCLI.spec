@@ -112,6 +112,7 @@ describe "Run SARL Agent from the Command Line" {
 		fact "Retrieve the Command Line Parameters in the Agent" {
 			val model = '''
 				agent MyAgent {
+					uses Logging
 					on Initialize {
 						println("Command line parameters: "
 							+occurrence.parameters)
@@ -119,6 +120,7 @@ describe "Run SARL Agent from the Command Line" {
 				}
 			'''.parseSuccessfully(
 				"package io.sarl.docs.gettingstarted.runsarlagent
+				import io.sarl.core.Logging
 				import io.sarl.core.Initialize",
 				// TEXT
 				""
@@ -126,7 +128,8 @@ describe "Run SARL Agent from the Command Line" {
 			
 			model => [
 				it should havePackage "io.sarl.docs.gettingstarted.runsarlagent"
-				it should haveNbImports 1
+				it should haveNbImports 2
+				it should importClass "io.sarl.core.Logging"
 				it should importClass "io.sarl.core.Initialize"
 				it should haveNbElements 1
 			]
@@ -134,8 +137,11 @@ describe "Run SARL Agent from the Command Line" {
 			model.elements.get(0) => [
 				it should beAgent "MyAgent"
 				it should extend _
-				it should haveNbElements 1
+				it should haveNbElements 2
 				(it as Agent).features.get(0) => [
+					it should beCapacityUse "io.sarl.core.Logging"
+				]
+				(it as Agent).features.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]

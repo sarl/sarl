@@ -167,20 +167,22 @@ describe "Agent Definition Introduction" {
 		 * To define this event handler, we must use the `on` keyword,
 		 * and provide the associated code block.
 		 * 
-		 *  <note>`println` is a shortcut for the Java function
-		 * `System.out.println`.</note>
+		 * <note>The `println` function is provided by the `Logging` capacity.
+		 * It permits printing a message on the log output.</note>
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Define an agent Perceptions"{
 			val model = '''
 			agent MyAgent {
+				uses Logging
 				on MyEvent {
 					println("Received MyEvent")
 				}
 			} 
 			'''.parseSuccessfully(
 				"package io.sarl.docs.gettingstarted.^agent
+				import io.sarl.core.Logging
 				event MyEvent",
 				// TEXT
 				""
@@ -188,7 +190,8 @@ describe "Agent Definition Introduction" {
 
 			model => [
 				it should havePackage "io.sarl.docs.gettingstarted.agent"
-				it should haveNbImports 0
+				it should haveNbImports 1
+				it should importClass "io.sarl.core.Logging"
 				it should haveNbElements 2
 			]
 			
@@ -201,8 +204,11 @@ describe "Agent Definition Introduction" {
 			model.elements.get(1) => [
 				it should beAgent "MyAgent"
 				it should extend _
-				it should haveNbElements 1
+				it should haveNbElements 2
 				(it as Agent).features.get(0) => [
+					it should beCapacityUse "io.sarl.core.Logging"
+				]
+				(it as Agent).features.get(1) => [
 					it should beBehaviorUnit "io.sarl.docs.gettingstarted.agent.MyEvent"
 					it should beGuardedWith _
 				]
@@ -229,10 +235,12 @@ describe "Agent Definition Introduction" {
 		 */
 		fact "Lifecycle events" {
 			val model = '''
+				import io.sarl.core.Logging
 				import io.sarl.core.Initialize
 				import io.sarl.core.Destroy
 				
 				agent MyAgent {
+					uses Logging
 					
 					on Initialize {
 						println("MyAgent spawned")
@@ -250,7 +258,8 @@ describe "Agent Definition Introduction" {
 
 			model => [
 				it should havePackage "io.sarl.docs.gettingstarted.agent"
-				it should haveNbImports 2
+				it should haveNbImports 3
+				it should importClass "io.sarl.core.Logging"
 				it should importClass "io.sarl.core.Initialize"
 				it should importClass "io.sarl.core.Destroy"
 				it should haveNbElements 1
@@ -259,12 +268,15 @@ describe "Agent Definition Introduction" {
 			model.elements.get(0) => [
 				it should beAgent "MyAgent"
 				it should extend _
-				it should haveNbElements 2
+				it should haveNbElements 3
 				(it as Agent).features.get(0) => [
+					it should beCapacityUse "io.sarl.core.Logging"
+				]
+				(it as Agent).features.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]
-				(it as Agent).features.get(1) => [
+				(it as Agent).features.get(2) => [
 					it should beBehaviorUnit "io.sarl.core.Destroy"
 					it should beGuardedWith _
 				]
@@ -285,6 +297,7 @@ describe "Agent Definition Introduction" {
 		fact "Accessing the event's occurrence" {
 			val model = '''
 				agent MyAgent {
+					uses Logging
 					
 					on Initialize {
 						println("MyAgent spawned")
@@ -298,6 +311,7 @@ describe "Agent Definition Introduction" {
 				}
 			'''.parseSuccessfully(
 				"package io.sarl.docs.gettingstarted.^agent
+				import io.sarl.core.Logging
 				import io.sarl.core.Initialize
 				import io.sarl.core.Destroy",
 				// TEXT
@@ -306,7 +320,8 @@ describe "Agent Definition Introduction" {
 
 			model => [
 				it should havePackage "io.sarl.docs.gettingstarted.agent"
-				it should haveNbImports 2
+				it should haveNbImports 3
+				it should importClass "io.sarl.core.Logging"
 				it should importClass "io.sarl.core.Initialize"
 				it should importClass "io.sarl.core.Destroy"
 				it should haveNbElements 1
@@ -315,12 +330,15 @@ describe "Agent Definition Introduction" {
 			model.elements.get(0) => [
 				it should beAgent "MyAgent"
 				it should extend _
-				it should haveNbElements 2
+				it should haveNbElements 3
 				(it as Agent).features.get(0) => [
+					it should beCapacityUse "io.sarl.core.Logging"
+				]
+				(it as Agent).features.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]
-				(it as Agent).features.get(1) => [
+				(it as Agent).features.get(2) => [
 					it should beBehaviorUnit "io.sarl.core.Destroy"
 					it should beGuardedWith _
 				]

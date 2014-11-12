@@ -157,6 +157,7 @@ describe "Behavior Reference" {
 				//
 				val model = '''
 				behavior MyBehavior {
+					uses Logging
 					// Defining an action without parameter nor return type
 					def myAction1 {
 						println("Hello world")
@@ -167,31 +168,37 @@ describe "Behavior Reference" {
 					}
 				}
 				'''.parseSuccessfully(
-					"package io.sarl.docs.reference.br",
+					"package io.sarl.docs.reference.br
+					import io.sarl.core.Logging",
 					// TEXT
 					""
 				)
 				
 				model => [
 					it should havePackage "io.sarl.docs.reference.br"
-					it should haveNbImports 0
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.Logging"
 					it should haveNbElements 1
 				]
 				
 				var b = (model.elements.get(0) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
-					it should haveNbElements 2
+					it should haveNbElements 3
 				]) as Behavior
 				
 				b.features.get(0) => [
+					it should beCapacityUse "io.sarl.core.Logging"
+				]
+
+				b.features.get(1) => [
 					it should beAction "myAction1"
 					it should reply _
 					it should haveNbParameters 0
 					it should beVariadic false
 				]
 
-				b.features.get(1) => [
+				b.features.get(2) => [
 					it should beAction "myAction2"
 					it should reply _
 					it should haveNbParameters 1
@@ -231,19 +238,22 @@ describe "Behavior Reference" {
 					var attr : String
 				}
 				behavior MySubBehavior extends MyBehavior {
+					uses Logging
 					def action {
 						println(attr)
 					}
 				}
 				'''.parseSuccessfully(
-					"package io.sarl.docs.reference.br",
+					"package io.sarl.docs.reference.br
+					import io.sarl.core.Logging",
 					// TEXT
 					""
 				)
 
 				model => [
 					it should havePackage "io.sarl.docs.reference.br"
-					it should haveNbImports 0
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.Logging"
 					it should haveNbElements 2
 				]
 				
@@ -261,8 +271,11 @@ describe "Behavior Reference" {
 				model.elements.get(1) => [
 					it should beBehavior "MySubBehavior"
 					it should extend "io.sarl.docs.reference.br.MyBehavior"
-					it should haveNbElements 1
+					it should haveNbElements 2
 					(it as Behavior).features.get(0) => [
+						it should beCapacityUse "io.sarl.core.Logging"
+					]
+					(it as Behavior).features.get(1) => [
 						it should beAction "action"
 						it should reply _
 						it should haveNbParameters 0
@@ -385,12 +398,14 @@ describe "Behavior Reference" {
 				//
 				val model = '''
 				behavior MyBehavior {
+					uses Logging
 					on SomethingChanged {
 						println("Reactive behavior")
 					}
 				}
 				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br
+					import io.sarl.core.Logging
 					event SomethingChanged",
 					// TEXT
 					""
@@ -398,7 +413,8 @@ describe "Behavior Reference" {
 				
 				model => [
 					it should havePackage "io.sarl.docs.reference.br"
-					it should haveNbImports 0
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.Logging"
 					it should haveNbElements 2
 				]
 				
@@ -411,8 +427,11 @@ describe "Behavior Reference" {
 				model.elements.get(1) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
-					it should haveNbElements 1
+					it should haveNbElements 2
 					(it as Behavior).features.get(0) => [
+						it should beCapacityUse "io.sarl.core.Logging"
+					]
+					(it as Behavior).features.get(1) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.br.SomethingChanged"
 						it should beGuardedWith _
 					]
@@ -432,6 +451,7 @@ describe "Behavior Reference" {
 			fact "Parallel Execution of the Reactive Behavior Units"{
 				val model = '''
 				behavior MyBehavior {
+					uses Logging
 					on SomethingChanged {
 						println("First reactive behavior")
 					}
@@ -441,6 +461,7 @@ describe "Behavior Reference" {
 				}
 				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br
+					import io.sarl.core.Logging
 					event SomethingChanged",
 					// TEXT
 					""
@@ -448,7 +469,8 @@ describe "Behavior Reference" {
 				
 				model => [
 					it should havePackage "io.sarl.docs.reference.br"
-					it should haveNbImports 0
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.Logging"
 					it should haveNbElements 2
 				]
 				
@@ -461,12 +483,15 @@ describe "Behavior Reference" {
 				model.elements.get(1) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
-					it should haveNbElements 2
+					it should haveNbElements 3
 					(it as Behavior).features.get(0) => [
+						it should beCapacityUse "io.sarl.core.Logging"
+					]
+					(it as Behavior).features.get(1) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.br.SomethingChanged"
 						it should beGuardedWith _
 					]
-					(it as Behavior).features.get(1) => [
+					(it as Behavior).features.get(2) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.br.SomethingChanged"
 						it should beGuardedWith _
 					]
@@ -492,7 +517,7 @@ describe "Behavior Reference" {
 				//
 				val model = '''
 				behavior MyBehavior {
-					uses Schedules
+					uses Schedules, Logging
 					on Initialize {
 						every(1000) [
 							println("Run a pro-active behavior")
@@ -501,6 +526,7 @@ describe "Behavior Reference" {
 				}
 				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.br
+					import io.sarl.core.Logging
 					import io.sarl.core.Initialize
 					import io.sarl.core.Schedules",
 					// TEXT
@@ -509,7 +535,8 @@ describe "Behavior Reference" {
 				
 				model => [
 					it should havePackage "io.sarl.docs.reference.br"
-					it should haveNbImports 2
+					it should haveNbImports 3
+					it should importClass "io.sarl.core.Logging"
 					it should importClass "io.sarl.core.Initialize"
 					it should importClass "io.sarl.core.Schedules"
 					it should haveNbElements 1
@@ -519,7 +546,7 @@ describe "Behavior Reference" {
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 2
-					(it as Behavior).features.get(0) should beCapacityUse #["io.sarl.core.Schedules"]
+					(it as Behavior).features.get(0) should beCapacityUse #["io.sarl.core.Schedules", "io.sarl.core.Logging"]
 					(it as Behavior).features.get(1) => [
 						it should beBehaviorUnit "io.sarl.core.Initialize"
 						it should beGuardedWith _
@@ -552,6 +579,7 @@ describe "Behavior Reference" {
 			 *         def action
 			 *     }
 			 *     skill Ski implements Cap {
+			 *         uses Logging
 			 *         def action {
 			 *             println("Action")
 			 *         }
@@ -575,11 +603,13 @@ describe "Behavior Reference" {
 			fact "Giving a Skill to the Associated Agent" {
 				'''
 				package io.sarl.docs.reference.br
+				import io.sarl.core.Logging
 				import io.sarl.lang.core.Agent
 				capacity Cap {
 					def action
 				}
 				skill Ski implements Cap {
+					uses Logging
 					def action { println(\"Action\") }
 				}
 				behavior MyBehavior {

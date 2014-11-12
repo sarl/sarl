@@ -324,6 +324,7 @@ describe "Agent Reference"{
 				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 				val model = '''
 				agent MyAgent {
+					uses Logging
 					// Defining an action without parameter nor return type
 					def myAction1 {
 						println("Hello world")
@@ -334,31 +335,37 @@ describe "Agent Reference"{
 					}
 				}
 				'''.parseSuccessfully(
-					"package io.sarl.docs.reference.ar",
+					"package io.sarl.docs.reference.ar
+					import io.sarl.core.Logging",
 					// TEXT
 					""
 				)
 
 				model => [
 					it should havePackage "io.sarl.docs.reference.ar"
-					it should haveNbImports 0
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.Logging"
 					it should haveNbElements 1
 				]
 				
 				var a = (model.elements.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
-					it should haveNbElements 2
+					it should haveNbElements 3
 				]) as Agent
 
 				a.features.get(0) => [
+					it should beCapacityUse "io.sarl.core.Logging"
+				]
+
+				a.features.get(1) => [
 					it should beAction "myAction1"
 					it should reply _;
 					it should haveNbParameters 0
 					it should beVariadic false
 				]
 
-				a.features.get(1) => [
+				a.features.get(2) => [
 					it should beAction "myAction2"
 					it should reply _;
 					it should haveNbParameters 1
@@ -398,19 +405,22 @@ describe "Agent Reference"{
 					var attr : String
 				}
 				agent MySubAgent extends MyAgent {
+					uses Logging
 					def action {
 						println(attr)
 					}
 				}
 				'''.parseSuccessfully(
-					"package io.sarl.docs.reference.ar",
+					"package io.sarl.docs.reference.ar
+					import io.sarl.core.Logging",
 					// TEXT
 					""
 				)
 
 				model => [
 					it should havePackage "io.sarl.docs.reference.ar"
-					it should haveNbImports 0
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.Logging"
 					it should haveNbElements 2
 				]
 				
@@ -429,10 +439,13 @@ describe "Agent Reference"{
 				var a2 = (model.elements.get(1) => [
 					it should beAgent "MySubAgent"
 					it should extend "io.sarl.docs.reference.ar.MyAgent"
-					it should haveNbElements 1
+					it should haveNbElements 2
 				]) as Agent
 
 				a2.features.get(0) => [
+					it should beCapacityUse "io.sarl.core.Logging"
+				]
+				a2.features.get(1) => [
 					it should beAction "action"
 					it should reply _
 					it should haveNbParameters 0
@@ -502,6 +515,7 @@ describe "Agent Reference"{
 				//
 				val model = '''
 				agent MyAgent {
+					uses Logging
 					on Initialize {
 						println(
 							"My initialization parameters are: "
@@ -510,6 +524,7 @@ describe "Agent Reference"{
 				}
 				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
+					import io.sarl.core.Logging
 					import io.sarl.core.Initialize",
 					// TEXT
 					""
@@ -517,7 +532,8 @@ describe "Agent Reference"{
 				
 				model => [
 					it should havePackage "io.sarl.docs.reference.ar"
-					it should haveNbImports 1
+					it should haveNbImports 2
+					it should importClass "io.sarl.core.Logging"
 					it should importClass "io.sarl.core.Initialize"
 					it should haveNbElements 1
 				]
@@ -525,10 +541,13 @@ describe "Agent Reference"{
 				var a = (model.elements.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
-					it should haveNbElements 1
+					it should haveNbElements 2
 				]) as Agent
 
 				a.features.get(0) => [
+					it should beCapacityUse "io.sarl.core.Logging"
+				]
+				a.features.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]
@@ -549,6 +568,7 @@ describe "Agent Reference"{
 			fact "Guarded Initialization Handler"{
 				val model = '''
 				agent MyAgent {
+					uses Logging
 					on Initialize [ occurrence.parameters.empty ] {
 						println("Initialization without parameters")
 					}
@@ -559,6 +579,7 @@ describe "Agent Reference"{
 				}
 				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
+					import io.sarl.core.Logging
 					import io.sarl.core.Initialize",
 					// TEXT
 					""
@@ -566,7 +587,8 @@ describe "Agent Reference"{
 				
 				model => [
 					it should havePackage "io.sarl.docs.reference.ar"
-					it should haveNbImports 1
+					it should haveNbImports 2
+					it should importClass "io.sarl.core.Logging"
 					it should importClass "io.sarl.core.Initialize"
 					it should haveNbElements 1
 				]
@@ -574,15 +596,17 @@ describe "Agent Reference"{
 				var a = (model.elements.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
-					it should haveNbElements 2
+					it should haveNbElements 3
 				]) as Agent
 
 				a.features.get(0) => [
+					it should beCapacityUse "io.sarl.core.Logging"
+				]
+				a.features.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith "occurrence.parameters.empty"
 				]
-
-				a.features.get(1) => [
+				a.features.get(2) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith "! occurrence.parameters.empty"
 				]
@@ -600,12 +624,14 @@ describe "Agent Reference"{
 			fact "Destruction Handler" {
 				val model = '''
 				agent MyAgent {
+					uses Logging
 					on Destroy {
 						println("Destroying the agent")
 					}
 				}
 				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
+					import io.sarl.core.Logging
 					import io.sarl.core.Destroy",
 					// TEXT
 					""
@@ -613,7 +639,8 @@ describe "Agent Reference"{
 
 				model => [
 					it should havePackage "io.sarl.docs.reference.ar"
-					it should haveNbImports 1
+					it should haveNbImports 2
+					it should importClass "io.sarl.core.Logging"
 					it should importClass "io.sarl.core.Destroy"
 					it should haveNbElements 1
 				]
@@ -621,10 +648,13 @@ describe "Agent Reference"{
 				var a = (model.elements.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
-					it should haveNbElements 1
+					it should haveNbElements 2
 				]) as Agent
 
 				a.features.get(0) => [
+					it should beCapacityUse "io.sarl.core.Logging"
+				]
+				a.features.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Destroy"
 					it should beGuardedWith _
 				]
@@ -643,6 +673,7 @@ describe "Agent Reference"{
 			fact "Guarded Destruction Handler" {
 				val model = '''
 				agent MyAgent {
+					uses Logging
 					var resource : Object
 					on Destroy [ resource !== null ] {
 						println("Destroying the agent when there is a resource")
@@ -653,6 +684,7 @@ describe "Agent Reference"{
 				}
 				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
+					import io.sarl.core.Logging
 					import io.sarl.core.Destroy",
 					// TEXT
 					""
@@ -660,7 +692,8 @@ describe "Agent Reference"{
 				
 				model => [
 					it should havePackage "io.sarl.docs.reference.ar"
-					it should haveNbImports 1
+					it should haveNbImports 2
+					it should importClass "io.sarl.core.Logging"
 					it should importClass "io.sarl.core.Destroy"
 					it should haveNbElements 1
 				]
@@ -668,21 +701,22 @@ describe "Agent Reference"{
 				var a = (model.elements.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
-					it should haveNbElements 3
+					it should haveNbElements 4
 				]) as Agent
 
 				a.features.get(0) => [
+					it should beCapacityUse "io.sarl.core.Logging"
+				]
+				a.features.get(1) => [
 					it should beVariable "resource"
 					it should haveType "java.lang.Object"
 					it should haveInitialValue _
 				]
-
-				a.features.get(1) => [
+				a.features.get(2) => [
 					it should beBehaviorUnit "io.sarl.core.Destroy"
 					it should beGuardedWith "resource !== null"
 				]
-
-				a.features.get(2) => [
+				a.features.get(3) => [
 					it should beBehaviorUnit "io.sarl.core.Destroy"
 					it should beGuardedWith "resource === null"
 				]
@@ -703,12 +737,14 @@ describe "Agent Reference"{
 			fact "Reactive Behaviors"{
 				val model = '''
 				agent MyAgent {
+					uses Logging
 					on SomethingChanged {
 						println("Reactive behavior")
 					}
 				}
 				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
+					import io.sarl.core.Logging
 					event SomethingChanged",
 					// TEXT
 					""
@@ -716,7 +752,8 @@ describe "Agent Reference"{
 				
 				model => [
 					it should havePackage "io.sarl.docs.reference.ar"
-					it should haveNbImports 0
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.Logging"
 					it should haveNbElements 2
 				]
 				
@@ -729,8 +766,11 @@ describe "Agent Reference"{
 				model.elements.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
-					it should haveNbElements 1
+					it should haveNbElements 2
 					(it as Agent).features.get(0) => [
+						it should beCapacityUse "io.sarl.core.Logging"
+					]
+					(it as Agent).features.get(1) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.ar.SomethingChanged"
 						it should beGuardedWith _
 					]
@@ -750,6 +790,7 @@ describe "Agent Reference"{
 			fact "Parallel Execution of the Reactive Behaviors"{
 				val model = '''
 				agent MyAgent {
+					uses Logging
 					on SomethingChanged {
 						println("First reactive behavior")
 					}
@@ -759,6 +800,7 @@ describe "Agent Reference"{
 				}
 				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
+					import io.sarl.core.Logging
 					event SomethingChanged",
 					// TEXT
 					""
@@ -766,7 +808,8 @@ describe "Agent Reference"{
 				
 				model => [
 					it should havePackage "io.sarl.docs.reference.ar"
-					it should haveNbImports 0
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.Logging"
 					it should haveNbElements 2
 				]
 				
@@ -779,12 +822,15 @@ describe "Agent Reference"{
 				model.elements.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
-					it should haveNbElements 2
+					it should haveNbElements 3
 					(it as Agent).features.get(0) => [
+						it should beCapacityUse "io.sarl.core.Logging"
+					]
+					(it as Agent).features.get(1) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.ar.SomethingChanged"
 						it should beGuardedWith _
 					]
-					(it as Agent).features.get(1) => [
+					(it as Agent).features.get(2) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.ar.SomethingChanged"
 						it should beGuardedWith _
 					]
@@ -810,7 +856,7 @@ describe "Agent Reference"{
 				//
 				val model = '''
 				agent MyAgent {
-					uses Schedules
+					uses Schedules, Logging
 					on Initialize {
 						every(1000) [
 							println("Run a pro-active behavior")
@@ -819,6 +865,7 @@ describe "Agent Reference"{
 				}
 				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
+					import io.sarl.core.Logging
 					import io.sarl.core.Initialize
 					import io.sarl.core.Schedules",
 					// TEXT
@@ -827,7 +874,8 @@ describe "Agent Reference"{
 				
 				model => [
 					it should havePackage "io.sarl.docs.reference.ar"
-					it should haveNbImports 2
+					it should haveNbImports 3
+					it should importClass "io.sarl.core.Logging"
 					it should importClass "io.sarl.core.Initialize"
 					it should importClass "io.sarl.core.Schedules"
 					it should haveNbElements 1
@@ -839,8 +887,7 @@ describe "Agent Reference"{
 					it should haveNbElements 2
 				]) as Agent
 
-				a.features.get(0) should beCapacityUse #["io.sarl.core.Schedules"]
-				
+				a.features.get(0) should beCapacityUse #["io.sarl.core.Schedules", "io.sarl.core.Logging"]
 				a.features.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
@@ -869,6 +916,7 @@ describe "Agent Reference"{
 			 *         def action
 			 *     }
 			 *     skill Ski implements Cap {
+			 * 	       uses Logging
 			 *         def action {
 			 *             println("Action")
 			 *         }
@@ -908,11 +956,13 @@ describe "Agent Reference"{
 				}
 				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
+					import io.sarl.core.Logging
 					import io.sarl.core.Initialize
 					capacity Cap {
 						def action
 					}
 					skill Ski implements Cap {
+						uses Logging
 						def action { println(\"Action\") }
 					}",
 					// TEXT
@@ -921,7 +971,8 @@ describe "Agent Reference"{
 
 				model => [
 					it should havePackage "io.sarl.docs.reference.ar"
-					it should haveNbImports 1
+					it should haveNbImports 2
+					it should importClass "io.sarl.core.Logging"
 					it should importClass "io.sarl.core.Initialize"
 					it should haveNbElements 3
 				]
@@ -943,10 +994,13 @@ describe "Agent Reference"{
 					it should beSkill "Ski"
 					it should extend _
 					it should implement #["io.sarl.docs.reference.ar.Cap"]
-					it should haveNbElements 1
+					it should haveNbElements 2
 				]) as Skill
 				
 				s.features.get(0) => [
+					it should beCapacityUse "io.sarl.core.Logging"
+				]
+				s.features.get(1) => [
 					it should beAction "action"
 					it should reply _
 					it should haveNbParameters 0
@@ -1015,11 +1069,13 @@ describe "Agent Reference"{
 				}
 				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
+					import io.sarl.core.Logging
 					import io.sarl.core.Initialize
 					capacity Cap {
 						def action
 					}
 					skill Ski implements Cap {
+						uses Logging
 						def action { println(\"Action\") }
 					}
 					event SomeEvent",
@@ -1029,7 +1085,8 @@ describe "Agent Reference"{
 
 				model => [
 					it should havePackage "io.sarl.docs.reference.ar"
-					it should haveNbImports 1
+					it should haveNbImports 2
+					it should importClass "io.sarl.core.Logging"
 					it should importClass "io.sarl.core.Initialize"
 					it should haveNbElements 4
 				]
@@ -1051,10 +1108,13 @@ describe "Agent Reference"{
 					it should beSkill "Ski"
 					it should extend _
 					it should implement #["io.sarl.docs.reference.ar.Cap"]
-					it should haveNbElements 1
+					it should haveNbElements 2
 				]) as Skill
 				
 				s.features.get(0) => [
+					it should beCapacityUse "io.sarl.core.Logging"
+				]
+				s.features.get(1) => [
 					it should beAction "action"
 					it should reply _
 					it should haveNbParameters 0
@@ -1170,11 +1230,13 @@ describe "Agent Reference"{
 				}
 				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
+					import io.sarl.core.Logging
 					import io.sarl.core.Initialize
 					capacity Cap {
 						def action
 					}
 					skill Ski implements Cap {
+						uses Logging
 						def action { println(\"Action\") }
 					}
 					event SomeEvent",
@@ -1184,7 +1246,8 @@ describe "Agent Reference"{
 				
 				model => [
 					it should havePackage "io.sarl.docs.reference.ar"
-					it should haveNbImports 1
+					it should haveNbImports 2
+					it should importClass "io.sarl.core.Logging"
 					it should importClass "io.sarl.core.Initialize"
 					it should haveNbElements 4
 				]
@@ -1205,8 +1268,11 @@ describe "Agent Reference"{
 					it should beSkill "Ski"
 					it should extend _
 					it should implement #["io.sarl.docs.reference.ar.Cap"]
-					it should haveNbElements 1
+					it should haveNbElements 2
 					(it as Skill).features.get(0) => [
+						it should beCapacityUse "io.sarl.core.Logging"
+					]
+					(it as Skill).features.get(1) => [
 						it should beAction "action"
 						it should reply _
 						it should haveNbParameters 0

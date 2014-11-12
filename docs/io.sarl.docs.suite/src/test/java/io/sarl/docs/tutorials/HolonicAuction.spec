@@ -272,7 +272,7 @@ describe "English Auction with Holons"{
 						maxPrice = random.nextFloat() * 900f + 100f
 					}
 					
-					uses DefaultContextInteractions
+					uses DefaultContextInteractions, Logging
 				
 					on Price {
 						if(occurrence.price == myLastBid) {
@@ -300,6 +300,7 @@ describe "English Auction with Holons"{
 					import java.util.Random
 					import io.sarl.core.Initialize
 					import io.sarl.core.DefaultContextInteractions
+					import io.sarl.core.Logging
 					import io.sarl.util.Scopes
 					event Price {
 						val price : float
@@ -346,7 +347,7 @@ describe "English Auction with Holons"{
 						maxPrice = random.nextFloat() * 900f + 100f
 					}
 				
-					uses DefaultContextInteractions
+					uses DefaultContextInteractions, Logging
 				
 					on Price {
 						if(occurrence.price == myLastBid) {
@@ -376,6 +377,7 @@ describe "English Auction with Holons"{
 					import java.util.Random
 					import io.sarl.core.Initialize
 					import io.sarl.core.DefaultContextInteractions
+					import io.sarl.core.Logging
 					import io.sarl.util.Scopes
 					event Price {
 						val price : float
@@ -599,7 +601,7 @@ describe "English Auction with Holons"{
 				'''
 				agent Auctioneer {
 									
-					uses Behaviors, Lifecycle, InnerContextAccess, Schedules
+					uses Behaviors, Lifecycle, InnerContextAccess, Schedules, Logging
 					
 					var maxBid = 0f
 					var winner : Address
@@ -646,6 +648,7 @@ describe "English Auction with Holons"{
 					import io.sarl.core.InnerContextAccess
 					import io.sarl.core.Lifecycle
 					import io.sarl.core.Schedules
+					import io.sarl.core.Logging
 					import io.sarl.core.Initialize
 					event Price {
 						val price : float
@@ -684,7 +687,7 @@ describe "English Auction with Holons"{
 				'''
 				agent Auctioneer {
 									
-					uses Behaviors, Lifecycle, InnerContextAccess, Schedules
+					uses Behaviors, Lifecycle, InnerContextAccess, Schedules, Logging
 					
 					var maxBid = 0f
 					var winner : Address
@@ -735,6 +738,7 @@ describe "English Auction with Holons"{
 					import io.sarl.core.InnerContextAccess
 					import io.sarl.core.Lifecycle
 					import io.sarl.core.Schedules
+					import io.sarl.core.Logging
 					import io.sarl.core.Initialize
 					event Price {
 						val price : float
@@ -878,7 +882,7 @@ describe "English Auction with Holons"{
 				'''
 				agent Auctioneer {
 									
-					uses Behaviors, Lifecycle, InnerContextAccess, Schedules
+					uses Behaviors, Lifecycle, InnerContextAccess, Schedules, Logging
 					
 					var maxBid = 0f
 					var winner : Address
@@ -937,6 +941,7 @@ describe "English Auction with Holons"{
 					import io.sarl.core.InnerContextAccess
 					import io.sarl.core.Lifecycle
 					import io.sarl.core.Schedules
+					import io.sarl.core.Logging
 					import io.sarl.core.Initialize
 					event Price {
 						val price : float

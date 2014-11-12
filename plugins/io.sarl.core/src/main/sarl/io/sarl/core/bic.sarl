@@ -310,3 +310,97 @@ capacity DefaultContextInteractions {
 	*/
 	def spawn(aAgent : Class<? extends Agent>, params : Object*) : UUID fires AgentSpawned
 }
+
+/**
+* Gives access to the logging mechanism associated to the agent.
+*
+*/
+capacity Logging {
+
+	/** Change the name used for logging.
+	 *
+	 * @param name - the name used for logging.
+	 */
+	def setLoggingName(message : String)
+
+	/** Print the given message at information logging level.
+	 * <p>
+	 * <strong>This function is deprecated.</strong> Please use
+	 * {@link #info(Object)} in place of <code>println</code>.
+	 *
+	 * @param message - the elements to display.
+	 * @deprecated Use {@link #info(Object)}.
+	 */
+	def println(message : Object)
+	
+	/** Print the given message at error logging level.
+	 *
+	 * @param message - the elements to display.
+	 * @param exception - the exception that is the cause of the error.
+	 */
+	def error(message : Object, exception : Throwable=null)
+
+	/** Print the given message at warning logging level.
+	 *
+	 * @param message - the elements to display.
+	 * @param exception - the exception that is the cause of the error.
+	 */
+	def warning(message : Object, exception : Throwable=null)
+
+	/** Print the given message at information logging level.
+	 *
+	 * @param message - the elements to display.
+	 */
+	def info(message : Object)
+
+	/** Print the given message at debug logging level.
+	 *
+	 * @param message - the elements to display.
+	 */
+	def debug(message : Object)
+
+	/** Replies if the logging system is displaying the errors.
+	 *
+	 * @return <code>true</code> if the errors are logged,
+	 *         <code>false</code> if not.
+	 */
+	def isErrorLogEnabled : boolean
+
+	/** Replies if the logging system is displaying the warnings.
+	 *
+	 * @return <code>true</code> if the warnings are logged,
+	 *         <code>false</code> if not.
+	 */
+	def isWarningLogEnabled : boolean
+
+	/** Replies if the logging system is displaying the information messages.
+	 *
+	 * @return <code>true</code> if the information messages are logged,
+	 *         <code>false</code> if not.
+	 */
+	def isInfoLogEnabled : boolean
+
+	/** Replies if the logging system is displaying the debugging messages.
+	 *
+	 * @return <code>true</code> if the debugging messages are logged,
+	 *         <code>false</code> if not.
+	 */
+	def isDebugLogEnabled : boolean
+
+	/** Replies the logging level.
+	 *
+	 * @return <code>0</code> for no logging, <code>1</code> for error,
+	 *         <code>2</code> for warning, <code>3</code> for info,
+	 *         <code>5</code> for debug.
+	 */
+	def getLogLevel : int
+
+	/** Set the logging level.
+	 *
+	 * @param level - <code>0</code> for no logging, <code>1</code> for error,
+	 *         <code>2</code> for warning, <code>3</code> for info,
+	 *         <code>5</code> for debug.
+	 */
+	def setLogLevel(level : int)
+
+}
