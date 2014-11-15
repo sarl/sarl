@@ -646,10 +646,15 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						var op = context.toMethod(entry.value.simpleName, entry.value.returnType) [
 							visibility = JvmVisibility::PROTECTED
 							val args = newArrayList
+							val argTypes = newArrayList
 							for(param : entry.value.parameters) {
 								parameters += context.toParameter(param.simpleName, param.parameterType)
 								args += param.simpleName
+								argTypes += param.parameterType.identifier
 							}
+							var hyperrefLink = capacityType.identifier + "#"
+									+ entry.value.simpleName + "(" + argTypes.join(",") + ")"
+							documentation = "See the capacity {@link " + hyperrefLink + "}.\n\n@see " + hyperrefLink + "."
 							varArgs = entry.value.varArgs
 							body = [
 								if (entry.value.returnType.identifier!='void') {
