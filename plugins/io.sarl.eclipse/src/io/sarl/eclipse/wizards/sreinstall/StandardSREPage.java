@@ -169,7 +169,9 @@ public class StandardSREPage extends AbstractSREInstallPage {
 			SARLEclipsePlugin.logDebugMessage("Associated Eclipse Path (Path): " + path); //$NON-NLS-1$
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			IPath workspaceLocation = workspace.getRoot().getLocation();
+			SARLEclipsePlugin.logDebugMessage("Workspace (Path): " + workspaceLocation); //$NON-NLS-1$
 			if (workspaceLocation.isPrefixOf(path)) {
+				SARLEclipsePlugin.logDebugMessage("Make relative path"); //$NON-NLS-1$
 				path = workspaceLocation.makeRelativeTo(workspaceLocation);
 			}
 			SARLEclipsePlugin.logDebugMessage("Resolved Path (Path): " + path); //$NON-NLS-1$
