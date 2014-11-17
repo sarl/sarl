@@ -164,16 +164,20 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		}
 		String selectedFile = dialog.open();
 		if (selectedFile != null) {
+			SARLEclipsePlugin.logDebugMessage("Selected SRE file (String): " + Strings.nullToEmpty(selectedFile)); //$NON-NLS-1$
 			IPath path = Path.fromOSString(selectedFile);
+			SARLEclipsePlugin.logDebugMessage("Associated Eclipse Path (Path): " + path); //$NON-NLS-1$
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			IPath workspaceLocation = workspace.getRoot().getLocation();
 			if (workspaceLocation.isPrefixOf(path)) {
 				path = workspaceLocation.makeRelativeTo(workspaceLocation);
 			}
+			SARLEclipsePlugin.logDebugMessage("Resolved Path (Path): " + path); //$NON-NLS-1$
 			//
 			createWorkingCopy();
 			this.workingCopy.setJarFile(path);
 			IStatus status = validate();
+			SARLEclipsePlugin.logDebugMessage("SRE status: " + status); //$NON-NLS-1$
 			//
 			initializeFields();
 			setPageStatus(status);
