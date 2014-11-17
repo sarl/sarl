@@ -223,11 +223,17 @@ public class StandardSREPage extends AbstractSREInstallPage {
 	 */
 	private void initializeFields() {
 		IPath path = this.workingCopy.getJarFile();
+		String tooltip = null;
+		String basename = null;
 		if (path != null) {
-			this.sreLibraryTextField.setText(path.removeTrailingSeparator().lastSegment());
-		} else {
-			this.sreLibraryTextField.setText(SARLEclipsePlugin.EMPTY_STRING);
+			tooltip = path.toOSString();
+			IPath tmpPath = path.removeTrailingSeparator();
+			if (tmpPath != null) {
+				basename = tmpPath.lastSegment();
+			}
 		}
+		this.sreLibraryTextField.setText(Strings.nullToEmpty(basename));
+		this.sreLibraryTextField.setToolTipText(Strings.nullToEmpty(tooltip));
 		//
 		String name = this.workingCopy.getNameNoDefault();
 		this.sreNameTextField.setText(Strings.nullToEmpty(name));
