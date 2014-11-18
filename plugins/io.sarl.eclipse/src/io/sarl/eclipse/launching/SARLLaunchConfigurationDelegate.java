@@ -400,9 +400,9 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			return bootEntries.toArray(new String[bootEntries.size()]);
 		}
 	}
-	
+
 	/** Replies the project SRE from the given configuration.
-	 * 
+	 *
 	 * @param configuration - the configuration to read.
 	 * @return the project SRE or <code>null</code>.
 	 */
