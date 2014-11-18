@@ -23,6 +23,7 @@ package io.sarl.eclipse.launching;
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
+import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SARLRuntime;
 
@@ -34,14 +35,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.launching.JRERuntimeClasspathEntryResolver;
 import org.eclipse.jdt.internal.launching.LaunchingMessages;
@@ -56,6 +60,7 @@ import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.xtext.xbase.lib.Pair;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 
 /**
@@ -395,6 +400,44 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			return bootEntries.toArray(new String[bootEntries.size()]);
 		}
 	}
+	
+	/** Replies the project SRE from the given configuration.
+	 * 
+	 * @param configuration - the configuration to read.
+	 * @return the project SRE or <code>null</code>.
+	 */
+	protected ISREInstall getProjectSRE(ILaunchConfiguration configuration) {
+		try {
+			IJavaProject jprj = getJavaProject(configuration);
+			if (jprj != null) {
+				IProject prj = jprj.getProject();
+				assert (prj != null);
+				ISREInstall sre = null;
+				QualifiedName propertyName = RuntimeEnvironmentPropertyPage.qualify(
+						RuntimeEnvironmentPropertyPage.PROPERTY_NAME_HAS_PROJECT_SPECIFIC);
+				if (Boolean.parseBoolean(Objects.firstNonNull(
+						prj.getPersistentProperty(propertyName), Boolean.FALSE.toString()))) {
+					propertyName = RuntimeEnvironmentPropertyPage.qualify(
+							RuntimeEnvironmentPropertyPage.PROPERTY_NAME_USE_SYSTEM_WIDE_SRE);
+					boolean useWideConfig = Boolean.parseBoolean(Objects.firstNonNull(
+							prj.getPersistentProperty(propertyName), Boolean.FALSE.toString()));
+					if (!useWideConfig) {
+						propertyName = RuntimeEnvironmentPropertyPage.qualify(
+								RuntimeEnvironmentPropertyPage.PROPERTY_NAME_SRE_INSTALL_ID);
+						String projectSREId = Strings.nullToEmpty(prj.getPersistentProperty(propertyName));
+						sre = SARLRuntime.getSREFromId(projectSREId);
+					}
+				}
+				if (sre == null) {
+					sre = SARLRuntime.getDefaultSREInstall();
+				}
+				return sre;
+			}
+		} catch (CoreException _) {
+			//
+		}
+		return null;
+	}
 
 	/** Replies the class path for the SARL application.
 	 *
@@ -402,15 +445,23 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 * @return the filtered entries.
 	 * @throws CoreException if impossible to get the classpath.
 	 */
-	private static IRuntimeClasspathEntry[] computeUnresolvedSARLRuntimeClasspath(
+	private IRuntimeClasspathEntry[] computeUnresolvedSARLRuntimeClasspath(
 			ILaunchConfiguration configuration) throws CoreException {
 		// Retrieve the SARL runtime environment jar file.
-		String useDefaultSRE = configuration.getAttribute(
-				SARLConfig.ATTR_USE_SARL_RUNTIME_ENVIRONMENT,
+		String useSystemSRE = configuration.getAttribute(
+				SARLConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
 				Boolean.TRUE.toString());
+		String useProjectSRE = configuration.getAttribute(
+				SARLConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
+				Boolean.FALSE.toString());
 		String runtime = null;
-		if (Boolean.parseBoolean(useDefaultSRE)) {
+		if (Boolean.parseBoolean(useSystemSRE)) {
 			ISREInstall sre = SARLRuntime.getDefaultSREInstall();
+			if (sre != null) {
+				runtime = sre.getId();
+			}
+		} else if (Boolean.parseBoolean(useProjectSRE)) {
+			ISREInstall sre = getProjectSRE(configuration);
 			if (sre != null) {
 				runtime = sre.getId();
 			}

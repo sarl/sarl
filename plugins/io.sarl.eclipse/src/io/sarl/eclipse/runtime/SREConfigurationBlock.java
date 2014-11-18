@@ -318,22 +318,6 @@ public class SREConfigurationBlock {
 		if (this.enableSystemWideSelector || this.projectProvider != null) {
 			createSystemWideSelector(group);
 			createProjectSelector(group);
-
-			if (this.projectProvider != null) {
-				this.projectSREButton = SWTFactory.createRadioButton(group,
-						MessageFormat.format(
-								Messages.SREConfigurationBlock_3, Messages.SREConfigurationBlock_0), 3);
-				this.projectSREButton.addSelectionListener(new SelectionAdapter() {
-					@SuppressWarnings("synthetic-access")
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						if (SREConfigurationBlock.this.projectSREButton.getSelection()) {
-							handleProjectConfigurationSelected();
-						}
-					}
-				});
-			}
-
 			this.specificSREButton = SWTFactory.createRadioButton(group,
 					Messages.SREConfigurationBlock_2, 1);
 			this.specificSREButton.addSelectionListener(new SelectionAdapter() {
@@ -498,11 +482,13 @@ public class SREConfigurationBlock {
 	}
 
 	private int indexOf(ISREInstall sre) {
-		Iterator<ISREInstall> iterator = this.runtimeEnvironments.iterator();
-		for (int i = 0; iterator.hasNext(); ++i) {
-			ISREInstall s = iterator.next();
-			if  (s.getId().equals(sre.getId())) {
-				return i;
+		if (sre != null) {
+			Iterator<ISREInstall> iterator = this.runtimeEnvironments.iterator();
+			for (int i = 0; iterator.hasNext(); ++i) {
+				ISREInstall s = iterator.next();
+				if  (s.getId().equals(sre.getId())) {
+					return i;
+				}
 			}
 		}
 		return -1;
@@ -680,7 +666,7 @@ public class SREConfigurationBlock {
 				status = SARLEclipsePlugin.createOkStatus();
 			}
 		} else if (this.projectProvider != null && this.projectSREButton.getSelection()) {
-			if (null == null) {
+			if (retreiveProjectSRE() == null) {
 				status = SARLEclipsePlugin.createStatus(IStatus.ERROR,
 							Messages.SREConfigurationBlock_6);
 			} else {
@@ -716,6 +702,7 @@ public class SREConfigurationBlock {
 			if (index >= 0) {
 				SREConfigurationBlock.this.runtimeEnvironments.remove(index);
 				SREConfigurationBlock.this.runtimeEnvironmentCombo.setItems(getSRELabels());
+				updateEnableState();
 				index = SREConfigurationBlock.this.runtimeEnvironmentCombo.getSelectionIndex();
 				if (index < 0) {
 					index = SREConfigurationBlock.this.runtimeEnvironmentCombo.getItemCount() - 1;
@@ -752,11 +739,16 @@ public class SREConfigurationBlock {
 		@SuppressWarnings("synthetic-access")
 		@Override
 		public void sreAdded(ISREInstall sre) {
-			if (validate(sre).isOK()) {
+			if (sre.getValidity().isOK()) {
 				ISREInstall current = getSpecificSRE();
 				SREConfigurationBlock.this.runtimeEnvironments.add(sre);
 				SREConfigurationBlock.this.runtimeEnvironmentCombo.setItems(getSRELabels());
+				updateEnableState();
 				int index = indexOf(current);
+				if (index < 0
+					&& SREConfigurationBlock.this.runtimeEnvironmentCombo.getItemCount() > 0) {
+					index = 0;
+				}
 				if (index >= 0) {
 					SREConfigurationBlock.this.runtimeEnvironmentCombo.select(index);
 				}

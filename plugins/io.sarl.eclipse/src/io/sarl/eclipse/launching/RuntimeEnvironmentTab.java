@@ -153,10 +153,21 @@ public class RuntimeEnvironmentTab extends JavaJRETab implements SRECompliantPro
 
 			try {
 				String useWideConfig = config.getAttribute(
-						SARLConfig.ATTR_USE_SARL_RUNTIME_ENVIRONMENT,
+						SARLConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
 						Boolean.TRUE.toString());
 				if (Boolean.parseBoolean(useWideConfig)) {
 					changed = this.sreBlock.selectSystemWideSRE();
+				}
+			} catch (CoreException ce) {
+				SARLEclipsePlugin.log(ce);
+			}
+
+			try {
+				String useProjectConfig = config.getAttribute(
+						SARLConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
+						Boolean.TRUE.toString());
+				if (Boolean.parseBoolean(useProjectConfig)) {
+					changed = this.sreBlock.selectProjectSRE();
 				}
 			} catch (CoreException ce) {
 				SARLEclipsePlugin.log(ce);
@@ -206,8 +217,10 @@ public class RuntimeEnvironmentTab extends JavaJRETab implements SRECompliantPro
 			config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
 					SARLEclipsePlugin.EMPTY_STRING);
 		}
-		config.setAttribute(SARLConfig.ATTR_USE_SARL_RUNTIME_ENVIRONMENT,
+		config.setAttribute(SARLConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
 				Boolean.TRUE.toString());
+		config.setAttribute(SARLConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
+				Boolean.FALSE.toString());
 	}
 
 	@Override
@@ -266,6 +279,7 @@ public class RuntimeEnvironmentTab extends JavaJRETab implements SRECompliantPro
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		super.performApply(configuration);
+		// Get the specific SRE (if selected)
 		ISREInstall sre = this.sreBlock.getSpecificSRE();
 		if (sre != null) {
 			configuration.setAttribute(
@@ -282,9 +296,13 @@ public class RuntimeEnvironmentTab extends JavaJRETab implements SRECompliantPro
 					IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
 					SARLEclipsePlugin.EMPTY_STRING);
 		}
+		// Save the boolean configuration flags
 		configuration.setAttribute(
-				SARLConfig.ATTR_USE_SARL_RUNTIME_ENVIRONMENT,
+				SARLConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
 				Boolean.toString(this.sreBlock.isSystemWideDefaultSRE()));
+		configuration.setAttribute(
+				SARLConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
+				Boolean.toString(this.sreBlock.isProjectSRE()));
 	}
 
 }
