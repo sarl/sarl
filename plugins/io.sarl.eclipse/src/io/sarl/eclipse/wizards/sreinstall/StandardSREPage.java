@@ -29,8 +29,6 @@ import io.sarl.eclipse.runtime.StandardSREInstall;
 import java.io.File;
 import java.text.MessageFormat;
 
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
