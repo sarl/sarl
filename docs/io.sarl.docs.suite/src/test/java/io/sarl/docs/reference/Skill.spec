@@ -135,7 +135,7 @@ describe "Skill Reference" {
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).signature.params.get(0) => [
+						(it as Action).params.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -146,7 +146,7 @@ describe "Skill Reference" {
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).signature.params.get(0) => [
+						(it as Action).params.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -242,7 +242,7 @@ describe "Skill Reference" {
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).signature.params.get(0) => [
+						(it as Action).params.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -253,7 +253,7 @@ describe "Skill Reference" {
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).signature.params.get(0) => [
+						(it as Action).params.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -339,7 +339,7 @@ describe "Skill Reference" {
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).signature.params.get(0) => [
+						(it as Action).params.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -350,7 +350,7 @@ describe "Skill Reference" {
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).signature.params.get(0) => [
+						(it as Action).params.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -361,7 +361,7 @@ describe "Skill Reference" {
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).signature.params.get(0) => [
+						(it as Action).params.get(0) => [
 							it should beParameter "t"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -475,7 +475,7 @@ describe "Skill Reference" {
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).signature.params.get(0) => [
+						(it as Action).params.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -486,7 +486,7 @@ describe "Skill Reference" {
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).signature.params.get(0) => [
+						(it as Action).params.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -624,7 +624,7 @@ describe "Skill Reference" {
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).signature.params.get(0) => [
+						(it as Action).params.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -635,7 +635,7 @@ describe "Skill Reference" {
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).signature.params.get(0) => [
+						(it as Action).params.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -646,7 +646,7 @@ describe "Skill Reference" {
 						it should reply "int"
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).signature.params.get(0) => [
+						(it as Action).params.get(0) => [
 							it should beParameter "filename"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -657,7 +657,7 @@ describe "Skill Reference" {
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).signature.params.get(0) => [
+						(it as Action).params.get(0) => [
 							it should beParameter "fid"
 							it should haveType "int"
 							it should haveDefaultValue _
@@ -755,7 +755,7 @@ describe "Skill Reference" {
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).signature.params.get(0) => [
+						(it as Action).params.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -766,7 +766,7 @@ describe "Skill Reference" {
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).signature.params.get(0) => [
+						(it as Action).params.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -784,7 +784,7 @@ describe "Skill Reference" {
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).signature.params.get(0) => [
+						(it as Action).params.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _

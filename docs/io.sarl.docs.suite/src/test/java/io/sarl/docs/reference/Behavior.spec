@@ -203,7 +203,7 @@ describe "Behavior Reference" {
 					it should reply _
 					it should haveNbParameters 1
 					it should beVariadic true
-					(it as Action).signature.params.get(0) => [
+					(it as Action).params.get(0) => [
 						it should beParameter "param"
 						it should haveType "int"
 						it should haveDefaultValue _

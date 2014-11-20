@@ -1604,12 +1604,12 @@ describe "General Syntax Reference" {
 				it should reply "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>"
 				it should haveNbParameters 2
 				it should beVariadic false
-				(it as Action).signature.params.get(0) => [
+				(it as Action).params.get(0) => [
 					it should beParameter "a"
 					it should haveType "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>"
 					it should haveDefaultValue _
 				]
-				(it as Action).signature.params.get(1) => [
+				(it as Action).params.get(1) => [
 					it should beParameter "b"
 					it should haveType "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>"
 					it should haveDefaultValue _
@@ -1858,7 +1858,7 @@ describe "General Syntax Reference" {
 				it should reply _
 				it should haveNbParameters 1
 				it should beVariadic false
-				(it as Action).signature.params.get(0) => [
+				(it as Action).params.get(0) => [
 					it should beParameter "a"
 					it should haveType "int"
 					it should haveDefaultValue _
@@ -1870,12 +1870,12 @@ describe "General Syntax Reference" {
 				it should reply _
 				it should haveNbParameters 2
 				it should beVariadic false
-				(it as Action).signature.params.get(0) => [
+				(it as Action).params.get(0) => [
 					it should beParameter "a"
 					it should haveType "int"
 					it should haveDefaultValue _
 				]
-				(it as Action).signature.params.get(1) => [
+				(it as Action).params.get(1) => [
 					it should beParameter "b"
 					it should haveType "java.lang.String"
 					it should haveDefaultValue _
@@ -1887,7 +1887,7 @@ describe "General Syntax Reference" {
 				it should reply "double"
 				it should haveNbParameters 1
 				it should beVariadic false
-				(it as Action).signature.params.get(0) => [
+				(it as Action).params.get(0) => [
 					it should beParameter "a"
 					it should haveType "int"
 					it should haveDefaultValue _
@@ -1899,12 +1899,12 @@ describe "General Syntax Reference" {
 				it should reply "java.lang.String"
 				it should haveNbParameters 2
 				it should beVariadic false
-				(it as Action).signature.params.get(0) => [
+				(it as Action).params.get(0) => [
 					it should beParameter "a"
 					it should haveType "int"
 					it should haveDefaultValue _
 				]
-				(it as Action).signature.params.get(1) => [
+				(it as Action).params.get(1) => [
 					it should beParameter "b"
 					it should haveType "java.lang.String"
 					it should haveDefaultValue _
@@ -1966,7 +1966,7 @@ describe "General Syntax Reference" {
 				it should reply _
 				it should haveNbParameters 1
 				it should beVariadic true
-				(it as Action).signature.params.get(0) => [
+				(it as Action).params.get(0) => [
 					it should beParameter "v"
 					it should haveType "int"
 					it should haveDefaultValue _
@@ -1978,17 +1978,17 @@ describe "General Syntax Reference" {
 				it should reply _
 				it should haveNbParameters 3
 				it should beVariadic true
-				(it as Action).signature.params.get(0) => [
+				(it as Action).params.get(0) => [
 					it should beParameter "a"
 					it should haveType "boolean"
 					it should haveDefaultValue _
 				]
-				(it as Action).signature.params.get(1) => [
+				(it as Action).params.get(1) => [
 					it should beParameter "b"
 					it should haveType "double"
 					it should haveDefaultValue _
 				]
-				(it as Action).signature.params.get(2) => [
+				(it as Action).params.get(2) => [
 					it should beParameter "c"
 					it should haveType "int"
 					it should haveDefaultValue _
@@ -2065,7 +2065,7 @@ describe "General Syntax Reference" {
 				it should reply _
 				it should haveNbParameters 1
 				it should beVariadic false
-				(it as Action).signature.params.get(0) => [
+				(it as Action).params.get(0) => [
 					it should beParameter "v"
 					it should haveType "int"
 					it should haveDefaultValue "5"
@@ -2077,17 +2077,17 @@ describe "General Syntax Reference" {
 				it should reply _
 				it should haveNbParameters 3
 				it should beVariadic false
-				(it as Action).signature.params.get(0) => [
+				(it as Action).params.get(0) => [
 					it should beParameter "a"
 					it should haveType "boolean"
 					it should haveDefaultValue "true"
 				]
-				(it as Action).signature.params.get(1) => [
+				(it as Action).params.get(1) => [
 					it should beParameter "b"
 					it should haveType "double"
 					it should haveDefaultValue _
 				]
-				(it as Action).signature.params.get(2) => [
+				(it as Action).params.get(2) => [
 					it should beParameter "c"
 					it should haveType "int"
 					it should haveDefaultValue "7"
@@ -2146,12 +2146,12 @@ describe "General Syntax Reference" {
 				it should reply _
 				it should haveNbParameters 2
 				it should beVariadic true
-				(it as Action).signature.params.get(0) => [
+				(it as Action).params.get(0) => [
 					it should beParameter "v"
 					it should haveType "int"
 					it should haveDefaultValue "5"
 				]
-				(it as Action).signature.params.get(1) => [
+				(it as Action).params.get(1) => [
 					it should beParameter "a"
 					it should haveType "float"
 					it should haveDefaultValue _

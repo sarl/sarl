@@ -49,6 +49,7 @@ import java.util.Objects;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
@@ -311,9 +312,6 @@ public class SARLParser {
 	public boolean should_haveNbParameters(EObject s, int numberOfParameters) {
 		int nb = 0;
 		EObject obj = s;
-		if (obj instanceof Action) {
-			obj = ((Action) obj).getSignature();
-		}
 		if (obj instanceof ParameterizedFeature) {
 			ParameterizedFeature f = (ParameterizedFeature) obj;
 			if (f.getParams() != null) {
@@ -580,12 +578,7 @@ public class SARLParser {
 			return false;
 		}
 		Action act = (Action) o;
-		ParameterizedFeature pf = act.getSignature();
-		if (!(pf instanceof ActionSignature)) {
-			return false;
-		}
-		ActionSignature sig = (ActionSignature) pf;
-		return Objects.equals(name, sig.getName());
+		return Objects.equals(name, act.getName());
 	}
 
 	/** Ensure that the given object is the SARL "def" statement (without body).
@@ -613,7 +606,7 @@ public class SARLParser {
 			return false;
 		}
 		BehaviorUnit bu = (BehaviorUnit) o;
-		return Objects.equals(event, bu.getEvent().getQualifiedName());
+		return Objects.equals(event, bu.getName().getQualifiedName());
 	}
 
 	/** Ensure that the given object is the SARL "uses" statement.
@@ -710,9 +703,7 @@ public class SARLParser {
 	 */
 	public boolean should_beVariadic(EObject o, boolean isVariadic) {
 		ParameterizedFeature f;
-		if (o instanceof Action) {
-			f = ((Action) o).getSignature();
-		} else if (o instanceof ParameterizedFeature) {
+		if (o instanceof ParameterizedFeature) {
 			f = (ParameterizedFeature) o;
 		} else {
 			return false;
@@ -728,23 +719,19 @@ public class SARLParser {
 	 * @return the validation status
 	 */
 	public boolean should_reply(EObject o, String returnType) {
-		ParameterizedFeature pf;
+		JvmTypeReference rType;
 		if (o instanceof Action) {
-			pf = ((Action) o).getSignature();
-		} else if (o instanceof ParameterizedFeature) {
-			pf = (ParameterizedFeature) o;
+			rType = ((Action) o).getType();
+		} else if (o instanceof ActionSignature) {
+			rType = ((ActionSignature) o).getType();
 		} else {
 			return false;
 		}
-		if (!(pf instanceof ActionSignature)) {
-			return false;
-		}
-		ActionSignature sig = (ActionSignature) pf;
 		if (returnType == null) {
-			return sig.getType() == null;
+			return rType == null;
 		}
-		return sig.getType() != null
-				&& Objects.equals(returnType, sig.getType().getQualifiedName());
+		return rType != null
+				&& Objects.equals(returnType, rType.getQualifiedName());
 	}
 
 	/** Ensure that the given feature has a formal parameter.
