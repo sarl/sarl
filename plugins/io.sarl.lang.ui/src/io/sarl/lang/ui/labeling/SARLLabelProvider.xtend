@@ -242,10 +242,17 @@ class SARLLabelProvider extends XbaseLabelProvider {
 	}
 
 	protected def text(Action element) {
-		if (element.signature !== null)
-			(element.signature as ActionSignature).text
-		else
-			new StyledString("???", StyledString::DECORATIONS_STYLER)
+		val simpleName = element.name
+		if (simpleName !== null) {
+			val qnName = QualifiedName.create(simpleName)
+			val operator = operatorMapping.getOperator(qnName)
+			if (operator !== null) {
+				val result = signature(operator.firstSegment, element.getJvmElement(JvmExecutable))
+				result.append(' (' + simpleName + ')', StyledString::COUNTER_STYLER)
+				return result
+			}
+		}
+		return signature(element.name, element.getJvmElement(JvmExecutable))
 	}
 	
 	protected def text(ActionSignature element) {
@@ -272,7 +279,7 @@ class SARLLabelProvider extends XbaseLabelProvider {
 
 	protected def text(BehaviorUnit element) {
 		var s = new StyledString("on ", StyledString::DECORATIONS_STYLER)
-		s.append(element.event.humanReadableName)
+		s.append(element.name.humanReadableName)
 		if (element.guard !== null) {
 			var String txt = null
 			var node = NodeModelUtils::getNode(element.guard);

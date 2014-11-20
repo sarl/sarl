@@ -53,8 +53,8 @@ public class BehaviorUnitComparator implements Comparator<BehaviorUnit> {
 		if (o2 == null) {
 			return Integer.MAX_VALUE;
 		}
-		String n1 = o1.getEvent().getIdentifier();
-		String n2 = o2.getEvent().getIdentifier();
+		String n1 = o1.getName().getIdentifier();
+		String n2 = o2.getName().getIdentifier();
 		int cmp = n1.compareTo(n2);
 		if (cmp != 0) {
 			return cmp;

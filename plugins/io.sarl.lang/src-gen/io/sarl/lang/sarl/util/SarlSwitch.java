@@ -284,10 +284,24 @@ public class SarlSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case SarlPackage.ACTION_SIGNATURE:
+      {
+        ActionSignature actionSignature = (ActionSignature)theEObject;
+        T result = caseActionSignature(actionSignature);
+        if (result == null) result = caseParameterizedFeature(actionSignature);
+        if (result == null) result = caseFeature(actionSignature);
+        if (result == null) result = caseEventFeature(actionSignature);
+        if (result == null) result = caseAgentFeature(actionSignature);
+        if (result == null) result = caseBehaviorFeature(actionSignature);
+        if (result == null) result = caseSkillFeature(actionSignature);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case SarlPackage.ACTION:
       {
         Action action = (Action)theEObject;
         T result = caseAction(action);
+        if (result == null) result = caseParameterizedFeature(action);
         if (result == null) result = caseFeature(action);
         if (result == null) result = caseEventFeature(action);
         if (result == null) result = caseAgentFeature(action);
@@ -306,19 +320,6 @@ public class SarlSwitch<T> extends Switch<T>
         if (result == null) result = caseAgentFeature(constructor);
         if (result == null) result = caseBehaviorFeature(constructor);
         if (result == null) result = caseSkillFeature(constructor);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case SarlPackage.ACTION_SIGNATURE:
-      {
-        ActionSignature actionSignature = (ActionSignature)theEObject;
-        T result = caseActionSignature(actionSignature);
-        if (result == null) result = caseParameterizedFeature(actionSignature);
-        if (result == null) result = caseFeature(actionSignature);
-        if (result == null) result = caseEventFeature(actionSignature);
-        if (result == null) result = caseAgentFeature(actionSignature);
-        if (result == null) result = caseBehaviorFeature(actionSignature);
-        if (result == null) result = caseSkillFeature(actionSignature);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -679,6 +680,22 @@ public class SarlSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Action Signature</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Action Signature</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseActionSignature(ActionSignature object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Action</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -706,22 +723,6 @@ public class SarlSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseConstructor(Constructor object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Action Signature</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Action Signature</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseActionSignature(ActionSignature object)
   {
     return null;
   }

@@ -221,6 +221,15 @@ public interface SarlFactory extends EFactory
   BehaviorUnit createBehaviorUnit();
 
   /**
+   * Returns a new object of class '<em>Action Signature</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Action Signature</em>'.
+   * @generated
+   */
+  ActionSignature createActionSignature();
+
+  /**
    * Returns a new object of class '<em>Action</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -237,15 +246,6 @@ public interface SarlFactory extends EFactory
    * @generated
    */
   Constructor createConstructor();
-
-  /**
-   * Returns a new object of class '<em>Action Signature</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Action Signature</em>'.
-   * @generated
-   */
-  ActionSignature createActionSignature();
 
   /**
    * Returns the package supported by this factory.

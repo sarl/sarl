@@ -37,7 +37,7 @@ TopElement:
 // Define an interface that is providing the 'name' feature.
 // This rule is declared only for generated the Java interface
 // with the expected features.
-// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
+// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANOTHER RULE.
 NamedElement:
 	name=ValidID
 ;
@@ -45,7 +45,7 @@ NamedElement:
 // Define an interface that is providing the 'features' feature.
 // This rule is declared only for generated the Java interface
 // with the expected features.
-// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
+// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANOTHER RULE.
 FeatureContainer returns NamedElement:
 	{FeatureContainer}
 	features+=Feature
@@ -54,7 +54,7 @@ FeatureContainer returns NamedElement:
 // Define an interface that is a feature.
 // This rule is declared only for generated the Java interface
 // with the expected features.
-// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
+// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANOTHER RULE.
 Feature:
 	{Feature}
 ;
@@ -62,7 +62,7 @@ Feature:
 // Define an interface that is a feature with parameters.
 // This rule is declared only for generated the Java interface
 // with the expected features.
-// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
+// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANOTHER RULE.
 ParameterizedFeature returns Feature:
 	{ParameterizedFeature}
 	params+=FormalParameter
@@ -162,12 +162,40 @@ RequiredCapacity returns Feature:
 
 BehaviorUnit returns Feature:
 	{BehaviorUnit}
-	'on' event=JvmParameterizedTypeReference (=> '[' guard=XExpression ']')? body=XBlockExpression
+	'on' name=JvmParameterizedTypeReference (=> '[' guard=XExpression ']')? body=XBlockExpression
 ;
 
-Action returns Feature:
+ActionSignature returns ParameterizedFeature:
+	{ActionSignature}
+	'def' name=ValidID 
+	(	=>'('
+		(	params+=FormalParameter
+			(=>',' params+=FormalParameter)* 
+			(varargs?=VarArgToken)?
+		)?
+		')'
+	)?
+	(':' type=JvmTypeReference)?
+	('fires' firedEvents+=JvmParameterizedTypeReference 
+		(',' firedEvents+=JvmParameterizedTypeReference)*
+	)?
+;
+
+Action returns ParameterizedFeature:
 	{Action}
-	signature=ActionSignature body=XBlockExpression
+	'def' name=ValidID 
+	(	=>'('
+		(	params+=FormalParameter
+			(=>',' params+=FormalParameter)* 
+			(varargs?=VarArgToken)?
+		)?
+		')'
+	)?
+	(':' type=JvmTypeReference)?
+	('fires' firedEvents+=JvmParameterizedTypeReference 
+		(',' firedEvents+=JvmParameterizedTypeReference)*
+	)?
+	body=XBlockExpression
 ;
 
 VarArgToken:
@@ -185,22 +213,6 @@ Constructor returns ParameterizedFeature:
 		')'
 	)?
 	body=XBlockExpression
-;
-
-ActionSignature returns ParameterizedFeature:
-	{ActionSignature}
-	'def' name=ValidID 
-	(	=>'('
-		(	params+=FormalParameter
-			(=>',' params+=FormalParameter)* 
-			(varargs?=VarArgToken)?
-		)?
-		')'
-	)?
-	(':' type=JvmTypeReference)?
-	('fires' firedEvents+=JvmParameterizedTypeReference 
-		(',' firedEvents+=JvmParameterizedTypeReference)*
-	)?
 ;
 	
 FormalParameter:

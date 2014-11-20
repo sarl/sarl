@@ -66,7 +66,7 @@ class ArgDefaultValueParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			io.sarl.lang.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
 			"A default value cannot be declared for the variadic formal parameter")
 	}
@@ -81,7 +81,7 @@ class ArgDefaultValueParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			Diagnostic::SYNTAX_DIAGNOSTIC,
 			"mismatched input '*=' expecting ')'")
 	}
@@ -226,7 +226,7 @@ class ArgDefaultValueParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			io.sarl.lang.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
 			"A default value cannot be declared for the variadic formal parameter")
 	}
@@ -732,7 +732,7 @@ class ArgDefaultValueParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			io.sarl.lang.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
 			"A default value cannot be declared for the variadic formal parameter")
 	}
@@ -749,7 +749,7 @@ class ArgDefaultValueParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			Diagnostic::SYNTAX_DIAGNOSTIC,
 			"mismatched input '*=' expecting ')'")
 	}
@@ -916,7 +916,7 @@ class ArgDefaultValueParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			io.sarl.lang.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
 			"A default value cannot be declared for the variadic formal parameter")
 	}

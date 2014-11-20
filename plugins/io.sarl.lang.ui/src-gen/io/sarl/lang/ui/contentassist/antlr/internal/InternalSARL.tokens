@@ -46,7 +46,7 @@
 'capacity'=56
 'case'=81
 'catch'=91
-'def'=71
+'def'=68
 'default'=80
 'do'=83
 'else'=78
@@ -55,13 +55,13 @@
 'extension'=48
 'false'=50
 'finally'=89
-'fires'=72
+'fires'=71
 'for'=74
 'if'=77
 'implements'=61
 'import'=47
 'instanceof'=75
-'new'=68
+'new'=72
 'null'=84
 'on'=65
 'package'=51

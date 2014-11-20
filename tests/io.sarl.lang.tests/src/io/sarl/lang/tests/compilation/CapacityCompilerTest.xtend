@@ -481,11 +481,21 @@ class CapacityCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class S1 extends Skill implements C1 {
+			  /**
+			   * See the capacity {@link C2#myaction3(int)}.
+			   * 
+			   * @see C2#myaction3(int).
+			   */
 			  @Generated
 			  protected float myaction3(final int a) {
 			    return getSkill(C2.class).myaction3(a);
 			  }
 			  
+			  /**
+			   * See the capacity {@link C2#myaction4(boolean)}.
+			   * 
+			   * @see C2#myaction4(boolean).
+			   */
 			  @Generated
 			  protected void myaction4(final boolean a) {
 			    getSkill(C2.class).myaction4(a);

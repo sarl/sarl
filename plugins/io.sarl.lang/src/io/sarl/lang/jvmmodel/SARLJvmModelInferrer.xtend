@@ -41,6 +41,7 @@ import io.sarl.lang.sarl.Event
 import io.sarl.lang.sarl.FormalParameter
 import io.sarl.lang.sarl.ImplementingElement
 import io.sarl.lang.sarl.InheritingElement
+import io.sarl.lang.sarl.ParameterizedFeature
 import io.sarl.lang.sarl.RequiredCapacity
 import io.sarl.lang.sarl.Skill
 import io.sarl.lang.sarl.TopElement
@@ -77,6 +78,7 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking
 
 import static io.sarl.lang.util.ModelUtil.*
+import org.eclipse.xtext.common.types.JvmTypeReference
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -267,8 +269,8 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				
 				var actionIndex = 0
 				for (feature : capacity.features) {
-					if (feature!==null) {
-						if (generateAction(feature as ActionSignature, null, actionIndex) !== null) {
+					if (feature instanceof ActionSignature) {
+						if (generateAction(feature.name, feature, feature.type, null, actionIndex) !== null) {
 							actionIndex++
 						}
 					}
@@ -307,9 +309,10 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					if (feature!==null) {
 						switch feature {
 							Action: {
-								var sig = feature.signature as ActionSignature
 								if (it.generateAction(
-									sig,
+									feature.name,
+									feature,
+									feature.type,
 									feature.body,
 									actionIndex, false,
 									operationsToImplement,
@@ -396,7 +399,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 								}
 							}
 							Action: {
-								if (generateAction(feature.signature as ActionSignature, feature.body, actionIndex) !== null) {
+								if (generateAction(feature.name, feature, feature.type, feature.body, actionIndex) !== null) {
 									actionIndex++
 								}
 							}
@@ -485,7 +488,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							}
 						}
 						Action: {
-							if (generateAction(feature.signature as ActionSignature, feature.body, actionIndex) !== null) {
+							if (generateAction(feature.name, feature, feature.type, feature.body, actionIndex) !== null) {
 								actionIndex++
 							}
 						}
@@ -684,7 +687,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	}
 
 	protected def JvmOperation generateBehaviorUnit(JvmGenericType owner, BehaviorUnit unit, int index) {
-		if (unit.event!==null) {
+		if (unit.name!==null) {
 			var isTrueGuard = false
 			val guard = unit.guard
 			
@@ -702,13 +705,13 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			}
 
 			val voidType = typeRef(Void::TYPE)
-			val behName = "_handle_" + unit.event.simpleName + "_" + index
+			val behName = "_handle_" + unit.name.simpleName + "_" + index
 			
 			val behaviorMethod = unit.toMethod(behName, voidType) [
 				unit.copyDocumentationTo(it)
 				annotations += annotationRef(typeof(Percept))
 				parameters +=
-					unit.toParameter(SARLKeywords::OCCURRENCE, unit.event)
+					unit.toParameter(SARLKeywords::OCCURRENCE, unit.name)
 			]
 						
 			if (isTrueGuard) {
@@ -719,7 +722,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					documentation = MessageFormat::format(
 						Messages::SARLJvmModelInferrer_9,
 						behName, guard.toString)
-					parameters += unit.toParameter(SARLKeywords::OCCURRENCE, unit.event)
+					parameters += unit.toParameter(SARLKeywords::OCCURRENCE, unit.name)
 					body = guard
 				]
 	
@@ -827,34 +830,41 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	}
 
 	protected final def JvmOperation generateAction(
-		JvmGenericType owner, ActionSignature signature, 
+		JvmGenericType owner,
+		String name,
+		ParameterizedFeature params,
+		JvmTypeReference returnType, 
 		XExpression operationBody, int index) {
-		return generateAction(owner, signature, operationBody,
+		return generateAction(owner,
+			name, params, returnType, operationBody,
 			index, operationBody===null, null,
 			null, null
 		)		
 	}
 
 	protected def JvmOperation generateAction(
-		JvmGenericType owner, ActionSignature signature,
+		JvmGenericType owner,
+		String name,
+		ParameterizedFeature params,
+		JvmTypeReference returnType,
 		XExpression operationBody, int index, boolean isAbstract,
 		Map<ActionKey,JvmOperation> operationsToImplement,
 		Map<ActionKey,JvmOperation> implementedOperations,
 		(ActionKey) => boolean inheritedOperation) {
 			
-		var returnType = signature.type
-		if (returnType == null) {
-			returnType = typeRef(Void::TYPE)
+		var returnValueType = returnType
+		if (returnValueType == null) {
+			returnValueType = typeRef(Void::TYPE)
 		}
 		
-		val actionKey = sarlSignatureProvider.createFunctionID(owner, signature.name)
+		val actionKey = sarlSignatureProvider.createFunctionID(owner, name)
 				
-		var mainOp = signature.toMethod(signature.name, returnType) [
-			signature.copyDocumentationTo(it)
-			varArgs = signature.varargs
+		var mainOp = params.toMethod(name, returnValueType) [
+			params.copyDocumentationTo(it)
+			varArgs = params.varargs
 			abstract = isAbstract
 			generateFormalParametersAndDefaultValueFields(
-				owner, signature, signature.varargs, signature.params, isAbstract, index
+				owner, params, params.varargs, params.params, isAbstract, index
 			)
 			body = operationBody
 		]
@@ -862,11 +872,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		
 		val otherSignatures = sarlSignatureProvider.createSignature(
 			actionKey,
-			signature.varargs, signature.params
+			params.varargs, params.params
 		)
 
 		var actSigKey = sarlSignatureProvider.createActionID(
-					signature.name,
+					name,
 					otherSignatures.formalParameterKey
 				)
 		if (operationsToImplement!==null && actSigKey!==null) {
@@ -878,23 +888,23 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		
 		for(otherSignature : otherSignatures.getInferredSignatures().entrySet) {
 			var ak = sarlSignatureProvider.createActionID(
-					signature.name,
+					name,
 					otherSignature.key
 				)
 			if (ak!==null &&
 				(inheritedOperation==null || 
 				inheritedOperation.apply(ak))) {
-				var additionalOp = signature.toMethod(signature.name, returnType) [
-					signature.copyDocumentationTo(it)
-					varArgs = signature.varargs
+				var additionalOp = params.toMethod(name, returnValueType) [
+					params.copyDocumentationTo(it)
+					varArgs = params.varargs
 					final = !isAbstract
 					abstract = isAbstract
 					val args = generateFormalParametersWithDefaultValue(
-						owner, signature.varargs, otherSignature.value, index
+						owner, params.varargs, otherSignature.value, index
 					)
 					if (!isAbstract) {
 						body = [
-							append(signature.name)
+							append(name)
 							append("(")
 							append(args.join(", "))
 							append(");")

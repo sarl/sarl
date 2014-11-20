@@ -826,13 +826,13 @@ public interface SarlPackage extends EPackage
   int BEHAVIOR_UNIT = 21;
 
   /**
-   * The feature id for the '<em><b>Event</b></em>' containment reference.
+   * The feature id for the '<em><b>Name</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int BEHAVIOR_UNIT__EVENT = FEATURE_FEATURE_COUNT + 0;
+  int BEHAVIOR_UNIT__NAME = FEATURE_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Guard</b></em>' containment reference.
@@ -862,89 +862,6 @@ public interface SarlPackage extends EPackage
   int BEHAVIOR_UNIT_FEATURE_COUNT = FEATURE_FEATURE_COUNT + 3;
 
   /**
-   * The meta object id for the '{@link io.sarl.lang.sarl.impl.ActionImpl <em>Action</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see io.sarl.lang.sarl.impl.ActionImpl
-   * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getAction()
-   * @generated
-   */
-  int ACTION = 22;
-
-  /**
-   * The feature id for the '<em><b>Signature</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ACTION__SIGNATURE = FEATURE_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Body</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ACTION__BODY = FEATURE_FEATURE_COUNT + 1;
-
-  /**
-   * The number of structural features of the '<em>Action</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ACTION_FEATURE_COUNT = FEATURE_FEATURE_COUNT + 2;
-
-  /**
-   * The meta object id for the '{@link io.sarl.lang.sarl.impl.ConstructorImpl <em>Constructor</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see io.sarl.lang.sarl.impl.ConstructorImpl
-   * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getConstructor()
-   * @generated
-   */
-  int CONSTRUCTOR = 23;
-
-  /**
-   * The feature id for the '<em><b>Params</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONSTRUCTOR__PARAMS = PARAMETERIZED_FEATURE__PARAMS;
-
-  /**
-   * The feature id for the '<em><b>Varargs</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONSTRUCTOR__VARARGS = PARAMETERIZED_FEATURE__VARARGS;
-
-  /**
-   * The feature id for the '<em><b>Body</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONSTRUCTOR__BODY = PARAMETERIZED_FEATURE_FEATURE_COUNT + 0;
-
-  /**
-   * The number of structural features of the '<em>Constructor</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONSTRUCTOR_FEATURE_COUNT = PARAMETERIZED_FEATURE_FEATURE_COUNT + 1;
-
-  /**
    * The meta object id for the '{@link io.sarl.lang.sarl.impl.ActionSignatureImpl <em>Action Signature</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -952,7 +869,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getActionSignature()
    * @generated
    */
-  int ACTION_SIGNATURE = 24;
+  int ACTION_SIGNATURE = 22;
 
   /**
    * The feature id for the '<em><b>Params</b></em>' containment reference list.
@@ -1007,6 +924,125 @@ public interface SarlPackage extends EPackage
    * @ordered
    */
   int ACTION_SIGNATURE_FEATURE_COUNT = PARAMETERIZED_FEATURE_FEATURE_COUNT + 3;
+
+  /**
+   * The meta object id for the '{@link io.sarl.lang.sarl.impl.ActionImpl <em>Action</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see io.sarl.lang.sarl.impl.ActionImpl
+   * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getAction()
+   * @generated
+   */
+  int ACTION = 23;
+
+  /**
+   * The feature id for the '<em><b>Params</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ACTION__PARAMS = PARAMETERIZED_FEATURE__PARAMS;
+
+  /**
+   * The feature id for the '<em><b>Varargs</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ACTION__VARARGS = PARAMETERIZED_FEATURE__VARARGS;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ACTION__NAME = PARAMETERIZED_FEATURE_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ACTION__TYPE = PARAMETERIZED_FEATURE_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Fired Events</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ACTION__FIRED_EVENTS = PARAMETERIZED_FEATURE_FEATURE_COUNT + 2;
+
+  /**
+   * The feature id for the '<em><b>Body</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ACTION__BODY = PARAMETERIZED_FEATURE_FEATURE_COUNT + 3;
+
+  /**
+   * The number of structural features of the '<em>Action</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ACTION_FEATURE_COUNT = PARAMETERIZED_FEATURE_FEATURE_COUNT + 4;
+
+  /**
+   * The meta object id for the '{@link io.sarl.lang.sarl.impl.ConstructorImpl <em>Constructor</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see io.sarl.lang.sarl.impl.ConstructorImpl
+   * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getConstructor()
+   * @generated
+   */
+  int CONSTRUCTOR = 24;
+
+  /**
+   * The feature id for the '<em><b>Params</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONSTRUCTOR__PARAMS = PARAMETERIZED_FEATURE__PARAMS;
+
+  /**
+   * The feature id for the '<em><b>Varargs</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONSTRUCTOR__VARARGS = PARAMETERIZED_FEATURE__VARARGS;
+
+  /**
+   * The feature id for the '<em><b>Body</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONSTRUCTOR__BODY = PARAMETERIZED_FEATURE_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Constructor</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONSTRUCTOR_FEATURE_COUNT = PARAMETERIZED_FEATURE_FEATURE_COUNT + 1;
 
 
   /**
@@ -1428,15 +1464,15 @@ public interface SarlPackage extends EPackage
   EClass getBehaviorUnit();
 
   /**
-   * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.BehaviorUnit#getEvent <em>Event</em>}'.
+   * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.BehaviorUnit#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Event</em>'.
-   * @see io.sarl.lang.sarl.BehaviorUnit#getEvent()
+   * @return the meta object for the containment reference '<em>Name</em>'.
+   * @see io.sarl.lang.sarl.BehaviorUnit#getName()
    * @see #getBehaviorUnit()
    * @generated
    */
-  EReference getBehaviorUnit_Event();
+  EReference getBehaviorUnit_Name();
 
   /**
    * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.BehaviorUnit#getGuard <em>Guard</em>}'.
@@ -1459,59 +1495,6 @@ public interface SarlPackage extends EPackage
    * @generated
    */
   EReference getBehaviorUnit_Body();
-
-  /**
-   * Returns the meta object for class '{@link io.sarl.lang.sarl.Action <em>Action</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Action</em>'.
-   * @see io.sarl.lang.sarl.Action
-   * @generated
-   */
-  EClass getAction();
-
-  /**
-   * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.Action#getSignature <em>Signature</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Signature</em>'.
-   * @see io.sarl.lang.sarl.Action#getSignature()
-   * @see #getAction()
-   * @generated
-   */
-  EReference getAction_Signature();
-
-  /**
-   * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.Action#getBody <em>Body</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Body</em>'.
-   * @see io.sarl.lang.sarl.Action#getBody()
-   * @see #getAction()
-   * @generated
-   */
-  EReference getAction_Body();
-
-  /**
-   * Returns the meta object for class '{@link io.sarl.lang.sarl.Constructor <em>Constructor</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Constructor</em>'.
-   * @see io.sarl.lang.sarl.Constructor
-   * @generated
-   */
-  EClass getConstructor();
-
-  /**
-   * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.Constructor#getBody <em>Body</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Body</em>'.
-   * @see io.sarl.lang.sarl.Constructor#getBody()
-   * @see #getConstructor()
-   * @generated
-   */
-  EReference getConstructor_Body();
 
   /**
    * Returns the meta object for class '{@link io.sarl.lang.sarl.ActionSignature <em>Action Signature</em>}'.
@@ -1555,6 +1538,81 @@ public interface SarlPackage extends EPackage
    * @generated
    */
   EReference getActionSignature_FiredEvents();
+
+  /**
+   * Returns the meta object for class '{@link io.sarl.lang.sarl.Action <em>Action</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Action</em>'.
+   * @see io.sarl.lang.sarl.Action
+   * @generated
+   */
+  EClass getAction();
+
+  /**
+   * Returns the meta object for the attribute '{@link io.sarl.lang.sarl.Action#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see io.sarl.lang.sarl.Action#getName()
+   * @see #getAction()
+   * @generated
+   */
+  EAttribute getAction_Name();
+
+  /**
+   * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.Action#getType <em>Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Type</em>'.
+   * @see io.sarl.lang.sarl.Action#getType()
+   * @see #getAction()
+   * @generated
+   */
+  EReference getAction_Type();
+
+  /**
+   * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.Action#getFiredEvents <em>Fired Events</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Fired Events</em>'.
+   * @see io.sarl.lang.sarl.Action#getFiredEvents()
+   * @see #getAction()
+   * @generated
+   */
+  EReference getAction_FiredEvents();
+
+  /**
+   * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.Action#getBody <em>Body</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Body</em>'.
+   * @see io.sarl.lang.sarl.Action#getBody()
+   * @see #getAction()
+   * @generated
+   */
+  EReference getAction_Body();
+
+  /**
+   * Returns the meta object for class '{@link io.sarl.lang.sarl.Constructor <em>Constructor</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Constructor</em>'.
+   * @see io.sarl.lang.sarl.Constructor
+   * @generated
+   */
+  EClass getConstructor();
+
+  /**
+   * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.Constructor#getBody <em>Body</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Body</em>'.
+   * @see io.sarl.lang.sarl.Constructor#getBody()
+   * @see #getConstructor()
+   * @generated
+   */
+  EReference getConstructor_Body();
 
   /**
    * Returns the factory that creates the instances of the model.
@@ -1944,12 +2002,12 @@ public interface SarlPackage extends EPackage
     EClass BEHAVIOR_UNIT = eINSTANCE.getBehaviorUnit();
 
     /**
-     * The meta object literal for the '<em><b>Event</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Name</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference BEHAVIOR_UNIT__EVENT = eINSTANCE.getBehaviorUnit_Event();
+    EReference BEHAVIOR_UNIT__NAME = eINSTANCE.getBehaviorUnit_Name();
 
     /**
      * The meta object literal for the '<em><b>Guard</b></em>' containment reference feature.
@@ -1966,50 +2024,6 @@ public interface SarlPackage extends EPackage
      * @generated
      */
     EReference BEHAVIOR_UNIT__BODY = eINSTANCE.getBehaviorUnit_Body();
-
-    /**
-     * The meta object literal for the '{@link io.sarl.lang.sarl.impl.ActionImpl <em>Action</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see io.sarl.lang.sarl.impl.ActionImpl
-     * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getAction()
-     * @generated
-     */
-    EClass ACTION = eINSTANCE.getAction();
-
-    /**
-     * The meta object literal for the '<em><b>Signature</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference ACTION__SIGNATURE = eINSTANCE.getAction_Signature();
-
-    /**
-     * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference ACTION__BODY = eINSTANCE.getAction_Body();
-
-    /**
-     * The meta object literal for the '{@link io.sarl.lang.sarl.impl.ConstructorImpl <em>Constructor</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see io.sarl.lang.sarl.impl.ConstructorImpl
-     * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getConstructor()
-     * @generated
-     */
-    EClass CONSTRUCTOR = eINSTANCE.getConstructor();
-
-    /**
-     * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference CONSTRUCTOR__BODY = eINSTANCE.getConstructor_Body();
 
     /**
      * The meta object literal for the '{@link io.sarl.lang.sarl.impl.ActionSignatureImpl <em>Action Signature</em>}' class.
@@ -2044,6 +2058,66 @@ public interface SarlPackage extends EPackage
      * @generated
      */
     EReference ACTION_SIGNATURE__FIRED_EVENTS = eINSTANCE.getActionSignature_FiredEvents();
+
+    /**
+     * The meta object literal for the '{@link io.sarl.lang.sarl.impl.ActionImpl <em>Action</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see io.sarl.lang.sarl.impl.ActionImpl
+     * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getAction()
+     * @generated
+     */
+    EClass ACTION = eINSTANCE.getAction();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute ACTION__NAME = eINSTANCE.getAction_Name();
+
+    /**
+     * The meta object literal for the '<em><b>Type</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ACTION__TYPE = eINSTANCE.getAction_Type();
+
+    /**
+     * The meta object literal for the '<em><b>Fired Events</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ACTION__FIRED_EVENTS = eINSTANCE.getAction_FiredEvents();
+
+    /**
+     * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ACTION__BODY = eINSTANCE.getAction_Body();
+
+    /**
+     * The meta object literal for the '{@link io.sarl.lang.sarl.impl.ConstructorImpl <em>Constructor</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see io.sarl.lang.sarl.impl.ConstructorImpl
+     * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getConstructor()
+     * @generated
+     */
+    EClass CONSTRUCTOR = eINSTANCE.getConstructor();
+
+    /**
+     * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference CONSTRUCTOR__BODY = eINSTANCE.getConstructor_Body();
 
   }
 

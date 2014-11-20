@@ -24,7 +24,7 @@ import org.eclipse.xtext.xbase.XExpression;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link io.sarl.lang.sarl.impl.BehaviorUnitImpl#getEvent <em>Event</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.BehaviorUnitImpl#getName <em>Name</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.impl.BehaviorUnitImpl#getGuard <em>Guard</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.impl.BehaviorUnitImpl#getBody <em>Body</em>}</li>
  * </ul>
@@ -35,14 +35,14 @@ import org.eclipse.xtext.xbase.XExpression;
 public class BehaviorUnitImpl extends FeatureImpl implements BehaviorUnit
 {
   /**
-   * The cached value of the '{@link #getEvent() <em>Event</em>}' containment reference.
+   * The cached value of the '{@link #getName() <em>Name</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getEvent()
+   * @see #getName()
    * @generated
    * @ordered
    */
-  protected JvmParameterizedTypeReference event;
+  protected JvmParameterizedTypeReference name;
 
   /**
    * The cached value of the '{@link #getGuard() <em>Guard</em>}' containment reference.
@@ -90,9 +90,9 @@ public class BehaviorUnitImpl extends FeatureImpl implements BehaviorUnit
    * <!-- end-user-doc -->
    * @generated
    */
-  public JvmParameterizedTypeReference getEvent()
+  public JvmParameterizedTypeReference getName()
   {
-    return event;
+    return name;
   }
 
   /**
@@ -100,13 +100,13 @@ public class BehaviorUnitImpl extends FeatureImpl implements BehaviorUnit
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetEvent(JvmParameterizedTypeReference newEvent, NotificationChain msgs)
+  public NotificationChain basicSetName(JvmParameterizedTypeReference newName, NotificationChain msgs)
   {
-    JvmParameterizedTypeReference oldEvent = event;
-    event = newEvent;
+    JvmParameterizedTypeReference oldName = name;
+    name = newName;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SarlPackage.BEHAVIOR_UNIT__EVENT, oldEvent, newEvent);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SarlPackage.BEHAVIOR_UNIT__NAME, oldName, newName);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -117,20 +117,20 @@ public class BehaviorUnitImpl extends FeatureImpl implements BehaviorUnit
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setEvent(JvmParameterizedTypeReference newEvent)
+  public void setName(JvmParameterizedTypeReference newName)
   {
-    if (newEvent != event)
+    if (newName != name)
     {
       NotificationChain msgs = null;
-      if (event != null)
-        msgs = ((InternalEObject)event).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SarlPackage.BEHAVIOR_UNIT__EVENT, null, msgs);
-      if (newEvent != null)
-        msgs = ((InternalEObject)newEvent).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SarlPackage.BEHAVIOR_UNIT__EVENT, null, msgs);
-      msgs = basicSetEvent(newEvent, msgs);
+      if (name != null)
+        msgs = ((InternalEObject)name).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SarlPackage.BEHAVIOR_UNIT__NAME, null, msgs);
+      if (newName != null)
+        msgs = ((InternalEObject)newName).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SarlPackage.BEHAVIOR_UNIT__NAME, null, msgs);
+      msgs = basicSetName(newName, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.BEHAVIOR_UNIT__EVENT, newEvent, newEvent));
+      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.BEHAVIOR_UNIT__NAME, newName, newName));
   }
 
   /**
@@ -239,8 +239,8 @@ public class BehaviorUnitImpl extends FeatureImpl implements BehaviorUnit
   {
     switch (featureID)
     {
-      case SarlPackage.BEHAVIOR_UNIT__EVENT:
-        return basicSetEvent(null, msgs);
+      case SarlPackage.BEHAVIOR_UNIT__NAME:
+        return basicSetName(null, msgs);
       case SarlPackage.BEHAVIOR_UNIT__GUARD:
         return basicSetGuard(null, msgs);
       case SarlPackage.BEHAVIOR_UNIT__BODY:
@@ -259,8 +259,8 @@ public class BehaviorUnitImpl extends FeatureImpl implements BehaviorUnit
   {
     switch (featureID)
     {
-      case SarlPackage.BEHAVIOR_UNIT__EVENT:
-        return getEvent();
+      case SarlPackage.BEHAVIOR_UNIT__NAME:
+        return getName();
       case SarlPackage.BEHAVIOR_UNIT__GUARD:
         return getGuard();
       case SarlPackage.BEHAVIOR_UNIT__BODY:
@@ -279,8 +279,8 @@ public class BehaviorUnitImpl extends FeatureImpl implements BehaviorUnit
   {
     switch (featureID)
     {
-      case SarlPackage.BEHAVIOR_UNIT__EVENT:
-        setEvent((JvmParameterizedTypeReference)newValue);
+      case SarlPackage.BEHAVIOR_UNIT__NAME:
+        setName((JvmParameterizedTypeReference)newValue);
         return;
       case SarlPackage.BEHAVIOR_UNIT__GUARD:
         setGuard((XExpression)newValue);
@@ -302,8 +302,8 @@ public class BehaviorUnitImpl extends FeatureImpl implements BehaviorUnit
   {
     switch (featureID)
     {
-      case SarlPackage.BEHAVIOR_UNIT__EVENT:
-        setEvent((JvmParameterizedTypeReference)null);
+      case SarlPackage.BEHAVIOR_UNIT__NAME:
+        setName((JvmParameterizedTypeReference)null);
         return;
       case SarlPackage.BEHAVIOR_UNIT__GUARD:
         setGuard((XExpression)null);
@@ -325,8 +325,8 @@ public class BehaviorUnitImpl extends FeatureImpl implements BehaviorUnit
   {
     switch (featureID)
     {
-      case SarlPackage.BEHAVIOR_UNIT__EVENT:
-        return event != null;
+      case SarlPackage.BEHAVIOR_UNIT__NAME:
+        return name != null;
       case SarlPackage.BEHAVIOR_UNIT__GUARD:
         return guard != null;
       case SarlPackage.BEHAVIOR_UNIT__BODY:

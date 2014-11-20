@@ -57,21 +57,23 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//RequiredCapacity/requiredCapacities"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//BehaviorUnit">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//BehaviorUnit/event"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//BehaviorUnit/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//BehaviorUnit/guard"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//BehaviorUnit/body"/>
-    </genClasses>
-    <genClasses ecoreClass="SARL.ecore#//Action">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//Action/signature"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//Action/body"/>
-    </genClasses>
-    <genClasses ecoreClass="SARL.ecore#//Constructor">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//Constructor/body"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//ActionSignature">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//ActionSignature/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//ActionSignature/type"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//ActionSignature/firedEvents"/>
+    </genClasses>
+    <genClasses ecoreClass="SARL.ecore#//Action">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//Action/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//Action/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//Action/firedEvents"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//Action/body"/>
+    </genClasses>
+    <genClasses ecoreClass="SARL.ecore#//Constructor">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//Constructor/body"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

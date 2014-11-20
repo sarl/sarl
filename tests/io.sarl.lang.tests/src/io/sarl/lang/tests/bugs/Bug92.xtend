@@ -301,11 +301,21 @@ class Bug92 {
 			    super(parentID, agentID);
 			  }
 			  
+			  /**
+			   * See the capacity {@link ComputeEnergyCapacity#getEnergy(java.lang.Double,java.lang.Double,java.lang.Double)}.
+			   * 
+			   * @see ComputeEnergyCapacity#getEnergy(java.lang.Double,java.lang.Double,java.lang.Double).
+			   */
 			  @Generated
 			  protected Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {
 			    return getSkill(ComputeEnergyCapacity.class).getEnergy(currentTime, deltaTime, wantedEnergy);
 			  }
 			  
+			  /**
+			   * See the capacity {@link ComputeEnergyCapacity#setVoltage(java.lang.Double)}.
+			   * 
+			   * @see ComputeEnergyCapacity#setVoltage(java.lang.Double).
+			   */
 			  @Generated
 			  protected void setVoltage(final Double currentVoltage) {
 			    getSkill(ComputeEnergyCapacity.class).setVoltage(currentVoltage);
@@ -402,11 +412,21 @@ class Bug92 {
 			    super(parentID, agentID);
 			  }
 			  
+			  /**
+			   * See the capacity {@link ComputeEnergyCapacity#getEnergy(java.lang.Double,java.lang.Double,java.lang.Double)}.
+			   * 
+			   * @see ComputeEnergyCapacity#getEnergy(java.lang.Double,java.lang.Double,java.lang.Double).
+			   */
 			  @Generated
 			  protected Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {
 			    return getSkill(ComputeEnergyCapacity.class).getEnergy(currentTime, deltaTime, wantedEnergy);
 			  }
 			  
+			  /**
+			   * See the capacity {@link ComputeEnergyCapacity#setVoltage(java.lang.Double)}.
+			   * 
+			   * @see ComputeEnergyCapacity#setVoltage(java.lang.Double).
+			   */
 			  @Generated
 			  protected void setVoltage(final Double currentVoltage) {
 			    getSkill(ComputeEnergyCapacity.class).setVoltage(currentVoltage);

@@ -77,7 +77,7 @@ class VarArgsParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			Diagnostic::SYNTAX_DIAGNOSTIC,
 			"mismatched input ',' expecting ')'")
 	}
@@ -118,7 +118,7 @@ class VarArgsParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			Diagnostic::SYNTAX_DIAGNOSTIC,
 			"mismatched input ',' expecting ')'")
 	}
@@ -162,7 +162,7 @@ class VarArgsParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			Diagnostic::SYNTAX_DIAGNOSTIC,
 			"mismatched input ',' expecting ')'")
 	}
@@ -374,7 +374,7 @@ class VarArgsParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			io.sarl.lang.validation.IssueCodes::DUPLICATE_METHOD,
 			"Duplicate action in 'B1': myaction(arg0 : int, arg1 : int)")
 	}

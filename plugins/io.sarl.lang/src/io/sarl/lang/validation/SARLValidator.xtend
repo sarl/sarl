@@ -70,6 +70,11 @@ import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 
 import static io.sarl.lang.util.ModelUtil.*
+import java.util.Map
+import io.sarl.lang.signature.ActionKey
+import org.eclipse.xtext.common.types.JvmOperation
+import org.eclipse.xtext.common.types.JvmTypeReference
+import org.eclipse.emf.ecore.EAttribute
 
 /**
  * Validator for the SARL elements.
@@ -236,12 +241,11 @@ class SARLValidator extends AbstractSARLValidator {
 				container = this.logicalContainerProvider.getNearestLogicalContainer(feature)
 			}
 			if (feature instanceof Action) {
-				var ActionSignature s = feature.signature as ActionSignature
-				name = s.name
+				name = feature.name
 				actionID = this.sarlSignatureProvider.createFunctionID(container, name)
-				signatureID = this.sarlSignatureProvider.createSignatureIDFromSarlModel(s.varargs, s.params)
-				errorFeature = s
-				errorStructFeature = SarlPackage.Literals::ACTION_SIGNATURE__NAME
+				signatureID = this.sarlSignatureProvider.createSignatureIDFromSarlModel(feature.varargs, feature.params)
+				errorFeature = feature
+				errorStructFeature = SarlPackage.Literals::ACTION__NAME
 			}
 			else if (feature instanceof ActionSignature) {
 				name = feature.name
@@ -320,6 +324,27 @@ class SARLValidator extends AbstractSARLValidator {
 							), 
 					action,
 					SarlPackage.Literals::ACTION_SIGNATURE__NAME,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+					IssueCodes::INVALID_MEMBER_NAME,
+					Messages::SARLValidator_8, action.name, validName1, validName2)
+		}
+	}
+
+	/**
+	 * @param action
+	 */
+	@Check(CheckType.FAST)
+	public def checkActionName(Action action) {
+		if (isHiddenAction(action.name)) {
+			var validName1 = ModelUtil::fixHiddenAction(action.name)
+			var validName2 = ModelUtil::removeHiddenAction(action.name)
+			error(
+					MessageFormat::format(
+							Messages::SARLValidator_9,
+							action.name
+							), 
+					action,
+					SarlPackage.Literals::ACTION__NAME,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					IssueCodes::INVALID_MEMBER_NAME,
 					Messages::SARLValidator_8, action.name, validName1, validName2)
@@ -566,64 +591,28 @@ class SARLValidator extends AbstractSARLValidator {
 							}
 						}
 					}
-				}
-				else if (feature instanceof Action || feature instanceof ActionSignature) {
-					var signature = (if (feature instanceof Action) (feature.signature) else feature) as ActionSignature
-					var sig = this.sarlSignatureProvider.createSignatureIDFromSarlModel(signature.varargs, signature.params)
-					var actionKey = this.sarlSignatureProvider.createActionID(signature.name, sig)
-					if (finalOperations.containsKey(actionKey)) {
-						error(
-								MessageFormat::format(
-										Messages::SARLValidator_16,
-										actionKey.toString),
-								signature,
-								SarlPackage.Literals.ACTION_SIGNATURE__NAME,
-								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-								IssueCodes::OVERRIDDEN_FINAL_OPERATION,
-								actionKey.toString)
-					}
-					else {
-						var implementableFunction = operationsToImplement.remove(actionKey)
-						if (implementableFunction!==null) {
-							var currentReturnType = signature.type?.toLightweightTypeReference
-							var inheritedReturnType = implementableFunction.returnType?.toLightweightTypeReference
-							if (!canCast(currentReturnType, inheritedReturnType, false, true, true)) {
-								error(
-										MessageFormat::format(
-												Messages::SARLValidator_17,
-												currentReturnType.canonicalTypeName,
-												inheritedReturnType.canonicalTypeName,
-												actionKey.toString),
-										signature,
-										SarlPackage.Literals.ACTION_SIGNATURE__TYPE,
-										ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-										org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
-										currentReturnType.canonicalTypeName,
-										inheritedReturnType.identifier)
-							}
-						}
-						else {
-							var superOperation = overridableOperations.get(actionKey)
-							if (superOperation!==null) {
-								var currentReturnType = signature.type?.toLightweightTypeReference
-								var inheritedReturnType = superOperation.returnType?.toLightweightTypeReference
-								if (!canCast(currentReturnType, inheritedReturnType, false, true, true)) {
-									error(
-											MessageFormat::format(
-													Messages::SARLValidator_17,
-													currentReturnType.canonicalTypeName,
-													inheritedReturnType.canonicalTypeName,
-													actionKey.toString),
-											signature,
-											SarlPackage.Literals.ACTION_SIGNATURE__TYPE,
-											ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-											org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
-											currentReturnType.canonicalTypeName,
-											inheritedReturnType.identifier)
-								}
-							}
-						}
-					}
+				} else if (feature instanceof Action) {
+					checkInheritedActionElement(
+							finalOperations,
+							overridableOperations,
+							operationsToImplement,
+							feature,
+							feature.name,
+							feature,
+							feature.type,
+							SarlPackage::Literals::ACTION__NAME,
+							SarlPackage::Literals::ACTION__TYPE)
+				} else if (feature instanceof ActionSignature) {
+					checkInheritedActionElement(
+							finalOperations,
+							overridableOperations,
+							operationsToImplement,
+							feature,
+							feature.name,
+							feature,
+							feature.type,
+							SarlPackage::Literals::ACTION_SIGNATURE__NAME,
+							SarlPackage::Literals::ACTION_SIGNATURE__TYPE)
 				}
 			}
 			
@@ -669,6 +658,73 @@ class SARLValidator extends AbstractSARLValidator {
 									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 									IssueCodes::MISSING_METHOD_IMPLEMENTATION)
 						}
+					}
+				}
+			}
+		}
+	}
+	
+	private def checkInheritedActionElement(
+					Map<ActionKey, JvmOperation> finalOperations,
+					Map<ActionKey, JvmOperation> overridableOperations,
+					Map<ActionKey, JvmOperation> operationsToImplement,
+					EObject referenceObject,
+					String name,
+					ParameterizedFeature paramOwner,
+					JvmTypeReference type,
+					EAttribute nameAttribute,
+					EReference typeAttribute) {
+		var sig = this.sarlSignatureProvider.createSignatureIDFromSarlModel(paramOwner.varargs, paramOwner.params)
+		var actionKey = this.sarlSignatureProvider.createActionID(name, sig)
+		if (finalOperations.containsKey(actionKey)) {
+			error(
+					MessageFormat::format(
+							Messages::SARLValidator_16,
+							actionKey.toString),
+					referenceObject,
+					nameAttribute,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+					IssueCodes::OVERRIDDEN_FINAL_OPERATION,
+					actionKey.toString)
+		}
+		else {
+			var implementableFunction = operationsToImplement.remove(actionKey)
+			if (implementableFunction!==null) {
+				var currentReturnType = type?.toLightweightTypeReference
+				var inheritedReturnType = implementableFunction.returnType?.toLightweightTypeReference
+				if (!canCast(currentReturnType, inheritedReturnType, false, true, true)) {
+					error(
+							MessageFormat::format(
+									Messages::SARLValidator_17,
+									currentReturnType.canonicalTypeName,
+									inheritedReturnType.canonicalTypeName,
+									actionKey.toString),
+							referenceObject,
+							typeAttribute,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
+							currentReturnType.canonicalTypeName,
+							inheritedReturnType.identifier)
+				}
+			}
+			else {
+				var superOperation = overridableOperations.get(actionKey)
+				if (superOperation!==null) {
+					var currentReturnType = type?.toLightweightTypeReference
+					var inheritedReturnType = superOperation.returnType?.toLightweightTypeReference
+					if (!canCast(currentReturnType, inheritedReturnType, false, true, true)) {
+						error(
+								MessageFormat::format(
+										Messages::SARLValidator_17,
+										currentReturnType.canonicalTypeName,
+										inheritedReturnType.canonicalTypeName,
+										actionKey.toString),
+								referenceObject,
+								typeAttribute,
+								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+								org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
+								currentReturnType.canonicalTypeName,
+								inheritedReturnType.identifier)
 					}
 				}
 			}
@@ -802,7 +858,7 @@ class SARLValidator extends AbstractSARLValidator {
 								null,
 								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 								IssueCodes::UNREACHABLE_BEHAVIOR_UNIT,
-								behaviorUnit.event.simpleName)
+								behaviorUnit.name.simpleName)
 					}
 				}
 				return;
@@ -889,6 +945,29 @@ class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 	
+	/**
+	 * @param action
+	 */
+	@Check(CheckType.FAST)
+	public def checkActionFires(Action action) {
+		for(event : action.firedEvents) {
+			var ref = event.toLightweightTypeReference
+			if (ref!==null && !ref.isSubtypeOf(typeof(io.sarl.lang.core.Event))) {
+				error(
+						MessageFormat::format(
+								Messages::SARLValidator_24,
+								event.qualifiedName,
+								Messages::SARLValidator_26,
+								SARLKeywords::FIRES),
+						event,
+						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						IssueCodes::INVALID_FIRING_EVENT_TYPE,
+						event.simpleName)
+			}
+		}
+	}
+
 	protected def int checkSuperTypes(InheritingElement element, Class<?> expectedType, boolean onlySubTypes) {
 		var int nbSuperTypes = 0
 		var inferredType = element.jvmGenericType
@@ -1074,7 +1153,7 @@ class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public def checkBehaviorUnitEventType(BehaviorUnit behaviorUnit) {
-		var event = behaviorUnit.event
+		var event = behaviorUnit.name
 		var ref = event.toLightweightTypeReference
 		if (ref===null || ref.interfaceType || !ref.isSubtypeOf(typeof(io.sarl.lang.core.Event))) {
 			error(

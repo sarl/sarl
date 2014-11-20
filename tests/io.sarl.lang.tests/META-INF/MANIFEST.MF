@@ -8,9 +8,18 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: io.sarl.lang.ui;bundle-version="[0.2.0,0.3.0)",
  io.sarl.lang.core;bundle-version="[0.2.0,0.3.0)",
  org.eclipse.xtext.junit4;bundle-version="[2.7.2,2.8.0)",
- org.eclipse.xtext.xbase.junit;bundle-version="[2.7.2,2.8.0)"
+ org.eclipse.xtext.xbase.junit;bundle-version="[2.7.2,2.8.0)",
+ io.sarl.lang,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.workbench;resolution:=optional,
+ org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional
 Import-Package: io.sarl.lang.core,
  org.junit;version="4.5.0",
- org.junit.runner;version="4.5.0"
+ org.junit.runner;version="4.5.0",
+ org.junit.runner.manipulation;version="4.5.0",
+ org.junit.runner.notification;version="4.5.0",
+ org.junit.runners;version="4.5.0",
+ org.junit.runners.model;version="4.5.0",
+ org.hamcrest.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: io.sarl.lang

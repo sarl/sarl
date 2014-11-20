@@ -6,9 +6,9 @@
 '%='=46
 '&&'=51
 '&'=98
-'('=36
-')'=37
-'*'=34
+'('=35
+')'=36
+'*'=38
 '**'=65
 '*='=44
 '+'=63
@@ -46,7 +46,7 @@
 'capacity'=19
 'case'=80
 'catch'=96
-'def'=38
+'def'=34
 'default'=79
 'do'=82
 'else'=77
@@ -55,13 +55,13 @@
 'extension'=85
 'false'=87
 'finally'=94
-'fires'=39
+'fires'=37
 'for'=41
 'if'=76
 'implements'=24
 'import'=84
 'instanceof'=56
-'new'=35
+'new'=39
 'null'=89
 'on'=31
 'package'=13

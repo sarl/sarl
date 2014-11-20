@@ -80,7 +80,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			IssueCodes::DUPLICATE_METHOD,
 			"Duplicate action in 'S1': myaction(a : int)")
 	}
@@ -149,7 +149,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			IssueCodes::INVALID_MEMBER_NAME,
 			"Invalid action name '_handle_myaction'.")
 	}
@@ -318,7 +318,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'float' and 'int' for myaction(int).")
 	}
@@ -340,7 +340,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'int' and 'void' for myaction(int).")
 	}
@@ -362,7 +362,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'void' and 'int' for myaction(int).")
 	}
@@ -380,7 +380,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'float' and 'int' for myaction(int).")
 	}
@@ -398,7 +398,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'int' and 'void' for myaction(int).")
 	}
@@ -416,7 +416,7 @@ class CapacityParsingTest {
 			}
 		'''.parse
 		mas.assertError(
-			SarlPackage::eINSTANCE.actionSignature,
+			SarlPackage::eINSTANCE.action,
 			org.eclipse.xtext.xbase.validation.IssueCodes::INCOMPATIBLE_RETURN_TYPE,
 			"Incompatible return type between 'void' and 'int' for myaction(int).")
 	}

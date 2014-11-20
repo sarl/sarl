@@ -185,6 +185,11 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
         return createBehaviorUnitAdapter();
       }
       @Override
+      public Adapter caseActionSignature(ActionSignature object)
+      {
+        return createActionSignatureAdapter();
+      }
+      @Override
       public Adapter caseAction(Action object)
       {
         return createActionAdapter();
@@ -193,11 +198,6 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
       public Adapter caseConstructor(Constructor object)
       {
         return createConstructorAdapter();
-      }
-      @Override
-      public Adapter caseActionSignature(ActionSignature object)
-      {
-        return createActionSignatureAdapter();
       }
       @Override
       public Adapter defaultCase(EObject object)
@@ -552,6 +552,21 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.ActionSignature <em>Action Signature</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.ActionSignature
+   * @generated
+   */
+  public Adapter createActionSignatureAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.Action <em>Action</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -577,21 +592,6 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createConstructorAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.ActionSignature <em>Action Signature</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see io.sarl.lang.sarl.ActionSignature
-   * @generated
-   */
-  public Adapter createActionSignatureAdapter()
   {
     return null;
   }

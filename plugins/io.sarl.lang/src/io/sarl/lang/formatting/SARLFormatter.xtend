@@ -44,6 +44,7 @@ import org.eclipse.xtext.xbase.services.XbaseGrammarAccess.XIfExpressionElements
 import org.eclipse.xtext.xbase.services.XbaseGrammarAccess.XMemberFeatureCallElements
 import org.eclipse.xtext.xbase.services.XbaseGrammarAccess.XTryCatchFinallyExpressionElements
 import org.eclipse.xtext.xbase.services.XtypeGrammarAccess.XImportDeclarationElements
+import io.sarl.lang.services.SARLGrammarAccess.ActionElements
 
 /**
  * This class contains custom formatting description.
@@ -72,6 +73,7 @@ class SARLFormatter extends XbaseFormatter {
 
 		c.configureXVariableDeclaration(XVariableDeclarationAccess)
 		c.configureXAssignmentElements(XAssignmentAccess)
+		c.configureActions(actionAccess)
 		c.configureActionSignatures(actionSignatureAccess)
 		c.configureCapacities(capacityAccess)
 		c.configureBehaviors(behaviorAccess)
@@ -122,6 +124,14 @@ class SARLFormatter extends XbaseFormatter {
 	}
 
 	def configureActionSignatures(FormattingConfig c, ActionSignatureElements ele) {
+		c.setLinewrap(2).before(ele.group)
+		c.setNoSpace.around(ele.leftParenthesisKeyword_3_0)
+		c.setNoSpace.before(ele.rightParenthesisKeyword_3_2)
+		c.setNoSpace.before(ele.commaKeyword_3_1_1_0)
+		c.setNoSpace.before(ele.commaKeyword_5_2_0)
+	}
+
+	def configureActions(FormattingConfig c, ActionElements ele) {
 		c.setLinewrap(2).before(ele.group)
 		c.setNoSpace.around(ele.leftParenthesisKeyword_3_0)
 		c.setNoSpace.before(ele.rightParenthesisKeyword_3_2)

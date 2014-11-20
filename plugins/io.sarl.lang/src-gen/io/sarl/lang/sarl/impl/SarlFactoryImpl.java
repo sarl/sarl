@@ -86,9 +86,9 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
       case SarlPackage.CAPACITY_USES: return createCapacityUses();
       case SarlPackage.REQUIRED_CAPACITY: return createRequiredCapacity();
       case SarlPackage.BEHAVIOR_UNIT: return createBehaviorUnit();
+      case SarlPackage.ACTION_SIGNATURE: return createActionSignature();
       case SarlPackage.ACTION: return createAction();
       case SarlPackage.CONSTRUCTOR: return createConstructor();
-      case SarlPackage.ACTION_SIGNATURE: return createActionSignature();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -341,6 +341,17 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public ActionSignature createActionSignature()
+  {
+    ActionSignatureImpl actionSignature = new ActionSignatureImpl();
+    return actionSignature;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public Action createAction()
   {
     ActionImpl action = new ActionImpl();
@@ -356,17 +367,6 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
   {
     ConstructorImpl constructor = new ConstructorImpl();
     return constructor;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public ActionSignature createActionSignature()
-  {
-    ActionSignatureImpl actionSignature = new ActionSignatureImpl();
-    return actionSignature;
   }
 
   /**

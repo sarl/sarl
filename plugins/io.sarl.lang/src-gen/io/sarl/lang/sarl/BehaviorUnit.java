@@ -14,7 +14,7 @@ import org.eclipse.xtext.xbase.XExpression;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link io.sarl.lang.sarl.BehaviorUnit#getEvent <em>Event</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.BehaviorUnit#getName <em>Name</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.BehaviorUnit#getGuard <em>Guard</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.BehaviorUnit#getBody <em>Body</em>}</li>
  * </ul>
@@ -27,30 +27,30 @@ import org.eclipse.xtext.xbase.XExpression;
 public interface BehaviorUnit extends Feature
 {
   /**
-   * Returns the value of the '<em><b>Event</b></em>' containment reference.
+   * Returns the value of the '<em><b>Name</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Event</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Name</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Event</em>' containment reference.
-   * @see #setEvent(JvmParameterizedTypeReference)
-   * @see io.sarl.lang.sarl.SarlPackage#getBehaviorUnit_Event()
+   * @return the value of the '<em>Name</em>' containment reference.
+   * @see #setName(JvmParameterizedTypeReference)
+   * @see io.sarl.lang.sarl.SarlPackage#getBehaviorUnit_Name()
    * @model containment="true"
    * @generated
    */
-  JvmParameterizedTypeReference getEvent();
+  JvmParameterizedTypeReference getName();
 
   /**
-   * Sets the value of the '{@link io.sarl.lang.sarl.BehaviorUnit#getEvent <em>Event</em>}' containment reference.
+   * Sets the value of the '{@link io.sarl.lang.sarl.BehaviorUnit#getName <em>Name</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Event</em>' containment reference.
-   * @see #getEvent()
+   * @param value the new value of the '<em>Name</em>' containment reference.
+   * @see #getName()
    * @generated
    */
-  void setEvent(JvmParameterizedTypeReference value);
+  void setName(JvmParameterizedTypeReference value);
 
   /**
    * Returns the value of the '<em><b>Guard</b></em>' containment reference.

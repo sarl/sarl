@@ -1371,20 +1371,16 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (signature=ActionSignature body=XBlockExpression)
+	 *     (
+	 *         name=ValidID 
+	 *         (params+=FormalParameter params+=FormalParameter* varargs?=VarArgToken?)? 
+	 *         type=JvmTypeReference? 
+	 *         (firedEvents+=JvmParameterizedTypeReference firedEvents+=JvmParameterizedTypeReference*)? 
+	 *         body=XBlockExpression
+	 *     )
 	 */
 	protected void sequence_Action(EObject context, Action semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, SarlPackage.Literals.ACTION__SIGNATURE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SarlPackage.Literals.ACTION__SIGNATURE));
-			if(transientValues.isValueTransient(semanticObject, SarlPackage.Literals.ACTION__BODY) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SarlPackage.Literals.ACTION__BODY));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getActionAccess().getSignatureActionSignatureParserRuleCall_1_0(), semanticObject.getSignature());
-		feeder.accept(grammarAccess.getActionAccess().getBodyXBlockExpressionParserRuleCall_2_0(), semanticObject.getBody());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -1408,7 +1404,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (event=JvmParameterizedTypeReference guard=XExpression? body=XBlockExpression)
+	 *     (name=JvmParameterizedTypeReference guard=XExpression? body=XBlockExpression)
 	 */
 	protected void sequence_BehaviorUnit(EObject context, BehaviorUnit semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
