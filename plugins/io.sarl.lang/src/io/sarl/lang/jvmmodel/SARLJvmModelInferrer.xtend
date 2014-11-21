@@ -79,6 +79,7 @@ import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking
 
 import static io.sarl.lang.util.ModelUtil.*
 import org.eclipse.xtext.common.types.JvmTypeReference
+import io.sarl.lang.annotation.FiredEvent
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -270,7 +271,10 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				var actionIndex = 0
 				for (feature : capacity.features) {
 					if (feature instanceof ActionSignature) {
-						if (generateAction(feature.name, feature, feature.type, null, actionIndex) !== null) {
+						if (generateAction(
+							feature.name, feature, feature.type,
+							feature.firedEvents,
+							null, actionIndex) !== null) {
 							actionIndex++
 						}
 					}
@@ -313,6 +317,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 									feature.name,
 									feature,
 									feature.type,
+									feature.firedEvents,
 									feature.body,
 									actionIndex, false,
 									operationsToImplement,
@@ -399,7 +404,10 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 								}
 							}
 							Action: {
-								if (generateAction(feature.name, feature, feature.type, feature.body, actionIndex) !== null) {
+								if (generateAction(
+									feature.name, feature, feature.type,
+									feature.firedEvents,
+									feature.body, actionIndex) !== null) {
 									actionIndex++
 								}
 							}
@@ -488,7 +496,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							}
 						}
 						Action: {
-							if (generateAction(feature.name, feature, feature.type, feature.body, actionIndex) !== null) {
+							if (generateAction(
+										feature.name, feature, feature.type, feature.firedEvents,
+										feature.body, actionIndex) !== null) {
 								actionIndex++
 							}
 						}
@@ -834,9 +844,10 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		String name,
 		ParameterizedFeature params,
 		JvmTypeReference returnType, 
+		List<JvmParameterizedTypeReference> firedEvents,
 		XExpression operationBody, int index) {
 		return generateAction(owner,
-			name, params, returnType, operationBody,
+			name, params, returnType, firedEvents, operationBody,
 			index, operationBody===null, null,
 			null, null
 		)		
@@ -847,6 +858,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		String name,
 		ParameterizedFeature params,
 		JvmTypeReference returnType,
+		List<JvmParameterizedTypeReference> firedEvents,
 		XExpression operationBody, int index, boolean isAbstract,
 		Map<ActionKey,JvmOperation> operationsToImplement,
 		Map<ActionKey,JvmOperation> implementedOperations,
@@ -855,6 +867,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		var returnValueType = returnType
 		if (returnValueType == null) {
 			returnValueType = typeRef(Void::TYPE)
+		}
+		
+		var firedEventNames = <String>newArrayList
+		for(eventReference : firedEvents) {
+			firedEventNames += eventReference.identifier
 		}
 		
 		val actionKey = sarlSignatureProvider.createFunctionID(owner, name)
@@ -868,6 +885,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			)
 			body = operationBody
 		]
+		mainOp.annotations += annotationRef(typeof(FiredEvent), firedEventNames)
 		owner.members += mainOp
 		
 		val otherSignatures = sarlSignatureProvider.createSignature(
@@ -915,6 +933,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						otherSignatures.formalParameterKey.toString
 					)
 				]
+				additionalOp.annotations += annotationRef(typeof(FiredEvent), firedEventNames)
 				owner.members += additionalOp
 	
 				if (operationsToImplement!==null) {
