@@ -902,8 +902,8 @@ describe "English Auction with Holons"{
 								synchronized(this) {
 									if (!isAuctionOpened) {
 										if (!hasMemberAgent) {
-											killMe
 											waitTask.cancel
+											killMe
 										}
 									} else {
 										if (!hasBid) {

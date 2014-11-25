@@ -21,14 +21,29 @@
 
 package foo;
 
-import io.sarl.lang.core.Capacity;
+import io.sarl.lang.annotation.EarlyExit;
 
-/**
+/** Several functions defined for unit test purpose.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface MockCapacity extends Capacity {
-	//
+public class EarlyExitFunctionDefinitions {
+
+	/**
+	 */
+	@EarlyExit
+	public static void killFunction2() {
+		//
+	}
+
+	/**
+	 */
+	@EarlyExit
+	public void killFunction1() {
+		//
+	}
+	
 }

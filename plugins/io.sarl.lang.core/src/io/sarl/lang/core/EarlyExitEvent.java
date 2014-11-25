@@ -18,26 +18,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.sarl.lang.core;
 
-package foo;
-
-import java.util.UUID;
-
-import io.sarl.lang.core.Agent;
 
 /**
+ * Event describing an early exit from a block of code when it
+ * is fired by a SARL action.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class MockFinalAgent extends Agent {
+public abstract class EarlyExitEvent extends Event {
 
-	/**
-	 * @param parent
+	private static final long serialVersionUID = -5601857950368054559L;
+
+	/** Constructs an EarlyExitEvent without source.
+	 * The source must be set with {@link #setSource(Address)}
+	 * by the creator of the event, or by the emitting mechanism,
+	 * before sending the event on the event bus.
 	 */
-	public MockFinalAgent(UUID parent) {
-		super(parent);
+	public EarlyExitEvent() {
+		//
 	}
-	
+
+	/** Constructs an EarlyExitEvent with a source.
+	 * @param source - source of the event.
+	 */
+	public EarlyExitEvent(Address source) {
+		super(source);
+	}
+
 }

@@ -18,25 +18,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.sarl.lang.annotation;
 
-package foo;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import io.sarl.lang.core.Agent;
-import io.sarl.lang.core.Skill;
-
-/**
+/** Annotation for marking a function that causes an early exit
+ * in the calling function.
+ * <p>
+ * For example, the <code>return</code> keyword is a function that
+ * causes an early exit.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class MockFinalSkill extends Skill implements MockCapacity {
-
-	/**
-	 * @param owner
-	 */
-	public MockFinalSkill(Agent owner) {
-		super(owner);
-	}
-	
+@Target({ ElementType.METHOD })
+@Retention(RetentionPolicy.CLASS)
+public @interface EarlyExit {
+	//
 }

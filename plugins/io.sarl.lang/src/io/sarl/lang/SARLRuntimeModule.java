@@ -21,11 +21,17 @@
 package io.sarl.lang;
 
 import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
+import org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer;
+import org.eclipse.xtext.xbase.typesystem.util.ExtendedEarlyExitComputer;
+import org.eclipse.xtext.xbase.validation.EarlyExitValidator;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 
+import io.sarl.lang.controlflow.SARLEarlyExitComputer;
+import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.DefaultActionSignatureProvider;
 import io.sarl.lang.validation.SARLConfigurableIssueCodesProvider;
+import io.sarl.lang.validation.SARLEarlyExitValidator;
 import io.sarl.lang.validation.SARLFeatureNameValidator;
 
 /**
@@ -39,7 +45,8 @@ import io.sarl.lang.validation.SARLFeatureNameValidator;
  */
 public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 
-	/**
+	/** Replies the type of the provider of SARL action signatures.
+	 *
 	 * @return the type of provider for inferred action signatures.
 	 */
 	@SuppressWarnings("static-method")
@@ -47,15 +54,39 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 		return DefaultActionSignatureProvider.class;
 	}
 
+	/** Replies the type of the extended component that computes the early-exit flags.
+	 * @return the type of the early-exit computer.
+	 */
+	@SuppressWarnings("static-method")
+	public Class<? extends ExtendedEarlyExitComputer> bindExtendedEarlyExitComputer() {
+		return SARLExtendedEarlyExitComputer.class;
+	}
+
+	/** Replies the type of the extended component that computes the early-exit flags.
+	 * @return the type of the early-exit computer.
+	 */
+	@SuppressWarnings("static-method")
+	public Class<? extends IEarlyExitComputer> bindEarlyExitComputer() {
+		return SARLEarlyExitComputer.class;
+	}
+
+	/** Replies the type of the extended component that validates the early-exit flags.
+	 * @return the type of the early-exit validator.
+	 */
+	@SuppressWarnings("static-method")
+	public Class<? extends EarlyExitValidator> bindEarlyExitValidator() {
+		return SARLEarlyExitValidator.class;
+	}
+
 	@Override
 	public Class<? extends ConfigurableIssueCodesProvider> bindConfigurableIssueCodesProvider() {
 		assert (
 				super.bindConfigurableIssueCodesProvider().isAssignableFrom(
 						SARLConfigurableIssueCodesProvider.class))
-			: "The class SARLConfigurableIssueCodesProvider does not extend " //$NON-NLS-1$
-				+ "the class provided by default by Xbase"; //$NON-NLS-1$
-		//
-		return SARLConfigurableIssueCodesProvider.class;
+						: "The class SARLConfigurableIssueCodesProvider does not extend " //$NON-NLS-1$
+							+ "the class provided by default by Xbase"; //$NON-NLS-1$
+				//
+				return SARLConfigurableIssueCodesProvider.class;
 	}
 
 	@Override
@@ -63,10 +94,10 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 		assert (
 				super.bindFeatureNameValidator().isAssignableFrom(
 						SARLFeatureNameValidator.class))
-			: "The class SARLFeatureNameValidator does not extend " //$NON-NLS-1$
-				+ "the class provided by default by Xbase"; //$NON-NLS-1$
-		//
-		return SARLFeatureNameValidator.class;
+						: "The class SARLFeatureNameValidator does not extend " //$NON-NLS-1$
+							+ "the class provided by default by Xbase"; //$NON-NLS-1$
+				//
+				return SARLFeatureNameValidator.class;
 	}
 
 }

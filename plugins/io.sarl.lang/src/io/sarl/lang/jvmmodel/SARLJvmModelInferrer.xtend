@@ -25,6 +25,7 @@ import io.sarl.lang.SARLKeywords
 import io.sarl.lang.annotation.DefaultValue
 import io.sarl.lang.annotation.DefaultValueSource
 import io.sarl.lang.annotation.DefaultValueUse
+import io.sarl.lang.annotation.FiredEvent
 import io.sarl.lang.annotation.Generated
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Percept
@@ -64,6 +65,7 @@ import org.eclipse.xtext.common.types.JvmFormalParameter
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
+import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.xbase.XBooleanLiteral
@@ -78,8 +80,9 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking
 
 import static io.sarl.lang.util.ModelUtil.*
-import org.eclipse.xtext.common.types.JvmTypeReference
-import io.sarl.lang.annotation.FiredEvent
+import java.lang.annotation.Annotation
+import io.sarl.lang.annotation.EarlyExit
+import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -113,6 +116,8 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	@Inject	private CommonTypeComputationServices services
 	
 	@Inject private JvmTypeExtensions typeExtensions;
+	
+	@Inject private SARLExtendedEarlyExitComputer earlyExitComputer;
 
 	/**
 	 * The dispatch method {@code infer} is called for each instance of the
@@ -682,6 +687,16 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 								append(");")
 							]
 						]
+						// Copy the EarlyExit Annotation from the capacity
+						if (hasAnnotation(entry.value, typeof(EarlyExit))) {
+							op.annotations += annotationRef(typeof(EarlyExit))
+						}
+						// Copy the FiredEvent annotation from the capacity
+						var firedEvents = annotationClasses(entry.value, typeof(FiredEvent))
+						if (!firedEvents.empty) {
+							op.annotations += annotationClassRef(typeof(FiredEvent), firedEvents)
+						}
+						// Add the annotation dedicated to this particular method
 						op.annotations += annotationRef(typeof(Generated))
 						owner.members += op
 						// 
@@ -694,6 +709,16 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			}
 		}
 		return index
+	}
+	
+	private def annotationClassRef(Class<? extends Annotation> type, JvmTypeReference... values) {
+		var annot = annotationRef(type)
+		var annotationValue = services.typesFactory.createJvmTypeAnnotationValue
+		for (value : values) {
+			annotationValue.getValues() += value.cloneWithProxies
+		}
+		annot.getExplicitValues() += annotationValue
+		return annot
 	}
 
 	protected def JvmOperation generateBehaviorUnit(JvmGenericType owner, BehaviorUnit unit, int index) {
@@ -854,24 +879,19 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	}
 
 	protected def JvmOperation generateAction(
-		JvmGenericType owner,
-		String name,
-		ParameterizedFeature params,
-		JvmTypeReference returnType,
-		List<JvmParameterizedTypeReference> firedEvents,
-		XExpression operationBody, int index, boolean isAbstract,
-		Map<ActionKey,JvmOperation> operationsToImplement,
-		Map<ActionKey,JvmOperation> implementedOperations,
-		(ActionKey) => boolean inheritedOperation) {
+									JvmGenericType owner,
+									String name,
+									ParameterizedFeature params,
+									JvmTypeReference returnType,
+									List<JvmParameterizedTypeReference> firedEvents,
+									XExpression operationBody, int index, boolean isAbstract,
+									Map<ActionKey,JvmOperation> operationsToImplement,
+									Map<ActionKey,JvmOperation> implementedOperations,
+									(ActionKey) => boolean inheritedOperation) {
 			
 		var returnValueType = returnType
 		if (returnValueType == null) {
 			returnValueType = typeRef(Void::TYPE)
-		}
-		
-		var firedEventNames = <String>newArrayList
-		for(eventReference : firedEvents) {
-			firedEventNames += eventReference.identifier
 		}
 		
 		val actionKey = sarlSignatureProvider.createFunctionID(owner, name)
@@ -885,7 +905,20 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			)
 			body = operationBody
 		]
-		mainOp.annotations += annotationRef(typeof(FiredEvent), firedEventNames)
+		
+		//TODO: Generalize the detection of the EarlyExit
+		var isEarlyExit = false
+		var eventIterator = firedEvents.iterator
+		while (!isEarlyExit && eventIterator.hasNext) {
+			if (earlyExitComputer.isEarlyExitEvent(eventIterator.next)) {
+				mainOp.annotations += annotationRef(typeof(EarlyExit))
+				isEarlyExit = true
+			}
+		}
+		
+		if (!firedEvents.empty) {
+			mainOp.annotations += annotationClassRef(typeof(FiredEvent), firedEvents)
+		}
 		owner.members += mainOp
 		
 		val otherSignatures = sarlSignatureProvider.createSignature(
@@ -933,7 +966,13 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						otherSignatures.formalParameterKey.toString
 					)
 				]
-				additionalOp.annotations += annotationRef(typeof(FiredEvent), firedEventNames)
+				//TODO: Generalize the detection of the EarlyExit
+				if (isEarlyExit) {
+					mainOp.annotations += annotationRef(typeof(EarlyExit))
+				}
+				if (!firedEvents.empty) {
+					additionalOp.annotations += annotationClassRef(typeof(FiredEvent), firedEvents)
+				}
 				owner.members += additionalOp
 	
 				if (operationsToImplement!==null) {

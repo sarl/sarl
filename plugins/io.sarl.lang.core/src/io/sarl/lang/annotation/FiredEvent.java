@@ -20,6 +20,8 @@
  */
 package io.sarl.lang.annotation;
 
+import io.sarl.lang.core.Event;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -41,6 +43,6 @@ public @interface FiredEvent {
 
 	/** List of the events that are fired by the SARL action.
 	 */
-	String[] value() default { };
+	Class<? extends Event>[] value() default { };
 
 }

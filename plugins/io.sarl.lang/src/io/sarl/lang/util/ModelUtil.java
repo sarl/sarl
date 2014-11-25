@@ -25,6 +25,8 @@ import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.SignatureKey;
 
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
@@ -43,6 +45,7 @@ import org.eclipse.xtext.common.types.JvmMember;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
@@ -467,6 +470,58 @@ public final class ModelUtil {
 			}
 		}
 		return null;
+	}
+
+	/** Extract the string values of the given annotation, if they exist.
+	 *
+	 * @param op - the annoted element.
+	 * @param annotationType - the type of the annotation to consider
+	 * @return the values of the annotation, never <code>null</code>.
+	 */
+	public static List<String> annotationStrings(JvmAnnotationTarget op, Class<?> annotationType) {
+		List<String> values = new ArrayList<>();
+		String n = annotationType.getName();
+		for (JvmAnnotationReference aref : op.getAnnotations()) {
+			JvmAnnotationType an = aref.getAnnotation();
+			if (n != null && n.equals(an.getQualifiedName())) {
+				for (JvmAnnotationValue value : aref.getValues()) {
+					if (value instanceof JvmStringAnnotationValue) {
+						for (String sValue : ((JvmStringAnnotationValue) value).getValues()) {
+							if (sValue != null) {
+								values.add(sValue);
+							}
+						}
+					}
+				}
+			}
+		}
+		return values;
+	}
+
+	/** Extract the type values of the given annotation, if they exist.
+	 *
+	 * @param op - the annoted element.
+	 * @param annotationType - the type of the annotation to consider
+	 * @return the values of the annotation, never <code>null</code>.
+	 */
+	public static List<JvmTypeReference> annotationClasses(JvmAnnotationTarget op, Class<?> annotationType) {
+		List<JvmTypeReference> values = new ArrayList<>();
+		String n = annotationType.getName();
+		for (JvmAnnotationReference aref : op.getAnnotations()) {
+			JvmAnnotationType an = aref.getAnnotation();
+			if (n != null && n.equals(an.getQualifiedName())) {
+				for (JvmAnnotationValue value : aref.getValues()) {
+					if (value instanceof JvmTypeAnnotationValue) {
+						for (JvmTypeReference sValue : ((JvmTypeAnnotationValue) value).getValues()) {
+							if (sValue != null) {
+								values.add(sValue);
+							}
+						}
+					}
+				}
+			}
+		}
+		return values;
 	}
 
 	/** Replies if the given target is annotated.

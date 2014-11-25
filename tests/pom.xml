@@ -13,6 +13,7 @@
 	<name>Tests Parent</name>
 
 	<modules>
+		<module>io.sarl.tests.testdata</module>
 		<module>io.sarl.lang.tests</module>
 		<module>io.sarl.lang.core.tests</module>
 		<module>io.sarl.lang.ui.tests</module>
@@ -68,6 +69,12 @@
 			<dependency>
 				<groupId>io.sarl</groupId>
 				<artifactId>io.sarl.util</artifactId>
+				<version>${project.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.tests</artifactId>
 				<version>${project.version}</version>
 				<scope>test</scope>
 			</dependency>
