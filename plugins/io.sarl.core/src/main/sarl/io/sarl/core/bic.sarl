@@ -231,11 +231,47 @@ capacity Schedules {
 
 	/**
 	 * Create an anonymous task and schedules a periodic execution of its behavior.
+	 * <p>
+	 * If the duration of the task is greater to the given period length, then
+	 * multiple task's instances will be run in parallel.
+	 * For example, consider the following code:
+	 * <pre><code>
+	 * every(500) [ sleep(2000) ]
+	 * </code></pre>
+	 * At a given time, 4 instances (A, B, C, D) of the task may be run in parallel:
+	 * <pre><code>
+	 * t=0   0500   1000   1500   2000   2500   3000   3500   4000   4500
+	 *   |    |      |      |      |      |      |      |      |      |
+	 *   [-A-----------------------]
+	 *        [-B-------------------------]
+	 *               [-C-------------------------]
+	 *                      [-D-------------------------]
+	 *                             [-E-------------------------]
+	 *                                    [-F-------------------------]
+	 * </code></pre>
 	 */
 	def every(period : long, procedure : (Agent) => void) : AgentTask
 
 	/**
 	 * Schedule a periodic execution of the given task.
+	 * <p>
+	 * If the duration of the task is greater to the given period length, then
+	 * multiple task's instances will be run in parallel.
+	 * For example, consider the following code:
+	 * <pre><code>
+	 * every(500) [ sleep(2000) ]
+	 * </code></pre>
+	 * At a given time, 4 instances (A, B, C, D) of the task may be run in parallel:
+	 * <pre><code>
+	 * t=0   0500   1000   1500   2000   2500   3000   3500   4000   4500
+	 *   |    |      |      |      |      |      |      |      |      |
+	 *   [-A-----------------------]
+	 *        [-B-------------------------]
+	 *               [-C-------------------------]
+	 *                      [-D-------------------------]
+	 *                             [-E-------------------------]
+	 *                                    [-F-------------------------]
+	 * </code></pre>
 	 */
 	def every(task : AgentTask, period : long,procedure : (Agent) => void ) : AgentTask
 

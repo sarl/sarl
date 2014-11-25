@@ -854,6 +854,26 @@ describe "Built-in Capacity Reference" {
 			 * accepts an agent task as parameter. This task will attach to the given
 			 * procedure. The replied task is the same as the task given as parameter.
 			 * 
+			 * If the duration of the task is greater to the given period length, then
+			 * multiple task's instances will be run in parallel.
+			 * For example, consider the following code:
+			 *
+			 *     every(500) [ sleep(2000) ]
+			 *
+			 *
+			 * At a given time, 4 instances (A, B, C, D for example) of the task may be
+			 * run in parallel:
+			 * 
+			 * | t= | 0   | 500 | 1000 | 1500 | 2000 | 2500 | 3000 | 3500 | 4000 | 4500 |
+			 * |:---|:---:|:---:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|
+			 * | A  |  X  |  X  |  X   |  X   |      |      |      |      |      |      |
+			 * | B  |     |  X  |  X   |  X   |  X   |      |      |      |      |      |
+			 * | C  |     |     |  X   |  X   |  X   |  X   |      |      |      |      |
+			 * | D  |     |     |      |  X   |  X   |  X   |  X   |      |      |      |
+			 * | E  |     |     |      |      |  X   |  X   |  X   |  X   |      |      |
+			 * | F  |     |     |      |      |      |  X   |  X   |  X   |  X   |      |
+			 * | G  |     |     |      |      |      |      |  X   |  X   |  X   |  X   |
+			 * 
 			 * @filter(.*) 
 			 */
 			fact "Launching a Periodic Task"{
