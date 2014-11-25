@@ -861,18 +861,22 @@ describe "Built-in Capacity Reference" {
 			 *     every(500) [ sleep(2000) ]
 			 *
 			 *
-			 * At a given time, 4 instances (A, B, C, D for example) of the task may be
-			 * run in parallel:
-			 * 
-			 * | t= | 0   | 500 | 1000 | 1500 | 2000 | 2500 | 3000 | 3500 | 4000 | 4500 |
-			 * |:---|:---:|:---:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|
-			 * | A  |  X  |  X  |  X   |  X   |      |      |      |      |      |      |
-			 * | B  |     |  X  |  X   |  X   |  X   |      |      |      |      |      |
-			 * | C  |     |     |  X   |  X   |  X   |  X   |      |      |      |      |
-			 * | D  |     |     |      |  X   |  X   |  X   |  X   |      |      |      |
-			 * | E  |     |     |      |      |  X   |  X   |  X   |  X   |      |      |
-			 * | F  |     |     |      |      |      |  X   |  X   |  X   |  X   |      |
-			 * | G  |     |     |      |      |      |      |  X   |  X   |  X   |  X   |
+			 * At a given time, four instances of the task are
+			 * run in parallel (A, B, C, D for example):
+			 *
+			 * <table>
+			 * <thead>
+			 * <tr><th>t=</th><th>0</th><th>500</th><th>1000</th><th>1500</th><th>2000</th><th>2500</th><th>3000</th><th>3500</th><th>4000</th></tr>
+			 * </thead>
+			 * <tbody>
+			 * <tr><td>A</td><td>X</td><td>X</td><td>X</td><td>X</td><td></td><td></td><td></td><td></td><td></td></tr>
+			 * <tr><td>B</td><td></td><td>X</td><td>X</td><td>X</td><td>X</td><td></td><td></td><td></td><td></td></tr>
+			 * <tr><td>C</td><td></td><td></td><td>X</td><td>X</td><td>X</td><td>X</td><td></td><td></td><td></td></tr>
+			 * <tr><td>D</td><td></td><td></td><td></td><td>X</td><td>X</td><td>X</td><td>X</td><td></td><td></td></tr>
+			 * <tr><td>E</td><td></td><td></td><td></td><td></td><td>X</td><td>X</td><td>X</td><td>X</td><td></td></tr>
+			 * <tr><td>F</td><td></td><td></td><td></td><td></td><td></td><td>X</td><td>X</td><td>X</td><td>X</td></tr>
+			 * </tbody>
+			 * </table>
 			 * 
 			 * @filter(.*) 
 			 */
