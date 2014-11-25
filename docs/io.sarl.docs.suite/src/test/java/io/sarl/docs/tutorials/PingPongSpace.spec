@@ -167,14 +167,11 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 			 * 
 			 * The sub-space is located in the default context.
 			 * For creating or joining it, we must use the
-			 * `getOrCreateSpace` function. This function
-			 * takes the type of the space specification that
-			 * permits to create an instance of the desired space.
-			 * The second argument is the identifier of the
-			 * new space.
-			 * The `getOrCreateSpace` function creates a new
-			 * space if there is no existing space with the given
-			 * identifier, or it replies the existing space.
+			 * `getOrCreateSpaceWithSpec` function.
+			 * This function searches for a space, which was
+			 * created with the given specification. If there
+			 * is no space, the space identifier is used
+			 * for creating a new space.
 			 * 
 			 * After retrieving the instance of the space,
 			 * it is mandatory to register the agent for
@@ -195,7 +192,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					var space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpace(
+						space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
 						space.register(asEventListener())
@@ -234,7 +231,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					var space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpace(
+						space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
 						space.register(asEventListener())
@@ -312,7 +309,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					var space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpace(
+						space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
 						space.register(asEventListener())
@@ -383,7 +380,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					var space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpace(
+						space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
 						space.register(asEventListener())
@@ -444,7 +441,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					var space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpace(
+						space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
 						space.register(asEventListener())
@@ -478,7 +475,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					var space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpace(
+						space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
 						space.register(asEventListener())
@@ -527,7 +524,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					var space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpace(
+						space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
 						space.register(asEventListener())
@@ -587,7 +584,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					var space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpace(
+						space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
 						space.register(asEventListener())
@@ -673,7 +670,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					var space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpace(
+						space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
 						space.register(asEventListener())
