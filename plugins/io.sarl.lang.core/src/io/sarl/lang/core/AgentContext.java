@@ -56,6 +56,8 @@ public interface AgentContext {
 
 	/** Create an instance of space following the given specification.
 	 * This function always creates a new instance of space.
+	 * It means that is a space with the given identifier already
+	 * exists, this function does nothing and replies <code>null</code>.
 	 * If you want to find an existing space prior to the creation of
 	 * a new one, you should use {@link #getOrCreateSpace(Class, UUID, Object...)}.
 	 *
@@ -63,7 +65,7 @@ public interface AgentContext {
 	 * @param spec - specification of the space to create.
 	 * @param spaceUUID - identifier of the new space.
 	 * @param creationParams - parameters to pass to the space constructor.
-	 * @return the new space.
+	 * @return the new space, or <code>null</code> if the space already exists.
 	 * @see #getOrCreateSpace(Class, UUID, Object...)
 	 * @see #getSpace(UUID)
 	 */
@@ -80,14 +82,14 @@ public interface AgentContext {
 
 	/** Retreive or create an instance of space following the given specification.
 	 * This function tries to find a space that fits the given specification.
-	 * If none wis found, this function create a new space in the same way as
+	 * If none was found, this function create a new space in the same way as
 	 * {@link #createSpace(Class, UUID, Object...)}.
 	 *
 	 * @param <S> - type of the replied space.
 	 * @param spec - specification of the space to create.
 	 * @param spaceUUID - identifier of the new space.
 	 * @param creationParams - parameters to pass to the space constructor.
-	 * @return the new space.
+	 * @return the new space, never <code>null</code>.
 	 * @see #createSpace(Class, UUID, Object...)
 	 * @see #getSpace(UUID)
 	 */
