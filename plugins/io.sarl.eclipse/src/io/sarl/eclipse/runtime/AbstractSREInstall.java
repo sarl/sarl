@@ -55,6 +55,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 	private String minimalSarlVersion;
 	private String maximalSarlVersion;
 	private String mainClass;
+	private boolean isStandalone;
 	private LibraryLocation[] libraryLocations;
 	private Map<String, String> attributeMap;
 	private boolean dirty = true;
@@ -155,15 +156,20 @@ public abstract class AbstractSREInstall implements ISREInstall {
 		}
 		IStatus s = null;
 		try {
-			s = getMainClassValidity();
+			if (!isStandalone()) {
+				return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_STANDALONE_SRE, Messages.AbstractSREInstall_5);
+			}
+			String mainClass = getMainClass();
+			if (Strings.isNullOrEmpty(mainClass)) {
+				return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_MAIN_CLASS, Messages.AbstractSREInstall_2);
+			}
+			String name = getName();
+			if (Strings.isNullOrEmpty(name)) {
+				return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_NAME, Messages.AbstractSREInstall_3);
+			}
+			s = getLibraryLocationValidity();
 			if (s == null) {
-				s = getNameValidity();
-				if (s == null) {
-					s = getLibraryLocationValidity();
-					if (s == null) {
-						s = getSARLVersionValidity();
-					}
-				}
+				s = getSARLVersionValidity();
 			}
 		} catch (Throwable e) {
 			//
@@ -172,22 +178,6 @@ public abstract class AbstractSREInstall implements ISREInstall {
 			s = SARLEclipsePlugin.createOkStatus();
 		}
 		return s;
-	}
-
-	private IStatus getMainClassValidity() {
-		String mainClass = getMainClass();
-		if (Strings.isNullOrEmpty(mainClass)) {
-			return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_MAIN_CLASS, Messages.AbstractSREInstall_2);
-		}
-		return null;
-	}
-
-	private IStatus getNameValidity() {
-		String name = getName();
-		if (Strings.isNullOrEmpty(name)) {
-			return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_NAME, Messages.AbstractSREInstall_3);
-		}
-		return null;
 	}
 
 	private IStatus getLibraryLocationValidity() {
@@ -209,16 +199,16 @@ public abstract class AbstractSREInstall implements ISREInstall {
 				return SARLEclipsePlugin.createStatus(IStatus.ERROR,
 						CODE_SARL_VERSION,
 						MessageFormat.format(
-							Messages.AbstractSREInstall_0,
-							sarlVersion.toString(),
-							minVersion.toString()));
+								Messages.AbstractSREInstall_0,
+								sarlVersion.toString(),
+								minVersion.toString()));
 			} else if (cmp > 0) {
 				return SARLEclipsePlugin.createStatus(IStatus.ERROR,
 						CODE_SARL_VERSION,
 						MessageFormat.format(
-							Messages.AbstractSREInstall_1,
-							sarlVersion.toString(),
-							maxVersion.toString()));
+								Messages.AbstractSREInstall_1,
+								sarlVersion.toString(),
+								maxVersion.toString()));
 			}
 		}
 		return null;
@@ -435,6 +425,35 @@ public abstract class AbstractSREInstall implements ISREInstall {
 				SARLRuntime.fireSREChanged(event);
 			}
 		}
+	}
+
+	/** {@inheritDoc}
+	 */
+	@Override
+	public void setStandalone(boolean isStandalone) {
+		if (isDirty()) {
+			setDirty(false);
+			resolveDirtyFields(true);
+		}
+		if (isStandalone != this.isStandalone) {
+			PropertyChangeEvent event = new PropertyChangeEvent(
+					this, ISREInstallChangedListener.PROPERTY_STANDALONE_SRE, this.isStandalone, isStandalone);
+			this.isStandalone = isStandalone;
+			if (this.notify) {
+				SARLRuntime.fireSREChanged(event);
+			}
+		}
+	}
+
+	/** {@inheritDoc}
+	 */
+	@Override
+	public boolean isStandalone() {
+		if (isDirty()) {
+			setDirty(false);
+			resolveDirtyFields(true);
+		}
+		return this.isStandalone;
 	}
 
 }

@@ -38,10 +38,13 @@ public class Messages extends NLS {
 	public static String AbstractSREInstall_2;
 	public static String AbstractSREInstall_3;
 	public static String AbstractSREInstall_4;
+	public static String AbstractSREInstall_5;
 	public static String StandardSREInstall_0;
 	public static String StandardSREInstall_1;
 	public static String StandardSREInstall_2;
 	public static String StandardSREInstall_3;
+	public static String StandardSREInstall_4;
+	public static String StandardSREInstall_5;
 	public static String SREConfigurationBlock_0;
 	public static String SREConfigurationBlock_1;
 	public static String SREConfigurationBlock_2;

@@ -69,6 +69,10 @@ public interface ISREInstall extends Cloneable {
 	 */
 	int CODE_SOURCE = 6;
 
+	/** Error code related to the standalone SRE.
+	 */
+	int CODE_STANDALONE_SRE = 7;
+
 	/** Clone this SRE.
 	 * The clone has the same Id as the cloned object.
 	 *
@@ -275,5 +279,23 @@ public interface ISREInstall extends Cloneable {
 	 * @return if this SRE should fire property change notifications.
 	 */
 	boolean getNotify();
+
+	/** Replies if this SRE is a standalone SRE.
+	 * A standalone SRE contains all the Java dependencies needed for
+	 * running the SRE.
+	 *
+	 * @return <code>true</code> if the SRE Install corresponds to a
+	 * standalone SRE; otherwise <code>false</code>.
+	 */
+	boolean isStandalone();
+
+	/** Set if this SRE is a standalone SRE.
+	 * A standalone SRE contains all the Java dependencies needed for
+	 * running the SRE.
+	 *
+	 * @param isStandalone - flag that is <code>true</code> if the SRE Install corresponds to a
+	 * standalone SRE; otherwise <code>false</code>.
+	 */
+	void setStandalone(boolean isStandalone);
 
 }

@@ -47,6 +47,8 @@
 	<suppress checks="MethodLength" files="SREsPreferencePage.java"/>
 	<suppress checks="MethodCount" files="SREsPreferencePage.java"/>
 
+	<suppress checks="NPathComplexity" files="AbstractSREInstall.java"/>
+
 	<suppress checks="CyclomaticComplexity" files="StandardSREInstall.java"/>
 	<suppress checks="NPathComplexity" files="StandardSREInstall.java"/>
 	<suppress checks="MethodLength" files="StandardSREInstall.java"/>

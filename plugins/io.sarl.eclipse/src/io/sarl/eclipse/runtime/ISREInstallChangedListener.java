@@ -90,6 +90,12 @@ public interface ISREInstallChangedListener extends EventListener {
 			+ ".PROPERTY_PROGRAM_ARGUMENTS"; //$NON-NLS-1$
 
 	/**
+	 * Property constant indicating if a SRE is standalone.
+	 */
+	String PROPERTY_STANDALONE_SRE = SARLEclipsePlugin.PLUGIN_ID
+			+ ".STANDALONE_SRE"; //$NON-NLS-1$
+
+	/**
 	 * Notification that the workspace default SRE install
 	 * has changed.
 	 *
