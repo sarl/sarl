@@ -26,14 +26,22 @@ import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
 import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.eclipse.runtime.SREConstants;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.ref.SoftReference;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -59,6 +67,7 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.xtext.xbase.lib.Pair;
+import org.osgi.framework.Version;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
@@ -73,10 +82,18 @@ import com.google.common.base.Strings;
  */
 public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigurationDelegate {
 
+	private SoftReference<IRuntimeClasspathEntry[]> unresolvedClasspathEntries;
+	private SoftReference<String[]> classpathEntries;
+
 	/**
 	 */
 	public SARLLaunchConfigurationDelegate() {
 		//
+	}
+
+	private synchronized void clearBuffers() {
+		this.unresolvedClasspathEntries = null;
+		this.classpathEntries = null;
 	}
 
 	@Override
@@ -89,83 +106,32 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			progressMonitor = monitor;
 		}
 
-		progressMonitor.beginTask(
-				MessageFormat.format(Messages.SARLLaunchConfigurationDelegate_1,
-				configuration.getName()),
-				3);
-		// check for cancellation
-		if (progressMonitor.isCanceled()) {
-			return;
-		}
 		try {
-			progressMonitor.subTask(
-					LaunchingMessages.JavaLocalApplicationLaunchConfigurationDelegate_Verifying_launch_attributes____1);
+			LaunchProcess process = new LaunchProcess(configuration, mode, launch);
 
-			String mainTypeName = verifyMainTypeName(configuration);
-			String agentName = verifyAgentName(configuration);
-			IVMRunner runner = getVMRunner(configuration, mode);
+			// Preparation
+			progressMonitor.beginTask(
+					MessageFormat.format(Messages.SARLLaunchConfigurationDelegate_1,
+							configuration.getName()),
+							process.getStepNumber());
 
-			File workingDir = verifyWorkingDirectory(configuration);
-			String workingDirName = null;
-			if (workingDir != null) {
-				workingDirName = workingDir.getAbsolutePath();
+			while (process.prepare(progressMonitor)) {
+				progressMonitor.worked(1);
+				if (progressMonitor.isCanceled()) {
+					return;
+				}
 			}
 
-			// Environment variables
-			String[] envp = getEnvironment(configuration);
-
-			// Program & VM arguments
-			String pgmArgs = getProgramArguments(configuration);
-			if (!Strings.isNullOrEmpty(pgmArgs)) {
-				pgmArgs = agentName + " " + pgmArgs; //$NON-NLS-1$
-			} else {
-				pgmArgs = agentName;
-			}
-			String vmArgs = getVMArguments(configuration);
-			ExecutionArguments execArgs = new ExecutionArguments(vmArgs, pgmArgs);
-
-			// VM-specific attributes
-			Map<String, Object> vmAttributesMap = getVMSpecificAttributesMap(configuration);
-
-			// Classpath
-			String[] classpath = getClasspath(configuration);
-
-			// Create VM config
-			VMRunnerConfiguration runConfig = new VMRunnerConfiguration(mainTypeName, classpath);
-			runConfig.setProgramArguments(execArgs.getProgramArgumentsArray());
-			runConfig.setEnvironment(envp);
-			runConfig.setVMArguments(execArgs.getVMArgumentsArray());
-			runConfig.setWorkingDirectory(workingDirName);
-			runConfig.setVMSpecificAttributesMap(vmAttributesMap);
-
-			// Bootpath
-			runConfig.setBootClassPath(getBootpath(configuration));
-
-			// check for cancellation
-			if (progressMonitor.isCanceled()) {
-				return;
-			}
-
-			// stop in main
-			prepareStopInMain(configuration);
-
-			// done the verification phase
-			progressMonitor.worked(1);
-
-			progressMonitor.subTask(
-					LaunchingMessages.JavaLocalApplicationLaunchConfigurationDelegate_Creating_source_locator____2);
-			// set the default source locator if required
-			setDefaultSourceLocator(launch, configuration);
-			progressMonitor.worked(1);
-
-			// Launch the configuration - 1 unit of work
-			runner.run(runConfig, launch, monitor);
-
-			// check for cancellation
-			if (progressMonitor.isCanceled()) {
-				return;
+			// Launching
+			while (process.launch(progressMonitor)) {
+				progressMonitor.worked(1);
+				if (progressMonitor.isCanceled()) {
+					return;
+				}
 			}
 		} finally {
+			// Clear cached entries
+			clearBuffers();
 			progressMonitor.done();
 		}
 	}
@@ -217,28 +183,61 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 */
 	@Override
 	public String[] getClasspath(ILaunchConfiguration configuration) throws CoreException {
-		// Specific to SARL launch configuration
-		IRuntimeClasspathEntry[] entries = computeUnresolvedSARLRuntimeClasspath(configuration);
+		String[] userEntries = null;
+		synchronized (this) {
+			if (this.classpathEntries != null) {
+				userEntries = this.classpathEntries.get();
+			}
+		}
+		if (userEntries != null) {
+			return userEntries;
+		}
 
+		IRuntimeClasspathEntry[] entries = computeUnresolvedSARLRuntimeClasspath(configuration);
 		entries = JavaRuntime.resolveRuntimeClasspath(entries, configuration);
-		List<String> userEntries = new ArrayList<>(entries.length);
-		Set<String> set = new HashSet<>(entries.length);
+
+		boolean isMavenProject = getJavaProject(configuration).getProject().hasNature(SARLConfig.MAVEN_NATURE_ID);
+		boolean needSREEntry = isMavenProject;
+
+		// Store in a list for preserving the order of the entries.
+		List<String> userEntryList = new ArrayList<>(entries.length + 1);
+		Set<String> set = new TreeSet<>();
 		for (int i = 0; i < entries.length; i++) {
 			if (entries[i].getClasspathProperty() == IRuntimeClasspathEntry.USER_CLASSES) {
 				String location = entries[i].getLocation();
-				if (location != null) {
-					if (!set.contains(location)) {
-						userEntries.add(location);
-						set.add(location);
+				if (location != null && !set.contains(location)) {
+					userEntryList.add(location);
+					set.add(location);
+					if (needSREEntry) {
+						needSREEntry = isNotSREEntry(entries[i]);
 					}
 				}
 			}
 		}
-		return userEntries.toArray(new String[userEntries.size()]);
+
+		if (needSREEntry) {
+			int insertIndex = 0;
+			for (IRuntimeClasspathEntry entry : getSREClasspathEntries(configuration)) {
+				if (entry.getClasspathProperty() == IRuntimeClasspathEntry.USER_CLASSES) {
+					String location = entry.getLocation();
+					if (location != null && !set.contains(location)) {
+						userEntryList.add(insertIndex, location);
+						set.add(location);
+						++insertIndex;
+					}
+				}
+			}
+		}
+
+		userEntries = userEntryList.toArray(new String[userEntryList.size()]);
+		synchronized (this) {
+			this.classpathEntries = new SoftReference<>(userEntries);
+		}
+		return userEntries;
 	}
 
 	private static Pair<IRuntimeClasspathEntry, Integer>
-			getJreEntry(IRuntimeClasspathEntry[] entries,
+	getJreEntry(IRuntimeClasspathEntry[] entries,
 			List<IRuntimeClasspathEntry> bootEntriesPrepend) {
 		int index = 0;
 		IRuntimeClasspathEntry jreEntry = null;
@@ -329,7 +328,6 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	public String[][] getBootpathExt(ILaunchConfiguration configuration)
 			throws CoreException {
 		String[][] bootpathInfo = new String[3][];
-		// Specific to SARL launch configuration
 		IRuntimeClasspathEntry[] entries = computeUnresolvedSARLRuntimeClasspath(configuration);
 		List<IRuntimeClasspathEntry> bootEntriesPrepend = new ArrayList<>();
 		IRuntimeClasspathEntry jreEntry;
@@ -375,7 +373,6 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			// default
 			return null;
 		}
-		// Specific to SARL launch configuration
 		IRuntimeClasspathEntry[] entries = computeUnresolvedSARLRuntimeClasspath(configuration);
 		entries = JavaRuntime.resolveRuntimeClasspath(entries, configuration);
 		List<String> bootEntries = new ArrayList<>(entries.length);
@@ -439,15 +436,13 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		return null;
 	}
 
-	/** Replies the class path for the SARL application.
+	/** Replies the SRE installation to be used for the given configuration.
 	 *
-	 * @param configuration - the configuration that provides the classpath.
-	 * @return the filtered entries.
-	 * @throws CoreException if impossible to get the classpath.
+	 * @param configuration - the configuration to check.
+	 * @return the SRE install.
+	 * @throws CoreException if impossible to get the SRE.
 	 */
-	private IRuntimeClasspathEntry[] computeUnresolvedSARLRuntimeClasspath(
-			ILaunchConfiguration configuration) throws CoreException {
-		// Retrieve the SARL runtime environment jar file.
+	private ISREInstall getSREInstallFor(ILaunchConfiguration configuration) throws CoreException {
 		String useSystemSRE = configuration.getAttribute(
 				SARLConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
 				Boolean.TRUE.toString());
@@ -477,8 +472,20 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		ISREInstall sre = SARLRuntime.getSREFromId(runtime);
 		verifySREValidity(sre, runtime);
 
+		return sre;
+	}
+
+	/** Replies the classpath entries associated to the SRE of the given configuration.
+	 *
+	 * @param configuration - the configuration to read.
+	 * @return the classpath entries for the SRE associated to the configuration.
+	 * @throws CoreException if impossible to determine the classpath entries.
+	 */
+	private List<IRuntimeClasspathEntry> getSREClasspathEntries(
+			ILaunchConfiguration configuration) throws CoreException {
+		ISREInstall sre = getSREInstallFor(configuration);
 		LibraryLocation[] locations = sre.getLibraryLocations();
-		List<IRuntimeClasspathEntry> cpEntries = new ArrayList<>(locations.length);
+		List<IRuntimeClasspathEntry> sreClasspathEntries = new ArrayList<>(locations.length);
 		for (int i = 0; i < locations.length; ++i) {
 			LibraryLocation location = locations[i];
 			IClasspathEntry cpEntry = JavaCore.newLibraryEntry(
@@ -488,21 +495,107 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			IRuntimeClasspathEntry rtcpEntry = new RuntimeClasspathEntry(cpEntry);
 			// No more a bootstrap library for enabling it to be in the classpath (not the JVM bootstrap).
 			rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
-			cpEntries.add(rtcpEntry);
+			sreClasspathEntries.add(rtcpEntry);
 		}
+		return sreClasspathEntries;
+	}
 
+	private static boolean isNotSREEntryInDirectory(File file) throws IOException {
+		File manifestFile = new File(file, "META-INF"); //$NON-NLS-1$
+		manifestFile = new File(manifestFile, "MANIFEST.MF"); //$NON-NLS-1$
+		if (manifestFile.canRead()) {
+			try (InputStream manifestStream = new FileInputStream(manifestFile)) {
+				Manifest manifest = new Manifest(manifestStream);
+				Attributes sarlSection = manifest.getAttributes(SREConstants.MANIFEST_SECTION_SRE);
+				if (sarlSection == null) {
+					return true;
+				}
+				String sarlVersion = sarlSection.getValue(SREConstants.MANIFEST_SARL_SPEC_VERSION);
+				if (sarlVersion == null || sarlVersion.isEmpty()) {
+					return true;
+				}
+				Version sarlVer = Version.parseVersion(sarlVersion);
+				return sarlVer == null;
+			}
+		}
+		return true;
+	}
+
+	private static boolean isNotSREEntryInJar(File file) throws IOException  {
+		try (JarFile jFile = new JarFile(file)) {
+			Manifest manifest = jFile.getManifest();
+			Attributes sarlSection = manifest.getAttributes(SREConstants.MANIFEST_SECTION_SRE);
+			if (sarlSection == null) {
+				return true;
+			}
+			String sarlVersion = sarlSection.getValue(SREConstants.MANIFEST_SARL_SPEC_VERSION);
+			if (sarlVersion == null || sarlVersion.isEmpty()) {
+				return true;
+			}
+			Version sarlVer = Version.parseVersion(sarlVersion);
+			return sarlVer == null;
+		}
+	}
+
+	/** Replies if the given classpath entry is a SRE.
+	 *
+	 * @param entry - the entry.
+	 * @return <code>true</code> if the entry points to a SRE;
+	 * <code>false</code> otherwise.
+	 */
+	private static boolean isNotSREEntry(IRuntimeClasspathEntry entry) {
+		try {
+			File file = new File(entry.getLocation());
+			if (file.isDirectory()) {
+				return isNotSREEntryInDirectory(file);
+			} else if (file.canRead()) {
+				return isNotSREEntryInJar(file);
+			}
+		} catch (Throwable e) {
+			SARLEclipsePlugin.log(e);
+		}
+		return true;
+	}
+
+	/** Replies the class path for the SARL application.
+	 *
+	 * @param configuration - the configuration that provides the classpath.
+	 * @return the filtered entries.
+	 * @throws CoreException if impossible to get the classpath.
+	 */
+	private IRuntimeClasspathEntry[] computeUnresolvedSARLRuntimeClasspath(ILaunchConfiguration configuration)
+			throws CoreException {
+		// Get the buffered entries
+		IRuntimeClasspathEntry[] entries = null;
+		synchronized (this) {
+			if (this.unresolvedClasspathEntries != null) {
+				entries = this.unresolvedClasspathEntries.get();
+			}
+		}
+		if (entries != null) {
+			return entries;
+		}
 		// Get the classpath from the configuration.
-		IRuntimeClasspathEntry[] entries = JavaRuntime.computeUnresolvedRuntimeClasspath(configuration);
-		// Filtering the entries by replacing the "SARL Libraries" with the SARL runtime environment.
+		entries = JavaRuntime.computeUnresolvedRuntimeClasspath(configuration);
+		//
 		List<IRuntimeClasspathEntry> filteredEntries = new ArrayList<>();
+		List<IRuntimeClasspathEntry> sreClasspathEntries = null;
+		// Filtering the entries by replacing the "SARL Libraries" with the SARL runtime environment.
 		for (IRuntimeClasspathEntry entry : entries) {
 			if (entry.getPath().equals(SARLClasspathContainerInitializer.CONTAINER_ID)) {
-				filteredEntries.addAll(cpEntries);
+				if (sreClasspathEntries == null) {
+					sreClasspathEntries = getSREClasspathEntries(configuration);
+				}
+				filteredEntries.addAll(sreClasspathEntries);
 			} else {
 				filteredEntries.add(entry);
 			}
 		}
 		entries = filteredEntries.toArray(new IRuntimeClasspathEntry[filteredEntries.size()]);
+		//
+		synchronized (this) {
+			this.unresolvedClasspathEntries = new SoftReference<>(entries);
+		}
 		return entries;
 	}
 
@@ -516,6 +609,223 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 					Messages.RuntimeEnvironmentTab_5,
 					sre.getName())));
 		}
+	}
+
+	/** Definition of the launching process splitted in separated steps for
+	 * making easier the cancellation.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private class LaunchProcess {
+
+		private final ILaunchConfiguration configuration;
+		private final String mode;
+		private final ILaunch launch;
+
+		private PreparationProcessState preparationState = PreparationProcessState.STEP_0;
+		private RunProcessState runState = RunProcessState.STEP_0;
+
+		private String mainTypeName;
+		private String agentName;
+		private IVMRunner runner;
+		private String workingDirName;
+		private String[] envp;
+		private ExecutionArguments execArgs;
+		private Map<String, Object> vmAttributesMap;
+		private String[] classpath;
+		private VMRunnerConfiguration runConfig;
+
+		/**
+		 * @param configuration - the launch configuration.
+		 * @param mode - the launching mode.
+		 * @param launch - the launching
+		 */
+		public LaunchProcess(ILaunchConfiguration configuration, String mode, ILaunch launch) {
+			this.configuration = configuration;
+			this.mode = mode;
+			this.launch = launch;
+		}
+
+		@SuppressWarnings("synthetic-access")
+		private void verifyConfigurationParameters(IProgressMonitor monitor) throws CoreException {
+			monitor.subTask(
+					LaunchingMessages.JavaLocalApplicationLaunchConfigurationDelegate_Verifying_launch_attributes____1);
+
+			// Clear cached entries
+			clearBuffers();
+
+			this.mainTypeName = verifyMainTypeName(this.configuration);
+			this.agentName = verifyAgentName(this.configuration);
+			this.runner = getVMRunner(this.configuration, this.mode);
+
+			File workingDir = verifyWorkingDirectory(this.configuration);
+			this.workingDirName = null;
+			if (workingDir != null) {
+				this.workingDirName = workingDir.getAbsolutePath();
+			}
+
+			// Environment variables
+			this.envp = getEnvironment(this.configuration);
+		}
+
+		private void readLaunchingArguments(IProgressMonitor monitor) throws CoreException {
+			monitor.subTask(
+					Messages.SARLLaunchConfigurationDelegate_2);
+
+			// Program & VM arguments
+			String pgmArgs = getProgramArguments(this.configuration);
+			if (!Strings.isNullOrEmpty(pgmArgs)) {
+				pgmArgs = this.agentName + " " + pgmArgs; //$NON-NLS-1$
+			} else {
+				pgmArgs = this.agentName;
+			}
+			String vmArgs = getVMArguments(this.configuration);
+			this.execArgs = new ExecutionArguments(vmArgs, pgmArgs);
+
+			// VM-specific attributes
+			this.vmAttributesMap = getVMSpecificAttributesMap(this.configuration);
+		}
+
+		private void buildClasspath(IProgressMonitor monitor) throws CoreException {
+			monitor.subTask(
+					Messages.SARLLaunchConfigurationDelegate_3);
+			this.classpath = getClasspath(this.configuration);
+		}
+
+		private void createRunConfiguration(IProgressMonitor monitor) throws CoreException {
+			monitor.subTask(
+					Messages.SARLLaunchConfigurationDelegate_4);
+			this.runConfig = new VMRunnerConfiguration(this.mainTypeName, this.classpath);
+			this.runConfig.setProgramArguments(this.execArgs.getProgramArgumentsArray());
+			this.runConfig.setEnvironment(this.envp);
+			this.runConfig.setVMArguments(this.execArgs.getVMArgumentsArray());
+			this.runConfig.setWorkingDirectory(this.workingDirName);
+			this.runConfig.setVMSpecificAttributesMap(this.vmAttributesMap);
+			this.runConfig.setBootClassPath(getBootpath(this.configuration));
+		}
+
+		@SuppressWarnings("synthetic-access")
+		private void configureStopInMain(IProgressMonitor monitor) throws CoreException {
+			monitor.subTask(
+					Messages.SARLLaunchConfigurationDelegate_5);
+			prepareStopInMain(this.configuration);
+		}
+
+		/** Replies the total number of steps.
+		 *
+		 * @return the total number of steps.
+		 */
+		public int getStepNumber() {
+			return PreparationProcessState.values().length + RunProcessState.values().length;
+		}
+
+		/** Run a preparation step of the launching process.
+		 *
+		 * @param monitor - the progression monitor.
+		 * @return <code>true</code> if something more must be done; otherwise <code>false</code>.
+		 * @throws CoreException if something cannot be done.
+		 */
+		public boolean prepare(IProgressMonitor monitor) throws CoreException {
+			switch (this.preparationState) {
+			case STEP_0:
+				verifyConfigurationParameters(monitor);
+				break;
+			case STEP_1:
+				readLaunchingArguments(monitor);
+				break;
+			case STEP_2:
+				buildClasspath(monitor);
+				break;
+			case STEP_3:
+				createRunConfiguration(monitor);
+				break;
+			case STEP_4:
+			default:
+				configureStopInMain(monitor);
+				return false;
+			}
+			this.preparationState = this.preparationState.next();
+			return true;
+		}
+
+		@SuppressWarnings("synthetic-access")
+		private void configureSourceLocator(IProgressMonitor monitor) throws CoreException {
+			monitor.subTask(
+					LaunchingMessages.JavaLocalApplicationLaunchConfigurationDelegate_Creating_source_locator____2);
+			setDefaultSourceLocator(this.launch, this.configuration);
+		}
+
+		private void launchRunner(IProgressMonitor monitor) throws CoreException {
+			monitor.subTask(
+					MessageFormat.format(Messages.SARLLaunchConfigurationDelegate_6, this.configuration.getName()));
+			this.runner.run(this.runConfig, this.launch, monitor);
+		}
+
+		/** Run a launching step of the launching process.
+		 *
+		 * @param monitor - the progression monitor.
+		 * @return <code>true</code> if something more must be done; otherwise <code>false</code>.
+		 * @throws CoreException if something cannot be done.
+		 */
+		public boolean launch(IProgressMonitor monitor) throws CoreException {
+			switch (this.runState) {
+			case STEP_0:
+				configureSourceLocator(monitor);
+				break;
+			case STEP_1:
+			default:
+				launchRunner(monitor);
+				return false;
+			}
+			this.runState = this.runState.next();
+			return true;
+		}
+
+	}
+
+	/** Steps of preparation in the launching process.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static enum PreparationProcessState {
+		STEP_0, STEP_1, STEP_2, STEP_3, STEP_4;
+
+		public PreparationProcessState next() {
+			int index = ordinal() + 1;
+			PreparationProcessState[] vals = values();
+			if (index < vals.length) {
+				return vals[index];
+			}
+			return this;
+		}
+
+	}
+
+	/** Steps of run in the launching process.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static enum RunProcessState {
+		STEP_0, STEP_1;
+
+		public RunProcessState next() {
+			int index = ordinal() + 1;
+			RunProcessState[] vals = values();
+			if (index < vals.length) {
+				return vals[index];
+			}
+			return this;
+		}
+
 	}
 
 }

@@ -71,6 +71,11 @@ public final class SARLConfig {
 	public static final String XTEXT_NATURE_ID = "org.eclipse.xtext.ui.shared.xtextNature"; //$NON-NLS-1$
 
 	/**
+	 * ID of the project nature defined by Maven.
+	 */
+	public static final String MAVEN_NATURE_ID = "org.eclipse.m2e.core.maven2Nature"; //$NON-NLS-1$
+
+	/**
 	 * ID of this nature.
 	 */
 	public static final String NATURE_ID = "io.sarl.eclipse.SARLProjectNature"; //$NON-NLS-1$

@@ -946,7 +946,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		public String getColumnText(Object element, int columnIndex) {
 			if (element instanceof ISREInstall) {
 				ISREInstall sre = (ISREInstall) element;
-				switch(columnIndex) {
+				switch (columnIndex) {
 				case 0:
 					if (getDefaultSRE() == element) {
 						return MessageFormat.format(
