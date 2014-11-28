@@ -110,6 +110,18 @@
           class="io.sarl.eclipse.preferences.SREsPreferencePage"
           id="io.sarl.eclipse.preferences.SREsPreferencePage"
           name="%preference.installedSREs">
+        <keywordReference id="io.sarl.eclipse.keyword_SARL"/>
+        <keywordReference id="io.sarl.eclipse.keyword_SRE"/>
+        <keywordReference id="io.sarl.eclipse.keyword_RUNTIME"/>
+        <keywordReference id="org.eclipse.jdt.ui.buildpath"/>
+    </page>
+    <page category="io.sarl.lang.SARL"
+          class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.ui.validation.ValidatorPreferencePage"
+          id="io.sarl.eclipse.preferences.Validator"
+          name="%preference.errorWarning">
+        <keywordReference id="io.sarl.eclipse.keyword_SARL"/>
+        <keywordReference id="org.eclipse.jdt.ui.severities"/>
+	    <keywordReference id="org.eclipse.jdt.ui.formatter"/>
     </page>
  </extension>
  <extension
@@ -119,18 +131,40 @@
             class="io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage"
             id="io.sarl.eclipse.properties.SRE"
             name="%propertyPage.runtimeEnvironment">
-            <keywordReference id="io.sarl.eclipse.keyword_SRE"/>
-            <enabledWhen>
-	            <adapt type="org.eclipse.core.resources.IProject"/>
-			</enabledWhen>
-	        <filter name="projectNature" value="io.sarl.eclipse.SARLProjectNature"/>
+        <keywordReference id="io.sarl.eclipse.keyword_SARL"/>
+        <keywordReference id="io.sarl.eclipse.keyword_SRE"/>
+        <keywordReference id="io.sarl.eclipse.keyword_RUNTIME"/>
+        <keywordReference id="org.eclipse.jdt.ui.buildpath"/>
+        <enabledWhen>
+            <adapt type="org.eclipse.core.resources.IProject"/>
+		</enabledWhen>
+        <filter name="projectNature" value="io.sarl.eclipse.SARLProjectNature"/>
+    </page>
+    <page
+          category="io.sarl.lang.SARL"
+          class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.ui.validation.ValidatorPreferencePage"
+          id="io.sarl.eclipse.properties.Validator"
+          name="%preference.errorWarning">
+		<keywordReference id="io.sarl.eclipse.keyword_SARL"/>
+		<keywordReference id="org.eclipse.jdt.ui.severities"/>
+	    <keywordReference id="org.eclipse.jdt.ui.formatter"/>
+	    <enabledWhen>
+		  <adapt type="org.eclipse.core.resources.IProject"/>
+	    </enabledWhen>
+        <filter name="projectNature" value="io.sarl.eclipse.SARLProjectNature"/>
     </page>
  </extension>
     <extension
         point="org.eclipse.ui.keywords">
         <keyword
+            id="io.sarl.eclipse.keyword_SARL"
+            label="%keyword.sarl"/>
+        <keyword
             id="io.sarl.eclipse.keyword_SRE"
-            label="%keyword.sre"/>
+            label="%keyword.sarl.sre"/>
+        <keyword
+            id="io.sarl.eclipse.keyword_RUNTIME"
+            label="%keyword.sarl.runtime"/>
     </extension>
 <!--
 	<extension point="org.eclipse.ui.views">

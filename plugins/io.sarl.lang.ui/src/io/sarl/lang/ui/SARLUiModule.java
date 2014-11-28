@@ -26,13 +26,17 @@ import io.sarl.lang.ui.outline.SARLFieldOutlineFilter;
 import io.sarl.lang.ui.outline.SARLOperationOutlineFilter;
 import io.sarl.lang.ui.outline.SARLOutlineNodeComparator;
 import io.sarl.lang.ui.outline.SARLOutlinePage;
+import io.sarl.lang.ui.preferences.SARLPreferenceStoreInitializer;
+import io.sarl.lang.ui.preferences.SARLValidatorConfigurationBlock;
 import io.sarl.lang.ui.validation.SARLUIValidator;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.xtext.ui.editor.outline.actions.IOutlineContribution;
 import org.eclipse.xtext.ui.editor.outline.impl.OutlineFilterAndSorter.IComparator;
+import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.ISemanticHighlightingCalculator;
+import org.eclipse.xtext.ui.validation.AbstractValidatorConfigurationBlock;
 import org.eclipse.xtext.xbase.ui.contentassist.ImportingTypesProposalProvider;
 
 import com.google.inject.Binder;
@@ -56,11 +60,26 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		super(plugin);
 	}
 
+	/** Replies the type of the configuration page for the SARL validator.
+	 *
+	 * @return the type of the SARL validator configuration page.
+	 */
+	@SuppressWarnings("static-method")
+	public Class<? extends AbstractValidatorConfigurationBlock> bindAbstractValidatorConfigurationBlock() {
+		return SARLValidatorConfigurationBlock.class;
+	}
+
+	@Override
+	public void configureSmartCaretPreferenceInitializer(Binder binder) {
+		binder.bind(IPreferenceStoreInitializer.class).annotatedWith(Names.named("smartCaretPreferenceInitializer")) //$NON-NLS-1$
+		.to(SARLPreferenceStoreInitializer.class);
+	}
+
 	@Override
 	public Class<? extends ISemanticHighlightingCalculator> bindISemanticHighlightingCalculator() {
 		assert (super.bindISemanticHighlightingCalculator().isAssignableFrom(SARLHighlightingCalculator.class))
-			: "The class SARLHighlightingCalculator does not extend the " //$NON-NLS-1$
-				+ "class provided by default by Xbase"; //$NON-NLS-1$
+		: "The class SARLHighlightingCalculator does not extend the " //$NON-NLS-1$
+			+ "class provided by default by Xbase"; //$NON-NLS-1$
 		//
 		return SARLHighlightingCalculator.class;
 	}
@@ -69,8 +88,8 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	@org.eclipse.xtext.service.SingletonBinding(eager = true)
 	public Class<? extends org.eclipse.xtext.xbase.ui.validation.XbaseUIValidator> bindXbaseUIValidator() {
 		assert (super.bindXbaseUIValidator().isAssignableFrom(SARLUIValidator.class))
-			: "The class SARLUIValidator does not extend the class " //$NON-NLS-1$
-				+ "provided by default by Xbase"; //$NON-NLS-1$
+		: "The class SARLUIValidator does not extend the class " //$NON-NLS-1$
+			+ "provided by default by Xbase"; //$NON-NLS-1$
 		//
 		return SARLUIValidator.class;
 	}
