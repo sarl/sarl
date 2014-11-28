@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target includeMode="feature" name="io.sarl.lang.targetplatform" sequenceNumber="28">
+<?pde version="3.8"?><target includeMode="feature" name="io.sarl.lang.targetplatform" sequenceNumber="29">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.feature.group" version="3.10.0.v20140925-0400"/>
@@ -10,13 +10,13 @@
 <repository location="http://download.eclipse.org/releases/luna"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.xtend.sdk.feature.group" version="2.7.2.v201409160908"/>
-<unit id="org.eclipse.xtext.redist.feature.group" version="2.7.2.v201409160908"/>
-<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.powermock.mockito-junit.feature.feature.group" version="1.5.4.1"/>
 <repository location="http://powermock-osgi.googlecode.com/svn/updateSite/1.5.4.1"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.xtext.redist.feature.group" version="2.7.3.v201411190455"/>
+<unit id="org.eclipse.xtend.sdk.feature.group" version="2.7.3.v201411190455"/>
+<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
 </location>
 </locations>
 </target>
