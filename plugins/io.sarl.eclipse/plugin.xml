@@ -188,6 +188,9 @@
                 name="appName"
                 value="%product.name">
           </property>
+          <property
+                name="preferenceCustomization"
+                value="plugin_customization.ini"/> 
        </product>
     </extension>
 <!--
