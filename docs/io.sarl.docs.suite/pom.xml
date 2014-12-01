@@ -139,7 +139,7 @@
 				<artifactId>groovy-maven-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>add-dynamic-properties</id>
+						<id>add-documentation-dynamic-properties</id>
 						<phase>initialize</phase>
 						<goals>
 							<goal>execute</goal>
@@ -159,10 +159,7 @@
 									project.properties.sarlspecificationreleasestatus = "Final Release"
 								}
 								versionFields = version.split("\\.")
-								project.properties.sarlspecificationreleaseversion = versionFields[0]+"."+versionFields[1]
-								project.properties.sarlspecificationreleasedate =
-									(new java.text.SimpleDateFormat("yyyy-MM-dd")).format(new java.util.Date())
-								project.properties.janusversion = "2."+project.properties.sarlspecificationreleaseversion+".0"+endOfVersion
+								project.properties.janusversion = "2."+versionFields[0]+"."+versionFields[1]+".0"+endOfVersion
 							</source>
 						</configuration>
 					</execution>

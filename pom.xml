@@ -367,6 +367,38 @@
 				</executions>
 			</plugin>
 
+			<!-- Compute the target folder -->
+			<plugin>
+				<groupId>org.codehaus.gmaven</groupId>
+				<artifactId>groovy-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>compute-sarl-version-property</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<source>
+								snapshotTag = "-SNAPSHOT"
+								if (project.version.endsWith(snapshotTag)) {
+									len = project.version.size() - snapshotTag.size()
+									version = project.version.substring(0,len)
+								}
+								else {
+									version = project.version
+								}
+								versionFields = version.split("\\.")
+								project.properties.sarlspecificationreleaseversion = versionFields[0]+"."+versionFields[1]
+								project.properties.sarlreleaseversion = project.properties.sarlspecificationreleaseversion+"."+versionFields[2]
+								project.properties.sarlspecificationreleasedate =
+									(new java.text.SimpleDateFormat("yyyy-MM-dd")).format(new java.util.Date())
+							</source>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 
