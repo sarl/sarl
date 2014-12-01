@@ -287,4 +287,9 @@
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
    </configurations>
 
+   <repositories>
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="false" />
+   </repositories>
+
 </product>
