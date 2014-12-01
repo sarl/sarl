@@ -44,7 +44,7 @@
 		<!-- Path to the root directory  -->
 		<main.basedir>${project.basedir}</main.basedir>
 		<!-- String to put after the copyright sign  -->
-		<copyrighters>Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND</copyrighters>
+		<copyrighters>Sebastian RODRIGUEZ, Nicolas GAUD, Stephane GALLAND</copyrighters>
 		<!-- URL of the Maven repositories of SARL (use in POM and documentation) -->
 		<sarl.maven.repository.url>http://maven.sarl.io</sarl.maven.repository.url>
 		<!-- Local path to the Maven repository -->
