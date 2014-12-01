@@ -136,7 +136,7 @@ public final class SARLConfig {
 
 	/** Filename of the image that is the SARL logo with an icon size (16x16).
 	 */
-	public static final String SARL_LOGO_IMAGE = "icons/sarl_logo_16.png"; //$NON-NLS-1$
+	public static final String SARL_LOGO_IMAGE = "icons/sarl_16.png"; //$NON-NLS-1$
 
 	private SARLConfig() {
 		//

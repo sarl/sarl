@@ -25,6 +25,11 @@
 					<include>about.mappings</include>
 				</includes>
 			</resource>
+			<resource>
+				<directory>OSGI-INF/l10n</directory>
+				<filtering>true</filtering>
+				<targetPath>OSGI-INF/l10n</targetPath>
+			</resource>
 		</resources>
 		<plugins>
 			<plugin>

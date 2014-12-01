@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="SARL Eclipse IDE" uid="io.sarl.lang.product" id="org.eclipse.platform.ide" application="org.eclipse.ui.ide.workbench" version="0.2.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="%product.name" uid="io.sarl.lang.product" id="io.sarl.eclipse.io_sarl_lang_product" application="org.eclipse.ui.ide.workbench" version="0.2.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
-      <image path="eclipse_lg.png"/>
+      <image path="/io.sarl.eclipse/icons/eclipse-about-banner.png"/>
       <text>
-         SARL Agent Programming Language
+         %about.general.text
       </text>
    </aboutInfo>
 
@@ -22,7 +22,7 @@
       </vmArgsMac>
    </launcherArgs>
 
-   <windowImages i16="../../../icons/sarl_16.png" i32="../../../icons/sarl_32.png" i48="../../../icons/sarl_48.png" i64="../../../icons/sarl_64.png" i128="../../../icons/sarl_128.png" i256="../../../icons/sarl_256.png"/>
+   <windowImages i16="/io.sarl.eclipse/icons/sarl_16.png" i32="/io.sarl.eclipse/icons/sarl_32.png" i48="/io.sarl.eclipse/icons/sarl_48.png" i64="/io.sarl.eclipse/icons/sarl_64.png" i128="/io.sarl.eclipse/icons/sarl_128.png" i256="/io.sarl.eclipse/icons/sarl_256.png"/>
 
    <splash
       location="io.sarl.eclipse" />
@@ -35,6 +35,7 @@
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
