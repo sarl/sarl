@@ -398,12 +398,12 @@
 
 								// Bug in Jenkins/Hudson: the buildId property is not correctly set
 								// since maven.build.timestamp is skipped by Jenkins/Hudson.
-								if (properties.buildId == "\${maven.build.timestamp}") {
-									properties.buildId =
+								if (project.properties.buildId == "\${maven.build.timestamp}") {
+									project.properties.buildId =
 										(new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(now)
-									println("\tbuildId: "+ properties.buildId + " (reset for Hudson)")
+									println("\tbuildId: "+ project.properties.buildId + " (reset for Hudson)")
 								} else {
-									println("\tbuildId: "+ properties.buildId)
+									println("\tbuildId: "+ project.properties.buildId)
 								}
 
 								snapshotTag = "-SNAPSHOT"
@@ -415,13 +415,13 @@
 									version = project.version
 								}
 								versionFields = version.split("\\.")
-								properties.sarlspecificationreleaseversion = versionFields[0]+"."+versionFields[1]
-								println("\tsarlspecificationreleaseversion: "+ properties.sarlspecificationreleaseversion)
-								properties.sarlreleaseversion = properties.sarlspecificationreleaseversion+"."+versionFields[2]
-								println("\tsarlreleaseversion: "+ properties.sarlreleaseversion)
-								properties.sarlspecificationreleasedate =
+								project.properties.sarlspecificationreleaseversion = versionFields[0]+"."+versionFields[1]
+								println("\tsarlspecificationreleaseversion: "+ project.properties.sarlspecificationreleaseversion)
+								project.properties.sarlreleaseversion = project.properties.sarlspecificationreleaseversion+"."+versionFields[2]
+								println("\tsarlreleaseversion: "+ project.properties.sarlreleaseversion)
+								project.properties.sarlspecificationreleasedate =
 									(new java.text.SimpleDateFormat("yyyy-MM-dd")).format(now)
-								println("\tsarlspecificationreleasedate: "+ properties.sarlspecificationreleasedate)
+								println("\tsarlspecificationreleasedate: "+ project.properties.sarlspecificationreleasedate)
 							</source>
 						</configuration>
 					</execution>
