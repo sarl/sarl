@@ -95,8 +95,8 @@
 										if (project.version.endsWith(snapshotTag)) {
 											len = project.version.size() - snapshotTag.size()
 											version = project.version.substring(0,len)
-											formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss");
-											releaseNumber = "R"+formatter.format(new Date());
+											formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss")
+											releaseNumber = "R"+formatter.format(session.getStartTime())
 											project.properties.p2UploadToDir = "/snapshots/"+version+"/"+releaseNumber
 										}
 										else {

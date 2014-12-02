@@ -23,7 +23,7 @@
 	<!-- ======================================= -->
 
 	<properties>
-		<!-- Build ID (used in Eclipse about) -->
+		<!-- Build ID Format (used in Eclipse about dialog) -->
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 		<buildId>${maven.build.timestamp}</buildId>
 		<!-- Version of the Xtext API -->
@@ -128,6 +128,12 @@
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.3</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
 					<version>2.8.2</version>
 				</plugin>
@@ -154,6 +160,12 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>2.17</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.jasig.maven</groupId>
+					<artifactId>maven-notice-plugin</artifactId>
+					<version>1.0.6.1</version>
 				</plugin>
 
 				<plugin>
@@ -275,10 +287,10 @@
 		</pluginManagement>
 
 		<plugins>
+			<!-- Automatic creation of the Jar archive with the source code inside. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>2.3</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -290,6 +302,7 @@
 				</executions>
 			</plugin>
 
+			<!-- Copy the licencing files into the target folder. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -324,10 +337,10 @@
 				</executions>
 			</plugin>
 
+			<!-- Generating the licencing files. -->
 			<plugin>
 				<groupId>org.jasig.maven</groupId>
 				<artifactId>maven-notice-plugin</artifactId>
-				<version>1.0.6.1</version>
 				<executions>
 					<execution>
 						<goals>
@@ -346,6 +359,7 @@
 				</executions>
 			</plugin>
 
+			<!-- Remove temporary folders created by testing modules. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
@@ -367,19 +381,31 @@
 				</executions>
 			</plugin>
 
-			<!-- Compute the target folder -->
+			<!-- Compute additional version numbers for the SARL (specification, release, buildId) -->
 			<plugin>
 				<groupId>org.codehaus.gmaven</groupId>
 				<artifactId>groovy-maven-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>compute-sarl-version-property</id>
+						<id>compute-sarl-version-properties</id>
 						<phase>initialize</phase>
 						<goals>
 							<goal>execute</goal>
 						</goals>
 						<configuration>
 							<source>
+								now = session.getStartTime()
+
+								// Bug in Jenkins/Hudson: the buildId property is not correctly set
+								// since maven.build.timestamp is skipped by Jenkins/Hudson.
+								if (properties.buildId == "\${maven.build.timestamp}") {
+									properties.buildId =
+										(new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(now)
+									println("\tbuildId: "+ properties.buildId + " (reset for Hudson)")
+								} else {
+									println("\tbuildId: "+ properties.buildId)
+								}
+
 								snapshotTag = "-SNAPSHOT"
 								if (project.version.endsWith(snapshotTag)) {
 									len = project.version.size() - snapshotTag.size()
@@ -389,16 +415,18 @@
 									version = project.version
 								}
 								versionFields = version.split("\\.")
-								project.properties.sarlspecificationreleaseversion = versionFields[0]+"."+versionFields[1]
-								project.properties.sarlreleaseversion = project.properties.sarlspecificationreleaseversion+"."+versionFields[2]
-								project.properties.sarlspecificationreleasedate =
-									(new java.text.SimpleDateFormat("yyyy-MM-dd")).format(new java.util.Date())
+								properties.sarlspecificationreleaseversion = versionFields[0]+"."+versionFields[1]
+								println("\tsarlspecificationreleaseversion: "+ properties.sarlspecificationreleaseversion)
+								properties.sarlreleaseversion = properties.sarlspecificationreleaseversion+"."+versionFields[2]
+								println("\tsarlreleaseversion: "+ properties.sarlreleaseversion)
+								properties.sarlspecificationreleasedate =
+									(new java.text.SimpleDateFormat("yyyy-MM-dd")).format(now)
+								println("\tsarlspecificationreleasedate: "+ properties.sarlspecificationreleasedate)
 							</source>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
 
