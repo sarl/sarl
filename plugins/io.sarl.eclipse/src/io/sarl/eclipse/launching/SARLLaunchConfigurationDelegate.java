@@ -392,6 +392,35 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		}
 	}
 
+	private static ISREInstall getSREFromExtension(IProject project, boolean verify) {
+		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+				SARLEclipsePlugin.PLUGIN_ID,
+				SARLConfig.EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY);
+		if (extensionPoint != null) {
+			for (IConfigurationElement element : extensionPoint.getConfigurationElements()) {
+				try {
+					Object obj = element.createExecutableExtension("class"); //$NON-NLS-1$
+					assert (obj instanceof ProjectSREProviderFactory);
+					ProjectSREProviderFactory factory = (ProjectSREProviderFactory) obj;
+					ProjectSREProvider provider = factory.getProjectSREProvider(project);
+					if (provider != null) {
+						ISREInstall sre = provider.getProjectSREInstall();
+						if (sre == null) {
+							return null;
+						}
+						if (verify) {
+							verifySREValidity(sre, sre.getId(), false);
+						}
+						return sre;
+					}
+				} catch (CoreException e) {
+					SARLEclipsePlugin.log(e);
+				}
+			}
+		}
+		return null;
+	}
+
 	/** Replies the project SRE from the given configuration.
 	 *
 	 * @param configuration - the configuration to read.
@@ -402,40 +431,16 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		if (jprj != null) {
 			IProject prj = jprj.getProject();
 			assert (prj != null);
-			
+
 			// Get the SRE from the extension point
-			IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-					SARLEclipsePlugin.PLUGIN_ID,
-					SARLConfig.EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY);
-			if (extensionPoint != null) {
-				for (IConfigurationElement element : extensionPoint.getConfigurationElements()) {
-					try {
-						Object obj = element.createExecutableExtension("class"); //$NON-NLS-1$
-						if (obj instanceof ProjectSREProviderFactory) {
-							ProjectSREProviderFactory factory = (ProjectSREProviderFactory) obj;
-							ProjectSREProvider provider = factory.getProjectSREProvider(prj);
-							if (provider != null) {
-								ISREInstall sre = provider.getProjectSREInstall();
-								if (sre != null) {
-									if (verify) {
-										verifySREValidity(sre, sre.getId(), false);
-									}
-									return sre;
-								}
-							}
-						} else {
-							SARLEclipsePlugin.logErrorMessage(
-									"Cannot instance extension point: " + element.getName()); //$NON-NLS-1$
-						}
-					} catch (CoreException e) {
-						SARLEclipsePlugin.log(e);
-					}
-				}
+			ISREInstall sre = getSREFromExtension(prj, verify);
+			if (sre != null) {
+				return null;
 			}
-			
+
 			// Get the SRE from the default project configuration
 			ProjectSREProvider provider = new StandardProjectSREProvider(prj);
-			ISREInstall sre = provider.getProjectSREInstall();
+			sre = provider.getProjectSREInstall();
 			if (sre != null) {
 				if (verify) {
 					verifySREValidity(sre, sre.getId(), true);

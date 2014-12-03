@@ -688,7 +688,7 @@ public final class SARLRuntime {
 					newSREs[i] = sre;
 					if (sre.getValidity().isOK()) {
 						if (initDefaultSRE == null
-							&& sre.getId().equals(predefinedDefaultId)) {
+								&& sre.getId().equals(predefinedDefaultId)) {
 							initDefaultSRE = sre;
 						}
 					}

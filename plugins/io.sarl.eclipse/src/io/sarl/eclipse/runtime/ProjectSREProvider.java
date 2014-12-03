@@ -56,7 +56,7 @@ public interface ProjectSREProvider {
 	String getSREInstallIdentifier();
 
 	/** Replies the SRE that is used by the project.
-	 * 
+	 *
 	 * @return the SRE install for the project.
 	 */
 	ISREInstall getProjectSREInstall();

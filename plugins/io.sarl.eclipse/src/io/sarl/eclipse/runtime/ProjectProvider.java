@@ -34,7 +34,7 @@ import org.eclipse.core.resources.IProject;
 public interface ProjectProvider {
 
 	/** Replies the project.
-	 * 
+	 *
 	 * @return the project.
 	 */
 	IProject getProject();

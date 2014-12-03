@@ -111,7 +111,7 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 		super.createControl(parent);
 		Composite oldComp = (Composite) getControl();
 		Control[] children = oldComp.getChildren();
-		
+
 		ProjectProvider projectProvider = new ProjectAdapter();
 		List<ProjectSREProviderFactory> sreProviderFactories = getProviderFromExtension();
 		sreProviderFactories.add(new StandardProjectSREProviderFactory());
