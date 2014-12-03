@@ -22,20 +22,18 @@ package io.sarl.eclipse.runtime;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.preferences.SREsPreferencePage;
-import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
-import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.jdt.internal.debug.ui.actions.ControlAccessibleListener;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -52,7 +50,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Strings;
 
 /**
  * Block of widgets that permits to select and
@@ -84,7 +81,10 @@ public class SREConfigurationBlock {
 	private ISREInstallChangedListener sreListener;
 
 	private final boolean enableSystemWideSelector;
-	private final SRECompliantProjectProvider projectProvider;
+	private final List<ProjectSREProviderFactory> projectProviderFactories;
+	private final ProjectProvider project;
+
+	private ProjectSREProvider projectProvider;
 
 	private Button systemSREButton;
 	private Button projectSREButton;
@@ -98,21 +98,33 @@ public class SREConfigurationBlock {
 
 	/**
 	 * @param enableSystemWideSelector - indicates if the system-wide configuration selector must be enabled.
-	 * @param projectProvider - the provider of a project that may give SRE configuration.
+	 * @param project - the provider of the project that may be associated to the block. If <code>null</code> the components
+	 * related to the project are hidden.
+	 * @param projectProviderFactories - the factories of  the provider of a project that may give SRE configuration.
+	 * If <code>null</code> the components related to the project are hidden.
 	 */
-	public SREConfigurationBlock(boolean enableSystemWideSelector, SRECompliantProjectProvider projectProvider) {
-		this(null, enableSystemWideSelector, projectProvider);
+	public SREConfigurationBlock(boolean enableSystemWideSelector,
+			ProjectProvider project,
+			List<ProjectSREProviderFactory> projectProviderFactories) {
+		this(null, enableSystemWideSelector, project, projectProviderFactories);
 	}
 
 	/**
 	 * @param title - the title of the group.
 	 * @param enableSystemWideSelector - indicates if the system-wide configuration selector must be enabled.
-	 * @param projectProvider - the provider of a project that may give SRE configuration.
+	 * @param project - the provider of the project that may be associated to the block. If <code>null</code> the components
+	 * related to the project are hidden.
+	 * @param projectProviderFactories - the factories of  the provider of a project that may give SRE configuration.
+	 * If <code>null</code> the components related to the project are hidden.
 	 */
-	public SREConfigurationBlock(String title, boolean enableSystemWideSelector, SRECompliantProjectProvider projectProvider) {
+	public SREConfigurationBlock(String title, boolean enableSystemWideSelector,
+			ProjectProvider project,
+			List<ProjectSREProviderFactory> projectProviderFactories) {
 		this.title = title;
 		this.enableSystemWideSelector = enableSystemWideSelector;
-		this.projectProvider = projectProvider;
+		this.project = project;
+		this.projectProviderFactories = projectProviderFactories != null
+				? projectProviderFactories : Collections.<ProjectSREProviderFactory>emptyList();
 	}
 
 	/** Change the event notification flag.
@@ -161,37 +173,24 @@ public class SREConfigurationBlock {
 	}
 
 	private ISREInstall retreiveProjectSRE() {
-		try {
+		if (this.projectProviderFactories.isEmpty() || this.project == null) {
+			return null;
+		}
+		if (this.projectProvider == null) {
+			IProject project = this.project.getProject();
+			if (project == null) {
+				return null;
+			}
+			Iterator<ProjectSREProviderFactory> iterator = this.projectProviderFactories.iterator();
+			while (this.projectProvider == null && iterator.hasNext()) {
+				ProjectSREProviderFactory factory = iterator.next();
+				this.projectProvider = factory.getProjectSREProvider(project);
+			}
 			if (this.projectProvider == null) {
 				return null;
 			}
-			IProject prj = this.projectProvider.getSRECompliantProject();
-			if (prj != null) {
-				ISREInstall sre = null;
-				QualifiedName propertyName = RuntimeEnvironmentPropertyPage.qualify(
-						RuntimeEnvironmentPropertyPage.PROPERTY_NAME_HAS_PROJECT_SPECIFIC);
-				if (Boolean.parseBoolean(Objects.firstNonNull(
-						prj.getPersistentProperty(propertyName), Boolean.FALSE.toString()))) {
-					propertyName = RuntimeEnvironmentPropertyPage.qualify(
-							RuntimeEnvironmentPropertyPage.PROPERTY_NAME_USE_SYSTEM_WIDE_SRE);
-					boolean useWideConfig = Boolean.parseBoolean(Objects.firstNonNull(
-							prj.getPersistentProperty(propertyName), Boolean.FALSE.toString()));
-					if (!useWideConfig) {
-						propertyName = RuntimeEnvironmentPropertyPage.qualify(
-								RuntimeEnvironmentPropertyPage.PROPERTY_NAME_SRE_INSTALL_ID);
-						String projectSREId = Strings.nullToEmpty(prj.getPersistentProperty(propertyName));
-						sre = SARLRuntime.getSREFromId(projectSREId);
-					}
-				}
-				if (sre == null) {
-					sre = SARLRuntime.getDefaultSREInstall();
-				}
-				return sre;
-			}
-		} catch (CoreException _) {
-			//
 		}
-		return null;
+		return this.projectProvider.getProjectSREInstall();
 	}
 
 	private void doSystemSREButtonClick() {
@@ -283,7 +282,7 @@ public class SREConfigurationBlock {
 	}
 
 	private void createProjectSelector(Group parent) {
-		if (this.projectProvider != null) {
+		if (!this.projectProviderFactories.isEmpty()) {
 			this.projectSREButton = SWTFactory.createRadioButton(parent,
 					MessageFormat.format(
 							Messages.SREConfigurationBlock_3, Messages.SREConfigurationBlock_0), 3);
@@ -315,7 +314,7 @@ public class SREConfigurationBlock {
 				Objects.firstNonNull(this.title, Messages.SREConfigurationBlock_7),
 				nColumns, 1, GridData.FILL_HORIZONTAL);
 
-		if (this.enableSystemWideSelector || this.projectProvider != null) {
+		if (this.enableSystemWideSelector || !this.projectProviderFactories.isEmpty()) {
 			createSystemWideSelector(group);
 			createProjectSelector(group);
 			this.specificSREButton = SWTFactory.createRadioButton(group,
@@ -354,7 +353,7 @@ public class SREConfigurationBlock {
 			this.systemSREButton.setText(MessageFormat.format(
 					Messages.SREConfigurationBlock_1, wideSystemSRELabel));
 		}
-		if (this.projectProvider != null) {
+		if (!this.projectProviderFactories.isEmpty()) {
 			ISREInstall projectSRE = retreiveProjectSRE();
 			String projectSRELabel;
 			if (projectSRE == null) {
@@ -391,7 +390,7 @@ public class SREConfigurationBlock {
 			if (this.enableSystemWideSelector) {
 				return selectSystemWideSRE();
 			}
-			if (this.projectProvider != null) {
+			if (!this.projectProviderFactories.isEmpty()) {
 				return selectProjectSRE();
 			}
 		}
@@ -415,7 +414,7 @@ public class SREConfigurationBlock {
 	 * @return <code>true</code> if the selection changed.
 	 */
 	public boolean selectProjectSRE() {
-		if (this.projectProvider != null && !this.projectSREButton.getSelection()) {
+		if (!this.projectProviderFactories.isEmpty() && !this.projectSREButton.getSelection()) {
 			doProjectSREButtonClick();
 			return true;
 		}
@@ -518,7 +517,7 @@ public class SREConfigurationBlock {
 	 * @see #getSelectedSRE()
 	 */
 	public boolean isProjectSRE() {
-		return this.projectProvider != null && this.projectSREButton.getSelection();
+		return !this.projectProviderFactories.isEmpty() && this.projectSREButton.getSelection();
 	}
 
 	/** Replies the selected SARL runtime environment.
@@ -531,7 +530,7 @@ public class SREConfigurationBlock {
 		if (this.enableSystemWideSelector && this.systemSREButton.getSelection()) {
 			return SARLRuntime.getDefaultSREInstall();
 		}
-		if (this.projectProvider != null && this.projectSREButton.getSelection()) {
+		if (!this.projectProviderFactories.isEmpty() && this.projectSREButton.getSelection()) {
 			return retreiveProjectSRE();
 		}
 		return getSpecificSRE();
@@ -593,11 +592,11 @@ public class SREConfigurationBlock {
 		// Initialize the type of configuration
 		if (this.enableSystemWideSelector) {
 			this.specificSREButton.setSelection(false);
-			if (this.projectProvider != null) {
+			if (!this.projectProviderFactories.isEmpty()) {
 				this.projectSREButton.setSelection(false);
 			}
 			this.systemSREButton.setSelection(true);
-		} else if (this.projectProvider != null) {
+		} else if (!this.projectProviderFactories.isEmpty()) {
 			this.specificSREButton.setSelection(false);
 			if (this.enableSystemWideSelector) {
 				this.systemSREButton.setSelection(false);
@@ -665,7 +664,7 @@ public class SREConfigurationBlock {
 			} else {
 				status = SARLEclipsePlugin.createOkStatus();
 			}
-		} else if (this.projectProvider != null && this.projectSREButton.getSelection()) {
+		} else if (!this.projectProviderFactories.isEmpty() && this.projectSREButton.getSelection()) {
 			if (retreiveProjectSRE() == null) {
 				status = SARLEclipsePlugin.createStatus(IStatus.ERROR,
 							Messages.SREConfigurationBlock_6);
@@ -761,25 +760,6 @@ public class SREConfigurationBlock {
 		public void defaultSREInstallChanged(ISREInstall previous, ISREInstall current) {
 			updateExternalSREButtonLabels();
 		}
-
-	}
-
-	/** The objects that are implementing this interface are able to
-	 * provide a project to the {@link SREConfigurationBlock}.
-	 * This project is used for managing the SRE configuration.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	public interface SRECompliantProjectProvider {
-
-		/** Replies the project that may provide a SRE configuration.
-		 *
-		 * @return the project.
-		 */
-		IProject getSRECompliantProject();
 
 	}
 

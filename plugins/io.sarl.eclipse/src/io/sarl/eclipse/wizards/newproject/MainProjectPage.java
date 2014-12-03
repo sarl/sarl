@@ -148,7 +148,7 @@ public class MainProjectPage extends WizardPage {
 
 		this.fNameGroup = new NameGroup();
 		this.fLocationGroup = new LocationGroup();
-		this.fSREGroup = new SREConfigurationBlock(Messages.MainProjectPage_0, true, null);
+		this.fSREGroup = new SREConfigurationBlock(Messages.MainProjectPage_0, true, null, null);
 		this.fJREGroup = new JREGroup();
 		this.fWorkingSetGroup = new WorkingSetGroup();
 		this.fDetectGroup = new DetectGroup();

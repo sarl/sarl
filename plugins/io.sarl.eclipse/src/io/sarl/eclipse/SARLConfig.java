@@ -138,6 +138,24 @@ public final class SARLConfig {
 	 */
 	public static final String SARL_LOGO_IMAGE = "icons/sarl_16.png"; //$NON-NLS-1$
 
+	/**
+	 * Extension point identifier for contributions of a wizard page that for a ISREInstall
+	 * (value <code>"sreInstallPage"</code>).
+	 */
+	public static final String EXTENSION_POINT_SRE_INSTALL_PAGES = "sreInstallPages"; //$NON-NLS-1$
+
+	/**
+	 * Name of the extension points for SRE installation
+	 * (value <code>"sreInstallations"</code>).
+	 */
+	public static final String EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT = "sreInstallations"; //$NON-NLS-1$
+
+	/**
+	 * Name of the extension points for the factory of project SRE provider.
+	 * (value <code>"projectSREProviderFactory"</code>).
+	 */
+	public static final String EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY = "projectSREProviderFactory"; //$NON-NLS-1$
+
 	private SARLConfig() {
 		//
 	}

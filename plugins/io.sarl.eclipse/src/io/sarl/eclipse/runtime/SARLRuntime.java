@@ -20,6 +20,7 @@
  */
 package io.sarl.eclipse.runtime;
 
+import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 
 import java.io.BufferedInputStream;
@@ -40,6 +41,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -49,6 +53,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -61,6 +67,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.internal.launching.LaunchingMessages;
 import org.eclipse.jdt.launching.PropertyChangeEvent;
+import org.osgi.framework.Version;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -75,7 +82,7 @@ import com.google.common.base.Strings;
 /**
  * The central access point for launching support. This class manages
  * the registered SRE types contributed through the
- * extension point with the name {@link #EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT}.
+ * extension point with the name {@link SARLConfig#EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT}.
  * As well, this class provides SRE install change notification.
  * <p>
  * This class was inspired from <code>JavaRuntime</code>.
@@ -87,12 +94,6 @@ import com.google.common.base.Strings;
  * @noinstantiate This class is not intended to be instantiated by clients.
  */
 public final class SARLRuntime {
-
-	/**
-	 * Name of the extension points for SRE installation
-	 * (value <code>"sreInstallations"</code>).
-	 */
-	public static final String EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT = "sreInstallations"; //$NON-NLS-1$
 
 	/**
 	 * Preference key for the String of XML that defines all installed SREs.
@@ -337,7 +338,7 @@ public final class SARLRuntime {
 
 	/**
 	 * Returns the list of registered SREs. SRE types are registered via
-	 * extension point with the name {@link #EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT}.
+	 * extension point with the name {@link SARLConfig#EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT}.
 	 * Returns an empty list if there are no registered SREs.
 	 *
 	 * @return the list of registered SREs.
@@ -406,7 +407,7 @@ public final class SARLRuntime {
 		MultiStatus status = new MultiStatus(SARLEclipsePlugin.PLUGIN_ID,
 				IStatus.OK, "Exceptions occurred", null);  //$NON-NLS-1$
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-				SARLEclipsePlugin.PLUGIN_ID, EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT);
+				SARLEclipsePlugin.PLUGIN_ID, SARLConfig.EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT);
 		if (extensionPoint != null) {
 			Object obj;
 			for (IConfigurationElement element : extensionPoint.getConfigurationElements()) {
@@ -789,6 +790,105 @@ public final class SARLRuntime {
 		} finally {
 			LOCK.unlock();
 		}
+	}
+
+	/** Replies if the given directory contains a SRE.
+	 *
+	 * @param directory - the directory.
+	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
+	 * @see #isPackedSRE(File)
+	 */
+	public static boolean isUnpackedSRE(File directory) {
+		File manifestFile = new File(directory, "META-INF"); //$NON-NLS-1$
+		manifestFile = new File(manifestFile, "MANIFEST.MF"); //$NON-NLS-1$
+		if (manifestFile.canRead()) {
+			try (InputStream manifestStream = new FileInputStream(manifestFile)) {
+				Manifest manifest = new Manifest(manifestStream);
+				Attributes sarlSection = manifest.getAttributes(SREConstants.MANIFEST_SECTION_SRE);
+				if (sarlSection == null) {
+					return false;
+				}
+				String sarlVersion = sarlSection.getValue(SREConstants.MANIFEST_SARL_SPEC_VERSION);
+				if (sarlVersion == null || sarlVersion.isEmpty()) {
+					return false;
+				}
+				Version sarlVer = Version.parseVersion(sarlVersion);
+				return sarlVer != null;
+			} catch (IOException _) {
+				return false;
+			}
+		}
+		return false;
+	}
+
+	/** Replies if the given directory contains a SRE.
+	 *
+	 * @param directory - the directory.
+	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
+	 * @see #isPackedSRE(File)
+	 */
+	public static boolean isUnpackedSRE(IPath directory) {
+		IFile location = ResourcesPlugin.getWorkspace().getRoot().getFile(directory);
+		if (location != null) {
+			IPath path = location.getLocation();
+			if (path != null) {
+				File file = path.toFile();
+				if (file.exists()) {
+					if (file.isDirectory()) {
+						return isUnpackedSRE(file);
+					}
+					return false;
+				}
+			}
+		}
+		return isUnpackedSRE(directory.makeAbsolute().toFile());
+	}
+
+	/** Replies if the given JAR file contains a SRE.
+	 *
+	 * @param jarFile - the JAR file to test.
+	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
+	 * @see #isUnpackedSRE(File)
+	 */
+	public static boolean isPackedSRE(File jarFile) {
+		try (JarFile jFile = new JarFile(jarFile)) {
+			Manifest manifest = jFile.getManifest();
+			Attributes sarlSection = manifest.getAttributes(SREConstants.MANIFEST_SECTION_SRE);
+			if (sarlSection == null) {
+				return false;
+			}
+			String sarlVersion = sarlSection.getValue(SREConstants.MANIFEST_SARL_SPEC_VERSION);
+			if (sarlVersion == null || sarlVersion.isEmpty()) {
+				return false;
+			}
+			Version sarlVer = Version.parseVersion(sarlVersion);
+			return sarlVer != null;
+		} catch (IOException _) {
+			return false;
+		}
+	}
+
+	/** Replies if the given JAR file contains a SRE.
+	 *
+	 * @param jarFile - the JAR file to test.
+	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
+	 * @see #isUnpackedSRE(File)
+	 */
+	public static boolean isPackedSRE(IPath jarFile) {
+		IFile location = ResourcesPlugin.getWorkspace().getRoot().getFile(jarFile);
+		if (location != null) {
+			IPath path = location.getLocation();
+			if (path != null) {
+				File file = path.toFile();
+				if (file.exists()) {
+					if (file.isFile()) {
+						return isPackedSRE(file);
+					}
+					return false;
+				}
+			}
+		}
+		return isPackedSRE(jarFile.makeAbsolute().toFile());
 	}
 
 }

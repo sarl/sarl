@@ -23,15 +23,12 @@ package io.sarl.eclipse.launching;
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
-import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
 import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.ProjectSREProvider;
+import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
 import io.sarl.eclipse.runtime.SARLRuntime;
-import io.sarl.eclipse.runtime.SREConstants;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -39,16 +36,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -67,9 +63,7 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.xtext.xbase.lib.Pair;
-import org.osgi.framework.Version;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 
 /**
@@ -403,37 +397,57 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 * @param configuration - the configuration to read.
 	 * @return the project SRE or <code>null</code>.
 	 */
-	protected ISREInstall getProjectSRE(ILaunchConfiguration configuration) {
-		try {
-			IJavaProject jprj = getJavaProject(configuration);
-			if (jprj != null) {
-				IProject prj = jprj.getProject();
-				assert (prj != null);
-				ISREInstall sre = null;
-				QualifiedName propertyName = RuntimeEnvironmentPropertyPage.qualify(
-						RuntimeEnvironmentPropertyPage.PROPERTY_NAME_HAS_PROJECT_SPECIFIC);
-				if (Boolean.parseBoolean(Objects.firstNonNull(
-						prj.getPersistentProperty(propertyName), Boolean.FALSE.toString()))) {
-					propertyName = RuntimeEnvironmentPropertyPage.qualify(
-							RuntimeEnvironmentPropertyPage.PROPERTY_NAME_USE_SYSTEM_WIDE_SRE);
-					boolean useWideConfig = Boolean.parseBoolean(Objects.firstNonNull(
-							prj.getPersistentProperty(propertyName), Boolean.FALSE.toString()));
-					if (!useWideConfig) {
-						propertyName = RuntimeEnvironmentPropertyPage.qualify(
-								RuntimeEnvironmentPropertyPage.PROPERTY_NAME_SRE_INSTALL_ID);
-						String projectSREId = Strings.nullToEmpty(prj.getPersistentProperty(propertyName));
-						sre = SARLRuntime.getSREFromId(projectSREId);
+	private ISREInstall getProjectSpecificSRE(ILaunchConfiguration configuration, boolean verify) throws CoreException {
+		IJavaProject jprj = getJavaProject(configuration);
+		if (jprj != null) {
+			IProject prj = jprj.getProject();
+			assert (prj != null);
+			
+			// Get the SRE from the extension point
+			IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+					SARLEclipsePlugin.PLUGIN_ID,
+					SARLConfig.EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY);
+			if (extensionPoint != null) {
+				for (IConfigurationElement element : extensionPoint.getConfigurationElements()) {
+					try {
+						Object obj = element.createExecutableExtension("class"); //$NON-NLS-1$
+						if (obj instanceof ProjectSREProviderFactory) {
+							ProjectSREProviderFactory factory = (ProjectSREProviderFactory) obj;
+							ProjectSREProvider provider = factory.getProjectSREProvider(prj);
+							if (provider != null) {
+								ISREInstall sre = provider.getProjectSREInstall();
+								if (sre != null) {
+									if (verify) {
+										verifySREValidity(sre, sre.getId(), false);
+									}
+									return sre;
+								}
+							}
+						} else {
+							SARLEclipsePlugin.logErrorMessage(
+									"Cannot instance extension point: " + element.getName()); //$NON-NLS-1$
+						}
+					} catch (CoreException e) {
+						SARLEclipsePlugin.log(e);
 					}
 				}
-				if (sre == null) {
-					sre = SARLRuntime.getDefaultSREInstall();
+			}
+			
+			// Get the SRE from the default project configuration
+			ProjectSREProvider provider = new StandardProjectSREProvider(prj);
+			ISREInstall sre = provider.getProjectSREInstall();
+			if (sre != null) {
+				if (verify) {
+					verifySREValidity(sre, sre.getId(), true);
 				}
 				return sre;
 			}
-		} catch (CoreException _) {
-			//
 		}
-		return null;
+		ISREInstall sre = SARLRuntime.getDefaultSREInstall();
+		if (verify) {
+			verifySREValidity(sre, (sre == null) ? Messages.SARLLaunchConfigurationDelegate_8 : sre.getId(), true);
+		}
+		return sre;
 	}
 
 	/** Replies the SRE installation to be used for the given configuration.
@@ -449,28 +463,22 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		String useProjectSRE = configuration.getAttribute(
 				SARLConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
 				Boolean.FALSE.toString());
-		String runtime = null;
+		ISREInstall sre = null;
 		if (Boolean.parseBoolean(useSystemSRE)) {
-			ISREInstall sre = SARLRuntime.getDefaultSREInstall();
-			if (sre != null) {
-				runtime = sre.getId();
-			}
+			sre = SARLRuntime.getDefaultSREInstall();
+			verifySREValidity(sre, sre.getId(), true);
 		} else if (Boolean.parseBoolean(useProjectSRE)) {
-			ISREInstall sre = getProjectSRE(configuration);
-			if (sre != null) {
-				runtime = sre.getId();
-			}
+			sre = getProjectSpecificSRE(configuration, true);
 		} else  {
-			runtime = configuration.getAttribute(SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT, (String) null);
+			String runtime = configuration.getAttribute(SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT, (String) null);
+			sre = SARLRuntime.getSREFromId(runtime);
+			verifySREValidity(sre, runtime, true);
 		}
 
-		if (Strings.isNullOrEmpty(runtime)) {
+		if (sre == null) {
 			throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.ERROR,
 					Messages.SARLLaunchConfigurationDelegate_0));
 		}
-
-		ISREInstall sre = SARLRuntime.getSREFromId(runtime);
-		verifySREValidity(sre, runtime);
 
 		return sre;
 	}
@@ -500,43 +508,6 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		return sreClasspathEntries;
 	}
 
-	private static boolean isNotSREEntryInDirectory(File file) throws IOException {
-		File manifestFile = new File(file, "META-INF"); //$NON-NLS-1$
-		manifestFile = new File(manifestFile, "MANIFEST.MF"); //$NON-NLS-1$
-		if (manifestFile.canRead()) {
-			try (InputStream manifestStream = new FileInputStream(manifestFile)) {
-				Manifest manifest = new Manifest(manifestStream);
-				Attributes sarlSection = manifest.getAttributes(SREConstants.MANIFEST_SECTION_SRE);
-				if (sarlSection == null) {
-					return true;
-				}
-				String sarlVersion = sarlSection.getValue(SREConstants.MANIFEST_SARL_SPEC_VERSION);
-				if (sarlVersion == null || sarlVersion.isEmpty()) {
-					return true;
-				}
-				Version sarlVer = Version.parseVersion(sarlVersion);
-				return sarlVer == null;
-			}
-		}
-		return true;
-	}
-
-	private static boolean isNotSREEntryInJar(File file) throws IOException  {
-		try (JarFile jFile = new JarFile(file)) {
-			Manifest manifest = jFile.getManifest();
-			Attributes sarlSection = manifest.getAttributes(SREConstants.MANIFEST_SECTION_SRE);
-			if (sarlSection == null) {
-				return true;
-			}
-			String sarlVersion = sarlSection.getValue(SREConstants.MANIFEST_SARL_SPEC_VERSION);
-			if (sarlVersion == null || sarlVersion.isEmpty()) {
-				return true;
-			}
-			Version sarlVer = Version.parseVersion(sarlVersion);
-			return sarlVer == null;
-		}
-	}
-
 	/** Replies if the given classpath entry is a SRE.
 	 *
 	 * @param entry - the entry.
@@ -547,9 +518,9 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		try {
 			File file = new File(entry.getLocation());
 			if (file.isDirectory()) {
-				return isNotSREEntryInDirectory(file);
+				return !SARLRuntime.isUnpackedSRE(file);
 			} else if (file.canRead()) {
-				return isNotSREEntryInJar(file);
+				return !SARLRuntime.isPackedSRE(file);
 			}
 		} catch (Throwable e) {
 			SARLEclipsePlugin.log(e);
@@ -599,12 +570,16 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		return entries;
 	}
 
-	private static void verifySREValidity(ISREInstall sre, String runtime) throws CoreException {
+	private static void verifySREValidity(ISREInstall sre, String runtime, boolean onlyStandalone) throws CoreException {
 		if (sre == null) {
 			throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.ERROR,
 					MessageFormat.format(Messages.RuntimeEnvironmentTab_6, runtime)));
 		}
-		if (!sre.getValidity().isOK()) {
+		int ignoreCode = 0;
+		if (!onlyStandalone) {
+			ignoreCode = ISREInstall.CODE_STANDALONE_SRE;
+		}
+		if (!sre.getValidity(ignoreCode).isOK()) {
 			throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.ERROR, MessageFormat.format(
 					Messages.RuntimeEnvironmentTab_5,
 					sre.getName())));
@@ -650,7 +625,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		}
 
 		@SuppressWarnings("synthetic-access")
-		private void verifyConfigurationParameters(IProgressMonitor monitor) throws CoreException {
+		private void readConfigurationParameters(IProgressMonitor monitor) throws CoreException {
 			monitor.subTask(
 					LaunchingMessages.JavaLocalApplicationLaunchConfigurationDelegate_Verifying_launch_attributes____1);
 
@@ -731,7 +706,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		public boolean prepare(IProgressMonitor monitor) throws CoreException {
 			switch (this.preparationState) {
 			case STEP_0:
-				verifyConfigurationParameters(monitor);
+				readConfigurationParameters(monitor);
 				break;
 			case STEP_1:
 				readLaunchingArguments(monitor);
@@ -740,15 +715,33 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 				buildClasspath(monitor);
 				break;
 			case STEP_3:
-				createRunConfiguration(monitor);
+				postValidation(monitor);
 				break;
 			case STEP_4:
+				createRunConfiguration(monitor);
+				break;
+			case STEP_5:
 			default:
 				configureStopInMain(monitor);
 				return false;
 			}
 			this.preparationState = this.preparationState.next();
 			return true;
+		}
+
+		@SuppressWarnings("synthetic-access")
+		private void postValidation(IProgressMonitor monitor) throws CoreException {
+			monitor.subTask(
+					Messages.SARLLaunchConfigurationDelegate_7);
+			if (Strings.isNullOrEmpty(this.mainTypeName)) {
+				// This case occurs when the launch configuration is using
+				// a SRE that is inside the classpath.
+				// The name of the main class is then no saved in the launch configuration properties.
+				ISREInstall sre = getSREInstallFor(this.configuration);
+				if (sre != null) {
+					this.mainTypeName = sre.getMainClass();
+				}
+			}
 		}
 
 		@SuppressWarnings("synthetic-access")
@@ -794,7 +787,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 * @mavenartifactid $ArtifactId$
 	 */
 	private static enum PreparationProcessState {
-		STEP_0, STEP_1, STEP_2, STEP_3, STEP_4;
+		STEP_0, STEP_1, STEP_2, STEP_3, STEP_4, STEP_5;
 
 		public PreparationProcessState next() {
 			int index = ordinal() + 1;

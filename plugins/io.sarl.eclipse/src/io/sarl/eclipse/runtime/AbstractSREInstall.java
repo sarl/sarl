@@ -138,38 +138,55 @@ public abstract class AbstractSREInstall implements ISREInstall {
 		this.dirty = dirty;
 	}
 
-	@Override
-	public IStatus revalidate() {
+	/** Force the computation of the installation validity.
+	 *
+	 * @param ignoreCauses - a set of bits that indicates the invalidity causes to ignore.
+	 * @return the validity status.
+	 */
+	protected IStatus revalidate(int ignoreCauses) {
 		try {
 			setDirty(false);
 			resolveDirtyFields(false);
-			return getValidity();
+			return getValidity(ignoreCauses);
 		} catch (Throwable e) {
-			return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_GENERAL, e);
+			if ((ignoreCauses & CODE_GENERAL) == 0) {
+				return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_GENERAL, e);
+			}
+			return SARLEclipsePlugin.createOkStatus();
 		}
 	}
 
 	@Override
-	public IStatus getValidity() {
+	public final IStatus revalidate() {
+		return revalidate(0);
+	}
+
+	@Override
+	public final IStatus getValidity() {
+		return getValidity(0);
+	}
+
+	@Override
+	public IStatus getValidity(int ignoreCauses) {
 		if (isDirty()) {
-			return revalidate();
+			return revalidate(ignoreCauses);
 		}
 		IStatus s = null;
 		try {
-			if (!isStandalone()) {
+			if (!isStandalone() && (ignoreCauses & CODE_STANDALONE_SRE) == 0) {
 				return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_STANDALONE_SRE, Messages.AbstractSREInstall_5);
 			}
 			String mainClass = getMainClass();
-			if (Strings.isNullOrEmpty(mainClass)) {
+			if (Strings.isNullOrEmpty(mainClass) && (ignoreCauses & CODE_MAIN_CLASS) == 0) {
 				return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_MAIN_CLASS, Messages.AbstractSREInstall_2);
 			}
 			String name = getName();
-			if (Strings.isNullOrEmpty(name)) {
+			if (Strings.isNullOrEmpty(name) && (ignoreCauses & CODE_NAME) == 0) {
 				return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_NAME, Messages.AbstractSREInstall_3);
 			}
-			s = getLibraryLocationValidity();
+			s = getLibraryLocationValidity(ignoreCauses);
 			if (s == null) {
-				s = getSARLVersionValidity();
+				s = getSARLVersionValidity(ignoreCauses);
 			}
 		} catch (Throwable e) {
 			//
@@ -180,29 +197,29 @@ public abstract class AbstractSREInstall implements ISREInstall {
 		return s;
 	}
 
-	private IStatus getLibraryLocationValidity() {
+	private IStatus getLibraryLocationValidity(int ignoreCauses) {
 		LibraryLocation[] locations = getLibraryLocations();
-		if (locations == null || locations.length == 0) {
+		if ((locations == null || locations.length == 0) &&  (ignoreCauses & CODE_LIBRARY_LOCATION) == 0) {
 			return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_LIBRARY_LOCATION, Messages.AbstractSREInstall_4);
 		}
 		return null;
 	}
 
-	private IStatus getSARLVersionValidity() {
+	private IStatus getSARLVersionValidity(int ignoreCauses) {
 		Bundle bundle = Platform.getBundle("io.sarl.lang"); //$NON-NLS-1$
 		if (bundle != null) {
 			Version sarlVersion = bundle.getVersion();
 			Version minVersion = SARLEclipsePlugin.parseVersion(getMinimalSARLVersion());
 			Version maxVersion = SARLEclipsePlugin.parseVersion(getMaximalSARLVersion());
 			int cmp = SARLEclipsePlugin.compareVersionToRange(sarlVersion, minVersion, maxVersion);
-			if (cmp < 0) {
+			if (cmp < 0 && (ignoreCauses & CODE_SARL_VERSION) == 0) {
 				return SARLEclipsePlugin.createStatus(IStatus.ERROR,
 						CODE_SARL_VERSION,
 						MessageFormat.format(
 								Messages.AbstractSREInstall_0,
 								sarlVersion.toString(),
 								minVersion.toString()));
-			} else if (cmp > 0) {
+			} else if (cmp > 0 && (ignoreCauses & CODE_SARL_VERSION) == 0) {
 				return SARLEclipsePlugin.createStatus(IStatus.ERROR,
 						CODE_SARL_VERSION,
 						MessageFormat.format(

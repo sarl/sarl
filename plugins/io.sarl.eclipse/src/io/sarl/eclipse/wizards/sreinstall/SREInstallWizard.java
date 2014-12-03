@@ -20,6 +20,7 @@
  */
 package io.sarl.eclipse.wizards.sreinstall;
 
+import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SREException;
@@ -46,12 +47,6 @@ import com.google.common.base.Strings;
  * @mavenartifactid $ArtifactId$
  */
 public abstract class SREInstallWizard extends Wizard {
-
-	/**
-	 * Extension point identifier for contributions of a wizard page that for a ISREInstall
-	 * (value <code>"sreInstallPage"</code>).
-	 */
-	public static final String EXTENSION_POINT_SRE_INSTALL_PAGES = "sreInstallPages"; //$NON-NLS-1$
 
 	private ISREInstall sre;
 	private String[] names;
@@ -100,7 +95,7 @@ public abstract class SREInstallWizard extends Wizard {
 	public AbstractSREInstallPage getPage(ISREInstall sre) {
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
 				SARLEclipsePlugin.PLUGIN_ID,
-				EXTENSION_POINT_SRE_INSTALL_PAGES);
+				SARLConfig.EXTENSION_POINT_SRE_INSTALL_PAGES);
 		if (sre != null && extensionPoint != null) {
 			IConfigurationElement firstTypeMatching = null;
 			for (IConfigurationElement info : extensionPoint.getConfigurationElements()) {

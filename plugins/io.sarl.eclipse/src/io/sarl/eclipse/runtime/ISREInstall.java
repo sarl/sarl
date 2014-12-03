@@ -55,23 +55,23 @@ public interface ISREInstall extends Cloneable {
 
 	/** Error code related to the required SARL version.
 	 */
-	int CODE_SARL_VERSION = 3;
+	int CODE_SARL_VERSION = 4;
 
 	/** Error code related to the main class name.
 	 */
-	int CODE_MAIN_CLASS = 4;
+	int CODE_MAIN_CLASS = 8;
 
 	/** Error code related to the name.
 	 */
-	int CODE_NAME = 5;
+	int CODE_NAME = 16;
 
 	/** Error code related to the source file.
 	 */
-	int CODE_SOURCE = 6;
+	int CODE_SOURCE = 32;
 
 	/** Error code related to the standalone SRE.
 	 */
-	int CODE_STANDALONE_SRE = 7;
+	int CODE_STANDALONE_SRE = 64;
 
 	/** Clone this SRE.
 	 * The clone has the same Id as the cloned object.
@@ -255,10 +255,21 @@ public interface ISREInstall extends Cloneable {
 	void setFromXML(Element element) throws IOException;
 
 	/** Validate the SRE.
+	 * The validation does not ignore any invalidity cause.
 	 *
 	 * @return the validation status.
+	 * @see #getValidity(int)
 	 */
 	IStatus getValidity();
+
+	/** Validate the SRE.
+	 * The validation does not ignore any invalidity cause.
+	 *
+	 * @param ignoreCauses - a set of bits that indicates the invalidity causes to ignore.
+	 * @return the validation status.
+	 * @see #getValidity()
+	 */
+	IStatus getValidity(int ignoreCauses);
 
 	/** Force the computation of the installation validity.
 	 *

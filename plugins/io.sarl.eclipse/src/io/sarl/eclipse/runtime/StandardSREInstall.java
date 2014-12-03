@@ -23,7 +23,6 @@ package io.sarl.eclipse.runtime;
 import io.sarl.eclipse.SARLEclipsePlugin;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
@@ -274,23 +273,25 @@ public class StandardSREInstall extends AbstractSREInstall {
 	}
 
 	@Override
-	public IStatus getValidity() {
+	public IStatus getValidity(int ignoreCauses) {
 		if (isDirty()) {
-			return revalidate();
+			return revalidate(ignoreCauses);
 		}
 		try {
 			IPath path = getJarFile();
-			if (path == null) {
+			if (path == null && (ignoreCauses & CODE_SOURCE) == 0) {
 				return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_SOURCE, Messages.StandardSREInstall_2);
 			}
-			File file = path.toFile();
-			if (file == null || !file.canRead()) {
-				throw new FileNotFoundException(Messages.StandardSREInstall_3);
+			File file = (path == null) ? null : path.toFile();
+			if ((file == null || !file.canRead()) && (ignoreCauses & CODE_SOURCE) == 0) {
+				return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_SOURCE, Messages.StandardSREInstall_3);
 			}
 		} catch (Throwable e) {
-			return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_GENERAL, e);
+			if ((ignoreCauses & CODE_GENERAL) == 0) {
+				return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_GENERAL, e);
+			}
 		}
-		return super.getValidity();
+		return super.getValidity(ignoreCauses);
 	}
 
 	/** {@inheritDoc}

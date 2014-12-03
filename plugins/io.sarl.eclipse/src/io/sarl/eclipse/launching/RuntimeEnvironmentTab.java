@@ -23,16 +23,22 @@ package io.sarl.eclipse.launching;
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.ProjectProvider;
+import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.runtime.SREConfigurationBlock;
-import io.sarl.eclipse.runtime.SREConfigurationBlock.SRECompliantProjectProvider;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaJRETab;
@@ -45,6 +51,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Version;
 
+import com.google.common.base.Strings;
+
 /**
  * Class for the configuration tab for the JRE and the SARL runtime environment.
  *
@@ -53,7 +61,7 @@ import org.osgi.framework.Version;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class RuntimeEnvironmentTab extends JavaJRETab implements SRECompliantProjectProvider {
+public class RuntimeEnvironmentTab extends JavaJRETab {
 
 	private SREConfigurationBlock sreBlock;
 	private IPropertyChangeListener listener;
@@ -74,24 +82,26 @@ public class RuntimeEnvironmentTab extends JavaJRETab implements SRECompliantPro
 		return "io.sarl.eclipse.debug.ui.sarlRuntimeEnvironmentTab"; //$NON-NLS-1$
 	}
 
-	@Override
-	public IProject getSRECompliantProject() {
-		ILaunchConfiguration config = getLaunchConfigurationWorkingCopy();
-		if (config == null) {
-			config = getLaunchConfiguration();
-		}
-		if (config != null) {
-			try {
-				String name = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String) null);
-				if (name != null && name.length() > 0) {
-					IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
-					if (project.exists()) {
-						return project;
+	private static List<ProjectSREProviderFactory> getProviderFromExtension() {
+		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+				SARLEclipsePlugin.PLUGIN_ID,
+				SARLConfig.EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY);
+		if (extensionPoint != null) {
+			List<ProjectSREProviderFactory> providers = new ArrayList<>();
+			for (IConfigurationElement element : extensionPoint.getConfigurationElements()) {
+				try {
+					Object obj = element.createExecutableExtension("class"); //$NON-NLS-1$
+					if (obj instanceof ProjectSREProviderFactory) {
+						providers.add((ProjectSREProviderFactory) obj);
+					} else {
+						SARLEclipsePlugin.logErrorMessage(
+								"Cannot instance extension point: " + element.getName()); //$NON-NLS-1$
 					}
+				} catch (CoreException e) {
+					SARLEclipsePlugin.log(e);
 				}
-			} catch (CoreException e) {
-				SARLEclipsePlugin.log(e);
 			}
+			return providers;
 		}
 		return null;
 	}
@@ -101,7 +111,12 @@ public class RuntimeEnvironmentTab extends JavaJRETab implements SRECompliantPro
 		super.createControl(parent);
 		Composite oldComp = (Composite) getControl();
 		Control[] children = oldComp.getChildren();
-		this.sreBlock = new SREConfigurationBlock(true, this);
+		
+		ProjectProvider projectProvider = new ProjectAdapter();
+		List<ProjectSREProviderFactory> sreProviderFactories = getProviderFromExtension();
+		sreProviderFactories.add(new StandardProjectSREProviderFactory());
+
+		this.sreBlock = new SREConfigurationBlock(true, projectProvider, sreProviderFactories);
 		this.sreBlock.createControl(parent);
 		for (Control ctl : children) {
 			ctl.setParent(this.sreBlock.getControl());
@@ -232,8 +247,15 @@ public class RuntimeEnvironmentTab extends JavaJRETab implements SRECompliantPro
 					SARLEclipsePlugin.EMPTY_STRING);
 			ISREInstall sre = SARLRuntime.getSREFromId(id);
 			if (sre == null) {
-				status = SARLEclipsePlugin.createStatus(IStatus.ERROR, MessageFormat.format(
-						Messages.RuntimeEnvironmentTab_6, id));
+				sre = this.sreBlock.getSelectedSRE();
+			}
+			if (sre == null) {
+				if (Strings.isNullOrEmpty(id)) {
+					status = SARLEclipsePlugin.createStatus(IStatus.ERROR, Messages.RuntimeEnvironmentTab_7);
+				} else {
+					status = SARLEclipsePlugin.createStatus(IStatus.ERROR, MessageFormat.format(
+							Messages.RuntimeEnvironmentTab_6, id));
+				}
 			} else {
 				status = this.sreBlock.validate(sre);
 			}
@@ -303,6 +325,45 @@ public class RuntimeEnvironmentTab extends JavaJRETab implements SRECompliantPro
 		configuration.setAttribute(
 				SARLConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
 				Boolean.toString(this.sreBlock.isProjectSRE()));
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private class ProjectAdapter implements ProjectProvider {
+
+		/**
+		 */
+		public ProjectAdapter() {
+			//
+		}
+
+		@Override
+		@SuppressWarnings("synthetic-access")
+		public IProject getProject() {
+			ILaunchConfiguration config = getLaunchConfigurationWorkingCopy();
+			if (config == null) {
+				config = getLaunchConfiguration();
+			}
+			if (config != null) {
+				try {
+					String name = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String) null);
+					if (name != null && name.length() > 0) {
+						IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
+						if (project.exists()) {
+							return project;
+						}
+					}
+				} catch (CoreException e) {
+					SARLEclipsePlugin.log(e);
+				}
+			}
+			return null;
+		}
+
 	}
 
 }

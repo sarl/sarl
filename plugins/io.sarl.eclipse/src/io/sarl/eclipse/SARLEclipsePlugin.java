@@ -172,7 +172,7 @@ public final class SARLEclipsePlugin extends Plugin {
 	 * @return the status.
 	 */
 	public static IStatus createStatus(int severity, int code, String message) {
-		return new Status(severity, PLUGIN_ID, message);
+		return new Status(severity, PLUGIN_ID, code, message, null);
 	}
 
 	/**

@@ -58,6 +58,7 @@
 	<suppress checks="MethodLength" files="SARLRuntime.java"/>
 	<suppress checks="ClassDataAbstractionCoupling" files="SARLRuntime.java"/>
 	<suppress checks="NestedIfDepth" files="SARLRuntime.java"/>
+	<suppress checks="MethodCount" files="SARLRuntime.java"/>
 
 	<suppress checks="MethodLength" files="StandardSREPage.java"/>
 

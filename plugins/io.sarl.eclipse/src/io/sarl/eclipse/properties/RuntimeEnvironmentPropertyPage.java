@@ -99,7 +99,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 
 	@Override
 	protected Control createPreferenceContent(Composite composite) {
-		this.sreBlock = new SREConfigurationBlock(true, null);
+		this.sreBlock = new SREConfigurationBlock(true, null, null);
 		Control ctrl = this.sreBlock.createControl(composite);
 		this.sreBlock.initialize();
 		try {
