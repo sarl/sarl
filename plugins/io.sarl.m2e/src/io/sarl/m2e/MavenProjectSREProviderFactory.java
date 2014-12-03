@@ -60,19 +60,21 @@ public class MavenProjectSREProviderFactory implements ProjectSREProviderFactory
 					&& project.hasNature(SARLConfig.NATURE_ID)) {
 				IMavenProjectFacade facade = MavenPluginActivator.getDefault()
 						.getMavenProjectManager().getProject(project);
-				if (facade != null) {
-					IJavaProject javaProject = JavaCore.create(project);
-					IClasspathEntry[] classpath = javaProject.getResolvedClasspath(true);
-					if (classpath != null) {
-						for(IClasspathEntry dep : classpath) {
-							IPath depPath = dep.getPath();
-							if (SARLRuntime.isPackedSRE(depPath)) {
-								return new MavenProjectSREProvider(
-										facade.getArtifactKey().toString()
-										+ ":" + depPath.lastSegment(), //$NON-NLS-1$
-										depPath);
-							}
-						}
+				if (facade == null) {
+					return null;
+				}
+				IJavaProject javaProject = JavaCore.create(project);
+				IClasspathEntry[] classpath = javaProject.getResolvedClasspath(true);
+				if (classpath == null) {
+					return null;
+				}
+				for (IClasspathEntry dep : classpath) {
+					IPath depPath = dep.getPath();
+					if (SARLRuntime.isPackedSRE(depPath)) {
+						return new MavenProjectSREProvider(
+								facade.getArtifactKey().toString()
+								+ ":" + depPath.lastSegment(), //$NON-NLS-1$
+								depPath);
 					}
 				}
 			}
