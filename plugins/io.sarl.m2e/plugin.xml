@@ -12,4 +12,10 @@
            name="SARL Project Configurator">
      </configurator>
   </extension>
+   <extension
+         point="io.sarl.eclipse.projectSREProviderFactory">
+     <projectSREProviderFactory
+           class="io.sarl.m2e.MavenProjectSREProviderFactory">
+     </projectSREProviderFactory>
+   </extension>
 </plugin>

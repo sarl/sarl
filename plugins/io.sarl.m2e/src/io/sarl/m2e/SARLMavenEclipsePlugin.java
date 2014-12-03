@@ -20,6 +20,7 @@
  */
 package io.sarl.m2e;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
@@ -72,6 +73,30 @@ public class SARLMavenEclipsePlugin extends Plugin {
 			m = cause.getClass().getSimpleName();
 		}
 		return new Status(severity, PLUGIN_ID, m, cause);
+	}
+
+	/**
+	 * Logs an internal error with the specified throwable.
+	 *
+	 * @param e the exception to be logged
+	 */
+	public static void log(Throwable e) {
+		if (e instanceof CoreException) {
+			log(new Status(IStatus.ERROR, PLUGIN_ID,
+					e.getMessage(), e.getCause()));
+		} else {
+			log(new Status(IStatus.ERROR, PLUGIN_ID,
+					"Internal Error", e));   //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Logs the specified status with this plug-in's log.
+	 *
+	 * @param status status to log
+	 */
+	public static void log(IStatus status) {
+		getDefault().getLog().log(status);
 	}
 
 }

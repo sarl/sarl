@@ -99,7 +99,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		} else {
 			path = MavenProjectUtils.getProjectRelativePath(project, file.getAbsolutePath());
 		}
-	    return project.getFullPath().append(path);
+		return project.getFullPath().append(path);
 	}
 
 	private static IPath makeProjectRelativePath(IMavenProjectFacade facade, File file) {
@@ -305,7 +305,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		return config;
 	}
 
-	/** Remove any reference to the SARL libraries.
+	/** Remove any reference to the SARL libraries from the given classpath.
 	 *
 	 * @param classpath - the classpath to update.
 	 */
@@ -314,7 +314,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		classpath.removeEntry(SARLClasspathContainerInitializer.CONTAINER_ID);
 	}
 
-	/** Add the SARL libraries.
+	/** Add the SARL libraries into the given classpath.
 	 *
 	 * @param classpath - the classpath to update.
 	 */
@@ -384,10 +384,11 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	public void configureRawClasspath(ProjectConfigurationRequest request,
 			IClasspathDescriptor classpath, IProgressMonitor monitor)
 					throws CoreException {
+		IMavenProjectFacade facade = request.getMavenProjectFacade();
 		SARLConfiguration config = readConfiguration(request, monitor);
 		removeSarlLibraries(classpath);
-		addSourceFolders(request.getMavenProjectFacade(), config, classpath, monitor);
-		addPreferences(request.getMavenProjectFacade(), config, monitor);
+		addSourceFolders(facade, config, classpath, monitor);
+		addPreferences(facade, config, monitor);
 	}
 
 }
