@@ -7,6 +7,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: %Bundle-Vendor
 Export-Package: io.sarl.lang.annotation,
  io.sarl.lang.core,
+ io.sarl.lang.scoping.batch,
  io.sarl.lang.util
 Import-Package: javax.inject
+Require-Bundle: org.eclipse.xtext.xbase.lib;bundle-version="2.7.3"
 

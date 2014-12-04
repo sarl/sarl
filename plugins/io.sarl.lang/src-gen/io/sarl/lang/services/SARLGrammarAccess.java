@@ -1430,6 +1430,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		
 		////-----------------------------------------------
 		//// BELOW THIS POINT, THE RULES FROM XBASE ARE OVERLOADED
+		//// Variable declaration according to the SARL syntax (not the Xtext/Xtend)
 		//XVariableDeclaration returns xbase::XExpression:
 		//	{xbase::XVariableDeclaration} (writeable?="var" | "val") (=> (name=ValidID ":" type=JvmTypeReference) | name=ValidID)
 		//	("=" right=XExpression)?;
@@ -1508,6 +1509,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cParameterTypeAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
 		private final RuleCall cParameterTypeJvmTypeReferenceParserRuleCall_2_1_0 = (RuleCall)cParameterTypeAssignment_2_1.eContents().get(0);
 		
+		//// Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
 		//JvmFormalParameter returns jvm::JvmFormalParameter:
 		//	{jvm::JvmFormalParameter} name=ValidID (":" parameterType=JvmTypeReference)?;
 		public ParserRule getRule() { return rule; }
@@ -1547,6 +1549,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cParameterTypeAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cParameterTypeJvmTypeReferenceParserRuleCall_3_0 = (RuleCall)cParameterTypeAssignment_3.eContents().get(0);
 		
+		//// Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
 		//FullJvmFormalParameter returns jvm::JvmFormalParameter:
 		//	{jvm::JvmFormalParameter} name=ValidID ":" parameterType=JvmTypeReference;
 		public ParserRule getRule() { return rule; }
@@ -1632,6 +1635,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cEachExpressionAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cEachExpressionXExpressionParserRuleCall_3_0 = (RuleCall)cEachExpressionAssignment_3.eContents().get(0);
 		
+		//// The type of the for-loop's variable is following the SARL syntax (not the Xtext/Xtend)
 		//XForLoopExpression returns xbase::XExpression:
 		//	=> ({xbase::XForLoopExpression} "for" "(" declaredParam=XXLoopFormalParameter ":") forExpression=XExpression ")"
 		//	eachExpression=XExpression;
@@ -2094,6 +2098,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 
 	////-----------------------------------------------
 	//// BELOW THIS POINT, THE RULES FROM XBASE ARE OVERLOADED
+	//// Variable declaration according to the SARL syntax (not the Xtext/Xtend)
 	//XVariableDeclaration returns xbase::XExpression:
 	//	{xbase::XVariableDeclaration} (writeable?="var" | "val") (=> (name=ValidID ":" type=JvmTypeReference) | name=ValidID)
 	//	("=" right=XExpression)?;
@@ -2105,6 +2110,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getXVariableDeclarationAccess().getRule();
 	}
 
+	//// Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
 	//JvmFormalParameter returns jvm::JvmFormalParameter:
 	//	{jvm::JvmFormalParameter} name=ValidID (":" parameterType=JvmTypeReference)?;
 	public JvmFormalParameterElements getJvmFormalParameterAccess() {
@@ -2115,6 +2121,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getJvmFormalParameterAccess().getRule();
 	}
 
+	//// Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
 	//FullJvmFormalParameter returns jvm::JvmFormalParameter:
 	//	{jvm::JvmFormalParameter} name=ValidID ":" parameterType=JvmTypeReference;
 	public FullJvmFormalParameterElements getFullJvmFormalParameterAccess() {
@@ -2137,6 +2144,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getXXLoopFormalParameterAccess().getRule();
 	}
 
+	//// The type of the for-loop's variable is following the SARL syntax (not the Xtext/Xtend)
 	//XForLoopExpression returns xbase::XExpression:
 	//	=> ({xbase::XForLoopExpression} "for" "(" declaredParam=XXLoopFormalParameter ":") forExpression=XExpression ")"
 	//	eachExpression=XExpression;

@@ -20,19 +20,21 @@
  */
 package io.sarl.lang;
 
-import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
-import org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer;
-import org.eclipse.xtext.xbase.typesystem.util.ExtendedEarlyExitComputer;
-import org.eclipse.xtext.xbase.validation.EarlyExitValidator;
-import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
-
 import io.sarl.lang.controlflow.SARLEarlyExitComputer;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
+import io.sarl.lang.scoping.batch.SARLImplicitlyImportedFeatures;
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.DefaultActionSignatureProvider;
 import io.sarl.lang.validation.SARLConfigurableIssueCodesProvider;
 import io.sarl.lang.validation.SARLEarlyExitValidator;
 import io.sarl.lang.validation.SARLFeatureNameValidator;
+
+import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
+import org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer;
+import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
+import org.eclipse.xtext.xbase.typesystem.util.ExtendedEarlyExitComputer;
+import org.eclipse.xtext.xbase.validation.EarlyExitValidator;
+import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 
 /**
  * Use this class to register components to be used at runtime / without the
@@ -76,6 +78,14 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	@SuppressWarnings("static-method")
 	public Class<? extends EarlyExitValidator> bindEarlyExitValidator() {
 		return SARLEarlyExitValidator.class;
+	}
+
+	/** Replies the type of the implicitly imported code extensions.
+	 * @return the type of the implicitly imported code extensions.
+	 */
+	@SuppressWarnings("static-method")
+	public Class<? extends ImplicitlyImportedFeatures> bindImplicitlyImportedFeatures() {
+		return SARLImplicitlyImportedFeatures.class;
 	}
 
 	@Override
