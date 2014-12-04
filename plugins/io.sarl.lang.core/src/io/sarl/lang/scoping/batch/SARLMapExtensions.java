@@ -28,6 +28,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pair;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.collect.Maps;
@@ -52,6 +53,7 @@ public final class SARLMapExtensions {
 		//
 	}
 
+	@Pure
 	private static <K, V> Map<K, V> cloneMap(Map<K, V> oldMap) {
 		if (oldMap instanceof TreeMap<?, ?>) {
 			return Maps.newTreeMap((TreeMap<K, V>) oldMap);
@@ -76,7 +78,8 @@ public final class SARLMapExtensions {
 	 * @return the value previously associated to the key, or <code>null</code>
 	 * if the key was not present in the map before the addition.
 	 */
-	@Inline(value = "$1.put($2.getKey(), $2.getValue())")
+	@Pure
+	@Inline(value = "($1.put($2.getKey(), $2.getValue()))")
 	public static <K, V> V operator_add(Map<K, V> map, Pair<? extends K, ? extends V> entry) {
 		return map.put(entry.getKey(), entry.getValue());
 	}
@@ -89,6 +92,7 @@ public final class SARLMapExtensions {
 	 * @param inputMap - the entries to add.
 	 * @return the outputMap
 	 */
+	@Pure
 	public static <K, V> Map<K, V> operator_add(Map<K, V> outputMap, Map<? extends K, ? extends V> inputMap) {
 		outputMap.putAll(inputMap);
 		return outputMap;
@@ -102,6 +106,7 @@ public final class SARLMapExtensions {
 	 * @param entry - the entry (key, value) to add into the map.
 	 * @return a map with the content of the map and with the given entry.
 	 */
+	@Pure
 	public static <K, V> Map<K, V> operator_plus(Map<K, V> map, Pair<? extends K, ? extends V> entry) {
 		Map<K, V> newMap = cloneMap(map);
 		newMap.put(entry.getKey(), entry.getValue());
@@ -116,6 +121,7 @@ public final class SARLMapExtensions {
 	 * @param map - the map to consider.
 	 * @return a map with the content of the map and with the given entry.
 	 */
+	@Pure
 	public static <K, V> Map<K, V> operator_plus(Pair<? extends K, ? extends V> entry, Map<K, V> map) {
 		Map<K, V> newMap = cloneMap(map);
 		newMap.put(entry.getKey(), entry.getValue());
@@ -131,6 +137,7 @@ public final class SARLMapExtensions {
 	 * @param map2 - the second map.
 	 * @return a map with the merged contents from the two maps.
 	 */
+	@Pure
 	public static <K, V> Map<K, V> operator_plus(Map<K, V> map, Map<? extends K, ? extends V> map2) {
 		Map<K, V> newMap = cloneMap(map);
 		newMap.putAll(map2);
@@ -146,7 +153,8 @@ public final class SARLMapExtensions {
 	 * @return the removed value, or <code>null</code> if the key was not
 	 * present in the map.
 	 */
-	@Inline("$1.remove($2)")
+	@Pure
+	@Inline("($1.remove($2))")
 	public static <K, V> V operator_remove(Map<K, V> map, K key) {
 		return map.remove(key);
 	}
@@ -160,6 +168,7 @@ public final class SARLMapExtensions {
 	 * @return the removed value, or <code>null</code> if the key was not
 	 * present in the map.
 	 */
+	@Pure
 	public static <K, V> Map<K, V> operator_minus(Map<K, V> map, K key) {
 		Map<K, V> newMap = cloneMap(map);
 		newMap.remove(key);
@@ -175,7 +184,8 @@ public final class SARLMapExtensions {
 	 * @return the value, or <code>null</code> if the key is not
 	 * present in the map.
 	 */
-	@Inline("$1.get($2)")
+	@Pure
+	@Inline("($1.get($2))")
 	public static <K, V> V operator_mappedTo(Map<K, V> map, K key) {
 		return map.get(key);
 	}
