@@ -51,6 +51,6 @@ public class SARLImplicitlyImportedFeatures extends ImplicitlyImportedFeatures {
 		xtextList.add(0, SARLMapExtensions.class);
 		return xtextList;
 	}
-	
+
 }
 

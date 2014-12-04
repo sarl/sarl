@@ -37,7 +37,7 @@ import com.google.common.collect.Maps;
  * <p>
  * This extension is provided for the elements that are not (yet) provided
  * by the Xbase API.
- * 
+ *
  * FIXME: Remove if Xbase or Xtend are providing these functions.
  *
  * @author $Author: sgalland$
@@ -46,7 +46,11 @@ import com.google.common.collect.Maps;
  * @mavenartifactid $ArtifactId$
  */
 @GwtCompatible
-public class SARLMapExtensions {
+public final class SARLMapExtensions {
+
+	private SARLMapExtensions() {
+		//
+	}
 
 	private static <K, V> Map<K, V> cloneMap(Map<K, V> oldMap) {
 		if (oldMap instanceof TreeMap<?, ?>) {
@@ -62,21 +66,25 @@ public class SARLMapExtensions {
 		}
 		return Maps.newHashMap(oldMap);
 	}
-	
+
 	/** Add the given pair into the map.
-	 * 
+	 *
+	 * @param <K> - type of the map keys.
+	 * @param <V> - type of the map values.
 	 * @param map - the map to update.
 	 * @param entry - the entry (key, value) to add into the map.
 	 * @return the value previously associated to the key, or <code>null</code>
 	 * if the key was not present in the map before the addition.
 	 */
-	@Inline(value="$1.put($2.getKey(), $2.getValue())")
+	@Inline(value = "$1.put($2.getKey(), $2.getValue())")
 	public static <K, V> V operator_add(Map<K, V> map, Pair<? extends K, ? extends V> entry) {
 		return map.put(entry.getKey(), entry.getValue());
 	}
 
 	/** Add the given entries of the input map into the output map.
-	 * 
+	 *
+	 * @param <K> - type of the map keys.
+	 * @param <V> - type of the map values.
 	 * @param outputMap - the map to update.
 	 * @param inputMap - the entries to add.
 	 * @return the outputMap
@@ -87,7 +95,9 @@ public class SARLMapExtensions {
 	}
 
 	/** Add the given pair to a given map for obtaining a new map.
-	 * 
+	 *
+	 * @param <K> - type of the map keys.
+	 * @param <V> - type of the map values.
 	 * @param map - the map to consider.
 	 * @param entry - the entry (key, value) to add into the map.
 	 * @return a map with the content of the map and with the given entry.
@@ -99,7 +109,9 @@ public class SARLMapExtensions {
 	}
 
 	/** Add the given pair to a given map for obtaining a new map.
-	 * 
+	 *
+	 * @param <K> - type of the map keys.
+	 * @param <V> - type of the map values.
 	 * @param entry - the entry (key, value) to add into the map.
 	 * @param map - the map to consider.
 	 * @return a map with the content of the map and with the given entry.
@@ -112,7 +124,9 @@ public class SARLMapExtensions {
 
 	/** Merge the given maps.
 	 * If a key exists in the two maps, the value in the second map is retained.
-	 * 
+	 *
+	 * @param <K> - type of the map keys.
+	 * @param <V> - type of the map values.
 	 * @param map - the first map.
 	 * @param map2 - the second map.
 	 * @return a map with the merged contents from the two maps.
@@ -124,7 +138,9 @@ public class SARLMapExtensions {
 	}
 
 	/** Remove a key from the given map.
-	 * 
+	 *
+	 * @param <K> - type of the map keys.
+	 * @param <V> - type of the map values.
 	 * @param map - the map to update.
 	 * @param key - the key to remove.
 	 * @return the removed value, or <code>null</code> if the key was not
@@ -136,7 +152,9 @@ public class SARLMapExtensions {
 	}
 
 	/** Create a copy of the given map without the given key.
-	 * 
+	 *
+	 * @param <K> - type of the map keys.
+	 * @param <V> - type of the map values.
 	 * @param map - the map to update.
 	 * @param key - the key to remove.
 	 * @return the removed value, or <code>null</code> if the key was not
@@ -149,7 +167,9 @@ public class SARLMapExtensions {
 	}
 
 	/** Replies the value associated to the key in the given map.
-	 * 
+	 *
+	 * @param <K> - type of the map keys.
+	 * @param <V> - type of the map values.
 	 * @param map - the map.
 	 * @param key - the key.
 	 * @return the value, or <code>null</code> if the key is not

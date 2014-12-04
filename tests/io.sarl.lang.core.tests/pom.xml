@@ -29,6 +29,16 @@
 			<artifactId>io.sarl.lang.core</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.lang</groupId>
+			<artifactId>io.sarl.lang.core</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 </project>

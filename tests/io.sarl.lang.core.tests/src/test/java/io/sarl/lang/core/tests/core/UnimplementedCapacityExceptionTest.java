@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.core.tests;
+package io.sarl.lang.core.tests.core;
 
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.UnimplementedCapacityException;

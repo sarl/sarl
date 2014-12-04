@@ -120,7 +120,7 @@ public class SARLProjectCreationWizard extends NewElementWizard implements IExec
 		if (path != null) {
 			IPath pathInProject = javaProject.getProject().getFullPath().append(path);
 			try {
-				for(IClasspathEntry entry : javaProject.getRawClasspath()) {
+				for (IClasspathEntry entry : javaProject.getRawClasspath()) {
 					if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE
 							&& pathInProject.equals(entry.getPath())) {
 						return true;
@@ -133,8 +133,31 @@ public class SARLProjectCreationWizard extends NewElementWizard implements IExec
 		return false;
 	}
 
+	private static String buildInvalidOutputPathMessageFragment(IJavaProject javaProject) {
+		StringBuilder sourceFolders = new StringBuilder();
+		try {
+			for (IClasspathEntry entry : javaProject.getRawClasspath()) {
+				if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+					sourceFolders.append("\t"); //$NON-NLS-1$
+					sourceFolders.append(entry.getPath().toOSString());
+					sourceFolders.append("\n"); //$NON-NLS-1$
+				}
+			}
+		} catch (Throwable _) {
+			//
+		}
+		return sourceFolders.toString();
+	}
+
+	private static String toOSString(IPath path) {
+		if (path == null) {
+			return SARLEclipsePlugin.EMPTY_STRING;
+		}
+		return path.toOSString();
+	}
+
 	/** Validate the SARL properties of the new projects.
-	 * 
+	 *
 	 * @param element - the created element
 	 * @return validity
 	 */
@@ -149,25 +172,12 @@ public class SARLProjectCreationWizard extends NewElementWizard implements IExec
 			outputPath = generalPath;
 		}
 		if (!hasSourcePath(javaProject, outputPath)) {
-			StringBuilder sourceFolders = new StringBuilder();
-			try {
-				for(IClasspathEntry entry : javaProject.getRawClasspath()) {
-					if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-						sourceFolders.append("\t"); //$NON-NLS-1$
-						sourceFolders.append(entry.getPath().toOSString());
-						sourceFolders.append("\n"); //$NON-NLS-1$
-					}
-				}
-			} catch (Throwable _) {
-				//
-			}
-
 			String message = MessageFormat.format(
 					Messages.SARLProjectCreationWizard_0,
-					outputPath == null ? null : outputPath.toOSString(),
-							projectPath == null ? null : projectPath.toOSString(),
-									generalPath == null ? null : generalPath.toOSString(),
-											sourceFolders.toString());
+					toOSString(outputPath),
+					toOSString(projectPath),
+					toOSString(generalPath),
+					buildInvalidOutputPathMessageFragment(javaProject));
 			IStatus status = SARLEclipsePlugin.createStatus(IStatus.ERROR, message);
 
 			handleFinishException(getShell(), new InvocationTargetException(new CoreException(status)));
