@@ -478,7 +478,7 @@
    </extension>
    <extension point="org.eclipse.ui.editorActions">
       <editorContribution targetID="io.sarl.lang.SARL" 
-                          id="io.sarl.lang.SARL.ide.rulerActions">
+                          id="io.sarl.lang.SARL.rulerActions">
 	     <action
 	             label="Not Used"
 	             class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
@@ -489,26 +489,26 @@
    </extension>
    <extension point="org.eclipse.ui.popupMenus">
       <viewerContribution
-         targetID="io.sarl.lang.SARL.ide.rulerContextMenu"
-         id="io.sarl.lang.SARL.ide.RulerPopupActions">
+         targetID="io.sarl.lang.SARL.RulerContext"
+         id="io.sarl.lang.SARL.RulerPopupActions">
          <action
             label="Toggle Breakpoint"
             class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
             menubarPath="debug"
-            id="io.sarl.lang.SARL.ide.rulerContextMenu.toggleBreakpointAction">
+            id="io.sarl.lang.SARL.rulerContextMenu.toggleBreakpointAction">
          </action>
          <action
             label="Not used"
             class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
             menubarPath="debug"
-            id="io.sarl.lang.SARL.ide.rulerContextMenu.enableDisableBreakpointAction">
+            id="io.sarl.lang.SARL.rulerContextMenu.enableDisableBreakpointAction">
          </action>
          <action
            label="Breakpoint Properties"
            helpContextId="breakpoint_properties_action_context"
            class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.jdt.debug.ui.actions.JavaBreakpointPropertiesRulerActionDelegate"
            menubarPath="group.properties"
-           id="io.sarl.lang.SARL.ide.rulerContextMenu.openBreapointPropertiesAction">
+           id="io.sarl.lang.SARL.rulerContextMenu.openBreapointPropertiesAction">
          </action>
       </viewerContribution>
    </extension>

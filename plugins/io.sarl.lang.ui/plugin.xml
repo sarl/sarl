@@ -468,6 +468,7 @@
 			</command>
 		</menuContribution>
 	</extension>
+	<!-- Breakpoints -->
 	<extension
          point="org.eclipse.core.runtime.adapters">
       <factory class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.builder.smap.StratumBreakpointAdapterFactory"
@@ -479,7 +480,7 @@
       <editorContribution targetID="io.sarl.lang.SARL" 
                           id="io.sarl.lang.SARL.ide.rulerActions">
 	     <action
-	             label="%action.label"
+	             label="%action.label.0"
 	             class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
 	             style="push"
 	             actionID="RulerDoubleClick"
@@ -488,16 +489,84 @@
    </extension>
    <extension point="org.eclipse.ui.popupMenus">
       <viewerContribution
-         targetID="example.rulerContextMenuId"
-         id="io.sarl.lang.SARL.ide.RulerPopupActions">
+         targetID="io.sarl.lang.SARL.RulerContext"
+         id="io.sarl.lang.SARL.RulerPopupActions">
          <action
             label="%action.label.0"
             class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
-            menubarPath="additions"
-            id="io.sarl.lang.SARL.ide.rulerContextMenu.toggleBreakpointAction">
+            menubarPath="debug"
+            id="io.sarl.lang.SARL.rulerContextMenu.toggleBreakpointAction">
+         </action>
+         <action
+            label="%action.label"
+            class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+            menubarPath="debug"
+            id="io.sarl.lang.SARL.rulerContextMenu.enableDisableBreakpointAction">
+         </action>
+         <action
+           label="%action.label.1"
+           helpContextId="breakpoint_properties_action_context"
+           class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.jdt.debug.ui.actions.JavaBreakpointPropertiesRulerActionDelegate"
+           menubarPath="group.properties"
+           id="io.sarl.lang.SARL.rulerContextMenu.openBreapointPropertiesAction">
          </action>
       </viewerContribution>
    </extension>
+   <!--
+   	<extension point="org.eclipse.ui.handlers">
+		<handler 
+			class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+			commandId="io.sarl.lang.SARL.breakpoint.ToggleBreakpointCommand">
+			<activeWhen>
+				<reference definitionId="io.sarl.lang.SARL.Editor.opened"/>
+			</activeWhen>
+		</handler>
+		<handler 
+			class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+			commandId="io.sarl.lang.SARL.breakpoint.EnableDisableBreakpointCommand">
+			<activeWhen>
+				<reference definitionId="io.sarl.lang.SARL.Editor.opened"/>
+			</activeWhen>
+		</handler>
+		<handler 
+			class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.jdt.debug.ui.actions.JavaBreakpointPropertiesRulerActionDelegate"
+			commandId="io.sarl.lang.SARL.breakpoint.OpenBreakpointPropertyCommand">
+			<activeWhen>
+				<reference definitionId="io.sarl.lang.SARL.Editor.opened"/>
+			</activeWhen>
+		</handler>
+	</extension>
+	<extension point="org.eclipse.ui.commands">
+		<command
+			description="%action.label.0"
+			id="io.sarl.lang.SARL.breakpoint.ToggleBreakpointCommand"
+			name="%action.label.0"/>
+		<command
+			description="%action.label"
+			id="io.sarl.lang.SARL.breakpoint.EnableDisableBreakpointCommand"
+			name="%action.label"/>
+		<command
+		    helpContextId="breakpoint_properties_action_context"
+			description="%action.label.1"
+			id="io.sarl.lang.SARL.breakpoint.OpenBreakpointPropertyCommand"
+			name="%action.label.1"/>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution locationURI="popup:io.sarl.lang.SARL.RulerContext?after=debug">
+	      <command 
+	            commandId="io.sarl.lang.SARL.breakpoint.ToggleBreakpointCommand" 
+	            id="io.sarl.lang.SARL.rulerContextMenu.toggleBreakpointAction"/>
+	      <command 
+	            commandId="io.sarl.lang.SARL.breakpoint.EnableDisableBreakpointCommand" 
+	            id="io.sarl.lang.SARL.rulerContextMenu.enableDisableBreakpointAction"/>
+		</menuContribution>
+		<menuContribution locationURI="popup:io.sarl.lang.SARL.RulerContext?after=group.properties">
+	      <command 
+	            commandId="io.sarl.lang.SARL.breakpoint.OpenBreakpointPropertyCommand" 
+	            id="io.sarl.lang.SARL.rulerContextMenu.openBreapointPropertiesAction"/>
+		</menuContribution>
+	</extension>
+	-->
    
     <!-- Introduce Local Variable Refactoring -->
 	<extension point="org.eclipse.ui.handlers">
