@@ -22,7 +22,6 @@ package io.sarl.eclipse.natures;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectNature;
-
 import org.eclipse.core.runtime.CoreException;
 
 /**
@@ -36,7 +35,7 @@ import org.eclipse.core.runtime.CoreException;
 public class SARLProjectNature implements IProjectNature {
 
 	private IProject project;
-
+	
 	@Override
 	public void configure() throws CoreException {
 		//

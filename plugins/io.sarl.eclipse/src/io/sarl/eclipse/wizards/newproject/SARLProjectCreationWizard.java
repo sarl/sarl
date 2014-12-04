@@ -24,8 +24,10 @@ import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
 import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.lang.ui.preferences.SARLProjectPreferences;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,13 +38,14 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart;
 import org.eclipse.jdt.internal.ui.util.ExceptionHandler;
@@ -113,6 +116,67 @@ public class SARLProjectCreationWizard extends NewElementWizard implements IExec
 		this.fFirstPage.init(getSelection(), getActivePart());
 	}
 
+	private static boolean hasSourcePath(IJavaProject javaProject, IPath path) {
+		if (path != null) {
+			IPath pathInProject = javaProject.getProject().getFullPath().append(path);
+			try {
+				for(IClasspathEntry entry : javaProject.getRawClasspath()) {
+					if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE
+							&& pathInProject.equals(entry.getPath())) {
+						return true;
+					}
+				}
+			} catch (Throwable _) {
+				//
+			}
+		}
+		return false;
+	}
+
+	/** Validate the SARL properties of the new projects.
+	 * 
+	 * @param element - the created element
+	 * @return validity
+	 */
+	protected boolean validateSARLSpecificElements(IJavaElement element) {
+		IJavaProject javaProject = (IJavaProject) element;
+		// Check if the "SARL" generation directory is a source folder.
+		IPath projectPath = SARLProjectPreferences.getSARLOutputPathFor(javaProject.getProject());
+		IPath outputPath = projectPath;
+		IPath generalPath = null;
+		if (outputPath == null) {
+			generalPath = SARLProjectPreferences.getSARLOutputPathFor(null);
+			outputPath = generalPath;
+		}
+		if (!hasSourcePath(javaProject, outputPath)) {
+			StringBuilder sourceFolders = new StringBuilder();
+			try {
+				for(IClasspathEntry entry : javaProject.getRawClasspath()) {
+					if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+						sourceFolders.append("\t"); //$NON-NLS-1$
+						sourceFolders.append(entry.getPath().toOSString());
+						sourceFolders.append("\n"); //$NON-NLS-1$
+					}
+				}
+			} catch (Throwable _) {
+				//
+			}
+
+			String message = MessageFormat.format(
+					Messages.SARLProjectCreationWizard_0,
+					outputPath == null ? null : outputPath.toOSString(),
+							projectPath == null ? null : projectPath.toOSString(),
+									generalPath == null ? null : generalPath.toOSString(),
+											sourceFolders.toString());
+			IStatus status = SARLEclipsePlugin.createStatus(IStatus.ERROR, message);
+
+			handleFinishException(getShell(), new InvocationTargetException(new CoreException(status)));
+
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	protected void finishPage(IProgressMonitor monitor) throws InterruptedException, CoreException {
 		// use the full progress monitor
@@ -128,6 +192,11 @@ public class SARLProjectCreationWizard extends NewElementWizard implements IExec
 				newElement = getCreatedElement();
 			} catch (Throwable e) {
 				handleFinishException(getShell(), new InvocationTargetException(e));
+				return false;
+			}
+
+			// Validate the SARL specific elements
+			if (!validateSARLSpecificElements(newElement)) {
 				return false;
 			}
 
@@ -192,14 +261,8 @@ public class SARLProjectCreationWizard extends NewElementWizard implements IExec
 
 		try {
 			addNatures(javaProject.getProject());
-		} catch (JavaModelException e) {
-			SARLEclipsePlugin.log(e);
-		} catch (CoreException e) {
-			SARLEclipsePlugin.log(e);
-		}
 
-		// Set the SRE configuration
-		try {
+			// Set the SRE configuration
 			IProject project = javaProject.getProject();
 			ISREInstall sre = this.fFirstPage.getSRE();
 			boolean useDefaultSRE = (sre == null || this.fFirstPage.isSystemDefaultSRE());

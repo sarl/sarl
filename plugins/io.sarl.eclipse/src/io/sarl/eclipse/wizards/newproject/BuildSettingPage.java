@@ -598,7 +598,7 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 			}
 
 			String newProjectCompliance = this.fKeepContent ? null : this.fFirstPage.getCompilerCompliance();
-			configureJavaProject(newProjectCompliance, new SubProgressMonitor(monitor, 2));
+			configureJavaProject(newProjectCompliance, new SubProgressMonitor(monitor, 1));
 		} catch (Throwable e) {
 			if (this.fCurrProject != null) {
 				removeProvisonalProject();

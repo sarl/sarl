@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.xtext.builder.EclipseOutputConfigurationProvider;
 import org.eclipse.xtext.builder.preferences.BuilderPreferenceAccess;
@@ -33,6 +34,7 @@ import org.eclipse.xtext.generator.OutputConfiguration;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock;
 
+import com.google.common.base.Strings;
 import com.google.inject.Injector;
 
 /** Utilities related to the preferences on a SARL project.
@@ -143,6 +145,32 @@ public final class SARLProjectPreferences {
 					EclipseOutputConfigurationProvider.OUTPUT_CLEAN_DIRECTORY);
 			preferenceStore.setValue(key, true);
 		}
+	}
+
+	/** Replies the output path for the generated sources that is registered inside the project's preferences.
+	 * If the project has no specific configuration, replies <code>null</code>.
+	 *
+	 * @param project - the project.
+	 * @return the output path for SARL compiler if the project has a specific configuration,
+	 * otherwise <code>null</code>.
+	 */
+	public static IPath getSARLOutputPathFor(
+			IProject project) {
+		IPreferenceStore preferenceStore = SARLProjectPreferences.getSARLPreferencesFor(project);
+		if (preferenceStore.getBoolean(OptionsConfigurationBlock.IS_PROJECT_SPECIFIC)) {
+			String key;
+			for (OutputConfiguration projectConfiguration
+					: SARLProjectPreferences.getXtextConfigurationsFor(project)) {
+				key = BuilderPreferenceAccess.getKey(
+						projectConfiguration,
+						EclipseOutputConfigurationProvider.OUTPUT_DIRECTORY);
+				String path = preferenceStore.getString(key);
+				if (!Strings.isNullOrEmpty(path)) {
+					return Path.fromOSString(path);
+				}
+			}
+		}
+		return null;
 	}
 
 }
