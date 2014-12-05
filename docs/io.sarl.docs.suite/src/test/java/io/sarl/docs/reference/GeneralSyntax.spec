@@ -37,6 +37,7 @@ import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.assumeFalse
+import java.util.Map
 
 /* @outline
  * 
@@ -1385,8 +1386,21 @@ describe "General Syntax Reference" {
 		 * </thead><tbody>
 		 * <tr><td>c += e</td><td>operator_add</td><td>Equivalent to: <code>c.add(e)</code></td></tr>
 		 * <tr><td>c -= e</td><td>operator_remove</td><td>Equivalent to: <code>c.remove(e)<code></td></tr>
+		 * <tr><td>c1 + c2</td><td>operator_plus</td><td>Create a collection that is containing the elements of the
+		 *                                               collections <code>c1</code> and <code>c2</code>.</td></tr>
+		 * <tr><td>m + p<br/>
+		 *         p + m</td><td>operator_plus</td><td>Create a map of type <code>Map&lt;A,B&gt;</code>
+		 *                                             that is containing the elements of the
+		 *                                             map <code>m</code> and the new pair <code>p</code> of type
+		 *                                             <code>Pair&lt;A,B&gt;</code>.</td></tr>
+		 * <tr><td>m - p</td><td>operator_plus</td><td>Create a map of type <code>Map&lt;A,B&gt;</code>
+		 *                                             that is containing the elements of the
+		 *                                             map <code>m</code>, except the pair <code>p</code> of type
+		 *                                             <code>Pair&lt;A,B&gt;</code>.</td></tr>
 		 * <tr><td>a -&gt; b</td><td>operator_mappedTo</td><td>Create an instance of <code>Pair&lt;A,B&gt;</code> where
 		 *                           <code>A</code> and <code>B</code> are the types of a and b respectively.</td></tr>
+		 * <tr><td>m -&gt; k</td><td>operator_mappedTo</td><td>This specific operator is dedicated to map.
+		 *                      It is equivalent to: <code>m.get(k)</code>.</td></tr>
 		 * </tbody></table>
 		 * 
 		 * @filter(.*) 
@@ -1394,12 +1408,29 @@ describe "General Syntax Reference" {
 		fact "Collection Operators" {
 			"#Operator_Overloading" should beAccessibleFrom this
 
-			"var c = newArrayList c += 3".toBool should be true
-			"var c = newArrayList c -= 3".toBool should be false
-
 			var pair = to("4 -> 'a'", typeof(Pair))			
 			pair.key should be 4
 			pair.value should be 'a'
+
+			"var c = newArrayList; c += 3".toBool should be true
+			"var c = newArrayList; c -= 3".toBool should be false
+
+			"var c = newHashSet; c += 3".toBool should be true
+			"var c = newHashSet; c -= 3".toBool should be false
+
+			"var c = newHashMap(5->'b'); c += (4 -> 'a'); c".to(typeof(Map)) should be #{4 -> 'a',5 -> 'b'}
+			"var c = newHashMap(5->'b', 4->'c'); c -= 4; c".to(typeof(Map)) should be #{5 -> 'b'}
+
+			"var c1=newArrayList(1,2); var c2=newArrayList(3,4); var r = (c1 + c2); r".to(typeof(Iterable)).iterator should iterate #[1,2,3,4]
+
+			"var c1=newHashMap(5->'b'); var c2=newHashMap(4->'a'); var r = (c1 + c2); r".to(typeof(Map)) should be #{4->'a',5->'b'}
+
+			"var c=newHashMap(5->'b'); var r = (c + (4->'a')); r".to(typeof(Map)) should be #{4->'a',5->'b'}
+			"var c=newHashMap(5->'b'); var r = ((4->'a') + c); r".to(typeof(Map)) should be #{4->'a',5->'b'}
+
+			"var c=newHashMap(4->'a',5->'b'); var r = (c - 4); r".to(typeof(Map)) should be #{5->'b'}
+			"var c=newHashMap(4->'a',5->'b'); var r = (c->5); r".toStr should be "b"
+			"var c=newHashMap(4->'a',5->'b'); var r = (c->6); r".toStr should be nullValue
 		}
 
 		/** The assignment operators are listed below.
@@ -2516,7 +2547,7 @@ describe "General Syntax Reference" {
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
-		fact "Import Static Extension Methods"{
+		fact "Import static extension methods"{
 			'''
 			import static extension java.util.Collections.*
 			agent A {
@@ -2556,6 +2587,696 @@ describe "General Syntax Reference" {
 				"}")
 		}
 		
+		/* The `String` class is extended with the following functions, where
+		 * s is a `String`.
+		 * 
+		 * <table><thead>
+		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>s.isNullOrEmpty()</td><td>Replies if s is null or empty.</td></tr>
+		 * <tr><td>s.toFirstLower()</td><td>Replies a copy of s in which the first letter is lowercase.</td></tr>
+		 * <tr><td>s.toFirstUpper()</td><td>Replies a copy of s in which the first letter is uppercase.</td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
+		 */
+		fact "String extension" {
+			'''
+			package io.sarl.docs.reference.gsr
+			agent A {
+				var s : String
+				def example0 : boolean {
+					s.isNullOrEmpty
+				}
+				def example1 : String {
+					s.toFirstLower
+				}
+				def example2 : String {
+					s.toFirstUpper
+				}
+			}
+			'''.parseSuccessfully
+		}
+	
+		/* The integer numbers have extension functions below, where
+		 * a and b are numbers.
+		 * 
+		 * <table><thead>
+		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>a.bitwiseAnd(b)</td><td>The bitwise <code>and</code> operation. This is the equivalent
+		 *                                 to the java <code>&</code> operator.</td></tr>
+		 * <tr><td>a.bitwiseNot</td><td>The bitwise complement operation. This is the equivalent to the
+		 *                              java <code>~</code> operator.</td></tr>
+		 * <tr><td>a.bitwiseOr(b)</td><td>The bitwise <code>or</code> operation. This is the equivalent
+		 *                                 to the java <code>|</code> operator.</td></tr>
+		 * <tr><td>a.bitwiseXor(b)</td><td>The bitwise <code>xor</code> operation. This is the equivalent
+		 *                                 to the java <code>^</code> operator.</td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
+		 */
+		fact "Integer and Long extensions" {
+			'''
+			package io.sarl.docs.reference.gsr
+			agent A {
+				var a : Long
+				var b : Long
+				def example0 : Object {
+					a.bitwiseAnd(b)
+				}
+				def example1 : Object {
+					a.bitwiseNot
+				}
+				def example2 : Object {
+					a.bitwiseOr(b)
+				}
+				def example3 : Object {
+					a.bitwiseXor(b)
+				}
+			}
+			'''.parseSuccessfully
+		}
+
+		/* The `Boolean` class is extended with the following functions, where
+		 * a and b are `Boolean` objects.
+		 * 
+		 * <table><thead>
+		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>a.xor(b)</td><td>A logical <code>xor</code>. This is the equivalent to the java
+		 *                          <code>^</code> operator.</td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
+		 */
+		fact "Boolean extension" {
+			'''
+			package io.sarl.docs.reference.gsr
+			agent A {
+				var a : boolean
+				var b : boolean
+				def example0 : Object {
+					a.xor(b)
+				}
+			}
+			'''.parseSuccessfully
+		}
+
+		/* The `Object` class is extended with the following functions, where
+		 * a and b are an `Object`.
+		 * 
+		 * <table><thead>
+		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>a.identityEquals(b)</td><td>Equivalent to: <code>a === b</code></td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
+		 */
+		fact "Object extension" {
+			'''
+			package io.sarl.docs.reference.gsr
+			agent A {
+				var a : Object
+				var b : Object
+				def example0 : Object {
+					a.identityEquals(b)
+				}
+			}
+			'''.parseSuccessfully
+		}
+
+		/* The `Iterable` classes is extended with the following functions, where
+		 * i is an instance of `Iterable`, and ii is an instanceof of `Iterable<Iterable>`.
+		 *  
+		 * <table><thead>
+		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>i.drop(n)</td><td>Returns a view on this iterable object that provides all elements except the first n entries.</td></tr>
+		 * <tr><td>i.dropWhile [e | predicate]</td><td>Returns an Iterable containing all elements starting from the first
+		 *                                             element for which the drop-predicate returned false. The resulting
+		 *                                             Iterable is a lazily computed view, so any modifications to the
+		 *                                             underlying Iterators will be reflected on iteration.</td></tr>
+		 * <tr><td>i.elementsEqual(i2)</td><td>Returns true if the elements of the two iterables, or one iterator and one iterable are equal.</td></tr>
+		 * <tr><td>i.exists [e | predicate]</td><td>Returns true if one or more elements in iterable satisfy the predicate.</td></tr>
+		 * <tr><td>i.filter [e | predicate]<br/>
+		 *         i.filter(type)</td><td>Returns the elements of i that satisfy a predicate or the given type.</td></tr>
+		 * <tr><td>i.filterNull</td><td>Returns a new iterable filtering any null references.</td></tr>
+		 * <tr><td>i.findFirst [e | predicate]</td><td>Finds the first element in the given iterable that
+		 *                                             fulfills the predicate.</td></tr>
+		 * <tr><td>i.findLast [e | predicate]</td><td>Finds the last element in the given iterable that
+		 *                                            fulfills the predicate.</td></tr>
+		 * <tr><td>ii.flatten</td><td>Combines multiple iterables into a single iterable. The returned iterable has an
+		 *                           iterator that traverses the elements of each iterable in inputs.</td></tr>
+		 * <tr><td>i.fold(seed) [e,l | statements]</td><td>Applies the combinator function to all elements of the iterable in turn.
+		 *                                             e is the current itered element. l is the last computed result.
+		 *                                             Replies a new value for the combination result.
+		 *                                             More formally, given an iterable {@code [a, b, c, d]} and a function
+		 *                                             {@code f}, the result of fold is
+		 *                                             <code>f(f(f(f(seed, a), b), c), d)</code>.</td></tr>
+		 * <tr><td>i.forall [e | predicate]</td><td>Returns true if every element in iterable satisfies the predicate.</td></tr>
+		 * <tr><td>i.forEach [e | statements]<br/>
+		 *         i.forEach [e,c | statements]</td><td>Applies the given procedure for each element
+		 *                                            of the given iterable. c is the number of the loop.</td></tr>
+		 * <tr><td>i.groupBy [e | key]</td><td>Returns a map for which the values is a collection of lists, where the
+		 *                                     elements in the list will appear in the order as they appeared in the
+		 *                                     iterable. Each key is the product of invoking the supplied  function
+		 *                                     on its corresponding value. So a key of that map groups a list of
+		 *                                     values for which the function produced exactly that key.</td></tr>
+		 * <tr><td>i.head</td><td>Returns the first element in the given iterable or null if empty.</td></tr>
+		 * <tr><td>i.indexed</td><td>Returns an Iterable of Pairs where the n-th pair is created by taking the n-th element of
+		 *                           the source as the value and its 0-based index as the key.</td></tr>
+		 * <tr><td>i.isEmpty</td><td>Determines if the given iterable contains no elements.</td></tr>
+		 * <tr><td>i.isNullOrEmpty</td><td>Determines if the given iterable is <code>null</code> or contains no elements.</td></tr>
+		 * <tr><td>i.join<br/>
+		 *         i.join(sep) [e| statement]<br/>
+		 *         i.join(prefix,sep,postfix) [e| statement]</td><td>Returns the concatenated string representation of the
+		 *                                          elements in the given iterable. sep is the separator between the
+		 *                                          elements. prefix and postfix are added to the final result.
+		 *                                          The function is computing the string representation of the elements.</td></tr>
+		 * <tr><td>i.last</td><td>Returns the last element in the given iterable or null if empty.</td></tr>
+		 * <tr><td>i.map [e | transformation]</td><td>Returns a iterable that performs the given transformation for
+		 *                                            each element of original when requested.
+		 *                                            The mapping is done lazily. That is, subsequent
+		 *                                            iterations of the elements in the list will
+		 *                                            repeatedly apply the transformation. The returned list is
+		 *                                            a transformed view of original; changes to original will
+		 *                                            be reflected in the returned iterator and vice versa.</td></tr>
+		 * <tr><td>i.max<br/>
+		 *         i.max(comparator)<br/>
+		 *         i.maxBy [e | comparable]</td><td>Returns the maximal value in the iterable. If the comparator
+		 *                                        or the function is provided, it is used for comparing the
+		 *                                        elements of the iterable. Otherwise the natural ordering of
+		 *                                        the elements is used.</td></tr>
+		 * <tr><td>i.min<br/>
+		 *         i.min(comparator)<br/>
+		 *         i.minBy [e | comparable]</td><td>Returns the minimal value in the iterable. If the comparator
+		 *                                        or the function is provided, it is used for comparing the
+		 *                                        elements of the iterable. Otherwise the natural ordering of
+		 *                                        the elements is used.</td></tr>
+		 * <tr><td>i.reduce [e,l | statements]</td><td>Applies the combinator function to all elements of the iterable in turn.
+		 *                                             e is the current itered element. l is the last computed result.
+		 *                                             Replies a new value for the comination result.
+		 *                                             More formally, given an iterable `[a, b, c, d]` and a function
+		 *                                             {@code f}, the result of reduce is
+		 *                                             <code>f(f(f(a, b), c), d)</code>.</td></tr>
+		 * <tr><td>i.size</td><td>Returns the number of elements in the iterable.</td></tr>
+		 * <tr><td>i.sort<br/>
+		 *         i.sortWith(comparator)<br/>
+		 *         i.sortBy [e | comparable]</td><td>Creates a sorted list that contains the items of the given iterable.
+		 *                                        If the comparator or the function is provided, it is used for comparing the
+		 *                                        elements of the iterable. Otherwise the natural ordering of
+		 *                                        the elements is used.</td></tr>
+		 * <tr><td>i.tail</td><td>Returns a view on this iterable that contains all the elements except the first.</td></tr>
+		 * <tr><td>i.take(n)</td><td>Returns a view on this iterable that provides at most the first n entries.</td></tr>
+		 * <tr><td>i.takeWhile [e | predicate]</td><td>Returns an Iterable containing all elements starting from the head of
+		 *                                             the source up to and excluding the first element that violates the
+		 *                                             predicate. The resulting Iterable is a lazily computed view, so
+		 *                                             any modifications to the underlying Iterables will be reflected
+		 *                                             on iteration.</td></tr>
+		 * <tr><td>i.toInvertedMap [e | value]</td><td>Returns a map for which the values are computed by the given function, and each
+		 *                                 key is an element in the given iterable. If the iterable contains equal keys more than
+		 *                                 once, the last one will be contained in the map. The map is computed eagerly. That
+		 *                                 is, subsequent changes in the keys are not reflected by the map.</td></tr>
+		 * <tr><td>i.toList</td><td>Wraps an iterable in a List.</td></tr>
+		 * <tr><td>i.toMap [e | key]</td><td>Returns a map for which the keys are computed by the given function, and each
+		 *                                 value is an element in the given iterable.</td></tr>
+		 * <tr><td>i.toSet</td><td>Wraps an iterable in a Set.</td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
+		 */
+		fact "Iterable extension" {
+			'''
+			package io.sarl.docs.reference.gsr
+			import java.util.Comparator
+			import java.util.List
+			import java.util.Map
+			import java.util.Set
+			agent A {
+				var i : Iterable<Integer>
+				var ii : Iterable<Iterable<Integer>>
+				def doNothing {}
+				def example0 : Object {
+					var r : Iterable<Integer>
+					r = i.drop(5)
+				}
+				def example1 : Object {
+					var r : Iterable<Integer>
+					r = i.dropWhile [e | true]
+				}
+				def example2_a : Object {
+					var r : boolean
+					var i2 : Iterable<Integer>
+					r = i.elementsEqual(i2)
+				}
+				def example2_b : Object {
+					var r : boolean
+					var i2 : Iterable<Integer>
+					r = i.elementsEqual(i2)
+				}
+				def example3 : Object {
+					var r : boolean
+					r = i.exists [e | e == 5]
+				}
+				def example4_a : Object {
+					var r : Iterable<Integer>
+					r = i.filter [e | e == 5]
+				}
+				def example4_b : Object {
+					var r : Iterable<Number>
+					r = i.filter(typeof(Number))
+				}
+				def example5 : Object {
+					var r : Iterable<Integer>
+					r = i.filterNull
+				}
+				def example6 : Object {
+					var r : Integer
+					r = i.findFirst [ e | e == 1 ]
+				}
+				def example7 : Object {
+					var r : Integer
+					r = i.findLast [ e | e == 1 ]
+				}
+				def example8 : Object {
+					var r : Iterable<Integer>
+					r = ii.flatten
+				}
+				def example9 : Object {
+					var r : Integer
+					r = i.fold(4) [e,res | e + res]
+				}
+				def example10 : Object {
+					var r : boolean
+					r = i.forall [e | e == 5]
+				}
+				def example11_a {
+					i.forEach [e | doNothing]
+				}
+				def example11_b {
+					i.forEach [e,c | doNothing]
+				}
+				def example12 : Object {
+					var r : Map<String,List<Integer>>
+					r = i.groupBy [e | e.toString]
+				}
+				def example13 : Object {
+					var r : Integer
+					r = i.head
+				}
+				def example14 : Object {
+					var r : Iterable<Pair<Integer,Integer>>
+					r = i.indexed
+				}
+				def example15 : Object {
+					var r : boolean
+					r = i.isEmpty
+				}
+				def example16 : Object {
+					var r : boolean
+					r = i.isNullOrEmpty
+				}
+				def example17_a : Object {
+					var s : String
+					s = i.join
+				}
+				def example17_b : Object {
+					var s : String
+					s = i.join("-") [e | e.toString]
+				}
+				def example17_c : Object {
+					var s : String
+					s = i.join("{","-","}") [e | e.toString]
+				}
+				def example18 : Object {
+					var r : Integer
+					r = i.last
+				}
+				def example19 : Object {
+					var r : Iterable<Double>
+					r = i.map [e | e.doubleValue]
+				}
+				def example20_a : Object {
+					var r : Integer
+					r = i.max
+				}
+				def example20_b : Object {
+					var r : Integer
+					var c : Comparator<Integer>
+					r = i.max(c)
+				}
+				def example20_c : Object {
+					var r : Integer
+					r = i.maxBy[e | e]
+				}
+				def example21_a : Object {
+					var r : Integer
+					r = i.min
+				}
+				def example22_b : Object {
+					var r : Integer
+					var c : Comparator<Integer>
+					r = i.min(c)
+				}
+				def example22_c : Object {
+					var r : Integer
+					r = i.minBy [e | e]
+				}
+				def example23 : Object {
+					var r : Integer
+					r = i.reduce [e,res | e + res]
+				}
+				def example24 : Object {
+					var r : int
+					r = i.size
+				}
+				def example25_a : Object {
+					var r : List<Integer>
+					r = i.sort
+				}
+				def example25_b : Object {
+					var r : List<Integer>
+					var c : Comparator<Integer>
+					r = i.sortWith(c)
+				}
+				def example25_c : Object {
+					var r : List<Integer>
+					r = i.sortBy [e | e]
+				}
+				def example26 : Object {
+					var r : Iterable<Integer>
+					r = i.tail
+				}
+				def example27 : Object {
+					var r : Iterable<Integer>
+					r = i.take(5)
+				}
+				def example28 : Object {
+					var r : Iterable<Integer>
+					r = i.takeWhile [e | true]
+				}
+				def example29 : Object {
+					var r : Map<Integer,String>
+					r = i.toInvertedMap [e | e.toString]
+				}
+				def example30 : Object {
+					var r : Map<String,Integer>
+					r = i.toMap [e | e.toString]
+				}
+				def example31 : Object {
+					var r : List<Integer>
+					r = i.toList
+				}
+				def example32 : Object {
+					var r : Set<Integer>
+					r = i.toSet
+				}
+			}
+			'''.parseSuccessfully
+		}
+
+		/* The `Iterator` classes is extended with a collection of functions.
+		 * 
+		 * The same functions as for the `Iterable` class are provided (see above), except
+		 * `flatten`, `sort`, `sortBy`, `sortWith`.
+		 * 
+		 * Additionnaly, the following functions extends the iterator type, where
+		 * i is an instance of `Iterator`.
+		 *  
+		 * <table><thead>
+		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>i.toIterable</td><td>Wraps an iterator in an Iterable.</td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
+		 */
+		fact "Iterator extension" {
+			'''
+			package io.sarl.docs.reference.gsr
+			import java.util.Iterator
+			agent A {
+				var i : Iterator<Integer>
+				def example0 : Object {
+					var r : Iterable<Integer>
+					r = i.toIterable
+				}
+			}
+			'''.parseSuccessfully
+		}
+
+		/* The `List` data structure is extended with the following functions, where
+		 * l is a `List`.
+		 * 
+		 * <table><thead>
+		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>l.immutableCopy</td><td>Returns an immutable copy of the specified list.</td></tr>
+		 * <tr><td>l.unmodifiableView</td><td>Returns an unmodifiable view of the specified list.</td></tr>
+		 * <tr><td>l.map [e | transformation]</td><td>Returns a list that performs the given transformation for
+		 *                                            each element of original when requested.
+		 *                                            The mapping is done lazily. That is, subsequent
+		 *                                            iterations of the elements in the list will
+		 *                                            repeatedly apply the transformation. The returned list is
+		 *                                            a transformed view of original; changes to original will
+		 *                                            be reflected in the returned list and vice versa.</td></tr>
+		 * <tr><td>l.reverse</td><td>Reverses the order of the elements in the specified list. The list itself
+		 *                           will be modified.</td></tr>
+		 * <tr><td>l.reverseView</td><td>Provides a reverse view on the given list which is especially useful
+		 *                               to traverse a list backwards in a for-each loop. The list itself is
+		 *                               not modified by calling this method.</td></tr>
+		 * <tr><td>l.sortInplace<br/>
+		 *         l.sortInplace(comparator)</td><td>
+		 *                               Sorts the specified list itself into ascending order. It the
+		 *                               comparator is given, it is used for comparing the elements.
+		 *                               Otherwise, the natural ordering of its elements is use.</td></tr>
+		 * <tr><td>l.sortInplaceBy [e | comparable_value]</td><td>Sorts the specified list itself according to the order
+		 *                                             induced by applying a key function to each element which
+		 *                                             yields a comparable criteria.</td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
+		 */
+		fact "List extension" {
+			'''
+			package io.sarl.docs.reference.gsr
+			import java.util.List
+			import java.util.Comparator
+			agent A {
+				var l : List<Integer>
+				var r : List<Integer>
+				var o : Object
+				def example0 : Object {
+					r = l.map [e | e + 1]
+				}
+				def example1 : Object {
+					r = l.reverse
+				}
+				def example2 : Object {
+					r = l.reverseView
+				}
+				def example3 : Object {
+					r = l.sortInplace
+				}
+				def example4 : Object {
+					var c : Comparator<Integer>
+					r = l.sortInplace(c)
+				}
+				def example5 : Object {
+					r = l.sortInplaceBy [e | e]
+				}
+				def example6 : Object {
+					r = l.immutableCopy
+				}
+				def example7 : Object {
+					r = l.unmodifiableView
+				}
+			}
+			'''.parseSuccessfully
+		}
+
+		/* The `Set` data structure is extended with the following functions, where
+		 * s is a `Set`.
+		 * 
+		 * <table><thead>
+		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>s.immutableCopy</td><td>Returns an immutable copy of the specified set.</td></tr>
+		 * <tr><td>s.unmodifiableView</td><td>Returns an unmodifiable view of the specified set.</td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
+		 */
+		fact "Set extension" {
+			'''
+			package io.sarl.docs.reference.gsr
+			import java.util.Set
+			agent A {
+				var s : Set<Integer>
+				var r : Set<Integer>
+				def example0 : Object {
+					r = s.immutableCopy
+				}
+				def example1 : Object {
+					r = s.unmodifiableView
+				}
+			}
+			'''.parseSuccessfully
+		}
+
+		/* The `Map` data structure is extended with the following functions, where
+		 * m is a `Map`.
+		 * 
+		 * <table><thead>
+		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>m.filter [k,v | true]</td><td>Returns a filtered live view on top of the original map.
+		 *                                       Changes to one affect the other.
+		 *                                       The replied map contains the elements of m for which
+		 *                                       the given function has replied true.</td></tr>
+		 * <tr><td>m.forEach [k,v | statements]<br/>
+		 *         m.forEach [k,v,c:int | statements]</td><td>Applies the given procedure for each key-value pair
+		 *                                              of the given map. c is the loop counter, starting with
+		 *                                              0 for the first pair.</td></tr>
+		 * <tr><td>m.immutableCopy</td><td>Returns an immutable copy of the specified map.</td></tr>
+		 * <tr><td>m.unmodifiableView</td><td>Returns an unmodifiable view of the specified map.</td></tr>
+		 * <tr><td>m.mapValues [v | transformation]</td><td>Returns a map that performs the given transformation
+		 *                                                  for each value of original when requested.
+		 *                                                  The mapping is done lazily. That is, subsequent access of
+		 *                                                  the values in the map will repeatedly apply the
+		 *                                                  transformation. Characteristics of the original map, 
+		 *                                                  such as iteration order, are left intact. Changes in the
+		 *                                                  original map are reflected in the result map. The results
+		 *                                                  supports removal if the original map supports removal.</td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
+		 */
+		fact "Map extension" {
+			'''
+			package io.sarl.docs.reference.gsr
+			import java.util.Map
+			agent A {
+				var m : Map<String, Integer>
+				var r1 : Map<String, Integer>
+				var r2 : Map<String, Double>
+				def doNothing {}
+				def example0 : Object {
+					r1 = m.filter [k,v | k == "a"]
+				}
+				def example1_a : void {
+					m.forEach [k,v | doNothing]
+				}
+				def example1_b : void {
+					m.forEach [k,v,c | doNothing]
+				}
+				def example2 : Object {
+					r1 = m.immutableCopy
+				}
+				def example3 : Object {
+					r1 = m.unmodifiableView
+				}
+				def example4 : Object {
+					r2 = m.mapValues [v | v.doubleValue]
+				}
+			}
+			'''.parseSuccessfully
+		}
+
+		/* A procedure is a lambda expression replying nothing. For example, the following
+		 * code is defining a procedure without parameter:
+		 *
+		 * 		var proc : () => void
+		 * 		proc = [ statements ]
+		 * 
+		 * A function is a lambda expression replying a value. For example, the following
+		 * code is defining a function without parameter and replying an integer:
+		 *
+		 * 		var func : () => int
+		 * 		func = [ 1 ]
+		 * 
+		 * For the procedures/functions with 1 to 6 formal parameters, the following function is defined below,
+		 * where f is the procedure/function and p is the first parameter of proc.
+		 * 
+		 * <table><thead>
+		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * </thead><tbody>
+		 * <tr><td>f.curry(p)</td><td>If f has n formal parameters, the curly function replies
+		 *                               a procedure/function with (n-1) parameters. This replied
+		 *                               procedure/function
+		 *                               is calling f with p as the first argument, and the
+		 *                               arguments of the replied procedure/function are passed to f.<br/>
+		 *                               Below, the lines 1 and 3 are equivalent:
+		 *                               <pre><code>
+		 *                               proc(1, 2, 3, 4)
+		 *                               var cproc = proc.curly(1)
+		 *                               cproc(2, 3, 4)
+		 *                               </code></pre></td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
+		 */
+		fact "Procedure and Function extensions" {
+			'''
+			package io.sarl.docs.reference.gsr
+			import org.eclipse.xtext.xbase.lib.Procedures.*
+			import org.eclipse.xtext.xbase.lib.Functions.*
+			agent A {
+				var n : Integer
+				def example0_0 {
+					var cproc : Procedure1<Integer>
+					cproc.curry(n).apply
+				}
+				def example0_1 {
+					var cproc : Procedure2<Integer,Integer>
+					cproc.curry(n).apply(1)
+				}
+				def example0_2 {
+					var cproc : Procedure3<Integer,Integer,Integer>
+					cproc.curry(n).apply(1,2)
+				}
+				def example0_3 {
+					var cproc : Procedure4<Integer,Integer,Integer,Integer>
+					cproc.curry(n).apply(1,2,3)
+				}
+				def example0_4 {
+					var cproc : Procedure5<Integer,Integer,Integer,Integer,Integer>
+					cproc.curry(n).apply(1,2,3,4)
+				}
+				def example0_5 {
+					var cproc : Procedure6<Integer,Integer,Integer,Integer,Integer,Integer>
+					cproc.curry(n).apply(1,2,3,4,5)
+				}
+				def example1_0 : Integer {
+					var cfunc : Function1<Integer,Integer>
+					cfunc.curry(n).apply
+				}
+				def example1_1 : Integer {
+					var cfunc : Function2<Integer,Integer,Integer>
+					cfunc.curry(n).apply(1)
+				}
+				def example1_2 : Integer {
+					var cfunc : Function3<Integer,Integer,Integer,Integer>
+					cfunc.curry(n).apply(1,2)
+				}
+				def example1_3 : Integer {
+					var cfunc : Function4<Integer,Integer,Integer,Integer,Integer>
+					cfunc.curry(n).apply(1,2,3)
+				}
+				def example1_4 : Integer {
+					var cfunc : Function5<Integer,Integer,Integer,Integer,Integer,Integer>
+					cfunc.curry(n).apply(1,2,3,4)
+				}
+				def example1_5 : Integer {
+					var cfunc : Function6<Integer,Integer,Integer,Integer,Integer,Integer,Integer>
+					cfunc.curry(n).apply(1,2,3,4,5)
+				}
+			}
+			'''.parseSuccessfully
+		}
+
 	}
 
 	/* A lambda expression is basically a piece of code, which is wrapped 

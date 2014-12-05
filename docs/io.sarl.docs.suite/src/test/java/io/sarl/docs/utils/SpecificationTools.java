@@ -868,6 +868,31 @@ public final class SpecificationTools {
 		return false;
 	}
 
+	/** Ensure that the given map contains the elements.
+	 * 
+	 * @param map - the map to check.
+	 * @param reference - the expected elements in the map.
+	 * @return the validation status.
+	 */
+	public static <K, V> boolean should_be(Map<K,V> map, Map<? super K, ? super V> reference) {
+		if (map == null) {
+			return false;
+		}
+		if (reference == null || reference.isEmpty()) {
+			return map.isEmpty();
+		}
+		for(Entry<? super K, ? super V> entry : reference.entrySet()) {
+			if (!map.containsKey(entry.getKey())) {
+				return false;
+			}
+			V currentValue = map.get(entry.getKey());
+			if (!Objects.equals(currentValue, entry.getValue())) {
+				return false;
+			}
+		}
+		return map.size() == reference.size();
+	}
+
 	private static class ArrayIterator implements Iterator<Object> {
 
 		private final Array array;
