@@ -171,10 +171,10 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>2.12.1</version>
+					<version>2.13</version>
 					<executions>
 						<execution>
-							<phase>process-sources</phase>
+							<phase>process-classes</phase>
 							<goals>
 								<goal>check</goal>
 							</goals>
@@ -184,8 +184,8 @@
 						<configLocation>${main.basedir}/checkstyle/checkstyle.xml</configLocation>
 						<suppressionsLocation>${main.basedir}/checkstyle/suppressions.xml</suppressionsLocation>
 						<headerLocation>${main.basedir}/checkstyle/ClassHeader.txt</headerLocation>
-						<enableRSS>false</enableRSS>
-						<linkXRef>false</linkXRef>
+						<enableRSS>true</enableRSS>
+						<linkXRef>true</linkXRef>
 						<consoleOutput>true</consoleOutput>
 						<failsOnError>true</failsOnError>
 						<failOnViolation>true</failOnViolation>

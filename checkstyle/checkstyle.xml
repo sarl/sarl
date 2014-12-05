@@ -94,8 +94,6 @@
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
 
-        <module name="JavadocStyle"/>
-
 		<module name="WriteTag">
 		   <property name="tag" value="@mavengroupid"/>
 		   <property name="tagFormat" value="\$GroupId\$"/>
@@ -110,6 +108,10 @@
 		   <property name="tagSeverity" value="ignore"/>
 		</module>
 
+        <module name="JavadocStyle">
+        	<property name="scope" value="package"/>
+        </module>
+
         <module name="JavadocType">
             <property name="scope" value="package"/>
             <property name="authorFormat" value="\$Author:\s*[a-zA-Z0-9_]+\$"/>
@@ -119,6 +121,7 @@
 
         <module name="JavadocMethod">
             <property name="scope" value="package"/>
+            <property name="allowUndeclaredRTE" value="true"/>
         </module>
 
         <module name="JavadocVariable">

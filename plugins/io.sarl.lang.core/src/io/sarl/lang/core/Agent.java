@@ -156,12 +156,16 @@ public class Agent implements Identifiable {
 
 	/**
 	 * Replies with the skill associated to the {@link Capacity}
-	 * <code>capacity</code>. The return may be <code>null</code> if not capacity
-	 * was set.
+	 * <code>capacity</code>.
+	 *
+	 * The return may never be <code>null</code>. If not capacity
+	 * was set, the exception {@link UnimplementedCapacityException}
+	 * is thrown.
 	 *
 	 * @param <S> - the type of the capacity.
 	 * @param capacity - the capacity to retreive.
-	 * @return the skill.
+	 * @return the skill, never <code>null</code>
+	 * @throws UnimplementedCapacityException - if no skill is owned by the agent for the given capacity.
 	 */
 	protected <S extends Capacity> S getSkill(Class<S> capacity) {
 		assert capacity != null;

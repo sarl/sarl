@@ -83,9 +83,15 @@ abstract class AgentTrait {
 
 	/** Replies the skill corresponding to the given capacity.
 	 *
+	 * The return may never be <code>null</code>. If not capacity
+	 * was set, the exception {@link UnimplementedCapacityException}
+	 * is thrown.
+	 *
 	 * @param <S> - type of the capacity.
 	 * @param capacity - the capacity to search for the implementation.
-	 * @return the skill.
+	 * @return the skill, never <code>null</code>
+	 * @see Agent#getSkill(Class)
+	 * @throws UnimplementedCapacityException - if no skill is owned by the agent for the given capacity.
 	 */
 	protected <S extends Capacity> S getSkill(Class<S> capacity) {
 		return getOwner().getSkill(capacity);
