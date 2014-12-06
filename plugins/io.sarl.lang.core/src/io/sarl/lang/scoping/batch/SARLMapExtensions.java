@@ -78,8 +78,7 @@ public final class SARLMapExtensions {
 	 * @return the value previously associated to the key, or <code>null</code>
 	 * if the key was not present in the map before the addition.
 	 */
-	@Pure
-	@Inline(value = "($1.put($2.getKey(), $2.getValue()))")
+	@Inline(value = "($1.put($2.getKey(), $2.getValue()))", statementExpression=true)
 	public static <K, V> V operator_add(Map<K, V> map, Pair<? extends K, ? extends V> entry) {
 		return map.put(entry.getKey(), entry.getValue());
 	}
@@ -92,7 +91,6 @@ public final class SARLMapExtensions {
 	 * @param inputMap - the entries to add.
 	 * @return the outputMap
 	 */
-	@Pure
 	public static <K, V> Map<K, V> operator_add(Map<K, V> outputMap, Map<? extends K, ? extends V> inputMap) {
 		outputMap.putAll(inputMap);
 		return outputMap;
@@ -153,8 +151,7 @@ public final class SARLMapExtensions {
 	 * @return the removed value, or <code>null</code> if the key was not
 	 * present in the map.
 	 */
-	@Pure
-	@Inline("($1.remove($2))")
+	@Inline(value="($1.remove($2))", statementExpression=true)
 	public static <K, V> V operator_remove(Map<K, V> map, K key) {
 		return map.remove(key);
 	}
