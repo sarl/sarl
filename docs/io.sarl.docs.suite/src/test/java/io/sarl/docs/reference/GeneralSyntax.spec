@@ -1418,8 +1418,9 @@ describe "General Syntax Reference" {
 			"var c = newHashSet; c += 3".toBool should be true
 			"var c = newHashSet; c -= 3".toBool should be false
 
-			"var c = newHashMap(5->'b'); c += (4 -> 'a'); c".to(typeof(Map)) should be #{4 -> 'a',5 -> 'b'}
-			"var c = newHashMap(5->'b', 4->'c'); c -= 4; c".to(typeof(Map)) should be #{5 -> 'b'}
+			"var c = newHashMap(5->'b'); c += (4 -> 'a')".toStr should be nullValue
+			"var c = newHashMap(5->'b'); c += (5 -> 'a')".toStr should be 'b'
+			"var c = newHashMap(5->'b', 4->'c'); c -= 4".toStr should be 'c'
 
 			"var c1=newArrayList(1,2); var c2=newArrayList(3,4); var r = (c1 + c2); r".to(typeof(Iterable)).iterator should iterate #[1,2,3,4]
 
