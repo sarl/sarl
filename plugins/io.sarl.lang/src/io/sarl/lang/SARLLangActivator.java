@@ -38,7 +38,7 @@ import org.osgi.framework.BundleContext;
 public class SARLLangActivator implements BundleActivator {
 
 	private static SARLLangActivator singleton;
-	
+
 	private String minimalJdkVersion;
 	private String minimalXtextVersion;
 
@@ -47,9 +47,9 @@ public class SARLLangActivator implements BundleActivator {
 	public SARLLangActivator() {
 		//
 	}
-	
+
 	/** Replies the activator of the bundle.
-	 * 
+	 *
 	 * @return the activator of the bundle.
 	 */
 	public static SARLLangActivator getActivator() {
@@ -70,9 +70,9 @@ public class SARLLangActivator implements BundleActivator {
 	}
 
 	/** Returns the minimal JDK version required by SARL.
-	 * 
+	 *
 	 * The version is read from the bundle's properties.
-	 * 
+	 *
 	 * @return the minimal JDK version required by SARL.
 	 */
 	public String getMinimalJdkVersion() {
@@ -80,9 +80,9 @@ public class SARLLangActivator implements BundleActivator {
 	}
 
 	/** Returns the minimal Xbase version required by SARL.
-	 * 
+	 *
 	 * The version is read from the bundle's properties.
-	 * 
+	 *
 	 * @return the minimal Xbase version required by SARL.
 	 */
 	public String getMinimalXtextVersion() {
