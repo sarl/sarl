@@ -1388,8 +1388,7 @@ describe "General Syntax Reference" {
 		 * <tr><td>c -= e</td><td>operator_remove</td><td>Equivalent to: <code>c.remove(e)<code></td></tr>
 		 * <tr><td>c1 + c2</td><td>operator_plus</td><td>Create a collection that is containing the elements of the
 		 *                                               collections <code>c1</code> and <code>c2</code>.</td></tr>
-		 * <tr><td>m + p<br/>
-		 *         p + m</td><td>operator_plus</td><td>Create a map of type <code>Map&lt;A,B&gt;</code>
+		 * <tr><td>m + p</td><td>operator_plus</td><td>Create a map of type <code>Map&lt;A,B&gt;</code>
 		 *                                             that is containing the elements of the
 		 *                                             map <code>m</code> and the new pair <code>p</code> of type
 		 *                                             <code>Pair&lt;A,B&gt;</code>.</td></tr>
@@ -1399,8 +1398,6 @@ describe "General Syntax Reference" {
 		 *                                             <code>Pair&lt;A,B&gt;</code>.</td></tr>
 		 * <tr><td>a -&gt; b</td><td>operator_mappedTo</td><td>Create an instance of <code>Pair&lt;A,B&gt;</code> where
 		 *                           <code>A</code> and <code>B</code> are the types of a and b respectively.</td></tr>
-		 * <tr><td>m -&gt; k</td><td>operator_mappedTo</td><td>This specific operator is dedicated to map.
-		 *                      It is equivalent to: <code>m.get(k)</code>.</td></tr>
 		 * </tbody></table>
 		 * 
 		 * @filter(.*) 
@@ -1427,11 +1424,6 @@ describe "General Syntax Reference" {
 			"var c1=newHashMap(5->'b'); var c2=newHashMap(4->'a'); var r = (c1 + c2); r".to(typeof(Map)) should be #{4->'a',5->'b'}
 
 			"var c=newHashMap(5->'b'); var r = (c + (4->'a')); r".to(typeof(Map)) should be #{4->'a',5->'b'}
-			"var c=newHashMap(5->'b'); var r = ((4->'a') + c); r".to(typeof(Map)) should be #{4->'a',5->'b'}
-
-			"var c=newHashMap(4->'a',5->'b'); var r = (c - 4); r".to(typeof(Map)) should be #{5->'b'}
-			"var c=newHashMap(4->'a',5->'b'); var r = (c->5); r".toStr should be "b"
-			"var c=newHashMap(4->'a',5->'b'); var r = (c->6); r".toStr should be nullValue
 		}
 
 		/** The assignment operators are listed below.

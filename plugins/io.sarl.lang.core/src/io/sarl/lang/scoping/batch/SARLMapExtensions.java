@@ -38,6 +38,8 @@ import com.google.common.collect.Maps;
  * <p>
  * This extension is provided for the elements that are not (yet) provided
  * by the Xbase API.
+ * The enhancement of Xbase is asked in the issue
+ * {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=454319"}.
  *
  * FIXME: Remove if Xbase or Xtend are providing these functions.
  *
@@ -78,7 +80,7 @@ public final class SARLMapExtensions {
 	 * @return the value previously associated to the key, or <code>null</code>
 	 * if the key was not present in the map before the addition.
 	 */
-	@Inline(value = "($1.put($2.getKey(), $2.getValue()))", statementExpression=true)
+	@Inline(value = "$1.put($2.getKey(), $2.getValue())", statementExpression = true)
 	public static <K, V> V operator_add(Map<K, V> map, Pair<? extends K, ? extends V> entry) {
 		return map.put(entry.getKey(), entry.getValue());
 	}
@@ -111,21 +113,6 @@ public final class SARLMapExtensions {
 		return newMap;
 	}
 
-	/** Add the given pair to a given map for obtaining a new map.
-	 *
-	 * @param <K> - type of the map keys.
-	 * @param <V> - type of the map values.
-	 * @param entry - the entry (key, value) to add into the map.
-	 * @param map - the map to consider.
-	 * @return a map with the content of the map and with the given entry.
-	 */
-	@Pure
-	public static <K, V> Map<K, V> operator_plus(Pair<? extends K, ? extends V> entry, Map<K, V> map) {
-		Map<K, V> newMap = cloneMap(map);
-		newMap.put(entry.getKey(), entry.getValue());
-		return newMap;
-	}
-
 	/** Merge the given maps.
 	 * If a key exists in the two maps, the value in the second map is retained.
 	 *
@@ -151,7 +138,7 @@ public final class SARLMapExtensions {
 	 * @return the removed value, or <code>null</code> if the key was not
 	 * present in the map.
 	 */
-	@Inline(value="($1.remove($2))", statementExpression=true)
+	@Inline(value = "$1.remove($2)", statementExpression = true)
 	public static <K, V> V operator_remove(Map<K, V> map, K key) {
 		return map.remove(key);
 	}
@@ -170,21 +157,6 @@ public final class SARLMapExtensions {
 		Map<K, V> newMap = cloneMap(map);
 		newMap.remove(key);
 		return newMap;
-	}
-
-	/** Replies the value associated to the key in the given map.
-	 *
-	 * @param <K> - type of the map keys.
-	 * @param <V> - type of the map values.
-	 * @param map - the map.
-	 * @param key - the key.
-	 * @return the value, or <code>null</code> if the key is not
-	 * present in the map.
-	 */
-	@Pure
-	@Inline("($1.get($2))")
-	public static <K, V> V operator_mappedTo(Map<K, V> map, K key) {
-		return map.get(key);
 	}
 
 }

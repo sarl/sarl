@@ -167,39 +167,6 @@ public class SARLMapExtensionsTest extends Assert {
 	}
 
 	@Test
-	public void operator_plusPairMap_0() {
-		String v = UUID.randomUUID().toString();
-		Map<String, String> o;
-
-		o = operator_plus(new Pair<String, String>("k3", v), this.map);
-		assertNotNull(o);
-		assertNotSame(this.map, o);
-		assertEquals(2, this.map.size());
-		assertEquals(this.value1, this.map.get("k1"));
-		assertEquals(this.value2, this.map.get("k2"));
-		assertEquals(3, o.size());
-		assertEquals(this.value1, o.get("k1"));
-		assertEquals(this.value2, o.get("k2"));
-		assertEquals(v, o.get("k3"));
-	}
-
-	@Test
-	public void operator_pluPairMap_1() {
-		String v = UUID.randomUUID().toString();
-		Map<String, String> o;
-
-		o = operator_plus(new Pair<String, String>("k2", v), this.map);
-		assertNotNull(o);
-		assertNotSame(this.map, o);
-		assertEquals(2, this.map.size());
-		assertEquals(this.value1, this.map.get("k1"));
-		assertEquals(this.value2, this.map.get("k2"));
-		assertEquals(2, o.size());
-		assertEquals(this.value1, o.get("k1"));
-		assertEquals(v, o.get("k2"));
-	}
-
-	@Test
 	public void operator_plusMapMap_0() {
 		String v1 = UUID.randomUUID().toString();
 		String v2 = UUID.randomUUID().toString();
@@ -342,24 +309,6 @@ public class SARLMapExtensionsTest extends Assert {
 		assertEquals(0, o2.size());
 		assertNull(o2.get("k1"));
 		assertNull(o2.get("k2"));
-	}
-
-	@Test
-	public void operator_mappedToMapK_0() {
-		String o = operator_mappedTo(this.map, "k0");
-		assertNull(o);
-	}
-
-	@Test
-	public void operator_mappedToMapK_1() {
-		String o = operator_mappedTo(this.map, "k1");
-		assertEquals(this.value1, o);
-	}
-
-	@Test
-	public void operator_mappedToMapK_2() {
-		String o = operator_mappedTo(this.map, "k2");
-		assertEquals(this.value2, o);
 	}
 
 }

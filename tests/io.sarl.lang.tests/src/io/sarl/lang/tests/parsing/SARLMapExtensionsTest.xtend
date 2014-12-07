@@ -159,45 +159,6 @@ class SARLMapExtensionsTest {
 	}
 
 	@Test
-	def void operator_plusPairMap_0() {
-		val mas = '''
-			package test
-			import java.util.Map
-			agent A1 {
-				var map : Map<String, Integer>
-				var r : Map<String, Integer>
-				var str = "a"
-				var num = 4
-				
-				def myaction0 : Object {
-					r = (str -> num) + map
-				}
-			}
-		'''.parse
-		mas.assertNoErrors
-	}
-
-	@Test
-	def void operator_plusPairMap_1() {
-		val mas = '''
-			package test
-			import java.util.Map
-			agent A1 {
-				var map : Map<String, Integer>
-				var r : Map<String, Integer>
-				var str = "a"
-				var num = 4
-				
-				def myaction0 : Object {
-					var p = str -> num
-					r = p + map
-				}
-			}
-		'''.parse
-		mas.assertNoErrors
-	}
-
-	@Test
 	def void operator_plusMapMap_0() {
 		val mas = '''
 			package test
@@ -422,48 +383,6 @@ class SARLMapExtensionsTest {
 			XbasePackage::eINSTANCE.XBinaryOperation,
 			IssueCodes::INCOMPATIBLE_TYPES,
 			"Type mismatch: cannot convert from int to Map<String, Integer>"
-		)
-	}
-
-	@Test
-	def void operator_mappedToMapK_0() {
-		val mas = '''
-			package test
-			import java.util.Map
-			agent A1 {
-				var map : Map<String, Integer>
-				var r : Integer
-				var str = "a"
-				var num = 4
-				
-				def myaction0 : Object {
-					r = map->str
-				}
-			}
-		'''.parse
-		mas.assertNoErrors
-	}
-
-	@Test
-	def void operator_mappedToMapK_1() {
-		val mas = '''
-			package test
-			import java.util.Map
-			agent A1 {
-				var map : Map<String, Integer>
-				var r : Integer
-				var str = "a"
-				var num = 4
-				
-				def myaction0 : Object {
-					r = map->num
-				}
-			}
-		'''.parse
-		mas.assertError(
-			XbasePackage::eINSTANCE.XBinaryOperation,
-			IssueCodes::INCOMPATIBLE_TYPES,
-			"Type mismatch: cannot convert from Pair<Map<String, Integer>, Integer> to Integer"
 		)
 	}
 
