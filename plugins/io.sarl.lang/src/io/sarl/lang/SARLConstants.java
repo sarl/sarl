@@ -20,6 +20,13 @@
  */
 package io.sarl.lang;
 
+import java.util.ResourceBundle;
+
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+
+
+
 /**
  * Set of SARL keywords that are added to the xtext/xbase ones.
  *
@@ -28,17 +35,31 @@ package io.sarl.lang;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class SARLConstants {
+public class SARLConstants implements BundleActivator {
 
 	/** The minimal JDK version required by SARL.
 	 */
-	public static final String MINIMAL_JDK_VERSION = "1.7"; //$NON-NLS-1$
+	public static String MINIMAL_JDK_VERSION;
 
 	/** The minimal Xbase version required by SARL.
 	 */
-	public static final String MINIMAL_XBASE_VERSION = "2.6.2"; //$NON-NLS-1$
+	public static String MINIMAL_XBASE_VERSION;
 
-	private SARLConstants() {
+	/**
+	 */
+	public SARLConstants() {
+		//
+	}
+
+	@Override
+	public void start(BundleContext context) throws Exception {
+		ResourceBundle bundle = ResourceBundle.getBundle("OSGI-INF/l10n/bundle"); //$NON-NLS-1$
+		MINIMAL_JDK_VERSION = bundle.getString("min.jdk.version"); //$NON-NLS-1$
+		MINIMAL_XBASE_VERSION = bundle.getString("min.xtext.version"); //$NON-NLS-1$
+	}
+
+	@Override
+	public void stop(BundleContext context) throws Exception {
 		//
 	}
 

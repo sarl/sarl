@@ -36,3 +36,4 @@ Export-Package: io.sarl.lang,
  io.sarl.lang.signature,
  io.sarl.lang.util,
  io.sarl.lang.validation
+Bundle-Activator: io.sarl.lang.SARLConstants
