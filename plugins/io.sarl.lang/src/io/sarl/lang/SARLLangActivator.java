@@ -35,32 +35,58 @@ import org.osgi.framework.BundleContext;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLConstants implements BundleActivator {
+public class SARLLangActivator implements BundleActivator {
 
-	/** The minimal JDK version required by SARL.
-	 */
-	public static String MINIMAL_JDK_VERSION;
-
-	/** The minimal Xbase version required by SARL.
-	 */
-	public static String MINIMAL_XBASE_VERSION;
+	private static SARLLangActivator singleton;
+	
+	private String minimalJdkVersion;
+	private String minimalXtextVersion;
 
 	/**
 	 */
-	public SARLConstants() {
+	public SARLLangActivator() {
 		//
+	}
+	
+	/** Replies the activator of the bundle.
+	 * 
+	 * @return the activator of the bundle.
+	 */
+	public static SARLLangActivator getActivator() {
+		return singleton;
 	}
 
 	@Override
 	public void start(BundleContext context) throws Exception {
+		singleton = this;
 		ResourceBundle bundle = ResourceBundle.getBundle("OSGI-INF/l10n/bundle"); //$NON-NLS-1$
-		MINIMAL_JDK_VERSION = bundle.getString("min.jdk.version"); //$NON-NLS-1$
-		MINIMAL_XBASE_VERSION = bundle.getString("min.xtext.version"); //$NON-NLS-1$
+		this.minimalJdkVersion = bundle.getString("min.jdk.version"); //$NON-NLS-1$
+		this.minimalXtextVersion = bundle.getString("min.xtext.version"); //$NON-NLS-1$
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		//
+	}
+
+	/** Returns the minimal JDK version required by SARL.
+	 * 
+	 * The version is read from the bundle's properties.
+	 * 
+	 * @return the minimal JDK version required by SARL.
+	 */
+	public String getMinimalJdkVersion() {
+		return this.minimalJdkVersion;
+	}
+
+	/** Returns the minimal Xbase version required by SARL.
+	 * 
+	 * The version is read from the bundle's properties.
+	 * 
+	 * @return the minimal Xbase version required by SARL.
+	 */
+	public String getMinimalXtextVersion() {
+		return this.minimalXtextVersion;
 	}
 
 }

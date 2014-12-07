@@ -22,7 +22,6 @@ package io.sarl.lang.validation
 
 import com.google.common.collect.Lists
 import com.google.inject.Inject
-import io.sarl.lang.SARLConstants
 import io.sarl.lang.SARLKeywords
 import io.sarl.lang.core.Capacity
 import io.sarl.lang.core.Event
@@ -77,6 +76,7 @@ import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 
 import static io.sarl.lang.util.ModelUtil.*
+import io.sarl.lang.SARLLangActivator
 
 /**
  * Validator for the SARL elements.
@@ -111,10 +111,14 @@ class SARLValidator extends AbstractSARLValidator {
 
 		var version = System.getProperty("java.specification.version"); //$NON-NLS-1$
 		
+		var sarlLangBundle = SARLLangActivator::activator
+		var minJdkVersion = sarlLangBundle.minimalJdkVersion
+		var minXtextVersion = sarlLangBundle.minimalXtextVersion
+		
 		if (version==null || version.empty ||
-			compareVersions(version, SARLConstants::MINIMAL_JDK_VERSION)<0) {
+			compareVersions(version, minJdkVersion)<0) {
 			error(
-				MessageFormat::format(Messages::SARLValidator_0, SARLConstants::MINIMAL_JDK_VERSION),
+				MessageFormat::format(Messages::SARLValidator_0, minJdkVersion),
 				sarlScript,
 				null,
 				IssueCodes::JDK_NOT_ON_CLASSPATH);
@@ -122,7 +126,7 @@ class SARLValidator extends AbstractSARLValidator {
 
 		if (typeReferences.findDeclaredType(ReassignFirstArgument, sarlScript) == null) {
 			error(
-				MessageFormat::format(Messages::SARLValidator_1, SARLConstants::MINIMAL_XBASE_VERSION),
+				MessageFormat::format(Messages::SARLValidator_1, minXtextVersion),
 				sarlScript,
 				null,
 				IssueCodes::XBASE_LIB_NOT_ON_CLASSPATH)
