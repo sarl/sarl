@@ -25,6 +25,7 @@ import com.google.inject.Inject
 import io.sarl.lang.SARLConstants
 import io.sarl.lang.SARLKeywords
 import io.sarl.lang.core.Capacity
+import io.sarl.lang.core.Event
 import io.sarl.lang.sarl.Action
 import io.sarl.lang.sarl.ActionSignature
 import io.sarl.lang.sarl.Agent
@@ -33,7 +34,6 @@ import io.sarl.lang.sarl.Behavior
 import io.sarl.lang.sarl.BehaviorUnit
 import io.sarl.lang.sarl.CapacityUses
 import io.sarl.lang.sarl.Constructor
-import io.sarl.lang.sarl.Event
 import io.sarl.lang.sarl.FeatureContainer
 import io.sarl.lang.sarl.FormalParameter
 import io.sarl.lang.sarl.ImplementingElement
@@ -44,12 +44,15 @@ import io.sarl.lang.sarl.RequiredCapacity
 import io.sarl.lang.sarl.SarlPackage
 import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.sarl.Skill
+import io.sarl.lang.signature.ActionKey
 import io.sarl.lang.signature.ActionNameKey
 import io.sarl.lang.signature.ActionSignatureProvider
 import io.sarl.lang.signature.SignatureKey
 import io.sarl.lang.util.ModelUtil
 import java.text.MessageFormat
 import java.util.List
+import java.util.Map
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
@@ -57,26 +60,23 @@ import org.eclipse.xtext.common.types.JvmConstructor
 import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
+import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
+import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.CheckType
 import org.eclipse.xtext.validation.ValidationMessageAcceptor
+import org.eclipse.xtext.xbase.XAbstractFeatureCall
 import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XBooleanLiteral
 import org.eclipse.xtext.xbase.XConstructorCall
 import org.eclipse.xtext.xbase.XFeatureCall
+import org.eclipse.xtext.xbase.XMemberFeatureCall
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 
 import static io.sarl.lang.util.ModelUtil.*
-import java.util.Map
-import io.sarl.lang.signature.ActionKey
-import org.eclipse.xtext.common.types.JvmOperation
-import org.eclipse.xtext.common.types.JvmTypeReference
-import org.eclipse.emf.ecore.EAttribute
-import org.eclipse.xtext.xbase.XMemberFeatureCall
-import org.eclipse.xtext.xbase.XAbstractFeatureCall
 
 /**
  * Validator for the SARL elements.
@@ -186,36 +186,46 @@ class SARLValidator extends AbstractSARLValidator {
 	public def checkForbiddenCalls(XFeatureCall expression) {
 		expression.checkForbiddenFeatureCall
 	}
+	
+	@Check(CheckType.FAST)
+	private def checkDiscouragedFeatureCall(XAbstractFeatureCall expression) {
+		var id = expression.feature.qualifiedName
+		switch (id) {
+			case "java.lang.System.err",
+			case "java.lang.System.out",
+			case "java.lang.System.setErr",
+			case "java.lang.System.setOut",
+			case "java.lang.System.console",
+			case "java.lang.System.inheritedChannel": {
+				addIssue(
+					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console.",
+					expression,
+					org.eclipse.xtext.xbase.validation.IssueCodes.DISCOURAGED_REFERENCE)
+			}
+			default: {
+				if (id.startsWith("org.eclipse.xtext.xbase.lib.InputOutput")) {
+					addIssue(
+						"Discouraged feature use. The agent's logging capacity should be used in place of the implicitly imported input/output functions.",
+						expression,
+						org.eclipse.xtext.xbase.validation.IssueCodes.DISCOURAGED_REFERENCE)
+				}
+			}
+		}
+	}
 
-//	@Check(CheckType.FAST)
-//	public def checkDiscouragedCalls(XMemberFeatureCall expression) {
-//		if (!isIgnored(org.eclipse.xtext.xbase.validation.IssueCodes::DISCOURAGED_REFERENCE)) {
-//		}
-//		var id = expression.feature.identifier
-//		if (id.startsWith("java.lang.System")) {
-//			switch (id) {
-//				case "java.lang.System.exit": {
-//					false
-//				}
-//				case "java.lang.System.err", "java.lang.System.out",
-//					"java.lang.System.setErr", "java.lang.System.setOut",
-//					"java.lang.System.console": {
-//					false
-//				}
-//				case "java.lang.System.in",
-//					"java.lang.System.setIn": {
-//					false
-//				}
-//				default: {
-//					false
-//				}
-//			}
-//			// exit
-//			// console
-//			// inheritedChannel
-//			
-//		}
-//	}
+	@Check(CheckType.FAST)
+	public def checkDiscouragedCalls(XMemberFeatureCall expression) {
+		if (!isIgnored(org.eclipse.xtext.xbase.validation.IssueCodes::DISCOURAGED_REFERENCE)) {
+			expression.checkDiscouragedFeatureCall
+		}
+	}
+
+	@Check(CheckType.FAST)
+	public def checkDiscouragedCalls(XFeatureCall expression) {
+		if (!isIgnored(org.eclipse.xtext.xbase.validation.IssueCodes::DISCOURAGED_REFERENCE)) {
+			expression.checkDiscouragedFeatureCall
+		}
+	}
 
 	/**
 	 * @param feature
@@ -444,7 +454,7 @@ class SARLValidator extends AbstractSARLValidator {
 	 * @param event
 	 */
 	@Check(CheckType.FAST)
-	public def checkFinalFieldInitialization(Event event) {
+	public def checkFinalFieldInitialization(io.sarl.lang.sarl.Event event) {
 		var type = event.jvmGenericType
 		if (type!==null) {
 			type.checkFinalFieldInitialization
@@ -654,8 +664,8 @@ class SARLValidator extends AbstractSARLValidator {
 							feature.name,
 							feature,
 							feature.type,
-							SarlPackage::Literals::ACTION__NAME,
-							SarlPackage::Literals::ACTION__TYPE)
+							SarlPackage.Literals::ACTION__NAME,
+							SarlPackage.Literals::ACTION__TYPE)
 				} else if (feature instanceof ActionSignature) {
 					checkInheritedActionElement(
 							finalOperations,
@@ -665,8 +675,8 @@ class SARLValidator extends AbstractSARLValidator {
 							feature.name,
 							feature,
 							feature.type,
-							SarlPackage::Literals::ACTION_SIGNATURE__NAME,
-							SarlPackage::Literals::ACTION_SIGNATURE__TYPE)
+							SarlPackage.Literals::ACTION_SIGNATURE__NAME,
+							SarlPackage.Literals::ACTION_SIGNATURE__TYPE)
 				}
 			}
 			
@@ -867,7 +877,7 @@ class SARLValidator extends AbstractSARLValidator {
 	 * @param event
 	 */
 	@Check(CheckType.FAST)
-	public def checkImplicitConstructorCall(Event event) {
+	public def checkImplicitConstructorCall(io.sarl.lang.sarl.Event event) {
 		checkImplicitConstructorCall(event,
 			#[
 				sarlSignatureProvider.createSignatureIDForVoid,
@@ -983,7 +993,7 @@ class SARLValidator extends AbstractSARLValidator {
 	public def checkActionSignatureFires(ActionSignature action) {
 		for(event : action.firedEvents) {
 			var ref = event.toLightweightTypeReference
-			if (ref!==null && !ref.isSubtypeOf(typeof(io.sarl.lang.core.Event))) {
+			if (ref!==null && !ref.isSubtypeOf(typeof(Event))) {
 				error(
 						MessageFormat::format(
 								Messages::SARLValidator_24,
@@ -1006,7 +1016,7 @@ class SARLValidator extends AbstractSARLValidator {
 	public def checkActionFires(Action action) {
 		for(event : action.firedEvents) {
 			var ref = event.toLightweightTypeReference
-			if (ref!==null && !ref.isSubtypeOf(typeof(io.sarl.lang.core.Event))) {
+			if (ref!==null && !ref.isSubtypeOf(typeof(Event))) {
 				error(
 						MessageFormat::format(
 								Messages::SARLValidator_24,
@@ -1163,8 +1173,8 @@ class SARLValidator extends AbstractSARLValidator {
 	 * @param action
 	 */
 	@Check(CheckType.FAST)
-	public def checkEventSuperType(Event event) {
-		checkSuperTypes(event, typeof(io.sarl.lang.core.Event), false)
+	public def checkEventSuperType(io.sarl.lang.sarl.Event event) {
+		checkSuperTypes(event, typeof(Event), false)
 	}
 
 	/**
@@ -1209,7 +1219,7 @@ class SARLValidator extends AbstractSARLValidator {
 	public def checkBehaviorUnitEventType(BehaviorUnit behaviorUnit) {
 		var event = behaviorUnit.name
 		var ref = event.toLightweightTypeReference
-		if (ref===null || ref.interfaceType || !ref.isSubtypeOf(typeof(io.sarl.lang.core.Event))) {
+		if (ref===null || ref.interfaceType || !ref.isSubtypeOf(typeof(Event))) {
 			error(
 					MessageFormat::format(
 							Messages::SARLValidator_24,
