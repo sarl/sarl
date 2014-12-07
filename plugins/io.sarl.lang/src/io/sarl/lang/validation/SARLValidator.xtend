@@ -75,6 +75,8 @@ import io.sarl.lang.signature.ActionKey
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.xtext.xbase.XMemberFeatureCall
+import org.eclipse.xtext.xbase.XAbstractFeatureCall
 
 /**
  * Validator for the SARL elements.
@@ -162,6 +164,58 @@ class SARLValidator extends AbstractSARLValidator {
 			}
 		}
 	}
+	
+	private def checkForbiddenFeatureCall(XAbstractFeatureCall expression) {
+		var id = expression.feature.qualifiedName
+		if (id == "java.lang.System.exit") {
+			error(
+				"Forbidden call to the exit function. The killing feature of the agent must be used.", 
+				expression,
+				null,
+				ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+				org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE)
+		}
+	}
+
+	@Check(CheckType.FAST)
+	public def checkForbiddenCalls(XMemberFeatureCall expression) {
+		expression.checkForbiddenFeatureCall
+	}
+
+	@Check(CheckType.FAST)
+	public def checkForbiddenCalls(XFeatureCall expression) {
+		expression.checkForbiddenFeatureCall
+	}
+
+//	@Check(CheckType.FAST)
+//	public def checkDiscouragedCalls(XMemberFeatureCall expression) {
+//		if (!isIgnored(org.eclipse.xtext.xbase.validation.IssueCodes::DISCOURAGED_REFERENCE)) {
+//		}
+//		var id = expression.feature.identifier
+//		if (id.startsWith("java.lang.System")) {
+//			switch (id) {
+//				case "java.lang.System.exit": {
+//					false
+//				}
+//				case "java.lang.System.err", "java.lang.System.out",
+//					"java.lang.System.setErr", "java.lang.System.setOut",
+//					"java.lang.System.console": {
+//					false
+//				}
+//				case "java.lang.System.in",
+//					"java.lang.System.setIn": {
+//					false
+//				}
+//				default: {
+//					false
+//				}
+//			}
+//			// exit
+//			// console
+//			// inheritedChannel
+//			
+//		}
+//	}
 
 	/**
 	 * @param feature
