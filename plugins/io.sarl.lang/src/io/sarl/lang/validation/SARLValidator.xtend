@@ -173,7 +173,7 @@ class SARLValidator extends AbstractSARLValidator {
 		var id = expression.feature.qualifiedName
 		if (id == "java.lang.System.exit") {
 			error(
-				"Forbidden call to the exit function. The killing feature of the agent must be used.", 
+				Messages.SARLValidator_39, 
 				expression,
 				null,
 				ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -202,14 +202,14 @@ class SARLValidator extends AbstractSARLValidator {
 			case "java.lang.System.console",
 			case "java.lang.System.inheritedChannel": {
 				addIssue(
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console.",
+					Messages.SARLValidator_40,
 					expression,
 					org.eclipse.xtext.xbase.validation.IssueCodes.DISCOURAGED_REFERENCE)
 			}
 			default: {
 				if (id.startsWith("org.eclipse.xtext.xbase.lib.InputOutput")) {
 					addIssue(
-						"Discouraged feature use. The agent's logging capacity should be used in place of the implicitly imported input/output functions.",
+						Messages.SARLValidator_41,
 						expression,
 						org.eclipse.xtext.xbase.validation.IssueCodes.DISCOURAGED_REFERENCE)
 				}
