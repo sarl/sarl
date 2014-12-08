@@ -1551,4 +1551,109 @@ public class SARLQuickfixProviderTest extends AbstractSARLQuickfixTest {
 				+ "agent A1 { }\n"); //$NON-NLS-1$
 	}
 
+	/**
+	 */
+	@Test
+	public void fixUnusedAgentCapacity_0() {
+		assertQuickFix(
+				IssueCodes.UNUSED_AGENT_CAPACITY,
+				//
+				// Code to fix:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 { def myfct }\n" //$NON-NLS-1$
+				+ "capacity C2 { def iddle }\n" //$NON-NLS-1$
+				+ "capacity C3 { def myfct2 }\n" //$NON-NLS-1$
+				+ "agent A1 {\n" //$NON-NLS-1$
+				+ "uses C1, C2, C3\n" //$NON-NLS-1$
+				+ "def testfct { myfct; myfct2 }\n" //$NON-NLS-1$
+				+ "}\n", //$NON-NLS-1$
+				//
+				// Label and description:
+				//
+				"Remove the capacity 'C2'", //$NON-NLS-1$
+				"Remove the capacity 'C2'", //$NON-NLS-1$
+				//
+				// Expected fixed code:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 { def myfct }\n" //$NON-NLS-1$
+				+ "capacity C2 { def iddle }\n" //$NON-NLS-1$
+				+ "capacity C3 { def myfct2 }\n" //$NON-NLS-1$
+				+ "agent A1 {\n" //$NON-NLS-1$
+				+ "uses C1, C3\n" //$NON-NLS-1$
+				+ "def testfct { myfct; myfct2 }\n" //$NON-NLS-1$
+				+ "}\n"); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void fixUnusedAgentCapacity_1() {
+		assertQuickFix(
+				IssueCodes.UNUSED_AGENT_CAPACITY,
+				//
+				// Code to fix:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 { def myfct }\n" //$NON-NLS-1$
+				+ "capacity C2 { def iddle }\n" //$NON-NLS-1$
+				+ "capacity C3 { def myfct2 }\n" //$NON-NLS-1$
+				+ "agent A1 {\n" //$NON-NLS-1$
+				+ "uses C1, C3, C2\n" //$NON-NLS-1$
+				+ "def testfct { myfct; myfct2 }\n" //$NON-NLS-1$
+				+ "}\n", //$NON-NLS-1$
+				//
+				// Label and description:
+				//
+				"Remove the capacity 'C2'", //$NON-NLS-1$
+				"Remove the capacity 'C2'", //$NON-NLS-1$
+				//
+				// Expected fixed code:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 { def myfct }\n" //$NON-NLS-1$
+				+ "capacity C2 { def iddle }\n" //$NON-NLS-1$
+				+ "capacity C3 { def myfct2 }\n" //$NON-NLS-1$
+				+ "agent A1 {\n" //$NON-NLS-1$
+				+ "uses C1, C3\n" //$NON-NLS-1$
+				+ "def testfct { myfct; myfct2 }\n" //$NON-NLS-1$
+				+ "}\n"); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void fixUnusedAgentCapacity_2() {
+		assertQuickFix(
+				IssueCodes.UNUSED_AGENT_CAPACITY,
+				//
+				// Code to fix:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 { def myfct }\n" //$NON-NLS-1$
+				+ "capacity C2 { def iddle }\n" //$NON-NLS-1$
+				+ "capacity C3 { def myfct2 }\n" //$NON-NLS-1$
+				+ "agent A1 {\n" //$NON-NLS-1$
+				+ "uses C2, C1, C3\n" //$NON-NLS-1$
+				+ "def testfct { myfct; myfct2 }\n" //$NON-NLS-1$
+				+ "}\n", //$NON-NLS-1$
+				//
+				// Label and description:
+				//
+				"Remove the capacity 'C2'", //$NON-NLS-1$
+				"Remove the capacity 'C2'", //$NON-NLS-1$
+				//
+				// Expected fixed code:
+				//
+				PACKAGE_STATEMENT
+				+ "capacity C1 { def myfct }\n" //$NON-NLS-1$
+				+ "capacity C2 { def iddle }\n" //$NON-NLS-1$
+				+ "capacity C3 { def myfct2 }\n" //$NON-NLS-1$
+				+ "agent A1 {\n" //$NON-NLS-1$
+				+ "uses C1, C3\n" //$NON-NLS-1$
+				+ "def testfct { myfct; myfct2 }\n" //$NON-NLS-1$
+				+ "}\n"); //$NON-NLS-1$
+	}
+
 }

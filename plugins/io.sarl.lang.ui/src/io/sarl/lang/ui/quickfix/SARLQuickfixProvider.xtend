@@ -654,4 +654,21 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		]
 	}
 	
+	@Fix(IssueCodes.UNUSED_AGENT_CAPACITY)
+	def fixUnusedAgentCapacity(Issue issue, IssueResolutionAcceptor acceptor) {
+		val typeName = issue.data.get(0)
+		var msg = MessageFormat::format(
+						Messages::SARLQuickfixProvider_5,
+						Messages::SARLQuickfixProvider_12, typeName)
+		acceptor.accept(issue, msg, msg, null) [ element, context |
+			var document = context.xtextDocument
+			var sep = ','
+			if (!removeBackwardUntilSeparator(issue, document, sep)) {
+				if (!removeForwardUntilSeparator(issue, document, sep)) {
+					removeBackwardWithInheritingKeyword(issue, document)
+				}
+			}
+		]
+	}
+	
 }
