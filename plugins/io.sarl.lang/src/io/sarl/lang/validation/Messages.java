@@ -74,6 +74,7 @@ public class Messages extends NLS {
 	public static String SARLValidator_39;
 	public static String SARLValidator_40;
 	public static String SARLValidator_41;
+	public static String SARLValidator_42;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

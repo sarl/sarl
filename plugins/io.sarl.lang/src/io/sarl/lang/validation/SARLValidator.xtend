@@ -21,8 +21,11 @@
 package io.sarl.lang.validation
 
 import com.google.common.collect.Lists
+import com.google.common.collect.Multimaps
 import com.google.inject.Inject
 import io.sarl.lang.SARLKeywords
+import io.sarl.lang.SARLLangActivator
+import io.sarl.lang.annotation.ImportedCapacityFeature
 import io.sarl.lang.core.Capacity
 import io.sarl.lang.core.Event
 import io.sarl.lang.sarl.Action
@@ -61,6 +64,7 @@ import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
+import org.eclipse.xtext.common.types.JvmTypeAnnotationValue
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.validation.Check
@@ -73,10 +77,10 @@ import org.eclipse.xtext.xbase.XConstructorCall
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XMemberFeatureCall
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider
+import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 
 import static io.sarl.lang.util.ModelUtil.*
-import io.sarl.lang.SARLLangActivator
 
 /**
  * Validator for the SARL elements.
@@ -100,6 +104,9 @@ class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private ActionSignatureProvider sarlSignatureProvider
+	
+	@Inject
+	private JvmModelAssociator jvmModelAssociator
 	
 	protected def canonicalTypeName(LightweightTypeReference typeRef) {
 		if (typeRef===null) "void" else typeRef.getHumanReadableName()
@@ -1255,4 +1262,59 @@ class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 	
+	/**
+	 * @param container
+	 */
+	@Check(CheckType.NORMAL)
+	public def checkUnusedCapacities(CapacityUses element) {
+		if(!isIgnored(IssueCodes::UNUSED_AGENT_CAPACITY)) {
+			var jvmContainer = this.logicalContainerProvider.getNearestLogicalContainer(element)
+			var container = this.jvmModelAssociator.getPrimarySourceElement(jvmContainer)
+
+			val annotationId = typeof(ImportedCapacityFeature).name
+			var importedFeatures = Multimaps::<String, JvmOperation>newMultimap(newHashMap) [ newArrayList ]
+			for (method : jvmContainer.eContents.filter [
+				if (it instanceof JvmOperation) {
+					if (it.annotations.findFirst [it.annotation.identifier == annotationId] !== null) {
+						return true
+					}
+				}
+				return false
+			]) {
+				var m = method as JvmOperation
+				var annotationValues = m.annotations.findFirst[it.annotation.identifier == annotationId].values
+				var annotationType = ((annotationValues.get(0)) as JvmTypeAnnotationValue)
+				var capacityType = annotationType.values.get(0)
+				importedFeatures.put(capacityType.identifier, m)
+			}
+
+			var index = 0
+			for (capacity : element.capacitiesUsed) {
+				var operations = importedFeatures.get(capacity.identifier)
+				if (!operations.empty) {
+					var iterator = operations.iterator
+					var notFound = true
+					while (notFound && iterator.hasNext) {
+						var operation = iterator.next
+						if (operation.isLocallyUsed(container)) {
+							notFound = false
+						}
+					}
+					if (notFound) {
+						addIssue(
+							MessageFormat::format(
+								Messages::SARLValidator_42,
+								capacity.simpleName),
+							element,
+							SarlPackage.Literals.CAPACITY_USES__CAPACITIES_USED,
+							index,
+							IssueCodes::UNUSED_AGENT_CAPACITY,
+							capacity.simpleName)
+					}
+				}
+				index++
+			}
+		}
+	}
+
 }

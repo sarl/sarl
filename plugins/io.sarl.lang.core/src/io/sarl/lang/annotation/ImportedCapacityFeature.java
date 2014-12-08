@@ -39,8 +39,6 @@ import java.lang.annotation.Target;
 public @interface ImportedCapacityFeature {
 
 	/** Replies the capacity that is the source of the annotated method.
-	 * 
-	 * @return the capacity.
 	 */
 	Class<? extends Capacity> value();
 

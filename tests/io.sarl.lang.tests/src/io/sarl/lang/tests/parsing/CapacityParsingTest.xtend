@@ -20,13 +20,19 @@ import io.sarl.lang.SARLInjectorProvider
 import io.sarl.lang.sarl.SarlPackage
 import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.validation.IssueCodes
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.TypesPackage
+import org.eclipse.xtext.diagnostics.Severity
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
+import org.eclipse.xtext.validation.Issue
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.List
+import org.junit.Assert
 
 /**
  * @author $Author: srodriguez$
@@ -980,6 +986,156 @@ class CapacityParsingTest {
 			SarlPackage::eINSTANCE.skill,
 			org.eclipse.xtext.xbase.validation.IssueCodes::MISSING_TYPE,
 			"Missing implemented type 'io.sarl.lang.core.Capacity' for 'S1'")
+	}
+	
+	/**
+	 * FIXME: Issue #260. Move to Xbase.
+	 */
+	private def StringBuilder getIssuesAsString(EObject model, Iterable<Issue> issues, StringBuilder result) {
+		for(issue : issues) {
+			var uri = issue.uriToProblem
+			result.append(issue.severity)
+			result.append(" (")
+			result.append(issue.code)
+			result.append(") '")
+			result.append(issue.message)
+			result.append("'")
+			if (uri !== null) {
+				var eObject = model.eResource.resourceSet.getEObject(uri, true)
+				result.append(" on ")
+				result.append(eObject.eClass.name)
+			}
+			result.append("\n")
+		}
+		return result
+	}
+
+	/**
+	 * FIXME: Issue #260. Move to Xbase.
+	 */
+	private def boolean isIssueMessage(Issue issue, String... messageParts) {
+		for (String messagePart : messageParts) {
+			if (!issue.message.toLowerCase.contains(messagePart.toLowerCase)) {
+				return false
+			}
+		}
+		return true
+	}
+	
+	/**
+	 * FIXME: Issue #260. Move to Xbase.
+	 */
+	private def void assertIssue(List<Issue> issues, Severity severity, EObject model,
+		EClass objectType, String code, String... messageParts) {
+		var iterator = issues.iterator
+		while (iterator.hasNext) {
+			var issue = iterator.next
+			if (issue.code == code && issue.severity == severity) {
+				var object = model.eResource().resourceSet.getEObject(issue.uriToProblem, true)
+				if (objectType.isInstance(object)) {
+					if (issue.isIssueMessage(messageParts)) {
+						iterator.remove
+						return;
+					}
+				}
+			}
+		}
+		var message = new StringBuilder("Expected " + severity + " '" + code + "' on " + objectType.name + " but got\n")
+		getIssuesAsString(model, issues, message)
+		Assert::fail(message.toString)
+	}
+	
+	/**
+	 * FIXME: Issue #260. Move to Xbase.
+	 */
+	def void assertWarning(List<Issue> issues, EObject model, EClass objectType, String code,
+			String... messageParts) {
+		assertIssue(issues, Severity::WARNING, model, objectType, code, messageParts)
+	}
+	
+	/**
+	 * FIXME: Issue #260. Move to Xbase.
+	 */
+	def void assertNoMoreIssues(List<Issue> issues, EObject model) {
+		if (!issues.isEmpty) {
+			var message = new StringBuilder("Expecting no issue but got\n")
+			getIssuesAsString(model, issues, message)
+			Assert::fail(message.toString)
+		}
+	}
+
+	@Test
+	def void agentUnsuedCapacity_0() {
+		val mas = '''
+			capacity C1 {
+				def myfct
+			}
+			capacity C2 {
+				def myfct2
+			}
+			agent A1 {
+				uses C2, C1
+				def myaction {
+					myfct2
+				}
+			}
+		'''.parse
+		var issues = mas.validate
+		issues.assertWarning(
+			mas,
+			SarlPackage::eINSTANCE.capacityUses,
+			IssueCodes::UNUSED_AGENT_CAPACITY,
+			"The capacity 'C1' is not used")
+		issues.assertNoMoreIssues(mas)
+	}
+
+	@Test
+	def void agentUnsuedCapacity_1() {
+		val mas = '''
+			capacity C1 {
+				def myfct
+			}
+			capacity C2 {
+				def myfct2
+			}
+			agent A1 {
+				uses C2, C1
+				def myaction {
+				}
+			}
+		'''.parse
+		var issues = mas.validate
+		issues.assertWarning(
+			mas,
+			SarlPackage::eINSTANCE.capacityUses,
+			IssueCodes::UNUSED_AGENT_CAPACITY,
+			"The capacity 'C1' is not used")
+		issues.assertWarning(
+			mas,
+			SarlPackage::eINSTANCE.capacityUses,
+			IssueCodes::UNUSED_AGENT_CAPACITY,
+			"The capacity 'C2' is not used")
+		issues.assertNoMoreIssues(mas)
+	}
+
+	@Test
+	def void agentUnsuedCapacity_2() {
+		val mas = '''
+			capacity C1 {
+				def myfct
+			}
+			capacity C2 {
+				def myfct2
+			}
+			agent A1 {
+				uses C2, C1
+				def myaction {
+					myfct
+					myfct2
+				}
+			}
+		'''.parse
+		mas.assertNoIssues
 	}
 
 }

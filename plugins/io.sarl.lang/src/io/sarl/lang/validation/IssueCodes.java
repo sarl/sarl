@@ -205,6 +205,11 @@ public final class IssueCodes {
 	public static final String MISSING_CONSTRUCTOR =
 			ISSUE_CODE_PREFIX + "missing_constructor"; //$NON-NLS-1$
 
+	/** A capacity was not used in the local context.
+	 */
+	public static final String UNUSED_AGENT_CAPACITY =
+			ISSUE_CODE_PREFIX + "unused_agent_capacity"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}
