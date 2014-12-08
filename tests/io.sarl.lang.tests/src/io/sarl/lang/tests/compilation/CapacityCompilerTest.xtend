@@ -476,6 +476,7 @@ class CapacityCompilerTest {
 		'''
 		val expectedS1 = '''
 			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.annotation.ImportedCapacityFeature;
 			import io.sarl.lang.core.Agent;
 			import io.sarl.lang.core.Skill;
 			
@@ -487,6 +488,7 @@ class CapacityCompilerTest {
 			   * @see C2#myaction3(int).
 			   */
 			  @Generated
+			  @ImportedCapacityFeature(C2.class)
 			  protected float myaction3(final int a) {
 			    return getSkill(C2.class).myaction3(a);
 			  }
@@ -497,6 +499,7 @@ class CapacityCompilerTest {
 			   * @see C2#myaction4(boolean).
 			   */
 			  @Generated
+			  @ImportedCapacityFeature(C2.class)
 			  protected void myaction4(final boolean a) {
 			    getSkill(C2.class).myaction4(a);
 			  }

@@ -25,8 +25,10 @@ import io.sarl.lang.SARLKeywords
 import io.sarl.lang.annotation.DefaultValue
 import io.sarl.lang.annotation.DefaultValueSource
 import io.sarl.lang.annotation.DefaultValueUse
+import io.sarl.lang.annotation.EarlyExit
 import io.sarl.lang.annotation.FiredEvent
 import io.sarl.lang.annotation.Generated
+import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Percept
 import io.sarl.lang.sarl.Action
@@ -51,6 +53,7 @@ import io.sarl.lang.signature.ActionSignatureProvider
 import io.sarl.lang.signature.InferredStandardParameter
 import io.sarl.lang.signature.InferredValuedParameter
 import io.sarl.lang.signature.SignatureKey
+import java.lang.annotation.Annotation
 import java.text.MessageFormat
 import java.util.List
 import java.util.Map
@@ -80,9 +83,7 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking
 
 import static io.sarl.lang.util.ModelUtil.*
-import java.lang.annotation.Annotation
-import io.sarl.lang.annotation.EarlyExit
-import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer
+import io.sarl.lang.annotation.ImportedCapacityFeature
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -698,6 +699,8 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						}
 						// Add the annotation dedicated to this particular method
 						op.annotations += annotationRef(typeof(Generated))
+						// Add the imported feature marker
+						op.annotations += annotationClassRef(typeof(ImportedCapacityFeature), capacityType)
 						owner.members += op
 						// 
 						if (operationsToImplement!==null) operationsToImplement.remove(entry.key)

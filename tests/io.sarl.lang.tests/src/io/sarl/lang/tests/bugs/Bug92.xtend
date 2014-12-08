@@ -278,6 +278,7 @@ class Bug92 {
 		'''
 		val expected2 = '''
 			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.annotation.ImportedCapacityFeature;
 			import java.util.UUID;
 			
 			@SuppressWarnings("all")
@@ -307,6 +308,7 @@ class Bug92 {
 			   * @see ComputeEnergyCapacity#getEnergy(java.lang.Double,java.lang.Double,java.lang.Double).
 			   */
 			  @Generated
+			  @ImportedCapacityFeature(ComputeEnergyCapacity.class)
 			  protected Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {
 			    return getSkill(ComputeEnergyCapacity.class).getEnergy(currentTime, deltaTime, wantedEnergy);
 			  }
@@ -317,6 +319,7 @@ class Bug92 {
 			   * @see ComputeEnergyCapacity#setVoltage(java.lang.Double).
 			   */
 			  @Generated
+			  @ImportedCapacityFeature(ComputeEnergyCapacity.class)
 			  protected void setVoltage(final Double currentVoltage) {
 			    getSkill(ComputeEnergyCapacity.class).setVoltage(currentVoltage);
 			  }
@@ -389,6 +392,7 @@ class Bug92 {
 		'''
 		val expected2 = '''
 			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.annotation.ImportedCapacityFeature;
 			import java.util.UUID;
 
 			@SuppressWarnings("all")
@@ -418,6 +422,7 @@ class Bug92 {
 			   * @see ComputeEnergyCapacity#getEnergy(java.lang.Double,java.lang.Double,java.lang.Double).
 			   */
 			  @Generated
+			  @ImportedCapacityFeature(ComputeEnergyCapacity.class)
 			  protected Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {
 			    return getSkill(ComputeEnergyCapacity.class).getEnergy(currentTime, deltaTime, wantedEnergy);
 			  }
@@ -428,6 +433,7 @@ class Bug92 {
 			   * @see ComputeEnergyCapacity#setVoltage(java.lang.Double).
 			   */
 			  @Generated
+			  @ImportedCapacityFeature(ComputeEnergyCapacity.class)
 			  protected void setVoltage(final Double currentVoltage) {
 			    getSkill(ComputeEnergyCapacity.class).setVoltage(currentVoltage);
 			  }
