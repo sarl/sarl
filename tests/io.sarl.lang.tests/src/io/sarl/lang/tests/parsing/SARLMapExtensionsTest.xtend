@@ -294,7 +294,7 @@ class SARLMapExtensionsTest {
 		mas.assertError(
 			XbasePackage::eINSTANCE.XFeatureCall,
 			IssueCodes::INCOMPATIBLE_TYPES,
-			"Type mismatch: cannot convert from int to String"
+			"Type mismatch: cannot convert from int to Map<? super String, ? super Integer>"
 		)
 	}
 
@@ -359,7 +359,7 @@ class SARLMapExtensionsTest {
 		mas.assertError(
 			XbasePackage::eINSTANCE.XFeatureCall,
 			IssueCodes::INCOMPATIBLE_TYPES,
-			"Type mismatch: cannot convert from int to String"
+			"Type mismatch: cannot convert from int to Map<? extends String, ? extends Integer>"
 		)
 	}
 

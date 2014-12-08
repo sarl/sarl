@@ -22,7 +22,9 @@ package io.sarl.lang.core.tests.scoping;
 
 import static io.sarl.lang.scoping.batch.SARLMapExtensions.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -49,7 +51,7 @@ public class SARLMapExtensionsTest extends Assert {
 
 	@Before
 	public void setUp() {
-		this.map = new HashMap<>();
+		this.map = new HashMap<String, String>();
 		this.key1 = "k1"; //$NON-NLS-1$
 		this.key2 = "k2"; //$NON-NLS-1$
 		this.value1 = UUID.randomUUID().toString();
@@ -97,7 +99,7 @@ public class SARLMapExtensionsTest extends Assert {
 		String v3 = UUID.randomUUID().toString();
 		Map<String, String> o;
 
-		Map<String, String> tmp = new HashMap<>();
+		Map<String, String> tmp = new HashMap<String, String>();
 		tmp.put("k3", v1);
 		tmp.put("k4", v2);
 		tmp.put("k5", v3);
@@ -119,7 +121,7 @@ public class SARLMapExtensionsTest extends Assert {
 		String v3 = UUID.randomUUID().toString();
 		Map<String, String> o;
 
-		Map<String, String> tmp = new HashMap<>();
+		Map<String, String> tmp = new HashMap<String, String>();
 		tmp.put("k3", v1);
 		tmp.put("k2", v2);
 		tmp.put("k5", v3);
@@ -150,20 +152,10 @@ public class SARLMapExtensionsTest extends Assert {
 		assertEquals(v, o.get("k3"));
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void operator_pluMapPair_1() {
 		String v = UUID.randomUUID().toString();
-		Map<String, String> o;
-
-		o = operator_plus(this.map, new Pair<String, String>("k2", v));
-		assertNotNull(o);
-		assertNotSame(this.map, o);
-		assertEquals(2, this.map.size());
-		assertEquals(this.value1, this.map.get("k1"));
-		assertEquals(this.value2, this.map.get("k2"));
-		assertEquals(2, o.size());
-		assertEquals(this.value1, o.get("k1"));
-		assertEquals(v, o.get("k2"));
+		operator_plus(this.map, new Pair<String, String>("k2", v));
 	}
 
 	@Test
@@ -173,7 +165,7 @@ public class SARLMapExtensionsTest extends Assert {
 		String v3 = UUID.randomUUID().toString();
 		Map<String, String> o;
 
-		Map<String, String> tmp = new HashMap<>();
+		Map<String, String> tmp = new HashMap<String, String>();
 		tmp.put("k3", v1);
 		tmp.put("k4", v2);
 		tmp.put("k5", v3);
@@ -204,7 +196,7 @@ public class SARLMapExtensionsTest extends Assert {
 		String v3 = UUID.randomUUID().toString();
 		Map<String, String> o;
 
-		Map<String, String> tmp = new HashMap<>();
+		Map<String, String> tmp = new HashMap<String, String>();
 		tmp.put("k3", v1);
 		tmp.put("k4", v2);
 		tmp.put("k5", v3);
@@ -226,6 +218,35 @@ public class SARLMapExtensionsTest extends Assert {
 		assertEquals(v1, o.get("k3"));
 		assertEquals(v2, o.get("k4"));
 		assertEquals(v3, o.get("k5"));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void operator_plusMapMap_2() {
+		String v1 = UUID.randomUUID().toString();
+		String v2 = UUID.randomUUID().toString();
+		String v3 = UUID.randomUUID().toString();
+		Map<String, String> o;
+
+		Map<String, String> tmp = new HashMap<String, String>();
+		tmp.put("k3", v1);
+		tmp.put("k1", v2);
+		tmp.put("k5", v3);
+
+		operator_plus(this.map, tmp);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void operator_plusMapMap_3() {
+		String v1 = UUID.randomUUID().toString();
+		String v2 = UUID.randomUUID().toString();
+		String v3 = UUID.randomUUID().toString();
+
+		Map<String, String> tmp = new HashMap<String, String>();
+		tmp.put("k3", v1);
+		tmp.put("k1", v2);
+		tmp.put("k5", v3);
+
+		operator_plus(tmp, this.map);
 	}
 
 	@Test
@@ -264,6 +285,42 @@ public class SARLMapExtensionsTest extends Assert {
 		assertNull(this.map.get("k2"));
 		assertEquals(this.value2, o1);
 		assertEquals(this.value1, o2);
+	}
+
+	@Test
+	public void operator_removeMapMap_0() {
+		Map<String, String> m = new HashMap<String, String>();
+		m.put("k0", "v0");
+		m.put("k1", "v0");
+		Map<String, String> o = operator_remove(this.map, m);
+		assertEquals(2, this.map.size());
+		assertEquals(this.value1, this.map.get("k1"));
+		assertEquals(this.value2, this.map.get("k2"));
+		assertSame(this.map, o);
+	}
+
+	@Test
+	public void operator_removeMapMap_1() {
+		Map<String, String> m = new HashMap<String, String>();
+		m.put("k0", "v0");
+		m.put("k1", this.value1);
+		Map<String, String> o = operator_remove(this.map, m);
+		assertEquals(1, this.map.size());
+		assertNull(this.map.get("k1"));
+		assertEquals(this.value2, this.map.get("k2"));
+		assertSame(this.map, o);
+	}
+
+	@Test
+	public void operator_removeMapIterable() {
+		List<String> m = new ArrayList<String>();
+		m.add("k0");
+		m.add("k1");
+		Map<String, String> o = operator_remove(this.map, m);
+		assertEquals(1, this.map.size());
+		assertNull(this.map.get("k1"));
+		assertEquals(this.value2, this.map.get("k2"));
+		assertSame(this.map, o);
 	}
 
 	@Test
