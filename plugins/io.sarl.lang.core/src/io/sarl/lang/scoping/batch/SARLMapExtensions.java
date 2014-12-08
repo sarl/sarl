@@ -71,7 +71,7 @@ public final class SARLMapExtensions {
 	 * if the key was not present in the map before the addition.
 	 * @since 2.8
 	 */
-	@Inline(value = "$1.put($2.getKey(), $2.getValue())", statementExpression=true)
+	@Inline(value = "$1.put($2.getKey(), $2.getValue())", statementExpression = true)
 	public static <K, V> V operator_add(Map<K, V> map, Pair<? extends K, ? extends V> entry) {
 		return map.put(entry.getKey(), entry.getValue());
 	}
@@ -97,7 +97,7 @@ public final class SARLMapExtensions {
 	 *
 	 * If the pair key already exists in the map, the exception
 	 * {@link IllegalArgumentException} is thrown.
-	 * 
+	 *
 	 * The replied map is a view on the given map. It means that any change
 	 * in the original map is reflected to the result of this operation.
 	 *
@@ -111,9 +111,9 @@ public final class SARLMapExtensions {
 	 */
 	@Pure
 	@Inline(value = "(ImmutableMap.<K,V>builder().putAll(left).put(right.getKey(), right.getValue()).build())",
-			imported=ImmutableMap.class)
+			imported = ImmutableMap.class)
 	public static <K, V> Map<K, V> operator_plus(Map<K, V> left, Pair<? extends K, ? extends V> right) {
-		return ImmutableMap.<K,V>builder().putAll(left).put(right.getKey(), right.getValue()).build();
+		return ImmutableMap.<K, V>builder().putAll(left).put(right.getKey(), right.getValue()).build();
 	}
 
 	/** Merge the given maps.
@@ -129,9 +129,9 @@ public final class SARLMapExtensions {
 	 * @throws IllegalArgumentException - when a right operand key exists in the left operand.
 	 */
 	@Pure
-	@Inline(value = "(ImmutableMap.<K,V>builder().putAll(left).putAll(right).build())", imported=ImmutableMap.class)
+	@Inline(value = "(ImmutableMap.<K,V>builder().putAll(left).putAll(right).build())", imported = ImmutableMap.class)
 	public static <K, V> Map<K, V> operator_plus(Map<K, V> left, Map<? extends K, ? extends V> right) {
-		return ImmutableMap.<K,V>builder().putAll(left).putAll(right).build();
+		return ImmutableMap.<K, V>builder().putAll(left).putAll(right).build();
 	}
 
 	/** Remove a key from the given map.
@@ -144,7 +144,7 @@ public final class SARLMapExtensions {
 	 * present in the map.
 	 * @since 2.8
 	 */
-	@Inline(value="$1.remove($2)", statementExpression=true)
+	@Inline(value = "$1.remove($2)", statementExpression = true)
 	public static <K, V> V operator_remove(Map<K, V> map, K key) {
 		return map.remove(key);
 	}
@@ -193,7 +193,7 @@ public final class SARLMapExtensions {
 	 *
 	 * The replied map is a view on the given map. It means that any change
 	 * in the original map is reflected to the result of this operation.
-	 * 
+	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
 	 * @param map - the map to update.
@@ -210,7 +210,7 @@ public final class SARLMapExtensions {
 			}
 		});
 	}
-	
+
 	/** Replies the elements of the left map without the pairs in the right map.
 	 *
 	 * The difference is an immutable
@@ -229,7 +229,7 @@ public final class SARLMapExtensions {
 	 * @since 2.8
 	 */
 	@Pure
-	@Inline(value = "(Maps.difference($1, $2).entriesOnlyOnLeft())", imported=Maps.class)
+	@Inline(value = "(Maps.difference($1, $2).entriesOnlyOnLeft())", imported = Maps.class)
 	public static <K, V> Map<K, V> operator_minus(Map<K, V> left, Map<? extends K, ? extends V> right) {
 		return Maps.difference(left, right).entriesOnlyOnLeft();
 	}
@@ -256,16 +256,18 @@ public final class SARLMapExtensions {
 			}
 		});
 	}
-	
+
 	/** Replies the value associated to the given key in the map.
 	 *
+	 * @param <K> - type of the map keys.
+	 * @param <V> - type of the map values.
 	 * @param map - the map to consider.
 	 * @param key - the key of the value.
 	 * @return the value associated to the key, or <code>null</code> if
 	 * the key was not found.
 	 */
 	@Pure
-	@Inline(value="($1.get($2))")
+	@Inline(value = "($1.get($2))")
 	public static <K, V> V operator_mappedTo(Map<K, V> map, K key) {
 		return map.get(key);
 	}
