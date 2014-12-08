@@ -90,7 +90,7 @@ class SARLMapExtensionsTest {
 				var map1 : Map<String, Number>
 				var map2 : Map<String, Integer>
 				
-				def myaction0 : Object {
+				def myaction0 {
 					map1 += map2
 				}
 			}
@@ -286,7 +286,7 @@ class SARLMapExtensionsTest {
 				var str = "a"
 				var num = 4
 				
-				def myaction0 : Object {
+				def myaction0 {
 					map -= num
 				}
 			}
@@ -294,7 +294,7 @@ class SARLMapExtensionsTest {
 		mas.assertError(
 			XbasePackage::eINSTANCE.XFeatureCall,
 			IssueCodes::INCOMPATIBLE_TYPES,
-			"Type mismatch: cannot convert from int to Map<? super String, ? super Integer>"
+			"Type mismatch: cannot convert from int to Iterable<? super String>"
 		)
 	}
 

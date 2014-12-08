@@ -21,8 +21,11 @@
 
 package io.sarl.lang.scoping.batch;
 
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.xtext.xbase.lib.Inline;
@@ -32,7 +35,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -69,7 +73,6 @@ public final class SARLMapExtensions {
 	 * @param entry - the entry (key, value) to add into the map.
 	 * @return the value previously associated to the key, or <code>null</code>
 	 * if the key was not present in the map before the addition.
-	 * @since 2.8
 	 */
 	@Inline(value = "$1.put($2.getKey(), $2.getValue())", statementExpression = true)
 	public static <K, V> V operator_add(Map<K, V> map, Pair<? extends K, ? extends V> entry) {
@@ -85,53 +88,51 @@ public final class SARLMapExtensions {
 	 * @param <V> - type of the map values.
 	 * @param outputMap - the map to update.
 	 * @param inputMap - the entries to add.
-	 * @return the outputMap
-	 * @since 2.8
 	 */
-	public static <K, V> Map<K, V> operator_add(Map<K, V> outputMap, Map<? extends K, ? extends V> inputMap) {
+	@Inline(value = "$1.putAll($2)", statementExpression = true)
+	public static <K, V> void operator_add(Map<K, V> outputMap, Map<? extends K, ? extends V> inputMap) {
 		outputMap.putAll(inputMap);
-		return outputMap;
 	}
 
 	/** Add the given pair to a given map for obtaining a new map.
 	 *
-	 * If the pair key already exists in the map, the exception
-	 * {@link IllegalArgumentException} is thrown.
-	 *
 	 * The replied map is a view on the given map. It means that any change
 	 * in the original map is reflected to the result of this operation.
+	 *
+	 * Even if the key of the right operand exists in the left operand, the value in the right operand is preferred.
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
 	 * @param left - the map to consider.
 	 * @param right - the entry (key, value) to add into the map.
 	 * @return an immutable map with the content of the map and with the given entry.
-	 * @since 2.8
 	 * @throws IllegalArgumentException - when the right operand key exists in the left operand.
 	 */
 	@Pure
-	@Inline(value = "(ImmutableMap.<K,V>builder().putAll(left).put(right.getKey(), right.getValue()).build())",
-			imported = ImmutableMap.class)
-	public static <K, V> Map<K, V> operator_plus(Map<K, V> left, Pair<? extends K, ? extends V> right) {
-		return ImmutableMap.<K, V>builder().putAll(left).put(right.getKey(), right.getValue()).build();
+	@Inline(value = "SARLMapExtensions.union($1, Collections.singletonMap($2.getKey(), $2.getValue()))",
+	imported = { SARLMapExtensions.class, Collections.class })
+	public static <K, V> Map<K, V> operator_plus(Map<K, V> left, final Pair<? extends K, ? extends V> right) {
+		return union(left, Collections.singletonMap(right.getKey(), right.getValue()));
 	}
 
-	/** Merge the given maps.
+	/** Merge the two maps.
 	 *
-	 * Builder don't accept duplicate keys (throws {@link IllegalArgumentException} if duplicate keys were added).
+	 * The replied map is a view on the given map. It means that any change
+	 * in the original map is reflected to the result of this operation.
+	 *
+	 * If a key exists in the left and right operands, the value in the right operand is preferred.
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
 	 * @param left - the left map.
 	 * @param right - the right map.
 	 * @return a map with the merged contents from the two maps.
-	 * @since 2.8
 	 * @throws IllegalArgumentException - when a right operand key exists in the left operand.
 	 */
 	@Pure
-	@Inline(value = "(ImmutableMap.<K,V>builder().putAll(left).putAll(right).build())", imported = ImmutableMap.class)
+	@Inline(value = "SARLMapExtensions.union($1, $2)", imported = SARLMapExtensions.class)
 	public static <K, V> Map<K, V> operator_plus(Map<K, V> left, Map<? extends K, ? extends V> right) {
-		return ImmutableMap.<K, V>builder().putAll(left).putAll(right).build();
+		return union(left, right);
 	}
 
 	/** Remove a key from the given map.
@@ -149,29 +150,6 @@ public final class SARLMapExtensions {
 		return map.remove(key);
 	}
 
-	/** Remove pairs from the given map.
-	 *
-	 * The pair is removed only if the key and the value are associated in the map.
-	 * If the key exists in the map, but it is not associated with the given value,
-	 * then the map stays unchanged.
-	 *
-	 * @param <K> - type of the map keys.
-	 * @param <V> - type of the map values.
-	 * @param map - the map to update.
-	 * @param pairsToRemove - the pairs to remove.
-	 * @return the map.
-	 * @since 2.8
-	 */
-	public static <K, V> Map<K, V> operator_remove(Map<K, V> map, Map<? super K, ? super V> pairsToRemove) {
-		for (Entry<? super K, ? super V> pair : pairsToRemove.entrySet()) {
-			V value = map.get(pair.getKey());
-			if (Objects.equal(value, pair.getValue())) {
-				map.remove(pair.getKey());
-			}
-		}
-		return map;
-	}
-
 	/** Remove pairs with the given keys from the map.
 	 *
 	 *
@@ -179,14 +157,11 @@ public final class SARLMapExtensions {
 	 * @param <V> - type of the map values.
 	 * @param map - the map to update.
 	 * @param keysToRemove - the keys of the pairs to remove.
-	 * @return the map.
-	 * @since 2.8
 	 */
-	public static <K, V> Map<K, V> operator_remove(Map<K, V> map, Iterable<? super K> keysToRemove) {
+	public static <K, V> void operator_remove(Map<K, V> map, Iterable<? super K> keysToRemove) {
 		for (Object key : keysToRemove) {
 			map.remove(key);
 		}
-		return map;
 	}
 
 	/** Replies the elements of the given map except the pair with the given key.
@@ -199,7 +174,6 @@ public final class SARLMapExtensions {
 	 * @param map - the map to update.
 	 * @param key - the key to remove.
 	 * @return the map with the content of the map except the key.
-	 * @since 2.8
 	 */
 	@Pure
 	public static <K, V> Map<K, V> operator_minus(Map<K, V> map, final K key) {
@@ -226,12 +200,11 @@ public final class SARLMapExtensions {
 	 * @param left - the map to update.
 	 * @param right - the pairs to remove.
 	 * @return the map with the content of the left map except the pairs of the right map.
-	 * @since 2.8
 	 */
 	@Pure
-	@Inline(value = "(Maps.difference($1, $2).entriesOnlyOnLeft())", imported = Maps.class)
+	@Inline(value = "SARLMapExtensions.operator_minus(left, right.keySet())", imported = SARLMapExtensions.class)
 	public static <K, V> Map<K, V> operator_minus(Map<K, V> left, Map<? extends K, ? extends V> right) {
-		return Maps.difference(left, right).entriesOnlyOnLeft();
+		return operator_minus(left, right.keySet());
 	}
 
 	/** Replies the elements of the given map except the pairs with the given keys.
@@ -244,15 +217,13 @@ public final class SARLMapExtensions {
 	 * @param map - the map to update.
 	 * @param keys - the keys of the pairs to remove.
 	 * @return the map with the content of the map except the pairs.
-	 * @since 2.8
 	 */
 	@Pure
-	public static <K, V> Map<K, V> operator_minus(Map<K, V> map, final Iterable<? super K> keys) {
+	public static <K, V> Map<K, V> operator_minus(Map<K, V> map, final Iterable<?> keys) {
 		return Maps.filterKeys(map, new Predicate<K>() {
-			private Set<Object> keySet = Sets.newHashSet(keys);
 			@Override
 			public boolean apply(K input) {
-				return !this.keySet.contains(input);
+				return !Iterables.contains(keys, input);
 			}
 		});
 	}
@@ -267,9 +238,230 @@ public final class SARLMapExtensions {
 	 * the key was not found.
 	 */
 	@Pure
-	@Inline(value = "($1.get($2))")
+	@Inline(value = "$1.get($2)")
 	public static <K, V> V operator_mappedTo(Map<K, V> map, K key) {
 		return map.get(key);
+	}
+
+	/** Merge the given maps.
+	 *
+	 * The replied map is a view on the given two maps.
+	 * If a key exsits in the two maps, the replied value is the value of the right operand.
+	 *
+	 * The replied map is unmodifiable.
+	 *
+	 * @param <K> - type of the map keys.
+	 * @param <V> - type of the map values.
+	 * @param left - the left map.
+	 * @param right - the right map.
+	 * @return a map with the merged contents from the two maps.
+	 */
+	public static <K, V> Map<K, V> union(Map<? extends K, ? extends V> left, Map<? extends K, ? extends V> right) {
+		return new MergingMap<>(left, right);
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @param <K>
+	 * @param <V>
+	 */
+	private static class MergingMap<K, V> implements Map<K, V> {
+
+		private final Map<? extends K, ? extends V> left;
+		private final Map<? extends K, ? extends V> filteredLeft;
+		private final Map<? extends K, ? extends V> right;
+
+		/**
+		 * @param left - the left operand to merge.
+		 * @param right - the right operand to merge.
+		 */
+		public MergingMap(Map<? extends K, ? extends V> left, Map<? extends K, ? extends V> right) {
+			this.left = left;
+			this.right = right;
+			this.filteredLeft = Maps.filterKeys(this.left, new Predicate<K>() {
+				@SuppressWarnings("synthetic-access")
+				@Override
+				public boolean apply(K input) {
+					return !MergingMap.this.right.containsKey(input);
+				}
+
+			});
+		}
+
+		@Override
+		public int size() {
+			return this.right.size() + this.filteredLeft.size();
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return this.right.isEmpty() && this.left.isEmpty();
+		}
+
+		@Override
+		public boolean containsKey(Object key) {
+			return this.right.containsKey(key) || this.left.containsKey(key);
+		}
+
+		@Override
+		public boolean containsValue(Object value) {
+			if (this.right.containsValue(value)) {
+				return true;
+			}
+			return this.filteredLeft.containsValue(value);
+		}
+
+		@Override
+		public V get(Object key) {
+			if (this.right.containsKey(key)) {
+				return this.right.get(key);
+			}
+			return this.left.get(key);
+		}
+
+		@Override
+		public V put(K key, V value) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public V remove(Object key) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void putAll(Map<? extends K, ? extends V> m) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void clear() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Set<K> keySet() {
+			return Sets.union(this.right.keySet(), this.filteredLeft.keySet());
+		}
+
+		@Override
+		public Collection<V> values() {
+			return new MergingCollection();
+		}
+
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		@Override
+		public Set<Entry<K, V>> entrySet() {
+			Set ks1 = this.right.entrySet();
+			Set ks2 = this.filteredLeft.entrySet();
+			return Sets.union(ks1, ks2);
+		}
+
+		/**
+		 * @author $Author: sgalland$
+		 * @version $FullVersion$
+		 * @mavengroupid $GroupId$
+		 * @mavenartifactid $ArtifactId$
+		 */
+		@SuppressWarnings("synthetic-access")
+		private class MergingCollection implements Collection<V> {
+
+			public MergingCollection() {
+				//
+			}
+
+			@Override
+			public int size() {
+				return MergingMap.this.size();
+			}
+
+			@Override
+			public boolean isEmpty() {
+				return MergingMap.this.isEmpty();
+			}
+
+			@Override
+			public boolean contains(Object o) {
+				return MergingMap.this.containsValue(o);
+			}
+
+			@Override
+			public Iterator<V> iterator() {
+				return Iterators.concat(
+						MergingMap.this.right.values().iterator(),
+						MergingMap.this.filteredLeft.values().iterator());
+			}
+
+			@Override
+			public Object[] toArray() {
+				Object[] tab = new Object[MergingMap.this.size()];
+				Iterator<?> iterator = iterator();
+				for (int i = 0; i < tab.length; ++i) {
+					tab[i] = iterator.next();
+				}
+				return tab;
+			}
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public <T> T[] toArray(T[] a) {
+				T[] tab = a;
+				int size = MergingMap.this.size();
+				if (tab == null || tab.length < size) {
+					tab = (T[]) Array.newInstance(Object.class, size);
+				}
+				Iterator<?> iterator = iterator();
+				for (int i = 0; i < tab.length; ++i) {
+					tab[i] = (T) iterator.next();
+				}
+				return tab;
+			}
+
+			@Override
+			public boolean containsAll(Collection<?> c) {
+				for (Object o : c) {
+					if (!MergingMap.this.containsValue(o)) {
+						return false;
+					}
+				}
+				return true;
+			}
+
+			@Override
+			public boolean add(V e) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public boolean remove(Object o) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public boolean addAll(Collection<? extends V> c) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public boolean removeAll(Collection<?> c) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public boolean retainAll(Collection<?> c) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public void clear() {
+				throw new UnsupportedOperationException();
+			}
+
+		}
+
 	}
 
 }
