@@ -112,5 +112,5 @@ public class SARLValidatorConfigurationBlock extends XbaseValidationConfiguratio
 		builder.addComboBox(IssueCodes.DISCOURAGED_CAPACITY_DEFINITION, Messages.SARLValidatorConfigurationBlock_4);
 		builder.addComboBox(IssueCodes.UNREACHABLE_BEHAVIOR_UNIT, Messages.SARLValidatorConfigurationBlock_5);
 	}
-	
+
 }
