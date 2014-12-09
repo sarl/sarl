@@ -94,6 +94,8 @@ public class SARLValidatorConfigurationBlock extends XbaseValidationConfiguratio
 		super.fillCodingStyleSection(builder);
 		builder.addComboBox(IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION, Messages.SARLValidatorConfigurationBlock_0);
 		builder.addComboBox(IssueCodes.WRONG_PACKAGE, Messages.SARLValidatorConfigurationBlock_1);
+		builder.addComboBox(IssueCodes.REDUNDANT_CAPACITY_USE, Messages.SARLValidatorConfigurationBlock_10);
+		builder.addComboBox(IssueCodes.UNUSED_AGENT_CAPACITY, Messages.SARLValidatorConfigurationBlock_11);
 	}
 
 	@Override
@@ -110,5 +112,5 @@ public class SARLValidatorConfigurationBlock extends XbaseValidationConfiguratio
 		builder.addComboBox(IssueCodes.DISCOURAGED_CAPACITY_DEFINITION, Messages.SARLValidatorConfigurationBlock_4);
 		builder.addComboBox(IssueCodes.UNREACHABLE_BEHAVIOR_UNIT, Messages.SARLValidatorConfigurationBlock_5);
 	}
-
+	
 }
