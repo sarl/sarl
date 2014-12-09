@@ -482,6 +482,14 @@ class CapacityCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class S1 extends Skill implements C1 {
+			  public float myaction(final int a) {
+			    return this.myaction3(a);
+			  }
+			  
+			  public void myaction2(final boolean a) {
+			    this.myaction4(a);
+			  }
+			  
 			  /**
 			   * See the capacity {@link C2#myaction3(int)}.
 			   * 
@@ -502,14 +510,6 @@ class CapacityCompilerTest {
 			  @ImportedCapacityFeature(C2.class)
 			  protected void myaction4(final boolean a) {
 			    getSkill(C2.class).myaction4(a);
-			  }
-			  
-			  public float myaction(final int a) {
-			    return this.myaction3(a);
-			  }
-			  
-			  public void myaction2(final boolean a) {
-			    this.myaction4(a);
 			  }
 			  
 			  /**

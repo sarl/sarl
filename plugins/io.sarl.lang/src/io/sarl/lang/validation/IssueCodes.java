@@ -210,6 +210,12 @@ public final class IssueCodes {
 	public static final String UNUSED_AGENT_CAPACITY =
 			ISSUE_CODE_PREFIX + "unused_agent_capacity"; //$NON-NLS-1$
 
+	/**
+	 * A capacity is used, but it is already used by the current type.
+	 */
+	public static final String REDUNDANT_CAPACITY_USE =
+			ISSUE_CODE_PREFIX + "redundant_capacity_use"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

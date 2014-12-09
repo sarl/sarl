@@ -49,6 +49,10 @@ class VarArgsCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
+			  public void myaction(final int... arg) {
+			    System.out.println(arg);
+			  }
+			  
 			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
@@ -66,10 +70,6 @@ class VarArgsCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  public void myaction(final int... arg) {
-			    System.out.println(arg);
 			  }
 			}
 		''')
@@ -90,6 +90,10 @@ class VarArgsCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
+			  public void myaction(final char arg1, final boolean arg2, final int... arg3) {
+			    System.out.println(arg3);
+			  }
+			  
 			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
@@ -107,10 +111,6 @@ class VarArgsCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  public void myaction(final char arg1, final boolean arg2, final int... arg3) {
-			    System.out.println(arg3);
 			  }
 			}
 		''')

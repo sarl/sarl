@@ -554,5 +554,40 @@ class AgentParsingTest {
 
 		mas.assertNoErrors
 	}
+	
+	@Test
+	def multipleCapacityUses_0() {
+		val mas = '''
+			capacity C1 {}
+			capacity C2 {}
+			agent A1 {
+				uses C1, C2, C1
+				def testFct { }
+			}
+		'''.parse
+
+		mas.assertWarning(
+			SarlPackage::eINSTANCE.capacityUses,
+			IssueCodes::REDUNDANT_CAPACITY_USE,
+			"Redundant use of the capacity 'C1'")
+	}
+
+	@Test
+	def multipleCapacityUses_1() {
+		val mas = '''
+			capacity C1 {}
+			capacity C2 {}
+			agent A1 {
+				uses C2
+				def testFct { }
+				uses C2, C1
+			}
+		'''.parse
+
+		mas.assertWarning(
+			SarlPackage::eINSTANCE.capacityUses,
+			IssueCodes::REDUNDANT_CAPACITY_USE,
+			"Redundant use of the capacity 'C2'")
+	}
 
 }

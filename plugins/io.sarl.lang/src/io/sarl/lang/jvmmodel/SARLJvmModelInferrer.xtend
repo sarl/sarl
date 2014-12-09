@@ -28,6 +28,7 @@ import io.sarl.lang.annotation.DefaultValueUse
 import io.sarl.lang.annotation.EarlyExit
 import io.sarl.lang.annotation.FiredEvent
 import io.sarl.lang.annotation.Generated
+import io.sarl.lang.annotation.ImportedCapacityFeature
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Percept
@@ -41,11 +42,11 @@ import io.sarl.lang.sarl.Capacity
 import io.sarl.lang.sarl.CapacityUses
 import io.sarl.lang.sarl.Constructor
 import io.sarl.lang.sarl.Event
+import io.sarl.lang.sarl.FeatureContainer
 import io.sarl.lang.sarl.FormalParameter
 import io.sarl.lang.sarl.ImplementingElement
 import io.sarl.lang.sarl.InheritingElement
 import io.sarl.lang.sarl.ParameterizedFeature
-import io.sarl.lang.sarl.RequiredCapacity
 import io.sarl.lang.sarl.Skill
 import io.sarl.lang.sarl.TopElement
 import io.sarl.lang.signature.ActionKey
@@ -83,7 +84,6 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking
 
 import static io.sarl.lang.util.ModelUtil.*
-import io.sarl.lang.annotation.ImportedCapacityFeature
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -173,7 +173,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 								}
 							}
 							Constructor: {
-								if (generateConstructor(event, feature, actionIndex) !== null) {
+								if (generateConstructor(event, feature, actionIndex, null) !== null) {
 									serial = serial + event.fullyQualifiedName.hashCode
 									actionIndex++
 									hasConstructor = true
@@ -184,29 +184,29 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				}
 				
 				if (!hasConstructor) {
-					var op = event.toConstructor [
+					var cons1 = event.toConstructor [
 						documentation = Messages::SARLJvmModelInferrer_0
 						body = '''
 							super();
 						'''
 					]
-					op.annotations += annotationRef(typeof(Generated))
-					typeExtensions.setSynthetic(op, true);
-					members += op
-					//
+					cons1.annotations += annotationRef(typeof(Generated))
+					typeExtensions.setSynthetic(cons1, true);
+					members += cons1
+
 					val addrType = typeRef(typeof(Address))
-					op = event.toConstructor [
+					var cons2 = event.toConstructor [
 						documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_1, 'source')
 						parameters += event.toParameter('source', addrType)
 						body = '''
 							super(source);
 						'''
 					]
-					op.annotations += annotationRef(typeof(Generated))
-					typeExtensions.setSynthetic(op, true);
-					members += op
+					cons2.annotations += annotationRef(typeof(Generated))
+					typeExtensions.setSynthetic(cons2, true);
+					members += cons2
 				}
-								
+
 				if (!jvmFields.isEmpty) {
 
 					val JvmField[] tab = jvmFields // single translation to the array
@@ -278,9 +278,17 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				for (feature : capacity.features) {
 					if (feature instanceof ActionSignature) {
 						if (generateAction(
-							feature.name, feature, feature.type,
-							feature.firedEvents,
-							null, actionIndex) !== null) {
+							feature.name, // name
+							feature, // params
+							feature.type, // return type
+							feature.firedEvents, // fires
+							null, // body
+							actionIndex, // action index in the capacity
+							true, // is abstract
+							null, // operations to implement
+							null, // implemented operations
+							null // action filter
+							) !== null) {
 							actionIndex++
 						}
 					}
@@ -303,58 +311,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				generateExtendedTypes(it, skill, typeof(io.sarl.lang.core.Skill))
 				generateImplementedTypes(it, skill, typeof(io.sarl.lang.core.Capacity))
 
-				val finalOperations = newTreeMap(null)
-				val overridableOperations = newTreeMap(null)
-				val operationsToImplement = newTreeMap(null)
-				populateInheritanceContext(
-						it,
-						finalOperations, overridableOperations,
-						null, operationsToImplement,
-						null, this.sarlSignatureProvider)
-				
-				var actionIndex = 0
-				var hasConstructor = false
-				
-				for (feature : skill.features) {
-					if (feature!==null) {
-						switch feature {
-							Action: {
-								if (it.generateAction(
-									feature.name,
-									feature,
-									feature.type,
-									feature.firedEvents,
-									feature.body,
-									actionIndex, false,
-									operationsToImplement,
-									overridableOperations
-								) [ return !finalOperations.containsKey(it)
-											&& !overridableOperations.containsKey(it)
-								] !== null) {
-									actionIndex++
-								}
-							}
-							Constructor: {
-								if (it.generateConstructor(skill, feature, actionIndex) !== null) {
-									actionIndex++
-									hasConstructor = true
-								}
-							}
-							Attribute: {
-								it.generateAttribute(feature, JvmVisibility::PROTECTED)
-							}
-							CapacityUses: {
-								for (used : feature.capacitiesUsed) {
-									actionIndex = generateCapacityDelegatorMethods(skill, used, actionIndex, operationsToImplement, overridableOperations)
-								}
-							}
-						}
-					}
-				}
-				
-				actionIndex = generateMissedFunction(skill, actionIndex, operationsToImplement, overridableOperations)
-								
-				if (!hasConstructor) {
+				var generationInformation = it.generateCodeForFeatures(skill, skill, false, null)
+
+				if (!generationInformation.hasConstructor) {
 					val aType = typeRef(typeof(io.sarl.lang.core.Agent))
 					var op = skill.toConstructor [
 						documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_3, 'owner')
@@ -392,61 +351,20 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				behavior.copyDocumentationTo(it)
 				generateExtendedTypes(it, behavior, typeof(io.sarl.lang.core.Behavior))
 				
-				var behaviorUnitIndex = 1
-				var actionIndex = 1
-				var hasConstructor = false
+				var genInfo = it.generateCodeForFeatures(behavior, behavior, true, null)
 				
-				for (feature : behavior.features) {
-					if (feature!==null) {
-						switch feature {
-							RequiredCapacity: {
-								//TODO Provide "requires" implementation
-							}
-							BehaviorUnit: {
-								val bMethod = generateBehaviorUnit(feature, behaviorUnitIndex)
-								if (bMethod !== null) {
-									behaviorUnitIndex++						
-									members += bMethod
-								}
-							}
-							Action: {
-								if (generateAction(
-									feature.name, feature, feature.type,
-									feature.firedEvents,
-									feature.body, actionIndex) !== null) {
-									actionIndex++
-								}
-							}
-							CapacityUses: {
-								for (used : feature.capacitiesUsed) {
-									actionIndex = generateCapacityDelegatorMethods(behavior, used, actionIndex, null, null)
-								}
-							}
-							Constructor: {
-								if (generateConstructor(behavior, feature, actionIndex) !== null) {
-									actionIndex++
-									hasConstructor = true
-								}
-							}
-							Attribute: {
-								generateAttribute(feature, JvmVisibility::PROTECTED)
-							}
-						}
-					}
-				}
-				
-				if (!hasConstructor) {
+				if (!genInfo.hasConstructor) {
 					val aType = typeRef(typeof(io.sarl.lang.core.Agent))
-					var op = behavior.toConstructor [
+					var cons = behavior.toConstructor [
 						documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_5, 'owner')
 						parameters += behavior.toParameter('owner', aType)
 						body = '''
 							super(owner);
 						'''
 					]
-					op.annotations += annotationRef(typeof(Generated))
-					members +=  op
-					typeExtensions.setSynthetic(op, true);
+					cons.annotations += annotationRef(typeof(Generated))
+					members +=  cons
+					typeExtensions.setSynthetic(cons, true);
 				}
 			]
 	}
@@ -463,6 +381,10 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			agent.copyDocumentationTo(it)
 			generateExtendedTypes(agent, typeof(io.sarl.lang.core.Agent))
 
+			var generatedConstructors = newTreeMap(null)
+			it.generateCodeForFeatures(agent, agent, true, generatedConstructors)
+
+			
 			var cons1 = agent.toConstructor [
 				documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_6, 'parentID')
 				parameters += agent.toParameter('parentID', typeRef(typeof(UUID)))
@@ -470,9 +392,12 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					super(parentID, null);
 				'''
 			]
-			cons1.annotations += annotationRef(typeof(Generated))
-			members += cons1
-			typeExtensions.setSynthetic(cons1, true)
+			var sigCons1 = sarlSignatureProvider.createSignatureIDFromJvmModel(cons1.varArgs, cons1.parameters)
+			if (!generatedConstructors.containsKey(sigCons1)) {
+				cons1.annotations += annotationRef(typeof(Generated))
+				members += cons1
+				typeExtensions.setSynthetic(cons1, true)
+			}
 			
 			var cons2 = agent.toConstructor [
 				documentation = MessageFormat::format(
@@ -484,42 +409,85 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					super(parentID, agentID);
 				'''
 			]
-			cons2.annotations += annotationRef(typeof(Generated))
-			members += cons2
-			typeExtensions.setSynthetic(cons2, true)
-
-			var behaviorUnitIndex = 1
-			var actionIndex = 1
-			
-			for (feature : agent.features) {
-				if (feature!==null) {
-					switch feature {
-						BehaviorUnit: {
-							val bMethod = generateBehaviorUnit(feature, behaviorUnitIndex)
+			var sigCons2 = sarlSignatureProvider.createSignatureIDFromJvmModel(cons2.varArgs, cons2.parameters)
+			if (!generatedConstructors.containsKey(sigCons2)) {
+				cons2.annotations += annotationRef(typeof(Generated))
+				members += cons2
+				typeExtensions.setSynthetic(cons2, true)
+			}
+		]
+	}
+	
+	protected def GenerationInformation generateCodeForFeatures(JvmGenericType featureContainerType, InheritingElement topElement,
+		FeatureContainer featureContainer, boolean enableEventHandling, Map<SignatureKey, JvmConstructor> generatedConstructors) {
+		val finalOperations = newTreeMap(null)
+		val overridableOperations = newTreeMap(null)
+		val operationsToImplement = newTreeMap(null)
+		populateInheritanceContext(
+				featureContainerType,
+				finalOperations, overridableOperations,
+				null, operationsToImplement,
+				null, this.sarlSignatureProvider)
+		
+		var actionIndex = 0
+		var behaviorUnitIndex = 0
+		var hasConstructor = false
+		
+		for (feature : featureContainer.features) {
+			if (feature!==null) {
+				switch feature {
+					Action: {
+						if (featureContainerType.generateAction(
+							feature.name,
+							feature,
+							feature.type,
+							feature.firedEvents,
+							feature.body,
+							actionIndex, false,
+							operationsToImplement,
+							overridableOperations
+						) [ return !finalOperations.containsKey(it)
+									&& !overridableOperations.containsKey(it)
+						] !== null) {
+							actionIndex++
+						}
+					}
+					Constructor: {
+						if (featureContainerType.generateConstructor(topElement, feature, actionIndex, generatedConstructors) !== null) {
+							actionIndex++
+							hasConstructor = true
+						}
+					}
+					Attribute: {
+						featureContainerType.generateAttribute(feature, JvmVisibility::PROTECTED)
+					}
+					BehaviorUnit: {
+						if (enableEventHandling) {
+							val bMethod = featureContainerType.generateBehaviorUnit(feature, behaviorUnitIndex)
 							if (bMethod !== null) {
-								behaviorUnitIndex++
-								members += bMethod
+								behaviorUnitIndex++						
+								featureContainerType.members += bMethod
 							}
-						}
-						Action: {
-							if (generateAction(
-										feature.name, feature, feature.type, feature.firedEvents,
-										feature.body, actionIndex) !== null) {
-								actionIndex++
-							}
-						}
-						Attribute: {
-							generateAttribute(feature, JvmVisibility::PROTECTED)
-						}
-						CapacityUses: {
-							for (used : feature.capacitiesUsed) {
-								actionIndex = generateCapacityDelegatorMethods(agent, used, actionIndex, null, null)
-							}
+						} else {
+							throw new IllegalStateException(Messages.SARLJvmModelInferrer_12)
 						}
 					}
 				}
 			}
-		]
+		}
+		
+		for (feature : featureContainer.features) {
+			if (feature instanceof CapacityUses) {
+				for (used : feature.capacitiesUsed) {
+					actionIndex = featureContainerType.generateCapacityDelegatorMethods(topElement, used, actionIndex,
+						operationsToImplement, overridableOperations)
+				}
+			}
+		}
+
+		actionIndex = featureContainerType.generateMissedFunction(featureContainer, actionIndex, operationsToImplement, overridableOperations)
+		
+		return new GenerationInformation(hasConstructor, actionIndex, behaviorUnitIndex)
 	}
 	
 	protected def int generateMissedFunction(
@@ -867,20 +835,6 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		return arguments
 	}
 
-	protected final def JvmOperation generateAction(
-		JvmGenericType owner,
-		String name,
-		ParameterizedFeature params,
-		JvmTypeReference returnType, 
-		List<JvmParameterizedTypeReference> firedEvents,
-		XExpression operationBody, int index) {
-		return generateAction(owner,
-			name, params, returnType, firedEvents, operationBody,
-			index, operationBody===null, null,
-			null, null
-		)		
-	}
-
 	protected def JvmOperation generateAction(
 									JvmGenericType owner,
 									String name,
@@ -990,10 +944,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		return mainOp
 	}
 
-	protected def SignatureKey generateConstructor(JvmGenericType owner, TopElement context, Constructor constructor, int index) {
+	protected def SignatureKey generateConstructor(JvmGenericType owner, TopElement context, Constructor constructor, int index,
+		Map<SignatureKey, JvmConstructor> generatedConstructors) {
 		val actionKey = sarlSignatureProvider.createConstructorID(owner)
 		
-		owner.members += constructor.toConstructor [
+		var cons = constructor.toConstructor [
 			constructor.copyDocumentationTo(it)
 			varArgs = constructor.varargs
 			generateFormalParametersAndDefaultValueFields(
@@ -1001,6 +956,12 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			)
 			body = constructor.body
 		]
+		owner.members += cons
+		
+		if (generatedConstructors !== null) {
+			var sigKey = sarlSignatureProvider.createSignatureIDFromJvmModel(cons.varArgs, cons.parameters)
+			generatedConstructors.put(sigKey, cons);
+		}
 
 		val otherSignatures = sarlSignatureProvider.createSignature(
 			actionKey,
@@ -1025,6 +986,10 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				)
 			]
 			owner.members += op
+			if (generatedConstructors !== null) {
+				var sigKey = sarlSignatureProvider.createSignatureIDFromJvmModel(op.varArgs, op.parameters)
+				generatedConstructors.put(sigKey, op);
+			}
 		}
 		
 		return otherSignatures.formalParameterKey
@@ -1141,6 +1106,20 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				newLine.append("return result;")
 			]
 		return result
+	}
+
+	protected static class GenerationInformation {
+
+		public val boolean hasConstructor
+		public val int actionIndex
+		public val int behaviorUnitIndex
+		
+		public new(boolean hasConstructor, int actionIndex, int behaviorUnitIndex) {
+			this.hasConstructor = hasConstructor
+			this.actionIndex = actionIndex
+			this.behaviorUnitIndex = behaviorUnitIndex
+		}
+		
 	}
 
 }

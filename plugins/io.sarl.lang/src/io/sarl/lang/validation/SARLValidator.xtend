@@ -1317,4 +1317,50 @@ class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
+	/**
+	 * @param uses
+	 */
+	@Check(CheckType.NORMAL)
+	public def checkMultipleCapacityUses(CapacityUses uses) {
+		if(!isIgnored(IssueCodes::REDUNDANT_CAPACITY_USE)) {
+			var jvmContainer = this.logicalContainerProvider.getNearestLogicalContainer(uses)
+			var container = this.jvmModelAssociator.getPrimarySourceElement(jvmContainer)
+			if (container instanceof FeatureContainer) {
+				
+				var iterator = container.features.iterator
+				var previousCapacityUses = newTreeSet(null)
+				while (iterator !== null && iterator.hasNext) {
+					var elt = iterator.next
+					if (elt instanceof CapacityUses) {
+						if (elt == uses) {
+							iterator = null
+						} else {
+							for (use : elt.capacitiesUsed) {
+								previousCapacityUses += use.identifier
+							}
+						}
+					}
+				}
+
+				var index = 0				
+				for (capacity : uses.capacitiesUsed) {
+					if (previousCapacityUses.contains(capacity.identifier)) {
+						addIssue(
+							MessageFormat::format(
+								Messages::SARLValidator_43,
+								capacity.simpleName),
+							uses,
+							SarlPackage.Literals.CAPACITY_USES__CAPACITIES_USED,
+							index,
+							IssueCodes::REDUNDANT_CAPACITY_USE,
+							capacity.simpleName)
+					} else {
+						previousCapacityUses += capacity.identifier
+					}
+					index++
+				}
+			}
+		}
+	}
+
 }

@@ -108,6 +108,11 @@ class AgentCompilerTest {
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
+			  @Percept
+			  public void _handle_E1_0(final E1 occurrence) {
+			    System.out.println(occurrence);
+			  }
+			  
 			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
@@ -125,11 +130,6 @@ class AgentCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  @Percept
-			  public void _handle_E1_1(final E1 occurrence) {
-			    System.out.println(occurrence);
 			  }
 			}
 		'''

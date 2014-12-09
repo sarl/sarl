@@ -152,6 +152,8 @@ class Bug92 {
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
+			  protected double myDouble = 0d;
+			  
 			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
@@ -170,8 +172,6 @@ class Bug92 {
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
-			  
-			  protected double myDouble = 0d;
 			}
 		''')
 	}
@@ -189,6 +189,8 @@ class Bug92 {
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
+			  protected Double myDouble = Double.valueOf(0d);
+			  
 			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
@@ -207,8 +209,6 @@ class Bug92 {
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
-			  
-			  protected Double myDouble = Double.valueOf(0d);
 			}
 		''')
 	}
@@ -226,6 +226,8 @@ class Bug92 {
 			
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
+			  protected double myDouble = 0d;
+			  
 			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
@@ -244,8 +246,6 @@ class Bug92 {
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
 			  }
-			  
-			  protected double myDouble = 0d;
 			}
 		''')
 	}
@@ -283,24 +283,9 @@ class Bug92 {
 			
 			@SuppressWarnings("all")
 			public class DeviceAgent extends EntityAgent {
-			  /**
-			   * Construct an agent.
-			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
-			   */
-			  @Generated
-			  public DeviceAgent(final UUID parentID) {
-			    super(parentID, null);
-			  }
+			  protected Double busTime = Double.valueOf(0d);
 			  
-			  /**
-			   * Construct an agent.
-			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
-			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
-			   */
-			  @Generated
-			  public DeviceAgent(final UUID parentID, final UUID agentID) {
-			    super(parentID, agentID);
-			  }
+			  protected Double wantedIntensity;
 			  
 			  /**
 			   * See the capacity {@link ComputeEnergyCapacity#getEnergy(java.lang.Double,java.lang.Double,java.lang.Double)}.
@@ -324,9 +309,24 @@ class Bug92 {
 			    getSkill(ComputeEnergyCapacity.class).setVoltage(currentVoltage);
 			  }
 			  
-			  protected Double busTime = Double.valueOf(0d);
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   */
+			  @Generated
+			  public DeviceAgent(final UUID parentID) {
+			    super(parentID, null);
+			  }
 			  
-			  protected Double wantedIntensity;
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
+			   */
+			  @Generated
+			  public DeviceAgent(final UUID parentID, final UUID agentID) {
+			    super(parentID, agentID);
+			  }
 			}
 		'''
 		val expected3 = '''
@@ -397,24 +397,9 @@ class Bug92 {
 
 			@SuppressWarnings("all")
 			public class DeviceAgent extends EntityAgent {
-			  /**
-			   * Construct an agent.
-			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
-			   */
-			  @Generated
-			  public DeviceAgent(final UUID parentID) {
-			    super(parentID, null);
-			  }
+			  protected double busTime = 0d;
 			  
-			  /**
-			   * Construct an agent.
-			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
-			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
-			   */
-			  @Generated
-			  public DeviceAgent(final UUID parentID, final UUID agentID) {
-			    super(parentID, agentID);
-			  }
+			  protected Double wantedIntensity;
 			  
 			  /**
 			   * See the capacity {@link ComputeEnergyCapacity#getEnergy(java.lang.Double,java.lang.Double,java.lang.Double)}.
@@ -438,9 +423,24 @@ class Bug92 {
 			    getSkill(ComputeEnergyCapacity.class).setVoltage(currentVoltage);
 			  }
 			  
-			  protected double busTime = 0d;
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   */
+			  @Generated
+			  public DeviceAgent(final UUID parentID) {
+			    super(parentID, null);
+			  }
 			  
-			  protected Double wantedIntensity;
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
+			   */
+			  @Generated
+			  public DeviceAgent(final UUID parentID, final UUID agentID) {
+			    super(parentID, agentID);
+			  }
 			}
 		'''
 		val expected3 = '''

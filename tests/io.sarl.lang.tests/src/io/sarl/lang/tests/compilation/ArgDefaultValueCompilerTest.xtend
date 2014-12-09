@@ -54,6 +54,22 @@ class ArgDefaultValueCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
+			   * Default value for the parameter arg
+			   */
+			  @Generated
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4;
+			  
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("0_0") final int arg) {
+			    System.out.println(arg);
+			  }
+			  
+			  @DefaultValueUse("int")
+			  public final void myaction() {
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
+			  }
+			  
+			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
@@ -70,22 +86,6 @@ class ArgDefaultValueCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  /**
-			   * Default value for the parameter arg
-			   */
-			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
-			  
-			  @DefaultValueSource
-			  public void myaction(@DefaultValue("1_0") final int arg) {
-			    System.out.println(arg);
-			  }
-			  
-			  @DefaultValueUse("int")
-			  public final void myaction() {
-			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -110,6 +110,22 @@ class ArgDefaultValueCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
+			   * Default value for the parameter arg
+			   */
+			  @Generated
+			  private final static float ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4.5f;
+			  
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("0_0") final float arg) {
+			    System.out.println(arg);
+			  }
+			  
+			  @DefaultValueUse("float")
+			  public final void myaction() {
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
+			  }
+			  
+			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
@@ -126,22 +142,6 @@ class ArgDefaultValueCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  /**
-			   * Default value for the parameter arg
-			   */
-			  @Generated
-			  private final static float ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4.5f;
-			  
-			  @DefaultValueSource
-			  public void myaction(@DefaultValue("1_0") final float arg) {
-			    System.out.println(arg);
-			  }
-			  
-			  @DefaultValueUse("float")
-			  public final void myaction() {
-			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -166,6 +166,22 @@ class ArgDefaultValueCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
+			   * Default value for the parameter arg
+			   */
+			  @Generated
+			  private final static boolean ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = true;
+			  
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("0_0") final boolean arg) {
+			    System.out.println(arg);
+			  }
+			  
+			  @DefaultValueUse("boolean")
+			  public final void myaction() {
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
+			  }
+			  
+			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
@@ -182,22 +198,6 @@ class ArgDefaultValueCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  /**
-			   * Default value for the parameter arg
-			   */
-			  @Generated
-			  private final static boolean ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = true;
-			  
-			  @DefaultValueSource
-			  public void myaction(@DefaultValue("1_0") final boolean arg) {
-			    System.out.println(arg);
-			  }
-			  
-			  @DefaultValueUse("boolean")
-			  public final void myaction() {
-			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -222,6 +222,22 @@ class ArgDefaultValueCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
+			   * Default value for the parameter arg
+			   */
+			  @Generated
+			  private final static double ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4.5;
+			  
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("0_0") final double arg) {
+			    System.out.println(arg);
+			  }
+			  
+			  @DefaultValueUse("double")
+			  public final void myaction() {
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
+			  }
+			  
+			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
@@ -238,22 +254,6 @@ class ArgDefaultValueCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  /**
-			   * Default value for the parameter arg
-			   */
-			  @Generated
-			  private final static double ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4.5;
-			  
-			  @DefaultValueSource
-			  public void myaction(@DefaultValue("1_0") final double arg) {
-			    System.out.println(arg);
-			  }
-			  
-			  @DefaultValueUse("double")
-			  public final void myaction() {
-			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -278,6 +278,22 @@ class ArgDefaultValueCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
+			   * Default value for the parameter arg
+			   */
+			  @Generated
+			  private final static long ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 450;
+			  
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("0_0") final long arg) {
+			    System.out.println(arg);
+			  }
+			  
+			  @DefaultValueUse("long")
+			  public final void myaction() {
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
+			  }
+			  
+			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
@@ -294,22 +310,6 @@ class ArgDefaultValueCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  /**
-			   * Default value for the parameter arg
-			   */
-			  @Generated
-			  private final static long ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 450;
-			  
-			  @DefaultValueSource
-			  public void myaction(@DefaultValue("1_0") final long arg) {
-			    System.out.println(arg);
-			  }
-			  
-			  @DefaultValueUse("long")
-			  public final void myaction() {
-			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -334,6 +334,22 @@ class ArgDefaultValueCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
+			   * Default value for the parameter arg
+			   */
+			  @Generated
+			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = "abcd";
+			  
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("0_0") final String arg) {
+			    System.out.println(arg);
+			  }
+			  
+			  @DefaultValueUse("java.lang.String")
+			  public final void myaction() {
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
+			  }
+			  
+			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
@@ -350,22 +366,6 @@ class ArgDefaultValueCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  /**
-			   * Default value for the parameter arg
-			   */
-			  @Generated
-			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = "abcd";
-			  
-			  @DefaultValueSource
-			  public void myaction(@DefaultValue("1_0") final String arg) {
-			    System.out.println(arg);
-			  }
-			  
-			  @DefaultValueUse("java.lang.String")
-			  public final void myaction() {
-			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -390,6 +390,22 @@ class ArgDefaultValueCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
+			   * Default value for the parameter arg
+			   */
+			  @Generated
+			  private final static char ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 'd';
+			  
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("0_0") final char arg) {
+			    System.out.println(arg);
+			  }
+			  
+			  @DefaultValueUse("char")
+			  public final void myaction() {
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
+			  }
+			  
+			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
@@ -406,22 +422,6 @@ class ArgDefaultValueCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  /**
-			   * Default value for the parameter arg
-			   */
-			  @Generated
-			  private final static char ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 'd';
-			  
-			  @DefaultValueSource
-			  public void myaction(@DefaultValue("1_0") final char arg) {
-			    System.out.println(arg);
-			  }
-			  
-			  @DefaultValueUse("char")
-			  public final void myaction() {
-			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
 			  }
 			}
 		''')
@@ -446,6 +446,22 @@ class ArgDefaultValueCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
+			   * Default value for the parameter arg0
+			   */
+			  @Generated
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4;
+			  
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("0_0") final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
+			    System.out.println(arg0);
+			  }
+			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  public final void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, arg1, arg2, arg3, arg4);
+			  }
+			  
+			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
@@ -462,22 +478,6 @@ class ArgDefaultValueCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  /**
-			   * Default value for the parameter arg0
-			   */
-			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
-			  
-			  @DefaultValueSource
-			  public void myaction(@DefaultValue("1_0") final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
-			    System.out.println(arg0);
-			  }
-			  
-			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
-			  public final void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {
-			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, arg3, arg4);
 			  }
 			}
 		''')
@@ -502,6 +502,22 @@ class ArgDefaultValueCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
+			   * Default value for the parameter arg1
+			   */
+			  @Generated
+			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = "abc";
+			  
+			  @DefaultValueSource
+			  public void myaction(final int arg0, @DefaultValue("0_1") final String arg1, final int arg2, final int arg3, final String arg4) {
+			    System.out.println(arg0);
+			  }
+			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  public final void myaction(final int arg0, final int arg2, final int arg3, final String arg4) {
+			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2, arg3, arg4);
+			  }
+			  
+			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
@@ -518,22 +534,6 @@ class ArgDefaultValueCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  /**
-			   * Default value for the parameter arg1
-			   */
-			  @Generated
-			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = "abc";
-			  
-			  @DefaultValueSource
-			  public void myaction(final int arg0, @DefaultValue("1_1") final String arg1, final int arg2, final int arg3, final String arg4) {
-			    System.out.println(arg0);
-			  }
-			  
-			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
-			  public final void myaction(final int arg0, final int arg2, final int arg3, final String arg4) {
-			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2, arg3, arg4);
 			  }
 			}
 		''')
@@ -558,6 +558,22 @@ class ArgDefaultValueCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
+			   * Default value for the parameter arg2
+			   */
+			  @Generated
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2 = 18;
+			  
+			  @DefaultValueSource
+			  public void myaction(final int arg0, final String arg1, @DefaultValue("0_2") final int arg2, final int arg3, final String arg4) {
+			    System.out.println(arg0);
+			  }
+			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  public final void myaction(final int arg0, final String arg1, final int arg3, final String arg4) {
+			    myaction(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2, arg3, arg4);
+			  }
+			  
+			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
@@ -574,22 +590,6 @@ class ArgDefaultValueCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  /**
-			   * Default value for the parameter arg2
-			   */
-			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2 = 18;
-			  
-			  @DefaultValueSource
-			  public void myaction(final int arg0, final String arg1, @DefaultValue("1_2") final int arg2, final int arg3, final String arg4) {
-			    System.out.println(arg0);
-			  }
-			  
-			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
-			  public final void myaction(final int arg0, final String arg1, final int arg3, final String arg4) {
-			    myaction(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, arg3, arg4);
 			  }
 			}
 		''')
@@ -614,6 +614,22 @@ class ArgDefaultValueCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
+			   * Default value for the parameter arg3
+			   */
+			  @Generated
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3 = 34;
+			  
+			  @DefaultValueSource
+			  public void myaction(final int arg0, final String arg1, final int arg2, @DefaultValue("0_3") final int arg3, final String arg4) {
+			    System.out.println(arg0);
+			  }
+			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  public final void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {
+			    myaction(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3, arg4);
+			  }
+			  
+			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
@@ -630,22 +646,6 @@ class ArgDefaultValueCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  /**
-			   * Default value for the parameter arg3
-			   */
-			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 34;
-			  
-			  @DefaultValueSource
-			  public void myaction(final int arg0, final String arg1, final int arg2, @DefaultValue("1_3") final int arg3, final String arg4) {
-			    System.out.println(arg0);
-			  }
-			  
-			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
-			  public final void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {
-			    myaction(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
 			  }
 			}
 		''')
@@ -670,6 +670,22 @@ class ArgDefaultValueCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
+			   * Default value for the parameter arg4
+			   */
+			  @Generated
+			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_0_4 = "xyz";
+			  
+			  @DefaultValueSource
+			  public void myaction(final int arg0, final String arg1, final int arg2, final int arg3, @DefaultValue("0_4") final String arg4) {
+			    System.out.println(arg0);
+			  }
+			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  public final void myaction(final int arg0, final String arg1, final int arg2, final int arg3) {
+			    myaction(arg0, arg1, arg2, arg3, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_4);
+			  }
+			  
+			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
@@ -686,22 +702,6 @@ class ArgDefaultValueCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  /**
-			   * Default value for the parameter arg4
-			   */
-			  @Generated
-			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_4 = "xyz";
-			  
-			  @DefaultValueSource
-			  public void myaction(final int arg0, final String arg1, final int arg2, final int arg3, @DefaultValue("1_4") final String arg4) {
-			    System.out.println(arg0);
-			  }
-			  
-			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
-			  public final void myaction(final int arg0, final String arg1, final int arg2, final int arg3) {
-			    myaction(arg0, arg1, arg2, arg3, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_4);
 			  }
 			}
 		''')
@@ -726,6 +726,38 @@ class ArgDefaultValueCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
+			   * Default value for the parameter arg0
+			   */
+			  @Generated
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4;
+			  
+			  /**
+			   * Default value for the parameter arg3
+			   */
+			  @Generated
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3 = 56;
+			  
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("0_0") final int arg0, final String arg1, final int arg2, @DefaultValue("0_3") final int arg3, final String arg4) {
+			    System.out.println(arg0);
+			  }
+			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  public final void myaction(final String arg1, final int arg2, final String arg4) {
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3, arg4);
+			  }
+			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  public final void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {
+			    myaction(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3, arg4);
+			  }
+			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  public final void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, arg1, arg2, arg3, arg4);
+			  }
+			  
+			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
@@ -742,38 +774,6 @@ class ArgDefaultValueCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  /**
-			   * Default value for the parameter arg0
-			   */
-			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
-			  
-			  /**
-			   * Default value for the parameter arg3
-			   */
-			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 56;
-			  
-			  @DefaultValueSource
-			  public void myaction(@DefaultValue("1_0") final int arg0, final String arg1, final int arg2, @DefaultValue("1_3") final int arg3, final String arg4) {
-			    System.out.println(arg0);
-			  }
-			  
-			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
-			  public final void myaction(final String arg1, final int arg2, final String arg4) {
-			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
-			  }
-			  
-			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
-			  public final void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {
-			    myaction(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
-			  }
-			  
-			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
-			  public final void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {
-			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, arg3, arg4);
 			  }
 			}
 		''')
@@ -798,6 +798,22 @@ class ArgDefaultValueCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
+			   * Default value for the parameter arg1
+			   */
+			  @Generated
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = 45;
+			  
+			  @DefaultValueSource
+			  public void myaction(final int arg0, @DefaultValue("0_1") final int arg1, final int... arg2) {
+			    System.out.println(arg0);
+			  }
+			  
+			  @DefaultValueUse("int,int,int*")
+			  public final void myaction(final int arg0, final int... arg2) {
+			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
+			  }
+			  
+			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
@@ -814,22 +830,6 @@ class ArgDefaultValueCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  /**
-			   * Default value for the parameter arg1
-			   */
-			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 45;
-			  
-			  @DefaultValueSource
-			  public void myaction(final int arg0, @DefaultValue("1_1") final int arg1, final int... arg2) {
-			    System.out.println(arg0);
-			  }
-			  
-			  @DefaultValueUse("int,int,int*")
-			  public final void myaction(final int arg0, final int... arg2) {
-			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
 			  }
 			}
 		''')
@@ -854,6 +854,22 @@ class ArgDefaultValueCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
+			   * Default value for the parameter arg0
+			   */
+			  @Generated
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 45;
+			  
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("0_0") final int arg0, final int arg1, final int... arg2) {
+			    System.out.println(arg0);
+			  }
+			  
+			  @DefaultValueUse("int,int,int*")
+			  public final void myaction(final int arg1, final int... arg2) {
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, arg1, arg2);
+			  }
+			  
+			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
@@ -870,22 +886,6 @@ class ArgDefaultValueCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  /**
-			   * Default value for the parameter arg0
-			   */
-			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
-			  
-			  @DefaultValueSource
-			  public void myaction(@DefaultValue("1_0") final int arg0, final int arg1, final int... arg2) {
-			    System.out.println(arg0);
-			  }
-			  
-			  @DefaultValueUse("int,int,int*")
-			  public final void myaction(final int arg1, final int... arg2) {
-			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2);
 			  }
 			}
 		''')
@@ -910,6 +910,33 @@ class ArgDefaultValueCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
+			   * Default value for the parameter arg0
+			   */
+			  @Generated
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 45;
+			  
+			  /**
+			   * Default value for the parameter arg1
+			   */
+			  @Generated
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = 56;
+			  
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("0_0") final int arg0, @DefaultValue("0_1") final int arg1, final int... arg2) {
+			    System.out.println(arg0);
+			  }
+			  
+			  @DefaultValueUse("int,int,int*")
+			  public final void myaction(final int... arg2) {
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
+			  }
+			  
+			  @DefaultValueUse("int,int,int*")
+			  public final void myaction(final int arg0, final int... arg2) {
+			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
+			  }
+			  
+			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
@@ -926,33 +953,6 @@ class ArgDefaultValueCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  /**
-			   * Default value for the parameter arg0
-			   */
-			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
-			  
-			  /**
-			   * Default value for the parameter arg1
-			   */
-			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 56;
-			  
-			  @DefaultValueSource
-			  public void myaction(@DefaultValue("1_0") final int arg0, @DefaultValue("1_1") final int arg1, final int... arg2) {
-			    System.out.println(arg0);
-			  }
-			  
-			  @DefaultValueUse("int,int,int*")
-			  public final void myaction(final int... arg2) {
-			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
-			  }
-			  
-			  @DefaultValueUse("int,int,int*")
-			  public final void myaction(final int arg0, final int... arg2) {
-			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
 			  }
 			}
 		''')
@@ -977,6 +977,55 @@ class ArgDefaultValueCompilerTest {
 			@SuppressWarnings("all")
 			public class A1 extends Agent {
 			  /**
+			   * Default value for the parameter arg0
+			   */
+			  @Generated
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 45;
+			  
+			  /**
+			   * Default value for the parameter arg1
+			   */
+			  @Generated
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = 56;
+			  
+			  /**
+			   * Default value for the parameter arg2
+			   */
+			  @Generated
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2 = 78;
+			  
+			  /**
+			   * Default value for the parameter arg3
+			   */
+			  @Generated
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3 = 14;
+			  
+			  @DefaultValueSource
+			  public void myaction(@DefaultValue("0_0") final int arg0, @DefaultValue("0_1") final int arg1, @DefaultValue("0_2") final int arg2, @DefaultValue("0_3") final int arg3) {
+			    System.out.println(arg0);
+			  }
+			  
+			  @DefaultValueUse("int,int,int,int")
+			  public final void myaction() {
+			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3);
+			  }
+			  
+			  @DefaultValueUse("int,int,int,int")
+			  public final void myaction(final int arg0) {
+			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3);
+			  }
+			  
+			  @DefaultValueUse("int,int,int,int")
+			  public final void myaction(final int arg0, final int arg1) {
+			    myaction(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3);
+			  }
+			  
+			  @DefaultValueUse("int,int,int,int")
+			  public final void myaction(final int arg0, final int arg1, final int arg2) {
+			    myaction(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3);
+			  }
+			  
+			  /**
 			   * Construct an agent.
 			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
 			   */
@@ -993,55 +1042,6 @@ class ArgDefaultValueCompilerTest {
 			  @Generated
 			  public A1(final UUID parentID, final UUID agentID) {
 			    super(parentID, agentID);
-			  }
-			  
-			  /**
-			   * Default value for the parameter arg0
-			   */
-			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
-			  
-			  /**
-			   * Default value for the parameter arg1
-			   */
-			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 56;
-			  
-			  /**
-			   * Default value for the parameter arg2
-			   */
-			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2 = 78;
-			  
-			  /**
-			   * Default value for the parameter arg3
-			   */
-			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 14;
-			  
-			  @DefaultValueSource
-			  public void myaction(@DefaultValue("1_0") final int arg0, @DefaultValue("1_1") final int arg1, @DefaultValue("1_2") final int arg2, @DefaultValue("1_3") final int arg3) {
-			    System.out.println(arg0);
-			  }
-			  
-			  @DefaultValueUse("int,int,int,int")
-			  public final void myaction() {
-			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
-			  }
-			  
-			  @DefaultValueUse("int,int,int,int")
-			  public final void myaction(final int arg0) {
-			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
-			  }
-			  
-			  @DefaultValueUse("int,int,int,int")
-			  public final void myaction(final int arg0, final int arg1) {
-			    myaction(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
-			  }
-			  
-			  @DefaultValueUse("int,int,int,int")
-			  public final void myaction(final int arg0, final int arg1, final int arg2) {
-			    myaction(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
 			  }
 			}
 		''')
@@ -1069,17 +1069,17 @@ class ArgDefaultValueCompilerTest {
 			   * Default value for the parameter arg
 			   */
 			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4;
 			  
 			  @DefaultValueSource
-			  public B1(@DefaultValue("1_0") final int arg) {
+			  public B1(@DefaultValue("0_0") final int arg) {
 			    super(null);
 			    System.out.println(arg);
 			  }
 			  
 			  @DefaultValueUse("int")
 			  public B1() {
-			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
 			}
 		''')
@@ -1107,17 +1107,17 @@ class ArgDefaultValueCompilerTest {
 			   * Default value for the parameter arg
 			   */
 			  @Generated
-			  private final static float ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4.5f;
+			  private final static float ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4.5f;
 			  
 			  @DefaultValueSource
-			  public B1(@DefaultValue("1_0") final float arg) {
+			  public B1(@DefaultValue("0_0") final float arg) {
 			    super(null);
 			    System.out.println(arg);
 			  }
 			  
 			  @DefaultValueUse("float")
 			  public B1() {
-			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
 			}
 		''')
@@ -1145,17 +1145,17 @@ class ArgDefaultValueCompilerTest {
 			   * Default value for the parameter arg
 			   */
 			  @Generated
-			  private final static boolean ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = true;
+			  private final static boolean ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = true;
 			  
 			  @DefaultValueSource
-			  public B1(@DefaultValue("1_0") final boolean arg) {
+			  public B1(@DefaultValue("0_0") final boolean arg) {
 			    super(null);
 			    System.out.println(arg);
 			  }
 			  
 			  @DefaultValueUse("boolean")
 			  public B1() {
-			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
 			}
 		''')
@@ -1183,17 +1183,17 @@ class ArgDefaultValueCompilerTest {
 			   * Default value for the parameter arg
 			   */
 			  @Generated
-			  private final static double ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4.5;
+			  private final static double ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4.5;
 			  
 			  @DefaultValueSource
-			  public B1(@DefaultValue("1_0") final double arg) {
+			  public B1(@DefaultValue("0_0") final double arg) {
 			    super(null);
 			    System.out.println(arg);
 			  }
 			  
 			  @DefaultValueUse("double")
 			  public B1() {
-			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
 			}
 		''')
@@ -1221,17 +1221,17 @@ class ArgDefaultValueCompilerTest {
 			   * Default value for the parameter arg
 			   */
 			  @Generated
-			  private final static long ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 450;
+			  private final static long ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 450;
 			  
 			  @DefaultValueSource
-			  public B1(@DefaultValue("1_0") final long arg) {
+			  public B1(@DefaultValue("0_0") final long arg) {
 			    super(null);
 			    System.out.println(arg);
 			  }
 			  
 			  @DefaultValueUse("long")
 			  public B1() {
-			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
 			}
 		''')
@@ -1259,17 +1259,17 @@ class ArgDefaultValueCompilerTest {
 			   * Default value for the parameter arg
 			   */
 			  @Generated
-			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = "abcd";
+			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = "abcd";
 			  
 			  @DefaultValueSource
-			  public B1(@DefaultValue("1_0") final String arg) {
+			  public B1(@DefaultValue("0_0") final String arg) {
 			    super(null);
 			    System.out.println(arg);
 			  }
 			  
 			  @DefaultValueUse("java.lang.String")
 			  public B1() {
-			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
 			}
 		''')
@@ -1297,17 +1297,17 @@ class ArgDefaultValueCompilerTest {
 			   * Default value for the parameter arg
 			   */
 			  @Generated
-			  private final static char ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 'd';
+			  private final static char ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 'd';
 			  
 			  @DefaultValueSource
-			  public B1(@DefaultValue("1_0") final char arg) {
+			  public B1(@DefaultValue("0_0") final char arg) {
 			    super(null);
 			    System.out.println(arg);
 			  }
 			  
 			  @DefaultValueUse("char")
 			  public B1() {
-			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
 			}
 		''')
@@ -1335,17 +1335,17 @@ class ArgDefaultValueCompilerTest {
 			   * Default value for the parameter arg0
 			   */
 			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4;
 			  
 			  @DefaultValueSource
-			  public B1(@DefaultValue("1_0") final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
+			  public B1(@DefaultValue("0_0") final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
 			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public B1(final String arg1, final int arg2, final int arg3, final String arg4) {
-			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, arg3, arg4);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, arg1, arg2, arg3, arg4);
 			  }
 			}
 		''')
@@ -1373,17 +1373,17 @@ class ArgDefaultValueCompilerTest {
 			   * Default value for the parameter arg1
 			   */
 			  @Generated
-			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = "abc";
+			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = "abc";
 			  
 			  @DefaultValueSource
-			  public B1(final int arg0, @DefaultValue("1_1") final String arg1, final int arg2, final int arg3, final String arg4) {
+			  public B1(final int arg0, @DefaultValue("0_1") final String arg1, final int arg2, final int arg3, final String arg4) {
 			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public B1(final int arg0, final int arg2, final int arg3, final String arg4) {
-			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2, arg3, arg4);
+			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2, arg3, arg4);
 			  }
 			}
 		''')
@@ -1411,17 +1411,17 @@ class ArgDefaultValueCompilerTest {
 			   * Default value for the parameter arg2
 			   */
 			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2 = 18;
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2 = 18;
 			  
 			  @DefaultValueSource
-			  public B1(final int arg0, final String arg1, @DefaultValue("1_2") final int arg2, final int arg3, final String arg4) {
+			  public B1(final int arg0, final String arg1, @DefaultValue("0_2") final int arg2, final int arg3, final String arg4) {
 			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public B1(final int arg0, final String arg1, final int arg3, final String arg4) {
-			    this(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, arg3, arg4);
+			    this(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2, arg3, arg4);
 			  }
 			}
 		''')
@@ -1449,17 +1449,17 @@ class ArgDefaultValueCompilerTest {
 			   * Default value for the parameter arg3
 			   */
 			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 34;
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3 = 34;
 			  
 			  @DefaultValueSource
-			  public B1(final int arg0, final String arg1, final int arg2, @DefaultValue("1_3") final int arg3, final String arg4) {
+			  public B1(final int arg0, final String arg1, final int arg2, @DefaultValue("0_3") final int arg3, final String arg4) {
 			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public B1(final int arg0, final String arg1, final int arg2, final String arg4) {
-			    this(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
+			    this(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3, arg4);
 			  }
 			}
 		''')
@@ -1487,17 +1487,17 @@ class ArgDefaultValueCompilerTest {
 			   * Default value for the parameter arg4
 			   */
 			  @Generated
-			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_1_4 = "xyz";
+			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_0_4 = "xyz";
 			  
 			  @DefaultValueSource
-			  public B1(final int arg0, final String arg1, final int arg2, final int arg3, @DefaultValue("1_4") final String arg4) {
+			  public B1(final int arg0, final String arg1, final int arg2, final int arg3, @DefaultValue("0_4") final String arg4) {
 			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public B1(final int arg0, final String arg1, final int arg2, final int arg3) {
-			    this(arg0, arg1, arg2, arg3, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_4);
+			    this(arg0, arg1, arg2, arg3, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_4);
 			  }
 			}
 		''')
@@ -1525,33 +1525,33 @@ class ArgDefaultValueCompilerTest {
 			   * Default value for the parameter arg0
 			   */
 			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 4;
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4;
 			  
 			  /**
 			   * Default value for the parameter arg3
 			   */
 			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 56;
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3 = 56;
 			  
 			  @DefaultValueSource
-			  public B1(@DefaultValue("1_0") final int arg0, final String arg1, final int arg2, @DefaultValue("1_3") final int arg3, final String arg4) {
+			  public B1(@DefaultValue("0_0") final int arg0, final String arg1, final int arg2, @DefaultValue("0_3") final int arg3, final String arg4) {
 			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public B1(final String arg1, final int arg2, final String arg4) {
-			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3, arg4);
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public B1(final int arg0, final String arg1, final int arg2, final String arg4) {
-			    this(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3, arg4);
+			    this(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3, arg4);
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
 			  public B1(final String arg1, final int arg2, final int arg3, final String arg4) {
-			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2, arg3, arg4);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, arg1, arg2, arg3, arg4);
 			  }
 			}
 		''')
@@ -1579,17 +1579,17 @@ class ArgDefaultValueCompilerTest {
 			   * Default value for the parameter arg1
 			   */
 			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 45;
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = 45;
 			  
 			  @DefaultValueSource
-			  public B1(final int arg0, @DefaultValue("1_1") final int arg1, final int... arg2) {
+			  public B1(final int arg0, @DefaultValue("0_1") final int arg1, final int... arg2) {
 			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
 			  @DefaultValueUse("int,int,int*")
 			  public B1(final int arg0, final int... arg2) {
-			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
+			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
 			  }
 			}
 		''')
@@ -1617,17 +1617,17 @@ class ArgDefaultValueCompilerTest {
 			   * Default value for the parameter arg0
 			   */
 			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 45;
 			  
 			  @DefaultValueSource
-			  public B1(@DefaultValue("1_0") final int arg0, final int arg1, final int... arg2) {
+			  public B1(@DefaultValue("0_0") final int arg0, final int arg1, final int... arg2) {
 			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
 			  @DefaultValueUse("int,int,int*")
 			  public B1(final int arg1, final int... arg2) {
-			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, arg1, arg2);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, arg1, arg2);
 			  }
 			}
 		''')
@@ -1655,28 +1655,28 @@ class ArgDefaultValueCompilerTest {
 			   * Default value for the parameter arg0
 			   */
 			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 45;
 			  
 			  /**
 			   * Default value for the parameter arg1
 			   */
 			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 56;
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = 56;
 			  
 			  @DefaultValueSource
-			  public B1(@DefaultValue("1_0") final int arg0, @DefaultValue("1_1") final int arg1, final int... arg2) {
+			  public B1(@DefaultValue("0_0") final int arg0, @DefaultValue("0_1") final int arg1, final int... arg2) {
 			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
 			  @DefaultValueUse("int,int,int*")
 			  public B1(final int... arg2) {
-			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
 			  }
 			  
 			  @DefaultValueUse("int,int,int*")
 			  public B1(final int arg0, final int... arg2) {
-			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, arg2);
+			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
 			  }
 			}
 		''')
@@ -1704,50 +1704,50 @@ class ArgDefaultValueCompilerTest {
 			   * Default value for the parameter arg0
 			   */
 			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_0 = 45;
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 45;
 			  
 			  /**
 			   * Default value for the parameter arg1
 			   */
 			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1 = 56;
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = 56;
 			  
 			  /**
 			   * Default value for the parameter arg2
 			   */
 			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2 = 78;
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2 = 78;
 			  
 			  /**
 			   * Default value for the parameter arg3
 			   */
 			  @Generated
-			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3 = 14;
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3 = 14;
 			  
 			  @DefaultValueSource
-			  public B1(@DefaultValue("1_0") final int arg0, @DefaultValue("1_1") final int arg1, @DefaultValue("1_2") final int arg2, @DefaultValue("1_3") final int arg3) {
+			  public B1(@DefaultValue("0_0") final int arg0, @DefaultValue("0_1") final int arg1, @DefaultValue("0_2") final int arg2, @DefaultValue("0_3") final int arg3) {
 			    super(null);
 			    System.out.println(arg0);
 			  }
 			  
 			  @DefaultValueUse("int,int,int,int")
 			  public B1() {
-			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_1_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
+			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3);
 			  }
 			  
 			  @DefaultValueUse("int,int,int,int")
 			  public B1(final int arg0) {
-			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
+			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3);
 			  }
 			  
 			  @DefaultValueUse("int,int,int,int")
 			  public B1(final int arg0, final int arg1) {
-			    this(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
+			    this(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3);
 			  }
 			  
 			  @DefaultValueUse("int,int,int,int")
 			  public B1(final int arg0, final int arg1, final int arg2) {
-			    this(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_1_3);
+			    this(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3);
 			  }
 			}
 		''')

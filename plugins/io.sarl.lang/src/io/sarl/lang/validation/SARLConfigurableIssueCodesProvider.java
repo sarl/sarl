@@ -74,6 +74,10 @@ public class SARLConfigurableIssueCodesProvider extends XbaseConfigurableIssueCo
 		iAcceptor.accept(create(
 				IssueCodes.UNUSED_AGENT_CAPACITY,
 				SeverityConverter.SEVERITY_WARNING));
+
+		iAcceptor.accept(create(
+				IssueCodes.REDUNDANT_CAPACITY_USE,
+				SeverityConverter.SEVERITY_WARNING));
 	}
 
 }
