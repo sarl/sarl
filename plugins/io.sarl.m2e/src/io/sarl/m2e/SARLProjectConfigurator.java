@@ -21,10 +21,13 @@
 package io.sarl.m2e;
 
 import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
 import io.sarl.lang.ui.preferences.SARLProjectPreferences;
 
 import java.io.File;
+import java.text.MessageFormat;
+import java.util.BitSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -35,7 +38,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -48,6 +53,7 @@ import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
 import org.eclipse.m2e.jdt.internal.ClasspathDescriptor;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
 /** Project configuration for the M2E.
@@ -58,6 +64,13 @@ import org.osgi.framework.Version;
  * @mavenartifactid $ArtifactId$
  */
 public class SARLProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
+
+	private static final String SARL_LANG_BUNDLE_NAME = "io.sarl.lang.core"; //$NON-NLS-1$
+	private static final String SARL_GROUP_ID = "io.sarl.lang"; //$NON-NLS-1$
+	private static final String SARL_ARTIFACT_ID = "io.sarl.lang.core"; //$NON-NLS-1$
+	private static final String GROUPID_ATTR_NAME = "maven.groupId"; //$NON-NLS-1$
+	private static final String ARTIFACTID_ATTR_NAME = "maven.artifactId"; //$NON-NLS-1$
+	private static final String VERSION_ATTR_NAME = "maven.version"; //$NON-NLS-1$
 
 	/** Invoked to add the preferences dedicated to SARL, JRE, etc.
 	 *
@@ -373,11 +386,68 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		addSarlLibraries(classpath);
 	}
 
+	private static void validateSARLLibraryVersion(String mavenVersion) throws CoreException {
+		Bundle bundle = Platform.getBundle(SARL_LANG_BUNDLE_NAME);
+		if (bundle == null) {
+			throw new CoreException(SARLMavenEclipsePlugin.createStatus(IStatus.ERROR,
+					MessageFormat.format(Messages.SARLProjectConfigurator_0, SARL_LANG_BUNDLE_NAME)));
+		}
+		Version bundleVersion = bundle.getVersion();
+		if (bundleVersion == null) {
+			throw new CoreException(SARLMavenEclipsePlugin.createStatus(IStatus.ERROR,
+					MessageFormat.format(Messages.SARLProjectConfigurator_1, SARL_LANG_BUNDLE_NAME)));
+		}
+		Version minVersion = new Version(bundleVersion.getMajor(), bundleVersion.getMinor(), 0);
+		Version maxVersion = new Version(bundleVersion.getMajor(), bundleVersion.getMinor() + 1, 0);
+
+		assert (minVersion != null && maxVersion != null);
+		Version mvnVersion = SARLMavenEclipsePlugin.parseMavenVersion(mavenVersion);
+		int compare = SARLEclipsePlugin.compareVersionToRange(mvnVersion, minVersion, maxVersion);
+		if (compare < 0) {
+			throw new CoreException(SARLMavenEclipsePlugin.createStatus(IStatus.ERROR,
+					MessageFormat.format(
+							Messages.SARLProjectConfigurator_2,
+							SARL_GROUP_ID, SARL_ARTIFACT_ID, mavenVersion, minVersion.toString())));
+		} else if (compare > 0) {
+			throw new CoreException(SARLMavenEclipsePlugin.createStatus(IStatus.ERROR,
+					MessageFormat.format(
+							Messages.SARLProjectConfigurator_3,
+							SARL_GROUP_ID, SARL_ARTIFACT_ID, mavenVersion, maxVersion.toString())));
+		}
+	}
+
+	private static boolean validateSARLLibraryVersion(IClasspathDescriptor classpath) throws CoreException {
+		for (IClasspathEntry dep : classpath.getEntries()) {
+			IClasspathAttribute[] attrs = dep.getExtraAttributes();
+			BitSet flags = new BitSet(3);
+			String version = null;
+			for (int i = 0; version == null && flags.cardinality() != 3 && i < attrs.length; ++i) {
+				IClasspathAttribute attr = attrs[i];
+				if (GROUPID_ATTR_NAME.equals(attr.getName())
+						&& SARL_GROUP_ID.equals(attr.getValue())) {
+					flags.set(0);
+				} else if (ARTIFACTID_ATTR_NAME.equals(attr.getName())
+						&& SARL_ARTIFACT_ID.equals(attr.getValue())) {
+					flags.set(1);
+				} else if (VERSION_ATTR_NAME.equals(attr.getName())) {
+					flags.set(2);
+					version = attr.getValue();
+				}
+			}
+			if (flags.cardinality() == 3 && version != null) {
+				validateSARLLibraryVersion(version);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	@Override
 	public void configureClasspath(IMavenProjectFacade facade,
 			IClasspathDescriptor classpath, IProgressMonitor monitor)
 					throws CoreException {
-		//
+		validateSARLLibraryVersion(classpath);
 	}
 
 	@Override
