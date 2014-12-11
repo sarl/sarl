@@ -75,16 +75,6 @@ public class SARLMavenEclipsePlugin extends Plugin {
 		return new Status(severity, PLUGIN_ID, m, cause);
 	}
 
-	/** Create a status.
-	 *
-	 * @param severity - the severity level, see {@link IStatus}.
-	 * @param message - the status message.
-	 * @return the status.
-	 */
-	public static IStatus createStatus(int severity, String message) {
-		return new Status(severity, PLUGIN_ID, message);
-	}
-
 	/**
 	 * Logs an internal error with the specified throwable.
 	 *
@@ -96,7 +86,7 @@ public class SARLMavenEclipsePlugin extends Plugin {
 					e.getMessage(), e.getCause()));
 		} else {
 			log(new Status(IStatus.ERROR, PLUGIN_ID,
-					"Internal Error", e));
+					"Internal Error", e));   //$NON-NLS-1$
 		}
 	}
 
