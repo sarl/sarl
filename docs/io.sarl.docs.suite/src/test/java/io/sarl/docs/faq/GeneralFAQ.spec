@@ -198,6 +198,21 @@ describe "General FAQ on SARL" {
 				"https://github.com/sarl/sarl/issues/new" should beURL _
 			}
 
+			/* A community driven list of useful SARL libraries, frameworks and software
+			 * is maintained on [Github](https://github.com/sarl/awesome-sarl).
+			 *
+			 * This is not a catalog of all the libraries, just a starting point for
+			 * your explorations.
+			 *
+			 * This list is be used by the SARL team for updating this official web site
+			 * of SARL.
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Where can I find more information and projects related to SARL?" {
+				"https://github.com/sarl/awesome-sarl" should beURL _
+			}
+
 		}
 		
 		/*  

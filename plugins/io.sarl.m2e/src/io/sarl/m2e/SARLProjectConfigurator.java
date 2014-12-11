@@ -21,10 +21,12 @@
 package io.sarl.m2e;
 
 import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.buildpath.SARLClasspathContainer;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
 import io.sarl.lang.ui.preferences.SARLProjectPreferences;
 
 import java.io.File;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Properties;
 
@@ -35,7 +37,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -48,6 +52,7 @@ import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
 import org.eclipse.m2e.jdt.internal.ClasspathDescriptor;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
 /** Project configuration for the M2E.
@@ -377,7 +382,23 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	public void configureClasspath(IMavenProjectFacade facade,
 			IClasspathDescriptor classpath, IProgressMonitor monitor)
 					throws CoreException {
-		//
+		// Check the SARL libraries
+		for (String referenceLibrary : SARLClasspathContainer.SARL_REFERENCE_LIBRARIES) {
+			Bundle bundle = Platform.getBundle(referenceLibrary);
+			if (bundle == null) {
+				throw new CoreException(SARLMavenEclipsePlugin.createStatus(IStatus.ERROR,
+						MessageFormat.format("Unable to find the bundle ''{0}''", referenceLibrary)));
+			}
+			Version bundleVersion = bundle.getVersion();
+			if (bundleVersion == null) {
+				throw new CoreException(SARLMavenEclipsePlugin.createStatus(IStatus.ERROR,
+						MessageFormat.format("Unable to determine the version of the bundle ''{0}''", referenceLibrary)));
+			}
+			MavenProject mavenProject = facade.getMavenProject(monitor);
+			mavenProject.getDe
+			for (IClasspathEntry dep : classpath.getEntries()) {
+			}
+		}
 	}
 
 	@Override
