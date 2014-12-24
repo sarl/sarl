@@ -21,6 +21,7 @@
 package io.sarl.eclipse;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
@@ -44,7 +45,7 @@ import com.google.common.base.Strings;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class SARLEclipsePlugin extends Plugin {
+public class SARLEclipsePlugin extends Plugin {
 
 	/** Empty string.
 	 */
@@ -59,7 +60,25 @@ public final class SARLEclipsePlugin extends Plugin {
 	/**
 	 */
 	public SARLEclipsePlugin() {
-		instance = this;
+		setDefault(this);
+	}
+	
+	/** Replies the logger.
+	 *
+	 * Thus function is a non-final version of {@link #getLog()}.
+	 * 
+	 * @return the logger.
+	 */
+	public ILog getILog() {
+		return getLog();
+	}
+
+	/** Set the default instance of the plugin.
+	 *
+	 * @param defaultInstance - the default plugin instance.
+	 */
+	public static void setDefault(SARLEclipsePlugin defaultInstance) {
+		instance = defaultInstance;
 	}
 
 	/** Replies the instance of the plugin.
@@ -181,7 +200,7 @@ public final class SARLEclipsePlugin extends Plugin {
 	 * @param status status to log
 	 */
 	public static void log(IStatus status) {
-		getDefault().getLog().log(status);
+		getDefault().getILog().log(status);
 	}
 
 	/**
@@ -237,6 +256,9 @@ public final class SARLEclipsePlugin extends Plugin {
 		if (e instanceof CoreException) {
 			log(new Status(IStatus.ERROR, PLUGIN_ID,
 					e.getMessage(), e.getCause()));
+		} else if (e != null) {
+			log(new Status(IStatus.ERROR, PLUGIN_ID,
+					e.getMessage(), e));
 		} else {
 			log(new Status(IStatus.ERROR, PLUGIN_ID,
 					"Internal Error", e));   //$NON-NLS-1$
@@ -304,14 +326,18 @@ public final class SARLEclipsePlugin extends Plugin {
 
 	/** Null-safe compare a version number to a range of version numbers.
 	 *
-	 * @param version - the version to compare to the range.
-	 * @param minVersion - the minimal version in the range (inclusive).
-	 * @param maxVersion - the maximal version in the range (exclusive).
-	 * @return A negative number if the version in lower than the minVersion.
+	 * The minVersion must be strictly lower to the maxVersion. Otherwise
+	 * the behavior is not predictible.
+	 *
+	 * @param version - the version to compare to the range; must not be <code>null</code>.
+	 * @param minVersion - the minimal version in the range (inclusive); could be <code>null</code>.
+	 * @param maxVersion - the maximal version in the range (exclusive); could be <code>null</code>.
+	 * @return a negative number if the version in lower than the minVersion.
 	 * A positive number if the version is greater than or equal to the maxVersion.
 	 * <code>0</code> if the version is between minVersion and maxVersion.
 	 */
 	public static int compareVersionToRange(Version version, Version minVersion, Version maxVersion) {
+		assert (minVersion == null || maxVersion == null || minVersion.compareTo(maxVersion) < 0);
 		if (version == null) {
 			return Integer.MIN_VALUE;
 		}

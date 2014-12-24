@@ -35,15 +35,15 @@
        name="%nature.name"
        point="org.eclipse.core.resources.natures">
 		<runtime>
-			<run class="io.sarl.eclipse.natures.SARLProjectNature">
-			</run>
+			<run class="io.sarl.eclipse.natures.SARLProjectNature" />
 		</runtime>
-	</extension>	
-
+		<requires-nature id="org.eclipse.xtext.ui.shared.xtextNature"/>
+	</extension>
+		
   <extension
         point="org.eclipse.ui.ide.projectNatureImages">
      <image
-           icon="icons/sarl_project_nature_16.png"
+           icon="icons/sarl_project_nature_overlay.png"
            id="io.sarl.eclipse.natures.SARLProjectNatureImage"
            natureId="io.sarl.eclipse.SARLProjectNature">
      </image>

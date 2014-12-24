@@ -99,8 +99,8 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	@SuppressWarnings("static-method")
 	protected void addNatures(IMavenProjectFacade facade,
 			SARLConfiguration config, IProgressMonitor monitor) throws CoreException {
-		addNature(facade.getProject(), SARLConfig.XTEXT_NATURE_ID, monitor);
 		addNature(facade.getProject(), SARLConfig.NATURE_ID, monitor);
+		addNature(facade.getProject(), SARLConfig.XTEXT_NATURE_ID, monitor);
 	}
 
 	private static IPath makeFullPath(IMavenProjectFacade facade, File file) {
@@ -141,9 +141,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 			IClasspathDescriptor classpath, IProgressMonitor monitor)
 					throws CoreException {
 
-		assertHasNature(facade.getProject(), JavaCore.NATURE_ID);
-		assertHasNature(facade.getProject(), SARLConfig.XTEXT_NATURE_ID);
 		assertHasNature(facade.getProject(), SARLConfig.NATURE_ID);
+		assertHasNature(facade.getProject(), SARLConfig.XTEXT_NATURE_ID);
+		assertHasNature(facade.getProject(), JavaCore.NATURE_ID);
 
 		String encoding = config.getEncoding();
 
