@@ -24,6 +24,7 @@ import java.text.MessageFormat;
 
 import org.apache.maven.artifact.ArtifactUtils;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
@@ -51,7 +52,17 @@ public class SARLMavenEclipsePlugin extends Plugin {
 	/**
 	 */
 	public SARLMavenEclipsePlugin() {
-		//
+		setDefault(this);
+	}
+
+	/** Replies the logger.
+	 *
+	 * Thus function is a non-final version of {@link #getLog()}.
+	 *
+	 * @return the logger.
+	 */
+	public ILog getILog() {
+		return getLog();
 	}
 
 	/** Replies the instance of the plugin.
@@ -60,6 +71,14 @@ public class SARLMavenEclipsePlugin extends Plugin {
 	 */
 	public static SARLMavenEclipsePlugin getDefault() {
 		return instance;
+	}
+
+	/** Set the default instance of the plugin.
+	 *
+	 * @param defaultInstance - the default plugin instance.
+	 */
+	public static void setDefault(SARLMavenEclipsePlugin defaultInstance) {
+		instance = defaultInstance;
 	}
 
 	/** Create a status.
@@ -110,7 +129,7 @@ public class SARLMavenEclipsePlugin extends Plugin {
 	 * @param status status to log
 	 */
 	public static void log(IStatus status) {
-		getDefault().getLog().log(status);
+		getDefault().getILog().log(status);
 	}
 
 	/** Maven version parser.

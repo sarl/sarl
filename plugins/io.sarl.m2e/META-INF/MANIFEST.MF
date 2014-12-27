@@ -16,4 +16,5 @@ Require-Bundle: io.sarl.eclipse;bundle-version="[0.2.0,0.3.0)",
  org.eclipse.jdt.core;bundle-version="3.10.0",
  org.eclipse.jdt.launching;bundle-version="3.7.101"
 Bundle-Activator: io.sarl.m2e.SARLMavenEclipsePlugin
+Export-Package: io.sarl.m2e
 

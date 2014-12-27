@@ -20,6 +20,7 @@
 		<module>io.sarl.lang.ui.tests</module>
 		<module>io.sarl.core.tests</module>
 		<module>io.sarl.eclipse.tests</module>
+		<module>io.sarl.m2e.tests</module>
 	</modules>
 
 	<!-- ======================================= -->
