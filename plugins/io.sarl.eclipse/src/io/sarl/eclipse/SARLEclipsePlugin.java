@@ -62,11 +62,11 @@ public class SARLEclipsePlugin extends Plugin {
 	public SARLEclipsePlugin() {
 		setDefault(this);
 	}
-	
+
 	/** Replies the logger.
 	 *
 	 * Thus function is a non-final version of {@link #getLog()}.
-	 * 
+	 *
 	 * @return the logger.
 	 */
 	public ILog getILog() {

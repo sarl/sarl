@@ -19,6 +19,9 @@
 			<plugin>
 				<groupId>org.eclipse.xtend</groupId>
 				<artifactId>xtend-maven-plugin</artifactId>
+				<configuration>
+					<argLine>-ea</argLine>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

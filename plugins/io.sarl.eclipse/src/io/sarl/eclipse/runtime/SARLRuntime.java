@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
@@ -63,8 +64,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.MultiStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.internal.launching.LaunchingMessages;
 import org.eclipse.jdt.launching.PropertyChangeEvent;
 import org.osgi.framework.Version;
@@ -98,7 +99,9 @@ public final class SARLRuntime {
 	/**
 	 * Preference key for the String of XML that defines all installed SREs.
 	 */
-	public static final String PREF_SRE_XML = SARLEclipsePlugin.PLUGIN_ID + ".runtime.PREF_SRE_XML"; //$NON-NLS-1$
+	public static final String DEFAULT_PREFERENCE_KEY = SARLEclipsePlugin.PLUGIN_ID + ".runtime.PREF_SRE_XML"; //$NON-NLS-1$
+
+	private static String currentPreferenceKey = DEFAULT_PREFERENCE_KEY;
 
 	/**
 	 * SRE change listeners.
@@ -114,6 +117,38 @@ public final class SARLRuntime {
 	private SARLRuntime() {
 		//
 	}
+
+	/** Replies the key used for storing the SARL runtime configuration
+	 * into the preferences.
+	 *
+	 * @return the current preference key.
+	 */
+	public static String getCurrentPreferenceKey() {
+		LOCK.lock();
+		try {
+			return currentPreferenceKey;
+		} finally {
+			LOCK.unlock();
+		}
+	}
+
+	/** Change the key used for storing the SARL runtime configuration
+	 * into the preferences.
+	 *
+	 * If the given key is <code>null</code> or empty, the preference key
+	 * is reset to the {@link #DEFAULT_PREFERENCE_KEY}.
+	 *
+	 * @param key - the new key or <code>null</code>.
+	 */
+	public static void setCurrentPreferenceKey(String key) {
+		LOCK.lock();
+		try {
+			currentPreferenceKey = (Strings.isNullOrEmpty(key)) ? DEFAULT_PREFERENCE_KEY : key;
+		} finally {
+			LOCK.unlock();
+		}
+	}
+
 	/**
 	 * Adds the given listener to the list of registered SRE install changed
 	 * listeners. Has no effect if an identical listener is already registered.
@@ -227,10 +262,15 @@ public final class SARLRuntime {
 	 * Sets the installed SREs.
 	 *
 	 * @param sres - The installed SREs.
-	 * @param monitor - progress monitor or <code>null</code>
+	 * @param monitor the progress monitor to use for reporting progress to the user. It is the caller's responsibility
+	 *        to call done() on the given monitor. Accepts <code>null</code>, indicating that no progress should be
+	 *        reported and that the operation cannot be cancelled.
 	 * @throws CoreException if trying to set the default SRE install encounters problems
 	 */
 	public static void setSREInstalls(ISREInstall[] sres, IProgressMonitor monitor) throws CoreException {
+		SubMonitor mon = SubMonitor.convert(monitor,
+				io.sarl.eclipse.runtime.Messages.SARLRuntime_0,
+				sres.length + ALL_SRE_INSTALLS.size() + 5);
 		initializeSREs();
 		String oldDefaultId;
 		String newDefaultId;
@@ -246,10 +286,12 @@ public final class SARLRuntime {
 					newElements.add(sre);
 					ALL_SRE_INSTALLS.put(sre.getId(), sre);
 				}
+				mon.worked(1);
 			}
 			for (ISREInstall sre : allKeys.values()) {
 				ALL_SRE_INSTALLS.remove(sre.getId());
 				platformSREInstalls.remove(sre.getId());
+				mon.worked(1);
 			}
 			if (oldDefaultId != null && !ALL_SRE_INSTALLS.containsKey(oldDefaultId)) {
 				newDefaultId = null;
@@ -258,10 +300,13 @@ public final class SARLRuntime {
 			LOCK.unlock();
 		}
 		boolean changed = false;
+		mon.subTask(io.sarl.eclipse.runtime.Messages.SARLRuntime_1);
 		if (oldDefaultId != null && newDefaultId == null) {
 			changed = true;
 			setDefaultSREInstall(null, monitor);
 		}
+		mon.worked(1);
+		mon.subTask(io.sarl.eclipse.runtime.Messages.SARLRuntime_2);
 		for (ISREInstall sre : allKeys.values()) {
 			changed = true;
 			fireSRERemoved(sre);
@@ -270,8 +315,9 @@ public final class SARLRuntime {
 			changed = true;
 			fireSREAdded(sre);
 		}
+		mon.worked(1);
 		if (changed) {
-			saveSREConfiguration(new NullProgressMonitor());
+			saveSREConfiguration(mon.newChild(3));
 		}
 	}
 
@@ -386,7 +432,7 @@ public final class SARLRuntime {
 	 * @throws CoreException if trying to save the current state of SREs encounters a problem
 	 */
 	public static void saveSREConfiguration(IProgressMonitor monitor) throws CoreException {
-		SARLEclipsePlugin.getPreferences().put(PREF_SRE_XML, getSREsAsXML());
+		SARLEclipsePlugin.getPreferences().put(getCurrentPreferenceKey(), getSREsAsXML(monitor));
 		SARLEclipsePlugin.savePreferences();
 	}
 
@@ -396,7 +442,7 @@ public final class SARLRuntime {
 	 * @throws CoreException if trying to save the current state of SREs encounters a problem
 	 */
 	public static void clearSREConfiguration() throws CoreException {
-		SARLEclipsePlugin.getPreferences().remove(PREF_SRE_XML);
+		SARLEclipsePlugin.getPreferences().remove(getCurrentPreferenceKey());
 		SARLEclipsePlugin.savePreferences();
 	}
 
@@ -485,10 +531,11 @@ public final class SARLRuntime {
 	/**
 	 * Returns the listing of currently installed SREs as a single XML file.
 	 *
+	 * @param monitor - monitor on the XML building.
 	 * @return an XML representation of all of the currently installed SREs.
 	 * @throws CoreException if trying to compute the XML for the SRE state encounters a problem.
 	 */
-	public static String getSREsAsXML() throws CoreException {
+	public static String getSREsAsXML(IProgressMonitor monitor) throws CoreException {
 		initializeSREs();
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -583,7 +630,7 @@ public final class SARLRuntime {
 		//		} catch (CoreException e1) {
 		//			e1.printStackTrace();
 		//		}
-		String rawXml = SARLEclipsePlugin.getPreferences().get(PREF_SRE_XML, ""); //$NON-NLS-1$
+		String rawXml = SARLEclipsePlugin.getPreferences().get(getCurrentPreferenceKey(), ""); //$NON-NLS-1$
 
 		try {
 			Element config = null;
@@ -757,7 +804,7 @@ public final class SARLRuntime {
 	public static String createUniqueIdentifier() {
 		String id = null;
 		do {
-			id = String.valueOf(System.currentTimeMillis());
+			id = UUID.randomUUID().toString();
 		} while (getSREFromId(id) != null);
 		return id;
 	}
@@ -772,17 +819,16 @@ public final class SARLRuntime {
 			// Clear the SRE configuration stored into the preferences.
 			clearSREConfiguration();
 			// Reset the internal data structures.
-			if (platformSREInstalls != null) {
-				ISREInstall previous = getDefaultSREInstall();
-				Map<String, ISREInstall> oldSREs = new HashMap<>(ALL_SRE_INSTALLS);
-				ALL_SRE_INSTALLS.clear();
-				platformSREInstalls = null;
-				defaultSREId = null;
-
-				// Notify about the removals
-				for (ISREInstall sre : oldSREs.values()) {
-					fireSRERemoved(sre);
-				}
+			ISREInstall previous = getDefaultSREInstall();
+			Map<String, ISREInstall> oldSREs = new HashMap<>(ALL_SRE_INSTALLS);
+			ALL_SRE_INSTALLS.clear();
+			platformSREInstalls = null;
+			defaultSREId = null;
+			// Notify about the removals
+			for (ISREInstall sre : oldSREs.values()) {
+				fireSRERemoved(sre);
+			}
+			if (previous != null) {
 				fireDefaultSREChanged(previous, null);
 			}
 			// Re-read the data

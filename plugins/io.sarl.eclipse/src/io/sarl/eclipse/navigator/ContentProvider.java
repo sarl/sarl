@@ -43,7 +43,7 @@ import org.eclipse.jface.viewers.Viewer;
  */
 public class ContentProvider implements ITreeContentProvider {
 
-	private static final Object[] NO_CHILDREN = {};
+	private static final Object[] NO_CHILDREN = new Object[0];
 
 	private ISARLProjectElement[] sarlProjectParents;
 
@@ -54,7 +54,6 @@ public class ContentProvider implements ITreeContentProvider {
 			if (this.sarlProjectParents == null) {
 				this.sarlProjectParents = initializeParent();
 			}
-
 			children = this.sarlProjectParents;
 		} else if (ISARLProjectElement.class.isInstance(parentElement)) {
 			children = ((ISARLProjectElement) parentElement).getChildren();

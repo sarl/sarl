@@ -9,10 +9,10 @@
 	</parent>
 
 	<groupId>io.sarl.lang</groupId>
-	<artifactId>io.sarl.lang.ui.tests</artifactId>
+	<artifactId>io.sarl.eclipse.tests</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 
-	<name>Language UI Library Tests</name>
+	<name>SARL Eclipse Contribution Tests</name>
 
 	<build>
 		<plugins>

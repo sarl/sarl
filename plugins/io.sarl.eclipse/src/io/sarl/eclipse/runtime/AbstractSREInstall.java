@@ -79,6 +79,9 @@ public abstract class AbstractSREInstall implements ISREInstall {
 			if (this.libraryLocations != null) {
 				clone.libraryLocations = this.libraryLocations.clone();
 			}
+			if (this.libraryLocations != null) {
+				clone.libraryLocations = this.libraryLocations.clone();
+			}
 			return clone;
 		} catch (CloneNotSupportedException e) {
 			throw new Error(e);

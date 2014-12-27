@@ -14,11 +14,12 @@
 
 	<modules>
 		<module>io.sarl.tests.testdata</module>
-		<module>io.sarl.lang.tests</module>
-		<module>io.sarl.lang.core.tests</module>
-		<module>io.sarl.lang.ui.tests</module>
 		<module>io.sarl.util.tests</module>
+		<module>io.sarl.lang.core.tests</module>
+		<module>io.sarl.lang.tests</module>
+		<module>io.sarl.lang.ui.tests</module>
 		<module>io.sarl.core.tests</module>
+		<module>io.sarl.eclipse.tests</module>
 	</modules>
 
 	<!-- ======================================= -->

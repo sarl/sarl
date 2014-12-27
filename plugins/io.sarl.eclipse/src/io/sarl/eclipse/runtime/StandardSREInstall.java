@@ -241,7 +241,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 					classPath.add(new LibraryLocation(this.jarFile, Path.EMPTY, Path.EMPTY));
 					String classPathStr = manifest.getMainAttributes().getValue(SREConstants.MANIFEST_CLASS_PATH);
 					if (!Strings.isNullOrEmpty(classPathStr)) {
-						for (String cpElement : classPathStr.split(Pattern.quote(File.pathSeparator))) {
+						for (String cpElement : classPathStr.split(Pattern.quote(":"))) { //$NON-NLS-1$
 							IPath p = Path.fromPortableString(cpElement);
 							classPath.add(new LibraryLocation(p, Path.EMPTY, Path.EMPTY));
 						}
@@ -261,6 +261,10 @@ public class StandardSREInstall extends AbstractSREInstall {
 
 	@Override
 	public String getProgramArguments() {
+		if (isDirty()) {
+			setDirty(false);
+			resolveDirtyFields(true);
+		}
 		if (this.programArguments.isEmpty()) {
 			return getMainClass();
 		}
@@ -269,6 +273,10 @@ public class StandardSREInstall extends AbstractSREInstall {
 
 	@Override
 	public String getVMArguments() {
+		if (isDirty()) {
+			setDirty(false);
+			resolveDirtyFields(true);
+		}
 		return this.vmArguments;
 	}
 
@@ -298,6 +306,10 @@ public class StandardSREInstall extends AbstractSREInstall {
 	 */
 	@Override
 	public void getAsXML(Document document, Element element) throws IOException {
+		if (isDirty()) {
+			setDirty(false);
+			resolveDirtyFields(true);
+		}
 		IPath path = getJarFile();
 		element.setAttribute(SREConstants.XML_STANDALONE_SRE, Boolean.toString(isStandalone()));
 		element.setAttribute(SREConstants.XML_LIBRARY_PATH, path.toPortableString());
