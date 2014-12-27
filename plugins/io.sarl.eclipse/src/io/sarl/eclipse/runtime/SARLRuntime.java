@@ -270,7 +270,7 @@ public final class SARLRuntime {
 	public static void setSREInstalls(ISREInstall[] sres, IProgressMonitor monitor) throws CoreException {
 		SubMonitor mon = SubMonitor.convert(monitor,
 				io.sarl.eclipse.runtime.Messages.SARLRuntime_0,
-				sres.length + ALL_SRE_INSTALLS.size() + 5);
+				sres.length * 2 + ALL_SRE_INSTALLS.size());
 		initializeSREs();
 		String oldDefaultId;
 		String newDefaultId;
@@ -317,7 +317,7 @@ public final class SARLRuntime {
 		}
 		mon.worked(1);
 		if (changed) {
-			saveSREConfiguration(mon.newChild(3));
+			saveSREConfiguration(mon.newChild(sres.length - 2));
 		}
 	}
 

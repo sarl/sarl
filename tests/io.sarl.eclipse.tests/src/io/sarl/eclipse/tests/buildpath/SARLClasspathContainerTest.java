@@ -75,31 +75,6 @@ public class SARLClasspathContainerTest extends Assert {
 	}
 	
 	@Test
-	public void getClasspathEntries() {
-		IClasspathEntry[] entries = this.container.getClasspathEntries();
-		List<IClasspathEntry> list = new ArrayList<>(Arrays.asList(entries));
-		for (String reference : SARLClasspathContainer.SARL_REFERENCE_LIBRARIES) {
-			Iterator<IClasspathEntry> iterator = list.iterator();
-			boolean found = false;
-			while (!found && iterator.hasNext()) {
-				IClasspathEntry entry = iterator.next();
-				if (isReferenceLibrary(reference, entry)) {
-					found = true;
-					iterator.remove();
-				}
-			}
-			if (!found) {
-				fail("Expecting the reference library: " + reference
-						+ "in: " + Arrays.toString(entries));
-			}
-		}
-		if (!list.isEmpty()) {
-			fail("Unexpected reference library: " + list.toString()
-					+ "in: " + Arrays.toString(entries));
-		}
-	}
-
-	@Test
 	public void getDescription() {
 		assertEquals(Messages.SARLClasspathContainer_0, this.container.getDescription());
 	}
