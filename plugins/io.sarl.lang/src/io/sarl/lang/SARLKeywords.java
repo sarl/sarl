@@ -54,6 +54,14 @@ public final class SARLKeywords {
 	 */
 	public static final String ON = "on"; //$NON-NLS-1$
 
+	/** Keyword: {@code implements}.
+	 */
+	public static final String IMPLEMENTS = "implements"; //$NON-NLS-1$
+
+	/** Keyword: {@code extends}.
+	 */
+	public static final String EXTENDS = "extends"; //$NON-NLS-1$
+
 	private SARLKeywords() {
 		//
 	}

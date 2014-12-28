@@ -47,6 +47,7 @@ import org.eclipse.xtext.validation.Issue
 import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable
 import org.eclipse.xtext.xbase.ui.quickfix.XbaseQuickfixProvider
 import java.text.MessageFormat
+import io.sarl.lang.SARLKeywords
 
 /**
  * Custom quickfixes.
@@ -62,7 +63,13 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	@Inject
 	private ReplacingAppendable.Factory appendableFactory
 	
-	protected def void removeBackwardWithSpaces(Issue issue, IXtextDocument document) {
+	/**
+	 * Remove element with the spaces before.
+	 *
+	 * @param issue - the description of the element.
+	 * @param document - the document to update.
+	 */
+	protected def void removeElementWithPreviousSpaces(Issue issue, IXtextDocument document) {
 		// Skip spaces before the identifier until the coma
 		var index = issue.offset - 1
 		var char c = document.getChar(index)
@@ -70,17 +77,37 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			index--
 			c = document.getChar(index)
 		}
-		
 		var delta = issue.offset - index - 1
 		document.replace(index + 1, issue.length + delta, "")
 	}
 	
-	protected def boolean removeBackwardUntilSeparator(Issue issue, IXtextDocument document, String separator) {
-		return removeBackwardUntilSeparator(issue.offset, issue.length, document, separator)
+	/**
+	 * Remove element and all the whitespaces before the element until the given separator.
+	 * The given separator is also removed.
+	 *
+	 * @param issue - the description of the element.
+	 * @param document - the document to update.
+	 * @param separator - the separator to consider.
+	 * @return <code>true</code> if the document was changed by this function;
+	 * <code>false</code> if the document remains unchanged.
+	 */
+	protected def boolean removeToPreviousSeparator(Issue issue, IXtextDocument document, String separator) {
+		return removeToPreviousSeparator(issue.offset, issue.length, document, separator)
 	}
 
-	protected def boolean removeBackwardUntilSeparator(int offset, int length, IXtextDocument document, String separator) {
-		// Skip spaces before the identifier until the coma
+	/**
+	 * Remove element and all the whitespaces before the element until the given separator.
+	 * The given separator is also removed.
+	 *
+	 * @param offset - position of the element.
+	 * @param length - length of the element.
+	 * @param document - the document to update.
+	 * @param separator - the separator to consider.
+	 * @return <code>true</code> if the document was changed by this function;
+	 * <code>false</code> if the document remains unchanged.
+	 */
+	protected def boolean removeToPreviousSeparator(int offset, int length, IXtextDocument document, String separator) {
+		// Skip spaces before the identifier until the separator
 		var index = offset - 1
 		var char c = document.getChar(index)
 		while (Character::isWhitespace(c)) {
@@ -106,8 +133,18 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		return foundSeparator
 	}
 
-	protected def boolean removeForwardUntilSeparator(Issue issue, IXtextDocument document, String separator) {
-		// Skip spaces after the identifier until the coma
+	/**
+	 * Remove element and all the whitespaces after the element until the given separator.
+	 * The given separator is also removed.
+	 *
+	 * @param issue - the description of the element.
+	 * @param document - the document to update.
+	 * @param separator - the separator to consider.
+	 * @return <code>true</code> if the document was changed by this function;
+	 * <code>false</code> if the document remains unchanged.
+	 */
+	protected def boolean removeToNextSeparator(Issue issue, IXtextDocument document, String separator) {
+		// Skip spaces after the identifier until the separator
 		var index = issue.offset + issue.length
 		var char c = document.getChar(index)
 		while (Character::isWhitespace(c)) {
@@ -133,8 +170,19 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		return foundSeparator
 	}
 	
-	private def removeBackwardWithInheritingKeyword(Issue issue, IXtextDocument document) {
-		// Skip spaces before the identifier
+	/**
+	 * Remove element and all the whitespaces before the element until the given keyword.
+	 * The given keyword is also removed.
+	 *
+	 * @param issue - the description of the element.
+	 * @param document - the document to update.
+	 * @param keyword1 - the first keyword to consider.
+	 * @param otherKeywords - the other keywords to consider.
+	 * @return <code>true</code> if the document was changed by this function;
+	 * <code>false</code> if the document remains unchanged.
+	 */
+	protected def boolean removeToPreviousKeyword(Issue issue, IXtextDocument document, String keyword1, String... otherKeywords) {
+		// Skip spaces before the element
 		var index = issue.offset - 1
 		var char c = document.getChar(index)
 		while (Character::isWhitespace(c)) {
@@ -143,21 +191,40 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		}
 		
 		// Skip non-spaces before the identifier
+		var kw = new StringBuffer
 		while (!Character::isWhitespace(c)) {
+			kw.insert(0, c)
 			index--
 			c = document.getChar(index)
 		}
 		
-		// Skip spaces before the previous keyword
-		while (Character::isWhitespace(c)) {
-			index--
-			c = document.getChar(index)
+		if (kw.toString == keyword1 || otherKeywords.contains(kw.toString)) {
+			// Skip spaces before the previous keyword
+			while (Character::isWhitespace(c)) {
+				index--
+				c = document.getChar(index)
+			}
+			
+			var delta = issue.offset - index - 1
+			document.replace(index + 1, issue.length + delta, "")
+			
+			return true
 		}
 		
-		var delta = issue.offset - index - 1
-		document.replace(index + 1, issue.length + delta, "")
+		return false		
 	}
 
+	/**
+	 * Remove element and all the whitespaces between the given separators and the element.
+	 * The given separators are also removed.
+	 *
+	 * @param issue - the description of the element.
+	 * @param document - the document to update.
+	 * @param beginSeparator - the left separator to consider.
+	 * @param endSeparator - the right separator to consider.
+	 * @return <code>true</code> if the document was changed by this function;
+	 * <code>false</code> if the document remains unchanged.
+	 */
 	protected def boolean removeBetweenSeparators(Issue issue, IXtextDocument document, String beginSeparator, String endSeparator) {
 		var offset = issue.offset
 		var length = issue.length
@@ -205,6 +272,11 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		return foundSeparator
 	}
 
+	/** Replies the position where to insert child elements into the given container.
+	 *
+	 * @param container - the container in which the insertion position must be determined.
+	 * @return the insertion position.
+	 */
 	protected def int getInsertOffset(FeatureContainer container) {
 		if (container.features.empty) {
 			val node = NodeModelUtils.findActualNodeFor(container)
@@ -213,14 +285,19 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 				return openingBraceNode.offset + 1
 			else
 				return node.endOffset
-		} 
-		else {
+		} else {
 			var lastFeature = IterableExtensions.last(container.features);
 			val node = NodeModelUtils.findActualNodeFor(lastFeature)
 			return node.endOffset
 		}
 	}
 	
+	/** Replies the size of a sequence of whitespaces.
+	 *
+	 * @param document - the document to read.
+	 * @param offset - the position of the first character in the sequence.
+	 * @return the number of whitespaces starting at the given offset.
+	 */
 	protected def int getSpaceSize(IXtextDocument document, int offset) {
 		var size = 0
 		var char c = document.getChar(offset + size)
@@ -231,6 +308,11 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		return size
 	}
 
+	/** Replies the qualified name for the given string representation.
+	 * 
+	 * @param name - the name to convert.
+	 * @return the qualified name.
+	 */
 	protected def QualifiedName qualifiedName(String name) {
 		if (name !== null) {
 			var segments = Strings::split(name, ".")
@@ -343,22 +425,22 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 				case "pre": {
 					fct = [ element, context |
 						var document = context.xtextDocument
-						removeBackwardUntilSeparator(issue, document, ',')
+						removeToPreviousSeparator(issue, document, ',')
 					]
 				}
 				case "post": {
 					fct = [ element, context |
 						var document = context.xtextDocument
-						removeForwardUntilSeparator(issue, document, ',')
+						removeToNextSeparator(issue, document, ',')
 					]
 				}
 				default: {
 					fct = [ element, context |
 						var document = context.xtextDocument
 						var sep = ','
-						if (!removeBackwardUntilSeparator(issue, document, sep)) {
-							if (!removeForwardUntilSeparator(issue, document, sep)) {
-								removeBackwardWithInheritingKeyword(issue, document)
+						if (!removeToPreviousSeparator(issue, document, sep)) {
+							if (!removeToNextSeparator(issue, document, sep)) {
+								removeToPreviousKeyword(issue, document, SARLKeywords::IMPLEMENTS)
 							}
 						}
 					]
@@ -434,9 +516,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				var document = context.xtextDocument
 				var sep = ','
-				if (!removeBackwardUntilSeparator(issue, document, sep)) {
-					if (!removeForwardUntilSeparator(issue, document, sep)) {
-						removeBackwardWithInheritingKeyword(issue, document)
+				if (!removeToPreviousSeparator(issue, document, sep)) {
+					if (!removeToNextSeparator(issue, document, sep)) {
+						removeToPreviousKeyword(issue, document, SARLKeywords::REQUIRES, SARLKeywords::USES)
 					}
 				}
 			]
@@ -453,9 +535,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				var document = context.xtextDocument
 				var sep = ','
-				if (!removeBackwardUntilSeparator(issue, document, sep)) {
-					if (!removeForwardUntilSeparator(issue, document, sep)) {
-						removeBackwardWithInheritingKeyword(issue, document)
+				if (!removeToPreviousSeparator(issue, document, sep)) {
+					if (!removeToNextSeparator(issue, document, sep)) {
+						removeToPreviousKeyword(issue, document, SARLKeywords::FIRES)
 					}
 				}
 			]
@@ -472,9 +554,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				var document = context.xtextDocument
 				var sep = ','
-				if (!removeBackwardUntilSeparator(issue, document, sep)) {
-					if (!removeForwardUntilSeparator(issue, document, sep)) {
-						removeBackwardWithInheritingKeyword(issue, document)
+				if (!removeToPreviousSeparator(issue, document, sep)) {
+					if (!removeToNextSeparator(issue, document, sep)) {
+						removeToPreviousKeyword(issue, document, SARLKeywords::IMPLEMENTS)
 					}
 				}
 			]
@@ -491,9 +573,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				var document = context.xtextDocument
 				var sep = ','
-				if (!removeBackwardUntilSeparator(issue, document, sep)) {
-					if (!removeForwardUntilSeparator(issue, document, sep)) {
-						removeBackwardWithInheritingKeyword(issue, document)
+				if (!removeToPreviousSeparator(issue, document, sep)) {
+					if (!removeToNextSeparator(issue, document, sep)) {
+						removeToPreviousKeyword(issue, document, SARLKeywords::EXTENDS)
 					}
 				}
 			]
@@ -510,9 +592,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				var document = context.xtextDocument
 				var sep = ','
-				if (!removeBackwardUntilSeparator(issue, document, sep)) {
-					if (!removeForwardUntilSeparator(issue, document, sep)) {
-						removeBackwardWithInheritingKeyword(issue, document)
+				if (!removeToPreviousSeparator(issue, document, sep)) {
+					if (!removeToNextSeparator(issue, document, sep)) {
+						removeToPreviousKeyword(issue, document, SARLKeywords::IMPLEMENTS, SARLKeywords::EXTENDS)
 					}
 				}
 			]
@@ -529,9 +611,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			acceptor.accept(issue, msg, msg, null) [ element, context |
 				var document = context.xtextDocument
 				var sep = ','
-				if (!removeBackwardUntilSeparator(issue, document, sep)) {
-					if (!removeForwardUntilSeparator(issue, document, sep)) {
-						removeBackwardWithInheritingKeyword(issue, document)
+				if (!removeToPreviousSeparator(issue, document, sep)) {
+					if (!removeToNextSeparator(issue, document, sep)) {
+						removeToPreviousKeyword(issue, document, SARLKeywords::IMPLEMENTS, SARLKeywords::EXTENDS)
 					}
 				}
 			]
@@ -636,7 +718,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		msg = Messages::SARLQuickfixProvider_19
 		acceptor.accept(issue, msg, msg, null) [ element, context |
 			var document = context.xtextDocument
-			removeBackwardWithSpaces(issue, document)
+			removeElementWithPreviousSpaces(issue, document)
 		]
 		msg = Messages::SARLQuickfixProvider_20
 		acceptor.accept(issue, msg, msg, null) [ element, context |
@@ -647,7 +729,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 					val node = NodeModelUtils.findActualNodeFor(formalParameter.defaultValue)
 					if (node!==null) {
 						var document = context.xtextDocument
-						removeBackwardUntilSeparator(node.offset, node.length, document, "=")
+						removeToPreviousSeparator(node.offset, node.length, document, "=")
 					}
 				}
 			}
@@ -663,9 +745,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		acceptor.accept(issue, msg, msg, null) [ element, context |
 			var document = context.xtextDocument
 			var sep = ','
-			if (!removeBackwardUntilSeparator(issue, document, sep)) {
-				if (!removeForwardUntilSeparator(issue, document, sep)) {
-					removeBackwardWithInheritingKeyword(issue, document)
+			if (!removeToPreviousSeparator(issue, document, sep)) {
+				if (!removeToNextSeparator(issue, document, sep)) {
+					removeToPreviousKeyword(issue, document, SARLKeywords::USES, SARLKeywords::REQUIRES)
 				}
 			}
 		]
@@ -680,9 +762,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		acceptor.accept(issue, msg, msg, null) [ element, context |
 			var document = context.xtextDocument
 			var sep = ','
-			if (!removeBackwardUntilSeparator(issue, document, sep)) {
-				if (!removeForwardUntilSeparator(issue, document, sep)) {
-					removeBackwardWithInheritingKeyword(issue, document)
+			if (!removeToPreviousSeparator(issue, document, sep)) {
+				if (!removeToNextSeparator(issue, document, sep)) {
+					removeToPreviousKeyword(issue, document, SARLKeywords::USES, SARLKeywords::REQUIRES)
 				}
 			}
 		]
