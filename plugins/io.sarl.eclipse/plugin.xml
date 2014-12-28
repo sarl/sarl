@@ -37,7 +37,7 @@
 		<runtime>
 			<run class="io.sarl.eclipse.natures.SARLProjectNature" />
 		</runtime>
-		<requires-nature id="org.eclipse.xtext.ui.shared.xtextNature"/>
+		<!-- <requires-nature id="org.eclipse.xtext.ui.shared.xtextNature"/> -->
 	</extension>
 		
   <extension
