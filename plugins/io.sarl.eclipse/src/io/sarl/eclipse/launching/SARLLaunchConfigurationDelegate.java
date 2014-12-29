@@ -27,6 +27,7 @@ import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.ProjectSREProvider;
 import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
 import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.eclipse.runtime.SREConstants;
 
 import java.io.File;
 import java.lang.ref.SoftReference;
@@ -45,6 +46,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -100,7 +102,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 					monitor,
 					MessageFormat.format(Messages.SARLLaunchConfigurationDelegate_1,
 							configuration.getName()),
-					process.getStepNumber());
+							process.getStepNumber());
 			while (process.prepare(progressMonitor.newChild(1))) {
 				if (progressMonitor.isCanceled()) {
 					return;
@@ -425,7 +427,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			// Get the SRE from the extension point
 			ISREInstall sre = getSREFromExtension(prj, verify);
 			if (sre != null) {
-				return null;
+				return sre;
 			}
 
 			// Get the SRE from the default project configuration
@@ -581,6 +583,84 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		}
 	}
 
+	@Override
+	public String getProgramArguments(ILaunchConfiguration configuration) throws CoreException {
+		String launchConfigArgs = super.getProgramArguments(configuration);
+		ISREInstall sre = getSREInstallFor(configuration);
+		assert (sre != null);
+		IStringVariableManager substitutor = VariablesPlugin.getDefault().getStringVariableManager();
+		String sreArgs = substitutor.performStringSubstitution(sre.getProgramArguments());
+
+		Map<String, String> cliOptions = sre.getCommandLineOptions();
+		assert (cliOptions != null);
+		String options = null;
+
+		if (configuration.getAttribute(SARLConfig.ATTR_SHOW_LOGO_OPTION, false)) {
+			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_SHOW_LOGO));
+		} else {
+			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_HIDE_LOGO));
+		}
+
+		if (configuration.getAttribute(SARLConfig.ATTR_SHOW_LOG_INFO, true)) {
+			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_SHOW_INFO));
+		} else {
+			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_HIDE_INFO));
+		}
+
+		if (configuration.getAttribute(SARLConfig.ATTR_SRE_OFFLINE, true)) {
+			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_SRE_OFFLINE));
+		}
+
+		RootContextIdentifierType type = RootContextIdentifierType.DEFAULT_CONTEXT_ID;
+		String typeName = configuration.getAttribute(SARLConfig.ATTR_ROOT_CONTEXT_ID_TYPE, (String) null);
+		if (!Strings.isNullOrEmpty(typeName)) {
+			try {
+				type = RootContextIdentifierType.valueOf(typeName);
+			} catch (Throwable _) {
+				//
+			}
+		}
+		switch (type) {
+		case RANDOM_CONTEXT_ID:
+			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_RANDOM_CONTEXT_ID));
+			break;
+		case BOOT_AGENT_CONTEXT_ID:
+			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_BOOT_AGENT_CONTEXT_ID));
+			break;
+		case DEFAULT_CONTEXT_ID:
+		default:
+			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_DEFAULT_CONTEXT_ID));
+			break;
+		}
+
+		options = substitutor.performStringSubstitution(options);
+
+		return join(sreArgs, options, launchConfigArgs);
+	}
+
+	@Override
+	public String getVMArguments(ILaunchConfiguration configuration) throws CoreException {
+		String launchConfigArgs = super.getVMArguments(configuration);
+		ISREInstall sre = getSREInstallFor(configuration);
+		assert (sre != null);
+		IStringVariableManager substitutor = VariablesPlugin.getDefault().getStringVariableManager();
+		String sreArgs = substitutor.performStringSubstitution(sre.getVMArguments());
+		return join(sreArgs, launchConfigArgs);
+	}
+
+	private static String join(String... values) {
+		StringBuilder b = new StringBuilder();
+		for (String value : values) {
+			if (!Strings.isNullOrEmpty(value)) {
+				if (b.length() > 0) {
+					b.append(" "); //$NON-NLS-1$
+				}
+				b.append(value);
+			}
+		}
+		return b.toString();
+	}
+
 	/** Definition of the launching process splitted in separated steps for
 	 * making easier the cancellation.
 	 *
@@ -704,10 +784,10 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 				readConfigurationParameters(monitor);
 				break;
 			case STEP_1:
-				readLaunchingArguments(monitor);
+				buildClasspath(monitor);
 				break;
 			case STEP_2:
-				buildClasspath(monitor);
+				readLaunchingArguments(monitor);
 				break;
 			case STEP_3:
 				postValidation(monitor);

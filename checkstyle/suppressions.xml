@@ -9,6 +9,8 @@
 	<!-- Suppress checking for the NLS files -->
 	<suppress checks="" files="Messages.java"/>
 
+	<suppress checks="MethodCount" files="MainLaunchConfigurationTab.java"/>
+
 	<suppress checks="DeclarationOrder" files="IssueCodes.java"/>
 
 	<suppress checks="BooleanExpressionComplexity" files="ModelUtil.java"/>

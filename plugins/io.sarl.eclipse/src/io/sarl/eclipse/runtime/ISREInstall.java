@@ -164,9 +164,19 @@ public interface ISREInstall extends Cloneable {
 	 */
 	LibraryLocation[] getLibraryLocations();
 
+	/** Replies the available command line options for this SRE.
+	 *
+	 * The replied map describes the CLI options to use in specific use cases.
+	 * The keys are defined in the {@link SREConstants SRE constants}, where
+	 * the key names are started by <code>MANIFEST_CLI_</code>.
+	 *
+	 * @return the program arguments to pass to the virtual machine for this SRE.
+	 */
+	Map<String, String> getCommandLineOptions();
+
 	/** Replies the arguments to pass to the virtual machine
 	 * as program arguments for this SRE.
-	 * The replied arguments may contain the main class
+	 * The replied arguments could contain the main class
 	 * replied by {@link #getMainClass()}.
 	 *
 	 * @return the program arguments to pass to the virtual machine for this SRE.
@@ -175,7 +185,7 @@ public interface ISREInstall extends Cloneable {
 
 	/** Replies the arguments to pass to the virtual machine
 	 * as VM arguments for this SRE.
-	 * The replied arguments may contain the main class
+	 * The replied arguments could contain the main class
 	 * replied by {@link #getMainClass()}.
 	 *
 	 * @return the VM arguments to pass to the virtual machine for this SRE.

@@ -232,6 +232,10 @@ public class AbstractSREInstallTest {
 			throw new UnsupportedOperationException();
 		}
 		@Override
+		public Map<String, String> getCommandLineOptions() {
+			throw new UnsupportedOperationException();
+		}
+		@Override
 		protected void resolveDirtyFields(boolean forceSettings) {
 			//
 		}

@@ -63,6 +63,38 @@ public final class SREConstants {
 	 */
 	public static final String MANIFEST_STANDALONE_SRE = "Standalone-SRE"; //$NON-NLS-1$
 
+	/** Field name for CLI option for showing the SRE logo.
+	 */
+	public static final String MANIFEST_CLI_SHOW_LOGO = "CLI-Show-Logo"; //$NON-NLS-1$
+
+	/** Field name for CLI option for hiding the SRE logo.
+	 */
+	public static final String MANIFEST_CLI_HIDE_LOGO = "CLI-Hide-Logo"; //$NON-NLS-1$
+
+	/** Field name for CLI option for showing the SRE logo.
+	 */
+	public static final String MANIFEST_CLI_SHOW_INFO = "CLI-Show-Info"; //$NON-NLS-1$
+
+	/** Field name for CLI option for hiding the SRE logo.
+	 */
+	public static final String MANIFEST_CLI_HIDE_INFO = "CLI-Hide-Info"; //$NON-NLS-1$
+
+	/** Field name for CLI option for using the default identifier of the root context.
+	 */
+	public static final String MANIFEST_CLI_DEFAULT_CONTEXT_ID = "CLI-Default-Context-ID"; //$NON-NLS-1$
+
+	/** Field name for CLI option for using the random identifier of the root context.
+	 */
+	public static final String MANIFEST_CLI_RANDOM_CONTEXT_ID = "CLI-Random-Context-ID"; //$NON-NLS-1$
+
+	/** Field name for CLI option for using the boot-agent-based identifier of the root context.
+	 */
+	public static final String MANIFEST_CLI_BOOT_AGENT_CONTEXT_ID = "CLI-BootAgent-Context-ID"; //$NON-NLS-1$
+
+	/** Field name for CLI option for launching the SRE offline.
+	 */
+	public static final String MANIFEST_CLI_SRE_OFFLINE = "CLI-Offline"; //$NON-NLS-1$
+
 	/** Attribute name of the SRE's library path (the jar file).
 	 */
 	public static final String XML_LIBRARY_PATH = "libraryPath"; //$NON-NLS-1$

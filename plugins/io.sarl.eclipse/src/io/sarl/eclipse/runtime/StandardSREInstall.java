@@ -24,10 +24,13 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.ref.SoftReference;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
@@ -46,6 +49,7 @@ import org.w3c.dom.NodeList;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 
 
 /**
@@ -61,6 +65,18 @@ import com.google.common.base.Strings;
  *     <li>The name of the SRE may be given by the field <code>"Name"</code>.</li>
  *     <li>The VM arguments of the SRE may be given by the field <code>"VM-Arguments"</code>.</li>
  *     <li>The program arguments of the SRE may be given by the field <code>"Program-Arguments"</code>.</li>
+ *     <li>The command line option for avoiding the logo is given by the field <code>"CLI-Hide-Logo"</code>.</li>
+ *     <li>The command line option for displaying the logo is given by the field <code>"CLI-Show-Logo"</code>.</li>
+ *     <li>The command line option for displaying the information messages is given by the
+ *     		field<code>"CLI-Show-Info"</code>.</li>
+ *     <li>The command line option for hiding the information messages is given by the
+ *     		field<code>"CLI-Hide-Info"</code>.</li>
+ *     <li>The command line option for using the default root context id is given by the
+ *     		field<code>"CLI-Default-Context-ID"</code>.</li>
+ *     <li>The command line option for using the random root context id is given by the
+ *     		field<code>"CLI-Random-Context-ID"</code>.</li>
+ *     <li>The command line option for using the agent-type-based root context id is given by the
+ *     		field<code>"CLI-BootAgent-Context-ID"</code>.</li>
  *     </ul></li>
  * </ul>
  *
@@ -75,8 +91,19 @@ public class StandardSREInstall extends AbstractSREInstall {
 	private String vmArguments = SARLEclipsePlugin.EMPTY_STRING;
 	private String programArguments = SARLEclipsePlugin.EMPTY_STRING;
 
+	private String cliLogoOff;
+	private String cliLogoOn;
+	private String cliShowInfo;
+	private String cliHideInfo;
+	private String cliDefaultContextID;
+	private String cliRandomContextID;
+	private String cliBootAgentContextID;
+	private String cliSreOffline;
+
 	private String manifestMainClass;
 	private String manifestName;
+
+	private transient SoftReference<Map<String, String>> optionBuffer;
 
 	/** Construct a SRE installation.
 	 *
@@ -223,6 +250,17 @@ public class StandardSREInstall extends AbstractSREInstall {
 				// VM-specific attributes
 				setVMSpecificAttributesMap(null);
 				//
+				// Specific CLI Options
+				this.optionBuffer = null;
+				this.cliLogoOn = sarlSection.getValue(SREConstants.MANIFEST_CLI_SHOW_LOGO);
+				this.cliLogoOff = sarlSection.getValue(SREConstants.MANIFEST_CLI_HIDE_LOGO);
+				this.cliShowInfo = sarlSection.getValue(SREConstants.MANIFEST_CLI_SHOW_INFO);
+				this.cliHideInfo = sarlSection.getValue(SREConstants.MANIFEST_CLI_HIDE_INFO);
+				this.cliDefaultContextID = sarlSection.getValue(SREConstants.MANIFEST_CLI_DEFAULT_CONTEXT_ID);
+				this.cliRandomContextID = sarlSection.getValue(SREConstants.MANIFEST_CLI_RANDOM_CONTEXT_ID);
+				this.cliBootAgentContextID = sarlSection.getValue(SREConstants.MANIFEST_CLI_BOOT_AGENT_CONTEXT_ID);
+				this.cliSreOffline = sarlSection.getValue(SREConstants.MANIFEST_CLI_SRE_OFFLINE);
+				//
 				// Program arguments
 				String programArgs = Strings.nullToEmpty(sarlSection.getValue(SREConstants.MANIFEST_PROGRAM_ARGUMENTS));
 				if (!this.programArguments.equals(programArgs)) {
@@ -265,10 +303,16 @@ public class StandardSREInstall extends AbstractSREInstall {
 			setDirty(false);
 			resolveDirtyFields(true);
 		}
-		if (this.programArguments.isEmpty()) {
-			return getMainClass();
+
+		StringBuilder cliArguments = new StringBuilder();
+		cliArguments.append(getMainClass());
+
+		if (!this.programArguments.isEmpty()) {
+			cliArguments.append(" "); //$NON-NLS-1$
+			cliArguments.append(this.programArguments);
 		}
-		return getMainClass() + " " + this.programArguments; //$NON-NLS-1$
+
+		return cliArguments.toString();
 	}
 
 	@Override
@@ -419,6 +463,35 @@ public class StandardSREInstall extends AbstractSREInstall {
 			}
 		}
 		return defaultPath;
+	}
+
+	@Override
+	public Map<String, String> getCommandLineOptions() {
+		if (isDirty()) {
+			setDirty(false);
+			resolveDirtyFields(true);
+		}
+
+		Map<String, String> options = (this.optionBuffer == null) ? null : this.optionBuffer.get();
+		if (options == null) {
+			options = Maps.newHashMap();
+			putIfNotempty(options, SREConstants.MANIFEST_CLI_SHOW_LOGO, this.cliLogoOn);
+			putIfNotempty(options, SREConstants.MANIFEST_CLI_HIDE_LOGO, this.cliLogoOff);
+			putIfNotempty(options, SREConstants.MANIFEST_CLI_SHOW_INFO, this.cliShowInfo);
+			putIfNotempty(options, SREConstants.MANIFEST_CLI_HIDE_INFO, this.cliHideInfo);
+			putIfNotempty(options, SREConstants.MANIFEST_CLI_DEFAULT_CONTEXT_ID, this.cliDefaultContextID);
+			putIfNotempty(options, SREConstants.MANIFEST_CLI_RANDOM_CONTEXT_ID, this.cliRandomContextID);
+			putIfNotempty(options, SREConstants.MANIFEST_CLI_BOOT_AGENT_CONTEXT_ID, this.cliBootAgentContextID);
+			putIfNotempty(options, SREConstants.MANIFEST_CLI_SRE_OFFLINE, this.cliSreOffline);
+			this.optionBuffer = new SoftReference<>(options);
+		}
+		return Collections.unmodifiableMap(options);
+	}
+
+	private static void putIfNotempty(Map<String, String> map, String key, String value) {
+		if (!Strings.isNullOrEmpty(value)) {
+			map.put(key, value);
+		}
 	}
 
 }

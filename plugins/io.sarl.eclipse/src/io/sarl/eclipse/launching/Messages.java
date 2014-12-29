@@ -38,6 +38,13 @@ public class Messages extends NLS {
 	public static String JavaLocalApplicationLaunchConfigurationDelegate_Verifying_launch_attributes____1;
 	public static String MainLaunchConfigurationTab_0;
 	public static String MainLaunchConfigurationTab_1;
+	public static String MainLaunchConfigurationTab_10;
+	public static String MainLaunchConfigurationTab_11;
+	public static String MainLaunchConfigurationTab_12;
+	public static String MainLaunchConfigurationTab_13;
+	public static String MainLaunchConfigurationTab_14;
+	public static String MainLaunchConfigurationTab_15;
+	public static String MainLaunchConfigurationTab_16;
 	public static String MainLaunchConfigurationTab_2;
 	public static String MainLaunchConfigurationTab_3;
 	public static String MainLaunchConfigurationTab_4;
@@ -45,6 +52,7 @@ public class Messages extends NLS {
 	public static String MainLaunchConfigurationTab_6;
 	public static String MainLaunchConfigurationTab_7;
 	public static String MainLaunchConfigurationTab_8;
+	public static String MainLaunchConfigurationTab_9;
 	public static String RuntimeEnvironmentTab_0;
 	public static String RuntimeEnvironmentTab_1;
 	public static String RuntimeEnvironmentTab_2;

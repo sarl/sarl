@@ -23,6 +23,7 @@ package io.sarl.eclipse.launching;
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 
+import java.lang.ref.SoftReference;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 
@@ -71,10 +72,18 @@ import com.google.common.base.Strings;
  */
 public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 
+	private volatile SoftReference<Image> image;
 	private volatile String lastAgentNameError;
 	private Text agentNameTextField;
 	private Button agentNameSearchButton;
-	private Image image;
+	private Button showLogoOptionButton;
+	private Button showLogInfoButton;
+	private Button offlineButton;
+	private Button defaultContextIdentifierButton;
+	private Button randomContextIdentifierButton;
+	private Button bootContextIdentifierButton;
+
+	private final WidgetListener defaultListener = new WidgetListener();
 
 	/**
 	 */
@@ -84,10 +93,12 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 
 	@Override
 	public Image getImage() {
-		if (this.image == null) {
-			this.image = SARLEclipsePlugin.getImage(SARLConfig.SARL_LOGO_IMAGE);
+		Image img = (this.image == null) ? null : this.image.get();
+		if (img == null) {
+			img = SARLEclipsePlugin.getImage(SARLConfig.SARL_LOGO_IMAGE);
+			this.image = new SoftReference<>(img);
 		}
-		return this.image;
+		return img;
 	}
 
 	@Override
@@ -107,6 +118,10 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 		createProjectEditor(comp);
 		createVerticalSpacer(comp, 1);
 		createAgentNameEditor(comp, Messages.MainLaunchConfigurationTab_0);
+		createVerticalSpacer(comp, 1);
+		createContextIdentifierTypeEditor(comp, Messages.MainLaunchConfigurationTab_9);
+		createVerticalSpacer(comp, 1);
+		createLaunchOptionEditor(comp, Messages.MainLaunchConfigurationTab_10);
 		setControl(comp);
 	}
 
@@ -141,10 +156,117 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 		});
 	}
 
+	/**
+	 * Creates the widgets for configuring the context identifier.
+	 *
+	 * @param parent - the parent composite.
+	 * @param text - the label of the group.
+	 */
+	protected void createContextIdentifierTypeEditor(Composite parent, String text) {
+		Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
+		this.defaultContextIdentifierButton = createRadioButton(group, Messages.MainLaunchConfigurationTab_11);
+		this.defaultContextIdentifierButton.addSelectionListener(this.defaultListener);
+		this.randomContextIdentifierButton = createRadioButton(group, Messages.MainLaunchConfigurationTab_12);
+		this.randomContextIdentifierButton.addSelectionListener(this.defaultListener);
+		this.bootContextIdentifierButton = createRadioButton(group, Messages.MainLaunchConfigurationTab_13);
+		this.bootContextIdentifierButton.addSelectionListener(this.defaultListener);
+	}
+
+	/** Replies the type of context identifier selected by the user.
+	 *
+	 * @return the type of context identifier.
+	 */
+	protected RootContextIdentifierType getSelectedContextIdentifierType() {
+		if (this.randomContextIdentifierButton.getSelection()) {
+			return RootContextIdentifierType.RANDOM_CONTEXT_ID;
+		}
+		if (this.bootContextIdentifierButton.getSelection()) {
+			return RootContextIdentifierType.BOOT_AGENT_CONTEXT_ID;
+		}
+		return RootContextIdentifierType.DEFAULT_CONTEXT_ID;
+	}
+
+	/**
+	 * Creates the widgets for configuring the launch options.
+	 *
+	 * @param parent - the parent composite.
+	 * @param text - the label of the group.
+	 */
+	protected void createLaunchOptionEditor(Composite parent, String text) {
+		Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
+		this.showLogoOptionButton = createCheckButton(group, Messages.MainLaunchConfigurationTab_14);
+		this.showLogoOptionButton.addSelectionListener(this.defaultListener);
+		this.showLogInfoButton = createCheckButton(group, Messages.MainLaunchConfigurationTab_15);
+		this.showLogInfoButton.addSelectionListener(this.defaultListener);
+		this.offlineButton = createCheckButton(group, Messages.MainLaunchConfigurationTab_16);
+		this.offlineButton.addSelectionListener(this.defaultListener);
+	}
+
 	@Override
 	public void initializeFrom(ILaunchConfiguration config) {
 		super.initializeFrom(config);
 		updateAgentNameFromConfig(config);
+		updateContextIdentifierTypeFromConfig(config);
+		updateLaunchOptionsFromConfig(config);
+	}
+
+	/**
+	 * Loads the context identifier type from the launch configuration's preference store.
+	 *
+	 * @param config - the config to load the agent name from
+	 */
+	protected void updateContextIdentifierTypeFromConfig(ILaunchConfiguration config) {
+		RootContextIdentifierType type = RootContextIdentifierType.DEFAULT_CONTEXT_ID;
+		try {
+			String typeName = config.getAttribute(SARLConfig.ATTR_ROOT_CONTEXT_ID_TYPE, (String) null);
+			if (!Strings.isNullOrEmpty(typeName)) {
+				type = RootContextIdentifierType.valueOf(typeName);
+			}
+		} catch (Exception ce) {
+			SARLEclipsePlugin.log(ce);
+		}
+		assert (type != null);
+		switch (type) {
+		case RANDOM_CONTEXT_ID:
+			this.randomContextIdentifierButton.setSelection(true);
+			break;
+		case BOOT_AGENT_CONTEXT_ID:
+			this.bootContextIdentifierButton.setSelection(true);
+			break;
+		case DEFAULT_CONTEXT_ID:
+		default:
+			this.defaultContextIdentifierButton.setSelection(true);
+			break;
+		}
+	}
+
+	/**
+	 * Loads the launch options from the launch configuration's preference store.
+	 *
+	 * @param config - the config to load the agent name from
+	 */
+	protected void updateLaunchOptionsFromConfig(ILaunchConfiguration config) {
+		boolean showLogo = false;
+		try {
+			showLogo = config.getAttribute(SARLConfig.ATTR_SHOW_LOGO_OPTION, false);
+		} catch (CoreException ce) {
+			SARLEclipsePlugin.log(ce);
+		}
+		boolean showLogInfo = true;
+		try {
+			showLogInfo = config.getAttribute(SARLConfig.ATTR_SHOW_LOG_INFO, false);
+		} catch (CoreException ce) {
+			SARLEclipsePlugin.log(ce);
+		}
+		boolean offline = true;
+		try {
+			offline = config.getAttribute(SARLConfig.ATTR_SRE_OFFLINE, true);
+		} catch (CoreException ce) {
+			SARLEclipsePlugin.log(ce);
+		}
+		this.showLogoOptionButton.setSelection(showLogo);
+		this.showLogInfoButton.setSelection(showLogInfo);
+		this.offlineButton.setSelection(offline);
 	}
 
 	/**
@@ -168,7 +290,26 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 	public boolean isValid(ILaunchConfiguration config) {
 		setErrorMessage(null);
 		setMessage(null);
-		return isValidProjectName() && isValidAgentName();
+		return isValidProjectName() && isValidAgentName()
+				&& isValidContextIdentifierType() && isValidLaunchOptions();
+	}
+
+	/** Replies if the context identfiier type is valid.
+	 *
+	 * @return the validity state.
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean isValidContextIdentifierType() {
+		return true;
+	}
+
+	/** Replies if the launch options are valid.
+	 *
+	 * @return the validity state.
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean isValidLaunchOptions() {
+		return true;
 	}
 
 	/** Replies if the agent name is valid.
@@ -236,10 +377,22 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
 		config.setAttribute(
 				IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME,
-				this.fProjText.getText().trim());
+				Strings.emptyToNull(this.fProjText.getText().trim()));
 		config.setAttribute(
 				SARLConfig.ATTR_AGENT_NAME,
-				this.agentNameTextField.getText().trim());
+				Strings.emptyToNull(this.agentNameTextField.getText().trim()));
+		config.setAttribute(
+				SARLConfig.ATTR_ROOT_CONTEXT_ID_TYPE,
+				getSelectedContextIdentifierType().name());
+		config.setAttribute(
+				SARLConfig.ATTR_SHOW_LOGO_OPTION,
+				this.showLogoOptionButton.getSelection());
+		config.setAttribute(
+				SARLConfig.ATTR_SHOW_LOG_INFO,
+				this.showLogInfoButton.getSelection());
+		config.setAttribute(
+				SARLConfig.ATTR_SRE_OFFLINE,
+				this.offlineButton.getSelection());
 		mapResources(config);
 	}
 
@@ -249,11 +402,33 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 		if (javaElement != null) {
 			initializeJavaProject(javaElement, config);
 		} else {
-			config.setAttribute(
-					IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME,
-					SARLEclipsePlugin.EMPTY_STRING);
+			config.removeAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME);
 		}
 		initializeAgentName(javaElement, config);
+		initializeContextIdentifierType(config);
+		initializeLaunchOptions(config);
+	}
+
+	/**
+	 * Reset the given configuration with the context identifier type.
+	 *
+	 * @param config - the config to set with the context identifier type.
+	 */
+	@SuppressWarnings("static-method")
+	protected void initializeContextIdentifierType(ILaunchConfigurationWorkingCopy config) {
+		config.setAttribute(SARLConfig.ATTR_ROOT_CONTEXT_ID_TYPE, RootContextIdentifierType.DEFAULT_CONTEXT_ID.name());
+	}
+
+	/**
+	 * Reset the given configuration with the launch options.
+	 *
+	 * @param config - the config to set with the launch options.
+	 */
+	@SuppressWarnings("static-method")
+	protected void initializeLaunchOptions(ILaunchConfigurationWorkingCopy config) {
+		config.setAttribute(SARLConfig.ATTR_SHOW_LOGO_OPTION, false);
+		config.setAttribute(SARLConfig.ATTR_SHOW_LOG_INFO, true);
+		config.setAttribute(SARLConfig.ATTR_SRE_OFFLINE, true);
 	}
 
 	private String extractNameFromJavaElement(final IJavaElement javaElement) {
@@ -283,7 +458,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 	}
 
 	/**
-	 * Initialize the given configuration with the agent name attributes associated
+	 * Reset the given configuration with the agent name attributes associated
 	 * to the given element.
 	 *
 	 * @param javaElement - the element from which information may be retrieved.
@@ -382,6 +557,33 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 			this.agentNameTextField.setText(type.getFullyQualifiedName());
 			this.fProjText.setText(type.getJavaProject().getElementName());
 		}
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private class WidgetListener implements SelectionListener {
+
+		/**
+		 */
+		public WidgetListener() {
+			//
+		}
+
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+			//
+		}
+
+		@SuppressWarnings("synthetic-access")
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			updateLaunchConfigurationDialog();
+		}
+
 	}
 
 }
