@@ -43,8 +43,8 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -93,32 +93,22 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	@Override
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
-		IProgressMonitor progressMonitor;
-		if (monitor == null) {
-			progressMonitor = new NullProgressMonitor();
-		} else {
-			progressMonitor = monitor;
-		}
-
 		try {
 			LaunchProcess process = new LaunchProcess(configuration, mode, launch);
-
 			// Preparation
-			progressMonitor.beginTask(
+			SubMonitor progressMonitor = SubMonitor.convert(
+					monitor,
 					MessageFormat.format(Messages.SARLLaunchConfigurationDelegate_1,
 							configuration.getName()),
-							process.getStepNumber());
-
-			while (process.prepare(progressMonitor)) {
-				progressMonitor.worked(1);
+					process.getStepNumber());
+			while (process.prepare(progressMonitor.newChild(1))) {
 				if (progressMonitor.isCanceled()) {
 					return;
 				}
 			}
 
 			// Launching
-			while (process.launch(progressMonitor)) {
-				progressMonitor.worked(1);
+			while (process.launch(progressMonitor.newChild(1))) {
 				if (progressMonitor.isCanceled()) {
 					return;
 				}
@@ -126,7 +116,6 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		} finally {
 			// Clear cached entries
 			clearBuffers();
-			progressMonitor.done();
 		}
 	}
 
@@ -140,7 +129,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 * @throws CoreException if unable to retrieve the attribute
 	 */
 	@SuppressWarnings("static-method")
-	public String getAgentName(ILaunchConfiguration configuration) throws CoreException {
+	protected String getAgentName(ILaunchConfiguration configuration) throws CoreException {
 		String agentName = configuration.getAttribute(
 				SARLConfig.ATTR_AGENT_NAME,
 				(String) null);
@@ -160,7 +149,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 * @throws CoreException if unable to retrieve the attribute or the attribute is
 	 * unspecified
 	 */
-	public String verifyAgentName(ILaunchConfiguration configuration) throws CoreException {
+	protected String verifyAgentName(ILaunchConfiguration configuration) throws CoreException {
 		String name = getAgentName(configuration);
 		if (name == null) {
 			abort(
@@ -168,7 +157,8 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 					null,
 					SARLConfig.ERR_UNSPECIFIED_AGENT_NAME);
 		}
-		return name;
+		return VariablesPlugin.getDefault().getStringVariableManager()
+				.performStringSubstitution(name);
 	}
 
 	/** Copied from JDT's super class, and patched for invoking

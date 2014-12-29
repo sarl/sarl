@@ -216,28 +216,6 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 		selectSREFromConfig(workingCopy);
 	}
 
-
-	@Override
-	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
-		super.setDefaults(config);
-		ISREInstall defaultSRE = SARLRuntime.getDefaultSREInstall();
-		if (defaultSRE != null) {
-			config.setAttribute(SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
-					defaultSRE.getId());
-			config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
-					defaultSRE.getMainClass());
-		} else {
-			config.setAttribute(SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
-					SARLEclipsePlugin.EMPTY_STRING);
-			config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
-					SARLEclipsePlugin.EMPTY_STRING);
-		}
-		config.setAttribute(SARLConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
-				Boolean.TRUE.toString());
-		config.setAttribute(SARLConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
-				Boolean.FALSE.toString());
-	}
-
 	@Override
 	public boolean isValid(ILaunchConfiguration config) {
 		IStatus status;
@@ -301,22 +279,23 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		super.performApply(configuration);
-		// Get the specific SRE (if selected)
-		ISREInstall sre = this.sreBlock.getSpecificSRE();
+		// Save the SRE specific parameters
+		ISREInstall sre = this.sreBlock.getSelectedSRE();
 		if (sre != null) {
 			configuration.setAttribute(
 					SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
 					sre.getId());
-			configuration.setAttribute(
-					IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
-					sre.getMainClass());
+			String mainClass = sre.getMainClass();
+			if (Strings.isNullOrEmpty(mainClass)) {
+				configuration.removeAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME);
+			} else {
+				configuration.setAttribute(
+						IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
+						mainClass);
+			}
 		} else {
-			configuration.setAttribute(
-					SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
-					SARLEclipsePlugin.EMPTY_STRING);
-			configuration.setAttribute(
-					IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
-					SARLEclipsePlugin.EMPTY_STRING);
+			configuration.removeAttribute(SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT);
+			configuration.removeAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME);
 		}
 		// Save the boolean configuration flags
 		configuration.setAttribute(
@@ -325,6 +304,31 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 		configuration.setAttribute(
 				SARLConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
 				Boolean.toString(this.sreBlock.isProjectSRE()));
+	}
+
+	@Override
+	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
+		super.setDefaults(config);
+		ISREInstall defaultSRE = SARLRuntime.getDefaultSREInstall();
+		if (defaultSRE != null) {
+			config.setAttribute(SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
+					defaultSRE.getId());
+			String mainClass = defaultSRE.getMainClass();
+			if (Strings.isNullOrEmpty(mainClass)) {
+				config.removeAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME);
+			} else {
+				config.setAttribute(
+						IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
+						mainClass);
+			}
+		} else {
+			config.removeAttribute(SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT);
+			config.removeAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME);
+		}
+		config.setAttribute(SARLConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
+				Boolean.TRUE.toString());
+		config.setAttribute(SARLConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
+				Boolean.FALSE.toString());
 	}
 
 	/**
