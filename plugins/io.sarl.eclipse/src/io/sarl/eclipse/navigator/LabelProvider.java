@@ -59,25 +59,25 @@ public class LabelProvider implements ILabelProvider {
 
 	@Override
 	public void addListener(ILabelProviderListener listener) {
-		SARLEclipsePlugin.logDebugMessage(
+		SARLEclipsePlugin.getDefault().logDebugMessage(
 				"LabelProvider.addListener: " + listener.getClass().getName()); //$NON-NLS-1$
 	}
 
 	@Override
 	public void dispose() {
-		SARLEclipsePlugin.logDebugMessage("LabelProvider.dispose"); //$NON-NLS-1$
+		SARLEclipsePlugin.getDefault().logDebugMessage("LabelProvider.dispose"); //$NON-NLS-1$
 	}
 
 	@Override
 	public boolean isLabelProperty(Object element, String property) {
-		SARLEclipsePlugin.logDebugMessage(
+		SARLEclipsePlugin.getDefault().logDebugMessage(
 				"LabelProvider.isLabelProperty: " + element.getClass().getName()); //$NON-NLS-1$
 		return false;
 	}
 
 	@Override
 	public void removeListener(ILabelProviderListener listener) {
-		SARLEclipsePlugin.logDebugMessage(
+		SARLEclipsePlugin.getDefault().logDebugMessage(
 				"LabelProvider.removeListener: " + listener.getClass().getName()); //$NON-NLS-1$
 	}
 

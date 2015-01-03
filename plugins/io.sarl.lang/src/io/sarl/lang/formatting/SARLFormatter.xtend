@@ -55,6 +55,7 @@ import io.sarl.lang.services.SARLGrammarAccess.ActionElements
  * Also see {@code org.eclipse.xtext.xtext.XtextFormattingTokenSerializer} as an example
  * 
  * FIXME: This formatter may extend the Xtend formatter.
+ * FIXME: This formatter should be replaced by the new version of the formatting API, available in Xbase 2.8.0.
  */
 class SARLFormatter extends XbaseFormatter {
 

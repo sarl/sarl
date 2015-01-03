@@ -21,16 +21,14 @@
 
 	<suppress checks="MethodName" files="SARLUiModule.java"/>
 
-	<suppress checks="" files="XtextBugFixes438191And438233.java"/>
+	<suppress checks="ExecutableStatementCount" files="MainProjectWizardPage.java"/>
+	<suppress checks="MagicNumber" files="MainProjectWizardPage.java"/>
+	<suppress checks="FileLength" files="MainProjectWizardPage.java"/>
+	<suppress checks="ClassDataAbstractionCoupling" files="MainProjectWizardPage.java"/>
 
-	<suppress checks="ExecutableStatementCount" files="MainProjectPage.java"/>
-	<suppress checks="MagicNumber" files="MainProjectPage.java"/>
-	<suppress checks="FileLength" files="MainProjectPage.java"/>
-	<suppress checks="ClassDataAbstractionCoupling" files="MainProjectPage.java"/>
-
-	<suppress checks="CyclomaticComplexity" files="BuildSettingPage.java"/>
-	<suppress checks="NPathComplexity" files="BuildSettingPage.jav"/>
-	<suppress checks="LineLength" files="BuildSettingPage.jav"/>
+	<suppress checks="CyclomaticComplexity" files="BuildSettingWizardPage.java"/>
+	<suppress checks="NPathComplexity" files="BuildSettingWizardPage.java"/>
+	<suppress checks="LineLength" files="BuildSettingWizardPage.java"/>
 
 	<suppress checks="." files="SARLParser.java"/>
 
@@ -76,6 +74,8 @@
 	<suppress checks="NPathComplexity" files="SARLConfiguration.java"/>
 
 	<suppress checks="" files="MavenHelper.java"/>
+
+	<suppress checks="NPathComplexity" files="FieldInitializerUtil.java"/>
 
 </suppressions>
 

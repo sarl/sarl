@@ -116,7 +116,7 @@ import org.eclipse.ui.dialogs.WorkingSetConfigurationBlock;
  *
  * This version removes the choice of the project structure and update the structure of
  * the source folder of the project
- * {@link MainProjectPage#getSourceClasspathEntries()}
+ * {@link MainProjectWizardPage#getSourceClasspathEntries()}
  *
  * @author $Author: ngaud$
  * @author $Author: sgalland$
@@ -124,11 +124,9 @@ import org.eclipse.ui.dialogs.WorkingSetConfigurationBlock;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class MainProjectPage extends WizardPage {
+public class MainProjectWizardPage extends WizardPage {
 
 	private static final IWorkingSet[] EMPTY_WORKING_SET_ARRAY = new IWorkingSet[0];
-
-	private static final String PAGE_NAME = "MainProjectPage"; //$NON-NLS-1$
 
 	private final NameGroup fNameGroup;
 	private final LocationGroup fLocationGroup;
@@ -139,11 +137,11 @@ public class MainProjectPage extends WizardPage {
 	private final WorkingSetGroup fWorkingSetGroup;
 
 	/**
-	 * Creates a new {@link MainProjectPage}.
+	 * Creates a new {@link MainProjectWizardPage}.
 	 */
 	@SuppressWarnings("synthetic-access")
-	public MainProjectPage() {
-		super(PAGE_NAME);
+	public MainProjectWizardPage() {
+		super(Messages.SARLProjectNewWizard_3);
 		setPageComplete(false);
 
 		this.fNameGroup = new NameGroup();
@@ -175,7 +173,7 @@ public class MainProjectPage extends WizardPage {
 
 		setTitle(Messages.SARLProjectNewWizard_3);
 		setDescription(Messages.SARLProjectNewWizard_1);
-		setImageDescriptor(SARLEclipsePlugin.getImageDescriptor(
+		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(
 				SARLConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
 
@@ -385,8 +383,8 @@ public class MainProjectPage extends WizardPage {
 		IClasspathEntry sarlClasspathEntry = JavaCore.newContainerEntry(
 				SARLClasspathContainerInitializer.CONTAINER_ID,
 				new IAccessRule[0],
-                new IClasspathAttribute[0],
-                true);
+				new IClasspathAttribute[0],
+				true);
 		classpathEntries.add(sarlClasspathEntry);
 	}
 
@@ -428,7 +426,7 @@ public class MainProjectPage extends WizardPage {
 				srcSarlEntry,
 				srcGeneratedSourcesEntry,
 				srcResourcesEntry
-		);
+				);
 	}
 
 	/**
@@ -680,7 +678,7 @@ public class MainProjectPage extends WizardPage {
 		@Override
 		public void update(Observable o, Object arg) {
 			if (isUseDefaultSelected()) {
-				this.fLocation.setText(getDefaultPath(MainProjectPage.this.fNameGroup.getName()));
+				this.fLocation.setText(getDefaultPath(MainProjectWizardPage.this.fNameGroup.getName()));
 			}
 			fireEvent();
 		}
@@ -702,7 +700,7 @@ public class MainProjectPage extends WizardPage {
 			if (path != null) {
 				this.fLocation.setText(path.toOSString());
 			} else {
-				this.fLocation.setText(getDefaultPath(MainProjectPage.this.fNameGroup.getName()));
+				this.fLocation.setText(getDefaultPath(MainProjectWizardPage.this.fNameGroup.getName()));
 			}
 			fireEvent();
 		}
@@ -732,9 +730,9 @@ public class MainProjectPage extends WizardPage {
 				this.fLocation.setText(selectedDirectory);
 				String lastSegment = new Path(selectedDirectory).lastSegment();
 				if (lastSegment != null
-						&& (MainProjectPage.this.fNameGroup.getName().length() == 0
-						|| MainProjectPage.this.fNameGroup.getName().equals(oldDirectory))) {
-					MainProjectPage.this.fNameGroup.setName(lastSegment);
+						&& (MainProjectWizardPage.this.fNameGroup.getName().length() == 0
+						|| MainProjectWizardPage.this.fNameGroup.getName().equals(oldDirectory))) {
+					MainProjectWizardPage.this.fNameGroup.setName(lastSegment);
 				}
 				JavaPlugin.getDefault().getDialogSettings().put(DIALOGSTORE_LAST_EXTERNAL_LOC, selectedDirectory);
 			}
@@ -747,7 +745,7 @@ public class MainProjectPage extends WizardPage {
 				final boolean checked = this.fUseDefaults.isSelected();
 				if (checked) {
 					this.fPreviousExternalLocation = this.fLocation.getText();
-					this.fLocation.setText(getDefaultPath(MainProjectPage.this.fNameGroup.getName()));
+					this.fLocation.setText(getDefaultPath(MainProjectWizardPage.this.fNameGroup.getName()));
 					this.fLocation.setEnabled(false);
 				} else {
 					this.fLocation.setText(this.fPreviousExternalLocation);
@@ -1010,7 +1008,7 @@ public class MainProjectPage extends WizardPage {
 
 		@SuppressWarnings("synthetic-access")
 		private void updateEnableState() {
-			final boolean detect = MainProjectPage.this.fDetectGroup.mustDetect();
+			final boolean detect = MainProjectWizardPage.this.fDetectGroup.mustDetect();
 			this.fUseDefaultJRE.setEnabled(!detect);
 			this.fUseProjectJRE.setEnabled(!detect);
 			this.fUseEEJRE.setEnabled(!detect);
@@ -1043,7 +1041,7 @@ public class MainProjectPage extends WizardPage {
 					data).open();
 
 			handlePossibleJVMChange();
-			MainProjectPage.this.fDetectGroup.handlePossibleJVMChange();
+			MainProjectWizardPage.this.fDetectGroup.handlePossibleJVMChange();
 		}
 
 		public void handlePossibleJVMChange() {
@@ -1056,7 +1054,7 @@ public class MainProjectPage extends WizardPage {
 		@Override
 		public void dialogFieldChanged(DialogField field) {
 			updateEnableState();
-			MainProjectPage.this.fDetectGroup.handlePossibleJVMChange();
+			MainProjectWizardPage.this.fDetectGroup.handlePossibleJVMChange();
 			if (field == this.fJRECombo) {
 				if (this.fUseProjectJRE.isSelected()) {
 					storeSelectionValue(this.fJRECombo, LAST_SELECTED_JRE_SETTINGS_KEY);
@@ -1243,7 +1241,7 @@ public class MainProjectPage extends WizardPage {
 				return;
 			}
 
-			String selectedCompliance = MainProjectPage.this.fJREGroup.getSelectedCompilerCompliance();
+			String selectedCompliance = MainProjectWizardPage.this.fJREGroup.getSelectedCompilerCompliance();
 			if (selectedCompliance != null) {
 				String defaultCompliance = JavaCore.getOption(JavaCore.COMPILER_COMPLIANCE);
 				if (selectedCompliance.equals(defaultCompliance)) {
@@ -1262,7 +1260,7 @@ public class MainProjectPage extends WizardPage {
 			}
 
 			selectedCompliance = JavaCore.getOption(JavaCore.COMPILER_COMPLIANCE);
-			IVMInstall selectedJVM = MainProjectPage.this.fJREGroup.getSelectedJVM();
+			IVMInstall selectedJVM = MainProjectWizardPage.this.fJREGroup.getSelectedJVM();
 			if (selectedJVM == null) {
 				selectedJVM = JavaRuntime.getDefaultVMInstall();
 			}
@@ -1289,17 +1287,17 @@ public class MainProjectPage extends WizardPage {
 
 		@SuppressWarnings("synthetic-access")
 		private boolean computeDetectState() {
-			if (MainProjectPage.this.fLocationGroup.isUseDefaultSelected()) {
-				String name = MainProjectPage.this.fNameGroup.getName();
+			if (MainProjectWizardPage.this.fLocationGroup.isUseDefaultSelected()) {
+				String name = MainProjectWizardPage.this.fNameGroup.getName();
 				if (name.length() == 0 || JavaPlugin.getWorkspace().getRoot().findMember(name) != null) {
 					return false;
 				}
 
-				File directory = MainProjectPage.this.fLocationGroup.getLocation().append(name).toFile();
+				File directory = MainProjectWizardPage.this.fLocationGroup.getLocation().append(name).toFile();
 				return directory.isDirectory();
 			}
 
-			File directory = MainProjectPage.this.fLocationGroup.getLocation().toFile();
+			File directory = MainProjectWizardPage.this.fLocationGroup.getLocation().toFile();
 			return directory.isDirectory();
 		}
 
@@ -1347,7 +1345,7 @@ public class MainProjectPage extends WizardPage {
 					new String[] {jreID, complianceId, eeID},
 					data).open();
 
-			MainProjectPage.this.fJREGroup.handlePossibleJVMChange();
+			MainProjectWizardPage.this.fJREGroup.handlePossibleJVMChange();
 			handlePossibleJVMChange();
 		}
 	}
@@ -1362,10 +1360,10 @@ public class MainProjectPage extends WizardPage {
 		public void update(Observable o, Object arg) {
 			try {
 				IWorkspace workspace = JavaPlugin.getWorkspace();
-				String name = MainProjectPage.this.fNameGroup.getName();
+				String name = MainProjectWizardPage.this.fNameGroup.getName();
 				checkProjectName(workspace, name);
 				IProject handle = checkProjectExist(workspace, name);
-				String location = MainProjectPage.this.fLocationGroup.getLocation().toOSString();
+				String location = MainProjectWizardPage.this.fLocationGroup.getLocation().toOSString();
 				IPath projectPath = checkLocationSyntax(location);
 				validateLocation(workspace, handle, projectPath);
 
@@ -1426,11 +1424,11 @@ public class MainProjectPage extends WizardPage {
 					String canonicalPath = projectLocation.toFile().getCanonicalPath();
 					projectLocation = new Path(canonicalPath);
 				} catch (IOException e) {
-					SARLEclipsePlugin.log(e);
+					SARLEclipsePlugin.getDefault().log(e);
 				}
 
 				String existingName = projectLocation.lastSegment();
-				if (!existingName.equals(MainProjectPage.this.fNameGroup.getName())) {
+				if (!existingName.equals(MainProjectWizardPage.this.fNameGroup.getName())) {
 					throw new ValidationException(
 							null,
 							MessageFormat.format(
@@ -1464,7 +1462,7 @@ public class MainProjectPage extends WizardPage {
 			}
 
 			IPath projectPath = null;
-			if (!MainProjectPage.this.fLocationGroup.isUseDefaultSelected()) {
+			if (!MainProjectWizardPage.this.fLocationGroup.isUseDefaultSelected()) {
 				projectPath = Path.fromOSString(location);
 				if (!projectPath.toFile().exists()) {
 					// check non-existing external location

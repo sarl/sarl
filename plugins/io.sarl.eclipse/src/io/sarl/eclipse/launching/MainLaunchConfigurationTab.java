@@ -22,6 +22,7 @@ package io.sarl.eclipse.launching;
 
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Utilities;
 
 import java.lang.ref.SoftReference;
 import java.lang.reflect.InvocationTargetException;
@@ -95,7 +96,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 	public Image getImage() {
 		Image img = (this.image == null) ? null : this.image.get();
 		if (img == null) {
-			img = SARLEclipsePlugin.getImage(SARLConfig.SARL_LOGO_IMAGE);
+			img = SARLEclipsePlugin.getDefault().getImage(SARLConfig.SARL_LOGO_IMAGE);
 			this.image = new SoftReference<>(img);
 		}
 		return img;
@@ -223,7 +224,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 				type = RootContextIdentifierType.valueOf(typeName);
 			}
 		} catch (Exception ce) {
-			SARLEclipsePlugin.log(ce);
+			SARLEclipsePlugin.getDefault().log(ce);
 		}
 		assert (type != null);
 		switch (type) {
@@ -250,19 +251,19 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 		try {
 			showLogo = config.getAttribute(SARLConfig.ATTR_SHOW_LOGO_OPTION, false);
 		} catch (CoreException ce) {
-			SARLEclipsePlugin.log(ce);
+			SARLEclipsePlugin.getDefault().log(ce);
 		}
 		boolean showLogInfo = true;
 		try {
 			showLogInfo = config.getAttribute(SARLConfig.ATTR_SHOW_LOG_INFO, false);
 		} catch (CoreException ce) {
-			SARLEclipsePlugin.log(ce);
+			SARLEclipsePlugin.getDefault().log(ce);
 		}
 		boolean offline = true;
 		try {
 			offline = config.getAttribute(SARLConfig.ATTR_SRE_OFFLINE, true);
 		} catch (CoreException ce) {
-			SARLEclipsePlugin.log(ce);
+			SARLEclipsePlugin.getDefault().log(ce);
 		}
 		this.showLogoOptionButton.setSelection(showLogo);
 		this.showLogInfoButton.setSelection(showLogInfo);
@@ -275,15 +276,15 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 	 * @param config - the config to load the agent name from
 	 */
 	protected void updateAgentNameFromConfig(ILaunchConfiguration config) {
-		String agentName = SARLEclipsePlugin.EMPTY_STRING;
+		String agentName = null;
 		try {
 			agentName = config.getAttribute(
 					SARLConfig.ATTR_AGENT_NAME,
-					SARLEclipsePlugin.EMPTY_STRING);
+					(String) null);
 		} catch (CoreException ce) {
-			SARLEclipsePlugin.log(ce);
+			SARLEclipsePlugin.getDefault().log(ce);
 		}
-		this.agentNameTextField.setText(agentName);
+		this.agentNameTextField.setText(Strings.nullToEmpty(agentName));
 	}
 
 	@Override
@@ -335,7 +336,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 			setErrorMessage(this.lastAgentNameError);
 			return false;
 		}
-		this.lastAgentNameError = SARLEclipsePlugin.EMPTY_STRING;
+		this.lastAgentNameError = Utilities.EMPTY_STRING;
 		return true;
 	}
 

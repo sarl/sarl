@@ -21,8 +21,8 @@
 package io.sarl.m2e;
 
 import io.sarl.eclipse.SARLConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
+import io.sarl.eclipse.util.Utilities;
 import io.sarl.lang.ui.preferences.SARLProjectPreferences;
 
 import java.io.File;
@@ -389,27 +389,27 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	private static void validateSARLLibraryVersion(String mavenVersion) throws CoreException {
 		Bundle bundle = Platform.getBundle(SARL_LANG_BUNDLE_NAME);
 		if (bundle == null) {
-			throw new CoreException(SARLMavenEclipsePlugin.createStatus(IStatus.ERROR,
+			throw new CoreException(SARLMavenEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 					MessageFormat.format(Messages.SARLProjectConfigurator_0, SARL_LANG_BUNDLE_NAME)));
 		}
 		Version bundleVersion = bundle.getVersion();
 		if (bundleVersion == null) {
-			throw new CoreException(SARLMavenEclipsePlugin.createStatus(IStatus.ERROR,
+			throw new CoreException(SARLMavenEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 					MessageFormat.format(Messages.SARLProjectConfigurator_1, SARL_LANG_BUNDLE_NAME)));
 		}
 		Version minVersion = new Version(bundleVersion.getMajor(), bundleVersion.getMinor(), 0);
 		Version maxVersion = new Version(bundleVersion.getMajor(), bundleVersion.getMinor() + 1, 0);
 
 		assert (minVersion != null && maxVersion != null);
-		Version mvnVersion = SARLMavenEclipsePlugin.parseMavenVersion(mavenVersion);
-		int compare = SARLEclipsePlugin.compareVersionToRange(mvnVersion, minVersion, maxVersion);
+		Version mvnVersion = M2EUtilities.parseMavenVersion(mavenVersion);
+		int compare = Utilities.compareVersionToRange(mvnVersion, minVersion, maxVersion);
 		if (compare < 0) {
-			throw new CoreException(SARLMavenEclipsePlugin.createStatus(IStatus.ERROR,
+			throw new CoreException(SARLMavenEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 					MessageFormat.format(
 							Messages.SARLProjectConfigurator_2,
 							SARL_GROUP_ID, SARL_ARTIFACT_ID, mavenVersion, minVersion.toString())));
 		} else if (compare > 0) {
-			throw new CoreException(SARLMavenEclipsePlugin.createStatus(IStatus.ERROR,
+			throw new CoreException(SARLMavenEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 					MessageFormat.format(
 							Messages.SARLProjectConfigurator_3,
 							SARL_GROUP_ID, SARL_ARTIFACT_ID, mavenVersion, maxVersion.toString())));

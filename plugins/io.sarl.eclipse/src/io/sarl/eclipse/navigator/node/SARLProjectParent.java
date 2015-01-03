@@ -59,7 +59,7 @@ public class SARLProjectParent implements ISARLProjectElement {
 	@Override
 	public Image getImage() {
 		if (this.image == null) {
-			this.image = SARLEclipsePlugin.getImage(SARLConfig.SARL_PROJECT_IMAGE);
+			this.image = SARLEclipsePlugin.getDefault().getImage(SARLConfig.SARL_PROJECT_IMAGE);
 		}
 		return this.image;
 	}

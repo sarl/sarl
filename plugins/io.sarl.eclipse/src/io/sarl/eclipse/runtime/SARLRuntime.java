@@ -432,8 +432,9 @@ public final class SARLRuntime {
 	 * @throws CoreException if trying to save the current state of SREs encounters a problem
 	 */
 	public static void saveSREConfiguration(IProgressMonitor monitor) throws CoreException {
-		SARLEclipsePlugin.getPreferences().put(getCurrentPreferenceKey(), getSREsAsXML(monitor));
-		SARLEclipsePlugin.savePreferences();
+		SARLEclipsePlugin plugin = SARLEclipsePlugin.getDefault();
+		plugin.getPreferences().put(getCurrentPreferenceKey(), getSREsAsXML(monitor));
+		plugin.savePreferences();
 	}
 
 	/**
@@ -442,8 +443,9 @@ public final class SARLRuntime {
 	 * @throws CoreException if trying to save the current state of SREs encounters a problem
 	 */
 	public static void clearSREConfiguration() throws CoreException {
-		SARLEclipsePlugin.getPreferences().remove(getCurrentPreferenceKey());
-		SARLEclipsePlugin.savePreferences();
+		SARLEclipsePlugin plugin = SARLEclipsePlugin.getDefault();
+		plugin.getPreferences().remove(getCurrentPreferenceKey());
+		plugin.savePreferences();
 	}
 
 	/**
@@ -464,7 +466,7 @@ public final class SARLRuntime {
 						platformSREInstalls.add(sre.getId());
 						ALL_SRE_INSTALLS.put(sre.getId(), sre);
 					} else {
-						SARLEclipsePlugin.logErrorMessage(
+						SARLEclipsePlugin.getDefault().logErrorMessage(
 								"Cannot instance extension point: " + element.getName()); //$NON-NLS-1$
 					}
 				} catch (CoreException e) {
@@ -473,7 +475,7 @@ public final class SARLRuntime {
 			}
 			if (!status.isOK()) {
 				//only happens on a CoreException
-				SARLEclipsePlugin.log(status);
+				SARLEclipsePlugin.getDefault().getLog().log(status);
 			}
 		}
 	}
@@ -508,7 +510,7 @@ public final class SARLRuntime {
 				return new String(baos.toByteArray());
 			}
 		} catch (Throwable e) {
-			throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.ERROR, e));
+			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, e));
 		}
 	}
 
@@ -524,7 +526,7 @@ public final class SARLRuntime {
 			Element root = parseXML(xml, false);
 			sre.setFromXML(root);
 		} catch (Throwable e) {
-			throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.ERROR, e));
+			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, e));
 		}
 	}
 
@@ -553,7 +555,7 @@ public final class SARLRuntime {
 				return new String(baos.toByteArray());
 			}
 		} catch (Throwable e) {
-			throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.ERROR, e));
+			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, e));
 		}
 	}
 
@@ -630,7 +632,7 @@ public final class SARLRuntime {
 		//		} catch (CoreException e1) {
 		//			e1.printStackTrace();
 		//		}
-		String rawXml = SARLEclipsePlugin.getPreferences().get(getCurrentPreferenceKey(), ""); //$NON-NLS-1$
+		String rawXml = SARLEclipsePlugin.getDefault().getPreferences().get(getCurrentPreferenceKey(), ""); //$NON-NLS-1$
 
 		try {
 			Element config = null;
@@ -649,7 +651,7 @@ public final class SARLRuntime {
 					try (InputStream fileInputStream = new BufferedInputStream(new FileInputStream(file))) {
 						config = parseXML(fileInputStream, true);
 					} catch (IOException e) {
-						SARLEclipsePlugin.log(e);
+						SARLEclipsePlugin.getDefault().log(e);
 					}
 				}
 			}
@@ -672,7 +674,7 @@ public final class SARLRuntime {
 									try {
 										sre.setFromXML(element);
 									} catch (IOException e) {
-										SARLEclipsePlugin.log(e);
+										SARLEclipsePlugin.getDefault().log(e);
 									}
 									ALL_SRE_INSTALLS.put(id, sre);
 									if (isPlatform) {
@@ -687,19 +689,19 @@ public final class SARLRuntime {
 									try {
 										sre.setFromXML(element);
 									} catch (IOException e) {
-										SARLEclipsePlugin.log(e);
+										SARLEclipsePlugin.getDefault().log(e);
 									}
 								}
 							}
 						}
 					} catch (IOException e) {
-						SARLEclipsePlugin.log(e);
+						SARLEclipsePlugin.getDefault().log(e);
 					}
 				}
 				return defaultId;
 			}
 		} catch (IOException e) {
-			SARLEclipsePlugin.log(e);
+			SARLEclipsePlugin.getDefault().log(e);
 		}
 		return null;
 	}
@@ -793,7 +795,7 @@ public final class SARLRuntime {
 		try {
 			saveSREConfiguration(null);
 		} catch (CoreException e) {
-			SARLEclipsePlugin.log(e);
+			SARLEclipsePlugin.getDefault().log(e);
 		}
 	}
 

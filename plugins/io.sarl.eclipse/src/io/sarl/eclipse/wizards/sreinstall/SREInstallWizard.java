@@ -107,7 +107,7 @@ public abstract class SREInstallWizard extends Wizard {
 						page.setExistingNames(this.names);
 						return page;
 					} catch (CoreException e) {
-						SARLEclipsePlugin.log(e);
+						SARLEclipsePlugin.getDefault().log(e);
 					}
 				} else if (firstTypeMatching == null
 						&& isInstance(info.getAttribute("sreInstallType"), sre)) { //$NON-NLS-1$
@@ -122,7 +122,7 @@ public abstract class SREInstallWizard extends Wizard {
 					page.setExistingNames(this.names);
 					return page;
 				} catch (CoreException e) {
-					SARLEclipsePlugin.log(e);
+					SARLEclipsePlugin.getDefault().log(e);
 				}
 			}
 		}
@@ -143,7 +143,7 @@ public abstract class SREInstallWizard extends Wizard {
 				Class<?> cType = Class.forName(classname);
 				return cType.isInstance(sre);
 			} catch (Throwable e) {
-				SARLEclipsePlugin.log(e);
+				SARLEclipsePlugin.getDefault().log(e);
 			}
 		}
 		return false;

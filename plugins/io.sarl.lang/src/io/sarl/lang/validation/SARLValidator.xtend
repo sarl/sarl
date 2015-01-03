@@ -109,7 +109,11 @@ class SARLValidator extends AbstractSARLValidator {
 	private JvmModelAssociator jvmModelAssociator
 	
 	protected def canonicalTypeName(LightweightTypeReference typeRef) {
-		if (typeRef===null) "void" else typeRef.getHumanReadableName()
+		if (typeRef===null) {
+			return "void"
+		} else {
+			return typeRef.getHumanReadableName()
+		}
 	}
 
 	@Check(CheckType.NORMAL)

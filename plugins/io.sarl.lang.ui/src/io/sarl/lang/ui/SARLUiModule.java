@@ -69,12 +69,20 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		return SARLValidatorConfigurationBlock.class;
 	}
 
+	/** Initialize the preference store with the SARL specific pairs.
+	 *
+	 * @param binder - the Google binder.
+	 */
 	@Override
 	public void configureSmartCaretPreferenceInitializer(Binder binder) {
 		binder.bind(IPreferenceStoreInitializer.class).annotatedWith(Names.named("smartCaretPreferenceInitializer")) //$NON-NLS-1$
 		.to(SARLPreferenceStoreInitializer.class);
 	}
 
+	/** Provides a syntax highlighting for the statements that are specific to SARL, such as keywords.
+	 *
+	 * @return the hilighting calculator.
+	 */
 	@Override
 	public Class<? extends ISemanticHighlightingCalculator> bindISemanticHighlightingCalculator() {
 		assert (super.bindISemanticHighlightingCalculator().isAssignableFrom(SARLHighlightingCalculator.class))
@@ -84,6 +92,10 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		return SARLHighlightingCalculator.class;
 	}
 
+	/** Validate the SARL script from an UI-based point of view.
+	 *
+	 * @return the UI validator.
+	 */
 	@Override
 	@org.eclipse.xtext.service.SingletonBinding(eager = true)
 	public Class<? extends org.eclipse.xtext.xbase.ui.validation.XbaseUIValidator> bindXbaseUIValidator() {
@@ -94,17 +106,25 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		return SARLUIValidator.class;
 	}
 
+	/** Provides the page for the outline.
+	 *
+	 * @return the type of the outline page.
+	 */
 	@Override
 	public Class<? extends IContentOutlinePage> bindIContentOutlinePage() {
 		return SARLOutlinePage.class;
 	}
 
+	/** Provides the comparator that permits to sort the outline entries.
+	 *
+	 * @return the comparator.
+	 */
 	@Override
 	public Class<? extends IComparator> bindOutlineFilterAndSorter$IComparator() {
 		return SARLOutlineNodeComparator.class;
 	}
 
-	/** Configure the contribution to the filtering operations.
+	/** Configure the contribution to the filtering operations in the outline.
 	 *
 	 * @param binder - the Google binder.
 	 */
@@ -121,6 +141,10 @@ public class SARLUiModule extends AbstractSARLUiModule {
 				.to(SARLBehaviorUnitOutlineFilter.class);
 	}
 
+	/** Provides the tool for building the list of the proposals.
+	 *
+	 * @return the proposal provider.
+	 */
 	@Override
 	public Class<? extends org.eclipse.xtext.common.types.xtext.ui.ITypesProposalProvider> bindITypesProposalProvider() {
 		return ImportingTypesProposalProvider.class;

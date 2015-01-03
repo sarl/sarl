@@ -51,10 +51,11 @@ public final class AttributeUtil {
 		if (attributes != null && !Strings.isNullOrEmpty(name)) {
 			Object value = attributes.get(name);
 			if (value != null) {
-				try {
-					return Boolean.parseBoolean(value.toString());
-				} catch (Throwable _) {
-					//
+				if ("true".equalsIgnoreCase(value.toString())) { //$NON-NLS-1$
+					return true;
+				}
+				if ("false".equalsIgnoreCase(value.toString())) { //$NON-NLS-1$
+					return false;
 				}
 			}
 		}

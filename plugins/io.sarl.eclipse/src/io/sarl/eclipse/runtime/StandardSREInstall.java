@@ -21,6 +21,7 @@
 package io.sarl.eclipse.runtime;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Utilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -88,8 +89,8 @@ import com.google.common.collect.Maps;
 public class StandardSREInstall extends AbstractSREInstall {
 
 	private IPath jarFile;
-	private String vmArguments = SARLEclipsePlugin.EMPTY_STRING;
-	private String programArguments = SARLEclipsePlugin.EMPTY_STRING;
+	private String vmArguments = Utilities.EMPTY_STRING;
+	private String programArguments = Utilities.EMPTY_STRING;
 
 	private String cliLogoOff;
 	private String cliLogoOn;
@@ -332,15 +333,15 @@ public class StandardSREInstall extends AbstractSREInstall {
 		try {
 			IPath path = getJarFile();
 			if (path == null && (ignoreCauses & CODE_SOURCE) == 0) {
-				return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_SOURCE, Messages.StandardSREInstall_2);
+				return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, CODE_SOURCE, Messages.StandardSREInstall_2);
 			}
 			File file = (path == null) ? null : path.toFile();
 			if ((file == null || !file.canRead()) && (ignoreCauses & CODE_SOURCE) == 0) {
-				return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_SOURCE, Messages.StandardSREInstall_3);
+				return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, CODE_SOURCE, Messages.StandardSREInstall_3);
 			}
 		} catch (Throwable e) {
 			if ((ignoreCauses & CODE_GENERAL) == 0) {
-				return SARLEclipsePlugin.createStatus(IStatus.ERROR, CODE_GENERAL, e);
+				return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, CODE_GENERAL, e);
 			}
 		}
 		return super.getValidity(ignoreCauses);
@@ -432,7 +433,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 									javadoc);
 							locations.add(location);
 						} else {
-							SARLEclipsePlugin.logErrorMessage(
+							SARLEclipsePlugin.getDefault().logErrorMessage(
 									MessageFormat.format(Messages.StandardSREInstall_4, getId()));
 						}
 					}

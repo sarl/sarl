@@ -24,6 +24,7 @@ import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
 import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.util.Utilities;
 import io.sarl.lang.ui.preferences.SARLProjectPreferences;
 
 import java.lang.reflect.InvocationTargetException;
@@ -72,16 +73,16 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLProjectCreationWizard extends NewElementWizard implements IExecutableExtension {
+public class NewSarlProjectWizard extends NewElementWizard implements IExecutableExtension {
 
-	private MainProjectPage fFirstPage;
-	private BuildSettingPage fSecondPage;
+	private MainProjectWizardPage fFirstPage;
+	private BuildSettingWizardPage fSecondPage;
 
 	private IConfigurationElement fConfigElement;
 
 	/** Construct a new wizard for creating a SARL project.
 	 */
-	public SARLProjectCreationWizard() {
+	public NewSarlProjectWizard() {
 		this(null, null);
 	}
 
@@ -91,8 +92,8 @@ public class SARLProjectCreationWizard extends NewElementWizard implements IExec
 	 * @param pageOne - reference to the first page of the wizard.
 	 * @param pageTwo - reference to the second page of the wizard.
 	 */
-	public SARLProjectCreationWizard(MainProjectPage pageOne, BuildSettingPage pageTwo) {
-		setDefaultPageImageDescriptor(SARLEclipsePlugin.getImageDescriptor(
+	public NewSarlProjectWizard(MainProjectWizardPage pageOne, BuildSettingWizardPage pageTwo) {
+		setDefaultPageImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(
 				SARLConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());
 		setWindowTitle(Messages.SARLProjectNewWizard_0);
@@ -104,12 +105,12 @@ public class SARLProjectCreationWizard extends NewElementWizard implements IExec
 	@Override
 	public void addPages() {
 		if (this.fFirstPage == null) {
-			this.fFirstPage = new MainProjectPage();
+			this.fFirstPage = new MainProjectWizardPage();
 		}
 		addPage(this.fFirstPage);
 
 		if (this.fSecondPage == null) {
-			this.fSecondPage = new BuildSettingPage(this.fFirstPage);
+			this.fSecondPage = new BuildSettingWizardPage(this.fFirstPage);
 		}
 		addPage(this.fSecondPage);
 
@@ -151,7 +152,7 @@ public class SARLProjectCreationWizard extends NewElementWizard implements IExec
 
 	private static String toOSString(IPath path) {
 		if (path == null) {
-			return SARLEclipsePlugin.EMPTY_STRING;
+			return Utilities.EMPTY_STRING;
 		}
 		return path.toOSString();
 	}
@@ -178,7 +179,7 @@ public class SARLProjectCreationWizard extends NewElementWizard implements IExec
 					toOSString(projectPath),
 					toOSString(generalPath),
 					buildInvalidOutputPathMessageFragment(javaProject));
-			IStatus status = SARLEclipsePlugin.createStatus(IStatus.ERROR, message);
+			IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, message);
 
 			handleFinishException(getShell(), new InvocationTargetException(new CoreException(status)));
 

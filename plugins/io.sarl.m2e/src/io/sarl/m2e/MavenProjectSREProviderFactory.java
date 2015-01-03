@@ -79,7 +79,7 @@ public class MavenProjectSREProviderFactory implements ProjectSREProviderFactory
 				}
 			}
 		} catch (CoreException e) {
-			SARLMavenEclipsePlugin.log(e);
+			SARLMavenEclipsePlugin.getDefault().log(e);
 		}
 		return null;
 	}

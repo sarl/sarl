@@ -144,14 +144,39 @@ public final class SARLConfig {
 	public static final String MINIMAL_JRE_VERSION = "1.7"; //$NON-NLS-1$
 
 	/** Filename of the image that may be used at
-	 * the top of the wiazrd dialog when creating new SARL project.
+	 * the top of the wizard dialog when creating new SARL project.
 	 */
 	public static final String NEW_PROJECT_WIZARD_DIALOG_IMAGE = "icons/sarl_new_project_dialog.png"; //$NON-NLS-1$
 
 	/** Filename of the image that may be used at
-	 * the top of the wiazrd dialog when creating new SARL file.
+	 * the top of the wizard dialog when creating new SARL file.
 	 */
 	public static final String NEW_FILE_WIZARD_DIALOG_IMAGE = "icons/sarl_new_file_dialog.png"; //$NON-NLS-1$
+
+	/** Filename of the image that may be used at
+	 * the top of the wizard dialog when creating new SARL agent.
+	 */
+	public static final String NEW_AGENT_WIZARD_DIALOG_IMAGE = "icons/sarl_new_agent_dialog.png"; //$NON-NLS-1$
+
+	/** Filename of the image that may be used at
+	 * the top of the wizard dialog when creating new SARL behavior.
+	 */
+	public static final String NEW_BEHAVIOR_WIZARD_DIALOG_IMAGE = "icons/sarl_new_behavior_dialog.png"; //$NON-NLS-1$
+
+	/** Filename of the image that may be used at
+	 * the top of the wizard dialog when creating new SARL capacity.
+	 */
+	public static final String NEW_CAPACITY_WIZARD_DIALOG_IMAGE = "icons/sarl_new_capacity_dialog.png"; //$NON-NLS-1$
+
+	/** Filename of the image that may be used at
+	 * the top of the wizard dialog when creating new SARL event.
+	 */
+	public static final String NEW_EVENT_WIZARD_DIALOG_IMAGE = "icons/sarl_new_event_dialog.png"; //$NON-NLS-1$
+
+	/** Filename of the image that may be used at
+	 * the top of the wizard dialog when creating new SARL skill.
+	 */
+	public static final String NEW_SKILL_WIZARD_DIALOG_IMAGE = "icons/sarl_new_skill_dialog.png"; //$NON-NLS-1$
 
 	/** Filename of the image that may be used for representing a SARL project.
 	 */

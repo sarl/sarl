@@ -62,6 +62,34 @@ public final class SARLKeywords {
 	 */
 	public static final String EXTENDS = "extends"; //$NON-NLS-1$
 
+	/** Keyword: {@code package}.
+	 */
+	public static final String PACKAGE = "package"; //$NON-NLS-1$
+
+	/** Keyword: {@code agent}.
+	 */
+	public static final String AGENT = "agent"; //$NON-NLS-1$
+
+	/** Keyword: {@code behavior}.
+	 */
+	public static final String BEHAVIOR = "behavior"; //$NON-NLS-1$
+
+	/** Keyword: {@code capacity}.
+	 */
+	public static final String CAPACITY = "capacity"; //$NON-NLS-1$
+
+	/** Keyword: {@code event}.
+	 */
+	public static final String EVENT = "event"; //$NON-NLS-1$
+
+	/** Keyword: {@code skill}.
+	 */
+	public static final String SKILL = "skill"; //$NON-NLS-1$
+
+	/** Keyword: {@code import}.
+	 */
+	public static final String IMPORT = "import"; //$NON-NLS-1$
+
 	private SARLKeywords() {
 		//
 	}

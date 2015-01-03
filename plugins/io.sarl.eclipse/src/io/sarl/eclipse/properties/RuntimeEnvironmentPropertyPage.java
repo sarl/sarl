@@ -122,7 +122,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 				this.sreBlock.setNotify(notify);
 			}
 		} catch (CoreException e) {
-			SARLEclipsePlugin.log(e);
+			SARLEclipsePlugin.getDefault().log(e);
 		}
 		return ctrl;
 	}
@@ -134,7 +134,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 					qualify(PROPERTY_NAME_HAS_PROJECT_SPECIFIC));
 			return Boolean.parseBoolean(value);
 		} catch (CoreException e) {
-			SARLEclipsePlugin.log(e);
+			SARLEclipsePlugin.getDefault().log(e);
 		}
 		return false;
 	}
@@ -155,7 +155,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 						Boolean.toString(useSpecificOptions));
 				return true;
 			} catch (CoreException e) {
-				SARLEclipsePlugin.log(e);
+				SARLEclipsePlugin.getDefault().log(e);
 			}
 		}
 		return false;
@@ -186,7 +186,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 					id);
 			return true;
 		} catch (CoreException e) {
-			SARLEclipsePlugin.log(e);
+			SARLEclipsePlugin.getDefault().log(e);
 		}
 		return false;
 	}

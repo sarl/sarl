@@ -66,7 +66,7 @@ public class ContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object getParent(Object element) {
-		SARLEclipsePlugin.logDebugMessage(
+		SARLEclipsePlugin.getDefault().logDebugMessage(
 				"ContentProvider.getParent: " //$NON-NLS-1$
 				+ element.getClass().getName());
 		Object parent = null;
@@ -97,19 +97,19 @@ public class ContentProvider implements ITreeContentProvider {
 
 	@Override
 	public void dispose() {
-		SARLEclipsePlugin.logDebugMessage("ContentProvider.dispose"); //$NON-NLS-1$
+		SARLEclipsePlugin.getDefault().logDebugMessage("ContentProvider.dispose"); //$NON-NLS-1$
 	}
 
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		if (oldInput != null && newInput != null) {
-			SARLEclipsePlugin.logDebugMessage(
+			SARLEclipsePlugin.getDefault().logDebugMessage(
 					"ContentProvider.inputChanged: old: " //$NON-NLS-1$
 					+ oldInput.getClass().getName()
 					+ " new: " //$NON-NLS-1$
 					+ newInput.getClass().getName());
 		} else {
-			SARLEclipsePlugin.logDebugMessage(
+			SARLEclipsePlugin.getDefault().logDebugMessage(
 					"ContentProvider.inputChanged"); //$NON-NLS-1$
 		}
 	}

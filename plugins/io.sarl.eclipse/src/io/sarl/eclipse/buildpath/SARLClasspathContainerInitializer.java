@@ -83,9 +83,9 @@ public class SARLClasspathContainerInitializer extends ClasspathContainerInitial
 							new IClasspathContainer[] {containerSuggestion},
 							monitor);
 				} catch (CoreException ex) {
-					return SARLEclipsePlugin.createStatus(IStatus.ERROR, ex);
+					return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, ex);
 				}
-				return SARLEclipsePlugin.createOkStatus();
+				return SARLEclipsePlugin.getDefault().createOkStatus();
 			}
 		};
 		job.schedule();

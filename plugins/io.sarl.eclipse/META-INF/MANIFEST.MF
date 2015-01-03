@@ -7,6 +7,7 @@ Bundle-SymbolicName: io.sarl.eclipse;singleton:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Require-Bundle: io.sarl.lang.ui;bundle-version="[0.2.0,0.3.0)",
+ io.sarl.lang.core;bundle-version="[0.2.0,0.3.0)",
  org.eclipse.ui.ide;bundle-version="3.10.1",
  org.eclipse.ui.navigator;bundle-version="3.5.401",
  org.eclipse.jdt.ui;bundle-version="3.10.1",
@@ -20,6 +21,7 @@ Require-Bundle: io.sarl.lang.ui;bundle-version="[0.2.0,0.3.0)",
  org.eclipse.core.variables;bundle-version="3.2.800"
 Export-Package: io.sarl.eclipse,
  io.sarl.eclipse.buildpath,
+ io.sarl.eclipse.dialog,
  io.sarl.eclipse.launching,
  io.sarl.eclipse.natures,
  io.sarl.eclipse.navigator,
@@ -29,6 +31,12 @@ Export-Package: io.sarl.eclipse,
  io.sarl.eclipse.properties,
  io.sarl.eclipse.runtime,
  io.sarl.eclipse.util,
+ io.sarl.eclipse.wizards.elements,
+ io.sarl.eclipse.wizards.elements.newagent,
+ io.sarl.eclipse.wizards.elements.newbehavior,
+ io.sarl.eclipse.wizards.elements.newcapacity,
+ io.sarl.eclipse.wizards.elements.newevent,
+ io.sarl.eclipse.wizards.elements.newskill,
  io.sarl.eclipse.wizards.newfile,
  io.sarl.eclipse.wizards.newproject,
  io.sarl.eclipse.wizards.sreinstall

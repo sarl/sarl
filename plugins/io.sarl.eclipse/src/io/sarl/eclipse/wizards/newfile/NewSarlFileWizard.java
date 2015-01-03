@@ -20,6 +20,9 @@
  */
 package io.sarl.eclipse.wizards.newfile;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -27,6 +30,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.xtext.Constants;
 
 /**
  * SARL new file wizard.
@@ -37,11 +41,21 @@ import org.eclipse.ui.ide.IDE;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLFileNewWizard extends Wizard implements INewWizard {
+public class NewSarlFileWizard extends Wizard implements INewWizard {
 
 	private IWorkbench workbench;
 	private IStructuredSelection selection;
-	private WizardNewSARLFileCreationPage pageOne;
+	private NewSarlFileWizardPage pageOne;
+
+	private final String fileExtension;
+
+	/**
+	 * @param fileExtension - the extension of the file.
+	 */
+	@Inject
+	public NewSarlFileWizard(@Named(Constants.FILE_EXTENSIONS) String fileExtension) {
+		this.fileExtension = fileExtension;
+	}
 
 	@Override
 	public void init(IWorkbench iworkbench, IStructuredSelection iselection) {
@@ -52,9 +66,7 @@ public class SARLFileNewWizard extends Wizard implements INewWizard {
 	@Override
 	public void addPages() {
 		super.addPages();
-
-		this.pageOne = new WizardNewSARLFileCreationPage(this.selection);
-
+		this.pageOne = new NewSarlFileWizardPage(this.selection, this.fileExtension);
 		addPage(this.pageOne);
 	}
 

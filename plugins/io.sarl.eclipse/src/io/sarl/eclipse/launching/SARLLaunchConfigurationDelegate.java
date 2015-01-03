@@ -406,7 +406,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 						return sre;
 					}
 				} catch (CoreException e) {
-					SARLEclipsePlugin.log(e);
+					SARLEclipsePlugin.getDefault().log(e);
 				}
 			}
 		}
@@ -473,7 +473,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		}
 
 		if (sre == null) {
-			throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.ERROR,
+			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 					Messages.SARLLaunchConfigurationDelegate_0));
 		}
 
@@ -520,7 +520,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 				return !SARLRuntime.isPackedSRE(file);
 			}
 		} catch (Throwable e) {
-			SARLEclipsePlugin.log(e);
+			SARLEclipsePlugin.getDefault().log(e);
 		}
 		return true;
 	}
@@ -569,7 +569,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 	private static void verifySREValidity(ISREInstall sre, String runtime, boolean onlyStandalone) throws CoreException {
 		if (sre == null) {
-			throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.ERROR,
+			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 					MessageFormat.format(Messages.RuntimeEnvironmentTab_6, runtime)));
 		}
 		int ignoreCode = 0;
@@ -577,7 +577,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			ignoreCode = ISREInstall.CODE_STANDALONE_SRE;
 		}
 		if (!sre.getValidity(ignoreCode).isOK()) {
-			throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.ERROR, MessageFormat.format(
+			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, MessageFormat.format(
 					Messages.RuntimeEnvironmentTab_5,
 					sre.getName())));
 		}

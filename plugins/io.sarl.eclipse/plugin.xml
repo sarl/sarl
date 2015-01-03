@@ -12,22 +12,79 @@
 		</category>
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
-		        class="io.sarl.eclipse.wizards.newproject.SARLProjectCreationWizard"
+		        class="io.sarl.eclipse.wizards.newproject.NewSarlProjectWizard"
 		        finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
 		        icon="icons/sarl_new_project_16.png"
-		        id="io.sarl.eclipse.wizard.new.sarl"
-		        name="%wizard.name"
+		        id="io.sarl.eclipse.wizard.newSarlProject"
+		        name="%wizard.name.newSarlProject"
 		        preferredPerspectives="org.eclipse.jdt.ui.JavaPerspective"
 		        project="true">
+				<description>%wizard.description.newSarlProject"</description>
 		  </wizard>
 		  <wizard 
 		        category="io.sarl.eclipse.category.wizards"
-		        class="io.sarl.eclipse.wizards.newfile.SARLFileNewWizard"
+		        class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.wizards.newfile.NewSarlFileWizard"
 		        finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
 		        icon="icons/sarl_new_file_16.png"
-		        id="io.sarl.eclipse.wizard.file.sarl"
-		        name="%wizard.name.0">
+		        id="io.sarl.eclipse.wizard.newSarlScript"
+		        name="%wizard.name.newSarlScript">
+				<description>%wizard.description.newSarlScript"</description>
 		  </wizard>
+		  <wizard
+		        category="io.sarl.eclipse.category.wizards"
+				icon="icons/sarl_new_agent_16.png"
+		        id="io.sarl.eclipse.wizard.newSarlAgent"
+				name="%wizard.name.newAgent">
+				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
+					<parameter name="javatype" value="true" />
+					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.newagent.NewSarlAgentWizard" />
+				</class>
+				<description>%wizard.description.newAgent"</description>
+      	  </wizard>
+		  <wizard
+		        category="io.sarl.eclipse.category.wizards"
+				icon="icons/sarl_new_behavior_16.png"
+		        id="io.sarl.eclipse.wizard.newSarlBehavior"
+				name="%wizard.name.newBehavior">
+				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
+					<parameter name="javatype" value="true" />
+					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.newbehavior.NewSarlBehaviorWizard" />
+				</class>
+				<description>%wizard.description.newBehavior"</description>
+      	  </wizard>
+		  <wizard
+		        category="io.sarl.eclipse.category.wizards"
+				icon="icons/sarl_new_capacity_16.png"
+		        id="io.sarl.eclipse.wizard.newSarlCapacity"
+				name="%wizard.name.newCapacity">
+				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
+					<parameter name="javatype" value="true" />
+					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.newcapacity.NewSarlCapacityWizard" />
+				</class>
+				<description>%wizard.description.newCapacity"</description>
+      	  </wizard>
+		  <wizard
+		        category="io.sarl.eclipse.category.wizards"
+				icon="icons/sarl_new_event_16.png"
+		        id="io.sarl.eclipse.wizard.newSarlEvent"
+				name="%wizard.name.newEvent">
+				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
+					<parameter name="javatype" value="true" />
+					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.newevent.NewSarlEventWizard" />
+				</class>
+				<description>%wizard.description.newEvent"</description>
+      	  </wizard>
+		  <wizard
+		        category="io.sarl.eclipse.category.wizards"
+				icon="icons/sarl_new_skill_16.png"
+		        id="io.sarl.eclipse.wizard.newSarlSkill"
+				name="%wizard.name.newSkill">
+				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
+					<parameter name="javatype" value="true" />
+					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.newskill.NewSarlSkillWizard" />
+				</class>
+				<description>%wizard.description.newSkill"</description>
+      	  </wizard>
 	</extension>
 	
 	<extension
@@ -194,74 +251,22 @@
                 value="plugin_customization.ini"/> 
        </product>
     </extension>
-<!--
-	<extension point="org.eclipse.ui.views">
-		<view
-        category="io.sarl.eclipse.category.navigator"
-        class="io.sarl.eclipse.navigator.SARLProjectNavigator"
-        icon="icons/sarl-project-explorer-16.png"
-        id="io.sarl.eclipse.navigator"
-        name="%view.name">
-		</view>
-  <category
-        id="io.sarl.eclipse.category.navigator"
-        name="%category.name.0">
-  </category>		
-	</extension>
-	
-	<extension point="org.eclipse.ui.navigator.viewer">
-		<viewerActionBinding viewerId="io.sarl.eclipse.navigator">
-			<includes>
-				<actionExtension
-					pattern="org.eclipse.ui.navigator.resources.*">
-				</actionExtension>
-			</includes>
-		</viewerActionBinding>
-		
-		<viewerContentBinding viewerId="io.sarl.eclipse.navigator">
- 			<includes>
-       <contentExtension pattern="io.sarl.eclipse.navigatorContent">
-       </contentExtension>
-				
-			</includes>			
-		</viewerContentBinding>
-	</extension>
-	
-	<extension
-        point="org.eclipse.ui.navigator.navigatorContent">
-     <navigatorContent
-           contentProvider="io.sarl.eclipse.navigator.ContentProvider"
-           id="io.sarl.eclipse.navigatorContent"
-           labelProvider="io.sarl.eclipse.navigator.LabelProvider"
-           name="%navigatorContent.name">
-        <triggerPoints>
-           <or>
-              <instanceof
-                    value="io.sarl.eclipse.navigator.SARLProjectWorkbenchRoot">
-              </instanceof>
-           </or>
-        </triggerPoints>
-     </navigatorContent>
-  </extension>
-	
-	<extension point="org.eclipse.ui.perspectives">
-		<perspective
-			id="io.sarl.eclipse.perspective"
-			name="%perspective.name"
-			icon="icons/sarl-perspective-16.png"
-			class="io.sarl.eclipse.perspectives.SARLPerspective">
-		</perspective>
-	</extension>
-	
- 	<extension point="org.eclipse.ui.perspectiveExtensions">
-		<perspectiveExtension  targetID="io.sarl.eclipse.perspective">
-			<view
-					id="io.sarl.eclipse.navigator" 
-					relative="org.eclipse.ui.editorss" 
-					relationship="left"
-					ratio="0.25"/>	
-		</perspectiveExtension> 
- 	</extension>
- 	-->
+
+  <!-- Perspectives -->
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <newWizardShortcut
+               id="io.sarl.eclipse.wizard.newSarlAgent">
+         </newWizardShortcut>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaBrowsingPerspective">
+         <newWizardShortcut
+               id="io.sarl.eclipse.wizard.newSarlAgent">
+         </newWizardShortcut>
+      </perspectiveExtension>
+   </extension>
 
 </plugin>

@@ -94,11 +94,11 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 					if (obj instanceof ProjectSREProviderFactory) {
 						providers.add((ProjectSREProviderFactory) obj);
 					} else {
-						SARLEclipsePlugin.logErrorMessage(
+						SARLEclipsePlugin.getDefault().logErrorMessage(
 								"Cannot instance extension point: " + element.getName()); //$NON-NLS-1$
 					}
 				} catch (CoreException e) {
-					SARLEclipsePlugin.log(e);
+					SARLEclipsePlugin.getDefault().log(e);
 				}
 			}
 			return providers;
@@ -151,15 +151,15 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 	 * @param config - the config to load the runtime environment from
 	 */
 	protected void selectSREFromConfig(ILaunchConfiguration config) {
-		String sreId = SARLEclipsePlugin.EMPTY_STRING;
+		String sreId = null;
 		try {
 			sreId = config.getAttribute(
 					SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
-					SARLEclipsePlugin.EMPTY_STRING);
+					(String) null);
 		} catch (CoreException ce) {
-			SARLEclipsePlugin.log(ce);
+			SARLEclipsePlugin.getDefault().log(ce);
 		}
-		ISREInstall sre = SARLRuntime.getSREFromId(sreId);
+		ISREInstall sre = SARLRuntime.getSREFromId(Strings.nullToEmpty(sreId));
 		boolean notify = this.sreBlock.getNotify();
 		boolean changed;
 		try {
@@ -174,7 +174,7 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 					changed = this.sreBlock.selectSystemWideSRE();
 				}
 			} catch (CoreException ce) {
-				SARLEclipsePlugin.log(ce);
+				SARLEclipsePlugin.getDefault().log(ce);
 			}
 
 			try {
@@ -185,7 +185,7 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 					changed = this.sreBlock.selectProjectSRE();
 				}
 			} catch (CoreException ce) {
-				SARLEclipsePlugin.log(ce);
+				SARLEclipsePlugin.getDefault().log(ce);
 			}
 		} finally {
 			this.sreBlock.setNotify(notify);
@@ -222,23 +222,23 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 		try {
 			String id = config.getAttribute(
 					SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
-					SARLEclipsePlugin.EMPTY_STRING);
+					(String) null);
 			ISREInstall sre = SARLRuntime.getSREFromId(id);
 			if (sre == null) {
 				sre = this.sreBlock.getSelectedSRE();
 			}
 			if (sre == null) {
 				if (Strings.isNullOrEmpty(id)) {
-					status = SARLEclipsePlugin.createStatus(IStatus.ERROR, Messages.RuntimeEnvironmentTab_7);
+					status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, Messages.RuntimeEnvironmentTab_7);
 				} else {
-					status = SARLEclipsePlugin.createStatus(IStatus.ERROR, MessageFormat.format(
-							Messages.RuntimeEnvironmentTab_6, id));
+					status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, MessageFormat.format(
+							Messages.RuntimeEnvironmentTab_6, Strings.nullToEmpty(id)));
 				}
 			} else {
 				status = this.sreBlock.validate(sre);
 			}
 		} catch (CoreException e) {
-			status = SARLEclipsePlugin.createStatus(IStatus.ERROR, e);
+			status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, e);
 		}
 		if (status.isOK()) {
 			return super.isValid(config) && isValidJREVersion(config);
@@ -362,7 +362,7 @@ public class RuntimeEnvironmentTab extends JavaJRETab {
 						}
 					}
 				} catch (CoreException e) {
-					SARLEclipsePlugin.log(e);
+					SARLEclipsePlugin.getDefault().log(e);
 				}
 			}
 			return null;

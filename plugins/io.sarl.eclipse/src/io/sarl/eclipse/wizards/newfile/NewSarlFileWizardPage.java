@@ -22,6 +22,7 @@ package io.sarl.eclipse.wizards.newfile;
 
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.lang.SARLKeywords;
 
 import java.io.InputStream;
 
@@ -43,24 +44,18 @@ import org.eclipse.xtext.util.StringInputStream;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class WizardNewSARLFileCreationPage extends WizardNewFileCreationPage {
-
-	private static final String WIZARD_NAME = "SARL File Wizard"; //$NON-NLS-1$
-	private static final String PAGE_TITLE = "SARL File Wizard"; //$NON-NLS-1$
-	private static final String PAGE_DESCRIPTION = "Create a SARL File"; //$NON-NLS-1$
-	private static final String SARL_FILE_EXTENSION = "sarl"; //$NON-NLS-1$
+public class NewSarlFileWizardPage extends WizardNewFileCreationPage {
 
 	/**
 	 * @param selection - selection in the IDE.
+	 * @param fileExtension - the extension of the file to create.
 	 */
-	public WizardNewSARLFileCreationPage(IStructuredSelection selection) {
-		super(WIZARD_NAME, selection);
-
-		setTitle(PAGE_TITLE);
-		setDescription(PAGE_DESCRIPTION);
-		setFileExtension(SARL_FILE_EXTENSION);
-		setImageDescriptor(SARLEclipsePlugin.getImageDescriptor(
-				SARLConfig.NEW_FILE_WIZARD_DIALOG_IMAGE));
+	public NewSarlFileWizardPage(IStructuredSelection selection, String fileExtension) {
+		super(Messages.NewSarlFileWizardPage_1, selection);
+		setTitle(Messages.NewSarlFileWizardPage_1);
+		setDescription(Messages.NewSarlFileWizardPage_2);
+		setFileExtension(fileExtension);
+		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(SARLConfig.NEW_FILE_WIZARD_DIALOG_IMAGE));
 	}
 
 	private static IPath determinePackageName(IPath path) {
@@ -90,7 +85,7 @@ public class WizardNewSARLFileCreationPage extends WizardNewFileCreationPage {
 
 		IPath packagePath = determinePackageName(folderInWorkspace);
 		if (packagePath != null && packagePath.segmentCount() > 0) {
-			content.append("package "); //$NON-NLS-1$
+			content.append(SARLKeywords.PACKAGE + " "); //$NON-NLS-1$
 			content.append(packagePath.segment(0));
 			for (int i = 1; i < packagePath.segmentCount(); ++i) {
 				content.append('.');

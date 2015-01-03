@@ -84,14 +84,14 @@ import org.eclipse.xtext.xbase.lib.Pair;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class BuildSettingPage extends JavaCapabilityConfigurationPage {
+public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 	private static final String FILENAME_PROJECT = ".project"; //$NON-NLS-1$
 	private static final String FILENAME_CLASSPATH = ".classpath"; //$NON-NLS-1$
 	private static final int FILE_COPY_BLOCK_SIZE = 8192;
 	private static final int UPDATE_PROJECT_MONITORED_STEPS = 7;
 
-	private final MainProjectPage fFirstPage;
+	private final MainProjectWizardPage fFirstPage;
 
 	/** Location of the current project.
 	 * It is <code>null</code> if the location is a platform location.
@@ -111,7 +111,7 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 	 *
 	 * @param mainPage the first page of the wizard
 	 */
-	public BuildSettingPage(MainProjectPage mainPage) {
+	public BuildSettingWizardPage(MainProjectWizardPage mainPage) {
 		setPageComplete(false);
 
 		this.fFirstPage = mainPage;
@@ -125,7 +125,7 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 
 		setTitle(Messages.SARLProjectNewWizard_3);
 		setDescription(Messages.SARLProjectNewWizard_2);
-		setImageDescriptor(SARLEclipsePlugin.getImageDescriptor(
+		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(
 				SARLConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
 
@@ -385,7 +385,7 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 			} else {
 				ee = e;
 			}
-			throw new CoreException(SARLEclipsePlugin.createStatus(IStatus.ERROR, ee));
+			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, ee));
 		} finally {
 			theMonitor.done();
 		}
@@ -414,7 +414,7 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 				}
 			}
 		} catch (CoreException e) {
-			SARLEclipsePlugin.log(e);
+			SARLEclipsePlugin.getDefault().log(e);
 		}
 	}
 
@@ -456,7 +456,7 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 				deleted.mkdir(EFS.NONE, null);
 			}
 		} catch (CoreException e) {
-			SARLEclipsePlugin.log(e);
+			SARLEclipsePlugin.getDefault().log(e);
 		}
 	}
 
@@ -730,8 +730,8 @@ public class BuildSettingPage extends JavaCapabilityConfigurationPage {
 		@Override
 		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 			try {
-				if (BuildSettingPage.this.fIsAutobuild == null) {
-					BuildSettingPage.this.fIsAutobuild =
+				if (BuildSettingWizardPage.this.fIsAutobuild == null) {
+					BuildSettingWizardPage.this.fIsAutobuild =
 							Boolean.valueOf(CoreUtility.setAutoBuilding(false));
 				}
 				this.infoStatus = updateProject(monitor);

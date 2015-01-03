@@ -74,7 +74,7 @@ public class StandardProjectSREProvider implements ProjectSREProvider {
 					}
 				}
 			} catch (CoreException e) {
-				SARLEclipsePlugin.log(e);
+				SARLEclipsePlugin.getDefault().log(e);
 			}
 		}
 		this.projectSpecificConfiguration = tmpSpecific;

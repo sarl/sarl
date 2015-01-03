@@ -660,19 +660,19 @@ public class SREConfigurationBlock {
 		IStatus status;
 		if (this.enableSystemWideSelector && this.systemSREButton.getSelection()) {
 			if (SARLRuntime.getDefaultSREInstall() == null) {
-				status = SARLEclipsePlugin.createStatus(IStatus.ERROR, Messages.SREConfigurationBlock_5);
+				status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, Messages.SREConfigurationBlock_5);
 			} else {
-				status = SARLEclipsePlugin.createOkStatus();
+				status = SARLEclipsePlugin.getDefault().createOkStatus();
 			}
 		} else if (!this.projectProviderFactories.isEmpty() && this.projectSREButton.getSelection()) {
 			if (retreiveProjectSRE() == null) {
-				status = SARLEclipsePlugin.createStatus(IStatus.ERROR,
+				status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 							Messages.SREConfigurationBlock_6);
 			} else {
-				status = SARLEclipsePlugin.createOkStatus();
+				status = SARLEclipsePlugin.getDefault().createOkStatus();
 			}
 		} else if (this.runtimeEnvironments.isEmpty()) {
-			status = SARLEclipsePlugin.createStatus(IStatus.ERROR,
+			status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 					Messages.SREConfigurationBlock_8);
 		} else {
 			status = sre.getValidity();

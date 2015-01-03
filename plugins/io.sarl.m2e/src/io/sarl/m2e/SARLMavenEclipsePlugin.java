@@ -22,13 +22,11 @@ package io.sarl.m2e;
 
 import java.text.MessageFormat;
 
-import org.apache.maven.artifact.ArtifactUtils;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.osgi.framework.Version;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import com.google.common.base.Strings;
 
@@ -41,7 +39,7 @@ import com.google.common.base.Strings;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLMavenEclipsePlugin extends Plugin {
+public class SARLMavenEclipsePlugin extends AbstractUIPlugin {
 
 	/** Identifier of the plugin.
 	 */
@@ -87,7 +85,8 @@ public class SARLMavenEclipsePlugin extends Plugin {
 	 * @param cause - the cause of the problem.
 	 * @return the status.
 	 */
-	public static IStatus createStatus(int severity, Throwable cause) {
+	@SuppressWarnings("static-method")
+	public IStatus createStatus(int severity, Throwable cause) {
 		String m = cause.getLocalizedMessage();
 		if (Strings.isNullOrEmpty(m)) {
 			m = cause.getMessage();
@@ -104,7 +103,8 @@ public class SARLMavenEclipsePlugin extends Plugin {
 	 * @param message - the status message.
 	 * @return the status.
 	 */
-	public static IStatus createStatus(int severity, String message) {
+	@SuppressWarnings("static-method")
+	public IStatus createStatus(int severity, String message) {
 		return new Status(severity, PLUGIN_ID, message);
 	}
 
@@ -113,49 +113,17 @@ public class SARLMavenEclipsePlugin extends Plugin {
 	 *
 	 * @param e the exception to be logged
 	 */
-	public static void log(Throwable e) {
+	public void log(Throwable e) {
 		if (e instanceof CoreException) {
-			log(new Status(IStatus.ERROR, PLUGIN_ID,
+			getILog().log(new Status(IStatus.ERROR, PLUGIN_ID,
 					e.getMessage(), e.getCause()));
-		} else {
-			log(new Status(IStatus.ERROR, PLUGIN_ID,
+		} else if (e != null) {
+			getILog().log(new Status(IStatus.ERROR, PLUGIN_ID,
 					MessageFormat.format(Messages.SARLMavenEclipsePlugin_0, e.getMessage()), e));
+		} else {
+			getILog().log(new Status(IStatus.ERROR, PLUGIN_ID,
+					"Internal Error", e));   //$NON-NLS-1$
 		}
-	}
-
-	/**
-	 * Logs the specified status with this plug-in's log.
-	 *
-	 * @param status status to log
-	 */
-	public static void log(IStatus status) {
-		getDefault().getILog().log(status);
-	}
-
-	/** Maven version parser.
-	 *
-	 * @param version - the version string.
-	 * @return the version.
-	 */
-	public static Version parseMavenVersion(String version) {
-		boolean isSnapshot = ArtifactUtils.isSnapshot(version);
-		String[] parts = version.split("[.]"); //$NON-NLS-1$
-		int minor = 0;
-		int micro = 0;
-		int major = Integer.parseInt(parts[0]);
-		if (parts.length > 1) {
-			minor = Integer.parseInt(parts[1]);
-			if (parts.length > 1) {
-				if (isSnapshot) {
-					parts[2] = parts[2].replaceFirst("\\-.+$", ""); //$NON-NLS-1$//$NON-NLS-2$
-				}
-				micro = Integer.parseInt(parts[2]);
-			}
-		}
-		if (isSnapshot) {
-			return new Version(major, minor, micro, "qualifier"); //$NON-NLS-1$
-		}
-		return new Version(major, minor, micro);
 	}
 
 }
