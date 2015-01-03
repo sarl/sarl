@@ -27,6 +27,8 @@ import java.util.UUID;
 
 import io.sarl.eclipse.navigator.ISARLProjectElement;
 import io.sarl.eclipse.navigator.LabelProvider;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 
 import org.eclipse.swt.graphics.Image;
 import org.junit.After;
@@ -40,18 +42,14 @@ import org.junit.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class LabelProviderTest {
+public class LabelProviderTest extends AbstractSarlTest {
 
+	@Nullable
 	private LabelProvider provider;
 	
 	@Before
 	public void setUp() {
 		this.provider = new LabelProvider();
-	}
-	
-	@After
-	public void tearDown() {
-		this.provider = null;
 	}
 
 	@Test

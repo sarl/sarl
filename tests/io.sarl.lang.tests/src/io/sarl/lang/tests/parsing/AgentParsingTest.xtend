@@ -32,6 +32,7 @@ import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
 import org.junit.Ignore
+import io.sarl.tests.api.AbstractSarlTest
 
 /**
  * @author $Author: srodriguez$
@@ -42,7 +43,7 @@ import org.junit.Ignore
  */
 @RunWith(XtextRunner)
 @InjectWith(SARLInjectorProvider)
-class AgentParsingTest {
+class AgentParsingTest extends AbstractSarlTest {
 	@Inject extension ParseHelper<SarlScript>
 	@Inject extension ValidationTestHelper
 

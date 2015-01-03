@@ -27,6 +27,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import io.sarl.lang.core.SpaceID;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 
 import java.util.UUID;
 
@@ -39,10 +41,13 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SpaceIDWithoutSpecificationTest {
+public class SpaceIDWithoutSpecificationTest extends AbstractSarlTest {
 
+	@Nullable
 	private UUID contextID;
+	@Nullable
 	private UUID id;
+	@Nullable
 	private SpaceID spaceID;
 	
 	private int cmp(UUID a, UUID b) {

@@ -19,6 +19,10 @@
  */
 package io.sarl.util.tests;
 
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 import io.sarl.util.Collections3;
 
 import java.util.ArrayList;
@@ -30,7 +34,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,11 +44,15 @@ import org.junit.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings({"javadoc","synthetic-access"})
-public class Collections3_SynchronizedCollectionTest_Sync extends Assert {
+public class Collections3_SynchronizedCollectionTest_Sync extends AbstractSarlTest {
 
+	@Nullable
 	private ExecutorService executors;
+	@Nullable
 	private Object mutex;
+	@Nullable
 	private List<String> original;
+	@Nullable
 	private Collection<String> collection;
 	
 	@Before
@@ -63,10 +70,6 @@ public class Collections3_SynchronizedCollectionTest_Sync extends Assert {
 	public void tearDown() throws Exception {
 		this.executors.shutdownNow();
 		this.executors.awaitTermination(30, TimeUnit.SECONDS);
-		this.executors = null;
-		this.collection = null;
-		this.original = null;
-		this.mutex = null;
 	}
 
 	@Test

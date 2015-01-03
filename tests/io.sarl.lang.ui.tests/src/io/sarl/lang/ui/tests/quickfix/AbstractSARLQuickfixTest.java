@@ -15,6 +15,9 @@
  */
 package io.sarl.lang.ui.tests.quickfix;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 import io.sarl.lang.ui.tests.AbstractSARLUiTestCase;

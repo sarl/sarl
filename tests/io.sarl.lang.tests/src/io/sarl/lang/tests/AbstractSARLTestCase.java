@@ -22,12 +22,12 @@
 package io.sarl.lang.tests;
 
 import io.sarl.lang.sarl.SarlScript;
+import io.sarl.tests.api.AbstractSarlTest;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
@@ -40,7 +40,7 @@ import com.google.inject.Inject;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractSARLTestCase extends Assert {
+public abstract class AbstractSARLTestCase extends AbstractSarlTest {
 
 	/** Helper for interaction with the Eclipse workbench.
 	 */

@@ -23,6 +23,7 @@ import io.sarl.lang.SARLInjectorProvider
 import org.junit.Test
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper
 import org.junit.Assert
+import io.sarl.tests.api.AbstractSarlTest
 
 /**
  * @author $Author: srodriguez$
@@ -32,7 +33,7 @@ import org.junit.Assert
  */
 @RunWith(XtextRunner)
 @InjectWith(SARLInjectorProvider)
-class AgentCompilerTest {
+class AgentCompilerTest extends AbstractSarlTest {
 	@Inject extension CompilationTestHelper
 
 	@Test

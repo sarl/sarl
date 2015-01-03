@@ -29,6 +29,8 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import io.sarl.eclipse.runtime.AbstractSREInstall;
 import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -49,21 +51,17 @@ import org.w3c.dom.Element;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class AbstractSREInstallTest {
+public class AbstractSREInstallTest extends AbstractSarlTest {
 
+	@Nullable
 	private String id;
+	@Nullable
 	private AbstractSREInstall sre;
 
 	@Before
 	public void setUp() {
 		this.id = UUID.randomUUID().toString();
 		this.sre = new SreMock(this.id);
-	}
-
-	@After
-	public void tearDown() {
-		this.sre = null;
-		this.id = null;
 	}
 
 	@Test

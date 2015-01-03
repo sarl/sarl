@@ -24,6 +24,8 @@ import org.eclipse.xtext.xbase.validation.IssueCodes
 import org.junit.Test
 import org.junit.runner.RunWith
 
+import static org.junit.Assert.assertEquals
+
 /**
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$

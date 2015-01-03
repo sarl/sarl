@@ -23,6 +23,8 @@ package io.sarl.eclipse.tests.natures;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import io.sarl.eclipse.natures.SARLProjectNature;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 
 import org.eclipse.core.resources.IProject;
 import org.junit.After;
@@ -36,18 +38,14 @@ import org.junit.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class SARLProjectNatureTest {
+public class SARLProjectNatureTest extends AbstractSarlTest {
 
+	@Nullable
 	private SARLProjectNature nature;
 	
 	@Before
 	public void setUp() {
 		this.nature = new SARLProjectNature();
-	}
-	
-	@After
-	public void tearDown() {
-		this.nature = null;
 	}
 	
 	@Test

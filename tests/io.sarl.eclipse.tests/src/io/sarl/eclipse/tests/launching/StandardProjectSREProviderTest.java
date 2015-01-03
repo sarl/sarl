@@ -20,16 +20,18 @@
  */
 package io.sarl.eclipse.tests.launching;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import io.sarl.eclipse.launching.StandardProjectSREProvider;
-import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
 import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.QualifiedName;
-import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -43,10 +45,13 @@ import org.mockito.stubbing.Answer;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class StandardProjectSREProviderTest extends Assert {
+public class StandardProjectSREProviderTest extends AbstractSarlTest {
 
+	@Nullable
 	private String id;
+	@Nullable
 	private IProject project;
+	@Nullable
 	private StandardProjectSREProvider provider;
 
 	@Before
@@ -70,13 +75,6 @@ public class StandardProjectSREProviderTest extends Assert {
 			}
 		});
 		this.provider = new StandardProjectSREProvider(this.project);
-	}
-
-	@After
-	public void tearDown() {
-		this.id = null;
-		this.project = null;
-		this.provider = null;
 	}
 	
 	@Test

@@ -15,6 +15,7 @@
  */
 package io.sarl.lang.ui.tests.images;
 
+import static org.junit.Assert.assertNotNull;
 import io.sarl.lang.ui.images.SARLImages;
 import io.sarl.lang.ui.tests.AbstractSARLUiTestCase;
 

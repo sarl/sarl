@@ -33,6 +33,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.List
 import org.junit.Assert
+import io.sarl.tests.api.AbstractSarlTest
 
 /**
  * @author $Author: srodriguez$
@@ -43,7 +44,7 @@ import org.junit.Assert
  */
 @RunWith(XtextRunner)
 @InjectWith(SARLInjectorProvider)
-class CapacityParsingTest {
+class CapacityParsingTest extends AbstractSarlTest {
 	@Inject extension ParseHelper<SarlScript>
 	@Inject extension ValidationTestHelper
 	

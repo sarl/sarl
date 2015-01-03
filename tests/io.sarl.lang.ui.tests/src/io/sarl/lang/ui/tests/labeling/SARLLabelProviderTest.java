@@ -15,6 +15,9 @@
  */
 package io.sarl.lang.ui.tests.labeling;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import io.sarl.lang.sarl.Action;
 import io.sarl.lang.sarl.ActionSignature;
 import io.sarl.lang.sarl.Agent;

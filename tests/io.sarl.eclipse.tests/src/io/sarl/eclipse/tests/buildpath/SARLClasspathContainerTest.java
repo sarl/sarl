@@ -20,25 +20,19 @@
  */
 package io.sarl.eclipse.tests.buildpath;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 import io.sarl.eclipse.buildpath.Messages;
 import io.sarl.eclipse.buildpath.SARLClasspathContainer;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
-import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.google.common.base.Strings;
 
 /**
  * @author $Author: sgalland$
@@ -47,21 +41,17 @@ import com.google.common.base.Strings;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class SARLClasspathContainerTest extends Assert {
+public class SARLClasspathContainerTest extends AbstractSarlTest {
 
+	@Nullable
 	private IPath containerPath;
+	@Nullable
 	private SARLClasspathContainer container;
 	
 	@Before
 	public void setUp() {
 		this.containerPath = mock(IPath.class);
 		this.container = new SARLClasspathContainer(this.containerPath);
-	}
-	
-	@After
-	public void tearDown() {
-		this.container = null;
-		this.containerPath = null;
 	}
 	
 	private static boolean isReferenceLibrary(String reference, IClasspathEntry entry) {

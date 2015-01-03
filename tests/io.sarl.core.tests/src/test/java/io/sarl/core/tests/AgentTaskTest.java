@@ -23,6 +23,8 @@ package io.sarl.core.tests;
 import static org.junit.Assert.*;
 import io.sarl.core.AgentTask;
 import io.sarl.lang.core.Agent;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 
 import java.util.UUID;
 
@@ -40,8 +42,9 @@ import org.mockito.Mockito;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings({"rawtypes","unchecked"})
-public class AgentTaskTest {
+public class AgentTaskTest extends AbstractSarlTest {
 
+	@Nullable
 	private AgentTask task;
 	
 	/**

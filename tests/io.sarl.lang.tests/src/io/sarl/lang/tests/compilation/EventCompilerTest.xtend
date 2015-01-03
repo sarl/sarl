@@ -24,6 +24,7 @@ import org.eclipse.xtext.xbase.compiler.CompilationTestHelper
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
+import io.sarl.tests.api.AbstractSarlTest
 
 /**
  * @author $Author: srodriguez$
@@ -34,7 +35,7 @@ import org.junit.runner.RunWith
  */
 @RunWith(XtextRunner)
 @InjectWith(SARLInjectorProvider)
-class EventCompilerTest {
+class EventCompilerTest extends AbstractSarlTest {
 	@Inject extension CompilationTestHelper
 
 	@Test

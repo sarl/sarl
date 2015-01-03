@@ -26,8 +26,16 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 import foo.Foo;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.runtime.StandardSREInstall;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.AbstractSarlUiTest;
+import io.sarl.tests.api.Nullable;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -44,10 +52,12 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.core.filesystem.URIUtil;
+import org.eclipse.core.internal.preferences.EclipsePreferences;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jdt.launching.LibraryLocation;
 import org.junit.After;
 import org.junit.Assume;
@@ -56,6 +66,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -77,21 +89,54 @@ import com.google.common.io.Resources;
 @SuppressWarnings("all")
 public class StandardSREInstallTest {
 
+	public static final String TESTING_PREFERENCE_KEY = SARLEclipsePlugin.PLUGIN_ID + ".tests.runtime.PREF_SRE_XML"; //$NON-NLS-1$
+
 	/**
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class Valid {
-	
+	public static class Valid extends AbstractSarlUiTest {
+
+		@Nullable
+		private SARLEclipsePlugin plugin;
+
+		@Nullable
+		private IEclipsePreferences preferences;
+
+		@Nullable
+		private BundleContext bundleContext;
+
+		@Nullable
+		private Bundle bundle;
+
+		@Nullable
 		private URL jarFile;
+
+		@Nullable
 		private String id;
+
+		@Nullable
 		private StandardSREInstall sre;
+
+		@Nullable
 		private IPath path;
-		
+
 		@Before
 		public void setUp() throws Exception {
+			this.preferences = new EclipsePreferences();
+			this.plugin = spy(new SARLEclipsePlugin());
+			SARLEclipsePlugin.setDefault(this.plugin);
+			when(this.plugin.getPreferences()).thenReturn(this.preferences);
+			this.bundle = mock(Bundle.class);
+			when(this.bundle.getSymbolicName()).thenReturn(SARLEclipsePlugin.PLUGIN_ID);
+			this.bundleContext = mock(BundleContext.class);
+			when(this.bundleContext.getBundle()).thenReturn(this.bundle);
+			when(this.bundle.getBundleContext()).thenReturn(this.bundleContext);
+			SARLRuntime.setCurrentPreferenceKey(TESTING_PREFERENCE_KEY);
+			this.plugin.start(this.bundleContext);
+			//
 			this.jarFile = Resources.getResource(Foo.class, "/foo/foo.jar");
 			Assume.assumeNotNull(this.jarFile);
 			this.id = UUID.randomUUID().toString();
@@ -101,40 +146,32 @@ public class StandardSREInstallTest {
 			this.path = URIUtil.toPath(uri);
 			this.sre.setJarFile(this.path);
 		}
-		
-		@After
-		public void tearDown() {
-			this.path = null;
-			this.jarFile = null;
-			this.id = null;
-			this.sre = null;
-		}
-	
+
 		@Test
 		public void getJarFile() {
 			assertSame(this.path, this.sre.getJarFile());
 		}
-	
+
 		@Test
 		public void getNameNoDefault() {
 			assertEquals("My SRE", this.sre.getNameNoDefault());
 		}
-	
+
 		@Test
 		public void getName() {
 			assertEquals("My SRE", this.sre.getName());
 		}
-	
+
 		@Test
 		public void getProgramArguments() {
 			assertEquals("io.sarl.eclipse.tests.sre.Boot fghi jkl", this.sre.getProgramArguments());
 		}
-	
+
 		@Test
 		public void getVMArguments() {
 			assertEquals("abc de", this.sre.getVMArguments());
 		}
-		
+
 		@Test
 		public void getLibraryLocation() {
 			assertArrayEquals(new LibraryLocation[] {
@@ -144,12 +181,12 @@ public class StandardSREInstallTest {
 					new LibraryLocation(Path.fromPortableString("c.jar"), Path.EMPTY, Path.EMPTY),
 			}, this.sre.getLibraryLocations());
 		}
-	
+
 		@Test
 		public void getLocation() {
 			assertEquals(this.path.toOSString(), this.sre.getLocation());
 		}
-	
+
 		@Test
 		public void getAsXML() throws Exception {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -167,13 +204,13 @@ public class StandardSREInstallTest {
 				trans.transform(source, xmlStream);
 				String content = new String(baos.toByteArray());
 				String[] expected = new String[] {
-					"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
-					"<root libraryPath=\"" + this.path.toOSString() + "\" standalone=\"true\">",
-					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toOSString() + "\"/>",
-					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"a.jar\"/>",
-					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"b.jar\"/>",
-					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"c.jar\"/>",
-					"</root>",
+						"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
+						"<root libraryPath=\"" + this.path.toOSString() + "\" standalone=\"true\">",
+						"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toOSString() + "\"/>",
+						"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"a.jar\"/>",
+						"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"b.jar\"/>",
+						"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"c.jar\"/>",
+						"</root>",
 				};
 				StringBuilder b = new StringBuilder();
 				for(String s : expected) {
@@ -183,17 +220,17 @@ public class StandardSREInstallTest {
 				assertEquals(b.toString(), content);
 			}
 		}
-	
+
 		@Test
 		public void setFromXML() throws Exception {
 			String[] expected = new String[] {
-				"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
-				"<SRE name=\"Hello\" mainClass=\"io.sarl.Boot\" libraryPath=\"" + this.path.toOSString() + "\" standalone=\"true\">",
-				"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toOSString() + "\"/>",
-				"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"x.jar\"/>",
-				"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"y.jar\"/>",
-				"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"z.jar\"/>",
-				"</SRE>",
+					"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
+					"<SRE name=\"Hello\" mainClass=\"io.sarl.Boot\" libraryPath=\"" + this.path.toOSString() + "\" standalone=\"true\">",
+					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toOSString() + "\"/>",
+					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"x.jar\"/>",
+					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"y.jar\"/>",
+					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"z.jar\"/>",
+					"</SRE>",
 			};
 			StringBuilder b = new StringBuilder();
 			for(String s : expected) {
@@ -211,7 +248,7 @@ public class StandardSREInstallTest {
 				assertEquals("io.sarl.Boot", this.sre.getMainClass());
 			}
 		}
-	
+
 		@Test
 		public void testClone() {
 			StandardSREInstall c = this.sre.clone();
@@ -227,7 +264,7 @@ public class StandardSREInstallTest {
 			assertEquals(this.sre.getJarFile(), c.getJarFile());
 			assertArrayEquals(this.sre.getLibraryLocations(), c.getLibraryLocations());
 		}
-	
+
 		@Test
 		public void copy() {
 			String id = UUID.randomUUID().toString();
@@ -244,19 +281,19 @@ public class StandardSREInstallTest {
 			assertEquals(this.sre.getJarFile(), c.getJarFile());
 			assertArrayEquals(this.sre.getLibraryLocations(), c.getLibraryLocations());
 		}
-	
+
 		@Test
 		public void getValidityInt() {
 			IStatus s = this.sre.getValidity();
 			assertNotNull(s);
 			assertTrue(s.isOK());
 		}
-	
+
 		@Test
 		public void revalidate() {
 			this.sre.revalidate();
 		}
-	
+
 		@Test
 		public void getValidity() {
 			IStatus s = this.sre.getValidity();
@@ -272,15 +309,46 @@ public class StandardSREInstallTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class Invalid {
-	
+	public static class Invalid extends AbstractSarlUiTest {
+
+		@Nullable
+		private SARLEclipsePlugin plugin;
+
+		@Nullable
+		private IEclipsePreferences preferences;
+
+		@Nullable
+		private BundleContext bundleContext;
+
+		@Nullable
+		private Bundle bundle;
+
+		@Nullable
 		private URL jarFile;
+
+		@Nullable
 		private String id;
+
+		@Nullable 
 		private StandardSREInstall sre;
+
+		@Nullable
 		private IPath path;
-		
+
 		@Before
 		public void setUp() throws Exception {
+			this.preferences = new EclipsePreferences();
+			this.plugin = spy(new SARLEclipsePlugin());
+			SARLEclipsePlugin.setDefault(this.plugin);
+			when(this.plugin.getPreferences()).thenReturn(this.preferences);
+			this.bundle = mock(Bundle.class);
+			when(this.bundle.getSymbolicName()).thenReturn(SARLEclipsePlugin.PLUGIN_ID);
+			this.bundleContext = mock(BundleContext.class);
+			when(this.bundleContext.getBundle()).thenReturn(this.bundle);
+			when(this.bundle.getBundleContext()).thenReturn(this.bundleContext);
+			SARLRuntime.setCurrentPreferenceKey(TESTING_PREFERENCE_KEY);
+			this.plugin.start(this.bundleContext);
+			//
 			this.jarFile = Resources.getResource(Foo.class, "/foo/foo2.jar");
 			Assume.assumeNotNull(this.jarFile);
 			this.id = UUID.randomUUID().toString();
@@ -290,52 +358,44 @@ public class StandardSREInstallTest {
 			this.path = URIUtil.toPath(uri);
 			this.sre.setJarFile(this.path);
 		}
-		
-		@After
-		public void tearDown() {
-			this.path = null;
-			this.jarFile = null;
-			this.id = null;
-			this.sre = null;
-		}
-	
+
 		@Test
 		public void getJarFile() {
 			assertSame(this.path, this.sre.getJarFile());
 		}
-	
+
 		@Test
 		public void getNameNoDefault() {
 			assertEquals("My SRE 2", this.sre.getNameNoDefault());
 		}
-	
+
 		@Test
 		public void getName() {
 			assertEquals("My SRE 2", this.sre.getName());
 		}
-	
+
 		@Test
 		public void getProgramArguments() {
 			assertEquals("io.sarl.eclipse.tests.sre.Boot", this.sre.getProgramArguments());
 		}
-	
+
 		@Test
 		public void getVMArguments() {
 			assertEquals("", this.sre.getVMArguments());
 		}
-		
+
 		@Test
 		public void getLibraryLocation() {
 			assertArrayEquals(new LibraryLocation[] {
 					new LibraryLocation(this.path, Path.EMPTY, Path.EMPTY),
 			}, this.sre.getLibraryLocations());
 		}
-	
+
 		@Test
 		public void getLocation() {
 			assertEquals(this.path.toOSString(), this.sre.getLocation());
 		}
-	
+
 		@Test
 		public void getAsXML() throws Exception {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -353,8 +413,8 @@ public class StandardSREInstallTest {
 				trans.transform(source, xmlStream);
 				String content = new String(baos.toByteArray());
 				String[] expected = new String[] {
-					"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
-					"<root libraryPath=\"" + this.path.toOSString() + "\" standalone=\"false\"/>",
+						"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
+						"<root libraryPath=\"" + this.path.toOSString() + "\" standalone=\"false\"/>",
 				};
 				StringBuilder b = new StringBuilder();
 				for(String s : expected) {
@@ -364,17 +424,17 @@ public class StandardSREInstallTest {
 				assertEquals(b.toString(), content);
 			}
 		}
-	
+
 		@Test
 		public void setFromXML() throws Exception {
 			String[] expected = new String[] {
-				"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
-				"<SRE name=\"Hello\" mainClass=\"io.sarl.Boot\" libraryPath=\"" + this.path.toOSString() + "\" standalone=\"true\">",
-				"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toOSString() + "\"/>",
-				"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"x.jar\"/>",
-				"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"y.jar\"/>",
-				"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"z.jar\"/>",
-				"</SRE>",
+					"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
+					"<SRE name=\"Hello\" mainClass=\"io.sarl.Boot\" libraryPath=\"" + this.path.toOSString() + "\" standalone=\"true\">",
+					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toOSString() + "\"/>",
+					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"x.jar\"/>",
+					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"y.jar\"/>",
+					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"z.jar\"/>",
+					"</SRE>",
 			};
 			StringBuilder b = new StringBuilder();
 			for(String s : expected) {
@@ -392,7 +452,7 @@ public class StandardSREInstallTest {
 				assertEquals("io.sarl.Boot", this.sre.getMainClass());
 			}
 		}
-	
+
 		@Test
 		public void testClone() {
 			StandardSREInstall c = this.sre.clone();
@@ -408,7 +468,7 @@ public class StandardSREInstallTest {
 			assertEquals(this.sre.getJarFile(), c.getJarFile());
 			assertArrayEquals(this.sre.getLibraryLocations(), c.getLibraryLocations());
 		}
-	
+
 		@Test
 		public void copy() {
 			String id = UUID.randomUUID().toString();
@@ -425,7 +485,7 @@ public class StandardSREInstallTest {
 			assertEquals(this.sre.getJarFile(), c.getJarFile());
 			assertArrayEquals(this.sre.getLibraryLocations(), c.getLibraryLocations());
 		}
-	
+
 		@Test
 		public void getValidityInt() {
 			IStatus s = this.sre.getValidity();
@@ -433,12 +493,12 @@ public class StandardSREInstallTest {
 			assertFalse(s.isOK());
 			assertEquals(64, s.getCode());
 		}
-	
+
 		@Test
 		public void revalidate() {
 			this.sre.revalidate();
 		}
-	
+
 		@Test
 		public void getValidity() {
 			IStatus s = this.sre.getValidity();

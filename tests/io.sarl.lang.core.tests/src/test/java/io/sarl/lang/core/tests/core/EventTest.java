@@ -22,6 +22,8 @@ package io.sarl.lang.core.tests.core;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Event;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,8 +38,9 @@ import static org.junit.Assert.*;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class EventTest {
+public class EventTest extends AbstractSarlTest {
 
+	@Nullable
 	private Event event;
 	
 	private static Event mockEvent() {

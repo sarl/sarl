@@ -26,6 +26,7 @@ import org.eclipse.xtext.xbase.XbasePackage
 import org.eclipse.xtext.xbase.validation.IssueCodes
 import org.junit.Test
 import org.junit.runner.RunWith
+import io.sarl.tests.api.AbstractSarlTest
 
 /**
  * @author $Author: sgalland$
@@ -35,7 +36,7 @@ import org.junit.runner.RunWith
  */
 @RunWith(XtextRunner)
 @InjectWith(SARLInjectorProvider)
-class DiscouragedSystemErrCallTest {
+class DiscouragedSystemErrCallTest extends AbstractSarlTest {
 
 	@Inject
 	extension ParseHelper<SarlScript>

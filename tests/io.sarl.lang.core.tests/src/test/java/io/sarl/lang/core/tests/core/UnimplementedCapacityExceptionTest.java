@@ -22,6 +22,8 @@ package io.sarl.lang.core.tests.core;
 
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.UnimplementedCapacityException;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 
 import java.util.UUID;
 
@@ -36,10 +38,13 @@ import static org.junit.Assert.*;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class UnimplementedCapacityExceptionTest {
+public class UnimplementedCapacityExceptionTest extends AbstractSarlTest {
 
+	@Nullable
 	private UUID agentID;
+	@Nullable
 	private Class<? extends Capacity> capacity;
+	@Nullable
 	private UnimplementedCapacityException exception;
 	
 	/**

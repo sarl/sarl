@@ -20,14 +20,18 @@
  */
 package io.sarl.eclipse.tests.navigator;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-import static io.sarl.eclipse.tests.Asserts.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import io.sarl.eclipse.navigator.ContentProvider;
 import io.sarl.eclipse.navigator.ISARLProjectElement;
 import io.sarl.eclipse.navigator.SARLProjectWorkbenchRoot;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,14 +42,21 @@ import org.junit.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class ContentProviderTest {
+public class ContentProviderTest extends AbstractSarlTest {
 
+	@Nullable
 	private ContentProvider provider;
+	@Nullable
 	private SARLProjectWorkbenchRoot root;
+	@Nullable
 	private ISARLProjectElement element;
+	@Nullable
 	private ISARLProjectElement child1;
+	@Nullable
 	private ISARLProjectElement child2;
+	@Nullable
 	private Object other;
+	@Nullable
 	private Object[] children;
 	
 	@Before
@@ -64,17 +75,6 @@ public class ContentProviderTest {
 		when(this.element.getChildren()).thenReturn(this.children);
 		when(this.element.hasChildren()).thenReturn(true);
 		this.other = mock(Object.class);
-	}
-	
-	@After
-	public void tearDown() {
-		this.provider = null;
-		this.root = null;
-		this.element = null;
-		this.other = null;
-		this.children = null;
-		this.child1 = null;
-		this.child2 = null;
 	}
 
 	@Test

@@ -32,6 +32,8 @@ import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.UnimplementedCapacityException;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 
 import java.security.InvalidParameterException;
 import java.util.UUID;
@@ -46,9 +48,11 @@ import org.mockito.Mockito;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class AgentTest {
+public class AgentTest extends AbstractSarlTest {
 
+	@Nullable
 	private UUID id;
+	@Nullable
 	private AgentMock agent;
 	
 	private static Address mockAddress(UUID agentID) {

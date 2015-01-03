@@ -19,7 +19,15 @@
  */
 package io.sarl.util.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import io.sarl.lang.util.SynchronizedCollection;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 import io.sarl.util.Collections3;
 
 import java.util.ArrayList;
@@ -29,8 +37,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,10 +47,13 @@ import org.junit.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings({"javadoc"})
-public class Collections3_SynchronizedCollectionTest_Collection extends Assert {
+public class Collections3_SynchronizedCollectionTest_Collection extends AbstractSarlTest {
 
+	@Nullable
 	private Object mutex;
+	@Nullable
 	private List<String> original;
+	@Nullable
 	private SynchronizedCollection<String> collection;
 	
 	@Before
@@ -57,13 +66,6 @@ public class Collections3_SynchronizedCollectionTest_Collection extends Assert {
 		this.collection = Collections3.synchronizedCollection(this.original, this.mutex);
 	}
 	
-	@After
-	public void tearDown() {
-		this.collection = null;
-		this.original = null;
-		this.mutex = null;
-	}
-
 	@Test
     public void size() {
     	assertEquals(this.original.size(), this.collection.size());

@@ -21,6 +21,8 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.SpaceID;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 
 import java.util.UUID;
 
@@ -34,10 +36,13 @@ import org.mockito.Mockito;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class AddressTest {
+public class AddressTest extends AbstractSarlTest {
 
+	@Nullable
 	private SpaceID spaceID;
+	@Nullable
 	private UUID agentID;
+	@Nullable
 	private Address adr;
 	
 	private static SpaceID mockSpaceID(final UUID agentUID, final UUID spaceUID) {

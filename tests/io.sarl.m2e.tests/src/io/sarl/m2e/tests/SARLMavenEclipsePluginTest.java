@@ -24,11 +24,19 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import io.sarl.m2e.SARLMavenEclipsePlugin;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
+
+import java.io.PrintStream;
 
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.osgi.internal.debug.Debug;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +44,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 import org.mockito.ArgumentCaptor;
-import org.osgi.framework.Version;
 
 
 /**
@@ -60,7 +67,7 @@ public final class SARLMavenEclipsePluginTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class DefaultPlugin {
+	public static class DefaultPlugin extends AbstractSarlTest {
 
 		@Before
 		public void setUp() {
@@ -92,9 +99,11 @@ public final class SARLMavenEclipsePluginTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class PluginInstance {
+	public static class PluginInstance extends AbstractSarlTest {
 
+		@Nullable
 		private SARLMavenEclipsePlugin plugin;
+		@Nullable
 		private SARLMavenEclipsePlugin spy;
 
 		@Before
@@ -106,8 +115,6 @@ public final class SARLMavenEclipsePluginTest {
 
 		@After
 		public void tearDown() {
-			this.plugin = null;
-			this.spy = null;
 			SARLMavenEclipsePlugin.setDefault(null);
 		}
 
@@ -134,15 +141,6 @@ public final class SARLMavenEclipsePluginTest {
 			assertEquals(msg, status.getMessage());
 		}
 
-		@Test
-		public void parseMavenVersion() {
-			Version version = SARLMavenEclipsePlugin.parseMavenVersion("1.2.3");
-			assertNotNull(version);
-			assertEquals(1, version.getMajor());
-			assertEquals(2, version.getMinor());
-			assertEquals(3, version.getMicro());
-		}
-
 	}
 
 	/**
@@ -151,43 +149,71 @@ public final class SARLMavenEclipsePluginTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class Logging {
+	public static class Logging extends AbstractSarlTest {
 
+		@Nullable
+		private PrintStream old;
+		@Nullable
 		private ILog logger;
+		@Nullable
 		private SARLMavenEclipsePlugin plugin;
 
 		@Before
 		public void setUp() {
-			SARLMavenEclipsePlugin.setDefault(null);
+			this.old = Debug.out;
+			Debug.out = mock(PrintStream.class);
 			this.logger = mock(ILog.class);
-			this.plugin = mock(SARLMavenEclipsePlugin.class);
+			// Cannot create a "spyied" version of getILog() since it
+			// will be directly called by the underlying implementation.
+			// For providing a mock for the ILog, only subclassing is working.
+			this.plugin = new SARLMavenEclipsePlugin() {
+				public ILog getILog() {
+					return logger;
+				}
+			};
 			SARLMavenEclipsePlugin.setDefault(this.plugin);
-			when(this.plugin.getILog()).thenReturn(this.logger);
 		}
 
 		@After
 		public void tearDown() {
-			this.logger = null;
-			this.plugin = null;
-			SARLMavenEclipsePlugin.setDefault(null);
-		}
-
-		@Test
-		public void logThrowable() {
-			Throwable ex = mock(Throwable.class);
-			this.plugin.log(ex);
-			ArgumentCaptor<IStatus> arg = ArgumentCaptor.forClass(IStatus.class);
-			verify(this.logger, times(1)).log(arg.capture());
-			assertSame(ex, arg.getValue().getException());
+			Debug.out = this.old;
 		}
 
 		@Test
 		public void logIStatus() {
 			IStatus status = mock(IStatus.class);
-			this.plugin.log(status);
+			this.plugin.getILog().log(status);
 			ArgumentCaptor<IStatus> arg = ArgumentCaptor.forClass(IStatus.class);
-			verify(this.logger, times(1)).log(arg.capture());
+			verify(this.logger).log(arg.capture());
 			assertSame(status, arg.getValue());
+		}
+
+		@Test
+		public void logThrowable_withoutException() {
+			this.plugin.log((Throwable) null);
+			ArgumentCaptor<IStatus> arg = ArgumentCaptor.forClass(IStatus.class);
+			verify(this.logger).log(arg.capture());
+			IStatus status = arg.getValue();
+			assertNotNull(status);
+			assertEquals("Internal Error", status.getMessage());
+			assertEquals(IStatus.ERROR, status.getSeverity());
+			assertNull(status.getException());
+			assertEquals(SARLMavenEclipsePlugin.PLUGIN_ID, status.getPlugin());
+		}
+
+		@Test
+		public void logThrowable_withException() {
+			Throwable ex = mock(Throwable.class);
+			when(ex.getMessage()).thenReturn("my message");
+			this.plugin.log(ex);
+			ArgumentCaptor<IStatus> arg = ArgumentCaptor.forClass(IStatus.class);
+			verify(this.logger).log(arg.capture());
+			IStatus status = arg.getValue();
+			assertNotNull(status);
+			assertEquals("Internal Error: my message", status.getMessage());
+			assertEquals(IStatus.ERROR, status.getSeverity());
+			assertSame(ex, status.getException());
+			assertEquals(SARLMavenEclipsePlugin.PLUGIN_ID, status.getPlugin());
 		}
 
 	}

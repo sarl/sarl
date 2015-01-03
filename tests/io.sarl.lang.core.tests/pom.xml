@@ -34,6 +34,11 @@
 			<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.tests.api</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 </project>

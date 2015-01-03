@@ -20,6 +20,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.ui.outline.SARLOutlineNodeComparator;
+import io.sarl.tests.api.Nullable;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
@@ -37,37 +38,67 @@ import org.junit.Test;
  */
 public class SARLOutlineNodeComparatorTest {
 
+	@Nullable
 	private SARLOutlineNodeComparator comparator;
 	
+	@Nullable
 	private EStructuralFeatureNode sarlScript;
+	@Nullable
 	private EStructuralFeatureNode agentFeature1;
+	@Nullable
 	private EStructuralFeatureNode agentFeature2;
+	@Nullable
 	private EStructuralFeatureNode behaviorFeature1;
+	@Nullable
 	private EStructuralFeatureNode behaviorFeature2;
+	@Nullable
 	private EStructuralFeatureNode capacityFeature1;
+	@Nullable
 	private EStructuralFeatureNode capacityFeature2;
+	@Nullable
 	private EStructuralFeatureNode skillFeature1;
+	@Nullable
 	private EStructuralFeatureNode skillFeature2;
+	@Nullable
 	private EStructuralFeatureNode eventFeature1;
+	@Nullable
 	private EStructuralFeatureNode eventFeature2;
+	@Nullable
 	private EStructuralFeatureNode otherFeature1;
+	@Nullable
 	private EStructuralFeatureNode otherFeature2;
 
+	@Nullable
 	private EObjectNode importFeature1;
+	@Nullable
 	private EObjectNode importFeature2;
+	@Nullable
 	private EObjectNode capacityUseFeature1;
+	@Nullable
 	private EObjectNode capacityUseFeature2;
+	@Nullable
 	private EObjectNode capacityRequirementFeature1;
+	@Nullable
 	private EObjectNode capacityRequirementFeature2;
+	@Nullable
 	private EObjectNode attributeFeature1;
+	@Nullable
 	private EObjectNode attributeFeature2;
+	@Nullable
 	private EObjectNode constructorFeature1;
+	@Nullable
 	private EObjectNode constructorFeature2;
+	@Nullable
 	private EObjectNode actionFeature1;
+	@Nullable
 	private EObjectNode actionFeature2;
+	@Nullable
 	private EObjectNode actionSignatureFeature1;
+	@Nullable
 	private EObjectNode actionSignatureFeature2;
+	@Nullable
 	private EObjectNode behaviorUnitFeature1;
+	@Nullable
 	private EObjectNode behaviorUnitFeature2;
 	
 	/**

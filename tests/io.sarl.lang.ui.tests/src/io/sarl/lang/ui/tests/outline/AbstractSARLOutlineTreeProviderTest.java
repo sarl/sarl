@@ -20,6 +20,12 @@
  */
 package io.sarl.lang.ui.tests.outline;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.ui.outline.SARLOutlineTreeProvider;
 import io.sarl.lang.ui.tests.AbstractSARLUiTestCase;

@@ -28,6 +28,7 @@ import org.eclipse.xtext.xbase.XbasePackage
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.eclipse.xtext.common.types.TypesPackage
+import io.sarl.tests.api.AbstractSarlTest
 
 /**
  * @author $Author: sgalland$
@@ -37,7 +38,7 @@ import org.eclipse.xtext.common.types.TypesPackage
  */
 @RunWith(XtextRunner)
 @InjectWith(SARLInjectorProvider)
-class BehaviorParsingTest {
+class BehaviorParsingTest extends AbstractSarlTest {
 	@Inject extension ParseHelper<SarlScript>
 	@Inject extension ValidationTestHelper
 

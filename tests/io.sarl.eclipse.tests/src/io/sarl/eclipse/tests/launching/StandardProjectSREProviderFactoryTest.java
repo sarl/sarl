@@ -26,6 +26,8 @@ import static org.mockito.Mockito.mock;
 import io.sarl.eclipse.launching.StandardProjectSREProvider;
 import io.sarl.eclipse.launching.StandardProjectSREProviderFactory;
 import io.sarl.eclipse.runtime.ProjectSREProvider;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 
 import org.eclipse.core.resources.IProject;
 import org.junit.After;
@@ -39,18 +41,14 @@ import org.junit.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class StandardProjectSREProviderFactoryTest {
+public class StandardProjectSREProviderFactoryTest extends AbstractSarlTest {
 
+	@Nullable
 	private StandardProjectSREProviderFactory factory;
 	
 	@Before
 	public void setUp() {
 		this.factory = new StandardProjectSREProviderFactory();
-	}
-	
-	@After
-	public void tearDown() {
-		this.factory = null;
 	}
 	
 	@Test

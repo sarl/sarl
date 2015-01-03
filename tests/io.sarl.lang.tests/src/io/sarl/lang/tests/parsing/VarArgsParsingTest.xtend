@@ -28,6 +28,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
+import io.sarl.tests.api.AbstractSarlTest
 
 /**
  * @author $Author: sgalland$
@@ -37,7 +38,7 @@ import static org.junit.Assert.*
  */
 @RunWith(XtextRunner)
 @InjectWith(SARLInjectorProvider)
-class VarArgsParsingTest {
+class VarArgsParsingTest extends AbstractSarlTest {
 	@Inject extension ParseHelper<SarlScript>
 	@Inject extension ValidationTestHelper
 

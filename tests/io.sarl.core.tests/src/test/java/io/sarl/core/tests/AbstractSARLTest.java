@@ -21,6 +21,8 @@
 package io.sarl.core.tests;
 
 import static org.junit.Assert.*;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -33,14 +35,16 @@ import java.lang.reflect.Method;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractSARLTest<T> {
+public abstract class AbstractSARLTest<T> extends AbstractSarlTest {
 
 	/** Name of the loaded class.
 	 */
+	@Nullable
 	protected String classname;
 
 	/** Loaded type.
 	 */
+	@Nullable
 	protected Class<? extends T> type;
 	
 	/** Load the given class, generated from the SARL code.

@@ -27,6 +27,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import static extension org.junit.Assert.*
+import io.sarl.tests.api.AbstractSarlTest
 
 /**
  * @author $Author: srodriguez$
@@ -36,7 +37,7 @@ import static extension org.junit.Assert.*
  */
 @RunWith(XtextRunner)
 @InjectWith(SARLInjectorProvider)
-class SARLFormatterTest {
+class SARLFormatterTest extends AbstractSarlTest {
 	@Inject extension ParseHelper<SarlScript>
 	@Inject extension INodeModelFormatter
 

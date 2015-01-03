@@ -23,6 +23,8 @@ package io.sarl.core.tests;
 import java.util.UUID;
 
 import io.sarl.core.UnknownContextException;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,11 +37,14 @@ import static org.junit.Assert.*;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class UnknownContextExceptionTest {
+public class UnknownContextExceptionTest extends AbstractSarlTest {
 
+	@Nullable
 	private UUID id;
+
+	@Nullable
 	private UnknownContextException exception;
-	
+
 	/**
 	 */
 	@Before

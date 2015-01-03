@@ -20,8 +20,6 @@
  */
 package io.sarl.eclipse.tests.runtime;
 
-import static io.sarl.eclipse.tests.Asserts.assertArrayContains;
-import static io.sarl.eclipse.tests.Asserts.assertArraySimilar;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -32,6 +30,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -40,17 +39,23 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.ISREInstallChangedListener;
 import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.AbstractSarlUiTest;
+import io.sarl.tests.api.Nullable;
 
 import java.io.File;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.UUID;
 
+import org.eclipse.core.internal.preferences.EclipsePreferences;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jdt.launching.PropertyChangeEvent;
 import org.junit.After;
 import org.junit.Before;
@@ -62,6 +67,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -90,9 +97,10 @@ public final class SARLRuntimeTest {
 			installs[i] = mock(ISREInstall.class);
 			when(installs[i].getId()).thenReturn(SARLRuntime.createUniqueIdentifier());
 			if ((i % 2) == 1) {
-				when(installs[i].getValidity()).thenReturn(SARLEclipsePlugin.createOkStatus());
+				when(installs[i].getValidity()).thenReturn(Status.OK_STATUS);
 			} else {
-				when(installs[i].getValidity()).thenReturn(SARLEclipsePlugin.createStatus(IStatus.ERROR, "message"));
+				when(installs[i].getValidity()).thenReturn(
+						new Status(IStatus.ERROR, SARLEclipsePlugin.PLUGIN_ID, "message"));
 			}
 		}
 		return installs;
@@ -104,7 +112,7 @@ public final class SARLRuntimeTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class PreferenceKey {
+	public static class PreferenceKey extends AbstractSarlTest {
 
 		@Test
 		public void getCurrentPreferenceKey() {
@@ -148,18 +156,43 @@ public final class SARLRuntimeTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class GetterSetter {
+	public static class GetterSetter extends AbstractSarlUiTest {
+		
+		@Nullable
+		private SARLEclipsePlugin plugin;
+		
+		@Nullable
+		private IEclipsePreferences preferences;
+		
+		@Nullable
+		private BundleContext bundleContext;
+
+		@Nullable
+		private Bundle bundle;
 
 		@Before
 		public void setUp() throws Exception {
+			this.preferences = new EclipsePreferences();
+			this.plugin = spy(new SARLEclipsePlugin());
+			SARLEclipsePlugin.setDefault(this.plugin);
+			when(this.plugin.getPreferences()).thenReturn(this.preferences);
+			this.bundle = mock(Bundle.class);
+			when(this.bundle.getSymbolicName()).thenReturn(SARLEclipsePlugin.PLUGIN_ID);
+			this.bundleContext = mock(BundleContext.class);
+			when(this.bundleContext.getBundle()).thenReturn(this.bundle);
+			when(this.bundle.getBundleContext()).thenReturn(this.bundleContext);
 			SARLRuntime.setCurrentPreferenceKey(TESTING_PREFERENCE_KEY);
+			this.plugin.start(this.bundleContext);
 		}
 
 		@After
 		public void tearDown() throws Exception {
-			SARLRuntime.setSREInstalls(new ISREInstall[0], null);
-			SARLRuntime.clearSREConfiguration();
-			SARLRuntime.setCurrentPreferenceKey(null);
+			if (SARLEclipsePlugin.getDefault() != null) {
+				SARLRuntime.setSREInstalls(new ISREInstall[0], null);
+				SARLRuntime.clearSREConfiguration();
+				SARLRuntime.setCurrentPreferenceKey(null);
+				SARLEclipsePlugin.setDefault(null);
+			}
 		}
 
 		@Test
@@ -283,7 +316,7 @@ public final class SARLRuntimeTest {
 			//
 			SARLRuntime.setDefaultSREInstall(sre, null, true);
 			//
-			assertNotNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNotNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			assertNull(SARLRuntime.getDefaultSREInstall());
 		}
 
@@ -295,7 +328,7 @@ public final class SARLRuntimeTest {
 			//
 			SARLRuntime.setDefaultSREInstall(sre, monitor, true);
 			//
-			assertNotNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNotNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			assertNull(SARLRuntime.getDefaultSREInstall());
 		}
 
@@ -308,7 +341,7 @@ public final class SARLRuntimeTest {
 			//
 			SARLRuntime.setDefaultSREInstall(sre, null, true);
 			//
-			assertNotNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNotNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			ISREInstall defaultSRE = SARLRuntime.getDefaultSREInstall();
 			assertNotNull(defaultSRE);
 			assertNotSame(sre, defaultSRE);
@@ -324,7 +357,7 @@ public final class SARLRuntimeTest {
 			//
 			SARLRuntime.setDefaultSREInstall(sre, null, true);
 			//
-			assertNotNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNotNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			ISREInstall defaultSRE = SARLRuntime.getDefaultSREInstall();
 			assertNotNull(defaultSRE);
 			assertNotSame(sre, defaultSRE);
@@ -339,7 +372,7 @@ public final class SARLRuntimeTest {
 			//
 			SARLRuntime.setDefaultSREInstall(sre, null, true);
 			//
-			assertNotNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNotNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			ISREInstall defaultSRE = SARLRuntime.getDefaultSREInstall();
 			assertNotNull(defaultSRE);
 			assertSame(sre, defaultSRE);
@@ -355,7 +388,7 @@ public final class SARLRuntimeTest {
 			//
 			SARLRuntime.setDefaultSREInstall(sre, null, true);
 			//
-			assertNotNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNotNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			ISREInstall defaultSRE = SARLRuntime.getDefaultSREInstall();
 			assertNotNull(defaultSRE);
 			assertSame(sre, defaultSRE);
@@ -368,7 +401,7 @@ public final class SARLRuntimeTest {
 			//
 			SARLRuntime.setDefaultSREInstall(sre, null, false);
 			//
-			assertNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			assertNull(SARLRuntime.getDefaultSREInstall());
 		}
 
@@ -380,7 +413,7 @@ public final class SARLRuntimeTest {
 			//
 			SARLRuntime.setDefaultSREInstall(sre, monitor, false);
 			//
-			assertNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			assertNull(SARLRuntime.getDefaultSREInstall());
 		}
 
@@ -393,7 +426,7 @@ public final class SARLRuntimeTest {
 			//
 			SARLRuntime.setDefaultSREInstall(sre, null, false);
 			//
-			assertNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			ISREInstall defaultSRE = SARLRuntime.getDefaultSREInstall();
 			assertNotNull(defaultSRE);
 			assertNotSame(sre, defaultSRE);
@@ -409,7 +442,7 @@ public final class SARLRuntimeTest {
 			//
 			SARLRuntime.setDefaultSREInstall(sre, null, false);
 			//
-			assertNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			ISREInstall defaultSRE = SARLRuntime.getDefaultSREInstall();
 			assertNotNull(defaultSRE);
 			assertNotSame(sre, defaultSRE);
@@ -424,7 +457,7 @@ public final class SARLRuntimeTest {
 			//
 			SARLRuntime.setDefaultSREInstall(sre, null, false);
 			//
-			assertNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			ISREInstall defaultSRE = SARLRuntime.getDefaultSREInstall();
 			assertNotNull(defaultSRE);
 			assertSame(sre, defaultSRE);
@@ -440,7 +473,7 @@ public final class SARLRuntimeTest {
 			//
 			SARLRuntime.setDefaultSREInstall(sre, null, false);
 			//
-			assertNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			ISREInstall defaultSRE = SARLRuntime.getDefaultSREInstall();
 			assertNotNull(defaultSRE);
 			assertSame(sre, defaultSRE);
@@ -453,7 +486,7 @@ public final class SARLRuntimeTest {
 			//
 			SARLRuntime.reset();
 			//
-			String xml = SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null);
+			String xml = SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null);
 			assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><SREs/>", xml);
 			assertNull(SARLRuntime.getDefaultSREInstall());
 		}
@@ -496,12 +529,23 @@ public final class SARLRuntimeTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class EventFiring {
+	public static class EventFiring extends AbstractSarlUiTest {
 
+		@Nullable
 		private ISREInstallChangedListener listener;
+		
+		@Nullable
+		private SARLEclipsePlugin plugin;
+		
+		@Nullable
+		private IEclipsePreferences preferences;
 		
 		@Before
 		public void setUp() throws Exception {
+			this.preferences = mock(IEclipsePreferences.class);
+			this.plugin = mock(SARLEclipsePlugin.class);
+			when(this.plugin.getPreferences()).thenReturn(this.preferences);
+			SARLEclipsePlugin.setDefault(this.plugin);
 			SARLRuntime.setCurrentPreferenceKey(TESTING_PREFERENCE_KEY);
 			this.listener = mock(ISREInstallChangedListener.class);
 			SARLRuntime.addSREInstallChangedListener(listener);
@@ -509,10 +553,15 @@ public final class SARLRuntimeTest {
 
 		@After
 		public void tearDown() throws Exception {
-			SARLRuntime.removeSREInstallChangedListener(this.listener);
-			SARLRuntime.setSREInstalls(new ISREInstall[0], null);
-			SARLRuntime.clearSREConfiguration();
-			SARLRuntime.setCurrentPreferenceKey(null);
+			if (this.listener != null) {
+				SARLRuntime.removeSREInstallChangedListener(this.listener);
+			}
+			if (SARLEclipsePlugin.getDefault() != null) {
+				SARLRuntime.clearSREConfiguration();
+				SARLRuntime.setSREInstalls(new ISREInstall[0], null);
+				SARLRuntime.setCurrentPreferenceKey(null);
+				SARLEclipsePlugin.setDefault(null);
+			}
 		}
 
 		@Test
@@ -550,46 +599,71 @@ public final class SARLRuntimeTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class InputOutput {
+	public static class InputOutput extends AbstractSarlTest {
+
+		@Nullable
+		private SARLEclipsePlugin plugin;
+		
+		@Nullable
+		private IEclipsePreferences preferences;
+		
+		@Nullable
+		private BundleContext bundleContext;
+
+		@Nullable
+		private Bundle bundle;
 
 		@Before
 		public void setUp() throws Exception {
+			this.preferences = new EclipsePreferences();
+			this.plugin = spy(new SARLEclipsePlugin());
+			SARLEclipsePlugin.setDefault(this.plugin);
+			when(this.plugin.getPreferences()).thenReturn(this.preferences);
+			this.bundle = mock(Bundle.class);
+			when(this.bundle.getSymbolicName()).thenReturn(SARLEclipsePlugin.PLUGIN_ID);
+			this.bundleContext = mock(BundleContext.class);
+			when(this.bundleContext.getBundle()).thenReturn(this.bundle);
+			when(this.bundle.getBundleContext()).thenReturn(this.bundleContext);
 			SARLRuntime.setCurrentPreferenceKey(TESTING_PREFERENCE_KEY);
+			this.plugin.start(this.bundleContext);
 		}
 
 		@After
 		public void tearDown() throws Exception {
-			SARLRuntime.setSREInstalls(new ISREInstall[0], null);
-			SARLRuntime.clearSREConfiguration();
-			SARLRuntime.setCurrentPreferenceKey(null);
+			if (SARLEclipsePlugin.getDefault() != null) {
+				SARLRuntime.setSREInstalls(new ISREInstall[0], null);
+				SARLRuntime.clearSREConfiguration();
+				SARLRuntime.setCurrentPreferenceKey(null);
+				SARLEclipsePlugin.setDefault(null);
+			}
 		}
 
 		@Test
 		public void saveSREConfiguration_nullMonitor_noSRE() throws Exception {
-			assertNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			SARLRuntime.saveSREConfiguration(null);
-			String xml = SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null);
+			String xml = SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null);
 			assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><SREs/>", xml);
 		}
 
 		@Test
 		public void saveSREConfiguration_monitor_noSRE() throws Exception {
 			IProgressMonitor monitor = mock(IProgressMonitor.class);
-			assertNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			SARLRuntime.saveSREConfiguration(monitor);
-			String xml = SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null);
+			String xml = SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null);
 			assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><SREs/>", xml);
 		}
 
 		@Test
 		public void saveSREConfiguration_nullMonitor_SRE() throws Exception {
-			assertNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			ISREInstall[] installs = createSREInstallArray();
 			SARLRuntime.setSREInstalls(installs, null);
 			//
 			SARLRuntime.saveSREConfiguration(null);
 			//
-			String xml = SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null);
+			String xml = SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null);
 			assertNotNull(xml);
 			assertNotEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><SREs/>", xml);
 		}
@@ -597,13 +671,13 @@ public final class SARLRuntimeTest {
 		@Test
 		public void saveSREConfiguration_monitor_SRE() throws Exception {
 			IProgressMonitor monitor = mock(IProgressMonitor.class);
-			assertNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			ISREInstall[] installs = createSREInstallArray();
 			SARLRuntime.setSREInstalls(installs, null);
 			//
 			SARLRuntime.saveSREConfiguration(monitor);
 			//
-			String xml = SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null);
+			String xml = SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null);
 			assertNotNull(xml);
 			assertNotEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><SREs/>", xml);
 		}
@@ -611,15 +685,15 @@ public final class SARLRuntimeTest {
 		@Test
 		public void clearSREConfiguration() throws Exception {
 			IProgressMonitor monitor = mock(IProgressMonitor.class);
-			assertNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			ISREInstall[] installs = createSREInstallArray();
 			SARLRuntime.setSREInstalls(installs, null);
 			SARLRuntime.saveSREConfiguration(monitor);
-			assertNotNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNotNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 			//
 			SARLRuntime.clearSREConfiguration();
 			//
-			assertNull(SARLEclipsePlugin.getPreferences().get(TESTING_PREFERENCE_KEY, null));
+			assertNull(SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null));
 		}
 
 		@Test
@@ -683,11 +757,12 @@ public final class SARLRuntimeTest {
 			ISREInstall sre1 = mock(ISREInstall.class);
 			String id1 = SARLRuntime.createUniqueIdentifier();
 			when(sre1.getId()).thenReturn(id1);
-			when(sre1.getValidity()).thenReturn(SARLEclipsePlugin.createOkStatus());
+			IStatus okStatus = SARLEclipsePlugin.getDefault().createOkStatus();
+			when(sre1.getValidity()).thenReturn(okStatus);
 			ISREInstall sre2 = mock(ISREInstall.class);
 			String id2 = SARLRuntime.createUniqueIdentifier();
 			when(sre2.getId()).thenReturn(id2);
-			when(sre2.getValidity()).thenReturn(SARLEclipsePlugin.createOkStatus());
+			when(sre2.getValidity()).thenReturn(okStatus);
 			SARLRuntime.setSREInstalls(new ISREInstall[] {
 					sre1, sre2
 			}, null);
@@ -713,11 +788,12 @@ public final class SARLRuntimeTest {
 			ISREInstall sre1 = mock(ISREInstall.class);
 			String id1 = SARLRuntime.createUniqueIdentifier();
 			when(sre1.getId()).thenReturn(id1);
-			when(sre1.getValidity()).thenReturn(SARLEclipsePlugin.createOkStatus());
+			IStatus okStatus = SARLEclipsePlugin.getDefault().createOkStatus();
+			when(sre1.getValidity()).thenReturn(okStatus);
 			ISREInstall sre2 = mock(ISREInstall.class);
 			String id2 = SARLRuntime.createUniqueIdentifier();
 			when(sre2.getId()).thenReturn(id2);
-			when(sre2.getValidity()).thenReturn(SARLEclipsePlugin.createOkStatus());
+			when(sre2.getValidity()).thenReturn(okStatus);
 			SARLRuntime.setSREInstalls(new ISREInstall[] {
 					sre1, sre2
 			}, null);
