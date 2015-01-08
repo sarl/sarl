@@ -30,7 +30,9 @@ import io.sarl.lang.sarl.FeatureContainer
 import io.sarl.lang.sarl.ParameterizedFeature
 import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.sarl.TopElement
+import io.sarl.lang.services.SARLGrammarAccess
 import io.sarl.lang.validation.IssueCodes
+import java.text.MessageFormat
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.naming.QualifiedName
@@ -46,8 +48,6 @@ import org.eclipse.xtext.util.Strings
 import org.eclipse.xtext.validation.Issue
 import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable
 import org.eclipse.xtext.xbase.ui.quickfix.XbaseQuickfixProvider
-import java.text.MessageFormat
-import io.sarl.lang.SARLKeywords
 
 /**
  * Custom quickfixes.
@@ -63,6 +63,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	@Inject
 	private ReplacingAppendable.Factory appendableFactory
 	
+	@Inject
+	private SARLGrammarAccess grammarAccess
+
 	/**
 	 * Remove element with the spaces before.
 	 *
@@ -440,7 +443,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 						var sep = ','
 						if (!removeToPreviousSeparator(issue, document, sep)) {
 							if (!removeToNextSeparator(issue, document, sep)) {
-								removeToPreviousKeyword(issue, document, SARLKeywords::IMPLEMENTS)
+								removeToPreviousKeyword(issue, document,
+									grammarAccess.skillAccess.implementsKeyword_3_1_0.value
+								)
 							}
 						}
 					]
@@ -518,7 +523,10 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 				var sep = ','
 				if (!removeToPreviousSeparator(issue, document, sep)) {
 					if (!removeToNextSeparator(issue, document, sep)) {
-						removeToPreviousKeyword(issue, document, SARLKeywords::REQUIRES, SARLKeywords::USES)
+						removeToPreviousKeyword(issue, document,
+							grammarAccess.requiredCapacityAccess.requiresKeyword_1.value,
+							grammarAccess.capacityUsesAccess.usesKeyword_1.value
+						)
 					}
 				}
 			]
@@ -537,7 +545,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 				var sep = ','
 				if (!removeToPreviousSeparator(issue, document, sep)) {
 					if (!removeToNextSeparator(issue, document, sep)) {
-						removeToPreviousKeyword(issue, document, SARLKeywords::FIRES)
+						removeToPreviousKeyword(issue, document,
+							grammarAccess.actionSignatureAccess.firesKeyword_5_0.value
+						)
 					}
 				}
 			]
@@ -556,7 +566,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 				var sep = ','
 				if (!removeToPreviousSeparator(issue, document, sep)) {
 					if (!removeToNextSeparator(issue, document, sep)) {
-						removeToPreviousKeyword(issue, document, SARLKeywords::IMPLEMENTS)
+						removeToPreviousKeyword(issue, document,
+							grammarAccess.skillAccess.implementsKeyword_3_1_0.value
+						)
 					}
 				}
 			]
@@ -575,7 +587,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 				var sep = ','
 				if (!removeToPreviousSeparator(issue, document, sep)) {
 					if (!removeToNextSeparator(issue, document, sep)) {
-						removeToPreviousKeyword(issue, document, SARLKeywords::EXTENDS)
+						removeToPreviousKeyword(issue, document,
+							grammarAccess.agentAccess.extendsKeyword_3_0.value
+						)
 					}
 				}
 			]
@@ -594,7 +608,10 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 				var sep = ','
 				if (!removeToPreviousSeparator(issue, document, sep)) {
 					if (!removeToNextSeparator(issue, document, sep)) {
-						removeToPreviousKeyword(issue, document, SARLKeywords::IMPLEMENTS, SARLKeywords::EXTENDS)
+						removeToPreviousKeyword(issue, document,
+							grammarAccess.skillAccess.implementsKeyword_3_1_0.value,
+							grammarAccess.agentAccess.extendsKeyword_3_0.value
+						)
 					}
 				}
 			]
@@ -613,7 +630,10 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 				var sep = ','
 				if (!removeToPreviousSeparator(issue, document, sep)) {
 					if (!removeToNextSeparator(issue, document, sep)) {
-						removeToPreviousKeyword(issue, document, SARLKeywords::IMPLEMENTS, SARLKeywords::EXTENDS)
+						removeToPreviousKeyword(issue, document,
+							grammarAccess.skillAccess.implementsKeyword_3_1_0.value,
+							grammarAccess.agentAccess.extendsKeyword_3_0.value
+						)
 					}
 				}
 			]
@@ -681,7 +701,9 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 					for(meth : methods.entrySet) {
 						appendable.newLine().append(meth.key).append(" {")
 						appendable.increaseIndentation()
-						appendable.newLine().append("// TODO: ").append(Messages::SARLQuickfixProvider_17)
+						appendable.newLine().append("// TODO ").append(
+							io.sarl.lang.genmodel.Messages::SARLCodeGenerator_0
+						)
 						var value = meth.value
 						if (value!==null && value!="") {
 							appendable.newLine().append(value)
@@ -747,7 +769,10 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			var sep = ','
 			if (!removeToPreviousSeparator(issue, document, sep)) {
 				if (!removeToNextSeparator(issue, document, sep)) {
-					removeToPreviousKeyword(issue, document, SARLKeywords::USES, SARLKeywords::REQUIRES)
+					removeToPreviousKeyword(issue, document,
+						grammarAccess.capacityUsesAccess.usesKeyword_1.value,
+						grammarAccess.requiredCapacityAccess.requiresKeyword_1.value
+					)
 				}
 			}
 		]
@@ -764,7 +789,10 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			var sep = ','
 			if (!removeToPreviousSeparator(issue, document, sep)) {
 				if (!removeToNextSeparator(issue, document, sep)) {
-					removeToPreviousKeyword(issue, document, SARLKeywords::USES, SARLKeywords::REQUIRES)
+					removeToPreviousKeyword(issue, document,
+						grammarAccess.capacityUsesAccess.usesKeyword_1.value,
+						grammarAccess.requiredCapacityAccess.requiresKeyword_1.value
+					)
 				}
 			}
 		]

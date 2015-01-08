@@ -22,7 +22,7 @@ package io.sarl.eclipse.wizards.newfile;
 
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.lang.SARLKeywords;
+import io.sarl.lang.services.SARLGrammarAccess;
 
 import java.io.InputStream;
 
@@ -36,6 +36,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.xtext.util.StringInputStream;
 
+import com.google.inject.Inject;
+
 /**
  * First page of the SARL new file wizard.
  *
@@ -45,6 +47,9 @@ import org.eclipse.xtext.util.StringInputStream;
  * @mavenartifactid $ArtifactId$
  */
 public class NewSarlFileWizardPage extends WizardNewFileCreationPage {
+
+	@Inject
+	private SARLGrammarAccess grammarAccess;
 
 	/**
 	 * @param selection - selection in the IDE.
@@ -84,8 +89,9 @@ public class NewSarlFileWizardPage extends WizardNewFileCreationPage {
 		IPath folderInWorkspace = getContainerFullPath();
 
 		IPath packagePath = determinePackageName(folderInWorkspace);
+
 		if (packagePath != null && packagePath.segmentCount() > 0) {
-			content.append(SARLKeywords.PACKAGE + " "); //$NON-NLS-1$
+			content.append(this.grammarAccess.getSarlScriptAccess().getPackageKeyword_0_0() + " "); //$NON-NLS-1$
 			content.append(packagePath.segment(0));
 			for (int i = 1; i < packagePath.segmentCount(); ++i) {
 				content.append('.');

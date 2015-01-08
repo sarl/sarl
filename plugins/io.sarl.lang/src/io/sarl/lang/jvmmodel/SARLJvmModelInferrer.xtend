@@ -21,7 +21,6 @@
 package io.sarl.lang.jvmmodel
 
 import com.google.inject.Inject
-import io.sarl.lang.SARLKeywords
 import io.sarl.lang.annotation.DefaultValue
 import io.sarl.lang.annotation.DefaultValueSource
 import io.sarl.lang.annotation.DefaultValueUse
@@ -84,6 +83,7 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking
 
 import static io.sarl.lang.util.ModelUtil.*
+import io.sarl.lang.SARLKeywords
 
 /**
  * <p>Infers a JVM model from the source model.</p> 

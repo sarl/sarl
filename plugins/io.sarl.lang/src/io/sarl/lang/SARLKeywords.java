@@ -20,8 +20,10 @@
  */
 package io.sarl.lang;
 
+import io.sarl.lang.services.SARLGrammarAccess;
+
 /**
- * Set of SARL keywords that are added to the xtext/xbase ones.
+ * Set of SARL keywords that are not directly supported by the {@link SARLGrammarAccess}.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -33,62 +35,6 @@ public final class SARLKeywords {
 	/** Keyword: {@code occurrence}.
 	 */
 	public static final String OCCURRENCE = "occurrence"; //$NON-NLS-1$
-
-	/** Keyword: {@code new}.
-	 */
-	public static final String CONSTRUCTOR = "new"; //$NON-NLS-1$
-
-	/** Keyword: {@code uses}.
-	 */
-	public static final String USES = "uses"; //$NON-NLS-1$
-
-	/** Keyword: {@code requires}.
-	 */
-	public static final String REQUIRES = "requires"; //$NON-NLS-1$
-
-	/** Keyword: {@code fires}.
-	 */
-	public static final String FIRES = "fires"; //$NON-NLS-1$
-
-	/** Keyword: {@code on}.
-	 */
-	public static final String ON = "on"; //$NON-NLS-1$
-
-	/** Keyword: {@code implements}.
-	 */
-	public static final String IMPLEMENTS = "implements"; //$NON-NLS-1$
-
-	/** Keyword: {@code extends}.
-	 */
-	public static final String EXTENDS = "extends"; //$NON-NLS-1$
-
-	/** Keyword: {@code package}.
-	 */
-	public static final String PACKAGE = "package"; //$NON-NLS-1$
-
-	/** Keyword: {@code agent}.
-	 */
-	public static final String AGENT = "agent"; //$NON-NLS-1$
-
-	/** Keyword: {@code behavior}.
-	 */
-	public static final String BEHAVIOR = "behavior"; //$NON-NLS-1$
-
-	/** Keyword: {@code capacity}.
-	 */
-	public static final String CAPACITY = "capacity"; //$NON-NLS-1$
-
-	/** Keyword: {@code event}.
-	 */
-	public static final String EVENT = "event"; //$NON-NLS-1$
-
-	/** Keyword: {@code skill}.
-	 */
-	public static final String SKILL = "skill"; //$NON-NLS-1$
-
-	/** Keyword: {@code import}.
-	 */
-	public static final String IMPORT = "import"; //$NON-NLS-1$
 
 	private SARLKeywords() {
 		//

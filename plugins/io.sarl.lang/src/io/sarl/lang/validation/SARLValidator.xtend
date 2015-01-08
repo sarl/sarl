@@ -23,7 +23,6 @@ package io.sarl.lang.validation
 import com.google.common.collect.Lists
 import com.google.common.collect.Multimaps
 import com.google.inject.Inject
-import io.sarl.lang.SARLKeywords
 import io.sarl.lang.SARLLangActivator
 import io.sarl.lang.annotation.ImportedCapacityFeature
 import io.sarl.lang.core.Capacity
@@ -46,6 +45,7 @@ import io.sarl.lang.sarl.RequiredCapacity
 import io.sarl.lang.sarl.SarlPackage
 import io.sarl.lang.sarl.SarlScript
 import io.sarl.lang.sarl.Skill
+import io.sarl.lang.services.SARLGrammarAccess
 import io.sarl.lang.signature.ActionKey
 import io.sarl.lang.signature.ActionNameKey
 import io.sarl.lang.signature.ActionSignatureProvider
@@ -107,6 +107,9 @@ class SARLValidator extends AbstractSARLValidator {
 	
 	@Inject
 	private JvmModelAssociator jvmModelAssociator
+	
+	@Inject
+	private SARLGrammarAccess grammarAccess
 	
 	protected def canonicalTypeName(LightweightTypeReference typeRef) {
 		if (typeRef===null) {
@@ -334,7 +337,7 @@ class SARLValidator extends AbstractSARLValidator {
 				errorStructFeature = SarlPackage.Literals::ACTION_SIGNATURE__NAME
 			}
 			else if (feature instanceof Constructor) {
-				name = SARLKeywords.CONSTRUCTOR
+				name = grammarAccess.constructorAccess.newKeyword_1.value
 				actionID = this.sarlSignatureProvider.createConstructorID(container)
 				signatureID = this.sarlSignatureProvider.createSignatureIDFromSarlModel(feature.varargs, feature.params)
 				errorFeature = feature
@@ -968,7 +971,7 @@ class SARLValidator extends AbstractSARLValidator {
 								Messages::SARLValidator_24,
 								usedType.qualifiedName,
 								Messages::SARLValidator_25,
-								SARLKeywords::USES),
+								grammarAccess.capacityUsesAccess.usesKeyword_1.value),
 						usedType,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -991,7 +994,7 @@ class SARLValidator extends AbstractSARLValidator {
 								Messages::SARLValidator_24,
 								requiredType.qualifiedName,
 								Messages::SARLValidator_25,
-								SARLKeywords::REQUIRES),
+								grammarAccess.requiredCapacityAccess.requiresKeyword_1.getValue()),
 						requiredType,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -1014,7 +1017,7 @@ class SARLValidator extends AbstractSARLValidator {
 								Messages::SARLValidator_24,
 								event.qualifiedName,
 								Messages::SARLValidator_26,
-								SARLKeywords::FIRES),
+								grammarAccess.actionSignatureAccess.firesKeyword_5_0.value),
 						event,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -1037,7 +1040,7 @@ class SARLValidator extends AbstractSARLValidator {
 								Messages::SARLValidator_24,
 								event.qualifiedName,
 								Messages::SARLValidator_26,
-								SARLKeywords::FIRES),
+								grammarAccess.actionSignatureAccess.firesKeyword_5_0.value),
 						event,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -1240,7 +1243,7 @@ class SARLValidator extends AbstractSARLValidator {
 							Messages::SARLValidator_24,
 							event.qualifiedName,
 							Messages::SARLValidator_26,
-							SARLKeywords.ON),
+							grammarAccess.behaviorUnitAccess.onKeyword_1.value),
 					event,
 					null,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
