@@ -20,19 +20,30 @@
  */
 package io.sarl.eclipse.wizards.elements.newevent;
 
+import static io.sarl.eclipse.util.Jdt2Ecore.findType;
+import static io.sarl.eclipse.util.Jdt2Ecore.populateInheritanceContext;
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
-import io.sarl.eclipse.wizards.elements.SarlTypeCreatorUtil;
 import io.sarl.lang.core.Event;
+import io.sarl.lang.genmodel.SARLCodeGenerator.GeneratedCode;
+import io.sarl.lang.signature.SignatureKey;
 
-import java.util.Set;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.swt.widgets.Composite;
+
+import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 
 /**
  * Wizard page for creating a new SARL event.
@@ -54,10 +65,10 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 	}
 
 	@Override
-	public void createControl(Composite parent) {
-		Composite composite = createCommonControls(parent);
-		createSuperClassControls(composite, COLUMNS);
-		setControl(composite);
+	public void createPageControls(Composite parent) {
+		createSuperClassControls(parent, COLUMNS);
+		createSeparator(parent, COLUMNS);
+		createMethodStubControls(parent, COLUMNS, true, false);
 	}
 
 	@Override
@@ -72,16 +83,40 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 	}
 
 	@Override
-	protected void getTypeContent(IPackageFragment packageFragment,
-			StringBuilder typeContent, Set<String> imports,
-			String indentation, String lineSeparator) {
-		String content = SarlTypeCreatorUtil.createEventContent(
-				packageFragment.getElementName(),
-				getTypeName(),
+	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
+		GeneratedCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
+		io.sarl.lang.sarl.Event event = this.sarlGenerator.createEvent(code, getTypeName(), getSuperClass());
+		this.sarlGenerator.attachComment(code, event, typeComment);
+
+		Map<SignatureKey, IMethod> constructors;
+
+		String superClass = getSuperClass();
+		if (Strings.isNullOrEmpty(superClass) || !isCreateConstructors()) {
+			constructors = null;
+		} else {
+			constructors = Maps.newTreeMap((Comparator<SignatureKey>) null);
+		}
+
+		populateInheritanceContext(
+				getJavaProject(),
+				// Discarding final operation.
+				null,
+				// Discarding overridable operation.
+				null,
+				// Discarding inherited fields,
+				null,
+				// Discarding the operations to implement.
+				null,
+				constructors,
+				code.getCodeGenerator().getActionSignatureProvider(),
 				getSuperClass(),
-				imports,
-				indentation, lineSeparator);
-		typeContent.append(content);
+				Collections.<String>emptyList());
+
+		if (constructors != null) {
+			Jdt2Ecore.createStandardConstructors(code, constructors.values(), event);
+		}
+
+		code.finalizeScript();
 	}
 
 	@Override

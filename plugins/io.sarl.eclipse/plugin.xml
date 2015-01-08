@@ -13,18 +13,17 @@
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
 		        class="io.sarl.eclipse.wizards.newproject.NewSarlProjectWizard"
-		        finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
 		        icon="icons/sarl_new_project_16.png"
 		        id="io.sarl.eclipse.wizard.newSarlProject"
 		        name="%wizard.name.newSarlProject"
-		        preferredPerspectives="org.eclipse.jdt.ui.JavaPerspective"
+		        finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
+		        preferredPerspectives="org.eclipse.jdt.ui.JavaPerspective,org.eclipse.jdt.ui.JavaBrowsingPerspective"
 		        project="true">
 				<description>%wizard.description.newSarlProject"</description>
 		  </wizard>
 		  <wizard 
 		        category="io.sarl.eclipse.category.wizards"
 		        class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.wizards.newfile.NewSarlFileWizard"
-		        finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
 		        icon="icons/sarl_new_file_16.png"
 		        id="io.sarl.eclipse.wizard.newSarlScript"
 		        name="%wizard.name.newSarlScript">
@@ -248,7 +247,7 @@
           </property>
           <property
                 name="preferenceCustomization"
-                value="plugin_customization.ini"/> 
+                value="plugin_customization.ini"/>
        </product>
     </extension>
 
@@ -257,15 +256,21 @@
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
             targetID="org.eclipse.jdt.ui.JavaPerspective">
-         <newWizardShortcut
-               id="io.sarl.eclipse.wizard.newSarlAgent">
-         </newWizardShortcut>
+         <newWizardShortcut id="io.sarl.eclipse.wizard.newSarlProject"/>
+         <newWizardShortcut id="io.sarl.eclipse.wizard.newSarlAgent"/>
+         <newWizardShortcut id="io.sarl.eclipse.wizard.newSarlBehavior"/>
+         <newWizardShortcut id="io.sarl.eclipse.wizard.newSarlCapacity"/>
+         <newWizardShortcut id="io.sarl.eclipse.wizard.newSarlEvent"/>
+         <newWizardShortcut id="io.sarl.eclipse.wizard.newSarlSkill"/>
       </perspectiveExtension>
       <perspectiveExtension
             targetID="org.eclipse.jdt.ui.JavaBrowsingPerspective">
-         <newWizardShortcut
-               id="io.sarl.eclipse.wizard.newSarlAgent">
-         </newWizardShortcut>
+         <newWizardShortcut id="io.sarl.eclipse.wizard.newSarlProject"/>
+         <newWizardShortcut id="io.sarl.eclipse.wizard.newSarlAgent"/>
+         <newWizardShortcut id="io.sarl.eclipse.wizard.newSarlBehavior"/>
+         <newWizardShortcut id="io.sarl.eclipse.wizard.newSarlCapacity"/>
+         <newWizardShortcut id="io.sarl.eclipse.wizard.newSarlEvent"/>
+         <newWizardShortcut id="io.sarl.eclipse.wizard.newSarlSkill"/>
       </perspectiveExtension>
    </extension>
 

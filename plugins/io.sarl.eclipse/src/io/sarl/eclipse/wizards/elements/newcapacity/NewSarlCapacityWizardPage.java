@@ -22,14 +22,14 @@ package io.sarl.eclipse.wizards.elements.newcapacity;
 
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
-import io.sarl.eclipse.wizards.elements.SarlTypeCreatorUtil;
 import io.sarl.lang.core.Capacity;
+import io.sarl.lang.genmodel.SARLCodeGenerator.GeneratedCode;
 
-import java.util.Set;
-
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.swt.widgets.Composite;
@@ -54,10 +54,8 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 	}
 
 	@Override
-	public void createControl(Composite parent) {
-		Composite composite = createCommonControls(parent);
-		createSuperClassControls(composite, COLUMNS);
-		setControl(composite);
+	public void createPageControls(Composite parent) {
+		createSuperClassControls(parent, COLUMNS);
 	}
 
 	@Override
@@ -72,16 +70,11 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 	}
 
 	@Override
-	protected void getTypeContent(IPackageFragment packageFragment,
-			StringBuilder typeContent, Set<String> imports,
-			String indentation, String lineSeparator) {
-		String content = SarlTypeCreatorUtil.createCapacityContent(
-				packageFragment.getElementName(),
-				getTypeName(),
-				getSuperClass(),
-				imports,
-				indentation, lineSeparator);
-		typeContent.append(content);
+	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
+		GeneratedCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
+		io.sarl.lang.sarl.Capacity capacity = this.sarlGenerator.createCapacity(code, getTypeName(), getSuperClass());
+		this.sarlGenerator.attachComment(code, capacity, typeComment);
+		code.finalizeScript();
 	}
 
 	@Override
@@ -96,7 +89,7 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 
 	@Override
 	protected IType getRootSuperType() throws JavaModelException {
-		return findType(getJavaProject(), Capacity.class.getName());
+		return Jdt2Ecore.findType(getJavaProject(), Capacity.class.getName());
 	}
 
 }

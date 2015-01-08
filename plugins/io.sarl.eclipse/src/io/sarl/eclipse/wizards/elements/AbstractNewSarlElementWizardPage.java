@@ -21,16 +21,17 @@
 package io.sarl.eclipse.wizards.elements;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.lang.SARLKeywords;
+import io.sarl.eclipse.util.Jdt2Ecore;
+import io.sarl.lang.genmodel.SARLCodeGenerator;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -46,6 +47,8 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -57,16 +60,22 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.CompilationUnit;
 import org.eclipse.jdt.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.jdt.internal.core.PackageFragment;
-import org.eclipse.jdt.internal.corext.codemanipulation.StubUtility;
+import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
+import org.eclipse.jdt.internal.ui.wizards.dialogfields.LayoutUtil;
+import org.eclipse.jdt.internal.ui.wizards.dialogfields.SelectionButtonDialogFieldGroup;
 import org.eclipse.jdt.ui.wizards.NewTypeWizardPage;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.formatting.IWhitespaceInformationProvider;
+import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
 
 import com.google.common.base.Strings;
@@ -89,18 +98,32 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	protected static final int COLUMNS = 4;
 
-	private IResource resource;
+	private static final int STEPS = 4;
+	private static final String SETTINGS_CREATECONSTR = "create_constructor"; //$NON-NLS-1$
+	private static final String SETTINGS_CREATEUNIMPLEMENTED = "create_unimplemented"; //$NON-NLS-1$
+
+	/** The generator for the SALR language.
+	 */
+	@Inject
+	protected SARLCodeGenerator sarlGenerator;
 
 	@Inject
-	private FieldInitializerUtil util;
+	private FieldInitializerUtil fieldInitializer;
 
-	private String sarlFileExtension;
+	@Inject
+	private IStorage2UriMapper storage2UriMapper;
+
+	@Inject
+	private IResourceSetProvider resourceSetFactory;
 
 	@Inject
 	private IWhitespaceInformationProvider whitespaceInformationProvider;
 
-	@Inject
-	private IStorage2UriMapper storage2UriMapper;
+	private String sarlFileExtension;
+	private IResource resource;
+	private SelectionButtonDialogFieldGroup methodStubsButtons;
+	private boolean isConstructorCreationEnabled;
+	private boolean isInheritedCreationEnabled;
 
 	/**
 	 * @param typeKind - Signals the kind of the type to be created. Valid kinds are
@@ -148,11 +171,6 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			doStatusUpdate();
 			setFocus();
 		}
-	}
-
-	@Override
-	public final void createType(IProgressMonitor monitor) throws CoreException, InterruptedException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -287,7 +305,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param selection - the current selection.
 	 */
 	protected void init(IStructuredSelection selection) {
-		IJavaElement elem = this.util.getSelectedResource(selection);
+		IJavaElement elem = this.fieldInitializer.getSelectedResource(selection);
 		initContainerPage(elem);
 		initTypePage(elem);
 		//
@@ -308,6 +326,12 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		doStatusUpdate();
 	}
 
+	@Override
+	public boolean isAddComments() {
+		// Create the comments
+		return true;
+	}
+
 	/** Replies if the given type is a subtype of the expected super-type.
 	 * The expected super-type is replied by {@link #getRootSuperType()}.
 	 *
@@ -321,7 +345,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		if (!Strings.isNullOrEmpty(className)) {
 			IType rootType = getRootSuperType();
 			assert (rootType != null);
-			IType type = findType(getJavaProject(), className);
+			IType type = Jdt2Ecore.findType(getJavaProject(), className);
 			assert (type != null);
 			ITypeHierarchy hierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
 			assert (hierarchy != null);
@@ -344,7 +368,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		if (!Strings.isNullOrEmpty(className)) {
 			IType rootType = getRootSuperInterface();
 			assert (rootType != null);
-			IType type = findType(getJavaProject(), className);
+			IType type = Jdt2Ecore.findType(getJavaProject(), className);
 			assert (type != null);
 			ITypeHierarchy hierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
 			assert (hierarchy != null);
@@ -402,21 +426,6 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			status.toArray(tab);
 			this.fSuperInterfacesStatus = SARLEclipsePlugin.getDefault().createMultiStatus(tab);
 		}
-	}
-
-	/** Find a type in the context of the given project.
-	 *
-	 * @param project - the context of the search.
-	 * @param typeName - the name of the type to search.
-	 * @return the type or <code>null</code>.
-	 * @throws JavaModelException if it is not possible to retreive the type.
-	 */
-	@SuppressWarnings("static-method")
-	protected IType findType(IJavaProject project, String typeName) throws JavaModelException {
-		if (project.exists()) {
-			return project.findType(typeName);
-		}
-		return null;
 	}
 
 	@Override
@@ -529,50 +538,32 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		return composite;
 	}
 
+	@Override
+	public final void createControl(Composite parent) {
+		Composite composite = createCommonControls(parent);
+		createPageControls(composite);
+		setControl(composite);
+		readSettings();
+		doStatusUpdate();
+	}
+
+	/** Invoked to create the controls in the page.
+	 *
+	 * @param parent - the container of the controls.
+	 */
+	protected abstract void createPageControls(Composite parent);
+
 	/** Create the type from the data gathered in the wizard.
 	 *
 	 * @return the size of the created file.
 	 */
-	protected int createType() {
+	protected final int asyncCreateType() {
 		final int[] size = {0};
 		IRunnableWithProgress op = new WorkspaceModifyOperation() {
-			private static final int STEPS = 4;
-			@SuppressWarnings("synthetic-access")
 			@Override
 			protected void execute(IProgressMonitor monitor) throws CoreException, InvocationTargetException,
 			InterruptedException {
-				SubMonitor mon = SubMonitor.convert(monitor, STEPS);
-				try {
-					// Create the package if not existing
-					if (!getPackageFragment().exists()) {
-						getPackageFragmentRoot().createPackageFragment(
-								getPackageFragment().getElementName(),
-								true,
-								mon.newChild(1));
-					} else {
-						mon.worked(1);
-					}
-					// Create the file
-					IResource packageResource = getPackageFragment().getResource();
-					IFile sarlFile = ((IFolder) packageResource).getFile(
-							getTypeName() + "." //$NON-NLS-1$
-							+ AbstractNewSarlElementWizardPage.this.sarlFileExtension);
-					URI sarlUri = AbstractNewSarlElementWizardPage.this.storage2UriMapper.getUri(sarlFile);
-					mon.worked(1);
-					// Create the file content
-					String content = createContent(mon.newChild(1), sarlFile,
-							AbstractNewSarlElementWizardPage.this.whitespaceInformationProvider.
-							getIndentationInformation(sarlUri).getIndentString(),
-							AbstractNewSarlElementWizardPage.this.whitespaceInformationProvider.
-							getLineSeparatorInformation(sarlUri).getLineSeparator());
-					size[0] = content.length();
-					sarlFile.create(new ByteArrayInputStream(content.getBytes()), true, mon.newChild(1));
-					setResource(sarlFile);
-				} catch (OperationCanceledException e) {
-					throw new InterruptedException();
-				} catch (Exception e) {
-					throw new InvocationTargetException(e);
-				}
+				size[0] = createSARLType(monitor);
 			}
 		};
 		try {
@@ -582,77 +573,203 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			return 0;
 		} catch (InvocationTargetException e) {
 			Throwable realException = e.getTargetException();
+			SARLEclipsePlugin.getDefault().log(realException);
 			MessageDialog.openError(getShell(), getTitle(), realException.getMessage());
 		}
 		return size[0];
 	}
 
-	/** Invoked to create a stub to a JDT compilation unit.
-	 * This stub could be used to access to the
-	 *
-	 * @return the stub.
-	 */
-	private ICompilationUnit getCompilationUnitStub() {
-		String compilationUnitName = getCompilationUnitName(getTypeName());
-		return new CompilationUnit((PackageFragment) getPackageFragment(),
-				compilationUnitName,
-				DefaultWorkingCopyOwner.PRIMARY);
+	@Override
+	public final void createType(IProgressMonitor monitor) throws CoreException, InterruptedException {
+		createSARLType(monitor);
 	}
 
-	/** Invoked for creating the content of the generated file.
+	/** Create the SARL type.
 	 *
 	 * @param monitor - the progression monitor.
-	 * @param sarlFile - the filename of the generated file.
-	 * @param indentation - the identation.
-	 * @param lineSeparator - the line separator.
-	 * @return the content of the file.
-	 * @throws CoreException when the content cannot be generated.
+	 * @return the size of the generated code.
+	 * @throws CoreException when the creation failed.
+	 * @throws InterruptedException when the operation was canceled.
 	 */
-	private String createContent(IProgressMonitor monitor, IFile sarlFile,
-			String indentation, String lineSeparator) throws CoreException {
-		ICompilationUnit compilationUnit = getCompilationUnitStub();
-		String fileComment = getFileComment(compilationUnit, lineSeparator);
-		String typeComment = getTypeComment(compilationUnit, lineSeparator);
+	public int createSARLType(IProgressMonitor monitor) throws CoreException, InterruptedException {
+		SubMonitor mon = SubMonitor.convert(monitor, STEPS);
+		try {
+			// Create the package if not existing
+			if (!getPackageFragment().exists()) {
+				getPackageFragmentRoot().createPackageFragment(
+						getPackageFragment().getElementName(),
+						true,
+						mon.newChild(1));
+			} else {
+				mon.worked(1);
+			}
+			// Create the file
+			IResource packageResource = getPackageFragment().getResource();
+			IFolder folder = (IFolder) packageResource;
+			IFile sarlFile = folder.getFile(
+					getTypeName() + "." //$NON-NLS-1$
+					+ AbstractNewSarlElementWizardPage.this.sarlFileExtension);
+			URI sarlUri = AbstractNewSarlElementWizardPage.this.storage2UriMapper.getUri(sarlFile);
+			ResourceSet resourceSet = AbstractNewSarlElementWizardPage.this.resourceSetFactory.get(
+					getJavaProject().getProject());
+			Resource ecoreResource = resourceSet.createResource(sarlUri);
+			mon.worked(1);
 
-		IPackageFragment packageFragment = getPackageFragment();
-
-		StringBuilder typeContent = new StringBuilder();
-		Set<String> imports = new TreeSet<>();
-		getTypeContent(packageFragment, typeContent, imports, indentation, lineSeparator);
-
-		String packageDeclaration = SarlTypeCreatorUtil.createPackageDeclaration(packageFragment, lineSeparator);
-
-		StringBuilder head = new StringBuilder();
-		head.append(packageDeclaration);
-		head.append(lineSeparator);
-		if (!imports.isEmpty()) {
-			for (String importElement : imports) {
-				if (!Strings.isNullOrEmpty(importElement)
-						&& !importElement.equals(packageFragment.getElementName())) {
-					head.append(SARLKeywords.IMPORT);
-					head.append(" "); //$NON-NLS-1$
-					head.append(importElement);
-					head.append(lineSeparator);
+			// Create the file content
+			ICompilationUnit compilationUnit = getCompilationUnitStub();
+			String lineSeparator = AbstractNewSarlElementWizardPage.this.whitespaceInformationProvider
+					.getLineSeparatorInformation(sarlUri).getLineSeparator();
+			String fileComment = getFileComment(compilationUnit, lineSeparator);
+			String typeComment = getTypeComment(compilationUnit, lineSeparator);
+			getTypeContent(ecoreResource, typeComment);
+			byte[] content;
+			try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+				if (!Strings.isNullOrEmpty(fileComment)) {
+					baos.write(fileComment.getBytes());
+					baos.write(lineSeparator.getBytes());
 				}
+				ecoreResource.save(baos, null);
+				content = baos.toByteArray();
+			}
+			mon.worked(1);
+
+			sarlFile.create(new ByteArrayInputStream(content), true, mon.newChild(1));
+			setResource(sarlFile);
+
+			saveSettings();
+
+			return content.length;
+		} catch (OperationCanceledException e) {
+			throw new InterruptedException();
+		} catch (CoreException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, e));
+		}
+	}
+
+	/** Read the settings of the dialog box.
+	 */
+	protected void readSettings() {
+		boolean createConstructors = false;
+		boolean createUnimplemented = true;
+		IDialogSettings dialogSettings = getDialogSettings();
+		if (dialogSettings != null) {
+			IDialogSettings section = dialogSettings.getSection(getName());
+			if (section != null) {
+				createConstructors = section.getBoolean(SETTINGS_CREATECONSTR);
+				createUnimplemented = section.getBoolean(SETTINGS_CREATEUNIMPLEMENTED);
 			}
 		}
-		return StubUtility.getCompilationUnitContent(compilationUnit,
-				head.toString(),
-				fileComment, typeComment, typeContent.toString(), lineSeparator);
+		setMethodStubSelection(createConstructors, createUnimplemented, true);
+	}
+
+	/** Save the settings of the dialog box.
+	 */
+	protected void saveSettings() {
+		IDialogSettings dialogSettings = getDialogSettings();
+		if (dialogSettings != null) {
+			IDialogSettings section = dialogSettings.getSection(getName());
+			if (section == null) {
+				section = dialogSettings.addNewSection(getName());
+			}
+			section.put(SETTINGS_CREATECONSTR, isCreateConstructors());
+			section.put(SETTINGS_CREATEUNIMPLEMENTED, isCreateInherited());
+		}
+	}
+
+	private ICompilationUnit getCompilationUnitStub() {
+		String compilationUnitName = getCompilationUnitName(getTypeName());
+		return new CompilationUnit((PackageFragment) getPackageFragment(), compilationUnitName, DefaultWorkingCopyOwner.PRIMARY);
 	}
 
 	/** Invoked for retreiving the definition of the new type.
 	 *
-	 * @param packageFragment - the definition of the package fragment in which the content should be generated.
-	 * @param content - the content of the file. This parameter is filled with the content.
-	 * @param imports - the list of the imports to inject into the file.
-	 * @param indentation - the identation.
-	 * @param lineSeparator - the line separator.
+	 * @param ecoreResource - the Ecore resource of the script.
+	 * @param typeComment - the comment for the type.
+	 * @throws CoreException if an error occurs when creating the content.
 	 */
-	protected abstract void getTypeContent(
-			IPackageFragment packageFragment,
-			StringBuilder content,
-			Set<String> imports,
-			String indentation, String lineSeparator);
+	protected abstract void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException;
+
+	/** Create the controls related to the behavior units to generate.
+	 *
+	 * @param composite - the container of the controls.
+	 * @param nColumns - the number of columns.
+	 * @param enableConstructors - indicates if the constructor creation is enable.
+	 * @param enableInherited - indicates if the inherited operation creation is enable.
+	 */
+	protected void createMethodStubControls(Composite composite, int nColumns,
+			boolean enableConstructors, boolean enableInherited) {
+		this.isConstructorCreationEnabled = enableConstructors;
+		this.isInheritedCreationEnabled = enableInherited;
+		String[] buttonNames;
+		if (enableConstructors && enableInherited) {
+			buttonNames = new String[] {
+					Messages.AbstractNewSarlElementWizardPage_0,
+					Messages.AbstractNewSarlElementWizardPage_1,
+			};
+		} else if (enableInherited && !enableConstructors) {
+			buttonNames = new String[] {
+					Messages.AbstractNewSarlElementWizardPage_1,
+			};
+		} else {
+			assert (enableConstructors);
+			buttonNames = new String[] {
+					Messages.AbstractNewSarlElementWizardPage_0,
+			};
+		}
+		this.methodStubsButtons = new SelectionButtonDialogFieldGroup(SWT.CHECK, buttonNames, 1);
+		this.methodStubsButtons.setLabelText(Messages.AbstractNewSarlElementWizardPage_2);
+
+		Control labelControl = this.methodStubsButtons.getLabelControl(composite);
+		LayoutUtil.setHorizontalSpan(labelControl, nColumns);
+
+		DialogField.createEmptySpace(composite);
+
+		Control buttonGroup = this.methodStubsButtons.getSelectionButtonsGroup(composite);
+		LayoutUtil.setHorizontalSpan(buttonGroup, nColumns - 1);
+	}
+
+	/**
+	 * Returns the current selection state of the 'Create Constructors' checkbox.
+	 *
+	 * @return the selection state of the 'Create Constructors' checkbox
+	 */
+	protected boolean isCreateConstructors() {
+		return this.isConstructorCreationEnabled && this.methodStubsButtons.isSelected(0);
+	}
+
+	/**
+	 * Returns the current selection state of the 'Create inherited abstract methods'
+	 * checkbox.
+	 *
+	 * @return the selection state of the 'Create inherited abstract methods' checkbox
+	 */
+	protected boolean isCreateInherited() {
+		return this.isInheritedCreationEnabled && this.methodStubsButtons.isSelected(
+				this.isConstructorCreationEnabled ? 1 : 0);
+	}
+
+	/**
+	 * Sets the selection state of the method stub checkboxes.
+	 *
+	 * @param createConstructors initial selection state of the 'Create Constructors' checkbox.
+	 * @param createInherited initial selection state of the 'Create inherited abstract methods' checkbox.
+	 * @param canBeModified if <code>true</code> the method stub checkboxes can be changed by
+	 * the user. If <code>false</code> the buttons are "read-only"
+	 */
+	protected void setMethodStubSelection(boolean createConstructors, boolean createInherited, boolean canBeModified) {
+		if (this.methodStubsButtons != null) {
+			if (this.isConstructorCreationEnabled && this.isInheritedCreationEnabled) {
+				this.methodStubsButtons.setSelection(0, createConstructors);
+				this.methodStubsButtons.setSelection(1, createInherited);
+			} else if (this.isInheritedCreationEnabled && !this.isConstructorCreationEnabled) {
+				this.methodStubsButtons.setSelection(0, createInherited);
+			} else {
+				this.methodStubsButtons.setSelection(0, createConstructors);
+			}
+			this.methodStubsButtons.setEnabled(canBeModified);
+		}
+	}
 
 }

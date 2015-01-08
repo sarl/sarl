@@ -36,6 +36,8 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.swt.widgets.Shell;
 
+import com.google.common.annotations.Beta;
+
 /** Dialog box for selecting an agent type.
  *
  * @author $Author: sgalland$
@@ -43,6 +45,7 @@ import org.eclipse.swt.widgets.Shell;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@Beta
 public class SuperAgentSelectionDialog extends OpenTypeSelectionDialog {
 
 	/** Creates new instance of SuperInterfaceSelectionDialog.

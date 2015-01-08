@@ -82,7 +82,7 @@ public abstract class AbstractNewSarlElementWizard extends NewElementWizard {
 
 	@Override
 	public boolean performFinish() {
-		final int size = this.page.createType();
+		final int size = this.page.asyncCreateType();
 		final IResource resource = this.page.getResource();
 		if (resource != null) {
 			selectAndReveal(resource);

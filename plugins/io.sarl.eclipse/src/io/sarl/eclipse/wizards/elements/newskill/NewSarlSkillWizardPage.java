@@ -20,20 +20,31 @@
  */
 package io.sarl.eclipse.wizards.elements.newskill;
 
+import static io.sarl.eclipse.util.Jdt2Ecore.findType;
+import static io.sarl.eclipse.util.Jdt2Ecore.populateInheritanceContext;
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
-import io.sarl.eclipse.wizards.elements.SarlTypeCreatorUtil;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.genmodel.SARLCodeGenerator.GeneratedCode;
+import io.sarl.lang.signature.ActionKey;
+import io.sarl.lang.signature.SignatureKey;
 
-import java.util.Set;
+import java.util.Comparator;
+import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.swt.widgets.Composite;
+
+import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 
 /**
  * Wizard page for creating a new SARL skill.
@@ -55,11 +66,11 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 	}
 
 	@Override
-	public void createControl(Composite parent) {
-		Composite composite = createCommonControls(parent);
-		createSuperClassControls(composite, COLUMNS);
-		createSuperInterfacesControls(composite, COLUMNS);
-		setControl(composite);
+	public void createPageControls(Composite parent) {
+		createSuperClassControls(parent, COLUMNS);
+		createSuperInterfacesControls(parent, COLUMNS);
+		createSeparator(parent, COLUMNS);
+		createMethodStubControls(parent, COLUMNS, true, true);
 	}
 
 	@Override
@@ -75,19 +86,51 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 	}
 
 	@Override
-	protected void getTypeContent(IPackageFragment packageFragment,
-			StringBuilder typeContent, Set<String> imports,
-			String indentation, String lineSeparator) {
-		String content = SarlTypeCreatorUtil.createSkillContent(
-				packageFragment.getElementName(),
-				getTypeName(),
+	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
+		GeneratedCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
+		io.sarl.lang.sarl.Skill skill = this.sarlGenerator.createSkill(code, getTypeName(),
+				getSuperClass(), getSuperInterfaces());
+		this.sarlGenerator.attachComment(code, skill, typeComment);
+
+		Map<ActionKey, IMethod> operationsToImplement;
+		Map<SignatureKey, IMethod> constructors;
+
+		String superClass = getSuperClass();
+		if (Strings.isNullOrEmpty(superClass) || !isCreateConstructors()) {
+			constructors = null;
+		} else {
+			constructors = Maps.newTreeMap((Comparator<SignatureKey>) null);
+		}
+
+		if (isCreateInherited()) {
+			operationsToImplement = Maps.newTreeMap((Comparator<ActionKey>) null);
+		} else {
+			operationsToImplement = null;
+		}
+
+		populateInheritanceContext(
+				getJavaProject(),
+				// Discarding final operation
+				null,
+				// Discarding overridable operation
+				null,
+				// Discarding inherited fields,
+				null,
+				operationsToImplement,
+				constructors,
+				code.getCodeGenerator().getActionSignatureProvider(),
 				getSuperClass(),
-				getSuperInterfaces(),
-				imports,
-				indentation, lineSeparator,
-				// Generate the actions
-				true);
-		typeContent.append(content);
+				getSuperInterfaces());
+
+		if (constructors != null) {
+			Jdt2Ecore.createStandardConstructors(code, constructors.values(), skill);
+		}
+
+		if (operationsToImplement != null) {
+			Jdt2Ecore.createActions(code, operationsToImplement.values(), skill);
+		}
+
+		code.finalizeScript();
 	}
 
 	@Override

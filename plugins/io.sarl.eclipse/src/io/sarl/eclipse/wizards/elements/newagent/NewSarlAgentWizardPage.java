@@ -20,19 +20,28 @@
  */
 package io.sarl.eclipse.wizards.elements.newagent;
 
+import static io.sarl.eclipse.util.Jdt2Ecore.populateInheritanceContext;
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
-import io.sarl.eclipse.wizards.elements.SarlTypeCreatorUtil;
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.genmodel.SARLCodeGenerator.GeneratedCode;
+import io.sarl.lang.signature.ActionKey;
 
-import java.util.Set;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.swt.widgets.Composite;
+
+import com.google.common.collect.Maps;
 
 /**
  * Wizard page for creating a new SARL agent.
@@ -54,10 +63,10 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 	}
 
 	@Override
-	public void createControl(Composite parent) {
-		Composite composite = createCommonControls(parent);
-		createSuperClassControls(composite, COLUMNS);
-		setControl(composite);
+	public void createPageControls(Composite parent) {
+		createSuperClassControls(parent, COLUMNS);
+		createSeparator(parent, COLUMNS);
+		createMethodStubControls(parent, COLUMNS, false, true);
 	}
 
 	@Override
@@ -72,18 +81,39 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 	}
 
 	@Override
-	protected void getTypeContent(IPackageFragment packageFragment,
-			StringBuilder typeContent, Set<String> imports,
-			String indentation, String lineSeparator) {
-		String content = SarlTypeCreatorUtil.createAgentContent(
-				packageFragment.getElementName(),
-				getTypeName(),
+	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
+		GeneratedCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
+		io.sarl.lang.sarl.Agent agent = this.sarlGenerator.createAgent(code, getTypeName(), getSuperClass());
+		this.sarlGenerator.attachComment(code, agent, typeComment);
+
+		Map<ActionKey, IMethod> operationsToImplement;
+
+		if (isCreateInherited()) {
+			operationsToImplement = Maps.newTreeMap((Comparator<ActionKey>) null);
+		} else {
+			operationsToImplement = null;
+		}
+
+		populateInheritanceContext(
+				getJavaProject(),
+				// Discarding final operation.
+				null,
+				// Discarding overridable operation.
+				null,
+				// Discarding inherited fields,
+				null,
+				operationsToImplement,
+				// Discarding super constructors,
+				null,
+				code.getCodeGenerator().getActionSignatureProvider(),
 				getSuperClass(),
-				imports,
-				indentation, lineSeparator,
-				// Generate the Initialize event handler
-				true);
-		typeContent.append(content);
+				Collections.<String>emptyList());
+
+		if (operationsToImplement != null) {
+			Jdt2Ecore.createActions(code, operationsToImplement.values(), agent);
+		}
+
+		code.finalizeScript();
 	}
 
 	@Override
@@ -98,7 +128,7 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 
 	@Override
 	protected IType getRootSuperType() throws JavaModelException {
-		return findType(getJavaProject(), Agent.class.getName());
+		return Jdt2Ecore.findType(getJavaProject(), Agent.class.getName());
 	}
 
 }
