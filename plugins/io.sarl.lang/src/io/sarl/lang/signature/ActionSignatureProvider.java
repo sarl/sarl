@@ -76,6 +76,14 @@ public interface ActionSignatureProvider {
 	SignatureKey createSignatureIDFromJvmModel(boolean isVarargs, EList<JvmFormalParameter> parameters);
 
 	/** Build an identifier for the given parameters.
+	 *
+	 * @param isVarargs - indicates if the signature has a variatic parameter.
+	 * @param provider - the provider of the formal parameters.
+	 * @return the id.
+	 */
+	SignatureKey createSignatureID(boolean isVarargs, FormalParameterProvider provider);
+
+	/** Build an identifier for the given parameters.
 	 * <p>
 	 * The given parameter must following the format of the value given
 	 * by {@link SignatureKey#toString()}.
@@ -125,5 +133,37 @@ public interface ActionSignatureProvider {
 	 * @return the signature or <code>null</code> if none.
 	 */
 	InferredActionSignature getSignatures(ActionNameKey actionID, SignatureKey signatureID);
+
+	/** An object able to provide the name and the type of a formal parameter.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public interface FormalParameterProvider {
+
+		/** Replies the number of formal parameters.
+		 *
+		 * @return the number of formal parameters.
+		 */
+		int getFormalParameterCount();
+
+		/** Replies the name of the formal parameter at the given position.
+		 *
+		 * @param position - the position of the formal parameter.
+		 * @return the name of the formal parameter.
+		 */
+		String getFormalParameterName(int position);
+
+		/** Replies the type of the formal parameter at the given position.
+		 *
+		 * @param position - the position of the formal parameter.
+		 * @param isVarargs - indicates if the parameter should be considered as a vararg parameter.
+		 * @return the type of the formal parameter.
+		 */
+		String getFormalParameterType(int position, boolean isVarargs);
+
+	}
 
 }

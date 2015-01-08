@@ -241,6 +241,27 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 	}
 
 	@Override
+	public SignatureKey createSignatureID(boolean isVarargs,
+			FormalParameterProvider provider) {
+		int count = provider.getFormalParameterCount();
+		SignatureKey sig = new SignatureKey(isVarargs, count);
+		if (count > 0) {
+			if (isVarargs) {
+				--count;
+				for (int i = 0; i < count; ++i) {
+					sig.add(provider.getFormalParameterType(i, false));
+				}
+				sig.add(provider.getFormalParameterType(count, true));
+			} else {
+				for (int i = 0; i < count; ++i) {
+					sig.add(provider.getFormalParameterType(i, false));
+				}
+			}
+		}
+		return sig;
+	}
+
+	@Override
 	public SignatureKey createSignatureIDForVoid() {
 		return new SignatureKey(false, 0);
 	}
