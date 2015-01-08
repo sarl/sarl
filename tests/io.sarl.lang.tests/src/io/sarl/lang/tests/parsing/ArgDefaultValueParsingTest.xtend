@@ -88,6 +88,20 @@ class ArgDefaultValueParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	def void inAgentAction_1p_returnValue() {
+		val mas = '''
+			agent A1 {
+				def myaction(arg : int=4) : boolean {
+					System.out.println(arg)
+					return true
+				}
+			}
+		'''.parse
+		mas.assertNoErrors
+		assertEquals(1, mas.elements.size)
+	}
+
+	@Test
 	def void inAgentAction_5p_0() {
 		val mas = '''
 			agent A1 {

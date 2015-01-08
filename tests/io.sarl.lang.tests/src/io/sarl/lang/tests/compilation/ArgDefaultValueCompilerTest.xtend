@@ -429,6 +429,65 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 	}
 
 	@Test
+	def void inAgentAction_1p_returnValue() {
+		'''
+			agent A1 {
+				def myaction(arg : int=4) : boolean {
+					System.out.println(arg)
+					return true
+				}
+			}
+		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
+			
+			@SuppressWarnings("all")
+			public class A1 extends Agent {
+			  /**
+			   * Default value for the parameter arg
+			   */
+			  @Generated("4")
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4;
+			  
+			  @DefaultValueSource
+			  public boolean myaction(@DefaultValue("0_0") final int arg) {
+			    System.out.println(arg);
+			    return true;
+			  }
+			  
+			  @DefaultValueUse("int")
+			  @Generated
+			  public final boolean myaction() {
+			    return myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   */
+			  @Generated
+			  public A1(final UUID parentID) {
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
+			   */
+			  @Generated
+			  public A1(final UUID parentID, final UUID agentID) {
+			    super(parentID, agentID);
+			  }
+			}
+		''')
+	}
+
+	@Test
 	def void inAgentAction_5p_0() {
 		'''
 			agent A1 {
@@ -781,6 +840,65 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 	}
 
 	@Test
+	def void inAgentAction_5p_returnValue() {
+		'''
+			agent A1 {
+				def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String) : boolean {
+					System.out.println(arg0)
+					return true
+				}
+			}
+		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
+			
+			@SuppressWarnings("all")
+			public class A1 extends Agent {
+			  /**
+			   * Default value for the parameter arg0
+			   */
+			  @Generated("4")
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4;
+			  
+			  @DefaultValueSource
+			  public boolean myaction(@DefaultValue("0_0") final int arg0, final String arg1, final int arg2, final int arg3, final String arg4) {
+			    System.out.println(arg0);
+			    return true;
+			  }
+			  
+			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  @Generated
+			  public final boolean myaction(final String arg1, final int arg2, final int arg3, final String arg4) {
+			    return myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, arg1, arg2, arg3, arg4);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   */
+			  @Generated
+			  public A1(final UUID parentID) {
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
+			   */
+			  @Generated
+			  public A1(final UUID parentID, final UUID agentID) {
+			    super(parentID, agentID);
+			  }
+			}
+		''')
+	}
+
+	@Test
 	def void inAgentAction_3p_vararg_1() {
 		'''
 			agent A1 {
@@ -935,6 +1053,65 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  @DefaultValueUse("int,int,int*")
 			  public final void myaction(final int arg0, final int... arg2) {
 			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   */
+			  @Generated
+			  public A1(final UUID parentID) {
+			    super(parentID, null);
+			  }
+			  
+			  /**
+			   * Construct an agent.
+			   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.
+			   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.
+			   */
+			  @Generated
+			  public A1(final UUID parentID, final UUID agentID) {
+			    super(parentID, agentID);
+			  }
+			}
+		''')
+	}
+
+	@Test
+	def void inAgentAction_3p_vararg_returnValue() {
+		'''
+			agent A1 {
+				def myaction(arg0 : int, arg1 : int=45, arg2 : int*) : boolean {
+					System.out.println(arg0)
+					return true
+				}
+			}
+		'''.assertCompilesTo('''
+			import io.sarl.lang.annotation.DefaultValue;
+			import io.sarl.lang.annotation.DefaultValueSource;
+			import io.sarl.lang.annotation.DefaultValueUse;
+			import io.sarl.lang.annotation.Generated;
+			import io.sarl.lang.core.Agent;
+			import java.util.UUID;
+			
+			@SuppressWarnings("all")
+			public class A1 extends Agent {
+			  /**
+			   * Default value for the parameter arg1
+			   */
+			  @Generated("45")
+			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = 45;
+			  
+			  @DefaultValueSource
+			  public boolean myaction(final int arg0, @DefaultValue("0_1") final int arg1, final int... arg2) {
+			    System.out.println(arg0);
+			    return true;
+			  }
+			  
+			  @DefaultValueUse("int,int,int*")
+			  @Generated
+			  public final boolean myaction(final int arg0, final int... arg2) {
+			    return myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
 			  }
 			  
 			  /**

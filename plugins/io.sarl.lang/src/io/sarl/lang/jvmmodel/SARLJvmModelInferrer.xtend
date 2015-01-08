@@ -116,9 +116,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 
 	@Inject	private CommonTypeComputationServices services
 	
-	@Inject private JvmTypeExtensions typeExtensions;
+	@Inject private JvmTypeExtensions typeExtensions
 	
-	@Inject private SARLExtendedEarlyExitComputer earlyExitComputer;
+	@Inject private SARLExtendedEarlyExitComputer earlyExitComputer
 
 	/**
 	 * The dispatch method {@code infer} is called for each instance of the
@@ -912,6 +912,9 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					)
 					if (!isAbstract) {
 						body = [
+							if (returnValueType.identifier != "void") {
+								append("return ")
+							}
 							append(name)
 							append("(")
 							append(args.join(", "))
