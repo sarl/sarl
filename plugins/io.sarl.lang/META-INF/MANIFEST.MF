@@ -24,6 +24,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: io.sarl.lang,
  io.sarl.lang.controlflow,
  io.sarl.lang.formatting,
+ io.sarl.lang.genmodel,
  io.sarl.lang.jvmmodel,
  io.sarl.lang.parser.antlr,
  io.sarl.lang.parser.antlr.internal,

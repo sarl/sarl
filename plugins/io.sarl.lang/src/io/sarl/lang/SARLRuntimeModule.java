@@ -22,6 +22,7 @@ package io.sarl.lang;
 
 import io.sarl.lang.controlflow.SARLEarlyExitComputer;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
+import io.sarl.lang.genmodel.SARLHiddenTokenSequencer;
 import io.sarl.lang.scoping.batch.SARLImplicitlyImportedFeatures;
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.DefaultActionSignatureProvider;
@@ -29,6 +30,8 @@ import io.sarl.lang.validation.SARLConfigurableIssueCodesProvider;
 import io.sarl.lang.validation.SARLEarlyExitValidator;
 import io.sarl.lang.validation.SARLFeatureNameValidator;
 
+import org.eclipse.xtext.serializer.acceptor.ISyntacticSequenceAcceptor;
+import org.eclipse.xtext.serializer.sequencer.IHiddenTokenSequencer;
 import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
 import org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer;
 import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
@@ -88,6 +91,9 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 		return SARLImplicitlyImportedFeatures.class;
 	}
 
+	/** Replies the type of the provider of the issues that could be configured by the end user.
+	 * @return the type of the provider of configurable issue codes.
+	 */
 	@Override
 	public Class<? extends ConfigurableIssueCodesProvider> bindConfigurableIssueCodesProvider() {
 		assert (
@@ -99,6 +105,9 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 				return SARLConfigurableIssueCodesProvider.class;
 	}
 
+	/** Replies the type of the validator of the feature names.
+	 * @return the type of the validator of the feature names.
+	 */
 	@Override
 	public Class<? extends FeatureNameValidator> bindFeatureNameValidator() {
 		assert (
@@ -108,6 +117,22 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 							+ "the class provided by default by Xbase"; //$NON-NLS-1$
 				//
 				return SARLFeatureNameValidator.class;
+	}
+
+	/** Replies the provider of hidden token sequencer.
+	 * @return the provider of hidden token sequencer.
+	 */
+	@SuppressWarnings("static-method")
+	public Class<? extends IHiddenTokenSequencer> bindHiddenTokenSequencer() {
+		return SARLHiddenTokenSequencer.class;
+	}
+
+	/** Replies the provider of hidden token sequencer.
+	 * @return the provider of hidden token sequencer.
+	 */
+	@SuppressWarnings("static-method")
+	public Class<? extends ISyntacticSequenceAcceptor> bindSyntacticSequenceAcceptor() {
+		return SARLHiddenTokenSequencer.class;
 	}
 
 }
