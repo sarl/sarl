@@ -23,6 +23,7 @@ grammar io.sarl.lang.SARL with org.eclipse.xtext.xbase.Xbase
 generate sarl "http://www.sarl.io/lang/SARL"
 import "http://www.eclipse.org/xtext/common/JavaVMTypes" as jvm
 import "http://www.eclipse.org/xtext/xbase/Xbase" as xbase
+import "http://www.eclipse.org/xtext/xbase/Xtype" as xtype
 
 SarlScript:
 	('package' name=QualifiedName ';'?)?
@@ -119,8 +120,10 @@ Skill returns ImplementingElement:
 	'skill' name=ValidID 
 	(	('extends' superTypes+=JvmParameterizedTypeReference)?
 		&
-		(	'implements' implementedTypes+=JvmParameterizedTypeReference
-			(',' implementedTypes+=JvmParameterizedTypeReference)*
+		(	'implements' 
+				(	implementedTypes+=JvmSuperTypeReference
+					(',' implementedTypes+=JvmSuperTypeReference)*
+				)
 		)?
 	)
 	'{' features+=SkillFeature* '}'
@@ -222,6 +225,19 @@ FormalParameter:
 
 DefaultParameterValue returns xbase::XExpression:
 	XLiteral
+;
+
+//-----------------------------------------------
+// BELOW THIS POINT, THE RULES FROM XTEND ARE COPIED/PASTED
+
+JvmSuperTypeReference returns jvm::JvmTypeReference:
+	JvmParameterizedTypeReference | XFunctionSuperTypeRef
+;
+
+XFunctionSuperTypeRef returns xtype::XFunctionTypeRef:
+  (instanceContext?='(' (paramTypes+=JvmTypeReference 
+  	(',' paramTypes+=JvmTypeReference)*
+  )? ')')? '=>' returnType=JvmTypeReference
 ;
 
 //-----------------------------------------------

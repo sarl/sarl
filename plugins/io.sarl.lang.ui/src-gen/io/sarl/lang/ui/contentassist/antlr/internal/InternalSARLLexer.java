@@ -1910,10 +1910,10 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_HEX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26345:10: ( ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )? )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26345:12: ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26833:10: ( ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )? )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26833:12: ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26345:12: ( '0x' | '0X' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26833:12: ( '0x' | '0X' )
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -1941,7 +1941,7 @@ public class InternalSARLLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26345:13: '0x'
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26833:13: '0x'
                     {
                     match("0x"); 
 
@@ -1949,7 +1949,7 @@ public class InternalSARLLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26345:18: '0X'
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26833:18: '0X'
                     {
                     match("0X"); 
 
@@ -1959,7 +1959,7 @@ public class InternalSARLLexer extends Lexer {
 
             }
 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26345:24: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26833:24: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+
             int cnt2=0;
             loop2:
             do {
@@ -1997,7 +1997,7 @@ public class InternalSARLLexer extends Lexer {
                 cnt2++;
             } while (true);
 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26345:58: ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26833:58: ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -2006,10 +2006,10 @@ public class InternalSARLLexer extends Lexer {
             }
             switch (alt4) {
                 case 1 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26345:59: '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26833:59: '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
                     {
                     match('#'); 
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26345:63: ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26833:63: ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
                     int alt3=2;
                     int LA3_0 = input.LA(1);
 
@@ -2027,7 +2027,7 @@ public class InternalSARLLexer extends Lexer {
                     }
                     switch (alt3) {
                         case 1 :
-                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26345:64: ( 'b' | 'B' ) ( 'i' | 'I' )
+                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26833:64: ( 'b' | 'B' ) ( 'i' | 'I' )
                             {
                             if ( input.LA(1)=='B'||input.LA(1)=='b' ) {
                                 input.consume();
@@ -2051,7 +2051,7 @@ public class InternalSARLLexer extends Lexer {
                             }
                             break;
                         case 2 :
-                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26345:84: ( 'l' | 'L' )
+                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26833:84: ( 'l' | 'L' )
                             {
                             if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
                                 input.consume();
@@ -2090,11 +2090,11 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26347:10: ( '0' .. '9' ( '0' .. '9' | '_' )* )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26347:12: '0' .. '9' ( '0' .. '9' | '_' )*
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26835:10: ( '0' .. '9' ( '0' .. '9' | '_' )* )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26835:12: '0' .. '9' ( '0' .. '9' | '_' )*
             {
             matchRange('0','9'); 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26347:21: ( '0' .. '9' | '_' )*
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26835:21: ( '0' .. '9' | '_' )*
             loop5:
             do {
                 int alt5=2;
@@ -2143,11 +2143,11 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_DECIMAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26349:14: ( RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )? )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26349:16: RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26837:14: ( RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )? )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26837:16: RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
             {
             mRULE_INT(); 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26349:25: ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )?
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26837:25: ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )?
             int alt7=2;
             int LA7_0 = input.LA(1);
 
@@ -2156,7 +2156,7 @@ public class InternalSARLLexer extends Lexer {
             }
             switch (alt7) {
                 case 1 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26349:26: ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26837:26: ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT
                     {
                     if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                         input.consume();
@@ -2167,7 +2167,7 @@ public class InternalSARLLexer extends Lexer {
                         recover(mse);
                         throw mse;}
 
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26349:36: ( '+' | '-' )?
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26837:36: ( '+' | '-' )?
                     int alt6=2;
                     int LA6_0 = input.LA(1);
 
@@ -2200,7 +2200,7 @@ public class InternalSARLLexer extends Lexer {
 
             }
 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26349:58: ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26837:58: ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
             int alt8=3;
             int LA8_0 = input.LA(1);
 
@@ -2212,7 +2212,7 @@ public class InternalSARLLexer extends Lexer {
             }
             switch (alt8) {
                 case 1 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26349:59: ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26837:59: ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' )
                     {
                     if ( input.LA(1)=='B'||input.LA(1)=='b' ) {
                         input.consume();
@@ -2236,7 +2236,7 @@ public class InternalSARLLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26349:87: ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' )
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26837:87: ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' )
                     {
                     if ( input.LA(1)=='D'||input.LA(1)=='F'||input.LA(1)=='L'||input.LA(1)=='d'||input.LA(1)=='f'||input.LA(1)=='l' ) {
                         input.consume();
@@ -2269,10 +2269,10 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26351:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )* )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26351:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26839:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )* )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26839:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26351:11: ( '^' )?
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26839:11: ( '^' )?
             int alt9=2;
             int LA9_0 = input.LA(1);
 
@@ -2281,7 +2281,7 @@ public class InternalSARLLexer extends Lexer {
             }
             switch (alt9) {
                 case 1 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26351:11: '^'
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26839:11: '^'
                     {
                     match('^'); 
 
@@ -2299,7 +2299,7 @@ public class InternalSARLLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26351:44: ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26839:44: ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
             loop10:
             do {
                 int alt10=2;
@@ -2348,10 +2348,10 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26353:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? ) )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26353:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26841:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? ) )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26841:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26353:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26841:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
             int alt15=2;
             int LA15_0 = input.LA(1);
 
@@ -2369,10 +2369,10 @@ public class InternalSARLLexer extends Lexer {
             }
             switch (alt15) {
                 case 1 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26353:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )?
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26841:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )?
                     {
                     match('\"'); 
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26353:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26841:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
                     loop11:
                     do {
                         int alt11=3;
@@ -2388,7 +2388,7 @@ public class InternalSARLLexer extends Lexer {
 
                         switch (alt11) {
                     	case 1 :
-                    	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26353:21: '\\\\' .
+                    	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26841:21: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -2396,7 +2396,7 @@ public class InternalSARLLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26353:28: ~ ( ( '\\\\' | '\"' ) )
+                    	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26841:28: ~ ( ( '\\\\' | '\"' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -2416,7 +2416,7 @@ public class InternalSARLLexer extends Lexer {
                         }
                     } while (true);
 
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26353:44: ( '\"' )?
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26841:44: ( '\"' )?
                     int alt12=2;
                     int LA12_0 = input.LA(1);
 
@@ -2425,7 +2425,7 @@ public class InternalSARLLexer extends Lexer {
                     }
                     switch (alt12) {
                         case 1 :
-                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26353:44: '\"'
+                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26841:44: '\"'
                             {
                             match('\"'); 
 
@@ -2438,10 +2438,10 @@ public class InternalSARLLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26353:49: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )?
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26841:49: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )?
                     {
                     match('\''); 
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26353:54: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26841:54: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
                     loop13:
                     do {
                         int alt13=3;
@@ -2457,7 +2457,7 @@ public class InternalSARLLexer extends Lexer {
 
                         switch (alt13) {
                     	case 1 :
-                    	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26353:55: '\\\\' .
+                    	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26841:55: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -2465,7 +2465,7 @@ public class InternalSARLLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26353:62: ~ ( ( '\\\\' | '\\'' ) )
+                    	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26841:62: ~ ( ( '\\\\' | '\\'' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -2485,7 +2485,7 @@ public class InternalSARLLexer extends Lexer {
                         }
                     } while (true);
 
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26353:79: ( '\\'' )?
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26841:79: ( '\\'' )?
                     int alt14=2;
                     int LA14_0 = input.LA(1);
 
@@ -2494,7 +2494,7 @@ public class InternalSARLLexer extends Lexer {
                     }
                     switch (alt14) {
                         case 1 :
-                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26353:79: '\\''
+                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26841:79: '\\''
                             {
                             match('\''); 
 
@@ -2525,12 +2525,12 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_ML_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26355:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26355:19: '/*' ( options {greedy=false; } : . )* '*/'
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26843:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26843:19: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26355:24: ( options {greedy=false; } : . )*
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26843:24: ( options {greedy=false; } : . )*
             loop16:
             do {
                 int alt16=2;
@@ -2555,7 +2555,7 @@ public class InternalSARLLexer extends Lexer {
 
                 switch (alt16) {
             	case 1 :
-            	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26355:52: .
+            	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26843:52: .
             	    {
             	    matchAny(); 
 
@@ -2585,12 +2585,12 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26357:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26357:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26845:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26845:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
             {
             match("//"); 
 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26357:24: (~ ( ( '\\n' | '\\r' ) ) )*
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26845:24: (~ ( ( '\\n' | '\\r' ) ) )*
             loop17:
             do {
                 int alt17=2;
@@ -2603,7 +2603,7 @@ public class InternalSARLLexer extends Lexer {
 
                 switch (alt17) {
             	case 1 :
-            	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26357:24: ~ ( ( '\\n' | '\\r' ) )
+            	    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26845:24: ~ ( ( '\\n' | '\\r' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -2623,7 +2623,7 @@ public class InternalSARLLexer extends Lexer {
                 }
             } while (true);
 
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26357:40: ( ( '\\r' )? '\\n' )?
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26845:40: ( ( '\\r' )? '\\n' )?
             int alt19=2;
             int LA19_0 = input.LA(1);
 
@@ -2632,9 +2632,9 @@ public class InternalSARLLexer extends Lexer {
             }
             switch (alt19) {
                 case 1 :
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26357:41: ( '\\r' )? '\\n'
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26845:41: ( '\\r' )? '\\n'
                     {
-                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26357:41: ( '\\r' )?
+                    // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26845:41: ( '\\r' )?
                     int alt18=2;
                     int LA18_0 = input.LA(1);
 
@@ -2643,7 +2643,7 @@ public class InternalSARLLexer extends Lexer {
                     }
                     switch (alt18) {
                         case 1 :
-                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26357:41: '\\r'
+                            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26845:41: '\\r'
                             {
                             match('\r'); 
 
@@ -2675,10 +2675,10 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26359:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26359:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26847:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26847:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             {
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26359:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26847:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             int cnt20=0;
             loop20:
             do {
@@ -2732,8 +2732,8 @@ public class InternalSARLLexer extends Lexer {
         try {
             int _type = RULE_ANY_OTHER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26361:16: ( . )
-            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26361:18: .
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26849:16: ( . )
+            // ../io.sarl.lang.ui/src-gen/io/sarl/lang/ui/contentassist/antlr/internal/InternalSARL.g:26849:18: .
             {
             matchAny(); 
 

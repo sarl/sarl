@@ -63,7 +63,6 @@ import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.common.types.JvmOperation
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.naming.QualifiedName
@@ -541,7 +540,7 @@ class SARLValidator extends AbstractSARLValidator {
 	private def boolean checkRedundantInterface(
 			InheritingElement element,
 			EReference structuralElement,
-			JvmParameterizedTypeReference interfaceReference,
+			JvmTypeReference interfaceReference,
 			LightweightTypeReference lightweightInterfaceReference, 
 			List<LightweightTypeReference> knownInterfaces) {
 		var index = 0
@@ -579,8 +578,8 @@ class SARLValidator extends AbstractSARLValidator {
 	private def checkRedundantInterfaces(
 						InheritingElement element, 
 						EReference structuralElement,
-						Iterable<JvmParameterizedTypeReference> interfaces,
-						Iterable<JvmParameterizedTypeReference> superTypes) {
+						Iterable<? extends JvmTypeReference> interfaces,
+						Iterable<? extends JvmTypeReference> superTypes) {
 		var knownInterfaces = newArrayList
 		for(interface : interfaces) {
 			var lightweightInterfaceReference = interface.toLightweightTypeReference

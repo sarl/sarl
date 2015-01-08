@@ -585,7 +585,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	
 	protected def long generateImplementedTypes(JvmGenericType owner, ImplementingElement element, Class<?> mandatoryType) {
 		var serial = 0L
-		for(JvmParameterizedTypeReference implementedType : element.implementedTypes) {
+		for(JvmTypeReference implementedType : element.implementedTypes) {
 			if (implementedType.type instanceof JvmGenericType) {	
 				var reference = toLightweightTypeReference(implementedType, services)
 				if (reference.interfaceType && reference.isSubtypeOf(mandatoryType)) {

@@ -808,12 +808,12 @@ ruleSkill returns [EObject current=null]
     {
     	newLeafNode(otherlv_6, grammarAccess.getSkillAccess().getImplementsKeyword_3_1_0());
     }
-(
+((
 (
 		{ 
-	        newCompositeNode(grammarAccess.getSkillAccess().getImplementedTypesJvmParameterizedTypeReferenceParserRuleCall_3_1_1_0()); 
+	        newCompositeNode(grammarAccess.getSkillAccess().getImplementedTypesJvmSuperTypeReferenceParserRuleCall_3_1_1_0_0()); 
 	    }
-		lv_implementedTypes_7_0=ruleJvmParameterizedTypeReference		{
+		lv_implementedTypes_7_0=ruleJvmSuperTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getSkillRule());
 	        }
@@ -821,21 +821,21 @@ ruleSkill returns [EObject current=null]
        			$current, 
        			"implementedTypes",
         		lv_implementedTypes_7_0, 
-        		"JvmParameterizedTypeReference");
+        		"JvmSuperTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
 )(	otherlv_8=',' 
     {
-    	newLeafNode(otherlv_8, grammarAccess.getSkillAccess().getCommaKeyword_3_1_2_0());
+    	newLeafNode(otherlv_8, grammarAccess.getSkillAccess().getCommaKeyword_3_1_1_1_0());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getSkillAccess().getImplementedTypesJvmParameterizedTypeReferenceParserRuleCall_3_1_2_1_0()); 
+	        newCompositeNode(grammarAccess.getSkillAccess().getImplementedTypesJvmSuperTypeReferenceParserRuleCall_3_1_1_1_1_0()); 
 	    }
-		lv_implementedTypes_9_0=ruleJvmParameterizedTypeReference		{
+		lv_implementedTypes_9_0=ruleJvmSuperTypeReference		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getSkillRule());
 	        }
@@ -843,12 +843,12 @@ ruleSkill returns [EObject current=null]
        			$current, 
        			"implementedTypes",
         		lv_implementedTypes_9_0, 
-        		"JvmParameterizedTypeReference");
+        		"JvmSuperTypeReference");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))*))
+))*)))
 					{ 
 	 				  getUnorderedGroupHelper().returnFromSelection(grammarAccess.getSkillAccess().getUnorderedGroup_3());
 	 				}
@@ -2256,6 +2256,154 @@ ruleDefaultParameterValue returns [EObject current=null]
         afterParserOrEnumRuleCall();
     }
 
+;
+
+
+
+
+
+// Entry rule entryRuleJvmSuperTypeReference
+entryRuleJvmSuperTypeReference returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getJvmSuperTypeReferenceRule()); }
+	 iv_ruleJvmSuperTypeReference=ruleJvmSuperTypeReference 
+	 { $current=$iv_ruleJvmSuperTypeReference.current; } 
+	 EOF 
+;
+
+// Rule JvmSuperTypeReference
+ruleJvmSuperTypeReference returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+	{ 
+	  /* */ 
+	}
+    { 
+        newCompositeNode(grammarAccess.getJvmSuperTypeReferenceAccess().getJvmParameterizedTypeReferenceParserRuleCall_0()); 
+    }
+    this_JvmParameterizedTypeReference_0=ruleJvmParameterizedTypeReference
+    { 
+        $current = $this_JvmParameterizedTypeReference_0.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+    |
+	{ 
+	  /* */ 
+	}
+    { 
+        newCompositeNode(grammarAccess.getJvmSuperTypeReferenceAccess().getXFunctionSuperTypeRefParserRuleCall_1()); 
+    }
+    this_XFunctionSuperTypeRef_1=ruleXFunctionSuperTypeRef
+    { 
+        $current = $this_XFunctionSuperTypeRef_1.current; 
+        afterParserOrEnumRuleCall();
+    }
+)
+;
+
+
+
+
+
+// Entry rule entryRuleXFunctionSuperTypeRef
+entryRuleXFunctionSuperTypeRef returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getXFunctionSuperTypeRefRule()); }
+	 iv_ruleXFunctionSuperTypeRef=ruleXFunctionSuperTypeRef 
+	 { $current=$iv_ruleXFunctionSuperTypeRef.current; } 
+	 EOF 
+;
+
+// Rule XFunctionSuperTypeRef
+ruleXFunctionSuperTypeRef returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(((
+(
+		lv_instanceContext_0_0=	'(' 
+    {
+        newLeafNode(lv_instanceContext_0_0, grammarAccess.getXFunctionSuperTypeRefAccess().getInstanceContextLeftParenthesisKeyword_0_0_0());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getXFunctionSuperTypeRefRule());
+	        }
+       		setWithLastConsumed($current, "instanceContext", true, "(");
+	    }
+
+)
+)((
+(
+		{ 
+	        newCompositeNode(grammarAccess.getXFunctionSuperTypeRefAccess().getParamTypesJvmTypeReferenceParserRuleCall_0_1_0_0()); 
+	    }
+		lv_paramTypes_1_0=ruleJvmTypeReference		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getXFunctionSuperTypeRefRule());
+	        }
+       		add(
+       			$current, 
+       			"paramTypes",
+        		lv_paramTypes_1_0, 
+        		"JvmTypeReference");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(	otherlv_2=',' 
+    {
+    	newLeafNode(otherlv_2, grammarAccess.getXFunctionSuperTypeRefAccess().getCommaKeyword_0_1_1_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getXFunctionSuperTypeRefAccess().getParamTypesJvmTypeReferenceParserRuleCall_0_1_1_1_0()); 
+	    }
+		lv_paramTypes_3_0=ruleJvmTypeReference		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getXFunctionSuperTypeRefRule());
+	        }
+       		add(
+       			$current, 
+       			"paramTypes",
+        		lv_paramTypes_3_0, 
+        		"JvmTypeReference");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))*)?	otherlv_4=')' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getXFunctionSuperTypeRefAccess().getRightParenthesisKeyword_0_2());
+    }
+)?	otherlv_5='=>' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getXFunctionSuperTypeRefAccess().getEqualsSignGreaterThanSignKeyword_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getXFunctionSuperTypeRefAccess().getReturnTypeJvmTypeReferenceParserRuleCall_2_0()); 
+	    }
+		lv_returnType_6_0=ruleJvmTypeReference		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getXFunctionSuperTypeRefRule());
+	        }
+       		set(
+       			$current, 
+       			"returnType",
+        		lv_returnType_6_0, 
+        		"JvmTypeReference");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))
 ;
 
 

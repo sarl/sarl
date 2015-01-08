@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -92,7 +93,7 @@ public class ImplementingElementImpl extends TopElementImpl implements Implement
    * @generated
    * @ordered
    */
-  protected EList<JvmParameterizedTypeReference> implementedTypes;
+  protected EList<JvmTypeReference> implementedTypes;
 
   /**
    * <!-- begin-user-doc -->
@@ -171,11 +172,11 @@ public class ImplementingElementImpl extends TopElementImpl implements Implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<JvmParameterizedTypeReference> getImplementedTypes()
+  public EList<JvmTypeReference> getImplementedTypes()
   {
     if (implementedTypes == null)
     {
-      implementedTypes = new EObjectContainmentEList<JvmParameterizedTypeReference>(JvmParameterizedTypeReference.class, this, SarlPackage.IMPLEMENTING_ELEMENT__IMPLEMENTED_TYPES);
+      implementedTypes = new EObjectContainmentEList<JvmTypeReference>(JvmTypeReference.class, this, SarlPackage.IMPLEMENTING_ELEMENT__IMPLEMENTED_TYPES);
     }
     return implementedTypes;
   }
@@ -246,7 +247,7 @@ public class ImplementingElementImpl extends TopElementImpl implements Implement
         return;
       case SarlPackage.IMPLEMENTING_ELEMENT__IMPLEMENTED_TYPES:
         getImplementedTypes().clear();
-        getImplementedTypes().addAll((Collection<? extends JvmParameterizedTypeReference>)newValue);
+        getImplementedTypes().addAll((Collection<? extends JvmTypeReference>)newValue);
         return;
     }
     super.eSet(featureID, newValue);

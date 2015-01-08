@@ -24,7 +24,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ImplementingElement" eSuperTypes="#//TopElement #//InheritingElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="implementedTypes" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
+        eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EventFeature"/>

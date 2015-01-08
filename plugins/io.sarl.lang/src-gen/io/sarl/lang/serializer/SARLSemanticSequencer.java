@@ -260,6 +260,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				if(context == grammarAccess.getJvmArgumentTypeReferenceRule() ||
 				   context == grammarAccess.getJvmParameterizedTypeReferenceRule() ||
 				   context == grammarAccess.getJvmParameterizedTypeReferenceAccess().getJvmInnerTypeReferenceOuterAction_1_4_0_0_0() ||
+				   context == grammarAccess.getJvmSuperTypeReferenceRule() ||
 				   context == grammarAccess.getJvmTypeReferenceRule() ||
 				   context == grammarAccess.getJvmTypeReferenceAccess().getJvmGenericArrayTypeReferenceComponentTypeAction_0_1_0_0()) {
 					sequence_JvmParameterizedTypeReference(context, (JvmInnerTypeReference) semanticObject); 
@@ -280,6 +281,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				if(context == grammarAccess.getJvmArgumentTypeReferenceRule() ||
 				   context == grammarAccess.getJvmParameterizedTypeReferenceRule() ||
 				   context == grammarAccess.getJvmParameterizedTypeReferenceAccess().getJvmInnerTypeReferenceOuterAction_1_4_0_0_0() ||
+				   context == grammarAccess.getJvmSuperTypeReferenceRule() ||
 				   context == grammarAccess.getJvmTypeReferenceRule() ||
 				   context == grammarAccess.getJvmTypeReferenceAccess().getJvmGenericArrayTypeReferenceComponentTypeAction_0_1_0_0()) {
 					sequence_JvmParameterizedTypeReference(context, (JvmParameterizedTypeReference) semanticObject); 
@@ -1332,7 +1334,12 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 			}
 		else if(semanticObject.eClass().getEPackage() == XtypePackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
 			case XtypePackage.XFUNCTION_TYPE_REF:
-				if(context == grammarAccess.getJvmArgumentTypeReferenceRule() ||
+				if(context == grammarAccess.getJvmSuperTypeReferenceRule() ||
+				   context == grammarAccess.getXFunctionSuperTypeRefRule()) {
+					sequence_XFunctionSuperTypeRef(context, (XFunctionTypeRef) semanticObject); 
+					return; 
+				}
+				else if(context == grammarAccess.getJvmArgumentTypeReferenceRule() ||
 				   context == grammarAccess.getJvmTypeReferenceRule() ||
 				   context == grammarAccess.getXFunctionTypeRefRule()) {
 					sequence_XFunctionTypeRef(context, (XFunctionTypeRef) semanticObject); 
@@ -1567,7 +1574,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	 *     (
 	 *         name=ValidID 
 	 *         superTypes+=JvmParameterizedTypeReference? 
-	 *         (implementedTypes+=JvmParameterizedTypeReference implementedTypes+=JvmParameterizedTypeReference*)? 
+	 *         (implementedTypes+=JvmSuperTypeReference implementedTypes+=JvmSuperTypeReference*)? 
 	 *         features+=SkillFeature*
 	 *     )
 	 */
@@ -1595,6 +1602,15 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 		feeder.accept(grammarAccess.getXForLoopExpressionAccess().getForExpressionXExpressionParserRuleCall_1_0(), semanticObject.getForExpression());
 		feeder.accept(grammarAccess.getXForLoopExpressionAccess().getEachExpressionXExpressionParserRuleCall_3_0(), semanticObject.getEachExpression());
 		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     ((instanceContext?='(' (paramTypes+=JvmTypeReference paramTypes+=JvmTypeReference*)?)? returnType=JvmTypeReference)
+	 */
+	protected void sequence_XFunctionSuperTypeRef(EObject context, XFunctionTypeRef semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

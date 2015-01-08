@@ -4,7 +4,7 @@ package io.sarl.lang.sarl;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +26,7 @@ public interface ImplementingElement extends TopElement, InheritingElement
 {
   /**
    * Returns the value of the '<em><b>Implemented Types</b></em>' containment reference list.
-   * The list contents are of type {@link org.eclipse.xtext.common.types.JvmParameterizedTypeReference}.
+   * The list contents are of type {@link org.eclipse.xtext.common.types.JvmTypeReference}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Implemented Types</em>' containment reference list isn't clear,
@@ -38,6 +38,6 @@ public interface ImplementingElement extends TopElement, InheritingElement
    * @model containment="true"
    * @generated
    */
-  EList<JvmParameterizedTypeReference> getImplementedTypes();
+  EList<JvmTypeReference> getImplementedTypes();
 
 } // ImplementingElement
