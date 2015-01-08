@@ -65,8 +65,13 @@ import com.ibm.icu.util.VersionInfo;
  */
 public final class ModelUtil {
 
-	private static final String PREFIX_ACTION_HANDLE = "_handle_"; //$NON-NLS-1$
-	private static final String PREFIX_ATTRIBUTE_DEFAULT_VALUE = "___FORMAL_PARAMETER_DEFAULT_VALUE_"; //$NON-NLS-1$
+	/** Préfix for the names of the hidden behavior units.
+	 */
+	public static final String PREFIX_ACTION_HANDLE = "_handle_"; //$NON-NLS-1$
+
+	/** Préfix for the names of the hidden fields related to the default values.
+	 */
+	public static final String PREFIX_ATTRIBUTE_DEFAULT_VALUE = "___FORMAL_PARAMETER_DEFAULT_VALUE_"; //$NON-NLS-1$
 
 	private ModelUtil() {
 		//

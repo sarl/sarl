@@ -53,6 +53,7 @@ import io.sarl.lang.signature.ActionSignatureProvider
 import io.sarl.lang.signature.InferredStandardParameter
 import io.sarl.lang.signature.InferredValuedParameter
 import io.sarl.lang.signature.SignatureKey
+import io.sarl.lang.util.ModelUtil
 import java.lang.annotation.Annotation
 import java.text.MessageFormat
 import java.util.List
@@ -71,6 +72,7 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.naming.IQualifiedNameProvider
+import org.eclipse.xtext.serializer.ISerializer
 import org.eclipse.xtext.xbase.XBooleanLiteral
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.compiler.XbaseCompiler
@@ -120,6 +122,8 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 	
 	@Inject private SARLExtendedEarlyExitComputer earlyExitComputer
 
+	@Inject private var ISerializer serializer
+		
 	/**
 	 * The dispatch method {@code infer} is called for each instance of the
 	 * given element's type that is contained in a resource.
@@ -535,7 +539,8 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						else if (vId!==null && !vId.empty) {
 							args.add(
 								originalOperation.declaringType.qualifiedName
-								+".___FORMAL_PARAMETER_DEFAULT_VALUE_"
+								+"."
+								+ModelUtil::PREFIX_ATTRIBUTE_DEFAULT_VALUE
 								+vId)
 						}
 						else {
@@ -712,7 +717,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 			}
 
 			val voidType = typeRef(Void::TYPE)
-			val behName = "_handle_" + unit.name.simpleName + "_" + index
+			val behName = ModelUtil::PREFIX_ACTION_HANDLE + unit.name.simpleName + "_" + index
 			
 			val behaviorMethod = unit.toMethod(behName, voidType) [
 				unit.copyDocumentationTo(it)
@@ -770,7 +775,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 				if (param.defaultValue!==null) {
 					hasDefaultValue = true
 					var namePostPart = actionIndex+"_"+paramIndex
-					var name = "___FORMAL_PARAMETER_DEFAULT_VALUE_"+namePostPart
+					var name = ModelUtil::PREFIX_ATTRIBUTE_DEFAULT_VALUE+namePostPart
 					// FIXME: Hide these attributes into an inner interface.
 					var field = param.defaultValue.toField(name, paramType) [
 						documentation = MessageFormat::format(Messages::SARLJvmModelInferrer_11, paramName)
@@ -821,7 +826,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 		var paramIndex = 0
 		for(parameterSpec : signature) {
 			if (parameterSpec instanceof InferredValuedParameter) {
-				arguments.add("___FORMAL_PARAMETER_DEFAULT_VALUE_"+actionIndex+"_"+paramIndex)
+				arguments.add(ModelUtil::PREFIX_ATTRIBUTE_DEFAULT_VALUE+actionIndex+"_"+paramIndex)
 			}
 			else {
 				val param = parameterSpec.parameter
