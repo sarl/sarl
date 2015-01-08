@@ -53,6 +53,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFac
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
+import com.google.common.base.Strings;
 import com.ibm.icu.util.VersionInfo;
 
 /**
@@ -125,7 +126,6 @@ public final class ModelUtil {
 			Map<ActionKey, JvmOperation> operationsToImplement,
 			Map<SignatureKey, JvmConstructor> superConstructors,
 			ActionSignatureProvider sarlSignatureProvider) {
-
 		// Get the operations that must be implemented
 		if (operationsToImplement != null) {
 			for (JvmTypeReference interfaceReference : jvmElement.getExtendedInterfaces()) {
@@ -607,10 +607,22 @@ public final class ModelUtil {
 	 * @return the default value.
 	 */
 	public static String getDefaultValueForType(LightweightTypeReference type) {
+		if (type != null) {
+			return getDefaultValueForType(type.getIdentifier());
+		}
+		return ""; //$NON-NLS-1$
+	}
+
+	/** Replies the default value for the given type.
+	 *
+	 * @param type - the type for which the default value should be determined.
+	 * @return the default value.
+	 */
+	public static String getDefaultValueForType(String type) {
 		//TODO: Check if a similar function exists in the Xbase library.
 		String defaultValue = ""; //$NON-NLS-1$
-		if (type != null && !type.isPrimitiveVoid()) {
-			switch(type.getIdentifier()) {
+		if (!Strings.isNullOrEmpty(type) && !"void".equals(type)) { //$NON-NLS-1$
+			switch(type) {
 			case "boolean":  //$NON-NLS-1$
 				defaultValue = "true"; //$NON-NLS-1$
 				break;
