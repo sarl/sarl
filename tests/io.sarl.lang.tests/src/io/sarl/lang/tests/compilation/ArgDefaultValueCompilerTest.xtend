@@ -57,7 +57,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
-			  @Generated
+			  @Generated("4")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4;
 			  
 			  @DefaultValueSource
@@ -66,6 +66,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int")
+			  @Generated
 			  public final void myaction() {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
@@ -113,7 +114,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
-			  @Generated
+			  @Generated("4.5f")
 			  private final static float ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4.5f;
 			  
 			  @DefaultValueSource
@@ -122,6 +123,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("float")
+			  @Generated
 			  public final void myaction() {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
@@ -169,7 +171,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
-			  @Generated
+			  @Generated("true")
 			  private final static boolean ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = true;
 			  
 			  @DefaultValueSource
@@ -178,6 +180,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("boolean")
+			  @Generated
 			  public final void myaction() {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
@@ -225,7 +228,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
-			  @Generated
+			  @Generated("4.5")
 			  private final static double ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4.5;
 			  
 			  @DefaultValueSource
@@ -234,6 +237,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("double")
+			  @Generated
 			  public final void myaction() {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
@@ -281,7 +285,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
-			  @Generated
+			  @Generated("450")
 			  private final static long ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 450;
 			  
 			  @DefaultValueSource
@@ -290,6 +294,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("long")
+			  @Generated
 			  public final void myaction() {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
@@ -337,7 +342,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
-			  @Generated
+			  @Generated("\"abcd\"")
 			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = "abcd";
 			  
 			  @DefaultValueSource
@@ -346,6 +351,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("java.lang.String")
+			  @Generated
 			  public final void myaction() {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
@@ -393,7 +399,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
-			  @Generated
+			  @Generated("\'d\'")
 			  private final static char ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 'd';
 			  
 			  @DefaultValueSource
@@ -402,6 +408,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("char")
+			  @Generated
 			  public final void myaction() {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
@@ -508,7 +515,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
-			  @Generated
+			  @Generated("4")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4;
 			  
 			  @DefaultValueSource
@@ -517,6 +524,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  @Generated
 			  public final void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, arg1, arg2, arg3, arg4);
 			  }
@@ -564,7 +572,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg1
 			   */
-			  @Generated
+			  @Generated("\"abc\"")
 			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = "abc";
 			  
 			  @DefaultValueSource
@@ -573,6 +581,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  @Generated
 			  public final void myaction(final int arg0, final int arg2, final int arg3, final String arg4) {
 			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2, arg3, arg4);
 			  }
@@ -620,7 +629,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg2
 			   */
-			  @Generated
+			  @Generated("18")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2 = 18;
 			  
 			  @DefaultValueSource
@@ -629,6 +638,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  @Generated
 			  public final void myaction(final int arg0, final String arg1, final int arg3, final String arg4) {
 			    myaction(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2, arg3, arg4);
 			  }
@@ -676,7 +686,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg3
 			   */
-			  @Generated
+			  @Generated(" 34")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3 = 34;
 			  
 			  @DefaultValueSource
@@ -685,6 +695,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  @Generated
 			  public final void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {
 			    myaction(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3, arg4);
 			  }
@@ -732,7 +743,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg4
 			   */
-			  @Generated
+			  @Generated("\"xyz\"")
 			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_0_4 = "xyz";
 			  
 			  @DefaultValueSource
@@ -741,6 +752,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  @Generated
 			  public final void myaction(final int arg0, final String arg1, final int arg2, final int arg3) {
 			    myaction(arg0, arg1, arg2, arg3, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_4);
 			  }
@@ -788,13 +800,13 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
-			  @Generated
+			  @Generated("4")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4;
 			  
 			  /**
 			   * Default value for the parameter arg3
 			   */
-			  @Generated
+			  @Generated("56")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3 = 56;
 			  
 			  @DefaultValueSource
@@ -803,16 +815,19 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  @Generated
 			  public final void myaction(final String arg1, final int arg2, final String arg4) {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3, arg4);
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  @Generated
 			  public final void myaction(final int arg0, final String arg1, final int arg2, final String arg4) {
 			    myaction(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3, arg4);
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  @Generated
 			  public final void myaction(final String arg1, final int arg2, final int arg3, final String arg4) {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, arg1, arg2, arg3, arg4);
 			  }
@@ -919,7 +934,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg1
 			   */
-			  @Generated
+			  @Generated("45")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = 45;
 			  
 			  @DefaultValueSource
@@ -928,6 +943,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,int,int*")
+			  @Generated
 			  public final void myaction(final int arg0, final int... arg2) {
 			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
 			  }
@@ -975,7 +991,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
-			  @Generated
+			  @Generated("45")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 45;
 			  
 			  @DefaultValueSource
@@ -984,6 +1000,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,int,int*")
+			  @Generated
 			  public final void myaction(final int arg1, final int... arg2) {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, arg1, arg2);
 			  }
@@ -1031,13 +1048,13 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
-			  @Generated
+			  @Generated("45")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 45;
 			  
 			  /**
 			   * Default value for the parameter arg1
 			   */
-			  @Generated
+			  @Generated("56")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = 56;
 			  
 			  @DefaultValueSource
@@ -1046,11 +1063,13 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,int,int*")
+			  @Generated
 			  public final void myaction(final int... arg2) {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
 			  }
 			  
 			  @DefaultValueUse("int,int,int*")
+			  @Generated
 			  public final void myaction(final int arg0, final int... arg2) {
 			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
 			  }
@@ -1157,25 +1176,25 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
-			  @Generated
+			  @Generated("45")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 45;
 			  
 			  /**
 			   * Default value for the parameter arg1
 			   */
-			  @Generated
+			  @Generated("56")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = 56;
 			  
 			  /**
 			   * Default value for the parameter arg2
 			   */
-			  @Generated
+			  @Generated("78")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2 = 78;
 			  
 			  /**
 			   * Default value for the parameter arg3
 			   */
-			  @Generated
+			  @Generated("14")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3 = 14;
 			  
 			  @DefaultValueSource
@@ -1184,21 +1203,25 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,int,int,int")
+			  @Generated
 			  public final void myaction() {
 			    myaction(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3);
 			  }
 			  
 			  @DefaultValueUse("int,int,int,int")
+			  @Generated
 			  public final void myaction(final int arg0) {
 			    myaction(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3);
 			  }
 			  
 			  @DefaultValueUse("int,int,int,int")
+			  @Generated
 			  public final void myaction(final int arg0, final int arg1) {
 			    myaction(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3);
 			  }
 			  
 			  @DefaultValueUse("int,int,int,int")
+			  @Generated
 			  public final void myaction(final int arg0, final int arg1, final int arg2) {
 			    myaction(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3);
 			  }
@@ -1246,7 +1269,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
-			  @Generated
+			  @Generated("4")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4;
 			  
 			  @DefaultValueSource
@@ -1256,6 +1279,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int")
+			  @Generated
 			  public B1() {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
@@ -1284,7 +1308,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
-			  @Generated
+			  @Generated("4.5f")
 			  private final static float ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4.5f;
 			  
 			  @DefaultValueSource
@@ -1294,6 +1318,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("float")
+			  @Generated
 			  public B1() {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
@@ -1322,7 +1347,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
-			  @Generated
+			  @Generated("true")
 			  private final static boolean ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = true;
 			  
 			  @DefaultValueSource
@@ -1332,6 +1357,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("boolean")
+			  @Generated
 			  public B1() {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
@@ -1360,7 +1386,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
-			  @Generated
+			  @Generated("4.5")
 			  private final static double ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4.5;
 			  
 			  @DefaultValueSource
@@ -1370,6 +1396,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("double")
+			  @Generated
 			  public B1() {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
@@ -1398,7 +1425,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
-			  @Generated
+			  @Generated("450")
 			  private final static long ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 450;
 			  
 			  @DefaultValueSource
@@ -1408,6 +1435,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("long")
+			  @Generated
 			  public B1() {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
@@ -1436,7 +1464,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
-			  @Generated
+			  @Generated("\"abcd\"")
 			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = "abcd";
 			  
 			  @DefaultValueSource
@@ -1446,6 +1474,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("java.lang.String")
+			  @Generated
 			  public B1() {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
@@ -1474,7 +1503,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg
 			   */
-			  @Generated
+			  @Generated("\'d\'")
 			  private final static char ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 'd';
 			  
 			  @DefaultValueSource
@@ -1484,6 +1513,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("char")
+			  @Generated
 			  public B1() {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
@@ -1512,7 +1542,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
-			  @Generated
+			  @Generated("4")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4;
 			  
 			  @DefaultValueSource
@@ -1522,6 +1552,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  @Generated
 			  public B1(final String arg1, final int arg2, final int arg3, final String arg4) {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, arg1, arg2, arg3, arg4);
 			  }
@@ -1550,7 +1581,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg1
 			   */
-			  @Generated
+			  @Generated("\"abc\"")
 			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = "abc";
 			  
 			  @DefaultValueSource
@@ -1560,6 +1591,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  @Generated
 			  public B1(final int arg0, final int arg2, final int arg3, final String arg4) {
 			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2, arg3, arg4);
 			  }
@@ -1588,7 +1620,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg2
 			   */
-			  @Generated
+			  @Generated("18")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2 = 18;
 			  
 			  @DefaultValueSource
@@ -1598,6 +1630,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  @Generated
 			  public B1(final int arg0, final String arg1, final int arg3, final String arg4) {
 			    this(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2, arg3, arg4);
 			  }
@@ -1626,7 +1659,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg3
 			   */
-			  @Generated
+			  @Generated(" 34")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3 = 34;
 			  
 			  @DefaultValueSource
@@ -1636,6 +1669,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  @Generated
 			  public B1(final int arg0, final String arg1, final int arg2, final String arg4) {
 			    this(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3, arg4);
 			  }
@@ -1664,7 +1698,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg4
 			   */
-			  @Generated
+			  @Generated("\"xyz\"")
 			  private final static String ___FORMAL_PARAMETER_DEFAULT_VALUE_0_4 = "xyz";
 			  
 			  @DefaultValueSource
@@ -1674,6 +1708,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  @Generated
 			  public B1(final int arg0, final String arg1, final int arg2, final int arg3) {
 			    this(arg0, arg1, arg2, arg3, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_4);
 			  }
@@ -1702,13 +1737,13 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
-			  @Generated
+			  @Generated("4")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4;
 			  
 			  /**
 			   * Default value for the parameter arg3
 			   */
-			  @Generated
+			  @Generated("56")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3 = 56;
 			  
 			  @DefaultValueSource
@@ -1718,16 +1753,19 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  @Generated
 			  public B1(final String arg1, final int arg2, final String arg4) {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3, arg4);
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  @Generated
 			  public B1(final int arg0, final String arg1, final int arg2, final String arg4) {
 			    this(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3, arg4);
 			  }
 			  
 			  @DefaultValueUse("int,java.lang.String,int,int,java.lang.String")
+			  @Generated
 			  public B1(final String arg1, final int arg2, final int arg3, final String arg4) {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, arg1, arg2, arg3, arg4);
 			  }
@@ -1756,7 +1794,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg1
 			   */
-			  @Generated
+			  @Generated("45")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = 45;
 			  
 			  @DefaultValueSource
@@ -1766,6 +1804,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,int,int*")
+			  @Generated
 			  public B1(final int arg0, final int... arg2) {
 			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
 			  }
@@ -1794,7 +1833,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
-			  @Generated
+			  @Generated("45")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 45;
 			  
 			  @DefaultValueSource
@@ -1804,6 +1843,7 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,int,int*")
+			  @Generated
 			  public B1(final int arg1, final int... arg2) {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, arg1, arg2);
 			  }
@@ -1832,13 +1872,13 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
-			  @Generated
+			  @Generated("45")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 45;
 			  
 			  /**
 			   * Default value for the parameter arg1
 			   */
-			  @Generated
+			  @Generated("56")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = 56;
 			  
 			  @DefaultValueSource
@@ -1848,11 +1888,13 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,int,int*")
+			  @Generated
 			  public B1(final int... arg2) {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
 			  }
 			  
 			  @DefaultValueUse("int,int,int*")
+			  @Generated
 			  public B1(final int arg0, final int... arg2) {
 			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
 			  }
@@ -1881,25 +1923,25 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
-			  @Generated
+			  @Generated("45")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 45;
 			  
 			  /**
 			   * Default value for the parameter arg1
 			   */
-			  @Generated
+			  @Generated("56")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = 56;
 			  
 			  /**
 			   * Default value for the parameter arg2
 			   */
-			  @Generated
+			  @Generated("78")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2 = 78;
 			  
 			  /**
 			   * Default value for the parameter arg3
 			   */
-			  @Generated
+			  @Generated("14")
 			  private final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3 = 14;
 			  
 			  @DefaultValueSource
@@ -1909,21 +1951,25 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,int,int,int")
+			  @Generated
 			  public B1() {
 			    this(___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3);
 			  }
 			  
 			  @DefaultValueUse("int,int,int,int")
+			  @Generated
 			  public B1(final int arg0) {
 			    this(arg0, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3);
 			  }
 			  
 			  @DefaultValueUse("int,int,int,int")
+			  @Generated
 			  public B1(final int arg0, final int arg1) {
 			    this(arg0, arg1, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3);
 			  }
 			  
 			  @DefaultValueUse("int,int,int,int")
+			  @Generated
 			  public B1(final int arg0, final int arg1, final int arg2) {
 			    this(arg0, arg1, arg2, ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3);
 			  }
@@ -1949,31 +1995,34 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
-			  @Generated
+			  @Generated("45")
 			  public final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 45;
 			  
 			  /**
 			   * Default value for the parameter arg1
 			   */
-			  @Generated
+			  @Generated("56")
 			  public final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = 56;
 			  
 			  /**
 			   * Default value for the parameter arg3
 			   */
-			  @Generated
+			  @Generated("14")
 			  public final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_3 = 14;
 			  
 			  @DefaultValueSource
 			  public abstract void myaction(@DefaultValue("0_0") final int arg0, @DefaultValue("0_1") final int arg1, final int arg2, @DefaultValue("0_3") final int arg3);
 			  
 			  @DefaultValueUse("int,int,int,int")
+			  @Generated
 			  public abstract void myaction(final int arg2);
 			  
 			  @DefaultValueUse("int,int,int,int")
+			  @Generated
 			  public abstract void myaction(final int arg0, final int arg2);
 			  
 			  @DefaultValueUse("int,int,int,int")
+			  @Generated
 			  public abstract void myaction(final int arg0, final int arg1, final int arg2);
 			}
 		''')
@@ -1993,22 +2042,24 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter arg0
 			   */
-			  @Generated
+			  @Generated("45")
 			  public final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 45;
 			  
 			  /**
 			   * Default value for the parameter arg1
 			   */
-			  @Generated
+			  @Generated("56")
 			  public final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_1 = 56;
 			  
 			  @DefaultValueSource
 			  public abstract void myaction(@DefaultValue("0_0") final int arg0, @DefaultValue("0_1") final int arg1, final int... arg2);
 			  
 			  @DefaultValueUse("int,int,int*")
+			  @Generated
 			  public abstract void myaction(final int... arg2);
 			  
 			  @DefaultValueUse("int,int,int*")
+			  @Generated
 			  public abstract void myaction(final int arg0, final int... arg2);
 			}
 		'''
@@ -2027,11 +2078,13 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int,int,int*")
+			  @Generated
 			  public final void myaction(final int... arg2) {
 			    myaction(C1.___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, C1.___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
 			  }
 			  
 			  @DefaultValueUse("int,int,int*")
+			  @Generated
 			  public final void myaction(final int arg0, final int... arg2) {
 			    myaction(arg0, C1.___FORMAL_PARAMETER_DEFAULT_VALUE_0_1, arg2);
 			  }
@@ -2083,13 +2136,14 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter a
 			   */
-			  @Generated
+			  @Generated("4")
 			  public final static int ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 4;
 			  
 			  @DefaultValueSource
 			  public abstract void myaction1(@DefaultValue("0_0") final int a);
 			  
 			  @DefaultValueUse("int")
+			  @Generated
 			  public abstract void myaction1();
 			}
 		'''
@@ -2105,13 +2159,14 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  /**
 			   * Default value for the parameter b
 			   */
-			  @Generated
+			  @Generated("6")
 			  public final static float ___FORMAL_PARAMETER_DEFAULT_VALUE_0_0 = 6;
 			  
 			  @DefaultValueSource
 			  public abstract void myaction2(@DefaultValue("0_0") final float b, final boolean c);
 			  
 			  @DefaultValueUse("float,boolean")
+			  @Generated
 			  public abstract void myaction2(final boolean c);
 			}
 		'''
@@ -2133,11 +2188,13 @@ class ArgDefaultValueCompilerTest extends AbstractSarlTest {
 			  }
 			  
 			  @DefaultValueUse("int")
+			  @Generated
 			  public final void myaction1() {
 			    myaction1(C1.___FORMAL_PARAMETER_DEFAULT_VALUE_0_0);
 			  }
 			  
 			  @DefaultValueUse("float,boolean")
+			  @Generated
 			  public final void myaction2(final boolean c) {
 			    myaction2(C2.___FORMAL_PARAMETER_DEFAULT_VALUE_0_0, c);
 			  }

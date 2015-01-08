@@ -554,6 +554,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						] //(new CallingFunctionGenerator(originalOperation.simpleName, args))
 					}
 					op.annotations += annotationRef(typeof(DefaultValueUse), originalSignature)
+					op.annotations += annotationRef(typeof(Generated))
 					output.members += op				
 					actIndex++
 				}
@@ -782,8 +783,13 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 							visibility = JvmVisibility::PRIVATE
 						}
 						initializer = param.defaultValue
+						if (param.defaultValue !== null) {
+							annotations += annotationRef(
+								typeof(Generated),
+								serializer.serialize(param.defaultValue))
+						}
 					]
-					field.annotations += annotationRef(typeof(Generated))
+					
 					actionContainer.members += field
 					if (owner instanceof JvmConstructor) {
 						readAndWriteTracking.markInitialized(field, owner)
@@ -846,10 +852,11 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 									Map<ActionKey,JvmOperation> implementedOperations,
 									(ActionKey) => boolean inheritedOperation) {
 			
-		var returnValueType = returnType
-		if (returnValueType == null) {
-			returnValueType = typeRef(Void::TYPE)
+		var tmpReturnValueType = returnType
+		if (returnType == null) {
+			tmpReturnValueType = typeRef(Void::TYPE)
 		}
+		val returnValueType = tmpReturnValueType
 		
 		val actionKey = sarlSignatureProvider.createFunctionID(owner, name)
 				
@@ -925,6 +932,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 						typeof(DefaultValueUse), 
 						otherSignatures.formalParameterKey.toString
 					)
+					annotations += annotationRef(typeof(Generated))
 				]
 				//TODO: Generalize the detection of the EarlyExit
 				if (isEarlyExit) {
@@ -987,6 +995,7 @@ class SARLJvmModelInferrer extends AbstractModelInferrer {
 					typeof(DefaultValueUse),
 					otherSignatures.formalParameterKey.toString
 				)
+				annotations += annotationRef(typeof(Generated))
 			]
 			owner.members += op
 			if (generatedConstructors !== null) {

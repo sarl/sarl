@@ -38,5 +38,12 @@ import java.lang.annotation.Target;
 @Target({ ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Generated {
-	//
+
+	/** Replies the SARL code that is the cause of the generation.
+	 *
+	 * The value may be an empty string if the SARL code is unknown or too long to
+	 * be stored in the annotation.
+	 */
+	String value() default "";
+
 }
