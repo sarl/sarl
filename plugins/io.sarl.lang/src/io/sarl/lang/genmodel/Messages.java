@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.ui.quickfix;
+package io.sarl.lang.genmodel;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -31,27 +31,7 @@ import org.eclipse.osgi.util.NLS;
  */
 @SuppressWarnings("all")
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.lang.ui.quickfix.messages"; //$NON-NLS-1$
-	public static String SARLQuickfixProvider_0;
-	public static String SARLQuickfixProvider_1;
-	public static String SARLQuickfixProvider_2;
-	public static String SARLQuickfixProvider_3;
-	public static String SARLQuickfixProvider_4;
-	public static String SARLQuickfixProvider_5;
-	public static String SARLQuickfixProvider_6;
-	public static String SARLQuickfixProvider_7;
-	public static String SARLQuickfixProvider_8;
-	public static String SARLQuickfixProvider_9;
-	public static String SARLQuickfixProvider_10;
-	public static String SARLQuickfixProvider_11;
-	public static String SARLQuickfixProvider_12;
-	public static String SARLQuickfixProvider_13;
-	public static String SARLQuickfixProvider_14;
-	public static String SARLQuickfixProvider_15;
-	public static String SARLQuickfixProvider_16;
-	public static String SARLQuickfixProvider_17;
-	public static String SARLQuickfixProvider_18;
-	public static String SARLQuickfixProvider_19;
+	private static final String BUNDLE_NAME = "io.sarl.lang.genmodel.messages"; //$NON-NLS-1$
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
@@ -59,4 +39,6 @@ public class Messages extends NLS {
 
 	private Messages() {
 	}
+
+	public static String SARLCodeGenerator_0;
 }

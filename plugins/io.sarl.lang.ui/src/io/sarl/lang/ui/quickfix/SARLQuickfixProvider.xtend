@@ -724,7 +724,7 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		if (issue.data!=null && issue.data.length==2) {
 			val expectedType = issue.data.get(1)
 			var msg = MessageFormat::format(
-						Messages::SARLQuickfixProvider_18,
+						Messages::SARLQuickfixProvider_17,
 						Messages::SARLQuickfixProvider_11,
 						expectedType)
 			acceptor.accept(issue, msg, msg, null) [ element, context |
@@ -737,12 +737,12 @@ class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	@Fix(IssueCodes.INVALID_USE_OF_VAR_ARG)
 	def fixNoDefaultValueForVariadicParameter(Issue issue, IssueResolutionAcceptor acceptor) {
 		var String msg
-		msg = Messages::SARLQuickfixProvider_19
+		msg = Messages::SARLQuickfixProvider_18
 		acceptor.accept(issue, msg, msg, null) [ element, context |
 			var document = context.xtextDocument
 			removeElementWithPreviousSpaces(issue, document)
 		]
-		msg = Messages::SARLQuickfixProvider_20
+		msg = Messages::SARLQuickfixProvider_19
 		acceptor.accept(issue, msg, msg, null) [ element, context |
 			var container = EcoreUtil2.getContainerOfType(element, typeof(ParameterizedFeature))
 			if (container!==null && !container.params.empty) {
