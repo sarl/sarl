@@ -22,6 +22,7 @@ package io.sarl.lang.genmodel;
 
 
 import io.sarl.lang.sarl.Action;
+import io.sarl.lang.sarl.ActionSignature;
 import io.sarl.lang.sarl.Agent;
 import io.sarl.lang.sarl.Attribute;
 import io.sarl.lang.sarl.Behavior;
@@ -345,6 +346,9 @@ public class SARLCodeGenerator {
 	 * @return the SARL attribute.
 	 */
 	public Attribute createVariable(GeneratedCode code, FeatureContainer container, String name, String type)  {
+		if (Strings.isNullOrEmpty(type)) {
+			throw new IllegalArgumentException("the parameter 'type' must contains a valid type"); //$NON-NLS-1$
+		}
 		Attribute attribute = SarlFactory.eINSTANCE.createAttribute();
 		attribute.setWriteable(true);
 		attribute.setName(name);
@@ -363,6 +367,9 @@ public class SARLCodeGenerator {
 	 */
 	@SuppressWarnings("static-method")
 	public Attribute createVariable(GeneratedCode code, FeatureContainer container, String name, XExpression initialValue)  {
+		if (initialValue == null) {
+			throw new IllegalArgumentException("the parameter 'initialValue' must not be null"); //$NON-NLS-1$
+		}
 		Attribute attribute = SarlFactory.eINSTANCE.createAttribute();
 		attribute.setWriteable(true);
 		attribute.setName(name);
@@ -380,6 +387,9 @@ public class SARLCodeGenerator {
 	 * @return the SARL attribute.
 	 */
 	public Attribute createValue(GeneratedCode code, FeatureContainer container, String name, String type)  {
+		if (Strings.isNullOrEmpty(type)) {
+			throw new IllegalArgumentException("the parameter 'type' must contains a valid type"); //$NON-NLS-1$
+		}
 		Attribute attribute = SarlFactory.eINSTANCE.createAttribute();
 		attribute.setWriteable(false);
 		attribute.setName(name);
@@ -398,6 +408,9 @@ public class SARLCodeGenerator {
 	 */
 	@SuppressWarnings("static-method")
 	public Attribute createValue(GeneratedCode code, FeatureContainer container, String name, XExpression initialValue)  {
+		if (initialValue == null) {
+			throw new IllegalArgumentException("the parameter 'initialValue' must not be null"); //$NON-NLS-1$
+		}
 		Attribute attribute = SarlFactory.eINSTANCE.createAttribute();
 		attribute.setWriteable(false);
 		attribute.setName(name);
@@ -417,6 +430,9 @@ public class SARLCodeGenerator {
 	 */
 	public FormalParameter createFormalParameter(GeneratedCode code, ParameterizedFeature container,
 			String name, String type, XExpression defaultValue)  {
+		if (Strings.isNullOrEmpty(type)) {
+			throw new IllegalArgumentException("the parameter 'type' must contains a valid type"); //$NON-NLS-1$
+		}
 		FormalParameter parameter = SarlFactory.eINSTANCE.createFormalParameter();
 		parameter.setName(name);
 		parameter.setParameterType(newTypeRef(code, type, container));
@@ -456,6 +472,9 @@ public class SARLCodeGenerator {
 	 */
 	public FormalParameter createFormalParameter(GeneratedCode code, ParameterizedFeature container,
 			String name, String type, String defaultValue, ResourceSet resourceSet)  {
+		if (Strings.isNullOrEmpty(type)) {
+			throw new IllegalArgumentException("the parameter 'type' must contains a valid type"); //$NON-NLS-1$
+		}
 		return createFormalParameter(code, container, name, type,
 				createXExpression(code, defaultValue, resourceSet));
 	}
@@ -504,6 +523,9 @@ public class SARLCodeGenerator {
 	 * @return the SARL formal parameter.
 	 */
 	public FormalParameter createVarArgs(GeneratedCode code, ParameterizedFeature container, String name, String type)  {
+		if (Strings.isNullOrEmpty(type)) {
+			throw new IllegalArgumentException("the parameter 'type' must contains a valid type"); //$NON-NLS-1$
+		}
 		FormalParameter parameter = SarlFactory.eINSTANCE.createFormalParameter();
 		parameter.setName(name);
 		parameter.setParameterType(newTypeRef(code, type, container));
@@ -549,6 +571,26 @@ public class SARLCodeGenerator {
 		return action;
 	}
 
+	/** Create a SARL action signature in the script.
+	 *
+	 * @param code - the generated code in which the agent must be created.
+	 * @param container - the container of the feature.
+	 * @param actionName - the name of the action.
+	 * @param returnType - the name of the return type, or <code>null</code> if the action's return type is void.
+	 * @return the SARL action signature.
+	 */
+	public ActionSignature createActionSignature(GeneratedCode code, FeatureContainer container, String actionName,
+			String returnType)  {
+		ActionSignature actionSignature = SarlFactory.eINSTANCE.createActionSignature();
+		actionSignature.setName(actionName);
+		String defaultValue = ModelUtil.getDefaultValueForType(returnType);
+		if (!Strings.isNullOrEmpty(defaultValue)) {
+			actionSignature.setType(newTypeRef(code, returnType, container));
+		}
+		container.getFeatures().add(actionSignature);
+		return actionSignature;
+	}
+
 	/** Create a SARL constructor in the script.
 	 *
 	 * @param code - the generated code in which the agent must be created.
@@ -578,25 +620,32 @@ public class SARLCodeGenerator {
 	public XExpression getDefaultXExpressionForType(GeneratedCode code, EObject context, String type) {
 		//TODO: Check if a similar function exists in the Xbase library.
 		XExpression expr = null;
-		if (type != null && !"void".equals(type)) { //$NON-NLS-1$
+		if (type != null && !"void".equals(type) && !Void.class.getName().equals(type)) { //$NON-NLS-1$
 			switch(type) {
 			case "boolean":  //$NON-NLS-1$
+			case "java.lang.Boolean":  //$NON-NLS-1$
 				XBooleanLiteral booleanLiteral = XbaseFactory.eINSTANCE.createXBooleanLiteral();
 				booleanLiteral.setIsTrue(false);
 				expr = booleanLiteral;
 				break;
 			case "float":  //$NON-NLS-1$
+			case "java.lang.Float":  //$NON-NLS-1$
 				XNumberLiteral numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 				numberLiteral.setValue("0.0f"); //$NON-NLS-1$
 				expr = numberLiteral;
 				break;
 			case "double":  //$NON-NLS-1$
+			case "java.lang.Double":  //$NON-NLS-1$
+			case "java.lang.BigDecimal":  //$NON-NLS-1$
 				numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 				numberLiteral.setValue("0.0"); //$NON-NLS-1$
 				expr = numberLiteral;
 				break;
 			case "int":  //$NON-NLS-1$
 			case "long":  //$NON-NLS-1$
+			case "java.lang.Integer":  //$NON-NLS-1$
+			case "java.lang.Long":  //$NON-NLS-1$
+			case "java.lang.BigInteger":  //$NON-NLS-1$
 				numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 				numberLiteral.setValue("0"); //$NON-NLS-1$
 				expr = numberLiteral;
@@ -604,6 +653,9 @@ public class SARLCodeGenerator {
 			case "byte": //$NON-NLS-1$
 			case "short":  //$NON-NLS-1$
 			case "char":  //$NON-NLS-1$
+			case "java.lang.Byte":  //$NON-NLS-1$
+			case "java.lang.Short":  //$NON-NLS-1$
+			case "java.lang.Character":  //$NON-NLS-1$
 				numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 				numberLiteral.setValue("0"); //$NON-NLS-1$
 				XCastedExpression castExpression = XbaseFactory.eINSTANCE.createXCastedExpression();
