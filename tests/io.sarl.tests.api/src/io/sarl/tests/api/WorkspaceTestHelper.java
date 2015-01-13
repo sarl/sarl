@@ -24,10 +24,12 @@ import static com.google.common.collect.Sets.newHashSet;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.TopElement;
 import io.sarl.lang.ui.internal.SARLActivator;
+import io.sarl.lang.ui.preferences.SARLProjectPreferences;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -86,16 +88,24 @@ public class WorkspaceTestHelper extends Assert {
 	/** List of the Bundles that are required for testing.
 	 */
 	public static final String[] DEFAULT_REQUIRED_BUNDLES = new String[] {
-			"com.google.inject", //$NON-NLS-1$
-			"org.eclipse.xtext.xbase.lib", //$NON-NLS-1$
-			"io.sarl.lang", //$NON-NLS-1$
-			"io.sarl.lang.core", //$NON-NLS-1$
-			"io.sarl.lang.ui"}; //$NON-NLS-1$
-	
+		"com.google.inject", //$NON-NLS-1$
+		"org.eclipse.xtext.xbase.lib", //$NON-NLS-1$
+		"io.sarl.lang", //$NON-NLS-1$
+		"io.sarl.lang.core", //$NON-NLS-1$
+	"io.sarl.lang.ui"}; //$NON-NLS-1$
+
+	/** Name of the Eclipse project in which the tests will be done.
+	 */
+	public static final String SARL_NATURE = "io.sarl.eclipse.SARLProjectNature"; //$NON-NLS-1$
+
 	/** Relative path of the source folder.
 	 */
 	public static String SOURCE_FOLDER = "src"; //$NON-NLS-1$
-	
+
+	/** Relative path of the generated source folder.
+	 */
+	public static String GENERATED_SOURCE_FOLDER = "src-gen"; //$NON-NLS-1$
+
 	private Set<IFile> files = newHashSet();
 
 	@Inject
@@ -113,7 +123,7 @@ public class WorkspaceTestHelper extends Assert {
 
 	@Inject
 	private IResourceSetProvider resourceSetProvider;
-	
+
 	/** Replies the SARL injector.
 	 * 
 	 * @return the injector.
@@ -132,45 +142,60 @@ public class WorkspaceTestHelper extends Assert {
 			injector.injectMembers(bindableObject);
 		}
 	}
-	
+
 	/** Create a project in the workspace with the dependencies
 	 * defined in {@link #DEFAULT_REQUIRED_BUNDLES}.
 	 * 
 	 * @param name - the name of the project.
+	 * @param addSARLNature - indicates if the project should have the project nature.
 	 * @return the project.
 	 * @throws CoreException
-	 * @see #createProjectWithDependencies(String, String...)
+	 * @see #createProjectWithDependencies(String, boolean, String...)
 	 */
-	public static IProject createProject(String name) throws CoreException {
-		return createProjectWithDependencies(name, DEFAULT_REQUIRED_BUNDLES);
+	public static IProject createProject(String name, boolean addSARLNature) throws CoreException {
+		return createProjectWithDependencies(name, addSARLNature, DEFAULT_REQUIRED_BUNDLES);
 	}
 
 	/** Create a project in the workspace with the given dependencies.
 	 * 
 	 * @param name - the name of the project.
+	 * @param addSARLNature - indicates if the project should have the project nature.
 	 * @param requiredBundles - the bundles required by the project. 
 	 * @return the project.
 	 * @throws CoreException
-	 * @see #createProject(String)
+	 * @see #createProject(String,boolean)
 	 * @see #DEFAULT_REQUIRED_BUNDLES
 	 */
-	public static IProject createProjectWithDependencies(String name, String... requiredBundles) throws CoreException {
+	public static IProject createProjectWithDependencies(String name, boolean addSARLNature, String... requiredBundles) throws CoreException {
 		Injector injector = getSARLInjector();
 		JavaProjectFactory projectFactory = injector.getInstance(JavaProjectFactory.class);
 		projectFactory.setProjectName(name);
-		projectFactory.addFolders(Collections.singletonList(SOURCE_FOLDER));
+		IPath srcGenFolder = null;
+		if (addSARLNature) {
+			projectFactory.addFolders(Arrays.asList(SOURCE_FOLDER, GENERATED_SOURCE_FOLDER));
+			srcGenFolder = Path.fromPortableString(GENERATED_SOURCE_FOLDER);
+		} else {
+			projectFactory.addFolders(Collections.singletonList(SOURCE_FOLDER));
+		}
 		projectFactory.addBuilderIds(
 				XtextProjectHelper.BUILDER_ID,
 				JavaCore.BUILDER_ID);
-		projectFactory.addProjectNatures(
-				XtextProjectHelper.NATURE_ID,
-				JavaCore.NATURE_ID);
-		
+		if (addSARLNature) {
+			projectFactory.addProjectNatures(
+					SARL_NATURE,
+					XtextProjectHelper.NATURE_ID,
+					JavaCore.NATURE_ID);
+		} else {
+			projectFactory.addProjectNatures(
+					XtextProjectHelper.NATURE_ID,
+					JavaCore.NATURE_ID);
+		}
+
 		IProject result = projectFactory.createProject(new NullProgressMonitor(), null);
 		IJavaProject javaProject = JavaCore.create(result);
 		JavaProjectSetupUtil.makeJava5Compliant(javaProject);
 		JavaProjectSetupUtil.addJreClasspathEntry(javaProject);
-		
+
 		IPath workspaceRoot;
 		IPath platformLocation;
 
@@ -201,6 +226,11 @@ public class WorkspaceTestHelper extends Assert {
 			JavaProjectSetupUtil.addToClasspath(javaProject, classPathEntry);
 		}
 		
+		// Add SARL source folder
+		if (srcGenFolder != null) {
+			SARLProjectPreferences.setSpecificSARLConfigurationFor(result, srcGenFolder);
+		}
+
 		return result;
 	}
 
@@ -326,7 +356,7 @@ public class WorkspaceTestHelper extends Assert {
 		IProject project = this.workspace.getRoot().getProject(TESTPROJECT_NAME);
 		if (createOnDemand && !project.exists()) {
 			try {
-				project = createProject(TESTPROJECT_NAME);
+				project = createProject(TESTPROJECT_NAME, false);
 			} catch (CoreException e) {
 				throw new RuntimeException(e);
 			}
@@ -479,6 +509,7 @@ public class WorkspaceTestHelper extends Assert {
 		Resource resource = getResourceSet().createResource(uri(file));
 		try (StringInputStream s = new StringInputStream(content)) {
 			resource.load(s, null);
+			resource.save(null);
 			assertEquals(resource.getErrors().toString(), 0, resource.getErrors().size());
 			SarlScript sarlScript = (SarlScript) resource.getContents().get(0);
 			return sarlScript;
@@ -496,6 +527,7 @@ public class WorkspaceTestHelper extends Assert {
 		Resource resource = getResourceSet().createResource(uri(file));
 		try (StringInputStream s = new StringInputStream(content)) {
 			resource.load(s, null);
+			resource.save(null);
 			assertEquals(resource.getErrors().toString(), 0, resource.getErrors().size());
 			SarlScript sarlScript = (SarlScript) resource.getContents().get(0);
 			assertNotNull(sarlScript);
@@ -556,12 +588,15 @@ public class WorkspaceTestHelper extends Assert {
 		Resource resource = this.resourceSetProvider.get(project).createResource(uri(file));
 		try (StringInputStream s = new StringInputStream(content)) {
 			resource.load(s, null);
+			resource.save(null);
+			waitForAutoBuild();
 			assertEquals(resource.getErrors().toString(), 0, resource.getErrors().size());
+			assertEquals(resource.getWarnings().toString(), 0, resource.getWarnings().size());
 			SarlScript sarlScript = (SarlScript) resource.getContents().get(0);
 			return sarlScript;
 		}
 	}
-	
+
 	/** Wait for the termination of the Eclipse automatic build.
 	 */
 	@SuppressWarnings("static-method")

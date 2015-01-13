@@ -77,6 +77,8 @@
 
 	<suppress checks="NPathComplexity" files="FieldInitializerUtil.java"/>
 
+	<suppress checks="CyclomaticComplexity" files="SARLCodeGenerator.java"/>
+
 	<suppress checks="NPathComplexity" files="Jdt2Ecore.java"/>
 	<suppress checks="CyclomaticComplexity" files="Jdt2Ecore.java"/>
 	<suppress checks="MethodLength" files="Jdt2Ecore.java"/>

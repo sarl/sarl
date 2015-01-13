@@ -20,7 +20,6 @@
  */
 package io.sarl.eclipse.wizards.elements.newevent;
 
-import static io.sarl.eclipse.util.Jdt2Ecore.findType;
 import static io.sarl.eclipse.util.Jdt2Ecore.populateInheritanceContext;
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
@@ -98,7 +97,7 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 		}
 
 		populateInheritanceContext(
-				getJavaProject(),
+				Jdt2Ecore.toTypeFinder(getJavaProject()),
 				// Discarding final operation.
 				null,
 				// Discarding overridable operation.
@@ -131,7 +130,7 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 
 	@Override
 	protected IType getRootSuperType() throws JavaModelException {
-		return findType(getJavaProject(), Event.class.getName());
+		return getJavaProject().findType(Event.class.getName());
 	}
 
 }

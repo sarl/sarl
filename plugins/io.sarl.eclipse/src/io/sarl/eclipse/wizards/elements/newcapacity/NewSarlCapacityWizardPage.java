@@ -22,7 +22,6 @@ package io.sarl.eclipse.wizards.elements.newcapacity;
 
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.genmodel.SARLCodeGenerator.GeneratedCode;
@@ -89,7 +88,7 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 
 	@Override
 	protected IType getRootSuperType() throws JavaModelException {
-		return Jdt2Ecore.findType(getJavaProject(), Capacity.class.getName());
+		return getJavaProject().findType(Capacity.class.getName());
 	}
 
 }

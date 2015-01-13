@@ -20,7 +20,6 @@
  */
 package io.sarl.eclipse.wizards.elements.newskill;
 
-import static io.sarl.eclipse.util.Jdt2Ecore.findType;
 import static io.sarl.eclipse.util.Jdt2Ecore.populateInheritanceContext;
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
@@ -109,7 +108,7 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 		}
 
 		populateInheritanceContext(
-				getJavaProject(),
+				Jdt2Ecore.toTypeFinder(getJavaProject()),
 				// Discarding final operation
 				null,
 				// Discarding overridable operation
@@ -145,12 +144,12 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 
 	@Override
 	protected IType getRootSuperType() throws JavaModelException {
-		return findType(getJavaProject(), Skill.class.getName());
+		return getJavaProject().findType(Skill.class.getName());
 	}
 
 	@Override
 	protected IType getRootSuperInterface() throws JavaModelException {
-		return findType(getJavaProject(), Capacity.class.getName());
+		return getJavaProject().findType(Capacity.class.getName());
 	}
 
 	@Override

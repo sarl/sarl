@@ -21,7 +21,6 @@
 package io.sarl.eclipse.wizards.elements;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.lang.genmodel.SARLCodeGenerator;
 
 import java.io.ByteArrayInputStream;
@@ -345,7 +344,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		if (!Strings.isNullOrEmpty(className)) {
 			IType rootType = getRootSuperType();
 			assert (rootType != null);
-			IType type = Jdt2Ecore.findType(getJavaProject(), className);
+			IType type = getJavaProject().findType(className);
 			assert (type != null);
 			ITypeHierarchy hierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
 			assert (hierarchy != null);
@@ -368,7 +367,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		if (!Strings.isNullOrEmpty(className)) {
 			IType rootType = getRootSuperInterface();
 			assert (rootType != null);
-			IType type = Jdt2Ecore.findType(getJavaProject(), className);
+			IType type = getJavaProject().findType(className);
 			assert (type != null);
 			ITypeHierarchy hierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
 			assert (hierarchy != null);

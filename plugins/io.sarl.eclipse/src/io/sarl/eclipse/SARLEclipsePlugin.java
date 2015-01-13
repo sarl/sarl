@@ -20,6 +20,8 @@
  */
 package io.sarl.eclipse;
 
+import java.util.Arrays;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
@@ -224,16 +226,31 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @param status - the status to put in the same status instance.
 	 * @return the status.
 	 */
-	@SuppressWarnings("static-method")
-	public IStatus createMultiStatus(IStatus[] status) {
-		IStatus max = findMax(status);
-		if (max == null) {
-			return new MultiStatus(PLUGIN_ID, 0, status, null, null);
-		}
-		return new MultiStatus(PLUGIN_ID, 0, status, max.getMessage(), max.getException());
+	public IStatus createMultiStatus(IStatus... status) {
+		return createMultiStatus(Arrays.asList(status));
 	}
 
-	private static IStatus findMax(IStatus[] status) {
+	/** Create a multistatus.
+	 *
+	 * @param status - the status to put in the same status instance.
+	 * @return the status.
+	 */
+	@SuppressWarnings("static-method")
+	public IStatus createMultiStatus(Iterable<? extends IStatus> status) {
+		IStatus max = findMax(status);
+		MultiStatus mStatus;
+		if (max == null) {
+			mStatus = new MultiStatus(PLUGIN_ID, 0, null, null);
+		} else {
+			mStatus = new MultiStatus(PLUGIN_ID, 0, max.getMessage(), max.getException());
+		}
+		for (IStatus s : status) {
+			mStatus.add(s);
+		}
+		return mStatus;
+	}
+
+	private static IStatus findMax(Iterable<? extends IStatus> status) {
 		IStatus max = null;
 		for (IStatus s : status) {
 			if (max == null || max.getSeverity() > s.getSeverity()) {

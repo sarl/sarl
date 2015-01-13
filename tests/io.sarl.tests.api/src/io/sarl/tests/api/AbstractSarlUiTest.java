@@ -21,14 +21,13 @@
 
 package io.sarl.tests.api;
 
-import io.sarl.tests.api.AbstractSarlTest;
-
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 
 import com.google.inject.Inject;
 
@@ -41,11 +40,35 @@ import com.google.inject.Inject;
  */
 public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 
+	/** This rule permits to create a project and clean the workspace.
+	 */
+	@Rule
+	public TestWatcher sarlUiWatchter = new TestWatcher() {
+		@Override
+		protected void starting(Description description) {
+			try {
+				IResourcesSetupUtil.cleanWorkspace();
+				WorkspaceTestHelper.createProject(WorkspaceTestHelper.TESTPROJECT_NAME, isSARLNatureAddedToProject());
+			} catch (CoreException e) {
+				throw new RuntimeException(e);
+			}
+			WorkspaceTestHelper.bind(AbstractSarlUiTest.this);
+		}
+		@Override
+		protected void finished(Description description) {
+			try {
+				IResourcesSetupUtil.cleanWorkspace();
+			} catch (CoreException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	};
+
 	/** Helper for interaction with the Eclipse workbench.
 	 */
 	@Inject
 	protected WorkspaceTestHelper helper;
-
+	
 	/** Build a path.
 	 * 
 	 * @param path - path elements.
@@ -69,43 +92,6 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 		return path(path).toOSString();
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		WorkspaceTestHelper.bind(this);
-	}
-	
-	/**
-	 * @throws Exception
-	 */
-	@Before
-	public void tearDown() throws Exception {
-		//
-	}
-	
-	/** Initialize the test case class.
-	 * This implementation clean the workspace and create the testing project.
-	 * 
-	 * @throws Exception
-	 */
-	@BeforeClass
-	public static void setUpProject() throws Exception {
-		IResourcesSetupUtil.cleanWorkspace();
-		WorkspaceTestHelper.createProject(WorkspaceTestHelper.TESTPROJECT_NAME);
-	}
-
-	/** Clean up after all the tests associated to this test case.
-	 * This implementation is cleaning the workspace.
-	 * 
-	 * @throws Exception
-	 */
-	@AfterClass
-	public static void tearDownProject() throws Exception {
-		IResourcesSetupUtil.cleanWorkspace();
-	}
-
 	/** Create an instance of the given class.
 	 * 
 	 * @param clazz - type of the instance to create.
@@ -113,6 +99,16 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	 */
 	public <T> T get(Class<T> clazz) {
 		return this.helper.newInstance(clazz);
+	}
+
+	/** Replies if the default project should have the SARL nature.
+	 * 
+	 * @return <code>true</code> if the SARL nature should be added to
+	 * the default project.
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean isSARLNatureAddedToProject() {
+		return false;
 	}
 
 }

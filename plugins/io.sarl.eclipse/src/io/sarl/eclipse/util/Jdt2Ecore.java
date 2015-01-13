@@ -20,6 +20,7 @@
  */
 package io.sarl.eclipse.util;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.Generated;
 import io.sarl.lang.genmodel.SARLCodeGenerator.GeneratedCode;
@@ -33,6 +34,7 @@ import io.sarl.lang.signature.ActionSignatureProvider.FormalParameterProvider;
 import io.sarl.lang.signature.SignatureKey;
 import io.sarl.lang.util.ModelUtil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Deque;
@@ -44,6 +46,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IAnnotatable;
@@ -85,19 +88,20 @@ public final class Jdt2Ecore {
 		//
 	}
 
-	/** Find the definition of a type in the classpath of the given project.
+	/** Create a {@link TypeFinder} wrapper for the given Java project.
 	 *
-	 * @param project - the project to explore.
-	 * @param typeName - the name of the type to search for.
-	 * @return the type, or <code>null</code> if the type was not found.
-	 * @throws JavaModelException if this project does not exist or if an
-	 *		exception occurs while accessing its corresponding resource.
+	 * The wrapper invokes {@link IJavaProject#findType(String)} on the given project.
+	 *
+	 * @param project - the project to wrap.
+	 * @return the type finder based on the given Java project.
 	 */
-	public static IType findType(IJavaProject project, String typeName) throws JavaModelException {
-		if (project != null) {
-			return project.findType(typeName);
-		}
-		return null;
+	public static TypeFinder toTypeFinder(final IJavaProject project) {
+		return new TypeFinder() {
+			@Override
+			public IType findType(String typeName) throws JavaModelException {
+				return project.findType(typeName);
+			}
+		};
 	}
 
 	/** Replies if the given type name is valid for a super-type.
@@ -113,18 +117,38 @@ public final class Jdt2Ecore {
 
 	/** Replies if the target feature is visible from the type.
 	 *
+	 * The type finder could be obtained with {@link #toTypeFinder(IJavaProject)}.
+	 *
+	 * @param typeFinder - the type finder to be used for finding the type definitions.
 	 * @param fromType - the type from which the feature visibility is tested.
 	 * @param target - the feature to test for the visibility.
 	 * @return <code>true</code> if the given type can see the target feature.
 	 * @throws JavaModelException if the Java model is invalid.
+	 * @see #toTypeFinder(IJavaProject)
 	 */
-	public static boolean isVisible(IType fromType, IMember target) throws JavaModelException {
+	public static boolean isVisible(TypeFinder typeFinder, IType fromType, IMember target) throws JavaModelException {
 		int flags = target.getFlags();
-		if (Flags.isPublic(flags) || Flags.isProtected(flags)) {
+		if (Flags.isPublic(flags)) {
 			return true;
 		}
+		String fromTypeName = fromType.getFullyQualifiedName();
+		String memberType = target.getDeclaringType().getFullyQualifiedName();
 		if (Flags.isPrivate(flags)) {
-			return false;
+			return target.getDeclaringType().equals(fromTypeName);
+		}
+		if (Flags.isProtected(flags)) {
+			IType t = fromType;
+			while (t != null) {
+				if (memberType.equals(t.getFullyQualifiedName())) {
+					return true;
+				}
+				String typeName = t.getSuperclassName();
+				if (Strings.isNullOrEmpty(typeName)) {
+					t = null;
+				} else {
+					t = typeFinder.findType(typeName);
+				}
+			}
 		}
 		IPackageFragment f1 = target.getDeclaringType().getPackageFragment();
 		IPackageFragment f2 = fromType.getPackageFragment();
@@ -147,7 +171,9 @@ public final class Jdt2Ecore {
 	/** Analyzing the type hierarchy of the given element, and
 	 * extract any type-related information.
 	 *
-	 * @param project - the project to explore.
+	 * The type finder could be obtained with {@link #toTypeFinder(IJavaProject)}.
+	 *
+	 * @param typeFinder - the type finder to be used for finding the type definitions.
 	 * @param finalOperations - filled with the final operations inherited by the element.
 	 * @param overridableOperations - filled with the oervrideable operations inherited by the element.
 	 * @param inheritedFields - filled with the fields inherited by the element.
@@ -156,10 +182,12 @@ public final class Jdt2Ecore {
 	 * @param sarlSignatureProvider - provider of tools related to action signatures.
 	 * @param superClass - the name of the super class.
 	 * @param superInterfaces - the super interfaces.
+	 * @return the status of the operation.
 	 * @throws JavaModelException if the Java model is invalid.
+	 * @see #toTypeFinder(IJavaProject)
 	 */
-	public static void populateInheritanceContext(
-			IJavaProject project,
+	public static IStatus populateInheritanceContext(
+			TypeFinder typeFinder,
 			Map<ActionKey, IMethod> finalOperations,
 			Map<ActionKey, IMethod> overridableOperations,
 			Map<String, IField> inheritedFields,
@@ -168,9 +196,11 @@ public final class Jdt2Ecore {
 			ActionSignatureProvider sarlSignatureProvider,
 			String superClass,
 			List<String> superInterfaces) throws JavaModelException {
+		SARLEclipsePlugin plugin = SARLEclipsePlugin.getDefault();
+		List<IStatus> statuses = new ArrayList<>();
 		// Get the operations that must be implemented
 		if (operationsToImplement != null) {
-			Iterator<IType> typeIterator = new SuperTypeIterator(project, true, superInterfaces);
+			SuperTypeIterator typeIterator = new SuperTypeIterator(typeFinder, true, superInterfaces);
 			while (typeIterator.hasNext()) {
 				IType type = typeIterator.next();
 				for (IMethod operation : type.getMethods()) {
@@ -183,22 +213,25 @@ public final class Jdt2Ecore {
 						ActionKey actionKey = sarlSignatureProvider.createActionID(
 								operation.getElementName(),
 								sig);
-						operationsToImplement.put(actionKey, operation);
+						if (!operationsToImplement.containsKey(actionKey)) {
+							operationsToImplement.put(actionKey, operation);
+						}
 					}
 				}
 			}
+			statuses.addAll(typeIterator.getStatuses());
 		}
 
 		// Check on the implemented features, inherited from the super type
 		if (isValidSuperType(superClass)) {
-			Iterator<IType> typeIterator = new SuperTypeIterator(project, false, superClass);
+			SuperTypeIterator typeIterator = new SuperTypeIterator(typeFinder, false, superClass);
 			while (typeIterator.hasNext()) {
 				IType type = typeIterator.next();
 				boolean checkForConstructors = (superConstructors != null && type.getFullyQualifiedName().equals(superClass));
 				for (IMethod operation : type.getMethods()) {
 					if (!Flags.isStatic(operation.getFlags())
 							&& !operation.isLambdaMethod()
-							&& isVisible(type, operation)) {
+							&& isVisible(typeFinder, type, operation)) {
 						if (!operation.isConstructor()
 								&& !ModelUtil.isHiddenAction(operation.getElementName())) {
 							SignatureKey sig = sarlSignatureProvider.createSignatureID(
@@ -237,13 +270,21 @@ public final class Jdt2Ecore {
 					for (IField field : type.getFields()) {
 						if (!Flags.isStatic(field.getFlags())
 								&& !ModelUtil.isHiddenAttribute(field.getElementName())
-								&& isVisible(type, field)) {
+								&& isVisible(typeFinder, type, field)) {
 							inheritedFields.put(field.getElementName(), field);
 						}
 					}
 				}
 			}
+			statuses.addAll(typeIterator.getStatuses());
 		}
+		if (statuses.isEmpty()) {
+			return plugin.createOkStatus();
+		}
+		if (statuses.size() == 1) {
+			return statuses.get(0);
+		}
+		return plugin.createMultiStatus(statuses);
 	}
 
 	/** Replies if the given method is marked has automatically generated by the SARL compiler.
@@ -285,7 +326,7 @@ public final class Jdt2Ecore {
 		return null;
 	}
 
-	/** Create the JvmConstructor for the given JDT method.
+	/** Create the JvmConstructor for the given JDT constructor.
 	 *
 	 * @param code - the generated code.
 	 * @param constructor - the JDT constructor.
@@ -429,31 +470,40 @@ public final class Jdt2Ecore {
 	 */
 	private static class SuperTypeIterator implements Iterator<IType> {
 
-		private final IJavaProject project;
+		private final TypeFinder typeFinder;
 		private final Set<String> encountered = new TreeSet<>();
 		private final Deque<String> queue = new LinkedList<>();
 		private final boolean isInterface;
+		private final List<IStatus> statuses = new ArrayList<>();
 		private IType current;
 
 		/**
-		 * @param project
-		 * @param isInterface
-		 * @param typeNames
+		 * @param typeFinder - the type finder to be used for finding the type definitions.
+		 * @param isInterface - indicates if the exploration is for interfaces or for classes.
+		 * @param typeNames - the initial types.
 		 */
-		public SuperTypeIterator(IJavaProject project, boolean isInterface, String... typeNames) {
-			this(project, isInterface, Arrays.asList(typeNames));
+		public SuperTypeIterator(TypeFinder typeFinder, boolean isInterface, String... typeNames) {
+			this(typeFinder, isInterface, Arrays.asList(typeNames));
 		}
 
 		/**
-		 * @param project
-		 * @param isInterface
-		 * @param typeNames
+		 * @param typeFinder - the type finder to be used for finding the type definitions.
+		 * @param isInterface - indicates if the exploration is for interfaces or for classes.
+		 * @param typeNames - the initial types.
 		 */
-		public SuperTypeIterator(IJavaProject project, boolean isInterface, Collection<String> typeNames) {
+		public SuperTypeIterator(TypeFinder typeFinder, boolean isInterface, Collection<String> typeNames) {
 			this.isInterface = isInterface;
-			this.project = project;
+			this.typeFinder = typeFinder;
 			this.queue.addAll(typeNames);
 			updateCurrent();
+		}
+
+		/** Replies the statuses related to the iteration.
+		 *
+		 * @return the statuses, or nothing if no issue occured.
+		 */
+		public Collection<IStatus> getStatuses() {
+			return this.statuses;
 		}
 
 		private void updateCurrent() {
@@ -462,9 +512,15 @@ public final class Jdt2Ecore {
 				String typeName = this.queue.removeFirst();
 				if (isValidSuperType(typeName) && !this.encountered.contains(typeName)) {
 					try {
-						this.current = findType(this.project, typeName);
+						this.current = this.typeFinder.findType(typeName);
+						if (this.current == null) {
+							this.statuses.add(SARLEclipsePlugin.getDefault().createStatus(
+									IStatus.ERROR, new ClassNotFoundException(typeName)));
+						}
 					} catch (JavaModelException e) {
 						this.current = null;
+						this.statuses.add(SARLEclipsePlugin.getDefault().createStatus(
+								IStatus.ERROR, e));
 					}
 				}
 			}
@@ -484,16 +540,36 @@ public final class Jdt2Ecore {
 			String name = c.getFullyQualifiedName();
 			this.encountered.add(name);
 			try {
+				String[] superTypes;
 				if (this.isInterface) {
-					this.queue.addAll(Arrays.asList(c.getSuperInterfaceNames()));
+					superTypes = c.getSuperInterfaceTypeSignatures();
 				} else {
-					this.queue.add(c.getSuperclassName());
+					superTypes = new String[] {c.getSuperclassTypeSignature()};
+				}
+				for (String signature : superTypes) {
+					signature = resolveType(c, signature);
+					if (!Strings.isNullOrEmpty(signature)) {
+						this.queue.add(signature);
+					}
 				}
 			} catch (JavaModelException _) {
 				//
 			}
 			updateCurrent();
 			return c;
+		}
+
+		private static String resolveType(IType type, String signature) throws JavaModelException {
+			String[][] resolved = type.resolveType(Signature.toString(signature));
+			if (resolved != null) {
+				for (String[] entry : resolved) {
+					if (Strings.isNullOrEmpty(entry[0])) {
+						return entry[1];
+					}
+					return entry[0] + "." + entry[1]; //$NON-NLS-1$
+				}
+			}
+			return null;
 		}
 
 		@Override
@@ -535,6 +611,26 @@ public final class Jdt2Ecore {
 		public String getFormalParameterType(int position, boolean isVarArgs) {
 			return Signature.toString(this.parameters[position].getTypeSignature());
 		}
+
+	}
+
+	/** The interface permits to find the JDT definition of a type.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public interface TypeFinder {
+
+		/** Find the definition of a type.
+		 *
+		 * @param typeName - the name of the type to search for.
+		 * @return the type, or <code>null</code> if the type was not found.
+		 * @throws JavaModelException if this project does not exist or if an
+		 *		exception occurs while accessing its corresponding resource.
+		 */
+		IType findType(String typeName) throws JavaModelException;
 
 	}
 

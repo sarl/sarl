@@ -95,7 +95,7 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 		}
 
 		populateInheritanceContext(
-				getJavaProject(),
+				Jdt2Ecore.toTypeFinder(getJavaProject()),
 				// Discarding final operation.
 				null,
 				// Discarding overridable operation.
@@ -128,7 +128,7 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 
 	@Override
 	protected IType getRootSuperType() throws JavaModelException {
-		return Jdt2Ecore.findType(getJavaProject(), Agent.class.getName());
+		return getJavaProject().findType(Agent.class.getName());
 	}
 
 }
