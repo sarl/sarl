@@ -23,6 +23,7 @@ package io.sarl.tests.api;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+import io.sarl.lang.sarl.SarlScript;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -293,7 +294,7 @@ public abstract class AbstractSarlTest {
 			fail("Expecting a value(s) in the array: " + expectedValues); //$NON-NLS-1$
 		}
 	}
-	
+
 	/** Assert that the given value is inside the array..
 	 *
 	 * @param expected - the array.

@@ -28,7 +28,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.ui.outline.SARLOutlineTreeProvider;
-import io.sarl.lang.ui.tests.AbstractSARLUiTestCase;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.StyledString;
@@ -48,7 +48,7 @@ import com.google.inject.Provider;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSARLUiTestCase { 
+public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUiTest { 
 
 	@Inject
 	private SARLOutlineTreeProvider treeProvider;
@@ -62,11 +62,10 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSARLUi
 	@Inject
 	private Provider<XtextDocument> documentProvider;
 
-	/** {@inheritDoc}
+	/**
+	 * @throws Exception
 	 */
-	@Override
 	public void setUp() throws Exception {
-		super.setUp();
 		this.sorter.setComparator(this.comparator);
 	}
 	

@@ -17,8 +17,8 @@ package io.sarl.lang.ui.tests.validation;
 
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.ui.tests.AbstractSARLUiTestCase;
 import io.sarl.lang.validation.IssueCodes;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
@@ -34,7 +34,7 @@ import com.google.inject.Inject;
  * @mavenartifactid $ArtifactId$
  */
 @RunWith(XtextRunner.class)
-public class SARLUIValidatorTest extends AbstractSARLUiTestCase {
+public class SARLUIValidatorTest extends AbstractSarlUiTest {
 
 	@Inject
 	private ValidationTestHelper validator;

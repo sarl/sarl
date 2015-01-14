@@ -22,6 +22,7 @@ package io.sarl.lang;
 
 import io.sarl.lang.controlflow.SARLEarlyExitComputer;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
+import io.sarl.lang.genmodel.SARLContextPDAProvider;
 import io.sarl.lang.genmodel.SARLHiddenTokenSequencer;
 import io.sarl.lang.scoping.batch.SARLImplicitlyImportedFeatures;
 import io.sarl.lang.signature.ActionSignatureProvider;
@@ -31,6 +32,7 @@ import io.sarl.lang.validation.SARLEarlyExitValidator;
 import io.sarl.lang.validation.SARLFeatureNameValidator;
 
 import org.eclipse.xtext.serializer.acceptor.ISyntacticSequenceAcceptor;
+import org.eclipse.xtext.serializer.analysis.IContextPDAProvider;
 import org.eclipse.xtext.serializer.sequencer.IHiddenTokenSequencer;
 import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
 import org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer;
@@ -133,6 +135,16 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	@SuppressWarnings("static-method")
 	public Class<? extends ISyntacticSequenceAcceptor> bindSyntacticSequenceAcceptor() {
 		return SARLHiddenTokenSequencer.class;
+	}
+
+	/** Replies the provider of context PDA that is used by the serializer.
+	 * This specific SARL implementation is provided for fixing the
+	 * <a href="https://github.com/sarl/sarl/issues/277">issue #277</a>.
+	 * @return the context PDA provider
+	 */
+	@SuppressWarnings("static-method")
+	public Class<? extends IContextPDAProvider> bindContextPDAProvider() {
+		return SARLContextPDAProvider.class;
 	}
 
 }

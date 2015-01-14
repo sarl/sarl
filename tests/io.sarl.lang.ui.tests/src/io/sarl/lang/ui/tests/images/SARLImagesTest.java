@@ -17,7 +17,7 @@ package io.sarl.lang.ui.tests.images;
 
 import static org.junit.Assert.assertNotNull;
 import io.sarl.lang.ui.images.SARLImages;
-import io.sarl.lang.ui.tests.AbstractSARLUiTestCase;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
@@ -34,7 +34,7 @@ import com.google.inject.Inject;
  * @mavenartifactid $ArtifactId$
  */
 @RunWith(XtextRunner.class)
-public class SARLImagesTest extends AbstractSARLUiTestCase {
+public class SARLImagesTest extends AbstractSarlUiTest {
 
 	@Inject
 	private SARLImages images;

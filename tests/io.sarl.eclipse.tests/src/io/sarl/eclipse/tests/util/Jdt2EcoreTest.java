@@ -43,6 +43,7 @@ import io.sarl.lang.signature.ActionSignatureProvider.FormalParameterProvider;
 import io.sarl.lang.signature.SignatureKey;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.Nullable;
+import io.sarl.tests.api.SARLNatureNeededForTest;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -1239,12 +1240,8 @@ public class Jdt2EcoreTest {
 					getResourceText("unit_test_code" + codeIndex));
 		}
 		
-		@Override
-		protected final boolean isSARLNatureAddedToProject() {
-			return true;
-		}
-
 		@Test
+		@SARLNatureNeededForTest
 		public void populateInheritanceContext_0() throws Exception {
 			// Create the SARL scripts
 			loadSARLCode(0);
@@ -1272,6 +1269,7 @@ public class Jdt2EcoreTest {
 		}
 
 		@Test
+		@SARLNatureNeededForTest
 		public void populateInheritanceContext_1() throws Exception {
 			// Create the SARL scripts
 			loadSARLCode(1);
@@ -1327,6 +1325,7 @@ public class Jdt2EcoreTest {
 		}
 
 		@Test
+		@SARLNatureNeededForTest
 		public void populateInheritanceContext_3() throws Exception {
 			// Create the SARL scripts
 			loadSARLCode(3);

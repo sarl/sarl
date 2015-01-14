@@ -48,7 +48,25 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 		protected void starting(Description description) {
 			try {
 				IResourcesSetupUtil.cleanWorkspace();
-				WorkspaceTestHelper.createProject(WorkspaceTestHelper.TESTPROJECT_NAME, isSARLNatureAddedToProject());
+				SARLNatureNeededForTest annot = description.getAnnotation(SARLNatureNeededForTest.class);
+				boolean isSARL = (annot != null);
+				String[] otherBundles = WorkspaceTestHelper.DEFAULT_REQUIRED_BUNDLES;
+				if (isSARL) {
+					assert (annot != null);
+					String[] moreBundles = annot.moreBundles();
+					if (moreBundles != null && moreBundles.length > 0) {
+						otherBundles = new String[WorkspaceTestHelper.DEFAULT_REQUIRED_BUNDLES.length + moreBundles.length];
+						System.arraycopy(
+								WorkspaceTestHelper.DEFAULT_REQUIRED_BUNDLES, 0,
+								otherBundles, 0,
+								WorkspaceTestHelper.DEFAULT_REQUIRED_BUNDLES.length);
+						System.arraycopy(
+								moreBundles, 0,
+								otherBundles, WorkspaceTestHelper.DEFAULT_REQUIRED_BUNDLES.length,
+								moreBundles.length);
+					}
+				}
+				WorkspaceTestHelper.createProjectWithDependencies(WorkspaceTestHelper.TESTPROJECT_NAME, isSARL, otherBundles);
 			} catch (CoreException e) {
 				throw new RuntimeException(e);
 			}
@@ -99,16 +117,6 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	 */
 	public <T> T get(Class<T> clazz) {
 		return this.helper.newInstance(clazz);
-	}
-
-	/** Replies if the default project should have the SARL nature.
-	 * 
-	 * @return <code>true</code> if the SARL nature should be added to
-	 * the default project.
-	 */
-	@SuppressWarnings("static-method")
-	protected boolean isSARLNatureAddedToProject() {
-		return false;
 	}
 
 }

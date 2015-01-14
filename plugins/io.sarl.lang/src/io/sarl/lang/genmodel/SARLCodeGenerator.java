@@ -197,7 +197,10 @@ public class SARLCodeGenerator {
 		}
 	}
 
-	/** Create an empty SARL script.
+	/** Create an empty SARL script, and put it in the given resource.
+	 *
+	 * If the given resource has already a content, it is removed and replaced
+	 * by the new SARL script.
 	 *
 	 * @param resource - the Ecore resource for the script.
 	 * @param packageName - the name of the package in the script.
@@ -208,7 +211,11 @@ public class SARLCodeGenerator {
 		if (!Strings.isNullOrEmpty(packageName)) {
 			script.setName(packageName);
 		}
-		resource.getContents().add(script);
+		EList<EObject> content = resource.getContents();
+		if (!content.isEmpty()) {
+			content.clear();
+		}
+		content.add(script);
 		return new GeneratedCode(script, resource.getResourceSet());
 	}
 

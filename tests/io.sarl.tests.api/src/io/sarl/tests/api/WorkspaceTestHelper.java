@@ -92,7 +92,8 @@ public class WorkspaceTestHelper extends Assert {
 		"org.eclipse.xtext.xbase.lib", //$NON-NLS-1$
 		"io.sarl.lang", //$NON-NLS-1$
 		"io.sarl.lang.core", //$NON-NLS-1$
-	"io.sarl.lang.ui"}; //$NON-NLS-1$
+		"io.sarl.lang.ui", //$NON-NLS-1$
+	};
 
 	/** Name of the Eclipse project in which the tests will be done.
 	 */
@@ -174,18 +175,18 @@ public class WorkspaceTestHelper extends Assert {
 		if (addSARLNature) {
 			projectFactory.addFolders(Arrays.asList(SOURCE_FOLDER, GENERATED_SOURCE_FOLDER));
 			srcGenFolder = Path.fromPortableString(GENERATED_SOURCE_FOLDER);
-		} else {
-			projectFactory.addFolders(Collections.singletonList(SOURCE_FOLDER));
-		}
-		projectFactory.addBuilderIds(
-				XtextProjectHelper.BUILDER_ID,
-				JavaCore.BUILDER_ID);
-		if (addSARLNature) {
+			projectFactory.addBuilderIds(
+					XtextProjectHelper.BUILDER_ID,
+					JavaCore.BUILDER_ID);
 			projectFactory.addProjectNatures(
 					SARL_NATURE,
 					XtextProjectHelper.NATURE_ID,
 					JavaCore.NATURE_ID);
 		} else {
+			projectFactory.addFolders(Collections.singletonList(SOURCE_FOLDER));
+			projectFactory.addBuilderIds(
+					XtextProjectHelper.BUILDER_ID,
+					JavaCore.BUILDER_ID);
 			projectFactory.addProjectNatures(
 					XtextProjectHelper.NATURE_ID,
 					JavaCore.NATURE_ID);
@@ -364,6 +365,26 @@ public class WorkspaceTestHelper extends Assert {
 		return project;
 	}
 
+	/** Replies the testing Java project.
+	 * If a project was not created, create
+	 * a new one.s
+	 * 
+	 * @return the testing Java project.
+	 */
+	public IJavaProject getJavaProject() {
+		return JavaCore.create(getProject(true));
+	}
+
+	/** Replies the testing Java project.
+	 *
+	 * @param createOnDemand - indicates if the project should be created
+	 * if it was not already created.
+	 * @return the testing Java project.
+	 */
+	protected IJavaProject getJavaProject(boolean createOnDemand) {
+		return JavaCore.create(getProject(createOnDemand));
+	}
+
 	/** Replies the identifier of the editors that are supporting the
 	 * SARL language.
 	 * 
@@ -506,31 +527,51 @@ public class WorkspaceTestHelper extends Assert {
 	 * @throws Exception
 	 */
 	public SarlScript createSARLScript(IFile file, String content) throws Exception {
-		Resource resource = getResourceSet().createResource(uri(file));
-		try (StringInputStream s = new StringInputStream(content)) {
-			resource.load(s, null);
-			resource.save(null);
-			assertEquals(resource.getErrors().toString(), 0, resource.getErrors().size());
-			SarlScript sarlScript = (SarlScript) resource.getContents().get(0);
-			return sarlScript;
-		}
+		Resource resource = createResource(file, content);
+		SarlScript sarlScript = (SarlScript) resource.getContents().get(0);
+		assertEquals(resource.getErrors().toString(), 0, resource.getErrors().size());
+		return sarlScript;
 	}
 
 	/** Create and compile a SARL script in the source folder.
 	 * 
 	 * @param file - the file in the source folder. 
 	 * @param content - the content of the file.
-	 * @return the parsed SARL script.
+	 * @return the parsed SARL script resource.
 	 * @throws Exception
 	 */
 	public Resource createSARLScriptResource(IFile file, String content) throws Exception {
+		Resource resource = createResource(file, content);
+		assertEquals(resource.getErrors().toString(), 0, resource.getErrors().size());
+		SarlScript sarlScript = (SarlScript) resource.getContents().get(0);
+		assertNotNull(sarlScript);
+		return resource;
+	}
+
+	/** Create and compile a SARL script in the source folder.
+	 * 
+	 * @param basename - the basename of the file in the source folder. 
+	 * @param content - the content of the file.
+	 * @return the parsed SARL script resource.
+	 * @throws Exception
+	 */
+	public Resource createSARLScriptResource(String basename, String content) throws Exception {
+		IFile file = createFileInSourceFolder(basename, content);
+		return createSARLScriptResource(file, content);
+	}
+
+	/** Create and compile a SARL script in the source folder.
+	 * 
+	 * @param file - the file in the source folder. 
+	 * @param content - the content of the resource.
+	 * @return the parsed SARL script.
+	 * @throws Exception
+	 */
+	public Resource createResource(IFile file, String content) throws Exception {
 		Resource resource = getResourceSet().createResource(uri(file));
 		try (StringInputStream s = new StringInputStream(content)) {
 			resource.load(s, null);
 			resource.save(null);
-			assertEquals(resource.getErrors().toString(), 0, resource.getErrors().size());
-			SarlScript sarlScript = (SarlScript) resource.getContents().get(0);
-			assertNotNull(sarlScript);
 			return resource;
 		}
 	}

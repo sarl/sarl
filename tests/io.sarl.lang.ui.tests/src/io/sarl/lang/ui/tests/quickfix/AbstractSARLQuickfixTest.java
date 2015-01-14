@@ -20,7 +20,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
-import io.sarl.lang.ui.tests.AbstractSARLUiTestCase;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Collection;
@@ -60,7 +60,7 @@ import com.google.inject.Inject;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractSARLQuickfixTest extends AbstractSARLUiTestCase {
+public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 
 	/** SARL Statement for declaring the package in the unit tests.
 	 */

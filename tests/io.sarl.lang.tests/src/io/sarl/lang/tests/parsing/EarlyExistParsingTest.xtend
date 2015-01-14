@@ -16,7 +16,8 @@
 package io.sarl.lang.tests.parsing
 
 import com.google.inject.Inject
-import io.sarl.lang.tests.AbstractSARLTestCase
+import io.sarl.lang.sarl.SarlScript
+import io.sarl.tests.api.AbstractSarlUiTest
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
 import org.eclipse.xtext.xbase.XbasePackage
@@ -33,10 +34,22 @@ import static org.junit.Assert.assertEquals
  * @mavenartifactid $ArtifactId$
  */
 @RunWith(XtextRunner)
-class EarlyExistParsingTest extends AbstractSARLTestCase {
+class EarlyExistParsingTest extends AbstractSarlUiTest {
 
 	@Inject extension ValidationTestHelper
 	
+	/** Parse the given code with the current project classpath.
+	 * 
+	 * @param text - the code to parse.
+	 * @return the parsed code tree.
+	 * @throws Exception - when parsing cannot be done.
+	 */
+	def SarlScript parseWithCP(CharSequence text) throws Exception {
+		return this.helper.createSARLScript(
+				pathStr("io","sarl","mypackage","test"),
+				if (text === null) null else text.toString)
+	}
+
 	@Test
 	def void earlyExistFunction_inAction_lastExpression_0() {
 		val mas = '''

@@ -25,7 +25,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.ui.tests.AbstractSARLUiTestCase;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 import java.util.Collection;
 
@@ -48,7 +48,7 @@ import com.google.common.collect.Multimap;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSARLUiTestCase {
+public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSarlUiTest {
 	
 	/** Replies the instance of the calculator to test.
 	 * 
@@ -56,10 +56,11 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSAR
 	 */
 	protected abstract ISemanticHighlightingCalculator getCalculator();
 	
+	/**
+	 * @throws Exception
+	 */
 	@Before
-	@Override
 	public void setUp() throws Exception {
-		super.setUp();
 		this.helper.waitForAutoBuild();
 	}
 	

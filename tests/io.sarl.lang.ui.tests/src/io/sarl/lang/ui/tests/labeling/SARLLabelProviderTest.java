@@ -32,7 +32,7 @@ import io.sarl.lang.sarl.RequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.Skill;
 import io.sarl.lang.ui.labeling.SARLLabelProvider;
-import io.sarl.lang.ui.tests.AbstractSARLUiTestCase;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -55,7 +55,7 @@ import com.google.inject.Inject;
  * @mavenartifactid $ArtifactId$
  */
 @RunWith(XtextRunner.class)
-public class SARLLabelProviderTest extends AbstractSARLUiTestCase {
+public class SARLLabelProviderTest extends AbstractSarlUiTest {
 
 	private static final String PACKAGE_STATEMENT = "package io.sarl.lang.ui.tests.labeling\n"; //$NON-NLS-1$
 	
