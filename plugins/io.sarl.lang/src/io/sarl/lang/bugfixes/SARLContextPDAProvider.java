@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.genmodel;
+package io.sarl.lang.bugfixes;
 
 import org.eclipse.xtext.Action;
 import org.eclipse.xtext.ParserRule;

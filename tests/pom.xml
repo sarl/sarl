@@ -13,8 +13,8 @@
 	<name>Tests Parent</name>
 
 	<modules>
-		<module>io.sarl.tests.api</module>
 		<module>io.sarl.tests.testdata</module>
+		<module>io.sarl.tests.api</module>
 		<module>io.sarl.util.tests</module>
 		<module>io.sarl.lang.core.tests</module>
 		<module>io.sarl.lang.tests</module>
@@ -48,6 +48,18 @@
 			<dependency>
 				<groupId>org.eclipse.xtext</groupId>
 				<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+				<version>${xtext.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext.common.types</artifactId>
+				<version>${xtext.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext.xbase</artifactId>
 				<version>${xtext.version}</version>
 				<scope>test</scope>
 			</dependency>
@@ -95,9 +107,8 @@
 	<!-- ======================================= -->
 
 	<build>
-		<!-- The build configurations are inside the submodules
-		     for avoiding to propagate the information outside a
-		     specific module -->
+		<!-- The build configurations are inside the submodules for avoiding to 
+			propagate the information outside a specific module -->
 	</build>
 
 </project>

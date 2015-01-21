@@ -20,9 +20,9 @@
  */
 package io.sarl.lang;
 
+import io.sarl.lang.bugfixes.SARLContextPDAProvider;
 import io.sarl.lang.controlflow.SARLEarlyExitComputer;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
-import io.sarl.lang.genmodel.SARLContextPDAProvider;
 import io.sarl.lang.genmodel.SARLHiddenTokenSequencer;
 import io.sarl.lang.scoping.batch.SARLImplicitlyImportedFeatures;
 import io.sarl.lang.signature.ActionSignatureProvider;

@@ -18,28 +18,23 @@ package io.sarl.eclipse.tests.bugs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import io.sarl.eclipse.util.Jdt2Ecore;
+import io.sarl.lang.bugfixes.SARLContextPDAProvider;
 import io.sarl.lang.genmodel.SARLCodeGenerator;
 import io.sarl.lang.genmodel.SARLCodeGenerator.GeneratedCode;
-import io.sarl.lang.genmodel.SARLContextPDAProvider;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.Skill;
 import io.sarl.lang.signature.ActionKey;
 import io.sarl.lang.signature.SignatureKey;
 import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.Nullable;
 import io.sarl.tests.api.SARLNatureNeededForTest;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.xtext.serializer.ISerializer;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.Maps;

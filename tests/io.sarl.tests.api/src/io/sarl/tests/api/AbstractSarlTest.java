@@ -20,9 +20,8 @@
  */
 package io.sarl.tests.api;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
+import io.sarl.lang.sarl.FormalParameter;
 import io.sarl.lang.sarl.SarlScript;
 
 import java.lang.reflect.Field;
@@ -33,12 +32,18 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XNullLiteral;
+import org.eclipse.xtext.xbase.XNumberLiteral;
+import org.eclipse.xtext.xbase.XStringLiteral;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
@@ -308,6 +313,152 @@ public abstract class AbstractSarlTest {
 		}
 		fail("Unable to find the value in the array, value: " + actual //$NON-NLS-1$
 				+ "\narray: " + Arrays.toString(expected)); //$NON-NLS-1$
+	}
+	
+	/** Helper for writting a multiline string in unit tests.
+	 * 
+	 * @param lines - the lines in the string.
+	 * @return the complete multiline string.
+	 */
+	public static String multilineString(Object... lines) {
+		return Joiner.on("\n").join(lines);
+	}
+
+	/** Assert that the given iterable object replies the expected identifiers.
+	 *
+	 * The order of the identifier is significant.
+	 * 
+	 * @param actualReferences - the actual elements.
+	 * @param expectedIdentifiers - the expected elements.
+	 * @see JvmTypeReference#getIdentifier()
+	 */
+	public static void assertTypeReferenceIdentifiers(Iterable<? extends JvmTypeReference> actualReferences, String... expectedIdentifiers) {
+		int i = 0;
+		for (JvmTypeReference reference : actualReferences) {
+			assertTypeReferenceIdentifier(reference, expectedIdentifiers[i]);
+			++i;
+		}
+		if (i < expectedIdentifiers.length) {
+			fail("Not enough identifiers. Expected: " + Arrays.toString(expectedIdentifiers)
+					+ "Actual: " + Iterables.toString(actualReferences));
+		}
+	}
+
+	/** Assert the the given type reference has the given identifier.
+	 *
+	 * @param actualReference - the actual type reference.
+	 * @param expectedIdentifier - the expected identifier.
+	 * @see JvmTypeReference#getIdentifier()
+	 */
+	public static void assertTypeReferenceIdentifier(JvmTypeReference actualReference, String expectedIdentifier) {
+		if (actualReference == null) {
+			assertEquals("void", expectedIdentifier);
+			return;
+		}
+		assertEquals("Unexpected type reference: " + actualReference.getIdentifier() + ". Expected: " + expectedIdentifier,
+				expectedIdentifier, actualReference.getIdentifier());
+	}
+
+	/** Assert that the given actual formal parameters have the expected names.
+	 *
+	 * The order of the parameters and the expected names is significant.
+	 *
+	 * @param actualFormalParameters - the list of the formal parameters.
+	 * @param expectedParameterNames - the expected names for the formal parameters.
+	 */
+	public static void assertParameterNames(Iterable<? extends FormalParameter> actualFormalParameters, String... expectedParameterNames) {
+		int i = 0;
+		for (FormalParameter parameter : actualFormalParameters) {
+			assertEquals("Unexpected parameter: " + parameter + ". Expected: " + expectedParameterNames[i],
+					parameter.getName(), expectedParameterNames[i]);
+			++i;
+		}
+		if (i < expectedParameterNames.length) {
+			fail("Not enough identifiers. Expected: " + Arrays.toString(expectedParameterNames)
+					+ "Actual: " + Iterables.toString(actualFormalParameters));
+		}
+	}
+
+	/** Assert that the given actual formal parameters have the expected types.
+	 *
+	 * The order of the parameters and the expected types is significant.
+	 *
+	 * @param actualFormalParameters - the list of the formal parameters.
+	 * @param expectedParameterTypes - the expected types for the formal parameters.
+	 */
+	public static void assertParameterTypes(Iterable<? extends FormalParameter> actualFormalParameters, String... expectedParameterTypes) {
+		int i = 0;
+		for (FormalParameter parameter : actualFormalParameters) {
+			assertTypeReferenceIdentifier(
+					parameter.getParameterType(), expectedParameterTypes[i]);
+			++i;
+		}
+		if (i < expectedParameterTypes.length) {
+			fail("Not enough identifiers. Expected: " + Arrays.toString(expectedParameterTypes)
+					+ "Actual: " + Iterables.toString(actualFormalParameters));
+		}
+	}
+
+	/** Assert that the given actual formal parameters have the expected default values.
+	 *
+	 * The order of the parameters and the expected types is significant.
+	 *
+	 * The parameter <code>expectedDefaultValues</code> is a sequence of pairs, where
+	 * the first element is the type of the default value and the second element is
+	 * the representation of the default value.
+	 * If the first element of the pair is null (meaning no default value), then
+	 * the second element must be missed.
+	 *
+	 * @param actualFormalParameters - the list of the formal parameters.
+	 * @param expectedDefaultValues - the expected default values.
+	 */
+	public static void assertParameterDefaultValues(Iterable<? extends FormalParameter> actualFormalParameters, Object... expectedDefaultValues) {
+		int i = 0;
+		for (FormalParameter parameter : actualFormalParameters) {
+			if (expectedDefaultValues[i] == null) {
+				assertNull("No default value expected", parameter.getDefaultValue());
+			} else {
+				assertTrue("The #" + i + " in expectedDefaultValues is not a Class", expectedDefaultValues[i] instanceof Class);
+				Class type = (Class) expectedDefaultValues[i];
+				assertTrue("Unexpected type for the default value.", type.isInstance(parameter.getDefaultValue()));
+				if (XNumberLiteral.class.isAssignableFrom(type)) {
+					++i;
+					assertEquals(expectedDefaultValues[i], ((XNumberLiteral) parameter.getDefaultValue()).getValue());
+				} else if (XStringLiteral.class.isAssignableFrom(type)) {
+					++i;
+					assertEquals(expectedDefaultValues[i], ((XStringLiteral) parameter.getDefaultValue()).getValue());
+				} else if (XNullLiteral.class.isAssignableFrom(type)) {
+					//
+				} else {
+					throw new RuntimeException("Unsupported type of literal for this assertion function");
+				}
+			}
+			++i;
+		}
+		if (i < expectedDefaultValues.length) {
+			fail("Not enough default values. Expected: " + Arrays.toString(expectedDefaultValues)
+					+ "Actual: " + Iterables.toString(actualFormalParameters));
+		}
+	}
+
+	/** Assert the actual XExpression is of the given type and initialized with the given literal.
+	 * 
+	 * @param actualExpression - the expression to test.
+	 * @param expectedType - the expected type of expression.
+	 * @param expectedValue - the expected value.
+	 */
+	public static void assertXExpression(XExpression actualExpression, Class<? extends XExpression> expectedType, String expectedValue) {
+		assertTrue("Expecting type of expression: " + expectedType.getName(),
+				expectedType.isInstance(actualExpression));
+		if (XNumberLiteral.class.isAssignableFrom(expectedType)) {
+			assertEquals("Invalid value.", expectedValue, ((XNumberLiteral) actualExpression).getValue());
+		}
+		else if (XStringLiteral.class.isAssignableFrom(expectedType)) {
+			assertEquals("Invalid value.", expectedValue, ((XStringLiteral) actualExpression).getValue());
+		}
+		else if (XNullLiteral.class.isAssignableFrom(expectedType)) {
+			//
+		}
 	}
 
 }

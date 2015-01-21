@@ -21,6 +21,8 @@
 
 package io.sarl.tests.api;
 
+import io.sarl.lang.sarl.SarlScript;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -50,23 +52,23 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 				IResourcesSetupUtil.cleanWorkspace();
 				SARLNatureNeededForTest annot = description.getAnnotation(SARLNatureNeededForTest.class);
 				boolean isSARL = (annot != null);
-				String[] otherBundles = WorkspaceTestHelper.DEFAULT_REQUIRED_BUNDLES;
+				String[] classpath = WorkspaceTestHelper.DEFAULT_REQUIRED_BUNDLES;
 				if (isSARL) {
 					assert (annot != null);
-					String[] moreBundles = annot.moreBundles();
-					if (moreBundles != null && moreBundles.length > 0) {
-						otherBundles = new String[WorkspaceTestHelper.DEFAULT_REQUIRED_BUNDLES.length + moreBundles.length];
-						System.arraycopy(
-								WorkspaceTestHelper.DEFAULT_REQUIRED_BUNDLES, 0,
-								otherBundles, 0,
-								WorkspaceTestHelper.DEFAULT_REQUIRED_BUNDLES.length);
-						System.arraycopy(
-								moreBundles, 0,
-								otherBundles, WorkspaceTestHelper.DEFAULT_REQUIRED_BUNDLES.length,
-								moreBundles.length);
+					classpath = merge(classpath, annot.moreBundles());
+				}
+				TestClasspath annot2 = description.getAnnotation(TestClasspath.class);
+				if (annot2 == null) {
+					Class<?> type = description.getTestClass();
+					while (type != null && annot2 == null) {
+						annot2 = type.getAnnotation(TestClasspath.class);
+						type = type.getEnclosingClass();
 					}
 				}
-				WorkspaceTestHelper.createProjectWithDependencies(WorkspaceTestHelper.TESTPROJECT_NAME, isSARL, otherBundles);
+				if (annot2 != null) {
+					classpath = merge(classpath, annot2.value());
+				}
+				WorkspaceTestHelper.createProjectWithDependencies(WorkspaceTestHelper.TESTPROJECT_NAME, isSARL, classpath);
 			} catch (CoreException e) {
 				throw new RuntimeException(e);
 			}
@@ -86,13 +88,62 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	 */
 	@Inject
 	protected WorkspaceTestHelper helper;
-	
+
+	/** Merge two arrays.
+	 * 
+	 * @param operand1 - the first array.
+	 * @param operand2 - the second array.
+	 * @return the merge.
+	 */
+	protected static String[] merge(String[] operand1, String[] operand2) {
+		if (operand1 == null) {
+			if (operand2 == null) {
+				return new String[0];
+			}
+			return operand2;
+		}
+		if (operand2 == null) {
+			return operand1;
+		}
+		String[] tab = new String[operand1.length + operand2.length];
+		System.arraycopy(
+				operand1, 0,
+				tab, 0,
+				operand1.length);
+		System.arraycopy(
+				operand2, 0,
+				tab, operand1.length,
+				operand2.length);
+		return tab;
+	}
+
+	/** Create an instance of the given class.
+	 * 
+	 * @param clazz - type of the instance to create.
+	 * @return the instance.
+	 */
+	public <T> T get(Class<T> clazz) {
+		return this.helper.newInstance(clazz);
+	}
+
+	/** Parse the given code with the current project classpath.
+	 * 
+	 * @param code - the multiline code to parse.
+	 * @return the parsed code tree.
+	 * @throws Exception - when parsing cannot be done.
+	 */
+	public SarlScript parseWithProjectClasspath(Object... code) throws Exception {
+		return this.helper.createSARLScript(
+				pathStr("io","sarl","mypackage","test"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				multilineString(code));
+	}
+
 	/** Build a path.
 	 * 
 	 * @param path - path elements.
 	 * @return the path.
 	 */
-	protected static IPath path(String... path) {
+	public static IPath path(String... path) {
 		assert(path != null && path.length > 0);
 		IPath p = new Path(path[0]);
 		for(int i=1; i<path.length; ++i) {
@@ -106,17 +157,8 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	 * @param path - path elements.
 	 * @return the path.
 	 */
-	protected static String pathStr(String... path) {
+	public static String pathStr(String... path) {
 		return path(path).toOSString();
-	}
-
-	/** Create an instance of the given class.
-	 * 
-	 * @param clazz - type of the instance to create.
-	 * @return the instance.
-	 */
-	public <T> T get(Class<T> clazz) {
-		return this.helper.newInstance(clazz);
 	}
 
 }
