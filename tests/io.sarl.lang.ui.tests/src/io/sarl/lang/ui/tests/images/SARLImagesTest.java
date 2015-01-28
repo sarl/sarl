@@ -15,12 +15,11 @@
  */
 package io.sarl.lang.ui.tests.images;
 
-import static org.junit.Assert.assertNotNull;
 import io.sarl.lang.ui.images.SARLImages;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.xtext.junit4.XtextRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,122 +38,128 @@ public class SARLImagesTest extends AbstractSarlUiTest {
 	@Inject
 	private SARLImages images;
 
-	private static void assertImage(ImageDescriptor desc) {
-		assertNotNull(desc);
-		Image img = desc.createImage();
-		assertNotNull(img);
-	}
-	
 	/**
 	 */
 	@Test
 	public void forPackage() {
-		assertImage(this.images.forPackage());
+		assertBundleImage("packd_obj.gif", this.images.forPackage()); //$NON-NLS-1$
 	}
 
 	/**
 	 */
 	@Test
 	public void forAgent() {
-		assertImage(this.images.forAgent());
+		assertBundleImage("sarl-agent.png", this.images.forAgent()); //$NON-NLS-1$
 	}
 
 	/**
 	 */
 	@Test
 	public void forBehavior() {
-		assertImage(this.images.forBehavior());
+		assertBundleImage("sarl-behavior.png", this.images.forBehavior()); //$NON-NLS-1$
 	}
 
 	/**
 	 */
 	@Test
 	public void forCapacity() {
-		assertImage(this.images.forCapacity());
+		assertBundleImage("sarl-capacity.png", this.images.forCapacity()); //$NON-NLS-1$
 	}
 
 	/**
 	 */
 	@Test
 	public void forSkill() {
-		assertImage(this.images.forSkill());
+		assertBundleImage("sarl-skill.png", this.images.forSkill()); //$NON-NLS-1$
 	}
 
 	/**
 	 */
 	@Test
 	public void forEvent() {
-		assertImage(this.images.forEvent());
+		assertBundleImage("sarl-event.png", this.images.forEvent()); //$NON-NLS-1$
 	}
 
 	/**
 	 */
 	@Test
 	public void forBehaviorUnit() {
-		assertImage(this.images.forBehaviorUnit());
+		assertBundleImage("sarl-behavior-unit.png", this.images.forBehaviorUnit()); //$NON-NLS-1$
 	}
 
 	/**
 	 */
 	@Test
 	public void forAction() {
-		assertImage(this.images.forAction());
+		assertJdtImage(
+				JavaPluginImages.DESC_MISC_PUBLIC, 0,
+				this.images.forAction());
 	}
 
 	/**
 	 */
 	@Test
 	public void forActionSignature() {
-		assertImage(this.images.forActionSignature());
+		assertJdtImage(
+				JavaPluginImages.DESC_MISC_PUBLIC, JavaElementImageDescriptor.ABSTRACT,
+				this.images.forActionSignature());
 	}
 
 	/**
 	 */
 	@Test
 	public void forFile() {
-		assertImage(this.images.forFile());
+		assertBundleImage("sarl-file.png", this.images.forFile()); //$NON-NLS-1$
 	}
 
 	/**
 	 */
 	@Test
 	public void forAttribute_writable() {
-		assertImage(this.images.forAttribute(true));
+		assertJdtImage(
+				JavaPluginImages.DESC_FIELD_PROTECTED, 0,
+				this.images.forAttribute(true));
 	}
 
 	/**
 	 */
 	@Test
 	public void forAttribute_notWritable() {
-		assertImage(this.images.forAttribute(false));
+		assertJdtImage(
+				JavaPluginImages.DESC_FIELD_PROTECTED, JavaElementImageDescriptor.FINAL,
+				this.images.forAttribute(false));
 	}
 
 	/**
 	 */
 	@Test
 	public void forCapacityUses() {
-		assertImage(this.images.forCapacityUses());
+		assertJdtImage(
+				JavaPluginImages.DESC_OBJS_IMPCONT, 0,
+				this.images.forCapacityUses());
 	}
 
 	/**
 	 */
 	@Test
 	public void forCapacityUse() {
-		assertImage(this.images.forCapacityUse());
+		assertBundleImage("imp_obj.gif", this.images.forCapacityUse()); //$NON-NLS-1$
 	}
 
 	/**
 	 */
 	@Test
 	public void forCapacityRequirements() {
-		assertImage(this.images.forCapacityRequirements());
+		assertJdtImage(
+				JavaPluginImages.DESC_OBJS_IMPCONT, 0,
+				this.images.forCapacityRequirements());
 	}
 
 	/**
 	 */
 	@Test
 	public void forCapacityRequirement() {
-		assertImage(this.images.forCapacityRequirement());
+		assertBundleImage("sarl-capacity.png", this.images.forCapacityRequirement()); //$NON-NLS-1$
 	}
 
 }

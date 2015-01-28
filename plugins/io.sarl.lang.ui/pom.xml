@@ -11,7 +11,7 @@
 	<artifactId>io.sarl.lang.ui</artifactId>
 	<packaging>eclipse-plugin</packaging>
 	<name>UI Contributions for SARL Language</name>
-	
+
 	<properties>
 		<!-- needed for checkstyle/findbugs and other plugins -->
 		<main.basedir>${project.basedir}/../..</main.basedir>
@@ -28,11 +28,6 @@
 			</resource>
 		</resources>
 		<plugins>
-			<plugin>
-				<groupId>org.eclipse.xtend</groupId>
-				<artifactId>xtend-maven-plugin</artifactId>
-			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>

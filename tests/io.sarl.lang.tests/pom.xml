@@ -14,4 +14,13 @@
 
 	<name>Compiler Tests</name>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>

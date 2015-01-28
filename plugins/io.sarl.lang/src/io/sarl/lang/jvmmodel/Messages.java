@@ -45,6 +45,7 @@ public class Messages extends NLS {
 	public static String SARLJvmModelInferrer_10;
 	public static String SARLJvmModelInferrer_11;
 	public static String SARLJvmModelInferrer_12;
+	public static String SARLJvmModelInferrer_13;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

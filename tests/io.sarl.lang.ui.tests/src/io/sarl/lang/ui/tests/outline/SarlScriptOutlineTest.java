@@ -20,9 +20,7 @@
  */
 package io.sarl.lang.ui.tests.outline;
 
-import org.eclipse.xtext.junit4.XtextRunner;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /** Test the outline of a sarl script.
  * 
@@ -31,7 +29,6 @@ import org.junit.runner.RunWith;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(XtextRunner.class)
 public class SarlScriptOutlineTest extends AbstractSARLOutlineTreeProviderTest { 
 	
 	/**
@@ -42,12 +39,12 @@ public class SarlScriptOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		OutlineAsserts asserts = newOutlineAsserts(
 				"package io.sarl.lang.ui.tests.outline.tests\n" //$NON-NLS-1$
 				+ "import io.sarl.lang.core.Event\n" //$NON-NLS-1$
-				+ "import io.sarl.core.Schedules\n" //$NON-NLS-1$
-				+ "import io.sarl.core.Initialize\n" //$NON-NLS-1$
-				+ "import io.sarl.core.Lifecycle\n" //$NON-NLS-1$
 				+ "event MyEvent\n" //$NON-NLS-1$
 				+ "capacity C1 {\n" //$NON-NLS-1$
 				+ "    def myfct\n" //$NON-NLS-1$
+				+ "}\n" //$NON-NLS-1$
+				+ "capacity C2 {\n" //$NON-NLS-1$
+				+ "    def myfct2\n" //$NON-NLS-1$
 				+ "}\n" //$NON-NLS-1$
 				+ "skill MySkill implements C1 {\n" //$NON-NLS-1$
 				+ "    def myfct { }\n" //$NON-NLS-1$
@@ -58,38 +55,38 @@ public class SarlScriptOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 				+ "agent ABC {\n" //$NON-NLS-1$
 				+ "    on Event {\n" //$NON-NLS-1$
 				+ "        println(\"Receiving the event \"+occurrence)\n" //$NON-NLS-1$
-				+ "        killMe\n" //$NON-NLS-1$
 				+ "    }\n" //$NON-NLS-1$
-				+ "    uses Schedules\n" //$NON-NLS-1$
-				+ "    on io.sarl.core.Initialize {\n" //$NON-NLS-1$
+				+ "    uses C1\n" //$NON-NLS-1$
+				+ "    on MyEvent {\n" //$NON-NLS-1$
 				+ "        setSkill(typeof(C1), new MySkill)\n" //$NON-NLS-1$
 				+ "    }\n" //$NON-NLS-1$
-				+ "    uses Lifecycle\n" //$NON-NLS-1$
+				+ "    uses C2\n" //$NON-NLS-1$
 				+ "}\n" //$NON-NLS-1$
 				+ "// END\n"); //$NON-NLS-1$
-		asserts.numChildren(6);
+		asserts.numChildren(7);
 		OutlineAsserts c, cc;
 		asserts.leaf(0, "io.sarl.lang.ui.tests.outline.tests"); //$NON-NLS-1$
 		
 		c = asserts.nextChild("import declarations"); //$NON-NLS-1$
-		c.numChildren(4);
-		c.leaf(0, "io.sarl.core.Initialize"); //$NON-NLS-1$
-		c.nextChild("io.sarl.core.Lifecycle").leaf(); //$NON-NLS-1$
-		c.nextChild("io.sarl.core.Schedules").leaf(); //$NON-NLS-1$
-		c.nextChild("io.sarl.lang.core.Event").leaf(); //$NON-NLS-1$
+		c.numChildren(1);
+		c.leaf(0, "io.sarl.lang.core.Event").leaf(); //$NON-NLS-1$
 
 		c = asserts.nextChild("ABC"); //$NON-NLS-1$
 		c.numChildren(3);
 		cc = c.child(0, "capacity uses"); //$NON-NLS-1$
 		cc.numChildren(2);
-		cc.leaf(0, "Lifecycle"); //$NON-NLS-1$
-		cc.leaf(1, "Schedules"); //$NON-NLS-1$
+		cc.leaf(0, "C1"); //$NON-NLS-1$
+		cc.leaf(1, "C2"); //$NON-NLS-1$
 		c.nextChild("on Event").leaf(); //$NON-NLS-1$
-		c.nextChild("on Initialize").leaf(); //$NON-NLS-1$
+		c.nextChild("on MyEvent").leaf(); //$NON-NLS-1$
 
 		c = asserts.nextChild("C1"); //$NON-NLS-1$
 		c.numChildren(1);
 		c.leaf(0, "myfct() : void"); //$NON-NLS-1$
+
+		c = asserts.nextChild("C2"); //$NON-NLS-1$
+		c.numChildren(1);
+		c.leaf(0, "myfct2() : void"); //$NON-NLS-1$
 
 		asserts.nextChild("MyEvent").leaf(); //$NON-NLS-1$
 

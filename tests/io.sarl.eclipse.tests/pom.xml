@@ -19,9 +19,6 @@
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
-				<configuration>
-					<argLine>-ea</argLine>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

@@ -21,11 +21,20 @@
 
 package io.sarl.tests.api;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.regex.Pattern;
+
 import io.sarl.lang.sarl.SarlScript;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
+import org.eclipse.jdt.ui.JavaElementImageDescriptor;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
@@ -50,13 +59,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 		protected void starting(Description description) {
 			try {
 				IResourcesSetupUtil.cleanWorkspace();
-				SARLNatureNeededForTest annot = description.getAnnotation(SARLNatureNeededForTest.class);
-				boolean isSARL = (annot != null);
 				String[] classpath = WorkspaceTestHelper.DEFAULT_REQUIRED_BUNDLES;
-				if (isSARL) {
-					assert (annot != null);
-					classpath = merge(classpath, annot.moreBundles());
-				}
 				TestClasspath annot2 = description.getAnnotation(TestClasspath.class);
 				if (annot2 == null) {
 					Class<?> type = description.getTestClass();
@@ -68,20 +71,20 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 				if (annot2 != null) {
 					classpath = merge(classpath, annot2.value());
 				}
-				WorkspaceTestHelper.createProjectWithDependencies(WorkspaceTestHelper.TESTPROJECT_NAME, isSARL, classpath);
+				WorkspaceTestHelper.createProjectWithDependencies(WorkspaceTestHelper.TESTPROJECT_NAME, classpath);
 			} catch (CoreException e) {
 				throw new RuntimeException(e);
 			}
 			WorkspaceTestHelper.bind(AbstractSarlUiTest.this);
 		}
-		@Override
-		protected void finished(Description description) {
-			try {
-				IResourcesSetupUtil.cleanWorkspace();
-			} catch (CoreException e) {
-				throw new RuntimeException(e);
-			}
-		}
+		//		@Override
+		//		protected void finished(Description description) {
+		//			try {
+		//				IResourcesSetupUtil.cleanWorkspace();
+		//			} catch (CoreException e) {
+		//				throw new RuntimeException(e);
+		//			}
+		//		}
 	};
 
 	/** Helper for interaction with the Eclipse workbench.
@@ -151,7 +154,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 		}
 		return p;
 	}
-	
+
 	/** Build a path.
 	 * 
 	 * @param path - path elements.
@@ -159,6 +162,38 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	 */
 	public static String pathStr(String... path) {
 		return path(path).toOSString();
+	}
+
+	/** Assert the given image descriptor is for an image in a bundle.
+	 *
+	 * @param filename - the name of the image file.
+	 * @param desc - the image descriptor to test.
+	 */
+	protected static void assertBundleImage(String filename, ImageDescriptor desc) {
+		assertNotNull(desc);
+		String s = desc.toString();
+		String regex = Pattern.quote("URLImageDescriptor(bundleentry://") //$NON-NLS-1$
+				+ "[^/]+" //$NON-NLS-1$
+				+ Pattern.quote("/icons/") //$NON-NLS-1$
+				+ "([^/]+[/])*" //$NON-NLS-1$
+				+ Pattern.quote(filename + ")"); //$NON-NLS-1$
+		assertTrue("Image not found: " + filename //$NON-NLS-1$
+				+ ". Actual: " + s, Pattern.matches(regex, s)); //$NON-NLS-1$
+	}
+
+	/** Assert the given image descriptor is for an image given by JDT.
+	 *
+	 * @param expected - the expected base image descriptor.
+	 * @param expectedFlags - the additional expected flags.
+	 * @param actual - the image descriptor to test.
+	 */
+	protected static void assertJdtImage(ImageDescriptor expected, int expectedFlags, ImageDescriptor actual) {
+		assertNotNull(actual);
+		assertTrue(actual instanceof JavaElementImageDescriptor);
+		assertEquals("Not the same JDT image descriptor.", //$NON-NLS-1$
+				expected.hashCode() | expectedFlags | JavaElementImageProvider.BIG_SIZE.hashCode(),
+				actual.hashCode());
+		assertEquals(expectedFlags, ((JavaElementImageDescriptor) actual).getAdronments());
 	}
 
 }

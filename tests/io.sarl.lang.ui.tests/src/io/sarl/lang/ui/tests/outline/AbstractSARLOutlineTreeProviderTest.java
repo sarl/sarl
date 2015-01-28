@@ -36,6 +36,9 @@ import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.XtextDocument;
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
 import org.eclipse.xtext.ui.editor.outline.impl.OutlineFilterAndSorter;
+import org.junit.Rule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 
 import com.google.common.base.Joiner;
 import com.google.inject.Inject;
@@ -62,13 +65,17 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 	@Inject
 	private Provider<XtextDocument> documentProvider;
 
-	/**
-	 * @throws Exception
+	/** This rule permits to initialize the outline tests.
 	 */
-	public void setUp() throws Exception {
-		this.sorter.setComparator(this.comparator);
-	}
-	
+	@Rule
+	public TestWatcher sarlOutlineWatchter = new TestWatcher() {
+		@SuppressWarnings("synthetic-access")
+		@Override
+		protected void starting(Description description) {
+			AbstractSARLOutlineTreeProviderTest.this.sorter.setComparator(AbstractSARLOutlineTreeProviderTest.this.comparator);
+		}
+	};
+
 	/** Replies the outline sorted.
 	 * 
 	 * @return the outline sorter.

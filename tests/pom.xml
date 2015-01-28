@@ -31,75 +31,6 @@
 	<dependencyManagement>
 		<!-- The other dependencies are inside the submodules for avoiding to propagate 
 			the dependency information outside a specific module -->
-
-		<dependencies>
-			<dependency>
-				<groupId>org.powermock</groupId>
-				<artifactId>powermock-api-mockito</artifactId>
-				<version>1.5.6</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.powermock</groupId>
-				<artifactId>powermock-module-junit4</artifactId>
-				<version>1.5.6</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.xtext</groupId>
-				<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
-				<version>${xtext.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.xtext</groupId>
-				<artifactId>org.eclipse.xtext.common.types</artifactId>
-				<version>${xtext.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.xtext</groupId>
-				<artifactId>org.eclipse.xtext.xbase</artifactId>
-				<version>${xtext.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>io.sarl.lang</groupId>
-				<artifactId>io.sarl.lang.core</artifactId>
-				<version>${project.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>io.sarl.lang</groupId>
-				<artifactId>io.sarl.lang.tests</artifactId>
-				<version>${project.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>io.sarl</groupId>
-				<artifactId>io.sarl.core</artifactId>
-				<version>${project.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>io.sarl</groupId>
-				<artifactId>io.sarl.util</artifactId>
-				<version>${project.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>io.sarl</groupId>
-				<artifactId>io.sarl.tests</artifactId>
-				<version>${project.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>io.sarl</groupId>
-				<artifactId>io.sarl.tests.api</artifactId>
-				<version>${project.version}</version>
-				<scope>test</scope>
-			</dependency>
-		</dependencies>
 	</dependencyManagement>
 
 	<!-- ======================================= -->
@@ -109,6 +40,17 @@
 	<build>
 		<!-- The build configurations are inside the submodules for avoiding to 
 			propagate the information outside a specific module -->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-surefire-plugin</artifactId>
+					<configuration>
+						<argLine>-ea</argLine>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 </project>

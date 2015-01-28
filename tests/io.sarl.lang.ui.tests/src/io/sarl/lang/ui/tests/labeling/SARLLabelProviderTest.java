@@ -36,8 +36,8 @@ import io.sarl.tests.api.AbstractSarlUiTest;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.junit4.XtextRunner;
@@ -58,7 +58,7 @@ import com.google.inject.Inject;
 public class SARLLabelProviderTest extends AbstractSarlUiTest {
 
 	private static final String PACKAGE_STATEMENT = "package io.sarl.lang.ui.tests.labeling\n"; //$NON-NLS-1$
-	
+
 	@Inject
 	private SARLLabelProvider provider;
 
@@ -72,159 +72,131 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				"tests", "labeling", //$NON-NLS-1$//$NON-NLS-2$
 				basename);
 	}
-	
+
 	/**
 	 */
 	@Test
 	public void getImageDescriptorPackage() {
-		ImageDescriptor desc = this.provider.getImageDescriptor(getClass().getPackage());
-		assertNotNull(desc);
-		Image img = desc.createImage();
-		assertNotNull(img);
-		img.dispose();
+		assertBundleImage(
+				"packd_obj.gif", //$NON-NLS-1$
+				this.provider.getImageDescriptor(getClass().getPackage()));
 	}
 
 	/**
 	 */
 	@Test
 	public void getImageDescriptorSarlScript() {
-		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(SarlScript.class));
-		assertNotNull(desc);
-		Image img = desc.createImage();
-		assertNotNull(img);
-		img.dispose();
+		assertBundleImage(
+				"sarl-file.png", //$NON-NLS-1$
+				this.provider.getImageDescriptor(Mockito.mock(SarlScript.class)));
 	}
-	
+
 	/**
 	 */
 	@Test
 	public void getImageDescriptorAgent() {
-		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(Agent.class));
-		assertNotNull(desc);
-		Image img = desc.createImage();
-		assertNotNull(img);
-		img.dispose();
+		assertBundleImage(
+				"sarl-agent.png", //$NON-NLS-1$
+				this.provider.getImageDescriptor(Mockito.mock(Agent.class)));
 	}
 
 	/**
 	 */
 	@Test
 	public void getImageDescriptorEvent() {
-		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(Event.class));
-		assertNotNull(desc);
-		Image img = desc.createImage();
-		assertNotNull(img);
-		img.dispose();
+		assertBundleImage(
+				"sarl-event.png", //$NON-NLS-1$
+				this.provider.getImageDescriptor(Mockito.mock(Event.class)));
 	}
 
 	/**
 	 */
 	@Test
 	public void getImageDescriptorCapacity() {
-		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(Capacity.class));
-		assertNotNull(desc);
-		Image img = desc.createImage();
-		assertNotNull(img);
-		img.dispose();
+		assertBundleImage(
+				"sarl-capacity.png", //$NON-NLS-1$
+				this.provider.getImageDescriptor(Mockito.mock(Capacity.class)));
 	}
 
 	/**
 	 */
 	@Test
 	public void getImageDescriptorSkill() {
-		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(Skill.class));
-		assertNotNull(desc);
-		Image img = desc.createImage();
-		assertNotNull(img);
-		img.dispose();
+		assertBundleImage(
+				"sarl-skill.png", //$NON-NLS-1$
+				this.provider.getImageDescriptor(Mockito.mock(Skill.class)));
 	}
 
 	/**
 	 */
 	@Test
 	public void getImageDescriptorBehavior() {
-		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(Behavior.class));
-		assertNotNull(desc);
-		Image img = desc.createImage();
-		assertNotNull(img);
-		img.dispose();
+		assertBundleImage(
+				"sarl-behavior.png", //$NON-NLS-1$
+				this.provider.getImageDescriptor(Mockito.mock(Behavior.class)));
 	}
 
 	/**
 	 */
 	@Test
 	public void getImageDescriptorAttribute() {
-		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(Attribute.class));
-		assertNotNull(desc);
-		Image img = desc.createImage();
-		assertNotNull(img);
-		img.dispose();
+		assertJdtImage(
+				JavaPluginImages.DESC_FIELD_PROTECTED, JavaElementImageDescriptor.FINAL,
+				this.provider.getImageDescriptor(Mockito.mock(Attribute.class)));
 	}
 
 	/**
 	 */
 	@Test
 	public void getImageDescriptorConstructor() {
-		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(Constructor.class));
-		assertNotNull(desc);
-		Image img = desc.createImage();
-		assertNotNull(img);
-		img.dispose();
+		assertJdtImage(
+				JavaPluginImages.DESC_MISC_PUBLIC, JavaElementImageDescriptor.CONSTRUCTOR,
+				this.provider.getImageDescriptor(Mockito.mock(Constructor.class)));
 	}
 
 	/**
 	 */
 	@Test
 	public void getImageDescriptorAction() {
-		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(Action.class));
-		assertNotNull(desc);
-		Image img = desc.createImage();
-		assertNotNull(img);
-		img.dispose();
+		assertJdtImage(
+				JavaPluginImages.DESC_MISC_PUBLIC, 0,
+				this.provider.getImageDescriptor(Mockito.mock(Action.class)));
 	}
 
 	/**
 	 */
 	@Test
 	public void getImageDescriptorActionSignature() {
-		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(ActionSignature.class));
-		assertNotNull(desc);
-		Image img = desc.createImage();
-		assertNotNull(img);
-		img.dispose();
+		assertJdtImage(
+				JavaPluginImages.DESC_MISC_PUBLIC, JavaElementImageDescriptor.ABSTRACT,
+				this.provider.getImageDescriptor(Mockito.mock(ActionSignature.class)));
 	}
 
 	/**
 	 */
 	@Test
 	public void getImageDescriptorCapacityUses() {
-		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(CapacityUses.class));
-		assertNotNull(desc);
-		Image img = desc.createImage();
-		assertNotNull(img);
-		img.dispose();
+		assertJdtImage(
+				JavaPluginImages.DESC_OBJS_IMPCONT, 0,
+				this.provider.getImageDescriptor(Mockito.mock(CapacityUses.class)));
 	}
 
 	/**
 	 */
 	@Test
 	public void getImageDescriptorRequiredCapacity() {
-		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(RequiredCapacity.class));
-		assertNotNull(desc);
-		Image img = desc.createImage();
-		assertNotNull(img);
-		img.dispose();
+		assertJdtImage(
+				JavaPluginImages.DESC_OBJS_IMPCONT, 0,
+				this.provider.getImageDescriptor(Mockito.mock(RequiredCapacity.class)));
 	}
 
 	/**
 	 */
 	@Test
 	public void getImageDescriptorBehaviorUnit() {
-		ImageDescriptor desc = this.provider.getImageDescriptor(Mockito.mock(BehaviorUnit.class));
-		assertNotNull(desc);
-		Image img = desc.createImage();
-		assertNotNull(img);
-		img.dispose();
+		assertBundleImage(
+				"sarl-behavior-unit.png",  //$NON-NLS-1$
+				this.provider.getImageDescriptor(Mockito.mock(BehaviorUnit.class)));
 	}
 
 	/**
@@ -308,7 +280,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 		assertNotNull(text);
 		assertEquals("textSarlScript", text); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * @throws Exception
 	 */
@@ -324,7 +296,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 		assertNotNull(text);
 		assertEquals("A1", text); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * @throws Exception
 	 */
@@ -399,7 +371,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				filename("textAttribute"), //$NON-NLS-1$
 				Agent.class,
 				PACKAGE_STATEMENT
-			+ "agent A1 { var myAttr : boolean }"); //$NON-NLS-1$
+				+ "agent A1 { var myAttr : boolean }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
@@ -408,7 +380,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 		assertNotNull(text);
 		assertEquals("myAttr : boolean", text); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * @throws Exception
 	 */
@@ -418,7 +390,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				filename("textConstructor"), //$NON-NLS-1$
 				Event.class,
 				PACKAGE_STATEMENT
-			+ "event E1 { new (id:int) { } }"); //$NON-NLS-1$
+				+ "event E1 { new (id:int) { } }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(event);
 		Object feature = event.getFeatures().get(0);
 		assertNotNull(feature);
@@ -437,7 +409,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				filename("textAction0"), //$NON-NLS-1$
 				Agent.class,
 				PACKAGE_STATEMENT
-			+ "agent A1 { def myAction { } }"); //$NON-NLS-1$
+				+ "agent A1 { def myAction { } }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
@@ -446,7 +418,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 		assertNotNull(text);
 		assertEquals("myAction() : void", text); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * @throws Exception
 	 */
@@ -456,7 +428,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				filename("textAction1"), //$NON-NLS-1$
 				Agent.class,
 				PACKAGE_STATEMENT
-			+ "agent A1 { def myAction : int { 0 } }"); //$NON-NLS-1$
+				+ "agent A1 { def myAction : int { 0 } }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
@@ -475,7 +447,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				filename("textAction2"), //$NON-NLS-1$
 				Agent.class,
 				PACKAGE_STATEMENT
-			+ "agent A1 { def myAction(a:char) { } }"); //$NON-NLS-1$
+				+ "agent A1 { def myAction(a:char) { } }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
@@ -484,7 +456,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 		assertNotNull(text);
 		assertEquals("myAction(char) : void", text); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * @throws Exception
 	 */
@@ -494,7 +466,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				filename("textAction3"), //$NON-NLS-1$
 				Agent.class,
 				PACKAGE_STATEMENT
-			+ "agent A1 { def myAction(a:char) : int { 0 } }"); //$NON-NLS-1$
+				+ "agent A1 { def myAction(a:char) : int { 0 } }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
@@ -513,7 +485,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				filename("textActionSignature0"), //$NON-NLS-1$
 				Capacity.class,
 				PACKAGE_STATEMENT
-			+ "capacity C1 { def myAction }"); //$NON-NLS-1$
+				+ "capacity C1 { def myAction }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(capacity);
 		Object feature = capacity.getFeatures().get(0);
 		assertNotNull(feature);
@@ -522,7 +494,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 		assertNotNull(text);
 		assertEquals("myAction() : void", text); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * @throws Exception
 	 */
@@ -532,7 +504,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				filename("textActionSignature1"), //$NON-NLS-1$
 				Capacity.class,
 				PACKAGE_STATEMENT
-			+ "capacity C1 { def myAction : int }"); //$NON-NLS-1$
+				+ "capacity C1 { def myAction : int }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(capacity);
 		Object feature = capacity.getFeatures().get(0);
 		assertNotNull(feature);
@@ -551,7 +523,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				filename("textActionSignature2"), //$NON-NLS-1$
 				Capacity.class,
 				PACKAGE_STATEMENT
-			+ "capacity C1 { def myAction(a:char) }"); //$NON-NLS-1$
+				+ "capacity C1 { def myAction(a:char) }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(capacity);
 		Object feature = capacity.getFeatures().get(0);
 		assertNotNull(feature);
@@ -560,7 +532,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 		assertNotNull(text);
 		assertEquals("myAction(char) : void", text); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * @throws Exception
 	 */
@@ -570,7 +542,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				filename("textActionSignature3"), //$NON-NLS-1$
 				Capacity.class,
 				PACKAGE_STATEMENT
-			+ "capacity C1 { def myAction(a:char) : int }"); //$NON-NLS-1$
+				+ "capacity C1 { def myAction(a:char) : int }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(capacity);
 		Object feature = capacity.getFeatures().get(0);
 		assertNotNull(feature);
@@ -589,8 +561,8 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				filename("textCapacityUses"), //$NON-NLS-1$
 				Agent.class, 1,
 				PACKAGE_STATEMENT
-			+ "capacity C1 { }\n" //$NON-NLS-1$
-			+ "agent A1 { uses C1 }"); //$NON-NLS-1$
+				+ "capacity C1 { }\n" //$NON-NLS-1$
+				+ "agent A1 { uses C1 }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
@@ -609,8 +581,8 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				filename("textRequiredCapacity"), //$NON-NLS-1$
 				Agent.class, 1,
 				PACKAGE_STATEMENT
-			+ "capacity C1 { }\n" //$NON-NLS-1$
-			+ "agent A1 { requires C1 }"); //$NON-NLS-1$
+				+ "capacity C1 { }\n" //$NON-NLS-1$
+				+ "agent A1 { requires C1 }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
@@ -629,8 +601,8 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				filename("textBehaviorUnit0"), //$NON-NLS-1$
 				Agent.class, 1,
 				PACKAGE_STATEMENT
-			+ "event E1 { }\n" //$NON-NLS-1$
-			+ "agent A1 { on E1 { } }"); //$NON-NLS-1$
+				+ "event E1 { }\n" //$NON-NLS-1$
+				+ "agent A1 { on E1 { } }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
@@ -649,8 +621,8 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				filename("textBehaviorUnit1"), //$NON-NLS-1$
 				Agent.class, 1,
 				PACKAGE_STATEMENT
-			+ "event E1 { }\n" //$NON-NLS-1$
-			+ "agent A1 { on E1 [ true ] { } }"); //$NON-NLS-1$
+				+ "event E1 { }\n" //$NON-NLS-1$
+				+ "agent A1 { on E1 [ true ] { } }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
@@ -669,8 +641,8 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				filename("textBehaviorUnit2"), //$NON-NLS-1$
 				Agent.class, 1,
 				PACKAGE_STATEMENT
-			+ "event E1 { }\n" //$NON-NLS-1$
-			+ "agent A1 { on E1 [ 3 > 5 ] { } }"); //$NON-NLS-1$
+				+ "event E1 { }\n" //$NON-NLS-1$
+				+ "agent A1 { on E1 [ 3 > 5 ] { } }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
@@ -689,8 +661,8 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				filename("textBehaviorUnit3"), //$NON-NLS-1$
 				Agent.class, 1,
 				PACKAGE_STATEMENT
-			+ "event E1 { }\n" //$NON-NLS-1$
-			+ "agent A1 { on E1 [ 3 <=5 ] { } }"); //$NON-NLS-1$
+				+ "event E1 { }\n" //$NON-NLS-1$
+				+ "agent A1 { on E1 [ 3 <=5 ] { } }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
@@ -709,8 +681,8 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				filename("textBehaviorUnit4"), //$NON-NLS-1$
 				Agent.class, 1,
 				PACKAGE_STATEMENT
-			+ "event E1 { }\n" //$NON-NLS-1$
-			+ "agent A1 { on E1 [ 1+2+3+4+5+6+7+8+9+10 < 100 ] { } }"); //$NON-NLS-1$
+				+ "event E1 { }\n" //$NON-NLS-1$
+				+ "agent A1 { on E1 [ 1+2+3+4+5+6+7+8+9+10 < 100 ] { } }"); //$NON-NLS-1$
 		this.validator.assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);

@@ -144,7 +144,7 @@
 		</module>
         <module name="MemberName"/>
         <module name="MethodName">
-        	<property name="format" value="^(operator_)?([a-z][a-zA-Z0-9]*)$"/>
+        	<property name="format" value="^((operator)?_)?([a-z][a-zA-Z0-9]*)$"/>
         </module>
         <module name="PackageName"/>
         <module name="ParameterName"/>

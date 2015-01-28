@@ -21,6 +21,16 @@
 
 	<suppress checks="MethodName" files="SARLUiModule.java"/>
 
+	<suppress checks="AnonInnerLength" files="SARLJvmModelInferrer.java"/>
+	<suppress checks="MethodLength" files="SARLJvmModelInferrer.java"/>
+	<suppress checks="ParameterNumber" files="SARLJvmModelInferrer.java"/>
+	<suppress checks="CyclomaticComplexity" files="SARLJvmModelInferrer.java"/>
+	<suppress checks="NPathComplexity" files="SARLJvmModelInferrer.java"/>
+	<suppress checks="ClassFanOutComplexity" files="SARLJvmModelInferrer.java"/>
+	<suppress checks="NestedIfDepth" files="SARLJvmModelInferrer.java"/>
+	<suppress checks="MethodCount" files="SARLJvmModelInferrer.java"/>
+	<suppress checks="FileLength" files="SARLJvmModelInferrer.java"/>
+
 	<suppress checks="ExecutableStatementCount" files="MainProjectWizardPage.java"/>
 	<suppress checks="MagicNumber" files="MainProjectWizardPage.java"/>
 	<suppress checks="FileLength" files="MainProjectWizardPage.java"/>
@@ -79,11 +89,23 @@
 
 	<suppress checks="CyclomaticComplexity" files="SARLCodeGenerator.java"/>
 
+	<suppress checks="NPathComplexity" files="SARLValidator.java"/>
+	<suppress checks="CyclomaticComplexity" files="SARLValidator.java"/>
+	<suppress checks="NestedIfDepth" files="SARLValidator.java"/>
+	<suppress checks="MethodLength" files="SARLValidator.java"/>
+	<suppress checks="ParameterNumber" files="SARLValidator.java"/>
+	<suppress checks="ClassFanOutComplexity" files="SARLValidator.java"/>
+	<suppress checks="MethodCount" files="SARLValidator.java"/>
+	<suppress checks="FileLength" files="SARLValidator.java"/>
+
 	<suppress checks="NPathComplexity" files="Jdt2Ecore.java"/>
 	<suppress checks="CyclomaticComplexity" files="Jdt2Ecore.java"/>
 	<suppress checks="MethodLength" files="Jdt2Ecore.java"/>
 	<suppress checks="NestedIfDepth" files="Jdt2Ecore.java"/>
 	<suppress checks="ParameterNumber" files="Jdt2Ecore.java"/>
+
+	<suppress checks="MethodLength" files="SARLQuickfixProvider.java"/>
+	<suppress checks="MethodCount" files="SARLQuickfixProvider.java"/>
 
 </suppressions>
 

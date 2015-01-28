@@ -70,6 +70,10 @@ public final class ModelUtil {
 	 */
 	public static final String PREFIX_ACTION_HANDLE = "_handle_"; //$NON-NLS-1$
 
+	/** Préfix for the names of the hidden behavior units.
+	 */
+	public static final String PREFIX_HANDLE_GUARD = "_guard_"; //$NON-NLS-1$
+
 	/** Préfix for the names of the hidden fields related to the default values.
 	 */
 	public static final String PREFIX_ATTRIBUTE_DEFAULT_VALUE = "___FORMAL_PARAMETER_DEFAULT_VALUE_"; //$NON-NLS-1$
@@ -224,7 +228,7 @@ public final class ModelUtil {
 	 * SARL.
 	 */
 	public static boolean isHiddenAction(String name) {
-		return name.startsWith(PREFIX_ACTION_HANDLE);
+		return name.startsWith(PREFIX_ACTION_HANDLE) || name.startsWith(PREFIX_HANDLE_GUARD);
 	}
 
 	/** Replies a fixed version of the given name assuming
@@ -244,9 +248,18 @@ public final class ModelUtil {
 				return "handle" + name.substring(//$NON-NLS-1$
 						PREFIX_ACTION_HANDLE.length(),
 						PREFIX_ACTION_HANDLE.length() + 1).toUpperCase()
-					+ name.substring(PREFIX_ACTION_HANDLE.length() + 1);
+						+ name.substring(PREFIX_ACTION_HANDLE.length() + 1);
 			}
 			return "handle"; //$NON-NLS-1$
+		}
+		if (name.startsWith(PREFIX_HANDLE_GUARD)) {
+			if (name.length() > PREFIX_HANDLE_GUARD.length()) {
+				return "guard" + name.substring(//$NON-NLS-1$
+						PREFIX_HANDLE_GUARD.length(),
+						PREFIX_HANDLE_GUARD.length() + 1).toUpperCase()
+						+ name.substring(PREFIX_HANDLE_GUARD.length() + 1);
+			}
+			return "guard"; //$NON-NLS-1$
 		}
 		return name;
 	}
@@ -267,9 +280,18 @@ public final class ModelUtil {
 				return name.substring(
 						PREFIX_ACTION_HANDLE.length(),
 						PREFIX_ACTION_HANDLE.length() + 1).toLowerCase()
-					+ name.substring(PREFIX_ACTION_HANDLE.length() + 1);
+						+ name.substring(PREFIX_ACTION_HANDLE.length() + 1);
 			}
 			return "handle"; //$NON-NLS-1$
+		}
+		if (name.startsWith(PREFIX_HANDLE_GUARD)) {
+			if (name.length() > PREFIX_HANDLE_GUARD.length()) {
+				return name.substring(
+						PREFIX_HANDLE_GUARD.length(),
+						PREFIX_HANDLE_GUARD.length() + 1).toLowerCase()
+						+ name.substring(PREFIX_HANDLE_GUARD.length() + 1);
+			}
+			return "guard"; //$NON-NLS-1$
 		}
 		return name;
 	}
@@ -303,7 +325,7 @@ public final class ModelUtil {
 				return name.substring(
 						PREFIX_ATTRIBUTE_DEFAULT_VALUE.length(),
 						PREFIX_ATTRIBUTE_DEFAULT_VALUE.length() + 1).toLowerCase()
-					+ name.substring(PREFIX_ATTRIBUTE_DEFAULT_VALUE.length() + 1);
+						+ name.substring(PREFIX_ATTRIBUTE_DEFAULT_VALUE.length() + 1);
 			}
 			return "attr";  //$NON-NLS-1$
 		}
@@ -399,7 +421,7 @@ public final class ModelUtil {
 			assert (fromType != null);
 			assert (toType != null);
 		} else if ((fromType == null || toType == null)
-					|| (fromType.isPrimitiveVoid() != toType.isPrimitiveVoid())) {
+				|| (fromType.isPrimitiveVoid() != toType.isPrimitiveVoid())) {
 			return false;
 		}
 		TypeConformanceComputationArgument conform = new TypeConformanceComputationArgument(
@@ -411,10 +433,10 @@ public final class ModelUtil {
 				&& (!isInterface(toType) || isFinal(fromType))
 				&& (!toType.isAssignableFrom(fromType, conform))
 				&& (isFinal(fromType) || isFinal(toType)
-					|| isClass(fromType) && isClass(toType))
-				// no upcast
-				&& (!fromType.isAssignableFrom(toType, conform)))
-			|| (toType.isPrimitive() && !(fromType.isPrimitive() || fromType.isWrapper()))) {
+						|| isClass(fromType) && isClass(toType))
+						// no upcast
+						&& (!fromType.isAssignableFrom(toType, conform)))
+						|| (toType.isPrimitive() && !(fromType.isPrimitive() || fromType.isWrapper()))) {
 			return false;
 		}
 		return true;

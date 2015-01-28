@@ -26,7 +26,7 @@ import io.sarl.lang.sarl.Skill;
 import io.sarl.lang.signature.ActionKey;
 import io.sarl.lang.signature.SignatureKey;
 import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.SARLNatureNeededForTest;
+import io.sarl.tests.api.TestClasspath;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -68,7 +68,6 @@ public class Bug277 extends AbstractSarlUiTest {
 	 * @see <a href="https://github.com/sarl/sarl/issues/277">issue #277</a>
 	 */
 	@Test
-	@SARLNatureNeededForTest
 	public void multipleCapacityImplementation_0() throws Exception {
 		SarlScript script = this.helper.createSARLScript("SARLContextPDAProviderTest0",
 				"package io.sarl.lang.tests.genmodel.serializer\n"
@@ -91,7 +90,7 @@ public class Bug277 extends AbstractSarlUiTest {
 	 * @see <a href="https://github.com/sarl/sarl/issues/277">issue #277</a>
 	 */
 	@Test
-	@SARLNatureNeededForTest(moreBundles="io.sarl.core")
+	@TestClasspath("io.sarl.core")
 	public void multipleCapacityImplementation_1() throws Exception {
 		SarlScript script = this.helper.createSARLScript("SARLContextPDAProviderTest1",
 				"package io.sarl.lang.tests.genmodel.serializer\n"
@@ -110,7 +109,7 @@ public class Bug277 extends AbstractSarlUiTest {
 	}
 	
 	@Test
-	@SARLNatureNeededForTest(moreBundles="io.sarl.core")
+	@TestClasspath("io.sarl.core")
 	public void similarToWizardCreation() throws Exception {
 		this.helper.createSARLScript(
 				"Bug277_0", "package io.sarl.lang.tests.bug277\ncapacity MyCapacity { }");

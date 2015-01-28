@@ -20,18 +20,21 @@
  */
 package io.sarl.eclipse.tests.navigator;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+
 import io.sarl.eclipse.navigator.ContentProvider;
 import io.sarl.eclipse.navigator.ISARLProjectElement;
 import io.sarl.eclipse.navigator.SARLProjectWorkbenchRoot;
+import io.sarl.eclipse.navigator.node.SARLProjectParent;
 import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.Nullable;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,7 +45,7 @@ import org.junit.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class ContentProviderTest extends AbstractSarlTest {
+public class ContentProviderTest extends AbstractSarlUiTest {
 
 	@Nullable
 	private ContentProvider provider;
@@ -81,7 +84,8 @@ public class ContentProviderTest extends AbstractSarlTest {
 	public void getChildren_root() {
 		Object[] objects = this.provider.getChildren(this.root);
 		assertNotNull(objects);
-		assertZero(objects.length);
+		assertEquals(1, objects.length);
+		assertTrue(objects[0] instanceof SARLProjectParent);
 	}
 
 	@Test
@@ -95,14 +99,15 @@ public class ContentProviderTest extends AbstractSarlTest {
 	public void getChildren_other() {
 		Object[] objects = this.provider.getChildren(this.other);
 		assertNotNull(objects);
-		assertZero(objects.length);
+		assertZero("For the children: " + Arrays.toString(objects), objects.length);
 	}
 
 	@Test
 	public void getElements_root() {
 		Object[] objects = this.provider.getElements(this.root);
 		assertNotNull(objects);
-		assertZero(objects.length);
+		assertEquals(1, objects.length);
+		assertTrue(objects[0] instanceof SARLProjectParent);
 	}
 
 	@Test
@@ -116,7 +121,7 @@ public class ContentProviderTest extends AbstractSarlTest {
 	public void getElements_other() {
 		Object[] objects = this.provider.getElements(this.other);
 		assertNotNull(objects);
-		assertZero(objects.length);
+		assertZero("For the elements: " + Arrays.toString(objects), objects.length);
 	}
 
 	@Test

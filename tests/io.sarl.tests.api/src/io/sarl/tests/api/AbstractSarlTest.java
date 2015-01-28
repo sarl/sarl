@@ -273,8 +273,23 @@ public abstract class AbstractSarlTest {
 	 * @param actual - the value to test.
 	 */
 	public static void assertZero(int actual) {
+		assertZero(null, actual);
+	}
+
+	/** Assert that the given value is equal to zero.
+	 * 
+	 * @param message - the error message.
+	 * @param actual - the value to test.
+	 */
+	public static void assertZero(String message, int actual) {
 		if (actual != 0) {
-			fail("Expecting a zero number, actual: " + actual); //$NON-NLS-1$
+			String msg;
+			if (!Strings.isNullOrEmpty(message)) {
+				msg = message + ". "; //$NON-NLS-1$
+			} else {
+				msg = ""; //$NON-NLS-1$
+			}
+			fail(msg + "Expecting a zero number, actual: " + actual); //$NON-NLS-1$
 		}
 	}
 

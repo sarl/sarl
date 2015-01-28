@@ -34,7 +34,6 @@ import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.SARLNatureNeededForTest;
 import io.sarl.tests.api.TestClasspath;
 
 import org.eclipse.xtext.common.types.TypesPackage;
@@ -46,6 +45,7 @@ import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
+import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -107,7 +107,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
-		public void invalidExtend_0() throws Exception {
+		public void invalidExtend() throws Exception {
 			SarlScript mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"}",
@@ -226,9 +226,14 @@ public class AgentParsingTest {
 
 		@Test
 		@TestClasspath("io.sarl.tests.testdata")
-		public void invalidExtend_1() throws Exception {
-			SarlScript script = this.helper.createSARLScript("TopElementUiBaseTest0",
-					"agent A1 extends foo.MockFinalAgent { }");
+		public void invalidExtend() throws Exception {
+			// This test is working only in Eclipse, not in Maven.
+			Assume.assumeTrue(System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit."));
+			//
+			SarlScript script = parseWithProjectClasspath(
+					"import foo.MockFinalAgent",
+					"agent InvalidAgentDeclaration extends MockFinalAgent {",
+					"}");
 			this.validator.assertError(script,
 					SarlPackage.eINSTANCE.getAgent(),
 					IssueCodes.OVERRIDDEN_FINAL_TYPE,
