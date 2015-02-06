@@ -167,7 +167,7 @@ describe "Runtime Environment FAQ" {
 			 * (Menu <code>Window&gt; Preferences&gt; SARL&gt; Installed SREs</code>).
 			 * 
 			 * <caution>If the latest stable version of Janus is not working, you should
-			 * download the latest development version</caution>
+			 * download the latest development version.</caution>
 			 * 
 			 * @filter(.*) 
 			 */
@@ -176,6 +176,25 @@ describe "Runtime Environment FAQ" {
 				var propertyFile = getBundlePropertyURL("io.sarl.eclipse", "OSGI-INF/l10n/bundle.properties")
 				propertyFile should haveProperty "category.name" -> "SARL"
 				propertyFile should haveProperty "preference.installedSREs" -> "Installed SREs"
+			}
+
+			/* When the Janus platform cannot find the class file for the start-up agent, it
+			 * displays the error message <code>"Agent class not found"</code>.
+			 *
+			 * For resolving this problem, you should child if: <ul>
+			 * <li>the class with the given name exists in the application's class path.</li>
+			 * <li>the class name is given as the first command-line argument to your application.</li>
+			 * <li>the class with the given name is a subtype of <code>Agent</code>.</li>
+			 * </ul>
+			 * 
+			 * For getting the arguments given to Janus, you could launch Janus with the command line option:
+			 * <code>-cli</code>. This option stops Janus after displaying the command line arguments
+			 * (including the <code>-cli</code> option).
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Error: \"Agent class not found.\"" {
+				true
 			}
 
 		}
