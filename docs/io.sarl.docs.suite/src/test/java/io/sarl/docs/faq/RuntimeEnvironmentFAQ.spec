@@ -25,7 +25,7 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
-import static extension io.sarl.docs.utils.SpecificationTools.*;
+import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.assumeFalse
 
 /*
@@ -40,6 +40,18 @@ describe "Runtime Environment FAQ" {
 		 */
 		context "General Questions about Janus" {
 			
+			/* SRE stands for "SARL Runtime Environment".
+			 * The SRE is an implementation of an agent platform, which is able to
+			 * run a SARL program.
+			 * The official standard SRE supported by the SARL developers is the
+			 * [Janus platform](http://www.janusproject.io).
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "What is the SRE?" {
+				"http://www.janusproject.io" should beURL _
+			}
+
 			/* Janus is an open-source multi-agent platform fully implemented 
 			 * in Java 1.7. Janus enables developers to quickly create 
 			 * web, enterprise and desktop agent-based applications.
@@ -144,6 +156,26 @@ describe "Runtime Environment FAQ" {
 				"../gettingstarted/RunSARLAgentFromTheCommandLineSpec.html" should beAccessibleFrom this
 				"../gettingstarted/RunSARLAgentInTheEclipseIDESpec.html" should beAccessibleFrom this
 				"../gettingstarted/RunSARLAgentFromAJavaProgramSpec.html" should beAccessibleFrom this
+			}
+			
+			/* This error occurs when there is no SARL Runtime Environment (SRE) installed on your
+			 * Eclipse environment, OR when the installed SRE is not compatible with the installed
+			 * version of the SARL tools, which are embedded in Eclipse.
+			 *
+			 * For solving this problem, you must download the latest
+			 * [Janus platform](http://www.janusproject.io), and install it in your Eclipse
+			 * (Menu <code>Window&gt; Preferences&gt; SARL&gt; Installed SREs</code>).
+			 * 
+			 * <caution>If the latest stable version of Janus is not working, you should
+			 * download the latest development version</caution>
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Error: \"The SRE is not standalone. It does not contain the Java dependencies.\"" {
+				"http://www.janusproject.io" should beURL _
+				var propertyFile = getBundlePropertyURL("io.sarl.eclipse", "OSGI-INF/l10n/bundle.properties")
+				propertyFile should haveProperty "category.name" -> "SARL"
+				propertyFile should haveProperty "preference.installedSREs" -> "Installed SREs"
 			}
 
 		}

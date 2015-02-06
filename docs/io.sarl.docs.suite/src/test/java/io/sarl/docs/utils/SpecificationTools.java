@@ -23,6 +23,7 @@ package io.sarl.docs.utils;
 import static org.jnario.lib.Assert.assertTrue;
 
 import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -41,10 +42,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Properties;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.arakhne.afc.vmutil.ClassLoaderFinder;
+import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
@@ -386,6 +390,28 @@ public final class SpecificationTools {
 		return false;
 	}
 
+	private static boolean isValidURL(URL url, String requiredSchemes) {
+		if (requiredSchemes != null && !requiredSchemes.isEmpty()) {
+			boolean mustHaveScheme = false;
+			for(String s : requiredSchemes.trim().split("\\s*,\\s*")) { //$NON-NLS-1$
+				if (!s.isEmpty()) {
+					if (s.startsWith("!")) { //$NON-NLS-1$
+						if (s.substring(1).equalsIgnoreCase(url.getProtocol())) {
+							return false;
+						}
+					} else {
+						mustHaveScheme = true;
+						if (s.equalsIgnoreCase(url.getProtocol())) {
+							return true;
+						}
+					}
+				}
+			}
+			return !mustHaveScheme;
+		}
+		return true;
+	}
+
 	/** Ensure that the string has the format of an URL.
 	 *
 	 * @param actual - the string to parse.
@@ -404,25 +430,15 @@ public final class SpecificationTools {
 			if (u == null) {
 				return false;
 			}
-			if (requiredSchemes != null && !requiredSchemes.isEmpty()) {
-				boolean mustHaveScheme = false;
-				for(String s : requiredSchemes.trim().split("\\s*,\\s*")) { //$NON-NLS-1$
-					if (!s.isEmpty()) {
-						if (s.startsWith("!")) { //$NON-NLS-1$
-							if (s.substring(1).equalsIgnoreCase(u.getProtocol())) {
-								return false;
-							}
-						} else {
-							mustHaveScheme = true;
-							if (s.equalsIgnoreCase(u.getProtocol())) {
-								return true;
-							}
-						}
-					}
+			if (isValidURL(u, requiredSchemes)) {
+				try(InputStream is = u.openStream()) {
+					is.read();
+				} catch (Throwable _) {
+					Logger.getLogger(SpecificationTools.class.getName()).warning("Unable to connect to: " //$NON-NLS-1$
+							+ u);
 				}
-				return !mustHaveScheme;
+				return true;
 			}
-			return true;
 		} catch (Throwable _)  {
 			//
 		}
@@ -780,7 +796,7 @@ public final class SpecificationTools {
 		pattern.append("$"); //$NON-NLS-1$
 		return Pattern.matches(pattern.toString(), actual);
 	}
-	
+
 	private static Version parseJavaVersion(String version, Version defaultVersion) {
 		try {
 			Pattern pattern = Pattern.compile("^([0-9]+)(?:\\.([0-9]+)(?:\\.([0-9]+))?)?"); //$NON-NLS-1$
@@ -891,6 +907,71 @@ public final class SpecificationTools {
 			}
 		}
 		return map.size() == reference.size();
+	}
+
+	/** Ensure that the given URL is a property file with the given property name.
+	 *
+	 * @param propertyFile - the name of the property file.
+	 * @param propertyName - the name of the property name.
+	 * @return the validation status.
+	 */
+	public static boolean should_haveProperty(URL propertyFile, String propertyName) {
+		try {
+			Properties props = new Properties();
+			try (InputStream is = propertyFile.openStream()) {
+				props.load(is);
+				String value = props.getProperty(propertyName, null);
+				return value != null;
+			}
+		} catch (Throwable _) {
+			//
+		}
+		return false;
+	}
+
+	/** Ensure that the given URL is a property file with the given property.
+	 *
+	 * @param propertyFile - the name of the property file.
+	 * @param property - the property.
+	 * @return the validation status.
+	 */
+	public static boolean should_haveProperty(URL propertyFile, Pair<String, String> property) {
+		if (propertyFile != null && property != null) {
+			try {
+				Properties props = new Properties();
+				try (InputStream is = propertyFile.openStream()) {
+					props.load(is);
+					String value = props.getProperty(property.getKey(), null);
+					return (Objects.equals(value, property.getValue()));
+				}
+			} catch (Throwable _) {
+				//
+			}
+		}
+		return false;
+	}
+
+	/** Replies the URL of the bundle's file.
+	 *
+	 * @param bundleName - the name of the bundle, i.e. the name of the jar file.
+	 * @param filename - the name of the file.
+	 * @return the URL, or <code>null</code>.
+	 */
+	public static URL getBundlePropertyURL(String bundleName, String filename) {
+		try {
+			Iterator<URL> urls = ClasspathUtil.getClasspath();
+			URL url;
+			while (urls.hasNext()) {
+				url = urls.next();
+				String resourceName = FileSystem.basename(url);
+				if (resourceName != null && resourceName.startsWith(bundleName + "-")) { //$NON-NLS-1$
+					return FileSystem.toJarURL(url, filename);
+				}
+			}
+		} catch (Throwable _) {
+			//
+		}
+		return null;
 	}
 
 	private static class ArrayIterator implements Iterator<Object> {

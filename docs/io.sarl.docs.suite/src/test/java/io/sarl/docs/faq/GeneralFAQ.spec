@@ -151,8 +151,20 @@ describe "General FAQ on SARL" {
 				typeof(Integer) should not be null
 			}
 
+			/* SRE stands for "SARL Runtime Environment".
+			 * The SRE is an implementation of an agent platform, which is able to
+			 * run a SARL program.
+			 * The official standard SRE supported by the SARL developers is the
+			 * [Janus platform](http://www.janusproject.io).
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "What is the SRE?" {
+				"http://www.janusproject.io" should beURL _
+			}
+
 			/* SARL is a general-purpose agent-oriented language.
-			 * Janus is a runtime environment for multi-agent applications
+			 * Janus is a runtime environment (SRE) for multi-agent applications
 			 * that fully supports the concepts of SARL.
 			 * 
 			 * We can make a parallel with the Java universe:
