@@ -188,8 +188,8 @@ describe "Runtime Environment FAQ" {
 			 * </ul>
 			 * 
 			 * For getting the arguments given to Janus, you could launch Janus with the command line option:
-			 * <code>-cli</code>. This option stops Janus after displaying the command line arguments
-			 * (including the <code>-cli</code> option).
+			 * <code>--cli</code>. This option stops Janus after displaying the command line arguments
+			 * (including the <code>--cli</code> option).
 			 * 
 			 * @filter(.*) 
 			 */
