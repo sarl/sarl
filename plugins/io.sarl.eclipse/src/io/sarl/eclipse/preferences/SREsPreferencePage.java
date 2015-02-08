@@ -584,7 +584,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		if (!sre.getValidity().isOK()) {
 			if (errorMessages) {
 				setErrorMessage(MessageFormat.format(
-						io.sarl.eclipse.launching.Messages.RuntimeEnvironmentTab_5,
+						io.sarl.eclipse.launching.dialog.Messages.RuntimeEnvironmentTab_5,
 						sre.getName()));
 			}
 			return false;
@@ -622,7 +622,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		setMessage(null);
 		setErrorMessage((String) null);
 		if (this.sreArray.isEmpty()) {
-			setMessage(io.sarl.eclipse.launching.Messages.RuntimeEnvironmentTab_7);
+			setMessage(io.sarl.eclipse.launching.dialog.Messages.RuntimeEnvironmentTab_7);
 		} else {
 			ISREInstall defaultSRE = getDefaultSRE();
 			if (defaultSRE == null) {

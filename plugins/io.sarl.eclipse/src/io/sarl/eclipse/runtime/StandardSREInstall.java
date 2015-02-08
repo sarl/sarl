@@ -100,6 +100,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 	private String cliRandomContextID;
 	private String cliBootAgentContextID;
 	private String cliSreOffline;
+	private String cliNoMoreOption;
 
 	private String manifestMainClass;
 	private String manifestName;
@@ -261,6 +262,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 				this.cliRandomContextID = sarlSection.getValue(SREConstants.MANIFEST_CLI_RANDOM_CONTEXT_ID);
 				this.cliBootAgentContextID = sarlSection.getValue(SREConstants.MANIFEST_CLI_BOOT_AGENT_CONTEXT_ID);
 				this.cliSreOffline = sarlSection.getValue(SREConstants.MANIFEST_CLI_SRE_OFFLINE);
+				this.cliNoMoreOption = sarlSection.getValue(SREConstants.MANIFEST_CLI_NO_MORE_OPTION);
 				//
 				// Program arguments
 				String programArgs = Strings.nullToEmpty(sarlSection.getValue(SREConstants.MANIFEST_PROGRAM_ARGUMENTS));
@@ -299,25 +301,16 @@ public class StandardSREInstall extends AbstractSREInstall {
 	}
 
 	@Override
-	public String getProgramArguments() {
+	public String getSREArguments() {
 		if (isDirty()) {
 			setDirty(false);
 			resolveDirtyFields(true);
 		}
-
-		StringBuilder cliArguments = new StringBuilder();
-		cliArguments.append(getMainClass());
-
-		if (!this.programArguments.isEmpty()) {
-			cliArguments.append(" "); //$NON-NLS-1$
-			cliArguments.append(this.programArguments);
-		}
-
-		return cliArguments.toString();
+		return this.programArguments;
 	}
 
 	@Override
-	public String getVMArguments() {
+	public String getJVMArguments() {
 		if (isDirty()) {
 			setDirty(false);
 			resolveDirtyFields(true);
@@ -467,7 +460,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 	}
 
 	@Override
-	public Map<String, String> getCommandLineOptions() {
+	public Map<String, String> getAvailableCommandLineOptions() {
 		if (isDirty()) {
 			setDirty(false);
 			resolveDirtyFields(true);
@@ -484,6 +477,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 			putIfNotempty(options, SREConstants.MANIFEST_CLI_RANDOM_CONTEXT_ID, this.cliRandomContextID);
 			putIfNotempty(options, SREConstants.MANIFEST_CLI_BOOT_AGENT_CONTEXT_ID, this.cliBootAgentContextID);
 			putIfNotempty(options, SREConstants.MANIFEST_CLI_SRE_OFFLINE, this.cliSreOffline);
+			putIfNotempty(options, SREConstants.MANIFEST_CLI_NO_MORE_OPTION, this.cliNoMoreOption);
 			this.optionBuffer = new SoftReference<>(options);
 		}
 		return Collections.unmodifiableMap(options);

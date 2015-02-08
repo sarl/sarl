@@ -95,6 +95,10 @@ public final class SREConstants {
 	 */
 	public static final String MANIFEST_CLI_SRE_OFFLINE = "CLI-Offline"; //$NON-NLS-1$
 
+	/** Field name for CLI option that disabling options.
+	 */
+	public static final String MANIFEST_CLI_NO_MORE_OPTION = "CLI-No-More-Option"; //$NON-NLS-1$
+
 	/** Attribute name of the SRE's library path (the jar file).
 	 */
 	public static final String XML_LIBRARY_PATH = "libraryPath"; //$NON-NLS-1$

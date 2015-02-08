@@ -18,32 +18,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launching;
+package io.sarl.eclipse.launching.sreproviding;
 
+import io.sarl.eclipse.runtime.ProjectSREProvider;
+import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
 
-/**
- * Type of the root context identifier in the multiagent system.
+import org.eclipse.core.resources.IProject;
+
+/** Factory of the default implementation of a project SRE provider.
+ * This provider is reading the properties associated to the project and
+ * determine the corresponding SRE.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @see StandardProjectSREProviderFactory
  */
-public enum RootContextIdentifierType {
+public class StandardProjectSREProviderFactory implements ProjectSREProviderFactory {
 
-	/** The identifier of the root context is the one
-	 * given by the SRE.
+	/**
 	 */
-	DEFAULT_CONTEXT_ID,
+	public StandardProjectSREProviderFactory() {
+		//
+	}
 
-	/** The identifier of the root context is randomly
-	 * computed at each start of the SRE.
-	 */
-	RANDOM_CONTEXT_ID,
-
-	/** The identifier of the root context is computed
-	 * from the name of the type of the bott agent.
-	 */
-	BOOT_AGENT_CONTEXT_ID;
+	@Override
+	public ProjectSREProvider getProjectSREProvider(IProject project) {
+		return new StandardProjectSREProvider(project);
+	}
 
 }

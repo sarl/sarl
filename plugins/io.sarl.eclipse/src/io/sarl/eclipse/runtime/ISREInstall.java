@@ -170,18 +170,16 @@ public interface ISREInstall extends Cloneable {
 	 * The keys are defined in the {@link SREConstants SRE constants}, where
 	 * the key names are started by <code>MANIFEST_CLI_</code>.
 	 *
-	 * @return the program arguments to pass to the virtual machine for this SRE.
+	 * @return the program arguments to pass to the SRE (not the Java virtual machine).
+	 * @see #getJVMArguments()
 	 */
-	Map<String, String> getCommandLineOptions();
+	Map<String, String> getAvailableCommandLineOptions();
 
-	/** Replies the arguments to pass to the virtual machine
-	 * as program arguments for this SRE.
-	 * The replied arguments could contain the main class
-	 * replied by {@link #getMainClass()}.
+	/** Replies the arguments to pass to the SRE instance.
 	 *
-	 * @return the program arguments to pass to the virtual machine for this SRE.
+	 * @return the arguments for the SRE.
 	 */
-	String getProgramArguments();
+	String getSREArguments();
 
 	/** Replies the arguments to pass to the virtual machine
 	 * as VM arguments for this SRE.
@@ -189,8 +187,9 @@ public interface ISREInstall extends Cloneable {
 	 * replied by {@link #getMainClass()}.
 	 *
 	 * @return the VM arguments to pass to the virtual machine for this SRE.
+	 * @see #getSREArguments()
 	 */
-	String getVMArguments();
+	String getJVMArguments();
 
 	/** Replies the <code>Map</code> that contains String name/value pairs that
 	 * represent VM-specific attributes for this SRE.

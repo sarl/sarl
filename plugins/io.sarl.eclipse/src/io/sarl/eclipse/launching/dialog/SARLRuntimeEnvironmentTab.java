@@ -18,10 +18,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launching;
+package io.sarl.eclipse.launching.dialog;
 
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProviderFactory;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.ProjectProvider;
 import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
@@ -61,14 +62,14 @@ import com.google.common.base.Strings;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class RuntimeEnvironmentTab extends JavaJRETab {
+public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 
 	private SREConfigurationBlock sreBlock;
 	private IPropertyChangeListener listener;
 
 	/**
 	 */
-	public RuntimeEnvironmentTab() {
+	public SARLRuntimeEnvironmentTab() {
 		//
 	}
 

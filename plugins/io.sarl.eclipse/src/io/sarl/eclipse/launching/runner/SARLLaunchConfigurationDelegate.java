@@ -18,11 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launching;
+package io.sarl.eclipse.launching.runner;
 
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
+import io.sarl.eclipse.launching.dialog.RootContextIdentifierType;
+import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProvider;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.ProjectSREProvider;
 import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
@@ -147,20 +149,17 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 * and returns the main type name.
 	 *
 	 * @param configuration - launch configuration
-	 * @return the main type name specified by the given launch configuration
 	 * @throws CoreException if unable to retrieve the attribute or the attribute is
 	 * unspecified
 	 */
-	protected String verifyAgentName(ILaunchConfiguration configuration) throws CoreException {
+	protected void verifyAgentName(ILaunchConfiguration configuration) throws CoreException {
 		String name = getAgentName(configuration);
 		if (name == null) {
 			abort(
-					Messages.MainLaunchConfigurationTab_2,
+					io.sarl.eclipse.launching.dialog.Messages.MainLaunchConfigurationTab_2,
 					null,
 					SARLConfig.ERR_UNSPECIFIED_AGENT_NAME);
 		}
-		return VariablesPlugin.getDefault().getStringVariableManager()
-				.performStringSubstitution(name);
 	}
 
 	/** Copied from JDT's super class, and patched for invoking
@@ -570,7 +569,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	private static void verifySREValidity(ISREInstall sre, String runtime, boolean onlyStandalone) throws CoreException {
 		if (sre == null) {
 			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
-					MessageFormat.format(Messages.RuntimeEnvironmentTab_6, runtime)));
+					MessageFormat.format(io.sarl.eclipse.launching.dialog.Messages.RuntimeEnvironmentTab_6, runtime)));
 		}
 		int ignoreCode = 0;
 		if (!onlyStandalone) {
@@ -578,20 +577,38 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		}
 		if (!sre.getValidity(ignoreCode).isOK()) {
 			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, MessageFormat.format(
-					Messages.RuntimeEnvironmentTab_5,
+					io.sarl.eclipse.launching.dialog.Messages.RuntimeEnvironmentTab_5,
 					sre.getName())));
 		}
 	}
 
+	/** Replies the arguments of the program including the boot agent name.
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getProgramArguments(ILaunchConfiguration configuration) throws CoreException {
-		String launchConfigArgs = super.getProgramArguments(configuration);
+		// The following line get the boot agent arguments
+		String bootAgentArgs = super.getProgramArguments(configuration);
+
+		// Get the specific SRE arguments
 		ISREInstall sre = getSREInstallFor(configuration);
 		assert (sre != null);
-		IStringVariableManager substitutor = VariablesPlugin.getDefault().getStringVariableManager();
-		String sreArgs = substitutor.performStringSubstitution(sre.getProgramArguments());
 
-		Map<String, String> cliOptions = sre.getCommandLineOptions();
+		IStringVariableManager substitutor = VariablesPlugin.getDefault().getStringVariableManager();
+
+		// Retreive the SRE arguments from the SRE configuration
+		String sreArgs1 = substitutor.performStringSubstitution(sre.getSREArguments());
+
+		// Retreive the SRE arguments from the launch configuration
+		String sreArgs2 = substitutor.performStringSubstitution(configuration.getAttribute(
+						SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS,
+						Strings.emptyToNull(null)));
+
+		// Retreive the classname of the boot agent.
+		String bootAgent = getAgentName(configuration);
+
+		// Add the options corresponding to the general setting of the launch configuration.
+		Map<String, String> cliOptions = sre.getAvailableCommandLineOptions();
 		assert (cliOptions != null);
 		String options = null;
 
@@ -635,7 +652,12 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 		options = substitutor.performStringSubstitution(options);
 
-		return join(sreArgs, options, launchConfigArgs);
+		// Add the command line option that mark the difference between the SRE's options and
+		// the arguments for the boot agent
+		String noMoreOption = cliOptions.get(SREConstants.MANIFEST_CLI_NO_MORE_OPTION);
+
+		// Make the complete command line
+		return join(sreArgs1, sreArgs2, options, bootAgent, noMoreOption, bootAgentArgs);
 	}
 
 	@Override
@@ -644,7 +666,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		ISREInstall sre = getSREInstallFor(configuration);
 		assert (sre != null);
 		IStringVariableManager substitutor = VariablesPlugin.getDefault().getStringVariableManager();
-		String sreArgs = substitutor.performStringSubstitution(sre.getVMArguments());
+		String sreArgs = substitutor.performStringSubstitution(sre.getJVMArguments());
 		return join(sreArgs, launchConfigArgs);
 	}
 
@@ -679,7 +701,6 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		private RunProcessState runState = RunProcessState.STEP_0;
 
 		private String mainTypeName;
-		private String agentName;
 		private IVMRunner runner;
 		private String workingDirName;
 		private String[] envp;
@@ -708,7 +729,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			clearBuffers();
 
 			this.mainTypeName = verifyMainTypeName(this.configuration);
-			this.agentName = verifyAgentName(this.configuration);
+			verifyAgentName(this.configuration);
 			this.runner = getVMRunner(this.configuration, this.mode);
 
 			File workingDir = verifyWorkingDirectory(this.configuration);
@@ -727,11 +748,6 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 			// Program & VM arguments
 			String pgmArgs = getProgramArguments(this.configuration);
-			if (!Strings.isNullOrEmpty(pgmArgs)) {
-				pgmArgs = this.agentName + " " + pgmArgs; //$NON-NLS-1$
-			} else {
-				pgmArgs = this.agentName;
-			}
 			String vmArgs = getVMArguments(this.configuration);
 			this.execArgs = new ExecutionArguments(vmArgs, pgmArgs);
 

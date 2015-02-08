@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launching;
+package io.sarl.eclipse.launching.dialog;
 
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
@@ -71,7 +71,7 @@ import com.google.common.base.Strings;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
+public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 
 	private volatile SoftReference<Image> image;
 	private volatile String lastAgentNameError;
@@ -88,7 +88,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 
 	/**
 	 */
-	public MainLaunchConfigurationTab() {
+	public SARLMainLaunchConfigurationTab() {
 		//
 	}
 
@@ -139,7 +139,7 @@ public class MainLaunchConfigurationTab extends AbstractJavaMainTab {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public void modifyText(ModifyEvent e) {
-				MainLaunchConfigurationTab.this.lastAgentNameError = null;
+				SARLMainLaunchConfigurationTab.this.lastAgentNameError = null;
 				updateLaunchConfigurationDialog();
 			}
 		});

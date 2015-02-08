@@ -163,13 +163,13 @@ public class StandardSREInstallTest {
 		}
 
 		@Test
-		public void getProgramArguments() {
-			assertEquals("io.sarl.eclipse.tests.sre.Boot fghi jkl", this.sre.getProgramArguments());
+		public void getSREArguments() {
+			assertEquals("fghi jkl", this.sre.getSREArguments());
 		}
 
 		@Test
 		public void getVMArguments() {
-			assertEquals("abc de", this.sre.getVMArguments());
+			assertEquals("abc de", this.sre.getJVMArguments());
 		}
 
 		@Test
@@ -259,8 +259,8 @@ public class StandardSREInstallTest {
 			assertEquals(this.sre.getMaximalSARLVersion(), c.getMaximalSARLVersion());
 			assertEquals(this.sre.getMinimalSARLVersion(), c.getMinimalSARLVersion());
 			assertEquals(this.sre.getLocation(), c.getLocation());
-			assertEquals(this.sre.getProgramArguments(), c.getProgramArguments());
-			assertEquals(this.sre.getVMArguments(), c.getVMArguments());
+			assertEquals(this.sre.getSREArguments(), c.getSREArguments());
+			assertEquals(this.sre.getJVMArguments(), c.getJVMArguments());
 			assertEquals(this.sre.getJarFile(), c.getJarFile());
 			assertArrayEquals(this.sre.getLibraryLocations(), c.getLibraryLocations());
 		}
@@ -276,8 +276,8 @@ public class StandardSREInstallTest {
 			assertEquals(this.sre.getMaximalSARLVersion(), c.getMaximalSARLVersion());
 			assertEquals(this.sre.getMinimalSARLVersion(), c.getMinimalSARLVersion());
 			assertEquals(this.sre.getLocation(), c.getLocation());
-			assertEquals(this.sre.getProgramArguments(), c.getProgramArguments());
-			assertEquals(this.sre.getVMArguments(), c.getVMArguments());
+			assertEquals(this.sre.getSREArguments(), c.getSREArguments());
+			assertEquals(this.sre.getJVMArguments(), c.getJVMArguments());
 			assertEquals(this.sre.getJarFile(), c.getJarFile());
 			assertArrayEquals(this.sre.getLibraryLocations(), c.getLibraryLocations());
 		}
@@ -376,12 +376,12 @@ public class StandardSREInstallTest {
 
 		@Test
 		public void getProgramArguments() {
-			assertEquals("io.sarl.eclipse.tests.sre.Boot", this.sre.getProgramArguments());
+			assertEquals("", this.sre.getSREArguments());
 		}
 
 		@Test
 		public void getVMArguments() {
-			assertEquals("", this.sre.getVMArguments());
+			assertEquals("", this.sre.getJVMArguments());
 		}
 
 		@Test
@@ -463,8 +463,8 @@ public class StandardSREInstallTest {
 			assertEquals(this.sre.getMaximalSARLVersion(), c.getMaximalSARLVersion());
 			assertEquals(this.sre.getMinimalSARLVersion(), c.getMinimalSARLVersion());
 			assertEquals(this.sre.getLocation(), c.getLocation());
-			assertEquals(this.sre.getProgramArguments(), c.getProgramArguments());
-			assertEquals(this.sre.getVMArguments(), c.getVMArguments());
+			assertEquals(this.sre.getSREArguments(), c.getSREArguments());
+			assertEquals(this.sre.getJVMArguments(), c.getJVMArguments());
 			assertEquals(this.sre.getJarFile(), c.getJarFile());
 			assertArrayEquals(this.sre.getLibraryLocations(), c.getLibraryLocations());
 		}
@@ -480,8 +480,8 @@ public class StandardSREInstallTest {
 			assertEquals(this.sre.getMaximalSARLVersion(), c.getMaximalSARLVersion());
 			assertEquals(this.sre.getMinimalSARLVersion(), c.getMinimalSARLVersion());
 			assertEquals(this.sre.getLocation(), c.getLocation());
-			assertEquals(this.sre.getProgramArguments(), c.getProgramArguments());
-			assertEquals(this.sre.getVMArguments(), c.getVMArguments());
+			assertEquals(this.sre.getSREArguments(), c.getSREArguments());
+			assertEquals(this.sre.getJVMArguments(), c.getJVMArguments());
 			assertEquals(this.sre.getJarFile(), c.getJarFile());
 			assertArrayEquals(this.sre.getLibraryLocations(), c.getLibraryLocations());
 		}

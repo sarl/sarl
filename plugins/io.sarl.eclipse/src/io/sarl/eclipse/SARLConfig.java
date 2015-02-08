@@ -133,7 +133,13 @@ public final class SARLConfig {
 	public static final String ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT = SARLEclipsePlugin.PLUGIN_ID
 			+ ".USE_PROJECT_SARL_RUNTIME_ENVIRONMENT"; //$NON-NLS-1$
 
-	 /**
+	/**
+	 * Launch configuration attribute key. The value is the arguments for the SRE;
+	 */
+	public static final String ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS = SARLEclipsePlugin.PLUGIN_ID
+			+ ".SARL_RUNTIME_ENVIRONMENT_ARGUMENTS"; //$NON-NLS-1$
+
+	/**
 	 * Status code indicating a launch configuration does not
 	 * specify an agent name to launch.
 	 */

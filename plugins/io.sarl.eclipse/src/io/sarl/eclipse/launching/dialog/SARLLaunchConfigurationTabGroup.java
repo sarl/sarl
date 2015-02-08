@@ -18,14 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launching;
+package io.sarl.eclipse.launching.dialog;
 
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.CommonTab;
 import org.eclipse.debug.ui.EnvironmentTab;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
-import org.eclipse.jdt.debug.ui.launchConfigurations.JavaArgumentsTab;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaClasspathTab;
 
 /**
@@ -47,9 +46,9 @@ public class SARLLaunchConfigurationTabGroup extends AbstractLaunchConfiguration
 	@Override
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
 		ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] {
-				new MainLaunchConfigurationTab(),
-				new JavaArgumentsTab(),
-				new RuntimeEnvironmentTab(),
+				new SARLMainLaunchConfigurationTab(),
+				new SARLArgumentsTab(),
+				new SARLRuntimeEnvironmentTab(),
 				new JavaClasspathTab(),
 				new EnvironmentTab(),
 				new CommonTab(),

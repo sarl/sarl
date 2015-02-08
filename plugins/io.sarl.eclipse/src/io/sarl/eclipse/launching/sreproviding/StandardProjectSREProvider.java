@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launching;
+package io.sarl.eclipse.launching.sreproviding;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;

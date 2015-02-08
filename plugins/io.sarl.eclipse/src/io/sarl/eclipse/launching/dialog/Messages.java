@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.launching;
+package io.sarl.eclipse.launching.dialog;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -32,10 +32,7 @@ import org.eclipse.osgi.util.NLS;
  */
 @SuppressWarnings("all")
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.eclipse.launching.messages"; //$NON-NLS-1$
-	public static String AgentTypeSearchEngine_0;
-	public static String JavaLocalApplicationLaunchConfigurationDelegate_Creating_source_locator____2;
-	public static String JavaLocalApplicationLaunchConfigurationDelegate_Verifying_launch_attributes____1;
+	private static final String BUNDLE_NAME = "io.sarl.eclipse.launching.dialog.messages"; //$NON-NLS-1$
 	public static String MainLaunchConfigurationTab_0;
 	public static String MainLaunchConfigurationTab_1;
 	public static String MainLaunchConfigurationTab_10;
@@ -61,15 +58,6 @@ public class Messages extends NLS {
 	public static String RuntimeEnvironmentTab_5;
 	public static String RuntimeEnvironmentTab_6;
 	public static String RuntimeEnvironmentTab_7;
-	public static String SARLLaunchConfigurationDelegate_0;
-	public static String SARLLaunchConfigurationDelegate_1;
-	public static String SARLLaunchConfigurationDelegate_2;
-	public static String SARLLaunchConfigurationDelegate_3;
-	public static String SARLLaunchConfigurationDelegate_4;
-	public static String SARLLaunchConfigurationDelegate_5;
-	public static String SARLLaunchConfigurationDelegate_6;
-	public static String SARLLaunchConfigurationDelegate_7;
-	public static String SARLLaunchConfigurationDelegate_8;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

@@ -210,11 +210,11 @@ public class AbstractSREInstallTest extends AbstractSarlTest {
 			throw new UnsupportedOperationException();
 		}
 		@Override
-		public String getVMArguments() {
+		public String getJVMArguments() {
 			throw new UnsupportedOperationException();
 		}
 		@Override
-		public String getProgramArguments() {
+		public String getSREArguments() {
 			throw new UnsupportedOperationException();
 		}
 		@Override
@@ -230,7 +230,7 @@ public class AbstractSREInstallTest extends AbstractSarlTest {
 			throw new UnsupportedOperationException();
 		}
 		@Override
-		public Map<String, String> getCommandLineOptions() {
+		public Map<String, String> getAvailableCommandLineOptions() {
 			throw new UnsupportedOperationException();
 		}
 		@Override

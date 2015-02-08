@@ -25,7 +25,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import io.sarl.eclipse.launching.StandardProjectSREProvider;
+import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProvider;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.Nullable;
