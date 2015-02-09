@@ -19,7 +19,7 @@
 	<!-- ======================================= -->
 
 	<properties>
-		<tycho.version>0.21.0</tycho.version>
+		<tycho.version>0.22.0</tycho.version>
 		<jre.environment>JavaSE-1.7</jre.environment>
 	</properties>
 
