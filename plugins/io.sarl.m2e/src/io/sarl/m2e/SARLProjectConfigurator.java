@@ -231,7 +231,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		List<MojoExecution> mojos = getMojoExecutions(request, monitor);
 		for (MojoExecution mojo : mojos) {
 			String goal = mojo.getGoal();
-			switch(goal) {
+			switch (goal) {
 			case "initialize": //$NON-NLS-1$
 				initConfig = readInitializeConfiguration(request, mojo, monitor);
 				break;
