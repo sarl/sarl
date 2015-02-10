@@ -513,7 +513,7 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 			String mode = issue.getData()[1];
 			String msg = MessageFormat.format(Messages.SARLQuickfixProvider_6, redundantName);
 			ISemanticModification fct;
-			switch(mode) {
+			switch (mode) {
 			case "pre": //$NON-NLS-1$
 				fct = new ISemanticModification() {
 					@Override
