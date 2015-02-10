@@ -206,7 +206,7 @@ public final class ModelUtil {
 	 * @return <code>true</code> if the given type can see the target feature.
 	 */
 	public static boolean isVisible(JvmDeclaredType fromType, JvmMember target) {
-		switch(target.getVisibility()) {
+		switch (target.getVisibility()) {
 		case DEFAULT:
 			return target.getDeclaringType().getPackageName().equals(fromType.getPackageName());
 		case PROTECTED:
@@ -644,7 +644,7 @@ public final class ModelUtil {
 		//TODO: Check if a similar function exists in the Xbase library.
 		String defaultValue = ""; //$NON-NLS-1$
 		if (!Strings.isNullOrEmpty(type) && !"void".equals(type)) { //$NON-NLS-1$
-			switch(type) {
+			switch (type) {
 			case "boolean":  //$NON-NLS-1$
 				defaultValue = "true"; //$NON-NLS-1$
 				break;

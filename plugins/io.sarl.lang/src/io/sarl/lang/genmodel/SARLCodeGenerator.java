@@ -628,7 +628,7 @@ public class SARLCodeGenerator {
 		//TODO: Check if a similar function exists in the Xbase library.
 		XExpression expr = null;
 		if (type != null && !"void".equals(type) && !Void.class.getName().equals(type)) { //$NON-NLS-1$
-			switch(type) {
+			switch (type) {
 			case "boolean":  //$NON-NLS-1$
 			case "java.lang.Boolean":  //$NON-NLS-1$
 				XBooleanLiteral booleanLiteral = XbaseFactory.eINSTANCE.createXBooleanLiteral();
