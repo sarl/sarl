@@ -24,7 +24,7 @@ import static com.google.common.collect.Sets.newHashSet;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.TopElement;
 import io.sarl.lang.ui.internal.SARLActivator;
-import io.sarl.lang.ui.preferences.SARLProjectPreferences;
+import io.sarl.lang.ui.preferences.SARLPreferences;
 
 import java.io.File;
 import java.io.IOException;
@@ -227,7 +227,7 @@ public class WorkspaceTestHelper extends Assert {
 		}
 
 		// Configure SARL source folder
-		SARLProjectPreferences.setSpecificSARLConfigurationFor(result, srcGenFolder);
+		SARLPreferences.setSpecificSARLConfigurationFor(result, srcGenFolder);
 
 		return result;
 	}

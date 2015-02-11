@@ -23,7 +23,7 @@ package io.sarl.m2e;
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
 import io.sarl.eclipse.util.Utilities;
-import io.sarl.lang.ui.preferences.SARLProjectPreferences;
+import io.sarl.lang.ui.preferences.SARLPreferences;
 
 import java.io.File;
 import java.text.MessageFormat;
@@ -85,7 +85,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 			IProgressMonitor monitor) throws CoreException {
 		IPath outputPath = makeProjectRelativePath(facade, config.getOutput());
 		// Set the SARL preferences
-		SARLProjectPreferences.setSpecificSARLConfigurationFor(
+		SARLPreferences.setSpecificSARLConfigurationFor(
 				facade.getProject(), outputPath);
 	}
 

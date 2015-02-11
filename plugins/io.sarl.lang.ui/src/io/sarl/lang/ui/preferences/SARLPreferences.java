@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.xtext.builder.EclipseOutputConfigurationProvider;
 import org.eclipse.xtext.builder.preferences.BuilderPreferenceAccess;
+import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.generator.OutputConfiguration;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock;
@@ -37,16 +38,16 @@ import org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock;
 import com.google.common.base.Strings;
 import com.google.inject.Injector;
 
-/** Utilities related to the preferences on a SARL project.
+/** Utilities related to the preferences related to SARL.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class SARLProjectPreferences {
+public final class SARLPreferences {
 
-	private SARLProjectPreferences() {
+	private SARLPreferences() {
 		//
 	}
 
@@ -82,7 +83,7 @@ public final class SARLProjectPreferences {
 	 * @param project - the project.
 	 */
 	public static void setSystemSARLConfigurationFor(IProject project) {
-		IPreferenceStore preferenceStore = SARLProjectPreferences.getSARLPreferencesFor(project);
+		IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(project);
 		preferenceStore.setValue(OptionsConfigurationBlock.IS_PROJECT_SPECIFIC, false);
 	}
 
@@ -95,14 +96,14 @@ public final class SARLProjectPreferences {
 	public static void setSpecificSARLConfigurationFor(
 			IProject project,
 			IPath outputPath) {
-		IPreferenceStore preferenceStore = SARLProjectPreferences.getSARLPreferencesFor(project);
+		IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(project);
 		// Force to use a specific configuration for the SARL
 		preferenceStore.setValue(OptionsConfigurationBlock.IS_PROJECT_SPECIFIC, true);
 
 		// Loop on the Xtext configurations embeded in the SARL compiler.
 		String key;
 		for (OutputConfiguration projectConfiguration
-				: SARLProjectPreferences.getXtextConfigurationsFor(project)) {
+				: SARLPreferences.getXtextConfigurationsFor(project)) {
 			//
 			// OUTPUT PATH
 			key = BuilderPreferenceAccess.getKey(
@@ -156,11 +157,12 @@ public final class SARLProjectPreferences {
 	 */
 	public static IPath getSARLOutputPathFor(
 			IProject project) {
-		IPreferenceStore preferenceStore = SARLProjectPreferences.getSARLPreferencesFor(project);
+		assert (project != null);
+		IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(project);
 		if (preferenceStore.getBoolean(OptionsConfigurationBlock.IS_PROJECT_SPECIFIC)) {
 			String key;
 			for (OutputConfiguration projectConfiguration
-					: SARLProjectPreferences.getXtextConfigurationsFor(project)) {
+					: SARLPreferences.getXtextConfigurationsFor(project)) {
 				key = BuilderPreferenceAccess.getKey(
 						projectConfiguration,
 						EclipseOutputConfigurationProvider.OUTPUT_DIRECTORY);
@@ -171,6 +173,26 @@ public final class SARLProjectPreferences {
 			}
 		}
 		return null;
+	}
+
+	/** Replies the SARL output path in the global preferences.
+	 *
+	 * @return the output path for SARL compiler in the global preferences.
+	 */
+	public static IPath getGlobalSARLOutputPath() {
+		Injector injector = SARLActivator.getInstance().getInjector(SARLActivator.IO_SARL_LANG_SARL);
+		IOutputConfigurationProvider configurationProvider =
+				injector.getInstance(IOutputConfigurationProvider.class);
+		for (OutputConfiguration config : configurationProvider.getOutputConfigurations()) {
+			String path = config.getOutputDirectory();
+			if (!Strings.isNullOrEmpty(path)) {
+				IPath iPath = Path.fromOSString(path);
+				if (iPath != null) {
+					return iPath;
+				}
+			}
+		}
+		throw new IllegalStateException("No global preferences found for SARL."); //$NON-NLS-1$
 	}
 
 }

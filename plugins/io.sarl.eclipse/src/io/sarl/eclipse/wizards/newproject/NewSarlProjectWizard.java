@@ -25,7 +25,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.util.Utilities;
-import io.sarl.lang.ui.preferences.SARLProjectPreferences;
+import io.sarl.lang.ui.preferences.SARLPreferences;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
@@ -165,19 +165,30 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	protected boolean validateSARLSpecificElements(IJavaElement element) {
 		IJavaProject javaProject = (IJavaProject) element;
 		// Check if the "SARL" generation directory is a source folder.
-		IPath projectPath = SARLProjectPreferences.getSARLOutputPathFor(javaProject.getProject());
-		IPath outputPath = projectPath;
-		IPath generalPath = null;
-		if (outputPath == null) {
-			generalPath = SARLProjectPreferences.getSARLOutputPathFor(null);
-			outputPath = generalPath;
+		IPath outputPath;
+		IPath generalPreferencePath;
+		IPath projectSpecificPath = SARLPreferences.getSARLOutputPathFor(javaProject.getProject());
+
+		generalPreferencePath = SARLPreferences.getGlobalSARLOutputPath();
+
+		if (projectSpecificPath != null) {
+			outputPath = projectSpecificPath;
+			generalPreferencePath = null;
+		} else {
+			generalPreferencePath = SARLPreferences.getGlobalSARLOutputPath();
+			outputPath = generalPreferencePath;
 		}
+		assert (outputPath != null);
 		if (!hasSourcePath(javaProject, outputPath)) {
+			if (generalPreferencePath == null) {
+				generalPreferencePath = SARLPreferences.getGlobalSARLOutputPath();
+			}
+			assert (generalPreferencePath != null);
 			String message = MessageFormat.format(
 					Messages.SARLProjectCreationWizard_0,
 					toOSString(outputPath),
-					toOSString(projectPath),
-					toOSString(generalPath),
+					toOSString(projectSpecificPath),
+					toOSString(generalPreferencePath),
 					buildInvalidOutputPathMessageFragment(javaProject));
 			IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, message);
 

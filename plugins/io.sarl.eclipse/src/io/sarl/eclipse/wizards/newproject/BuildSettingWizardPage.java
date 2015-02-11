@@ -22,7 +22,7 @@ package io.sarl.eclipse.wizards.newproject;
 
 import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.lang.ui.preferences.SARLProjectPreferences;
+import io.sarl.lang.ui.preferences.SARLPreferences;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -588,17 +588,17 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 				updateProject(new SubProgressMonitor(monitor, 1));
 			}
 
-			IPath generationFolder = findGenerationSourcePath();
-			if (generationFolder != null) {
-				SARLProjectPreferences.setSpecificSARLConfigurationFor(
-						this.fCurrProject, generationFolder);
-			} else {
-				SARLProjectPreferences.setSystemSARLConfigurationFor(
-						this.fCurrProject);
-			}
-
 			String newProjectCompliance = this.fKeepContent ? null : this.fFirstPage.getCompilerCompliance();
 			configureJavaProject(newProjectCompliance, new SubProgressMonitor(monitor, 1));
+
+			IPath generationFolder = findGenerationSourcePath();
+			if (generationFolder != null) {
+				SARLPreferences.setSpecificSARLConfigurationFor(
+						getJavaProject().getProject(), generationFolder);
+			} else {
+				SARLPreferences.setSystemSARLConfigurationFor(
+						getJavaProject().getProject());
+			}
 		} catch (Throwable e) {
 			if (this.fCurrProject != null) {
 				removeProvisonalProject();
