@@ -77,14 +77,16 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 			}
 			WorkspaceTestHelper.bind(AbstractSarlUiTest.this);
 		}
-		//		@Override
-		//		protected void finished(Description description) {
-		//			try {
-		//				IResourcesSetupUtil.cleanWorkspace();
-		//			} catch (CoreException e) {
-		//				throw new RuntimeException(e);
-		//			}
-		//		}
+		@Override
+		protected void finished(Description description) {
+			if (description.getAnnotation(CleanWorkspaceAfter.class) != null) {
+				try {
+					IResourcesSetupUtil.cleanWorkspace();
+				} catch (CoreException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
 	};
 
 	/** Helper for interaction with the Eclipse workbench.

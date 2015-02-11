@@ -41,6 +41,7 @@ import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.ActionSignatureProvider.FormalParameterProvider;
 import io.sarl.lang.signature.SignatureKey;
 import io.sarl.tests.api.AbstractSarlUiTest;
+import io.sarl.tests.api.CleanWorkspaceAfter;
 import io.sarl.tests.api.Nullable;
 
 import java.util.Arrays;
@@ -61,9 +62,9 @@ import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -1218,9 +1219,6 @@ public class Jdt2EcoreTest {
 		@Nullable
 		private Map<SignatureKey, IMethod> superConstructors;
 
-		@Nullable
-		private IJavaProject project;
-
 		@Before
 		public void setUp() throws Exception {
 			this.finalOperations = Maps.newHashMap();
@@ -1228,23 +1226,24 @@ public class Jdt2EcoreTest {
 			this.inheritedFields = Maps.newHashMap();
 			this.operationsToImplement = Maps.newHashMap();
 			this.superConstructors = Maps.newHashMap();
-			this.project = JavaCore.create(this.helper.getProject());
 		}
-		
-		protected void loadSARLCode(int codeIndex) throws Exception {
+
+		private void loadSARLCode(int codeIndex) throws Exception {
 			this.helper.createSARLScript(
-					this.project.getProject(),
+					this.helper.getProject(),
 					"PopulateInherithanceContextTest" + codeIndex,
 					getResourceText("unit_test_code" + codeIndex));
+			this.helper.waitForAutoBuild();
 		}
-		
+
 		@Test
+		@CleanWorkspaceAfter
 		public void populateInheritanceContext_0() throws Exception {
 			// Create the SARL scripts
 			loadSARLCode(0);
 			//
 			IStatus s = Jdt2Ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(this.project),
+					new UnitTestTypeFinder(this.helper.getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1254,15 +1253,15 @@ public class Jdt2EcoreTest {
 					"io.sarl.eclipse.tests.p0.Skill1",
 					Arrays.asList("io.sarl.eclipse.tests.p0.Capacity3", "io.sarl.eclipse.tests.p0.Capacity2"));
 			//
+			assertNotNull(s);
+			assertTrue(s.toString(), s.isOK());
+			//
 			assertTrue(this.finalOperations.isEmpty());
 			assertActionKeys(this.overridableOperations.keySet(),
 					"skilFct(char)", "myFct1()");
 			assertContains(this.inheritedFields.keySet(), "attr1");
 			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()");
 			assertSignatureKeys(this.superConstructors.keySet(), "int");
-			//
-			assertNotNull(s);
-			assertTrue(s.toString(), s.isOK());
 		}
 
 		@Test
@@ -1271,7 +1270,7 @@ public class Jdt2EcoreTest {
 			loadSARLCode(1);
 			//
 			IStatus s = Jdt2Ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(this.project),
+					new UnitTestTypeFinder(this.helper.getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1281,6 +1280,9 @@ public class Jdt2EcoreTest {
 					"io.sarl.eclipse.tests.p1.Skill1",
 					Arrays.asList("io.sarl.eclipse.tests.p1.Capacity3", "io.sarl.eclipse.tests.p1.Capacity2"));
 			//
+			assertNotNull(s);
+			assertTrue(s.toString(), s.isOK());
+			//
 			assertActionKeys(this.finalOperations.keySet(),
 					"myFct1()");
 			assertActionKeys(this.overridableOperations.keySet(),
@@ -1288,9 +1290,6 @@ public class Jdt2EcoreTest {
 			assertContains(this.inheritedFields.keySet(), "attr1");
 			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()");
 			assertSignatureKeys(this.superConstructors.keySet(), "int");
-			//
-			assertNotNull(s);
-			assertTrue(s.toString(), s.isOK());
 		}
 
 		@Test
@@ -1299,7 +1298,7 @@ public class Jdt2EcoreTest {
 			loadSARLCode(2);
 			//
 			IStatus s = Jdt2Ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(this.project),
+					new UnitTestTypeFinder(this.helper.getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1309,15 +1308,15 @@ public class Jdt2EcoreTest {
 					"io.sarl.eclipse.tests.p2.Skill1",
 					Arrays.asList("io.sarl.eclipse.tests.p2.Capacity3", "io.sarl.eclipse.tests.p2.Capacity2"));
 			//
+			assertNotNull(s);
+			assertTrue(s.toString(), s.isOK());
+			//
 			assertTrue(this.finalOperations.isEmpty());
 			assertActionKeys(this.overridableOperations.keySet(),
 					"skilFct(char)", "myFct1(int*)");
 			assertContains(this.inheritedFields.keySet(), "attr1");
 			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()");
 			assertSignatureKeys(this.superConstructors.keySet(), "int");
-			//
-			assertNotNull(s);
-			assertTrue(s.toString(), s.isOK());
 		}
 
 		@Test
@@ -1326,7 +1325,7 @@ public class Jdt2EcoreTest {
 			loadSARLCode(3);
 			//
 			IStatus s = Jdt2Ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(this.project),
+					new UnitTestTypeFinder(this.helper.getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1336,18 +1335,18 @@ public class Jdt2EcoreTest {
 					"io.sarl.eclipse.tests.p3.Skill1",
 					Arrays.asList("io.sarl.eclipse.tests.p3.Capacity3", "io.sarl.eclipse.tests.p3.Capacity2"));
 			//
+			assertNotNull(s);
+			assertFalse(s.toString(), s.isOK());
+			assertFalse(s.toString(), s.isMultiStatus());
+			assertEquals("io.sarl.eclipse.tests.p3.Skill1", s.getMessage());
+			//
 			assertTrue(this.finalOperations.isEmpty());
 			assertTrue(this.overridableOperations.isEmpty());
 			assertTrue(this.inheritedFields.isEmpty());
 			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()", "myFct1(int*)");
 			assertTrue(this.superConstructors.isEmpty());
-			//
-			assertNotNull(s);
-			assertFalse(s.toString(), s.isOK());
-			assertFalse(s.toString(), s.isMultiStatus());
-			assertEquals("io.sarl.eclipse.tests.p3.Skill1", s.getMessage());
 		}
-		
+
 		/**
 		 * @author $Author: sgalland$
 		 * @version $FullVersion$
@@ -1357,11 +1356,11 @@ public class Jdt2EcoreTest {
 		private static class UnitTestTypeFinder implements TypeFinder {
 
 			private final IJavaProject project;
-			
+
 			public UnitTestTypeFinder(IJavaProject project) {
 				this.project = project;
 			}
-			
+
 			private IType createType(String fullyQualifiedName, String simpleName) throws JavaModelException {
 				IType type = mock(IType.class);
 				when(type.getFullyQualifiedName()).thenReturn(fullyQualifiedName);
@@ -1385,9 +1384,9 @@ public class Jdt2EcoreTest {
 				}
 				return this.project.findType(typeName);
 			}
-			
+
 		}
-		
+
 	}
 
 }
