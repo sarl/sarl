@@ -107,7 +107,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 					qualify(PROPERTY_NAME_USE_SYSTEM_WIDE_SRE));
 			String sreInstallId = getProject().getPersistentProperty(
 					qualify(PROPERTY_NAME_SRE_INSTALL_ID));
-			ISREInstall sre = SARLRuntime.getSREFromId(Strings.emptyToNull(sreInstallId));
+			ISREInstall sre = SARLRuntime.getSREFromId(sreInstallId);
 			boolean notify = this.sreBlock.getNotify();
 			try {
 				this.sreBlock.setNotify(false);

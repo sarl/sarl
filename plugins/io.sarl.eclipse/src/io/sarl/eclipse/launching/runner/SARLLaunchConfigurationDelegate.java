@@ -602,7 +602,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		// Retreive the SRE arguments from the launch configuration
 		String sreArgs2 = substitutor.performStringSubstitution(configuration.getAttribute(
 						SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS,
-						Strings.emptyToNull(null)));
+						Strings.nullToEmpty(null)));
 
 		// Retreive the classname of the boot agent.
 		String bootAgent = getAgentName(configuration);
