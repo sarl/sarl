@@ -15,8 +15,17 @@
  */
 package io.sarl.lang.tests.genmodel;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.genmodel.SARLCodeGenerator;
 import io.sarl.lang.genmodel.SARLCodeGenerator.BlockInnerDocumentationAdapter;
@@ -31,6 +40,7 @@ import io.sarl.lang.sarl.BehaviorUnit;
 import io.sarl.lang.sarl.Capacity;
 import io.sarl.lang.sarl.Constructor;
 import io.sarl.lang.sarl.Event;
+import io.sarl.lang.sarl.FeatureContainer;
 import io.sarl.lang.sarl.FormalParameter;
 import io.sarl.lang.sarl.ParameterizedFeature;
 import io.sarl.lang.sarl.SarlScript;
@@ -38,6 +48,7 @@ import io.sarl.lang.sarl.Skill;
 import io.sarl.lang.sarl.TopElement;
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.Nullable;
 
 import java.util.Arrays;
@@ -52,9 +63,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtext.common.types.JvmConstructor;
+import org.eclipse.xtext.common.types.JvmExecutable;
+import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
-import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.common.types.util.TypeReferences;
@@ -70,6 +83,7 @@ import org.eclipse.xtext.xbase.XbaseFactory;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.impl.XBlockExpressionImpl;
+import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,7 +94,6 @@ import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 
 /**
@@ -107,7 +120,10 @@ import com.google.inject.Inject;
 	SARLCodeGeneratorTest.EventFeatures.class,
 	SARLCodeGeneratorTest.SkillFeatures.class,
 	SARLCodeGeneratorTest.Expressions.class,
-	SARLCodeGeneratorTest.FormalParameters.class
+	SARLCodeGeneratorTest.FormalParameters.class,
+	SARLCodeGeneratorTest.CreateActionFromJvmElement.class,
+	SARLCodeGeneratorTest.CreateConstructorFromJvmElement.class,
+	SARLCodeGeneratorTest.CreateActionSignatureFromJvmElement.class
 })
 @SuppressWarnings("all")
 public class SARLCodeGeneratorTest {
@@ -1125,7 +1141,7 @@ public class SARLCodeGeneratorTest {
 		}
 
 		@Test
-		public void createAction_returnNull()  {
+		public void returnNull()  {
 			Action action = gen.createAction(code, agent, "myFct", null, block);
 			//
 			assertNotNull(action);
@@ -1136,7 +1152,7 @@ public class SARLCodeGeneratorTest {
 		}
 
 		@Test
-		public void createAction_returnBoolean()  {
+		public void returnBoolean()  {
 			Action action = gen.createAction(code, agent, "myFct", "boolean", block);
 			//
 			assertNotNull(action);
@@ -1147,7 +1163,7 @@ public class SARLCodeGeneratorTest {
 		}
 
 		@Test
-		public void createAction_returnObject()  {
+		public void returnObject()  {
 			Action action = gen.createAction(code, agent, "myFct", "java.lang.String", block);
 			//
 			assertNotNull(action);
@@ -1325,7 +1341,7 @@ public class SARLCodeGeneratorTest {
 		}
 
 		@Test
-		public void createAction_returnNull()  {
+		public void returnNull()  {
 			Action action = gen.createAction(code, behavior, "myFct", null, block);
 			//
 			assertNotNull(action);
@@ -1336,7 +1352,7 @@ public class SARLCodeGeneratorTest {
 		}
 
 		@Test
-		public void createAction_returnBoolean()  {
+		public void returnBoolean()  {
 			Action action = gen.createAction(code, behavior, "myFct", "boolean", block);
 			//
 			assertNotNull(action);
@@ -1347,7 +1363,7 @@ public class SARLCodeGeneratorTest {
 		}
 
 		@Test
-		public void createAction_returnObject()  {
+		public void returnObject()  {
 			Action action = gen.createAction(code, behavior, "myFct", "java.lang.String", block);
 			//
 			assertNotNull(action);
@@ -1521,7 +1537,7 @@ public class SARLCodeGeneratorTest {
 		}
 
 		@Test
-		public void createActionSignature_returnNull()  {
+		public void returnNull()  {
 			ActionSignature action = gen.createActionSignature(code, capacity, "myFct", null);
 			//
 			assertNotNull(action);
@@ -1531,7 +1547,7 @@ public class SARLCodeGeneratorTest {
 		}
 
 		@Test
-		public void createActionSignature_returnBoolean()  {
+		public void returnBoolean()  {
 			ActionSignature action = gen.createActionSignature(code, capacity, "myFct", "boolean");
 			//
 			assertNotNull(action);
@@ -1541,7 +1557,7 @@ public class SARLCodeGeneratorTest {
 		}
 
 		@Test
-		public void createActionSignature_returnObject()  {
+		public void returnObject()  {
 			ActionSignature action = gen.createActionSignature(code, capacity, "myFct", "java.lang.String");
 			//
 			assertNotNull(action);
@@ -1763,7 +1779,7 @@ public class SARLCodeGeneratorTest {
 		}
 
 		@Test
-		public void createAction_returnNull()  {
+		public void returnNull()  {
 			Action action = gen.createAction(code, skill, "myFct", null, block);
 			//
 			assertNotNull(action);
@@ -1774,7 +1790,7 @@ public class SARLCodeGeneratorTest {
 		}
 
 		@Test
-		public void createAction_returnBoolean()  {
+		public void returnBoolean()  {
 			Action action = gen.createAction(code, skill, "myFct", "boolean", block);
 			//
 			assertNotNull(action);
@@ -1785,7 +1801,7 @@ public class SARLCodeGeneratorTest {
 		}
 
 		@Test
-		public void createAction_returnObject()  {
+		public void returnObject()  {
 			Action action = gen.createAction(code, skill, "myFct", "java.lang.String", block);
 			//
 			assertNotNull(action);
@@ -1927,14 +1943,14 @@ public class SARLCodeGeneratorTest {
 
 		@Test
 		public void createXExpression_null()  {
-			XExpression expr = gen.createXExpression(code, null, eResourceSet);
+			XExpression expr = gen.createXExpression(null, eResourceSet);
 			//
 			assertNull(expr);
 		}
 
 		@Test
 		public void createXExpression_empty()  {
-			XExpression expr = gen.createXExpression(code, "", eResourceSet);
+			XExpression expr = gen.createXExpression("", eResourceSet);
 			//
 			assertNull(expr);
 		}
@@ -2086,6 +2102,1311 @@ public class SARLCodeGeneratorTest {
 			assertTypeReferenceIdentifier(param.getParameterType(), "java.lang.String");
 			//
 			assertParameterNames(container.getParams(), "myParam");
+		}
+
+	}
+
+	@InjectWith(SARLInjectorProvider.class)
+	public static class CreateActionFromJvmElement extends AbstractSarlUiTest {
+
+		@Inject
+		private SARLCodeGenerator generator;
+
+		/** Associator of the JVM elements and the SARL elements.
+		 */
+		@Inject
+		protected JvmModelAssociator jvmModelAssociator;
+
+		private JvmOperation createJvmFeature(String... sarlCode) throws Exception {
+			String sarlFilename = generateFilename();
+			SarlScript sarlScript = this.helper.createSARLScript(sarlFilename, multilineString(sarlCode));
+			this.helper.waitForAutoBuild();
+			EObject feature = ((FeatureContainer) sarlScript.getElements().get(0)).getFeatures().get(0);
+			EObject jvmElement = this.jvmModelAssociator.getPrimaryJvmElement(feature);
+			return (JvmOperation) jvmElement;
+		}
+
+		@Test
+		public void noParam_noReturn() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"agent A1 {",
+					"	def fct {}",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(0, action.getParams().size());
+		}
+
+		@Test
+		public void stdParam_noReturn() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"agent A1 {",
+					"	def fct(a : URL, b : int) {}",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void variadicParam_noReturn() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"agent A1 {",
+					"	def fct(a : URL, b : int*) {}",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void defaultValue_noReturn() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"agent A1 {",
+					"	def fct(a : URL, b : int=4, c : char) {}",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
+		}
+
+		@Test
+		public void variadicParam_defaultValue_noReturn() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"agent A1 {",
+					"	def fct(a : URL, b : int=4, c : char*) {}",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
+		}
+
+		@Test
+		public void noParam_returnValue() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"agent A1 {",
+					"	def fct : String { null }",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(0, action.getParams().size());
+		}
+
+		@Test
+		public void stdParam_returnValue() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"agent A1 {",
+					"	def fct(a : URL, b : int) : String { null }",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void variadicParam_returnValue() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"agent A1 {",
+					"	def fct(a : URL, b : int*) : String { null }",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void defaultValue_returnValue() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"agent A1 {",
+					"	def fct(a : URL, b : int=4, c : char) : String { null }",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
+		}
+
+		@Test
+		public void variadicParam_defaultValue_returnValue() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"agent A1 {",
+					"	def fct(a : URL, b : int=4, c : char*) : String { null }",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
+		}
+
+		@Test
+		public void noParam_noReturn_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"agent A1 {",
+					"	def fct fires MyEvent {}",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(0, action.getParams().size());
+		}
+
+		@Test
+		public void stdParam_noReturn_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"agent A1 {",
+					"	def fct(a : URL, b : int) fires MyEvent {}",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void variadicParam_noReturn_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"agent A1 {",
+					"	def fct(a : URL, b : int*) fires MyEvent {}",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void defaultValue_noReturn_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"agent A1 {",
+					"	def fct(a : URL, b : int=4, c : char) fires MyEvent {}",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
+		}
+
+		@Test
+		public void variadicParam_defaultValue_noReturn_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"agent A1 {",
+					"	def fct(a : URL, b : int=4, c : char*) fires MyEvent {}",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
+		}
+
+		@Test
+		public void noParam_returnValue_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"agent A1 {",
+					"	def fct : String fires MyEvent { null }",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(0, action.getParams().size());
+		}
+
+		@Test
+		public void stdParam_returnValue_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"agent A1 {",
+					"	def fct(a : URL, b : int) : String fires MyEvent { null }",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void variadicParam_returnValue_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"agent A1 {",
+					"	def fct(a : URL, b : int*) : String fires MyEvent { null }",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void defaultValue_returnValue_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"agent A1 {",
+					"	def fct(a : URL, b : int=4, c : char) : String fires MyEvent { null }",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
+		}
+
+		@Test
+		public void variadicParam_defaultValue_returnValue_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"agent A1 {",
+					"	def fct(a : URL, b : int=4, c : char*) : String fires MyEvent { null }",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			//
+			assertNotNull(feature);
+			Action action = (Action) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
+		}
+
+	}
+
+	@InjectWith(SARLInjectorProvider.class)
+	public static class CreateConstructorFromJvmElement extends AbstractSarlUiTest {
+
+		@Inject
+		private SARLCodeGenerator generator;
+
+		/** Associator of the JVM elements and the SARL elements.
+		 */
+		@Inject
+		protected JvmModelAssociator jvmModelAssociator;
+
+		private JvmConstructor createJvmFeature(String... sarlCode) throws Exception {
+			String sarlFilename = generateFilename();
+			SarlScript sarlScript = this.helper.createSARLScript(sarlFilename, multilineString(sarlCode));
+			this.helper.waitForAutoBuild();
+			EObject feature = ((FeatureContainer) sarlScript.getElements().get(0)).getFeatures().get(0);
+			EObject jvmElement = this.jvmModelAssociator.getPrimaryJvmElement(feature);
+			return (JvmConstructor) jvmElement;
+		}
+
+		@Test
+		public void noParam() throws Exception {
+			JvmConstructor cons = createJvmFeature(
+					// Code
+					"event E1 {",
+					"	new() {}",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createConstructor(cons, false);
+			//
+			assertNotNull(feature);
+			Constructor action = (Constructor) feature;
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(0, action.getParams().size());
+		}
+
+		@Test
+		public void stdParam() throws Exception {
+			JvmConstructor cons = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"event E1 {",
+					"	new (a : URL, b : int) {}",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createConstructor(cons, false);
+			//
+			assertNotNull(feature);
+			Constructor action = (Constructor) feature;
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void variadicParam() throws Exception {
+			JvmConstructor cons = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"event E1 {",
+					"	new (a : URL, b : int*) {}",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createConstructor(cons, false);
+			//
+			assertNotNull(feature);
+			Constructor action = (Constructor) feature;
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void defaultValue() throws Exception {
+			JvmConstructor cons = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"event E1 {",
+					"	new (a : URL, b : int=4, c : char) {}",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createConstructor(cons, false);
+			//
+			assertNotNull(feature);
+			Constructor action = (Constructor) feature;
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
+		}
+
+		@Test
+		public void variadicParam_defaultValue() throws Exception {
+			JvmConstructor cons = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"event E1 {",
+					"	new (a : URL, b : int=4, c : char*) {}",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createConstructor(cons, false);
+			//
+			assertNotNull(feature);
+			Constructor action = (Constructor) feature;
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
+		}
+
+	}
+
+	@InjectWith(SARLInjectorProvider.class)
+	public static class CreateActionSignatureFromJvmElement extends AbstractSarlUiTest {
+
+		@Inject
+		private SARLCodeGenerator generator;
+
+		/** Associator of the JVM elements and the SARL elements.
+		 */
+		@Inject
+		protected JvmModelAssociator jvmModelAssociator;
+
+		private JvmOperation createJvmFeature(String... sarlCode) throws Exception {
+			String sarlFilename = generateFilename();
+			SarlScript sarlScript = this.helper.createSARLScript(sarlFilename, multilineString(sarlCode));
+			this.helper.waitForAutoBuild();
+			EObject feature = ((FeatureContainer) sarlScript.getElements().get(0)).getFeatures().get(0);
+			EObject jvmElement = this.jvmModelAssociator.getPrimaryJvmElement(feature);
+			return (JvmOperation) jvmElement;
+		}
+
+		@Test
+		public void noParam_noReturn() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"capacity C1 {",
+					"	def fct",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(0, action.getParams().size());
+		}
+
+		@Test
+		public void stdParam_noReturn() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"capacity C1 {",
+					"	def fct(a : URL, b : int)",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void variadicParam_noReturn() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"capacity C1 {",
+					"	def fct(a : URL, b : int*)",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void defaultValue_noReturn() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"capacity C1 {",
+					"	def fct(a : URL, b : int=4, c : char)",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
+		}
+
+		@Test
+		public void variadicParam_defaultValue_noReturn() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"capacity C1 {",
+					"	def fct(a : URL, b : int=4, c : char*)",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
+		}
+
+		@Test
+		public void noParam_returnValue() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"capacity C1 {",
+					"	def fct : String",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(0, action.getParams().size());
+		}
+
+		@Test
+		public void stdParam_returnValue() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"capacity C1 {",
+					"	def fct(a : URL, b : int) : String",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void variadicParam_returnValue() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"capacity C1 {",
+					"	def fct(a : URL, b : int*) : String",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void defaultValue_returnValue() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"capacity C1 {",
+					"	def fct(a : URL, b : int=4, c : char) : String",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
+		}
+
+		@Test
+		public void variadicParam_defaultValue_returnValue() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"capacity C1 {",
+					"	def fct(a : URL, b : int=4, c : char*) : String",
+					"}");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(0, action.getFiredEvents().size());
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
+		}
+
+		@Test
+		public void noParam_noReturn_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"capacity C1 {",
+					"	def fct fires MyEvent",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(0, action.getParams().size());
+		}
+
+		@Test
+		public void stdParam_noReturn_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"capacity C1 {",
+					"	def fct(a : URL, b : int) fires MyEvent",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void variadicParam_noReturn_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"capacity C1 {",
+					"	def fct(a : URL, b : int*) fires MyEvent",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void defaultValue_noReturn_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"capacity C1 {",
+					"	def fct(a : URL, b : int=4, c : char) fires MyEvent",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
+		}
+
+		@Test
+		public void variadicParam_defaultValue_noReturn_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"capacity C1 {",
+					"	def fct(a : URL, b : int=4, c : char*) fires MyEvent",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "void");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
+		}
+
+		@Test
+		public void noParam_returnValue_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"capacity C1 {",
+					"	def fct : String fires MyEvent",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(0, action.getParams().size());
+		}
+
+		@Test
+		public void stdParam_returnValue_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"capacity C1 {",
+					"	def fct(a : URL, b : int) : String fires MyEvent",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void variadicParam_returnValue_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"capacity C1 {",
+					"	def fct(a : URL, b : int*) : String fires MyEvent",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(2, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					null);
+		}
+
+		@Test
+		public void defaultValue_returnValue_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"capacity C1 {",
+					"	def fct(a : URL, b : int=4, c : char) : String fires MyEvent",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertFalse(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
+		}
+
+		@Test
+		public void variadicParam_defaultValue_returnValue_fireEvents() throws Exception {
+			JvmOperation operation = createJvmFeature(
+					// Code
+					"import java.net.URL",
+					"capacity C1 {",
+					"	def fct(a : URL, b : int=4, c : char*) : String fires MyEvent",
+					"}",
+					"event MyEvent");
+			//
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			//
+			assertNotNull(feature);
+			ActionSignature action = (ActionSignature) feature;
+			assertEquals("fct", action.getName());
+			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			//
+			assertEquals(1, action.getFiredEvents().size());
+			assertTypeReferenceIdentifiers(
+					action.getFiredEvents(),
+					"MyEvent");
+			//
+			assertTrue(action.isVarargs());
+			assertEquals(3, action.getParams().size());
+			assertParameterNames(action.getParams(), "a", "b", "c");
+			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParams(),
+					null,
+					XNumberLiteral.class, "4",
+					null);
 		}
 
 	}

@@ -20,6 +20,7 @@
  */
 package io.sarl.lang.util;
 
+import io.sarl.lang.genmodel.SARLCodeGenerator;
 import io.sarl.lang.signature.ActionKey;
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.SignatureKey;
@@ -587,7 +588,9 @@ public final class ModelUtil {
 	 *
 	 * @param e - the executable for which a strig representation must be replied.
 	 * @return the prototype
+	 * @deprecated use {@link SARLCodeGenerator}.
 	 */
+	@Deprecated
 	public static String toActionProtoptypeString(JvmExecutable e) {
 		StringBuilder b = new StringBuilder();
 		JvmTypeReference returnType;

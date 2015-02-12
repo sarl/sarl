@@ -84,27 +84,6 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 		return this.sorter;
 	}
 	
-	/** Generate a filename for a resource that does not exist yet.
-	 * 
-	 * @return the filename.
-	 */
-	protected String generateFilename() {
-		int filenameCounter = 0;
-		String oFilename = pathStr(
-				"io", "sarl", //$NON-NLS-1$//$NON-NLS-2$
-				"lang", "ui", //$NON-NLS-1$//$NON-NLS-2$
-				"tests", "outline", //$NON-NLS-1$//$NON-NLS-2$
-				"fixing_sarl_outline"); //$NON-NLS-1$
-		String filename = oFilename;
-		boolean foundFile = this.helper.isFileInSourceFolder(filename + ".sarl"); //$NON-NLS-1$
-		while (foundFile) {
-			++filenameCounter;
-			filename = oFilename + Integer.toString(filenameCounter);
-			foundFile = this.helper.isFileInSourceFolder(filename + ".sarl"); //$NON-NLS-1$
-		}
-		return filename;
-	}
-
 	/** Create a new assertion tool on a specific code resource.
 	 * The code will be used for generating the outline.
 	 * 

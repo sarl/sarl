@@ -130,7 +130,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private SARLGrammarAccess grammarAccess;
-
+	
 	/** Replies the canonical name of the given type.
 	 *
 	 * @param typeRef - the type.

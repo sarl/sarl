@@ -197,5 +197,32 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 				actual.hashCode());
 		assertEquals(expectedFlags, ((JavaElementImageDescriptor) actual).getAdronments());
 	}
+	
+	/** Generate a filename for a resource that does not exist yet.
+	 * 
+	 * @param pathElements - the elements of the path (directories and basename), without the extension.
+	 * @return the filename.
+	 */
+	protected String generateFilename(String... pathElements) {
+		int filenameCounter = 0;
+		String oFilename = pathStr(pathElements);
+		String filename = oFilename;
+		boolean foundFile = this.helper.isFileInSourceFolder(filename + ".sarl"); //$NON-NLS-1$
+		while (foundFile) {
+			++filenameCounter;
+			filename = oFilename + Integer.toString(filenameCounter);
+			foundFile = this.helper.isFileInSourceFolder(filename + ".sarl"); //$NON-NLS-1$
+		}
+		return filename;
+	}
+
+	/** Generate a filename for a resource that does not exist yet.
+	 * 
+	 * @return the filename.
+	 */
+	protected String generateFilename() {
+		return generateFilename(
+				"io", "sarl", "tests", "basename"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	}
 
 }

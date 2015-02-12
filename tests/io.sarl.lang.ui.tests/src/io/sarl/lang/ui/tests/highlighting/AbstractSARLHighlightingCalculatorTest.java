@@ -64,27 +64,6 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 		this.helper.waitForAutoBuild();
 	}
 	
-	/** Generate a filename for a resource that does not exist yet.
-	 * 
-	 * @return the filename.
-	 */
-	private String generateFilename() {
-		int filenameCounter = 0;
-		String oFilename = pathStr(
-				"io", "sarl", //$NON-NLS-1$//$NON-NLS-2$
-				"lang", "ui", //$NON-NLS-1$//$NON-NLS-2$
-				"tests", "highlighting", //$NON-NLS-1$//$NON-NLS-2$
-				"highlighting_sarl"); //$NON-NLS-1$
-		String filename = oFilename;
-		boolean foundFile = this.helper.isFileInSourceFolder(filename + ".sarl"); //$NON-NLS-1$
-		while (foundFile) {
-			++filenameCounter;
-			filename = oFilename + Integer.toString(filenameCounter);
-			foundFile = this.helper.isFileInSourceFolder(filename + ".sarl"); //$NON-NLS-1$
-		}
-		return filename + ".sarl"; //$NON-NLS-1$
-	}
-
 	/** Highlight the given text.
 	 * 
 	 * @param code - the SARL script.

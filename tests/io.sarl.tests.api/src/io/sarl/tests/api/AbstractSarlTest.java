@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XNullLiteral;
@@ -370,8 +371,7 @@ public abstract class AbstractSarlTest {
 			assertEquals("void", expectedIdentifier);
 			return;
 		}
-		assertEquals("Unexpected type reference: " + actualReference.getIdentifier() + ". Expected: " + expectedIdentifier,
-				expectedIdentifier, actualReference.getIdentifier());
+		assertEquals("Unexpected type reference", expectedIdentifier, actualReference.getIdentifier());
 	}
 
 	/** Assert that the given actual formal parameters have the expected names.

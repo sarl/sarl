@@ -104,7 +104,7 @@ public class WorkspaceTestHelper extends Assert {
 
 	/** Relative path of the generated source folder.
 	 */
-	public static String GENERATED_SOURCE_FOLDER = "src-gen"; //$NON-NLS-1$
+	public static String GENERATED_SOURCE_FOLDER= "src-gen"; //$NON-NLS-1$
 
 	private static boolean IS_WAITING_FOR_BUILD_AT_FILE_CREATION = false;
 	
@@ -426,6 +426,16 @@ public class WorkspaceTestHelper extends Assert {
 		return this.workspace.getRoot().exists(new Path(fullFileName));
 	}
 
+	/** Replies if a file exists in the generated source folder.
+	 * 
+	 * @param basename - the basename of the file in the source folder.
+	 * @return <code>true</code> if the file exists, otherwise <code>false</code>.
+	 */
+	public boolean isFileInGeneratedSourceFolder(String basename) {
+		String fullFileName = convertGeneratedBasenameToWorkspace(getProject(), basename);
+		return this.workspace.getRoot().exists(new Path(fullFileName));
+	}
+
 	/** Replies a file in the source folder.
 	 * 
 	 * @param basename - the basename of the file.
@@ -433,6 +443,15 @@ public class WorkspaceTestHelper extends Assert {
 	 */
 	public IFile getFileInSourceFolder(String basename) {
 		return this.workspace.getRoot().getFile(new Path(convertBasenameToWorkspace(getProject(), basename)));
+	}
+
+	/** Replies a file in the generated source folder.
+	 * 
+	 * @param basename - the basename of the file.
+	 * @return the filename relative to the workspace directory.
+	 */
+	public IFile getFileInGeneratedSourceFolder(String basename) {
+		return this.workspace.getRoot().getFile(new Path(convertGeneratedBasenameToWorkspace(getProject(), basename)));
 	}
 
 	/** Replies a file in the workspace.
@@ -450,9 +469,46 @@ public class WorkspaceTestHelper extends Assert {
 	 * @param basename - the filename without extension relative to the source folder.
 	 * @return the filename relative to the workspace.
 	 */
-	protected String convertBasenameToWorkspace(IProject project, String basename) {
+	public String convertBasenameToWorkspace(IProject project, String basename) {
 		String extension = (basename.indexOf(".") != -1) ? "" : "." + getFileExtension(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		String fullFileName = project.getName() + File.separator + SOURCE_FOLDER
+				+ File.separator + basename + extension;
+		return fullFileName;
+	}
+
+	/** Replies the basename from the given full name.
+	 * 
+	 * @param fullName - the full name.
+	 * @param removeExtension - indicates if the file extension must be removed from the basename.
+	 * @return the basename.
+	 */
+	@SuppressWarnings("static-method")
+	public String getBasenameFrom(String fullName, boolean removeExtension) {
+		String basename;
+		int idx = fullName.lastIndexOf(File.separator);
+		if (idx >= 0) {
+			basename = fullName.substring(idx + 1);
+		} else {
+			basename = fullName;
+		}
+		if (removeExtension) {
+			idx = basename.indexOf('.');
+			if (idx >= 0) {
+				basename = basename.substring(0, idx);
+			}
+		}
+		return basename;
+	}
+
+	/** Convert a filename from the generated source folder to the workspace.
+	 * 
+	 * @param project - project that is containing the source folder.
+	 * @param basename - the filename without extension relative to the source folder.
+	 * @return the filename relative to the workspace.
+	 */
+	public String convertGeneratedBasenameToWorkspace(IProject project, String basename) {
+		String extension = (basename.indexOf(".") != -1) ? "" : "." + getFileExtension(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String fullFileName = project.getName() + File.separator + GENERATED_SOURCE_FOLDER
 				+ File.separator + basename + extension;
 		return fullFileName;
 	}
@@ -470,9 +526,18 @@ public class WorkspaceTestHelper extends Assert {
 	 * @param file - the file
 	 * @return the URI of the file.
 	 */
-	@SuppressWarnings("static-method")
 	public URI uri(IFile file) {
-		return URI.createPlatformResourceURI(file.getFullPath().toString(), true);
+		return uri(file.getFullPath().toString());
+	}
+
+	/** Replies the URI of trhe given file.
+	 * 
+	 * @param file - the filename from the workspace.
+	 * @return the URI of the file.
+	 */
+	@SuppressWarnings("static-method")
+	public URI uri(String file) {
+		return URI.createPlatformResourceURI(file, true);
 	}
 
 	/** Replies the set of resources inside the current project.
@@ -566,7 +631,7 @@ public class WorkspaceTestHelper extends Assert {
 	 * 
 	 * @param file - the file in the source folder. 
 	 * @param content - the content of the resource.
-	 * @return the parsed SARL script.
+	 * @return the parsed resource.
 	 * @throws Exception
 	 */
 	public Resource createResource(IFile file, String content) throws Exception {
@@ -576,6 +641,16 @@ public class WorkspaceTestHelper extends Assert {
 			resource.save(null);
 			return resource;
 		}
+	}
+
+	/** Load an existing resource.
+	 * 
+	 * @param file - the file in the source folder. 
+	 * @return the resource.
+	 * @throws Exception
+	 */
+	public Resource loadResource(URI file) throws Exception {
+		return getResourceSet().getResource(file, true);
 	}
 
 	/** Create and compile a SARL script in the source folder,

@@ -21,6 +21,9 @@
 package io.sarl.lang.genmodel;
 
 
+import io.sarl.lang.annotation.DefaultValue;
+import io.sarl.lang.annotation.FiredEvent;
+import io.sarl.lang.annotation.Generated;
 import io.sarl.lang.sarl.Action;
 import io.sarl.lang.sarl.ActionSignature;
 import io.sarl.lang.sarl.Agent;
@@ -40,6 +43,7 @@ import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.util.ModelUtil;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Named;
 
@@ -50,7 +54,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.Constants;
+import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmField;
+import org.eclipse.xtext.common.types.JvmFormalParameter;
+import org.eclipse.xtext.common.types.JvmGenericArrayTypeReference;
+import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
@@ -66,6 +75,8 @@ import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XbaseFactory;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
+import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XImportSection;
 import org.eclipse.xtext.xtype.XtypeFactory;
@@ -91,10 +102,16 @@ public class SARLCodeGenerator {
 	private TypeReferences typeReferences;
 
 	@Inject
+	private JvmTypesBuilder typesBuilder;
+
+	@Inject
 	private IResourceFactory resourceFactory;
 
 	@Inject
 	private ActionSignatureProvider actionSignatureProvider;
+
+	@Inject
+	private JvmModelAssociator jvmModelAssociator;
 
 	private final String sarlFileExtension;
 
@@ -128,6 +145,14 @@ public class SARLCodeGenerator {
 	 */
 	public TypesFactory getTypesFactory() {
 		return this.typeFactory;
+	}
+
+	/** Replies the type builder.
+	 *
+	 * @return the type builder.
+	 */
+	public JvmTypesBuilder getTypesBuilder() {
+		return this.typesBuilder;
 	}
 
 	/** Replies the factory of resources.
@@ -483,18 +508,17 @@ public class SARLCodeGenerator {
 			throw new IllegalArgumentException("the parameter 'type' must contains a valid type"); //$NON-NLS-1$
 		}
 		return createFormalParameter(code, container, name, type,
-				createXExpression(code, defaultValue, resourceSet));
+				createXExpression(defaultValue, resourceSet));
 	}
 
 	/** Create an expression.
 	 *
-	 * @param code - the generated code in which the agent must be created.
 	 * @param expression - the texutal representation of the expression.
 	 * @param resourceSet - the set of resources in which this function could
 	 * create temporary resources for compiling the default value.
 	 * @return the SARL formal parameter.
 	 */
-	public XExpression createXExpression(GeneratedCode code, String expression, ResourceSet resourceSet)  {
+	public XExpression createXExpression(String expression, ResourceSet resourceSet)  {
 		XExpression xExpression = null;
 		if (!Strings.isNullOrEmpty(expression)) {
 			URI uri = computeUnusedUri(resourceSet);
@@ -699,6 +723,188 @@ public class SARLCodeGenerator {
 		JvmParameterizedTypeReference reference = getTypesFactory().createJvmParameterizedTypeReference();
 		reference.setType(type);
 		return reference;
+	}
+
+	private JvmTypeReference cloneType(JvmTypeReference type) {
+		// CAUTION: The following line is needed otherwise the clone of the type will failed.
+		type.getIdentifier();
+		return getTypesBuilder().cloneWithProxies(type);
+	}
+
+	/** Replies the SARL Ecore equivalent for the givne JVM Ecore element.
+	 *
+	 * @param operation - the JVM Ecore element.
+	 * @param exploreAssociatedModel - indicates if the associated model (supported
+	 * by {@link JvmModelAssociator}) should be considered.
+	 * @return the SARL Ecore element.
+	 */
+	public Action createAction(JvmOperation operation, boolean exploreAssociatedModel) {
+		if (exploreAssociatedModel) {
+			EObject o = this.jvmModelAssociator.getPrimarySourceElement(operation);
+			if (o instanceof Action) {
+				return (Action) o;
+			}
+		}
+		Action action = SarlFactory.eINSTANCE.createAction();
+		// Name
+		action.setName(operation.getSimpleName());
+		// Return types
+		JvmTypeReference typeReference = cloneType(operation.getReturnType());
+		action.setType(typeReference);
+		// Parameters
+		action.setVarargs(operation.isVarArgs());
+		List<FormalParameter> parameters = action.getParams();
+		List<JvmFormalParameter> jvmParameters = operation.getParameters();
+		for (int i = 0; i < jvmParameters.size(); ++i) {
+			JvmFormalParameter jvmParameter = jvmParameters.get(i);
+			FormalParameter parameter = SarlFactory.eINSTANCE.createFormalParameter();
+			parameter.setName(jvmParameter.getSimpleName());
+			typeReference = jvmParameter.getParameterType();
+			if (i == jvmParameters.size() - 1 && operation.isVarArgs()) {
+				typeReference = ((JvmGenericArrayTypeReference) typeReference).getComponentType();
+			}
+			typeReference = cloneType(typeReference);
+			parameter.setParameterType(typeReference);
+			// Default values
+			String defaultValue = findDefaultValue(
+					operation.getDeclaringType(),
+					ModelUtil.annotationString(jvmParameter, DefaultValue.class));
+			if (!Strings.isNullOrEmpty(defaultValue)) {
+				XExpression defaultValueExpr = createXExpression(
+						defaultValue,
+						operation.eResource().getResourceSet());
+				parameter.setDefaultValue(defaultValueExpr);
+			}
+			parameters.add(parameter);
+		}
+		// Fired events
+		List<JvmTypeReference> firedEvents = ModelUtil.annotationClasses(operation, FiredEvent.class);
+		if (!firedEvents.isEmpty()) {
+			List<JvmParameterizedTypeReference> events = action.getFiredEvents();
+			for (JvmTypeReference type : firedEvents) {
+				JvmTypeReference clone = cloneType(type);
+				if (clone instanceof JvmParameterizedTypeReference) {
+					events.add((JvmParameterizedTypeReference) clone);
+				}
+			}
+		}
+		return action;
+	}
+
+	/** Replies the SARL Ecore equivalent for the givne JVM Ecore element.
+	 *
+	 * @param operation - the JVM Ecore element.
+	 * @param exploreAssociatedModel - indicates if the associated model (supported
+	 * by {@link JvmModelAssociator}) should be considered.
+	 * @return the SARL Ecore element.
+	 */
+	public ActionSignature createActionSignature(JvmOperation operation, boolean exploreAssociatedModel) {
+		if (exploreAssociatedModel) {
+			EObject o = this.jvmModelAssociator.getPrimarySourceElement(operation);
+			if (o instanceof ActionSignature) {
+				return (ActionSignature) o;
+			}
+		}
+		ActionSignature signature = SarlFactory.eINSTANCE.createActionSignature();
+		// Name
+		signature.setName(operation.getSimpleName());
+		// Return types
+		JvmTypeReference typeReference = cloneType(operation.getReturnType());
+		signature.setType(typeReference);
+		// Parameters
+		signature.setVarargs(operation.isVarArgs());
+		List<FormalParameter> parameters = signature.getParams();
+		List<JvmFormalParameter> jvmParameters = operation.getParameters();
+		for (int i = 0; i < jvmParameters.size(); ++i) {
+			JvmFormalParameter jvmParameter = jvmParameters.get(i);
+			FormalParameter parameter = SarlFactory.eINSTANCE.createFormalParameter();
+			parameter.setName(jvmParameter.getSimpleName());
+			typeReference = jvmParameter.getParameterType();
+			if (i == jvmParameters.size() - 1 && operation.isVarArgs()) {
+				typeReference = ((JvmGenericArrayTypeReference) typeReference).getComponentType();
+			}
+			typeReference = cloneType(typeReference);
+			parameter.setParameterType(typeReference);
+			// Default values
+			String defaultValue = findDefaultValue(
+					operation.getDeclaringType(),
+					ModelUtil.annotationString(jvmParameter, DefaultValue.class));
+			if (!Strings.isNullOrEmpty(defaultValue)) {
+				XExpression defaultValueExpr = createXExpression(
+						defaultValue,
+						operation.eResource().getResourceSet());
+				parameter.setDefaultValue(defaultValueExpr);
+			}
+			parameters.add(parameter);
+		}
+		// Fired events
+		List<JvmTypeReference> firedEvents = ModelUtil.annotationClasses(operation, FiredEvent.class);
+		if (!firedEvents.isEmpty()) {
+			List<JvmParameterizedTypeReference> events = signature.getFiredEvents();
+			for (JvmTypeReference type : firedEvents) {
+				JvmTypeReference clone = cloneType(type);
+				if (clone instanceof JvmParameterizedTypeReference) {
+					events.add((JvmParameterizedTypeReference) clone);
+				}
+			}
+		}
+		return signature;
+	}
+
+	/** Replies the SARL Ecore equivalent for the givne JVM Ecore element.
+	 *
+	 * @param constructor - the JVM Ecore element.
+	 * @param exploreAssociatedModel - indicates if the associated model (supported
+	 * by {@link JvmModelAssociator}) should be considered.
+	 * @return the SARL Ecore element.
+	 */
+	public Constructor createConstructor(JvmConstructor constructor, boolean exploreAssociatedModel) {
+		if (exploreAssociatedModel) {
+			EObject o = this.jvmModelAssociator.getPrimarySourceElement(constructor);
+			if (o instanceof Constructor) {
+				return (Constructor) o;
+			}
+		}
+		Constructor cons = SarlFactory.eINSTANCE.createConstructor();
+		// Parameters
+		cons.setVarargs(constructor.isVarArgs());
+		List<FormalParameter> parameters = cons.getParams();
+		List<JvmFormalParameter> jvmParameters = constructor.getParameters();
+		for (int i = 0; i < jvmParameters.size(); ++i) {
+			JvmFormalParameter jvmParameter = jvmParameters.get(i);
+			FormalParameter parameter = SarlFactory.eINSTANCE.createFormalParameter();
+			parameter.setName(jvmParameter.getSimpleName());
+			JvmTypeReference typeReference = jvmParameter.getParameterType();
+			if (i == jvmParameters.size() - 1 && constructor.isVarArgs()) {
+				typeReference = ((JvmGenericArrayTypeReference) typeReference).getComponentType();
+			}
+			typeReference = cloneType(typeReference);
+			parameter.setParameterType(typeReference);
+			// Default values
+			String defaultValue = findDefaultValue(
+					constructor.getDeclaringType(),
+					ModelUtil.annotationString(jvmParameter, DefaultValue.class));
+			if (!Strings.isNullOrEmpty(defaultValue)) {
+				XExpression defaultValueExpr = createXExpression(
+						defaultValue,
+						constructor.eResource().getResourceSet());
+				parameter.setDefaultValue(defaultValueExpr);
+			}
+			parameters.add(parameter);
+		}
+		return cons;
+	}
+
+	private static String findDefaultValue(JvmDeclaredType container, String name) {
+		if (!Strings.isNullOrEmpty(name)) {
+			String dfName = ModelUtil.PREFIX_ATTRIBUTE_DEFAULT_VALUE + name;
+			for (JvmField field : container.getDeclaredFields()) {
+				if (field.getSimpleName().equals(dfName)) {
+					return ModelUtil.annotationString(field, Generated.class);
+				}
+			}
+		}
+		return null;
 	}
 
 	/** Describes a generated code.
