@@ -78,6 +78,11 @@
 					</execution>
 				</executions>
 				<configuration>
+					<outputDirectory>xtend-gen</outputDirectory>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<compilerSourceLevel>${compiler.level}</compilerSourceLevel>
+					<compilerTargetLevel>${compiler.level}</compilerTargetLevel>
+					<failOnValidationError>true</failOnValidationError>
 					<languages>
 						<language>
 							<setup>io.sarl.lang.SARLStandaloneSetup</setup>
@@ -100,11 +105,11 @@
 						<artifactId>io.sarl.lang.core</artifactId>
 						<version>${project.version}</version>
 					</dependency>
-			 		<dependency> 
-			 			<groupId>org.eclipse</groupId> 
-			 			<artifactId>osgi</artifactId> 
+					<dependency>
+						<groupId>org.eclipse</groupId>
+						<artifactId>osgi</artifactId>
 						<version>${osgi.nls.version}</version>
-			 		</dependency> 
+					</dependency>
 				</dependencies>
 			</plugin>
 

@@ -47,7 +47,7 @@ public class InnerContextAccessTest extends AbstractSARLTest<Capacity> {
 	 */
 	@Test
 	public void memberCount() {
-		assertEquals(4, this.type.getDeclaredMethods().length);
+		assertEquals(7, this.type.getDeclaredMethods().length);
 	}
 	
 	/**

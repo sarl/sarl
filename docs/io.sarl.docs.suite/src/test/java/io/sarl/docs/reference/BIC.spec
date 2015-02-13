@@ -23,6 +23,7 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
+import io.sarl.lang.sarl.FeatureContainer
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
@@ -364,6 +365,89 @@ describe "Built-in Capacity Reference" {
 					}".parseSuccessfully
 			}
 		
+			/* The `ExternalContextAccess` provides a collection of utility functions
+			 * that test if their parameters are related to the any external context.
+			 *
+			 * <table>
+			 * <thead><tr><th>Function</th><th>Explanation</th></tr></thead>
+			 * <tbody>
+			 * <tr><td><code>isInSpace(Event, Space)</code></td><td>tests if the given event was emitted in
+			 * the given space.</td></tr>
+			 * <tr><td><code>isInSpace(Event, SpaceID)</code></td><td>tests if the given event was emitted in
+			 * the space with the given identifier.</td></tr>
+			 * <tr><td><code>isInSpace(Event, UUID)</code></td><td>tests if the given event was emitted in
+			 * the space with the given identifier.</td></tr>
+			 * </tbody>
+			 * </table>
+			 * 
+			 * The following example illustrates the use of the `isInSpace` function in the guard
+			 * of an behavior unit. In this example, the behavior unit is run only if the event
+			 * of type `AnEvent` was emitted in the space `myspace` (declared as attribute in
+			 * the container).
+			 * 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+			 */
+			fact "Testing if an element is related to an external context" {
+				val model = '''
+				on AnEvent [ isInSpace(occurrence, myspace) ] {
+					// Do something with the event when it was emitted in the space myspace
+				}
+				'''.parseSuccessfully(
+					"	package io.sarl.docs.reference.bic
+						import io.sarl.core.ExternalContextAccess
+						import io.sarl.lang.core.Space
+						import io.sarl.lang.core.Event
+						event AnEvent
+						agent MyAgent {
+							uses ExternalContextAccess
+							var myspace : Space
+							def testOtherFunctions(e : Event) : boolean {
+			 					return isInSpace(e, myspace.ID)
+								    || isInSpace(e, myspace.ID.ID)
+							}",
+					// TEXT
+					"	}"
+				)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.bic"
+					it should haveNbImports 3
+					it should importClass "io.sarl.core.ExternalContextAccess"
+					it should importClass "io.sarl.lang.core.Space"
+					it should importClass "io.sarl.lang.core.Event"
+					it should haveNbElements 2
+				]
+				
+				model.elements.get(0) => [
+					it should beEvent "AnEvent"
+					it should extend _
+					it should haveNbElements 0
+				]
+
+				model.elements.get(1) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 4
+					
+					(it as FeatureContainer).features.get(0) => [
+						it should beCapacityUse "io.sarl.core.ExternalContextAccess"
+					]
+
+					(it as FeatureContainer).features.get(1) => [
+						it should beVariable "myspace"
+					]
+
+					(it as FeatureContainer).features.get(2) => [
+						it should beAction "testOtherFunctions"
+					]
+
+					(it as FeatureContainer).features.get(3) => [
+						it should beBehaviorUnit "io.sarl.docs.reference.bic.AnEvent"
+						it should beGuardedWith "isInSpace(occurrence, myspace)"
+					]
+				]
+			}
+
 		}
 
 		/* The built-in capacity `InnerContextAccess` provides access to 
@@ -436,6 +520,88 @@ describe "Built-in Capacity Reference" {
 							m = getMemberAgents
 						}
 					}".parseSuccessfully
+			}
+
+			/* The `InnerContextAccess` provides a collection of utility functions
+			 * that test if their parameters are related to the inner context.
+			 *
+			 * <table>
+			 * <thead><tr><th>Function</th><th>Explanation</th></tr></thead>
+			 * <tbody>
+			 * <tr><td><code>isInnerDefaultSpace(Space)</code></td><td>tests if the given space is the
+			 * default space of the inner context.</td></tr>
+			 * <tr><td><code>isInnerDefaultSpace(SpaceID)</code></td><td>tests if the default space of
+			 * the inner context has the given identifier.</td></tr>
+			 * <tr><td><code>isInnerDefaultSpace(UUID)</code></td><td>tests if the default space of
+			 * the inner context has the given identifier.</td></tr>
+			 * <tr><td><code>isInInnerDefaultSpace(Event)</code></td><td>tests if the given event was emitted in
+			 * the default space of the inner context.</td></tr>
+			 * </tbody>
+			 * </table>
+			 * 
+			 * The following example illustrates the use of the `isInInnerDefaultSpace` function in the guard
+			 * of an behavior unit. In this example, the behavior unit is run only if the event
+			 * of type `AnEvent` was emitted in the default space of the inner context.
+			 * 
+			 * <note>According to the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
+			 * the `event.inInnerDefaultSpace` is equivalent to `isInInnerDefaultSpace(event)`.</note>
+			 * 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+			 */
+			fact "Testing if an element is related to the inner context" {
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+				val model = '''
+				on AnEvent [ occurrence.inInnerDefaultSpace ] {
+					// Do something with the event when it was emitted in the inner default space
+				}
+				'''.parseSuccessfully(
+					"	package io.sarl.docs.reference.bic
+						import io.sarl.core.InnerContextAccess
+						import io.sarl.lang.core.Space
+						event AnEvent
+						agent MyAgent {
+							uses InnerContextAccess
+							def testOtherFunctions(s : Space) : boolean {
+			 					return isInnerDefaultSpace(s)
+								    || isInnerDefaultSpace(s.ID)
+								    || isInnerDefaultSpace(s.ID.ID)
+							}",
+					// TEXT
+					"	}"
+				)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.bic"
+					it should haveNbImports 2
+					it should importClass "io.sarl.core.InnerContextAccess"
+					it should importClass "io.sarl.lang.core.Space"
+					it should haveNbElements 2
+				]
+				
+				model.elements.get(0) => [
+					it should beEvent "AnEvent"
+					it should extend _
+					it should haveNbElements 0
+				]
+
+				model.elements.get(1) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 3
+					
+					(it as FeatureContainer).features.get(0) => [
+						it should beCapacityUse "io.sarl.core.InnerContextAccess"
+					]
+
+					(it as FeatureContainer).features.get(1) => [
+						it should beAction "testOtherFunctions"
+					]
+
+					(it as FeatureContainer).features.get(2) => [
+						it should beBehaviorUnit "io.sarl.docs.reference.bic.AnEvent"
+						it should beGuardedWith "occurrence.inInnerDefaultSpace"
+					]
+				]
 			}
 
 		}
@@ -622,6 +788,91 @@ describe "Built-in Capacity Reference" {
 							emit(e, Scopes::addresses(a1, a2))
 						}
 					}".parseSuccessfully
+			}
+
+			/* The `DefaultContextInteractions` provides a collection of utility functions
+			 * that test if their parameters are related to the default context or the
+			 * default space.
+			 *
+			 * <table>
+			 * <thead><tr><th>Function</th><th>Explanation</th></tr></thead>
+			 * <tbody>
+			 * <tr><td><code>isDefaultContext(AgentContext)</code></td><td>tests if the given context is the default
+			 * context.</td></tr>
+			 * <tr><td><code>isDefaultContext(UUID)</code></td><td>tests if the default context has the given
+			 * identifier.</td></tr>
+			 * <tr><td><code>isDefaultSpace(Space)</code></td><td>tests if the given space is the default
+			 * space of the default context.</td></tr>
+			 * <tr><td><code>isDefaultSpace(UUID)</code></td><td>tests if the default space of the
+			 * default context has the given identifier.</td></tr>
+			 * <tr><td><code>isInDefaultSpace(Event)</code></td><td>tests if the given event was emitted
+			 * in the default space of the default context.</td></tr>
+			 * </tbody>
+			 * </table>
+			 * 
+			 * The following example illustrates the use of the `isInDefaultSpace` function in the guard
+			 * of an behavior unit. In this example, the behavior unit is run only if the event
+			 * of type `AnEvent` was emitted in the default space.
+			 * 
+			 * <note>According to the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
+			 * the `event.inDefaultSpace` is equivalent to `isInDefaultSpace(event)`.</note>
+			 * 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+			 */
+			fact "Testing if an element is related to the default context" {
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+				val model = '''
+				on AnEvent [ occurrence.inDefaultSpace ] {
+					// Do something with the event when it was emitted in the default space
+				}
+				'''.parseSuccessfully(
+					"	package io.sarl.docs.reference.bic
+						import io.sarl.core.DefaultContextInteractions
+						event AnEvent
+						agent MyAgent {
+							uses DefaultContextInteractions
+							def testOtherFunctions : boolean {
+			 					return isDefaultContext(defaultContext)
+								    || isDefaultContext(defaultContext.ID)
+								    || isDefaultSpace(defaultSpace)
+								    || isDefaultSpace(defaultSpace.ID)
+								    || isDefaultSpace(defaultSpace.ID.ID)
+							}",
+					// TEXT
+					"	}"
+				)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.bic"
+					it should haveNbImports 1
+					it should importClass "io.sarl.core.DefaultContextInteractions"
+					it should haveNbElements 2
+				]
+				
+				model.elements.get(0) => [
+					it should beEvent "AnEvent"
+					it should extend _
+					it should haveNbElements 0
+				]
+
+				model.elements.get(1) => [
+					it should beAgent "MyAgent"
+					it should extend _
+					it should haveNbElements 3
+					
+					(it as FeatureContainer).features.get(0) => [
+						it should beCapacityUse "io.sarl.core.DefaultContextInteractions"
+					]
+
+					(it as FeatureContainer).features.get(1) => [
+						it should beAction "testOtherFunctions"
+					]
+
+					(it as FeatureContainer).features.get(2) => [
+						it should beBehaviorUnit "io.sarl.docs.reference.bic.AnEvent"
+						it should beGuardedWith "occurrence.inDefaultSpace"
+					]
+				]
 			}
 
 		}

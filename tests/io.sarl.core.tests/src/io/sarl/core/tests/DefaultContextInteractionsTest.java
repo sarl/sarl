@@ -52,7 +52,7 @@ public class DefaultContextInteractionsTest extends AbstractSARLTest<Capacity> {
 	 */
 	@Test
 	public void memberCount() {
-		assertEquals(7, this.type.getDeclaredMethods().length);
+		assertEquals(12, this.type.getDeclaredMethods().length);
 	}
 	
 	/**

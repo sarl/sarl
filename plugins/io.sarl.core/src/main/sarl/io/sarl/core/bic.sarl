@@ -29,6 +29,8 @@ import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.Scope
+import io.sarl.lang.core.Space
+import io.sarl.lang.core.SpaceID
 import io.sarl.lang.util.SynchronizedCollection
 import io.sarl.lang.util.SynchronizedSet
 import java.util.UUID
@@ -77,6 +79,38 @@ capacity ExternalContextAccess {
 	 */
 	def leave(contextID : UUID) fires ContextLeft, MemberLeft
 
+	/** Replies if the given event was emitted in the given space.
+	 *
+	 * @param event - the event to test.
+	 * @param space - the space in which the event may be.
+	 * @return <code>true</code> if the given event was emitted in the
+	 * given space. Otherwise <code>false</code>.
+	 * @since 0.2
+	 */
+	def isInSpace(^event : Event, space : Space) : boolean
+
+	/** Replies if the given event was emitted in the space with
+	 * the given identifier..
+	 *
+	 * @param event - the event to test.
+	 * @param spaceID - the identifier of the space in which the event may be.
+	 * @return <code>true</code> if the given event was emitted in the
+	 * space with the given identifier. Otherwise <code>false</code>.
+	 * @since 0.2
+	 */
+	def isInSpace(^event : Event, spaceID : SpaceID) : boolean
+
+	/** Replies if the given event was emitted in the space with
+	 * the given identifier..
+	 *
+	 * @param event - the event to test.
+	 * @param spaceID - the identifier of the space in which the event may be.
+	 * @return <code>true</code> if the given event was emitted in the
+	 * space with the given identifier. Otherwise <code>false</code>.
+	 * @since 0.2
+	 */
+	def isInSpace(^event : Event, spaceID : UUID) : boolean
+
 }
 
 capacity InnerContextAccess {
@@ -107,6 +141,46 @@ capacity InnerContextAccess {
 	 * one space of the inner context. 
 	 */	 
 	def getMemberAgents : SynchronizedSet<UUID>
+
+	/** Replies if the given space is the default space of the inner context.
+	 *
+	 * @param space - the space to test.
+	 * @return <code>true</code> if the given space is the default space of
+	 * the inner context. Otherwise <code>false</code>.
+	 * @since 0.2
+	 */
+	 def isInnerDefaultSpace(space : Space) : boolean
+
+	/** Replies if the given identifier is the identifier of the
+	 * default space of the inner context.
+	 *
+	 * @param spaceID - the identifier to test.
+	 * @return <code>true</code> if the given identifier is the identifier
+	 * of the default space of the inner context. Otherwise <code>false</code>.
+	 * @since 0.2
+	 */
+	 def isInnerDefaultSpace(spaceID : SpaceID) : boolean
+
+	/** Replies if the given identifier is the identifier of the
+	 * default space of the inner context.
+	 *
+	 * @param spaceID - the identifier to test.
+	 * @return <code>true</code> if the given identifier is the identifier
+	 * of the default space of the inner context. Otherwise <code>false</code>.
+	 * @since 0.2
+	 */
+	 def isInnerDefaultSpace(spaceID : UUID) : boolean
+
+	/** Replies if the given event was emitted in the default space
+	 * of the inner context.
+	 *
+	 * @param event - the event to test.
+	 * @return <code>true</code> if the given event was emitted
+	 * in the default space of the inner context. Otherwise <code>false</code>.
+	 * @since 0.2
+	 */
+	 def isInInnerDefaultSpace(^event : Event) : boolean
+
 }
 
 /**
@@ -337,6 +411,63 @@ capacity DefaultContextInteractions {
 	*/
 	def receive(receiver : UUID, e : Event)
 	
+	/** Replies if the given space is the default space of the default context.
+	 *
+	 * @param space - the space to test.
+	 * @return <code>true</code> if the given space is the default space of
+	 * the default context. Otherwise <code>false</code>.
+	 * @since 0.2
+	 */
+	def isDefaultSpace(space : Space) : boolean
+	
+	/** Replies if the given identifier is the identifier of the default space of
+	 * the default context.
+	 *
+	 * @param space - the space to test.
+	 * @return <code>true</code> if the given identifier is the identifier
+	 * of the default space of the default context. Otherwise <code>false</code>.
+	 * @since 0.2
+	 */
+	def isDefaultSpace(space : SpaceID) : boolean
+
+	/** Replies if the given identifier is the identifier of the default space of
+	 * the default context.
+	 *
+	 * @param space - the space to test.
+	 * @return <code>true</code> if the given identifier is the identifier
+	 * of the default space of the default context. Otherwise <code>false</code>.
+	 * @since 0.2
+	 */
+	def isDefaultSpace(space : UUID) : boolean
+
+	/** Replies if the given event was emitted in the default space of
+	 * the default context.
+	 *
+	 * @param event - the event to test.
+	 * @return <code>true</code> if the given event is emitted in the default
+	 * space of the default context. Otherwise <code>false</code>.
+	 * @since 0.2
+	 */
+	def isInDefaultSpace(^event : Event) : boolean
+
+	/** Replies if the given context is the default context.
+	 *
+	 * @param context - the agent context to test.
+	 * @return <code>true</code> if the given context is the default context.
+	 * Otherwise <code>false</code>.
+	 * @since 0.2
+	 */
+	def isDefaultContext(context : AgentContext) : boolean
+	
+	/** Replies if the given identifier is the identifier of the default context.
+	 *
+	 * @param contextID - the identifier of the context.
+	 * @return <code>true</code> if the given identifier is the identifier
+	 * of the default context. Otherwise <code>false</code>.
+	 * @since 0.2
+	 */
+	def isDefaultContext(contextID : UUID) : boolean
+
 	//Agent Creation
 	/**
 	* Spawns a new Agent inside the default context of this agent.
