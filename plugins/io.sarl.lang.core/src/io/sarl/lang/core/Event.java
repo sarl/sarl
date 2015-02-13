@@ -21,6 +21,7 @@
 package io.sarl.lang.core;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * Elementary interaction unit inside an {@link EventSpace} An event is the
@@ -112,6 +113,30 @@ public abstract class Event implements Serializable {
 		return getClass().getSimpleName()
 				+ " [" + attributesToString() //$NON-NLS-1$
 				+ "]"; //$NON-NLS-1$
+	}
+
+	/** Replies if the event was emitted by an entity with the given address.
+	 *
+	 * @param address - the address of the emitter to test.
+	 * @return <code>true</code> if the given event was emitted by
+	 * an entity with the given address; otherwise <code>false</code>.
+	 * @since 0.2
+	 */
+	public boolean isFrom(Address address) {
+		return (address != null) && address.equals(getSource());
+	}
+
+	/** Replies if the event was emitted by an entity with the given identifier.
+	 *
+	 * @param entityId - the identifier of the emitter to test.
+	 * @return <code>true</code> if the given event was emitted by
+	 * an entity with the given identifier; otherwise <code>false</code>.
+	 * @since 0.2
+	 */
+	public boolean isFrom(UUID entityId) {
+		Address source = getSource();
+		return (entityId != null) && (source != null)
+				&& entityId.equals(source.getUUID());
 	}
 
 }

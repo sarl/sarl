@@ -20,8 +20,11 @@
  */
 package io.sarl.lang.core.tests.core;
 
+import java.util.UUID;
+
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Event;
+import io.sarl.lang.core.SpaceID;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.Nullable;
 
@@ -38,6 +41,7 @@ import static org.junit.Assert.*;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public class EventTest extends AbstractSarlTest {
 
 	@Nullable
@@ -50,15 +54,17 @@ public class EventTest extends AbstractSarlTest {
 		};
 	}
 	
-	/**
-	 */
 	@Before
 	public void setUp() {
 		this.event = mockEvent();
 	}
+	
+	private static Address mockAddress(UUID contextId, UUID spaceId, UUID agentID) {
+		SpaceID sid = new SpaceID(contextId, spaceId, null);
+		Address adr = new Address(Mockito.spy(sid), agentID);
+		return Mockito.spy(adr);
+	}
 
-	/**
-	 */
 	@Test
 	public void getSource() {
 		assertNull(this.event.getSource());
@@ -67,8 +73,6 @@ public class EventTest extends AbstractSarlTest {
 		assertSame(adr, this.event.getSource());
 	}
 
-	/**
-	 */
 	@Test
 	public void setSource() {
 		assertNull(this.event.getSource());
@@ -77,8 +81,6 @@ public class EventTest extends AbstractSarlTest {
 		assertSame(adr, this.event.getSource());
 	}
 
-	/**
-	 */
 	@Test
 	public void equals() {
 		Event e;
@@ -101,8 +103,6 @@ public class EventTest extends AbstractSarlTest {
 		assertFalse(this.event.equals(e));
 	}
 
-	/**
-	 */
 	@Test
 	public void testHashCode() {
 		Event e;
@@ -119,6 +119,35 @@ public class EventTest extends AbstractSarlTest {
 		e = mockEvent();
 		e.setSource(adr2);
 		assertNotEquals(this.event.hashCode(), e.hashCode());
+	}
+	
+	@Test
+	public void isFromAddress() {
+		Address adr = mockAddress(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID());
+		this.event.setSource(adr);
+		
+		Address adr0 = Mockito.mock(Address.class);
+		Address adr1 = Mockito.mock(Address.class);
+		
+		assertFalse(this.event.isFrom((Address) null));
+		assertTrue(this.event.isFrom(adr));
+		assertFalse(this.event.isFrom(adr0));
+		assertFalse(this.event.isFrom(adr1));
+	}
+
+	@Test
+	public void isFromUUID() {
+		UUID id = UUID.randomUUID();
+		Address adr = mockAddress(UUID.randomUUID(), UUID.randomUUID(), id);
+		this.event.setSource(adr);
+		
+		UUID id0 = UUID.randomUUID();
+		UUID id1 = UUID.randomUUID();
+		
+		assertFalse(this.event.isFrom((UUID) null));
+		assertTrue(this.event.isFrom(id));
+		assertFalse(this.event.isFrom(id0));
+		assertFalse(this.event.isFrom(id1));
 	}
 
 }
