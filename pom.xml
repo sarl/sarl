@@ -216,6 +216,7 @@
 						<source>${compiler.level}</source>
 						<target>${compiler.level}</target>
 						<encoding>${project.build.sourceEncoding}</encoding>
+						<xtendAsPrimaryDebugSource>true</xtendAsPrimaryDebugSource>
 					</configuration>
 				</plugin>
 
