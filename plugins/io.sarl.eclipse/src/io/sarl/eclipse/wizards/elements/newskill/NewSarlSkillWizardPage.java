@@ -27,7 +27,7 @@ import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Skill;
-import io.sarl.lang.genmodel.SARLCodeGenerator.GeneratedCode;
+import io.sarl.lang.genmodel.GeneratedCode;
 import io.sarl.lang.signature.ActionKey;
 import io.sarl.lang.signature.SignatureKey;
 

@@ -2408,7 +2408,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			this.validator.assertError(mas,
 					SarlPackage.eINSTANCE.getSkill(),
 					io.sarl.lang.validation.IssueCodes.MISSING_METHOD_IMPLEMENTATION,
-					"The operation myaction1(int) must be implemented.");
+					"The operation myaction1(a : int=4) must be implemented.");
 		}
 
 		@Test
@@ -2428,7 +2428,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			this.validator.assertError(mas,
 					SarlPackage.eINSTANCE.getSkill(),
 					io.sarl.lang.validation.IssueCodes.MISSING_METHOD_IMPLEMENTATION,
-					"The operation myaction1(int) must be implemented.");
+					"The operation myaction1(a : int=4) must be implemented.");
 		}
 
 	}

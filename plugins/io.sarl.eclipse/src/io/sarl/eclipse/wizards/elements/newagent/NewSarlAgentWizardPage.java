@@ -26,7 +26,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.lang.core.Agent;
-import io.sarl.lang.genmodel.SARLCodeGenerator.GeneratedCode;
+import io.sarl.lang.genmodel.GeneratedCode;
 import io.sarl.lang.signature.ActionKey;
 
 import java.util.Collections;

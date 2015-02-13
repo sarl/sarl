@@ -24,7 +24,7 @@ import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.lang.core.Capacity;
-import io.sarl.lang.genmodel.SARLCodeGenerator.GeneratedCode;
+import io.sarl.lang.genmodel.GeneratedCode;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;

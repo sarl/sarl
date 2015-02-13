@@ -983,7 +983,7 @@ public class CapacityParsingTest {
 			this.validator.assertError(mas,
 					SarlPackage.eINSTANCE.getSkill(),
 					IssueCodes.MISSING_METHOD_IMPLEMENTATION,
-					"The operation myaction1(int) must be implemented.");
+					"The operation myaction1(a : int) must be implemented.");
 		}
 
 		@Test
@@ -1003,7 +1003,7 @@ public class CapacityParsingTest {
 			this.validator.assertError(mas,
 					SarlPackage.eINSTANCE.getSkill(),
 					IssueCodes.MISSING_METHOD_IMPLEMENTATION,
-					"The operation myaction1(int) must be implemented.");
+					"The operation myaction1(a : int) must be implemented.");
 		}
 
 		@Test

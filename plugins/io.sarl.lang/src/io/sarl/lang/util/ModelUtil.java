@@ -20,7 +20,6 @@
  */
 package io.sarl.lang.util;
 
-import io.sarl.lang.genmodel.SARLCodeGenerator;
 import io.sarl.lang.signature.ActionKey;
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.SignatureKey;
@@ -30,17 +29,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmAnnotationType;
 import org.eclipse.xtext.common.types.JvmAnnotationValue;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
-import org.eclipse.xtext.common.types.JvmExecutable;
 import org.eclipse.xtext.common.types.JvmFeature;
 import org.eclipse.xtext.common.types.JvmField;
-import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmMember;
 import org.eclipse.xtext.common.types.JvmOperation;
@@ -582,48 +578,6 @@ public final class ModelUtil {
 		VersionInfo vi1 = VersionInfo.getInstance(v1);
 		VersionInfo vi2 = VersionInfo.getInstance(v2);
 		return vi1.compareTo(vi2);
-	}
-
-	/** Create a string representation of the prototype of the given executable.
-	 *
-	 * @param e - the executable for which a strig representation must be replied.
-	 * @return the prototype
-	 * @deprecated use {@link SARLCodeGenerator}.
-	 */
-	@Deprecated
-	public static String toActionProtoptypeString(JvmExecutable e) {
-		StringBuilder b = new StringBuilder();
-		JvmTypeReference returnType;
-		if (e instanceof JvmConstructor) {
-			b.append("new"); //$NON-NLS-1$
-			returnType = null;
-		} else {
-			JvmOperation op = (JvmOperation) e;
-			b.append("def "); //$NON-NLS-1$
-			b.append(op.getSimpleName());
-			returnType = op.getReturnType();
-		}
-		EList<JvmFormalParameter> params = e.getParameters();
-		if (!params.isEmpty()) {
-			b.append("("); //$NON-NLS-1$
-			boolean first = true;
-			for (JvmFormalParameter param : params) {
-				if (first) {
-					first = false;
-				} else {
-					b.append(", "); //$NON-NLS-1$
-				}
-				b.append(param.getName());
-				b.append(" : "); //$NON-NLS-1$
-				b.append(param.getParameterType().getIdentifier());
-			}
-			b.append(")"); //$NON-NLS-1$
-		}
-		if (returnType != null && !"void".equals(returnType.getIdentifier())) { //$NON-NLS-1$
-			b.append(" : "); //$NON-NLS-1$
-			b.append(returnType.getIdentifier());
-		}
-		return b.toString();
 	}
 
 	/** Replies the default value for the given type.

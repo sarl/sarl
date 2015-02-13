@@ -19,8 +19,8 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.genmodel.GeneratedCode;
 import io.sarl.lang.genmodel.SARLCodeGenerator;
-import io.sarl.lang.genmodel.SARLCodeGenerator.GeneratedCode;
 import io.sarl.lang.sarl.Agent;
 import io.sarl.tests.api.AbstractSarlTest;
 

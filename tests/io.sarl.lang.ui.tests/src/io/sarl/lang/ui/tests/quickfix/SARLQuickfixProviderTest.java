@@ -30,30 +30,28 @@ import org.junit.runners.Suite.SuiteClasses;
  * @mavenartifactid $ArtifactId$
  */
 @RunWith(Suite.class)
-@SuiteClasses({
-	SARLQuickfixProviderTest.WrongPackage.class,
-	SARLQuickfixProviderTest.DuplicateTypeName.class,
-	SARLQuickfixProviderTest.DuplicateField.class,
-	SARLQuickfixProviderTest.DuplicateMethod.class,
-	SARLQuickfixProviderTest.InvalidMemberName.class,
-	SARLQuickfixProviderTest.RedundantInterfaceImplementation.class,
-	SARLQuickfixProviderTest.VariableNameShadowing.class,
-	SARLQuickfixProviderTest.OverriddenFinalOperation.class,
-	SARLQuickfixProviderTest.DiscouragedBooleanExpression.class,
-	SARLQuickfixProviderTest.UnreachableBehaviorUnit.class,
-	SARLQuickfixProviderTest.InvalidCapacityType.class,
-	SARLQuickfixProviderTest.InvalidFiringEventType.class,
-	SARLQuickfixProviderTest.InvalidImplementedType.class,
-	SARLQuickfixProviderTest.InvalidExtendedType.class,
-	SARLQuickfixProviderTest.DiscouragedCapacityDefinition.class,
-	SARLQuickfixProviderTest.MissingMethodImplementation.class,
-	SARLQuickfixProviderTest.IncompatibleReturnType.class,
-	SARLQuickfixProviderTest.InvalidUseOfVarargs.class,
-	SARLQuickfixProviderTest.InconsistentTypeHierarchy.class,
-	SARLQuickfixProviderTest.OverriddenFinalType.class,
-	SARLQuickfixProviderTest.UnusedAgentCapacity.class,
-	SARLQuickfixProviderTest.RedundantCapacityUse.class,
-})
+@SuiteClasses({ SARLQuickfixProviderTest.WrongPackage.class,
+		SARLQuickfixProviderTest.DuplicateTypeName.class,
+		SARLQuickfixProviderTest.DuplicateField.class,
+		SARLQuickfixProviderTest.DuplicateMethod.class,
+		SARLQuickfixProviderTest.InvalidMemberName.class,
+		SARLQuickfixProviderTest.RedundantInterfaceImplementation.class,
+		SARLQuickfixProviderTest.VariableNameShadowing.class,
+		SARLQuickfixProviderTest.OverriddenFinalOperation.class,
+		SARLQuickfixProviderTest.DiscouragedBooleanExpression.class,
+		SARLQuickfixProviderTest.UnreachableBehaviorUnit.class,
+		SARLQuickfixProviderTest.InvalidCapacityType.class,
+		SARLQuickfixProviderTest.InvalidFiringEventType.class,
+		SARLQuickfixProviderTest.InvalidImplementedType.class,
+		SARLQuickfixProviderTest.InvalidExtendedType.class,
+		SARLQuickfixProviderTest.DiscouragedCapacityDefinition.class,
+		SARLQuickfixProviderTest.MissingMethodImplementation.class,
+		SARLQuickfixProviderTest.IncompatibleReturnType.class,
+		SARLQuickfixProviderTest.InvalidUseOfVarargs.class,
+		SARLQuickfixProviderTest.InconsistentTypeHierarchy.class,
+		SARLQuickfixProviderTest.OverriddenFinalType.class,
+		SARLQuickfixProviderTest.UnusedAgentCapacity.class,
+		SARLQuickfixProviderTest.RedundantCapacityUse.class, })
 @SuppressWarnings("all")
 public class SARLQuickfixProviderTest {
 
@@ -103,10 +101,7 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 { }\n"
-					+ "event E1\n"
-					+ "agent A1 { }\n",
+					multilineString("agent A1 { }", "event E1", "agent A1 { }"),
 					//
 					// Label and description:
 					//
@@ -115,9 +110,7 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 { }\n"
-					+ "event E1\n");
+					multilineString("agent A1 { }", "event E1"));
 		}
 
 	}
@@ -139,11 +132,8 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "var attr1 = true\n"
-					+ "var attr1 = \"\"\n"
-					+ "}\n",
+					multilineString("agent A1 {", "	var attr1 = true",
+							"	var attr1 = \"\"", "}"),
 					//
 					// Label and description:
 					//
@@ -152,10 +142,7 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "var attr1 = true\n"
-					+ "}\n");
+					multilineString("agent A1 {", "	var attr1 = true", "}"));
 		}
 
 	}
@@ -177,15 +164,10 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "def method1(a : int) : boolean {\n"
-					+ "true"
-					+ "}\n"
-					+ "def method1(a : int) : float {\n"
-					+ "1.0f\n"
-					+ "}\n"
-					+ "}\n",
+					multilineString("agent A1 {",
+							"	def method1(a : int) : boolean {", "		true",
+							"	}", "	def method1(a : int) : float {", "		1.0f",
+							"	}", "}"),
 					//
 					// Label and description:
 					//
@@ -194,12 +176,9 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "def method1(a : int) : boolean {\n"
-					+ "true"
-					+ "}\n"
-					+ "}\n");
+					multilineString("agent A1 {",
+							"	def method1(a : int) : boolean {", "		true",
+							"	}", "}"));
 		}
 
 	}
@@ -221,15 +200,10 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "def _handle_method1(a : int) : boolean {\n"
-					+ "true"
-					+ "}\n"
-					+ "def method2(a : int) : float {\n"
-					+ "1.0f\n"
-					+ "}\n"
-					+ "}\n");
+					multilineString("agent A1 {",
+							"	def _handle_method1(a : int) : boolean {",
+							"		true", "	}", "	def method2(a : int) : float {",
+							"		1.0f", "	}", "}"));
 			asserts.assertQuickFix(
 					//
 					// Label and description:
@@ -239,15 +213,10 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "def handleMethod1(a : int) : boolean {\n"
-					+ "true"
-					+ "}\n"
-					+ "def method2(a : int) : float {\n"
-					+ "1.0f\n"
-					+ "}\n"
-					+ "}\n");
+					multilineString("agent A1 {",
+							"	def handleMethod1(a : int) : boolean {",
+							"		true", "	}", "	def method2(a : int) : float {",
+							"		1.0f", "	}", "}"));
 			asserts.assertQuickFix(
 					//
 					// Label and description:
@@ -257,15 +226,10 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "def method1(a : int) : boolean {\n"
-					+ "true"
-					+ "}\n"
-					+ "def method2(a : int) : float {\n"
-					+ "1.0f\n"
-					+ "}\n"
-					+ "}\n");
+					multilineString("agent A1 {",
+							"	def method1(a : int) : boolean {", "		true",
+							"	}", "	def method2(a : int) : float {", "		1.0f",
+							"	}", "}"));
 			asserts.assertQuickFix(
 					//
 					// Label and description:
@@ -275,12 +239,9 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "def method2(a : int) : float {\n"
-					+ "1.0f\n"
-					+ "}\n"
-					+ "}\n");
+					multilineString("agent A1 {",
+							"	def method2(a : int) : float {", "		1.0f", "	}",
+							"}"));
 			asserts.assertNoQuickFix();
 		}
 
@@ -293,11 +254,10 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "var ___FORMAL_PARAMETER_DEFAULT_VALUE_myattr1 : boolean\n"
-					+ "var myattr2 : float\n"
-					+ "}\n");
+					multilineString(
+							"agent A1 {",
+							"var ___FORMAL_PARAMETER_DEFAULT_VALUE_myattr1 : boolean",
+							"var myattr2 : float", "}"));
 			asserts.assertQuickFix(
 					//
 					// Label and description:
@@ -307,11 +267,8 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "var myattr1 : boolean\n"
-					+ "var myattr2 : float\n"
-					+ "}\n");
+					multilineString("agent A1 {", "var myattr1 : boolean",
+							"var myattr2 : float", "}"));
 			asserts.assertQuickFix(
 					//
 					// Label and description:
@@ -321,10 +278,7 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "var myattr2 : float\n"
-					+ "}\n");
+					multilineString("agent A1 {", "var myattr2 : float", "}"));
 			asserts.assertNoQuickFix();
 		}
 
@@ -336,7 +290,8 @@ public class SARLQuickfixProviderTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class RedundantInterfaceImplementation extends AbstractSARLQuickfixTest {
+	public static class RedundantInterfaceImplementation extends
+			AbstractSARLQuickfixTest {
 
 		/**
 		 */
@@ -347,10 +302,8 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "skill S1 implements C1, C2, C1 { }\n",
+					multilineString("capacity C1 { }", "capacity C2 { }",
+							"skill S1 implements C1, C2, C1 { }"),
 					//
 					// Label and description:
 					//
@@ -359,10 +312,8 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "skill S1 implements C1, C2 { }\n");
+					multilineString("capacity C1 { }", "capacity C2 { }",
+							"skill S1 implements C1, C2 { }"));
 		}
 
 		/**
@@ -374,10 +325,8 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "skill S1 implements C1, C1, C2 { }\n",
+					multilineString("capacity C1 { }", "capacity C2 { }",
+							"skill S1 implements C1, C1, C2 { }"),
 					//
 					// Label and description:
 					//
@@ -386,10 +335,8 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "skill S1 implements C1, C2 { }\n");
+					multilineString("capacity C1 { }", "capacity C2 { }",
+							"skill S1 implements C1, C2 { }"));
 		}
 
 		/**
@@ -401,10 +348,8 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "skill S1 implements C2, C1, C1 { }\n",
+					multilineString("capacity C1 { }", "capacity C2 { }",
+							"skill S1 implements C2, C1, C1 { }"),
 					//
 					// Label and description:
 					//
@@ -413,10 +358,8 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "skill S1 implements C2, C1 { }\n");
+					multilineString("capacity C1 { }", "capacity C2 { }",
+							"skill S1 implements C2, C1 { }"));
 		}
 
 		/**
@@ -428,11 +371,9 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "capacity C3 extends C1 { }\n"
-					+ "skill S1 implements C1, C2, C3 { }\n",
+					multilineString("capacity C1 { }", "capacity C2 { }",
+							"capacity C3 extends C1 { }",
+							"skill S1 implements C1, C2, C3 { }"),
 					//
 					// Label and description:
 					//
@@ -441,11 +382,9 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "capacity C3 extends C1 { }\n"
-					+ "skill S1 implements C2, C3 { }\n");
+					multilineString("capacity C1 { }", "capacity C2 { }",
+							"capacity C3 extends C1 { }",
+							"skill S1 implements C2, C3 { }"));
 		}
 
 	}
@@ -467,28 +406,18 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "var attr1 : boolean\n"
-					+ "}\n"
-					+ "agent A2 extends A1 {\n"
-					+ "var attr1 : int\n"
-					+ "}\n");
+					multilineString("agent A1 {", "	var attr1 : boolean", "}",
+							"agent A2 extends A1 {", "	var attr1 : int", "}"));
 			asserts.assertQuickFix(
-					//
-					// Label and description:
-					//
-					"Remove the field 'attr1'",
-					"Remove the field 'attr1'",
+			//
+			// Label and description:
+			//
+					"Remove the field 'attr1'", "Remove the field 'attr1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "var attr1 : boolean\n"
-					+ "}\n"
-					+ "agent A2 extends A1 {\n"
-					+ "}\n");
+					multilineString("agent A1 {", "	var attr1 : boolean", "}",
+							"agent A2 extends A1 {", "}"));
 			asserts.assertQuickFix(
 					//
 					// Label and description:
@@ -498,13 +427,8 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "var attr1 : boolean\n"
-					+ "}\n"
-					+ "agent A2 extends A1 {\n"
-					+ "var attr10 : int\n"
-					+ "}\n");
+					multilineString("agent A1 {", "	var attr1 : boolean", "}",
+							"agent A2 extends A1 {", "	var attr10 : int", "}"));
 			asserts.assertNoQuickFix();
 		}
 
@@ -516,7 +440,8 @@ public class SARLQuickfixProviderTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class OverriddenFinalOperation extends AbstractSARLQuickfixTest {
+	public static class OverriddenFinalOperation extends
+			AbstractSARLQuickfixTest {
 
 		/**
 		 */
@@ -527,13 +452,10 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "def myfct(a : boolean, a : int = 4) { }\n"
-					+ "}\n"
-					+ "agent A2 extends A1 {\n"
-					+ "def myfct(b : boolean) { }\n"
-					+ "}\n",
+					multilineString("agent A1 {",
+							"	def myfct(a : boolean, a : int = 4) { }", "}",
+							"agent A2 extends A1 {",
+							"	def myfct(b : boolean) { }", "}"),
 					//
 					// Label and description:
 					//
@@ -542,12 +464,9 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "def myfct(a : boolean, a : int = 4) { }\n"
-					+ "}\n"
-					+ "agent A2 extends A1 {\n"
-					+ "}\n");
+					multilineString("agent A1 {",
+							"	def myfct(a : boolean, a : int = 4) { }", "}",
+							"agent A2 extends A1 {", "}"));
 		}
 
 	}
@@ -558,35 +477,28 @@ public class SARLQuickfixProviderTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class DiscouragedBooleanExpression extends AbstractSARLQuickfixTest {
+	public static class DiscouragedBooleanExpression extends
+			AbstractSARLQuickfixTest {
 
 		/**
 		 */
 		@Test
 		public void fixDiscouragedBooleanExpression() {
-			assertQuickFix(
-					IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "agent A1 {\n"
-					+ "on E1 [true] { [ false ] }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "agent A1 {",
+							"	on E1 [true] { [ false ] }", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the guard",
-					"Remove the guard",
+					"Remove the guard", "Remove the guard",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "agent A1 {\n"
-					+ "on E1 { [ false ] }\n"
-					+ "}\n");
+					multilineString("event E1", "agent A1 {",
+							"	on E1 { [ false ] }", "}"));
 		}
 
 	}
@@ -597,7 +509,8 @@ public class SARLQuickfixProviderTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class UnreachableBehaviorUnit extends AbstractSARLQuickfixTest {
+	public static class UnreachableBehaviorUnit extends
+			AbstractSARLQuickfixTest {
 
 		/**
 		 */
@@ -608,11 +521,8 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "agent A1 {\n"
-					+ "on E1 [false] { [ false ] }\n"
-					+ "}\n",
+					multilineString("event E1", "agent A1 {",
+							"	on E1 [false] { [ false ] }", "}"),
 					//
 					// Label and description:
 					//
@@ -621,10 +531,7 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "agent A1 {\n"
-					+ "}\n");
+					multilineString("event E1", "agent A1 {", "}"));
 		}
 
 	}
@@ -641,254 +548,177 @@ public class SARLQuickfixProviderTest {
 		 */
 		@Test
 		public void fixInvalidCapacityType_0() {
-			assertQuickFix(
-					IssueCodes.INVALID_CAPACITY_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "agent A1 {\n"
-					+ "uses E1\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.INVALID_CAPACITY_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "agent A1 {", "	uses E1", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'E1'",
-					"Remove the type 'E1'",
+					"Remove the type 'E1'", "Remove the type 'E1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "agent A1 {\n"
-					+ "}\n");
+					multilineString("event E1", "agent A1 {", "}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInvalidCapacityType_1() {
-			assertQuickFix(
-					IssueCodes.INVALID_CAPACITY_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "agent A1 {\n"
-					+ "uses E1, C1, C2\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.INVALID_CAPACITY_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "agent A1 {",
+							"	uses E1, C1, C2", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'E1'",
-					"Remove the type 'E1'",
+					"Remove the type 'E1'", "Remove the type 'E1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C2\n"
-					+ "}\n");
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "agent A1 {", "	uses C1, C2",
+							"}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInvalidCapacityType_2() {
-			assertQuickFix(
-					IssueCodes.INVALID_CAPACITY_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, E1, C2\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.INVALID_CAPACITY_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "agent A1 {",
+							"	uses C1, E1, C2", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'E1'",
-					"Remove the type 'E1'",
+					"Remove the type 'E1'", "Remove the type 'E1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C2\n"
-					+ "}\n");
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "agent A1 {", "	uses C1, C2",
+							"}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInvalidCapacityType_3() {
-			assertQuickFix(
-					IssueCodes.INVALID_CAPACITY_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C2, E1\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.INVALID_CAPACITY_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "agent A1 {",
+							"	uses C1, C2, E1", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'E1'",
-					"Remove the type 'E1'",
+					"Remove the type 'E1'", "Remove the type 'E1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C2\n"
-					+ "}\n");
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "agent A1 {", "	uses C1, C2",
+							"}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInvalidCapacityType_4() {
-			assertQuickFix(
-					IssueCodes.INVALID_CAPACITY_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "agent A1 {\n"
-					+ "requires E1\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.INVALID_CAPACITY_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "agent A1 {", "	requires E1",
+							"}"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'E1'",
-					"Remove the type 'E1'",
+					"Remove the type 'E1'", "Remove the type 'E1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "agent A1 {\n"
-					+ "}\n");
+					multilineString("event E1", "agent A1 {", "}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInvalidCapacityType_5() {
-			assertQuickFix(
-					IssueCodes.INVALID_CAPACITY_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "agent A1 {\n"
-					+ "requires E1, C1, C2\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.INVALID_CAPACITY_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "agent A1 {",
+							"	requires E1, C1, C2", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'E1'",
-					"Remove the type 'E1'",
+					"Remove the type 'E1'", "Remove the type 'E1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "agent A1 {\n"
-					+ "requires C1, C2\n"
-					+ "}\n");
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "agent A1 {",
+							"	requires C1, C2", "}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInvalidCapacityType_6() {
-			assertQuickFix(
-					IssueCodes.INVALID_CAPACITY_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "agent A1 {\n"
-					+ "requires C1, E1, C2\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.INVALID_CAPACITY_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "agent A1 {",
+							"	requires C1, E1, C2", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'E1'",
-					"Remove the type 'E1'",
+					"Remove the type 'E1'", "Remove the type 'E1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "agent A1 {\n"
-					+ "requires C1, C2\n"
-					+ "}\n");
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "agent A1 {",
+							"	requires C1, C2", "}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInvalidCapacityType_7() {
-			assertQuickFix(
-					IssueCodes.INVALID_CAPACITY_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "agent A1 {\n"
-					+ "requires C1, C2, E1\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.INVALID_CAPACITY_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "agent A1 {",
+							"	requires C1, C2, E1", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'E1'",
-					"Remove the type 'E1'",
+					"Remove the type 'E1'", "Remove the type 'E1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "agent A1 {\n"
-					+ "requires C1, C2\n"
-					+ "}\n");
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "agent A1 {",
+							"	requires C1, C2", "}"));
 		}
 
 	}
@@ -905,99 +735,66 @@ public class SARLQuickfixProviderTest {
 		 */
 		@Test
 		public void fixInvalidFiringEventType_0() {
-			assertQuickFix(
-					IssueCodes.INVALID_FIRING_EVENT_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "event E2\n"
-					+ "capacity C1 { }\n"
-					+ "agent A1 {\n"
-					+ "def myfct fires C1, E1, E2 { }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.INVALID_FIRING_EVENT_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "event E2", "capacity C1 { }",
+							"agent A1 {", "	def myfct fires C1, E1, E2 { }",
+							"}"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'C1'",
-					"Remove the type 'C1'",
+					"Remove the type 'C1'", "Remove the type 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "event E2\n"
-					+ "capacity C1 { }\n"
-					+ "agent A1 {\n"
-					+ "def myfct fires E1, E2 { }\n"
-					+ "}\n");
+					multilineString("event E1", "event E2", "capacity C1 { }",
+							"agent A1 {", "	def myfct fires E1, E2 { }", "}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInvalidFiringEventType_1() {
-			assertQuickFix(
-					IssueCodes.INVALID_FIRING_EVENT_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "event E2\n"
-					+ "capacity C1 { }\n"
-					+ "agent A1 {\n"
-					+ "def myfct fires E1, C1, E2 { }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.INVALID_FIRING_EVENT_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "event E2", "capacity C1 { }",
+							"agent A1 {", "	def myfct fires E1, C1, E2 { }",
+							"}"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'C1'",
-					"Remove the type 'C1'",
+					"Remove the type 'C1'", "Remove the type 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "event E2\n"
-					+ "capacity C1 { }\n"
-					+ "agent A1 {\n"
-					+ "def myfct fires E1, E2 { }\n"
-					+ "}\n");
+					multilineString("event E1", "event E2", "capacity C1 { }",
+							"agent A1 {", "	def myfct fires E1, E2 { }", "}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInvalidFiringEventType_2() {
-			assertQuickFix(
-					IssueCodes.INVALID_FIRING_EVENT_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "event E2\n"
-					+ "capacity C1 { }\n"
-					+ "agent A1 {\n"
-					+ "def myfct fires E1, E2, C1 { }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.INVALID_FIRING_EVENT_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "event E2", "capacity C1 { }",
+							"agent A1 {", "	def myfct fires E1, E2, C1 { }",
+							"}"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'C1'",
-					"Remove the type 'C1'",
+					"Remove the type 'C1'", "Remove the type 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "event E2\n"
-					+ "capacity C1 { }\n"
-					+ "agent A1 {\n"
-					+ "def myfct fires E1, E2 { }\n"
-					+ "}\n");
+					multilineString("event E1", "event E2", "capacity C1 { }",
+							"agent A1 {", "	def myfct fires E1, E2 { }", "}"));
 		}
 
 	}
@@ -1014,141 +811,108 @@ public class SARLQuickfixProviderTest {
 		 */
 		@Test
 		public void fixInvalidImplementedType_0() {
-			assertQuickFix(
-					IssueCodes.INVALID_IMPLEMENTED_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "skill S2 implements E1, C1, C2 { }\n",
+			assertQuickFix(IssueCodes.INVALID_IMPLEMENTED_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }",
+							"skill S2 implements E1, C1, C2 { }"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'E1'",
-					"Remove the type 'E1'",
+					"Remove the type 'E1'", "Remove the type 'E1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "skill S2 implements C1, C2 { }\n");
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "skill S2 implements C1, C2 { }"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInvalidImplementedType_1() {
-			assertQuickFix(
-					IssueCodes.INVALID_IMPLEMENTED_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "skill S2 implements C1, E1, C2 { }\n",
+			assertQuickFix(IssueCodes.INVALID_IMPLEMENTED_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }",
+							"skill S2 implements C1, E1, C2 { }"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'E1'",
-					"Remove the type 'E1'",
+					"Remove the type 'E1'", "Remove the type 'E1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "skill S2 implements C1, C2 { }\n");
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "skill S2 implements C1, C2 { }"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInvalidImplementedType_2() {
-			assertQuickFix(
-					IssueCodes.INVALID_IMPLEMENTED_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "skill S2 implements C1, C2, E1 { }\n",
+			assertQuickFix(IssueCodes.INVALID_IMPLEMENTED_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }",
+							"skill S2 implements C1, C2, E1 { }"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'E1'",
-					"Remove the type 'E1'",
+					"Remove the type 'E1'", "Remove the type 'E1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "skill S2 implements C1, C2 { }\n");
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "skill S2 implements C1, C2 { }"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInvalidImplementedType_3() {
-			assertQuickFix(
-					IssueCodes.INVALID_IMPLEMENTED_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "skill S2 implements E1 { }\n",
+			assertQuickFix(IssueCodes.INVALID_IMPLEMENTED_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "skill S2 implements E1 { }"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'E1'",
-					"Remove the type 'E1'",
+					"Remove the type 'E1'", "Remove the type 'E1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "skill S2 { }\n");
+					multilineString("event E1", "skill S2 { }"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInvalidImplementedType_4() {
-			assertQuickFix(
-					IssueCodes.INVALID_IMPLEMENTED_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "skill S1 implements C1 { }\n"
-					+ "skill S2 extends S1 implements E1 { }\n",
+			assertQuickFix(IssueCodes.INVALID_IMPLEMENTED_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "capacity C1 { }",
+							"skill S1 implements C1 { }",
+							"skill S2 extends S1 implements E1 { }"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'E1'",
-					"Remove the type 'E1'",
+					"Remove the type 'E1'", "Remove the type 'E1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "skill S1 implements C1 { }\n"
-					+ "skill S2 extends S1 { }\n");
+					multilineString("event E1", "capacity C1 { }",
+							"skill S1 implements C1 { }",
+							"skill S2 extends S1 { }"));
 		}
 
 	}
@@ -1165,137 +929,105 @@ public class SARLQuickfixProviderTest {
 		 */
 		@Test
 		public void fixInvalidExtendedType_0() {
-			assertQuickFix(
-					IssueCodes.INVALID_EXTENDED_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "capacity C3 extends E1, C1, C2 { }\n",
+			assertQuickFix(IssueCodes.INVALID_EXTENDED_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }",
+							"capacity C3 extends E1, C1, C2 { }"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'E1'",
-					"Remove the type 'E1'",
+					"Remove the type 'E1'", "Remove the type 'E1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "capacity C3 extends C1, C2 { }\n");
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "capacity C3 extends C1, C2 { }"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInvalidExtendedType_1() {
-			assertQuickFix(
-					IssueCodes.INVALID_EXTENDED_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "capacity C3 extends C1, E1, C2 { }\n",
+			assertQuickFix(IssueCodes.INVALID_EXTENDED_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }",
+							"capacity C3 extends C1, E1, C2 { }"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'E1'",
-					"Remove the type 'E1'",
+					"Remove the type 'E1'", "Remove the type 'E1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "capacity C3 extends C1, C2 { }\n");
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "capacity C3 extends C1, C2 { }"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInvalidExtendedType_2() {
-			assertQuickFix(
-					IssueCodes.INVALID_EXTENDED_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "capacity C3 extends C1, C2, E1 { }\n",
+			assertQuickFix(IssueCodes.INVALID_EXTENDED_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }",
+							"capacity C3 extends C1, C2, E1 { }"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'E1'",
-					"Remove the type 'E1'",
+					"Remove the type 'E1'", "Remove the type 'E1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "capacity C3 extends C1, C2 { }\n");
+					multilineString("event E1", "capacity C1 { }",
+							"capacity C2 { }", "capacity C3 extends C1, C2 { }"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInvalidExtendedType_3() {
-			assertQuickFix(
-					IssueCodes.INVALID_EXTENDED_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C3 extends E1 { }\n",
+			assertQuickFix(IssueCodes.INVALID_EXTENDED_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("event E1", "capacity C3 extends E1 { }"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'E1'",
-					"Remove the type 'E1'",
+					"Remove the type 'E1'", "Remove the type 'E1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "event E1\n"
-					+ "capacity C3 { }\n");
+					multilineString("event E1", "capacity C3 { }"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInvalidExtendedType_4() {
-			assertQuickFix(
-					IssueCodes.INVALID_EXTENDED_TYPE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "event E3 extends C1 { }\n",
+			assertQuickFix(IssueCodes.INVALID_EXTENDED_TYPE,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { }",
+							"event E3 extends C1 { }"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'C1'",
-					"Remove the type 'C1'",
+					"Remove the type 'C1'", "Remove the type 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "event E3 { }\n");
+					multilineString("capacity C1 { }", "event E3 { }"));
 		}
 
 	}
@@ -1306,9 +1038,11 @@ public class SARLQuickfixProviderTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class DiscouragedCapacityDefinition extends AbstractSARLQuickfixTest {
+	public static class DiscouragedCapacityDefinition extends
+			AbstractSARLQuickfixTest {
 
-		/** {@link IssueCodes#DISCOURAGED_CAPACITY_DEFINITION}.
+		/**
+		 * {@link IssueCodes#DISCOURAGED_CAPACITY_DEFINITION}.
 		 */
 		@Test
 		public void fixDiscouragedCapacityDefinition() {
@@ -1317,31 +1051,25 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n");
+					"capacity C1 { }");
 			asserts.assertQuickFix(
-					//
-					// Label and description:
-					//
-					"Remove the capacity 'C1'",
-					"Remove the capacity 'C1'",
+			//
+			// Label and description:
+			//
+					"Remove the capacity 'C1'", "Remove the capacity 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT);
+					"");
 			asserts.assertQuickFix(
-					//
-					// Label and description:
-					//
-					"Add the action 'aFunction'",
-					"Add the action 'aFunction'",
+			//
+			// Label and description:
+			//
+					"Add the action 'aFunction'", "Add the action 'aFunction'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 {\n"
-					+ "\tdef aFunction\n"
-					+ "}\n");
+					multilineString("capacity C1 {", "	def aFunction", "}"));
 			asserts.assertNoQuickFix();
 		}
 
@@ -1353,24 +1081,25 @@ public class SARLQuickfixProviderTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class MissingMethodImplementation extends AbstractSARLQuickfixTest {
+	public static class MissingMethodImplementation extends
+			AbstractSARLQuickfixTest {
 
 		/**
 		 */
 		@Test
-		public void fixMissingMethodImplementation_0() {
+		public void fixClassicPrototype_0() {
 			assertQuickFix(
 					IssueCodes.MISSING_METHOD_IMPLEMENTATION,
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 {\n"
-					+ "\tdef fct1\n"
-					+ "\tdef fct2(a : int)\n"
-					+ "\tdef fct3 : boolean\n"
-					+ "}\n"
-					+ "skill S1 implements C1 { }\n",
+					multilineString(
+							"capacity C1 {",
+							"	def fct1",
+							"	def fct2(a : int)",
+							"	def fct3 : boolean",
+							"}",
+							"skill S1 implements C1 { }"),
 					//
 					// Label and description:
 					//
@@ -1379,44 +1108,39 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 {\n"
-					+ "\tdef fct1\n"
-					+ "\tdef fct2(a : int)\n"
-					+ "\tdef fct3 : boolean\n"
-					+ "}\n"
-					+ "skill S1 implements C1 {\n"
-					+ "\tdef fct1 {\n"
-					+ "\t\t// TODO Auto-generated action.\n"
-					+ "\t}\n"
-					+ "\tdef fct2(a : int) {\n"
-					+ "\t\t// TODO Auto-generated action.\n"
-					+ "\t}\n"
-					+ "\tdef fct3 : boolean {\n"
-					+ "\t\t// TODO Auto-generated action.\n"
-					+ "\t\ttrue\n"
-					+ "\t}\n"
-					+ "}\n");
+					multilineString(
+							"capacity C1 {",
+							"	def fct1",
+							"	def fct2(a : int)",
+							"	def fct3 : boolean",
+							"}",
+							"skill S1 implements C1 {",
+							"	def fct1 {",
+							"		// TODO Auto-generated action.",
+							"	}",
+							"	def fct2(a : int) {",
+							"		// TODO Auto-generated action.",
+							"	}",
+							"	def fct3 : boolean {",
+							"		// TODO Auto-generated action.",
+							"		true",
+							"	}",
+							"}"));
 		}
 
 		/**
 		 */
 		@Test
-		public void fixMissingMethodImplementation_1() {
+		public void fixClassicPrototype_1() {
 			assertQuickFix(
 					IssueCodes.MISSING_METHOD_IMPLEMENTATION,
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 {\n"
-					+ "\tdef fct1\n"
-					+ "\tdef fct2(a : int)\n"
-					+ "\tdef fct3 : boolean\n"
-					+ "}\n"
-					+ "skill S1 implements C1 {\n"
-					+ "\tdef fct2(b : int) { }\n"
-					+ "}\n",
+					multilineString("capacity C1 {", "	def fct1",
+							"	def fct2(a : int)", "	def fct3 : boolean", "}",
+							"skill S1 implements C1 {",
+							"	def fct2(b : int) { }", "}"),
 					//
 					// Label and description:
 					//
@@ -1425,22 +1149,184 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 {\n"
-					+ "\tdef fct1\n"
-					+ "\tdef fct2(a : int)\n"
-					+ "\tdef fct3 : boolean\n"
-					+ "}\n"
-					+ "skill S1 implements C1 {\n"
-					+ "\tdef fct2(b : int) { }\n"
-					+ "\tdef fct1 {\n"
-					+ "\t\t// TODO Auto-generated action.\n"
-					+ "\t}\n"
-					+ "\tdef fct3 : boolean {\n"
-					+ "\t\t// TODO Auto-generated action.\n"
-					+ "\t\ttrue\n"
-					+ "\t}\n"
-					+ "}\n");
+					multilineString("capacity C1 {", "	def fct1",
+							"	def fct2(a : int)", "	def fct3 : boolean", "}",
+							"skill S1 implements C1 {",
+							"	def fct2(b : int) { }", "	def fct1 {",
+							"		// TODO Auto-generated action.", "	}",
+							"	def fct3 : boolean {",
+							"		// TODO Auto-generated action.", "		true", "	}",
+							"}"));
+		}
+
+		/**
+		 */
+		@Test
+		public void fixVariadicParameter_0() {
+			assertQuickFix(
+					IssueCodes.MISSING_METHOD_IMPLEMENTATION,
+					//
+					// Code to fix:
+					//
+					multilineString(
+							"capacity C1 {",
+							"	def fct(a : int*)",
+							"}",
+							"skill S1 implements C1 { }"),
+					//
+					// Label and description:
+					//
+					"Add unimplemented actions",
+					"Add the following unimplemented actions:\n- def fct(a : int*)\n",
+					//
+					// Expected fixed code:
+					//
+					multilineString(
+							"capacity C1 {",
+							"	def fct(a : int*)",
+							"}",
+							"skill S1 implements C1 {",
+							"	def fct(a : int*) {",
+							"		// TODO Auto-generated action.",
+							"	}",
+							"}"));
+		}
+
+		/**
+		 */
+		@Test
+		public void fixVariadicParameter_1() {
+			assertQuickFix(
+					IssueCodes.MISSING_METHOD_IMPLEMENTATION,
+					//
+					// Code to fix:
+					//
+					multilineString(
+							"capacity C1 {",
+							"	def fct1(a : int*)",
+							"	def fct2(b : String, c : double*)",
+							"}",
+							"skill S1 implements C1 { }"),
+					//
+					// Label and description:
+					//
+					"Add unimplemented actions",
+					"Add the following unimplemented actions:\n- def fct1(a : int*)\n- def fct2(b : String, c : double*)\n",
+					//
+					// Expected fixed code:
+					//
+					multilineString(
+							"capacity C1 {",
+							"	def fct1(a : int*)",
+							"	def fct2(b : String, c : double*)",
+							"}",
+							"skill S1 implements C1 {",
+							"	def fct1(a : int*) {",
+							"		// TODO Auto-generated action.",
+							"	}",
+							"	def fct2(b : String, c : double*) {",
+							"		// TODO Auto-generated action.",
+							"	}",
+							"}"));
+		}
+
+		/**
+		 */
+		@Test
+		public void fixParameterDefaultValue_0() {
+			assertQuickFix(
+					IssueCodes.MISSING_METHOD_IMPLEMENTATION,
+					//
+					// Code to fix:
+					//
+					multilineString(
+							"capacity C1 {",
+							"	def fct(a : int=4)",
+							"}",
+							"skill S1 implements C1 { }"),
+					//
+					// Label and description:
+					//
+					"Add unimplemented actions",
+					"Add the following unimplemented actions:\n- def fct(a : int=4)\n",
+					//
+					// Expected fixed code:
+					//
+					multilineString(
+							"capacity C1 {",
+							"	def fct(a : int=4)",
+							"}",
+							"skill S1 implements C1 {",
+							"	def fct(a : int=4) {",
+							"		// TODO Auto-generated action.",
+							"	}",
+							"}"));
+		}
+
+		/**
+		 */
+		@Test
+		public void fixParameterDefaultValue_1() {
+			assertQuickFix(
+					IssueCodes.MISSING_METHOD_IMPLEMENTATION,
+					//
+					// Code to fix:
+					//
+					multilineString(
+							"capacity C1 {",
+							"	def fct(a : int=4, b : java.lang.String)",
+							"}",
+							"skill S1 implements C1 { }"),
+					//
+					// Label and description:
+					//
+					"Add unimplemented actions",
+					"Add the following unimplemented actions:\n- def fct(a : int=4, b : java.lang.String)\n",
+					//
+					// Expected fixed code:
+					//
+					multilineString(
+							"capacity C1 {",
+							"	def fct(a : int=4, b : java.lang.String)",
+							"}",
+							"skill S1 implements C1 {",
+							"	def fct(a : int=4, b : java.lang.String) {",
+							"		// TODO Auto-generated action.",
+							"	}",
+							"}"));
+		}
+
+		/**
+		 */
+		@Test
+		public void fixParameterDefaultValueAndVariadicParameter() {
+			assertQuickFix(
+					IssueCodes.MISSING_METHOD_IMPLEMENTATION,
+					//
+					// Code to fix:
+					//
+					multilineString(
+							"capacity C1 {",
+							"	def fct(a : int=4, b : java.lang.String, c : int*)",
+							"}",
+							"skill S1 implements C1 { }"),
+					//
+					// Label and description:
+					//
+					"Add unimplemented actions",
+					"Add the following unimplemented actions:\n- def fct(a : int=4, b : java.lang.String, c : int*)\n",
+					//
+					// Expected fixed code:
+					//
+					multilineString(
+							"capacity C1 {",
+							"	def fct(a : int=4, b : java.lang.String, c : int*)",
+							"}",
+							"skill S1 implements C1 {",
+							"	def fct(a : int=4, b : java.lang.String, c : int*) {",
+							"		// TODO Auto-generated action.",
+							"	}",
+							"}"));
 		}
 
 	}
@@ -1462,36 +1348,19 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "\tdef fct1 : int {\n"
-					+ "\t\t123\n"
-					+ "\t}\n"
-					+ "}\n"
-					+ "agent A2 extends A1 {\n"
-					+ "\tdef fct1 : boolean {\n"
-					+ "\t\ttrue\n"
-					+ "\t}\n"
-					+ "}\n",
+					multilineString("agent A1 {", "	def fct1 : int {", "		123",
+							"	}", "}", "agent A2 extends A1 {",
+							"	def fct1 : boolean {", "		true", "	}", "}"),
 					//
 					// Label and description:
 					//
-					"Replace the type by 'int'",
-					"Replace the type by 'int'",
+					"Replace the type by 'int'", "Replace the type by 'int'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "\tdef fct1 : int {\n"
-					+ "\t\t123\n"
-					+ "\t}\n"
-					+ "}\n"
-					+ "agent A2 extends A1 {\n"
-					+ "\tdef fct1 : int {\n"
-					+ "\t\ttrue\n"
-					+ "\t}\n"
-					+ "}\n");
+					multilineString("agent A1 {", "	def fct1 : int {", "		123",
+							"	}", "}", "agent A2 extends A1 {",
+							"	def fct1 : int {", "		true", "	}", "}"));
 		}
 
 	}
@@ -1513,11 +1382,9 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "\tdef fct1(a : int, b : boolean = true *) {\n"
-					+ "\t}\n"
-					+ "}\n");
+					multilineString("agent A1 {",
+							"	def fct1(a : int, b : boolean = true *) {", "	}",
+							"}"));
 			asserts.assertQuickFix(
 					//
 					// Label and description:
@@ -1527,25 +1394,19 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "\tdef fct1(a : int, b : boolean = true) {\n"
-					+ "\t}\n"
-					+ "}\n");
+					multilineString("agent A1 {",
+							"	def fct1(a : int, b : boolean = true) {", "	}",
+							"}"));
 			asserts.assertQuickFix(
-					//
-					// Label and description:
-					//
-					"Remove the default value",
-					"Remove the default value",
+			//
+			// Label and description:
+			//
+					"Remove the default value", "Remove the default value",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "agent A1 {\n"
-					+ "\tdef fct1(a : int, b : boolean *) {\n"
-					+ "\t}\n"
-					+ "}\n");
+					multilineString("agent A1 {",
+							"	def fct1(a : int, b : boolean *) {", "	}", "}"));
 			asserts.assertNoQuickFix();
 		}
 
@@ -1557,189 +1418,156 @@ public class SARLQuickfixProviderTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class InconsistentTypeHierarchy extends AbstractSARLQuickfixTest {
+	public static class InconsistentTypeHierarchy extends
+			AbstractSARLQuickfixTest {
 
 		/**
 		 */
 		@Test
 		public void fixInconsistentTypeHierarchy_0() {
-			assertQuickFix(
-					IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 extends C1 { }\n",
+			assertQuickFix(IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 extends C1 { }"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'C1'",
-					"Remove the type 'C1'",
+					"Remove the type 'C1'", "Remove the type 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n");
+					"capacity C1 { }");
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInconsistentTypeHierarchy_1() {
-			assertQuickFix(
-					IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 extends C2 { }\n"
-					+ "capacity C2 extends C1 { }\n",
+			assertQuickFix(IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 extends C2 { }",
+							"capacity C2 extends C1 { }"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'C2'",
-					"Remove the type 'C2'",
+					"Remove the type 'C2'", "Remove the type 'C2'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "capacity C2 extends C1 { }\n");
+					multilineString("capacity C1 { }",
+							"capacity C2 extends C1 { }"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInconsistentTypeHierarchy_3() {
-			assertQuickFix(
-					IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 extends C2 { }\n"
-					+ "capacity C2 extends C3 { }\n"
-					+ "capacity C3 extends C1 { }\n",
+			assertQuickFix(IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 extends C2 { }",
+							"capacity C2 extends C3 { }",
+							"capacity C3 extends C1 { }"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'C2'",
-					"Remove the type 'C2'",
+					"Remove the type 'C2'", "Remove the type 'C2'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "capacity C2 extends C3 { }\n"
-					+ "capacity C3 extends C1 { }\n");
+					multilineString("capacity C1 { }",
+							"capacity C2 extends C3 { }",
+							"capacity C3 extends C1 { }"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInconsistentTypeHierarchy_4() {
-			assertQuickFix(
-					IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C3 extends C1 { }\n"
-					+ "capacity C2 extends C3 { }\n"
-					+ "capacity C1 extends C2 { }\n",
+			assertQuickFix(IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C3 extends C1 { }",
+							"capacity C2 extends C3 { }",
+							"capacity C1 extends C2 { }"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'C1'",
-					"Remove the type 'C1'",
+					"Remove the type 'C1'", "Remove the type 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C3 { }\n"
-					+ "capacity C2 extends C3 { }\n"
-					+ "capacity C1 extends C2 { }\n");
+					multilineString("capacity C3 { }",
+							"capacity C2 extends C3 { }",
+							"capacity C1 extends C2 { }"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInconsistentTypeHierarchy_5() {
-			assertQuickFix(
-					IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "capacity C3 extends C1, C2, C3 { }\n",
+			assertQuickFix(IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { }", "capacity C2 { }",
+							"capacity C3 extends C1, C2, C3 { }"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'C3'",
-					"Remove the type 'C3'",
+					"Remove the type 'C3'", "Remove the type 'C3'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "capacity C3 extends C1, C2 { }\n");
+					multilineString("capacity C1 { }", "capacity C2 { }",
+							"capacity C3 extends C1, C2 { }"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInconsistentTypeHierarchy_6() {
-			assertQuickFix(
-					IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "capacity C3 extends C1, C3, C2 { }\n",
+			assertQuickFix(IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { }", "capacity C2 { }",
+							"capacity C3 extends C1, C3, C2 { }"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'C3'",
-					"Remove the type 'C3'",
+					"Remove the type 'C3'", "Remove the type 'C3'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "capacity C3 extends C1, C2 { }\n");
+					multilineString("capacity C1 { }", "capacity C2 { }",
+							"capacity C3 extends C1, C2 { }"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixInconsistentTypeHierarchy_7() {
-			assertQuickFix(
-					IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "capacity C3 extends C3, C1, C2 { }\n",
+			assertQuickFix(IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { }", "capacity C2 { }",
+							"capacity C3 extends C3, C1, C2 { }"),
 					//
 					// Label and description:
 					//
-					"Remove the type 'C3'",
-					"Remove the type 'C3'",
+					"Remove the type 'C3'", "Remove the type 'C3'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { }\n"
-					+ "capacity C2 { }\n"
-					+ "capacity C3 extends C1, C2 { }\n");
+					multilineString("capacity C1 { }", "capacity C2 { }",
+							"capacity C3 extends C1, C2 { }"));
 		}
 
 	}
@@ -1762,9 +1590,8 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "import foo.MockFinalAgent\n"
-					+ "agent A1 extends MockFinalAgent { }\n",
+					multilineString("import foo.MockFinalAgent",
+							"agent A1 extends MockFinalAgent { }"),
 					//
 					// Label and description:
 					//
@@ -1773,9 +1600,7 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "import foo.MockFinalAgent\n"
-					+ "agent A1 { }\n");
+					multilineString("import foo.MockFinalAgent", "agent A1 { }"));
 		}
 
 	}
@@ -1792,105 +1617,81 @@ public class SARLQuickfixProviderTest {
 		 */
 		@Test
 		public void fixUnusedAgentCapacity_0() {
-			assertQuickFix(
-					IssueCodes.UNUSED_AGENT_CAPACITY,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "capacity C3 { def myfct2 }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C2, C3\n"
-					+ "def testfct { myfct; myfct2 }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.UNUSED_AGENT_CAPACITY,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }",
+							"capacity C3 { def myfct2 }", "agent A1 {",
+							"	uses C1, C2, C3",
+							"	def testfct { myfct; myfct2 }", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C2'",
-					"Remove the capacity 'C2'",
+					"Remove the capacity 'C2'", "Remove the capacity 'C2'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "capacity C3 { def myfct2 }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C3\n"
-					+ "def testfct { myfct; myfct2 }\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }",
+							"capacity C3 { def myfct2 }", "agent A1 {",
+							"	uses C1, C3", "	def testfct { myfct; myfct2 }",
+							"}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixUnusedAgentCapacity_1() {
-			assertQuickFix(
-					IssueCodes.UNUSED_AGENT_CAPACITY,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "capacity C3 { def myfct2 }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C3, C2\n"
-					+ "def testfct { myfct; myfct2 }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.UNUSED_AGENT_CAPACITY,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }",
+							"capacity C3 { def myfct2 }", "agent A1 {",
+							"	uses C1, C3, C2",
+							"	def testfct { myfct; myfct2 }", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C2'",
-					"Remove the capacity 'C2'",
+					"Remove the capacity 'C2'", "Remove the capacity 'C2'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "capacity C3 { def myfct2 }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C3\n"
-					+ "def testfct { myfct; myfct2 }\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }",
+							"capacity C3 { def myfct2 }", "agent A1 {",
+							"	uses C1, C3", "	def testfct { myfct; myfct2 }",
+							"}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixUnusedAgentCapacity_2() {
-			assertQuickFix(
-					IssueCodes.UNUSED_AGENT_CAPACITY,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "capacity C3 { def myfct2 }\n"
-					+ "agent A1 {\n"
-					+ "uses C2, C1, C3\n"
-					+ "def testfct { myfct; myfct2 }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.UNUSED_AGENT_CAPACITY,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }",
+							"capacity C3 { def myfct2 }", "agent A1 {",
+							"	uses C2, C1, C3",
+							"	def testfct { myfct; myfct2 }", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C2'",
-					"Remove the capacity 'C2'",
+					"Remove the capacity 'C2'", "Remove the capacity 'C2'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "capacity C3 { def myfct2 }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C3\n"
-					+ "def testfct { myfct; myfct2 }\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }",
+							"capacity C3 { def myfct2 }", "agent A1 {",
+							"	uses C1, C3", "	def testfct { myfct; myfct2 }",
+							"}"));
 		}
 
 		/**
@@ -1902,16 +1703,12 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity Logging { def println(v : String) }\n"
-					+ "capacity Lifecycle { def killMe }\n"
-					+ "event Initialize\n"
-					+ "agent AgentB {\n"
-					+ "\tuses Logging, Lifecycle\n"
-					+ "\ton Initialize {\n"
-					+ "\t\tprintln(\"Je me presente\")\n"
-					+ "\t}\n"
-					+ "}\n",
+					multilineString(
+							"capacity Logging { def println(v : String) }",
+							"capacity Lifecycle { def killMe }",
+							"event Initialize", "agent AgentB {",
+							"	uses Logging, Lifecycle", "	on Initialize {",
+							"		println(\"Je me presente\")", "	}", "}"),
 					//
 					// Label and description:
 					//
@@ -1920,16 +1717,12 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity Logging { def println(v : String) }\n"
-					+ "capacity Lifecycle { def killMe }\n"
-					+ "event Initialize\n"
-					+ "agent AgentB {\n"
-					+ "\tuses Logging\n"
-					+ "\ton Initialize {\n"
-					+ "\t\tprintln(\"Je me presente\")\n"
-					+ "\t}\n"
-					+ "}\n");
+					multilineString(
+							"capacity Logging { def println(v : String) }",
+							"capacity Lifecycle { def killMe }",
+							"event Initialize", "agent AgentB {",
+							"	uses Logging", "	on Initialize {",
+							"		println(\"Je me presente\")", "	}", "}"));
 		}
 
 		/**
@@ -1941,16 +1734,12 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity Logging { def println(v : String) }\n"
-					+ "capacity Lifecycle { def killMe }\n"
-					+ "event Initialize\n"
-					+ "agent AgentB {\n"
-					+ "\tuses Lifecycle, Logging\n"
-					+ "\ton Initialize {\n"
-					+ "\t\tprintln(\"Je me presente\")\n"
-					+ "\t}\n"
-					+ "}\n",
+					multilineString(
+							"capacity Logging { def println(v : String) }",
+							"capacity Lifecycle { def killMe }",
+							"event Initialize", "agent AgentB {",
+							"	uses Lifecycle, Logging", "	on Initialize {",
+							"		println(\"Je me presente\")", "	}", "}"),
 					//
 					// Label and description:
 					//
@@ -1959,16 +1748,12 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity Logging { def println(v : String) }\n"
-					+ "capacity Lifecycle { def killMe }\n"
-					+ "event Initialize\n"
-					+ "agent AgentB {\n"
-					+ "\tuses Logging\n"
-					+ "\ton Initialize {\n"
-					+ "\t\tprintln(\"Je me presente\")\n"
-					+ "\t}\n"
-					+ "}\n");
+					multilineString(
+							"capacity Logging { def println(v : String) }",
+							"capacity Lifecycle { def killMe }",
+							"event Initialize", "agent AgentB {",
+							"	uses Logging", "	on Initialize {",
+							"		println(\"Je me presente\")", "	}", "}"));
 		}
 
 		/**
@@ -1980,14 +1765,9 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity Lifecycle { def killMe }\n"
-					+ "event Initialize\n"
-					+ "agent AgentB {\n"
-					+ "\tuses Lifecycle\n"
-					+ "\ton Initialize {\n"
-					+ "\t}\n"
-					+ "}\n",
+					multilineString("capacity Lifecycle { def killMe }",
+							"event Initialize", "agent AgentB {",
+							"	uses Lifecycle", "	on Initialize {", "	}", "}"),
 					//
 					// Label and description:
 					//
@@ -1996,118 +1776,90 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity Lifecycle { def killMe }\n"
-					+ "event Initialize\n"
-					+ "agent AgentB {\n"
-					+ "\ton Initialize {\n"
-					+ "\t}\n"
-					+ "}\n");
+					multilineString("capacity Lifecycle { def killMe }",
+							"event Initialize", "agent AgentB {",
+							"	on Initialize {", "	}", "}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixUnusedAgentCapacity_6() {
-			assertQuickFix(
-					IssueCodes.UNUSED_AGENT_CAPACITY,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "capacity C3 { def myfct2 }\n"
-					+ "behavior B1 {\n"
-					+ "uses C1, C2, C3\n"
-					+ "def testfct { myfct; myfct2 }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.UNUSED_AGENT_CAPACITY,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }",
+							"capacity C3 { def myfct2 }", "behavior B1 {",
+							"	uses C1, C2, C3",
+							"	def testfct { myfct; myfct2 }", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C2'",
-					"Remove the capacity 'C2'",
+					"Remove the capacity 'C2'", "Remove the capacity 'C2'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "capacity C3 { def myfct2 }\n"
-					+ "behavior B1 {\n"
-					+ "uses C1, C3\n"
-					+ "def testfct { myfct; myfct2 }\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }",
+							"capacity C3 { def myfct2 }", "behavior B1 {",
+							"	uses C1, C3", "	def testfct { myfct; myfct2 }",
+							"}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixUnusedAgentCapacity_7() {
-			assertQuickFix(
-					IssueCodes.UNUSED_AGENT_CAPACITY,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "capacity C3 { def myfct2 }\n"
-					+ "behavior B1 {\n"
-					+ "uses C1, C3, C2\n"
-					+ "def testfct { myfct; myfct2 }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.UNUSED_AGENT_CAPACITY,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }",
+							"capacity C3 { def myfct2 }", "behavior B1 {",
+							"	uses C1, C3, C2",
+							"	def testfct { myfct; myfct2 }", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C2'",
-					"Remove the capacity 'C2'",
+					"Remove the capacity 'C2'", "Remove the capacity 'C2'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "capacity C3 { def myfct2 }\n"
-					+ "behavior B1 {\n"
-					+ "uses C1, C3\n"
-					+ "def testfct { myfct; myfct2 }\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }",
+							"capacity C3 { def myfct2 }", "behavior B1 {",
+							"	uses C1, C3", "	def testfct { myfct; myfct2 }",
+							"}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixUnusedAgentCapacity_8() {
-			assertQuickFix(
-					IssueCodes.UNUSED_AGENT_CAPACITY,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "capacity C3 { def myfct2 }\n"
-					+ "behavior B1 {\n"
-					+ "uses C2, C1, C3\n"
-					+ "def testfct { myfct; myfct2 }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.UNUSED_AGENT_CAPACITY,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }",
+							"capacity C3 { def myfct2 }", "behavior B1 {",
+							"	uses C2, C1, C3",
+							"	def testfct { myfct; myfct2 }", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C2'",
-					"Remove the capacity 'C2'",
+					"Remove the capacity 'C2'", "Remove the capacity 'C2'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "capacity C3 { def myfct2 }\n"
-					+ "behavior B1 {\n"
-					+ "uses C1, C3\n"
-					+ "def testfct { myfct; myfct2 }\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }",
+							"capacity C3 { def myfct2 }", "behavior B1 {",
+							"	uses C1, C3", "	def testfct { myfct; myfct2 }",
+							"}"));
 		}
 
 		/**
@@ -2119,16 +1871,12 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity Logging { def println(v : String) }\n"
-					+ "capacity Lifecycle { def killMe }\n"
-					+ "event Initialize\n"
-					+ "behavior B {\n"
-					+ "\tuses Logging, Lifecycle\n"
-					+ "\ton Initialize {\n"
-					+ "\t\tprintln(\"Je me presente\")\n"
-					+ "\t}\n"
-					+ "}\n",
+					multilineString(
+							"capacity Logging { def println(v : String) }",
+							"capacity Lifecycle { def killMe }",
+							"event Initialize", "behavior B {",
+							"	uses Logging, Lifecycle", "	on Initialize {",
+							"		println(\"Je me presente\")", "	}", "}"),
 					//
 					// Label and description:
 					//
@@ -2137,16 +1885,12 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity Logging { def println(v : String) }\n"
-					+ "capacity Lifecycle { def killMe }\n"
-					+ "event Initialize\n"
-					+ "behavior B {\n"
-					+ "\tuses Logging\n"
-					+ "\ton Initialize {\n"
-					+ "\t\tprintln(\"Je me presente\")\n"
-					+ "\t}\n"
-					+ "}\n");
+					multilineString(
+							"capacity Logging { def println(v : String) }",
+							"capacity Lifecycle { def killMe }",
+							"event Initialize", "behavior B {",
+							"	uses Logging", "	on Initialize {",
+							"		println(\"Je me presente\")", "	}", "}"));
 		}
 
 		/**
@@ -2158,16 +1902,12 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity Logging { def println(v : String) }\n"
-					+ "capacity Lifecycle { def killMe }\n"
-					+ "event Initialize\n"
-					+ "behavior B {\n"
-					+ "\tuses Lifecycle, Logging\n"
-					+ "\ton Initialize {\n"
-					+ "\t\tprintln(\"Je me presente\")\n"
-					+ "\t}\n"
-					+ "}\n",
+					multilineString(
+							"capacity Logging { def println(v : String) }",
+							"capacity Lifecycle { def killMe }",
+							"event Initialize", "behavior B {",
+							"	uses Lifecycle, Logging", "	on Initialize {",
+							"		println(\"Je me presente\")", "	}", "}"),
 					//
 					// Label and description:
 					//
@@ -2176,16 +1916,12 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity Logging { def println(v : String) }\n"
-					+ "capacity Lifecycle { def killMe }\n"
-					+ "event Initialize\n"
-					+ "behavior B {\n"
-					+ "\tuses Logging\n"
-					+ "\ton Initialize {\n"
-					+ "\t\tprintln(\"Je me presente\")\n"
-					+ "\t}\n"
-					+ "}\n");
+					multilineString(
+							"capacity Logging { def println(v : String) }",
+							"capacity Lifecycle { def killMe }",
+							"event Initialize", "behavior B {",
+							"	uses Logging", "	on Initialize {",
+							"		println(\"Je me presente\")", "	}", "}"));
 		}
 
 		/**
@@ -2197,14 +1933,9 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity Lifecycle { def killMe }\n"
-					+ "event Initialize\n"
-					+ "behavior B {\n"
-					+ "\tuses Lifecycle\n"
-					+ "\ton Initialize {\n"
-					+ "\t}\n"
-					+ "}\n",
+					multilineString("capacity Lifecycle { def killMe }",
+							"event Initialize", "behavior B {",
+							"	uses Lifecycle", "	on Initialize {", "	}", "}"),
 					//
 					// Label and description:
 					//
@@ -2213,13 +1944,9 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity Lifecycle { def killMe }\n"
-					+ "event Initialize\n"
-					+ "behavior B {\n"
-					+ "\ton Initialize {\n"
-					+ "\t}\n"
-					+ "}\n");
+					multilineString("capacity Lifecycle { def killMe }",
+							"event Initialize", "behavior B {",
+							"	on Initialize {", "	}", "}"));
 		}
 
 	}
@@ -2236,398 +1963,294 @@ public class SARLQuickfixProviderTest {
 		 */
 		@Test
 		public void fixRedundantCapacityUse_0() {
-			assertQuickFix(
-					IssueCodes.REDUNDANT_CAPACITY_USE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C2, C1\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.REDUNDANT_CAPACITY_USE,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "agent A1 {",
+							"	uses C1, C2, C1",
+							"	def testfct { myfct; iddle }", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C1'",
-					"Remove the capacity 'C1'",
+					"Remove the capacity 'C1'", "Remove the capacity 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C2\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "agent A1 {",
+							"	uses C1, C2", "	def testfct { myfct; iddle }",
+							"}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixRedundantCapacityUse_1() {
-			assertQuickFix(
-					IssueCodes.REDUNDANT_CAPACITY_USE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C1\n"
-					+ "def testfct { myfct }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.REDUNDANT_CAPACITY_USE,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }", "agent A1 {",
+							"	uses C1, C1", "	def testfct { myfct }", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C1'",
-					"Remove the capacity 'C1'",
+					"Remove the capacity 'C1'", "Remove the capacity 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "agent A1 {\n"
-					+ "uses C1\n"
-					+ "def testfct { myfct }\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }", "agent A1 {",
+							"	uses C1", "	def testfct { myfct }", "}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixRedundantCapacityUse_2() {
-			assertQuickFix(
-					IssueCodes.REDUNDANT_CAPACITY_USE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C1, C2, C1\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.REDUNDANT_CAPACITY_USE,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "agent A1 {",
+							"	uses C1, C1, C2, C1",
+							"	def testfct { myfct; iddle }", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C1'",
-					"Remove the capacity 'C1'",
+					"Remove the capacity 'C1'", "Remove the capacity 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C2, C1\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "agent A1 {",
+							"	uses C1, C2, C1",
+							"	def testfct { myfct; iddle }", "}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixRedundantCapacityUse_3() {
-			assertQuickFix(
-					IssueCodes.REDUNDANT_CAPACITY_USE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C2, C1, C1\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.REDUNDANT_CAPACITY_USE,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "agent A1 {",
+							"	uses C1, C2, C1, C1",
+							"	def testfct { myfct; iddle }", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C1'",
-					"Remove the capacity 'C1'",
+					"Remove the capacity 'C1'", "Remove the capacity 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C2, C1\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "agent A1 {",
+							"	uses C1, C2, C1",
+							"	def testfct { myfct; iddle }", "}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixRedundantCapacityUse_4() {
-			assertQuickFix(
-					IssueCodes.REDUNDANT_CAPACITY_USE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C2\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "uses C1\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.REDUNDANT_CAPACITY_USE,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "agent A1 {",
+							"	uses C1, C2", "	def testfct { myfct; iddle }",
+							"	uses C1", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C1'",
-					"Remove the capacity 'C1'",
+					"Remove the capacity 'C1'", "Remove the capacity 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C2\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "agent A1 {",
+							"	uses C1, C2", "	def testfct { myfct; iddle }",
+							"}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixRedundantCapacityUse_5() {
-			assertQuickFix(
-					IssueCodes.REDUNDANT_CAPACITY_USE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C2\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "uses C1, C2, C1\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.REDUNDANT_CAPACITY_USE,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "agent A1 {",
+							"	uses C1, C2", "	def testfct { myfct; iddle }",
+							"	uses C1, C2, C1", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C1'",
-					"Remove the capacity 'C1'",
+					"Remove the capacity 'C1'", "Remove the capacity 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "agent A1 {\n"
-					+ "uses C1, C2\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "uses C2, C1\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "agent A1 {",
+							"	uses C1, C2", "	def testfct { myfct; iddle }",
+							"	uses C2, C1", "}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixRedundantCapacityUse_6() {
-			assertQuickFix(
-					IssueCodes.REDUNDANT_CAPACITY_USE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "behavior B1 {\n"
-					+ "uses C1, C2, C1\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.REDUNDANT_CAPACITY_USE,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "behavior B1 {",
+							"	uses C1, C2, C1",
+							"	def testfct { myfct; iddle }", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C1'",
-					"Remove the capacity 'C1'",
+					"Remove the capacity 'C1'", "Remove the capacity 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "behavior B1 {\n"
-					+ "uses C1, C2\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "behavior B1 {",
+							"	uses C1, C2", "	def testfct { myfct; iddle }",
+							"}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixRedundantCapacityUse_7() {
-			assertQuickFix(
-					IssueCodes.REDUNDANT_CAPACITY_USE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "behavior B1 {\n"
-					+ "uses C1, C1\n"
-					+ "def testfct { myfct }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.REDUNDANT_CAPACITY_USE,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }",
+							"behavior B1 {", "	uses C1, C1",
+							"	def testfct { myfct }", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C1'",
-					"Remove the capacity 'C1'",
+					"Remove the capacity 'C1'", "Remove the capacity 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "behavior B1 {\n"
-					+ "uses C1\n"
-					+ "def testfct { myfct }\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }",
+							"behavior B1 {", "	uses C1",
+							"	def testfct { myfct }", "}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixRedundantCapacityUse_8() {
-			assertQuickFix(
-					IssueCodes.REDUNDANT_CAPACITY_USE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "behavior B1 {\n"
-					+ "uses C1, C1, C2, C1\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.REDUNDANT_CAPACITY_USE,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "behavior B1 {",
+							"	uses C1, C1, C2, C1",
+							"	def testfct { myfct; iddle }", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C1'",
-					"Remove the capacity 'C1'",
+					"Remove the capacity 'C1'", "Remove the capacity 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "behavior B1 {\n"
-					+ "uses C1, C2, C1\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "behavior B1 {",
+							"	uses C1, C2, C1",
+							"	def testfct { myfct; iddle }", "}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixRedundantCapacityUse_9() {
-			assertQuickFix(
-					IssueCodes.REDUNDANT_CAPACITY_USE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "behavior B1 {\n"
-					+ "uses C1, C2, C1, C1\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.REDUNDANT_CAPACITY_USE,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "behavior B1 {",
+							"	uses C1, C2, C1, C1",
+							"	def testfct { myfct; iddle }", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C1'",
-					"Remove the capacity 'C1'",
+					"Remove the capacity 'C1'", "Remove the capacity 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "behavior B1 {\n"
-					+ "uses C1, C2, C1\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "behavior B1 {",
+							"	uses C1, C2, C1",
+							"	def testfct { myfct; iddle }", "}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixRedundantCapacityUse_10() {
-			assertQuickFix(
-					IssueCodes.REDUNDANT_CAPACITY_USE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "behavior B1 {\n"
-					+ "uses C1, C2\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "uses C1\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.REDUNDANT_CAPACITY_USE,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "behavior B1 {",
+							"	uses C1, C2", "	def testfct { myfct; iddle }",
+							"	uses C1", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C1'",
-					"Remove the capacity 'C1'",
+					"Remove the capacity 'C1'", "Remove the capacity 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "behavior B1 {\n"
-					+ "uses C1, C2\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "behavior B1 {",
+							"	uses C1, C2", "	def testfct { myfct; iddle }",
+							"}"));
 		}
 
 		/**
 		 */
 		@Test
 		public void fixRedundantCapacityUse_11() {
-			assertQuickFix(
-					IssueCodes.REDUNDANT_CAPACITY_USE,
-					//
-					// Code to fix:
-					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "behavior B1 {\n"
-					+ "uses C1, C2\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "uses C1, C2, C1\n"
-					+ "}\n",
+			assertQuickFix(IssueCodes.REDUNDANT_CAPACITY_USE,
+			//
+			// Code to fix:
+			//
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "behavior B1 {",
+							"	uses C1, C2", "	def testfct { myfct; iddle }",
+							"	uses C1, C2, C1", "}"),
 					//
 					// Label and description:
 					//
-					"Remove the capacity 'C1'",
-					"Remove the capacity 'C1'",
+					"Remove the capacity 'C1'", "Remove the capacity 'C1'",
 					//
 					// Expected fixed code:
 					//
-					PACKAGE_STATEMENT
-					+ "capacity C1 { def myfct }\n"
-					+ "capacity C2 { def iddle }\n"
-					+ "behavior B1 {\n"
-					+ "uses C1, C2\n"
-					+ "def testfct { myfct; iddle }\n"
-					+ "uses C2, C1\n"
-					+ "}\n");
+					multilineString("capacity C1 { def myfct }",
+							"capacity C2 { def iddle }", "behavior B1 {",
+							"	uses C1, C2", "	def testfct { myfct; iddle }",
+							"	uses C2, C1", "}"));
 		}
 
 	}

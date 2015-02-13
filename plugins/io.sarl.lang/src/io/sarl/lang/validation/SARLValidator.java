@@ -21,9 +21,11 @@
 package io.sarl.lang.validation;
 
 import io.sarl.lang.SARLLangActivator;
+import io.sarl.lang.annotation.Generated;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
+import io.sarl.lang.genmodel.SARLCodeGenerator;
 import io.sarl.lang.sarl.Action;
 import io.sarl.lang.sarl.ActionSignature;
 import io.sarl.lang.sarl.Agent;
@@ -59,6 +61,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
@@ -78,6 +81,7 @@ import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.QualifiedName;
+import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
@@ -130,7 +134,13 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private SARLGrammarAccess grammarAccess;
-	
+
+	@Inject
+	private SARLCodeGenerator codeGenerator;
+
+	@Inject
+	private ISerializer serializer;
+
 	/** Replies the canonical name of the given type.
 	 *
 	 * @param typeRef - the type.
@@ -790,43 +800,57 @@ public class SARLValidator extends AbstractSARLValidator {
 				// Now, we are sure that there is missed operations
 				if (!operationsToImplement.isEmpty()) {
 					List<String> data = CollectionLiterals.newArrayList();
-					for (JvmOperation value : operationsToImplement.values()) {
-						data.add(ModelUtil.toActionProtoptypeString(value));
-						JvmTypeReference returnType = value.getReturnType();
-						LightweightTypeReference lwRef;
-						if (returnType == null) {
-							lwRef = null;
-						} else {
-							lwRef = toLightweightTypeReference(returnType);
-						}
-						data.add(ModelUtil.getDefaultValueForType(lwRef));
-					}
-					boolean first = true;
-					for (ActionKey key : operationsToImplement.keySet()) {
-						if (first) {
-							first = false;
-							String[] dataArray = new String[data.size()];
-							data.toArray(dataArray);
-							error(
-									MessageFormat.format(
-											Messages.SARLValidator_18,
-											key.toString()),
-											element,
-											SarlPackage.Literals.NAMED_ELEMENT__NAME,
-											ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-											IssueCodes.MISSING_METHOD_IMPLEMENTATION,
-											// Provides the prototypes for the quick fixes
-											dataArray);
-						} else {
-							// No prototypes, so no quick fix
-							error(
-									MessageFormat.format(
-											Messages.SARLValidator_18,
-											key.toString()),
-											element,
-											SarlPackage.Literals.NAMED_ELEMENT__NAME,
-											ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-											IssueCodes.MISSING_METHOD_IMPLEMENTATION);
+					Iterator<JvmOperation> iterator = operationsToImplement.values().iterator();
+					while (iterator.hasNext()) {
+						JvmOperation value = iterator.next();
+						if (!ModelUtil.hasAnnotation(value, Generated.class)) {
+							// Get quick fix information
+							ActionSignature signature = this.codeGenerator.createActionSignature(value, true);
+							String sarlCode = this.serializer.serialize(signature);
+							// Sometimes, the serializer added tabular and new line characters to the sarlCode
+							// due to the formating rules.
+							sarlCode = sarlCode.trim();
+							// Remove the "def" keyword
+							String cleanedSarlCode = sarlCode.replaceFirst(
+									"^" //$NON-NLS-1$
+									+ Pattern.quote(
+											this.grammarAccess.getActionSignatureAccess().getDefKeyword_1().getValue())
+									+ "\\s*", //$NON-NLS-1$
+									""); //$NON-NLS-1$
+							data.add(sarlCode);
+							JvmTypeReference returnType = value.getReturnType();
+							LightweightTypeReference lwRef;
+							if (returnType == null) {
+								lwRef = null;
+							} else {
+								lwRef = toLightweightTypeReference(returnType);
+							}
+							data.add(ModelUtil.getDefaultValueForType(lwRef));
+							// Generate the error
+							if (iterator.hasNext()) {
+								// No need to quick fix
+								error(
+										MessageFormat.format(
+												Messages.SARLValidator_18,
+												cleanedSarlCode),
+										element,
+										SarlPackage.Literals.NAMED_ELEMENT__NAME,
+										ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+										IssueCodes.MISSING_METHOD_IMPLEMENTATION);
+							} else {
+								String[] dataArray = new String[data.size()];
+								data.toArray(dataArray);
+								error(
+										MessageFormat.format(
+												Messages.SARLValidator_18,
+												cleanedSarlCode),
+										element,
+										SarlPackage.Literals.NAMED_ELEMENT__NAME,
+										ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+										IssueCodes.MISSING_METHOD_IMPLEMENTATION,
+										// Provides the prototypes for the quick fixes
+										dataArray);
+							}
 						}
 					}
 				}

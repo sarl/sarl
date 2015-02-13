@@ -20,8 +20,6 @@
  */
 package io.sarl.lang.genmodel;
 
-import io.sarl.lang.genmodel.SARLCodeGenerator.BlockInnerDocumentationAdapter;
-import io.sarl.lang.genmodel.SARLCodeGenerator.PostDocumentationAdapter;
 import io.sarl.lang.services.SARLGrammarAccess;
 
 import org.eclipse.emf.common.notify.Adapter;

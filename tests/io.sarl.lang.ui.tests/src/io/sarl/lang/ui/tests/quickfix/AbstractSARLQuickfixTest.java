@@ -62,10 +62,6 @@ import com.google.inject.Inject;
  */
 public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 
-	/** SARL Statement for declaring the package in the unit tests.
-	 */
-	protected static final String PACKAGE_STATEMENT = "package io.sarl.lang.ui.tests.quickfix\n"; //$NON-NLS-1$
-
 	@Inject
 	private SARLQuickfixProvider quickfixProvider;
 
@@ -112,21 +108,22 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 			assertNotNull(script);
 
 			List<Issue> issues = this.validator.validate(script);
-			Issue issue = null;
 			StringBuilder issueLabels = new StringBuilder();
 			Iterator<Issue> issueIterator = issues.iterator();
-			while (issue == null && issueIterator.hasNext()) {
+			List<IssueResolution> resolutions = null;
+			Issue issue = null;
+			while ((resolutions == null || resolutions.isEmpty()) && issueIterator.hasNext()) {
 				Issue nextIssue = issueIterator.next();
+				if (issueLabels.length() > 0) {
+					issueLabels.append(", "); //$NON-NLS-1$
+				}
+				issueLabels.append(nextIssue.getCode());
+				issueLabels.append(" - \""); //$NON-NLS-1$
+				issueLabels.append(Strings.convertToJavaString(nextIssue.getMessage()));
+				issueLabels.append("\""); //$NON-NLS-1$
 				if (issueCode.equals(nextIssue.getCode())) {
 					issue = nextIssue;
-				} else {
-					if (issueLabels.length() > 0) {
-						issueLabels.append(", "); //$NON-NLS-1$
-					}
-					issueLabels.append(nextIssue.getCode());
-					issueLabels.append(" - \""); //$NON-NLS-1$
-					issueLabels.append(Strings.convertToJavaString(nextIssue.getMessage()));
-					issueLabels.append("\""); //$NON-NLS-1$
+					resolutions = this.quickfixProvider.getResolutions(issue);
 				}
 			}
 			if (issue == null) {
@@ -134,8 +131,6 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 					+ "' was not found.\nAvailable issues are: " //$NON-NLS-1$
 					+ issueLabels.toString());
 			}
-
-			List<IssueResolution> resolutions = this.quickfixProvider.getResolutions(issue);
 			if (resolutions == null || resolutions.isEmpty()) {
 				fail("No resolution found for the issue '" + issueCode //$NON-NLS-1$
 					+ "'."); //$NON-NLS-1$

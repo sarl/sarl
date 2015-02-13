@@ -23,7 +23,7 @@ package io.sarl.eclipse.util;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.Generated;
-import io.sarl.lang.genmodel.SARLCodeGenerator.GeneratedCode;
+import io.sarl.lang.genmodel.GeneratedCode;
 import io.sarl.lang.sarl.Action;
 import io.sarl.lang.sarl.Constructor;
 import io.sarl.lang.sarl.FeatureContainer;

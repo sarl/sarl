@@ -47,7 +47,6 @@ import java.util.List;
 
 import javax.inject.Named;
 
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -56,6 +55,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmExecutable;
 import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericArrayTypeReference;
@@ -74,12 +74,8 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XbaseFactory;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
-import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
-import org.eclipse.xtext.xtype.XImportDeclaration;
-import org.eclipse.xtext.xtype.XImportSection;
-import org.eclipse.xtext.xtype.XtypeFactory;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
@@ -241,7 +237,7 @@ public class SARLCodeGenerator {
 			content.clear();
 		}
 		content.add(script);
-		return new GeneratedCode(script, resource.getResourceSet());
+		return new GeneratedCode(this, script, resource.getResourceSet(), getTypeReferences());
 	}
 
 	/** Create a SARL agent in the script.
@@ -753,41 +749,9 @@ public class SARLCodeGenerator {
 		action.setType(typeReference);
 		// Parameters
 		action.setVarargs(operation.isVarArgs());
-		List<FormalParameter> parameters = action.getParams();
-		List<JvmFormalParameter> jvmParameters = operation.getParameters();
-		for (int i = 0; i < jvmParameters.size(); ++i) {
-			JvmFormalParameter jvmParameter = jvmParameters.get(i);
-			FormalParameter parameter = SarlFactory.eINSTANCE.createFormalParameter();
-			parameter.setName(jvmParameter.getSimpleName());
-			typeReference = jvmParameter.getParameterType();
-			if (i == jvmParameters.size() - 1 && operation.isVarArgs()) {
-				typeReference = ((JvmGenericArrayTypeReference) typeReference).getComponentType();
-			}
-			typeReference = cloneType(typeReference);
-			parameter.setParameterType(typeReference);
-			// Default values
-			String defaultValue = findDefaultValue(
-					operation.getDeclaringType(),
-					ModelUtil.annotationString(jvmParameter, DefaultValue.class));
-			if (!Strings.isNullOrEmpty(defaultValue)) {
-				XExpression defaultValueExpr = createXExpression(
-						defaultValue,
-						operation.eResource().getResourceSet());
-				parameter.setDefaultValue(defaultValueExpr);
-			}
-			parameters.add(parameter);
-		}
+		createExecutableFeatureParameters(operation, action.getParams());
 		// Fired events
-		List<JvmTypeReference> firedEvents = ModelUtil.annotationClasses(operation, FiredEvent.class);
-		if (!firedEvents.isEmpty()) {
-			List<JvmParameterizedTypeReference> events = action.getFiredEvents();
-			for (JvmTypeReference type : firedEvents) {
-				JvmTypeReference clone = cloneType(type);
-				if (clone instanceof JvmParameterizedTypeReference) {
-					events.add((JvmParameterizedTypeReference) clone);
-				}
-			}
-		}
+		createExecutableFeatureFireEvents(operation, action.getFiredEvents());
 		return action;
 	}
 
@@ -813,41 +777,9 @@ public class SARLCodeGenerator {
 		signature.setType(typeReference);
 		// Parameters
 		signature.setVarargs(operation.isVarArgs());
-		List<FormalParameter> parameters = signature.getParams();
-		List<JvmFormalParameter> jvmParameters = operation.getParameters();
-		for (int i = 0; i < jvmParameters.size(); ++i) {
-			JvmFormalParameter jvmParameter = jvmParameters.get(i);
-			FormalParameter parameter = SarlFactory.eINSTANCE.createFormalParameter();
-			parameter.setName(jvmParameter.getSimpleName());
-			typeReference = jvmParameter.getParameterType();
-			if (i == jvmParameters.size() - 1 && operation.isVarArgs()) {
-				typeReference = ((JvmGenericArrayTypeReference) typeReference).getComponentType();
-			}
-			typeReference = cloneType(typeReference);
-			parameter.setParameterType(typeReference);
-			// Default values
-			String defaultValue = findDefaultValue(
-					operation.getDeclaringType(),
-					ModelUtil.annotationString(jvmParameter, DefaultValue.class));
-			if (!Strings.isNullOrEmpty(defaultValue)) {
-				XExpression defaultValueExpr = createXExpression(
-						defaultValue,
-						operation.eResource().getResourceSet());
-				parameter.setDefaultValue(defaultValueExpr);
-			}
-			parameters.add(parameter);
-		}
+		createExecutableFeatureParameters(operation, signature.getParams());
 		// Fired events
-		List<JvmTypeReference> firedEvents = ModelUtil.annotationClasses(operation, FiredEvent.class);
-		if (!firedEvents.isEmpty()) {
-			List<JvmParameterizedTypeReference> events = signature.getFiredEvents();
-			for (JvmTypeReference type : firedEvents) {
-				JvmTypeReference clone = cloneType(type);
-				if (clone instanceof JvmParameterizedTypeReference) {
-					events.add((JvmParameterizedTypeReference) clone);
-				}
-			}
-		}
+		createExecutableFeatureFireEvents(operation, signature.getFiredEvents());
 		return signature;
 	}
 
@@ -868,31 +800,46 @@ public class SARLCodeGenerator {
 		Constructor cons = SarlFactory.eINSTANCE.createConstructor();
 		// Parameters
 		cons.setVarargs(constructor.isVarArgs());
-		List<FormalParameter> parameters = cons.getParams();
-		List<JvmFormalParameter> jvmParameters = constructor.getParameters();
+		createExecutableFeatureParameters(constructor, cons.getParams());
+		return cons;
+	}
+
+	private void createExecutableFeatureParameters(JvmExecutable operation, List<FormalParameter> parameters) {
+		List<JvmFormalParameter> jvmParameters = operation.getParameters();
 		for (int i = 0; i < jvmParameters.size(); ++i) {
 			JvmFormalParameter jvmParameter = jvmParameters.get(i);
 			FormalParameter parameter = SarlFactory.eINSTANCE.createFormalParameter();
 			parameter.setName(jvmParameter.getSimpleName());
 			JvmTypeReference typeReference = jvmParameter.getParameterType();
-			if (i == jvmParameters.size() - 1 && constructor.isVarArgs()) {
+			if (i == jvmParameters.size() - 1 && operation.isVarArgs()) {
 				typeReference = ((JvmGenericArrayTypeReference) typeReference).getComponentType();
 			}
 			typeReference = cloneType(typeReference);
 			parameter.setParameterType(typeReference);
 			// Default values
 			String defaultValue = findDefaultValue(
-					constructor.getDeclaringType(),
+					operation.getDeclaringType(),
 					ModelUtil.annotationString(jvmParameter, DefaultValue.class));
 			if (!Strings.isNullOrEmpty(defaultValue)) {
 				XExpression defaultValueExpr = createXExpression(
 						defaultValue,
-						constructor.eResource().getResourceSet());
+						operation.eResource().getResourceSet());
 				parameter.setDefaultValue(defaultValueExpr);
 			}
 			parameters.add(parameter);
 		}
-		return cons;
+	}
+
+	private void createExecutableFeatureFireEvents(JvmExecutable operation, List<JvmParameterizedTypeReference> events) {
+		List<JvmTypeReference> firedEvents = ModelUtil.annotationClasses(operation, FiredEvent.class);
+		if (!firedEvents.isEmpty()) {
+			for (JvmTypeReference type : firedEvents) {
+				JvmTypeReference clone = cloneType(type);
+				if (clone instanceof JvmParameterizedTypeReference) {
+					events.add((JvmParameterizedTypeReference) clone);
+				}
+			}
+		}
 	}
 
 	private static String findDefaultValue(JvmDeclaredType container, String name) {
@@ -905,156 +852,6 @@ public class SARLCodeGenerator {
 			}
 		}
 		return null;
-	}
-
-	/** Describes a generated code.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	public class GeneratedCode {
-
-		private final ImportManager importManager = new ImportManager();
-		private final SarlScript script;
-		private final ResourceSet resourceSet;
-
-		/**
-		 * @param script - the root Ecore element.
-		 * @param resourceSet - the resource set in which the script should be generated.
-		 */
-		public GeneratedCode(SarlScript script, ResourceSet resourceSet) {
-			this.script = script;
-			this.resourceSet = resourceSet;
-		}
-
-		/** Replies the resource set in which the generated code should be generated.
-		 *
-		 * @return the resource set of the SARL script.
-		 */
-		public ResourceSet getResourceSet() {
-			return this.resourceSet;
-		}
-
-		/** Replies the SARL code generator that had built this code.
-		 *
-		 * @return the SARL code generator.
-		 */
-		public SARLCodeGenerator getCodeGenerator() {
-			return SARLCodeGenerator.this;
-		}
-
-		/** Replies the SARL script.
-		 *
-		 * @return the SARL script.
-		 */
-		public SarlScript getSarlScript() {
-			return this.script;
-		}
-
-		/** Replies the import manager.
-		 *
-		 * @return the import manager.
-		 */
-		public ImportManager getImportManager() {
-			return this.importManager;
-		}
-
-		/** Finialize the script.
-		 *
-		 * The finalization includes: <ul>
-		 * <li>The import section is created.</li>
-		 * </ul>
-		 */
-		public void finalizeScript() {
-			XImportSection importSection = this.script.getImportSection();
-			for (String importName : this.importManager.getImports()) {
-				XImportDeclaration declaration = XtypeFactory.eINSTANCE.createXImportDeclaration();
-				JvmType type = getTypeReferences().findDeclaredType(importName, this.script);
-				if (type instanceof JvmDeclaredType) {
-					declaration.setImportedType((JvmDeclaredType) type);
-					if (importSection == null) {
-						importSection = XtypeFactory.eINSTANCE.createXImportSection();
-						this.script.setImportSection(importSection);
-					}
-					importSection.getImportDeclarations().add(declaration);
-				}
-			}
-		}
-
-	}
-
-	/** Postfix documentation for an Ecore element.
-	 *
-	 * The prefix document is supported by {@link DocumentationAdapter}.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @see DocumentationAdapter
-	 */
-	public static class PostDocumentationAdapter extends AdapterImpl {
-
-		private String documentation;
-
-		/** Replies the documentation.
-		 *
-		 * @return the documentation.
-		 */
-		public String getDocumentation() {
-			return this.documentation;
-		}
-
-		/** Change the documentation.
-		 *
-		 * @param documentation - the comment.
-		 */
-		public void setDocumentation(String documentation) {
-			this.documentation = documentation;
-		}
-
-		@Override
-		public boolean isAdapterForType(Object type) {
-			return type == PostDocumentationAdapter.class;
-		}
-
-	}
-
-	/** Documentation at the beginning of an Ecore block.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @see DocumentationAdapter
-	 */
-	public static class BlockInnerDocumentationAdapter extends AdapterImpl {
-
-		private String documentation;
-
-		/** Replies the documentation.
-		 *
-		 * @return the documentation.
-		 */
-		public String getDocumentation() {
-			return this.documentation;
-		}
-
-		/** Change the documentation.
-		 *
-		 * @param documentation - the comment.
-		 */
-		public void setDocumentation(String documentation) {
-			this.documentation = documentation;
-		}
-
-		@Override
-		public boolean isAdapterForType(Object type) {
-			return type == BlockInnerDocumentationAdapter.class;
-		}
-
 	}
 
 }

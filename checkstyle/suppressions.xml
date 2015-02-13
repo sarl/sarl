@@ -88,6 +88,7 @@
 	<suppress checks="NPathComplexity" files="FieldInitializerUtil.java"/>
 
 	<suppress checks="CyclomaticComplexity" files="SARLCodeGenerator.java"/>
+	<suppress checks="ClassFanOutComplexity" files="SARLCodeGenerator.java"/>
 
 	<suppress checks="NPathComplexity" files="SARLValidator.java"/>
 	<suppress checks="CyclomaticComplexity" files="SARLValidator.java"/>
