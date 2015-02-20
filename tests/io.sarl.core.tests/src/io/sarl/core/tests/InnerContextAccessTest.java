@@ -21,8 +21,14 @@
 package io.sarl.core.tests;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.UUID;
+
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.Event;
+import io.sarl.lang.core.Space;
+import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.SynchronizedSet;
 
 import org.junit.Before;
@@ -47,9 +53,9 @@ public class InnerContextAccessTest extends AbstractSARLTest<Capacity> {
 	 */
 	@Test
 	public void memberCount() {
-		assertEquals(7, this.type.getDeclaredMethods().length);
+		assertEquals(8, this.type.getDeclaredMethods().length);
 	}
-	
+
 	/**
 	 */
 	@Test
@@ -70,12 +76,40 @@ public class InnerContextAccessTest extends AbstractSARLTest<Capacity> {
 	public void getMemberAgentCount() {
 		assertMethod("getMemberAgentCount", int.class); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 */
 	@Test
 	public void getMemberAgents() {
 		assertMethod("getMemberAgents", SynchronizedSet.class); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void isInnerDefaultSpaceSpace() {
+		assertMethod("isInnerDefaultSpace", boolean.class, Space.class); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void isInnerDefaultSpaceSpaceID() {
+		assertMethod("isInnerDefaultSpace", boolean.class, SpaceID.class); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void isInnerDefaultSpaceUUID() {
+		assertMethod("isInnerDefaultSpace", boolean.class, UUID.class); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void isInInnerDefaultSpace() {
+		assertMethod("isInInnerDefaultSpace", boolean.class, Event.class); //$NON-NLS-1$
 	}
 
 }

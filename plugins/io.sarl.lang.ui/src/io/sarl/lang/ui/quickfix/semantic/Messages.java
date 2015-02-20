@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.ui.quickfix;
+package io.sarl.lang.ui.quickfix.semantic;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -31,7 +31,7 @@ import org.eclipse.osgi.util.NLS;
  */
 @SuppressWarnings("all")
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.lang.ui.quickfix.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "io.sarl.lang.ui.quickfix.semantic.messages"; //$NON-NLS-1$
 	public static String SARLQuickfixProvider_0;
 	public static String SARLQuickfixProvider_1;
 	public static String SARLQuickfixProvider_2;

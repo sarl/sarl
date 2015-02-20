@@ -699,7 +699,7 @@ public final class ModelUtil {
 		}
 		return b.toString();
 	}
-	
+
 	private static void addParamToSignature(StringBuilder signature, FormalParameter parameter, boolean isVarargs,
 			SARLGrammarAccess grammarAccess, ImportManager importManager, ISerializer serializer) {
 		FormalParameterElements elements = grammarAccess.getFormalParameterAccess();
@@ -714,10 +714,10 @@ public final class ModelUtil {
 			signature.append(' ');
 			signature.append(elements.getEqualsSignKeyword_3_0().getValue());
 			signature.append(' ');
-			signature.append(serializer.serialize(parameter.getDefaultValue()));
+			signature.append(serializer.serialize(parameter.getDefaultValue()).trim());
 		}
 	}
-	
+
 	private static String getSignatureType(JvmTypeReference type, ImportManager importManager) {
 		if (importManager != null) {
 			importManager.addImportFor(type.getType());
@@ -725,5 +725,5 @@ public final class ModelUtil {
 		}
 		return type.getIdentifier();
 	}
-	
+
 }

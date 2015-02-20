@@ -21,25 +21,47 @@
 package io.sarl.lang.ui.quickfix;
 
 import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.Attribute;
-import io.sarl.lang.sarl.BehaviorUnit;
-import io.sarl.lang.sarl.Capacity;
 import io.sarl.lang.sarl.Feature;
 import io.sarl.lang.sarl.FeatureContainer;
-import io.sarl.lang.sarl.FormalParameter;
-import io.sarl.lang.sarl.ParameterizedFeature;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.TopElement;
 import io.sarl.lang.services.SARLGrammarAccess;
+import io.sarl.lang.ui.quickfix.semantic.AttributeRemovalMemberNameModification;
+import io.sarl.lang.ui.quickfix.semantic.CapacityRemovalDiscouragedCapacityDefinitionModification;
+import io.sarl.lang.ui.quickfix.semantic.DefaultActionDiscouragedCapacityDefinitionModification;
+import io.sarl.lang.ui.quickfix.semantic.DiscouragedBooleanExpressionModification;
+import io.sarl.lang.ui.quickfix.semantic.DuplicateActionModification;
+import io.sarl.lang.ui.quickfix.semantic.DuplicateAttributeModification;
+import io.sarl.lang.ui.quickfix.semantic.DuplicateTopElementModification;
+import io.sarl.lang.ui.quickfix.semantic.ExecutableFeatureRemovalMemberNameModification;
+import io.sarl.lang.ui.quickfix.semantic.IncompatibleReturnTypeModification;
+import io.sarl.lang.ui.quickfix.semantic.IncompatibleTypeHierarchyModification;
+import io.sarl.lang.ui.quickfix.semantic.InfixRedundantInterfaceModification;
+import io.sarl.lang.ui.quickfix.semantic.InvalidCapacityTypeModification;
+import io.sarl.lang.ui.quickfix.semantic.InvalidExtendedTypeModification;
+import io.sarl.lang.ui.quickfix.semantic.InvalidFiringEventTypeModification;
+import io.sarl.lang.ui.quickfix.semantic.InvalidImplementedTypeModification;
+import io.sarl.lang.ui.quickfix.semantic.MissingMethodImplementationModification;
+import io.sarl.lang.ui.quickfix.semantic.OverriddenFinalOperationModification;
+import io.sarl.lang.ui.quickfix.semantic.OverriddenFinalTypeModification;
+import io.sarl.lang.ui.quickfix.semantic.PostRedundantInterfaceModification;
+import io.sarl.lang.ui.quickfix.semantic.PreRedundantInterfaceModification;
+import io.sarl.lang.ui.quickfix.semantic.RedundantCapacityUseModification;
+import io.sarl.lang.ui.quickfix.semantic.RemovalVariableNameShadowingModification;
+import io.sarl.lang.ui.quickfix.semantic.RenamingMemberNameModification;
+import io.sarl.lang.ui.quickfix.semantic.RenamingVariableNameShadowingModification;
+import io.sarl.lang.ui.quickfix.semantic.UnreachableBehaviorUnitModification;
+import io.sarl.lang.ui.quickfix.semantic.UnusedAgentCapacityModification;
+import io.sarl.lang.ui.quickfix.semantic.ValueRemovalInvalidUseOfVarArgsModification;
+import io.sarl.lang.ui.quickfix.semantic.VarArgRemovalInvalidUseOfVarArgsModification;
+import io.sarl.lang.ui.quickfix.semantic.WrongPackageModification;
 import io.sarl.lang.validation.IssueCodes;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.TypesFactory;
@@ -47,24 +69,19 @@ import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.ILeafNode;
+import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
-import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
-import org.eclipse.xtext.ui.editor.model.edit.IModification;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
-import org.eclipse.xtext.ui.editor.model.edit.ISemanticModification;
 import org.eclipse.xtext.ui.editor.quickfix.Fix;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.util.Arrays;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.validation.Issue;
-import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.Functions;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 import org.eclipse.xtext.xbase.ui.quickfix.XbaseQuickfixProvider;
-import org.eclipse.xtext.xtype.XImportDeclaration;
-import org.eclipse.xtext.xtype.XImportSection;
 
 import com.google.inject.Inject;
 
@@ -91,13 +108,45 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	@Inject
 	private TypesFactory typeFactory;
 
-	/** Create a reference to the given type.
+	/** Replies the factory for appendable.
+	 *
+	 * @return the appendable factory.
+	 */
+	public ReplacingAppendable.Factory getAppendableFactory() {
+		return this.appendableFactory;
+	}
+
+	/** Replies the SARL grammar accessor.
+	 *
+	 * @return the SARL grammar accessor.
+	 */
+	public SARLGrammarAccess getGrammarAccess() {
+		return this.grammarAccess;
+	}
+
+	/** Replies the finder of type references.
+	 *
+	 * @return the type reference finder.
+	 */
+	public TypeReferences getTypeReferences() {
+		return this.typeReferences;
+	}
+
+	/** Replies type factory.
+	 *
+	 * @return the type factory.
+	 */
+	public TypesFactory getTypeFactory() {
+		return this.typeFactory;
+	}
+
+	/** Create the reference to the type with the given name.
 	 *
 	 * @param typeName - the name of the type.
-	 * @param context - the SARL context.
+	 * @param context - the context of the reference.
 	 * @return the type reference.
 	 */
-	protected JvmParameterizedTypeReference newTypeRef(String typeName, EObject context) {
+	public JvmParameterizedTypeReference newTypeRef(String typeName, EObject context) {
 		JvmType type = this.typeReferences.findDeclaredType(typeName, context);
 		if (type == null) {
 			type = this.typeReferences.findDeclaredType("java.lang." + typeName, context); //$NON-NLS-1$
@@ -113,14 +162,14 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		return reference;
 	}
 
-	/**
-	 * Remove element with the spaces before.
+	/** Remove the element related to the given issue, and the spaces before the element.
 	 *
-	 * @param issue - the description of the element.
-	 * @param document - the document to update.
-	 * @throws BadLocationException if the location is bad.
+	 * @param issue - the issue.
+	 * @param document - the document.
+	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
-	protected static void removeElementWithPreviousSpaces(Issue issue, IXtextDocument document) throws BadLocationException {
+	@SuppressWarnings("static-method")
+	public void removeElementWithPreviousSpaces(Issue issue, IXtextDocument document) throws BadLocationException {
 		// Skip spaces before the identifier until the coma
 		int index = issue.getOffset() - 1;
 		char c = document.getChar(index);
@@ -132,35 +181,30 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		document.replace(index + 1, issue.getLength() + delta, ""); //$NON-NLS-1$
 	}
 
-	/**
-	 * Remove element and all the whitespaces before the element until the given separator.
-	 * The given separator is also removed.
+	/** Remove the element related to the issue, and the whitespaces before the element until the given separator.
 	 *
-	 * @param issue - the description of the element.
-	 * @param document - the document to update.
+	 * @param issue - the issue.
+	 * @param document - the document.
 	 * @param separator - the separator to consider.
-	 * @return <code>true</code> if the document was changed by this function;
-	 * <code>false</code> if the document remains unchanged.
-	 * @throws BadLocationException if the location is bad.
+	 * @return <code>true</code> if the separator was found, <code>false</code> if not.
+	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
-	protected static boolean removeToPreviousSeparator(Issue issue, IXtextDocument document, String separator)
+	public boolean removeToPreviousSeparator(Issue issue, IXtextDocument document, String separator)
 			throws BadLocationException {
 		return removeToPreviousSeparator(issue.getOffset(), issue.getLength(), document, separator);
 	}
 
-	/**
-	 * Remove element and all the whitespaces before the element until the given separator.
-	 * The given separator is also removed.
+	/** Remove the portion of text, and the whitespaces before the text until the given separator.
 	 *
-	 * @param offset - position of the element.
-	 * @param length - length of the element.
-	 * @param document - the document to update.
+	 * @param offset - the offset where to start to remove.
+	 * @param length - the length of the text to remove.
+	 * @param document - the document.
 	 * @param separator - the separator to consider.
-	 * @return <code>true</code> if the document was changed by this function;
-	 * <code>false</code> if the document remains unchanged.
-	 * @throws BadLocationException if the location is bad.
+	 * @return <code>true</code> if the separator was found, <code>false</code> if not.
+	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
-	protected static boolean removeToPreviousSeparator(int offset, int length, IXtextDocument document, String separator)
+	@SuppressWarnings("static-method")
+	public boolean removeToPreviousSeparator(int offset, int length, IXtextDocument document, String separator)
 			throws BadLocationException {
 		// Skip spaces before the identifier until the separator
 		int index = offset - 1;
@@ -188,18 +232,16 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		return foundSeparator;
 	}
 
-	/**
-	 * Remove element and all the whitespaces after the element until the given separator.
-	 * The given separator is also removed.
+	/** Remove the element related to the issue, and the whitespaces after the element until the given separator.
 	 *
-	 * @param issue - the description of the element.
-	 * @param document - the document to update.
+	 * @param issue - the issue.
+	 * @param document - the document.
 	 * @param separator - the separator to consider.
-	 * @return <code>true</code> if the document was changed by this function;
-	 * <code>false</code> if the document remains unchanged.
-	 * @throws BadLocationException if the location is bad.
+	 * @return <code>true</code> if the separator was found, <code>false</code> if not.
+	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
-	protected static boolean removeToNextSeparator(Issue issue, IXtextDocument document, String separator)
+	@SuppressWarnings("static-method")
+	public boolean removeToNextSeparator(Issue issue, IXtextDocument document, String separator)
 			throws BadLocationException {
 		// Skip spaces after the identifier until the separator
 		int index = issue.getOffset() + issue.getLength();
@@ -227,19 +269,18 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		return foundSeparator;
 	}
 
-	/**
-	 * Remove element and all the whitespaces before the element until the given keyword.
-	 * The given keyword is also removed.
+	/** Remove the element related to the issue, and the whitespaces before the element until one of the given
+	 * keywords is encountered.
 	 *
-	 * @param issue - the description of the element.
-	 * @param document - the document to update.
+	 * @param issue - the issue.
+	 * @param document - the document.
 	 * @param keyword1 - the first keyword to consider.
-	 * @param otherKeywords - the other keywords to consider.
-	 * @return <code>true</code> if the document was changed by this function;
-	 * <code>false</code> if the document remains unchanged.
-	 * @throws BadLocationException if the location is bad.
+	 * @param otherKeywords - other keywords.
+	 * @return <code>true</code> if one keyword was found, <code>false</code> if not.
+	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
-	protected static boolean removeToPreviousKeyword(Issue issue, IXtextDocument document,
+	@SuppressWarnings("static-method")
+	public boolean removeToPreviousKeyword(Issue issue, IXtextDocument document,
 			String keyword1, String... otherKeywords) throws BadLocationException {
 		// Skip spaces before the element
 		int index = issue.getOffset() - 1;
@@ -273,19 +314,18 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		return false;
 	}
 
-	/**
-	 * Remove element and all the whitespaces between the given separators and the element.
-	 * The given separators are also removed.
+	/** Remove the element related to the issue, and the whitespaces before the element until the begin separator,
+	 * and the whitespaces after the element until the end separator.
 	 *
-	 * @param issue - the description of the element.
-	 * @param document - the document to update.
-	 * @param beginSeparator - the left separator to consider.
-	 * @param endSeparator - the right separator to consider.
-	 * @return <code>true</code> if the document was changed by this function;
-	 * <code>false</code> if the document remains unchanged.
-	 * @throws BadLocationException if the location is bad.
+	 * @param issue - the issue.
+	 * @param document - the document.
+	 * @param beginSeparator - the separator before the element.
+	 * @param endSeparator - the separator after the element.
+	 * @return <code>true</code> if the separator was found, <code>false</code> if not.
+	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
-	protected static boolean removeBetweenSeparators(Issue issue, IXtextDocument document,
+	@SuppressWarnings("static-method")
+	public boolean removeBetweenSeparators(Issue issue, IXtextDocument document,
 			String beginSeparator, String endSeparator) throws BadLocationException {
 		int offset = issue.getOffset();
 		int length = issue.getLength();
@@ -333,12 +373,13 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		return foundSeparator;
 	}
 
-	/** Replies the position where to insert child elements into the given container.
+	/** Replies the index where elements could be inserted into the given container.
 	 *
-	 * @param container - the container in which the insertion position must be determined.
-	 * @return the insertion position.
+	 * @param container - the container to consider for the insertion
+	 * @return the insertion index.
 	 */
-	protected static int getInsertOffset(FeatureContainer container) {
+	@SuppressWarnings("static-method")
+	public int getInsertOffset(FeatureContainer container) {
 		if (container.getFeatures().isEmpty()) {
 			ICompositeNode node = NodeModelUtils.findActualNodeFor(container);
 			ILeafNode openingBraceNode = IterableExtensions.findFirst(node.getLeafNodes(),
@@ -358,32 +399,33 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		return node.getEndOffset();
 	}
 
-	/** Replies the position where to insert an import declaration in the given script.
+	/** Replies the index where import declaration could be inserted into the given container.
 	 *
-	 * @param script - the script for which the import declaration insertion point must be declared.
-	 * @return the insertion position.
+	 * @param script - the script to consider for the insertion
+	 * @return the insertion index.
 	 */
-	protected static int getImportInsertOffset(SarlScript script) {
-//		FIXME:if (script.getImportSection() == null || script.getImportSection().getImportDeclarations().isEmpty()) {
-//			ICompositeNode node = NodeModelUtils.findActualNodeFor(script);
-//			if (Strings.isEmpty(script.getName())) {
-//				// Insert at the beginning of the script
-//				return 0;
-//			}
-//			throw new UnsupportedOperationException();
-//		}
+	@SuppressWarnings("static-method")
+	public int getImportInsertOffset(SarlScript script) {
 		ICompositeNode node = NodeModelUtils.findActualNodeFor(script.getImportSection());
+		if (node == null) {
+			List<INode> children = NodeModelUtils.findNodesForFeature(script, SarlPackage.eINSTANCE.getSarlScript_Name());
+			if (children.isEmpty()) {
+				return 0;
+			}
+			return children.get(0).getEndOffset();
+		}
 		return node.getEndOffset();
 	}
 
 	/** Replies the size of a sequence of whitespaces.
 	 *
-	 * @param document - the document to read.
-	 * @param offset - the position of the first character in the sequence.
-	 * @return the number of whitespaces starting at the given offset.
-	 * @throws BadLocationException if the location is bad.
+	 * @param document - the document.
+	 * @param offset - the offset of the first character of the sequence.
+	 * @return the number of whitespaces at the given offset.
+	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
-	protected static int getSpaceSize(IXtextDocument document, int offset) throws BadLocationException {
+	@SuppressWarnings("static-method")
+	public int getSpaceSize(IXtextDocument document, int offset) throws BadLocationException {
 		int size = 0;
 		char c = document.getChar(offset + size);
 		while (Character.isWhitespace(c)) {
@@ -393,12 +435,13 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		return size;
 	}
 
-	/** Replies the qualified name for the given string representation.
+	/** Replies the qualified name for the given name.
 	 *
-	 * @param name - the name to convert.
+	 * @param name - the name.
 	 * @return the qualified name.
 	 */
-	protected static QualifiedName qualifiedName(String name) {
+	@SuppressWarnings("static-method")
+	public QualifiedName qualifiedName(String name) {
 		if (!com.google.common.base.Strings.isNullOrEmpty(name)) {
 			List<String> segments = Strings.split(name, "."); //$NON-NLS-1$
 			return QualifiedName.create(segments);
@@ -406,118 +449,13 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		return QualifiedName.create();
 	}
 
-	/** Quick fix for "Wrong package".
+	/** Remove the exectuable feature.
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param element - the executable feature to remove.
+	 * @param context - the context of the change.
+	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
-	@Fix(IssueCodes.WRONG_PACKAGE)
-	@SuppressWarnings("static-method")
-	public void fixPackageName(Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length == 1) {
-			final String expectedPackage = issue.getData()[0];
-			String msg = MessageFormat.format(Messages.SARLQuickfixProvider_0, expectedPackage);
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					String n;
-					if (com.google.common.base.Strings.isNullOrEmpty(expectedPackage)) {
-						n = null;
-					} else {
-						n = expectedPackage;
-					}
-					((SarlScript) element).setName(n);
-				}
-			});
-		}
-	}
-
-	/** Quick fix for "Duplicate type".
-	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
-	 */
-	@Fix(IssueCodes.DUPLICATE_TYPE_NAME)
-	public void fixDuplicateTopElements(Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length == 1) {
-			QualifiedName duplicateName = qualifiedName(issue.getData()[0]);
-			String msg = MessageFormat.format(Messages.SARLQuickfixProvider_1, duplicateName.getLastSegment());
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					remove(element, TopElement.class, context);
-				}
-			});
-		}
-	}
-
-	/** Quick fix for "Duplicate field".
-	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
-	 */
-	@Fix(IssueCodes.DUPLICATE_FIELD)
-	public void fixDuplicateAttribute(Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length == 1) {
-			QualifiedName duplicateName = qualifiedName(issue.getData()[0]);
-			String msg = MessageFormat.format(Messages.SARLQuickfixProvider_2, duplicateName.getLastSegment());
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					remove(element, Attribute.class, context);
-				}
-
-				/** Quick fix for "Duplicate field".
-				 *
-				 * @param issue - the issue.
-				 * @param acceptor - the quick fix acceptor.
-				 */
-				@Fix(IssueCodes.DUPLICATE_FIELD)
-				public void fixDuplicateAttribute(Issue issue, IssueResolutionAcceptor acceptor) {
-					if (issue.getData() != null && issue.getData().length == 1) {
-						QualifiedName duplicateName = qualifiedName(issue.getData()[0]);
-						String msg = MessageFormat.format(Messages.SARLQuickfixProvider_2, duplicateName.getLastSegment());
-						acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-							@SuppressWarnings("synthetic-access")
-							@Override
-							public void apply(EObject element, IModificationContext context) throws Exception {
-								remove(element, Attribute.class, context);
-							}
-						});
-					}
-				}
-			});
-		}
-	}
-
-	/** Quick fix for "Duplicate method".
-	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
-	 */
-	@Fix(IssueCodes.DUPLICATE_METHOD)
-	public void fixDuplicateMethod(Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length == 1) {
-			String duplicateName = issue.getData()[0];
-			String msg = MessageFormat.format(Messages.SARLQuickfixProvider_3, duplicateName);
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					removeExecutableFeature(element, context);
-				}
-			});
-		}
-	}
-
-	/** Remove the executable feature.
-	 *
-	 * @param element - the element
-	 * @param context - the context.
-	 * @throws BadLocationException if the location is bad.
-	 */
-	protected void removeExecutableFeature(EObject element, IModificationContext context) throws BadLocationException {
+	public void removeExecutableFeature(EObject element, IModificationContext context) throws BadLocationException {
 		ICompositeNode node = null;
 		Action action = EcoreUtil2.getContainerOfType(element, Action.class);
 		if (action == null) {
@@ -531,6 +469,52 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		}
 	}
 
+	@Override
+	public <T extends EObject> void remove(EObject element, Class<T> type, IModificationContext context)
+			throws BadLocationException {
+		super.remove(element, type, context);
+	}
+
+	/** Quick fix for "Wrong package".
+	 *
+	 * @param issue - the issue.
+	 * @param acceptor - the quick fix acceptor.
+	 */
+	@Fix(IssueCodes.WRONG_PACKAGE)
+	public void fixPackageName(Issue issue, IssueResolutionAcceptor acceptor) {
+		WrongPackageModification.accept(this, issue, acceptor);
+	}
+
+	/** Quick fix for "Duplicate type".
+	 *
+	 * @param issue - the issue.
+	 * @param acceptor - the quick fix acceptor.
+	 */
+	@Fix(IssueCodes.DUPLICATE_TYPE_NAME)
+	public void fixDuplicateTopElements(Issue issue, IssueResolutionAcceptor acceptor) {
+		DuplicateTopElementModification.accept(this, issue, acceptor);
+	}
+
+	/** Quick fix for "Duplicate field".
+	 *
+	 * @param issue - the issue.
+	 * @param acceptor - the quick fix acceptor.
+	 */
+	@Fix(IssueCodes.DUPLICATE_FIELD)
+	public void fixDuplicateAttribute(Issue issue, IssueResolutionAcceptor acceptor) {
+		DuplicateAttributeModification.accept(this, issue, acceptor);
+	}
+
+	/** Quick fix for "Duplicate method".
+	 *
+	 * @param issue - the issue.
+	 * @param acceptor - the quick fix acceptor.
+	 */
+	@Fix(IssueCodes.DUPLICATE_METHOD)
+	public void fixDuplicateMethod(Issue issue, IssueResolutionAcceptor acceptor) {
+		DuplicateActionModification.accept(this, issue, acceptor);
+	}
+
 	/** Quick fix for "Invalid member name".
 	 *
 	 * @param issue - the issue.
@@ -538,38 +522,9 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 */
 	@Fix(IssueCodes.INVALID_MEMBER_NAME)
 	public void fixMemberName(final Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length >= 3) {
-			String type = issue.getData()[0];
-			String invalidName = issue.getData()[1];
-			for (int i = 2; i < issue.getData().length; i++) {
-				final String validName = issue.getData()[i];
-				String msg = MessageFormat.format(Messages.SARLQuickfixProvider_4,
-						type, invalidName, validName);
-				acceptor.accept(issue, msg, msg, null, new IModification() {
-					@Override
-					public void apply(IModificationContext context) throws Exception {
-						context.getXtextDocument().replace(issue.getOffset(), issue.getLength(), validName);
-					}
-				});
-			}
-			String msg = MessageFormat.format(Messages.SARLQuickfixProvider_5, type, invalidName);
-			if ("attribute".equals(type)) { //$NON-NLS-1$
-				acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-					@SuppressWarnings("synthetic-access")
-					@Override
-					public void apply(EObject element, IModificationContext context) throws Exception {
-						remove(element, Attribute.class, context);
-					}
-				});
-			} else {
-				acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-					@Override
-					public void apply(EObject element, IModificationContext context) throws Exception {
-						removeExecutableFeature(element, context);
-					}
-				});
-			}
-		}
+		RenamingMemberNameModification.accept(this, issue, acceptor);
+		AttributeRemovalMemberNameModification.accept(this, issue, acceptor);
+		ExecutableFeatureRemovalMemberNameModification.accept(this, issue, acceptor);
 	}
 
 	/** Quick fix for "Redundant interface implementation".
@@ -579,50 +534,9 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 */
 	@Fix(IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION)
 	public void fixRedundantInterface(final Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length == 2) {
-			String redundantName = issue.getData()[0];
-			String mode = issue.getData()[1];
-			String msg = MessageFormat.format(Messages.SARLQuickfixProvider_6, redundantName);
-			ISemanticModification fct;
-			switch (mode) {
-			case "pre": //$NON-NLS-1$
-				fct = new ISemanticModification() {
-					@Override
-					public void apply(EObject element, IModificationContext context) throws Exception {
-						IXtextDocument document = context.getXtextDocument();
-						removeToPreviousSeparator(issue, document, ","); //$NON-NLS-1$
-					}
-				};
-				break;
-			case "post": //$NON-NLS-1$
-				fct = new ISemanticModification() {
-					@Override
-					public void apply(EObject element, IModificationContext context) throws Exception {
-						IXtextDocument document = context.getXtextDocument();
-						removeToNextSeparator(issue, document, ","); //$NON-NLS-1$
-					}
-				};
-				break;
-			default:
-				fct = new ISemanticModification() {
-					@SuppressWarnings("synthetic-access")
-					@Override
-					public void apply(EObject element, IModificationContext context) throws Exception {
-						IXtextDocument document = context.getXtextDocument();
-						String sep = ","; //$NON-NLS-1$
-						if (!removeToPreviousSeparator(issue, document, sep)) {
-							if (!removeToNextSeparator(issue, document, sep)) {
-								removeToPreviousKeyword(issue, document,
-										SARLQuickfixProvider.this.grammarAccess.getSkillAccess()
-										.getImplementsKeyword_3_1_0().getValue());
-							}
-						}
-					}
-				};
-				break;
-			}
-			acceptor.accept(issue, msg, msg, null, fct);
-		}
+		PreRedundantInterfaceModification.accept(this, issue, acceptor);
+		PostRedundantInterfaceModification.accept(this, issue, acceptor);
+		InfixRedundantInterfaceModification.accept(this, issue, acceptor);
 	}
 
 	/** Quick fix for "Variable name shadowing".
@@ -632,30 +546,8 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 */
 	@Fix(org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING)
 	public void fixVariableNameShadowing(final Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length == 2) {
-			String redundantName = issue.getData()[0];
-			final String newName = issue.getData()[1];
-			String msg = MessageFormat.format(
-					Messages.SARLQuickfixProvider_5,
-					Messages.SARLQuickfixProvider_7, redundantName);
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					remove(element, Attribute.class, context);
-				}
-			});
-			msg = MessageFormat.format(
-					Messages.SARLQuickfixProvider_4,
-					Messages.SARLQuickfixProvider_7, redundantName, newName);
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					IXtextDocument document = context.getXtextDocument();
-					document.replace(issue.getOffset(), issue.getLength(), newName);
-				}
-			});
-		}
+		RemovalVariableNameShadowingModification.accept(this, issue, acceptor);
+		RenamingVariableNameShadowingModification.accept(this, issue, acceptor);
 	}
 
 	/** Quick fix for "Override final operation".
@@ -664,19 +556,8 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 * @param acceptor - the quick fix acceptor.
 	 */
 	@Fix(IssueCodes.OVERRIDDEN_FINAL_OPERATION)
-	public void fixOverriddenFinal(Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length == 1) {
-			String signature = issue.getData()[0];
-			String msg = MessageFormat.format(
-					Messages.SARLQuickfixProvider_5,
-					Messages.SARLQuickfixProvider_8, signature);
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					removeExecutableFeature(element, context);
-				}
-			});
-		}
+	public void fixOverriddenFinalOperation(Issue issue, IssueResolutionAcceptor acceptor) {
+		OverriddenFinalOperationModification.accept(this, issue, acceptor);
 	}
 
 	/** Quick fix for "Discouraged boolean expression".
@@ -684,19 +565,9 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 * @param issue - the issue.
 	 * @param acceptor - the quick fix acceptor.
 	 */
-	@SuppressWarnings("static-method")
 	@Fix(IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION)
 	public void fixDiscouragedBooleanExpression(final Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length == 0) {
-			String msg = Messages.SARLQuickfixProvider_9;
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					IXtextDocument document = context.getXtextDocument();
-					removeBetweenSeparators(issue, document, "[", "]"); //$NON-NLS-1$//$NON-NLS-2$
-				}
-			});
-		}
+		DiscouragedBooleanExpressionModification.accept(this, issue, acceptor);
 	}
 
 	/** Quick fix for "Unreachable behavior unit".
@@ -706,17 +577,7 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 */
 	@Fix(IssueCodes.UNREACHABLE_BEHAVIOR_UNIT)
 	public void fixUnreachableBehaviorUnit(Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length == 1) {
-			String eventName = issue.getData()[0];
-			String msg = MessageFormat.format(Messages.SARLQuickfixProvider_10, eventName);
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					remove(element, BehaviorUnit.class, context);
-				}
-			});
-		}
+		UnreachableBehaviorUnitModification.accept(this, issue, acceptor);
 	}
 
 	/** Quick fix for "Invalid capacity type".
@@ -726,29 +587,7 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 */
 	@Fix(IssueCodes.INVALID_CAPACITY_TYPE)
 	public void fixInvalidCapacityType(final Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length == 1) {
-			String typeName = issue.getData()[0];
-			String msg = MessageFormat.format(
-					Messages.SARLQuickfixProvider_5,
-					Messages.SARLQuickfixProvider_11, typeName);
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					IXtextDocument document = context.getXtextDocument();
-					String sep = ","; //$NON-NLS-1$
-					if (!removeToPreviousSeparator(issue, document, sep)) {
-						if (!removeToNextSeparator(issue, document, sep)) {
-							removeToPreviousKeyword(issue, document,
-									SARLQuickfixProvider.this.grammarAccess.getRequiredCapacityAccess()
-									.getRequiresKeyword_1().getValue(),
-									SARLQuickfixProvider.this.grammarAccess.getCapacityUsesAccess()
-									.getUsesKeyword_1().getValue());
-						}
-					}
-				}
-			});
-		}
+		InvalidCapacityTypeModification.accept(this, issue, acceptor);
 	}
 
 	/** Quick fix for "Invalid firing event type".
@@ -758,27 +597,7 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 */
 	@Fix(IssueCodes.INVALID_FIRING_EVENT_TYPE)
 	public void fixInvalidFiringEventType(final Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length == 1) {
-			String typeName = issue.getData()[0];
-			String msg = MessageFormat.format(
-					Messages.SARLQuickfixProvider_5,
-					Messages.SARLQuickfixProvider_11, typeName);
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					IXtextDocument document = context.getXtextDocument();
-					String sep = ","; //$NON-NLS-1$
-					if (!removeToPreviousSeparator(issue, document, sep)) {
-						if (!removeToNextSeparator(issue, document, sep)) {
-							removeToPreviousKeyword(issue, document,
-									SARLQuickfixProvider.this.grammarAccess.getActionSignatureAccess()
-									.getFiresKeyword_5_0().getValue());
-						}
-					}
-				}
-			});
-		}
+		InvalidFiringEventTypeModification.accept(this, issue, acceptor);
 	}
 
 	/** Quick fix for "Invalid implemented type".
@@ -788,27 +607,7 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 */
 	@Fix(IssueCodes.INVALID_IMPLEMENTED_TYPE)
 	public void fixInvalidImplementedType(final Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length == 1) {
-			String typeName = issue.getData()[0];
-			String msg = MessageFormat.format(
-					Messages.SARLQuickfixProvider_5,
-					Messages.SARLQuickfixProvider_11, typeName);
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					IXtextDocument document = context.getXtextDocument();
-					String sep = ","; //$NON-NLS-1$
-					if (!removeToPreviousSeparator(issue, document, sep)) {
-						if (!removeToNextSeparator(issue, document, sep)) {
-							removeToPreviousKeyword(issue, document,
-									SARLQuickfixProvider.this.grammarAccess.getSkillAccess()
-									.getImplementsKeyword_3_1_0().getValue());
-						}
-					}
-				}
-			});
-		}
+		InvalidImplementedTypeModification.accept(this, issue, acceptor);
 	}
 
 	/** Quick fix for "Invalid extended type".
@@ -818,26 +617,7 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 */
 	@Fix(IssueCodes.INVALID_EXTENDED_TYPE)
 	public void fixInvalidExtendedType(final Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length == 2) {
-			QualifiedName superTypeName = qualifiedName(issue.getData()[1]);
-			String msg = MessageFormat.format(
-					Messages.SARLQuickfixProvider_5,
-					Messages.SARLQuickfixProvider_11, superTypeName.getLastSegment());
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					IXtextDocument document = context.getXtextDocument();
-					String sep = ","; //$NON-NLS-1$
-					if (!removeToPreviousSeparator(issue, document, sep)) {
-						if (!removeToNextSeparator(issue, document, sep)) {
-							removeToPreviousKeyword(issue, document,
-									SARLQuickfixProvider.this.grammarAccess.getAgentAccess().getExtendsKeyword_3_0().getValue());
-						}
-					}
-				}
-			});
-		}
+		InvalidExtendedTypeModification.accept(this, issue, acceptor);
 	}
 
 	/** Quick fix for "Inconsistent hierarchy".
@@ -847,29 +627,7 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 */
 	@Fix(IssueCodes.INCONSISTENT_TYPE_HIERARCHY)
 	public void fixInconsistentTypeHierarchy(final Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length == 2) {
-			QualifiedName superTypeName = qualifiedName(issue.getData()[1]);
-			String msg = MessageFormat.format(
-					Messages.SARLQuickfixProvider_5,
-					Messages.SARLQuickfixProvider_11, superTypeName.getLastSegment());
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					IXtextDocument document = context.getXtextDocument();
-					String sep = ","; //$NON-NLS-1$
-					if (!removeToPreviousSeparator(issue, document, sep)) {
-						if (!removeToNextSeparator(issue, document, sep)) {
-							removeToPreviousKeyword(issue, document,
-									SARLQuickfixProvider.this.grammarAccess.getSkillAccess()
-									.getImplementsKeyword_3_1_0().getValue(),
-									SARLQuickfixProvider.this.grammarAccess.getAgentAccess()
-									.getExtendsKeyword_3_0().getValue());
-						}
-					}
-				}
-			});
-		}
+		IncompatibleTypeHierarchyModification.accept(this, issue, acceptor);
 	}
 
 	/** Quick fix for "Override final type".
@@ -879,29 +637,7 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 */
 	@Fix(IssueCodes.OVERRIDDEN_FINAL_TYPE)
 	public void fixOverriddenFinalType(final Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length == 1) {
-			String typeName = issue.getData()[0];
-			String msg = MessageFormat.format(
-					Messages.SARLQuickfixProvider_5,
-					Messages.SARLQuickfixProvider_11, typeName);
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					IXtextDocument document = context.getXtextDocument();
-					String sep = ","; //$NON-NLS-1$
-					if (!removeToPreviousSeparator(issue, document, sep)) {
-						if (!removeToNextSeparator(issue, document, sep)) {
-							removeToPreviousKeyword(issue, document,
-									SARLQuickfixProvider.this.grammarAccess.getSkillAccess()
-									.getImplementsKeyword_3_1_0().getValue(),
-									SARLQuickfixProvider.this.grammarAccess.getAgentAccess()
-									.getExtendsKeyword_3_0().getValue());
-						}
-					}
-				}
-			});
-		}
+		OverriddenFinalTypeModification.accept(this, issue, acceptor);
 	}
 
 	/** Quick fix for "Discouraged capacity definition".
@@ -911,47 +647,8 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 */
 	@Fix(IssueCodes.DISCOURAGED_CAPACITY_DEFINITION)
 	public void fixDiscouragedCapacityDefinition(Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length == 2) {
-			String capacityName = issue.getData()[0];
-			final String defaultActionName = issue.getData()[1];
-			String msg = MessageFormat.format(
-					Messages.SARLQuickfixProvider_5,
-					Messages.SARLQuickfixProvider_12, capacityName);
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					remove(element, Capacity.class, context);
-				}
-			});
-			msg = MessageFormat.format(
-					Messages.SARLQuickfixProvider_13,
-					Messages.SARLQuickfixProvider_8, defaultActionName);
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					FeatureContainer container = EcoreUtil2.getContainerOfType(element, FeatureContainer.class);
-					if (container != null) {
-						int insertOffset = getInsertOffset(container);
-						IXtextDocument document = context.getXtextDocument();
-						int length = getSpaceSize(document, insertOffset);
-						ReplacingAppendable appendable = SARLQuickfixProvider.this.appendableFactory.create(document,
-								(XtextResource) element.eResource(), insertOffset, length);
-						boolean changeIndentation = container.getFeatures().isEmpty();
-						if (changeIndentation) {
-							appendable.increaseIndentation();
-						}
-						appendable.newLine().append("def ").append(defaultActionName); //$NON-NLS-1$
-						if (changeIndentation) {
-							appendable.decreaseIndentation();
-						}
-						appendable.newLine();
-						appendable.commitChanges();
-					}
-				}
-			});
-		}
+		CapacityRemovalDiscouragedCapacityDefinitionModification.accept(this, issue, acceptor);
+		DefaultActionDiscouragedCapacityDefinitionModification.accept(this, issue, acceptor);
 	}
 
 	/** Quick fix for "Missing method implementation".
@@ -961,85 +658,7 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 */
 	@Fix(IssueCodes.MISSING_METHOD_IMPLEMENTATION)
 	public void fixMissingMethodImplementation(final Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length > 0) {
-			StringBuffer lines = new StringBuffer();
-			String[] data = issue.getData();
-			int i;
-			for (i = 0; i < data.length && !Strings.isEmpty(data[i]); ++i) {
-				// Search for the end of the import declarations
-			}
-			++i;
-			final int startIndex = i;
-			for (; i < data.length; i += 2) {
-				lines.append(MessageFormat.format(Messages.SARLQuickfixProvider_14, data[i]));
-			}
-			String description = MessageFormat.format(Messages.SARLQuickfixProvider_15, lines);
-			acceptor.accept(issue, Messages.SARLQuickfixProvider_16, description, null, new ISemanticModification() {
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					FeatureContainer container = EcoreUtil2.getContainerOfType(element, FeatureContainer.class);
-					if (container != null) {
-						SarlScript script = EcoreUtil2.getContainerOfType(element, SarlScript.class);
-						assert (script != null);
-						String[] data = issue.getData();
-						assert (data != null && data.length > 0);
-						IXtextDocument document = context.getXtextDocument();
-
-						// Add missed functions
-						int insertOffset = getInsertOffset(container);
-						int length = getSpaceSize(document, insertOffset);
-						ReplacingAppendable appendable = SARLQuickfixProvider.this.appendableFactory.create(document,
-								(XtextResource) element.eResource(), insertOffset, length);
-						boolean initialIndent = (container.getFeatures().isEmpty());
-						if (initialIndent) {
-							appendable.increaseIndentation();
-						}
-						appendable.newLine().newLine();
-						for (int j = startIndex; j < data.length; j += 2) {
-							appendable.append(data[j]).append(" {"); //$NON-NLS-1$
-							appendable.increaseIndentation();
-							appendable.newLine().append("// TODO ").append(//$NON-NLS-1$
-									io.sarl.lang.genmodel.Messages.SARLCodeGenerator_0);
-							if (!com.google.common.base.Strings.isNullOrEmpty(data[j + 1])) {
-								appendable.newLine().append(data[j + 1]);
-							}
-							appendable.decreaseIndentation();
-							appendable.newLine().append("}").newLine().newLine(); //$NON-NLS-1$
-						}
-						appendable.decreaseIndentation();
-						appendable.commitChanges();
-
-						// Add missed imports
-						insertOffset = getImportInsertOffset(script);
-						appendable = SARLQuickfixProvider.this.appendableFactory.create(document,
-								(XtextResource) element.eResource(), insertOffset, 0);
-						ImportManager importManager = new ImportManager();
-						XImportSection importSection = script.getImportSection();
-						if (importSection != null) {
-							for (XImportDeclaration declaration : importSection.getImportDeclarations()) {
-								JvmDeclaredType type = declaration.getImportedType();
-								if (type != null) {
-									importManager.addImportFor(type);
-								}
-							}
-						}
-						for (int j = 0; j < (startIndex - 1); ++j) {
-							JvmParameterizedTypeReference typeRef = newTypeRef(data[j], container);
-							if (typeRef != null && importManager.addImportFor(typeRef.getType())) {
-								appendable.newLine();
-								appendable.append(
-										SARLQuickfixProvider.this.grammarAccess
-										.getXImportDeclarationAccess().getImportKeyword_0().getValue());
-								appendable.append(" "); //$NON-NLS-1$
-								appendable.append(typeRef.getQualifiedName());
-							}
-						}
-						appendable.commitChanges();
-					}
-				}
-			});
-		}
+		MissingMethodImplementationModification.accept(this, issue, acceptor);
 	}
 
 	/** Quick fix for "Incompatible return type".
@@ -1047,23 +666,9 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 * @param issue - the issue.
 	 * @param acceptor - the quick fix acceptor.
 	 */
-	@SuppressWarnings("static-method")
 	@Fix(org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE)
 	public void fixIncompatibleReturnType(final Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length == 2) {
-			final String expectedType = issue.getData()[1];
-			String msg = MessageFormat.format(
-					Messages.SARLQuickfixProvider_17,
-					Messages.SARLQuickfixProvider_11,
-					expectedType);
-			acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-				@Override
-				public void apply(EObject element, IModificationContext context) throws Exception {
-					IXtextDocument document = context.getXtextDocument();
-					document.replace(issue.getOffset(), issue.getLength(), expectedType);
-				}
-			});
-		}
+		IncompatibleReturnTypeModification.accept(this, issue, acceptor);
 	}
 
 	/** Quick fix for "Invalid default value for variadic parameter".
@@ -1071,34 +676,10 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 * @param issue - the issue.
 	 * @param acceptor - the quick fix acceptor.
 	 */
-	@SuppressWarnings("static-method")
 	@Fix(IssueCodes.INVALID_USE_OF_VAR_ARG)
 	public void fixNoDefaultValueForVariadicParameter(final Issue issue, IssueResolutionAcceptor acceptor) {
-		String msg = Messages.SARLQuickfixProvider_18;
-		acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-			@Override
-			public void apply(EObject element, IModificationContext context) throws Exception {
-				IXtextDocument document = context.getXtextDocument();
-				removeElementWithPreviousSpaces(issue, document);
-			}
-		});
-		msg = Messages.SARLQuickfixProvider_19;
-		acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-			@Override
-			public void apply(EObject element, IModificationContext context) throws Exception {
-				ParameterizedFeature container = EcoreUtil2.getContainerOfType(element, ParameterizedFeature.class);
-				if (container != null && !container.getParams().isEmpty()) {
-					FormalParameter formalParameter = IterableExtensions.last(container.getParams());
-					if (formalParameter.getDefaultValue() != null) {
-						ICompositeNode node = NodeModelUtils.findActualNodeFor(formalParameter.getDefaultValue());
-						if (node != null) {
-							IXtextDocument document = context.getXtextDocument();
-							removeToPreviousSeparator(node.getOffset(), node.getLength(), document, "="); //$NON-NLS-1$
-						}
-					}
-				}
-			}
-		});
+		VarArgRemovalInvalidUseOfVarArgsModification.accept(this, issue, acceptor);
+		ValueRemovalInvalidUseOfVarArgsModification.accept(this, issue, acceptor);
 	}
 
 	/** Quick fix for "Unused agent capacity".
@@ -1108,26 +689,7 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 */
 	@Fix(IssueCodes.UNUSED_AGENT_CAPACITY)
 	public void fixUnusedAgentCapacity(final Issue issue, IssueResolutionAcceptor acceptor) {
-		String typeName = issue.getData()[0];
-		String msg = MessageFormat.format(
-				Messages.SARLQuickfixProvider_5,
-				Messages.SARLQuickfixProvider_12, typeName);
-		acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-			@SuppressWarnings("synthetic-access")
-			@Override
-			public void apply(EObject element, IModificationContext context) throws Exception {
-				IXtextDocument document = context.getXtextDocument();
-				String sep = ","; //$NON-NLS-1$
-				if (!removeToPreviousSeparator(issue, document, sep)) {
-					if (!removeToNextSeparator(issue, document, sep)) {
-						removeToPreviousKeyword(issue, document,
-								SARLQuickfixProvider.this.grammarAccess.getCapacityUsesAccess().getUsesKeyword_1().getValue(),
-								SARLQuickfixProvider.this.grammarAccess.getRequiredCapacityAccess()
-								.getRequiresKeyword_1().getValue());
-					}
-				}
-			}
-		});
+		UnusedAgentCapacityModification.accept(this, issue, acceptor);
 	}
 
 	/** Quick fix for "Redundant capacity use".
@@ -1137,26 +699,7 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 */
 	@Fix(IssueCodes.REDUNDANT_CAPACITY_USE)
 	public void fixRedundantAgentCapacityUse(final Issue issue, IssueResolutionAcceptor acceptor) {
-		String typeName = issue.getData()[0];
-		String msg = MessageFormat.format(
-				Messages.SARLQuickfixProvider_5,
-				Messages.SARLQuickfixProvider_12, typeName);
-		acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
-			@SuppressWarnings("synthetic-access")
-			@Override
-			public void apply(EObject element, IModificationContext context) throws Exception {
-				IXtextDocument document = context.getXtextDocument();
-				String sep = ","; //$NON-NLS-1$
-				if (!removeToPreviousSeparator(issue, document, sep)) {
-					if (!removeToNextSeparator(issue, document, sep)) {
-						removeToPreviousKeyword(issue, document,
-								SARLQuickfixProvider.this.grammarAccess.getCapacityUsesAccess().getUsesKeyword_1().getValue(),
-								SARLQuickfixProvider.this.grammarAccess.getRequiredCapacityAccess()
-								.getRequiresKeyword_1().getValue());
-					}
-				}
-			}
-		});
+		RedundantCapacityUseModification.accept(this, issue, acceptor);
 	}
 
 }

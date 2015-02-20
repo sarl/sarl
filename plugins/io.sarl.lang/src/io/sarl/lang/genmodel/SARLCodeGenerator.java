@@ -534,13 +534,11 @@ public class SARLCodeGenerator {
 					Agent ag = (Agent) script.getElements().get(0);
 					Attribute attr = (Attribute) ag.getFeatures().get(0);
 					xExpression = attr.getInitialValue();
-					if (importManager != null) {
-						XImportSection importSection = script.getImportSection();
-						if (importSection != null) {
-							for (XImportDeclaration importDeclaration : importSection.getImportDeclarations()) {
-								importManager.addImportFor(importDeclaration.getImportedType());
-							}
-						}	
+					XImportSection importSection = script.getImportSection();
+					if (importManager != null && importSection != null) {
+						for (XImportDeclaration importDeclaration : importSection.getImportDeclarations()) {
+							importManager.addImportFor(importDeclaration.getImportedType());
+						}
 					}
 				}
 			} catch (Throwable _) {

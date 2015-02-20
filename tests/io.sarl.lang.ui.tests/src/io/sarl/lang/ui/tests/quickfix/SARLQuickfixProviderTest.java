@@ -1115,16 +1115,20 @@ public class SARLQuickfixProviderTest {
 							"	def fct3 : boolean",
 							"}",
 							"skill S1 implements C1 {",
+							"",
 							"	def fct1 {",
 							"		// TODO Auto-generated action.",
 							"	}",
+							"	",
 							"	def fct2(a : int) {",
 							"		// TODO Auto-generated action.",
 							"	}",
+							"	",
 							"	def fct3 : boolean {",
 							"		// TODO Auto-generated action.",
 							"		true",
 							"	}",
+							"	",
 							"}"));
 		}
 
@@ -1137,10 +1141,64 @@ public class SARLQuickfixProviderTest {
 					//
 					// Code to fix:
 					//
-					multilineString("capacity C1 {", "	def fct1",
-							"	def fct2(a : int)", "	def fct3 : boolean", "}",
+					multilineString(
+							"capacity C1 {",
+							"	def fct1",
+							"	def fct2(a : int)",
+							"	def fct3 : boolean",
+							"}",
 							"skill S1 implements C1 {",
-							"	def fct2(b : int) { }", "}"),
+							"}"),
+					//
+					// Label and description:
+					//
+					"Add unimplemented actions",
+					"Add the following unimplemented actions:\n- def fct1\n- def fct2(a : int)\n- def fct3 : boolean\n",
+					//
+					// Expected fixed code:
+					//
+					multilineString(
+							"capacity C1 {",
+							"	def fct1",
+							"	def fct2(a : int)",
+							"	def fct3 : boolean",
+							"}",
+							"skill S1 implements C1 {",
+							"",
+							"	def fct1 {",
+							"		// TODO Auto-generated action.",
+							"	}",
+							"	",
+							"	def fct2(a : int) {",
+							"		// TODO Auto-generated action.",
+							"	}",
+							"	",
+							"	def fct3 : boolean {",
+							"		// TODO Auto-generated action.",
+							"		true",
+							"	}",
+							"	",
+							"}"));
+		}
+
+		/**
+		 */
+		@Test
+		public void fixClassicPrototype_2() {
+			assertQuickFix(
+					IssueCodes.MISSING_METHOD_IMPLEMENTATION,
+					//
+					// Code to fix:
+					//
+					multilineString(
+							"capacity C1 {",
+							"	def fct1",
+							"	def fct2(a : int)",
+							"	def fct3 : boolean",
+							"}",
+							"skill S1 implements C1 {",
+							"	def fct2(b : int) { }",
+							"}"),
 					//
 					// Label and description:
 					//
@@ -1149,13 +1207,73 @@ public class SARLQuickfixProviderTest {
 					//
 					// Expected fixed code:
 					//
-					multilineString("capacity C1 {", "	def fct1",
-							"	def fct2(a : int)", "	def fct3 : boolean", "}",
+					multilineString(
+							"capacity C1 {",
+							"	def fct1",
+							"	def fct2(a : int)",
+							"	def fct3 : boolean",
+							"}",
 							"skill S1 implements C1 {",
-							"	def fct2(b : int) { }", "	def fct1 {",
-							"		// TODO Auto-generated action.", "	}",
+							"	def fct2(b : int) { }",
+							"	",
+							"	def fct1 {",
+							"		// TODO Auto-generated action.",
+							"	}",
+							"	",
 							"	def fct3 : boolean {",
-							"		// TODO Auto-generated action.", "		true", "	}",
+							"		// TODO Auto-generated action.",
+							"		true",
+							"	}",
+							"	",
+							"}"));
+		}
+
+		/**
+		 */
+		@Test
+		public void fixClassicPrototype_3() {
+			assertQuickFix(
+					IssueCodes.MISSING_METHOD_IMPLEMENTATION,
+					//
+					// Code to fix:
+					//
+					multilineString(
+							"capacity C1 {",
+							"	def fct1",
+							"	def fct2(a : int)",
+							"	def fct3 : boolean",
+							"}",
+							"skill S1 implements C1 {",
+							"	def fct2(b : int) {",
+							"	}",
+							"}"),
+					//
+					// Label and description:
+					//
+					"Add unimplemented actions",
+					"Add the following unimplemented actions:\n- def fct1\n- def fct3 : boolean\n",
+					//
+					// Expected fixed code:
+					//
+					multilineString(
+							"capacity C1 {",
+							"	def fct1",
+							"	def fct2(a : int)",
+							"	def fct3 : boolean",
+							"}",
+							"skill S1 implements C1 {",
+							"	def fct2(b : int) {",
+							"	}",
+							"	",
+							"	def fct1 {",
+							"		// TODO Auto-generated action.",
+							"	}",
+							"	",
+							"	def fct3 : boolean {",
+							"		// TODO Auto-generated action.",
+							"		true",
+							"	}",
+							"	",
 							"}"));
 		}
 
@@ -1186,9 +1304,11 @@ public class SARLQuickfixProviderTest {
 							"	def fct(a : int*)",
 							"}",
 							"skill S1 implements C1 {",
+							"",
 							"	def fct(a : int*) {",
 							"		// TODO Auto-generated action.",
 							"	}",
+							"	",
 							"}"));
 		}
 
@@ -1221,12 +1341,15 @@ public class SARLQuickfixProviderTest {
 							"	def fct2(b : String, c : double*)",
 							"}",
 							"skill S1 implements C1 {",
+							"",
 							"	def fct1(a : int*) {",
 							"		// TODO Auto-generated action.",
 							"	}",
+							"	",
 							"	def fct2(b : String, c : double*) {",
 							"		// TODO Auto-generated action.",
 							"	}",
+							"	",
 							"}"));
 		}
 
@@ -1248,7 +1371,7 @@ public class SARLQuickfixProviderTest {
 					// Label and description:
 					//
 					"Add unimplemented actions",
-					"Add the following unimplemented actions:\n- def fct(a : int=4)\n",
+					"Add the following unimplemented actions:\n- def fct(a : int = 4)\n",
 					//
 					// Expected fixed code:
 					//
@@ -1257,9 +1380,11 @@ public class SARLQuickfixProviderTest {
 							"	def fct(a : int=4)",
 							"}",
 							"skill S1 implements C1 {",
-							"	def fct(a : int=4) {",
+							"",
+							"	def fct(a : int = 4) {",
 							"		// TODO Auto-generated action.",
 							"	}",
+							"	",
 							"}"));
 		}
 
@@ -1274,25 +1399,27 @@ public class SARLQuickfixProviderTest {
 					//
 					multilineString(
 							"capacity C1 {",
-							"	def fct(a : int=4, b : java.lang.String)",
+							"	def fct(a : int = 4, b : String)",
 							"}",
 							"skill S1 implements C1 { }"),
 					//
 					// Label and description:
 					//
 					"Add unimplemented actions",
-					"Add the following unimplemented actions:\n- def fct(a : int=4, b : java.lang.String)\n",
+					"Add the following unimplemented actions:\n- def fct(a : int = 4, b : String)\n",
 					//
 					// Expected fixed code:
 					//
 					multilineString(
 							"capacity C1 {",
-							"	def fct(a : int=4, b : java.lang.String)",
+							"	def fct(a : int = 4, b : String)",
 							"}",
 							"skill S1 implements C1 {",
-							"	def fct(a : int=4, b : java.lang.String) {",
+							"",
+							"	def fct(a : int = 4, b : String) {",
 							"		// TODO Auto-generated action.",
 							"	}",
+							"	",
 							"}"));
 		}
 
@@ -1307,25 +1434,27 @@ public class SARLQuickfixProviderTest {
 					//
 					multilineString(
 							"capacity C1 {",
-							"	def fct(a : int=4, b : java.lang.String, c : int*)",
+							"	def fct(a : int = 4, b : String, c : int*)",
 							"}",
 							"skill S1 implements C1 { }"),
 					//
 					// Label and description:
 					//
 					"Add unimplemented actions",
-					"Add the following unimplemented actions:\n- def fct(a : int=4, b : java.lang.String, c : int*)\n",
+					"Add the following unimplemented actions:\n- def fct(a : int = 4, b : String, c : int*)\n",
 					//
 					// Expected fixed code:
 					//
 					multilineString(
 							"capacity C1 {",
-							"	def fct(a : int=4, b : java.lang.String, c : int*)",
+							"	def fct(a : int = 4, b : String, c : int*)",
 							"}",
 							"skill S1 implements C1 {",
-							"	def fct(a : int=4, b : java.lang.String, c : int*) {",
+							"",
+							"	def fct(a : int = 4, b : String, c : int*) {",
 							"		// TODO Auto-generated action.",
 							"	}",
+							"	",
 							"}"));
 		}
 

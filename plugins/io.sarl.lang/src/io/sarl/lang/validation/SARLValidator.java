@@ -139,7 +139,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private SARLCodeGenerator codeGenerator;
-	
+
 	@Inject
 	private ISerializer serializer;
 
@@ -825,7 +825,7 @@ public class SARLValidator extends AbstractSARLValidator {
 							}
 							data.add(ModelUtil.getDefaultValueForType(lwRef));
 							// Generate a simplified name
-							String simplifiedName = 
+							String simplifiedName =
 									sarlCode.replaceFirst(
 											"^\\s*" //$NON-NLS-1$
 											+ Pattern.quote(

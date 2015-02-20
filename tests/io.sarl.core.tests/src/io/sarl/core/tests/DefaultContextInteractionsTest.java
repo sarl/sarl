@@ -27,6 +27,8 @@ import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Scope;
+import io.sarl.lang.core.Space;
+import io.sarl.lang.core.SpaceID;
 
 import java.util.UUID;
 
@@ -52,9 +54,9 @@ public class DefaultContextInteractionsTest extends AbstractSARLTest<Capacity> {
 	 */
 	@Test
 	public void memberCount() {
-		assertEquals(12, this.type.getDeclaredMethods().length);
+		assertEquals(13, this.type.getDeclaredMethods().length);
 	}
-	
+
 	/**
 	 */
 	@Test
@@ -96,12 +98,54 @@ public class DefaultContextInteractionsTest extends AbstractSARLTest<Capacity> {
 	public void receive() {
 		assertMethod("receive", void.class, UUID.class, Event.class); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 */
 	@Test
 	public void spawn() {
 		assertMethod("spawn", UUID.class, Class.class, Object[].class); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void isDefaultSpaceSpace() {
+		assertMethod("isDefaultSpace", boolean.class, Space.class); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void isDefaultSpaceSpaceID() {
+		assertMethod("isDefaultSpace", boolean.class, SpaceID.class); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void isDefaultSpaceUUID() {
+		assertMethod("isDefaultSpace", boolean.class, UUID.class); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void isInDefaultSpace() {
+		assertMethod("isInDefaultSpace", boolean.class, Event.class); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void isDefaultContextAgentContext() {
+		assertMethod("isDefaultContext", boolean.class, AgentContext.class); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void isDefaultContextUUID() {
+		assertMethod("isDefaultContext", boolean.class, UUID.class); //$NON-NLS-1$
 	}
 
 }
