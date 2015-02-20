@@ -74,8 +74,10 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XbaseFactory;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
-import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
+import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
+import org.eclipse.xtext.xtype.XImportDeclaration;
+import org.eclipse.xtext.xtype.XImportSection;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
@@ -105,9 +107,6 @@ public class SARLCodeGenerator {
 
 	@Inject
 	private ActionSignatureProvider actionSignatureProvider;
-
-	@Inject
-	private JvmModelAssociator jvmModelAssociator;
 
 	private final String sarlFileExtension;
 
@@ -504,7 +503,7 @@ public class SARLCodeGenerator {
 			throw new IllegalArgumentException("the parameter 'type' must contains a valid type"); //$NON-NLS-1$
 		}
 		return createFormalParameter(code, container, name, type,
-				createXExpression(defaultValue, resourceSet));
+				createXExpression(defaultValue, resourceSet, code.getImportManager()));
 	}
 
 	/** Create an expression.
@@ -512,9 +511,12 @@ public class SARLCodeGenerator {
 	 * @param expression - the texutal representation of the expression.
 	 * @param resourceSet - the set of resources in which this function could
 	 * create temporary resources for compiling the default value.
+	 * @param importManager - the manager of the imports that is used for importing the types.
+	 * This parameter could be <code>null</code>.
 	 * @return the SARL formal parameter.
 	 */
-	public XExpression createXExpression(String expression, ResourceSet resourceSet)  {
+	public XExpression createXExpression(String expression, ResourceSet resourceSet,
+			ImportManager importManager)  {
 		XExpression xExpression = null;
 		if (!Strings.isNullOrEmpty(expression)) {
 			URI uri = computeUnusedUri(resourceSet);
@@ -528,9 +530,18 @@ public class SARLCodeGenerator {
 				resource.load(is, null);
 				EObject content = resource.getContents().isEmpty() ? null : resource.getContents().get(0);
 				if (content != null) {
-					Agent ag = (Agent) ((SarlScript) content).getElements().get(0);
+					SarlScript script = (SarlScript) content;
+					Agent ag = (Agent) script.getElements().get(0);
 					Attribute attr = (Attribute) ag.getFeatures().get(0);
 					xExpression = attr.getInitialValue();
+					if (importManager != null) {
+						XImportSection importSection = script.getImportSection();
+						if (importSection != null) {
+							for (XImportDeclaration importDeclaration : importSection.getImportDeclarations()) {
+								importManager.addImportFor(importDeclaration.getImportedType());
+							}
+						}	
+					}
 				}
 			} catch (Throwable _) {
 				//
@@ -730,81 +741,75 @@ public class SARLCodeGenerator {
 	/** Replies the SARL Ecore equivalent for the givne JVM Ecore element.
 	 *
 	 * @param operation - the JVM Ecore element.
-	 * @param exploreAssociatedModel - indicates if the associated model (supported
-	 * by {@link JvmModelAssociator}) should be considered.
+	 * @param importManager - the manager of the imports that is used for importing the types.
+	 * This parameter could be <code>null</code>.
 	 * @return the SARL Ecore element.
 	 */
-	public Action createAction(JvmOperation operation, boolean exploreAssociatedModel) {
-		if (exploreAssociatedModel) {
-			EObject o = this.jvmModelAssociator.getPrimarySourceElement(operation);
-			if (o instanceof Action) {
-				return (Action) o;
-			}
-		}
+	public Action createAction(JvmOperation operation, ImportManager importManager) {
 		Action action = SarlFactory.eINSTANCE.createAction();
 		// Name
 		action.setName(operation.getSimpleName());
 		// Return types
 		JvmTypeReference typeReference = cloneType(operation.getReturnType());
 		action.setType(typeReference);
+		updateImports(typeReference, importManager);
 		// Parameters
 		action.setVarargs(operation.isVarArgs());
-		createExecutableFeatureParameters(operation, action.getParams());
+		createExecutableFeatureParameters(operation, action.getParams(), importManager);
 		// Fired events
-		createExecutableFeatureFireEvents(operation, action.getFiredEvents());
+		createExecutableFeatureFireEvents(operation, action.getFiredEvents(), importManager);
 		return action;
+	}
+
+	private static void updateImports(JvmTypeReference type, ImportManager manager) {
+		if (manager != null && type != null) {
+			JvmType t = type.getType();
+			if (t != null) {
+				manager.addImportFor(t);
+			}
+		}
 	}
 
 	/** Replies the SARL Ecore equivalent for the givne JVM Ecore element.
 	 *
 	 * @param operation - the JVM Ecore element.
-	 * @param exploreAssociatedModel - indicates if the associated model (supported
-	 * by {@link JvmModelAssociator}) should be considered.
+	 * @param importManager - the manager of the imports that is used for importing the types.
+	 * This parameter could be <code>null</code>.
 	 * @return the SARL Ecore element.
 	 */
-	public ActionSignature createActionSignature(JvmOperation operation, boolean exploreAssociatedModel) {
-		if (exploreAssociatedModel) {
-			EObject o = this.jvmModelAssociator.getPrimarySourceElement(operation);
-			if (o instanceof ActionSignature) {
-				return (ActionSignature) o;
-			}
-		}
+	public ActionSignature createActionSignature(JvmOperation operation, ImportManager importManager) {
 		ActionSignature signature = SarlFactory.eINSTANCE.createActionSignature();
 		// Name
 		signature.setName(operation.getSimpleName());
 		// Return types
 		JvmTypeReference typeReference = cloneType(operation.getReturnType());
 		signature.setType(typeReference);
+		updateImports(typeReference, importManager);
 		// Parameters
 		signature.setVarargs(operation.isVarArgs());
-		createExecutableFeatureParameters(operation, signature.getParams());
+		createExecutableFeatureParameters(operation, signature.getParams(), importManager);
 		// Fired events
-		createExecutableFeatureFireEvents(operation, signature.getFiredEvents());
+		createExecutableFeatureFireEvents(operation, signature.getFiredEvents(), importManager);
 		return signature;
 	}
 
 	/** Replies the SARL Ecore equivalent for the givne JVM Ecore element.
 	 *
 	 * @param constructor - the JVM Ecore element.
-	 * @param exploreAssociatedModel - indicates if the associated model (supported
-	 * by {@link JvmModelAssociator}) should be considered.
+	 * @param importManager - the manager of the imports that is used for importing the types.
+	 * This parameter could be <code>null</code>.
 	 * @return the SARL Ecore element.
 	 */
-	public Constructor createConstructor(JvmConstructor constructor, boolean exploreAssociatedModel) {
-		if (exploreAssociatedModel) {
-			EObject o = this.jvmModelAssociator.getPrimarySourceElement(constructor);
-			if (o instanceof Constructor) {
-				return (Constructor) o;
-			}
-		}
+	public Constructor createConstructor(JvmConstructor constructor, ImportManager importManager) {
 		Constructor cons = SarlFactory.eINSTANCE.createConstructor();
 		// Parameters
 		cons.setVarargs(constructor.isVarArgs());
-		createExecutableFeatureParameters(constructor, cons.getParams());
+		createExecutableFeatureParameters(constructor, cons.getParams(), importManager);
 		return cons;
 	}
 
-	private void createExecutableFeatureParameters(JvmExecutable operation, List<FormalParameter> parameters) {
+	private void createExecutableFeatureParameters(JvmExecutable operation, List<FormalParameter> parameters,
+			ImportManager importManager) {
 		List<JvmFormalParameter> jvmParameters = operation.getParameters();
 		for (int i = 0; i < jvmParameters.size(); ++i) {
 			JvmFormalParameter jvmParameter = jvmParameters.get(i);
@@ -816,6 +821,7 @@ public class SARLCodeGenerator {
 			}
 			typeReference = cloneType(typeReference);
 			parameter.setParameterType(typeReference);
+			updateImports(typeReference, importManager);
 			// Default values
 			String defaultValue = findDefaultValue(
 					operation.getDeclaringType(),
@@ -823,20 +829,24 @@ public class SARLCodeGenerator {
 			if (!Strings.isNullOrEmpty(defaultValue)) {
 				XExpression defaultValueExpr = createXExpression(
 						defaultValue,
-						operation.eResource().getResourceSet());
+						operation.eResource().getResourceSet(),
+						importManager);
 				parameter.setDefaultValue(defaultValueExpr);
 			}
 			parameters.add(parameter);
 		}
 	}
 
-	private void createExecutableFeatureFireEvents(JvmExecutable operation, List<JvmParameterizedTypeReference> events) {
+	private void createExecutableFeatureFireEvents(JvmExecutable operation, List<JvmParameterizedTypeReference> events,
+			ImportManager importManager) {
 		List<JvmTypeReference> firedEvents = ModelUtil.annotationClasses(operation, FiredEvent.class);
 		if (!firedEvents.isEmpty()) {
 			for (JvmTypeReference type : firedEvents) {
 				JvmTypeReference clone = cloneType(type);
 				if (clone instanceof JvmParameterizedTypeReference) {
-					events.add((JvmParameterizedTypeReference) clone);
+					JvmParameterizedTypeReference pRef = (JvmParameterizedTypeReference) clone;
+					updateImports(pRef, importManager);
+					events.add(pRef);
 				}
 			}
 		}

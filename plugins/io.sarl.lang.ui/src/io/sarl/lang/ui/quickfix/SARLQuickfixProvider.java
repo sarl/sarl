@@ -35,12 +35,15 @@ import io.sarl.lang.validation.IssueCodes;
 
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.TypesFactory;
+import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.ILeafNode;
@@ -55,11 +58,13 @@ import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.util.Arrays;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.validation.Issue;
-import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.Functions;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 import org.eclipse.xtext.xbase.ui.quickfix.XbaseQuickfixProvider;
+import org.eclipse.xtext.xtype.XImportDeclaration;
+import org.eclipse.xtext.xtype.XImportSection;
 
 import com.google.inject.Inject;
 
@@ -79,6 +84,34 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 
 	@Inject
 	private SARLGrammarAccess grammarAccess;
+
+	@Inject
+	private TypeReferences typeReferences;
+
+	@Inject
+	private TypesFactory typeFactory;
+
+	/** Create a reference to the given type.
+	 *
+	 * @param typeName - the name of the type.
+	 * @param context - the SARL context.
+	 * @return the type reference.
+	 */
+	protected JvmParameterizedTypeReference newTypeRef(String typeName, EObject context) {
+		JvmType type = this.typeReferences.findDeclaredType(typeName, context);
+		if (type == null) {
+			type = this.typeReferences.findDeclaredType("java.lang." + typeName, context); //$NON-NLS-1$
+			if (type == null) {
+				type = this.typeReferences.findDeclaredType("java.lang.Object", context); //$NON-NLS-1$
+			}
+		}
+		if (type == null) {
+			return null;
+		}
+		JvmParameterizedTypeReference reference = this.typeFactory.createJvmParameterizedTypeReference();
+		reference.setType(type);
+		return reference;
+	}
 
 	/**
 	 * Remove element with the spaces before.
@@ -325,6 +358,24 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 		return node.getEndOffset();
 	}
 
+	/** Replies the position where to insert an import declaration in the given script.
+	 *
+	 * @param script - the script for which the import declaration insertion point must be declared.
+	 * @return the insertion position.
+	 */
+	protected static int getImportInsertOffset(SarlScript script) {
+//		FIXME:if (script.getImportSection() == null || script.getImportSection().getImportDeclarations().isEmpty()) {
+//			ICompositeNode node = NodeModelUtils.findActualNodeFor(script);
+//			if (Strings.isEmpty(script.getName())) {
+//				// Insert at the beginning of the script
+//				return 0;
+//			}
+//			throw new UnsupportedOperationException();
+//		}
+		ICompositeNode node = NodeModelUtils.findActualNodeFor(script.getImportSection());
+		return node.getEndOffset();
+	}
+
 	/** Replies the size of a sequence of whitespaces.
 	 *
 	 * @param document - the document to read.
@@ -416,6 +467,26 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 				@Override
 				public void apply(EObject element, IModificationContext context) throws Exception {
 					remove(element, Attribute.class, context);
+				}
+
+				/** Quick fix for "Duplicate field".
+				 *
+				 * @param issue - the issue.
+				 * @param acceptor - the quick fix acceptor.
+				 */
+				@Fix(IssueCodes.DUPLICATE_FIELD)
+				public void fixDuplicateAttribute(Issue issue, IssueResolutionAcceptor acceptor) {
+					if (issue.getData() != null && issue.getData().length == 1) {
+						QualifiedName duplicateName = qualifiedName(issue.getData()[0]);
+						String msg = MessageFormat.format(Messages.SARLQuickfixProvider_2, duplicateName.getLastSegment());
+						acceptor.accept(issue, msg, msg, null, new ISemanticModification() {
+							@SuppressWarnings("synthetic-access")
+							@Override
+							public void apply(EObject element, IModificationContext context) throws Exception {
+								remove(element, Attribute.class, context);
+							}
+						});
+					}
 				}
 			});
 		}
@@ -543,7 +614,7 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 							if (!removeToNextSeparator(issue, document, sep)) {
 								removeToPreviousKeyword(issue, document,
 										SARLQuickfixProvider.this.grammarAccess.getSkillAccess()
-											.getImplementsKeyword_3_1_0().getValue());
+										.getImplementsKeyword_3_1_0().getValue());
 							}
 						}
 					}
@@ -670,9 +741,9 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 						if (!removeToNextSeparator(issue, document, sep)) {
 							removeToPreviousKeyword(issue, document,
 									SARLQuickfixProvider.this.grammarAccess.getRequiredCapacityAccess()
-										.getRequiresKeyword_1().getValue(),
+									.getRequiresKeyword_1().getValue(),
 									SARLQuickfixProvider.this.grammarAccess.getCapacityUsesAccess()
-										.getUsesKeyword_1().getValue());
+									.getUsesKeyword_1().getValue());
 						}
 					}
 				}
@@ -702,7 +773,7 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 						if (!removeToNextSeparator(issue, document, sep)) {
 							removeToPreviousKeyword(issue, document,
 									SARLQuickfixProvider.this.grammarAccess.getActionSignatureAccess()
-										.getFiresKeyword_5_0().getValue());
+									.getFiresKeyword_5_0().getValue());
 						}
 					}
 				}
@@ -732,7 +803,7 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 						if (!removeToNextSeparator(issue, document, sep)) {
 							removeToPreviousKeyword(issue, document,
 									SARLQuickfixProvider.this.grammarAccess.getSkillAccess()
-										.getImplementsKeyword_3_1_0().getValue());
+									.getImplementsKeyword_3_1_0().getValue());
 						}
 					}
 				}
@@ -791,9 +862,9 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 						if (!removeToNextSeparator(issue, document, sep)) {
 							removeToPreviousKeyword(issue, document,
 									SARLQuickfixProvider.this.grammarAccess.getSkillAccess()
-										.getImplementsKeyword_3_1_0().getValue(),
+									.getImplementsKeyword_3_1_0().getValue(),
 									SARLQuickfixProvider.this.grammarAccess.getAgentAccess()
-										.getExtendsKeyword_3_0().getValue());
+									.getExtendsKeyword_3_0().getValue());
 						}
 					}
 				}
@@ -823,9 +894,9 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 						if (!removeToNextSeparator(issue, document, sep)) {
 							removeToPreviousKeyword(issue, document,
 									SARLQuickfixProvider.this.grammarAccess.getSkillAccess()
-										.getImplementsKeyword_3_1_0().getValue(),
+									.getImplementsKeyword_3_1_0().getValue(),
 									SARLQuickfixProvider.this.grammarAccess.getAgentAccess()
-										.getExtendsKeyword_3_0().getValue());
+									.getExtendsKeyword_3_0().getValue());
 						}
 					}
 				}
@@ -888,16 +959,19 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 	 * @param issue - the issue.
 	 * @param acceptor - the quick fix acceptor.
 	 */
-	@SuppressWarnings("unchecked")
 	@Fix(IssueCodes.MISSING_METHOD_IMPLEMENTATION)
-	public void fixMissingMethodImplementation(Issue issue, IssueResolutionAcceptor acceptor) {
-		if (issue.getData() != null && issue.getData().length >= 1) {
+	public void fixMissingMethodImplementation(final Issue issue, IssueResolutionAcceptor acceptor) {
+		if (issue.getData() != null && issue.getData().length > 0) {
 			StringBuffer lines = new StringBuffer();
-			final Map<String, String> methods = CollectionLiterals.newTreeMap(null);
-			for (int i = 0; i < issue.getData().length; i += 2) {
-				String meth = issue.getData()[i];
-				lines.append(MessageFormat.format(Messages.SARLQuickfixProvider_14, meth));
-				methods.put(meth, issue.getData()[i + 1]);
+			String[] data = issue.getData();
+			int i;
+			for (i = 0; i < data.length && !Strings.isEmpty(data[i]); ++i) {
+				// Search for the end of the import declarations
+			}
+			++i;
+			final int startIndex = i;
+			for (; i < data.length; i += 2) {
+				lines.append(MessageFormat.format(Messages.SARLQuickfixProvider_14, data[i]));
 			}
 			String description = MessageFormat.format(Messages.SARLQuickfixProvider_15, lines);
 			acceptor.accept(issue, Messages.SARLQuickfixProvider_16, description, null, new ISemanticModification() {
@@ -906,8 +980,14 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 				public void apply(EObject element, IModificationContext context) throws Exception {
 					FeatureContainer container = EcoreUtil2.getContainerOfType(element, FeatureContainer.class);
 					if (container != null) {
-						int insertOffset = getInsertOffset(container);
+						SarlScript script = EcoreUtil2.getContainerOfType(element, SarlScript.class);
+						assert (script != null);
+						String[] data = issue.getData();
+						assert (data != null && data.length > 0);
 						IXtextDocument document = context.getXtextDocument();
+
+						// Add missed functions
+						int insertOffset = getInsertOffset(container);
 						int length = getSpaceSize(document, insertOffset);
 						ReplacingAppendable appendable = SARLQuickfixProvider.this.appendableFactory.create(document,
 								(XtextResource) element.eResource(), insertOffset, length);
@@ -915,20 +995,46 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 						if (initialIndent) {
 							appendable.increaseIndentation();
 						}
-						for (Entry<String, String> meth : methods.entrySet()) {
-							appendable.newLine().append(meth.getKey()).append(" {"); //$NON-NLS-1$
+						appendable.newLine().newLine();
+						for (int j = startIndex; j < data.length; j += 2) {
+							appendable.append(data[j]).append(" {"); //$NON-NLS-1$
 							appendable.increaseIndentation();
 							appendable.newLine().append("// TODO ").append(//$NON-NLS-1$
 									io.sarl.lang.genmodel.Messages.SARLCodeGenerator_0);
-							String value = meth.getValue();
-							if (!com.google.common.base.Strings.isNullOrEmpty(value)) {
-								appendable.newLine().append(value);
+							if (!com.google.common.base.Strings.isNullOrEmpty(data[j + 1])) {
+								appendable.newLine().append(data[j + 1]);
 							}
 							appendable.decreaseIndentation();
-							appendable.newLine().append("}"); //$NON-NLS-1$
+							appendable.newLine().append("}").newLine().newLine(); //$NON-NLS-1$
 						}
 						appendable.decreaseIndentation();
-						appendable.newLine();
+						appendable.commitChanges();
+
+						// Add missed imports
+						insertOffset = getImportInsertOffset(script);
+						appendable = SARLQuickfixProvider.this.appendableFactory.create(document,
+								(XtextResource) element.eResource(), insertOffset, 0);
+						ImportManager importManager = new ImportManager();
+						XImportSection importSection = script.getImportSection();
+						if (importSection != null) {
+							for (XImportDeclaration declaration : importSection.getImportDeclarations()) {
+								JvmDeclaredType type = declaration.getImportedType();
+								if (type != null) {
+									importManager.addImportFor(type);
+								}
+							}
+						}
+						for (int j = 0; j < (startIndex - 1); ++j) {
+							JvmParameterizedTypeReference typeRef = newTypeRef(data[j], container);
+							if (typeRef != null && importManager.addImportFor(typeRef.getType())) {
+								appendable.newLine();
+								appendable.append(
+										SARLQuickfixProvider.this.grammarAccess
+										.getXImportDeclarationAccess().getImportKeyword_0().getValue());
+								appendable.append(" "); //$NON-NLS-1$
+								appendable.append(typeRef.getQualifiedName());
+							}
+						}
 						appendable.commitChanges();
 					}
 				}
@@ -1017,7 +1123,7 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 						removeToPreviousKeyword(issue, document,
 								SARLQuickfixProvider.this.grammarAccess.getCapacityUsesAccess().getUsesKeyword_1().getValue(),
 								SARLQuickfixProvider.this.grammarAccess.getRequiredCapacityAccess()
-									.getRequiresKeyword_1().getValue());
+								.getRequiresKeyword_1().getValue());
 					}
 				}
 			}
@@ -1046,7 +1152,7 @@ public class SARLQuickfixProvider extends XbaseQuickfixProvider {
 						removeToPreviousKeyword(issue, document,
 								SARLQuickfixProvider.this.grammarAccess.getCapacityUsesAccess().getUsesKeyword_1().getValue(),
 								SARLQuickfixProvider.this.grammarAccess.getRequiredCapacityAccess()
-									.getRequiresKeyword_1().getValue());
+								.getRequiresKeyword_1().getValue());
 					}
 				}
 			}

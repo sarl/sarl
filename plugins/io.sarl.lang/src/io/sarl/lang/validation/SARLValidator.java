@@ -92,6 +92,7 @@ import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
+import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider;
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
@@ -101,6 +102,7 @@ import org.eclipse.xtext.xbase.lib.ReassignFirstArgument;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
@@ -137,7 +139,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private SARLCodeGenerator codeGenerator;
-
+	
 	@Inject
 	private ISerializer serializer;
 
@@ -799,24 +801,20 @@ public class SARLValidator extends AbstractSARLValidator {
 
 				// Now, we are sure that there is missed operations
 				if (!operationsToImplement.isEmpty()) {
-					List<String> data = CollectionLiterals.newArrayList();
+					ImportManager importManager = new ImportManager();
+					List<String> data = CollectionLiterals.newLinkedList();
 					Iterator<JvmOperation> iterator = operationsToImplement.values().iterator();
 					while (iterator.hasNext()) {
 						JvmOperation value = iterator.next();
 						if (!ModelUtil.hasAnnotation(value, Generated.class)) {
 							// Get quick fix information
-							ActionSignature signature = this.codeGenerator.createActionSignature(value, true);
-							String sarlCode = this.serializer.serialize(signature);
+							ActionSignature signature = this.codeGenerator.createActionSignature(value, importManager);
+							String sarlCode = ModelUtil.getActionSignatureString(signature, this.serializer,
+									this.grammarAccess, importManager);
 							// Sometimes, the serializer added tabular and new line characters to the sarlCode
 							// due to the formating rules.
 							sarlCode = sarlCode.trim();
-							// Remove the "def" keyword
-							String cleanedSarlCode = sarlCode.replaceFirst(
-									"^" //$NON-NLS-1$
-									+ Pattern.quote(
-											this.grammarAccess.getActionSignatureAccess().getDefKeyword_1().getValue())
-									+ "\\s*", //$NON-NLS-1$
-									""); //$NON-NLS-1$
+							// Add the data for the quick fix
 							data.add(sarlCode);
 							JvmTypeReference returnType = value.getReturnType();
 							LightweightTypeReference lwRef;
@@ -826,24 +824,36 @@ public class SARLValidator extends AbstractSARLValidator {
 								lwRef = toLightweightTypeReference(returnType);
 							}
 							data.add(ModelUtil.getDefaultValueForType(lwRef));
+							// Generate a simplified name
+							String simplifiedName = 
+									sarlCode.replaceFirst(
+											"^\\s*" //$NON-NLS-1$
+											+ Pattern.quote(
+													this.grammarAccess.getActionSignatureAccess().getDefKeyword_1().getValue())
+											+ "\\s+", //$NON-NLS-1$
+											""); //$NON-NLS-1$
 							// Generate the error
 							if (iterator.hasNext()) {
 								// No need to quick fix
 								error(
 										MessageFormat.format(
 												Messages.SARLValidator_18,
-												cleanedSarlCode),
+												simplifiedName),
 										element,
 										SarlPackage.Literals.NAMED_ELEMENT__NAME,
 										ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 										IssueCodes.MISSING_METHOD_IMPLEMENTATION);
 							} else {
+								// Finalize the data collection to send to the quick fix module
+								data.add(0, Strings.nullToEmpty(null));
+								data.addAll(0, importManager.getImports());
+								//
 								String[] dataArray = new String[data.size()];
 								data.toArray(dataArray);
 								error(
 										MessageFormat.format(
 												Messages.SARLValidator_18,
-												cleanedSarlCode),
+												simplifiedName),
 										element,
 										SarlPackage.Literals.NAMED_ELEMENT__NAME,
 										ValidationMessageAcceptor.INSIGNIFICANT_INDEX,

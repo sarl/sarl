@@ -43,6 +43,7 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
@@ -70,6 +71,25 @@ public abstract class AbstractSarlTest {
 	 */
 	@Rule
 	public TestWatcher rootSarlWatchter = new TestWatcher() {
+		private boolean isMockable() {
+			Class<?> type = AbstractSarlTest.this.getClass();
+			while (type != null && !Object.class.equals(type)) {
+				for (Field field : type.getDeclaredFields()) {
+					if (field.getAnnotation(Mock.class) != null
+						|| field.getAnnotation(InjectMocks.class) != null) {
+						return true;
+					}
+				}
+				type = type.getSuperclass();
+			}
+			return false;
+		}
+		@Override
+		protected void starting(Description description) {
+			if (isMockable()) {
+				MockitoAnnotations.initMocks(AbstractSarlTest.this);
+			}
+		}
 		@Override
 		protected void finished(Description description) {
 			// Clear the references to the mock objects or the injected objects

@@ -20,6 +20,11 @@
  */
 package io.sarl.lang.util;
 
+import io.sarl.lang.sarl.ActionSignature;
+import io.sarl.lang.sarl.FormalParameter;
+import io.sarl.lang.services.SARLGrammarAccess;
+import io.sarl.lang.services.SARLGrammarAccess.ActionSignatureElements;
+import io.sarl.lang.services.SARLGrammarAccess.FormalParameterElements;
 import io.sarl.lang.signature.ActionKey;
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.SignatureKey;
@@ -44,6 +49,8 @@ import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.serializer.ISerializer;
+import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
@@ -633,4 +640,90 @@ public final class ModelUtil {
 		return defaultValue;
 	}
 
+	/** This is a context-safe serializer of a signature.
+	 *
+	 * @param signature - the signature to serialize.
+	 * @param serializer - the Xtext serializer
+	 * @param grammarAccess - the accessor to the SARL grammar.
+	 * @param importManager - used to collect the types to import.
+	 * If <code>null</code>, the qualified names of the types with be put in the signature.
+	 * @return the string representation of the signature.
+	 */
+	public static String getActionSignatureString(ActionSignature signature, ISerializer serializer,
+			SARLGrammarAccess grammarAccess, ImportManager importManager) {
+		// Try the serializer
+		try {
+			//TODO: Check if there is a way to serialize without context
+			return serializer.serialize(signature);
+		} catch (Throwable _) {
+			// No working, perhaps the context's of the signature is unknown
+		}
+		ActionSignatureElements signatureElements = grammarAccess.getActionSignatureAccess();
+		StringBuilder b = new StringBuilder();
+		b.append(signatureElements.getDefKeyword_1().getValue());
+		b.append(' ');
+		b.append(signature.getName());
+		if (!signature.getParams().isEmpty()) {
+			b.append(signatureElements.getLeftParenthesisKeyword_3_0().getValue());
+			int idx = signature.getParams().size() - 1;
+			for (int i = 0; i < idx; ++i) {
+				addParamToSignature(b, signature.getParams().get(i), false, grammarAccess, importManager, serializer);
+				b.append(signatureElements.getCommaKeyword_3_1_1_0().getValue());
+				b.append(' ');
+			}
+			addParamToSignature(b, signature.getParams().get(idx), signature.isVarargs(), grammarAccess,
+					importManager, serializer);
+			b.append(signatureElements.getRightParenthesisKeyword_3_2().getValue());
+		}
+		JvmTypeReference returnType = signature.getType();
+		if (returnType != null && !"void".equals(returnType.getIdentifier())) { //$NON-NLS-1$
+			b.append(' ');
+			b.append(signatureElements.getColonKeyword_4_0().getValue());
+			b.append(' ');
+			b.append(getSignatureType(returnType, importManager));
+		}
+		if (!signature.getFiredEvents().isEmpty()) {
+			b.append(' ');
+			b.append(signatureElements.getFiresKeyword_5_0().getValue());
+			b.append(' ');
+			boolean addComa = false;
+			for (JvmTypeReference eventType : signature.getFiredEvents()) {
+				if (addComa) {
+					b.append(signatureElements.getCommaKeyword_5_2_0().getValue());
+					b.append(' ');
+				} else {
+					addComa = true;
+				}
+				b.append(getSignatureType(eventType, importManager));
+			}
+		}
+		return b.toString();
+	}
+	
+	private static void addParamToSignature(StringBuilder signature, FormalParameter parameter, boolean isVarargs,
+			SARLGrammarAccess grammarAccess, ImportManager importManager, ISerializer serializer) {
+		FormalParameterElements elements = grammarAccess.getFormalParameterAccess();
+		signature.append(parameter.getName());
+		signature.append(' ');
+		signature.append(elements.getColonKeyword_1().getValue());
+		signature.append(' ');
+		signature.append(getSignatureType(parameter.getParameterType(), importManager));
+		if (isVarargs) {
+			signature.append(grammarAccess.getVarArgTokenAccess().getAsteriskKeyword().getValue());
+		} else if (parameter.getDefaultValue() != null) {
+			signature.append(' ');
+			signature.append(elements.getEqualsSignKeyword_3_0().getValue());
+			signature.append(' ');
+			signature.append(serializer.serialize(parameter.getDefaultValue()));
+		}
+	}
+	
+	private static String getSignatureType(JvmTypeReference type, ImportManager importManager) {
+		if (importManager != null) {
+			importManager.addImportFor(type.getType());
+			return type.getSimpleName();
+		}
+		return type.getIdentifier();
+	}
+	
 }

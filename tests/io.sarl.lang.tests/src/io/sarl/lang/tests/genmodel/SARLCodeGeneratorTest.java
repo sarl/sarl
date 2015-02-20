@@ -53,6 +53,7 @@ import io.sarl.tests.api.Nullable;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.notify.Adapter;
@@ -90,6 +91,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -127,6 +130,20 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class SARLCodeGeneratorTest {
 
+	/** Check if the import manager contains the given elements.
+	 *
+	 * @param importManager - the import manager.
+	 * @param importDeclarations - the expected import declarations.
+	 */
+	protected static void assertImports(ImportManager importManager, String... importDeclarations) {
+		List<String> imports = importManager.getImports();
+		assertEquals("Invalid number of import declarations", importDeclarations.length, imports.size());
+		for (String declaration : importDeclarations) {
+			assertTrue("Expecting import declaration: " + declaration,
+					imports.contains(declaration));
+		}
+	}
+	
 	@RunWith(XtextRunner.class)
 	@InjectWith(SARLInjectorProvider.class)
 	public static class InjectedAttributes extends AbstractSarlTest {
@@ -1898,17 +1915,17 @@ public class SARLCodeGeneratorTest {
 		@Inject
 		private SARLCodeGenerator gen;
 
-		@Nullable
+		@Mock
 		private GeneratedCode code;
 
-		@Nullable
+		@Mock
 		private ResourceSet eResourceSet;
+
+		@Inject
+		private ImportManager importManager;
 
 		@Before
 		public void setUp() {
-			code = mock(GeneratedCode.class);
-			eResourceSet = mock(ResourceSet.class);
-
 			Resource eResource = mock(Resource.class);
 			ResourceSet eResourceSet = mock(ResourceSet.class);
 			Resource.Factory.Registry registry = mock(Resource.Factory.Registry.class);
@@ -1939,19 +1956,21 @@ public class SARLCodeGeneratorTest {
 			when(eResourceSet.getResourceFactoryRegistry()).thenReturn(registry);
 			when(eResource.getResourceSet()).thenReturn(eResourceSet);
 		}
-
+		
 		@Test
 		public void createXExpression_null()  {
-			XExpression expr = gen.createXExpression(null, eResourceSet);
+			XExpression expr = gen.createXExpression(null, eResourceSet, this.importManager);
 			//
 			assertNull(expr);
+			assertImports(this.importManager);
 		}
 
 		@Test
 		public void createXExpression_empty()  {
-			XExpression expr = gen.createXExpression("", eResourceSet);
+			XExpression expr = gen.createXExpression("", eResourceSet, this.importManager);
 			//
 			assertNull(expr);
+			assertImports(this.importManager);
 		}
 
 	}
@@ -2116,6 +2135,9 @@ public class SARLCodeGeneratorTest {
 		@Inject
 		protected JvmModelAssociator jvmModelAssociator;
 
+		@Inject
+		private ImportManager importManager;
+
 		private JvmOperation createJvmFeature(String... sarlCode) throws Exception {
 			String sarlFilename = generateFilename();
 			SarlScript sarlScript = this.helper.createSARLScript(sarlFilename, multilineString(sarlCode));
@@ -2133,7 +2155,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2144,6 +2166,8 @@ public class SARLCodeGeneratorTest {
 			//
 			assertFalse(action.isVarargs());
 			assertEquals(0, action.getParams().size());
+			//
+			assertImports(this.importManager);
 		}
 
 		@Test
@@ -2155,7 +2179,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int) {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2171,6 +2195,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2182,7 +2208,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int*) {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2198,6 +2224,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2209,7 +2237,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int=4, c : char) {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2226,6 +2254,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2237,7 +2267,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int=4, c : char*) {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2254,6 +2284,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2264,7 +2296,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct : String { null }",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2275,6 +2307,8 @@ public class SARLCodeGeneratorTest {
 			//
 			assertFalse(action.isVarargs());
 			assertEquals(0, action.getParams().size());
+			//
+			assertImports(this.importManager);
 		}
 
 		@Test
@@ -2286,7 +2320,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int) : String { null }",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2302,6 +2336,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2313,7 +2349,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int*) : String { null }",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2329,6 +2365,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2340,7 +2378,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int=4, c : char) : String { null }",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2357,6 +2395,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2368,7 +2408,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int=4, c : char*) : String { null }",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2385,6 +2425,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2396,7 +2438,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2410,6 +2452,8 @@ public class SARLCodeGeneratorTest {
 			//
 			assertFalse(action.isVarargs());
 			assertEquals(0, action.getParams().size());
+			//
+			assertImports(this.importManager);
 		}
 
 		@Test
@@ -2422,7 +2466,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2441,6 +2485,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2453,7 +2499,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2472,6 +2518,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2484,7 +2532,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2504,6 +2552,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2516,7 +2566,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2536,6 +2586,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2547,7 +2599,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2561,6 +2613,8 @@ public class SARLCodeGeneratorTest {
 			//
 			assertFalse(action.isVarargs());
 			assertEquals(0, action.getParams().size());
+			//
+			assertImports(this.importManager);
 		}
 
 		@Test
@@ -2573,7 +2627,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2592,6 +2646,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2604,7 +2660,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2623,6 +2679,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2635,7 +2693,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2655,6 +2713,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2667,7 +2727,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, false);
+			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			Action action = (Action) feature;
@@ -2687,6 +2747,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 	}
@@ -2701,6 +2763,9 @@ public class SARLCodeGeneratorTest {
 		 */
 		@Inject
 		protected JvmModelAssociator jvmModelAssociator;
+		
+		@Inject
+		private ImportManager importManager;
 
 		private JvmConstructor createJvmFeature(String... sarlCode) throws Exception {
 			String sarlFilename = generateFilename();
@@ -2719,13 +2784,15 @@ public class SARLCodeGeneratorTest {
 					"	new() {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createConstructor(cons, false);
+			ParameterizedFeature feature = this.generator.createConstructor(cons, this.importManager);
 			//
 			assertNotNull(feature);
 			Constructor action = (Constructor) feature;
 			//
 			assertFalse(action.isVarargs());
 			assertEquals(0, action.getParams().size());
+			//
+			assertImports(this.importManager);
 		}
 
 		@Test
@@ -2737,7 +2804,7 @@ public class SARLCodeGeneratorTest {
 					"	new (a : URL, b : int) {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createConstructor(cons, false);
+			ParameterizedFeature feature = this.generator.createConstructor(cons, this.importManager);
 			//
 			assertNotNull(feature);
 			Constructor action = (Constructor) feature;
@@ -2749,6 +2816,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2760,7 +2829,7 @@ public class SARLCodeGeneratorTest {
 					"	new (a : URL, b : int*) {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createConstructor(cons, false);
+			ParameterizedFeature feature = this.generator.createConstructor(cons, this.importManager);
 			//
 			assertNotNull(feature);
 			Constructor action = (Constructor) feature;
@@ -2772,6 +2841,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2783,7 +2854,7 @@ public class SARLCodeGeneratorTest {
 					"	new (a : URL, b : int=4, c : char) {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createConstructor(cons, false);
+			ParameterizedFeature feature = this.generator.createConstructor(cons, this.importManager);
 			//
 			assertNotNull(feature);
 			Constructor action = (Constructor) feature;
@@ -2796,6 +2867,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2807,7 +2880,7 @@ public class SARLCodeGeneratorTest {
 					"	new (a : URL, b : int=4, c : char*) {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createConstructor(cons, false);
+			ParameterizedFeature feature = this.generator.createConstructor(cons, this.importManager);
 			//
 			assertNotNull(feature);
 			Constructor action = (Constructor) feature;
@@ -2820,6 +2893,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 	}
@@ -2834,6 +2909,9 @@ public class SARLCodeGeneratorTest {
 		 */
 		@Inject
 		protected JvmModelAssociator jvmModelAssociator;
+		
+		@Inject
+		private ImportManager importManager;
 
 		private JvmOperation createJvmFeature(String... sarlCode) throws Exception {
 			String sarlFilename = generateFilename();
@@ -2852,7 +2930,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -2863,6 +2941,8 @@ public class SARLCodeGeneratorTest {
 			//
 			assertFalse(action.isVarargs());
 			assertEquals(0, action.getParams().size());
+			//
+			assertImports(this.importManager);
 		}
 
 		@Test
@@ -2874,7 +2954,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int)",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -2890,6 +2970,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2901,7 +2983,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int*)",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -2917,6 +2999,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2928,7 +3012,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int=4, c : char)",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -2945,6 +3029,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2956,7 +3042,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int=4, c : char*)",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -2973,6 +3059,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -2983,7 +3071,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct : String",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -2994,6 +3082,8 @@ public class SARLCodeGeneratorTest {
 			//
 			assertFalse(action.isVarargs());
 			assertEquals(0, action.getParams().size());
+			//
+			assertImports(this.importManager);
 		}
 
 		@Test
@@ -3005,7 +3095,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int) : String",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -3021,6 +3111,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -3032,7 +3124,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int*) : String",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -3048,6 +3140,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -3059,7 +3153,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int=4, c : char) : String",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -3076,6 +3170,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -3087,7 +3183,7 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int=4, c : char*) : String",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -3104,6 +3200,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -3115,7 +3213,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -3129,6 +3227,8 @@ public class SARLCodeGeneratorTest {
 			//
 			assertFalse(action.isVarargs());
 			assertEquals(0, action.getParams().size());
+			//
+			assertImports(this.importManager);
 		}
 
 		@Test
@@ -3141,7 +3241,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -3160,6 +3260,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -3172,7 +3274,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -3191,6 +3293,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -3203,7 +3307,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -3223,6 +3327,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -3235,7 +3341,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -3255,6 +3361,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -3266,7 +3374,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -3280,6 +3388,8 @@ public class SARLCodeGeneratorTest {
 			//
 			assertFalse(action.isVarargs());
 			assertEquals(0, action.getParams().size());
+			//
+			assertImports(this.importManager);
 		}
 
 		@Test
@@ -3292,7 +3402,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -3311,6 +3421,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -3323,7 +3435,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -3342,6 +3454,8 @@ public class SARLCodeGeneratorTest {
 			assertParameterDefaultValues(action.getParams(),
 					null,
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -3354,7 +3468,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -3374,6 +3488,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 		@Test
@@ -3386,7 +3502,7 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, false);
+			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
 			//
 			assertNotNull(feature);
 			ActionSignature action = (ActionSignature) feature;
@@ -3406,6 +3522,8 @@ public class SARLCodeGeneratorTest {
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			//
+			assertImports(this.importManager, "java.net.URL");
 		}
 
 	}
