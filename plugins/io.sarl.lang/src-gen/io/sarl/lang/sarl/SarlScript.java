@@ -6,6 +6,8 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
 
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+
 import org.eclipse.xtext.xtype.XImportSection;
 
 /**
@@ -82,7 +84,7 @@ public interface SarlScript extends EObject
 
   /**
    * Returns the value of the '<em><b>Elements</b></em>' containment reference list.
-   * The list contents are of type {@link io.sarl.lang.sarl.TopElement}.
+   * The list contents are of type {@link org.eclipse.xtend.core.xtend.XtendTypeDeclaration}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Elements</em>' containment reference list isn't clear,
@@ -94,6 +96,6 @@ public interface SarlScript extends EObject
    * @model containment="true"
    * @generated
    */
-  EList<TopElement> getElements();
+  EList<XtendTypeDeclaration> getElements();
 
 } // SarlScript

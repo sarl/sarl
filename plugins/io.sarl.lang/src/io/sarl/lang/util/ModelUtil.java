@@ -20,11 +20,11 @@
  */
 package io.sarl.lang.util;
 
-import io.sarl.lang.sarl.ActionSignature;
-import io.sarl.lang.sarl.FormalParameter;
+import io.sarl.lang.sarl.SarlActionSignature;
+import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.services.SARLGrammarAccess;
-import io.sarl.lang.services.SARLGrammarAccess.ActionSignatureElements;
-import io.sarl.lang.services.SARLGrammarAccess.FormalParameterElements;
+import io.sarl.lang.services.SARLGrammarAccess.ParameterElements;
+import io.sarl.lang.services.SARLGrammarAccess.SarlActionSignatureElements;
 import io.sarl.lang.signature.ActionKey;
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.SignatureKey;
@@ -649,7 +649,7 @@ public final class ModelUtil {
 	 * If <code>null</code>, the qualified names of the types with be put in the signature.
 	 * @return the string representation of the signature.
 	 */
-	public static String getActionSignatureString(ActionSignature signature, ISerializer serializer,
+	public static String getActionSignatureString(SarlActionSignature signature, ISerializer serializer,
 			SARLGrammarAccess grammarAccess, ImportManager importManager) {
 		// Try the serializer
 		try {
@@ -658,24 +658,24 @@ public final class ModelUtil {
 		} catch (Throwable _) {
 			// No working, perhaps the context's of the signature is unknown
 		}
-		ActionSignatureElements signatureElements = grammarAccess.getActionSignatureAccess();
+		SarlActionSignatureElements signatureElements = grammarAccess.getSarlActionSignatureAccess();
 		StringBuilder b = new StringBuilder();
-		b.append(signatureElements.getDefKeyword_1().getValue());
+		b.append(signature.getModifiers().get(0));
 		b.append(' ');
 		b.append(signature.getName());
-		if (!signature.getParams().isEmpty()) {
+		if (!signature.getParameters().isEmpty()) {
 			b.append(signatureElements.getLeftParenthesisKeyword_3_0().getValue());
-			int idx = signature.getParams().size() - 1;
+			int idx = signature.getParameters().size() - 1;
 			for (int i = 0; i < idx; ++i) {
-				addParamToSignature(b, signature.getParams().get(i), false, grammarAccess, importManager, serializer);
+				addParamToSignature(b, signature.getParameters().get(i), false, grammarAccess, importManager, serializer);
 				b.append(signatureElements.getCommaKeyword_3_1_1_0().getValue());
 				b.append(' ');
 			}
-			addParamToSignature(b, signature.getParams().get(idx), signature.isVarargs(), grammarAccess,
+			addParamToSignature(b, signature.getParameters().get(idx), signature.isVarargs(), grammarAccess,
 					importManager, serializer);
 			b.append(signatureElements.getRightParenthesisKeyword_3_2().getValue());
 		}
-		JvmTypeReference returnType = signature.getType();
+		JvmTypeReference returnType = signature.getReturnType();
 		if (returnType != null && !"void".equals(returnType.getIdentifier())) { //$NON-NLS-1$
 			b.append(' ');
 			b.append(signatureElements.getColonKeyword_4_0().getValue());
@@ -700,9 +700,9 @@ public final class ModelUtil {
 		return b.toString();
 	}
 
-	private static void addParamToSignature(StringBuilder signature, FormalParameter parameter, boolean isVarargs,
+	private static void addParamToSignature(StringBuilder signature, SarlFormalParameter parameter, boolean isVarargs,
 			SARLGrammarAccess grammarAccess, ImportManager importManager, ISerializer serializer) {
-		FormalParameterElements elements = grammarAccess.getFormalParameterAccess();
+		ParameterElements elements = grammarAccess.getParameterAccess();
 		signature.append(parameter.getName());
 		signature.append(' ');
 		signature.append(elements.getColonKeyword_1().getValue());

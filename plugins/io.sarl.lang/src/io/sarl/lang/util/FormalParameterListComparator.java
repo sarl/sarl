@@ -20,12 +20,11 @@
  */
 package io.sarl.lang.util;
 
-import io.sarl.lang.sarl.FormalParameter;
-
 import java.util.Comparator;
 import java.util.Iterator;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 
 /**
@@ -36,7 +35,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class FormalParameterListComparator implements Comparator<EList<FormalParameter>> {
+public class FormalParameterListComparator implements Comparator<EList<? extends XtendParameter>> {
 
 	/** Construct a comparator of formal parameter lists.
 	 */
@@ -45,7 +44,7 @@ public class FormalParameterListComparator implements Comparator<EList<FormalPar
 	}
 
 	@Override
-	public int compare(EList<FormalParameter> a, EList<FormalParameter> b) {
+	public int compare(EList<? extends XtendParameter> a, EList<? extends XtendParameter> b) {
 		if (a == b) {
 			return 0;
 		}
@@ -57,8 +56,8 @@ public class FormalParameterListComparator implements Comparator<EList<FormalPar
 		}
 		int cmp = Integer.compare(a.size(), b.size());
 		if (cmp == 0) {
-			Iterator<FormalParameter> i1 = a.iterator();
-			Iterator<FormalParameter> i2 = b.iterator();
+			Iterator<? extends XtendParameter> i1 = a.iterator();
+			Iterator<? extends XtendParameter> i2 = b.iterator();
 			while (cmp == 0 && i1.hasNext() && i2.hasNext()) {
 				cmp = compare(i1.next(), i2.next());
 			}
@@ -75,7 +74,7 @@ public class FormalParameterListComparator implements Comparator<EList<FormalPar
 	 * <code>p1</code> is greater than <code>p2</code>,
 	 * otherwise <code>0</code>.
 	 */
-	public static int compare(FormalParameter p1, FormalParameter p2) {
+	public static int compare(XtendParameter p1, XtendParameter p2) {
 		if (p1 != p2) {
 			if (p1 == null) {
 				return Integer.MIN_VALUE;

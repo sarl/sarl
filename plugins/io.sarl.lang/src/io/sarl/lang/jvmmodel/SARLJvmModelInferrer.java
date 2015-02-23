@@ -31,23 +31,11 @@ import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Percept;
-import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.ActionSignature;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.Attribute;
-import io.sarl.lang.sarl.Behavior;
-import io.sarl.lang.sarl.BehaviorUnit;
-import io.sarl.lang.sarl.Capacity;
-import io.sarl.lang.sarl.CapacityUses;
-import io.sarl.lang.sarl.Constructor;
-import io.sarl.lang.sarl.Event;
-import io.sarl.lang.sarl.FeatureContainer;
-import io.sarl.lang.sarl.FormalParameter;
-import io.sarl.lang.sarl.ImplementingElement;
-import io.sarl.lang.sarl.InheritingElement;
-import io.sarl.lang.sarl.ParameterizedFeature;
-import io.sarl.lang.sarl.Skill;
-import io.sarl.lang.sarl.TopElement;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.signature.ActionKey;
 import io.sarl.lang.signature.ActionNameKey;
 import io.sarl.lang.signature.ActionSignatureProvider;
@@ -177,16 +165,16 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 
 	@Override
 	public void infer(EObject object, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		if (object instanceof Agent) {
-			_infer((Agent) object, acceptor, isPreIndexingPhase);
-		} else if (object instanceof Behavior) {
-			_infer((Behavior) object, acceptor, isPreIndexingPhase);
-		} else if (object instanceof Capacity) {
-			_infer((Capacity) object, acceptor, isPreIndexingPhase);
-		} else if (object instanceof Event) {
-			_infer((Event) object, acceptor, isPreIndexingPhase);
-		} else if (object instanceof Skill) {
-			_infer((Skill) object, acceptor, isPreIndexingPhase);
+		if (object instanceof SarlAgent) {
+			_infer((SarlAgent) object, acceptor, isPreIndexingPhase);
+		} else if (object instanceof SarlBehavior) {
+			_infer((SarlBehavior) object, acceptor, isPreIndexingPhase);
+		} else if (object instanceof SarlCapacity) {
+			_infer((SarlCapacity) object, acceptor, isPreIndexingPhase);
+		} else if (object instanceof SarlEvent) {
+			_infer((SarlEvent) object, acceptor, isPreIndexingPhase);
+		} else if (object instanceof SarlSkill) {
+			_infer((SarlSkill) object, acceptor, isPreIndexingPhase);
 		} else {
 			super.infer(object, acceptor, isPreIndexingPhase);
 		}
@@ -214,7 +202,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 *            rely on linking using the index if isPreIndexingPhase is
 	 *            <code>true</code>.
 	 */
-	protected void _infer(Event event, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	protected void _infer(SarlEvent event, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		QualifiedName qn = this.nameProvider.getFullyQualifiedName(event);
 		if (qn == null) {
 			return;
@@ -245,7 +233,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 *            rely on linking using the index if isPreIndexingPhase is
 	 *            <code>true</code>.
 	 */
-	protected void _infer(Capacity capacity, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	protected void _infer(SarlCapacity capacity, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		QualifiedName qn = this.nameProvider.getFullyQualifiedName(capacity);
 		if (qn == null) {
 			return;
@@ -276,7 +264,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 *            rely on linking using the index if isPreIndexingPhase is
 	 *            <code>true</code>.
 	 */
-	protected void _infer(Skill skill, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	protected void _infer(SarlSkill skill, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		QualifiedName qn = this.nameProvider.getFullyQualifiedName(skill);
 		if (qn == null) {
 			return;
@@ -307,7 +295,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 *            rely on linking using the index if isPreIndexingPhase is
 	 *            <code>true</code>.
 	 */
-	protected void _infer(Behavior behavior, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	protected void _infer(SarlBehavior behavior, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		QualifiedName qn = this.nameProvider.getFullyQualifiedName(behavior);
 		if (qn == null) {
 			return;
@@ -338,7 +326,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 *            rely on linking using the index if isPreIndexingPhase is
 	 *            <code>true</code>.
 	 */
-	protected void _infer(Agent agent, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	protected void _infer(SarlAgent agent, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		QualifiedName qn = this.nameProvider.getFullyQualifiedName(agent);
 		if (qn == null) {
 			return;
@@ -1743,12 +1731,12 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	protected class AgentGenerator extends AbstractGenerator<Agent> {
+	protected class AgentGenerator extends AbstractGenerator<SarlAgent> {
 
 		/**
 		 * @param agent - the agent.
 		 */
-		public AgentGenerator(Agent agent) {
+		public AgentGenerator(SarlAgent agent) {
 			super(agent);
 		}
 

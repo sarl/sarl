@@ -26,7 +26,6 @@ var projectName = "io.sarl.lang"
 var grammarURI = "platform:/resource/${projectName}/src/io/sarl/lang/SARL.xtext"
 var runtimeProject = "../${projectName}"
 var testPluginPath = "../../tests/io.sarl.lang.tests"
-var generateXtendStub = true
 var encoding = "UTF-8"
 
 Workflow {
@@ -44,13 +43,20 @@ Workflow {
     		from = "platform:/resource/org.eclipse.xtext.common.types/"
     		to = "classpath:/"
     	}
+    	uriMap = {
+    		from = "platform:/resource/org.eclipse.xtend.core/"
+    		to = "classpath:/"
+    	}
+    	uriMap = {
+    		from = "platform:/resource/org.eclipse.xtend.core.xtend/"
+    		to = "classpath:/"
+    	}
     	
     	// register current projects and its siblings for platform URI map, as they are not on the classpath.
     	platformUri = "${runtimeProject}/.."
     	
-    	// The following two lines can be removed, if Xbase is not used.
-    	registerGeneratedEPackage = "org.eclipse.xtext.xbase.XbasePackage"
-    	registerGenModelFile = "platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel"
+    	registerGeneratedEPackage = "org.eclipse.xtend.core.xtend.XtendPackage"
+    	registerGenModelFile = "platform:/resource/org.eclipse.xtend.core/model/Xtend.genmodel"
     }
     
     component = DirectoryCleaner {
@@ -94,6 +100,7 @@ Workflow {
     		// serializer 2.0
     		fragment = serializer.SerializerFragment auto-inject {
     			generateStub = false
+    			generateXtendStub = false
     		}
     
     		// a custom ResourceFactory for use with EMF
@@ -106,8 +113,8 @@ Workflow {
     		  }
     		}
     
-    		// Xtend-based API for validation
-    		fragment = validation.ValidatorFragment auto-inject {
+    		// API for validation
+    		fragment = validation.JavaValidatorFragment auto-inject {
     		//    composedCheck = "org.eclipse.xtext.validation.ImportUriValidator"
     		//    composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
     		}
@@ -117,28 +124,40 @@ Workflow {
     		// fragment = exporting.SimpleNamesFragment auto-inject {}
     
     		// scoping and exporting API
-    		fragment = scoping.ImportNamespacesScopingFragment auto-inject {}
+    		fragment = scoping.ImportNamespacesScopingFragment auto-inject {
+    			generateXtendStub = false
+    		}
     		fragment = exporting.QualifiedNamesFragment auto-inject {}
     		fragment = builder.BuilderIntegrationFragment auto-inject {}
     
     		// generator API
-    		fragment = generator.GeneratorFragment auto-inject {}
+    		fragment = generator.GeneratorFragment auto-inject {
+    			generateXtendMain = false
+    		}
     
     		// formatter API
-    		fragment = formatting.FormatterFragment auto-inject {}
+    		fragment = formatting.FormatterFragment auto-inject {
+    			generateXtendStub = false
+    		}
     
     		// labeling API
-    		fragment = labeling.LabelProviderFragment auto-inject {}
+    		fragment = labeling.LabelProviderFragment auto-inject {
+    			generateXtendStub = false
+    		}
     
     		// outline API
-    		fragment = outline.OutlineTreeProviderFragment auto-inject {}
+    		fragment = outline.OutlineTreeProviderFragment auto-inject {
+    			generateXtendStub = false
+    		}
     		fragment = outline.QuickOutlineFragment auto-inject {}
     
     		// quickfix API
-    		fragment = quickfix.QuickfixProviderFragment auto-inject {}
+    		fragment = quickfix.QuickfixProviderFragment auto-inject {
+    			generateXtendStub = false
+    		}
     
     		// content assist API
-    		fragment = contentAssist.ContentAssistFragment auto-inject {}
+    		fragment = contentAssist.JavaBasedContentAssistFragment auto-inject {}
     
     		// generates a more lightweight Antlr parser and lexer tailored for content assist
     		fragment = parser.antlr.XtextAntlrUiGeneratorFragment auto-inject {}
@@ -158,7 +177,9 @@ Workflow {
     		fragment = types.TypesGeneratorFragment auto-inject {}
     
     		// generates the required bindings only if the grammar inherits from Xbase
-    		fragment = xbase.XbaseGeneratorFragment auto-inject {}
+    		fragment = xbase.XbaseGeneratorFragment auto-inject {
+    			generateXtendInferrer = false
+    		}
     
     		// provides a preference page for template proposals
     		fragment = templates.CodetemplatesGeneratorFragment auto-inject {}

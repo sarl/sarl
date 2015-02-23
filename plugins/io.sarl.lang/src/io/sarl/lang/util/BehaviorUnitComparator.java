@@ -20,7 +20,7 @@
  */
 package io.sarl.lang.util;
 
-import io.sarl.lang.sarl.BehaviorUnit;
+import io.sarl.lang.sarl.SarlBehaviorUnit;
 
 import java.util.Comparator;
 
@@ -34,7 +34,7 @@ import org.eclipse.xtext.xbase.XExpression;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class BehaviorUnitComparator implements Comparator<BehaviorUnit> {
+public class BehaviorUnitComparator implements Comparator<SarlBehaviorUnit> {
 
 	/** Construct a comparator of behavior units.
 	 */
@@ -43,7 +43,7 @@ public class BehaviorUnitComparator implements Comparator<BehaviorUnit> {
 	}
 
 	@Override
-	public int compare(BehaviorUnit o1, BehaviorUnit o2) {
+	public int compare(SarlBehaviorUnit o1, SarlBehaviorUnit o2) {
 		if (o1 == o2) {
 			return 0;
 		}

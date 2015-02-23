@@ -108,7 +108,7 @@ public abstract class AbstractSARLUiModule extends DefaultUiModule {
 		return io.sarl.lang.ui.quickfix.SARLQuickfixProvider.class;
 	}
 
-	// contributed by org.eclipse.xtext.ui.generator.contentAssist.ContentAssistFragment
+	// contributed by org.eclipse.xtext.ui.generator.contentAssist.JavaBasedContentAssistFragment
 	public Class<? extends org.eclipse.xtext.ui.editor.contentassist.IContentProposalProvider> bindIContentProposalProvider() {
 		return io.sarl.lang.ui.contentassist.SARLProposalProvider.class;
 	}

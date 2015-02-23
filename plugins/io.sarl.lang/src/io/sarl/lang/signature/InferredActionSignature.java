@@ -20,7 +20,7 @@
  */
 package io.sarl.lang.signature;
 
-import io.sarl.lang.sarl.FormalParameter;
+import io.sarl.lang.sarl.SarlFormalParameter;
 
 import java.util.Map;
 
@@ -60,7 +60,7 @@ public interface InferredActionSignature extends Iterable<EList<InferredStandard
 	 *
 	 * @return the parameters.
 	 */
-	EList<FormalParameter> getFormalParameters();
+	EList<SarlFormalParameter> getFormalParameters();
 
 	/** Replies key associated to the parameters.
 	 *

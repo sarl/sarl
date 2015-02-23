@@ -20,7 +20,7 @@
  */
 package io.sarl.lang.signature;
 
-import io.sarl.lang.sarl.FormalParameter;
+import io.sarl.lang.sarl.SarlFormalParameter;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
@@ -65,7 +65,7 @@ public interface ActionSignatureProvider {
 	 * @param parameters - the list of the formal parameter to put in the signature key.
 	 * @return the id.
 	 */
-	SignatureKey createSignatureIDFromSarlModel(boolean isVarargs, EList<FormalParameter> parameters);
+	SignatureKey createSignatureIDFromSarlModel(boolean isVarargs, EList<SarlFormalParameter> parameters);
 
 	/** Build an identifier for the given parameters.
 	 *
@@ -116,7 +116,7 @@ public interface ActionSignatureProvider {
 	 * @param parameters - list of the formal parameters of the function.
 	 * @return the signature or <code>null</code> if none.
 	 */
-	InferredActionSignature createSignature(ActionNameKey id, boolean isVarargs, EList<FormalParameter> parameters);
+	InferredActionSignature createSignature(ActionNameKey id, boolean isVarargs, EList<SarlFormalParameter> parameters);
 
 	/** Replies the inferred action signature for the element with
 	 * the given ID.

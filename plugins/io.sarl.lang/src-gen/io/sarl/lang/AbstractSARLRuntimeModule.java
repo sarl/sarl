@@ -94,9 +94,9 @@ public abstract class AbstractSARLRuntimeModule extends DefaultRuntimeModule {
 		return org.eclipse.xtext.parser.antlr.UnorderedGroupHelper.class;
 	}
 
-	// contributed by org.eclipse.xtext.generator.validation.ValidatorFragment
-	@org.eclipse.xtext.service.SingletonBinding(eager=true)	public Class<? extends io.sarl.lang.validation.SARLValidator> bindSARLValidator() {
-		return io.sarl.lang.validation.SARLValidator.class;
+	// contributed by org.eclipse.xtext.generator.validation.JavaValidatorFragment
+	@org.eclipse.xtext.service.SingletonBinding(eager=true)	public Class<? extends io.sarl.lang.validation.SARLJavaValidator> bindSARLJavaValidator() {
+		return io.sarl.lang.validation.SARLJavaValidator.class;
 	}
 
 	// contributed by org.eclipse.xtext.generator.scoping.AbstractScopingFragment
@@ -332,11 +332,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultRuntimeModule {
 	// contributed by org.eclipse.xtext.generator.xbase.XbaseGeneratorFragment
 	public Class<? extends org.eclipse.xtext.validation.IResourceValidator> bindIResourceValidator() {
 		return org.eclipse.xtext.xbase.annotations.validation.DerivedStateAwareResourceValidator.class;
-	}
-
-	// contributed by org.eclipse.xtext.generator.xbase.XbaseGeneratorFragment
-	public Class<? extends org.eclipse.xtext.xbase.jvmmodel.IJvmModelInferrer> bindIJvmModelInferrer() {
-		return io.sarl.lang.jvmmodel.SARLJvmModelInferrer.class;
 	}
 
 }

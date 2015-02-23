@@ -4,7 +4,6 @@ package io.sarl.lang.sarl.impl;
 
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.TopElement;
 
 import java.util.Collection;
 
@@ -21,6 +20,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 
 import org.eclipse.xtext.xtype.XImportSection;
 
@@ -79,7 +80,7 @@ public class SarlScriptImpl extends MinimalEObjectImpl.Container implements Sarl
    * @generated
    * @ordered
    */
-  protected EList<TopElement> elements;
+  protected EList<XtendTypeDeclaration> elements;
 
   /**
    * <!-- begin-user-doc -->
@@ -178,11 +179,11 @@ public class SarlScriptImpl extends MinimalEObjectImpl.Container implements Sarl
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<TopElement> getElements()
+  public EList<XtendTypeDeclaration> getElements()
   {
     if (elements == null)
     {
-      elements = new EObjectContainmentEList<TopElement>(TopElement.class, this, SarlPackage.SARL_SCRIPT__ELEMENTS);
+      elements = new EObjectContainmentEList<XtendTypeDeclaration>(XtendTypeDeclaration.class, this, SarlPackage.SARL_SCRIPT__ELEMENTS);
     }
     return elements;
   }
@@ -244,7 +245,7 @@ public class SarlScriptImpl extends MinimalEObjectImpl.Container implements Sarl
         return;
       case SarlPackage.SARL_SCRIPT__ELEMENTS:
         getElements().clear();
-        getElements().addAll((Collection<? extends TopElement>)newValue);
+        getElements().addAll((Collection<? extends XtendTypeDeclaration>)newValue);
         return;
     }
     super.eSet(featureID, newValue);

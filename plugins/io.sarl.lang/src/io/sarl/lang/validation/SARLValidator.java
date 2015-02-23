@@ -26,25 +26,8 @@ import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.genmodel.SARLCodeGenerator;
-import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.ActionSignature;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.Attribute;
-import io.sarl.lang.sarl.Behavior;
-import io.sarl.lang.sarl.BehaviorUnit;
-import io.sarl.lang.sarl.CapacityUses;
-import io.sarl.lang.sarl.Constructor;
-import io.sarl.lang.sarl.FeatureContainer;
-import io.sarl.lang.sarl.FormalParameter;
-import io.sarl.lang.sarl.ImplementingElement;
-import io.sarl.lang.sarl.InheritingElement;
-import io.sarl.lang.sarl.NamedElement;
-import io.sarl.lang.sarl.ParameterizedFeature;
-import io.sarl.lang.sarl.RequiredCapacity;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.Skill;
-import io.sarl.lang.sarl.TopElement;
 import io.sarl.lang.services.SARLGrammarAccess;
 import io.sarl.lang.signature.ActionKey;
 import io.sarl.lang.signature.ActionNameKey;
@@ -123,7 +106,7 @@ import com.google.inject.Inject;
  * @mavenartifactid $ArtifactId$
  * @see "http://www.eclipse.org/Xtext/documentation.html#validation"
  */
-public class SARLValidator extends AbstractSARLValidator {
+public class SARLValidator extends AbstractSARLJavaValidator {
 
 	@Inject
 	private ILogicalContainerProvider logicalContainerProvider;

@@ -20,7 +20,7 @@
  */
 package io.sarl.lang.signature;
 
-import io.sarl.lang.sarl.FormalParameter;
+import io.sarl.lang.sarl.SarlFormalParameter;
 
 import org.eclipse.xtext.xbase.XExpression;
 
@@ -37,7 +37,7 @@ public class InferredValuedParameter extends InferredStandardParameter {
 	/**
 	 * @param parameter - the wrapper parameter.
 	 */
-	protected InferredValuedParameter(FormalParameter parameter) {
+	protected InferredValuedParameter(SarlFormalParameter parameter) {
 		super(parameter);
 	}
 

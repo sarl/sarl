@@ -24,21 +24,14 @@ package io.sarl.lang.genmodel;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.FiredEvent;
 import io.sarl.lang.annotation.Generated;
-import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.ActionSignature;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.Attribute;
-import io.sarl.lang.sarl.Behavior;
-import io.sarl.lang.sarl.BehaviorUnit;
-import io.sarl.lang.sarl.Capacity;
-import io.sarl.lang.sarl.Constructor;
-import io.sarl.lang.sarl.Event;
-import io.sarl.lang.sarl.FeatureContainer;
-import io.sarl.lang.sarl.FormalParameter;
-import io.sarl.lang.sarl.ParameterizedFeature;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.Skill;
+import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.util.ModelUtil;
 
@@ -246,8 +239,8 @@ public class SARLCodeGenerator {
 	 * @param superClass - the name of the super class, or <code>null</code> if the default Agent.
 	 * @return the SARL agent.
 	 */
-	public Agent createAgent(GeneratedCode code, String agentName, String superClass)  {
-		Agent agent = SarlFactory.eINSTANCE.createAgent();
+	public SarlAgent createAgent(GeneratedCode code, String agentName, String superClass)  {
+		SarlAgent agent = SarlFactory.eINSTANCE.createSarlAgent();
 		agent.setName(agentName);
 		if (!Strings.isNullOrEmpty(superClass)
 				&& !io.sarl.lang.core.Agent.class.getName().equals(superClass)) {
@@ -264,8 +257,8 @@ public class SARLCodeGenerator {
 	 * @param superClass - the name of the super class, or <code>null</code> if the default Behavior.
 	 * @return the SARL behavior.
 	 */
-	public Behavior createBehavior(GeneratedCode code, String behaviorName, String superClass)  {
-		Behavior behavior = SarlFactory.eINSTANCE.createBehavior();
+	public SarlBehavior createBehavior(GeneratedCode code, String behaviorName, String superClass)  {
+		SarlBehavior behavior = SarlFactory.eINSTANCE.createSarlBehavior();
 		behavior.setName(behaviorName);
 		if (!Strings.isNullOrEmpty(superClass)
 				&& !io.sarl.lang.core.Behavior.class.getName().equals(superClass)) {
@@ -282,8 +275,8 @@ public class SARLCodeGenerator {
 	 * @param superClass - the name of the super class, or <code>null</code> if the default Capacity.
 	 * @return the SARL capacity.
 	 */
-	public Capacity createCapacity(GeneratedCode code, String capacityName, String superClass)  {
-		Capacity capacity = SarlFactory.eINSTANCE.createCapacity();
+	public SarlCapacity createCapacity(GeneratedCode code, String capacityName, String superClass)  {
+		SarlCapacity capacity = SarlFactory.eINSTANCE.createSarlCapacity();
 		capacity.setName(capacityName);
 		if (!Strings.isNullOrEmpty(superClass)
 				&& !io.sarl.lang.core.Capacity.class.getName().equals(superClass)) {
@@ -300,8 +293,8 @@ public class SARLCodeGenerator {
 	 * @param superClass - the name of the super class, or <code>null</code> if the default Event.
 	 * @return the SARL event.
 	 */
-	public Event createEvent(GeneratedCode code, String eventName, String superClass)  {
-		Event event = SarlFactory.eINSTANCE.createEvent();
+	public SarlEvent createEvent(GeneratedCode code, String eventName, String superClass)  {
+		SarlEvent event = SarlFactory.eINSTANCE.createSarlEvent();
 		event.setName(eventName);
 		if (!Strings.isNullOrEmpty(superClass)
 				&& !io.sarl.lang.core.Event.class.getName().equals(superClass)) {
@@ -319,15 +312,15 @@ public class SARLCodeGenerator {
 	 * @param superInterfaces - the names of the super interfaces of the implemented capacities.
 	 * @return the SARL skill.
 	 */
-	public Skill createSkill(GeneratedCode code, String skillName, String superClass, Collection<String> superInterfaces)  {
-		Skill skill = SarlFactory.eINSTANCE.createSkill();
+	public SarlSkill createSkill(GeneratedCode code, String skillName, String superClass, Collection<String> superInterfaces)  {
+		SarlSkill skill = SarlFactory.eINSTANCE.createSarlSkill();
 		skill.setName(skillName);
 		if (!Strings.isNullOrEmpty(superClass)
 				&& !io.sarl.lang.core.Skill.class.getName().equals(superClass)) {
 			skill.getSuperTypes().add(newTypeRef(code, superClass, code.getSarlScript()));
 		}
 		if (!superInterfaces.isEmpty()) {
-			EList<JvmTypeReference> interfaces = skill.getImplementedTypes();
+			EList<JvmParameterizedTypeReference> interfaces = skill.getImplementedTypes();
 			for (String superInterface : superInterfaces) {
 				if (!Strings.isNullOrEmpty(superInterface)
 						&& !io.sarl.lang.core.Capacity.class.getName().equals(superInterface)) {
@@ -348,9 +341,9 @@ public class SARLCodeGenerator {
 	 * @param block - the code for the event handler, or <code>null</code> for an empty block.
 	 * @return the SARL behavior unit.
 	 */
-	public BehaviorUnit createBehaviorUnit(GeneratedCode code, FeatureContainer container,
+	public SarlBehaviorUnit createBehaviorUnit(GeneratedCode code, FeatureContainer container,
 			String eventName, XExpression guard, XBlockExpression block)  {
-		BehaviorUnit unit = SarlFactory.eINSTANCE.createBehaviorUnit();
+		SarlBehaviorUnit unit = SarlFactory.eINSTANCE.createSarlBehaviorUnit();
 		unit.setName(newTypeRef(code, eventName, container));
 		if (guard != null) {
 			unit.setGuard(guard);

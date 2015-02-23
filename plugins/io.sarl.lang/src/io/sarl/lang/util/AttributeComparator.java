@@ -20,9 +20,9 @@
  */
 package io.sarl.lang.util;
 
-import io.sarl.lang.sarl.Attribute;
-
 import java.util.Comparator;
+
+import org.eclipse.xtend.core.xtend.XtendField;
 
 /**
  * Comparator of Attribute.
@@ -32,7 +32,7 @@ import java.util.Comparator;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class AttributeComparator implements Comparator<Attribute> {
+public class AttributeComparator implements Comparator<XtendField> {
 
 	/** Construct a comparator of attributes.
 	 */
@@ -41,7 +41,7 @@ public class AttributeComparator implements Comparator<Attribute> {
 	}
 
 	@Override
-	public int compare(Attribute o1, Attribute o2) {
+	public int compare(XtendField o1, XtendField o2) {
 		if (o1 == o2) {
 			return 0;
 		}

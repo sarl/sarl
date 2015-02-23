@@ -20,7 +20,7 @@
  */
 package io.sarl.lang.signature;
 
-import io.sarl.lang.sarl.FormalParameter;
+import io.sarl.lang.sarl.SarlFormalParameter;
 
 import java.util.List;
 import java.util.Map;
@@ -62,12 +62,12 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 	}
 
 	private Map<SignatureKey, EList<InferredStandardParameter>> buildParameter(
-			FormalParameter param,
+			SarlFormalParameter param,
 			int parameterIndex,
 			JvmTypeReference paramType,
 			XExpression paramDefaultValue,
 			final int lastParamIndex,
-			List<FormalParameter> params,
+			List<SarlFormalParameter> params,
 			Map<SignatureKey, EList<InferredStandardParameter>> signatures,
 			SignatureKey fillSignatureKeyOutputParameter) {
 		boolean isOptional = (paramDefaultValue != null
@@ -114,13 +114,13 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 	}
 
 	private Map<SignatureKey, EList<InferredStandardParameter>> buildSignaturesForArgDefaultValues(
-						List<FormalParameter> params, SignatureKey fillSignatureKeyOutputParameter) {
+						List<SarlFormalParameter> params, SignatureKey fillSignatureKeyOutputParameter) {
 		Map<SignatureKey, EList<InferredStandardParameter>> signatures = new TreeMap<>();
 		fillSignatureKeyOutputParameter.clear();
 		if (!params.isEmpty()) {
 			final int lastParamIndex = params.size() - 1;
 			for (int i = 0; i <= lastParamIndex; ++i) {
-				FormalParameter param = params.get(i);
+				SarlFormalParameter param = params.get(i);
 
 				XExpression paramDefaultValue = param.getDefaultValue();
 				JvmTypeReference paramType = param.getParameterType();
@@ -163,7 +163,7 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 
 	@Override
 	public InferredActionSignature createSignature(ActionNameKey id,
-			boolean isVarargs, EList<FormalParameter> parameters) {
+			boolean isVarargs, EList<SarlFormalParameter> parameters) {
 		assert (parameters != null);
 		SignatureKey key = new SignatureKey(isVarargs, parameters.size());
 		Map<SignatureKey, EList<InferredStandardParameter>> ip = buildSignaturesForArgDefaultValues(parameters, key);
@@ -213,9 +213,9 @@ public class DefaultActionSignatureProvider implements ActionSignatureProvider {
 	}
 
 	@Override
-	public SignatureKey createSignatureIDFromSarlModel(boolean isVarargs, EList<FormalParameter> parameters) {
+	public SignatureKey createSignatureIDFromSarlModel(boolean isVarargs, EList<SarlFormalParameter> parameters) {
 		SignatureKey sig = new SignatureKey(isVarargs, parameters.size());
-		for (FormalParameter p : parameters) {
+		for (SarlFormalParameter p : parameters) {
 			if (p.getParameterType() != null) {
 				sig.add(p.getParameterType().getIdentifier());
 			}

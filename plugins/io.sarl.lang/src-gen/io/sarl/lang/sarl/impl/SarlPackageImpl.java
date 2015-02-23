@@ -2,33 +2,21 @@
  */
 package io.sarl.lang.sarl.impl;
 
-import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.ActionSignature;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.AgentFeature;
-import io.sarl.lang.sarl.Attribute;
-import io.sarl.lang.sarl.Behavior;
-import io.sarl.lang.sarl.BehaviorFeature;
-import io.sarl.lang.sarl.BehaviorUnit;
-import io.sarl.lang.sarl.Capacity;
-import io.sarl.lang.sarl.CapacityUses;
-import io.sarl.lang.sarl.Constructor;
-import io.sarl.lang.sarl.Event;
-import io.sarl.lang.sarl.EventFeature;
-import io.sarl.lang.sarl.Feature;
-import io.sarl.lang.sarl.FeatureContainer;
-import io.sarl.lang.sarl.FormalParameter;
-import io.sarl.lang.sarl.ImplementingElement;
-import io.sarl.lang.sarl.InheritingElement;
-import io.sarl.lang.sarl.NamedElement;
-import io.sarl.lang.sarl.ParameterizedFeature;
-import io.sarl.lang.sarl.RequiredCapacity;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlActionSignature;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlFactory;
+import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.Skill;
-import io.sarl.lang.sarl.SkillFeature;
-import io.sarl.lang.sarl.TopElement;
+import io.sarl.lang.sarl.SarlSkill;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -36,6 +24,8 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
+import org.eclipse.xtend.core.xtend.XtendPackage;
 
 import org.eclipse.xtext.common.types.TypesPackage;
 
@@ -63,168 +53,84 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass topElementEClass = null;
+  private EClass sarlActionSignatureEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass namedElementEClass = null;
+  private EClass sarlActionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass featureEClass = null;
+  private EClass sarlBehaviorUnitEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass featureContainerEClass = null;
+  private EClass sarlCapacityUsesEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass inheritingElementEClass = null;
+  private EClass sarlRequiredCapacityEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass implementingElementEClass = null;
+  private EClass sarlConstructorEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass eventFeatureEClass = null;
+  private EClass sarlEventEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass agentFeatureEClass = null;
+  private EClass sarlAgentEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass behaviorFeatureEClass = null;
+  private EClass sarlCapacityEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass skillFeatureEClass = null;
+  private EClass sarlBehaviorEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass parameterizedFeatureEClass = null;
+  private EClass sarlSkillEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass formalParameterEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass eventEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass capacityEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass agentEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass behaviorEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass skillEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass attributeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass capacityUsesEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass requiredCapacityEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass behaviorUnitEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass actionSignatureEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass actionEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass constructorEClass = null;
+  private EClass sarlFormalParameterEClass = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -275,8 +181,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
     isInited = true;
 
     // Initialize simple dependencies
-    XbasePackage.eINSTANCE.eClass();
-    XtypePackage.eINSTANCE.eClass();
+    XtendPackage.eINSTANCE.eClass();
 
     // Create package meta-data objects
     theSarlPackage.createPackageContents();
@@ -338,9 +243,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getTopElement()
+  public EClass getSarlActionSignature()
   {
-    return topElementEClass;
+    return sarlActionSignatureEClass;
   }
 
   /**
@@ -348,9 +253,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getNamedElement()
+  public EReference getSarlActionSignature_TypeParameters()
   {
-    return namedElementEClass;
+    return (EReference)sarlActionSignatureEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -358,9 +263,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getNamedElement_Name()
+  public EAttribute getSarlActionSignature_Name()
   {
-    return (EAttribute)namedElementEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)sarlActionSignatureEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -368,9 +273,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getFeature()
+  public EReference getSarlActionSignature_Parameters()
   {
-    return featureEClass;
+    return (EReference)sarlActionSignatureEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -378,9 +283,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getFeatureContainer()
+  public EAttribute getSarlActionSignature_Varargs()
   {
-    return featureContainerEClass;
+    return (EAttribute)sarlActionSignatureEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -388,9 +293,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getFeatureContainer_Features()
+  public EReference getSarlActionSignature_ReturnType()
   {
-    return (EReference)featureContainerEClass.getEStructuralFeatures().get(0);
+    return (EReference)sarlActionSignatureEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -398,9 +303,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getInheritingElement()
+  public EReference getSarlActionSignature_CreateExtensionInfo()
   {
-    return inheritingElementEClass;
+    return (EReference)sarlActionSignatureEClass.getEStructuralFeatures().get(5);
   }
 
   /**
@@ -408,9 +313,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getInheritingElement_SuperTypes()
+  public EReference getSarlActionSignature_Exceptions()
   {
-    return (EReference)inheritingElementEClass.getEStructuralFeatures().get(0);
+    return (EReference)sarlActionSignatureEClass.getEStructuralFeatures().get(6);
   }
 
   /**
@@ -418,9 +323,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getImplementingElement()
+  public EReference getSarlActionSignature_FiredEvents()
   {
-    return implementingElementEClass;
+    return (EReference)sarlActionSignatureEClass.getEStructuralFeatures().get(7);
   }
 
   /**
@@ -428,9 +333,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getImplementingElement_ImplementedTypes()
+  public EClass getSarlAction()
   {
-    return (EReference)implementingElementEClass.getEStructuralFeatures().get(0);
+    return sarlActionEClass;
   }
 
   /**
@@ -438,9 +343,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getEventFeature()
+  public EReference getSarlAction_TypeParameters()
   {
-    return eventFeatureEClass;
+    return (EReference)sarlActionEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -448,9 +353,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getAgentFeature()
+  public EAttribute getSarlAction_Name()
   {
-    return agentFeatureEClass;
+    return (EAttribute)sarlActionEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -458,9 +363,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getBehaviorFeature()
+  public EReference getSarlAction_Parameters()
   {
-    return behaviorFeatureEClass;
+    return (EReference)sarlActionEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -468,9 +373,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getSkillFeature()
+  public EAttribute getSarlAction_Varargs()
   {
-    return skillFeatureEClass;
+    return (EAttribute)sarlActionEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -478,9 +383,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getParameterizedFeature()
+  public EReference getSarlAction_ReturnType()
   {
-    return parameterizedFeatureEClass;
+    return (EReference)sarlActionEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -488,9 +393,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getParameterizedFeature_Params()
+  public EReference getSarlAction_CreateExtensionInfo()
   {
-    return (EReference)parameterizedFeatureEClass.getEStructuralFeatures().get(0);
+    return (EReference)sarlActionEClass.getEStructuralFeatures().get(5);
   }
 
   /**
@@ -498,9 +403,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getParameterizedFeature_Varargs()
+  public EReference getSarlAction_Exceptions()
   {
-    return (EAttribute)parameterizedFeatureEClass.getEStructuralFeatures().get(1);
+    return (EReference)sarlActionEClass.getEStructuralFeatures().get(6);
   }
 
   /**
@@ -508,9 +413,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getFormalParameter()
+  public EReference getSarlAction_FiredEvents()
   {
-    return formalParameterEClass;
+    return (EReference)sarlActionEClass.getEStructuralFeatures().get(7);
   }
 
   /**
@@ -518,9 +423,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getFormalParameter_Name()
+  public EReference getSarlAction_Expression()
   {
-    return (EAttribute)formalParameterEClass.getEStructuralFeatures().get(0);
+    return (EReference)sarlActionEClass.getEStructuralFeatures().get(8);
   }
 
   /**
@@ -528,9 +433,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getFormalParameter_ParameterType()
+  public EClass getSarlBehaviorUnit()
   {
-    return (EReference)formalParameterEClass.getEStructuralFeatures().get(1);
+    return sarlBehaviorUnitEClass;
   }
 
   /**
@@ -538,9 +443,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getFormalParameter_DefaultValue()
+  public EReference getSarlBehaviorUnit_Name()
   {
-    return (EReference)formalParameterEClass.getEStructuralFeatures().get(2);
+    return (EReference)sarlBehaviorUnitEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -548,9 +453,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getEvent()
+  public EReference getSarlBehaviorUnit_Guard()
   {
-    return eventEClass;
+    return (EReference)sarlBehaviorUnitEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -558,9 +463,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getCapacity()
+  public EReference getSarlBehaviorUnit_Body()
   {
-    return capacityEClass;
+    return (EReference)sarlBehaviorUnitEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -568,9 +473,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getAgent()
+  public EClass getSarlCapacityUses()
   {
-    return agentEClass;
+    return sarlCapacityUsesEClass;
   }
 
   /**
@@ -578,9 +483,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getBehavior()
+  public EReference getSarlCapacityUses_CapacitiesUsed()
   {
-    return behaviorEClass;
+    return (EReference)sarlCapacityUsesEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -588,9 +493,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getSkill()
+  public EClass getSarlRequiredCapacity()
   {
-    return skillEClass;
+    return sarlRequiredCapacityEClass;
   }
 
   /**
@@ -598,9 +503,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getAttribute()
+  public EReference getSarlRequiredCapacity_RequiredCapacities()
   {
-    return attributeEClass;
+    return (EReference)sarlRequiredCapacityEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -608,9 +513,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAttribute_Writeable()
+  public EClass getSarlConstructor()
   {
-    return (EAttribute)attributeEClass.getEStructuralFeatures().get(0);
+    return sarlConstructorEClass;
   }
 
   /**
@@ -618,9 +523,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAttribute_Name()
+  public EReference getSarlConstructor_TypeParameters()
   {
-    return (EAttribute)attributeEClass.getEStructuralFeatures().get(1);
+    return (EReference)sarlConstructorEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -628,9 +533,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getAttribute_Type()
+  public EReference getSarlConstructor_Parameters()
   {
-    return (EReference)attributeEClass.getEStructuralFeatures().get(2);
+    return (EReference)sarlConstructorEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -638,9 +543,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getAttribute_InitialValue()
+  public EAttribute getSarlConstructor_Varargs()
   {
-    return (EReference)attributeEClass.getEStructuralFeatures().get(3);
+    return (EAttribute)sarlConstructorEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -648,9 +553,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getCapacityUses()
+  public EReference getSarlConstructor_Exceptions()
   {
-    return capacityUsesEClass;
+    return (EReference)sarlConstructorEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -658,9 +563,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getCapacityUses_CapacitiesUsed()
+  public EReference getSarlConstructor_Expression()
   {
-    return (EReference)capacityUsesEClass.getEStructuralFeatures().get(0);
+    return (EReference)sarlConstructorEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -668,9 +573,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getRequiredCapacity()
+  public EClass getSarlEvent()
   {
-    return requiredCapacityEClass;
+    return sarlEventEClass;
   }
 
   /**
@@ -678,9 +583,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRequiredCapacity_RequiredCapacities()
+  public EReference getSarlEvent_SuperTypes()
   {
-    return (EReference)requiredCapacityEClass.getEStructuralFeatures().get(0);
+    return (EReference)sarlEventEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -688,9 +593,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getBehaviorUnit()
+  public EReference getSarlEvent_Features()
   {
-    return behaviorUnitEClass;
+    return (EReference)sarlEventEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -698,9 +603,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getBehaviorUnit_Name()
+  public EClass getSarlAgent()
   {
-    return (EReference)behaviorUnitEClass.getEStructuralFeatures().get(0);
+    return sarlAgentEClass;
   }
 
   /**
@@ -708,9 +613,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getBehaviorUnit_Guard()
+  public EReference getSarlAgent_SuperTypes()
   {
-    return (EReference)behaviorUnitEClass.getEStructuralFeatures().get(1);
+    return (EReference)sarlAgentEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -718,9 +623,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getBehaviorUnit_Body()
+  public EReference getSarlAgent_Features()
   {
-    return (EReference)behaviorUnitEClass.getEStructuralFeatures().get(2);
+    return (EReference)sarlAgentEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -728,9 +633,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getActionSignature()
+  public EClass getSarlCapacity()
   {
-    return actionSignatureEClass;
+    return sarlCapacityEClass;
   }
 
   /**
@@ -738,9 +643,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getActionSignature_Name()
+  public EReference getSarlCapacity_SuperTypes()
   {
-    return (EAttribute)actionSignatureEClass.getEStructuralFeatures().get(0);
+    return (EReference)sarlCapacityEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -748,9 +653,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getActionSignature_Type()
+  public EReference getSarlCapacity_Features()
   {
-    return (EReference)actionSignatureEClass.getEStructuralFeatures().get(1);
+    return (EReference)sarlCapacityEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -758,9 +663,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getActionSignature_FiredEvents()
+  public EClass getSarlBehavior()
   {
-    return (EReference)actionSignatureEClass.getEStructuralFeatures().get(2);
+    return sarlBehaviorEClass;
   }
 
   /**
@@ -768,9 +673,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getAction()
+  public EReference getSarlBehavior_SuperTypes()
   {
-    return actionEClass;
+    return (EReference)sarlBehaviorEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -778,9 +683,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAction_Name()
+  public EReference getSarlBehavior_Features()
   {
-    return (EAttribute)actionEClass.getEStructuralFeatures().get(0);
+    return (EReference)sarlBehaviorEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -788,9 +693,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getAction_Type()
+  public EClass getSarlSkill()
   {
-    return (EReference)actionEClass.getEStructuralFeatures().get(1);
+    return sarlSkillEClass;
   }
 
   /**
@@ -798,9 +703,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getAction_FiredEvents()
+  public EReference getSarlSkill_SuperTypes()
   {
-    return (EReference)actionEClass.getEStructuralFeatures().get(2);
+    return (EReference)sarlSkillEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -808,9 +713,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getAction_Body()
+  public EReference getSarlSkill_ImplementedTypes()
   {
-    return (EReference)actionEClass.getEStructuralFeatures().get(3);
+    return (EReference)sarlSkillEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -818,9 +723,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getConstructor()
+  public EReference getSarlSkill_Features()
   {
-    return constructorEClass;
+    return (EReference)sarlSkillEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -828,9 +733,19 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getConstructor_Body()
+  public EClass getSarlFormalParameter()
   {
-    return (EReference)constructorEClass.getEStructuralFeatures().get(0);
+    return sarlFormalParameterEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getSarlFormalParameter_DefaultValue()
+  {
+    return (EReference)sarlFormalParameterEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -868,79 +783,68 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
     createEReference(sarlScriptEClass, SARL_SCRIPT__IMPORT_SECTION);
     createEReference(sarlScriptEClass, SARL_SCRIPT__ELEMENTS);
 
-    topElementEClass = createEClass(TOP_ELEMENT);
+    sarlActionSignatureEClass = createEClass(SARL_ACTION_SIGNATURE);
+    createEReference(sarlActionSignatureEClass, SARL_ACTION_SIGNATURE__TYPE_PARAMETERS);
+    createEAttribute(sarlActionSignatureEClass, SARL_ACTION_SIGNATURE__NAME);
+    createEReference(sarlActionSignatureEClass, SARL_ACTION_SIGNATURE__PARAMETERS);
+    createEAttribute(sarlActionSignatureEClass, SARL_ACTION_SIGNATURE__VARARGS);
+    createEReference(sarlActionSignatureEClass, SARL_ACTION_SIGNATURE__RETURN_TYPE);
+    createEReference(sarlActionSignatureEClass, SARL_ACTION_SIGNATURE__CREATE_EXTENSION_INFO);
+    createEReference(sarlActionSignatureEClass, SARL_ACTION_SIGNATURE__EXCEPTIONS);
+    createEReference(sarlActionSignatureEClass, SARL_ACTION_SIGNATURE__FIRED_EVENTS);
 
-    namedElementEClass = createEClass(NAMED_ELEMENT);
-    createEAttribute(namedElementEClass, NAMED_ELEMENT__NAME);
+    sarlActionEClass = createEClass(SARL_ACTION);
+    createEReference(sarlActionEClass, SARL_ACTION__TYPE_PARAMETERS);
+    createEAttribute(sarlActionEClass, SARL_ACTION__NAME);
+    createEReference(sarlActionEClass, SARL_ACTION__PARAMETERS);
+    createEAttribute(sarlActionEClass, SARL_ACTION__VARARGS);
+    createEReference(sarlActionEClass, SARL_ACTION__RETURN_TYPE);
+    createEReference(sarlActionEClass, SARL_ACTION__CREATE_EXTENSION_INFO);
+    createEReference(sarlActionEClass, SARL_ACTION__EXCEPTIONS);
+    createEReference(sarlActionEClass, SARL_ACTION__FIRED_EVENTS);
+    createEReference(sarlActionEClass, SARL_ACTION__EXPRESSION);
 
-    featureEClass = createEClass(FEATURE);
+    sarlBehaviorUnitEClass = createEClass(SARL_BEHAVIOR_UNIT);
+    createEReference(sarlBehaviorUnitEClass, SARL_BEHAVIOR_UNIT__NAME);
+    createEReference(sarlBehaviorUnitEClass, SARL_BEHAVIOR_UNIT__GUARD);
+    createEReference(sarlBehaviorUnitEClass, SARL_BEHAVIOR_UNIT__BODY);
 
-    featureContainerEClass = createEClass(FEATURE_CONTAINER);
-    createEReference(featureContainerEClass, FEATURE_CONTAINER__FEATURES);
+    sarlCapacityUsesEClass = createEClass(SARL_CAPACITY_USES);
+    createEReference(sarlCapacityUsesEClass, SARL_CAPACITY_USES__CAPACITIES_USED);
 
-    inheritingElementEClass = createEClass(INHERITING_ELEMENT);
-    createEReference(inheritingElementEClass, INHERITING_ELEMENT__SUPER_TYPES);
+    sarlRequiredCapacityEClass = createEClass(SARL_REQUIRED_CAPACITY);
+    createEReference(sarlRequiredCapacityEClass, SARL_REQUIRED_CAPACITY__REQUIRED_CAPACITIES);
 
-    implementingElementEClass = createEClass(IMPLEMENTING_ELEMENT);
-    createEReference(implementingElementEClass, IMPLEMENTING_ELEMENT__IMPLEMENTED_TYPES);
+    sarlConstructorEClass = createEClass(SARL_CONSTRUCTOR);
+    createEReference(sarlConstructorEClass, SARL_CONSTRUCTOR__TYPE_PARAMETERS);
+    createEReference(sarlConstructorEClass, SARL_CONSTRUCTOR__PARAMETERS);
+    createEAttribute(sarlConstructorEClass, SARL_CONSTRUCTOR__VARARGS);
+    createEReference(sarlConstructorEClass, SARL_CONSTRUCTOR__EXCEPTIONS);
+    createEReference(sarlConstructorEClass, SARL_CONSTRUCTOR__EXPRESSION);
 
-    eventFeatureEClass = createEClass(EVENT_FEATURE);
+    sarlEventEClass = createEClass(SARL_EVENT);
+    createEReference(sarlEventEClass, SARL_EVENT__SUPER_TYPES);
+    createEReference(sarlEventEClass, SARL_EVENT__FEATURES);
 
-    agentFeatureEClass = createEClass(AGENT_FEATURE);
+    sarlAgentEClass = createEClass(SARL_AGENT);
+    createEReference(sarlAgentEClass, SARL_AGENT__SUPER_TYPES);
+    createEReference(sarlAgentEClass, SARL_AGENT__FEATURES);
 
-    behaviorFeatureEClass = createEClass(BEHAVIOR_FEATURE);
+    sarlCapacityEClass = createEClass(SARL_CAPACITY);
+    createEReference(sarlCapacityEClass, SARL_CAPACITY__SUPER_TYPES);
+    createEReference(sarlCapacityEClass, SARL_CAPACITY__FEATURES);
 
-    skillFeatureEClass = createEClass(SKILL_FEATURE);
+    sarlBehaviorEClass = createEClass(SARL_BEHAVIOR);
+    createEReference(sarlBehaviorEClass, SARL_BEHAVIOR__SUPER_TYPES);
+    createEReference(sarlBehaviorEClass, SARL_BEHAVIOR__FEATURES);
 
-    parameterizedFeatureEClass = createEClass(PARAMETERIZED_FEATURE);
-    createEReference(parameterizedFeatureEClass, PARAMETERIZED_FEATURE__PARAMS);
-    createEAttribute(parameterizedFeatureEClass, PARAMETERIZED_FEATURE__VARARGS);
+    sarlSkillEClass = createEClass(SARL_SKILL);
+    createEReference(sarlSkillEClass, SARL_SKILL__SUPER_TYPES);
+    createEReference(sarlSkillEClass, SARL_SKILL__IMPLEMENTED_TYPES);
+    createEReference(sarlSkillEClass, SARL_SKILL__FEATURES);
 
-    formalParameterEClass = createEClass(FORMAL_PARAMETER);
-    createEAttribute(formalParameterEClass, FORMAL_PARAMETER__NAME);
-    createEReference(formalParameterEClass, FORMAL_PARAMETER__PARAMETER_TYPE);
-    createEReference(formalParameterEClass, FORMAL_PARAMETER__DEFAULT_VALUE);
-
-    eventEClass = createEClass(EVENT);
-
-    capacityEClass = createEClass(CAPACITY);
-
-    agentEClass = createEClass(AGENT);
-
-    behaviorEClass = createEClass(BEHAVIOR);
-
-    skillEClass = createEClass(SKILL);
-
-    attributeEClass = createEClass(ATTRIBUTE);
-    createEAttribute(attributeEClass, ATTRIBUTE__WRITEABLE);
-    createEAttribute(attributeEClass, ATTRIBUTE__NAME);
-    createEReference(attributeEClass, ATTRIBUTE__TYPE);
-    createEReference(attributeEClass, ATTRIBUTE__INITIAL_VALUE);
-
-    capacityUsesEClass = createEClass(CAPACITY_USES);
-    createEReference(capacityUsesEClass, CAPACITY_USES__CAPACITIES_USED);
-
-    requiredCapacityEClass = createEClass(REQUIRED_CAPACITY);
-    createEReference(requiredCapacityEClass, REQUIRED_CAPACITY__REQUIRED_CAPACITIES);
-
-    behaviorUnitEClass = createEClass(BEHAVIOR_UNIT);
-    createEReference(behaviorUnitEClass, BEHAVIOR_UNIT__NAME);
-    createEReference(behaviorUnitEClass, BEHAVIOR_UNIT__GUARD);
-    createEReference(behaviorUnitEClass, BEHAVIOR_UNIT__BODY);
-
-    actionSignatureEClass = createEClass(ACTION_SIGNATURE);
-    createEAttribute(actionSignatureEClass, ACTION_SIGNATURE__NAME);
-    createEReference(actionSignatureEClass, ACTION_SIGNATURE__TYPE);
-    createEReference(actionSignatureEClass, ACTION_SIGNATURE__FIRED_EVENTS);
-
-    actionEClass = createEClass(ACTION);
-    createEAttribute(actionEClass, ACTION__NAME);
-    createEReference(actionEClass, ACTION__TYPE);
-    createEReference(actionEClass, ACTION__FIRED_EVENTS);
-    createEReference(actionEClass, ACTION__BODY);
-
-    constructorEClass = createEClass(CONSTRUCTOR);
-    createEReference(constructorEClass, CONSTRUCTOR__BODY);
+    sarlFormalParameterEClass = createEClass(SARL_FORMAL_PARAMETER);
+    createEReference(sarlFormalParameterEClass, SARL_FORMAL_PARAMETER__DEFAULT_VALUE);
   }
 
   /**
@@ -969,6 +873,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
     // Obtain other dependent packages
     XtypePackage theXtypePackage = (XtypePackage)EPackage.Registry.INSTANCE.getEPackage(XtypePackage.eNS_URI);
+    XtendPackage theXtendPackage = (XtendPackage)EPackage.Registry.INSTANCE.getEPackage(XtendPackage.eNS_URI);
     TypesPackage theTypesPackage = (TypesPackage)EPackage.Registry.INSTANCE.getEPackage(TypesPackage.eNS_URI);
     XbasePackage theXbasePackage = (XbasePackage)EPackage.Registry.INSTANCE.getEPackage(XbasePackage.eNS_URI);
 
@@ -977,108 +882,87 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
     // Set bounds for type parameters
 
     // Add supertypes to classes
-    featureEClass.getESuperTypes().add(this.getEventFeature());
-    featureEClass.getESuperTypes().add(this.getAgentFeature());
-    featureEClass.getESuperTypes().add(this.getBehaviorFeature());
-    featureEClass.getESuperTypes().add(this.getSkillFeature());
-    featureContainerEClass.getESuperTypes().add(this.getNamedElement());
-    inheritingElementEClass.getESuperTypes().add(this.getTopElement());
-    inheritingElementEClass.getESuperTypes().add(this.getFeatureContainer());
-    implementingElementEClass.getESuperTypes().add(this.getTopElement());
-    implementingElementEClass.getESuperTypes().add(this.getInheritingElement());
-    parameterizedFeatureEClass.getESuperTypes().add(this.getFeature());
-    eventEClass.getESuperTypes().add(this.getInheritingElement());
-    capacityEClass.getESuperTypes().add(this.getInheritingElement());
-    agentEClass.getESuperTypes().add(this.getInheritingElement());
-    behaviorEClass.getESuperTypes().add(this.getInheritingElement());
-    skillEClass.getESuperTypes().add(this.getImplementingElement());
-    attributeEClass.getESuperTypes().add(this.getFeature());
-    capacityUsesEClass.getESuperTypes().add(this.getFeature());
-    requiredCapacityEClass.getESuperTypes().add(this.getFeature());
-    behaviorUnitEClass.getESuperTypes().add(this.getFeature());
-    actionSignatureEClass.getESuperTypes().add(this.getParameterizedFeature());
-    actionEClass.getESuperTypes().add(this.getParameterizedFeature());
-    constructorEClass.getESuperTypes().add(this.getParameterizedFeature());
+    sarlActionSignatureEClass.getESuperTypes().add(theXtendPackage.getXtendMember());
+    sarlActionEClass.getESuperTypes().add(theXtendPackage.getXtendMember());
+    sarlBehaviorUnitEClass.getESuperTypes().add(theXtendPackage.getXtendMember());
+    sarlCapacityUsesEClass.getESuperTypes().add(theXtendPackage.getXtendMember());
+    sarlRequiredCapacityEClass.getESuperTypes().add(theXtendPackage.getXtendMember());
+    sarlConstructorEClass.getESuperTypes().add(theXtendPackage.getXtendMember());
+    sarlEventEClass.getESuperTypes().add(theXtendPackage.getXtendTypeDeclaration());
+    sarlAgentEClass.getESuperTypes().add(theXtendPackage.getXtendTypeDeclaration());
+    sarlCapacityEClass.getESuperTypes().add(theXtendPackage.getXtendTypeDeclaration());
+    sarlBehaviorEClass.getESuperTypes().add(theXtendPackage.getXtendTypeDeclaration());
+    sarlSkillEClass.getESuperTypes().add(theXtendPackage.getXtendTypeDeclaration());
+    sarlFormalParameterEClass.getESuperTypes().add(theXtendPackage.getXtendParameter());
 
     // Initialize classes and features; add operations and parameters
     initEClass(sarlScriptEClass, SarlScript.class, "SarlScript", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getSarlScript_Name(), ecorePackage.getEString(), "name", null, 0, 1, SarlScript.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getSarlScript_ImportSection(), theXtypePackage.getXImportSection(), null, "importSection", null, 0, 1, SarlScript.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getSarlScript_Elements(), this.getTopElement(), null, "elements", null, 0, -1, SarlScript.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlScript_Elements(), theXtendPackage.getXtendTypeDeclaration(), null, "elements", null, 0, -1, SarlScript.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(topElementEClass, TopElement.class, "TopElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(sarlActionSignatureEClass, SarlActionSignature.class, "SarlActionSignature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSarlActionSignature_TypeParameters(), theTypesPackage.getJvmTypeParameter(), null, "typeParameters", null, 0, -1, SarlActionSignature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getSarlActionSignature_Name(), ecorePackage.getEString(), "name", null, 0, 1, SarlActionSignature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlActionSignature_Parameters(), theXtendPackage.getXtendParameter(), null, "parameters", null, 0, -1, SarlActionSignature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getSarlActionSignature_Varargs(), ecorePackage.getEBoolean(), "varargs", null, 0, 1, SarlActionSignature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlActionSignature_ReturnType(), theTypesPackage.getJvmTypeReference(), null, "returnType", null, 0, 1, SarlActionSignature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlActionSignature_CreateExtensionInfo(), theXtendPackage.getCreateExtensionInfo(), null, "createExtensionInfo", null, 0, 1, SarlActionSignature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlActionSignature_Exceptions(), theTypesPackage.getJvmTypeReference(), null, "exceptions", null, 0, -1, SarlActionSignature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlActionSignature_FiredEvents(), theTypesPackage.getJvmTypeReference(), null, "firedEvents", null, 0, -1, SarlActionSignature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(namedElementEClass, NamedElement.class, "NamedElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getNamedElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, NamedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(sarlActionEClass, SarlAction.class, "SarlAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSarlAction_TypeParameters(), theTypesPackage.getJvmTypeParameter(), null, "typeParameters", null, 0, -1, SarlAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getSarlAction_Name(), ecorePackage.getEString(), "name", null, 0, 1, SarlAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlAction_Parameters(), theXtendPackage.getXtendParameter(), null, "parameters", null, 0, -1, SarlAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getSarlAction_Varargs(), ecorePackage.getEBoolean(), "varargs", null, 0, 1, SarlAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlAction_ReturnType(), theTypesPackage.getJvmTypeReference(), null, "returnType", null, 0, 1, SarlAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlAction_CreateExtensionInfo(), theXtendPackage.getCreateExtensionInfo(), null, "createExtensionInfo", null, 0, 1, SarlAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlAction_Exceptions(), theTypesPackage.getJvmTypeReference(), null, "exceptions", null, 0, -1, SarlAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlAction_FiredEvents(), theTypesPackage.getJvmTypeReference(), null, "firedEvents", null, 0, -1, SarlAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlAction_Expression(), theXbasePackage.getXExpression(), null, "expression", null, 0, 1, SarlAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(featureEClass, Feature.class, "Feature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(sarlBehaviorUnitEClass, SarlBehaviorUnit.class, "SarlBehaviorUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSarlBehaviorUnit_Name(), theTypesPackage.getJvmParameterizedTypeReference(), null, "name", null, 0, 1, SarlBehaviorUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlBehaviorUnit_Guard(), theXbasePackage.getXExpression(), null, "guard", null, 0, 1, SarlBehaviorUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlBehaviorUnit_Body(), theXbasePackage.getXExpression(), null, "body", null, 0, 1, SarlBehaviorUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(featureContainerEClass, FeatureContainer.class, "FeatureContainer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getFeatureContainer_Features(), ecorePackage.getEObject(), null, "features", null, 0, -1, FeatureContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(sarlCapacityUsesEClass, SarlCapacityUses.class, "SarlCapacityUses", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSarlCapacityUses_CapacitiesUsed(), theTypesPackage.getJvmParameterizedTypeReference(), null, "capacitiesUsed", null, 0, -1, SarlCapacityUses.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(inheritingElementEClass, InheritingElement.class, "InheritingElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getInheritingElement_SuperTypes(), theTypesPackage.getJvmParameterizedTypeReference(), null, "superTypes", null, 0, -1, InheritingElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(sarlRequiredCapacityEClass, SarlRequiredCapacity.class, "SarlRequiredCapacity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSarlRequiredCapacity_RequiredCapacities(), theTypesPackage.getJvmParameterizedTypeReference(), null, "requiredCapacities", null, 0, -1, SarlRequiredCapacity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(implementingElementEClass, ImplementingElement.class, "ImplementingElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getImplementingElement_ImplementedTypes(), theTypesPackage.getJvmTypeReference(), null, "implementedTypes", null, 0, -1, ImplementingElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(sarlConstructorEClass, SarlConstructor.class, "SarlConstructor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSarlConstructor_TypeParameters(), theTypesPackage.getJvmTypeParameter(), null, "typeParameters", null, 0, -1, SarlConstructor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlConstructor_Parameters(), theXtendPackage.getXtendParameter(), null, "parameters", null, 0, -1, SarlConstructor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getSarlConstructor_Varargs(), ecorePackage.getEBoolean(), "varargs", null, 0, 1, SarlConstructor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlConstructor_Exceptions(), theTypesPackage.getJvmTypeReference(), null, "exceptions", null, 0, -1, SarlConstructor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlConstructor_Expression(), theXbasePackage.getXExpression(), null, "expression", null, 0, 1, SarlConstructor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(eventFeatureEClass, EventFeature.class, "EventFeature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(sarlEventEClass, SarlEvent.class, "SarlEvent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSarlEvent_SuperTypes(), theTypesPackage.getJvmParameterizedTypeReference(), null, "superTypes", null, 0, -1, SarlEvent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlEvent_Features(), theXtendPackage.getXtendMember(), null, "features", null, 0, -1, SarlEvent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(agentFeatureEClass, AgentFeature.class, "AgentFeature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(sarlAgentEClass, SarlAgent.class, "SarlAgent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSarlAgent_SuperTypes(), theTypesPackage.getJvmParameterizedTypeReference(), null, "superTypes", null, 0, -1, SarlAgent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlAgent_Features(), theXtendPackage.getXtendMember(), null, "features", null, 0, -1, SarlAgent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(behaviorFeatureEClass, BehaviorFeature.class, "BehaviorFeature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(sarlCapacityEClass, SarlCapacity.class, "SarlCapacity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSarlCapacity_SuperTypes(), theTypesPackage.getJvmParameterizedTypeReference(), null, "superTypes", null, 0, -1, SarlCapacity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlCapacity_Features(), theXtendPackage.getXtendMember(), null, "features", null, 0, -1, SarlCapacity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(skillFeatureEClass, SkillFeature.class, "SkillFeature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(sarlBehaviorEClass, SarlBehavior.class, "SarlBehavior", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSarlBehavior_SuperTypes(), theTypesPackage.getJvmParameterizedTypeReference(), null, "superTypes", null, 0, -1, SarlBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlBehavior_Features(), theXtendPackage.getXtendMember(), null, "features", null, 0, -1, SarlBehavior.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(parameterizedFeatureEClass, ParameterizedFeature.class, "ParameterizedFeature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getParameterizedFeature_Params(), this.getFormalParameter(), null, "params", null, 0, -1, ParameterizedFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getParameterizedFeature_Varargs(), ecorePackage.getEBoolean(), "varargs", null, 0, 1, ParameterizedFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(sarlSkillEClass, SarlSkill.class, "SarlSkill", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSarlSkill_SuperTypes(), theTypesPackage.getJvmParameterizedTypeReference(), null, "superTypes", null, 0, -1, SarlSkill.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlSkill_ImplementedTypes(), theTypesPackage.getJvmParameterizedTypeReference(), null, "implementedTypes", null, 0, -1, SarlSkill.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSarlSkill_Features(), theXtendPackage.getXtendMember(), null, "features", null, 0, -1, SarlSkill.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(formalParameterEClass, FormalParameter.class, "FormalParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getFormalParameter_Name(), ecorePackage.getEString(), "name", null, 0, 1, FormalParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getFormalParameter_ParameterType(), theTypesPackage.getJvmTypeReference(), null, "parameterType", null, 0, 1, FormalParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getFormalParameter_DefaultValue(), theXbasePackage.getXExpression(), null, "defaultValue", null, 0, 1, FormalParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(eventEClass, Event.class, "Event", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(capacityEClass, Capacity.class, "Capacity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(agentEClass, Agent.class, "Agent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(behaviorEClass, Behavior.class, "Behavior", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(skillEClass, Skill.class, "Skill", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(attributeEClass, Attribute.class, "Attribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getAttribute_Writeable(), ecorePackage.getEBoolean(), "writeable", null, 0, 1, Attribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getAttribute_Name(), ecorePackage.getEString(), "name", null, 0, 1, Attribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getAttribute_Type(), theTypesPackage.getJvmTypeReference(), null, "type", null, 0, 1, Attribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getAttribute_InitialValue(), theXbasePackage.getXExpression(), null, "initialValue", null, 0, 1, Attribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(capacityUsesEClass, CapacityUses.class, "CapacityUses", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getCapacityUses_CapacitiesUsed(), theTypesPackage.getJvmParameterizedTypeReference(), null, "capacitiesUsed", null, 0, -1, CapacityUses.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(requiredCapacityEClass, RequiredCapacity.class, "RequiredCapacity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getRequiredCapacity_RequiredCapacities(), theTypesPackage.getJvmParameterizedTypeReference(), null, "requiredCapacities", null, 0, -1, RequiredCapacity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(behaviorUnitEClass, BehaviorUnit.class, "BehaviorUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getBehaviorUnit_Name(), theTypesPackage.getJvmParameterizedTypeReference(), null, "name", null, 0, 1, BehaviorUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBehaviorUnit_Guard(), theXbasePackage.getXExpression(), null, "guard", null, 0, 1, BehaviorUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBehaviorUnit_Body(), theXbasePackage.getXExpression(), null, "body", null, 0, 1, BehaviorUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(actionSignatureEClass, ActionSignature.class, "ActionSignature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getActionSignature_Name(), ecorePackage.getEString(), "name", null, 0, 1, ActionSignature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getActionSignature_Type(), theTypesPackage.getJvmTypeReference(), null, "type", null, 0, 1, ActionSignature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getActionSignature_FiredEvents(), theTypesPackage.getJvmParameterizedTypeReference(), null, "firedEvents", null, 0, -1, ActionSignature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(actionEClass, Action.class, "Action", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getAction_Name(), ecorePackage.getEString(), "name", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getAction_Type(), theTypesPackage.getJvmTypeReference(), null, "type", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getAction_FiredEvents(), theTypesPackage.getJvmParameterizedTypeReference(), null, "firedEvents", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getAction_Body(), theXbasePackage.getXExpression(), null, "body", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(constructorEClass, Constructor.class, "Constructor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getConstructor_Body(), theXbasePackage.getXExpression(), null, "body", null, 0, 1, Constructor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(sarlFormalParameterEClass, SarlFormalParameter.class, "SarlFormalParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSarlFormalParameter_DefaultValue(), theXbasePackage.getXExpression(), null, "defaultValue", null, 0, 1, SarlFormalParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Create resource
     createResource(eNS_URI);

@@ -20,7 +20,7 @@
  */
 package io.sarl.lang.signature;
 
-import io.sarl.lang.sarl.FormalParameter;
+import io.sarl.lang.sarl.SarlFormalParameter;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -39,7 +39,7 @@ import org.eclipse.emf.common.util.EList;
 public class DefaultInferredActionSignature implements InferredActionSignature {
 
 	private final Map<SignatureKey, EList<InferredStandardParameter>> inferredParameters;
-	private final EList<FormalParameter> parameters;
+	private final EList<SarlFormalParameter> parameters;
 	private final SignatureKey parameterKey;
 	private final ActionNameKey key;
 
@@ -51,7 +51,7 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 	 */
 	protected DefaultInferredActionSignature(
 			ActionNameKey key,
-			EList<FormalParameter> parameters,
+			EList<SarlFormalParameter> parameters,
 			SignatureKey parameterKey,
 			Map<SignatureKey, EList<InferredStandardParameter>> inferredParameters) {
 		this.key = key;
@@ -71,7 +71,7 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 	}
 
 	@Override
-	public EList<FormalParameter> getFormalParameters() {
+	public EList<SarlFormalParameter> getFormalParameters() {
 		return this.parameters;
 	}
 
@@ -106,8 +106,8 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 	public String toString() {
 		if (!this.parameters.isEmpty()) {
 			StringBuilder b = new StringBuilder();
-			Iterator<FormalParameter> it = this.parameters.iterator();
-			FormalParameter p = it.next();
+			Iterator<SarlFormalParameter> it = this.parameters.iterator();
+			SarlFormalParameter p = it.next();
 			b.append((p.getName() != null) ? p.getName() : null);
 			b.append(" : "); //$NON-NLS-1$
 			b.append((p.getParameterType() != null) ? p.getParameterType().getIdentifier() : null);
@@ -129,8 +129,8 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 			StringBuilder b = new StringBuilder();
 			b.append(functionName);
 			b.append("("); //$NON-NLS-1$
-			Iterator<FormalParameter> it = this.parameters.iterator();
-			FormalParameter p = it.next();
+			Iterator<SarlFormalParameter> it = this.parameters.iterator();
+			SarlFormalParameter p = it.next();
 			b.append((p.getName() != null) ? p.getName() : null);
 			b.append(" : "); //$NON-NLS-1$
 			b.append((p.getParameterType() != null) ? p.getParameterType().getIdentifier() : null);

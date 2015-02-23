@@ -65,30 +65,18 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
     switch (eClass.getClassifierID())
     {
       case SarlPackage.SARL_SCRIPT: return createSarlScript();
-      case SarlPackage.TOP_ELEMENT: return createTopElement();
-      case SarlPackage.NAMED_ELEMENT: return createNamedElement();
-      case SarlPackage.FEATURE: return createFeature();
-      case SarlPackage.FEATURE_CONTAINER: return createFeatureContainer();
-      case SarlPackage.INHERITING_ELEMENT: return createInheritingElement();
-      case SarlPackage.IMPLEMENTING_ELEMENT: return createImplementingElement();
-      case SarlPackage.EVENT_FEATURE: return createEventFeature();
-      case SarlPackage.AGENT_FEATURE: return createAgentFeature();
-      case SarlPackage.BEHAVIOR_FEATURE: return createBehaviorFeature();
-      case SarlPackage.SKILL_FEATURE: return createSkillFeature();
-      case SarlPackage.PARAMETERIZED_FEATURE: return createParameterizedFeature();
-      case SarlPackage.FORMAL_PARAMETER: return createFormalParameter();
-      case SarlPackage.EVENT: return createEvent();
-      case SarlPackage.CAPACITY: return createCapacity();
-      case SarlPackage.AGENT: return createAgent();
-      case SarlPackage.BEHAVIOR: return createBehavior();
-      case SarlPackage.SKILL: return createSkill();
-      case SarlPackage.ATTRIBUTE: return createAttribute();
-      case SarlPackage.CAPACITY_USES: return createCapacityUses();
-      case SarlPackage.REQUIRED_CAPACITY: return createRequiredCapacity();
-      case SarlPackage.BEHAVIOR_UNIT: return createBehaviorUnit();
-      case SarlPackage.ACTION_SIGNATURE: return createActionSignature();
-      case SarlPackage.ACTION: return createAction();
-      case SarlPackage.CONSTRUCTOR: return createConstructor();
+      case SarlPackage.SARL_ACTION_SIGNATURE: return createSarlActionSignature();
+      case SarlPackage.SARL_ACTION: return createSarlAction();
+      case SarlPackage.SARL_BEHAVIOR_UNIT: return createSarlBehaviorUnit();
+      case SarlPackage.SARL_CAPACITY_USES: return createSarlCapacityUses();
+      case SarlPackage.SARL_REQUIRED_CAPACITY: return createSarlRequiredCapacity();
+      case SarlPackage.SARL_CONSTRUCTOR: return createSarlConstructor();
+      case SarlPackage.SARL_EVENT: return createSarlEvent();
+      case SarlPackage.SARL_AGENT: return createSarlAgent();
+      case SarlPackage.SARL_CAPACITY: return createSarlCapacity();
+      case SarlPackage.SARL_BEHAVIOR: return createSarlBehavior();
+      case SarlPackage.SARL_SKILL: return createSarlSkill();
+      case SarlPackage.SARL_FORMAL_PARAMETER: return createSarlFormalParameter();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -110,10 +98,10 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public TopElement createTopElement()
+  public SarlActionSignature createSarlActionSignature()
   {
-    TopElementImpl topElement = new TopElementImpl();
-    return topElement;
+    SarlActionSignatureImpl sarlActionSignature = new SarlActionSignatureImpl();
+    return sarlActionSignature;
   }
 
   /**
@@ -121,10 +109,10 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public NamedElement createNamedElement()
+  public SarlAction createSarlAction()
   {
-    NamedElementImpl namedElement = new NamedElementImpl();
-    return namedElement;
+    SarlActionImpl sarlAction = new SarlActionImpl();
+    return sarlAction;
   }
 
   /**
@@ -132,10 +120,10 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public Feature createFeature()
+  public SarlBehaviorUnit createSarlBehaviorUnit()
   {
-    FeatureImpl feature = new FeatureImpl();
-    return feature;
+    SarlBehaviorUnitImpl sarlBehaviorUnit = new SarlBehaviorUnitImpl();
+    return sarlBehaviorUnit;
   }
 
   /**
@@ -143,10 +131,10 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public FeatureContainer createFeatureContainer()
+  public SarlCapacityUses createSarlCapacityUses()
   {
-    FeatureContainerImpl featureContainer = new FeatureContainerImpl();
-    return featureContainer;
+    SarlCapacityUsesImpl sarlCapacityUses = new SarlCapacityUsesImpl();
+    return sarlCapacityUses;
   }
 
   /**
@@ -154,10 +142,10 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public InheritingElement createInheritingElement()
+  public SarlRequiredCapacity createSarlRequiredCapacity()
   {
-    InheritingElementImpl inheritingElement = new InheritingElementImpl();
-    return inheritingElement;
+    SarlRequiredCapacityImpl sarlRequiredCapacity = new SarlRequiredCapacityImpl();
+    return sarlRequiredCapacity;
   }
 
   /**
@@ -165,10 +153,10 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public ImplementingElement createImplementingElement()
+  public SarlConstructor createSarlConstructor()
   {
-    ImplementingElementImpl implementingElement = new ImplementingElementImpl();
-    return implementingElement;
+    SarlConstructorImpl sarlConstructor = new SarlConstructorImpl();
+    return sarlConstructor;
   }
 
   /**
@@ -176,10 +164,10 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public EventFeature createEventFeature()
+  public SarlEvent createSarlEvent()
   {
-    EventFeatureImpl eventFeature = new EventFeatureImpl();
-    return eventFeature;
+    SarlEventImpl sarlEvent = new SarlEventImpl();
+    return sarlEvent;
   }
 
   /**
@@ -187,10 +175,10 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public AgentFeature createAgentFeature()
+  public SarlAgent createSarlAgent()
   {
-    AgentFeatureImpl agentFeature = new AgentFeatureImpl();
-    return agentFeature;
+    SarlAgentImpl sarlAgent = new SarlAgentImpl();
+    return sarlAgent;
   }
 
   /**
@@ -198,10 +186,10 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public BehaviorFeature createBehaviorFeature()
+  public SarlCapacity createSarlCapacity()
   {
-    BehaviorFeatureImpl behaviorFeature = new BehaviorFeatureImpl();
-    return behaviorFeature;
+    SarlCapacityImpl sarlCapacity = new SarlCapacityImpl();
+    return sarlCapacity;
   }
 
   /**
@@ -209,10 +197,10 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public SkillFeature createSkillFeature()
+  public SarlBehavior createSarlBehavior()
   {
-    SkillFeatureImpl skillFeature = new SkillFeatureImpl();
-    return skillFeature;
+    SarlBehaviorImpl sarlBehavior = new SarlBehaviorImpl();
+    return sarlBehavior;
   }
 
   /**
@@ -220,10 +208,10 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public ParameterizedFeature createParameterizedFeature()
+  public SarlSkill createSarlSkill()
   {
-    ParameterizedFeatureImpl parameterizedFeature = new ParameterizedFeatureImpl();
-    return parameterizedFeature;
+    SarlSkillImpl sarlSkill = new SarlSkillImpl();
+    return sarlSkill;
   }
 
   /**
@@ -231,142 +219,10 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public FormalParameter createFormalParameter()
+  public SarlFormalParameter createSarlFormalParameter()
   {
-    FormalParameterImpl formalParameter = new FormalParameterImpl();
-    return formalParameter;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Event createEvent()
-  {
-    EventImpl event = new EventImpl();
-    return event;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Capacity createCapacity()
-  {
-    CapacityImpl capacity = new CapacityImpl();
-    return capacity;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Agent createAgent()
-  {
-    AgentImpl agent = new AgentImpl();
-    return agent;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Behavior createBehavior()
-  {
-    BehaviorImpl behavior = new BehaviorImpl();
-    return behavior;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Skill createSkill()
-  {
-    SkillImpl skill = new SkillImpl();
-    return skill;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Attribute createAttribute()
-  {
-    AttributeImpl attribute = new AttributeImpl();
-    return attribute;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public CapacityUses createCapacityUses()
-  {
-    CapacityUsesImpl capacityUses = new CapacityUsesImpl();
-    return capacityUses;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public RequiredCapacity createRequiredCapacity()
-  {
-    RequiredCapacityImpl requiredCapacity = new RequiredCapacityImpl();
-    return requiredCapacity;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public BehaviorUnit createBehaviorUnit()
-  {
-    BehaviorUnitImpl behaviorUnit = new BehaviorUnitImpl();
-    return behaviorUnit;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public ActionSignature createActionSignature()
-  {
-    ActionSignatureImpl actionSignature = new ActionSignatureImpl();
-    return actionSignature;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Action createAction()
-  {
-    ActionImpl action = new ActionImpl();
-    return action;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Constructor createConstructor()
-  {
-    ConstructorImpl constructor = new ConstructorImpl();
-    return constructor;
+    SarlFormalParameterImpl sarlFormalParameter = new SarlFormalParameterImpl();
+    return sarlFormalParameter;
   }
 
   /**

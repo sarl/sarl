@@ -9,6 +9,11 @@ import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
 
+import org.eclipse.xtend.core.xtend.XtendAnnotationTarget;
+import org.eclipse.xtend.core.xtend.XtendMember;
+import org.eclipse.xtend.core.xtend.XtendParameter;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+
 /**
  * <!-- begin-user-doc -->
  * The <b>Switch</b> for the model's inheritance hierarchy.
@@ -79,247 +84,116 @@ public class SarlSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case SarlPackage.TOP_ELEMENT:
+      case SarlPackage.SARL_ACTION_SIGNATURE:
       {
-        TopElement topElement = (TopElement)theEObject;
-        T result = caseTopElement(topElement);
+        SarlActionSignature sarlActionSignature = (SarlActionSignature)theEObject;
+        T result = caseSarlActionSignature(sarlActionSignature);
+        if (result == null) result = caseXtendMember(sarlActionSignature);
+        if (result == null) result = caseXtendAnnotationTarget(sarlActionSignature);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case SarlPackage.NAMED_ELEMENT:
+      case SarlPackage.SARL_ACTION:
       {
-        NamedElement namedElement = (NamedElement)theEObject;
-        T result = caseNamedElement(namedElement);
+        SarlAction sarlAction = (SarlAction)theEObject;
+        T result = caseSarlAction(sarlAction);
+        if (result == null) result = caseXtendMember(sarlAction);
+        if (result == null) result = caseXtendAnnotationTarget(sarlAction);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case SarlPackage.FEATURE:
+      case SarlPackage.SARL_BEHAVIOR_UNIT:
       {
-        Feature feature = (Feature)theEObject;
-        T result = caseFeature(feature);
-        if (result == null) result = caseEventFeature(feature);
-        if (result == null) result = caseAgentFeature(feature);
-        if (result == null) result = caseBehaviorFeature(feature);
-        if (result == null) result = caseSkillFeature(feature);
+        SarlBehaviorUnit sarlBehaviorUnit = (SarlBehaviorUnit)theEObject;
+        T result = caseSarlBehaviorUnit(sarlBehaviorUnit);
+        if (result == null) result = caseXtendMember(sarlBehaviorUnit);
+        if (result == null) result = caseXtendAnnotationTarget(sarlBehaviorUnit);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case SarlPackage.FEATURE_CONTAINER:
+      case SarlPackage.SARL_CAPACITY_USES:
       {
-        FeatureContainer featureContainer = (FeatureContainer)theEObject;
-        T result = caseFeatureContainer(featureContainer);
-        if (result == null) result = caseNamedElement(featureContainer);
+        SarlCapacityUses sarlCapacityUses = (SarlCapacityUses)theEObject;
+        T result = caseSarlCapacityUses(sarlCapacityUses);
+        if (result == null) result = caseXtendMember(sarlCapacityUses);
+        if (result == null) result = caseXtendAnnotationTarget(sarlCapacityUses);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case SarlPackage.INHERITING_ELEMENT:
+      case SarlPackage.SARL_REQUIRED_CAPACITY:
       {
-        InheritingElement inheritingElement = (InheritingElement)theEObject;
-        T result = caseInheritingElement(inheritingElement);
-        if (result == null) result = caseTopElement(inheritingElement);
-        if (result == null) result = caseFeatureContainer(inheritingElement);
-        if (result == null) result = caseNamedElement(inheritingElement);
+        SarlRequiredCapacity sarlRequiredCapacity = (SarlRequiredCapacity)theEObject;
+        T result = caseSarlRequiredCapacity(sarlRequiredCapacity);
+        if (result == null) result = caseXtendMember(sarlRequiredCapacity);
+        if (result == null) result = caseXtendAnnotationTarget(sarlRequiredCapacity);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case SarlPackage.IMPLEMENTING_ELEMENT:
+      case SarlPackage.SARL_CONSTRUCTOR:
       {
-        ImplementingElement implementingElement = (ImplementingElement)theEObject;
-        T result = caseImplementingElement(implementingElement);
-        if (result == null) result = caseInheritingElement(implementingElement);
-        if (result == null) result = caseTopElement(implementingElement);
-        if (result == null) result = caseFeatureContainer(implementingElement);
-        if (result == null) result = caseNamedElement(implementingElement);
+        SarlConstructor sarlConstructor = (SarlConstructor)theEObject;
+        T result = caseSarlConstructor(sarlConstructor);
+        if (result == null) result = caseXtendMember(sarlConstructor);
+        if (result == null) result = caseXtendAnnotationTarget(sarlConstructor);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case SarlPackage.EVENT_FEATURE:
+      case SarlPackage.SARL_EVENT:
       {
-        EventFeature eventFeature = (EventFeature)theEObject;
-        T result = caseEventFeature(eventFeature);
+        SarlEvent sarlEvent = (SarlEvent)theEObject;
+        T result = caseSarlEvent(sarlEvent);
+        if (result == null) result = caseXtendTypeDeclaration(sarlEvent);
+        if (result == null) result = caseXtendMember(sarlEvent);
+        if (result == null) result = caseXtendAnnotationTarget(sarlEvent);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case SarlPackage.AGENT_FEATURE:
+      case SarlPackage.SARL_AGENT:
       {
-        AgentFeature agentFeature = (AgentFeature)theEObject;
-        T result = caseAgentFeature(agentFeature);
+        SarlAgent sarlAgent = (SarlAgent)theEObject;
+        T result = caseSarlAgent(sarlAgent);
+        if (result == null) result = caseXtendTypeDeclaration(sarlAgent);
+        if (result == null) result = caseXtendMember(sarlAgent);
+        if (result == null) result = caseXtendAnnotationTarget(sarlAgent);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case SarlPackage.BEHAVIOR_FEATURE:
+      case SarlPackage.SARL_CAPACITY:
       {
-        BehaviorFeature behaviorFeature = (BehaviorFeature)theEObject;
-        T result = caseBehaviorFeature(behaviorFeature);
+        SarlCapacity sarlCapacity = (SarlCapacity)theEObject;
+        T result = caseSarlCapacity(sarlCapacity);
+        if (result == null) result = caseXtendTypeDeclaration(sarlCapacity);
+        if (result == null) result = caseXtendMember(sarlCapacity);
+        if (result == null) result = caseXtendAnnotationTarget(sarlCapacity);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case SarlPackage.SKILL_FEATURE:
+      case SarlPackage.SARL_BEHAVIOR:
       {
-        SkillFeature skillFeature = (SkillFeature)theEObject;
-        T result = caseSkillFeature(skillFeature);
+        SarlBehavior sarlBehavior = (SarlBehavior)theEObject;
+        T result = caseSarlBehavior(sarlBehavior);
+        if (result == null) result = caseXtendTypeDeclaration(sarlBehavior);
+        if (result == null) result = caseXtendMember(sarlBehavior);
+        if (result == null) result = caseXtendAnnotationTarget(sarlBehavior);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case SarlPackage.PARAMETERIZED_FEATURE:
+      case SarlPackage.SARL_SKILL:
       {
-        ParameterizedFeature parameterizedFeature = (ParameterizedFeature)theEObject;
-        T result = caseParameterizedFeature(parameterizedFeature);
-        if (result == null) result = caseFeature(parameterizedFeature);
-        if (result == null) result = caseEventFeature(parameterizedFeature);
-        if (result == null) result = caseAgentFeature(parameterizedFeature);
-        if (result == null) result = caseBehaviorFeature(parameterizedFeature);
-        if (result == null) result = caseSkillFeature(parameterizedFeature);
+        SarlSkill sarlSkill = (SarlSkill)theEObject;
+        T result = caseSarlSkill(sarlSkill);
+        if (result == null) result = caseXtendTypeDeclaration(sarlSkill);
+        if (result == null) result = caseXtendMember(sarlSkill);
+        if (result == null) result = caseXtendAnnotationTarget(sarlSkill);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case SarlPackage.FORMAL_PARAMETER:
+      case SarlPackage.SARL_FORMAL_PARAMETER:
       {
-        FormalParameter formalParameter = (FormalParameter)theEObject;
-        T result = caseFormalParameter(formalParameter);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case SarlPackage.EVENT:
-      {
-        Event event = (Event)theEObject;
-        T result = caseEvent(event);
-        if (result == null) result = caseInheritingElement(event);
-        if (result == null) result = caseTopElement(event);
-        if (result == null) result = caseFeatureContainer(event);
-        if (result == null) result = caseNamedElement(event);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case SarlPackage.CAPACITY:
-      {
-        Capacity capacity = (Capacity)theEObject;
-        T result = caseCapacity(capacity);
-        if (result == null) result = caseInheritingElement(capacity);
-        if (result == null) result = caseTopElement(capacity);
-        if (result == null) result = caseFeatureContainer(capacity);
-        if (result == null) result = caseNamedElement(capacity);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case SarlPackage.AGENT:
-      {
-        Agent agent = (Agent)theEObject;
-        T result = caseAgent(agent);
-        if (result == null) result = caseInheritingElement(agent);
-        if (result == null) result = caseTopElement(agent);
-        if (result == null) result = caseFeatureContainer(agent);
-        if (result == null) result = caseNamedElement(agent);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case SarlPackage.BEHAVIOR:
-      {
-        Behavior behavior = (Behavior)theEObject;
-        T result = caseBehavior(behavior);
-        if (result == null) result = caseInheritingElement(behavior);
-        if (result == null) result = caseTopElement(behavior);
-        if (result == null) result = caseFeatureContainer(behavior);
-        if (result == null) result = caseNamedElement(behavior);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case SarlPackage.SKILL:
-      {
-        Skill skill = (Skill)theEObject;
-        T result = caseSkill(skill);
-        if (result == null) result = caseImplementingElement(skill);
-        if (result == null) result = caseInheritingElement(skill);
-        if (result == null) result = caseTopElement(skill);
-        if (result == null) result = caseFeatureContainer(skill);
-        if (result == null) result = caseNamedElement(skill);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case SarlPackage.ATTRIBUTE:
-      {
-        Attribute attribute = (Attribute)theEObject;
-        T result = caseAttribute(attribute);
-        if (result == null) result = caseFeature(attribute);
-        if (result == null) result = caseEventFeature(attribute);
-        if (result == null) result = caseAgentFeature(attribute);
-        if (result == null) result = caseBehaviorFeature(attribute);
-        if (result == null) result = caseSkillFeature(attribute);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case SarlPackage.CAPACITY_USES:
-      {
-        CapacityUses capacityUses = (CapacityUses)theEObject;
-        T result = caseCapacityUses(capacityUses);
-        if (result == null) result = caseFeature(capacityUses);
-        if (result == null) result = caseEventFeature(capacityUses);
-        if (result == null) result = caseAgentFeature(capacityUses);
-        if (result == null) result = caseBehaviorFeature(capacityUses);
-        if (result == null) result = caseSkillFeature(capacityUses);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case SarlPackage.REQUIRED_CAPACITY:
-      {
-        RequiredCapacity requiredCapacity = (RequiredCapacity)theEObject;
-        T result = caseRequiredCapacity(requiredCapacity);
-        if (result == null) result = caseFeature(requiredCapacity);
-        if (result == null) result = caseEventFeature(requiredCapacity);
-        if (result == null) result = caseAgentFeature(requiredCapacity);
-        if (result == null) result = caseBehaviorFeature(requiredCapacity);
-        if (result == null) result = caseSkillFeature(requiredCapacity);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case SarlPackage.BEHAVIOR_UNIT:
-      {
-        BehaviorUnit behaviorUnit = (BehaviorUnit)theEObject;
-        T result = caseBehaviorUnit(behaviorUnit);
-        if (result == null) result = caseFeature(behaviorUnit);
-        if (result == null) result = caseEventFeature(behaviorUnit);
-        if (result == null) result = caseAgentFeature(behaviorUnit);
-        if (result == null) result = caseBehaviorFeature(behaviorUnit);
-        if (result == null) result = caseSkillFeature(behaviorUnit);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case SarlPackage.ACTION_SIGNATURE:
-      {
-        ActionSignature actionSignature = (ActionSignature)theEObject;
-        T result = caseActionSignature(actionSignature);
-        if (result == null) result = caseParameterizedFeature(actionSignature);
-        if (result == null) result = caseFeature(actionSignature);
-        if (result == null) result = caseEventFeature(actionSignature);
-        if (result == null) result = caseAgentFeature(actionSignature);
-        if (result == null) result = caseBehaviorFeature(actionSignature);
-        if (result == null) result = caseSkillFeature(actionSignature);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case SarlPackage.ACTION:
-      {
-        Action action = (Action)theEObject;
-        T result = caseAction(action);
-        if (result == null) result = caseParameterizedFeature(action);
-        if (result == null) result = caseFeature(action);
-        if (result == null) result = caseEventFeature(action);
-        if (result == null) result = caseAgentFeature(action);
-        if (result == null) result = caseBehaviorFeature(action);
-        if (result == null) result = caseSkillFeature(action);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case SarlPackage.CONSTRUCTOR:
-      {
-        Constructor constructor = (Constructor)theEObject;
-        T result = caseConstructor(constructor);
-        if (result == null) result = caseParameterizedFeature(constructor);
-        if (result == null) result = caseFeature(constructor);
-        if (result == null) result = caseEventFeature(constructor);
-        if (result == null) result = caseAgentFeature(constructor);
-        if (result == null) result = caseBehaviorFeature(constructor);
-        if (result == null) result = caseSkillFeature(constructor);
+        SarlFormalParameter sarlFormalParameter = (SarlFormalParameter)theEObject;
+        T result = caseSarlFormalParameter(sarlFormalParameter);
+        if (result == null) result = caseXtendParameter(sarlFormalParameter);
+        if (result == null) result = caseXtendAnnotationTarget(sarlFormalParameter);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -344,342 +218,6 @@ public class SarlSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Top Element</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Top Element</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseTopElement(TopElement object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Named Element</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Named Element</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseNamedElement(NamedElement object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Feature</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Feature</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseFeature(Feature object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Feature Container</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Feature Container</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseFeatureContainer(FeatureContainer object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Inheriting Element</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Inheriting Element</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseInheritingElement(InheritingElement object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Implementing Element</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Implementing Element</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseImplementingElement(ImplementingElement object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Event Feature</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Event Feature</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseEventFeature(EventFeature object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Agent Feature</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Agent Feature</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseAgentFeature(AgentFeature object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Behavior Feature</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Behavior Feature</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseBehaviorFeature(BehaviorFeature object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Skill Feature</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Skill Feature</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseSkillFeature(SkillFeature object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Parameterized Feature</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Parameterized Feature</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseParameterizedFeature(ParameterizedFeature object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Formal Parameter</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Formal Parameter</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseFormalParameter(FormalParameter object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Event</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Event</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseEvent(Event object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Capacity</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Capacity</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseCapacity(Capacity object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Agent</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Agent</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseAgent(Agent object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Behavior</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Behavior</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseBehavior(Behavior object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Skill</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Skill</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseSkill(Skill object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Attribute</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Attribute</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseAttribute(Attribute object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Capacity Uses</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Capacity Uses</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseCapacityUses(CapacityUses object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Required Capacity</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Required Capacity</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseRequiredCapacity(RequiredCapacity object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Behavior Unit</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Behavior Unit</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseBehaviorUnit(BehaviorUnit object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>Action Signature</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -690,7 +228,7 @@ public class SarlSwitch<T> extends Switch<T>
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseActionSignature(ActionSignature object)
+  public T caseSarlActionSignature(SarlActionSignature object)
   {
     return null;
   }
@@ -706,7 +244,55 @@ public class SarlSwitch<T> extends Switch<T>
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseAction(Action object)
+  public T caseSarlAction(SarlAction object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Behavior Unit</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Behavior Unit</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSarlBehaviorUnit(SarlBehaviorUnit object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Capacity Uses</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Capacity Uses</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSarlCapacityUses(SarlCapacityUses object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Required Capacity</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Required Capacity</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSarlRequiredCapacity(SarlRequiredCapacity object)
   {
     return null;
   }
@@ -722,7 +308,167 @@ public class SarlSwitch<T> extends Switch<T>
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseConstructor(Constructor object)
+  public T caseSarlConstructor(SarlConstructor object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Event</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Event</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSarlEvent(SarlEvent object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Agent</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Agent</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSarlAgent(SarlAgent object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Capacity</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Capacity</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSarlCapacity(SarlCapacity object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Behavior</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Behavior</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSarlBehavior(SarlBehavior object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Skill</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Skill</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSarlSkill(SarlSkill object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Formal Parameter</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Formal Parameter</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSarlFormalParameter(SarlFormalParameter object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Annotation Target</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Annotation Target</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseXtendAnnotationTarget(XtendAnnotationTarget object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Member</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Member</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseXtendMember(XtendMember object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Type Declaration</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Type Declaration</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseXtendTypeDeclaration(XtendTypeDeclaration object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Parameter</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Parameter</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseXtendParameter(XtendParameter object)
   {
     return null;
   }
