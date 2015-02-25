@@ -17,8 +17,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.eclipse.xtend.core.xtend.XtendMember;
-
 import org.eclipse.xtend.core.xtend.impl.XtendTypeDeclarationImpl;
 
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
@@ -30,9 +28,8 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link io.sarl.lang.sarl.impl.SarlSkillImpl#getSuperTypes <em>Super Types</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.impl.SarlSkillImpl#getImplementedTypes <em>Implemented Types</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.impl.SarlSkillImpl#getFeatures <em>Features</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.SarlSkillImpl#getExtends <em>Extends</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.SarlSkillImpl#getImplements <em>Implements</em>}</li>
  * </ul>
  * </p>
  *
@@ -41,34 +38,24 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 public class SarlSkillImpl extends XtendTypeDeclarationImpl implements SarlSkill
 {
   /**
-   * The cached value of the '{@link #getSuperTypes() <em>Super Types</em>}' containment reference list.
+   * The cached value of the '{@link #getExtends() <em>Extends</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getSuperTypes()
+   * @see #getExtends()
    * @generated
    * @ordered
    */
-  protected EList<JvmParameterizedTypeReference> superTypes;
+  protected EList<JvmParameterizedTypeReference> extends_;
 
   /**
-   * The cached value of the '{@link #getImplementedTypes() <em>Implemented Types</em>}' containment reference list.
+   * The cached value of the '{@link #getImplements() <em>Implements</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getImplementedTypes()
+   * @see #getImplements()
    * @generated
    * @ordered
    */
-  protected EList<JvmParameterizedTypeReference> implementedTypes;
-
-  /**
-   * The cached value of the '{@link #getFeatures() <em>Features</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getFeatures()
-   * @generated
-   * @ordered
-   */
-  protected EList<XtendMember> features;
+  protected EList<JvmParameterizedTypeReference> implements_;
 
   /**
    * <!-- begin-user-doc -->
@@ -96,13 +83,13 @@ public class SarlSkillImpl extends XtendTypeDeclarationImpl implements SarlSkill
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<JvmParameterizedTypeReference> getSuperTypes()
+  public EList<JvmParameterizedTypeReference> getExtends()
   {
-    if (superTypes == null)
+    if (extends_ == null)
     {
-      superTypes = new EObjectContainmentEList<JvmParameterizedTypeReference>(JvmParameterizedTypeReference.class, this, SarlPackage.SARL_SKILL__SUPER_TYPES);
+      extends_ = new EObjectContainmentEList<JvmParameterizedTypeReference>(JvmParameterizedTypeReference.class, this, SarlPackage.SARL_SKILL__EXTENDS);
     }
-    return superTypes;
+    return extends_;
   }
 
   /**
@@ -110,27 +97,13 @@ public class SarlSkillImpl extends XtendTypeDeclarationImpl implements SarlSkill
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<JvmParameterizedTypeReference> getImplementedTypes()
+  public EList<JvmParameterizedTypeReference> getImplements()
   {
-    if (implementedTypes == null)
+    if (implements_ == null)
     {
-      implementedTypes = new EObjectContainmentEList<JvmParameterizedTypeReference>(JvmParameterizedTypeReference.class, this, SarlPackage.SARL_SKILL__IMPLEMENTED_TYPES);
+      implements_ = new EObjectContainmentEList<JvmParameterizedTypeReference>(JvmParameterizedTypeReference.class, this, SarlPackage.SARL_SKILL__IMPLEMENTS);
     }
-    return implementedTypes;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EList<XtendMember> getFeatures()
-  {
-    if (features == null)
-    {
-      features = new EObjectContainmentEList<XtendMember>(XtendMember.class, this, SarlPackage.SARL_SKILL__FEATURES);
-    }
-    return features;
+    return implements_;
   }
 
   /**
@@ -143,12 +116,10 @@ public class SarlSkillImpl extends XtendTypeDeclarationImpl implements SarlSkill
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_SKILL__SUPER_TYPES:
-        return ((InternalEList<?>)getSuperTypes()).basicRemove(otherEnd, msgs);
-      case SarlPackage.SARL_SKILL__IMPLEMENTED_TYPES:
-        return ((InternalEList<?>)getImplementedTypes()).basicRemove(otherEnd, msgs);
-      case SarlPackage.SARL_SKILL__FEATURES:
-        return ((InternalEList<?>)getFeatures()).basicRemove(otherEnd, msgs);
+      case SarlPackage.SARL_SKILL__EXTENDS:
+        return ((InternalEList<?>)getExtends()).basicRemove(otherEnd, msgs);
+      case SarlPackage.SARL_SKILL__IMPLEMENTS:
+        return ((InternalEList<?>)getImplements()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -163,12 +134,10 @@ public class SarlSkillImpl extends XtendTypeDeclarationImpl implements SarlSkill
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_SKILL__SUPER_TYPES:
-        return getSuperTypes();
-      case SarlPackage.SARL_SKILL__IMPLEMENTED_TYPES:
-        return getImplementedTypes();
-      case SarlPackage.SARL_SKILL__FEATURES:
-        return getFeatures();
+      case SarlPackage.SARL_SKILL__EXTENDS:
+        return getExtends();
+      case SarlPackage.SARL_SKILL__IMPLEMENTS:
+        return getImplements();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -184,17 +153,13 @@ public class SarlSkillImpl extends XtendTypeDeclarationImpl implements SarlSkill
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_SKILL__SUPER_TYPES:
-        getSuperTypes().clear();
-        getSuperTypes().addAll((Collection<? extends JvmParameterizedTypeReference>)newValue);
+      case SarlPackage.SARL_SKILL__EXTENDS:
+        getExtends().clear();
+        getExtends().addAll((Collection<? extends JvmParameterizedTypeReference>)newValue);
         return;
-      case SarlPackage.SARL_SKILL__IMPLEMENTED_TYPES:
-        getImplementedTypes().clear();
-        getImplementedTypes().addAll((Collection<? extends JvmParameterizedTypeReference>)newValue);
-        return;
-      case SarlPackage.SARL_SKILL__FEATURES:
-        getFeatures().clear();
-        getFeatures().addAll((Collection<? extends XtendMember>)newValue);
+      case SarlPackage.SARL_SKILL__IMPLEMENTS:
+        getImplements().clear();
+        getImplements().addAll((Collection<? extends JvmParameterizedTypeReference>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -210,14 +175,11 @@ public class SarlSkillImpl extends XtendTypeDeclarationImpl implements SarlSkill
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_SKILL__SUPER_TYPES:
-        getSuperTypes().clear();
+      case SarlPackage.SARL_SKILL__EXTENDS:
+        getExtends().clear();
         return;
-      case SarlPackage.SARL_SKILL__IMPLEMENTED_TYPES:
-        getImplementedTypes().clear();
-        return;
-      case SarlPackage.SARL_SKILL__FEATURES:
-        getFeatures().clear();
+      case SarlPackage.SARL_SKILL__IMPLEMENTS:
+        getImplements().clear();
         return;
     }
     super.eUnset(featureID);
@@ -233,12 +195,10 @@ public class SarlSkillImpl extends XtendTypeDeclarationImpl implements SarlSkill
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_SKILL__SUPER_TYPES:
-        return superTypes != null && !superTypes.isEmpty();
-      case SarlPackage.SARL_SKILL__IMPLEMENTED_TYPES:
-        return implementedTypes != null && !implementedTypes.isEmpty();
-      case SarlPackage.SARL_SKILL__FEATURES:
-        return features != null && !features.isEmpty();
+      case SarlPackage.SARL_SKILL__EXTENDS:
+        return extends_ != null && !extends_.isEmpty();
+      case SarlPackage.SARL_SKILL__IMPLEMENTS:
+        return implements_ != null && !implements_.isEmpty();
     }
     return super.eIsSet(featureID);
   }

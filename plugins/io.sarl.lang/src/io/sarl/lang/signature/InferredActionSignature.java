@@ -20,11 +20,10 @@
  */
 package io.sarl.lang.signature;
 
-import io.sarl.lang.sarl.SarlFormalParameter;
-
+import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtend.core.xtend.XtendParameter;
 
 /**
  * Provides additional function signatures according the semantic
@@ -35,7 +34,7 @@ import org.eclipse.emf.common.util.EList;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface InferredActionSignature extends Iterable<EList<InferredStandardParameter>> {
+public interface InferredActionSignature extends Iterable<List<InferredStandardParameter>> {
 
 	/** Replies the key used to stored this signature in a {@link ActionSignatureProvider}.
 	 *
@@ -48,7 +47,7 @@ public interface InferredActionSignature extends Iterable<EList<InferredStandard
 	 *
 	 * @return the inferred signatures.
 	 */
-	Map<SignatureKey, EList<InferredStandardParameter>> getInferredSignatures();
+	Map<SignatureKey, List<InferredStandardParameter>> getInferredSignatures();
 
 	/** Replies an iterator on the original and inferred signature keys.
 	 *
@@ -60,7 +59,7 @@ public interface InferredActionSignature extends Iterable<EList<InferredStandard
 	 *
 	 * @return the parameters.
 	 */
-	EList<SarlFormalParameter> getFormalParameters();
+	List<? extends XtendParameter> getFormalParameters();
 
 	/** Replies key associated to the parameters.
 	 *

@@ -17,8 +17,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.eclipse.xtend.core.xtend.XtendMember;
-
 import org.eclipse.xtend.core.xtend.impl.XtendTypeDeclarationImpl;
 
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
@@ -30,8 +28,7 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link io.sarl.lang.sarl.impl.SarlEventImpl#getSuperTypes <em>Super Types</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.impl.SarlEventImpl#getFeatures <em>Features</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.SarlEventImpl#getExtends <em>Extends</em>}</li>
  * </ul>
  * </p>
  *
@@ -40,24 +37,14 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 public class SarlEventImpl extends XtendTypeDeclarationImpl implements SarlEvent
 {
   /**
-   * The cached value of the '{@link #getSuperTypes() <em>Super Types</em>}' containment reference list.
+   * The cached value of the '{@link #getExtends() <em>Extends</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getSuperTypes()
+   * @see #getExtends()
    * @generated
    * @ordered
    */
-  protected EList<JvmParameterizedTypeReference> superTypes;
-
-  /**
-   * The cached value of the '{@link #getFeatures() <em>Features</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getFeatures()
-   * @generated
-   * @ordered
-   */
-  protected EList<XtendMember> features;
+  protected EList<JvmParameterizedTypeReference> extends_;
 
   /**
    * <!-- begin-user-doc -->
@@ -85,27 +72,13 @@ public class SarlEventImpl extends XtendTypeDeclarationImpl implements SarlEvent
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<JvmParameterizedTypeReference> getSuperTypes()
+  public EList<JvmParameterizedTypeReference> getExtends()
   {
-    if (superTypes == null)
+    if (extends_ == null)
     {
-      superTypes = new EObjectContainmentEList<JvmParameterizedTypeReference>(JvmParameterizedTypeReference.class, this, SarlPackage.SARL_EVENT__SUPER_TYPES);
+      extends_ = new EObjectContainmentEList<JvmParameterizedTypeReference>(JvmParameterizedTypeReference.class, this, SarlPackage.SARL_EVENT__EXTENDS);
     }
-    return superTypes;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EList<XtendMember> getFeatures()
-  {
-    if (features == null)
-    {
-      features = new EObjectContainmentEList<XtendMember>(XtendMember.class, this, SarlPackage.SARL_EVENT__FEATURES);
-    }
-    return features;
+    return extends_;
   }
 
   /**
@@ -118,10 +91,8 @@ public class SarlEventImpl extends XtendTypeDeclarationImpl implements SarlEvent
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_EVENT__SUPER_TYPES:
-        return ((InternalEList<?>)getSuperTypes()).basicRemove(otherEnd, msgs);
-      case SarlPackage.SARL_EVENT__FEATURES:
-        return ((InternalEList<?>)getFeatures()).basicRemove(otherEnd, msgs);
+      case SarlPackage.SARL_EVENT__EXTENDS:
+        return ((InternalEList<?>)getExtends()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -136,10 +107,8 @@ public class SarlEventImpl extends XtendTypeDeclarationImpl implements SarlEvent
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_EVENT__SUPER_TYPES:
-        return getSuperTypes();
-      case SarlPackage.SARL_EVENT__FEATURES:
-        return getFeatures();
+      case SarlPackage.SARL_EVENT__EXTENDS:
+        return getExtends();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -155,13 +124,9 @@ public class SarlEventImpl extends XtendTypeDeclarationImpl implements SarlEvent
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_EVENT__SUPER_TYPES:
-        getSuperTypes().clear();
-        getSuperTypes().addAll((Collection<? extends JvmParameterizedTypeReference>)newValue);
-        return;
-      case SarlPackage.SARL_EVENT__FEATURES:
-        getFeatures().clear();
-        getFeatures().addAll((Collection<? extends XtendMember>)newValue);
+      case SarlPackage.SARL_EVENT__EXTENDS:
+        getExtends().clear();
+        getExtends().addAll((Collection<? extends JvmParameterizedTypeReference>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -177,11 +142,8 @@ public class SarlEventImpl extends XtendTypeDeclarationImpl implements SarlEvent
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_EVENT__SUPER_TYPES:
-        getSuperTypes().clear();
-        return;
-      case SarlPackage.SARL_EVENT__FEATURES:
-        getFeatures().clear();
+      case SarlPackage.SARL_EVENT__EXTENDS:
+        getExtends().clear();
         return;
     }
     super.eUnset(featureID);
@@ -197,10 +159,8 @@ public class SarlEventImpl extends XtendTypeDeclarationImpl implements SarlEvent
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_EVENT__SUPER_TYPES:
-        return superTypes != null && !superTypes.isEmpty();
-      case SarlPackage.SARL_EVENT__FEATURES:
-        return features != null && !features.isEmpty();
+      case SarlPackage.SARL_EVENT__EXTENDS:
+        return extends_ != null && !extends_.isEmpty();
     }
     return super.eIsSet(featureID);
   }

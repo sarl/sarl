@@ -16,7 +16,7 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link io.sarl.lang.sarl.SarlCapacityUses#getCapacitiesUsed <em>Capacities Used</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.SarlCapacityUses#getCapacities <em>Capacities</em>}</li>
  * </ul>
  * </p>
  *
@@ -27,19 +27,19 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 public interface SarlCapacityUses extends XtendMember
 {
   /**
-   * Returns the value of the '<em><b>Capacities Used</b></em>' containment reference list.
+   * Returns the value of the '<em><b>Capacities</b></em>' containment reference list.
    * The list contents are of type {@link org.eclipse.xtext.common.types.JvmParameterizedTypeReference}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Capacities Used</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Capacities</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Capacities Used</em>' containment reference list.
-   * @see io.sarl.lang.sarl.SarlPackage#getSarlCapacityUses_CapacitiesUsed()
+   * @return the value of the '<em>Capacities</em>' containment reference list.
+   * @see io.sarl.lang.sarl.SarlPackage#getSarlCapacityUses_Capacities()
    * @model containment="true"
    * @generated
    */
-  EList<JvmParameterizedTypeReference> getCapacitiesUsed();
+  EList<JvmParameterizedTypeReference> getCapacities();
 
 } // SarlCapacityUses

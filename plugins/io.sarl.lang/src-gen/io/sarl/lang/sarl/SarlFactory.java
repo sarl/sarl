@@ -32,15 +32,6 @@ public interface SarlFactory extends EFactory
   SarlScript createSarlScript();
 
   /**
-   * Returns a new object of class '<em>Action Signature</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Action Signature</em>'.
-   * @generated
-   */
-  SarlActionSignature createSarlActionSignature();
-
-  /**
    * Returns a new object of class '<em>Action</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

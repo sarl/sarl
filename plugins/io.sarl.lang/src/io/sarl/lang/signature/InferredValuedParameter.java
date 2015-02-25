@@ -22,6 +22,7 @@ package io.sarl.lang.signature;
 
 import io.sarl.lang.sarl.SarlFormalParameter;
 
+import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.xbase.XExpression;
 
 /**
@@ -37,7 +38,7 @@ public class InferredValuedParameter extends InferredStandardParameter {
 	/**
 	 * @param parameter - the wrapper parameter.
 	 */
-	protected InferredValuedParameter(SarlFormalParameter parameter) {
+	protected InferredValuedParameter(XtendParameter parameter) {
 		super(parameter);
 	}
 
@@ -46,15 +47,19 @@ public class InferredValuedParameter extends InferredStandardParameter {
 	 * @return the default value.
 	 */
 	public XExpression getExpr() {
-		return this.parameter.getDefaultValue();
+		if (this.parameter instanceof SarlFormalParameter) {
+			return ((SarlFormalParameter) this.parameter).getDefaultValue();
+		}
+		return null;
 	}
 
 	@Override
 	public String toString() {
-		if (this.parameter.getDefaultValue() == null) {
+		XExpression expr = getExpr();
+		if (expr == null) {
 			return super.toString();
 		}
-		return this.parameter.getDefaultValue().toString();
+		return expr.toString();
 	}
 
 }

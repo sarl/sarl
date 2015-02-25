@@ -69,9 +69,11 @@ public class SARLUIValidator extends XbaseUIValidator {
 	protected List<EPackage> getEPackages() {
 		List<EPackage> packages = super.getEPackages();
 		packages.add(SarlPackage.eINSTANCE);
-		packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtext/common/JavaVMTypes")); //$NON-NLS-1$
-		packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtext/xbase/Xbase")); //$NON-NLS-1$
-		packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtext/xbase/Xtype")); //$NON-NLS-1$
+		packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtend")); //$NON-NLS-1$
+	    packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtext/xbase/Xbase")); //$NON-NLS-1$
+	    packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtext/common/JavaVMTypes")); //$NON-NLS-1$
+	    packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtext/xbase/Xtype")); //$NON-NLS-1$
+	    packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/Xtext/Xbase/XAnnotations")); //$NON-NLS-1$
 		return packages;
 	}
 

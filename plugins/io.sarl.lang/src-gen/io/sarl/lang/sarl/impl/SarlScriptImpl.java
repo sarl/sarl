@@ -16,14 +16,13 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 
-import org.eclipse.xtext.xtype.XImportSection;
+import org.eclipse.xtend.core.xtend.impl.XtendFileImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,14 +32,13 @@ import org.eclipse.xtext.xtype.XImportSection;
  * The following features are implemented:
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.impl.SarlScriptImpl#getName <em>Name</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.impl.SarlScriptImpl#getImportSection <em>Import Section</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.impl.SarlScriptImpl#getElements <em>Elements</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class SarlScriptImpl extends MinimalEObjectImpl.Container implements SarlScript
+public class SarlScriptImpl extends XtendFileImpl implements SarlScript
 {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -61,16 +59,6 @@ public class SarlScriptImpl extends MinimalEObjectImpl.Container implements Sarl
    * @ordered
    */
   protected String name = NAME_EDEFAULT;
-
-  /**
-   * The cached value of the '{@link #getImportSection() <em>Import Section</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getImportSection()
-   * @generated
-   * @ordered
-   */
-  protected XImportSection importSection;
 
   /**
    * The cached value of the '{@link #getElements() <em>Elements</em>}' containment reference list.
@@ -131,54 +119,6 @@ public class SarlScriptImpl extends MinimalEObjectImpl.Container implements Sarl
    * <!-- end-user-doc -->
    * @generated
    */
-  public XImportSection getImportSection()
-  {
-    return importSection;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetImportSection(XImportSection newImportSection, NotificationChain msgs)
-  {
-    XImportSection oldImportSection = importSection;
-    importSection = newImportSection;
-    if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SarlPackage.SARL_SCRIPT__IMPORT_SECTION, oldImportSection, newImportSection);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setImportSection(XImportSection newImportSection)
-  {
-    if (newImportSection != importSection)
-    {
-      NotificationChain msgs = null;
-      if (importSection != null)
-        msgs = ((InternalEObject)importSection).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SarlPackage.SARL_SCRIPT__IMPORT_SECTION, null, msgs);
-      if (newImportSection != null)
-        msgs = ((InternalEObject)newImportSection).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SarlPackage.SARL_SCRIPT__IMPORT_SECTION, null, msgs);
-      msgs = basicSetImportSection(newImportSection, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.SARL_SCRIPT__IMPORT_SECTION, newImportSection, newImportSection));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EList<XtendTypeDeclaration> getElements()
   {
     if (elements == null)
@@ -198,8 +138,6 @@ public class SarlScriptImpl extends MinimalEObjectImpl.Container implements Sarl
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_SCRIPT__IMPORT_SECTION:
-        return basicSetImportSection(null, msgs);
       case SarlPackage.SARL_SCRIPT__ELEMENTS:
         return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
     }
@@ -218,8 +156,6 @@ public class SarlScriptImpl extends MinimalEObjectImpl.Container implements Sarl
     {
       case SarlPackage.SARL_SCRIPT__NAME:
         return getName();
-      case SarlPackage.SARL_SCRIPT__IMPORT_SECTION:
-        return getImportSection();
       case SarlPackage.SARL_SCRIPT__ELEMENTS:
         return getElements();
     }
@@ -239,9 +175,6 @@ public class SarlScriptImpl extends MinimalEObjectImpl.Container implements Sarl
     {
       case SarlPackage.SARL_SCRIPT__NAME:
         setName((String)newValue);
-        return;
-      case SarlPackage.SARL_SCRIPT__IMPORT_SECTION:
-        setImportSection((XImportSection)newValue);
         return;
       case SarlPackage.SARL_SCRIPT__ELEMENTS:
         getElements().clear();
@@ -264,9 +197,6 @@ public class SarlScriptImpl extends MinimalEObjectImpl.Container implements Sarl
       case SarlPackage.SARL_SCRIPT__NAME:
         setName(NAME_EDEFAULT);
         return;
-      case SarlPackage.SARL_SCRIPT__IMPORT_SECTION:
-        setImportSection((XImportSection)null);
-        return;
       case SarlPackage.SARL_SCRIPT__ELEMENTS:
         getElements().clear();
         return;
@@ -286,8 +216,6 @@ public class SarlScriptImpl extends MinimalEObjectImpl.Container implements Sarl
     {
       case SarlPackage.SARL_SCRIPT__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-      case SarlPackage.SARL_SCRIPT__IMPORT_SECTION:
-        return importSection != null;
       case SarlPackage.SARL_SCRIPT__ELEMENTS:
         return elements != null && !elements.isEmpty();
     }

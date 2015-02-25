@@ -20,9 +20,9 @@
  */
 package io.sarl.lang.signature;
 
-import io.sarl.lang.sarl.SarlFormalParameter;
+import java.util.List;
 
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 
@@ -61,11 +61,10 @@ public interface ActionSignatureProvider {
 
 	/** Build an identifier for the given parameters.
 	 *
-	 * @param isVarargs - indicates if the signature has a variatic parameter.
 	 * @param parameters - the list of the formal parameter to put in the signature key.
 	 * @return the id.
 	 */
-	SignatureKey createSignatureIDFromSarlModel(boolean isVarargs, EList<SarlFormalParameter> parameters);
+	SignatureKey createSignatureIDFromSarlModel(List<? extends XtendParameter> parameters);
 
 	/** Build an identifier for the given parameters.
 	 *
@@ -73,7 +72,7 @@ public interface ActionSignatureProvider {
 	 * @param parameters - the list of the formal parameter to put in the signature key.
 	 * @return the id.
 	 */
-	SignatureKey createSignatureIDFromJvmModel(boolean isVarargs, EList<JvmFormalParameter> parameters);
+	SignatureKey createSignatureIDFromJvmModel(boolean isVarargs, List<JvmFormalParameter> parameters);
 
 	/** Build an identifier for the given parameters.
 	 *
@@ -112,11 +111,10 @@ public interface ActionSignatureProvider {
 	 * to the definition, or not, of default values for the formal parameters.
 	 *
 	 * @param id - identifier of the function.
-	 * @param isVarargs - indicates if the signature has a variatic parameter.
 	 * @param parameters - list of the formal parameters of the function.
 	 * @return the signature or <code>null</code> if none.
 	 */
-	InferredActionSignature createSignature(ActionNameKey id, boolean isVarargs, EList<SarlFormalParameter> parameters);
+	InferredActionSignature createSignature(ActionNameKey id, List<? extends XtendParameter> parameters);
 
 	/** Replies the inferred action signature for the element with
 	 * the given ID.

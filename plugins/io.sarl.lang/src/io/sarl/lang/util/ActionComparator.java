@@ -20,7 +20,7 @@
  */
 package io.sarl.lang.util;
 
-import io.sarl.lang.sarl.SarlActionSignature;
+import io.sarl.lang.sarl.SarlAction;
 
 import java.util.Comparator;
 
@@ -32,18 +32,18 @@ import java.util.Comparator;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class ActionSignatureComparator implements Comparator<SarlActionSignature> {
+public class ActionComparator implements Comparator<SarlAction> {
 
 	private final FormalParameterListComparator comparator = new FormalParameterListComparator();
 
 	/** Construct a comparator of action signatures.
 	 */
-	public ActionSignatureComparator() {
+	public ActionComparator() {
 		//
 	}
 
 	@Override
-	public int compare(SarlActionSignature a, SarlActionSignature b) {
+	public int compare(SarlAction a, SarlAction b) {
 		if (a == b) {
 			return 0;
 		}

@@ -4,73 +4,43 @@
     editorDirectory="/io.sarl.lang.editor/src" modelPluginID="io.sarl.lang" forceOverwrite="true"
     modelName="SARL" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     complianceLevel="5.0" copyrightFields="false" editPluginID="io.sarl.lang.edit"
-    editorPluginID="io.sarl.lang.editor" runtimeVersion="2.10" usedGenPackages="platform:/resource/org.eclipse.xtend.core/model/Xtend.genmodel#//xtend platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel#//xbase platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel#//xtype">
+    editorPluginID="io.sarl.lang.editor" runtimeVersion="2.10" usedGenPackages="platform:/resource/org.eclipse.xtend.core/model/Xtend.genmodel#//xtend platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel#//xbase">
   <genPackages prefix="Sarl" basePackage="io.sarl.lang" disposableProviderFactory="true"
       fileExtensions="sarl" ecorePackage="SARL.ecore#/">
     <genClasses ecoreClass="SARL.ecore#//SarlScript">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//SarlScript/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlScript/importSection"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlScript/elements"/>
     </genClasses>
-    <genClasses ecoreClass="SARL.ecore#//SarlActionSignature">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlActionSignature/typeParameters"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//SarlActionSignature/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlActionSignature/parameters"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//SarlActionSignature/varargs"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlActionSignature/returnType"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlActionSignature/createExtensionInfo"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlActionSignature/exceptions"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlActionSignature/firedEvents"/>
-    </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlAction">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAction/typeParameters"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//SarlAction/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAction/parameters"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//SarlAction/varargs"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAction/returnType"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAction/createExtensionInfo"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAction/exceptions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAction/firedEvents"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAction/expression"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlBehaviorUnit">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlBehaviorUnit/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlBehaviorUnit/guard"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlBehaviorUnit/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlBehaviorUnit/expression"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlCapacityUses">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlCapacityUses/capacitiesUsed"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlCapacityUses/capacities"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlRequiredCapacity">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlRequiredCapacity/requiredCapacities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlRequiredCapacity/capacities"/>
     </genClasses>
-    <genClasses ecoreClass="SARL.ecore#//SarlConstructor">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlConstructor/typeParameters"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlConstructor/parameters"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SARL.ecore#//SarlConstructor/varargs"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlConstructor/exceptions"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlConstructor/expression"/>
-    </genClasses>
+    <genClasses ecoreClass="SARL.ecore#//SarlConstructor"/>
     <genClasses ecoreClass="SARL.ecore#//SarlEvent">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlEvent/superTypes"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlEvent/features"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlEvent/extends"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlAgent">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAgent/superTypes"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAgent/features"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAgent/extends"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlCapacity">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlCapacity/superTypes"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlCapacity/features"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlCapacity/extends"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlBehavior">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlBehavior/superTypes"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlBehavior/features"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlBehavior/extends"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlSkill">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlSkill/superTypes"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlSkill/implementedTypes"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlSkill/features"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlSkill/extends"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlSkill/implements"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlFormalParameter">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlFormalParameter/defaultValue"/>

@@ -28,7 +28,7 @@ import org.eclipse.xtext.xbase.XExpression;
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.impl.SarlBehaviorUnitImpl#getName <em>Name</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.impl.SarlBehaviorUnitImpl#getGuard <em>Guard</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.impl.SarlBehaviorUnitImpl#getBody <em>Body</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.SarlBehaviorUnitImpl#getExpression <em>Expression</em>}</li>
  * </ul>
  * </p>
  *
@@ -57,14 +57,14 @@ public class SarlBehaviorUnitImpl extends XtendMemberImpl implements SarlBehavio
   protected XExpression guard;
 
   /**
-   * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
+   * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getBody()
+   * @see #getExpression()
    * @generated
    * @ordered
    */
-  protected XExpression body;
+  protected XExpression expression;
 
   /**
    * <!-- begin-user-doc -->
@@ -188,9 +188,9 @@ public class SarlBehaviorUnitImpl extends XtendMemberImpl implements SarlBehavio
    * <!-- end-user-doc -->
    * @generated
    */
-  public XExpression getBody()
+  public XExpression getExpression()
   {
-    return body;
+    return expression;
   }
 
   /**
@@ -198,13 +198,13 @@ public class SarlBehaviorUnitImpl extends XtendMemberImpl implements SarlBehavio
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetBody(XExpression newBody, NotificationChain msgs)
+  public NotificationChain basicSetExpression(XExpression newExpression, NotificationChain msgs)
   {
-    XExpression oldBody = body;
-    body = newBody;
+    XExpression oldExpression = expression;
+    expression = newExpression;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SarlPackage.SARL_BEHAVIOR_UNIT__BODY, oldBody, newBody);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SarlPackage.SARL_BEHAVIOR_UNIT__EXPRESSION, oldExpression, newExpression);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -215,20 +215,20 @@ public class SarlBehaviorUnitImpl extends XtendMemberImpl implements SarlBehavio
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setBody(XExpression newBody)
+  public void setExpression(XExpression newExpression)
   {
-    if (newBody != body)
+    if (newExpression != expression)
     {
       NotificationChain msgs = null;
-      if (body != null)
-        msgs = ((InternalEObject)body).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SarlPackage.SARL_BEHAVIOR_UNIT__BODY, null, msgs);
-      if (newBody != null)
-        msgs = ((InternalEObject)newBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SarlPackage.SARL_BEHAVIOR_UNIT__BODY, null, msgs);
-      msgs = basicSetBody(newBody, msgs);
+      if (expression != null)
+        msgs = ((InternalEObject)expression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SarlPackage.SARL_BEHAVIOR_UNIT__EXPRESSION, null, msgs);
+      if (newExpression != null)
+        msgs = ((InternalEObject)newExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SarlPackage.SARL_BEHAVIOR_UNIT__EXPRESSION, null, msgs);
+      msgs = basicSetExpression(newExpression, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.SARL_BEHAVIOR_UNIT__BODY, newBody, newBody));
+      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.SARL_BEHAVIOR_UNIT__EXPRESSION, newExpression, newExpression));
   }
 
   /**
@@ -245,8 +245,8 @@ public class SarlBehaviorUnitImpl extends XtendMemberImpl implements SarlBehavio
         return basicSetName(null, msgs);
       case SarlPackage.SARL_BEHAVIOR_UNIT__GUARD:
         return basicSetGuard(null, msgs);
-      case SarlPackage.SARL_BEHAVIOR_UNIT__BODY:
-        return basicSetBody(null, msgs);
+      case SarlPackage.SARL_BEHAVIOR_UNIT__EXPRESSION:
+        return basicSetExpression(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -265,8 +265,8 @@ public class SarlBehaviorUnitImpl extends XtendMemberImpl implements SarlBehavio
         return getName();
       case SarlPackage.SARL_BEHAVIOR_UNIT__GUARD:
         return getGuard();
-      case SarlPackage.SARL_BEHAVIOR_UNIT__BODY:
-        return getBody();
+      case SarlPackage.SARL_BEHAVIOR_UNIT__EXPRESSION:
+        return getExpression();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -287,8 +287,8 @@ public class SarlBehaviorUnitImpl extends XtendMemberImpl implements SarlBehavio
       case SarlPackage.SARL_BEHAVIOR_UNIT__GUARD:
         setGuard((XExpression)newValue);
         return;
-      case SarlPackage.SARL_BEHAVIOR_UNIT__BODY:
-        setBody((XExpression)newValue);
+      case SarlPackage.SARL_BEHAVIOR_UNIT__EXPRESSION:
+        setExpression((XExpression)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -310,8 +310,8 @@ public class SarlBehaviorUnitImpl extends XtendMemberImpl implements SarlBehavio
       case SarlPackage.SARL_BEHAVIOR_UNIT__GUARD:
         setGuard((XExpression)null);
         return;
-      case SarlPackage.SARL_BEHAVIOR_UNIT__BODY:
-        setBody((XExpression)null);
+      case SarlPackage.SARL_BEHAVIOR_UNIT__EXPRESSION:
+        setExpression((XExpression)null);
         return;
     }
     super.eUnset(featureID);
@@ -331,8 +331,8 @@ public class SarlBehaviorUnitImpl extends XtendMemberImpl implements SarlBehavio
         return name != null;
       case SarlPackage.SARL_BEHAVIOR_UNIT__GUARD:
         return guard != null;
-      case SarlPackage.SARL_BEHAVIOR_UNIT__BODY:
-        return body != null;
+      case SarlPackage.SARL_BEHAVIOR_UNIT__EXPRESSION:
+        return expression != null;
     }
     return super.eIsSet(featureID);
   }

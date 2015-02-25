@@ -1,54 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="sarl" nsURI="http://www.sarl.io/lang/SARL" nsPrefix="sarl">
-  <eClassifiers xsi:type="ecore:EClass" name="SarlScript">
+  <eClassifiers xsi:type="ecore:EClass" name="SarlScript" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendFile">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="importSection" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xtype.ecore#//XImportSection"
-        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
         eType="ecore:EClass platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendTypeDeclaration"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SarlActionSignature" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendMember">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameters" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeParameter"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendParameter"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="varargs" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="createExtensionInfo" eType="ecore:EClass platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//CreateExtensionInfo"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="exceptions" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
-        containment="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SarlAction" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendFunction">
     <eStructuralFeatures xsi:type="ecore:EReference" name="firedEvents" upperBound="-1"
         eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SarlAction" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendMember">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameters" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeParameter"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendParameter"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="varargs" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="createExtensionInfo" eType="ecore:EClass platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//CreateExtensionInfo"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="exceptions" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="firedEvents" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlBehaviorUnit" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendMember">
@@ -56,74 +17,46 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="guard" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlCapacityUses" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendMember">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="capacitiesUsed" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="capacities" upperBound="-1"
         eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlRequiredCapacity" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendMember">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="requiredCapacities" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="capacities" upperBound="-1"
         eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SarlConstructor" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendMember">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameters" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeParameter"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendParameter"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="varargs" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="exceptions" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
-        containment="true"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SarlConstructor" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendConstructor"/>
   <eClassifiers xsi:type="ecore:EClass" name="SarlEvent" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendTypeDeclaration">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="superTypes" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extends" upperBound="-1"
         eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="features" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendMember"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlAgent" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendTypeDeclaration">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="superTypes" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extends" upperBound="-1"
         eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="features" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendMember"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlCapacity" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendTypeDeclaration">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="superTypes" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extends" upperBound="-1"
         eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="features" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendMember"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlBehavior" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendTypeDeclaration">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="superTypes" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extends" upperBound="-1"
         eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="features" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendMember"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlSkill" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendTypeDeclaration">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="superTypes" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extends" upperBound="-1"
         eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="implementedTypes" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="implements" upperBound="-1"
         eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="features" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendMember"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlFormalParameter" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendParameter">

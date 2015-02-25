@@ -4,11 +4,8 @@ package io.sarl.lang.sarl;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.eclipse.emf.ecore.EObject;
-
+import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
-
-import org.eclipse.xtext.xtype.XImportSection;
 
 /**
  * <!-- begin-user-doc -->
@@ -19,7 +16,6 @@ import org.eclipse.xtext.xtype.XImportSection;
  * The following features are supported:
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.SarlScript#getName <em>Name</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.SarlScript#getImportSection <em>Import Section</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.SarlScript#getElements <em>Elements</em>}</li>
  * </ul>
  * </p>
@@ -28,7 +24,7 @@ import org.eclipse.xtext.xtype.XImportSection;
  * @model
  * @generated
  */
-public interface SarlScript extends EObject
+public interface SarlScript extends XtendFile
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
@@ -55,32 +51,6 @@ public interface SarlScript extends EObject
    * @generated
    */
   void setName(String value);
-
-  /**
-   * Returns the value of the '<em><b>Import Section</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Import Section</em>' containment reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Import Section</em>' containment reference.
-   * @see #setImportSection(XImportSection)
-   * @see io.sarl.lang.sarl.SarlPackage#getSarlScript_ImportSection()
-   * @model containment="true"
-   * @generated
-   */
-  XImportSection getImportSection();
-
-  /**
-   * Sets the value of the '{@link io.sarl.lang.sarl.SarlScript#getImportSection <em>Import Section</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Import Section</em>' containment reference.
-   * @see #getImportSection()
-   * @generated
-   */
-  void setImportSection(XImportSection value);
 
   /**
    * Returns the value of the '<em><b>Elements</b></em>' containment reference list.

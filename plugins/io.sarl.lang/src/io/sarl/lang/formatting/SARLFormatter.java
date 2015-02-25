@@ -22,7 +22,6 @@ package io.sarl.lang.formatting;
 
 import io.sarl.lang.services.SARLGrammarAccess;
 import io.sarl.lang.services.SARLGrammarAccess.SarlActionElements;
-import io.sarl.lang.services.SARLGrammarAccess.SarlActionSignatureElements;
 import io.sarl.lang.services.SARLGrammarAccess.SarlAgentElements;
 import io.sarl.lang.services.SARLGrammarAccess.SarlBehaviorElements;
 import io.sarl.lang.services.SARLGrammarAccess.SarlBehaviorUnitElements;
@@ -78,25 +77,24 @@ public class SARLFormatter extends XbaseFormatter {
 		configureXImportDeclaration(c, this.access.getXImportDeclarationAccess());
 		configureAgent(c, this.access.getSarlAgentAccess());
 
-		configureAttributes(c, this.access.getAttributeAccess());
-		configureEvents(c, this.access.getEventAccess());
-		configureUses(c, this.access.getCapacityUsesAccess());
-		configureBehaviorUnit(c, this.access.getBehaviorUnitAccess());
+		configureAttributes(c, this.access.getSarlFieldAccess());
+		configureEvents(c, this.access.getSarlEventAccess());
+		configureUses(c, this.access.getSarlCapacityUsesAccess());
+		configureBehaviorUnit(c, this.access.getSarlBehaviorUnitAccess());
 
 		configureXVariableDeclaration(c, this.access.getXVariableDeclarationAccess());
 		configureXAssignmentElements(c, this.access.getXAssignmentAccess());
-		configureActions(c, this.access.getActionAccess());
-		configureActionSignatures(c, this.access.getActionSignatureAccess());
-		configureCapacities(c, this.access.getCapacityAccess());
-		configureBehaviors(c, this.access.getBehaviorAccess());
-		configureRequires(c, this.access.getRequiredCapacityAccess());
-		configureSkill(c, this.access.getSkillAccess());
-		configureConstructor(c, this.access.getConstructorAccess());
+		configureActions(c, this.access.getSarlActionAccess());
+		configureCapacities(c, this.access.getSarlCapacityAccess());
+		configureBehaviors(c, this.access.getSarlBehaviorAccess());
+		configureRequires(c, this.access.getSarlRequiredCapacityAccess());
+		configureSkill(c, this.access.getSarlSkillAccess());
+		configureConstructor(c, this.access.getSarlConstructorAccess());
 
 		//package
-		c.setLinewrap(2).after(this.access.getSarlScriptAccess().getGroup_0());
+		c.setLinewrap(2).after(this.access.getSarlScriptAccess().getGroup_1());
 
-		super.configure(c, this.access.getXbaseGrammarAccess());
+		super.configure(c, this.access.getXtendGrammarAccess().getXbaseWithAnnotationsGrammarAccess());
 
 		// formatting for Comments
 		c.setLinewrap(0, 1, 2).before(this.access.getSL_COMMENTRule());
@@ -112,10 +110,9 @@ public class SARLFormatter extends XbaseFormatter {
 	@SuppressWarnings("static-method")
 	public void configureConstructor(FormattingConfig c, SarlConstructorElements ele) {
 		c.setLinewrap(2).before(ele.getGroup());
-		c.setNoSpace().around(ele.getLeftParenthesisKeyword_2_0());
-		c.setNoSpace().before(ele.getRightParenthesisKeyword_2_2());
-		c.setNoSpace().before(ele.getCommaKeyword_2_1_1_0());
-
+		c.setNoSpace().around(ele.getLeftParenthesisKeyword_6_0());
+		c.setNoSpace().before(ele.getRightParenthesisKeyword_6_2());
+		c.setNoSpace().before(ele.getCommaKeyword_5_2_0());
 	}
 
 	/** Configure the skill formatting.
@@ -126,8 +123,8 @@ public class SARLFormatter extends XbaseFormatter {
 	@SuppressWarnings("static-method")
 	public void configureSkill(FormattingConfig c, SarlSkillElements ele) {
 		c.setLinewrap(1, 1, 2).before(ele.getGroup());
-		c.setIndentation(ele.getLeftCurlyBracketKeyword_4(), ele.getRightCurlyBracketKeyword_6());
-		c.setLinewrap().around(ele.getRightCurlyBracketKeyword_6());
+		c.setIndentation(ele.getLeftCurlyBracketKeyword_7(), ele.getRightCurlyBracketKeyword_9());
+		c.setLinewrap().around(ele.getRightCurlyBracketKeyword_9());
 	}
 
 	/** Configure the capacity requirement formatting.
@@ -149,8 +146,8 @@ public class SARLFormatter extends XbaseFormatter {
 	@SuppressWarnings("static-method")
 	public void configureBehaviors(FormattingConfig c, SarlBehaviorElements ele) {
 		c.setLinewrap(2).before(ele.getGroup());
-		c.setIndentation(ele.getLeftCurlyBracketKeyword_4(), ele.getRightCurlyBracketKeyword_6());
-		c.setLinewrap().around(ele.getRightCurlyBracketKeyword_6());
+		c.setIndentation(ele.getLeftCurlyBracketKeyword_7(), ele.getRightCurlyBracketKeyword_9());
+		c.setLinewrap().around(ele.getRightCurlyBracketKeyword_9());
 	}
 
 	/** Configure the capacity formatting.
@@ -161,22 +158,8 @@ public class SARLFormatter extends XbaseFormatter {
 	@SuppressWarnings("static-method")
 	public void configureCapacities(FormattingConfig c, SarlCapacityElements ele) {
 		c.setLinewrap(1, 1, 2).before(ele.getGroup());
-		c.setIndentation(ele.getLeftCurlyBracketKeyword_4(), ele.getRightCurlyBracketKeyword_6());
-		c.setLinewrap().around(ele.getRightCurlyBracketKeyword_6());
-	}
-
-	/** Configure the action signature formatting.
-	 *
-	 * @param c - the configuration.
-	 * @param ele - the elements.
-	 */
-	@SuppressWarnings("static-method")
-	public void configureActionSignatures(FormattingConfig c, SarlActionSignatureElements ele) {
-		c.setLinewrap(2).before(ele.getGroup());
-		c.setNoSpace().around(ele.getLeftParenthesisKeyword_3_0());
-		c.setNoSpace().before(ele.getRightParenthesisKeyword_3_2());
-		c.setNoSpace().before(ele.getCommaKeyword_3_1_1_0());
-		c.setNoSpace().before(ele.getCommaKeyword_5_2_0());
+		c.setIndentation(ele.getLeftCurlyBracketKeyword_7(), ele.getRightCurlyBracketKeyword_9());
+		c.setLinewrap().around(ele.getRightCurlyBracketKeyword_9());
 	}
 
 	/** Configure the action formatting.
@@ -187,10 +170,12 @@ public class SARLFormatter extends XbaseFormatter {
 	@SuppressWarnings("static-method")
 	public void configureActions(FormattingConfig c, SarlActionElements ele) {
 		c.setLinewrap(2).before(ele.getGroup());
-		c.setNoSpace().around(ele.getLeftParenthesisKeyword_3_0());
-		c.setNoSpace().before(ele.getRightParenthesisKeyword_3_2());
-		c.setNoSpace().before(ele.getCommaKeyword_3_1_1_0());
-		c.setNoSpace().before(ele.getCommaKeyword_5_2_0());
+		c.setNoSpace().around(ele.getLeftParenthesisKeyword_8_0());
+		c.setNoSpace().before(ele.getRightParenthesisKeyword_8_2());
+		c.setNoSpace().before(ele.getCommaKeyword_6_2_0());
+		c.setNoSpace().before(ele.getCommaKeyword_8_1_1_0());
+		c.setNoSpace().before(ele.getCommaKeyword_10_0_2_0());
+		c.setNoSpace().before(ele.getCommaKeyword_10_1_2_0());
 	}
 
 	/** Configure the import formatting.
@@ -222,8 +207,8 @@ public class SARLFormatter extends XbaseFormatter {
 	@SuppressWarnings("static-method")
 	public void configureAgent(FormattingConfig c, SarlAgentElements ele) {
 		c.setLinewrap(2).after(ele.getGroup());
-		c.setLinewrap().before(ele.getRightCurlyBracketKeyword_6());
-		c.setIndentation(ele.getLeftCurlyBracketKeyword_4(), ele.getRightCurlyBracketKeyword_6());
+		c.setLinewrap().before(ele.getRightCurlyBracketKeyword_9());
+		c.setIndentation(ele.getLeftCurlyBracketKeyword_7(), ele.getRightCurlyBracketKeyword_9());
 	}
 
 	/** Configure the event formatting.
@@ -234,8 +219,8 @@ public class SARLFormatter extends XbaseFormatter {
 	@SuppressWarnings("static-method")
 	public void configureEvents(FormattingConfig c, SarlEventElements ele) {
 		c.setLinewrap(2).after(ele.getGroup());
-		c.setLinewrap().before(ele.getRightCurlyBracketKeyword_4_2());
-		c.setIndentation(ele.getLeftCurlyBracketKeyword_4_0(), ele.getRightCurlyBracketKeyword_4_2());
+		c.setLinewrap().before(ele.getRightCurlyBracketKeyword_7_2());
+		c.setIndentation(ele.getLeftCurlyBracketKeyword_7_0(), ele.getRightCurlyBracketKeyword_7_2());
 	}
 
 	/** Configure the capacity use formatting.
@@ -259,8 +244,8 @@ public class SARLFormatter extends XbaseFormatter {
 		c.setLinewrap(2).before(ele.getGroup());
 		c.setLinewrap().after(ele.getGroup());
 
-		c.setNoSpace().after(ele.getLeftSquareBracketKeyword_3_0());
-		c.setNoSpace().before(ele.getRightSquareBracketKeyword_3_2());
+		c.setNoSpace().after(ele.getLeftSquareBracketKeyword_5_0());
+		c.setNoSpace().before(ele.getRightSquareBracketKeyword_5_2());
 
 	}
 

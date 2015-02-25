@@ -18,7 +18,7 @@ import org.eclipse.xtext.xbase.XExpression;
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.SarlBehaviorUnit#getName <em>Name</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.SarlBehaviorUnit#getGuard <em>Guard</em>}</li>
- *   <li>{@link io.sarl.lang.sarl.SarlBehaviorUnit#getBody <em>Body</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.SarlBehaviorUnit#getExpression <em>Expression</em>}</li>
  * </ul>
  * </p>
  *
@@ -81,29 +81,29 @@ public interface SarlBehaviorUnit extends XtendMember
   void setGuard(XExpression value);
 
   /**
-   * Returns the value of the '<em><b>Body</b></em>' containment reference.
+   * Returns the value of the '<em><b>Expression</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Body</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Expression</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Body</em>' containment reference.
-   * @see #setBody(XExpression)
-   * @see io.sarl.lang.sarl.SarlPackage#getSarlBehaviorUnit_Body()
+   * @return the value of the '<em>Expression</em>' containment reference.
+   * @see #setExpression(XExpression)
+   * @see io.sarl.lang.sarl.SarlPackage#getSarlBehaviorUnit_Expression()
    * @model containment="true"
    * @generated
    */
-  XExpression getBody();
+  XExpression getExpression();
 
   /**
-   * Sets the value of the '{@link io.sarl.lang.sarl.SarlBehaviorUnit#getBody <em>Body</em>}' containment reference.
+   * Sets the value of the '{@link io.sarl.lang.sarl.SarlBehaviorUnit#getExpression <em>Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Body</em>' containment reference.
-   * @see #getBody()
+   * @param value the new value of the '<em>Expression</em>' containment reference.
+   * @see #getExpression()
    * @generated
    */
-  void setBody(XExpression value);
+  void setExpression(XExpression value);
 
 } // SarlBehaviorUnit

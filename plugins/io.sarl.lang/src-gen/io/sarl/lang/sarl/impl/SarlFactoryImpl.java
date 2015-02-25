@@ -65,7 +65,6 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
     switch (eClass.getClassifierID())
     {
       case SarlPackage.SARL_SCRIPT: return createSarlScript();
-      case SarlPackage.SARL_ACTION_SIGNATURE: return createSarlActionSignature();
       case SarlPackage.SARL_ACTION: return createSarlAction();
       case SarlPackage.SARL_BEHAVIOR_UNIT: return createSarlBehaviorUnit();
       case SarlPackage.SARL_CAPACITY_USES: return createSarlCapacityUses();
@@ -91,17 +90,6 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
   {
     SarlScriptImpl sarlScript = new SarlScriptImpl();
     return sarlScript;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public SarlActionSignature createSarlActionSignature()
-  {
-    SarlActionSignatureImpl sarlActionSignature = new SarlActionSignatureImpl();
-    return sarlActionSignature;
   }
 
   /**

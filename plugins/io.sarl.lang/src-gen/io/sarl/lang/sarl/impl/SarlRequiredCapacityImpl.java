@@ -28,7 +28,7 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link io.sarl.lang.sarl.impl.SarlRequiredCapacityImpl#getRequiredCapacities <em>Required Capacities</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.SarlRequiredCapacityImpl#getCapacities <em>Capacities</em>}</li>
  * </ul>
  * </p>
  *
@@ -37,14 +37,14 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 public class SarlRequiredCapacityImpl extends XtendMemberImpl implements SarlRequiredCapacity
 {
   /**
-   * The cached value of the '{@link #getRequiredCapacities() <em>Required Capacities</em>}' containment reference list.
+   * The cached value of the '{@link #getCapacities() <em>Capacities</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getRequiredCapacities()
+   * @see #getCapacities()
    * @generated
    * @ordered
    */
-  protected EList<JvmParameterizedTypeReference> requiredCapacities;
+  protected EList<JvmParameterizedTypeReference> capacities;
 
   /**
    * <!-- begin-user-doc -->
@@ -72,13 +72,13 @@ public class SarlRequiredCapacityImpl extends XtendMemberImpl implements SarlReq
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<JvmParameterizedTypeReference> getRequiredCapacities()
+  public EList<JvmParameterizedTypeReference> getCapacities()
   {
-    if (requiredCapacities == null)
+    if (capacities == null)
     {
-      requiredCapacities = new EObjectContainmentEList<JvmParameterizedTypeReference>(JvmParameterizedTypeReference.class, this, SarlPackage.SARL_REQUIRED_CAPACITY__REQUIRED_CAPACITIES);
+      capacities = new EObjectContainmentEList<JvmParameterizedTypeReference>(JvmParameterizedTypeReference.class, this, SarlPackage.SARL_REQUIRED_CAPACITY__CAPACITIES);
     }
-    return requiredCapacities;
+    return capacities;
   }
 
   /**
@@ -91,8 +91,8 @@ public class SarlRequiredCapacityImpl extends XtendMemberImpl implements SarlReq
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_REQUIRED_CAPACITY__REQUIRED_CAPACITIES:
-        return ((InternalEList<?>)getRequiredCapacities()).basicRemove(otherEnd, msgs);
+      case SarlPackage.SARL_REQUIRED_CAPACITY__CAPACITIES:
+        return ((InternalEList<?>)getCapacities()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -107,8 +107,8 @@ public class SarlRequiredCapacityImpl extends XtendMemberImpl implements SarlReq
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_REQUIRED_CAPACITY__REQUIRED_CAPACITIES:
-        return getRequiredCapacities();
+      case SarlPackage.SARL_REQUIRED_CAPACITY__CAPACITIES:
+        return getCapacities();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -124,9 +124,9 @@ public class SarlRequiredCapacityImpl extends XtendMemberImpl implements SarlReq
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_REQUIRED_CAPACITY__REQUIRED_CAPACITIES:
-        getRequiredCapacities().clear();
-        getRequiredCapacities().addAll((Collection<? extends JvmParameterizedTypeReference>)newValue);
+      case SarlPackage.SARL_REQUIRED_CAPACITY__CAPACITIES:
+        getCapacities().clear();
+        getCapacities().addAll((Collection<? extends JvmParameterizedTypeReference>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -142,8 +142,8 @@ public class SarlRequiredCapacityImpl extends XtendMemberImpl implements SarlReq
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_REQUIRED_CAPACITY__REQUIRED_CAPACITIES:
-        getRequiredCapacities().clear();
+      case SarlPackage.SARL_REQUIRED_CAPACITY__CAPACITIES:
+        getCapacities().clear();
         return;
     }
     super.eUnset(featureID);
@@ -159,8 +159,8 @@ public class SarlRequiredCapacityImpl extends XtendMemberImpl implements SarlReq
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_REQUIRED_CAPACITY__REQUIRED_CAPACITIES:
-        return requiredCapacities != null && !requiredCapacities.isEmpty();
+      case SarlPackage.SARL_REQUIRED_CAPACITY__CAPACITIES:
+        return capacities != null && !capacities.isEmpty();
     }
     return super.eIsSet(featureID);
   }

@@ -20,8 +20,7 @@
  */
 package io.sarl.lang.signature;
 
-import io.sarl.lang.sarl.SarlFormalParameter;
-
+import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 
 /**
@@ -36,12 +35,12 @@ public class InferredStandardParameter {
 
 	/** Parameter.
 	 */
-	protected final SarlFormalParameter parameter;
+	protected final XtendParameter parameter;
 
 	/**
 	 * @param parameter - the wraped formal parameter.
 	 */
-	protected InferredStandardParameter(SarlFormalParameter parameter) {
+	protected InferredStandardParameter(XtendParameter parameter) {
 		this.parameter = parameter;
 	}
 
@@ -49,7 +48,7 @@ public class InferredStandardParameter {
 	 *
 	 * @return the parameter.
 	 */
-	public SarlFormalParameter getParameter() {
+	public XtendParameter getParameter() {
 		return this.parameter;
 	}
 

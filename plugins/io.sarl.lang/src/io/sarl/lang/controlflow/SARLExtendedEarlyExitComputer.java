@@ -21,7 +21,7 @@
 
 package io.sarl.lang.controlflow;
 
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
@@ -84,7 +84,7 @@ public class SARLExtendedEarlyExitComputer extends ExtendedEarlyExitComputer {
 	 * statement, <code>false</code> otherwise.
 	 */
 	@SuppressWarnings("static-method")
-	public boolean isEarlyExitEvent(JvmParameterizedTypeReference expression) {
+	public boolean isEarlyExitEvent(JvmTypeReference expression) {
 		return SARLEarlyExitComputerUtil.isEarlyExitEvent(expression);
 	}
 

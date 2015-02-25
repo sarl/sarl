@@ -28,7 +28,7 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link io.sarl.lang.sarl.impl.SarlCapacityUsesImpl#getCapacitiesUsed <em>Capacities Used</em>}</li>
+ *   <li>{@link io.sarl.lang.sarl.impl.SarlCapacityUsesImpl#getCapacities <em>Capacities</em>}</li>
  * </ul>
  * </p>
  *
@@ -37,14 +37,14 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 public class SarlCapacityUsesImpl extends XtendMemberImpl implements SarlCapacityUses
 {
   /**
-   * The cached value of the '{@link #getCapacitiesUsed() <em>Capacities Used</em>}' containment reference list.
+   * The cached value of the '{@link #getCapacities() <em>Capacities</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getCapacitiesUsed()
+   * @see #getCapacities()
    * @generated
    * @ordered
    */
-  protected EList<JvmParameterizedTypeReference> capacitiesUsed;
+  protected EList<JvmParameterizedTypeReference> capacities;
 
   /**
    * <!-- begin-user-doc -->
@@ -72,13 +72,13 @@ public class SarlCapacityUsesImpl extends XtendMemberImpl implements SarlCapacit
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<JvmParameterizedTypeReference> getCapacitiesUsed()
+  public EList<JvmParameterizedTypeReference> getCapacities()
   {
-    if (capacitiesUsed == null)
+    if (capacities == null)
     {
-      capacitiesUsed = new EObjectContainmentEList<JvmParameterizedTypeReference>(JvmParameterizedTypeReference.class, this, SarlPackage.SARL_CAPACITY_USES__CAPACITIES_USED);
+      capacities = new EObjectContainmentEList<JvmParameterizedTypeReference>(JvmParameterizedTypeReference.class, this, SarlPackage.SARL_CAPACITY_USES__CAPACITIES);
     }
-    return capacitiesUsed;
+    return capacities;
   }
 
   /**
@@ -91,8 +91,8 @@ public class SarlCapacityUsesImpl extends XtendMemberImpl implements SarlCapacit
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_CAPACITY_USES__CAPACITIES_USED:
-        return ((InternalEList<?>)getCapacitiesUsed()).basicRemove(otherEnd, msgs);
+      case SarlPackage.SARL_CAPACITY_USES__CAPACITIES:
+        return ((InternalEList<?>)getCapacities()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -107,8 +107,8 @@ public class SarlCapacityUsesImpl extends XtendMemberImpl implements SarlCapacit
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_CAPACITY_USES__CAPACITIES_USED:
-        return getCapacitiesUsed();
+      case SarlPackage.SARL_CAPACITY_USES__CAPACITIES:
+        return getCapacities();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -124,9 +124,9 @@ public class SarlCapacityUsesImpl extends XtendMemberImpl implements SarlCapacit
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_CAPACITY_USES__CAPACITIES_USED:
-        getCapacitiesUsed().clear();
-        getCapacitiesUsed().addAll((Collection<? extends JvmParameterizedTypeReference>)newValue);
+      case SarlPackage.SARL_CAPACITY_USES__CAPACITIES:
+        getCapacities().clear();
+        getCapacities().addAll((Collection<? extends JvmParameterizedTypeReference>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -142,8 +142,8 @@ public class SarlCapacityUsesImpl extends XtendMemberImpl implements SarlCapacit
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_CAPACITY_USES__CAPACITIES_USED:
-        getCapacitiesUsed().clear();
+      case SarlPackage.SARL_CAPACITY_USES__CAPACITIES:
+        getCapacities().clear();
         return;
     }
     super.eUnset(featureID);
@@ -159,8 +159,8 @@ public class SarlCapacityUsesImpl extends XtendMemberImpl implements SarlCapacit
   {
     switch (featureID)
     {
-      case SarlPackage.SARL_CAPACITY_USES__CAPACITIES_USED:
-        return capacitiesUsed != null && !capacitiesUsed.isEmpty();
+      case SarlPackage.SARL_CAPACITY_USES__CAPACITIES:
+        return capacities != null && !capacities.isEmpty();
     }
     return super.eIsSet(featureID);
   }

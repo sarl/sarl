@@ -27,7 +27,8 @@ import "http://www.eclipse.org/xtext/common/JavaVMTypes" as jvm
 import "http://www.eclipse.org/xtext/xbase/Xbase" as xbase
 import "http://www.eclipse.org/xtext/xbase/Xtype" as xtype
 
-SarlScript:
+SarlScript returns xtend::XtendFile:
+	{SarlScript}
 	('package' name=QualifiedName ';'?)?
 	importSection=XImportSection?
 	elements+=Type*
@@ -60,35 +61,8 @@ SarlField returns xtend::XtendMember:
 	('=' initialValue=XExpression)? ';'?
 ;
 
-SarlActionSignature returns xtend::XtendMember:
-	{xtend::XtendFunction}
-	annotations+=XAnnotation*
-	{SarlActionSignature.annotationInfo = current} modifiers+=CommonModifier*
-	modifiers+=MethodModifier (modifiers+=CommonModifier | modifiers+=MethodModifier)* 
-	('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?
-	name=FunctionID
-	(
-		=> '('
-		(	parameters+=Parameter
-			(=>',' parameters+=Parameter)* 
-			(varargs?=VarArgToken)?
-		)?
-		')'
-	)?
-	(	':'
-		=>(returnType=JvmTypeReference createExtensionInfo=CreateExtensionInfo)
-	  | =>(returnType=TypeReferenceWithTypeArgs)
-	  | =>(returnType=TypeReferenceNoTypeArgs)
-	  | =>(createExtensionInfo=CreateExtensionInfo)
-	)?
-	(	('throws' exceptions+=JvmTypeReference (',' exceptions+=JvmTypeReference)*)?
-		&
-		('fires' firedEvents+=JvmTypeReference (',' firedEvents+=JvmTypeReference)*)?
-	) ';'?
-;
-
-SarlAction returns xtend::XtendMember:
-	{xtend::XtendFunction}
+SarlAction returns xtend::XtendFunction:
+	{SarlAction}
 	annotations+=XAnnotation*
 	{SarlAction.annotationInfo = current} modifiers+=CommonModifier*
 	modifiers+=MethodModifier (modifiers+=CommonModifier | modifiers+=MethodModifier)* 
@@ -98,7 +72,6 @@ SarlAction returns xtend::XtendMember:
 		=> '('
 		(	parameters+=Parameter
 			(=>',' parameters+=Parameter)* 
-			(varargs?=VarArgToken)?
 		)?
 		')'
 	)?
@@ -112,7 +85,7 @@ SarlAction returns xtend::XtendMember:
 		&
 		('fires' firedEvents+=JvmTypeReference (',' firedEvents+=JvmTypeReference)*)?
 	)
-	(expression=XBlockExpression | expression=RichString | ';')
+	(expression=XBlockExpression | expression=RichString | ';')?
 ;
 
 SarlBehaviorUnit returns xtend::XtendMember:
@@ -120,30 +93,29 @@ SarlBehaviorUnit returns xtend::XtendMember:
 	annotations+=XAnnotation*
 	{SarlBehaviorUnit.annotationInfo = current} 
 	'on' name=JvmParameterizedTypeReference (=> '[' guard=XExpression ']')?
-	(body=XBlockExpression | body=RichString | ';')
+	(expression=XBlockExpression | expression=RichString | ';')
 ;
 
 SarlCapacityUses returns xtend::XtendMember:
 	{SarlCapacityUses}
-	'uses' capacitiesUsed+=JvmParameterizedTypeReference
-	(',' capacitiesUsed+=JvmParameterizedTypeReference)* ';'?
+	'uses' capacities+=JvmParameterizedTypeReference
+	(',' capacities+=JvmParameterizedTypeReference)* ';'?
 ;
 
 SarlRequiredCapacity returns xtend::XtendMember:
 	{SarlRequiredCapacity}
-	'requires' requiredCapacities+=JvmParameterizedTypeReference
-	(',' requiredCapacities+=JvmParameterizedTypeReference)* ';'?
+	'requires' capacities+=JvmParameterizedTypeReference
+	(',' capacities+=JvmParameterizedTypeReference)* ';'?
 ;
 
-SarlConstructor returns xtend::XtendMember:
-	{xtend::XtendConstructor}
+SarlConstructor returns xtend::XtendConstructor:
+	{SarlConstructor}
 	annotations+=XAnnotation*
 	{SarlConstructor.annotationInfo = current}
 	modifiers+=CommonModifier*
 	'new'
 	('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?
 	( '(' (parameters+=Parameter (',' parameters+=Parameter)*)?
-		(varargs?=VarArgToken)?
 	  ')'
 	)?
 	('throws' exceptions+=JvmTypeReference (',' exceptions+=JvmTypeReference)*)?
@@ -197,8 +169,8 @@ SarlEvent returns xtend::XtendTypeDeclaration:
 	annotations+=XAnnotation*
 	{SarlEvent.annotationInfo = current}
 	modifiers+=CommonModifier*
-	'event' name=ValidID ('extends' superTypes+=JvmParameterizedTypeReference)? 
-	('{' (features+=EventMember)* '}')?
+	'event' name=ValidID ('extends' extends+=JvmParameterizedTypeReference)? 
+	('{' (members+=EventMember)* '}')?
 ;
 
 EventMember returns xtend::XtendMember:
@@ -211,8 +183,8 @@ SarlAgent returns xtend::XtendTypeDeclaration:
 	{SarlAgent.annotationInfo = current}
 	modifiers+=CommonModifier*
 	'agent' name=ValidID 
-	('extends' superTypes+=JvmParameterizedTypeReference)?
-	'{' (features+=AgentMember)* '}'
+	('extends' extends+=JvmParameterizedTypeReference)?
+	'{' (members+=AgentMember)* '}'
 ;
 
 AgentMember returns xtend::XtendMember:
@@ -225,13 +197,13 @@ SarlCapacity returns xtend::XtendTypeDeclaration:
 	{SarlCapacity.annotationInfo = current}
 	modifiers+=CommonModifier*
 	'capacity' name=ValidID
-	('extends' superTypes+=JvmParameterizedTypeReference
-		( ',' superTypes+=JvmParameterizedTypeReference )* )? 
-	'{' (features+=CapacityMember)* '}'
+	('extends' extends+=JvmParameterizedTypeReference
+		( ',' extends+=JvmParameterizedTypeReference )* )? 
+	'{' (members+=CapacityMember)* '}'
 ;
 
 CapacityMember returns xtend::XtendMember:
-	SarlActionSignature
+	SarlAction
 ;
 
 SarlBehavior returns xtend::XtendTypeDeclaration:
@@ -239,8 +211,8 @@ SarlBehavior returns xtend::XtendTypeDeclaration:
 	annotations+=XAnnotation*
 	{SarlBehavior.annotationInfo = current}
 	modifiers+=CommonModifier*
-	'behavior' name=ValidID ('extends' superTypes+=JvmParameterizedTypeReference)?
-	'{' (features+=BehaviorMember)* '}'
+	'behavior' name=ValidID ('extends' extends+=JvmParameterizedTypeReference)?
+	'{' (members+=BehaviorMember)* '}'
 ;
 
 BehaviorMember returns xtend::XtendMember:
@@ -253,15 +225,15 @@ SarlSkill returns xtend::XtendTypeDeclaration:
 	{SarlSkill.annotationInfo = current}
 	modifiers+=CommonModifier*
 	'skill' name=ValidID 
-	(	('extends' superTypes+=JvmParameterizedTypeReference)?
+	(	('extends' extends+=JvmParameterizedTypeReference)?
 		&
 		(	'implements' 
-				(	implementedTypes+=JvmParameterizedTypeReference
-					(',' implementedTypes+=JvmParameterizedTypeReference)*
+				(	implements+=JvmParameterizedTypeReference
+					(',' implements+=JvmParameterizedTypeReference)*
 				)
 		)?
 	)
-	'{' (features+=SkillMember)* '}'
+	'{' (members+=SkillMember)* '}'
 ;
 
 SkillMember returns xtend::XtendMember:
@@ -273,7 +245,9 @@ Parameter returns xtend::XtendParameter:
 	annotations+=XAnnotation*
 	(extension?='extension' annotations+=XAnnotation*)?  
 	name=InnerVarID ':' parameterType=JvmTypeReference 
-	('=' defaultValue=DefaultParameterValue)?
+	(	  ('=' defaultValue=DefaultParameterValue)
+		| (varArg?=VarArgToken)
+	)?
 ;
 
 DefaultParameterValue returns xbase::XExpression:

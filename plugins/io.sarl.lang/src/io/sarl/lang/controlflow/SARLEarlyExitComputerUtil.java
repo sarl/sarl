@@ -25,7 +25,7 @@ import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.util.ModelUtil;
 
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 
 /** Utilities related to early-exit flags.
  *
@@ -49,7 +49,7 @@ public final class SARLEarlyExitComputerUtil {
 	 * @return <code>true</code> if the event may causes early exit of the function,
 	 * otherwise <code>false</code>.
 	 */
-	public static boolean isEarlyExitEvent(JvmParameterizedTypeReference reference) {
+	public static boolean isEarlyExitEvent(JvmTypeReference reference) {
 		if (reference != null) {
 			//TODO: Introduce inheritance testing. Should be solved by annotations' introduction in SARL.
 			return EARLY_EXIT_EVENT.equals(reference.getIdentifier());

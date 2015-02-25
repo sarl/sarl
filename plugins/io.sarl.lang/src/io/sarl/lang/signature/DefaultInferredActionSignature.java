@@ -20,12 +20,11 @@
  */
 package io.sarl.lang.signature;
 
-import io.sarl.lang.sarl.SarlFormalParameter;
-
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtend.core.xtend.XtendParameter;
 
 /**
  * Provides additional function signatures according the semantic
@@ -38,8 +37,8 @@ import org.eclipse.emf.common.util.EList;
  */
 public class DefaultInferredActionSignature implements InferredActionSignature {
 
-	private final Map<SignatureKey, EList<InferredStandardParameter>> inferredParameters;
-	private final EList<SarlFormalParameter> parameters;
+	private final Map<SignatureKey, List<InferredStandardParameter>> inferredParameters;
+	private final List<? extends XtendParameter> parameters;
 	private final SignatureKey parameterKey;
 	private final ActionNameKey key;
 
@@ -51,9 +50,9 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 	 */
 	protected DefaultInferredActionSignature(
 			ActionNameKey key,
-			EList<SarlFormalParameter> parameters,
+			List<? extends XtendParameter> parameters,
 			SignatureKey parameterKey,
-			Map<SignatureKey, EList<InferredStandardParameter>> inferredParameters) {
+			Map<SignatureKey, List<InferredStandardParameter>> inferredParameters) {
 		this.key = key;
 		this.parameters = parameters;
 		this.parameterKey = parameterKey;
@@ -66,12 +65,12 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 	}
 
 	@Override
-	public Map<SignatureKey, EList<InferredStandardParameter>> getInferredSignatures() {
+	public Map<SignatureKey, List<InferredStandardParameter>> getInferredSignatures() {
 		return this.inferredParameters;
 	}
 
 	@Override
-	public EList<SarlFormalParameter> getFormalParameters() {
+	public List<? extends XtendParameter> getFormalParameters() {
 		return this.parameters;
 	}
 
@@ -86,7 +85,7 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 	}
 
 	@Override
-	public Iterator<EList<InferredStandardParameter>> iterator() {
+	public Iterator<List<InferredStandardParameter>> iterator() {
 		return this.inferredParameters.values().iterator();
 	}
 
@@ -106,8 +105,8 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 	public String toString() {
 		if (!this.parameters.isEmpty()) {
 			StringBuilder b = new StringBuilder();
-			Iterator<SarlFormalParameter> it = this.parameters.iterator();
-			SarlFormalParameter p = it.next();
+			Iterator<? extends XtendParameter> it = this.parameters.iterator();
+			XtendParameter p = it.next();
 			b.append((p.getName() != null) ? p.getName() : null);
 			b.append(" : "); //$NON-NLS-1$
 			b.append((p.getParameterType() != null) ? p.getParameterType().getIdentifier() : null);
@@ -129,8 +128,8 @@ public class DefaultInferredActionSignature implements InferredActionSignature {
 			StringBuilder b = new StringBuilder();
 			b.append(functionName);
 			b.append("("); //$NON-NLS-1$
-			Iterator<SarlFormalParameter> it = this.parameters.iterator();
-			SarlFormalParameter p = it.next();
+			Iterator<? extends XtendParameter> it = this.parameters.iterator();
+			XtendParameter p = it.next();
 			b.append((p.getName() != null) ? p.getName() : null);
 			b.append(" : "); //$NON-NLS-1$
 			b.append((p.getParameterType() != null) ? p.getParameterType().getIdentifier() : null);
