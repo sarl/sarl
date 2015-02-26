@@ -82,6 +82,7 @@ import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.common.types.JvmMember;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
@@ -490,7 +491,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				this.typeExtensions.setSynthetic(constructor, true);
 			}
 			// Add standard functions
-			addStandardFunctionsTo(inferredJvmType, jvmFields);
+			addStandardFunctionsTo(source, inferredJvmType);
 			// Generate the documentation
 			this.jvmTypesBuilder.copyDocumentationTo(source, inferredJvmType);
 			// Resolve name classes for synthetic members
@@ -1376,63 +1377,285 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * 
 	 * The typical functions are: {@link #toString()}, {@link #hashCode()}, and {@link #equals(Object)}.
 	 * 
+	 * @param sourceMember - the SARL source.
 	 * @param inferredJvmType - the target type.
-	 * @param jvmFields - the list of fields to consider.
 	 */
-	protected void addStandardFunctionsTo(JvmGenericType inferredJvmType, List<JvmField> jvmFields) {
-		// single translation to the array
-		JvmField[] tab = new JvmField[jvmFields.size()];
-		jvmFields.toArray(tab);
-		JvmGenericType elementType = SARLJvmModelInferrer.this.typeBuilder.toClass(this.element,
-				SARLJvmModelInferrer.this.nameProvider.getFullyQualifiedName(this.element));
-
-		JvmOperation op = toEqualsMethod(this.element, elementType, tab);
-		if (op != null) {
-			op.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Generated.class));
-			SARLJvmModelInferrer.this.typeExtensions.setSynthetic(op, true);
-			it.getMembers().add(op);
+	protected void addStandardFunctionsTo(XtendTypeDeclaration sourceMember, JvmGenericType inferredJvmType) {
+		List<JvmField> fields = CollectionLiterals.newArrayList();
+		for (JvmMember member : inferredJvmType.getMembers()) {
+			if (member instanceof JvmField) {
+				fields.add((JvmField) member);
+			}
 		}
 
-		op = toHashCodeMethod(this.element, tab);
+		JvmOperation op = getEqualsMethod(sourceMember, inferredJvmType, fields);
 		if (op != null) {
-			op.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Generated.class));
+			op.getAnnotations().add(SARLJvmModelInferrer.this.annotationTypesBuilder.annotationRef(Generated.class));
 			SARLJvmModelInferrer.this.typeExtensions.setSynthetic(op, true);
-			it.getMembers().add(op);
+			inferredJvmType.getMembers().add(op);
+			this.associator.associate(sourceMember, inferredJvmType);
 		}
 
-		op = SARLJvmModelInferrer.this.typeBuilder.toMethod(
-				this.element,
-				"attributesToString", //$NON-NLS-1$
-				SARLJvmModelInferrer.this._typeReferenceBuilder.typeRef(String.class),
-				new Procedures.Procedure1<JvmOperation>() {
-					@Override
-					public void apply(JvmOperation it2) {
-						it2.setVisibility(JvmVisibility.PROTECTED);
-						SARLJvmModelInferrer.this.typeBuilder.setDocumentation(it2,
-								MessageFormat.format(Messages.SARLJvmModelInferrer_2,
-										EventGenerator.this.element.getName()));
-						SARLJvmModelInferrer.this.typeBuilder.setBody(it2,
-								new Procedures.Procedure1<ITreeAppendable>() {
-							@Override
-							public void apply(ITreeAppendable it3) {
-								it3.append("StringBuilder result = new StringBuilder(" //$NON-NLS-1$
-										+ "super.attributesToString());").newLine(); //$NON-NLS-1$
-								for (Attribute attr : IterableExtensions.filter(
-										EventGenerator.this.element.getFeatures(), Attribute.class)) {
-									it3.append("result.append(\"" + attr.getName() //$NON-NLS-1$
-											+ "  = \").append(this." //$NON-NLS-1$
-											+ attr.getName() + ");").newLine(); //$NON-NLS-1$
-								}
-								it3.append("return result.toString();"); //$NON-NLS-1$
-							}
-						});
+		op = getHashCodeMethod(sourceMember, inferredJvmType, fields);
+		if (op != null) {
+			op.getAnnotations().add(SARLJvmModelInferrer.this.annotationTypesBuilder.annotationRef(Generated.class));
+			SARLJvmModelInferrer.this.typeExtensions.setSynthetic(op, true);
+			inferredJvmType.getMembers().add(op);
+			this.associator.associate(sourceMember, inferredJvmType);
+		}
+
+		op = getAttributeToStringMethod(sourceMember, inferredJvmType, fields);
+		if (op != null) {
+			op.getAnnotations().add(SARLJvmModelInferrer.this.annotationTypesBuilder.annotationRef(Generated.class));
+			SARLJvmModelInferrer.this.typeExtensions.setSynthetic(op, true);
+			inferredJvmType.getMembers().add(op);
+			this.associator.associate(sourceMember, inferredJvmType);
+		}
+	}
+
+	/** Generate the "equals()" operation.
+	 * This function was deprecated in Xbase, and should be provided by DSL
+	 * providers now.
+	 *
+	 * @param sourceMember - the SARL source.
+	 * @param inferredJvmType - the target type.
+	 * @param fields - the fields declared in the container.
+	 * @return the "equals" function.
+	 */
+	protected JvmOperation getAttributeToStringMethod(XtendTypeDeclaration sourceMember, final JvmGenericType inferredJvmType,
+			final List<JvmField> fields) {
+		JvmOperation operation = this.typesFactory.createJvmOperation();
+		// name
+		operation.setSimpleName("attributesToString"); //$NON-NLS-1$
+		// Modifiers
+		operation.setAbstract(false);
+		operation.setNative(false);
+		operation.setSynchronized(true);
+		operation.setStrictFloatingPoint(false);
+		operation.setFinal(false);
+		operation.setVisibility(JvmVisibility.PROTECTED);
+		operation.setStatic(false);
+		operation.setVarArgs(false);
+		// Parameters
+		JvmFormalParameter parameter = this.typesFactory.createJvmFormalParameter();
+		parameter.setName("obj"); //$NON-NLS-1$
+		parameter.setParameterType(this.typeReferenceBuilder.typeRef(Object.class));
+		operation.getParameters().add(parameter);
+		// Return type
+		JvmTypeReference returnType = this.typeReferenceBuilder.typeRef(String.class);
+		JvmTypeReference realReturnType = null;
+		if (returnType != null) {
+			realReturnType = this.jvmTypesBuilder.cloneWithProxies(returnType);
+		} else {
+			realReturnType = this.jvmTypesBuilder.inferredType();
+		}
+		operation.setReturnType(realReturnType);
+		// Annotations
+		operation.getAnnotations().add(this.annotationTypesBuilder.annotationRef(Override.class));
+		// Documentation
+		this.jvmTypesBuilder.setDocumentation(operation, MessageFormat.format(Messages.SARLJvmModelInferrer_2,
+										sourceMember.getName()));
+		// Body
+		this.jvmTypesBuilder.setBody(operation, new Procedures.Procedure1<ITreeAppendable>() {
+			@Override
+			public void apply(ITreeAppendable it) {
+				it.append("StringBuilder result = new StringBuilder(" //$NON-NLS-1$
+						+ "super.attributesToString());").newLine(); //$NON-NLS-1$
+				for (JvmField attr : fields) {
+					it.append("result.append(\"" + attr.getSimpleName() //$NON-NLS-1$
+							+ "  = \").append(this." //$NON-NLS-1$
+							+ attr.getSimpleName() + ");").newLine(); //$NON-NLS-1$
+				}
+				it.append("return result.toString();"); //$NON-NLS-1$
+			}
+		});
+		return operation;
+	}
+
+	/** Generate the "equals()" operation.
+	 * This function was deprecated in Xbase, and should be provided by DSL
+	 * providers now.
+	 *
+	 * @param sourceMember - the SARL source.
+	 * @param inferredJvmType - the target type.
+	 * @param fields - the fields declared in the container.
+	 * @return the "equals" function.
+	 */
+	protected JvmOperation getEqualsMethod(XtendTypeDeclaration sourceMember, final JvmGenericType inferredJvmType,
+			final List<JvmField> fields) {
+		JvmOperation operation = this.typesFactory.createJvmOperation();
+		// name
+		operation.setSimpleName("equals"); //$NON-NLS-1$
+		// Modifiers
+		operation.setAbstract(false);
+		operation.setNative(false);
+		operation.setSynchronized(true);
+		operation.setStrictFloatingPoint(false);
+		operation.setFinal(false);
+		operation.setVisibility(JvmVisibility.PUBLIC);
+		operation.setStatic(false);
+		operation.setVarArgs(false);
+		// Parameters
+		JvmFormalParameter parameter = this.typesFactory.createJvmFormalParameter();
+		parameter.setName("obj"); //$NON-NLS-1$
+		parameter.setParameterType(this.typeReferenceBuilder.typeRef(Object.class));
+		operation.getParameters().add(parameter);
+		// Return type
+		JvmTypeReference returnType = this.typeReferenceBuilder.typeRef(Boolean.TYPE);
+		JvmTypeReference realReturnType = null;
+		if (returnType != null) {
+			realReturnType = this.jvmTypesBuilder.cloneWithProxies(returnType);
+		} else {
+			realReturnType = this.jvmTypesBuilder.inferredType();
+		}
+		operation.setReturnType(realReturnType);
+		// Annotations
+		operation.getAnnotations().add(this.annotationTypesBuilder.annotationRef(Override.class));
+		// Body
+		this.jvmTypesBuilder.setBody(operation, new Procedures.Procedure1<ITreeAppendable>() {
+			@Override
+			public void apply(ITreeAppendable it) {
+				it.append("if (this == obj)").increaseIndentation(); //$NON-NLS-1$
+				it.newLine().append("return true;").decreaseIndentation(); //$NON-NLS-1$
+				it.newLine().append("if (obj == null)").increaseIndentation(); //$NON-NLS-1$
+				it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
+				it.newLine().append("if (getClass() != obj.getClass())").increaseIndentation(); //$NON-NLS-1$
+				it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
+				it.newLine().append("if (!super.equals(obj))").increaseIndentation(); //$NON-NLS-1$
+				it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
+				it.newLine().append(inferredJvmType.getSimpleName() + " other = (" //$NON-NLS-1$
+						+ inferredJvmType.getSimpleName() + ") obj;"); //$NON-NLS-1$
+				for (JvmField field : fields) {
+					generateToEqualForField(it, field);
+				}
+				it.newLine().append("return true;"); //$NON-NLS-1$
+			}
+
+			private boolean arrayContains(String element, String... array) {
+				for (String elt : array) {
+					if (Objects.equal(elt, element)) {
+						return true;
 					}
-				});
-		if (op != null) {
-			op.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Generated.class));
-			SARLJvmModelInferrer.this.typeExtensions.setSynthetic(op, true);
-			it.getMembers().add(op);
+				}
+				return false;
+			}
+
+			private void generateToEqualForField(ITreeAppendable it, JvmField field) {
+				String typeName = field.getType().getIdentifier();
+				if (arrayContains(typeName,
+						Boolean.TYPE.getName(),
+						Integer.TYPE.getName(),
+						Long.TYPE.getName(),
+						Character.TYPE.getName(),
+						Byte.TYPE.getName(),
+						Short.TYPE.getName())) {
+					it.newLine().append("if (other." + field.getSimpleName() //$NON-NLS-1$
+							+ " != this." + field.getSimpleName() + ")").increaseIndentation(); //$NON-NLS-1$ //$NON-NLS-2$
+					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
+				} else if (Objects.equal(Double.TYPE.getName(), typeName)) {
+					it.newLine().append("if (Double.doubleToLongBits(other." + field.getSimpleName() //$NON-NLS-1$
+							+ ") != Double.doubleToLongBits(this." + field.getSimpleName() //$NON-NLS-1$
+							+ "))").increaseIndentation(); //$NON-NLS-1$
+					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
+				} else if (Objects.equal(Float.TYPE.getName(), typeName)) {
+					it.newLine().append("if (Float.floatToIntBits(other." + field.getSimpleName() //$NON-NLS-1$
+							+ ") != Float.floatToIntBits(this." + field.getSimpleName() //$NON-NLS-1$
+							+ "))").increaseIndentation(); //$NON-NLS-1$
+					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
+				} else  {
+					it.newLine().append("if (this." + field.getSimpleName() //$NON-NLS-1$
+							+ " == null) {").increaseIndentation(); //$NON-NLS-1$
+					it.newLine().append("if (other." + field.getSimpleName() //$NON-NLS-1$
+							+ " != null)").increaseIndentation(); //$NON-NLS-1$
+					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
+					it.decreaseIndentation();
+					it.newLine().append("} else if (!this." + field.getSimpleName() //$NON-NLS-1$
+							+ ".equals(other." + field.getSimpleName() //$NON-NLS-1$
+							+ "))").increaseIndentation(); //$NON-NLS-1$
+					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
+				}
+			}
+		});
+		return operation;
+	}
+
+	/** Generate the "hashCode()" operation.
+	 * This function was deprecated in Xbase, and should be provided by DSL
+	 * providers now.
+	 *
+	 * @param sourceMember - the SARL source.
+	 * @param inferredJvmType - the target type.
+	 * @param fields - the fields declared in the container.
+	 * @return the "hashCode" function.
+	 */
+	protected JvmOperation getHashCodeMethod(XtendTypeDeclaration sourceMember, JvmGenericType inferredJvmType,
+			final List<JvmField> fields) {
+		JvmOperation operation = this.typesFactory.createJvmOperation();
+		// name
+		operation.setSimpleName("hashCode"); //$NON-NLS-1$
+		// Modifiers
+		operation.setAbstract(false);
+		operation.setNative(false);
+		operation.setSynchronized(true);
+		operation.setStrictFloatingPoint(false);
+		operation.setFinal(false);
+		operation.setVisibility(JvmVisibility.PUBLIC);
+		operation.setStatic(false);
+		operation.setVarArgs(false);
+		// Parameters
+		JvmFormalParameter parameter = this.typesFactory.createJvmFormalParameter();
+		parameter.setName("obj"); //$NON-NLS-1$
+		parameter.setParameterType(this.typeReferenceBuilder.typeRef(Object.class));
+		operation.getParameters().add(parameter);
+		// Return type
+		JvmTypeReference returnType = this.typeReferenceBuilder.typeRef(Integer.TYPE);
+		JvmTypeReference realReturnType = null;
+		if (returnType != null) {
+			realReturnType = this.jvmTypesBuilder.cloneWithProxies(returnType);
+		} else {
+			realReturnType = this.jvmTypesBuilder.inferredType();
 		}
+		operation.setReturnType(realReturnType);
+		// Annotations
+		operation.getAnnotations().add(this.annotationTypesBuilder.annotationRef(Override.class));
+		// Body
+		this.jvmTypesBuilder.setBody(operation, new Procedures.Procedure1<ITreeAppendable>() {
+			@Override
+			public void apply(ITreeAppendable it) {
+				it.append("final int prime = 31;"); //$NON-NLS-1$
+				it.newLine().append("int result = super.hashCode();"); //$NON-NLS-1$
+				for (JvmField field : fields) {
+					String typeName = field.getType().getIdentifier();
+					if (Objects.equal(Boolean.TYPE.getName(), typeName)) {
+						it.newLine().append("result = prime * result + (this." //$NON-NLS-1$
+								+ field.getSimpleName() + " ? 1231 : 1237);"); //$NON-NLS-1$
+					} else if (Objects.equal(Integer.TYPE.getName(), typeName)
+							|| Objects.equal(Character.TYPE.getName(), typeName)
+							|| Objects.equal(Byte.TYPE.getName(), typeName)
+							|| Objects.equal(Short.TYPE.getName(), typeName)) {
+						it.newLine().append("result = prime * result + this." //$NON-NLS-1$
+								+ field.getSimpleName() + ";"); //$NON-NLS-1$
+					} else if (Objects.equal(Long.TYPE.getName(), typeName)) {
+						it.newLine().append("result = prime * result + (int) (this." //$NON-NLS-1$
+								+ field.getSimpleName() + " ^ (this." + field.getSimpleName() //$NON-NLS-1$
+								+ " >>> 32));"); //$NON-NLS-1$
+					} else if (Objects.equal(Float.TYPE.getName(), typeName)) {
+						it.newLine().append("result = prime * result + Float.floatToIntBits(this." //$NON-NLS-1$
+								+ field.getSimpleName() + ");"); //$NON-NLS-1$
+					} else if (Objects.equal(Double.TYPE.getName(), typeName)) {
+						it.newLine().append("result = prime * result + (int) (Double.doubleToLongBits(this." //$NON-NLS-1$
+								+ field.getSimpleName() + ") ^ (Double.doubleToLongBits(this." //$NON-NLS-1$
+								+ field.getSimpleName() + ") >>> 32));"); //$NON-NLS-1$
+					} else {
+						it.newLine().append("result = prime * result + ((this." //$NON-NLS-1$
+								+ field.getSimpleName() + "== null) ? 0 : this." + field.getSimpleName() //$NON-NLS-1$
+								+ ".hashCode());"); //$NON-NLS-1$
+					}
+				}
+				it.newLine().append("return result;"); //$NON-NLS-1$
+			}
+		});
+		return operation;
 	}
 
 	//	/** Generator of JVM elements.
