@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,17 +21,17 @@
 package io.sarl.lang.formatting;
 
 import io.sarl.lang.services.SARLGrammarAccess;
-import io.sarl.lang.services.SARLGrammarAccess.SarlActionElements;
-import io.sarl.lang.services.SARLGrammarAccess.SarlAgentElements;
-import io.sarl.lang.services.SARLGrammarAccess.SarlBehaviorElements;
-import io.sarl.lang.services.SARLGrammarAccess.SarlBehaviorUnitElements;
-import io.sarl.lang.services.SARLGrammarAccess.SarlCapacityElements;
-import io.sarl.lang.services.SARLGrammarAccess.SarlCapacityUsesElements;
-import io.sarl.lang.services.SARLGrammarAccess.SarlConstructorElements;
-import io.sarl.lang.services.SARLGrammarAccess.SarlEventElements;
-import io.sarl.lang.services.SARLGrammarAccess.SarlFieldElements;
-import io.sarl.lang.services.SARLGrammarAccess.SarlRequiredCapacityElements;
-import io.sarl.lang.services.SARLGrammarAccess.SarlSkillElements;
+import io.sarl.lang.services.SARLGrammarAccess.ActionElements;
+import io.sarl.lang.services.SARLGrammarAccess.AgentElements;
+import io.sarl.lang.services.SARLGrammarAccess.BehaviorElements;
+import io.sarl.lang.services.SARLGrammarAccess.BehaviorUnitElements;
+import io.sarl.lang.services.SARLGrammarAccess.CapacityElements;
+import io.sarl.lang.services.SARLGrammarAccess.CapacityUsesElements;
+import io.sarl.lang.services.SARLGrammarAccess.ConstructorElements;
+import io.sarl.lang.services.SARLGrammarAccess.EventElements;
+import io.sarl.lang.services.SARLGrammarAccess.FieldElements;
+import io.sarl.lang.services.SARLGrammarAccess.RequiredCapacityElements;
+import io.sarl.lang.services.SARLGrammarAccess.SkillElements;
 import io.sarl.lang.services.SARLGrammarAccess.XVariableDeclarationElements;
 
 import org.eclipse.xtext.formatting.impl.FormattingConfig;
@@ -75,21 +75,21 @@ public class SARLFormatter extends XbaseFormatter {
 
 		c.setAutoLinewrap(LINE_WRAP);
 		configureXImportDeclaration(c, this.access.getXImportDeclarationAccess());
-		configureAgent(c, this.access.getSarlAgentAccess());
+		configureAgent(c, this.access.getAgentAccess());
 
-		configureAttributes(c, this.access.getSarlFieldAccess());
-		configureEvents(c, this.access.getSarlEventAccess());
-		configureUses(c, this.access.getSarlCapacityUsesAccess());
-		configureBehaviorUnit(c, this.access.getSarlBehaviorUnitAccess());
+		configureAttributes(c, this.access.getFieldAccess());
+		configureEvents(c, this.access.getEventAccess());
+		configureUses(c, this.access.getCapacityUsesAccess());
+		configureBehaviorUnit(c, this.access.getBehaviorUnitAccess());
 
 		configureXVariableDeclaration(c, this.access.getXVariableDeclarationAccess());
 		configureXAssignmentElements(c, this.access.getXAssignmentAccess());
-		configureActions(c, this.access.getSarlActionAccess());
-		configureCapacities(c, this.access.getSarlCapacityAccess());
-		configureBehaviors(c, this.access.getSarlBehaviorAccess());
-		configureRequires(c, this.access.getSarlRequiredCapacityAccess());
-		configureSkill(c, this.access.getSarlSkillAccess());
-		configureConstructor(c, this.access.getSarlConstructorAccess());
+		configureActions(c, this.access.getActionAccess());
+		configureCapacities(c, this.access.getCapacityAccess());
+		configureBehaviors(c, this.access.getBehaviorAccess());
+		configureRequires(c, this.access.getRequiredCapacityAccess());
+		configureSkill(c, this.access.getSkillAccess());
+		configureConstructor(c, this.access.getConstructorAccess());
 
 		//package
 		c.setLinewrap(2).after(this.access.getSarlScriptAccess().getGroup_1());
@@ -108,7 +108,7 @@ public class SARLFormatter extends XbaseFormatter {
 	 * @param ele - the elements.
 	 */
 	@SuppressWarnings("static-method")
-	public void configureConstructor(FormattingConfig c, SarlConstructorElements ele) {
+	public void configureConstructor(FormattingConfig c, ConstructorElements ele) {
 		c.setLinewrap(2).before(ele.getGroup());
 		c.setNoSpace().around(ele.getLeftParenthesisKeyword_6_0());
 		c.setNoSpace().before(ele.getRightParenthesisKeyword_6_2());
@@ -121,7 +121,7 @@ public class SARLFormatter extends XbaseFormatter {
 	 * @param ele - the elements.
 	 */
 	@SuppressWarnings("static-method")
-	public void configureSkill(FormattingConfig c, SarlSkillElements ele) {
+	public void configureSkill(FormattingConfig c, SkillElements ele) {
 		c.setLinewrap(1, 1, 2).before(ele.getGroup());
 		c.setIndentation(ele.getLeftCurlyBracketKeyword_7(), ele.getRightCurlyBracketKeyword_9());
 		c.setLinewrap().around(ele.getRightCurlyBracketKeyword_9());
@@ -133,7 +133,7 @@ public class SARLFormatter extends XbaseFormatter {
 	 * @param ele - the elements.
 	 */
 	@SuppressWarnings("static-method")
-	public void configureRequires(FormattingConfig c, SarlRequiredCapacityElements ele) {
+	public void configureRequires(FormattingConfig c, RequiredCapacityElements ele) {
 		c.setLinewrap().around(ele.getGroup());
 		c.setNoSpace().before(ele.getCommaKeyword_3_0());
 	}
@@ -144,7 +144,7 @@ public class SARLFormatter extends XbaseFormatter {
 	 * @param ele - the elements.
 	 */
 	@SuppressWarnings("static-method")
-	public void configureBehaviors(FormattingConfig c, SarlBehaviorElements ele) {
+	public void configureBehaviors(FormattingConfig c, BehaviorElements ele) {
 		c.setLinewrap(2).before(ele.getGroup());
 		c.setIndentation(ele.getLeftCurlyBracketKeyword_7(), ele.getRightCurlyBracketKeyword_9());
 		c.setLinewrap().around(ele.getRightCurlyBracketKeyword_9());
@@ -156,7 +156,7 @@ public class SARLFormatter extends XbaseFormatter {
 	 * @param ele - the elements.
 	 */
 	@SuppressWarnings("static-method")
-	public void configureCapacities(FormattingConfig c, SarlCapacityElements ele) {
+	public void configureCapacities(FormattingConfig c, CapacityElements ele) {
 		c.setLinewrap(1, 1, 2).before(ele.getGroup());
 		c.setIndentation(ele.getLeftCurlyBracketKeyword_7(), ele.getRightCurlyBracketKeyword_9());
 		c.setLinewrap().around(ele.getRightCurlyBracketKeyword_9());
@@ -168,7 +168,7 @@ public class SARLFormatter extends XbaseFormatter {
 	 * @param ele - the elements.
 	 */
 	@SuppressWarnings("static-method")
-	public void configureActions(FormattingConfig c, SarlActionElements ele) {
+	public void configureActions(FormattingConfig c, ActionElements ele) {
 		c.setLinewrap(2).before(ele.getGroup());
 		c.setNoSpace().around(ele.getLeftParenthesisKeyword_8_0());
 		c.setNoSpace().before(ele.getRightParenthesisKeyword_8_2());
@@ -195,7 +195,7 @@ public class SARLFormatter extends XbaseFormatter {
 	 * @param ele - the elements.
 	 */
 	@SuppressWarnings("static-method")
-	public void configureAttributes(FormattingConfig c, SarlFieldElements ele) {
+	public void configureAttributes(FormattingConfig c, FieldElements ele) {
 		c.setLinewrap().around(ele.getGroup());
 	}
 
@@ -205,7 +205,7 @@ public class SARLFormatter extends XbaseFormatter {
 	 * @param ele - the elements.
 	 */
 	@SuppressWarnings("static-method")
-	public void configureAgent(FormattingConfig c, SarlAgentElements ele) {
+	public void configureAgent(FormattingConfig c, AgentElements ele) {
 		c.setLinewrap(2).after(ele.getGroup());
 		c.setLinewrap().before(ele.getRightCurlyBracketKeyword_9());
 		c.setIndentation(ele.getLeftCurlyBracketKeyword_7(), ele.getRightCurlyBracketKeyword_9());
@@ -217,7 +217,7 @@ public class SARLFormatter extends XbaseFormatter {
 	 * @param ele - the elements.
 	 */
 	@SuppressWarnings("static-method")
-	public void configureEvents(FormattingConfig c, SarlEventElements ele) {
+	public void configureEvents(FormattingConfig c, EventElements ele) {
 		c.setLinewrap(2).after(ele.getGroup());
 		c.setLinewrap().before(ele.getRightCurlyBracketKeyword_7_2());
 		c.setIndentation(ele.getLeftCurlyBracketKeyword_7_0(), ele.getRightCurlyBracketKeyword_7_2());
@@ -229,7 +229,7 @@ public class SARLFormatter extends XbaseFormatter {
 	 * @param ele - the elements.
 	 */
 	@SuppressWarnings("static-method")
-	public void configureUses(FormattingConfig c, SarlCapacityUsesElements ele) {
+	public void configureUses(FormattingConfig c, CapacityUsesElements ele) {
 		c.setLinewrap().around(ele.getGroup());
 		c.setNoSpace().before(ele.getCommaKeyword_3_0());
 	}
@@ -240,7 +240,7 @@ public class SARLFormatter extends XbaseFormatter {
 	 * @param ele - the elements.
 	 */
 	@SuppressWarnings("static-method")
-	public void configureBehaviorUnit(FormattingConfig c, SarlBehaviorUnitElements ele) {
+	public void configureBehaviorUnit(FormattingConfig c, BehaviorUnitElements ele) {
 		c.setLinewrap(2).before(ele.getGroup());
 		c.setLinewrap().after(ele.getGroup());
 

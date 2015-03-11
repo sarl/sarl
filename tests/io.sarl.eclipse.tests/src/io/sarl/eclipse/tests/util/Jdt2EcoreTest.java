@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,6 @@ import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.util.Jdt2Ecore.TypeFinder;
 import io.sarl.lang.genmodel.GeneratedCode;
 import io.sarl.lang.genmodel.SARLCodeGenerator;
-import io.sarl.lang.sarl.ParameterizedFeature;
 import io.sarl.lang.signature.ActionKey;
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.ActionSignatureProvider.FormalParameterProvider;
@@ -63,6 +62,7 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -1003,12 +1003,12 @@ public class Jdt2EcoreTest {
 					new String[] { "param1", "param2", "param3" },
 					new String[] { "Ljava.lang.String;", "I", "[Z" },
 					0);
-			ParameterizedFeature container = mock(ParameterizedFeature.class);
+			XtendExecutable container = mock(XtendExecutable.class);
 			//
 			Jdt2Ecore.createFormalParameters(code, method, container);
 			//
 			ArgumentCaptor<GeneratedCode> arg0 = ArgumentCaptor.forClass(GeneratedCode.class);
-			ArgumentCaptor<ParameterizedFeature> arg1 = ArgumentCaptor.forClass(ParameterizedFeature.class);
+			ArgumentCaptor<XtendExecutable> arg1 = ArgumentCaptor.forClass(XtendExecutable.class);
 			ArgumentCaptor<String> arg2 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg3 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg4 = ArgumentCaptor.forClass(String.class);
@@ -1041,12 +1041,12 @@ public class Jdt2EcoreTest {
 					new String[] { "param1", "param2", "param3" },
 					new String[] { "Ljava.lang.String;", "I", "[Z" },
 					Flags.AccVarargs);
-			ParameterizedFeature container = mock(ParameterizedFeature.class);
+			XtendExecutable container = mock(XtendExecutable.class);
 			//
 			Jdt2Ecore.createFormalParameters(code, method, container);
 			//
 			ArgumentCaptor<GeneratedCode> arg0 = ArgumentCaptor.forClass(GeneratedCode.class);
-			ArgumentCaptor<ParameterizedFeature> arg1 = ArgumentCaptor.forClass(ParameterizedFeature.class);
+			ArgumentCaptor<XtendExecutable> arg1 = ArgumentCaptor.forClass(XtendExecutable.class);
 			ArgumentCaptor<String> arg2 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg3 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg4 = ArgumentCaptor.forClass(String.class);
@@ -1103,12 +1103,12 @@ public class Jdt2EcoreTest {
 					new IAnnotation[] { null, annotation1, null },
 					new IAnnotation[] { annotation2 },
 					0);
-			ParameterizedFeature container = mock(ParameterizedFeature.class);
+			XtendExecutable container = mock(XtendExecutable.class);
 			//
 			Jdt2Ecore.createFormalParameters(code, method, container);
 			//
 			ArgumentCaptor<GeneratedCode> arg0 = ArgumentCaptor.forClass(GeneratedCode.class);
-			ArgumentCaptor<ParameterizedFeature> arg1 = ArgumentCaptor.forClass(ParameterizedFeature.class);
+			ArgumentCaptor<XtendExecutable> arg1 = ArgumentCaptor.forClass(XtendExecutable.class);
 			ArgumentCaptor<String> arg2 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg3 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg4 = ArgumentCaptor.forClass(String.class);
@@ -1165,12 +1165,12 @@ public class Jdt2EcoreTest {
 					new IAnnotation[] { null, annotation1, null },
 					new IAnnotation[] { annotation2 },
 					Flags.AccVarargs);
-			ParameterizedFeature container = mock(ParameterizedFeature.class);
+			XtendExecutable container = mock(XtendExecutable.class);
 			//
 			Jdt2Ecore.createFormalParameters(code, method, container);
 			//
 			ArgumentCaptor<GeneratedCode> arg0 = ArgumentCaptor.forClass(GeneratedCode.class);
-			ArgumentCaptor<ParameterizedFeature> arg1 = ArgumentCaptor.forClass(ParameterizedFeature.class);
+			ArgumentCaptor<XtendExecutable> arg1 = ArgumentCaptor.forClass(XtendExecutable.class);
 			ArgumentCaptor<String> arg2 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg3 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg4 = ArgumentCaptor.forClass(String.class);

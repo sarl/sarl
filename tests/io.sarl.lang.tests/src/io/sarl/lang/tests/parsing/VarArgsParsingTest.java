@@ -19,17 +19,18 @@ import com.google.common.base.Strings;
 import com.google.inject.Inject;
 
 import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.ActionSignature;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.Behavior;
-import io.sarl.lang.sarl.Capacity;
-import io.sarl.lang.sarl.Constructor;
-import io.sarl.lang.sarl.Event;
-import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.lang.sarl.Skill;
+import io.sarl.lang.sarl.SarlSkill;
 
+import org.eclipse.xtend.core.validation.IssueCodes;
+import org.eclipse.xtend.core.xtend.XtendConstructor;
+import org.eclipse.xtend.core.xtend.XtendFile;
+import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
@@ -65,14 +66,14 @@ public class VarArgsParsingTest {
 	public static class AgentTest extends AbstractSarlTest {
 
 		@Inject
-		private ParseHelper<SarlScript> parser;
+		private ParseHelper<XtendFile> parser;
 
 		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
 		public void action_singleParam() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"agent A1 {",
 					"	def myaction(arg : int*) {",
 					"		System.out.println(arg)",
@@ -80,27 +81,27 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(1, mas.getElements().size());
+			assertEquals(1, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Agent agent = (Agent) mas.getElements().get(0);
+			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getSuperTypes());
-			assertEquals(1, agent.getFeatures().size());
+			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertEquals(1, agent.getMembers().size());
 			//
-			Action action = (Action) agent.getFeatures().get(0);
+			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
 			assertTypeReferenceIdentifiers(action.getFiredEvents());
-			assertTypeReferenceIdentifier(action.getType(), "void");
-			assertParameterNames(action.getParams(), "arg");
-			assertParameterTypes(action.getParams(), "int");
-			assertParameterDefaultValues(action.getParams(), (Object) null);
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
+			assertParameterNames(action.getParameters(), "arg");
+			assertParameterTypes(action.getParameters(), "int");
+			assertParameterDefaultValues(action.getParameters(), (Object) null);
 		}
 
 		@Test
 		public void inAgentAction() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"agent A1 {",
 					"	def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {",
 					"		System.out.println(arg3)",
@@ -108,28 +109,28 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(1, mas.getElements().size());
+			assertEquals(1, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Agent agent = (Agent) mas.getElements().get(0);
+			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getSuperTypes());
-			assertEquals(1, agent.getFeatures().size());
+			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertEquals(1, agent.getMembers().size());
 			//
-			Action action = (Action) agent.getFeatures().get(0);
+			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
 			assertTypeReferenceIdentifiers(action.getFiredEvents());
-			assertTypeReferenceIdentifier(action.getType(), "void");
-			assertParameterNames(action.getParams(), "arg1", "arg2", "arg3");
-			assertParameterTypes(action.getParams(), "char", "boolean", "int");
-			assertTrue(action.isVarargs());
-			assertParameterDefaultValues(action.getParams(), null, null, null);
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
+			assertParameterNames(action.getParameters(), "arg1", "arg2", "arg3");
+			assertParameterTypes(action.getParameters(), "char", "boolean", "int");
+			assertParameterDefaultValues(action.getParameters(), null, null, null);
+			assertParameterVarArg(action.getParameters());
 		}
 
 		@Test
 		public void action_invalid() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"agent A1 {",
 					"	def myaction(arg1 : char, arg2 : boolean*, arg3 : int) {",
 					"		System.out.println(arg3)",
@@ -137,7 +138,7 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getAction(),
+					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ',' expecting ')'");
 		}
@@ -149,14 +150,14 @@ public class VarArgsParsingTest {
 	public static class BehaviorTest extends AbstractSarlTest {
 
 		@Inject
-		private ParseHelper<SarlScript> parser;
+		private ParseHelper<XtendFile> parser;
 
 		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
 		public void action_singleParam() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"behavior B1 {",
 					"	def myaction(arg : int*) {",
 					"		System.out.println(arg)",
@@ -164,28 +165,28 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(1, mas.getElements().size());
+			assertEquals(1, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Behavior behavior = (Behavior) mas.getElements().get(0);
+			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getSuperTypes());
-			assertEquals(1, behavior.getFeatures().size());
+			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertEquals(1, behavior.getMembers().size());
 			//
-			Action action = (Action) behavior.getFeatures().get(0);
+			SarlAction action = (SarlAction) behavior.getMembers().get(0);
 			assertEquals("myaction", action.getName());
 			assertTypeReferenceIdentifiers(action.getFiredEvents());
-			assertTypeReferenceIdentifier(action.getType(), "void");
-			assertParameterNames(action.getParams(), "arg");
-			assertParameterTypes(action.getParams(), "int");
-			assertTrue(action.isVarargs());
-			assertParameterDefaultValues(action.getParams(), (Object) null);
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
+			assertParameterNames(action.getParameters(), "arg");
+			assertParameterTypes(action.getParameters(), "int");
+			assertParameterDefaultValues(action.getParameters(), (Object) null);
+			assertParameterVarArg(action.getParameters());
 		}
 
 		@Test
 		public void action() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"behavior B1 {",
 					"	def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {",
 					"		System.out.println(arg3)",
@@ -193,28 +194,28 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(1, mas.getElements().size());
+			assertEquals(1, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Behavior behavior = (Behavior) mas.getElements().get(0);
+			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getSuperTypes());
-			assertEquals(1, behavior.getFeatures().size());
+			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertEquals(1, behavior.getMembers().size());
 			//
-			Action action = (Action) behavior.getFeatures().get(0);
+			SarlAction action = (SarlAction) behavior.getMembers().get(0);
 			assertEquals("myaction", action.getName());
 			assertTypeReferenceIdentifiers(action.getFiredEvents());
-			assertTypeReferenceIdentifier(action.getType(), "void");
-			assertParameterNames(action.getParams(), "arg1", "arg2", "arg3");
-			assertParameterTypes(action.getParams(), "char", "boolean", "int");
-			assertTrue(action.isVarargs());
-			assertParameterDefaultValues(action.getParams(), null, null, null);
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
+			assertParameterNames(action.getParameters(), "arg1", "arg2", "arg3");
+			assertParameterTypes(action.getParameters(), "char", "boolean", "int");
+			assertParameterDefaultValues(action.getParameters(), null, null, null);
+			assertParameterVarArg(action.getParameters());
 		}
 
 		@Test
 		public void action_invalid() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"behavior B1 {",
 					"	def myaction(arg1 : char, arg2 : boolean*, arg3 : int) {",
 					"		System.out.println(arg3)",
@@ -222,14 +223,14 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getAction(),
+					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ',' expecting ')'");
 		}
 
 		@Test
 		public void constructor_singleParam() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"behavior B1 {",
 					"	new(arg : int*) {",
 					"		super(null) // must be never null during runtime",
@@ -238,25 +239,25 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(1, mas.getElements().size());
+			assertEquals(1, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Behavior behavior = (Behavior) mas.getElements().get(0);
+			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getSuperTypes());
-			assertEquals(1, behavior.getFeatures().size());
+			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertEquals(1, behavior.getMembers().size());
 			//
-			Constructor constructor = (Constructor) behavior.getFeatures().get(0);
-			assertParameterNames(constructor.getParams(), "arg");
-			assertParameterTypes(constructor.getParams(), "int");
-			assertTrue(constructor.isVarargs());
-			assertParameterDefaultValues(constructor.getParams(), (Object) null);
+			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
+			assertParameterNames(constructor.getParameters(), "arg");
+			assertParameterTypes(constructor.getParameters(), "int");
+			assertParameterDefaultValues(constructor.getParameters(), (Object) null);
+			assertParameterVarArg(constructor.getParameters());
 		}
 
 		@Test
 		public void constructor() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"behavior B1 {",
 					"	new (arg1 : char, arg2 : boolean, arg3 : int*) {",
 					"		super(null) // must be never null during runtime",
@@ -265,25 +266,25 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(1, mas.getElements().size());
+			assertEquals(1, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Behavior behavior = (Behavior) mas.getElements().get(0);
+			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getSuperTypes());
-			assertEquals(1, behavior.getFeatures().size());
+			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertEquals(1, behavior.getMembers().size());
 			//
-			Constructor constructor = (Constructor) behavior.getFeatures().get(0);
-			assertParameterNames(constructor.getParams(), "arg1", "arg2", "arg3");
-			assertParameterTypes(constructor.getParams(), "char", "boolean", "int");
-			assertTrue(constructor.isVarargs());
-			assertParameterDefaultValues(constructor.getParams(), null, null, null);
+			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
+			assertParameterNames(constructor.getParameters(), "arg1", "arg2", "arg3");
+			assertParameterTypes(constructor.getParameters(), "char", "boolean", "int");
+			assertParameterDefaultValues(constructor.getParameters(), null, null, null);
+			assertParameterVarArg(constructor.getParameters());
 		}
 
 		@Test
 		public void constructor_invalid() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"behavior B1 {",
 					"	new (arg1 : char, arg2 : boolean*, arg3 : int) {",
 					"		super(null) // must be never null during runtime",
@@ -292,14 +293,14 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getConstructor(),
+					XtendPackage.eINSTANCE.getXtendConstructor(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ',' expecting ')'");
 		}
 
 		@Test
 		public void multipleActionDefinitionsInBehavior_0() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int, arg1 : int*) {",
 					"		System.out.println(\"invalid\")",
@@ -310,34 +311,34 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(1, mas.getElements().size());
+			assertEquals(1, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Behavior behavior = (Behavior) mas.getElements().get(0);
+			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getSuperTypes());
-			assertEquals(2, behavior.getFeatures().size());
+			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertEquals(2, behavior.getMembers().size());
 			//
-			Action action1 = (Action) behavior.getFeatures().get(0);
+			SarlAction action1 = (SarlAction) behavior.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
 			assertTypeReferenceIdentifiers(action1.getFiredEvents());
-			assertTypeReferenceIdentifier(action1.getType(), "void");
-			assertParameterNames(action1.getParams(), "arg0", "arg1");
-			assertParameterTypes(action1.getParams(), "int", "int");
-			assertTrue(action1.isVarargs());
-			assertParameterDefaultValues(action1.getParams(), null, null);
+			assertTypeReferenceIdentifier(action1.getReturnType(), "void");
+			assertParameterNames(action1.getParameters(), "arg0", "arg1");
+			assertParameterTypes(action1.getParameters(), "int", "int");
+			assertParameterDefaultValues(action1.getParameters(), null, null);
+			assertParameterVarArg(action1.getParameters());
 			//
-			Action action2 = (Action) behavior.getFeatures().get(1);
+			SarlAction action2 = (SarlAction) behavior.getMembers().get(1);
 			assertEquals("myaction", action2.getName());
 			assertTypeReferenceIdentifiers(action2.getFiredEvents());
-			assertTypeReferenceIdentifier(action2.getType(), "void");
-			assertParameterNames(action2.getParams());
+			assertTypeReferenceIdentifier(action2.getReturnType(), "void");
+			assertParameterNames(action2.getParameters());
 		}
 
 		@Test
 		public void multipleActionDefinitionsInBehavior_1() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int, arg1 : int*) {",
 					"		System.out.println(\"invalid\")",
@@ -348,36 +349,36 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(1, mas.getElements().size());
+			assertEquals(1, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Behavior behavior = (Behavior) mas.getElements().get(0);
+			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getSuperTypes());
-			assertEquals(2, behavior.getFeatures().size());
+			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertEquals(2, behavior.getMembers().size());
 			//
-			Action action1 = (Action) behavior.getFeatures().get(0);
+			SarlAction action1 = (SarlAction) behavior.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
 			assertTypeReferenceIdentifiers(action1.getFiredEvents());
-			assertTypeReferenceIdentifier(action1.getType(), "void");
-			assertParameterNames(action1.getParams(), "arg0", "arg1");
-			assertParameterTypes(action1.getParams(), "int", "int");
-			assertTrue(action1.isVarargs());
-			assertParameterDefaultValues(action1.getParams(), null, null);
+			assertTypeReferenceIdentifier(action1.getReturnType(), "void");
+			assertParameterNames(action1.getParameters(), "arg0", "arg1");
+			assertParameterTypes(action1.getParameters(), "int", "int");
+			assertParameterDefaultValues(action1.getParameters(), null, null);
+			assertParameterVarArg(action1.getParameters());
 			//
-			Action action2 = (Action) behavior.getFeatures().get(1);
+			SarlAction action2 = (SarlAction) behavior.getMembers().get(1);
 			assertEquals("myaction", action2.getName());
 			assertTypeReferenceIdentifiers(action2.getFiredEvents());
-			assertTypeReferenceIdentifier(action2.getType(), "void");
-			assertParameterNames(action2.getParams(), "arg0");
-			assertParameterTypes(action2.getParams(), "int");
-			assertParameterDefaultValues(action2.getParams(), (Object) null);
+			assertTypeReferenceIdentifier(action2.getReturnType(), "void");
+			assertParameterNames(action2.getParameters(), "arg0");
+			assertParameterTypes(action2.getParameters(), "int");
+			assertParameterDefaultValues(action2.getParameters(), (Object) null);
 		}
 
 		@Test
 		public void multipleActionDefinitionsInBehavior_2() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int, arg1 : int*) {",
 					"		System.out.println(\"invalid\")",
@@ -388,8 +389,8 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getAction(),
-					io.sarl.lang.validation.IssueCodes.DUPLICATE_METHOD,
+					SarlPackage.eINSTANCE.getSarlAction(),
+					IssueCodes.DUPLICATE_METHOD,
 					"Duplicate action in 'B1': myaction(arg0 : int, arg1 : int)");
 		}
 
@@ -400,14 +401,14 @@ public class VarArgsParsingTest {
 	public static class SkillTest extends AbstractSarlTest {
 
 		@Inject
-		private ParseHelper<SarlScript> parser;
+		private ParseHelper<XtendFile> parser;
 
 		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
 		public void action_singleParam() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	def myaction(arg : int*) {",
@@ -416,34 +417,34 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(2, mas.getElements().size());
+			assertEquals(2, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Capacity capacity = (Capacity) mas.getElements().get(0);
+			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getSuperTypes());
-			assertEquals(0, capacity.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertEquals(0, capacity.getMembers().size());
 			//
-			Skill skill = (Skill) mas.getElements().get(1);
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getSuperTypes());
-			assertTypeReferenceIdentifiers(skill.getImplementedTypes(), "C1");
-			assertEquals(1, skill.getFeatures().size());
+			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
+			assertEquals(1, skill.getMembers().size());
 			//
-			Action action1 = (Action) skill.getFeatures().get(0);
+			SarlAction action1 = (SarlAction) skill.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
 			assertTypeReferenceIdentifiers(action1.getFiredEvents());
-			assertTypeReferenceIdentifier(action1.getType(), "void");
-			assertParameterNames(action1.getParams(), "arg");
-			assertParameterTypes(action1.getParams(), "int");
-			assertTrue(action1.isVarargs());
-			assertParameterDefaultValues(action1.getParams(), (Object) null);
+			assertTypeReferenceIdentifier(action1.getReturnType(), "void");
+			assertParameterNames(action1.getParameters(), "arg");
+			assertParameterTypes(action1.getParameters(), "int");
+			assertParameterDefaultValues(action1.getParameters(), (Object) null);
+			assertParameterVarArg(action1.getParameters());
 		}
 
 		@Test
 		public void action() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {",
@@ -452,34 +453,34 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(2, mas.getElements().size());
+			assertEquals(2, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Capacity capacity = (Capacity) mas.getElements().get(0);
+			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getSuperTypes());
-			assertEquals(0, capacity.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertEquals(0, capacity.getMembers().size());
 			//
-			Skill skill = (Skill) mas.getElements().get(1);
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getSuperTypes());
-			assertTypeReferenceIdentifiers(skill.getImplementedTypes(), "C1");
-			assertEquals(1, skill.getFeatures().size());
+			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
+			assertEquals(1, skill.getMembers().size());
 			//
-			Action action1 = (Action) skill.getFeatures().get(0);
+			SarlAction action1 = (SarlAction) skill.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
 			assertTypeReferenceIdentifiers(action1.getFiredEvents());
-			assertTypeReferenceIdentifier(action1.getType(), "void");
-			assertParameterNames(action1.getParams(), "arg1", "arg2", "arg3");
-			assertParameterTypes(action1.getParams(), "char", "boolean", "int");
-			assertTrue(action1.isVarargs());
-			assertParameterDefaultValues(action1.getParams(), null, null, null);
+			assertTypeReferenceIdentifier(action1.getReturnType(), "void");
+			assertParameterNames(action1.getParameters(), "arg1", "arg2", "arg3");
+			assertParameterTypes(action1.getParameters(), "char", "boolean", "int");
+			assertParameterDefaultValues(action1.getParameters(), null, null, null);
+			assertParameterVarArg(action1.getParameters());
 		}
 
 		@Test
 		public void action_invalid() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	def myaction(arg1 : char, arg2 : boolean*, arg3 : int) {",
@@ -488,14 +489,14 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getAction(),
+					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ',' expecting ')'");
 		}
 
 		@Test
 		public void constructor_singleParam() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	new(arg : int*) {",
@@ -504,31 +505,31 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(2, mas.getElements().size());
+			assertEquals(2, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Capacity capacity = (Capacity) mas.getElements().get(0);
+			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getSuperTypes());
-			assertEquals(0, capacity.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertEquals(0, capacity.getMembers().size());
 			//
-			Skill skill = (Skill) mas.getElements().get(1);
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getSuperTypes());
-			assertTypeReferenceIdentifiers(skill.getImplementedTypes(), "C1");
-			assertEquals(1, skill.getFeatures().size());
+			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
+			assertEquals(1, skill.getMembers().size());
 			//
-			Constructor constructor = (Constructor) skill.getFeatures().get(0);
-			assertParameterNames(constructor.getParams(), "arg");
-			assertParameterTypes(constructor.getParams(), "int");
-			assertTrue(constructor.isVarargs());
-			assertParameterDefaultValues(constructor.getParams(), (Object) null);
+			XtendConstructor constructor = (XtendConstructor) skill.getMembers().get(0);
+			assertParameterNames(constructor.getParameters(), "arg");
+			assertParameterTypes(constructor.getParameters(), "int");
+			assertParameterDefaultValues(constructor.getParameters(), (Object) null);
+			assertParameterVarArg(constructor.getParameters());
 		}
 
 		@Test
 		public void constructor() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	new (arg1 : char, arg2 : boolean, arg3 : int*) {",
@@ -537,31 +538,31 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(2, mas.getElements().size());
+			assertEquals(2, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Capacity capacity = (Capacity) mas.getElements().get(0);
+			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getSuperTypes());
-			assertEquals(0, capacity.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertEquals(0, capacity.getMembers().size());
 			//
-			Skill skill = (Skill) mas.getElements().get(1);
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getSuperTypes());
-			assertTypeReferenceIdentifiers(skill.getImplementedTypes(), "C1");
-			assertEquals(1, skill.getFeatures().size());
+			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
+			assertEquals(1, skill.getMembers().size());
 			//
-			Constructor constructor = (Constructor) skill.getFeatures().get(0);
-			assertParameterNames(constructor.getParams(), "arg1", "arg2", "arg3");
-			assertParameterTypes(constructor.getParams(), "char", "boolean", "int");
-			assertTrue(constructor.isVarargs());
-			assertParameterDefaultValues(constructor.getParams(), null, null, null);
+			XtendConstructor constructor = (XtendConstructor) skill.getMembers().get(0);
+			assertParameterNames(constructor.getParameters(), "arg1", "arg2", "arg3");
+			assertParameterTypes(constructor.getParameters(), "char", "boolean", "int");
+			assertParameterDefaultValues(constructor.getParameters(), null, null, null);
+			assertParameterVarArg(constructor.getParameters());
 		}
 
 		@Test
 		public void constructor_invalid() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	new (arg1 : char, arg2 : boolean*, arg3 : int) {",
@@ -570,7 +571,7 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getConstructor(),
+					XtendPackage.eINSTANCE.getXtendConstructor(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ',' expecting ')'");
 		}
@@ -582,74 +583,74 @@ public class VarArgsParsingTest {
 	public static class CapacityTest extends AbstractSarlTest {
 
 		@Inject
-		private ParseHelper<SarlScript> parser;
+		private ParseHelper<XtendFile> parser;
 
 		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
 		public void action_singleParam() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction(arg : int*)",
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(1, mas.getElements().size());
+			assertEquals(1, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Capacity capacity = (Capacity) mas.getElements().get(0);
+			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getSuperTypes());
-			assertEquals(1, capacity.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertEquals(1, capacity.getMembers().size());
 			//
-			ActionSignature action1 = (ActionSignature) capacity.getFeatures().get(0);
+			SarlAction action1 = (SarlAction) capacity.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
 			assertTypeReferenceIdentifiers(action1.getFiredEvents());
-			assertTypeReferenceIdentifier(action1.getType(), "void");
-			assertParameterNames(action1.getParams(), "arg");
-			assertParameterTypes(action1.getParams(), "int");
-			assertTrue(action1.isVarargs());
-			assertParameterDefaultValues(action1.getParams(), (Object) null);
+			assertTypeReferenceIdentifier(action1.getReturnType(), "void");
+			assertParameterNames(action1.getParameters(), "arg");
+			assertParameterTypes(action1.getParameters(), "int");
+			assertParameterDefaultValues(action1.getParameters(), (Object) null);
+			assertParameterVarArg(action1.getParameters());
 		}
 
 		@Test
 		public void action() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction(arg1 : char, arg2 : boolean, arg3 : int*)",
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(1, mas.getElements().size());
+			assertEquals(1, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Capacity capacity = (Capacity) mas.getElements().get(0);
+			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getSuperTypes());
-			assertEquals(1, capacity.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertEquals(1, capacity.getMembers().size());
 			//
-			ActionSignature action1 = (ActionSignature) capacity.getFeatures().get(0);
+			SarlAction action1 = (SarlAction) capacity.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
 			assertTypeReferenceIdentifiers(action1.getFiredEvents());
-			assertTypeReferenceIdentifier(action1.getType(), "void");
-			assertParameterNames(action1.getParams(), "arg1", "arg2", "arg3");
-			assertParameterTypes(action1.getParams(), "char", "boolean", "int");
-			assertTrue(action1.isVarargs());
-			assertParameterDefaultValues(action1.getParams(), null, null, null);
+			assertTypeReferenceIdentifier(action1.getReturnType(), "void");
+			assertParameterNames(action1.getParameters(), "arg1", "arg2", "arg3");
+			assertParameterTypes(action1.getParameters(), "char", "boolean", "int");
+			assertParameterDefaultValues(action1.getParameters(), null, null, null);
+			assertParameterVarArg(action1.getParameters());
 		}
 
 		@Test
 		public void action_invalid() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction(arg1 : char, arg2 : boolean*, arg3 : int)",
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getActionSignature(),
+					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ',' expecting ')'");
 		}
@@ -661,14 +662,14 @@ public class VarArgsParsingTest {
 	public static class EventTest extends AbstractSarlTest {
 
 		@Inject
-		private ParseHelper<SarlScript> parser;
+		private ParseHelper<XtendFile> parser;
 
 		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
 		public void constructor_singleParam() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"event E1 {",
 					"	new(arg : int*) {",
 					"		System.out.println(arg)",
@@ -676,25 +677,25 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(1, mas.getElements().size());
+			assertEquals(1, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Event event = (Event) mas.getElements().get(0);
+			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
 			assertEquals("E1", event.getName());
-			assertTypeReferenceIdentifiers(event.getSuperTypes());
-			assertEquals(1, event.getFeatures().size());
+			assertTypeReferenceIdentifiers(event.getExtends());
+			assertEquals(1, event.getMembers().size());
 			//
-			Constructor constructor = (Constructor) event.getFeatures().get(0);
-			assertParameterNames(constructor.getParams(), "arg");
-			assertParameterTypes(constructor.getParams(), "int");
-			assertTrue(constructor.isVarargs());
-			assertParameterDefaultValues(constructor.getParams(), (Object) null);
+			XtendConstructor constructor = (XtendConstructor) event.getMembers().get(0);
+			assertParameterNames(constructor.getParameters(), "arg");
+			assertParameterTypes(constructor.getParameters(), "int");
+			assertParameterDefaultValues(constructor.getParameters(), (Object) null);
+			assertParameterVarArg(constructor.getParameters());
 		}
 
 		@Test
 		public void constructor() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"event E1 {",
 					"	new (arg1 : char, arg2 : boolean, arg3 : int*) {",
 					"		System.out.println(arg3)",
@@ -702,25 +703,25 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(1, mas.getElements().size());
+			assertEquals(1, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Event event = (Event) mas.getElements().get(0);
+			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
 			assertEquals("E1", event.getName());
-			assertTypeReferenceIdentifiers(event.getSuperTypes());
-			assertEquals(1, event.getFeatures().size());
+			assertTypeReferenceIdentifiers(event.getExtends());
+			assertEquals(1, event.getMembers().size());
 			//
-			Constructor constructor = (Constructor) event.getFeatures().get(0);
-			assertParameterNames(constructor.getParams(), "arg1", "arg2", "arg3");
-			assertParameterTypes(constructor.getParams(), "char", "boolean", "int");
-			assertTrue(constructor.isVarargs());
-			assertParameterDefaultValues(constructor.getParams(), null, null, null);
+			XtendConstructor constructor = (XtendConstructor) event.getMembers().get(0);
+			assertParameterNames(constructor.getParameters(), "arg1", "arg2", "arg3");
+			assertParameterTypes(constructor.getParameters(), "char", "boolean", "int");
+			assertParameterDefaultValues(constructor.getParameters(), null, null, null);
+			assertParameterVarArg(constructor.getParameters());
 		}
 
 		@Test
 		public void constructor_invalid() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"event E1 {",
 					"	new (arg1 : char, arg2 : boolean*, arg3 : int) {",
 					"		System.out.println(arg3)",
@@ -728,7 +729,7 @@ public class VarArgsParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getConstructor(),
+					XtendPackage.eINSTANCE.getXtendConstructor(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ',' expecting ')'");
 		}

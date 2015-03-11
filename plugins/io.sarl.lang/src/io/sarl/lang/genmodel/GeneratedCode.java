@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,8 @@ package io.sarl.lang.genmodel;
 
 import java.lang.ref.WeakReference;
 
-import io.sarl.lang.sarl.SarlScript;
-
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.util.TypeReferences;
@@ -44,7 +43,7 @@ import org.eclipse.xtext.xtype.XtypeFactory;
 public class GeneratedCode {
 
 	private final ImportManager importManager = new ImportManager();
-	private final SarlScript script;
+	private final XtendFile script;
 	private final ResourceSet resourceSet;
 	private final TypeReferences typeReferences;
 	private final WeakReference<SARLCodeGenerator> generator;
@@ -55,7 +54,7 @@ public class GeneratedCode {
 	 * @param resourceSet - the resource set in which the script should be generated.
 	 * @param typeReferences - the accessor for exisiting types.
 	 */
-	GeneratedCode(SARLCodeGenerator generator, SarlScript script,
+	GeneratedCode(SARLCodeGenerator generator, XtendFile script,
 			ResourceSet resourceSet, TypeReferences typeReferences) {
 		this.generator = new WeakReference<>(generator);
 		this.script = script;
@@ -83,7 +82,7 @@ public class GeneratedCode {
 	 *
 	 * @return the SARL script.
 	 */
-	public SarlScript getSarlScript() {
+	public XtendFile getSarlScript() {
 		return this.script;
 	}
 

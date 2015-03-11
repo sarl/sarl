@@ -17,9 +17,9 @@ package io.sarl.lang.tests.bugs;
 
 import static org.junit.Assert.assertEquals;
 import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
+import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
@@ -44,7 +44,7 @@ import com.google.inject.Inject;
 public class Bug23 extends AbstractSarlTest {
 
 	@Inject
-	private ParseHelper<SarlScript> parser;
+	private ParseHelper<XtendFile> parser;
 
 	@Inject
 	private ValidationTestHelper validator;
@@ -71,7 +71,7 @@ public class Bug23 extends AbstractSarlTest {
 
 	@Test
 	public void bug23() throws Exception {
-		SarlScript mas = this.parser.parse(snippet);
+		XtendFile mas = this.parser.parse(snippet);
 		this.validator.assertNoErrors(mas);
 	}
 

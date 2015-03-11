@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,12 +26,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.ui.outline.SARLOutlineTreeProvider;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.XtextDocument;
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
@@ -93,7 +93,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 	 * @throws CoreException
 	 */
 	protected OutlineAsserts newOutlineAsserts(String code) throws Exception, CoreException {
-		SarlScript script = this.helper.createSARLScript(generateFilename(), code);
+		XtendFile script = this.helper.createSARLScript(generateFilename(), code);
 		return newOutlineAsserts(script);
 	}
 
@@ -104,7 +104,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 	 * @throws Exception
 	 * @throws CoreException
 	 */
-	protected OutlineAsserts newOutlineAsserts(SarlScript script) throws Exception, CoreException {
+	protected OutlineAsserts newOutlineAsserts(XtendFile script) throws Exception, CoreException {
 		XtextDocument document = this.documentProvider.get();
 		document.setInput((XtextResource) script.eResource());
 		IOutlineNode root = this.treeProvider.createRoot(document);

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,12 @@
  */
 package io.sarl.tests.api;
 
-import static org.junit.Assert.*;
-import io.sarl.lang.sarl.FormalParameter;
-import io.sarl.lang.sarl.SarlScript;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import io.sarl.lang.sarl.SarlFormalParameter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -32,7 +35,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.xtext.common.types.JvmFormalParameter;
+import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XNullLiteral;
@@ -401,9 +404,9 @@ public abstract class AbstractSarlTest {
 	 * @param actualFormalParameters - the list of the formal parameters.
 	 * @param expectedParameterNames - the expected names for the formal parameters.
 	 */
-	public static void assertParameterNames(Iterable<? extends FormalParameter> actualFormalParameters, String... expectedParameterNames) {
+	public static void assertParameterNames(Iterable<? extends XtendParameter> actualFormalParameters, String... expectedParameterNames) {
 		int i = 0;
-		for (FormalParameter parameter : actualFormalParameters) {
+		for (XtendParameter parameter : actualFormalParameters) {
 			assertEquals("Unexpected parameter: " + parameter + ". Expected: " + expectedParameterNames[i],
 					parameter.getName(), expectedParameterNames[i]);
 			++i;
@@ -421,9 +424,9 @@ public abstract class AbstractSarlTest {
 	 * @param actualFormalParameters - the list of the formal parameters.
 	 * @param expectedParameterTypes - the expected types for the formal parameters.
 	 */
-	public static void assertParameterTypes(Iterable<? extends FormalParameter> actualFormalParameters, String... expectedParameterTypes) {
+	public static void assertParameterTypes(Iterable<? extends XtendParameter> actualFormalParameters, String... expectedParameterTypes) {
 		int i = 0;
-		for (FormalParameter parameter : actualFormalParameters) {
+		for (XtendParameter parameter : actualFormalParameters) {
 			assertTypeReferenceIdentifier(
 					parameter.getParameterType(), expectedParameterTypes[i]);
 			++i;
@@ -447,21 +450,24 @@ public abstract class AbstractSarlTest {
 	 * @param actualFormalParameters - the list of the formal parameters.
 	 * @param expectedDefaultValues - the expected default values.
 	 */
-	public static void assertParameterDefaultValues(Iterable<? extends FormalParameter> actualFormalParameters, Object... expectedDefaultValues) {
+	public static void assertParameterDefaultValues(Iterable<? extends XtendParameter> actualFormalParameters, Object... expectedDefaultValues) {
 		int i = 0;
-		for (FormalParameter parameter : actualFormalParameters) {
+		for (XtendParameter parameter : actualFormalParameters) {
 			if (expectedDefaultValues[i] == null) {
-				assertNull("No default value expected", parameter.getDefaultValue());
+				if (parameter instanceof SarlFormalParameter) {
+					assertNull("No default value expected", ((SarlFormalParameter) parameter).getDefaultValue());
+				}
 			} else {
+				assertTrue(parameter instanceof SarlFormalParameter);
 				assertTrue("The #" + i + " in expectedDefaultValues is not a Class", expectedDefaultValues[i] instanceof Class);
 				Class type = (Class) expectedDefaultValues[i];
-				assertTrue("Unexpected type for the default value.", type.isInstance(parameter.getDefaultValue()));
+				assertTrue("Unexpected type for the default value.", type.isInstance(((SarlFormalParameter) parameter).getDefaultValue()));
 				if (XNumberLiteral.class.isAssignableFrom(type)) {
 					++i;
-					assertEquals(expectedDefaultValues[i], ((XNumberLiteral) parameter.getDefaultValue()).getValue());
+					assertEquals(expectedDefaultValues[i], ((XNumberLiteral) ((SarlFormalParameter) parameter).getDefaultValue()).getValue());
 				} else if (XStringLiteral.class.isAssignableFrom(type)) {
 					++i;
-					assertEquals(expectedDefaultValues[i], ((XStringLiteral) parameter.getDefaultValue()).getValue());
+					assertEquals(expectedDefaultValues[i], ((XStringLiteral) ((SarlFormalParameter) parameter).getDefaultValue()).getValue());
 				} else if (XNullLiteral.class.isAssignableFrom(type)) {
 					//
 				} else {
@@ -473,6 +479,36 @@ public abstract class AbstractSarlTest {
 		if (i < expectedDefaultValues.length) {
 			fail("Not enough default values. Expected: " + Arrays.toString(expectedDefaultValues)
 					+ "Actual: " + Iterables.toString(actualFormalParameters));
+		}
+	}
+	
+	/** Assert that the last parameter in the given actual formal parameters is variadic.
+	 *
+	 * @param actualFormalParameters
+	 */
+	public static void assertParameterVarArg(Iterable<? extends XtendParameter> actualFormalParameters) {
+		Iterator<? extends XtendParameter> iterator = actualFormalParameters.iterator();
+		XtendParameter lastParam = null;
+		while (iterator.hasNext()) {
+			lastParam = iterator.next();
+		}
+		if (lastParam == null || !lastParam.isVarArg()) {
+			fail("The last parameter is expected to be a variadic parameter.");
+		}
+	}
+
+	/** Assert that the last parameter in the given actual formal parameters is not variadic.
+	 *
+	 * @param actualFormalParameters
+	 */
+	public static void assertNoParameterVarArg(Iterable<? extends XtendParameter> actualFormalParameters) {
+		Iterator<? extends XtendParameter> iterator = actualFormalParameters.iterator();
+		XtendParameter lastParam = null;
+		while (iterator.hasNext()) {
+			lastParam = iterator.next();
+		}
+		if (lastParam != null && lastParam.isVarArg()) {
+			fail("The last parameter is expected to be not a variadic parameter.");
 		}
 	}
 

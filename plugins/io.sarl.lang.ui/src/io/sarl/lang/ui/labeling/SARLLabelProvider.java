@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,32 +20,30 @@
  */
 package io.sarl.lang.ui.labeling;
 
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.ui.images.SARLImages;
+
 import java.util.Collections;
 import java.util.concurrent.locks.ReentrantLock;
-
-import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.ActionSignature;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.Attribute;
-import io.sarl.lang.sarl.Behavior;
-import io.sarl.lang.sarl.BehaviorUnit;
-import io.sarl.lang.sarl.Capacity;
-import io.sarl.lang.sarl.CapacityUses;
-import io.sarl.lang.sarl.Constructor;
-import io.sarl.lang.sarl.Event;
-import io.sarl.lang.sarl.RequiredCapacity;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.Skill;
-import io.sarl.lang.ui.images.SARLImages;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.xtend.core.xtend.XtendConstructor;
+import org.eclipse.xtend.core.xtend.XtendField;
+import org.eclipse.xtend.core.xtend.XtendFile;
+import org.eclipse.xtend.ide.labeling.XtendLabelProvider;
 import org.eclipse.xtext.common.types.JvmExecutable;
-import org.eclipse.xtext.common.types.JvmField;
-import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmVisibility;
@@ -55,10 +53,8 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.util.Exceptions;
 import org.eclipse.xtext.util.PolymorphicDispatcher;
 import org.eclipse.xtext.util.PolymorphicDispatcher.ErrorHandler;
-import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider;
 import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
-import org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider;
 import org.eclipse.xtext.xbase.validation.UIStrings;
 
 import com.google.common.base.Strings;
@@ -73,7 +69,7 @@ import com.google.inject.Inject;
  * @mavenartifactid $ArtifactId$
  * @see "http://www.eclipse.org/Xtext/documentation.html#labelProvider"
  */
-public class SARLLabelProvider extends XbaseLabelProvider {
+public class SARLLabelProvider extends XtendLabelProvider {
 
 	/** Max length of the text for the behavior units.
 	 */
@@ -87,9 +83,6 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 
 	@Inject
 	private CommonTypeComputationServices services;
-
-	@Inject
-	private ILogicalContainerProvider logicalContainerProvider;
 
 	@Inject
 	private SARLImages images;
@@ -244,7 +237,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(SarlScript element) {
+	protected ImageDescriptor imageDescriptor(XtendFile element) {
 		return this.images.forFile();
 	}
 
@@ -256,7 +249,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(Agent element) {
+	protected ImageDescriptor imageDescriptor(SarlAgent element) {
 		return this.images.forAgent();
 	}
 
@@ -268,7 +261,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(Event element) {
+	protected ImageDescriptor imageDescriptor(SarlEvent element) {
 		return this.images.forEvent();
 	}
 
@@ -280,7 +273,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(Capacity element) {
+	protected ImageDescriptor imageDescriptor(SarlCapacity element) {
 		return this.images.forCapacity();
 	}
 
@@ -292,7 +285,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(Skill element) {
+	protected ImageDescriptor imageDescriptor(SarlSkill element) {
 		return this.images.forSkill();
 	}
 
@@ -304,7 +297,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(Behavior element) {
+	protected ImageDescriptor imageDescriptor(SarlBehavior element) {
 		return this.images.forBehavior();
 	}
 
@@ -316,8 +309,8 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(Attribute element) {
-		return this.images.forAttribute(element.isWriteable());
+	protected ImageDescriptor imageDescriptor(XtendField element) {
+		return this.images.forAttribute(!element.isFinal());
 	}
 
 	/** Replies the image for the given element.
@@ -328,7 +321,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(Constructor element) {
+	protected ImageDescriptor imageDescriptor(XtendConstructor element) {
 		return this.images.forConstructor(JvmVisibility.PUBLIC, 0);
 	}
 
@@ -340,7 +333,10 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(Action element) {
+	protected ImageDescriptor imageDescriptor(SarlAction element) {
+		if (element.getExpression() == null) {
+			return this.images.forActionSignature();
+		}
 		return this.images.forAction();
 	}
 
@@ -352,19 +348,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(ActionSignature element) {
-		return this.images.forActionSignature();
-	}
-
-	/** Replies the image for the given element.
-	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
-	 *
-	 * @param element - the element.
-	 * @return the image descriptor.
-	 * @see #imageDescriptor(Object)
-	 */
-	protected ImageDescriptor imageDescriptor(CapacityUses element) {
+	protected ImageDescriptor imageDescriptor(SarlCapacityUses element) {
 		return this.images.forCapacityUses();
 	}
 
@@ -376,7 +360,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(RequiredCapacity element) {
+	protected ImageDescriptor imageDescriptor(SarlRequiredCapacity element) {
 		return this.images.forCapacityRequirements();
 	}
 
@@ -388,7 +372,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(BehaviorUnit element) {
+	protected ImageDescriptor imageDescriptor(SarlBehaviorUnit element) {
 		return this.images.forBehaviorUnit();
 	}
 
@@ -408,16 +392,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @param element - the element.
 	 * @return the text.
 	 */
-	protected StyledString text(SarlScript element) {
-		return convertToStyledString(element.eResource().getURI().trimFileExtension().lastSegment());
-	}
-
-	/** Replies the text for the given element.
-	 *
-	 * @param element - the element.
-	 * @return the text.
-	 */
-	protected StyledString text(Agent element) {
+	protected StyledString text(SarlAgent element) {
 		return convertToStyledString(element.getName());
 	}
 
@@ -426,7 +401,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @param element - the element.
 	 * @return the text.
 	 */
-	protected StyledString text(Event element) {
+	protected StyledString text(SarlEvent element) {
 		return convertToStyledString(element.getName());
 	}
 
@@ -435,7 +410,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @param element - the element.
 	 * @return the text.
 	 */
-	protected StyledString text(Capacity element) {
+	protected StyledString text(SarlCapacity element) {
 		return convertToStyledString(element.getName());
 	}
 
@@ -444,7 +419,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @param element - the element.
 	 * @return the text.
 	 */
-	protected StyledString text(Skill element) {
+	protected StyledString text(SarlSkill element) {
 		return convertToStyledString(element.getName());
 	}
 
@@ -453,7 +428,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @param element - the element.
 	 * @return the text.
 	 */
-	protected StyledString text(Behavior element) {
+	protected StyledString text(SarlBehavior element) {
 		return convertToStyledString(element.getName());
 	}
 
@@ -462,68 +437,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @param element - the element.
 	 * @return the text.
 	 */
-	protected StyledString text(Attribute element) {
-		StyledString label = convertToStyledString(element.getName());
-		JvmTypeReference theType = null;
-		if (element.getType() != null) {
-			theType = element.getType();
-		} else {
-			JvmField jvmElement = getJvmElement(element, JvmField.class);
-			if (jvmElement != null) {
-				theType = jvmElement.getType();
-			}
-		}
-		if (theType != null) {
-			label.append(" : " + getHumanReadableName(theType), StyledString.COUNTER_STYLER); //$NON-NLS-1$
-		}
-		return label;
-	}
-
-	/** Replies the text for the given element.
-	 *
-	 * @param element - the element.
-	 * @return the text.
-	 */
-	protected StyledString text(Constructor element) {
-		JvmIdentifiableElement container = this.logicalContainerProvider.getNearestLogicalContainer(element);
-		StyledString name;
-		if (container != null) {
-			name = convertToStyledString(container.getSimpleName());
-		} else {
-			name = new StyledString("new", StyledString.DECORATIONS_STYLER); //$NON-NLS-1$
-		}
-		JvmExecutable jvmElement = getJvmElement(element, JvmExecutable.class);
-		if (jvmElement != null) {
-			return signatureWithoutReturnType(name, jvmElement);
-		}
-		return signatureWithoutReturnType(name, jvmElement);
-	}
-
-	/** Replies the text for the given element.
-	 *
-	 * @param element - the element.
-	 * @return the text.
-	 */
-	protected StyledString text(Action element) {
-		String simpleName = element.getName();
-		if (simpleName != null) {
-			QualifiedName qnName = QualifiedName.create(simpleName);
-			QualifiedName operator = this.operatorMapping.getOperator(qnName);
-			if (operator != null) {
-				StyledString result = signature(operator.getFirstSegment(), getJvmElement(element, JvmExecutable.class));
-				result.append(" (" + simpleName + ")", StyledString.COUNTER_STYLER); //$NON-NLS-1$//$NON-NLS-2$
-				return result;
-			}
-		}
-		return signature(element.getName(), getJvmElement(element, JvmExecutable.class));
-	}
-
-	/** Replies the text for the given element.
-	 *
-	 * @param element - the element.
-	 * @return the text.
-	 */
-	protected StyledString text(ActionSignature element) {
+	protected StyledString text(SarlAction element) {
 		String simpleName = element.getName();
 		if (simpleName != null) {
 			QualifiedName qnName = QualifiedName.create(simpleName);
@@ -543,7 +457,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @return the text.
 	 */
 	@SuppressWarnings("static-method")
-	protected StyledString text(CapacityUses element) {
+	protected StyledString text(SarlCapacityUses element) {
 		return new StyledString(Messages.SARLLabelProvider_0, StyledString.QUALIFIER_STYLER);
 	}
 
@@ -553,7 +467,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @return the text.
 	 */
 	@SuppressWarnings("static-method")
-	protected StyledString text(RequiredCapacity element) {
+	protected StyledString text(SarlRequiredCapacity element) {
 		return new StyledString(Messages.SARLLabelProvider_1, StyledString.QUALIFIER_STYLER);
 	}
 
@@ -562,7 +476,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @param element - the element.
 	 * @return the text.
 	 */
-	protected StyledString text(BehaviorUnit element) {
+	protected StyledString text(SarlBehaviorUnit element) {
 		StyledString s = new StyledString("on ", StyledString.DECORATIONS_STYLER); //$NON-NLS-1$
 		s.append(getHumanReadableName(element.getName()));
 		if (element.getGuard() != null) {

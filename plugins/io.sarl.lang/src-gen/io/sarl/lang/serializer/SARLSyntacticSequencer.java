@@ -18,17 +18,17 @@ import org.eclipse.xtext.serializer.sequencer.AbstractSyntacticSequencer;
 public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected SARLGrammarAccess grammarAccess;
+	protected AbstractElementAlias match_Action_SemicolonKeyword_11_2_q;
+	protected AbstractElementAlias match_Action___LeftParenthesisKeyword_8_0_RightParenthesisKeyword_8_2__q;
 	protected AbstractElementAlias match_AnnotationField_SemicolonKeyword_2_0_2_q;
 	protected AbstractElementAlias match_AnnotationField_SemicolonKeyword_2_3_6_q;
+	protected AbstractElementAlias match_CapacityUses_SemicolonKeyword_4_q;
+	protected AbstractElementAlias match_Constructor___LeftParenthesisKeyword_6_0_RightParenthesisKeyword_6_2__q;
+	protected AbstractElementAlias match_Enum_SemicolonKeyword_8_q;
+	protected AbstractElementAlias match_Event___LeftCurlyBracketKeyword_7_0_RightCurlyBracketKeyword_7_2__q;
+	protected AbstractElementAlias match_Field_SemicolonKeyword_7_q;
 	protected AbstractElementAlias match_File_SemicolonKeyword_0_2_q;
-	protected AbstractElementAlias match_SarlAction_SemicolonKeyword_11_2_q;
-	protected AbstractElementAlias match_SarlAction___LeftParenthesisKeyword_8_0_RightParenthesisKeyword_8_2__q;
-	protected AbstractElementAlias match_SarlCapacityUses_SemicolonKeyword_4_q;
-	protected AbstractElementAlias match_SarlConstructor___LeftParenthesisKeyword_6_0_RightParenthesisKeyword_6_2__q;
-	protected AbstractElementAlias match_SarlEnum_SemicolonKeyword_8_q;
-	protected AbstractElementAlias match_SarlEvent___LeftCurlyBracketKeyword_7_0_RightCurlyBracketKeyword_7_2__q;
-	protected AbstractElementAlias match_SarlField_SemicolonKeyword_7_q;
-	protected AbstractElementAlias match_SarlRequiredCapacity_SemicolonKeyword_4_q;
+	protected AbstractElementAlias match_RequiredCapacity_SemicolonKeyword_4_q;
 	protected AbstractElementAlias match_SarlScript_SemicolonKeyword_1_2_q;
 	protected AbstractElementAlias match_XAnnotation___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q;
 	protected AbstractElementAlias match_XBlockExpression_SemicolonKeyword_2_1_q;
@@ -41,17 +41,17 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (SARLGrammarAccess) access;
+		match_Action_SemicolonKeyword_11_2_q = new TokenAlias(false, true, grammarAccess.getActionAccess().getSemicolonKeyword_11_2());
+		match_Action___LeftParenthesisKeyword_8_0_RightParenthesisKeyword_8_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getActionAccess().getLeftParenthesisKeyword_8_0()), new TokenAlias(false, false, grammarAccess.getActionAccess().getRightParenthesisKeyword_8_2()));
 		match_AnnotationField_SemicolonKeyword_2_0_2_q = new TokenAlias(false, true, grammarAccess.getAnnotationFieldAccess().getSemicolonKeyword_2_0_2());
 		match_AnnotationField_SemicolonKeyword_2_3_6_q = new TokenAlias(false, true, grammarAccess.getAnnotationFieldAccess().getSemicolonKeyword_2_3_6());
+		match_CapacityUses_SemicolonKeyword_4_q = new TokenAlias(false, true, grammarAccess.getCapacityUsesAccess().getSemicolonKeyword_4());
+		match_Constructor___LeftParenthesisKeyword_6_0_RightParenthesisKeyword_6_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getConstructorAccess().getLeftParenthesisKeyword_6_0()), new TokenAlias(false, false, grammarAccess.getConstructorAccess().getRightParenthesisKeyword_6_2()));
+		match_Enum_SemicolonKeyword_8_q = new TokenAlias(false, true, grammarAccess.getEnumAccess().getSemicolonKeyword_8());
+		match_Event___LeftCurlyBracketKeyword_7_0_RightCurlyBracketKeyword_7_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getEventAccess().getLeftCurlyBracketKeyword_7_0()), new TokenAlias(false, false, grammarAccess.getEventAccess().getRightCurlyBracketKeyword_7_2()));
+		match_Field_SemicolonKeyword_7_q = new TokenAlias(false, true, grammarAccess.getFieldAccess().getSemicolonKeyword_7());
 		match_File_SemicolonKeyword_0_2_q = new TokenAlias(false, true, grammarAccess.getFileAccess().getSemicolonKeyword_0_2());
-		match_SarlAction_SemicolonKeyword_11_2_q = new TokenAlias(false, true, grammarAccess.getSarlActionAccess().getSemicolonKeyword_11_2());
-		match_SarlAction___LeftParenthesisKeyword_8_0_RightParenthesisKeyword_8_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getSarlActionAccess().getLeftParenthesisKeyword_8_0()), new TokenAlias(false, false, grammarAccess.getSarlActionAccess().getRightParenthesisKeyword_8_2()));
-		match_SarlCapacityUses_SemicolonKeyword_4_q = new TokenAlias(false, true, grammarAccess.getSarlCapacityUsesAccess().getSemicolonKeyword_4());
-		match_SarlConstructor___LeftParenthesisKeyword_6_0_RightParenthesisKeyword_6_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getSarlConstructorAccess().getLeftParenthesisKeyword_6_0()), new TokenAlias(false, false, grammarAccess.getSarlConstructorAccess().getRightParenthesisKeyword_6_2()));
-		match_SarlEnum_SemicolonKeyword_8_q = new TokenAlias(false, true, grammarAccess.getSarlEnumAccess().getSemicolonKeyword_8());
-		match_SarlEvent___LeftCurlyBracketKeyword_7_0_RightCurlyBracketKeyword_7_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getSarlEventAccess().getLeftCurlyBracketKeyword_7_0()), new TokenAlias(false, false, grammarAccess.getSarlEventAccess().getRightCurlyBracketKeyword_7_2()));
-		match_SarlField_SemicolonKeyword_7_q = new TokenAlias(false, true, grammarAccess.getSarlFieldAccess().getSemicolonKeyword_7());
-		match_SarlRequiredCapacity_SemicolonKeyword_4_q = new TokenAlias(false, true, grammarAccess.getSarlRequiredCapacityAccess().getSemicolonKeyword_4());
+		match_RequiredCapacity_SemicolonKeyword_4_q = new TokenAlias(false, true, grammarAccess.getRequiredCapacityAccess().getSemicolonKeyword_4());
 		match_SarlScript_SemicolonKeyword_1_2_q = new TokenAlias(false, true, grammarAccess.getSarlScriptAccess().getSemicolonKeyword_1_2());
 		match_XAnnotation___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getXAnnotationAccess().getLeftParenthesisKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getXAnnotationAccess().getRightParenthesisKeyword_3_2()));
 		match_XBlockExpression_SemicolonKeyword_2_1_q = new TokenAlias(false, true, grammarAccess.getXBlockExpressionAccess().getSemicolonKeyword_2_1());
@@ -112,28 +112,28 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 		List<INode> transitionNodes = collectNodes(fromNode, toNode);
 		for (AbstractElementAlias syntax : transition.getAmbiguousSyntaxes()) {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
-			if(match_AnnotationField_SemicolonKeyword_2_0_2_q.equals(syntax))
+			if(match_Action_SemicolonKeyword_11_2_q.equals(syntax))
+				emit_Action_SemicolonKeyword_11_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_Action___LeftParenthesisKeyword_8_0_RightParenthesisKeyword_8_2__q.equals(syntax))
+				emit_Action___LeftParenthesisKeyword_8_0_RightParenthesisKeyword_8_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_AnnotationField_SemicolonKeyword_2_0_2_q.equals(syntax))
 				emit_AnnotationField_SemicolonKeyword_2_0_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_AnnotationField_SemicolonKeyword_2_3_6_q.equals(syntax))
 				emit_AnnotationField_SemicolonKeyword_2_3_6_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_CapacityUses_SemicolonKeyword_4_q.equals(syntax))
+				emit_CapacityUses_SemicolonKeyword_4_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_Constructor___LeftParenthesisKeyword_6_0_RightParenthesisKeyword_6_2__q.equals(syntax))
+				emit_Constructor___LeftParenthesisKeyword_6_0_RightParenthesisKeyword_6_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_Enum_SemicolonKeyword_8_q.equals(syntax))
+				emit_Enum_SemicolonKeyword_8_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_Event___LeftCurlyBracketKeyword_7_0_RightCurlyBracketKeyword_7_2__q.equals(syntax))
+				emit_Event___LeftCurlyBracketKeyword_7_0_RightCurlyBracketKeyword_7_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_Field_SemicolonKeyword_7_q.equals(syntax))
+				emit_Field_SemicolonKeyword_7_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_File_SemicolonKeyword_0_2_q.equals(syntax))
 				emit_File_SemicolonKeyword_0_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_SarlAction_SemicolonKeyword_11_2_q.equals(syntax))
-				emit_SarlAction_SemicolonKeyword_11_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_SarlAction___LeftParenthesisKeyword_8_0_RightParenthesisKeyword_8_2__q.equals(syntax))
-				emit_SarlAction___LeftParenthesisKeyword_8_0_RightParenthesisKeyword_8_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_SarlCapacityUses_SemicolonKeyword_4_q.equals(syntax))
-				emit_SarlCapacityUses_SemicolonKeyword_4_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_SarlConstructor___LeftParenthesisKeyword_6_0_RightParenthesisKeyword_6_2__q.equals(syntax))
-				emit_SarlConstructor___LeftParenthesisKeyword_6_0_RightParenthesisKeyword_6_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_SarlEnum_SemicolonKeyword_8_q.equals(syntax))
-				emit_SarlEnum_SemicolonKeyword_8_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_SarlEvent___LeftCurlyBracketKeyword_7_0_RightCurlyBracketKeyword_7_2__q.equals(syntax))
-				emit_SarlEvent___LeftCurlyBracketKeyword_7_0_RightCurlyBracketKeyword_7_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_SarlField_SemicolonKeyword_7_q.equals(syntax))
-				emit_SarlField_SemicolonKeyword_7_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_SarlRequiredCapacity_SemicolonKeyword_4_q.equals(syntax))
-				emit_SarlRequiredCapacity_SemicolonKeyword_4_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_RequiredCapacity_SemicolonKeyword_4_q.equals(syntax))
+				emit_RequiredCapacity_SemicolonKeyword_4_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_SarlScript_SemicolonKeyword_1_2_q.equals(syntax))
 				emit_SarlScript_SemicolonKeyword_1_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_XAnnotation___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q.equals(syntax))
@@ -158,6 +158,22 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * Syntax:
 	 *     ';'?
 	 */
+	protected void emit_Action_SemicolonKeyword_11_2_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ('(' ')')?
+	 */
+	protected void emit_Action___LeftParenthesisKeyword_8_0_RightParenthesisKeyword_8_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ';'?
+	 */
 	protected void emit_AnnotationField_SemicolonKeyword_2_0_2_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
@@ -174,6 +190,46 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * Syntax:
 	 *     ';'?
 	 */
+	protected void emit_CapacityUses_SemicolonKeyword_4_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ('(' ')')?
+	 */
+	protected void emit_Constructor___LeftParenthesisKeyword_6_0_RightParenthesisKeyword_6_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ';'?
+	 */
+	protected void emit_Enum_SemicolonKeyword_8_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ('{' '}')?
+	 */
+	protected void emit_Event___LeftCurlyBracketKeyword_7_0_RightCurlyBracketKeyword_7_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ';'?
+	 */
+	protected void emit_Field_SemicolonKeyword_7_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ';'?
+	 */
 	protected void emit_File_SemicolonKeyword_0_2_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
@@ -182,63 +238,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * Syntax:
 	 *     ';'?
 	 */
-	protected void emit_SarlAction_SemicolonKeyword_11_2_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ('(' ')')?
-	 */
-	protected void emit_SarlAction___LeftParenthesisKeyword_8_0_RightParenthesisKeyword_8_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ';'?
-	 */
-	protected void emit_SarlCapacityUses_SemicolonKeyword_4_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ('(' ')')?
-	 */
-	protected void emit_SarlConstructor___LeftParenthesisKeyword_6_0_RightParenthesisKeyword_6_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ';'?
-	 */
-	protected void emit_SarlEnum_SemicolonKeyword_8_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ('{' '}')?
-	 */
-	protected void emit_SarlEvent___LeftCurlyBracketKeyword_7_0_RightCurlyBracketKeyword_7_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ';'?
-	 */
-	protected void emit_SarlField_SemicolonKeyword_7_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ';'?
-	 */
-	protected void emit_SarlRequiredCapacity_SemicolonKeyword_4_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_RequiredCapacity_SemicolonKeyword_4_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

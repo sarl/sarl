@@ -16,9 +16,9 @@
 package io.sarl.lang.tests.parsing;
 
 import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
+import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
@@ -42,14 +42,14 @@ import com.google.inject.Inject;
 public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Inject
-	private ParseHelper<SarlScript> parser;
+	private ParseHelper<XtendFile> parser;
 
 	@Inject
 	private ValidationTestHelper validator;
 
 	@Test
 	public void systemExit_agent_action() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"agent A1 {",
 				"def test {",
 					"System.exit(0)",
@@ -64,7 +64,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_agent_behaviorUnit() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"event E1 { }",
 			"agent A1 {",
 				"on E1 {",
@@ -80,7 +80,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_action() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"behavior B1 {",
 				"def test {",
 					"System.exit(0)",
@@ -95,7 +95,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_behaviorUnit() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"event E1 { }",
 			"behavior B1 {",
 				"on E1 {",
@@ -111,7 +111,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_constructor() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"event E1 { }",
 			"behavior B1 {",
 				"new (a : Agent) {",
@@ -128,7 +128,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_action() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"capacity C1 { }",
 			"skill S1 implements C1 {",
 				"def test {",
@@ -144,7 +144,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_constructor() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"capacity C1 { }",
 			"event E1 { }",
 			"skill S1 implements C1 {",
@@ -162,7 +162,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_agent_action_staticImport() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import static java.lang.System.*",
 			"agent A1 {",
 				"def test {",
@@ -178,7 +178,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_agent_behaviorUnit_staticImport() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import static java.lang.System.*",
 			"event E1 { }",
 			"agent A1 {",
@@ -195,7 +195,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_action_staticImport() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import static java.lang.System.*",
 			"behavior B1 {",
 				"def test {",
@@ -211,7 +211,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_behaviorUnit_staticImport() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import static java.lang.System.*",
 			"event E1 { }",
 			"behavior B1 {",
@@ -228,7 +228,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_constructor_staticImport() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import io.sarl.lang.core.Agent",
 			"import static java.lang.System.*",
 			"event E1 { }",
@@ -247,7 +247,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_action_staticImport() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import static java.lang.System.*",
 			"capacity C1 { }",
 			"skill S1 implements C1 {",
@@ -264,7 +264,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_constructor_staticImport() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import io.sarl.lang.core.Agent",
 			"import static java.lang.System.*",
 			"capacity C1 { }",
@@ -284,7 +284,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_agent_action_extension() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import static extension java.lang.System.*",
 			"agent A1 {",
 				"def test {",
@@ -300,7 +300,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_agent_behaviorUnit_extension() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import static extension java.lang.System.*",
 			"event E1 { }",
 			"agent A1 {",
@@ -317,7 +317,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_action_extension() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import static extension java.lang.System.*",
 			"behavior B1 {",
 				"def test {",
@@ -333,7 +333,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_behaviorUnit_extension() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import static extension java.lang.System.*",
 			"event E1 { }",
 			"behavior B1 {",
@@ -350,7 +350,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_constructor_extension() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import io.sarl.lang.core.Agent",
 			"import static extension java.lang.System.*",
 			"event E1 { }",
@@ -369,7 +369,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_action_extension() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import static extension java.lang.System.*",
 			"capacity C1 { }",
 			"skill S1 implements C1 {",
@@ -386,7 +386,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_constructor_extension() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import io.sarl.lang.core.Agent",
 			"import static extension java.lang.System.*",
 			"capacity C1 { }",

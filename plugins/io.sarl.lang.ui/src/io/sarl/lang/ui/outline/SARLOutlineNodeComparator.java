@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,15 @@
  */
 package io.sarl.lang.ui.outline;
 
-import static io.sarl.lang.sarl.SarlPackage.Literals.ACTION;
-import static io.sarl.lang.sarl.SarlPackage.Literals.ACTION_SIGNATURE;
-import static io.sarl.lang.sarl.SarlPackage.Literals.ATTRIBUTE;
-import static io.sarl.lang.sarl.SarlPackage.Literals.BEHAVIOR_UNIT;
-import static io.sarl.lang.sarl.SarlPackage.Literals.CAPACITY_USES;
-import static io.sarl.lang.sarl.SarlPackage.Literals.CONSTRUCTOR;
-import static io.sarl.lang.sarl.SarlPackage.Literals.REQUIRED_CAPACITY;
+import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_ACTION;
+import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_BEHAVIOR_UNIT;
+import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_CAPACITY_USES;
+import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_REQUIRED_CAPACITY;
+import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_CONSTRUCTOR;
+import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FIELD;
+import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FILE__PACKAGE;
+import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FUNCTION;
 import static org.eclipse.xtext.xtype.XtypePackage.Literals.XIMPORT_SECTION;
-import io.sarl.lang.sarl.SarlPackage;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -54,13 +54,13 @@ public class SARLOutlineNodeComparator extends DefaultComparator {
 	private static final int PRIORITY_STEP = 10;
 
 	private final EClass[] types = new EClass[] {
-			CAPACITY_USES,
-			REQUIRED_CAPACITY,
-			ATTRIBUTE,
-			CONSTRUCTOR,
-			BEHAVIOR_UNIT,
-			ACTION,
-			ACTION_SIGNATURE,
+			SARL_CAPACITY_USES,
+			SARL_REQUIRED_CAPACITY,
+			XTEND_FIELD,
+			XTEND_CONSTRUCTOR,
+			SARL_BEHAVIOR_UNIT,
+			SARL_ACTION,
+			XTEND_FUNCTION,
 	};
 
 	/**
@@ -73,7 +73,7 @@ public class SARLOutlineNodeComparator extends DefaultComparator {
 	public int getCategory(IOutlineNode node) {
 		if (node instanceof EStructuralFeatureNode) {
 			EStructuralFeature feature = ((EStructuralFeatureNode) node).getEStructuralFeature();
-			if (feature == SarlPackage.Literals.SARL_SCRIPT__NAME) {
+			if (feature == XTEND_FILE__PACKAGE) {
 				return SCRIPT_PRIORITY;
 			}
 			return TOPELEMENT_PRIORITY;

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,6 @@
 package io.sarl.tests.api;
 
 import static com.google.common.collect.Sets.newHashSet;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.TopElement;
 import io.sarl.lang.ui.internal.SARLActivator;
 import io.sarl.lang.ui.preferences.SARLPreferences;
 
@@ -52,6 +50,8 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.osgi.service.datalocation.Location;
+import org.eclipse.xtend.core.xtend.XtendFile;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil;
 import org.eclipse.xtext.junit4.ui.util.JavaProjectSetupUtil;
@@ -576,7 +576,7 @@ public class WorkspaceTestHelper extends Assert {
 	 * @return the parsed SARL script.
 	 * @throws Exception
 	 */
-	public SarlScript createSARLScript(String basename, String content) throws Exception {
+	public XtendFile createSARLScript(String basename, String content) throws Exception {
 		return createSARLScript(getProject(), basename, content);
 	}
 
@@ -587,12 +587,12 @@ public class WorkspaceTestHelper extends Assert {
 	 * @return the parsed SARL script.
 	 * @throws Exception
 	 */
-	public SarlScript createSARLScript(IFile file, String content) throws Exception {
+	public XtendFile createSARLScript(IFile file, String content) throws Exception {
 		Resource resource = createResource(file, content);
 		if (IS_WAITING_FOR_BUILD_AT_FILE_CREATION) {
 			waitForAutoBuild();
 		}
-		SarlScript sarlScript = (SarlScript) resource.getContents().get(0);
+		XtendFile sarlScript = (XtendFile) resource.getContents().get(0);
 		assertEquals(resource.getErrors().toString(), 0, resource.getErrors().size());
 		return sarlScript;
 	}
@@ -610,7 +610,7 @@ public class WorkspaceTestHelper extends Assert {
 			waitForAutoBuild();
 		}
 		assertEquals(resource.getErrors().toString(), 0, resource.getErrors().size());
-		SarlScript sarlScript = (SarlScript) resource.getContents().get(0);
+		XtendFile sarlScript = (XtendFile) resource.getContents().get(0);
 		assertNotNull(sarlScript);
 		return resource;
 	}
@@ -665,12 +665,12 @@ public class WorkspaceTestHelper extends Assert {
 	 * @throws NoSuchElementException if there is no element of the given type.
 	 * @throws Exception
 	 */
-	public <T extends TopElement> T createSARLTopElement(String basename,
+	public <T extends XtendTypeDeclaration> T createSARLTopElement(String basename,
 			Class<T> type, int position, String content) throws Exception {
-		SarlScript script = createSARLScript(basename, content);
-		EList<TopElement> list = script.getElements();
+		XtendFile script = createSARLScript(basename, content);
+		EList<XtendTypeDeclaration> list = script.getXtendTypes();
 		if (list != null && position < list.size()) {
-			TopElement topElement = list.get(position);
+			XtendTypeDeclaration topElement = list.get(position);
 			if (type.isInstance(topElement)) {
 				return type.cast(topElement);
 			}
@@ -688,7 +688,7 @@ public class WorkspaceTestHelper extends Assert {
 	 * @throws NoSuchElementException if there is no element of the given type.
 	 * @throws Exception
 	 */
-	public <T extends TopElement> T createSARLTopElement(String basename,
+	public <T extends XtendTypeDeclaration> T createSARLTopElement(String basename,
 			Class<T> type, String content) throws Exception {
 		return createSARLTopElement(basename, type, 0, content);
 	}
@@ -701,7 +701,7 @@ public class WorkspaceTestHelper extends Assert {
 	 * @return the parsed SARL script.
 	 * @throws Exception
 	 */
-	public SarlScript createSARLScript(IProject project, String basename, String content) throws Exception {
+	public XtendFile createSARLScript(IProject project, String basename, String content) throws Exception {
 		IFile file = createFile(convertBasenameToWorkspace(project, basename), content);
 		Resource resource = this.resourceSetProvider.get(project).createResource(uri(file));
 		try (StringInputStream s = new StringInputStream(content)) {
@@ -712,7 +712,7 @@ public class WorkspaceTestHelper extends Assert {
 			}
 			assertEquals(resource.getErrors().toString(), 0, resource.getErrors().size());
 			assertEquals(resource.getWarnings().toString(), 0, resource.getWarnings().size());
-			SarlScript sarlScript = (SarlScript) resource.getContents().get(0);
+			XtendFile sarlScript = (XtendFile) resource.getContents().get(0);
 			return sarlScript;
 		}
 	}

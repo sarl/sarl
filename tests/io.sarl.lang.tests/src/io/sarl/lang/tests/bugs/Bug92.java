@@ -18,10 +18,10 @@ package io.sarl.lang.tests.bugs;
 import com.google.inject.Inject;
 
 import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.Attribute;
-import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.SarlAgent;
 
+import org.eclipse.xtend.core.xtend.XtendField;
+import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmPrimitiveType;
@@ -52,7 +52,7 @@ import io.sarl.tests.api.AbstractSarlTest;
 @SuppressWarnings("all")
 public class Bug92 extends AbstractSarlTest {
 	@Inject
-	private ParseHelper<SarlScript> parser;
+	private ParseHelper<XtendFile> parser;
 
 	@Inject
 	private ValidationTestHelper validator;
@@ -81,20 +81,20 @@ public class Bug92 extends AbstractSarlTest {
 
 	@Test
 	public void attributeDeclarationSyntax_inferredDouble() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 				"agent A1 {",
 				"  var myDouble = 0d",
 				"}"
 				));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
-		assertInstance(Agent.class, mas.getElements().get(0));
-		Agent ag = (Agent) mas.getElements().get(0);
-		assertEquals(1, ag.getFeatures().size());
-		assertInstance(Attribute.class, ag.getFeatures().get(0));
-		Attribute attr = (Attribute) ag.getFeatures().get(0);
+		assertEquals(1, mas.getXtendTypes().size());
+		assertInstance(SarlAgent.class, mas.getXtendTypes().get(0));
+		SarlAgent ag = (SarlAgent) mas.getXtendTypes().get(0);
+		assertEquals(1, ag.getMembers().size());
+		assertInstance(XtendField.class, ag.getMembers().get(0));
+		XtendField attr = (XtendField) ag.getMembers().get(0);
 		assertEquals("myDouble", attr.getName());
-		assertTrue(attr.isWriteable());
+		assertFalse(attr.isFinal());
 		assertNull(attr.getType());
 		assertInstance(XNumberLiteral.class, attr.getInitialValue());
 		XNumberLiteral literal = (XNumberLiteral) attr.getInitialValue();
@@ -103,20 +103,20 @@ public class Bug92 extends AbstractSarlTest {
 
 	@Test
 	public void attributeDeclarationSyntax_Double() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 				"agent A1 {",
 				"  var myDouble : Double = 0d",
 				"}"
 				));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
-		assertInstance(Agent.class, mas.getElements().get(0));
-		Agent ag = (Agent) mas.getElements().get(0);
-		assertEquals(1, ag.getFeatures().size());
-		assertInstance(Attribute.class, ag.getFeatures().get(0));
-		Attribute attr = (Attribute) ag.getFeatures().get(0);
+		assertEquals(1, mas.getXtendTypes().size());
+		assertInstance(SarlAgent.class, mas.getXtendTypes().get(0));
+		SarlAgent ag = (SarlAgent) mas.getXtendTypes().get(0);
+		assertEquals(1, ag.getMembers().size());
+		assertInstance(XtendField.class, ag.getMembers().get(0));
+		XtendField attr = (XtendField) ag.getMembers().get(0);
 		assertEquals("myDouble", attr.getName());
-		assertTrue(attr.isWriteable());
+		assertFalse(attr.isFinal());
 		assertInstance(JvmParameterizedTypeReference.class, attr.getType());
 		JvmParameterizedTypeReference type = (JvmParameterizedTypeReference) attr.getType();
 		assertEquals(createType(Double.class).getQualifiedName(), type.getType().getQualifiedName());
@@ -127,21 +127,21 @@ public class Bug92 extends AbstractSarlTest {
 
 	@Test
 	public void attributeDeclarationSyntax_double() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 				"agent A1 {",
 				"  var myDouble : double = 0d",
 				"}"
 				));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
-		assertEquals(1, mas.getElements().size());
-		assertInstance(Agent.class, mas.getElements().get(0));
-		Agent ag = (Agent) mas.getElements().get(0);
-		assertEquals(1, ag.getFeatures().size());
-		assertInstance(Attribute.class, ag.getFeatures().get(0));
-		Attribute attr = (Attribute) ag.getFeatures().get(0);
+		assertEquals(1, mas.getXtendTypes().size());
+		assertEquals(1, mas.getXtendTypes().size());
+		assertInstance(SarlAgent.class, mas.getXtendTypes().get(0));
+		SarlAgent ag = (SarlAgent) mas.getXtendTypes().get(0);
+		assertEquals(1, ag.getMembers().size());
+		assertInstance(XtendField.class, ag.getMembers().get(0));
+		XtendField attr = (XtendField) ag.getMembers().get(0);
 		assertEquals("myDouble", attr.getName());
-		assertTrue(attr.isWriteable());
+		assertFalse(attr.isFinal());
 		assertInstance(JvmParameterizedTypeReference.class, attr.getType());
 		JvmParameterizedTypeReference type = (JvmParameterizedTypeReference) attr.getType();
 		assertEquals(createPrimitiveType(double.class).getQualifiedName(), type.getType().getQualifiedName());

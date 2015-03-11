@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,7 +91,7 @@ public class NewSarlFileWizardPage extends WizardNewFileCreationPage {
 		IPath packagePath = determinePackageName(folderInWorkspace);
 
 		if (packagePath != null && packagePath.segmentCount() > 0) {
-			content.append(this.grammarAccess.getSarlScriptAccess().getPackageKeyword_0_0() + " "); //$NON-NLS-1$
+			content.append(this.grammarAccess.getSarlScriptAccess().getPackageKeyword_1_0() + " "); //$NON-NLS-1$
 			content.append(packagePath.segment(0));
 			for (int i = 1; i < packagePath.segmentCount(); ++i) {
 				content.append('.');

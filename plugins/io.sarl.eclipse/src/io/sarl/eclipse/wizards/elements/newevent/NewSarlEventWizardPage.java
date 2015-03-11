@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.genmodel.GeneratedCode;
+import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.signature.SignatureKey;
 
 import java.util.Collections;
@@ -84,7 +85,7 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 	@Override
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
 		GeneratedCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
-		io.sarl.lang.sarl.Event event = this.sarlGenerator.createEvent(code, getTypeName(), getSuperClass());
+		SarlEvent event = this.sarlGenerator.createEvent(code, getTypeName(), getSuperClass());
 		this.sarlGenerator.attachComment(code, event, typeComment);
 
 		Map<SignatureKey, IMethod> constructors;

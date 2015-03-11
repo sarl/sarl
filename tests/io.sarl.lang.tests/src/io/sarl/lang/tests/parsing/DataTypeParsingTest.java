@@ -18,12 +18,13 @@ package io.sarl.lang.tests.parsing;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.Attribute;
+import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
+import org.eclipse.xtend.core.xtend.XtendField;
+import org.eclipse.xtend.core.xtend.XtendFile;
+import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
@@ -50,42 +51,42 @@ import com.google.inject.Inject;
 public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Inject
-	private ParseHelper<SarlScript> parser;
-	
+	private ParseHelper<XtendFile> parser;
+
 	@Inject
 	private ValidationTestHelper validator;
 
 	@Test
 	public void intToDouble() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
-			"agent A1 {",
-			"	var internalTime : Double = 0",
-			"}"
-		));
+		XtendFile mas = this.parser.parse(multilineString(
+				"agent A1 {",
+				"	var internalTime : Double = 0",
+				"}"
+				));
 		this.validator.assertError(mas,
-			XbasePackage.eINSTANCE.getXNumberLiteral(),
-			IssueCodes.INCOMPATIBLE_TYPES,
-			"cannot convert from int to Double");
+				XbasePackage.eINSTANCE.getXNumberLiteral(),
+				IssueCodes.INCOMPATIBLE_TYPES,
+				"cannot convert from int to Double");
 	}
-	
+
 	@Test
 	public void doubleToDouble_1() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
-			"agent A1 {",
-			"	var internalTime : Double = 0.0",
-			"}"
-		));
+		XtendFile mas = this.parser.parse(multilineString(
+				"agent A1 {",
+				"	var internalTime : Double = 0.0",
+				"}"
+				));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertTrue(Strings.isNullOrEmpty(mas.getName()));
+		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(1, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(1, agent.getMembers().size());
 		//
-		Attribute attr = (Attribute) agent.getFeatures().get(0);
+		XtendField attr = (XtendField) agent.getMembers().get(0);
 		assertEquals("internalTime", attr.getName());
 		assertTypeReferenceIdentifier(attr.getType(), "java.lang.Double");
 		assertXExpression(attr.getInitialValue(), XNumberLiteral.class, "0.0");
@@ -93,48 +94,48 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void doubleToDouble_2() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
-			"agent A1 {",
-			"	var internalTime : Double = 0.",
-			"}"
-		));
+		XtendFile mas = this.parser.parse(multilineString(
+				"agent A1 {",
+				"	var internalTime : Double = 0.",
+				"}"
+				));
 		this.validator.assertError(mas,
-			SarlPackage.eINSTANCE.getAgent(),
-			Diagnostic.SYNTAX_DIAGNOSTIC,
-			"extraneous input '.' expecting '}'");
+				SarlPackage.eINSTANCE.getSarlAgent(),
+				Diagnostic.SYNTAX_DIAGNOSTIC,
+				"extraneous input '.' expecting '}'");
 	}
 
 	@Test
 	public void doubleToDouble_3() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
-			"agent A1 {",
-			"	var internalTime : Double = .0",
-			"}"
-		));
+		XtendFile mas = this.parser.parse(multilineString(
+				"agent A1 {",
+				"	var internalTime : Double = .0",
+				"}"
+				));
 		this.validator.assertError(mas,
-			SarlPackage.eINSTANCE.getAttribute(),
-			Diagnostic.SYNTAX_DIAGNOSTIC,
-			"no viable alternative at input '.'");
+				XtendPackage.eINSTANCE.getXtendField(),
+				Diagnostic.SYNTAX_DIAGNOSTIC,
+				"no viable alternative at input '.'");
 	}
 
 	@Test
 	public void doubleToDouble_4() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
-			"agent A1 {",
-			"	var internalTime : Double = 0d",
-			"}"
-		));
+		XtendFile mas = this.parser.parse(multilineString(
+				"agent A1 {",
+				"	var internalTime : Double = 0d",
+				"}"
+				));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertTrue(Strings.isNullOrEmpty(mas.getName()));
+		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(1, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(1, agent.getMembers().size());
 		//
-		Attribute attr = (Attribute) agent.getFeatures().get(0);
+		XtendField attr = (XtendField) agent.getMembers().get(0);
 		assertEquals("internalTime", attr.getName());
 		assertTypeReferenceIdentifier(attr.getType(), "java.lang.Double");
 		assertXExpression(attr.getInitialValue(), XNumberLiteral.class, "0d");

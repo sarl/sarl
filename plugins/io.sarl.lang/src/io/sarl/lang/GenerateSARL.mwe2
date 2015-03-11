@@ -18,11 +18,11 @@ module io.sarl.lang.GenerateSARL
 import org.eclipse.emf.mwe.utils.*
 import org.eclipse.xtext.generator.*
 import org.eclipse.xtext.ui.generator.*
+import org.eclipse.xtend.core.*
+import org.eclipse.xtext.resource.XtextResourceSet 
 
 var fileExtensions = "sarl"
 var projectName = "io.sarl.lang"
-
-
 var grammarURI = "platform:/resource/${projectName}/src/io/sarl/lang/SARL.xtext"
 var runtimeProject = "../${projectName}"
 var testPluginPath = "../../tests/io.sarl.lang.tests"
@@ -30,9 +30,10 @@ var encoding = "UTF-8"
 
 Workflow {
     bean = StandaloneSetup {
+    	ignoreBrokenProjectFiles = true
     	scanClassPath = true
 		// use an XtextResourceset throughout the process, which is able to resolve classpath:/ URIs.
-    	resourceSet = org.eclipse.xtext.resource.XtextResourceSet:theResourceSet {}
+    	resourceSet = XtextResourceSet:theResourceSet {}
     	
     	// add mappings from platform:/resource to classpath:/
     	uriMap = {
@@ -48,13 +49,14 @@ Workflow {
     		to = "classpath:/"
     	}
     	uriMap = {
-    		from = "platform:/resource/org.eclipse.xtend.core.xtend/"
+    		from = "platform:/resource/org.eclipse.xtend.ide/"
     		to = "classpath:/"
     	}
     	
     	// register current projects and its siblings for platform URI map, as they are not on the classpath.
     	platformUri = "${runtimeProject}/.."
     	
+    	// register Xtend grammar for inclusion
     	registerGeneratedEPackage = "org.eclipse.xtend.core.xtend.XtendPackage"
     	registerGenModelFile = "platform:/resource/org.eclipse.xtend.core/model/Xtend.genmodel"
     }
@@ -93,9 +95,6 @@ Workflow {
     
     		// generates Java API for the generated EPackages
     		fragment = ecore.EMFGeneratorFragment auto-inject {}
-    
-    		// the old serialization component
-    		// fragment = parseTreeConstructor.ParseTreeConstructorFragment auto-inject {}    
     
     		// serializer 2.0
     		fragment = serializer.SerializerFragment auto-inject {
@@ -160,7 +159,14 @@ Workflow {
     		fragment = contentAssist.JavaBasedContentAssistFragment auto-inject {}
     
     		// generates a more lightweight Antlr parser and lexer tailored for content assist
-    		fragment = parser.antlr.XtextAntlrUiGeneratorFragment auto-inject {}
+    		fragment = parser.ContentAssistParserGenerator auto-inject {
+				removeBacktrackingGuards = true
+				lookaheadThreshold = '5'
+				options = auto-inject {
+					classSplitting = true
+				}
+				partialParsing = true
+			}
     
     		// generates junit test support classes into Generator#pathTestProject
     		fragment = junit.Junit4Fragment auto-inject {}

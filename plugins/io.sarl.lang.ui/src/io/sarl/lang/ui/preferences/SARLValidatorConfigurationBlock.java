@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.xtend.ide.validator.preferences.XtendValidatorConfigurationBlock;
 import org.eclipse.xtext.validation.SeverityConverter;
-import org.eclipse.xtext.xbase.ui.validation.XbaseValidationConfigurationBlock;
 
 /** Preference page that permits to configure the SARL validator.
  *
@@ -38,7 +38,7 @@ import org.eclipse.xtext.xbase.ui.validation.XbaseValidationConfigurationBlock;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLValidatorConfigurationBlock extends XbaseValidationConfigurationBlock {
+public class SARLValidatorConfigurationBlock extends XtendValidatorConfigurationBlock {
 
 	private static final String SECTION_NAME = SARLValidatorConfigurationBlock.class.getName();
 
@@ -93,7 +93,6 @@ public class SARLValidatorConfigurationBlock extends XbaseValidationConfiguratio
 	protected void fillCodingStyleSection(ComboBoxBuilder builder) {
 		super.fillCodingStyleSection(builder);
 		builder.addComboBox(IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION, Messages.SARLValidatorConfigurationBlock_0);
-		builder.addComboBox(IssueCodes.WRONG_PACKAGE, Messages.SARLValidatorConfigurationBlock_1);
 		builder.addComboBox(IssueCodes.REDUNDANT_CAPACITY_USE, Messages.SARLValidatorConfigurationBlock_10);
 		builder.addComboBox(IssueCodes.UNUSED_AGENT_CAPACITY, Messages.SARLValidatorConfigurationBlock_11);
 	}

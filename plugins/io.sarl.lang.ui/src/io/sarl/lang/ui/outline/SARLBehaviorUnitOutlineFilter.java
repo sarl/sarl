@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  */
 package io.sarl.lang.ui.outline;
 
-import io.sarl.lang.sarl.SarlPackage;
+import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_BEHAVIOR_UNIT;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.jface.action.Action;
@@ -56,7 +56,7 @@ public class SARLBehaviorUnitOutlineFilter extends AbstractFilterOutlineContribu
 	 * @return <code>true</code> if the given type is for a behavior unit; <code>false</code> otherwise.
 	 */
 	protected static boolean isBehaviorUnit(EClass type) {
-		return type == SarlPackage.Literals.BEHAVIOR_UNIT;
+		return type == SARL_BEHAVIOR_UNIT;
 	}
 
 	@Override

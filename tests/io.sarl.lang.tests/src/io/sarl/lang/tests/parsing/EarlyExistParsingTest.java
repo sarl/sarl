@@ -17,12 +17,12 @@ package io.sarl.lang.tests.parsing;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.TestClasspath;
 
+import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.xbase.XbasePackage;
@@ -49,7 +49,7 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 
 	@Test
 	public void earlyExistFunction_inAction_lastExpression_0() throws Exception {
-		SarlScript mas = parseWithProjectClasspath(
+		XtendFile mas = parseWithProjectClasspath(
 				"agent A1 {",
 				"	def caller {",
 				"		foo.EarlyExitFunctionDefinitions::killFunction2",
@@ -57,25 +57,25 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 				"}"
 				);
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertTrue(Strings.isNullOrEmpty(mas.getName()));
+		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(1, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(1, agent.getMembers().size());
 		//
-		Action action = (Action) agent.getFeatures().get(0);
+		SarlAction action = (SarlAction) agent.getMembers().get(0);
 		assertEquals("caller", action.getName());
 		assertTypeReferenceIdentifiers(action.getFiredEvents());
-		assertParameterNames(action.getParams());
-		assertTypeReferenceIdentifier(action.getType(), "void");
+		assertParameterNames(action.getParameters());
+		assertTypeReferenceIdentifier(action.getReturnType(), "void");
 	}
 
 	@Test
 	public void earlyExistFunction_inAction_lastExpression_1() throws Exception {
-		SarlScript mas = parseWithProjectClasspath(
+		XtendFile mas = parseWithProjectClasspath(
 				"agent A1 {",
 				"	def caller {",
 				"		var inst = new foo.EarlyExitFunctionDefinitions",
@@ -84,25 +84,25 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 				"}"
 				);
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertTrue(Strings.isNullOrEmpty(mas.getName()));
+		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(1, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(1, agent.getMembers().size());
 		//
-		Action action = (Action) agent.getFeatures().get(0);
+		SarlAction action = (SarlAction) agent.getMembers().get(0);
 		assertEquals("caller", action.getName());
 		assertTypeReferenceIdentifiers(action.getFiredEvents());
-		assertParameterNames(action.getParams());
-		assertTypeReferenceIdentifier(action.getType(), "void");
+		assertParameterNames(action.getParameters());
+		assertTypeReferenceIdentifier(action.getReturnType(), "void");
 	}
 
 	@Test
 	public void earlyExistFunction_inAction_penultimateExpression_0() throws Exception {
-		SarlScript mas = parseWithProjectClasspath(
+		XtendFile mas = parseWithProjectClasspath(
 				"agent A1 {",
 				"	def caller {",
 				"		foo.EarlyExitFunctionDefinitions::killFunction2",
@@ -120,7 +120,7 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 
 	@Test
 	public void earlyExistFunction_inAction_penultimateExpression_1() throws Exception {
-		SarlScript mas = parseWithProjectClasspath(
+		XtendFile mas = parseWithProjectClasspath(
 				"agent A1 {",
 				"	def caller {",
 				"		var inst = new foo.EarlyExitFunctionDefinitions",
@@ -139,7 +139,7 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 
 	@Test
 	public void earlyExistFunction_inIf_0() throws Exception {
-		SarlScript mas = parseWithProjectClasspath(
+		XtendFile mas = parseWithProjectClasspath(
 				"agent A1 {",
 				"	def caller {",
 				"		if (true) {",
@@ -161,7 +161,7 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 
 	@Test
 	public void earlyExistFunction_inIf_1() throws Exception {
-		SarlScript mas = parseWithProjectClasspath(
+		XtendFile mas = parseWithProjectClasspath(
 				"agent A1 {",
 				"	def caller {",
 				"		if (true) {",
@@ -174,25 +174,25 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 				"}"
 				);
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertTrue(Strings.isNullOrEmpty(mas.getName()));
+		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(1, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(1, agent.getMembers().size());
 		//
-		Action action = (Action) agent.getFeatures().get(0);
+		SarlAction action = (SarlAction) agent.getMembers().get(0);
 		assertEquals("caller", action.getName());
 		assertTypeReferenceIdentifiers(action.getFiredEvents());
-		assertParameterNames(action.getParams());
-		assertTypeReferenceIdentifier(action.getType(), "void");
+		assertParameterNames(action.getParameters());
+		assertTypeReferenceIdentifier(action.getReturnType(), "void");
 	}
 
 	@Test
 	public void earlyExistFunction_inIf_2() throws Exception {
-		SarlScript mas = parseWithProjectClasspath(
+		XtendFile mas = parseWithProjectClasspath(
 				"agent A1 {",
 				"	def caller {",
 				"		if (true) {",
@@ -205,20 +205,20 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 				"}"
 				);
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertTrue(Strings.isNullOrEmpty(mas.getName()));
+		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(1, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(1, agent.getMembers().size());
 		//
-		Action action = (Action) agent.getFeatures().get(0);
+		SarlAction action = (SarlAction) agent.getMembers().get(0);
 		assertEquals("caller", action.getName());
 		assertTypeReferenceIdentifiers(action.getFiredEvents());
-		assertParameterNames(action.getParams());
-		assertTypeReferenceIdentifier(action.getType(), "void");
+		assertParameterNames(action.getParameters());
+		assertTypeReferenceIdentifier(action.getReturnType(), "void");
 	}
 
 }

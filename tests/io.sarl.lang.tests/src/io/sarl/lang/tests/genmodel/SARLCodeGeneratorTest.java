@@ -31,21 +31,14 @@ import io.sarl.lang.genmodel.BlockInnerDocumentationAdapter;
 import io.sarl.lang.genmodel.GeneratedCode;
 import io.sarl.lang.genmodel.PostDocumentationAdapter;
 import io.sarl.lang.genmodel.SARLCodeGenerator;
-import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.ActionSignature;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.Attribute;
-import io.sarl.lang.sarl.Behavior;
-import io.sarl.lang.sarl.BehaviorUnit;
-import io.sarl.lang.sarl.Capacity;
-import io.sarl.lang.sarl.Constructor;
-import io.sarl.lang.sarl.Event;
-import io.sarl.lang.sarl.FeatureContainer;
-import io.sarl.lang.sarl.FormalParameter;
-import io.sarl.lang.sarl.ParameterizedFeature;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.Skill;
-import io.sarl.lang.sarl.TopElement;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
@@ -64,6 +57,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtend.core.xtend.XtendConstructor;
+import org.eclipse.xtend.core.xtend.XtendExecutable;
+import org.eclipse.xtend.core.xtend.XtendField;
+import org.eclipse.xtend.core.xtend.XtendFile;
+import org.eclipse.xtend.core.xtend.XtendMember;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
@@ -125,7 +124,7 @@ import com.google.inject.Inject;
 	SARLCodeGeneratorTest.FormalParameters.class,
 	SARLCodeGeneratorTest.CreateActionFromJvmElement.class,
 	SARLCodeGeneratorTest.CreateConstructorFromJvmElement.class,
-	SARLCodeGeneratorTest.CreateActionSignatureFromJvmElement.class
+	SARLCodeGeneratorTest.createActionFromJvmElement.class
 })
 @SuppressWarnings("all")
 public class SARLCodeGeneratorTest {
@@ -161,7 +160,7 @@ public class SARLCodeGeneratorTest {
 		ActionSignatureProvider actionSignatureProvider;
 
 		@Inject
-		private SARLCodeGenerator gen;;
+		private SARLCodeGenerator gen;
 
 		@Test
 		public void getSARLFileExtension() {
@@ -200,10 +199,10 @@ public class SARLCodeGeneratorTest {
 		private ISerializer serializer;
 
 		@Inject
-		private SARLCodeGenerator gen;;
+		private SARLCodeGenerator gen;
 
 		@Nullable
-		private GeneratedCode code;;
+		private GeneratedCode code;
 
 		@Nullable
 		private EObject context;
@@ -327,16 +326,16 @@ public class SARLCodeGeneratorTest {
 	public static class References extends AbstractSarlTest {
 
 		@Inject
-		private SARLCodeGenerator gen;;
+		private SARLCodeGenerator gen;
 
 		@Nullable
-		private GeneratedCode code;;
+		private GeneratedCode code;
 
 		@Nullable
 		private EObject context;
 
 		@Nullable
-		private ImportManager importManager;;
+		private ImportManager importManager;
 
 		@Nullable
 		private JvmType jvmType;
@@ -398,10 +397,10 @@ public class SARLCodeGeneratorTest {
 	public static class Comments extends AbstractSarlTest {
 
 		@Inject
-		private SARLCodeGenerator gen;;
+		private SARLCodeGenerator gen;
 
 		@Nullable
-		private GeneratedCode code;;
+		private GeneratedCode code;
 
 		@Nullable
 		private EObject context;
@@ -410,7 +409,7 @@ public class SARLCodeGeneratorTest {
 		private EObject object;
 
 		@Nullable
-		private XBlockExpression block;;
+		private XBlockExpression block;
 
 		@Before
 		public void setUp() {
@@ -458,7 +457,7 @@ public class SARLCodeGeneratorTest {
 	public static class ScriptLevel extends AbstractSarlTest {
 
 		@Inject
-		private SARLCodeGenerator gen;;
+		private SARLCodeGenerator gen;
 
 		@Nullable
 		private ResourceSet resourceSet;
@@ -470,7 +469,7 @@ public class SARLCodeGeneratorTest {
 		private EList<EObject> content;
 
 		@Nullable
-		private GeneratedCode code;;
+		private GeneratedCode code;
 
 		@Before
 		public void setUp() {
@@ -485,10 +484,10 @@ public class SARLCodeGeneratorTest {
 
 		@Test
 		public void sarlScript()  {
-			SarlScript script = code.getSarlScript();
+			XtendFile script = code.getSarlScript();
 			assertNotNull(script);
-			assertEquals("io.sarl.lang.tests", script.getName());
-			assertTrue(script.getElements().isEmpty());
+			assertEquals("io.sarl.lang.tests", script.getPackage());
+			assertTrue(script.getXtendTypes().isEmpty());
 			assertNull(script.getImportSection());
 		}
 
@@ -517,29 +516,29 @@ public class SARLCodeGeneratorTest {
 	public static class AgentTopElement extends AbstractSarlTest {
 
 		@Inject
-		private SARLCodeGenerator gen;;
+		private SARLCodeGenerator gen;
 
 		@Nullable
-		private GeneratedCode code;;
+		private GeneratedCode code;
 
 		@Nullable
-		private SarlScript context;
+		private XtendFile context;
 
 		@Nullable
-		private ImportManager importManager;;
+		private ImportManager importManager;
 
 		@Nullable
 		private JvmType jvmType;
 
 		@Nullable
-		private EList<TopElement> elements;
+		private EList<XtendTypeDeclaration> elements;
 
 		@Before
 		public void setUp() {
-			elements = new BasicEList<TopElement>();
+			elements = new BasicEList<>();
 			importManager = new ImportManager();
 			code = mock(GeneratedCode.class);
-			context = mock(SarlScript.class);
+			context = mock(XtendFile.class);
 
 			Resource eResource = mock(Resource.class);
 			ResourceSet eResourceSet = mock(ResourceSet.class);
@@ -556,25 +555,25 @@ public class SARLCodeGeneratorTest {
 			when(eResourceSet.getResourceFactoryRegistry()).thenReturn(registry);
 			when(eResource.getResourceSet()).thenReturn(eResourceSet);
 			when(context.eResource()).thenReturn(eResource);
-			when(context.getElements()).thenReturn(elements);
+			when(context.getXtendTypes()).thenReturn(elements);
 		}
 
 		@Test	
 		public void nullSuperClass()  {
-			Agent agent = gen.createAgent(code, "MyAgent", null);
+			SarlAgent agent = gen.createAgent(code, "MyAgent", null);
 			assertNotNull(agent);
 			assertEquals("MyAgent", agent.getName());
-			assertTrue(agent.getSuperTypes().isEmpty());
-			assertTrue(agent.getFeatures().isEmpty());
+			assertTrue(agent.getExtends().isEmpty());
+			assertTrue(agent.getMembers().isEmpty());
 		}
 
 		@Test	
 		public void agentSuperClass()  {
-			Agent agent = gen.createAgent(code, "MyAgent", "io.sarl.lang.core.Agent");
+			SarlAgent agent = gen.createAgent(code, "MyAgent", "io.sarl.lang.core.Agent");
 			assertNotNull(agent);
 			assertEquals("MyAgent", agent.getName());
-			assertTrue(agent.getSuperTypes().isEmpty());
-			assertTrue(agent.getFeatures().isEmpty());
+			assertTrue(agent.getExtends().isEmpty());
+			assertTrue(agent.getMembers().isEmpty());
 		}
 
 		@Test	
@@ -584,12 +583,12 @@ public class SARLCodeGeneratorTest {
 			when(jvmType.getQualifiedName()).thenReturn("foo.ecore.SubAgent");
 			when(jvmType.getSimpleName()).thenReturn("SubAgent");
 			//
-			Agent agent = gen.createAgent(code, "MyAgent", "foo.ecore.SubAgent");
+			SarlAgent agent = gen.createAgent(code, "MyAgent", "foo.ecore.SubAgent");
 			//
 			assertNotNull(agent);
 			assertEquals("MyAgent", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getSuperTypes(), "foo.ecore.SubAgent");
-			assertTrue(agent.getFeatures().isEmpty());
+			assertTypeReferenceIdentifiers(agent.getExtends(), "foo.ecore.SubAgent");
+			assertTrue(agent.getMembers().isEmpty());
 		}
 
 		@Test	
@@ -599,12 +598,12 @@ public class SARLCodeGeneratorTest {
 			when(jvmType.getQualifiedName()).thenReturn("foo.Foo");
 			when(jvmType.getSimpleName()).thenReturn("Foo");
 			//
-			Agent agent = gen.createAgent(code, "MyAgent", "foo.Foo");
+			SarlAgent agent = gen.createAgent(code, "MyAgent", "foo.Foo");
 			//
 			assertNotNull(agent);
 			assertEquals("MyAgent", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getSuperTypes(), "foo.Foo");
-			assertTrue(agent.getFeatures().isEmpty());
+			assertTypeReferenceIdentifiers(agent.getExtends(), "foo.Foo");
+			assertTrue(agent.getMembers().isEmpty());
 		}
 
 	}
@@ -614,29 +613,29 @@ public class SARLCodeGeneratorTest {
 	public static class BehaviorTopElement extends AbstractSarlTest {
 
 		@Inject
-		private SARLCodeGenerator gen;;
+		private SARLCodeGenerator gen;
 
 		@Nullable
-		private GeneratedCode code;;
+		private GeneratedCode code;
 
 		@Nullable
-		private SarlScript context;
+		private XtendFile context;
 
 		@Nullable
-		private ImportManager importManager;;
+		private ImportManager importManager;
 
 		@Nullable
 		private JvmType jvmType;
 
 		@Nullable
-		private EList<TopElement> elements;
+		private EList<XtendTypeDeclaration> elements;
 
 		@Before
 		public void setUp() {
 			elements = new BasicEList();
 			importManager = new ImportManager();
 			code = mock(GeneratedCode.class);
-			context = mock(SarlScript.class);
+			context = mock(XtendFile.class);
 
 			Resource eResource = mock(Resource.class);
 			ResourceSet eResourceSet = mock(ResourceSet.class);
@@ -653,25 +652,25 @@ public class SARLCodeGeneratorTest {
 			when(eResourceSet.getResourceFactoryRegistry()).thenReturn(registry);
 			when(eResource.getResourceSet()).thenReturn(eResourceSet);
 			when(context.eResource()).thenReturn(eResource);
-			when(context.getElements()).thenReturn(elements);
+			when(context.getXtendTypes()).thenReturn(elements);
 		}
 
 		@Test	
 		public void nullSuperClass()  {
-			Behavior behavior = gen.createBehavior(code, "MyBehavior", null);
+			SarlBehavior behavior = gen.createBehavior(code, "MyBehavior", null);
 			assertNotNull(behavior);
 			assertEquals("MyBehavior", behavior.getName());
-			assertTrue(behavior.getSuperTypes().isEmpty());
-			assertTrue(behavior.getFeatures().isEmpty());
+			assertTrue(behavior.getExtends().isEmpty());
+			assertTrue(behavior.getMembers().isEmpty());
 		}
 
 		@Test	
 		public void behaviorSuperClass()  {
-			Behavior behavior = gen.createBehavior(code, "MyBehavior", "io.sarl.lang.core.Behavior");
+			SarlBehavior behavior = gen.createBehavior(code, "MyBehavior", "io.sarl.lang.core.Behavior");
 			assertNotNull(behavior);
 			assertEquals("MyBehavior", behavior.getName());
-			assertTrue(behavior.getSuperTypes().isEmpty());
-			assertTrue(behavior.getFeatures().isEmpty());
+			assertTrue(behavior.getExtends().isEmpty());
+			assertTrue(behavior.getMembers().isEmpty());
 		}
 
 		@Test	
@@ -681,12 +680,12 @@ public class SARLCodeGeneratorTest {
 			when(jvmType.getQualifiedName()).thenReturn("foo.ecore.SubBehavior");
 			when(jvmType.getSimpleName()).thenReturn("SubBehavior");
 			//
-			Behavior behavior = gen.createBehavior(code, "MyBehavior", "foo.ecore.SubBehavior");
+			SarlBehavior behavior = gen.createBehavior(code, "MyBehavior", "foo.ecore.SubBehavior");
 			//
 			assertNotNull(behavior);
 			assertEquals("MyBehavior", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getSuperTypes(), "foo.ecore.SubBehavior");
-			assertTrue(behavior.getFeatures().isEmpty());
+			assertTypeReferenceIdentifiers(behavior.getExtends(), "foo.ecore.SubBehavior");
+			assertTrue(behavior.getMembers().isEmpty());
 		}
 
 		@Test	
@@ -696,12 +695,12 @@ public class SARLCodeGeneratorTest {
 			when(jvmType.getQualifiedName()).thenReturn("foo.Foo");
 			when(jvmType.getSimpleName()).thenReturn("Foo");
 			//
-			Behavior behavior = gen.createBehavior(code, "MyBehavior", "foo.Foo");
+			SarlBehavior behavior = gen.createBehavior(code, "MyBehavior", "foo.Foo");
 			//
 			assertNotNull(behavior);
 			assertEquals("MyBehavior", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getSuperTypes(), "foo.Foo");
-			assertTrue(behavior.getFeatures().isEmpty());
+			assertTypeReferenceIdentifiers(behavior.getExtends(), "foo.Foo");
+			assertTrue(behavior.getMembers().isEmpty());
 		}
 
 	}
@@ -711,29 +710,29 @@ public class SARLCodeGeneratorTest {
 	public static class CapacityTopElement extends AbstractSarlTest {
 
 		@Inject
-		private SARLCodeGenerator gen;;
+		private SARLCodeGenerator gen;
 
 		@Nullable
-		private GeneratedCode code;;
+		private GeneratedCode code;
 
 		@Nullable
-		private SarlScript context;
+		private XtendFile context;
 
 		@Nullable
-		private ImportManager importManager;;
+		private ImportManager importManager;
 
 		@Nullable
 		private JvmType jvmType;
 
 		@Nullable
-		private EList<TopElement> elements;
+		private EList<XtendTypeDeclaration> elements;
 
 		@Before
 		public void setUp() {
 			elements = new BasicEList();
 			importManager = new ImportManager();
 			code = mock(GeneratedCode.class);
-			context = mock(SarlScript.class);
+			context = mock(XtendFile.class);
 
 			Resource eResource = mock(Resource.class);
 			ResourceSet eResourceSet = mock(ResourceSet.class);
@@ -750,25 +749,25 @@ public class SARLCodeGeneratorTest {
 			when(eResourceSet.getResourceFactoryRegistry()).thenReturn(registry);
 			when(eResource.getResourceSet()).thenReturn(eResourceSet);
 			when(context.eResource()).thenReturn(eResource);
-			when(context.getElements()).thenReturn(elements);
+			when(context.getXtendTypes()).thenReturn(elements);
 		}
 
-		@Test	
+		@Test
 		public void nullSuperClass()  {
-			Capacity capacity = gen.createCapacity(code, "MyCapacity", null);
+			SarlCapacity capacity = gen.createCapacity(code, "MyCapacity", null);
 			assertNotNull(capacity);
 			assertEquals("MyCapacity", capacity.getName());
-			assertTrue(capacity.getSuperTypes().isEmpty());
-			assertTrue(capacity.getFeatures().isEmpty());
+			assertTrue(capacity.getExtends().isEmpty());
+			assertTrue(capacity.getMembers().isEmpty());
 		}
 
 		@Test	
 		public void behaviorSuperClass()  {
-			Capacity capacity = gen.createCapacity(code, "MyCapacity", "io.sarl.lang.core.Capacity");
+			SarlCapacity capacity = gen.createCapacity(code, "MyCapacity", "io.sarl.lang.core.Capacity");
 			assertNotNull(capacity);
 			assertEquals("MyCapacity", capacity.getName());
-			assertTrue(capacity.getSuperTypes().isEmpty());
-			assertTrue(capacity.getFeatures().isEmpty());
+			assertTrue(capacity.getExtends().isEmpty());
+			assertTrue(capacity.getMembers().isEmpty());
 		}
 
 		@Test	
@@ -778,12 +777,12 @@ public class SARLCodeGeneratorTest {
 			when(jvmType.getQualifiedName()).thenReturn("foo.ecore.SubCapacity");
 			when(jvmType.getSimpleName()).thenReturn("SubCapacity");
 			//
-			Capacity capacity = gen.createCapacity(code, "MyCapacity", "foo.ecore.SubCapacity");
+			SarlCapacity capacity = gen.createCapacity(code, "MyCapacity", "foo.ecore.SubCapacity");
 			//
 			assertNotNull(capacity);
 			assertEquals("MyCapacity", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getSuperTypes(), "foo.ecore.SubCapacity");
-			assertTrue(capacity.getFeatures().isEmpty());
+			assertTypeReferenceIdentifiers(capacity.getExtends(), "foo.ecore.SubCapacity");
+			assertTrue(capacity.getMembers().isEmpty());
 		}
 
 		@Test	
@@ -793,12 +792,12 @@ public class SARLCodeGeneratorTest {
 			when(jvmType.getQualifiedName()).thenReturn("foo.Foo");
 			when(jvmType.getSimpleName()).thenReturn("Foo");
 			//
-			Capacity capacity = gen.createCapacity(code, "MyCapacity", "foo.Foo");
+			SarlCapacity capacity = gen.createCapacity(code, "MyCapacity", "foo.Foo");
 			//
 			assertNotNull(capacity);
 			assertEquals("MyCapacity", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getSuperTypes(), "foo.Foo");
-			assertTrue(capacity.getFeatures().isEmpty());
+			assertTypeReferenceIdentifiers(capacity.getExtends(), "foo.Foo");
+			assertTrue(capacity.getMembers().isEmpty());
 		}
 
 	}
@@ -808,29 +807,29 @@ public class SARLCodeGeneratorTest {
 	public static class EventTopElement extends AbstractSarlTest {
 
 		@Inject
-		private SARLCodeGenerator gen;;
+		private SARLCodeGenerator gen;
 
 		@Nullable
-		private GeneratedCode code;;
+		private GeneratedCode code;
 
 		@Nullable
-		private SarlScript context;
+		private XtendFile context;
 
 		@Nullable
-		private ImportManager importManager;;
+		private ImportManager importManager;
 
 		@Nullable
 		private JvmType jvmType;
 
 		@Nullable
-		private EList<TopElement> elements;
+		private EList<XtendTypeDeclaration> elements;
 
 		@Before
 		public void setUp() {
 			elements = new BasicEList();
 			importManager = new ImportManager();
 			code = mock(GeneratedCode.class);
-			context = mock(SarlScript.class);
+			context = mock(XtendFile.class);
 
 			Resource eResource = mock(Resource.class);
 			ResourceSet eResourceSet = mock(ResourceSet.class);
@@ -847,25 +846,25 @@ public class SARLCodeGeneratorTest {
 			when(eResourceSet.getResourceFactoryRegistry()).thenReturn(registry);
 			when(eResource.getResourceSet()).thenReturn(eResourceSet);
 			when(context.eResource()).thenReturn(eResource);
-			when(context.getElements()).thenReturn(elements);
+			when(context.getXtendTypes()).thenReturn(elements);
 		}
 
 		@Test	
 		public void nullSuperClass()  {
-			Event event = gen.createEvent(code, "MyEvent", null);
+			SarlEvent event = gen.createEvent(code, "MyEvent", null);
 			assertNotNull(event);
 			assertEquals("MyEvent", event.getName());
-			assertTrue(event.getSuperTypes().isEmpty());
-			assertTrue(event.getFeatures().isEmpty());
+			assertTrue(event.getExtends().isEmpty());
+			assertTrue(event.getMembers().isEmpty());
 		}
 
 		@Test	
 		public void behaviorSuperClass()  {
-			Event event = gen.createEvent(code, "MyEvent", "io.sarl.lang.core.Event");
+			SarlEvent event = gen.createEvent(code, "MyEvent", "io.sarl.lang.core.Event");
 			assertNotNull(event);
 			assertEquals("MyEvent", event.getName());
-			assertTrue(event.getSuperTypes().isEmpty());
-			assertTrue(event.getFeatures().isEmpty());
+			assertTrue(event.getExtends().isEmpty());
+			assertTrue(event.getMembers().isEmpty());
 		}
 
 		@Test	
@@ -875,12 +874,12 @@ public class SARLCodeGeneratorTest {
 			when(jvmType.getQualifiedName()).thenReturn("foo.ecore.SubEvent");
 			when(jvmType.getSimpleName()).thenReturn("SubEvent");
 			//
-			Event event = gen.createEvent(code, "MyEvent", "foo.ecore.SubEvent");
+			SarlEvent event = gen.createEvent(code, "MyEvent", "foo.ecore.SubEvent");
 			//
 			assertNotNull(event);
 			assertEquals("MyEvent", event.getName());
-			assertTypeReferenceIdentifiers(event.getSuperTypes(), "foo.ecore.SubEvent");
-			assertTrue(event.getFeatures().isEmpty());
+			assertTypeReferenceIdentifiers(event.getExtends(), "foo.ecore.SubEvent");
+			assertTrue(event.getMembers().isEmpty());
 		}
 
 		@Test	
@@ -890,12 +889,12 @@ public class SARLCodeGeneratorTest {
 			when(jvmType.getQualifiedName()).thenReturn("foo.Foo");
 			when(jvmType.getSimpleName()).thenReturn("Foo");
 			//
-			Event event = gen.createEvent(code, "MyEvent", "foo.Foo");
+			SarlEvent event = gen.createEvent(code, "MyEvent", "foo.Foo");
 			//
 			assertNotNull(event);
 			assertEquals("MyEvent", event.getName());
-			assertTypeReferenceIdentifiers(event.getSuperTypes(), "foo.Foo");
-			assertTrue(event.getFeatures().isEmpty());
+			assertTypeReferenceIdentifiers(event.getExtends(), "foo.Foo");
+			assertTrue(event.getMembers().isEmpty());
 		}
 
 	}
@@ -905,26 +904,26 @@ public class SARLCodeGeneratorTest {
 	public static class SkillTopElement extends AbstractSarlTest {
 
 		@Inject
-		private SARLCodeGenerator gen;;
+		private SARLCodeGenerator gen;
 
 		@Nullable
-		private GeneratedCode code;;
+		private GeneratedCode code;
 
 		@Nullable
-		private SarlScript context;
+		private XtendFile context;
 
 		@Nullable
-		private ImportManager importManager;;
+		private ImportManager importManager;
 
 		@Nullable
-		private EList<TopElement> elements;
+		private EList<XtendTypeDeclaration> elements;
 
 		@Before
 		public void setUp() {
 			elements = new BasicEList();
 			importManager = new ImportManager();
 			code = mock(GeneratedCode.class);
-			context = mock(SarlScript.class);
+			context = mock(XtendFile.class);
 
 			Resource eResource = mock(Resource.class);
 			ResourceSet eResourceSet = mock(ResourceSet.class);
@@ -960,133 +959,133 @@ public class SARLCodeGeneratorTest {
 			when(eResourceSet.getResourceFactoryRegistry()).thenReturn(registry);
 			when(eResource.getResourceSet()).thenReturn(eResourceSet);
 			when(context.eResource()).thenReturn(eResource);
-			when(context.getElements()).thenReturn(elements);
+			when(context.getXtendTypes()).thenReturn(elements);
 		}
 
 		@Test	
 		public void nullSuperClass_noSuperInterfaces()  {
-			Skill skill = gen.createSkill(code, "MySkill", null, Collections.<String>emptyList());
+			SarlSkill skill = gen.createSkill(code, "MySkill", null, Collections.<String>emptyList());
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTrue(skill.getSuperTypes().isEmpty());
-			assertTrue(skill.getImplementedTypes().isEmpty());
-			assertTrue(skill.getFeatures().isEmpty());
+			assertTrue(skill.getExtends().isEmpty());
+			assertTrue(skill.getImplements().isEmpty());
+			assertTrue(skill.getMembers().isEmpty());
 		}
 
 		@Test	
 		public void behaviorSuperClass_noSuperInterfaces()  {
-			Skill skill = gen.createSkill(code, "MySkill", "io.sarl.lang.core.Skill", Collections.<String>emptyList());
+			SarlSkill skill = gen.createSkill(code, "MySkill", "io.sarl.lang.core.Skill", Collections.<String>emptyList());
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTrue(skill.getSuperTypes().isEmpty());
-			assertTrue(skill.getImplementedTypes().isEmpty());
-			assertTrue(skill.getFeatures().isEmpty());
+			assertTrue(skill.getExtends().isEmpty());
+			assertTrue(skill.getImplements().isEmpty());
+			assertTrue(skill.getMembers().isEmpty());
 		}
 
 		@Test	
 		public void subbehaviorSuperClass_noSuperInterface()  {
-			Skill skill = gen.createSkill(code, "MySkill", "foo.ecore.SubSkill", Collections.<String>emptyList());
+			SarlSkill skill = gen.createSkill(code, "MySkill", "foo.ecore.SubSkill", Collections.<String>emptyList());
 			//
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getSuperTypes(), "foo.ecore.SubSkill");
-			assertTrue(skill.getImplementedTypes().isEmpty());
-			assertTrue(skill.getFeatures().isEmpty());
+			assertTypeReferenceIdentifiers(skill.getExtends(), "foo.ecore.SubSkill");
+			assertTrue(skill.getImplements().isEmpty());
+			assertTrue(skill.getMembers().isEmpty());
 		}
 
 		@Test	
 		public void otherSuperClass_noSuperInterface()  {
-			Skill skill = gen.createSkill(code, "MySkill", "foo.Foo", Collections.<String>emptyList());
+			SarlSkill skill = gen.createSkill(code, "MySkill", "foo.Foo", Collections.<String>emptyList());
 			//
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getSuperTypes(), "foo.Foo");
-			assertTrue(skill.getImplementedTypes().isEmpty());
-			assertTrue(skill.getFeatures().isEmpty());
+			assertTypeReferenceIdentifiers(skill.getExtends(), "foo.Foo");
+			assertTrue(skill.getImplements().isEmpty());
+			assertTrue(skill.getMembers().isEmpty());
 		}
 
 		@Test	
 		public void nullSuperClass_oneSuperInterfaces()  {
-			Skill skill = gen.createSkill(code, "MySkill", null, Collections.singleton("foo.ecore.SubCapacity"));
+			SarlSkill skill = gen.createSkill(code, "MySkill", null, Collections.singleton("foo.ecore.SubCapacity"));
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTrue(skill.getSuperTypes().isEmpty());
-			assertTypeReferenceIdentifiers(skill.getImplementedTypes(), "foo.ecore.SubCapacity");
-			assertTrue(skill.getFeatures().isEmpty());
+			assertTrue(skill.getExtends().isEmpty());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "foo.ecore.SubCapacity");
+			assertTrue(skill.getMembers().isEmpty());
 		}
 
 		@Test	
 		public void behaviorSuperClass_oneSuperInterfaces()  {
-			Skill skill = gen.createSkill(code, "MySkill", "io.sarl.lang.core.Skill", Collections.singleton("foo.ecore.SubCapacity"));
+			SarlSkill skill = gen.createSkill(code, "MySkill", "io.sarl.lang.core.Skill", Collections.singleton("foo.ecore.SubCapacity"));
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTrue(skill.getSuperTypes().isEmpty());
-			assertTypeReferenceIdentifiers(skill.getImplementedTypes(), "foo.ecore.SubCapacity");
-			assertTrue(skill.getFeatures().isEmpty());
+			assertTrue(skill.getExtends().isEmpty());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "foo.ecore.SubCapacity");
+			assertTrue(skill.getMembers().isEmpty());
 		}
 
 		@Test	
 		public void subbehaviorSuperClass_oneSuperInterface()  {
-			Skill skill = gen.createSkill(code, "MySkill", "foo.ecore.SubSkill", Collections.singleton("foo.ecore.SubCapacity"));
+			SarlSkill skill = gen.createSkill(code, "MySkill", "foo.ecore.SubSkill", Collections.singleton("foo.ecore.SubCapacity"));
 			//
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getSuperTypes(), "foo.ecore.SubSkill");
-			assertTypeReferenceIdentifiers(skill.getImplementedTypes(), "foo.ecore.SubCapacity");
-			assertTrue(skill.getFeatures().isEmpty());
+			assertTypeReferenceIdentifiers(skill.getExtends(), "foo.ecore.SubSkill");
+			assertTypeReferenceIdentifiers(skill.getImplements(), "foo.ecore.SubCapacity");
+			assertTrue(skill.getMembers().isEmpty());
 		}
 
 		@Test	
 		public void otherSuperClass_oneSuperInterface()  {
-			Skill skill = gen.createSkill(code, "MySkill", "foo.Foo", Collections.singleton("foo.ecore.SubCapacity"));
+			SarlSkill skill = gen.createSkill(code, "MySkill", "foo.Foo", Collections.singleton("foo.ecore.SubCapacity"));
 			//
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getSuperTypes(), "foo.Foo");
-			assertTypeReferenceIdentifiers(skill.getImplementedTypes(), "foo.ecore.SubCapacity");
-			assertTrue(skill.getFeatures().isEmpty());
+			assertTypeReferenceIdentifiers(skill.getExtends(), "foo.Foo");
+			assertTypeReferenceIdentifiers(skill.getImplements(), "foo.ecore.SubCapacity");
+			assertTrue(skill.getMembers().isEmpty());
 		}
 
 		@Test	
 		public void nullSuperClass_twoSuperInterfaces()  {
-			Skill skill = gen.createSkill(code, "MySkill", null, Arrays.asList("foo.ecore.SubCapacity", "foo.ecore.SubCapacity2"));
+			SarlSkill skill = gen.createSkill(code, "MySkill", null, Arrays.asList("foo.ecore.SubCapacity", "foo.ecore.SubCapacity2"));
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTrue(skill.getSuperTypes().isEmpty());
-			assertTypeReferenceIdentifiers(skill.getImplementedTypes(), "foo.ecore.SubCapacity", "foo.ecore.SubCapacity2");
-			assertTrue(skill.getFeatures().isEmpty());
+			assertTrue(skill.getExtends().isEmpty());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "foo.ecore.SubCapacity", "foo.ecore.SubCapacity2");
+			assertTrue(skill.getMembers().isEmpty());
 		}
 
 		@Test	
 		public void behaviorSuperClass_twoSuperInterfaces()  {
-			Skill skill = gen.createSkill(code, "MySkill", "io.sarl.lang.core.Skill", Arrays.asList("foo.ecore.SubCapacity", "foo.ecore.SubCapacity2"));
+			SarlSkill skill = gen.createSkill(code, "MySkill", "io.sarl.lang.core.Skill", Arrays.asList("foo.ecore.SubCapacity", "foo.ecore.SubCapacity2"));
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTrue(skill.getSuperTypes().isEmpty());
-			assertTypeReferenceIdentifiers(skill.getImplementedTypes(), "foo.ecore.SubCapacity", "foo.ecore.SubCapacity2");
-			assertTrue(skill.getFeatures().isEmpty());
+			assertTrue(skill.getExtends().isEmpty());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "foo.ecore.SubCapacity", "foo.ecore.SubCapacity2");
+			assertTrue(skill.getMembers().isEmpty());
 		}
 
 		@Test	
 		public void subbehaviorSuperClass_twoSuperInterface()  {
-			Skill skill = gen.createSkill(code, "MySkill", "foo.ecore.SubSkill", Arrays.asList("foo.ecore.SubCapacity", "foo.ecore.SubCapacity2"));
+			SarlSkill skill = gen.createSkill(code, "MySkill", "foo.ecore.SubSkill", Arrays.asList("foo.ecore.SubCapacity", "foo.ecore.SubCapacity2"));
 			//
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getSuperTypes(), "foo.ecore.SubSkill");
-			assertTypeReferenceIdentifiers(skill.getImplementedTypes(), "foo.ecore.SubCapacity", "foo.ecore.SubCapacity2");
-			assertTrue(skill.getFeatures().isEmpty());
+			assertTypeReferenceIdentifiers(skill.getExtends(), "foo.ecore.SubSkill");
+			assertTypeReferenceIdentifiers(skill.getImplements(), "foo.ecore.SubCapacity", "foo.ecore.SubCapacity2");
+			assertTrue(skill.getMembers().isEmpty());
 		}
 
 		@Test	
 		public void otherSuperClass_twoSuperInterface()  {
-			Skill skill = gen.createSkill(code, "MySkill", "foo.Foo", Arrays.asList("foo.ecore.SubCapacity", "foo.ecore.SubCapacity2"));
+			SarlSkill skill = gen.createSkill(code, "MySkill", "foo.Foo", Arrays.asList("foo.ecore.SubCapacity", "foo.ecore.SubCapacity2"));
 			//
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getSuperTypes(), "foo.Foo");
-			assertTypeReferenceIdentifiers(skill.getImplementedTypes(), "foo.ecore.SubCapacity", "foo.ecore.SubCapacity2");
-			assertTrue(skill.getFeatures().isEmpty());
+			assertTypeReferenceIdentifiers(skill.getExtends(), "foo.Foo");
+			assertTypeReferenceIdentifiers(skill.getImplements(), "foo.ecore.SubCapacity", "foo.ecore.SubCapacity2");
+			assertTrue(skill.getMembers().isEmpty());
 		}
 
 	}
@@ -1096,29 +1095,29 @@ public class SARLCodeGeneratorTest {
 	public static class AgentFeatures extends AbstractSarlTest {
 
 		@Inject
-		private SARLCodeGenerator gen;;
+		private SARLCodeGenerator gen;
 
 		@Nullable
-		private GeneratedCode code;;
+		private GeneratedCode code;
 
 		@Nullable
-		private EList<EObject> features;;
+		private EList<XtendMember> features;
 
 		@Nullable
-		private XBlockExpression block;;
+		private XBlockExpression block;
 
 		@Nullable
-		private Agent agent;
+		private SarlAgent agent;
 
 		@Nullable
-		private ImportManager importManager;;
+		private ImportManager importManager;
 
 		@Before
 		public void setUp() {
 			importManager = new ImportManager();
 			features = new BasicEList();
 			code = mock(GeneratedCode.class);
-			agent = mock(Agent.class);
+			agent = mock(SarlAgent.class);
 			block = XbaseFactory.eINSTANCE.createXBlockExpression();
 
 			Resource eResource = mock(Resource.class);
@@ -1152,72 +1151,72 @@ public class SARLCodeGeneratorTest {
 			when(eResourceSet.getResourceFactoryRegistry()).thenReturn(registry);
 			when(eResource.getResourceSet()).thenReturn(eResourceSet);
 			when(agent.eResource()).thenReturn(eResource);
-			when(agent.getFeatures()).thenReturn(features);
+			when(agent.getMembers()).thenReturn(features);
 			when(code.getImportManager()).thenReturn(importManager);
 		}
 
 		@Test
 		public void returnNull()  {
-			Action action = gen.createAction(code, agent, "myFct", null, block);
+			SarlAction action = gen.createAction(code, agent, "myFct", null, block);
 			//
 			assertNotNull(action);
 			assertEquals("myFct", action.getName());
-			assertNull(action.getType());
-			assertTrue(action.getParams().isEmpty());
-			assertSame(block, action.getBody());
+			assertNull(action.getReturnType());
+			assertTrue(action.getParameters().isEmpty());
+			assertSame(block, action.getExpression());
 		}
 
 		@Test
 		public void returnBoolean()  {
-			Action action = gen.createAction(code, agent, "myFct", "boolean", block);
+			SarlAction action = gen.createAction(code, agent, "myFct", "boolean", block);
 			//
 			assertNotNull(action);
 			assertEquals("myFct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "boolean");
-			assertTrue(action.getParams().isEmpty());
-			assertSame(block, action.getBody());
+			assertTypeReferenceIdentifier(action.getReturnType(), "boolean");
+			assertTrue(action.getParameters().isEmpty());
+			assertSame(block, action.getExpression());
 		}
 
 		@Test
 		public void returnObject()  {
-			Action action = gen.createAction(code, agent, "myFct", "java.lang.String", block);
+			SarlAction action = gen.createAction(code, agent, "myFct", "java.lang.String", block);
 			//
 			assertNotNull(action);
 			assertEquals("myFct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
-			assertTrue(action.getParams().isEmpty());
-			assertSame(block, action.getBody());
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
+			assertTrue(action.getParameters().isEmpty());
+			assertSame(block, action.getExpression());
 		}
 
 		@Test
 		public void createConstructor()  {
-			Constructor constructor = gen.createConstructor(code, agent, block);
+			XtendConstructor constructor = gen.createConstructor(code, agent, block);
 			//
 			assertNotNull(constructor);
-			assertTrue(constructor.getParams().isEmpty());
-			assertSame(block, constructor.getBody());
+			assertTrue(constructor.getParameters().isEmpty());
+			assertSame(block, constructor.getExpression());
 		}
 
 		@Test
 		public void createBehaviorUnit_noGuard()  {
-			BehaviorUnit unit = gen.createBehaviorUnit(code, agent, "foo.ecore.SubEvent", null, block);
+			SarlBehaviorUnit unit = gen.createBehaviorUnit(code, agent, "foo.ecore.SubEvent", null, block);
 			//
 			assertNotNull(unit);
 			assertTypeReferenceIdentifier(unit.getName(), "foo.ecore.SubEvent");
 			assertNull(unit.getGuard());
-			assertSame(block, unit.getBody());
+			assertSame(block, unit.getExpression());
 		}
 
 		@Test
 		public void createBehaviorUnit_aGuard()  {
 			XBlockExpression guard = XbaseFactory.eINSTANCE.createXBlockExpression();
 			//
-			BehaviorUnit unit = gen.createBehaviorUnit(code, agent, "foo.ecore.SubEvent", guard, block);
+			SarlBehaviorUnit unit = gen.createBehaviorUnit(code, agent, "foo.ecore.SubEvent", guard, block);
 			//
 			assertNotNull(unit);
 			assertTypeReferenceIdentifier(unit.getName(), "foo.ecore.SubEvent");
 			assertSame(guard, unit.getGuard());
-			assertSame(block, unit.getBody());
+			assertSame(block, unit.getExpression());
 		}
 
 		@Test(expected = IllegalArgumentException.class)
@@ -1232,13 +1231,13 @@ public class SARLCodeGeneratorTest {
 
 		@Test
 		public void createVariableGeneratedCodeFeatureContainerStringString()  {
-			Attribute variable = gen.createVariable(code, agent, "myVar", "java.lang.String");
+			XtendField variable = gen.createVariable(code, agent, "myVar", "java.lang.String");
 			//
 			assertNotNull(variable);
 			assertEquals("myVar", variable.getName());
 			assertTypeReferenceIdentifier(variable.getType(), "java.lang.String");
 			assertNull(variable.getInitialValue());
-			assertTrue(variable.isWriteable());
+			assertFalse(variable.isFinal());
 		}
 
 		@Test
@@ -1246,13 +1245,13 @@ public class SARLCodeGeneratorTest {
 			XNumberLiteral numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 			numberLiteral.setValue("2.3f"); //$NON-NLS-1$
 			//
-			Attribute variable = gen.createVariable(code, agent, "myVar", numberLiteral);
+			XtendField variable = gen.createVariable(code, agent, "myVar", numberLiteral);
 			//
 			assertNotNull(variable);
 			assertEquals("myVar", variable.getName());
 			assertNull(variable.getType());
 			assertSame(numberLiteral, variable.getInitialValue());
-			assertTrue(variable.isWriteable());
+			assertFalse(variable.isFinal());
 		}
 
 		@Test(expected = IllegalArgumentException.class)
@@ -1267,13 +1266,13 @@ public class SARLCodeGeneratorTest {
 
 		@Test
 		public void createValueGeneratedCodeFeatureContainerStringString()  {
-			Attribute value = gen.createValue(code, agent, "myConst", "java.lang.String");
+			XtendField value = gen.createValue(code, agent, "myConst", "java.lang.String");
 			//
 			assertNotNull(value);
 			assertEquals("myConst", value.getName());
 			assertTypeReferenceIdentifier(value.getType(), "java.lang.String");
 			assertNull(value.getInitialValue());
-			assertFalse(value.isWriteable());
+			assertTrue(value.isFinal());
 		}
 
 		@Test
@@ -1281,13 +1280,13 @@ public class SARLCodeGeneratorTest {
 			XNumberLiteral  numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 			numberLiteral.setValue("2.3f"); //$NON-NLS-1$
 			//
-			Attribute value = gen.createValue(code, agent, "myConst", numberLiteral);
+			XtendField value = gen.createValue(code, agent, "myConst", numberLiteral);
 			//
 			assertNotNull(value);
 			assertEquals("myConst", value.getName());
 			assertNull(value.getType());
 			assertSame(numberLiteral, value.getInitialValue());
-			assertFalse(value.isWriteable());
+			assertTrue(value.isFinal());
 		}
 
 	}
@@ -1297,29 +1296,29 @@ public class SARLCodeGeneratorTest {
 	public static class BehaviorFeatures extends AbstractSarlTest {
 
 		@Inject
-		private SARLCodeGenerator gen;;
+		private SARLCodeGenerator gen;
 
 		@Nullable
-		private GeneratedCode code;;
+		private GeneratedCode code;
 
 		@Nullable
-		private EList<EObject> features;;
+		private EList<XtendMember> features;
 
 		@Nullable
-		private XBlockExpression block;;
+		private XBlockExpression block;
 
 		@Nullable
-		private Behavior behavior;
+		private SarlBehavior behavior;
 
 		@Nullable
-		private ImportManager importManager;;
+		private ImportManager importManager;
 
 		@Before
 		public void setUp() {
 			importManager = new ImportManager();
 			features = new BasicEList();
 			code = mock(GeneratedCode.class);
-			behavior = mock(Behavior.class);
+			behavior = mock(SarlBehavior.class);
 			block = XbaseFactory.eINSTANCE.createXBlockExpression();
 
 			Resource eResource = mock(Resource.class);
@@ -1352,72 +1351,72 @@ public class SARLCodeGeneratorTest {
 			when(eResourceSet.getResourceFactoryRegistry()).thenReturn(registry);
 			when(eResource.getResourceSet()).thenReturn(eResourceSet);
 			when(behavior.eResource()).thenReturn(eResource);
-			when(behavior.getFeatures()).thenReturn(features);
+			when(behavior.getMembers()).thenReturn(features);
 			when(code.getImportManager()).thenReturn(importManager);
 		}
 
 		@Test
 		public void returnNull()  {
-			Action action = gen.createAction(code, behavior, "myFct", null, block);
+			SarlAction action = gen.createAction(code, behavior, "myFct", null, block);
 			//
 			assertNotNull(action);
 			assertEquals("myFct", action.getName());
-			assertNull(action.getType());
-			assertTrue(action.getParams().isEmpty());
-			assertSame(block, action.getBody());
+			assertNull(action.getReturnType());
+			assertTrue(action.getParameters().isEmpty());
+			assertSame(block, action.getExpression());
 		}
 
 		@Test
 		public void returnBoolean()  {
-			Action action = gen.createAction(code, behavior, "myFct", "boolean", block);
+			SarlAction action = gen.createAction(code, behavior, "myFct", "boolean", block);
 			//
 			assertNotNull(action);
 			assertEquals("myFct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "boolean");
-			assertTrue(action.getParams().isEmpty());
-			assertSame(block, action.getBody());
+			assertTypeReferenceIdentifier(action.getReturnType(), "boolean");
+			assertTrue(action.getParameters().isEmpty());
+			assertSame(block, action.getExpression());
 		}
 
 		@Test
 		public void returnObject()  {
-			Action action = gen.createAction(code, behavior, "myFct", "java.lang.String", block);
+			SarlAction action = gen.createAction(code, behavior, "myFct", "java.lang.String", block);
 			//
 			assertNotNull(action);
 			assertEquals("myFct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
-			assertTrue(action.getParams().isEmpty());
-			assertSame(block, action.getBody());
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
+			assertTrue(action.getParameters().isEmpty());
+			assertSame(block, action.getExpression());
 		}
 
 		@Test
 		public void createConstructor()  {
-			Constructor constructor = gen.createConstructor(code, behavior, block);
+			XtendConstructor constructor = gen.createConstructor(code, behavior, block);
 			//
 			assertNotNull(constructor);
-			assertTrue(constructor.getParams().isEmpty());
-			assertSame(block, constructor.getBody());
+			assertTrue(constructor.getParameters().isEmpty());
+			assertSame(block, constructor.getExpression());
 		}
 
 		@Test
 		public void createBehaviorUnit_noGuard()  {
-			BehaviorUnit unit = gen.createBehaviorUnit(code, behavior, "foo.ecore.SubEvent", null, block);
+			SarlBehaviorUnit unit = gen.createBehaviorUnit(code, behavior, "foo.ecore.SubEvent", null, block);
 			//
 			assertNotNull(unit);
 			assertTypeReferenceIdentifier(unit.getName(), "foo.ecore.SubEvent");
 			assertNull(unit.getGuard());
-			assertSame(block, unit.getBody());
+			assertSame(block, unit.getExpression());
 		}
 
 		@Test
 		public void createBehaviorUnit_aGuard()  {
 			XBlockExpression guard = XbaseFactory.eINSTANCE.createXBlockExpression();
 			//
-			BehaviorUnit unit = gen.createBehaviorUnit(code, behavior, "foo.ecore.SubEvent", guard, block);
+			SarlBehaviorUnit unit = gen.createBehaviorUnit(code, behavior, "foo.ecore.SubEvent", guard, block);
 			//
 			assertNotNull(unit);
 			assertTypeReferenceIdentifier(unit.getName(), "foo.ecore.SubEvent");
 			assertSame(guard, unit.getGuard());
-			assertSame(block, unit.getBody());
+			assertSame(block, unit.getExpression());
 		}
 
 		@Test(expected = IllegalArgumentException.class)
@@ -1432,13 +1431,13 @@ public class SARLCodeGeneratorTest {
 
 		@Test
 		public void createVariableGeneratedCodeFeatureContainerStringString()  {
-			Attribute variable = gen.createVariable(code, behavior, "myVar", "java.lang.String");
+			XtendField variable = gen.createVariable(code, behavior, "myVar", "java.lang.String");
 			//
 			assertNotNull(variable);
 			assertEquals("myVar", variable.getName());
 			assertTypeReferenceIdentifier(variable.getType(), "java.lang.String");
 			assertNull(variable.getInitialValue());
-			assertTrue(variable.isWriteable());
+			assertFalse(variable.isFinal());
 		}
 
 		@Test
@@ -1446,13 +1445,13 @@ public class SARLCodeGeneratorTest {
 			XNumberLiteral numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 			numberLiteral.setValue("2.3f"); //$NON-NLS-1$
 			//
-			Attribute variable = gen.createVariable(code, behavior, "myVar", numberLiteral);
+			XtendField variable = gen.createVariable(code, behavior, "myVar", numberLiteral);
 			//
 			assertNotNull(variable);
 			assertEquals("myVar", variable.getName());
 			assertNull(variable.getType());
 			assertSame(numberLiteral, variable.getInitialValue());
-			assertTrue(variable.isWriteable());
+			assertFalse(variable.isFinal());
 		}
 
 		@Test(expected = IllegalArgumentException.class)
@@ -1467,13 +1466,13 @@ public class SARLCodeGeneratorTest {
 
 		@Test
 		public void createValueGeneratedCodeFeatureContainerStringString()  {
-			Attribute value = gen.createValue(code, behavior, "myConst", "java.lang.String");
+			XtendField value = gen.createValue(code, behavior, "myConst", "java.lang.String");
 			//
 			assertNotNull(value);
 			assertEquals("myConst", value.getName());
 			assertTypeReferenceIdentifier(value.getType(), "java.lang.String");
 			assertNull(value.getInitialValue());
-			assertFalse(value.isWriteable());
+			assertTrue(value.isFinal());
 		}
 
 		@Test
@@ -1481,13 +1480,13 @@ public class SARLCodeGeneratorTest {
 			XNumberLiteral numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 			numberLiteral.setValue("2.3f"); //$NON-NLS-1$
 			//
-			Attribute value = gen.createValue(code, behavior, "myConst", numberLiteral);
+			XtendField value = gen.createValue(code, behavior, "myConst", numberLiteral);
 			//
 			assertNotNull(value);
 			assertEquals("myConst", value.getName());
 			assertNull(value.getType());
 			assertSame(numberLiteral, value.getInitialValue());
-			assertFalse(value.isWriteable());
+			assertTrue(value.isFinal());
 		}
 
 	}
@@ -1497,26 +1496,26 @@ public class SARLCodeGeneratorTest {
 	public static class CapacityFeatures extends AbstractSarlTest {
 
 		@Inject
-		private SARLCodeGenerator gen;;
+		private SARLCodeGenerator gen;
 
 		@Nullable
-		private GeneratedCode code;;
+		private GeneratedCode code;
 
 		@Nullable
-		private EList<EObject> features;;
+		private EList<XtendMember> features;
 
 		@Nullable
-		private Capacity capacity;
+		private SarlCapacity capacity;
 
 		@Nullable
-		private ImportManager importManager;;
+		private ImportManager importManager;
 
 		@Before
 		public void setUp() {
 			importManager = new ImportManager();
 			features = new BasicEList();
 			code = mock(GeneratedCode.class);
-			capacity = mock(Capacity.class);
+			capacity = mock(SarlCapacity.class);
 
 			Resource eResource = mock(Resource.class);
 			ResourceSet eResourceSet = mock(ResourceSet.class);
@@ -1548,38 +1547,41 @@ public class SARLCodeGeneratorTest {
 			when(eResourceSet.getResourceFactoryRegistry()).thenReturn(registry);
 			when(eResource.getResourceSet()).thenReturn(eResourceSet);
 			when(capacity.eResource()).thenReturn(eResource);
-			when(capacity.getFeatures()).thenReturn(features);
+			when(capacity.getMembers()).thenReturn(features);
 			when(code.getImportManager()).thenReturn(importManager);
 		}
 
 		@Test
 		public void returnNull()  {
-			ActionSignature action = gen.createActionSignature(code, capacity, "myFct", null);
+			SarlAction action = gen.createAction(code, capacity, "myFct", null, null);
 			//
 			assertNotNull(action);
 			assertEquals("myFct", action.getName());
-			assertNull(action.getType());
-			assertTrue(action.getParams().isEmpty());
+			assertNull(action.getReturnType());
+			assertTrue(action.getParameters().isEmpty());
+			assertNull(action.getExpression());
 		}
 
 		@Test
 		public void returnBoolean()  {
-			ActionSignature action = gen.createActionSignature(code, capacity, "myFct", "boolean");
+			SarlAction action = gen.createAction(code, capacity, "myFct", "boolean", null);
 			//
 			assertNotNull(action);
 			assertEquals("myFct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "boolean");
-			assertTrue(action.getParams().isEmpty());
+			assertTypeReferenceIdentifier(action.getReturnType(), "boolean");
+			assertTrue(action.getParameters().isEmpty());
+			assertNull(action.getExpression());
 		}
 
 		@Test
 		public void returnObject()  {
-			ActionSignature action = gen.createActionSignature(code, capacity, "myFct", "java.lang.String");
+			SarlAction action = gen.createAction(code, capacity, "myFct", "java.lang.String", null);
 			//
 			assertNotNull(action);
 			assertEquals("myFct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
-			assertTrue(action.getParams().isEmpty());
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
+			assertTrue(action.getParameters().isEmpty());
+			assertNull(action.getExpression());
 		}
 
 	}
@@ -1595,13 +1597,13 @@ public class SARLCodeGeneratorTest {
 		private GeneratedCode code;
 
 		@Nullable
-		private EList<EObject> features;
+		private EList<XtendMember> features;
 
 		@Nullable
 		private XBlockExpression block;
 
 		@Nullable
-		private Event event;
+		private SarlEvent event;
 
 		@Nullable
 		private ImportManager importManager;
@@ -1611,7 +1613,7 @@ public class SARLCodeGeneratorTest {
 			importManager = new ImportManager();
 			features = new BasicEList();
 			code = mock(GeneratedCode.class);
-			event = mock(Event.class);
+			event = mock(SarlEvent.class);
 			block = XbaseFactory.eINSTANCE.createXBlockExpression();
 
 			Resource eResource = mock(Resource.class);
@@ -1644,17 +1646,17 @@ public class SARLCodeGeneratorTest {
 			when(eResourceSet.getResourceFactoryRegistry()).thenReturn(registry);
 			when(eResource.getResourceSet()).thenReturn(eResourceSet);
 			when(event.eResource()).thenReturn(eResource);
-			when(event.getFeatures()).thenReturn(features);
+			when(event.getMembers()).thenReturn(features);
 			when(code.getImportManager()).thenReturn(importManager);
 		}
 
 		@Test
 		public void createConstructor()  {
-			Constructor constructor = gen.createConstructor(code, event, block);
+			XtendConstructor constructor = gen.createConstructor(code, event, block);
 			//
 			assertNotNull(constructor);
-			assertTrue(constructor.getParams().isEmpty());
-			assertSame(block, constructor.getBody());
+			assertTrue(constructor.getParameters().isEmpty());
+			assertSame(block, constructor.getExpression());
 		}
 
 		@Test(expected = IllegalArgumentException.class)
@@ -1669,13 +1671,13 @@ public class SARLCodeGeneratorTest {
 
 		@Test
 		public void createVariableGeneratedCodeFeatureContainerStringString()  {
-			Attribute variable = gen.createVariable(code, event, "myVar", "java.lang.String");
+			XtendField variable = gen.createVariable(code, event, "myVar", "java.lang.String");
 			//
 			assertNotNull(variable);
 			assertEquals("myVar", variable.getName());
 			assertTypeReferenceIdentifier(variable.getType(), "java.lang.String");
 			assertNull(variable.getInitialValue());
-			assertTrue(variable.isWriteable());
+			assertFalse(variable.isFinal());
 		}
 
 		@Test
@@ -1683,13 +1685,13 @@ public class SARLCodeGeneratorTest {
 			XNumberLiteral numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 			numberLiteral.setValue("2.3f"); //$NON-NLS-1$
 			//
-			Attribute variable = gen.createVariable(code, event, "myVar", numberLiteral);
+			XtendField variable = gen.createVariable(code, event, "myVar", numberLiteral);
 			//
 			assertNotNull(variable);
 			assertEquals("myVar", variable.getName());
 			assertNull(variable.getType());
 			assertSame(numberLiteral, variable.getInitialValue());
-			assertTrue(variable.isWriteable());
+			assertFalse(variable.isFinal());
 		}
 
 		@Test(expected = IllegalArgumentException.class)
@@ -1704,13 +1706,13 @@ public class SARLCodeGeneratorTest {
 
 		@Test
 		public void createValueGeneratedCodeFeatureContainerStringString()  {
-			Attribute value = gen.createValue(code, event, "myConst", "java.lang.String");
+			XtendField value = gen.createValue(code, event, "myConst", "java.lang.String");
 			//
 			assertNotNull(value);
 			assertEquals("myConst", value.getName());
 			assertTypeReferenceIdentifier(value.getType(), "java.lang.String");
 			assertNull(value.getInitialValue());
-			assertFalse(value.isWriteable());
+			assertTrue(value.isFinal());
 		}
 
 		@Test
@@ -1718,13 +1720,13 @@ public class SARLCodeGeneratorTest {
 			XNumberLiteral numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 			numberLiteral.setValue("2.3f"); //$NON-NLS-1$
 			//
-			Attribute value = gen.createValue(code, event, "myConst", numberLiteral);
+			XtendField value = gen.createValue(code, event, "myConst", numberLiteral);
 			//
 			assertNotNull(value);
 			assertEquals("myConst", value.getName());
 			assertNull(value.getType());
 			assertSame(numberLiteral, value.getInitialValue());
-			assertFalse(value.isWriteable());
+			assertTrue(value.isFinal());
 		}
 
 	}
@@ -1740,13 +1742,13 @@ public class SARLCodeGeneratorTest {
 		private GeneratedCode code;
 
 		@Nullable
-		private EList<EObject> features;
+		private EList<XtendMember> features;
 
 		@Nullable
 		private XBlockExpression block;
 
 		@Nullable
-		private Skill skill;
+		private SarlSkill skill;
 
 		@Nullable
 		private ImportManager importManager;
@@ -1756,7 +1758,7 @@ public class SARLCodeGeneratorTest {
 			importManager = new ImportManager();
 			features = new BasicEList();
 			code = mock(GeneratedCode.class);
-			skill = mock(Skill.class);
+			skill = mock(SarlSkill.class);
 			block = XbaseFactory.eINSTANCE.createXBlockExpression();
 
 			Resource eResource = mock(Resource.class);
@@ -1790,50 +1792,50 @@ public class SARLCodeGeneratorTest {
 			when(eResourceSet.getResourceFactoryRegistry()).thenReturn(registry);
 			when(eResource.getResourceSet()).thenReturn(eResourceSet);
 			when(skill.eResource()).thenReturn(eResource);
-			when(skill.getFeatures()).thenReturn(features);
+			when(skill.getMembers()).thenReturn(features);
 			when(code.getImportManager()).thenReturn(importManager);
 		}
 
 		@Test
 		public void returnNull()  {
-			Action action = gen.createAction(code, skill, "myFct", null, block);
+			SarlAction action = gen.createAction(code, skill, "myFct", null, block);
 			//
 			assertNotNull(action);
 			assertEquals("myFct", action.getName());
-			assertNull(action.getType());
-			assertTrue(action.getParams().isEmpty());
-			assertSame(block, action.getBody());
+			assertNull(action.getReturnType());
+			assertTrue(action.getParameters().isEmpty());
+			assertSame(block, action.getExpression());
 		}
 
 		@Test
 		public void returnBoolean()  {
-			Action action = gen.createAction(code, skill, "myFct", "boolean", block);
+			SarlAction action = gen.createAction(code, skill, "myFct", "boolean", block);
 			//
 			assertNotNull(action);
 			assertEquals("myFct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "boolean");
-			assertTrue(action.getParams().isEmpty());
-			assertSame(block, action.getBody());
+			assertTypeReferenceIdentifier(action.getReturnType(), "boolean");
+			assertTrue(action.getParameters().isEmpty());
+			assertSame(block, action.getExpression());
 		}
 
 		@Test
 		public void returnObject()  {
-			Action action = gen.createAction(code, skill, "myFct", "java.lang.String", block);
+			SarlAction action = gen.createAction(code, skill, "myFct", "java.lang.String", block);
 			//
 			assertNotNull(action);
 			assertEquals("myFct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
-			assertTrue(action.getParams().isEmpty());
-			assertSame(block, action.getBody());
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
+			assertTrue(action.getParameters().isEmpty());
+			assertSame(block, action.getExpression());
 		}
 
 		@Test
 		public void createConstructor()  {
-			Constructor constructor = gen.createConstructor(code, skill, block);
+			XtendConstructor constructor = gen.createConstructor(code, skill, block);
 			//
 			assertNotNull(constructor);
-			assertTrue(constructor.getParams().isEmpty());
-			assertSame(block, constructor.getBody());
+			assertTrue(constructor.getParameters().isEmpty());
+			assertSame(block, constructor.getExpression());
 		}
 
 		@Test(expected = IllegalArgumentException.class)
@@ -1848,13 +1850,13 @@ public class SARLCodeGeneratorTest {
 
 		@Test
 		public void createVariableGeneratedCodeFeatureContainerStringString()  {
-			Attribute variable = gen.createVariable(code, skill, "myVar", "java.lang.String");
+			XtendField variable = gen.createVariable(code, skill, "myVar", "java.lang.String");
 			//
 			assertNotNull(variable);
 			assertEquals("myVar", variable.getName());
 			assertTypeReferenceIdentifier(variable.getType(), "java.lang.String");
 			assertNull(variable.getInitialValue());
-			assertTrue(variable.isWriteable());
+			assertFalse(variable.isFinal());
 		}
 
 		@Test
@@ -1862,13 +1864,13 @@ public class SARLCodeGeneratorTest {
 			XNumberLiteral numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 			numberLiteral.setValue("2.3f"); //$NON-NLS-1$
 			//
-			Attribute variable = gen.createVariable(code, skill, "myVar", numberLiteral);
+			XtendField variable = gen.createVariable(code, skill, "myVar", numberLiteral);
 			//
 			assertNotNull(variable);
 			assertEquals("myVar", variable.getName());
 			assertNull(variable.getType());
 			assertSame(numberLiteral, variable.getInitialValue());
-			assertTrue(variable.isWriteable());
+			assertFalse(variable.isFinal());
 		}
 
 		@Test(expected = IllegalArgumentException.class)
@@ -1883,13 +1885,13 @@ public class SARLCodeGeneratorTest {
 
 		@Test
 		public void createValueGeneratedCodeFeatureContainerStringString()  {
-			Attribute value = gen.createValue(code, skill, "myConst", "java.lang.String");
+			XtendField value = gen.createValue(code, skill, "myConst", "java.lang.String");
 			//
 			assertNotNull(value);
 			assertEquals("myConst", value.getName());
 			assertTypeReferenceIdentifier(value.getType(), "java.lang.String");
 			assertNull(value.getInitialValue());
-			assertFalse(value.isWriteable());
+			assertTrue(value.isFinal());
 		}
 
 		@Test
@@ -1897,13 +1899,13 @@ public class SARLCodeGeneratorTest {
 			XNumberLiteral numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 			numberLiteral.setValue("2.3f"); //$NON-NLS-1$
 			//
-			Attribute value = gen.createValue(code, skill, "myConst", numberLiteral);
+			XtendField value = gen.createValue(code, skill, "myConst", numberLiteral);
 			//
 			assertNotNull(value);
 			assertEquals("myConst", value.getName());
 			assertNull(value.getType());
 			assertSame(numberLiteral, value.getInitialValue());
-			assertFalse(value.isWriteable());
+			assertTrue(value.isFinal());
 		}
 
 	}
@@ -1989,7 +1991,7 @@ public class SARLCodeGeneratorTest {
 		private EObject context;
 
 		@Nullable
-		private ParameterizedFeature container;
+		private XtendExecutable container;
 
 		@Nullable
 		private ImportManager importManager;
@@ -2002,7 +2004,7 @@ public class SARLCodeGeneratorTest {
 			importManager = new ImportManager();
 			code = mock(GeneratedCode.class);
 			context = mock(EObject.class);
-			container = mock(ParameterizedFeature.class);
+			container = mock(XtendExecutable.class);
 
 			Resource eResource = mock(Resource.class);
 			ResourceSet eResourceSet = mock(ResourceSet.class);
@@ -2036,7 +2038,7 @@ public class SARLCodeGeneratorTest {
 			when(eResourceSet.getResources()).thenReturn(resources);
 			when(eResource.getResourceSet()).thenReturn(eResourceSet);
 			when(container.eResource()).thenReturn(eResource);
-			when(container.getParams()).thenReturn(new BasicEList());
+			when(container.getParameters()).thenReturn(new BasicEList());
 			when(code.getImportManager()).thenReturn(importManager);
 			when(code.getResourceSet()).thenReturn(eResourceSet);
 		}
@@ -2048,18 +2050,15 @@ public class SARLCodeGeneratorTest {
 
 		@Test
 		public void createVarArgs()  {
-			FormalParameter param = gen.createVarArgs(code, container, "myParam", "boolean");
+			SarlFormalParameter param = gen.createVarArgs(code, container, "myParam", "boolean");
 			//
 			assertNotNull(param);
 			assertEquals("myParam", param.getName());
 			assertNull(param.getDefaultValue());
 			assertTypeReferenceIdentifier(param.getParameterType(), "boolean");
 			//
-			assertParameterNames(container.getParams(), "myParam");
-			//
-			ArgumentCaptor<Boolean> arg = ArgumentCaptor.forClass(boolean.class);
-			verify(container).setVarargs(arg.capture());
-			assertTrue(arg.getValue());
+			assertParameterNames(container.getParameters(), "myParam");
+			assertParameterVarArg(container.getParameters());
 		}
 
 		@Test(expected = IllegalArgumentException.class)
@@ -2074,14 +2073,14 @@ public class SARLCodeGeneratorTest {
 
 		@Test
 		public void createFormalParameterGeneratedCodeParameterizedFeatureStringStringStringResourceSet_noDefaultValue()  {
-			FormalParameter param = gen.createFormalParameter(code, container, "myParam", "java.lang.String", null, code.getResourceSet());
+			SarlFormalParameter param = gen.createFormalParameter(code, container, "myParam", "java.lang.String", null, code.getResourceSet());
 			//
 			assertNotNull(param);
 			assertEquals("myParam", param.getName());
 			assertNull(param.getDefaultValue());
 			assertTypeReferenceIdentifier(param.getParameterType(), "java.lang.String");
 			//
-			assertParameterNames(container.getParams(), "myParam");
+			assertParameterNames(container.getParameters(), "myParam");
 		}
 
 		@Test(expected = IllegalArgumentException.class)
@@ -2098,28 +2097,28 @@ public class SARLCodeGeneratorTest {
 
 		@Test
 		public void createFormalParameterGeneratedCodeParameterizedFeatureStringStringXExpression_noDefaultValue()  {
-			FormalParameter param = gen.createFormalParameter(code, container, "myParam", "java.lang.String", null);
+			SarlFormalParameter param = gen.createFormalParameter(code, container, "myParam", "java.lang.String", null);
 			//
 			assertNotNull(param);
 			assertEquals("myParam", param.getName());
 			assertNull(param.getDefaultValue());
 			assertTypeReferenceIdentifier(param.getParameterType(), "java.lang.String");
 			//
-			assertParameterNames(container.getParams(), "myParam");
+			assertParameterNames(container.getParameters(), "myParam");
 		}
 
 		@Test
 		public void createFormalParameterGeneratedCodeParameterizedFeatureStringStringXExpression_defaultValue()  {
 			XStringLiteral expr = XbaseFactory.eINSTANCE.createXStringLiteral();
 			expr.setValue("abc");
-			FormalParameter param = gen.createFormalParameter(code, container, "myParam", "java.lang.String", expr);
+			SarlFormalParameter param = gen.createFormalParameter(code, container, "myParam", "java.lang.String", expr);
 			//
 			assertNotNull(param);
 			assertEquals("myParam", param.getName());
 			assertSame(expr, param.getDefaultValue());
 			assertTypeReferenceIdentifier(param.getParameterType(), "java.lang.String");
 			//
-			assertParameterNames(container.getParams(), "myParam");
+			assertParameterNames(container.getParameters(), "myParam");
 		}
 
 	}
@@ -2140,9 +2139,9 @@ public class SARLCodeGeneratorTest {
 
 		private JvmOperation createJvmFeature(String... sarlCode) throws Exception {
 			String sarlFilename = generateFilename();
-			SarlScript sarlScript = this.helper.createSARLScript(sarlFilename, multilineString(sarlCode));
+			XtendFile sarlScript = this.helper.createSARLScript(sarlFilename, multilineString(sarlCode));
 			this.helper.waitForAutoBuild();
-			EObject feature = ((FeatureContainer) sarlScript.getElements().get(0)).getFeatures().get(0);
+			EObject feature = sarlScript.getXtendTypes().get(0).getMembers().get(0);
 			EObject jvmElement = this.jvmModelAssociator.getPrimaryJvmElement(feature);
 			return (JvmOperation) jvmElement;
 		}
@@ -2155,17 +2154,15 @@ public class SARLCodeGeneratorTest {
 					"	def fct {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(0, action.getParams().size());
+			assertEquals(0, action.getParameters().size());
 			//
 			assertImports(this.importManager);
 		}
@@ -2179,22 +2176,21 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int) {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2208,22 +2204,21 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int*) {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2237,23 +2232,22 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int=4, c : char) {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2267,23 +2261,22 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int=4, c : char*) {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2296,17 +2289,15 @@ public class SARLCodeGeneratorTest {
 					"	def fct : String { null }",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(0, action.getParams().size());
+			assertEquals(0, action.getParameters().size());
 			//
 			assertImports(this.importManager);
 		}
@@ -2320,22 +2311,21 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int) : String { null }",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2349,22 +2339,21 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int*) : String { null }",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2378,23 +2367,22 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int=4, c : char) : String { null }",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2408,23 +2396,22 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int=4, c : char*) : String { null }",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2438,20 +2425,18 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(0, action.getParams().size());
+			assertEquals(0, action.getParameters().size());
 			//
 			assertImports(this.importManager);
 		}
@@ -2466,25 +2451,24 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2499,25 +2483,24 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2532,26 +2515,25 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2566,26 +2548,25 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2599,20 +2580,18 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(0, action.getParams().size());
+			assertEquals(0, action.getParameters().size());
 			//
 			assertImports(this.importManager);
 		}
@@ -2627,25 +2606,24 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2660,25 +2638,24 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2693,26 +2670,25 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2727,26 +2703,25 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createAction(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			Action action = (Action) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2769,9 +2744,9 @@ public class SARLCodeGeneratorTest {
 
 		private JvmConstructor createJvmFeature(String... sarlCode) throws Exception {
 			String sarlFilename = generateFilename();
-			SarlScript sarlScript = this.helper.createSARLScript(sarlFilename, multilineString(sarlCode));
+			XtendFile sarlScript = this.helper.createSARLScript(sarlFilename, multilineString(sarlCode));
 			this.helper.waitForAutoBuild();
-			EObject feature = ((FeatureContainer) sarlScript.getElements().get(0)).getFeatures().get(0);
+			EObject feature = sarlScript.getXtendTypes().get(0).getMembers().get(0);
 			EObject jvmElement = this.jvmModelAssociator.getPrimaryJvmElement(feature);
 			return (JvmConstructor) jvmElement;
 		}
@@ -2784,13 +2759,11 @@ public class SARLCodeGeneratorTest {
 					"	new() {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createConstructor(cons, this.importManager);
+			XtendConstructor action = this.generator.createConstructor(cons, this.importManager);
 			//
-			assertNotNull(feature);
-			Constructor action = (Constructor) feature;
+			assertNotNull(action);
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(0, action.getParams().size());
+			assertEquals(0, action.getParameters().size());
 			//
 			assertImports(this.importManager);
 		}
@@ -2804,18 +2777,17 @@ public class SARLCodeGeneratorTest {
 					"	new (a : URL, b : int) {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createConstructor(cons, this.importManager);
+			XtendConstructor action = this.generator.createConstructor(cons, this.importManager);
 			//
-			assertNotNull(feature);
-			Constructor action = (Constructor) feature;
+			assertNotNull(action);
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2829,18 +2801,17 @@ public class SARLCodeGeneratorTest {
 					"	new (a : URL, b : int*) {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createConstructor(cons, this.importManager);
+			XtendConstructor action = this.generator.createConstructor(cons, this.importManager);
 			//
-			assertNotNull(feature);
-			Constructor action = (Constructor) feature;
+			assertNotNull(action);
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2854,19 +2825,18 @@ public class SARLCodeGeneratorTest {
 					"	new (a : URL, b : int=4, c : char) {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createConstructor(cons, this.importManager);
+			XtendConstructor action = this.generator.createConstructor(cons, this.importManager);
 			//
-			assertNotNull(feature);
-			Constructor action = (Constructor) feature;
+			assertNotNull(action);
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2880,19 +2850,18 @@ public class SARLCodeGeneratorTest {
 					"	new (a : URL, b : int=4, c : char*) {}",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createConstructor(cons, this.importManager);
+			XtendConstructor action = this.generator.createConstructor(cons, this.importManager);
 			//
-			assertNotNull(feature);
-			Constructor action = (Constructor) feature;
+			assertNotNull(action);
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2900,7 +2869,7 @@ public class SARLCodeGeneratorTest {
 	}
 
 	@InjectWith(SARLInjectorProvider.class)
-	public static class CreateActionSignatureFromJvmElement extends AbstractSarlUiTest {
+	public static class createActionFromJvmElement extends AbstractSarlUiTest {
 
 		@Inject
 		private SARLCodeGenerator generator;
@@ -2915,9 +2884,9 @@ public class SARLCodeGeneratorTest {
 
 		private JvmOperation createJvmFeature(String... sarlCode) throws Exception {
 			String sarlFilename = generateFilename();
-			SarlScript sarlScript = this.helper.createSARLScript(sarlFilename, multilineString(sarlCode));
+			XtendFile sarlScript = this.helper.createSARLScript(sarlFilename, multilineString(sarlCode));
 			this.helper.waitForAutoBuild();
-			EObject feature = ((FeatureContainer) sarlScript.getElements().get(0)).getFeatures().get(0);
+			EObject feature = sarlScript.getXtendTypes().get(0).getMembers().get(0);
 			EObject jvmElement = this.jvmModelAssociator.getPrimaryJvmElement(feature);
 			return (JvmOperation) jvmElement;
 		}
@@ -2930,17 +2899,15 @@ public class SARLCodeGeneratorTest {
 					"	def fct",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(0, action.getParams().size());
+			assertEquals(0, action.getParameters().size());
 			//
 			assertImports(this.importManager);
 		}
@@ -2954,22 +2921,21 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int)",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -2983,22 +2949,21 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int*)",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -3012,23 +2977,22 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int=4, c : char)",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -3042,23 +3006,22 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int=4, c : char*)",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -3071,17 +3034,15 @@ public class SARLCodeGeneratorTest {
 					"	def fct : String",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(0, action.getParams().size());
+			assertEquals(0, action.getParameters().size());
 			//
 			assertImports(this.importManager);
 		}
@@ -3095,22 +3056,21 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int) : String",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -3124,22 +3084,21 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int*) : String",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -3153,23 +3112,22 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int=4, c : char) : String",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -3183,23 +3141,22 @@ public class SARLCodeGeneratorTest {
 					"	def fct(a : URL, b : int=4, c : char*) : String",
 					"}");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(0, action.getFiredEvents().size());
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -3213,20 +3170,18 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(0, action.getParams().size());
+			assertEquals(0, action.getParameters().size());
 			//
 			assertImports(this.importManager);
 		}
@@ -3241,25 +3196,24 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -3274,25 +3228,24 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -3307,26 +3260,25 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -3341,26 +3293,25 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "void");
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -3374,20 +3325,18 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(0, action.getParams().size());
+			assertEquals(0, action.getParameters().size());
 			//
 			assertImports(this.importManager);
 		}
@@ -3402,25 +3351,24 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -3435,25 +3383,24 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(2, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(2, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					null);
+			assertParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -3468,26 +3415,25 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertFalse(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertNoParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}
@@ -3502,26 +3448,25 @@ public class SARLCodeGeneratorTest {
 					"}",
 					"event MyEvent");
 			//
-			ParameterizedFeature feature = this.generator.createActionSignature(operation, this.importManager);
+			SarlAction action = this.generator.createAction(operation, this.importManager);
 			//
-			assertNotNull(feature);
-			ActionSignature action = (ActionSignature) feature;
+			assertNotNull(action);
 			assertEquals("fct", action.getName());
-			assertTypeReferenceIdentifier(action.getType(), "java.lang.String");
+			assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.String");
 			//
 			assertEquals(1, action.getFiredEvents().size());
 			assertTypeReferenceIdentifiers(
 					action.getFiredEvents(),
 					"MyEvent");
 			//
-			assertTrue(action.isVarargs());
-			assertEquals(3, action.getParams().size());
-			assertParameterNames(action.getParams(), "a", "b", "c");
-			assertParameterTypes(action.getParams(), "java.net.URL", "int", "char");
-			assertParameterDefaultValues(action.getParams(),
+			assertEquals(3, action.getParameters().size());
+			assertParameterNames(action.getParameters(), "a", "b", "c");
+			assertParameterTypes(action.getParameters(), "java.net.URL", "int", "char");
+			assertParameterDefaultValues(action.getParameters(),
 					null,
 					XNumberLiteral.class, "4",
 					null);
+			assertParameterVarArg(action.getParameters());
 			//
 			assertImports(this.importManager, "java.net.URL");
 		}

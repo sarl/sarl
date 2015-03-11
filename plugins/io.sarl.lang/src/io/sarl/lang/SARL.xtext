@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,16 +22,16 @@ grammar io.sarl.lang.SARL with org.eclipse.xtend.core.Xtend
 
 generate sarl "http://www.sarl.io/lang/SARL"
 
-import "http://www.eclipse.org/xtend" as xtend
 import "http://www.eclipse.org/xtext/common/JavaVMTypes" as jvm
 import "http://www.eclipse.org/xtext/xbase/Xbase" as xbase
 import "http://www.eclipse.org/xtext/xbase/Xtype" as xtype
+import "http://www.eclipse.org/xtend" as xtend
 
 SarlScript returns xtend::XtendFile:
-	{SarlScript}
-	('package' name=QualifiedName ';'?)?
+	{xtend::XtendFile}
+	('package' package=QualifiedName ';'?)?
 	importSection=XImportSection?
-	elements+=Type*
+	xtendTypes+=Type*
 ;
 
 VarArgToken:
@@ -39,14 +39,14 @@ VarArgToken:
 ;
 
 Type returns xtend::XtendTypeDeclaration:
-	SarlEvent | SarlCapacity | SarlAgent | SarlBehavior | SarlSkill | SarlClass | SarlInterface | SarlEnum | SarlAnnotationType 
+	Event | Capacity | Agent | Behavior | Skill | Class | Interface | Enum | AnnotationType 
 ;
 
 Member returns xtend::XtendMember:
-	SarlField | SarlConstructor | SarlAction | SarlClass | SarlInterface | SarlEnum | SarlAnnotationType 
-;
+	Field | Constructor | Action | Class | Interface | Enum | AnnotationType 
+; 
 
-SarlField returns xtend::XtendMember:
+Field returns xtend::XtendMember:
 	{xtend::XtendField}
 	annotations+=XAnnotation*
 	{xtend::XtendField.annotationInfo = current} modifiers+=CommonModifier*
@@ -61,7 +61,7 @@ SarlField returns xtend::XtendMember:
 	('=' initialValue=XExpression)? ';'?
 ;
 
-SarlAction returns xtend::XtendFunction:
+Action returns xtend::XtendFunction:
 	{SarlAction}
 	annotations+=XAnnotation*
 	{SarlAction.annotationInfo = current} modifiers+=CommonModifier*
@@ -88,7 +88,21 @@ SarlAction returns xtend::XtendFunction:
 	(expression=XBlockExpression | expression=RichString | ';')?
 ;
 
-SarlBehaviorUnit returns xtend::XtendMember:
+Constructor returns xtend::XtendConstructor:
+	{xtend::XtendConstructor}
+	annotations+=XAnnotation*
+	{xtend::XtendConstructor.annotationInfo = current}
+	modifiers+=CommonModifier*
+	'new'
+	('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?
+	(=> '(' (parameters+=Parameter (',' parameters+=Parameter)*)?
+	  ')'
+	)?
+	('throws' exceptions+=JvmTypeReference (',' exceptions+=JvmTypeReference)*)?
+	expression=XBlockExpression
+;
+
+BehaviorUnit returns xtend::XtendMember:
 	{SarlBehaviorUnit}
 	annotations+=XAnnotation*
 	{SarlBehaviorUnit.annotationInfo = current} 
@@ -96,33 +110,19 @@ SarlBehaviorUnit returns xtend::XtendMember:
 	(expression=XBlockExpression | expression=RichString | ';')
 ;
 
-SarlCapacityUses returns xtend::XtendMember:
+CapacityUses returns xtend::XtendMember:
 	{SarlCapacityUses}
 	'uses' capacities+=JvmParameterizedTypeReference
 	(',' capacities+=JvmParameterizedTypeReference)* ';'?
 ;
 
-SarlRequiredCapacity returns xtend::XtendMember:
+RequiredCapacity returns xtend::XtendMember:
 	{SarlRequiredCapacity}
 	'requires' capacities+=JvmParameterizedTypeReference
 	(',' capacities+=JvmParameterizedTypeReference)* ';'?
 ;
 
-SarlConstructor returns xtend::XtendConstructor:
-	{SarlConstructor}
-	annotations+=XAnnotation*
-	{SarlConstructor.annotationInfo = current}
-	modifiers+=CommonModifier*
-	'new'
-	('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?
-	( '(' (parameters+=Parameter (',' parameters+=Parameter)*)?
-	  ')'
-	)?
-	('throws' exceptions+=JvmTypeReference (',' exceptions+=JvmTypeReference)*)?
-	expression=XBlockExpression
-;
-
-SarlClass returns xtend::XtendTypeDeclaration:
+Class returns xtend::XtendTypeDeclaration:
 	{xtend::XtendClass}
 	annotations+=XAnnotation*
 	{xtend::XtendClass.annotationInfo = current}
@@ -134,7 +134,7 @@ SarlClass returns xtend::XtendTypeDeclaration:
 	'}'
 ;
 
-SarlInterface returns xtend::XtendTypeDeclaration:
+Interface returns xtend::XtendTypeDeclaration:
 	{xtend::XtendInterface}
 	annotations+=XAnnotation*
 	{xtend::XtendInterface.annotationInfo = current}
@@ -145,7 +145,7 @@ SarlInterface returns xtend::XtendTypeDeclaration:
    	'}'
 ;
 
-SarlEnum returns xtend::XtendTypeDeclaration:
+Enum returns xtend::XtendTypeDeclaration:
 	{xtend::XtendEnum}
 	annotations+=XAnnotation*
 	{xtend::XtendEnum.annotationInfo = current}
@@ -155,7 +155,7 @@ SarlEnum returns xtend::XtendTypeDeclaration:
    	'}'
 ;
 
-SarlAnnotationType returns xtend::XtendTypeDeclaration:
+AnnotationType returns xtend::XtendTypeDeclaration:
 	{xtend::XtendAnnotationType}
 	annotations+=XAnnotation*
  	{xtend::XtendAnnotationType.annotationInfo = current}
@@ -164,7 +164,7 @@ SarlAnnotationType returns xtend::XtendTypeDeclaration:
 	'{' (members+=AnnotationField)* '}'
 ;
 
-SarlEvent returns xtend::XtendTypeDeclaration:
+Event returns xtend::XtendTypeDeclaration:
 	{SarlEvent}
 	annotations+=XAnnotation*
 	{SarlEvent.annotationInfo = current}
@@ -174,10 +174,10 @@ SarlEvent returns xtend::XtendTypeDeclaration:
 ;
 
 EventMember returns xtend::XtendMember:
-	SarlField | SarlConstructor
+	Field | Constructor 
 ;
 
-SarlAgent returns xtend::XtendTypeDeclaration:
+Agent returns xtend::XtendTypeDeclaration:
 	{SarlAgent}
 	annotations+=XAnnotation*
 	{SarlAgent.annotationInfo = current}
@@ -188,10 +188,10 @@ SarlAgent returns xtend::XtendTypeDeclaration:
 ;
 
 AgentMember returns xtend::XtendMember:
-	Member | SarlBehaviorUnit | SarlCapacityUses | SarlRequiredCapacity
+	Member | BehaviorUnit | CapacityUses | RequiredCapacity
 ;
 
-SarlCapacity returns xtend::XtendTypeDeclaration:
+Capacity returns xtend::XtendTypeDeclaration:
 	{SarlCapacity}
 	annotations+=XAnnotation*
 	{SarlCapacity.annotationInfo = current}
@@ -203,10 +203,10 @@ SarlCapacity returns xtend::XtendTypeDeclaration:
 ;
 
 CapacityMember returns xtend::XtendMember:
-	SarlAction
+	Action
 ;
 
-SarlBehavior returns xtend::XtendTypeDeclaration:
+Behavior returns xtend::XtendTypeDeclaration:
 	{SarlBehavior}
 	annotations+=XAnnotation*
 	{SarlBehavior.annotationInfo = current}
@@ -216,10 +216,10 @@ SarlBehavior returns xtend::XtendTypeDeclaration:
 ;
 
 BehaviorMember returns xtend::XtendMember:
-	Member | SarlBehaviorUnit | SarlCapacityUses | SarlRequiredCapacity
+	Member | BehaviorUnit | CapacityUses | RequiredCapacity
 ;
 
-SarlSkill returns xtend::XtendTypeDeclaration:
+Skill returns xtend::XtendTypeDeclaration:
 	{SarlSkill}
 	annotations+=XAnnotation*
 	{SarlSkill.annotationInfo = current}
@@ -237,7 +237,7 @@ SarlSkill returns xtend::XtendTypeDeclaration:
 ;
 
 SkillMember returns xtend::XtendMember:
-	Member | SarlBehaviorUnit | SarlCapacityUses | SarlRequiredCapacity
+	Member | BehaviorUnit | CapacityUses | RequiredCapacity
 ;
 
 Parameter returns xtend::XtendParameter:

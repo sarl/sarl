@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,15 +24,19 @@ import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.services.SARLGrammarAccess;
 import io.sarl.lang.services.SARLGrammarAccess.ParameterElements;
-import io.sarl.lang.services.SARLGrammarAccess.SarlActionElements;
+import io.sarl.lang.services.SARLGrammarAccess.ActionElements;
 import io.sarl.lang.signature.ActionKey;
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.SignatureKey;
 
 import java.lang.reflect.Modifier;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
@@ -43,6 +47,7 @@ import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmFeature;
 import org.eclipse.xtext.common.types.JvmField;
+import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmMember;
 import org.eclipse.xtext.common.types.JvmOperation;
@@ -51,12 +56,14 @@ import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.annotations.services.XbaseWithAnnotationsGrammarAccess.XAnnotationElements;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationElementValuePair;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
@@ -227,7 +234,7 @@ public final class ModelUtil {
 		}
 		return false;
 	}
-	
+
 	/** Replies if the last parameter is a variadic parameter.
 	 *
 	 * @param params - parameters.
@@ -682,7 +689,7 @@ public final class ModelUtil {
 			textRepresentation.append(annotationElements.getRightParenthesisKeyword_3_2());
 		}
 	}
-	
+
 	/** This is a context-safe serializer of a signature.
 	 *
 	 * @param signature - the signature to serialize.
@@ -701,7 +708,7 @@ public final class ModelUtil {
 		} catch (Throwable _) {
 			// No working, perhaps the context's of the signature is unknown
 		}
-		SarlActionElements signatureElements = grammarAccess.getSarlActionAccess();
+		ActionElements signatureElements = grammarAccess.getActionAccess();
 		StringBuilder textRepresentation = new StringBuilder();
 		// Annotations
 		for(XAnnotation annotation : signature.getAnnotations()) {
@@ -814,6 +821,144 @@ public final class ModelUtil {
 			return type.getSimpleName();
 		}
 		return type.getIdentifier();
+	}
+
+	/** Compute the serial version UID for the given JVM element.
+	 *
+	 * @param jvm - the JVM element.
+	 * @return the serial version UID.
+	 * @see "http://docs.oracle.com/javase/8/docs/platform/serialization/spec/class.html#a4100"
+	 */
+	public static long computeSerialVersionUID(JvmGenericType jvm) {
+		StringBuilder serialVersionUIDBuffer = new StringBuilder();
+
+		serialVersionUIDBuffer.append(jvm.getQualifiedName());
+
+		BitSet bitset = new BitSet(32);
+		bitset.set(jvm.getVisibility().getValue());
+		if (jvm.isFinal()) {
+			bitset.set(4);
+		}
+		if (jvm.isAbstract()) {
+			bitset.set(5);
+		}
+		if (jvm.isInterface()) {
+			bitset.set(6);
+		}
+		serialVersionUIDBuffer.append(bitset.toByteArray());
+
+		SortedSet<JvmTypeReference> superTypes = CollectionLiterals.newTreeSet(new JvmTypeReferenceComparator());
+		superTypes.addAll(jvm.getSuperTypes());
+
+		SortedSet<JvmField> fields = CollectionLiterals.newTreeSet(new JvmIdentifiableComparator());
+		SortedSet<JvmConstructor> constructors = CollectionLiterals.newTreeSet(new JvmIdentifiableComparator());
+		SortedSet<JvmOperation> operations = CollectionLiterals.newTreeSet(new JvmIdentifiableComparator());
+		for (JvmMember member : jvm.getMembers()) {
+			if (member instanceof JvmField) {
+				JvmField field = (JvmField) member;
+				if ((field.getVisibility() != JvmVisibility.PRIVATE)
+						|| (!field.isStatic() && !field.isTransient())) {
+					fields.add(field);
+				}
+			} else if (member instanceof JvmConstructor) {
+				JvmConstructor constructor = (JvmConstructor) member;
+				if (constructor.getVisibility() != JvmVisibility.PRIVATE) {
+					constructors.add(constructor);
+				}
+			} else if (member instanceof JvmOperation) {
+				JvmOperation operation = (JvmOperation) member;
+				if (operation.getVisibility() != JvmVisibility.PRIVATE) {
+					operations.add(operation);
+				}
+			}
+		}
+
+		for (JvmTypeReference superType : superTypes) {
+			serialVersionUIDBuffer.append(superType.getQualifiedName());
+		}
+
+		for (JvmField field : fields) {
+			serialVersionUIDBuffer.append(field.getSimpleName());
+			bitset = new BitSet(32);
+			bitset.set(field.getVisibility().getValue());
+			if (field.isStatic()) {
+				bitset.set(4);
+			}
+			if (field.isFinal()) {
+				bitset.set(5);
+			}
+			if (field.isVolatile()) {
+				bitset.set(6);
+			}
+			if (field.isTransient()) {
+				bitset.set(7);
+			}
+			serialVersionUIDBuffer.append(bitset.toByteArray());
+			serialVersionUIDBuffer.append(field.getType().getIdentifier());
+		}
+
+		for (JvmConstructor constructor : constructors) {
+			bitset = new BitSet(32);
+			bitset.set(constructor.getVisibility().getValue());
+			if (constructor.isStatic()) {
+				bitset.set(4);
+			}
+			if (constructor.isVarArgs()) {
+				bitset.set(5);
+			}
+			serialVersionUIDBuffer.append(bitset.toByteArray());
+			for (JvmFormalParameter parameter : constructor.getParameters()) {
+				serialVersionUIDBuffer.append(parameter.getParameterType().getIdentifier());
+			}
+		}
+
+		for (JvmOperation operation : operations) {
+			bitset = new BitSet(32);
+			bitset.set(operation.getVisibility().getValue());
+			if (operation.isStatic()) {
+				bitset.set(4);
+			}
+			if (operation.isFinal()) {
+				bitset.set(5);
+			}
+			if (operation.isSynchronized()) {
+				bitset.set(6);
+			}
+			if (operation.isNative()) {
+				bitset.set(7);
+			}
+			if (operation.isAbstract()) {
+				bitset.set(8);
+			}
+			if (operation.isStrictFloatingPoint()) {
+				bitset.set(9);
+			}
+			if (operation.isVarArgs()) {
+				bitset.set(10);
+			}
+			serialVersionUIDBuffer.append(bitset.toByteArray());
+			for (JvmFormalParameter parameter : operation.getParameters()) {
+				serialVersionUIDBuffer.append(parameter.getParameterType().getIdentifier());
+			}
+		}
+
+		long key = 1L;
+		try {
+			byte[] uniqueKey = serialVersionUIDBuffer.toString().getBytes();
+			byte[] sha = MessageDigest.getInstance("SHA").digest(uniqueKey); //$NON-NLS-1$
+			key = ((sha[0] >>> 24) & 0xFF) |
+					((sha[0] >>> 16) & 0xFF) << 8 |
+					((sha[0] >>> 8) & 0xFF) << 16 |
+					((sha[0] >>> 0) & 0xFF) << 24 |
+					((sha[1] >>> 24) & 0xFF) << 32 |
+					((sha[1] >>> 16) & 0xFF) << 40 |
+					((sha[1] >>> 8) & 0xFF) << 48 |
+					((sha[1] >>> 0) & 0xFF) << 56;		
+		} catch (NoSuchAlgorithmException e) {
+			// 
+		}
+
+		return key;
 	}
 
 }

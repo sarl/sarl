@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,14 +27,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.regex.Pattern;
 
-import io.sarl.lang.sarl.SarlScript;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
@@ -137,7 +136,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	 * @return the parsed code tree.
 	 * @throws Exception - when parsing cannot be done.
 	 */
-	public SarlScript parseWithProjectClasspath(Object... code) throws Exception {
+	public XtendFile parseWithProjectClasspath(Object... code) throws Exception {
 		return this.helper.createSARLScript(
 				pathStr("io","sarl","mypackage","test"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				multilineString(code));

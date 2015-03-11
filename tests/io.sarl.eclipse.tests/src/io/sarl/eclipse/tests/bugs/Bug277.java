@@ -21,8 +21,7 @@ import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.lang.bugfixes.SARLContextPDAProvider;
 import io.sarl.lang.genmodel.GeneratedCode;
 import io.sarl.lang.genmodel.SARLCodeGenerator;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.Skill;
+import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.signature.ActionKey;
 import io.sarl.lang.signature.SignatureKey;
 import io.sarl.tests.api.AbstractSarlUiTest;
@@ -34,6 +33,7 @@ import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.junit.Test;
 
@@ -69,7 +69,7 @@ public class Bug277 extends AbstractSarlUiTest {
 	 */
 	@Test
 	public void multipleCapacityImplementation_0() throws Exception {
-		SarlScript script = this.helper.createSARLScript("SARLContextPDAProviderTest0",
+		XtendFile script = this.helper.createSARLScript("SARLContextPDAProviderTest0",
 				"package io.sarl.lang.tests.genmodel.serializer\n"
 						+"capacity C1 {}\n"
 						+"capacity C2 {}\n"
@@ -92,7 +92,7 @@ public class Bug277 extends AbstractSarlUiTest {
 	@Test
 	@TestClasspath("io.sarl.core")
 	public void multipleCapacityImplementation_1() throws Exception {
-		SarlScript script = this.helper.createSARLScript("SARLContextPDAProviderTest1",
+		XtendFile script = this.helper.createSARLScript("SARLContextPDAProviderTest1",
 				"package io.sarl.lang.tests.genmodel.serializer\n"
 						+"import io.sarl.core.Lifecycle\n"
 						+"import io.sarl.core.Schedules\n"
@@ -118,7 +118,7 @@ public class Bug277 extends AbstractSarlUiTest {
 		IFile file = this.helper.createFileInSourceFolder("Bug277_1", "");
 		Resource resource = this.helper.createResource(file, "package io.sarl.lang.tests.bug277");
 		GeneratedCode code = this.sarlGenerator.createScript(resource, "io.sarl.lang.tests.bug277");
-		Skill skill = this.sarlGenerator.createSkill(code, "MyS", null,
+		SarlSkill skill = this.sarlGenerator.createSkill(code, "MyS", null,
 				Arrays.asList("io.sarl.core.Lifecycle", "io.sarl.lang.tests.bug277.MyCapacity"));
 		this.sarlGenerator.attachComment(code, skill, "My Test");
 

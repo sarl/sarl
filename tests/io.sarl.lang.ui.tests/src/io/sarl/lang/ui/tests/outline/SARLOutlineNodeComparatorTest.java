@@ -23,6 +23,7 @@ import io.sarl.lang.ui.outline.SARLOutlineNodeComparator;
 import io.sarl.tests.api.Nullable;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
 import org.eclipse.xtext.xtype.XtypePackage;
@@ -106,7 +107,7 @@ public class SARLOutlineNodeComparatorTest {
 	@Before
 	public void setUp() {
 		this.sarlScript = mock(EStructuralFeatureNode.class);
-		when(this.sarlScript.getEStructuralFeature()).thenReturn(SarlPackage.Literals.SARL_SCRIPT__NAME);
+		when(this.sarlScript.getEStructuralFeature()).thenReturn(XtendPackage.Literals.XTEND_FILE__PACKAGE);
 		
 		this.agentFeature1 = mock(EStructuralFeatureNode.class);
 		this.agentFeature2 = mock(EStructuralFeatureNode.class);
@@ -134,39 +135,34 @@ public class SARLOutlineNodeComparatorTest {
 		when(this.importFeature2.getEClass()).thenReturn(XtypePackage.Literals.XIMPORT_SECTION);
 		
 		this.capacityUseFeature1 = mock(EObjectNode.class);
-		when(this.capacityUseFeature1.getEClass()).thenReturn(SarlPackage.Literals.CAPACITY_USES);
+		when(this.capacityUseFeature1.getEClass()).thenReturn(SarlPackage.Literals.SARL_CAPACITY_USES);
 		this.capacityUseFeature2 = mock(EObjectNode.class);
-		when(this.capacityUseFeature2.getEClass()).thenReturn(SarlPackage.Literals.CAPACITY_USES);
+		when(this.capacityUseFeature2.getEClass()).thenReturn(SarlPackage.Literals.SARL_CAPACITY_USES);
 		
 		this.capacityRequirementFeature1 = mock(EObjectNode.class);
-		when(this.capacityRequirementFeature1.getEClass()).thenReturn(SarlPackage.Literals.REQUIRED_CAPACITY);
+		when(this.capacityRequirementFeature1.getEClass()).thenReturn(SarlPackage.Literals.SARL_REQUIRED_CAPACITY);
 		this.capacityRequirementFeature2 = mock(EObjectNode.class);
-		when(this.capacityRequirementFeature2.getEClass()).thenReturn(SarlPackage.Literals.REQUIRED_CAPACITY);
+		when(this.capacityRequirementFeature2.getEClass()).thenReturn(SarlPackage.Literals.SARL_REQUIRED_CAPACITY);
 		
 		this.attributeFeature1 = mock(EObjectNode.class);
-		when(this.attributeFeature1.getEClass()).thenReturn(SarlPackage.Literals.ATTRIBUTE);
+		when(this.attributeFeature1.getEClass()).thenReturn(XtendPackage.Literals.XTEND_FIELD);
 		this.attributeFeature2 = mock(EObjectNode.class);
-		when(this.attributeFeature2.getEClass()).thenReturn(SarlPackage.Literals.ATTRIBUTE);
+		when(this.attributeFeature2.getEClass()).thenReturn(XtendPackage.Literals.XTEND_FIELD);
 		
 		this.constructorFeature1 = mock(EObjectNode.class);
-		when(this.constructorFeature1.getEClass()).thenReturn(SarlPackage.Literals.CONSTRUCTOR);
+		when(this.constructorFeature1.getEClass()).thenReturn(XtendPackage.Literals.XTEND_CONSTRUCTOR);
 		this.constructorFeature2 = mock(EObjectNode.class);
-		when(this.constructorFeature2.getEClass()).thenReturn(SarlPackage.Literals.CONSTRUCTOR);
+		when(this.constructorFeature2.getEClass()).thenReturn(XtendPackage.Literals.XTEND_CONSTRUCTOR);
 		
 		this.actionFeature1 = mock(EObjectNode.class);
-		when(this.actionFeature1.getEClass()).thenReturn(SarlPackage.Literals.ACTION);
+		when(this.actionFeature1.getEClass()).thenReturn(SarlPackage.Literals.SARL_ACTION);
 		this.actionFeature2 = mock(EObjectNode.class);
-		when(this.actionFeature2.getEClass()).thenReturn(SarlPackage.Literals.ACTION);
+		when(this.actionFeature2.getEClass()).thenReturn(SarlPackage.Literals.SARL_ACTION);
 		
-		this.actionSignatureFeature1 = mock(EObjectNode.class);
-		when(this.actionSignatureFeature1.getEClass()).thenReturn(SarlPackage.Literals.ACTION_SIGNATURE);
-		this.actionSignatureFeature2 = mock(EObjectNode.class);
-		when(this.actionSignatureFeature2.getEClass()).thenReturn(SarlPackage.Literals.ACTION_SIGNATURE);
-
 		this.behaviorUnitFeature1 = mock(EObjectNode.class);
-		when(this.behaviorUnitFeature1.getEClass()).thenReturn(SarlPackage.Literals.BEHAVIOR_FEATURE);
+		when(this.behaviorUnitFeature1.getEClass()).thenReturn(SarlPackage.Literals.SARL_BEHAVIOR_UNIT);
 		this.behaviorUnitFeature2 = mock(EObjectNode.class);
-		when(this.behaviorUnitFeature2.getEClass()).thenReturn(SarlPackage.Literals.BEHAVIOR_FEATURE);
+		when(this.behaviorUnitFeature2.getEClass()).thenReturn(SarlPackage.Literals.SARL_BEHAVIOR_UNIT);
 		
 		this.comparator = new SARLOutlineNodeComparator();
 	}

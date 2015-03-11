@@ -19,13 +19,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.Attribute;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
+import org.eclipse.xtend.core.xtend.XtendField;
+import org.eclipse.xtend.core.xtend.XtendFile;
+import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.junit4.InjectWith;
@@ -52,14 +53,14 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class VarDeclarationParsingTest extends AbstractSarlTest {
 	@Inject
-	private ParseHelper<SarlScript> parser;
+	private ParseHelper<XtendFile> parser;
 	
 	@Inject
 	private ValidationTestHelper validator;
 
 	@Test
-	public void variableDeclaration_attributeScope_xtend() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+	public void variableDeclaration_XtendFieldScope_xtend() throws Exception {
+		XtendFile mas = this.parser.parse(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var List<Integer> list",
@@ -68,18 +69,18 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertError(mas,
-			SarlPackage.eINSTANCE.getAttribute(),
+			XtendPackage.eINSTANCE.getXtendField(),
 			Diagnostic.SYNTAX_DIAGNOSTIC,
 			"no viable alternative at input 'List'");
 		this.validator.assertError(mas,
-			SarlPackage.eINSTANCE.getAttribute(),
+			XtendPackage.eINSTANCE.getXtendField(),
 			Diagnostic.SYNTAX_DIAGNOSTIC,
 			"no viable alternative at input 'double'");
 	}
 
 	@Test
 	public void variableDeclaration_localScope_xtend() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"var int i",
@@ -106,8 +107,8 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void variableDeclaration_attributeScope() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+	public void variableDeclaration_XtendFieldScope() throws Exception {
+		XtendFile mas = this.parser.parse(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var list : List<Integer>",
@@ -116,26 +117,26 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertTrue(Strings.isNullOrEmpty(mas.getName()));
+		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(3, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(3, agent.getMembers().size());
 		//
-		Attribute attr1 = (Attribute) agent.getFeatures().get(0);
+		XtendField attr1 = (XtendField) agent.getMembers().get(0);
 		assertEquals("list", attr1.getName());
 		assertTypeReferenceIdentifier(attr1.getType(), "java.util.List<java.lang.Integer>");
 		assertNull(attr1.getInitialValue());
 		//
-		Attribute attr2 = (Attribute) agent.getFeatures().get(1);
+		XtendField attr2 = (XtendField) agent.getMembers().get(1);
 		assertEquals("i", attr2.getName());
 		assertNull(attr2.getType());
 		assertXExpression(attr2.getInitialValue(), XNumberLiteral.class, "45");
 		//
-		Attribute attr3 = (Attribute) agent.getFeatures().get(2);
+		XtendField attr3 = (XtendField) agent.getMembers().get(2);
 		assertEquals("j", attr3.getName());
 		assertTypeReferenceIdentifier(attr3.getType(), "double");
 		assertXExpression(attr3.getInitialValue(), XNumberLiteral.class, "45");
@@ -143,7 +144,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void variableDeclaration_localScope() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"def myaction {",
@@ -157,24 +158,24 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertTrue(Strings.isNullOrEmpty(mas.getName()));
+		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(1, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(1, agent.getMembers().size());
 		//
-		Action action = (Action) agent.getFeatures().get(0);
+		SarlAction action = (SarlAction) agent.getMembers().get(0);
 		assertEquals("myaction", action.getName());
-		assertTypeReferenceIdentifier(action.getType(), "void");
-		assertParameterNames(action.getParams());
+		assertTypeReferenceIdentifier(action.getReturnType(), "void");
+		assertParameterNames(action.getParameters());
 	}
 
 	@Test
-	public void valueDeclaration_attributeScope_xtend() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+	public void valueDeclaration_XtendFieldScope_xtend() throws Exception {
+		XtendFile mas = this.parser.parse(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"val List<Integer> list",
@@ -183,18 +184,18 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertError(mas,
-			SarlPackage.eINSTANCE.getAttribute(),
+			XtendPackage.eINSTANCE.getXtendField(),
 			Diagnostic.SYNTAX_DIAGNOSTIC,
 			"no viable alternative at input 'List'");
 		this.validator.assertError(mas,
-			SarlPackage.eINSTANCE.getAttribute(),
+			XtendPackage.eINSTANCE.getXtendField(),
 			Diagnostic.SYNTAX_DIAGNOSTIC,
 			"no viable alternative at input 'double'");
 	}
 
 	@Test
 	public void valueDeclaration_localScope_xtend() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"val int i",
@@ -221,8 +222,8 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void valueDeclaration_attributeScope() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+	public void valueDeclaration_XtendFieldScope() throws Exception {
+		XtendFile mas = this.parser.parse(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"val list : List<Integer> = null",
@@ -231,26 +232,26 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertTrue(Strings.isNullOrEmpty(mas.getName()));
+		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(3, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(3, agent.getMembers().size());
 		//
-		Attribute attr1 = (Attribute) agent.getFeatures().get(0);
+		XtendField attr1 = (XtendField) agent.getMembers().get(0);
 		assertEquals("list", attr1.getName());
 		assertTypeReferenceIdentifier(attr1.getType(), "java.util.List<java.lang.Integer>");
 		assertXExpression(attr1.getInitialValue(), XNullLiteral.class, null);
 		//
-		Attribute attr2 = (Attribute) agent.getFeatures().get(1);
+		XtendField attr2 = (XtendField) agent.getMembers().get(1);
 		assertEquals("i", attr2.getName());
 		assertNull(attr2.getType());
 		assertXExpression(attr2.getInitialValue(), XNumberLiteral.class, "45");
 		//
-		Attribute attr3 = (Attribute) agent.getFeatures().get(2);
+		XtendField attr3 = (XtendField) agent.getMembers().get(2);
 		assertEquals("j", attr3.getName());
 		assertTypeReferenceIdentifier(attr3.getType(), "double");
 		assertXExpression(attr3.getInitialValue(), XNumberLiteral.class, "45");
@@ -258,7 +259,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void valueDeclaration_localScope() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"val j = 45",
@@ -269,24 +270,24 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertTrue(Strings.isNullOrEmpty(mas.getName()));
+		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(1, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(1, agent.getMembers().size());
 		//
-		Action action = (Action) agent.getFeatures().get(0);
+		SarlAction action = (SarlAction) agent.getMembers().get(0);
 		assertEquals("myaction", action.getName());
-		assertTypeReferenceIdentifier(action.getType(), "void");
-		assertParameterNames(action.getParams());
+		assertTypeReferenceIdentifier(action.getReturnType(), "void");
+		assertParameterNames(action.getParameters());
 	}
 
 	@Test
 	public void forLoop_xtend() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var list : List<Integer>",
@@ -305,7 +306,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void forLoop_inferredType() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var list : List<Integer>",
@@ -317,29 +318,29 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertTrue(Strings.isNullOrEmpty(mas.getName()));
+		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(2, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(2, agent.getMembers().size());
 		//
-		Attribute attr = (Attribute) agent.getFeatures().get(0);
+		XtendField attr = (XtendField) agent.getMembers().get(0);
 		assertEquals("list", attr.getName());
 		assertTypeReferenceIdentifier(attr.getType(), "java.util.List<java.lang.Integer>");
 		assertNull(attr.getInitialValue());
 		//
-		Action action = (Action) agent.getFeatures().get(1);
+		SarlAction action = (SarlAction) agent.getMembers().get(1);
 		assertEquals("myaction", action.getName());
-		assertTypeReferenceIdentifier(action.getType(), "void");
-		assertParameterNames(action.getParams());
+		assertTypeReferenceIdentifier(action.getReturnType(), "void");
+		assertParameterNames(action.getParameters());
 	}
 
 	@Test
 	public void forLoop_explicitType() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var list : List<Integer>",
@@ -351,29 +352,29 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertTrue(Strings.isNullOrEmpty(mas.getName()));
+		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(2, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(2, agent.getMembers().size());
 		//
-		Attribute attr = (Attribute) agent.getFeatures().get(0);
+		XtendField attr = (XtendField) agent.getMembers().get(0);
 		assertEquals("list", attr.getName());
 		assertTypeReferenceIdentifier(attr.getType(), "java.util.List<java.lang.Integer>");
 		assertNull(attr.getInitialValue());
 		//
-		Action action = (Action) agent.getFeatures().get(1);
+		SarlAction action = (SarlAction) agent.getMembers().get(1);
 		assertEquals("myaction", action.getName());
-		assertTypeReferenceIdentifier(action.getType(), "void");
-		assertParameterNames(action.getParams());
+		assertTypeReferenceIdentifier(action.getReturnType(), "void");
+		assertParameterNames(action.getParameters());
 	}
 
 	@Test
 	public void catch_xtend() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"try {",
@@ -393,7 +394,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void catch_oneType() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"try {",
@@ -406,24 +407,24 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertTrue(Strings.isNullOrEmpty(mas.getName()));
+		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(1, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(1, agent.getMembers().size());
 		//
-		Action action = (Action) agent.getFeatures().get(0);
+		SarlAction action = (SarlAction) agent.getMembers().get(0);
 		assertEquals("myaction", action.getName());
-		assertTypeReferenceIdentifier(action.getType(), "void");
-		assertParameterNames(action.getParams());
+		assertTypeReferenceIdentifier(action.getReturnType(), "void");
+		assertParameterNames(action.getParameters());
 	}
 
 	@Test
 	public void multicatch_xtend() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"try {",
@@ -446,7 +447,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void multicatch_oneType() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"try {",
@@ -462,24 +463,24 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertTrue(Strings.isNullOrEmpty(mas.getName()));
+		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(1, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(1, agent.getMembers().size());
 		//
-		Action action = (Action) agent.getFeatures().get(0);
+		SarlAction action = (SarlAction) agent.getMembers().get(0);
 		assertEquals("myaction", action.getName());
-		assertTypeReferenceIdentifier(action.getType(), "void");
-		assertParameterNames(action.getParams());
+		assertTypeReferenceIdentifier(action.getReturnType(), "void");
+		assertParameterNames(action.getParameters());
 	}
 
 	@Test
 	public void closure_xtend() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"agent A1 {",
 				"def mycall(a : int, f : (Number,Number) => int) {",
 					"return a + f.apply",
@@ -499,7 +500,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void closure_twoParams() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"agent A1 {",
 				"def mycall(a : int, f : (Float,Integer) => float) : float {",
 					"return a + f.apply(5.45f, 6)",
@@ -512,26 +513,26 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertTrue(Strings.isNullOrEmpty(mas.getName()));
+		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(2, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(2, agent.getMembers().size());
 		//
-		Action action1 = (Action) agent.getFeatures().get(0);
+		SarlAction action1 = (SarlAction) agent.getMembers().get(0);
 		assertEquals("mycall", action1.getName());
-		assertTypeReferenceIdentifier(action1.getType(), "float");
-		assertParameterNames(action1.getParams(), "a", "f");
-		assertParameterTypes(action1.getParams(), "int", "(java.lang.Float, java.lang.Integer)=>float");
-		assertParameterDefaultValues(action1.getParams(), null, null);
+		assertTypeReferenceIdentifier(action1.getReturnType(), "float");
+		assertParameterNames(action1.getParameters(), "a", "f");
+		assertParameterTypes(action1.getParameters(), "int", "(java.lang.Float, java.lang.Integer)=>float");
+		assertParameterDefaultValues(action1.getParameters(), null, null);
 		//
-		Action action2 = (Action) agent.getFeatures().get(1);
+		SarlAction action2 = (SarlAction) agent.getMembers().get(1);
 		assertEquals("myaction", action2.getName());
-		assertTypeReferenceIdentifier(action2.getType(), "void");
-		assertParameterNames(action2.getParams());
+		assertTypeReferenceIdentifier(action2.getReturnType(), "void");
+		assertParameterNames(action2.getParameters());
 	}
 	
 }

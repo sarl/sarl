@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,11 +29,9 @@ import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
-import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.sarl.SarlFormalParameter;
-import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarAccess;
 import io.sarl.lang.signature.ActionSignatureProvider;
@@ -49,9 +47,11 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtend.core.xtend.XtendConstructor;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendField;
+import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.Constants;
@@ -232,9 +232,9 @@ public class SARLCodeGenerator {
 	 * @return the SARL script.
 	 */
 	public GeneratedCode createScript(Resource resource, String packageName)  {
-		SarlScript script = SarlFactory.eINSTANCE.createSarlScript();
+		XtendFile script = XtendFactory.eINSTANCE.createXtendFile();
 		if (!Strings.isNullOrEmpty(packageName)) {
-			script.setName(packageName);
+			script.setPackage(packageName);
 		}
 		EList<EObject> content = resource.getContents();
 		if (!content.isEmpty()) {
@@ -258,7 +258,7 @@ public class SARLCodeGenerator {
 				&& !io.sarl.lang.core.Agent.class.getName().equals(superClass)) {
 			agent.getExtends().add(newTypeRef(code, superClass, code.getSarlScript()));
 		}
-		code.getSarlScript().getElements().add(agent);
+		code.getSarlScript().getXtendTypes().add(agent);
 		return agent;
 	}
 
@@ -276,7 +276,7 @@ public class SARLCodeGenerator {
 				&& !io.sarl.lang.core.Behavior.class.getName().equals(superClass)) {
 			behavior.getExtends().add(newTypeRef(code, superClass, code.getSarlScript()));
 		}
-		code.getSarlScript().getElements().add(behavior);
+		code.getSarlScript().getXtendTypes().add(behavior);
 		return behavior;
 	}
 
@@ -294,7 +294,7 @@ public class SARLCodeGenerator {
 				&& !io.sarl.lang.core.Capacity.class.getName().equals(superClass)) {
 			capacity.getExtends().add(newTypeRef(code, superClass, code.getSarlScript()));
 		}
-		code.getSarlScript().getElements().add(capacity);
+		code.getSarlScript().getXtendTypes().add(capacity);
 		return capacity;
 	}
 
@@ -312,7 +312,7 @@ public class SARLCodeGenerator {
 				&& !io.sarl.lang.core.Event.class.getName().equals(superClass)) {
 			event.getExtends().add(newTypeRef(code, superClass, code.getSarlScript()));
 		}
-		code.getSarlScript().getElements().add(event);
+		code.getSarlScript().getXtendTypes().add(event);
 		return event;
 	}
 
@@ -340,7 +340,7 @@ public class SARLCodeGenerator {
 				}
 			}
 		}
-		code.getSarlScript().getElements().add(skill);
+		code.getSarlScript().getXtendTypes().add(skill);
 		return skill;
 	}
 
@@ -533,8 +533,8 @@ public class SARLCodeGenerator {
 				resource.load(is, null);
 				EObject content = resource.getContents().isEmpty() ? null : resource.getContents().get(0);
 				if (content != null) {
-					SarlScript script = (SarlScript) content;
-					SarlAgent ag = (SarlAgent) script.getElements().get(0);
+					XtendFile script = (XtendFile) content;
+					SarlAgent ag = (SarlAgent) script.getXtendTypes().get(0);
 					XtendField attr = (XtendField) ag.getMembers().get(0);
 					xExpression = attr.getInitialValue();
 					XImportSection importSection = script.getImportSection();
@@ -618,8 +618,8 @@ public class SARLCodeGenerator {
 	 * @return the SARL action.
 	 */
 	@SuppressWarnings("static-method")
-	public SarlConstructor createConstructor(GeneratedCode code, XtendTypeDeclaration container, XBlockExpression block)  {
-		SarlConstructor constructor = SarlFactory.eINSTANCE.createSarlConstructor();
+	public XtendConstructor createConstructor(GeneratedCode code, XtendTypeDeclaration container, XBlockExpression block)  {
+		XtendConstructor constructor = XtendFactory.eINSTANCE.createXtendConstructor();
 		XBlockExpression b = block;
 		if (b == null) {
 			b = XbaseFactory.eINSTANCE.createXBlockExpression();
@@ -759,8 +759,8 @@ public class SARLCodeGenerator {
 	 * This parameter could be <code>null</code>.
 	 * @return the SARL Ecore element.
 	 */
-	public SarlConstructor createConstructor(JvmConstructor constructor, ImportManager importManager) {
-		SarlConstructor cons = SarlFactory.eINSTANCE.createSarlConstructor();
+	public XtendConstructor createConstructor(JvmConstructor constructor, ImportManager importManager) {
+		XtendConstructor cons = XtendFactory.eINSTANCE.createXtendConstructor();
 		// Parameters
 		createExecutableFeatureParameters(constructor, cons.getParameters(), importManager);
 		// Throws

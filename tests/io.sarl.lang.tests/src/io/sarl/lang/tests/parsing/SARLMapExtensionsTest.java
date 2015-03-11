@@ -18,12 +18,12 @@ package io.sarl.lang.tests.parsing;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.Attribute;
-import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.tests.api.AbstractSarlTest;
 
+import org.eclipse.xtend.core.xtend.XtendField;
+import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
@@ -51,14 +51,14 @@ import com.google.inject.Inject;
 public class SARLMapExtensionsTest extends AbstractSarlTest {
 	
 	@Inject
-	private ParseHelper<SarlScript> parser;
+	private ParseHelper<XtendFile> parser;
 	
 	@Inject
 	private ValidationTestHelper validator;
 
 	@Test
 	public void operator_addMapPair_0() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -71,40 +71,40 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertEquals("test", mas.getName());
+		assertEquals("test", mas.getPackage());
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(4, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(4, agent.getMembers().size());
 		//
-		Attribute attr1 = (Attribute) agent.getFeatures().get(0);
+		XtendField attr1 = (XtendField) agent.getMembers().get(0);
 		assertEquals("map", attr1.getName());
 		assertTypeReferenceIdentifier(attr1.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr1.getInitialValue());
 		//
-		Attribute attr2 = (Attribute) agent.getFeatures().get(1);
+		XtendField attr2 = (XtendField) agent.getMembers().get(1);
 		assertEquals("str", attr2.getName());
 		assertNull(attr2.getType());
 		assertXExpression(attr2.getInitialValue(), XStringLiteral.class, "a");
 		//
-		Attribute attr3 = (Attribute) agent.getFeatures().get(2);
+		XtendField attr3 = (XtendField) agent.getMembers().get(2);
 		assertEquals("num", attr3.getName());
 		assertNull(attr3.getType());
 		assertXExpression(attr3.getInitialValue(), XNumberLiteral.class, "4");
 		//
-		Action action = (Action) agent.getFeatures().get(3);
+		SarlAction action = (SarlAction) agent.getMembers().get(3);
 		assertEquals("myaction0", action.getName());
 		assertTypeReferenceIdentifiers(action.getFiredEvents());
-		assertParameterNames(action.getParams());
-		assertTypeReferenceIdentifier(action.getType(), "java.lang.Object");
+		assertParameterNames(action.getParameters());
+		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
 
 	@Test
 	public void operator_addMapPair_1() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -118,40 +118,40 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertEquals("test", mas.getName());
+		assertEquals("test", mas.getPackage());
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(4, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(4, agent.getMembers().size());
 		//
-		Attribute attr1 = (Attribute) agent.getFeatures().get(0);
+		XtendField attr1 = (XtendField) agent.getMembers().get(0);
 		assertEquals("map", attr1.getName());
 		assertTypeReferenceIdentifier(attr1.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr1.getInitialValue());
 		//
-		Attribute attr2 = (Attribute) agent.getFeatures().get(1);
+		XtendField attr2 = (XtendField) agent.getMembers().get(1);
 		assertEquals("str", attr2.getName());
 		assertNull(attr2.getType());
 		assertXExpression(attr2.getInitialValue(), XStringLiteral.class, "a");
 		//
-		Attribute attr3 = (Attribute) agent.getFeatures().get(2);
+		XtendField attr3 = (XtendField) agent.getMembers().get(2);
 		assertEquals("num", attr3.getName());
 		assertNull(attr3.getType());
 		assertXExpression(attr3.getInitialValue(), XNumberLiteral.class, "4");
 		//
-		Action action = (Action) agent.getFeatures().get(3);
+		SarlAction action = (SarlAction) agent.getMembers().get(3);
 		assertEquals("myaction1", action.getName());
 		assertTypeReferenceIdentifiers(action.getFiredEvents());
-		assertParameterNames(action.getParams());
-		assertTypeReferenceIdentifier(action.getType(), "java.lang.Object");
+		assertParameterNames(action.getParameters());
+		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
 
 	@Test
 	public void operator_addMapMap_0() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -163,35 +163,35 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertEquals("test", mas.getName());
+		assertEquals("test", mas.getPackage());
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(3, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(3, agent.getMembers().size());
 		//
-		Attribute attr1 = (Attribute) agent.getFeatures().get(0);
+		XtendField attr1 = (XtendField) agent.getMembers().get(0);
 		assertEquals("map1", attr1.getName());
 		assertTypeReferenceIdentifier(attr1.getType(), "java.util.Map<java.lang.String, java.lang.Number>");
 		assertNull(attr1.getInitialValue());
 		//
-		Attribute attr2 = (Attribute) agent.getFeatures().get(1);
+		XtendField attr2 = (XtendField) agent.getMembers().get(1);
 		assertEquals("map2", attr2.getName());
 		assertTypeReferenceIdentifier(attr2.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr2.getInitialValue());
 		//
-		Action action = (Action) agent.getFeatures().get(2);
+		SarlAction action = (SarlAction) agent.getMembers().get(2);
 		assertEquals("myaction0", action.getName());
 		assertTypeReferenceIdentifiers(action.getFiredEvents());
-		assertParameterNames(action.getParams());
-		assertTypeReferenceIdentifier(action.getType(), "void");
+		assertParameterNames(action.getParameters());
+		assertTypeReferenceIdentifier(action.getReturnType(), "void");
 	}
 
 	@Test
 	public void operator_addMapMap_1() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -210,7 +210,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 
 	@Test
 	public void operator_plusMapPair_0() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -224,45 +224,45 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertEquals("test", mas.getName());
+		assertEquals("test", mas.getPackage());
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(5, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(5, agent.getMembers().size());
 		//
-		Attribute attr1 = (Attribute) agent.getFeatures().get(0);
+		XtendField attr1 = (XtendField) agent.getMembers().get(0);
 		assertEquals("map", attr1.getName());
 		assertTypeReferenceIdentifier(attr1.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr1.getInitialValue());
 		//
-		Attribute attr2 = (Attribute) agent.getFeatures().get(1);
+		XtendField attr2 = (XtendField) agent.getMembers().get(1);
 		assertEquals("r", attr2.getName());
 		assertTypeReferenceIdentifier(attr2.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr2.getInitialValue());
 		//
-		Attribute attr3 = (Attribute) agent.getFeatures().get(2);
+		XtendField attr3 = (XtendField) agent.getMembers().get(2);
 		assertEquals("str", attr3.getName());
 		assertNull(attr3.getType());
 		assertXExpression(attr3.getInitialValue(), XStringLiteral.class, "a");
 		//
-		Attribute attr4 = (Attribute) agent.getFeatures().get(3);
+		XtendField attr4 = (XtendField) agent.getMembers().get(3);
 		assertEquals("num", attr4.getName());
 		assertNull(attr4.getType());
 		assertXExpression(attr4.getInitialValue(), XNumberLiteral.class, "4");
 		//
-		Action action = (Action) agent.getFeatures().get(4);
+		SarlAction action = (SarlAction) agent.getMembers().get(4);
 		assertEquals("myaction0", action.getName());
 		assertTypeReferenceIdentifiers(action.getFiredEvents());
-		assertParameterNames(action.getParams());
-		assertTypeReferenceIdentifier(action.getType(), "java.lang.Object");
+		assertParameterNames(action.getParameters());
+		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
 
 	@Test
 	public void operator_plusMapPair_1() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -277,45 +277,45 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertEquals("test", mas.getName());
+		assertEquals("test", mas.getPackage());
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(5, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(5, agent.getMembers().size());
 		//
-		Attribute attr1 = (Attribute) agent.getFeatures().get(0);
+		XtendField attr1 = (XtendField) agent.getMembers().get(0);
 		assertEquals("map", attr1.getName());
 		assertTypeReferenceIdentifier(attr1.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr1.getInitialValue());
 		//
-		Attribute attr2 = (Attribute) agent.getFeatures().get(1);
+		XtendField attr2 = (XtendField) agent.getMembers().get(1);
 		assertEquals("r", attr2.getName());
 		assertTypeReferenceIdentifier(attr2.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr2.getInitialValue());
 		//
-		Attribute attr3 = (Attribute) agent.getFeatures().get(2);
+		XtendField attr3 = (XtendField) agent.getMembers().get(2);
 		assertEquals("str", attr3.getName());
 		assertNull(attr3.getType());
 		assertXExpression(attr3.getInitialValue(), XStringLiteral.class, "a");
 		//
-		Attribute attr4 = (Attribute) agent.getFeatures().get(3);
+		XtendField attr4 = (XtendField) agent.getMembers().get(3);
 		assertEquals("num", attr4.getName());
 		assertNull(attr4.getType());
 		assertXExpression(attr4.getInitialValue(), XNumberLiteral.class, "4");
 		//
-		Action action = (Action) agent.getFeatures().get(4);
+		SarlAction action = (SarlAction) agent.getMembers().get(4);
 		assertEquals("myaction0", action.getName());
 		assertTypeReferenceIdentifiers(action.getFiredEvents());
-		assertParameterNames(action.getParams());
-		assertTypeReferenceIdentifier(action.getType(), "java.lang.Object");
+		assertParameterNames(action.getParameters());
+		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
 
 	@Test
 	public void operator_plusMapMap_0() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -328,40 +328,40 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertEquals("test", mas.getName());
+		assertEquals("test", mas.getPackage());
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(4, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(4, agent.getMembers().size());
 		//
-		Attribute attr1 = (Attribute) agent.getFeatures().get(0);
+		XtendField attr1 = (XtendField) agent.getMembers().get(0);
 		assertEquals("map1", attr1.getName());
 		assertTypeReferenceIdentifier(attr1.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr1.getInitialValue());
 		//
-		Attribute attr2 = (Attribute) agent.getFeatures().get(1);
+		XtendField attr2 = (XtendField) agent.getMembers().get(1);
 		assertEquals("map2", attr2.getName());
 		assertTypeReferenceIdentifier(attr2.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr2.getInitialValue());
 		//
-		Attribute attr3 = (Attribute) agent.getFeatures().get(2);
+		XtendField attr3 = (XtendField) agent.getMembers().get(2);
 		assertEquals("r", attr3.getName());
 		assertTypeReferenceIdentifier(attr3.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr3.getInitialValue());
 		//
-		Action action = (Action) agent.getFeatures().get(3);
+		SarlAction action = (SarlAction) agent.getMembers().get(3);
 		assertEquals("myaction0", action.getName());
 		assertTypeReferenceIdentifiers(action.getFiredEvents());
-		assertParameterNames(action.getParams());
-		assertTypeReferenceIdentifier(action.getType(), "java.lang.Object");
+		assertParameterNames(action.getParameters());
+		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
 
 	@Test
 	public void operator_plusMapMap_1() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -374,39 +374,39 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertEquals("test", mas.getName());
+		assertEquals("test", mas.getPackage());
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(4, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(4, agent.getMembers().size());
 		//
-		Attribute attr1 = (Attribute) agent.getFeatures().get(0);
+		XtendField attr1 = (XtendField) agent.getMembers().get(0);
 		assertEquals("map1", attr1.getName());
 		assertTypeReferenceIdentifier(attr1.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr1.getInitialValue());
 		//
-		Attribute attr2 = (Attribute) agent.getFeatures().get(1);
+		XtendField attr2 = (XtendField) agent.getMembers().get(1);
 		assertEquals("map2", attr2.getName());
 		assertTypeReferenceIdentifier(attr2.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr2.getInitialValue());
 		//
-		Attribute attr3 = (Attribute) agent.getFeatures().get(2);
+		XtendField attr3 = (XtendField) agent.getMembers().get(2);
 		assertEquals("r", attr3.getName());
 		assertTypeReferenceIdentifier(attr3.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr3.getInitialValue());
 		//
-		Action action = (Action) agent.getFeatures().get(3);
+		SarlAction action = (SarlAction) agent.getMembers().get(3);
 		assertEquals("myaction0", action.getName());
 		assertTypeReferenceIdentifiers(action.getFiredEvents());
-		assertParameterNames(action.getParams());
+		assertParameterNames(action.getParameters());
 	}
 
 	@Test
 	public void operator_plusMapMap_2() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -426,7 +426,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 
 	@Test
 	public void operator_plusMapMap_3() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -439,40 +439,40 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertEquals("test", mas.getName());
+		assertEquals("test", mas.getPackage());
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(4, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(4, agent.getMembers().size());
 		//
-		Attribute attr1 = (Attribute) agent.getFeatures().get(0);
+		XtendField attr1 = (XtendField) agent.getMembers().get(0);
 		assertEquals("map1", attr1.getName());
 		assertTypeReferenceIdentifier(attr1.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr1.getInitialValue());
 		//
-		Attribute attr2 = (Attribute) agent.getFeatures().get(1);
+		XtendField attr2 = (XtendField) agent.getMembers().get(1);
 		assertEquals("map2", attr2.getName());
 		assertTypeReferenceIdentifier(attr2.getType(), "java.util.Map<java.lang.String, java.lang.Number>");
 		assertNull(attr2.getInitialValue());
 		//
-		Attribute attr3 = (Attribute) agent.getFeatures().get(2);
+		XtendField attr3 = (XtendField) agent.getMembers().get(2);
 		assertEquals("r", attr3.getName());
 		assertTypeReferenceIdentifier(attr3.getType(), "java.util.Map<java.lang.String, java.lang.Number>");
 		assertNull(attr3.getInitialValue());
 		//
-		Action action = (Action) agent.getFeatures().get(3);
+		SarlAction action = (SarlAction) agent.getMembers().get(3);
 		assertEquals("myaction0", action.getName());
 		assertTypeReferenceIdentifiers(action.getFiredEvents());
-		assertParameterNames(action.getParams());
-		assertTypeReferenceIdentifier(action.getType(), "java.lang.Object");
+		assertParameterNames(action.getParameters());
+		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
 
 	@Test
 	public void operator_plusMapMap_4() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -492,7 +492,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 
 	@Test
 	public void operator_removeMapK_0() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -506,45 +506,45 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertEquals("test", mas.getName());
+		assertEquals("test", mas.getPackage());
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(5, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(5, agent.getMembers().size());
 		//
-		Attribute attr1 = (Attribute) agent.getFeatures().get(0);
+		XtendField attr1 = (XtendField) agent.getMembers().get(0);
 		assertEquals("map", attr1.getName());
 		assertTypeReferenceIdentifier(attr1.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr1.getInitialValue());
 		//
-		Attribute attr2 = (Attribute) agent.getFeatures().get(1);
+		XtendField attr2 = (XtendField) agent.getMembers().get(1);
 		assertEquals("r", attr2.getName());
 		assertTypeReferenceIdentifier(attr2.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr2.getInitialValue());
 		//
-		Attribute attr3 = (Attribute) agent.getFeatures().get(2);
+		XtendField attr3 = (XtendField) agent.getMembers().get(2);
 		assertEquals("str", attr3.getName());
 		assertNull(attr3.getType());
 		assertXExpression(attr3.getInitialValue(), XStringLiteral.class, "a");
 		//
-		Attribute attr4 = (Attribute) agent.getFeatures().get(3);
+		XtendField attr4 = (XtendField) agent.getMembers().get(3);
 		assertEquals("num", attr4.getName());
 		assertNull(attr4.getType());
 		assertXExpression(attr4.getInitialValue(), XNumberLiteral.class, "4");
 		//
-		Action action = (Action) agent.getFeatures().get(4);
+		SarlAction action = (SarlAction) agent.getMembers().get(4);
 		assertEquals("myaction0", action.getName());
 		assertTypeReferenceIdentifiers(action.getFiredEvents());
-		assertParameterNames(action.getParams());
-		assertTypeReferenceIdentifier(action.getType(), "java.lang.Object");
+		assertParameterNames(action.getParameters());
+		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
 
 	@Test
 	public void operator_removeMapK_1() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -565,7 +565,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 
 	@Test
 	public void operator_minusMapK_0() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -579,45 +579,45 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 			"}"
 		));
 		this.validator.assertNoErrors(mas);
-		assertEquals(1, mas.getElements().size());
+		assertEquals(1, mas.getXtendTypes().size());
 		//
-		assertEquals("test", mas.getName());
+		assertEquals("test", mas.getPackage());
 		//
-		Agent agent = (Agent) mas.getElements().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getSuperTypes());
-		assertEquals(5, agent.getFeatures().size());
+		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertEquals(5, agent.getMembers().size());
 		//
-		Attribute attr1 = (Attribute) agent.getFeatures().get(0);
+		XtendField attr1 = (XtendField) agent.getMembers().get(0);
 		assertEquals("map", attr1.getName());
 		assertTypeReferenceIdentifier(attr1.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr1.getInitialValue());
 		//
-		Attribute attr2 = (Attribute) agent.getFeatures().get(1);
+		XtendField attr2 = (XtendField) agent.getMembers().get(1);
 		assertEquals("r", attr2.getName());
 		assertTypeReferenceIdentifier(attr2.getType(), "java.util.Map<java.lang.String, java.lang.Integer>");
 		assertNull(attr2.getInitialValue());
 		//
-		Attribute attr3 = (Attribute) agent.getFeatures().get(2);
+		XtendField attr3 = (XtendField) agent.getMembers().get(2);
 		assertEquals("str", attr3.getName());
 		assertNull(attr3.getType());
 		assertXExpression(attr3.getInitialValue(), XStringLiteral.class, "a");
 		//
-		Attribute attr4 = (Attribute) agent.getFeatures().get(3);
+		XtendField attr4 = (XtendField) agent.getMembers().get(3);
 		assertEquals("num", attr4.getName());
 		assertNull(attr4.getType());
 		assertXExpression(attr4.getInitialValue(), XNumberLiteral.class, "4");
 		//
-		Action action = (Action) agent.getFeatures().get(4);
+		SarlAction action = (SarlAction) agent.getMembers().get(4);
 		assertEquals("myaction0", action.getName());
 		assertTypeReferenceIdentifiers(action.getFiredEvents());
-		assertParameterNames(action.getParams());
-		assertTypeReferenceIdentifier(action.getType(), "java.lang.Object");
+		assertParameterNames(action.getParameters());
+		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
 
 	@Test
 	public void operator_minusMapK_1() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -638,7 +638,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 
 	@Test
 	public void operator_minusMapK_2() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -659,7 +659,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 
 	@Test
 	public void operator_minusMapK_3() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		XtendFile mas = this.parser.parse(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",

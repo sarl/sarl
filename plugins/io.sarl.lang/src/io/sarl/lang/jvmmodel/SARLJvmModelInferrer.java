@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,11 +30,11 @@ import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
 import io.sarl.lang.core.Percept;
 import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
-import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
@@ -56,6 +56,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.eclipse.xtend.core.jvmmodel.SyntheticNameClashResolver;
@@ -89,7 +90,6 @@ import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesFactory;
-import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XExpression;
@@ -167,13 +167,33 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	private JvmTypeExtensions typeExtensions;
 
 	@Inject
-	private IQualifiedNameProvider nameProvider;
-
-	@Inject
 	private XbaseCompiler xbaseCompiler;
 
 	private final Map<JvmIdentifiableElement, GenerationContext> generationContexts =
 			new TreeMap<>(new JvmIdentifiableComparator());
+
+	private static StringConcatenationClient toStringConcatenation(final String... javaCodeLines) {
+		return new StringConcatenationClient() {
+			@Override
+			protected void appendTo(StringConcatenationClient.TargetStringConcatenation builder) {
+				for (String line : javaCodeLines) {
+					builder.append(line);
+					builder.newLineIfNotEmpty();
+				}
+			}
+		};
+	}
+
+	private static boolean isInstance(Object o, Class<?>[] types) {
+		if (o != null) {
+			for (Class<?> type : types) {
+				if (type.isInstance(o)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	/** Regitering the initialization of the inferred elements.
 	 *
@@ -223,6 +243,19 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 			return javaType;
 		}
+		if (declaration instanceof SarlAgent) {
+			final SarlAgent sarlAgent = (SarlAgent) declaration;
+			final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
+			if (!preIndexingPhase) {
+				doLater.add(new Runnable() {
+					@Override
+					public void run() {
+						initialize(sarlAgent, javaType);
+					}
+				});
+			}
+			return javaType;
+		}
 		if (declaration instanceof SarlBehavior) {
 			final SarlBehavior sarlBehavior = (SarlBehavior) declaration;
 			final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
@@ -253,9 +286,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 		GenerationContext context = this.generationContexts.get(container);
 		assert (context != null);
-		long serial = context.getSerial();
-		serial += this.nameProvider.getFullyQualifiedName(sourceMember).hashCode();
-		context.setSerial(serial);
 	}
 
 	@Override
@@ -269,24 +299,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	}
 
 	@Override
-	protected void transform(XtendConstructor source, JvmGenericType container) {
-		if (source instanceof SarlConstructor) {
-			transform((SarlConstructor) source, container);
-		} else {
-			super.transform(source, container);
-		}
-	}
-
-	/** {@inheritDoc}
-	 */
-	@Override
 	protected void transform(XtendField source, JvmGenericType container) {
 		super.transform(source, container);
 		GenerationContext context = this.generationContexts.get(container);
 		assert (context != null);
-		long serial = context.getSerial();
-		serial += source.getName().hashCode();
-		context.setSerial(serial);
 	}
 
 	/** Invoked for intializing the inferred SARL capacity.
@@ -298,8 +314,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		try {
 			// Initialize the generator tools
 			this.sarlSignatureProvider.resetSignatures(inferredJvmType);
-			this.generationContexts.put(inferredJvmType,
-					new GenerationContext(source, inferredJvmType));
+			this.generationContexts.put(inferredJvmType, new GenerationContext(inferredJvmType));
 			// Initialize the Java type
 			inferredJvmType.setVisibility(source.getVisibility());
 			inferredJvmType.setStatic(source.isStatic() && !isTopLevel(source));
@@ -331,7 +346,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		try {
 			// Initialize the generator tools
 			this.sarlSignatureProvider.resetSignatures(inferredJvmType);
-			GenerationContext context = new GenerationContext(source, inferredJvmType);
+			GenerationContext context = new GenerationContext(inferredJvmType);
 			this.generationContexts.put(inferredJvmType, context);
 			// Initialize the Java type
 			inferredJvmType.setVisibility(source.getVisibility());
@@ -350,7 +365,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					SarlCapacityUses.class,
 					SarlRequiredCapacity.class,
 					XtendField.class,
-					SarlConstructor.class,
+					XtendConstructor.class,
 					SarlAction.class,
 					SarlBehaviorUnit.class,
 					XtendClass.class,
@@ -385,6 +400,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				inferredJvmType.getMembers().add(constructor);
 				this.associator.associate(source, constructor);
 			}
+			// Add missed functions with default value parameters.
+			addMissedDefaultValueBasedFunctionsTo(source, inferredJvmType);
+			// Add standard functions
+			addStandardFunctionsTo(source, inferredJvmType);
+			// Add serial ID
+			addSerialIDTo(source, inferredJvmType);
 			// Generate the documentation
 			this.jvmTypesBuilder.copyDocumentationTo(source, inferredJvmType);
 			// Resolve name classes for synthetic members
@@ -404,7 +425,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		try {
 			// Initialize the generator tools
 			this.sarlSignatureProvider.resetSignatures(inferredJvmType);
-			GenerationContext context = new GenerationContext(source, inferredJvmType);
+			GenerationContext context = new GenerationContext(inferredJvmType);
 			this.generationContexts.put(inferredJvmType, context);
 			// Initialize the Java type
 			inferredJvmType.setVisibility(source.getVisibility());
@@ -421,7 +442,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					SarlCapacityUses.class,
 					SarlRequiredCapacity.class,
 					XtendField.class,
-					SarlConstructor.class,
+					XtendConstructor.class,
 					SarlAction.class,
 					SarlBehaviorUnit.class,
 					XtendClass.class,
@@ -446,6 +467,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				inferredJvmType.getMembers().add(constructor);
 				this.associator.associate(source, constructor);
 			}
+			// Add missed functions with default value parameters.
+			addMissedDefaultValueBasedFunctionsTo(source, inferredJvmType);
+			// Add standard functions
+			addStandardFunctionsTo(source, inferredJvmType);
+			// Add serial ID
+			addSerialIDTo(source, inferredJvmType);
 			// Generate the documentation
 			this.jvmTypesBuilder.copyDocumentationTo(source, inferredJvmType);
 			// Resolve name classes for synthetic members
@@ -465,7 +492,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		try {
 			// Initialize the generator tools
 			this.sarlSignatureProvider.resetSignatures(inferredJvmType);
-			GenerationContext context = new GenerationContext(source, inferredJvmType);
+			GenerationContext context = new GenerationContext(inferredJvmType);
 			this.generationContexts.put(inferredJvmType, context);
 			// Initialize the Java type
 			inferredJvmType.setVisibility(source.getVisibility());
@@ -480,7 +507,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Generate the members
 			translateMembers(source, inferredJvmType,
 					XtendField.class,
-					SarlConstructor.class);
+					XtendConstructor.class);
 			// Add default constructors
 			if (!context.getGeneratedConstructors().isEmpty()) {
 				JvmConstructor constructor = this.typesFactory.createJvmConstructor();
@@ -492,6 +519,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 			// Add standard functions
 			addStandardFunctionsTo(source, inferredJvmType);
+			// Add serial ID
+			addSerialIDTo(source, inferredJvmType);
 			// Generate the documentation
 			this.jvmTypesBuilder.copyDocumentationTo(source, inferredJvmType);
 			// Resolve name classes for synthetic members
@@ -500,64 +529,87 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Reset the generator tools
 			this.generationContexts.remove(inferredJvmType);
 		}
-		//			serial = serial + generateExtendedTypes(it, this.element, io.sarl.lang.core.Event.class);
-		//			JvmField jvmField;
-		//			List<JvmField> jvmFields = CollectionLiterals.newArrayList();
-		//			int actionIndex = 0;
-		//			boolean hasConstructor = false;
-		//
-		//			for (EObject feature : this.element.getFeatures()) {
-		//				if (feature instanceof Attribute) {
-		//					Attribute attribute = (Attribute) feature;
-		//					jvmField = generateAttribute(it, attribute, JvmVisibility.PUBLIC);
-		//					if (jvmField != null) {
-		//						jvmFields.add(jvmField);
-		//						it.getMembers().add(jvmField);
-		//						serial = serial + attribute.getName().hashCode();
-		//					}
-		//				} else if (feature instanceof Constructor) {
-		//					Constructor constructor = (Constructor) feature;
-		//					if (generateConstructor(it, this.element, constructor, actionIndex, null) != null) {
-		//						serial = serial + SARLJvmModelInferrer.this.nameProvider.getFullyQualifiedName(
-		//								this.element).hashCode();
-		//						++actionIndex;
-		//						hasConstructor = true;
-		//					}
-		//				}
-		//			}
-		//
-		//			if (!hasConstructor) {
-		//				createDefaultConstructor(it);
-		//			}
-		//
-		//			if (!jvmFields.isEmpty()) {
-		//				generateAttributeFunctions(it, jvmFields);
-		//			}
-		//
-		//			generateSerialID(it, serial);
 	}
 
-	private static StringConcatenationClient toStringConcatenation(final String... javaCodeLines) {
-		return new StringConcatenationClient() {
-			@Override
-			protected void appendTo(StringConcatenationClient.TargetStringConcatenation builder) {
-				for (String line : javaCodeLines) {
-					builder.append(line);
-					builder.newLineIfNotEmpty();
-				}
+	/** Invoked for intializing the inferred SARL agent.
+	 *
+	 * @param source - the SARL source.
+	 * @param inferredJvmType - the Java inferred type.
+	 */
+	protected void initialize(SarlAgent source, JvmGenericType inferredJvmType) {
+		try {
+			// Initialize the generator tools
+			this.sarlSignatureProvider.resetSignatures(inferredJvmType);
+			GenerationContext context = new GenerationContext(inferredJvmType);
+			this.generationContexts.put(inferredJvmType, context);
+			// Initialize the Java type
+			inferredJvmType.setVisibility(source.getVisibility());
+			inferredJvmType.setStatic(source.isStatic() && !isTopLevel(source));
+			inferredJvmType.setInterface(false);
+			inferredJvmType.setAbstract(false);
+			// Generate the annotations
+			translateAnnotationsTo(source.getAnnotations(), inferredJvmType);
+			// Generate the super types
+			translateSuperTypes(source, inferredJvmType, io.sarl.lang.core.Agent.class,
+					source.getExtends(), true);
+			// Generate the members
+			translateMembers(source, inferredJvmType,
+					XtendField.class,
+					XtendConstructor.class);
+			// Add default constructors
+			JvmConstructor constructor1 = this.typesFactory.createJvmConstructor();
+			constructor1.setVisibility(JvmVisibility.PUBLIC);
+			this.typeExtensions.setSynthetic(constructor1, true);
+			this.jvmTypesBuilder.setDocumentation(constructor1, MessageFormat.format(
+					Messages.SARLJvmModelInferrer_6, "parentID")); //$NON-NLS-1$
+			JvmFormalParameter parameter1 = this.typesFactory.createJvmFormalParameter();
+			parameter1.setName("parentID"); //$NON-NLS-1$
+			parameter1.setParameterType(this.typeReferenceBuilder.typeRef(UUID.class));
+			constructor1.getParameters().add(parameter1);
+			constructor1.getAnnotations().add(this.annotationTypesBuilder.annotationRef(Generated.class));
+			this.jvmTypesBuilder.setBody(constructor1, toStringConcatenation("super(parentID, null);")); //$NON-NLS-1$
+			SignatureKey sigConstructor1 = this.sarlSignatureProvider.createSignatureIDFromJvmModel(
+					constructor1.isVarArgs(), constructor1.getParameters());
+			if (!context.getGeneratedConstructors().containsKey(sigConstructor1)) {
+				inferredJvmType.getMembers().add(constructor1);
+				this.associator.associate(source, constructor1);
 			}
-		};
-	}
-
-	private static boolean isInstance(Object o, Class<?>[] types) {
-		if (o != null) {
-			for (Class<?> type : types) {
-				if (type.isInstance(o)) {
-					return true;
-				}
+			JvmConstructor constructor2 = this.typesFactory.createJvmConstructor();
+			constructor1.setVisibility(JvmVisibility.PUBLIC);
+			this.typeExtensions.setSynthetic(constructor2, true);
+			this.jvmTypesBuilder.setDocumentation(constructor2, MessageFormat.format(
+					Messages.SARLJvmModelInferrer_7,
+					"parentID", "agentID")); //$NON-NLS-1$ //$NON-NLS-2$
+			JvmFormalParameter parameter2 = this.typesFactory.createJvmFormalParameter();
+			parameter2.setName("parentID"); //$NON-NLS-1$
+			parameter2.setParameterType(this.typeReferenceBuilder.typeRef(UUID.class));
+			constructor2.getParameters().add(parameter2);
+			JvmFormalParameter parameter3 = this.typesFactory.createJvmFormalParameter();
+			parameter3.setName("agentID"); //$NON-NLS-1$
+			parameter3.setParameterType(this.typeReferenceBuilder.typeRef(UUID.class));
+			constructor2.getParameters().add(parameter3);
+			constructor2.getAnnotations().add(this.annotationTypesBuilder.annotationRef(Generated.class));
+			this.jvmTypesBuilder.setBody(constructor2, toStringConcatenation("super(parentID, agentID);")); //$NON-NLS-1$
+			SignatureKey sigConstructor2 = this.sarlSignatureProvider.createSignatureIDFromJvmModel(
+					constructor2.isVarArgs(), constructor2.getParameters());
+			if (!context.getGeneratedConstructors().containsKey(sigConstructor2)) {
+				inferredJvmType.getMembers().add(constructor2);
+				this.associator.associate(source, constructor2);
 			}
+			// Add missed functions with default value parameters.
+			addMissedDefaultValueBasedFunctionsTo(source, inferredJvmType);
+			// Add standard functions
+			addStandardFunctionsTo(source, inferredJvmType);
+			// Add serial ID
+			addSerialIDTo(source, inferredJvmType);
+			// Generate the documentation
+			this.jvmTypesBuilder.copyDocumentationTo(source, inferredJvmType);
+			// Resolve name classes for synthetic members
+			this.nameClashResolver.resolveNameClashes(inferredJvmType);
+		} finally {
+			// Reset the generator tools
+			this.generationContexts.remove(inferredJvmType);
 		}
-		return false;
 	}
 
 	/** Generate the members for the given features.
@@ -838,7 +890,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param sourceMember - the signature to generate.
 	 * @param inferredJvmType - the target inferred type.
 	 */
-	protected void transform(SarlConstructor sourceMember, JvmGenericType inferredJvmType) {
+	@Override
+	protected void transform(XtendConstructor sourceMember, JvmGenericType inferredJvmType) {
 		GenerationContext context = this.generationContexts.get(inferredJvmType);
 		assert (context != null);
 		JvmConstructor operation = translateConstructor(
@@ -864,24 +917,19 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected void translateSuperTypes(XtendTypeDeclaration source, JvmGenericType inferredJvmType,
 			Class<?> defaultType, List<? extends JvmTypeReference> types, boolean addDefault) {
-		GenerationContext context = this.generationContexts.get(inferredJvmType);
-		long serial = context.getSerial();
 		boolean isInterface = inferredJvmType.isInterface();
 		for (JvmTypeReference superType : types) {
 			if (superType.getType() instanceof JvmGenericType) {
 				LightweightTypeReference reference = ModelUtil.toLightweightTypeReference(superType, this.services);
 				if (reference.isInterfaceType() == isInterface && reference.isSubtypeOf(defaultType)) {
 					inferredJvmType.getSuperTypes().add(this.jvmTypesBuilder.cloneWithProxies(superType));
-					serial = serial + superType.getIdentifier().hashCode();
 				}
 			}
 		}
 		if (inferredJvmType.getSuperTypes().isEmpty() && addDefault) {
 			JvmTypeReference type = this.typeReferenceBuilder.typeRef(defaultType);
 			inferredJvmType.getSuperTypes().add(type);
-			serial = serial + type.getIdentifier().hashCode();
 		}
-		context.setSerial(serial);
 	}
 
 	/** Create an annotation with classes as values.
@@ -1256,6 +1304,31 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 	}
 
+	/** Add the serial field.
+	 *
+	 * @param source - the SARL type.
+	 * @param inferredJvmType - the JVM container.
+	 * @see "http://docs.oracle.com/javase/8/docs/platform/serialization/spec/class.html#a4100"
+	 */
+	protected void addSerialIDTo(XtendTypeDeclaration source, JvmGenericType inferredJvmType) {
+		JvmField serialField = this.typesFactory.createJvmField();
+		serialField.setSimpleName("serialVersionUID"); //$NON-NLS-1$
+		serialField.setFinal(true);
+		serialField.setStatic(true);
+		serialField.setVisibility(JvmVisibility.PRIVATE);
+		serialField.setType(this.typeReferenceBuilder.typeRef(long.class));
+
+		this.jvmTypesBuilder.setInitializer(serialField, toStringConcatenation(
+				ModelUtil.computeSerialVersionUID(inferredJvmType) + "L")); //$NON-NLS-1$
+
+		serialField.getAnnotations().add(this.annotationTypesBuilder.annotationRef(Generated.class));
+		SARLJvmModelInferrer.this.typeExtensions.setSynthetic(serialField, true);
+		inferredJvmType.getMembers().add(serialField);
+		this.associator.associate(source, serialField);
+
+		SARLJvmModelInferrer.this.readAndWriteTracking.markInitialized(serialField, null);
+	}
+
 	/** Generate the missed functions with default value parameters in the given type declaration.
 	 *
 	 * @param source - the SARL type.
@@ -1454,7 +1527,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		operation.getAnnotations().add(this.annotationTypesBuilder.annotationRef(Override.class));
 		// Documentation
 		this.jvmTypesBuilder.setDocumentation(operation, MessageFormat.format(Messages.SARLJvmModelInferrer_2,
-										sourceMember.getName()));
+				sourceMember.getName()));
 		// Body
 		this.jvmTypesBuilder.setBody(operation, new Procedures.Procedure1<ITreeAppendable>() {
 			@Override
@@ -1658,248 +1731,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		return operation;
 	}
 
-	//	/** Generator of JVM elements.
-	//	 */
-	//	@Inject
-	//	protected JvmTypesBuilder typeBuilder;
-	//
-	//	/** Provider of qualified names.
-	//	 */
-	//	@Inject
-	//	protected IQualifiedNameProvider nameProvider;
-	//
-	//	/** On-fly Xbase compiler.
-	//	 */
-	//	@Inject
-	//	protected XbaseCompiler xbaseCompiler;
-	//
-	//	/** Associator of the JVM elements and the SARL elements.
-	//	 */
-	//	@Inject
-	//	protected JvmModelAssociator jvmModelAssociator;
-	//
-	//	/** Generator's logger.
-	//	 */
-	//	@Inject
-	//	protected Logger log;
-	//
-	//	/** Manager of SARL action signatures.
-	//	 */
-	//	@Inject
-	//	protected ActionSignatureProvider sarlSignatureProvider;
-	//
-	//	/** Tracker of field initialization.
-	//	 */
-	//	@Inject
-	//	protected ReadAndWriteTracking readAndWriteTracking;
-	//
-	//	/** Several generation services.
-	//	 */
-	//	@Inject
-	//	protected CommonTypeComputationServices services;
-	//
-	//	/** JVM type services.
-	//	 */
-	//	@Inject
-	//	protected JvmTypeExtensions typeExtensions;
-	//
-	//	/** Computer of early-exits for SARL.
-	//	 */
-	//	@Inject
-	//	protected SARLExtendedEarlyExitComputer earlyExitComputer;
-	//
-	//	/** SARL Serializer.
-	//	 */
-	//	@Inject
-	//	protected ISerializer sarlSerializer;
-
-	//	/** Generator for the SARL Event statement.
-	//	 *
-	//	 * @author $Author: sgalland$
-	//	 * @version $FullVersion$
-	//	 * @mavengroupid $GroupId$
-	//	 * @mavenartifactid $ArtifactId$
-	//	 */
-	//	protected class EventGenerator extends AbstractGenerator<SarlEvent> {
-	//
-	//		/**
-	//		 * @param event - the event.
-	//		 */
-	//		public EventGenerator(SarlEvent event) {
-	//			super(event);
-	//		}
-	//
-	//		@Override
-	//		public void generate(JvmGenericType it) {
-	//			long serial = 1L;
-	//			serial = serial + generateExtendedTypes(it, this.element, io.sarl.lang.core.Event.class);
-	//			JvmField jvmField;
-	//			List<JvmField> jvmFields = CollectionLiterals.newArrayList();
-	//			int actionIndex = 0;
-	//			boolean hasConstructor = false;
-	//
-	//			for (EObject feature : this.element.getFeatures()) {
-	//				if (feature instanceof Attribute) {
-	//					Attribute attribute = (Attribute) feature;
-	//					jvmField = generateAttribute(it, attribute, JvmVisibility.PUBLIC);
-	//					if (jvmField != null) {
-	//						jvmFields.add(jvmField);
-	//						it.getMembers().add(jvmField);
-	//						serial = serial + attribute.getName().hashCode();
-	//					}
-	//				} else if (feature instanceof Constructor) {
-	//					Constructor constructor = (Constructor) feature;
-	//					if (generateConstructor(it, this.element, constructor, actionIndex, null) != null) {
-	//						serial = serial + SARLJvmModelInferrer.this.nameProvider.getFullyQualifiedName(
-	//								this.element).hashCode();
-	//						++actionIndex;
-	//						hasConstructor = true;
-	//					}
-	//				}
-	//			}
-	//
-	//			if (!hasConstructor) {
-	//				createDefaultConstructor(it);
-	//			}
-	//
-	//			if (!jvmFields.isEmpty()) {
-	//				generateAttributeFunctions(it, jvmFields);
-	//			}
-	//
-	//			generateSerialID(it, serial);
-	//		}
-	//
-	//		@SuppressWarnings("synthetic-access")
-	//		private void generateSerialID(JvmGenericType it, final long serial) {
-	//			JvmField serialField = SARLJvmModelInferrer.this.typeBuilder.toField(this.element, "serialVersionUID", //$NON-NLS-1$
-	//					SARLJvmModelInferrer.this._typeReferenceBuilder.typeRef(long.class), new Procedures.Procedure1<JvmField>() {
-	//				@Override
-	//				public void apply(JvmField it2) {
-	//					it2.setVisibility(JvmVisibility.PRIVATE);
-	//					it2.setFinal(true);
-	//					it2.setStatic(true);
-	//					SARLJvmModelInferrer.this.typeBuilder.setInitializer(it2,
-	//							toStringConcatenation(serial + "L")); //$NON-NLS-1$
-	//				}
-	//			});
-	//			serialField.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
-	//					Generated.class));
-	//			SARLJvmModelInferrer.this.typeExtensions.setSynthetic(serialField, true);
-	//			it.getMembers().add(serialField);
-	//			SARLJvmModelInferrer.this.readAndWriteTracking.markInitialized(serialField, null);
-	//		}
-	//
-	//		@SuppressWarnings("synthetic-access")
-	//		private void createDefaultConstructor(JvmGenericType it) {
-	//			JvmConstructor cons1 = SARLJvmModelInferrer.this.typeBuilder.toConstructor(this.element,
-	//					new Procedures.Procedure1<JvmConstructor>() {
-	//				@Override
-	//				public void apply(JvmConstructor it2) {
-	//					SARLJvmModelInferrer.this.typeBuilder.setDocumentation(it2, Messages.SARLJvmModelInferrer_0);
-	//					SARLJvmModelInferrer.this.typeBuilder.setBody(it2, toStringConcatenation("super();")); //$NON-NLS-1$
-	//				}
-	//			});
-	//			cons1.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Generated.class));
-	//			SARLJvmModelInferrer.this.typeExtensions.setSynthetic(cons1, true);
-	//			it.getMembers().add(cons1);
-	//
-	//			final JvmTypeReference addrType = SARLJvmModelInferrer.this._typeReferenceBuilder.typeRef(Address.class);
-	//			JvmConstructor cons2 = SARLJvmModelInferrer.this.typeBuilder.toConstructor(this.element,
-	//					new Procedures.Procedure1<JvmConstructor>() {
-	//				@Override
-	//				public void apply(JvmConstructor it2) {
-	//					SARLJvmModelInferrer.this.typeBuilder.setDocumentation(it2,
-	//							MessageFormat.format(Messages.SARLJvmModelInferrer_1, "source")); //$NON-NLS-1$
-	//					it2.getParameters().add(SARLJvmModelInferrer.this.typeBuilder.toParameter(
-	//							EventGenerator.this.element, "source", addrType)); //$NON-NLS-1$
-	//					SARLJvmModelInferrer.this.typeBuilder.setBody(it2,
-	//							toStringConcatenation("super(source);")); //$NON-NLS-1$
-	//				}
-	//			});
-	//			cons2.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Generated.class));
-	//			SARLJvmModelInferrer.this.typeExtensions.setSynthetic(cons2, true);
-	//			it.getMembers().add(cons2);
-	//		}
-	//
-	//		@SuppressWarnings("synthetic-access")
-	//
-	//	}
-	//
-	//	/** Generator of the agent top element.
-	//	 *
-	//	 * @author $Author: sgalland$
-	//	 * @version $FullVersion$
-	//	 * @mavengroupid $GroupId$
-	//	 * @mavenartifactid $ArtifactId$
-	//	 */
-	//	protected class AgentGenerator extends AbstractGenerator<SarlAgent> {
-	//
-	//		/**
-	//		 * @param agent - the agent.
-	//		 */
-	//		public AgentGenerator(SarlAgent agent) {
-	//			super(agent);
-	//		}
-	//
-	//		@SuppressWarnings({ "synthetic-access", "unchecked" })
-	//		@Override
-	//		public void generate(JvmGenericType it) {
-	//			generateExtendedTypes(it, this.element, io.sarl.lang.core.Agent.class);
-	//
-	//			Map<SignatureKey, JvmConstructor> generatedConstructors = CollectionLiterals.newTreeMap(null);
-	//			generateCodeForFeatures(it, this.element, this.element, true, generatedConstructors);
-	//
-	//
-	//			JvmConstructor cons1 = SARLJvmModelInferrer.this.typeBuilder.toConstructor(this.element,
-	//					new Procedures.Procedure1<JvmConstructor>() {
-	//				@Override
-	//				public void apply(JvmConstructor it) {
-	//					SARLJvmModelInferrer.this.typeBuilder.setDocumentation(it, MessageFormat.format(
-	//							Messages.SARLJvmModelInferrer_6, "parentID")); //$NON-NLS-1$
-	//					it.getParameters().add(SARLJvmModelInferrer.this.typeBuilder.toParameter(
-	//							AgentGenerator.this.element, "parentID", //$NON-NLS-1$
-	//							SARLJvmModelInferrer.this._typeReferenceBuilder.typeRef(UUID.class)));
-	//					SARLJvmModelInferrer.this.typeBuilder.setBody(it,
-	//							toStringConcatenation("super(parentID, null);")); //$NON-NLS-1$
-	//				}
-	//			});
-	//			SignatureKey sigCons1 = SARLJvmModelInferrer.this.sarlSignatureProvider.createSignatureIDFromJvmModel(
-	//					cons1.isVarArgs(), cons1.getParameters());
-	//			if (!generatedConstructors.containsKey(sigCons1)) {
-	//				cons1.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Generated.class));
-	//				it.getMembers().add(cons1);
-	//				SARLJvmModelInferrer.this.typeExtensions.setSynthetic(cons1, true);
-	//			}
-	//
-	//			JvmConstructor cons2 = SARLJvmModelInferrer.this.typeBuilder.toConstructor(this.element,
-	//					new Procedures.Procedure1<JvmConstructor>() {
-	//				@Override
-	//				public void apply(JvmConstructor it) {
-	//					SARLJvmModelInferrer.this.typeBuilder.setDocumentation(it, MessageFormat.format(
-	//							Messages.SARLJvmModelInferrer_7,
-	//							"parentID", "agentID")); //$NON-NLS-1$ //$NON-NLS-2$
-	//					it.getParameters().add(SARLJvmModelInferrer.this.typeBuilder.toParameter(
-	//							AgentGenerator.this.element, "parentID", //$NON-NLS-1$
-	//							SARLJvmModelInferrer.this._typeReferenceBuilder.typeRef(UUID.class)));
-	//					it.getParameters().add(SARLJvmModelInferrer.this.typeBuilder.toParameter(
-	//							AgentGenerator.this.element, "agentID", //$NON-NLS-1$
-	//							SARLJvmModelInferrer.this._typeReferenceBuilder.typeRef(UUID.class)));
-	//					SARLJvmModelInferrer.this.typeBuilder.setBody(it,
-	//							toStringConcatenation("super(parentID, agentID);")); //$NON-NLS-1$
-	//				}
-	//
-	//			});
-	//			SignatureKey sigCons2 = SARLJvmModelInferrer.this.sarlSignatureProvider.createSignatureIDFromJvmModel(
-	//					cons2.isVarArgs(), cons2.getParameters());
-	//			if (!generatedConstructors.containsKey(sigCons2)) {
-	//				cons2.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Generated.class));
-	//				it.getMembers().add(cons2);
-	//				SARLJvmModelInferrer.this.typeExtensions.setSynthetic(cons2, true);
-	//			}
-	//		}
-	//
-	//	}
-
 	/** Generate a constructor.
 	 *
 	 * @param source - the SARL element.
@@ -2030,36 +1861,30 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	private static class GenerationContext {
 
-		private final XtendTypeDeclaration container;
 		private final JvmGenericType inferredContainer;
 		private final GenerationContext parent;
-		private long serial = 1L;
 		private int actionIndex;
 		private int behaviorUnitIndex;
 		private Map<ActionKey, JvmOperation> finalOperations;
 		private Map<ActionKey, JvmOperation>  overridableOperations;
 		private Map<ActionKey, JvmOperation>  operationsToImplement;
 		private Map<String, JvmField> inheritedFields;
-		private Map<SignatureKey, JvmConstructor> superConstructors;
 		private Map<SignatureKey, JvmConstructor> generatedConstructors;
 		private Map<ActionKey, JvmOperation> implementedOperations;
 		private List<String> latelyGenerateParameters = CollectionLiterals.newArrayList();
 
 		/** Construct a information about the generation.
 		 * 
-		 * @param container - the container that is the top context.
 		 * @param inferredContainer - the inferred container that is the top context.
 		 */
 		@SuppressWarnings("unchecked")
-		public GenerationContext(XtendTypeDeclaration container, JvmGenericType inferredContainer) {
+		public GenerationContext(JvmGenericType inferredContainer) {
 			this.parent = null;
-			this.container = container;
 			this.inferredContainer =  inferredContainer;
 			this.finalOperations = CollectionLiterals.newTreeMap(null);
 			this.overridableOperations = CollectionLiterals.newTreeMap(null);
 			this.operationsToImplement = CollectionLiterals.newTreeMap(null);
 			this.inheritedFields = CollectionLiterals.newTreeMap(null);
-			this.superConstructors = CollectionLiterals.newTreeMap(null);
 			this.generatedConstructors = CollectionLiterals.newTreeMap(null);
 			this.implementedOperations = CollectionLiterals.newTreeMap(null);
 		}
@@ -2071,26 +1896,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		@SuppressWarnings("unchecked")
 		public GenerationContext(GenerationContext context) {
 			this.parent = context;
-			this.container = null;
 			this.inferredContainer = null;
 			this.finalOperations = CollectionLiterals.newTreeMap(null);
 			this.overridableOperations = CollectionLiterals.newTreeMap(null);
 			this.operationsToImplement = CollectionLiterals.newTreeMap(null);
 			this.inheritedFields = CollectionLiterals.newTreeMap(null);
-			this.superConstructors = CollectionLiterals.newTreeMap(null);
 			this.generatedConstructors = CollectionLiterals.newTreeMap(null);
 			this.implementedOperations = CollectionLiterals.newTreeMap(null);
-		}
-
-		/** Replies the top container.
-		 *
-		 * @return the top container.
-		 */
-		public XtendTypeDeclaration getSourceTopContainer() {
-			if (this.parent != null) {
-				return this.parent.getSourceTopContainer();
-			}
-			return this.container;
 		}
 
 		/** Replies the top container.
@@ -2110,41 +1922,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		 */
 		public List<String> getLateArguments() {
 			return this.latelyGenerateParameters;
-		}
-
-		/** Set the lately generated arguments.
-		 *
-		 * @param arguments - the arguments.
-		 */
-		public void setLateArguments(List<String> arguments) {
-			if (arguments == null) {
-				this.latelyGenerateParameters = CollectionLiterals.newArrayList();
-			} else {
-				this.latelyGenerateParameters = arguments;
-			}
-		}
-
-		/** Replies the serial associated to the generated element.
-		 *
-		 * @return the serial.
-		 */
-		public long getSerial() {
-			if (this.parent != null) {
-				return this.parent.getSerial();
-			}
-			return this.serial;
-		}
-
-		/** Set the serial associated to the generated element.
-		 *
-		 * @param serial - the new serial.
-		 */
-		public void setSerial(long serial) {
-			if (this.parent != null) {
-				this.parent.setSerial(serial);
-			} else {
-				this.serial = serial;
-			}
 		}
 
 		/** Replies the index of the late created action.
@@ -2198,10 +1975,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		 * @param inferredJvmType - the type to populate from.
 		 * @param sarlSignatureProvider - the provider of SARL signatures.
 		 * @see #getInheritedFinalOperations()
-		 * @see #getInheritedFields()
 		 * @see #getInheritedOperationsToImplement()
 		 * @see #getInheritedOverridableOperations()
-		 * @see #getSuperConstructors()
 		 * @see #getGeneratedConstructors()
 		 * @see #getGeneratedOperations()
 		 */
@@ -2210,8 +1985,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			this.finalOperations = CollectionLiterals.newTreeMap(null);
 			this.overridableOperations = CollectionLiterals.newTreeMap(null);
 			this.operationsToImplement = CollectionLiterals.newTreeMap(null);
-			this.inheritedFields = CollectionLiterals.newTreeMap(null);
-			this.superConstructors = CollectionLiterals.newTreeMap(null);
 			this.generatedConstructors = CollectionLiterals.newTreeMap(null);
 			this.implementedOperations = CollectionLiterals.newTreeMap(null);
 			ModelUtil.populateInheritanceContext(
@@ -2220,7 +1993,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					this.overridableOperations,
 					this.inheritedFields,
 					this.operationsToImplement,
-					this.superConstructors,
+					null,
 					sarlSignatureProvider);
 		}
 
@@ -2249,24 +2022,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		 */
 		public Map<ActionKey, JvmOperation>  getInheritedOperationsToImplement() {
 			return this.operationsToImplement;
-		}
-
-		/** Replies the list of the inherited fields.
-		 *
-		 * @return the list of the inherited fields.
-		 * @see #populateInheritanceContext(JvmGenericType, ActionSignatureProvider)
-		 */
-		public Map<String, JvmField> getInheritedFields() {
-			return this.inheritedFields;
-		}
-
-		/** Replies the list of the super constructors.
-		 *
-		 * @return the list of the super constructors.
-		 * @see #populateInheritanceContext(JvmGenericType, ActionSignatureProvider)
-		 */
-		public Map<SignatureKey, JvmConstructor> getSuperConstructors() {
-			return this.superConstructors;
 		}
 
 		/** Replies the list of the generated constructors.

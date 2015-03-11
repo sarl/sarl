@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,13 @@
  */
 package io.sarl.lang.ui.images;
 
-import com.google.inject.Inject;
-
-import org.eclipse.jdt.internal.ui.JavaPluginImages;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.xtext.ui.IImageHelper.IImageDescriptorHelper;
-import org.eclipse.xtext.xbase.ui.labeling.XbaseImages2;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.xtend.ide.labeling.XtendImages;
 import org.eclipse.xtext.common.types.JvmVisibility;
+import org.eclipse.xtext.ui.IImageHelper.IImageDescriptorHelper;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 /**
@@ -39,20 +37,11 @@ import com.google.inject.Singleton;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("static-method")
 @Singleton
-public class SARLImages extends XbaseImages2 {
+public class SARLImages extends XtendImages {
 
 	@Inject
 	private IImageDescriptorHelper imageHelper;
-
-	/** Replies the image descriptor for the "packages".
-	 *
-	 * @return the image descriptor for the packages.
-	 */
-	public ImageDescriptor forPackage() {
-		return JavaPluginImages.DESC_OBJS_PACKDECL;
-	}
 
 	/** Replies the image descriptor for the "agents".
 	 *
@@ -122,6 +111,7 @@ public class SARLImages extends XbaseImages2 {
 	 *
 	 * @return the image descriptor for the SARL script.
 	 */
+	@Override
 	public ImageDescriptor forFile() {
 		return this.imageHelper.getImageDescriptor("sarl-file.png"); //$NON-NLS-1$
 	}

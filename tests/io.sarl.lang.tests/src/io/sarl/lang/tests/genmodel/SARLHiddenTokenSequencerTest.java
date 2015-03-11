@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.genmodel.GeneratedCode;
 import io.sarl.lang.genmodel.SARLCodeGenerator;
-import io.sarl.lang.sarl.Agent;
+import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.tests.api.AbstractSarlTest;
 
 import org.eclipse.emf.common.util.BasicEList;
@@ -58,7 +58,7 @@ public class SARLHiddenTokenSequencerTest extends AbstractSarlTest {
 		Resource resource = mock(Resource.class);
 		when(resource.getContents()).thenReturn(new BasicEList());
 		GeneratedCode code = generator.createScript(resource, "io.sarl.lang.tests");
-		Agent agent = generator.createAgent(code, "MyAgent", null);
+		SarlAgent agent = generator.createAgent(code, "MyAgent", null);
 		//
 		generator.attachComment(code, agent, "/* my comment\n*/");
 		//
@@ -73,7 +73,7 @@ public class SARLHiddenTokenSequencerTest extends AbstractSarlTest {
 		Resource resource = mock(Resource.class);
 		when(resource.getContents()).thenReturn(new BasicEList());
 		GeneratedCode code = generator.createScript(resource, "io.sarl.lang.tests");
-		Agent agent = generator.createAgent(code, "MyAgent", null);
+		SarlAgent agent = generator.createAgent(code, "MyAgent", null);
 		//
 		generator.attachPostComment(code, agent, "/* my comment\n*/");
 		//
@@ -88,7 +88,7 @@ public class SARLHiddenTokenSequencerTest extends AbstractSarlTest {
 		Resource resource = mock(Resource.class);
 		when(resource.getContents()).thenReturn(new BasicEList());
 		GeneratedCode code = generator.createScript(resource, "io.sarl.lang.tests");
-		Agent agent = generator.createAgent(code, "MyAgent", null);
+		SarlAgent agent = generator.createAgent(code, "MyAgent", null);
 		XBlockExpression block = XbaseFactory.eINSTANCE.createXBlockExpression();
 		generator.createAction(code, agent, "myFct", null, block);
 		//

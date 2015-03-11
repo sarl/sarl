@@ -16,10 +16,11 @@
 package io.sarl.lang.ui.tests.validation;
 
 import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
+import org.eclipse.xtend.core.xtend.XtendFile;
+import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.junit.Test;
@@ -44,7 +45,7 @@ public class SARLUIValidatorTest extends AbstractSarlUiTest {
 	 */
 	@Test
 	public void checkFileNamingConventions_validPackageName() throws Exception {
-		SarlScript script = this.helper.createSARLScript(
+		XtendFile script = this.helper.createSARLScript(
 				pathStr("io","sarl","mypackage","test"), //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 				"package io.sarl.mypackage"); //$NON-NLS-1$
 		this.validator.assertNoIssues(script);
@@ -55,13 +56,13 @@ public class SARLUIValidatorTest extends AbstractSarlUiTest {
 	 */
 	@Test
 	public void checkFileNamingConventions_wrongPackageName() throws Exception {
-		SarlScript script = this.helper.createSARLScript(
+		XtendFile script = this.helper.createSARLScript(
 				pathStr("io","sarl","mypackage","test"), //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 				"package io.sarl.myotherpackage"); //$NON-NLS-1$
 		this.validator.assertWarning(
 				script,
-				SarlPackage.eINSTANCE.getSarlScript(),
-				IssueCodes.WRONG_PACKAGE,
+				XtendPackage.eINSTANCE.getXtendFile(),
+				org.eclipse.xtend.core.validation.IssueCodes.WRONG_PACKAGE,
 				"The declared package 'io.sarl.myotherpackage' does not match the expected package 'io.sarl.mypackage'"); //$NON-NLS-1$
 	}
 

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,8 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.Generated;
 import io.sarl.lang.genmodel.GeneratedCode;
-import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.Constructor;
-import io.sarl.lang.sarl.FeatureContainer;
-import io.sarl.lang.sarl.ParameterizedFeature;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.signature.ActionKey;
 import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.signature.ActionSignatureProvider.FormalParameterProvider;
@@ -60,6 +58,9 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
+import org.eclipse.xtend.core.xtend.XtendConstructor;
+import org.eclipse.xtend.core.xtend.XtendExecutable;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
@@ -334,7 +335,7 @@ public final class Jdt2Ecore {
 	 * @return the JvmConstructor
 	 * @throws JavaModelException if the Java model is invalid.
 	 */
-	public static JvmConstructor getJvmConstructor(GeneratedCode code, IMethod constructor, FeatureContainer context)
+	public static JvmConstructor getJvmConstructor(GeneratedCode code, IMethod constructor, XtendTypeDeclaration context)
 			throws JavaModelException {
 		if (constructor.isConstructor()) {
 			JvmType type = code.getCodeGenerator().getTypeReferences().findDeclaredType(
@@ -386,9 +387,8 @@ public final class Jdt2Ecore {
 	 * @throws IllegalArgumentException if the signature is not syntactically correct.
 	 */
 	public static void createFormalParameters(GeneratedCode code, IMethod operation,
-			ParameterizedFeature container) throws JavaModelException, IllegalArgumentException {
+			XtendExecutable container) throws JavaModelException, IllegalArgumentException {
 		boolean isVarargs = Flags.isVarargs(operation.getFlags());
-		container.setVarargs(isVarargs);
 		ILocalVariable[] parameters = operation.getParameters();
 		for (int i = 0; i < parameters.length; ++i) {
 			ILocalVariable parameter = parameters[i];
@@ -398,11 +398,14 @@ public final class Jdt2Ecore {
 			if (isVarargs && i == parameters.length - 1 && type.endsWith("[]")) { //$NON-NLS-1$
 				type = type.substring(0, type.length() - 2);
 			}
-			code.getCodeGenerator().createFormalParameter(code, container,
+			SarlFormalParameter sarlParameter = code.getCodeGenerator().createFormalParameter(code, container,
 					parameter.getElementName(),
 					type,
 					defaultValue,
 					code.getResourceSet());
+			if (isVarargs && i == parameters.length - 1) {
+				sarlParameter.setVarArg(isVarargs);
+			}
 		}
 	}
 
@@ -414,7 +417,7 @@ public final class Jdt2Ecore {
 	 * @throws JavaModelException if the Java model is invalid.
 	 */
 	public static void createStandardConstructors(GeneratedCode code,
-			Collection<IMethod> superClassConstructors, FeatureContainer container) throws JavaModelException {
+			Collection<IMethod> superClassConstructors, XtendTypeDeclaration container) throws JavaModelException {
 		if (superClassConstructors != null) {
 			for (IMethod constructor : superClassConstructors) {
 				if (!isGeneratedOperation(constructor)) {
@@ -432,7 +435,7 @@ public final class Jdt2Ecore {
 					}
 					block.getExpressions().add(call);
 					//
-					Constructor cons = code.getCodeGenerator().createConstructor(code, container, block);
+					XtendConstructor cons = code.getCodeGenerator().createConstructor(code, container, block);
 					createFormalParameters(code, constructor, cons);
 				}
 			}
@@ -448,11 +451,11 @@ public final class Jdt2Ecore {
 	 * @throws IllegalArgumentException if the signature is not syntactically correct.
 	 */
 	public static void createActions(GeneratedCode code,
-			Collection<IMethod> methods, FeatureContainer container) throws JavaModelException, IllegalArgumentException {
+			Collection<IMethod> methods, XtendTypeDeclaration container) throws JavaModelException, IllegalArgumentException {
 		if (methods != null) {
 			for (IMethod operation : methods) {
 				if (!isGeneratedOperation(operation)) {
-					Action action = code.getCodeGenerator().createAction(code, container,
+					SarlAction action = code.getCodeGenerator().createAction(code, container,
 							operation.getElementName(),
 							Signature.toString(operation.getReturnType()),
 							null);

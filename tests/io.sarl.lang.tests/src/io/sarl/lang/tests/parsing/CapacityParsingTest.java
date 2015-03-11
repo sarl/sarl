@@ -20,20 +20,20 @@ import com.google.common.base.Strings;
 import com.google.inject.Inject;
 
 import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.ActionSignature;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.Attribute;
-import io.sarl.lang.sarl.Capacity;
-import io.sarl.lang.sarl.CapacityUses;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.Skill;
+import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.validation.IssueCodes;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtend.core.xtend.XtendField;
+import org.eclipse.xtend.core.xtend.XtendFile;
+import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.junit4.InjectWith;
@@ -158,14 +158,14 @@ public class CapacityParsingTest {
 	public static class TopElementTest extends AbstractSarlTest {
 
 		@Inject
-		private ParseHelper<SarlScript> parser;
+		private ParseHelper<XtendFile> parser;
 
 		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
 		public void capacityDirectImplementation() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"import io.sarl.lang.core.Capacity",
 					"skill S1 implements Capacity {",
 					"}"
@@ -178,21 +178,21 @@ public class CapacityParsingTest {
 
 		@Test
 		public void redundantCapacity_fromSuperType() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"skill S1 implements C1 { }",
 					"skill S2 extends S1 implements C2, C1 { }"
 					));
 			this.validator.assertWarning(mas,
-					SarlPackage.eINSTANCE.getSkill(),
+					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
 					"The feature 'C1' is already implemented by the super-type 'S1'.");
 		}
 
 		@Test
 		public void redundantCapacity_duplicate() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"capacity C3 {}",
@@ -200,14 +200,14 @@ public class CapacityParsingTest {
 					"skill S2 extends S1 implements C2, C3, C2 { }"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getSkill(),
+					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
 					"Duplicate implemented feature 'C2'");
 		}
 
 		@Test
 		public void redundantCapacity_fromPreviousCapacity() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"capacity C3 extends C2 {}",
@@ -215,28 +215,28 @@ public class CapacityParsingTest {
 					"skill S2 extends S1 implements C3, C2 { }"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getSkill(),
+					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
 					"Duplicate implemented feature 'C2'");
 		}
 
 		@Test
 		public void invalidCapacityExtend_0() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 extends A1 {",
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
+					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Invalid supertype. Expecting: interface");
 		}
 
 		@Test
 		public void invalidCapacityExtend_1() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 {",
@@ -245,14 +245,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
+					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Invalid supertype. Expecting: interface");
 		}
 
 		@Test
 		public void invalidCapacityExtend_2() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 {",
@@ -261,14 +261,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
+					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Invalid supertype. Expecting: interface");
 		}
 
 		@Test
 		public void invalidCapacityExtend_3() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 {",
@@ -279,14 +279,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
+					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Invalid supertype. Expecting: interface");
 		}
 
 		@Test
 		public void invalidCapacityExtend_4() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 {",
@@ -297,14 +297,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
+					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Invalid supertype. Expecting: interface");
 		}
 
 		@Test
 		public void invalidCapacityExtend_5() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 {",
@@ -315,54 +315,54 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
+					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Invalid supertype. Expecting: interface");
 		}
 
 		@Test
 		public void invalidCapacityExtend_6() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 extends java.lang.Cloneable {",
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
+					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Capacity'");
 		}
 
 		@Test
 		public void invalidCapacityExtend_7() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 extends java.lang.Cloneable, C1 {",
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
+					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Capacity'");
 		}
 
 		@Test
 		public void invalidCapacityExtend_8() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 extends C1, java.lang.Cloneable {",
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
+					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Capacity'");
 		}
 
 		@Test
 		public void invalidCapacityExtend_9() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 {",
@@ -371,14 +371,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
+					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Capacity'");
 		}
 
 		@Test
 		public void invalidCapacityExtend_10() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 {",
@@ -387,14 +387,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
+					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Capacity'");
 		}
 
 		@Test
 		public void invalidCapacityExtend_11() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 {",
@@ -403,40 +403,40 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
+					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Capacity'");
 		}
 
 		@Test
 		public void invalidCapacityExtend_12() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 extends C1 {",
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
-					IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+					SarlPackage.eINSTANCE.getSarlCapacity(),
+					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
 					"The inheritance hierarchy of 'C1' is inconsistent");
 		}
 
 		@Test
 		public void invalidCapacityExtend_13() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 extends C2 {",
 					"}",
 					"capacity C2 extends C1 {",
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
-					IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+					SarlPackage.eINSTANCE.getSarlCapacity(),
+					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
 					"The inheritance hierarchy of 'C1' is inconsistent");
 		}
 
 		@Test
 		public void invalidCapacityExtend_14() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 extends C3 {",
 					"}",
 					"capacity C2 extends C1 {",
@@ -445,53 +445,53 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
-					IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+					SarlPackage.eINSTANCE.getSarlCapacity(),
+					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
 					"The inheritance hierarchy of 'C1' is inconsistent");
 		}
 
 		@Test
 		public void invalidCapacityExtend_15() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"capacity C3 extends C1, C2, C3 { }"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
-					IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+					SarlPackage.eINSTANCE.getSarlCapacity(),
+					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
 					"The inheritance hierarchy of 'C3' is inconsistent");
 		}
 
 		@Test
 		public void invalidCapacityExtend_16() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"capacity C3 extends C1, C3, C2 { }"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
-					IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+					SarlPackage.eINSTANCE.getSarlCapacity(),
+					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
 					"The inheritance hierarchy of 'C3' is inconsistent");
 		}
 
 		@Test
 		public void invalidCapacityExtend_17() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"capacity C3 extends C3, C1, C3 { }"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
-					IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+					SarlPackage.eINSTANCE.getSarlCapacity(),
+					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
 					"The inheritance hierarchy of 'C3' is inconsistent");
 		}
 
 		@Test
 		public void invalidSkillExtend_0() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"}",
 					"agent A1 {",
@@ -500,14 +500,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getSkill(),
+					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Skill'");
 		}
 
 		@Test
 		public void invalidSkillExtend_1() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 {",
@@ -516,14 +516,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getSkill(),
+					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Invalid supertype. Expecting: class");
 		}
 
 		@Test
 		public void invalidSkillImplement_0() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"behavior B1 {",
 					"}",
 					"skill S1 implements B1 {",
@@ -537,7 +537,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidSkillImplement_1() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"behavior B1 {",
 					"}",
 					"capacity C1 {",
@@ -555,7 +555,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidSkillImplement_2() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"behavior B1 {",
 					"}",
 					"capacity C1 {",
@@ -573,7 +573,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidSkillImplement_3() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"behavior B1 {",
 					"}",
 					"capacity C1 {",
@@ -591,7 +591,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void inheritance() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity CapTest1 {",
 					"	def func1 : int",
 					"}",
@@ -600,47 +600,47 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(2, mas.getElements().size());
+			assertEquals(2, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Capacity capacity1 = (Capacity) mas.getElements().get(0);
+			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("CapTest1", capacity1.getName());
-			assertTypeReferenceIdentifiers(capacity1.getSuperTypes());
-			assertEquals(1, capacity1.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity1.getExtends());
+			assertEquals(1, capacity1.getMembers().size());
 			//
-			ActionSignature signature1 = (ActionSignature) capacity1.getFeatures().get(0);
+			SarlAction signature1 = (SarlAction) capacity1.getMembers().get(0);
 			assertEquals("func1", signature1.getName());
 			assertTypeReferenceIdentifiers(signature1.getFiredEvents());
-			assertTypeReferenceIdentifier(signature1.getType(), "int");
-			assertParameterNames(signature1.getParams());
+			assertTypeReferenceIdentifier(signature1.getReturnType(), "int");
+			assertParameterNames(signature1.getParameters());
 			//
-			Capacity capacity2 = (Capacity) mas.getElements().get(1);
+			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
 			assertEquals("CapTest2", capacity2.getName());
-			assertTypeReferenceIdentifiers(capacity2.getSuperTypes(), "CapTest1");
-			assertEquals(1, capacity2.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity2.getExtends(), "CapTest1");
+			assertEquals(1, capacity2.getMembers().size());
 			//
-			ActionSignature signature2 = (ActionSignature) capacity2.getFeatures().get(0);
+			SarlAction signature2 = (SarlAction) capacity2.getMembers().get(0);
 			assertEquals("func2", signature2.getName());
 			assertTypeReferenceIdentifiers(signature2.getFiredEvents());
-			assertTypeReferenceIdentifier(signature2.getType(), "void");
-			assertParameterNames(signature2.getParams(), "a");
-			assertParameterTypes(signature2.getParams(), "int");
-			assertParameterDefaultValues(signature2.getParams(), (Object) null);
+			assertTypeReferenceIdentifier(signature2.getReturnType(), "void");
+			assertParameterNames(signature2.getParameters(), "a");
+			assertParameterTypes(signature2.getParameters(), "int");
+			assertParameterDefaultValues(signature2.getParameters(), (Object) null);
 		}
 
 		@Test
 		public void emptyCapacity() throws Exception {
-			SarlScript mas = this.parser.parse("capacity C1 { }");
+			XtendFile mas = this.parser.parse("capacity C1 { }");
 			this.validator.assertWarning(mas,
-					SarlPackage.eINSTANCE.getCapacity(),
+					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.DISCOURAGED_CAPACITY_DEFINITION,
 					"Discouraged capacity definition. A capacity without actions defined inside is not useful since it cannot be called by an agent or a behavior.");
 		}
 
 		@Test
 		public void skillImplementCapacity() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction",
 					"}",
@@ -649,37 +649,37 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(2, mas.getElements().size());
+			assertEquals(2, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Capacity capacity = (Capacity) mas.getElements().get(0);
+			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getSuperTypes());
-			assertEquals(1, capacity.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertEquals(1, capacity.getMembers().size());
 			//
-			ActionSignature signature = (ActionSignature) capacity.getFeatures().get(0);
+			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
 			assertEquals("myaction", signature.getName());
 			assertTypeReferenceIdentifiers(signature.getFiredEvents());
-			assertTypeReferenceIdentifier(signature.getType(), "void");
-			assertParameterNames(signature.getParams());
+			assertTypeReferenceIdentifier(signature.getReturnType(), "void");
+			assertParameterNames(signature.getParameters());
 			//
-			Skill skill = (Skill) mas.getElements().get(1);
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getSuperTypes());
-			assertTypeReferenceIdentifiers(skill.getImplementedTypes(), "C1");
-			assertEquals(1, skill.getFeatures().size());
+			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
+			assertEquals(1, skill.getMembers().size());
 			//
-			Action action = (Action) skill.getFeatures().get(0);
+			SarlAction action = (SarlAction) skill.getMembers().get(0);
 			assertEquals("myaction", action.getName());
 			assertTypeReferenceIdentifiers(action.getFiredEvents());
-			assertTypeReferenceIdentifier(action.getType(), "void");
-			assertParameterNames(action.getParams());
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
+			assertParameterNames(action.getParameters());
 		}
 
 		@Test
 		public void skillExtendSkill() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction",
 					"}",
@@ -691,49 +691,49 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(3, mas.getElements().size());
+			assertEquals(3, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Capacity capacity = (Capacity) mas.getElements().get(0);
+			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getSuperTypes());
-			assertEquals(1, capacity.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertEquals(1, capacity.getMembers().size());
 			//
-			ActionSignature signature = (ActionSignature) capacity.getFeatures().get(0);
+			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
 			assertEquals("myaction", signature.getName());
 			assertTypeReferenceIdentifiers(signature.getFiredEvents());
-			assertTypeReferenceIdentifier(signature.getType(), "void");
-			assertParameterNames(signature.getParams());
+			assertTypeReferenceIdentifier(signature.getReturnType(), "void");
+			assertParameterNames(signature.getParameters());
 			//
-			Skill skill1 = (Skill) mas.getElements().get(1);
+			SarlSkill skill1 = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill1.getName());
-			assertTypeReferenceIdentifiers(skill1.getSuperTypes());
-			assertTypeReferenceIdentifiers(skill1.getImplementedTypes(), "C1");
-			assertEquals(1, skill1.getFeatures().size());
+			assertTypeReferenceIdentifiers(skill1.getExtends());
+			assertTypeReferenceIdentifiers(skill1.getImplements(), "C1");
+			assertEquals(1, skill1.getMembers().size());
 			//
-			Action action1 = (Action) skill1.getFeatures().get(0);
+			SarlAction action1 = (SarlAction) skill1.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
 			assertTypeReferenceIdentifiers(action1.getFiredEvents());
-			assertTypeReferenceIdentifier(action1.getType(), "void");
-			assertParameterNames(action1.getParams());
+			assertTypeReferenceIdentifier(action1.getReturnType(), "void");
+			assertParameterNames(action1.getParameters());
 			//
-			Skill skill2 = (Skill) mas.getElements().get(2);
+			SarlSkill skill2 = (SarlSkill) mas.getXtendTypes().get(2);
 			assertEquals("S2", skill2.getName());
-			assertTypeReferenceIdentifiers(skill2.getSuperTypes(), "S1");
-			assertTypeReferenceIdentifiers(skill2.getImplementedTypes());
-			assertEquals(1, skill2.getFeatures().size());
+			assertTypeReferenceIdentifiers(skill2.getExtends(), "S1");
+			assertTypeReferenceIdentifiers(skill2.getImplements());
+			assertEquals(1, skill2.getMembers().size());
 			//
-			Action action2 = (Action) skill2.getFeatures().get(0);
+			SarlAction action2 = (SarlAction) skill2.getMembers().get(0);
 			assertEquals("myaction", action2.getName());
 			assertTypeReferenceIdentifiers(action2.getFiredEvents());
-			assertTypeReferenceIdentifier(action2.getType(), "void");
-			assertParameterNames(action2.getParams());
+			assertTypeReferenceIdentifier(action2.getReturnType(), "void");
+			assertParameterNames(action2.getParameters());
 		}
 
 		@Test
 		public void skillExtendSkillImplementCapacity() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction",
 					"}",
@@ -749,72 +749,72 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(4, mas.getElements().size());
+			assertEquals(4, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Capacity capacity1 = (Capacity) mas.getElements().get(0);
+			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity1.getName());
-			assertTypeReferenceIdentifiers(capacity1.getSuperTypes());
-			assertEquals(1, capacity1.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity1.getExtends());
+			assertEquals(1, capacity1.getMembers().size());
 			//
-			ActionSignature signature1 = (ActionSignature) capacity1.getFeatures().get(0);
+			SarlAction signature1 = (SarlAction) capacity1.getMembers().get(0);
 			assertEquals("myaction", signature1.getName());
 			assertTypeReferenceIdentifiers(signature1.getFiredEvents());
-			assertTypeReferenceIdentifier(signature1.getType(), "void");
-			assertParameterNames(signature1.getParams());
+			assertTypeReferenceIdentifier(signature1.getReturnType(), "void");
+			assertParameterNames(signature1.getParameters());
 			//
-			Capacity capacity2 = (Capacity) mas.getElements().get(1);
+			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
 			assertEquals("C2", capacity2.getName());
-			assertTypeReferenceIdentifiers(capacity2.getSuperTypes());
-			assertEquals(1, capacity2.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity2.getExtends());
+			assertEquals(1, capacity2.getMembers().size());
 			//
-			ActionSignature signature2 = (ActionSignature) capacity2.getFeatures().get(0);
+			SarlAction signature2 = (SarlAction) capacity2.getMembers().get(0);
 			assertEquals("myaction2", signature2.getName());
 			assertTypeReferenceIdentifiers(signature2.getFiredEvents());
-			assertTypeReferenceIdentifier(signature2.getType(), "void");
-			assertParameterNames(signature2.getParams());
+			assertTypeReferenceIdentifier(signature2.getReturnType(), "void");
+			assertParameterNames(signature2.getParameters());
 			//
-			Skill skill1 = (Skill) mas.getElements().get(2);
+			SarlSkill skill1 = (SarlSkill) mas.getXtendTypes().get(2);
 			assertEquals("S1", skill1.getName());
-			assertTypeReferenceIdentifiers(skill1.getSuperTypes());
-			assertTypeReferenceIdentifiers(skill1.getImplementedTypes(), "C1");
-			assertEquals(1, skill1.getFeatures().size());
+			assertTypeReferenceIdentifiers(skill1.getExtends());
+			assertTypeReferenceIdentifiers(skill1.getImplements(), "C1");
+			assertEquals(1, skill1.getMembers().size());
 			//
-			Action action1 = (Action) skill1.getFeatures().get(0);
+			SarlAction action1 = (SarlAction) skill1.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
 			assertTypeReferenceIdentifiers(action1.getFiredEvents());
-			assertTypeReferenceIdentifier(action1.getType(), "void");
-			assertParameterNames(action1.getParams());
+			assertTypeReferenceIdentifier(action1.getReturnType(), "void");
+			assertParameterNames(action1.getParameters());
 			//
-			Skill skill2 = (Skill) mas.getElements().get(3);
+			SarlSkill skill2 = (SarlSkill) mas.getXtendTypes().get(3);
 			assertEquals("S2", skill2.getName());
-			assertTypeReferenceIdentifiers(skill2.getSuperTypes(), "S1");
-			assertTypeReferenceIdentifiers(skill2.getImplementedTypes(), "C2");
-			assertEquals(2, skill2.getFeatures().size());
+			assertTypeReferenceIdentifiers(skill2.getExtends(), "S1");
+			assertTypeReferenceIdentifiers(skill2.getImplements(), "C2");
+			assertEquals(2, skill2.getMembers().size());
 			//
-			Action action2 = (Action) skill2.getFeatures().get(0);
+			SarlAction action2 = (SarlAction) skill2.getMembers().get(0);
 			assertEquals("myaction", action2.getName());
 			assertTypeReferenceIdentifiers(action2.getFiredEvents());
-			assertTypeReferenceIdentifier(action2.getType(), "void");
-			assertParameterNames(action2.getParams());
+			assertTypeReferenceIdentifier(action2.getReturnType(), "void");
+			assertParameterNames(action2.getParameters());
 			//
-			Action action3 = (Action) skill2.getFeatures().get(1);
+			SarlAction action3 = (SarlAction) skill2.getMembers().get(1);
 			assertEquals("myaction2", action3.getName());
 			assertTypeReferenceIdentifiers(action3.getFiredEvents());
-			assertTypeReferenceIdentifier(action3.getType(), "void");
-			assertParameterNames(action3.getParams());
+			assertTypeReferenceIdentifier(action3.getReturnType(), "void");
+			assertParameterNames(action3.getParameters());
 		}
 
 		@Test
 		public void skillNoExtendSkillNoImplementCapacity() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"skill S1 {",
 					"	def myaction { }",
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getSkill(),
+					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_TYPE,
 					"Missing implemented type 'io.sarl.lang.core.Capacity' for 'S1'");
 		}
@@ -826,14 +826,14 @@ public class CapacityParsingTest {
 	public static class ActionTest extends AbstractSarlTest {
 
 		@Inject
-		private ParseHelper<SarlScript> parser;
+		private ParseHelper<XtendFile> parser;
 
 		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
 		public void multipleActionDefinitionInCapacity() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int, b : int)",
 					"	def myaction(a : int)",
@@ -841,14 +841,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getActionSignature(),
-					IssueCodes.DUPLICATE_METHOD,
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
 					"Duplicate action in 'C1': myaction(a : int)");
 		}
 
 		@Test
 		public void multipleActionDefinitionInSkill() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def myaction(a : int, b : int) { }",
@@ -857,14 +857,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getAction(),
-					IssueCodes.DUPLICATE_METHOD,
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
 					"Duplicate action in 'S1': myaction(a : int)");
 		}
 
 		@Test
 		public void invalidActionNameInCapacity() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction",
 					"	def _handle_myaction",
@@ -872,14 +872,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getActionSignature(),
-					IssueCodes.INVALID_MEMBER_NAME,
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
 					"Invalid action name '_handle_myaction'.");
 		}
 
 		@Test
 		public void invalidActionNameInSkill() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def myaction {",
@@ -894,14 +894,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getAction(),
-					IssueCodes.INVALID_MEMBER_NAME,
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
 					"Invalid action name '_handle_myaction'.");
 		}
 
 		@Test
 		public void missedActionImplementation_0() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction1(a : int)",
 					"}",
@@ -914,62 +914,62 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(3, mas.getElements().size());
+			assertEquals(3, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Capacity capacity1 = (Capacity) mas.getElements().get(0);
+			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity1.getName());
-			assertTypeReferenceIdentifiers(capacity1.getSuperTypes());
-			assertEquals(1, capacity1.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity1.getExtends());
+			assertEquals(1, capacity1.getMembers().size());
 			//
-			ActionSignature signature1 = (ActionSignature) capacity1.getFeatures().get(0);
+			SarlAction signature1 = (SarlAction) capacity1.getMembers().get(0);
 			assertEquals("myaction1", signature1.getName());
 			assertTypeReferenceIdentifiers(signature1.getFiredEvents());
-			assertTypeReferenceIdentifier(signature1.getType(), "void");
-			assertParameterNames(signature1.getParams(), "a");
-			assertParameterTypes(signature1.getParams(), "int");
-			assertParameterDefaultValues(signature1.getParams(), (Object) null);
+			assertTypeReferenceIdentifier(signature1.getReturnType(), "void");
+			assertParameterNames(signature1.getParameters(), "a");
+			assertParameterTypes(signature1.getParameters(), "int");
+			assertParameterDefaultValues(signature1.getParameters(), (Object) null);
 			//
-			Capacity capacity2 = (Capacity) mas.getElements().get(1);
+			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
 			assertEquals("C2", capacity2.getName());
-			assertTypeReferenceIdentifiers(capacity2.getSuperTypes());
-			assertEquals(1, capacity2.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity2.getExtends());
+			assertEquals(1, capacity2.getMembers().size());
 			//
-			ActionSignature signature2 = (ActionSignature) capacity2.getFeatures().get(0);
+			SarlAction signature2 = (SarlAction) capacity2.getMembers().get(0);
 			assertEquals("myaction2", signature2.getName());
 			assertTypeReferenceIdentifiers(signature2.getFiredEvents());
-			assertTypeReferenceIdentifier(signature2.getType(), "void");
-			assertParameterNames(signature2.getParams(), "b", "c");
-			assertParameterTypes(signature2.getParams(), "float", "boolean");
-			assertParameterDefaultValues(signature2.getParams(), null, null);
+			assertTypeReferenceIdentifier(signature2.getReturnType(), "void");
+			assertParameterNames(signature2.getParameters(), "b", "c");
+			assertParameterTypes(signature2.getParameters(), "float", "boolean");
+			assertParameterDefaultValues(signature2.getParameters(), null, null);
 			//
-			Skill skill = (Skill) mas.getElements().get(2);
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(2);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getSuperTypes());
-			assertTypeReferenceIdentifiers(skill.getImplementedTypes(), "C1", "C2");
-			assertEquals(2, skill.getFeatures().size());
+			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "C1", "C2");
+			assertEquals(2, skill.getMembers().size());
 			//
-			Action action1 = (Action) skill.getFeatures().get(0);
+			SarlAction action1 = (SarlAction) skill.getMembers().get(0);
 			assertEquals("myaction1", action1.getName());
 			assertTypeReferenceIdentifiers(action1.getFiredEvents());
-			assertTypeReferenceIdentifier(action1.getType(), "void");
-			assertParameterNames(action1.getParams(), "x");
-			assertParameterTypes(action1.getParams(), "int");
-			assertParameterDefaultValues(action1.getParams(), (Object) null);
+			assertTypeReferenceIdentifier(action1.getReturnType(), "void");
+			assertParameterNames(action1.getParameters(), "x");
+			assertParameterTypes(action1.getParameters(), "int");
+			assertParameterDefaultValues(action1.getParameters(), (Object) null);
 			//
-			Action action2 = (Action) skill.getFeatures().get(1);
+			SarlAction action2 = (SarlAction) skill.getMembers().get(1);
 			assertEquals("myaction2", action2.getName());
 			assertTypeReferenceIdentifiers(action2.getFiredEvents());
-			assertTypeReferenceIdentifier(action2.getType(), "void");
-			assertParameterNames(action2.getParams(), "y", "z");
-			assertParameterTypes(action2.getParams(), "float", "boolean");
-			assertParameterDefaultValues(action2.getParams(), null, null);
+			assertTypeReferenceIdentifier(action2.getReturnType(), "void");
+			assertParameterNames(action2.getParameters(), "y", "z");
+			assertParameterTypes(action2.getParameters(), "float", "boolean");
+			assertParameterDefaultValues(action2.getParameters(), null, null);
 		}
 
 		@Test
 		public void missedActionImplementation_1() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction1(a : int)",
 					"}",
@@ -981,14 +981,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getSkill(),
+					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.MISSING_METHOD_IMPLEMENTATION,
 					"The operation myaction1(a : int) must be implemented.");
 		}
 
 		@Test
 		public void missedActionImplementation_2() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction1(a : int)",
 					"}",
@@ -1001,14 +1001,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getSkill(),
+					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.MISSING_METHOD_IMPLEMENTATION,
 					"The operation myaction1(a : int) must be implemented.");
 		}
 
 		@Test
 		public void incompatibleReturnType_0() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1023,14 +1023,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getAction(),
+					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
 					"Incompatible return type between 'float' and 'int' for myaction(int).");
 		}
 
 		@Test
 		public void incompatibleReturnType_1() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1045,14 +1045,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getAction(),
+					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
 					"Incompatible return type between 'int' and 'void' for myaction(int).");
 		}
 
 		@Test
 		public void incompatibleReturnType_2() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1067,14 +1067,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getAction(),
+					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
 					"Incompatible return type between 'void' and 'int' for myaction(int).");
 		}
 
 		@Test
 		public void incompatibleReturnType_3() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : int",
 					"}",
@@ -1085,14 +1085,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getAction(),
+					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
 					"Incompatible return type between 'float' and 'int' for myaction(int).");
 		}
 
 		@Test
 		public void incompatibleReturnType_4() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) // void",
 					"}",
@@ -1103,14 +1103,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getAction(),
+					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
 					"Incompatible return type between 'int' and 'void' for myaction(int).");
 		}
 
 		@Test
 		public void incompatibleReturnType_5() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : int",
 					"}",
@@ -1121,14 +1121,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getAction(),
+					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
 					"Incompatible return type between 'void' and 'int' for myaction(int).");
 		}
 
 		@Test
 		public void compatibleReturnType_0() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1143,52 +1143,52 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(4, mas.getElements().size());
+			assertEquals(4, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Capacity capacity1 = (Capacity) mas.getElements().get(0);
+			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity1.getName());
-			assertTypeReferenceIdentifiers(capacity1.getSuperTypes());
-			assertEquals(0, capacity1.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity1.getExtends());
+			assertEquals(0, capacity1.getMembers().size());
 			//
-			Capacity capacity2 = (Capacity) mas.getElements().get(1);
+			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
 			assertEquals("C2", capacity2.getName());
-			assertTypeReferenceIdentifiers(capacity2.getSuperTypes());
-			assertEquals(0, capacity2.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity2.getExtends());
+			assertEquals(0, capacity2.getMembers().size());
 			//
-			Skill skill1 = (Skill) mas.getElements().get(2);
+			SarlSkill skill1 = (SarlSkill) mas.getXtendTypes().get(2);
 			assertEquals("S1", skill1.getName());
-			assertTypeReferenceIdentifiers(skill1.getSuperTypes());
-			assertTypeReferenceIdentifiers(skill1.getImplementedTypes(), "C1");
-			assertEquals(1, skill1.getFeatures().size());
+			assertTypeReferenceIdentifiers(skill1.getExtends());
+			assertTypeReferenceIdentifiers(skill1.getImplements(), "C1");
+			assertEquals(1, skill1.getMembers().size());
 			//
-			Action action1 = (Action) skill1.getFeatures().get(0);
+			SarlAction action1 = (SarlAction) skill1.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
 			assertTypeReferenceIdentifiers(action1.getFiredEvents());
-			assertTypeReferenceIdentifier(action1.getType(), "java.lang.Number");
-			assertParameterNames(action1.getParams(), "a");
-			assertParameterTypes(action1.getParams(), "int");
-			assertParameterDefaultValues(action1.getParams(), (Object) null);
+			assertTypeReferenceIdentifier(action1.getReturnType(), "java.lang.Number");
+			assertParameterNames(action1.getParameters(), "a");
+			assertParameterTypes(action1.getParameters(), "int");
+			assertParameterDefaultValues(action1.getParameters(), (Object) null);
 			//
-			Skill skill2 = (Skill) mas.getElements().get(3);
+			SarlSkill skill2 = (SarlSkill) mas.getXtendTypes().get(3);
 			assertEquals("S2", skill2.getName());
-			assertTypeReferenceIdentifiers(skill2.getSuperTypes(), "S1");
-			assertTypeReferenceIdentifiers(skill2.getImplementedTypes(), "C2");
-			assertEquals(1, skill2.getFeatures().size());
+			assertTypeReferenceIdentifiers(skill2.getExtends(), "S1");
+			assertTypeReferenceIdentifiers(skill2.getImplements(), "C2");
+			assertEquals(1, skill2.getMembers().size());
 			//
-			Action action2 = (Action) skill2.getFeatures().get(0);
+			SarlAction action2 = (SarlAction) skill2.getMembers().get(0);
 			assertEquals("myaction", action2.getName());
 			assertTypeReferenceIdentifiers(action2.getFiredEvents());
-			assertTypeReferenceIdentifier(action2.getType(), "java.lang.Double");
-			assertParameterNames(action2.getParams(), "a");
-			assertParameterTypes(action2.getParams(), "int");
-			assertParameterDefaultValues(action2.getParams(), (Object) null);
+			assertTypeReferenceIdentifier(action2.getReturnType(), "java.lang.Double");
+			assertParameterNames(action2.getParameters(), "a");
+			assertParameterTypes(action2.getParameters(), "int");
+			assertParameterDefaultValues(action2.getParameters(), (Object) null);
 		}
 
 		@Test
 		public void compatibleReturnType_1() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1203,52 +1203,52 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(4, mas.getElements().size());
+			assertEquals(4, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Capacity capacity1 = (Capacity) mas.getElements().get(0);
+			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity1.getName());
-			assertTypeReferenceIdentifiers(capacity1.getSuperTypes());
-			assertEquals(0, capacity1.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity1.getExtends());
+			assertEquals(0, capacity1.getMembers().size());
 			//
-			Capacity capacity2 = (Capacity) mas.getElements().get(1);
+			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
 			assertEquals("C2", capacity2.getName());
-			assertTypeReferenceIdentifiers(capacity2.getSuperTypes());
-			assertEquals(0, capacity2.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity2.getExtends());
+			assertEquals(0, capacity2.getMembers().size());
 			//
-			Skill skill1 = (Skill) mas.getElements().get(2);
+			SarlSkill skill1 = (SarlSkill) mas.getXtendTypes().get(2);
 			assertEquals("S1", skill1.getName());
-			assertTypeReferenceIdentifiers(skill1.getSuperTypes());
-			assertTypeReferenceIdentifiers(skill1.getImplementedTypes(), "C1");
-			assertEquals(1, skill1.getFeatures().size());
+			assertTypeReferenceIdentifiers(skill1.getExtends());
+			assertTypeReferenceIdentifiers(skill1.getImplements(), "C1");
+			assertEquals(1, skill1.getMembers().size());
 			//
-			Action action1 = (Action) skill1.getFeatures().get(0);
+			SarlAction action1 = (SarlAction) skill1.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
 			assertTypeReferenceIdentifiers(action1.getFiredEvents());
-			assertTypeReferenceIdentifier(action1.getType(), "float");
-			assertParameterNames(action1.getParams(), "a");
-			assertParameterTypes(action1.getParams(), "int");
-			assertParameterDefaultValues(action1.getParams(), (Object) null);
+			assertTypeReferenceIdentifier(action1.getReturnType(), "float");
+			assertParameterNames(action1.getParameters(), "a");
+			assertParameterTypes(action1.getParameters(), "int");
+			assertParameterDefaultValues(action1.getParameters(), (Object) null);
 			//
-			Skill skill2 = (Skill) mas.getElements().get(3);
+			SarlSkill skill2 = (SarlSkill) mas.getXtendTypes().get(3);
 			assertEquals("S2", skill2.getName());
-			assertTypeReferenceIdentifiers(skill2.getSuperTypes(), "S1");
-			assertTypeReferenceIdentifiers(skill2.getImplementedTypes(), "C2");
-			assertEquals(1, skill2.getFeatures().size());
+			assertTypeReferenceIdentifiers(skill2.getExtends(), "S1");
+			assertTypeReferenceIdentifiers(skill2.getImplements(), "C2");
+			assertEquals(1, skill2.getMembers().size());
 			//
-			Action action2 = (Action) skill2.getFeatures().get(0);
+			SarlAction action2 = (SarlAction) skill2.getMembers().get(0);
 			assertEquals("myaction", action2.getName());
 			assertTypeReferenceIdentifiers(action2.getFiredEvents());
-			assertTypeReferenceIdentifier(action2.getType(), "float");
-			assertParameterNames(action2.getParams(), "a");
-			assertParameterTypes(action2.getParams(), "int");
-			assertParameterDefaultValues(action2.getParams(), (Object) null);
+			assertTypeReferenceIdentifier(action2.getReturnType(), "float");
+			assertParameterNames(action2.getParameters(), "a");
+			assertParameterTypes(action2.getParameters(), "int");
+			assertParameterDefaultValues(action2.getParameters(), (Object) null);
 		}
 
 		@Test
 		public void compatibleReturnType_2() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : Number",
 					"}",
@@ -1259,41 +1259,41 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(2, mas.getElements().size());
+			assertEquals(2, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Capacity capacity = (Capacity) mas.getElements().get(0);
+			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getSuperTypes());
-			assertEquals(1, capacity.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertEquals(1, capacity.getMembers().size());
 			//
-			ActionSignature action1 = (ActionSignature) capacity.getFeatures().get(0);
+			SarlAction action1 = (SarlAction) capacity.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
 			assertTypeReferenceIdentifiers(action1.getFiredEvents());
-			assertTypeReferenceIdentifier(action1.getType(), "java.lang.Number");
-			assertParameterNames(action1.getParams(), "a");
-			assertParameterTypes(action1.getParams(), "int");
-			assertParameterDefaultValues(action1.getParams(), (Object) null);
+			assertTypeReferenceIdentifier(action1.getReturnType(), "java.lang.Number");
+			assertParameterNames(action1.getParameters(), "a");
+			assertParameterTypes(action1.getParameters(), "int");
+			assertParameterDefaultValues(action1.getParameters(), (Object) null);
 			//
-			Skill skill = (Skill) mas.getElements().get(1);
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S2", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getSuperTypes());
-			assertTypeReferenceIdentifiers(skill.getImplementedTypes(), "C1");
-			assertEquals(1, skill.getFeatures().size());
+			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
+			assertEquals(1, skill.getMembers().size());
 			//
-			Action action2 = (Action) skill.getFeatures().get(0);
+			SarlAction action2 = (SarlAction) skill.getMembers().get(0);
 			assertEquals("myaction", action2.getName());
 			assertTypeReferenceIdentifiers(action2.getFiredEvents());
-			assertTypeReferenceIdentifier(action2.getType(), "java.lang.Double");
-			assertParameterNames(action2.getParams(), "a");
-			assertParameterTypes(action2.getParams(), "int");
-			assertParameterDefaultValues(action2.getParams(), (Object) null);
+			assertTypeReferenceIdentifier(action2.getReturnType(), "java.lang.Double");
+			assertParameterNames(action2.getParameters(), "a");
+			assertParameterTypes(action2.getParameters(), "int");
+			assertParameterDefaultValues(action2.getParameters(), (Object) null);
 		}
 
 		@Test
 		public void compatibleReturnType_3() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : float",
 					"}",
@@ -1304,36 +1304,36 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(2, mas.getElements().size());
+			assertEquals(2, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Capacity capacity = (Capacity) mas.getElements().get(0);
+			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getSuperTypes());
-			assertEquals(1, capacity.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertEquals(1, capacity.getMembers().size());
 			//
-			ActionSignature action1 = (ActionSignature) capacity.getFeatures().get(0);
+			SarlAction action1 = (SarlAction) capacity.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
 			assertTypeReferenceIdentifiers(action1.getFiredEvents());
-			assertTypeReferenceIdentifier(action1.getType(), "float");
-			assertParameterNames(action1.getParams(), "a");
-			assertParameterTypes(action1.getParams(), "int");
-			assertParameterDefaultValues(action1.getParams(), (Object) null);
+			assertTypeReferenceIdentifier(action1.getReturnType(), "float");
+			assertParameterNames(action1.getParameters(), "a");
+			assertParameterTypes(action1.getParameters(), "int");
+			assertParameterDefaultValues(action1.getParameters(), (Object) null);
 			//
-			Skill skill = (Skill) mas.getElements().get(1);
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S2", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getSuperTypes());
-			assertTypeReferenceIdentifiers(skill.getImplementedTypes(), "C1");
-			assertEquals(1, skill.getFeatures().size());
+			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
+			assertEquals(1, skill.getMembers().size());
 			//
-			Action action2 = (Action) skill.getFeatures().get(0);
+			SarlAction action2 = (SarlAction) skill.getMembers().get(0);
 			assertEquals("myaction", action2.getName());
 			assertTypeReferenceIdentifiers(action2.getFiredEvents());
-			assertTypeReferenceIdentifier(action2.getType(), "float");
-			assertParameterNames(action2.getParams(), "a");
-			assertParameterTypes(action2.getParams(), "int");
-			assertParameterDefaultValues(action2.getParams(), (Object) null);
+			assertTypeReferenceIdentifier(action2.getReturnType(), "float");
+			assertParameterNames(action2.getParameters(), "a");
+			assertParameterTypes(action2.getParameters(), "int");
+			assertParameterDefaultValues(action2.getParameters(), (Object) null);
 		}
 
 	}
@@ -1343,14 +1343,14 @@ public class CapacityParsingTest {
 	public static class AttributeTest extends AbstractSarlTest {
 
 		@Inject
-		private ParseHelper<SarlScript> parser;
+		private ParseHelper<XtendFile> parser;
 
 		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
 		public void multipleVariableDefinitionInSkill() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	var myfield : int",
@@ -1359,14 +1359,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getAttribute(),
-					IssueCodes.DUPLICATE_FIELD,
+					XtendPackage.eINSTANCE.getXtendField(),
+					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 					"Duplicate field in 'S1': myfield");
 		}
 
 		@Test
 		public void multipleValueDefinitionInSkill() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	val myfield : int = 4",
@@ -1375,14 +1375,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getAttribute(),
-					IssueCodes.DUPLICATE_FIELD,
+					XtendPackage.eINSTANCE.getXtendField(),
+					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 					"Duplicate field in 'S1': myfield");
 		}
 
 		@Test
 		public void missedFinalFieldInitialization() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	val field1 : int = 5",
@@ -1397,7 +1397,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void completeFinalFieldInitialization() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	val field1 : int = 5",
@@ -1405,27 +1405,27 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertNoErrors(mas);
-			assertEquals(2, mas.getElements().size());
+			assertEquals(2, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Capacity capacity = (Capacity) mas.getElements().get(0);
+			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getSuperTypes());
-			assertEquals(0, capacity.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertEquals(0, capacity.getMembers().size());
 			//
-			Skill skill = (Skill) mas.getElements().get(1);
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getSuperTypes());
-			assertTypeReferenceIdentifiers(skill.getImplementedTypes(), "C1");
-			assertEquals(2, skill.getFeatures().size());
+			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
+			assertEquals(2, skill.getMembers().size());
 			//
-			Attribute attr1 = (Attribute) skill.getFeatures().get(0);
+			XtendField attr1 = (XtendField) skill.getMembers().get(0);
 			assertEquals("field1", attr1.getName());
 			assertTypeReferenceIdentifier(attr1.getType(), "int");
 			assertXExpression(attr1.getInitialValue(), XNumberLiteral.class, "5");
 			//
-			Attribute attr2 = (Attribute) skill.getFeatures().get(1);
+			XtendField attr2 = (XtendField) skill.getMembers().get(1);
 			assertEquals("field2", attr2.getName());
 			assertTypeReferenceIdentifier(attr2.getType(), "java.lang.String");
 			assertXExpression(attr2.getInitialValue(), XStringLiteral.class, "");
@@ -1433,7 +1433,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void fieldNameShadowingInSkill() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1446,7 +1446,7 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertWarning(mas,
-					SarlPackage.eINSTANCE.getAttribute(),
+					XtendPackage.eINSTANCE.getXtendField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
 					"The field 'field1' in 'S2' is hidding the inherited field 'S1.field1'.");
 		}
@@ -1458,14 +1458,14 @@ public class CapacityParsingTest {
 	public static class CapacityUsesTest extends AbstractSarlTest {
 
 		@Inject
-		private ParseHelper<SarlScript> parser;
+		private ParseHelper<XtendFile> parser;
 
 		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
 		public void invalidCapacityTypeForUses() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : float",
 					"}",
@@ -1484,7 +1484,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityTypeForRequires() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : float",
 					"}",
@@ -1503,7 +1503,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void agentUnsuedCapacity_0() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myfct",
 					"}",
@@ -1521,7 +1521,7 @@ public class CapacityParsingTest {
 			assertWarning(
 					issues,
 					mas,
-					SarlPackage.eINSTANCE.getCapacityUses(),
+					SarlPackage.eINSTANCE.getSarlCapacityUses(),
 					IssueCodes.UNUSED_AGENT_CAPACITY,
 					"The capacity 'C1' is not used");
 			assertNoMoreIssues(issues, mas);
@@ -1529,7 +1529,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void agentUnsuedCapacity_1() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myfct",
 					"}",
@@ -1546,13 +1546,13 @@ public class CapacityParsingTest {
 			assertWarning(
 					issues,
 					mas,
-					SarlPackage.eINSTANCE.getCapacityUses(),
+					SarlPackage.eINSTANCE.getSarlCapacityUses(),
 					IssueCodes.UNUSED_AGENT_CAPACITY,
 					"The capacity 'C1' is not used");
 			assertWarning(
 					issues,
 					mas,
-					SarlPackage.eINSTANCE.getCapacityUses(),
+					SarlPackage.eINSTANCE.getSarlCapacityUses(),
 					IssueCodes.UNUSED_AGENT_CAPACITY,
 					"The capacity 'C2' is not used");
 			assertNoMoreIssues(issues, mas);
@@ -1560,7 +1560,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void agentUnsuedCapacity_2() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {",
 					"	def myfct",
 					"}",
@@ -1576,50 +1576,50 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertNoIssues(mas);
-			assertEquals(3, mas.getElements().size());
+			assertEquals(3, mas.getXtendTypes().size());
 			//
-			assertTrue(Strings.isNullOrEmpty(mas.getName()));
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
-			Capacity capacity1 = (Capacity) mas.getElements().get(0);
+			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity1.getName());
-			assertTypeReferenceIdentifiers(capacity1.getSuperTypes());
-			assertEquals(1, capacity1.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity1.getExtends());
+			assertEquals(1, capacity1.getMembers().size());
 			//
-			ActionSignature signature1 = (ActionSignature) capacity1.getFeatures().get(0);
+			SarlAction signature1 = (SarlAction) capacity1.getMembers().get(0);
 			assertEquals("myfct", signature1.getName());
 			assertTypeReferenceIdentifiers(signature1.getFiredEvents());
-			assertTypeReferenceIdentifier(signature1.getType(), "void");
-			assertParameterNames(signature1.getParams());
+			assertTypeReferenceIdentifier(signature1.getReturnType(), "void");
+			assertParameterNames(signature1.getParameters());
 			//
-			Capacity capacity2 = (Capacity) mas.getElements().get(1);
+			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
 			assertEquals("C2", capacity2.getName());
-			assertTypeReferenceIdentifiers(capacity2.getSuperTypes());
-			assertEquals(1, capacity2.getFeatures().size());
+			assertTypeReferenceIdentifiers(capacity2.getExtends());
+			assertEquals(1, capacity2.getMembers().size());
 			//
-			ActionSignature signature2 = (ActionSignature) capacity2.getFeatures().get(0);
+			SarlAction signature2 = (SarlAction) capacity2.getMembers().get(0);
 			assertEquals("myfct2", signature2.getName());
 			assertTypeReferenceIdentifiers(signature2.getFiredEvents());
-			assertTypeReferenceIdentifier(signature2.getType(), "void");
-			assertParameterNames(signature2.getParams());
+			assertTypeReferenceIdentifier(signature2.getReturnType(), "void");
+			assertParameterNames(signature2.getParameters());
 			//
-			Agent agent = (Agent) mas.getElements().get(2);
+			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(2);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getSuperTypes());
-			assertEquals(2, agent.getFeatures().size());
+			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertEquals(2, agent.getMembers().size());
 			//
-			CapacityUses uses = (CapacityUses) agent.getFeatures().get(0);
-			assertTypeReferenceIdentifiers(uses.getCapacitiesUsed(), "C2", "C1");
+			SarlCapacityUses uses = (SarlCapacityUses) agent.getMembers().get(0);
+			assertTypeReferenceIdentifiers(uses.getCapacities(), "C2", "C1");
 			//
-			Action action = (Action) agent.getFeatures().get(1);
+			SarlAction action = (SarlAction) agent.getMembers().get(1);
 			assertEquals("myaction", action.getName());
 			assertTypeReferenceIdentifiers(action.getFiredEvents());
-			assertTypeReferenceIdentifier(action.getType(), "void");
-			assertParameterNames(action.getParams());
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
+			assertParameterNames(action.getParameters());
 		}
 
 		@Test
 		public void multipleCapacityUses_0() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"capacity C3 { def testFct }",
@@ -1629,14 +1629,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertWarning(mas,
-					SarlPackage.eINSTANCE.getCapacityUses(),
+					SarlPackage.eINSTANCE.getSarlCapacityUses(),
 					IssueCodes.REDUNDANT_CAPACITY_USE,
 					"Redundant use of the capacity 'C1'");
 		}
 
 		@Test
 		public void multipleCapacityUses_1() throws Exception {
-			SarlScript mas = this.parser.parse(multilineString(
+			XtendFile mas = this.parser.parse(multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"capacity C3 { def testFct }",
@@ -1647,7 +1647,7 @@ public class CapacityParsingTest {
 					"}"
 					));
 			this.validator.assertWarning(mas,
-					SarlPackage.eINSTANCE.getCapacityUses(),
+					SarlPackage.eINSTANCE.getSarlCapacityUses(),
 					IssueCodes.REDUNDANT_CAPACITY_USE,
 					"Redundant use of the capacity 'C2'");
 		}

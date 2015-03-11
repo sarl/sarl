@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="sarl" nsURI="http://www.sarl.io/lang/SARL" nsPrefix="sarl">
-  <eClassifiers xsi:type="ecore:EClass" name="SarlScript" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendFile">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendTypeDeclaration"
-        containment="true"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlAction" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendFunction">
     <eStructuralFeatures xsi:type="ecore:EReference" name="firedEvents" upperBound="-1"
         eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
@@ -30,7 +24,6 @@
         eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SarlConstructor" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendConstructor"/>
   <eClassifiers xsi:type="ecore:EClass" name="SarlEvent" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendTypeDeclaration">
     <eStructuralFeatures xsi:type="ecore:EReference" name="extends" upperBound="-1"
         eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"

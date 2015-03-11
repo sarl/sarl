@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@
  */
 package io.sarl.lang.ui.outline;
 
-import io.sarl.lang.sarl.SarlPackage;
+import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_ACTION;
+import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_CONSTRUCTOR;
+import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FUNCTION;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.jface.action.Action;
@@ -57,9 +59,9 @@ public class SARLOperationOutlineFilter extends AbstractFilterOutlineContributio
 	 * @return <code>true</code> if the given type is for a SARL operation; <code>false</code> otherwise.
 	 */
 	protected static boolean isOperation(EClass type) {
-		return type == SarlPackage.Literals.ACTION
-				|| type == SarlPackage.Literals.ACTION_SIGNATURE
-				|| type == SarlPackage.Literals.CONSTRUCTOR;
+		return type == SARL_ACTION
+				|| type == XTEND_FUNCTION
+				|| type == XTEND_CONSTRUCTOR;
 	}
 
 	@Override

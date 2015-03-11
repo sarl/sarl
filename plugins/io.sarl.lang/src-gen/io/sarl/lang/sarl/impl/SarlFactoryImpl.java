@@ -64,12 +64,10 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
   {
     switch (eClass.getClassifierID())
     {
-      case SarlPackage.SARL_SCRIPT: return createSarlScript();
       case SarlPackage.SARL_ACTION: return createSarlAction();
       case SarlPackage.SARL_BEHAVIOR_UNIT: return createSarlBehaviorUnit();
       case SarlPackage.SARL_CAPACITY_USES: return createSarlCapacityUses();
       case SarlPackage.SARL_REQUIRED_CAPACITY: return createSarlRequiredCapacity();
-      case SarlPackage.SARL_CONSTRUCTOR: return createSarlConstructor();
       case SarlPackage.SARL_EVENT: return createSarlEvent();
       case SarlPackage.SARL_AGENT: return createSarlAgent();
       case SarlPackage.SARL_CAPACITY: return createSarlCapacity();
@@ -79,17 +77,6 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public SarlScript createSarlScript()
-  {
-    SarlScriptImpl sarlScript = new SarlScriptImpl();
-    return sarlScript;
   }
 
   /**
@@ -134,17 +121,6 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
   {
     SarlRequiredCapacityImpl sarlRequiredCapacity = new SarlRequiredCapacityImpl();
     return sarlRequiredCapacity;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public SarlConstructor createSarlConstructor()
-  {
-    SarlConstructorImpl sarlConstructor = new SarlConstructorImpl();
-    return sarlConstructor;
   }
 
   /**
