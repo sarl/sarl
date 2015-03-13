@@ -94,12 +94,15 @@ Workflow {
     		fragment = grammarAccess.GrammarAccessFragment auto-inject {}
     
     		// generates Java API for the generated EPackages
-    		fragment = ecore.EMFGeneratorFragment auto-inject {}
-    
+    		fragment = ecore.EMFGeneratorFragment auto-inject {
+    			
+    		}
+    		
     		// serializer 2.0
     		fragment = serializer.SerializerFragment auto-inject {
     			generateStub = false
     			generateXtendStub = false
+    			//generateDebugData = true
     		}
     
     		// a custom ResourceFactory for use with EMF
@@ -118,10 +121,6 @@ Workflow {
     		//    composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
     		}
     
-    		// old scoping and exporting API
-    		// fragment = scoping.ImportURIScopingFragment auto-inject {}
-    		// fragment = exporting.SimpleNamesFragment auto-inject {}
-    
     		// scoping and exporting API
     		fragment = scoping.ImportNamespacesScopingFragment auto-inject {
     			generateXtendStub = false
@@ -138,6 +137,9 @@ Workflow {
     		fragment = formatting.FormatterFragment auto-inject {
     			generateXtendStub = false
     		}
+    		
+//    		// New formatter API
+//    		fragment = formatting2.Formatter2Fragment auto-inject {}
     
     		// labeling API
     		fragment = labeling.LabelProviderFragment auto-inject {
@@ -171,13 +173,10 @@ Workflow {
     		// generates junit test support classes into Generator#pathTestProject
     		fragment = junit.Junit4Fragment auto-inject {}
     
-    		// project wizard (optional)
-    		// fragment = projectWizard.SimpleProjectWizardFragment auto-inject {
-    		//      generatorProjectName = "${projectName}"
-    		// }
-    
     		// rename refactoring
-    		fragment = refactoring.RefactorElementNameFragment auto-inject {}
+    		fragment = refactoring.RefactorElementNameFragment auto-inject {
+    			useJdtRefactoring = true
+    		}
     
     		// provides the necessary bindings for java types integration
     		fragment = types.TypesGeneratorFragment auto-inject {}
@@ -188,7 +187,9 @@ Workflow {
     		}
     
     		// provides a preference page for template proposals
-    		fragment = templates.CodetemplatesGeneratorFragment auto-inject {}
+    		fragment = templates.CodetemplatesGeneratorFragment auto-inject {
+    			suppressRestriction = false
+    		}
     
     		// provides a compare view
     		fragment = compare.CompareFragment auto-inject {}

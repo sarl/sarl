@@ -20,12 +20,20 @@
  */
 package io.sarl.lang.ui.validation;
 
+import static org.eclipse.xtext.util.Strings.isEmpty;
+import static org.eclipse.xtext.util.Strings.notNull;
 import io.sarl.lang.sarl.SarlPackage;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.xtend.core.validation.IssueCodes;
+import org.eclipse.xtend.core.xtend.XtendFile;
+import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.ide.validator.XtendUIValidator;
+import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.validation.ValidationMessageAcceptor;
 
 /** Validator based on the Eclipse UI.
  *
@@ -46,6 +54,28 @@ public class SARLUIValidator extends XtendUIValidator {
 	    packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtext/xbase/Xtype")); //$NON-NLS-1$
 	    packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/Xtext/Xbase/XAnnotations")); //$NON-NLS-1$
 		return packages;
+	}
+
+	@Check
+	@Override
+	public void checkFileNamingConventions(XtendFile xtendFile) {
+		//
+		// The wrong package is a warning in SARL (an error in Xtend).
+		//
+		String expectedPackage = getExpectedPackageName(xtendFile);
+		String declaredPackage = xtendFile.getPackage();
+		if(expectedPackage != null &&
+			!((isEmpty(expectedPackage) && declaredPackage == null) || expectedPackage.equals(declaredPackage))) {
+			warning(
+					MessageFormat.format(
+							Messages.SARLUIValidator_0,
+							notNull(declaredPackage),
+							notNull(expectedPackage)),
+					XtendPackage.Literals.XTEND_FILE__PACKAGE,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+					IssueCodes.WRONG_PACKAGE,
+					expectedPackage);
+		}
 	}
 
 }
