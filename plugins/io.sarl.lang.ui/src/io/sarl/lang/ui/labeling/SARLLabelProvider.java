@@ -20,9 +20,6 @@
  */
 package io.sarl.lang.ui.labeling;
 
-import java.util.Collections;
-import java.util.concurrent.locks.ReentrantLock;
-
 import io.sarl.lang.sarl.Action;
 import io.sarl.lang.sarl.ActionSignature;
 import io.sarl.lang.sarl.Agent;
@@ -37,6 +34,9 @@ import io.sarl.lang.sarl.RequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.Skill;
 import io.sarl.lang.ui.images.SARLImages;
+
+import java.util.Collections;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
@@ -55,9 +55,13 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.util.Exceptions;
 import org.eclipse.xtext.util.PolymorphicDispatcher;
 import org.eclipse.xtext.util.PolymorphicDispatcher.ErrorHandler;
+import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider;
+import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
 import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping;
-import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
+import org.eclipse.xtext.xbase.typesystem.IBatchTypeResolver;
+import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
+import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider;
 import org.eclipse.xtext.xbase.validation.UIStrings;
 
@@ -86,7 +90,10 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	private OperatorMapping operatorMapping;
 
 	@Inject
-	private CommonTypeComputationServices services;
+	private JvmModelAssociator jvmModelAssociator;
+
+	@Inject
+	private IBatchTypeResolver typeResolver;
 
 	@Inject
 	private ILogicalContainerProvider logicalContainerProvider;
@@ -200,7 +207,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @return the JVM element, or <code>null</code> if not found.
 	 */
 	protected <T> T getJvmElement(EObject element, Class<T> type) {
-		for (EObject obj : this.services.getJvmModelAssociations().getJvmElements(element)) {
+		for (EObject obj : this.jvmModelAssociator.getJvmElements(element)) {
 			if (type.isInstance(obj)) {
 				return type.cast(obj);
 			}
@@ -473,9 +480,26 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 				theType = jvmElement.getType();
 			}
 		}
+		StyledString typeLabel = null;
 		if (theType != null) {
-			label.append(" : " + getHumanReadableName(theType), StyledString.COUNTER_STYLER); //$NON-NLS-1$
+			typeLabel = getHumanReadableName(theType);
+		} else {
+			XExpression expr = element.getInitialValue();
+			if (expr != null) {
+				IResolvedTypes types = this.typeResolver.resolveTypes(expr);
+				LightweightTypeReference lwRef = types.getExpectedType(expr);
+				if (lwRef == null) {
+					lwRef = types.getActualType(expr);
+				}
+				if (lwRef != null) {
+					typeLabel = convertToStyledString(lwRef.getHumanReadableName());
+				}
+			}
 		}
+		if (typeLabel == null || typeLabel.length() == 0) {
+			typeLabel = getHumanReadableName(null);
+		}
+		label.append(" : " + typeLabel, StyledString.COUNTER_STYLER); //$NON-NLS-1$
 		return label;
 	}
 
