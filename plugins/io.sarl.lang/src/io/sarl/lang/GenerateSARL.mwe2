@@ -94,9 +94,7 @@ Workflow {
     		fragment = grammarAccess.GrammarAccessFragment auto-inject {}
     
     		// generates Java API for the generated EPackages
-    		fragment = ecore.EMFGeneratorFragment auto-inject {
-    			
-    		}
+    		fragment = ecore.EMFGeneratorFragment auto-inject {}
     		
     		// serializer 2.0
     		fragment = serializer.SerializerFragment auto-inject {
@@ -185,7 +183,7 @@ Workflow {
     		fragment = xbase.XbaseGeneratorFragment auto-inject {
     			generateXtendInferrer = false
     		}
-    
+    		
     		// provides a preference page for template proposals
     		fragment = templates.CodetemplatesGeneratorFragment auto-inject {
     			suppressRestriction = false
