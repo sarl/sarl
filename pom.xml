@@ -34,7 +34,7 @@
 		<!-- Version of the OSGi module that provides the NLS -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
 		<!-- Year of the release of SARL (used in Eclipse about, license management and documentation) -->
-		<year>2014</year>
+		<year>2015</year>
 		<!-- URL of the SARL project (use in POM, Eclipse about and documentation) -->
 		<sarl.url>http://www.sarl.io</sarl.url>
 		<!-- Default encoding of the source files -->
