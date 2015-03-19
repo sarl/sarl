@@ -40,10 +40,7 @@ import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeReference;
-import org.eclipse.xtext.junit4.XtextRunner;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import com.google.inject.Inject;
@@ -54,16 +51,12 @@ import com.google.inject.Inject;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(XtextRunner.class)
 public class SARLLabelProviderTest extends AbstractSarlUiTest {
 
 	private static final String PACKAGE_STATEMENT = "package io.sarl.lang.ui.tests.labeling\n"; //$NON-NLS-1$
 
 	@Inject
 	private SARLLabelProvider provider;
-
-	@Inject
-	private ValidationTestHelper validator;
 
 	private static String filename(String basename) {
 		return pathStr(
@@ -210,7 +203,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				PACKAGE_STATEMENT
 				+ "agent A1 { }\n" //$NON-NLS-1$
 				+ "agent A2 extends A1 { }\n"); //$NON-NLS-1$
-		this.validator.assertNoErrors(agent);
+		this.helper.getValidator().assertNoErrors(agent);
 		EList<JvmParameterizedTypeReference> superTypes = agent.getSuperTypes();
 		assertNotNull(superTypes);
 		assertEquals(1, superTypes.size());
@@ -231,7 +224,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				+ "event E1 {\n" //$NON-NLS-1$
 				+ "var attr : org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer,java.lang.Double>\n" //$NON-NLS-1$
 				+ "}"); //$NON-NLS-1$
-		this.validator.assertNoErrors(event);
+		this.helper.getValidator().assertNoErrors(event);
 		EList<EObject> features = event.getFeatures();
 		assertNotNull(features);
 		assertEquals(1, features.size());
@@ -257,7 +250,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				PACKAGE_STATEMENT
 				+ "agent A1 { }\n" //$NON-NLS-1$
 				+ "agent A2 extends A1 { }\n"); //$NON-NLS-1$
-		this.validator.assertNoErrors(agent);
+		this.helper.getValidator().assertNoErrors(agent);
 		EList<JvmParameterizedTypeReference> superTypes = agent.getSuperTypes();
 		assertNotNull(superTypes);
 		assertEquals(1, superTypes.size());
@@ -275,7 +268,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 		SarlScript script = this.helper.createSARLScript(
 				filename("textSarlScript"), //$NON-NLS-1$
 				PACKAGE_STATEMENT);
-		this.validator.assertNoErrors(script);
+		this.helper.getValidator().assertNoErrors(script);
 		Object text = this.provider.getText(script);
 		assertNotNull(text);
 		assertEquals("textSarlScript", text); //$NON-NLS-1$
@@ -291,7 +284,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				Agent.class,
 				PACKAGE_STATEMENT
 				+ "agent A1 { }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(agent);
+		this.helper.getValidator().assertNoErrors(agent);
 		Object text = this.provider.getText(agent);
 		assertNotNull(text);
 		assertEquals("A1", text); //$NON-NLS-1$
@@ -307,7 +300,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				Event.class,
 				PACKAGE_STATEMENT
 				+ "event E1 { }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(event);
+		this.helper.getValidator().assertNoErrors(event);
 		Object text = this.provider.getText(event);
 		assertNotNull(text);
 		assertEquals("E1", text); //$NON-NLS-1$
@@ -323,7 +316,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				Capacity.class,
 				PACKAGE_STATEMENT
 				+ "capacity C1 { }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(capacity);
+		this.helper.getValidator().assertNoErrors(capacity);
 		Object text = this.provider.getText(capacity);
 		assertNotNull(text);
 		assertEquals("C1", text); //$NON-NLS-1$
@@ -340,7 +333,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				PACKAGE_STATEMENT
 				+ "capacity C1 { }\n" //$NON-NLS-1$
 				+ "skill S1 implements C1 { }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(skill);
+		this.helper.getValidator().assertNoErrors(skill);
 		Object text = this.provider.getText(skill);
 		assertNotNull(text);
 		assertEquals("S1", text); //$NON-NLS-1$
@@ -356,7 +349,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				Behavior.class,
 				PACKAGE_STATEMENT
 				+ "behavior B1 { }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(behavior);
+		this.helper.getValidator().assertNoErrors(behavior);
 		Object text = this.provider.getText(behavior);
 		assertNotNull(text);
 		assertEquals("B1", text); //$NON-NLS-1$
@@ -372,7 +365,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				Agent.class,
 				PACKAGE_STATEMENT
 				+ "agent A1 { var myAttr : boolean }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(agent);
+		this.helper.getValidator().assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
 		assertTrue(feature instanceof Attribute);
@@ -391,7 +384,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				Event.class,
 				PACKAGE_STATEMENT
 				+ "event E1 { new (id:int) { } }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(event);
+		this.helper.getValidator().assertNoErrors(event);
 		Object feature = event.getFeatures().get(0);
 		assertNotNull(feature);
 		assertTrue(feature instanceof Constructor);
@@ -410,7 +403,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				Agent.class,
 				PACKAGE_STATEMENT
 				+ "agent A1 { def myAction { } }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(agent);
+		this.helper.getValidator().assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
 		assertTrue(feature instanceof Action);
@@ -429,7 +422,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				Agent.class,
 				PACKAGE_STATEMENT
 				+ "agent A1 { def myAction : int { 0 } }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(agent);
+		this.helper.getValidator().assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
 		assertTrue(feature instanceof Action);
@@ -448,7 +441,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				Agent.class,
 				PACKAGE_STATEMENT
 				+ "agent A1 { def myAction(a:char) { } }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(agent);
+		this.helper.getValidator().assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
 		assertTrue(feature instanceof Action);
@@ -467,7 +460,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				Agent.class,
 				PACKAGE_STATEMENT
 				+ "agent A1 { def myAction(a:char) : int { 0 } }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(agent);
+		this.helper.getValidator().assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
 		assertTrue(feature instanceof Action);
@@ -486,7 +479,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				Capacity.class,
 				PACKAGE_STATEMENT
 				+ "capacity C1 { def myAction }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(capacity);
+		this.helper.getValidator().assertNoErrors(capacity);
 		Object feature = capacity.getFeatures().get(0);
 		assertNotNull(feature);
 		assertTrue(feature instanceof ActionSignature);
@@ -505,7 +498,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				Capacity.class,
 				PACKAGE_STATEMENT
 				+ "capacity C1 { def myAction : int }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(capacity);
+		this.helper.getValidator().assertNoErrors(capacity);
 		Object feature = capacity.getFeatures().get(0);
 		assertNotNull(feature);
 		assertTrue(feature instanceof ActionSignature);
@@ -524,7 +517,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				Capacity.class,
 				PACKAGE_STATEMENT
 				+ "capacity C1 { def myAction(a:char) }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(capacity);
+		this.helper.getValidator().assertNoErrors(capacity);
 		Object feature = capacity.getFeatures().get(0);
 		assertNotNull(feature);
 		assertTrue(feature instanceof ActionSignature);
@@ -543,7 +536,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				Capacity.class,
 				PACKAGE_STATEMENT
 				+ "capacity C1 { def myAction(a:char) : int }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(capacity);
+		this.helper.getValidator().assertNoErrors(capacity);
 		Object feature = capacity.getFeatures().get(0);
 		assertNotNull(feature);
 		assertTrue(feature instanceof ActionSignature);
@@ -563,7 +556,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				PACKAGE_STATEMENT
 				+ "capacity C1 { }\n" //$NON-NLS-1$
 				+ "agent A1 { uses C1 }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(agent);
+		this.helper.getValidator().assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
 		assertTrue(feature instanceof CapacityUses);
@@ -583,7 +576,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				PACKAGE_STATEMENT
 				+ "capacity C1 { }\n" //$NON-NLS-1$
 				+ "agent A1 { requires C1 }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(agent);
+		this.helper.getValidator().assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
 		assertTrue(feature instanceof RequiredCapacity);
@@ -603,7 +596,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				PACKAGE_STATEMENT
 				+ "event E1 { }\n" //$NON-NLS-1$
 				+ "agent A1 { on E1 { } }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(agent);
+		this.helper.getValidator().assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
 		assertTrue(feature instanceof BehaviorUnit);
@@ -623,7 +616,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				PACKAGE_STATEMENT
 				+ "event E1 { }\n" //$NON-NLS-1$
 				+ "agent A1 { on E1 [ true ] { } }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(agent);
+		this.helper.getValidator().assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
 		assertTrue(feature instanceof BehaviorUnit);
@@ -643,7 +636,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				PACKAGE_STATEMENT
 				+ "event E1 { }\n" //$NON-NLS-1$
 				+ "agent A1 { on E1 [ 3 > 5 ] { } }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(agent);
+		this.helper.getValidator().assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
 		assertTrue(feature instanceof BehaviorUnit);
@@ -663,7 +656,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				PACKAGE_STATEMENT
 				+ "event E1 { }\n" //$NON-NLS-1$
 				+ "agent A1 { on E1 [ 3 <=5 ] { } }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(agent);
+		this.helper.getValidator().assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
 		assertTrue(feature instanceof BehaviorUnit);
@@ -683,7 +676,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 				PACKAGE_STATEMENT
 				+ "event E1 { }\n" //$NON-NLS-1$
 				+ "agent A1 { on E1 [ 1+2+3+4+5+6+7+8+9+10 < 100 ] { } }"); //$NON-NLS-1$
-		this.validator.assertNoErrors(agent);
+		this.helper.getValidator().assertNoErrors(agent);
 		Object feature = agent.getFeatures().get(0);
 		assertNotNull(feature);
 		assertTrue(feature instanceof BehaviorUnit);

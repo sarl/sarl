@@ -20,9 +20,7 @@ import io.sarl.tests.api.AbstractSarlUiTest;
 
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
-import org.eclipse.xtext.junit4.XtextRunner;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.google.inject.Inject;
 
@@ -32,7 +30,6 @@ import com.google.inject.Inject;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(XtextRunner.class)
 public class SARLImagesTest extends AbstractSarlUiTest {
 
 	@Inject

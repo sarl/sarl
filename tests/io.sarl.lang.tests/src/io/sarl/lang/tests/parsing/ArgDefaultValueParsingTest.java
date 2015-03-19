@@ -63,8 +63,6 @@ import io.sarl.tests.api.AbstractSarlTest;
 @SuppressWarnings("all")
 public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class AgentAction extends AbstractSarlTest {
 
 		@Inject
@@ -599,8 +597,6 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class BehaviorConstructor extends AbstractSarlTest {
 
 		@Inject
@@ -1100,8 +1096,6 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CapacityAction extends AbstractSarlTest {
 
 		@Inject
@@ -1484,8 +1478,6 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class SkillAction extends AbstractSarlTest {
 
 		@Inject
@@ -2433,8 +2425,6 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class BehaviorAction extends AbstractSarlTest {
 
 		@Inject

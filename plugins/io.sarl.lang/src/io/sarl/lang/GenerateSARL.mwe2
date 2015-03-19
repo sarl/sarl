@@ -25,7 +25,7 @@ var projectName = "io.sarl.lang"
 
 var grammarURI = "platform:/resource/${projectName}/src/io/sarl/lang/SARL.xtext"
 var runtimeProject = "../${projectName}"
-var testPluginPath = "../../tests/io.sarl.lang.tests"
+var testPluginPath = "../../tests/io.sarl.tests.api"
 var generateXtendStub = true
 var encoding = "UTF-8"
 

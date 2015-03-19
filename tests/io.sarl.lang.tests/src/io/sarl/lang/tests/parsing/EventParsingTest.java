@@ -57,8 +57,6 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class EventParsingTest extends AbstractSarlTest {
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class TopElementTest extends AbstractSarlTest {
 
 		@Inject
@@ -97,8 +95,6 @@ public class EventParsingTest extends AbstractSarlTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class AttributeTest extends AbstractSarlTest {
 
 		@Inject
@@ -229,8 +225,6 @@ public class EventParsingTest extends AbstractSarlTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class ConstructorTest extends AbstractSarlTest {
 
 		@Inject

@@ -35,7 +35,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class LifecycleTest extends AbstractSARLTest<Capacity> {
+public class LifecycleTest extends AbstractSarlCoreTest<Capacity> {
 
 	/**
 	 */

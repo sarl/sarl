@@ -35,7 +35,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class BehaviorsTest extends AbstractSARLTest<Capacity> {
+public class BehaviorsTest extends AbstractSarlCoreTest<Capacity> {
 
 	/**
 	 */

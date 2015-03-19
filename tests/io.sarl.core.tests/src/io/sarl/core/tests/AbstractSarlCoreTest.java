@@ -20,7 +20,10 @@
  */
 package io.sarl.core.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.Nullable;
 
@@ -35,7 +38,7 @@ import java.lang.reflect.Method;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractSARLTest<T> extends AbstractSarlTest {
+public abstract class AbstractSarlCoreTest<T> extends AbstractSarlTest {
 
 	/** Name of the loaded class.
 	 */

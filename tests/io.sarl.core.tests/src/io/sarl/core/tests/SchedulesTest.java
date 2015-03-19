@@ -34,7 +34,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SchedulesTest extends AbstractSARLTest<Capacity> {
+public class SchedulesTest extends AbstractSarlCoreTest<Capacity> {
 
 	/**
 	 */

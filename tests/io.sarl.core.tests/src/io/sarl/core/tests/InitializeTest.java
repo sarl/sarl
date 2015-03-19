@@ -33,7 +33,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class InitializeTest extends AbstractSARLTest<Event> {
+public class InitializeTest extends AbstractSarlCoreTest<Event> {
 
 	/**
 	 */

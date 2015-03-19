@@ -60,8 +60,6 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class BehaviorParsingTest {
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class TopElementTest extends AbstractSarlTest {
 	
 		@Inject
@@ -175,8 +173,6 @@ public class BehaviorParsingTest {
 
 	}
 	
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class ActionTest extends AbstractSarlTest {
 	
 		@Inject
@@ -389,8 +385,6 @@ public class BehaviorParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class AttributeTest extends AbstractSarlTest {
 	
 		@Inject
@@ -522,8 +516,6 @@ public class BehaviorParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class ConstructorTest extends AbstractSarlTest {
 	
 		@Inject
@@ -643,8 +635,6 @@ public class BehaviorParsingTest {
 
 	}
 	
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CapacityUsesTest extends AbstractSarlTest {
 	
 		@Inject

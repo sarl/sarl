@@ -91,6 +91,15 @@
 							<version>${project.version}</version>
 						</artifact>
 					</target>
+					<filters>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.xtext.xbase</id>
+							<restrictTo>
+								<versionRange>${xtext.versionRange}</versionRange>
+							</restrictTo>
+						</filter>
+					</filters>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -103,7 +112,10 @@
 					<version>${tycho.version}</version>
 					<configuration>
 						<useUIHarness>true</useUIHarness>
-						<useUIThread>false</useUIThread>
+						<useUIThread>true</useUIThread>
+						<runOrder>alphabetical</runOrder>
+						<product>io.sarl.eclipse.io_sarl_lang_product</product>
+						<application>org.eclipse.ui.ide.workbench</application>
 					</configuration>
 				</plugin>
 

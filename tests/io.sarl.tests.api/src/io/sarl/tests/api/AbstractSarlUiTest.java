@@ -24,10 +24,10 @@ package io.sarl.tests.api;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import io.sarl.lang.SARLUiInjectorProvider;
+import io.sarl.lang.sarl.SarlScript;
 
 import java.util.regex.Pattern;
-
-import io.sarl.lang.sarl.SarlScript;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -35,12 +35,14 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 
 /** This class is inspired from AbstractXbaseUITestCase of Xtext.
  *
@@ -49,12 +51,17 @@ import com.google.inject.Inject;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@InjectWith(SARLUiInjectorProvider.class)
 public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 
+	@Inject
+	private Injector injector;
+	
 	/** This rule permits to create a project and clean the workspace.
 	 */
 	@Rule
 	public TestWatcher sarlUiWatchter = new TestWatcher() {
+		@SuppressWarnings("synthetic-access")
 		@Override
 		protected void starting(Description description) {
 			try {
@@ -71,11 +78,13 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 				if (annot2 != null) {
 					classpath = merge(classpath, annot2.value());
 				}
-				WorkspaceTestHelper.createProjectWithDependencies(WorkspaceTestHelper.TESTPROJECT_NAME, classpath);
+				WorkspaceTestHelper.createProjectWithDependencies(
+						AbstractSarlUiTest.this.injector,
+						WorkspaceTestHelper.TESTPROJECT_NAME,
+						classpath);
 			} catch (CoreException e) {
 				throw new RuntimeException(e);
 			}
-			WorkspaceTestHelper.bind(AbstractSarlUiTest.this);
 		}
 		@Override
 		protected void finished(Description description) {

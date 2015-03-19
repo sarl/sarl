@@ -18,57 +18,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.core.tests;
+package io.sarl.tests.api;
 
-import static org.junit.Assert.assertEquals;
-import io.sarl.lang.core.Address;
-import io.sarl.lang.core.Event;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.junit.Before;
-import org.junit.Test;
 
-/**
+/** Annotation for specifying the scope of the unit test.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class DestroyTest extends AbstractSarlCoreTest<Event> {
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface TestScope {
 
-	/**
+	/** The test is valid for a run in Tycho.
+	 * 
+	 * @return <code>true</code> if the unit test could be run in Tycho.
 	 */
-	@Before
-	public void setUp() {
-		loadSARL("io.sarl.core.Destroy", Event.class); //$NON-NLS-1$
-	}
+	boolean tycho() default true;
 
-	/**
+	/** List of the bundles to add in the classpath.
+	 * 
+	 * @return <code>true</code> if the unit test could be run in Eclipse.
 	 */
-	@Test
-	public void memberCount() {
-		assertEquals(1, this.type.getDeclaredFields().length);
-		assertEquals(2, this.type.getDeclaredConstructors().length);
-	}
-
-	/**
-	 */
-	@Test
-	public void serialVersionUID() {
-		assertField("serialVersionUID", long.class); //$NON-NLS-1$
-	}
-
-	/**
-	 */
-	@Test
-	public void constructorVoid() {
-		assertConstructor();
-	}
-
-	/**
-	 */
-	@Test
-	public void constructorAddress() {
-		assertConstructor(Address.class);
-	}
+	boolean eclipse() default true;
 
 }

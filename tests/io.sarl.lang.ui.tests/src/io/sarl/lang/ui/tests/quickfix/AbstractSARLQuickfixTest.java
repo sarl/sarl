@@ -39,7 +39,6 @@ import org.eclipse.jface.text.ILineTracker;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextStore;
 import org.eclipse.jface.text.Region;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.resource.IFragmentProvider;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
@@ -64,9 +63,6 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 
 	@Inject
 	private SARLQuickfixProvider quickfixProvider;
-
-	@Inject
-	private ValidationTestHelper validator;
 
 	/** Create the filename for the given basename.
 	 * 
@@ -107,7 +103,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 			SarlScript script = (SarlScript) scriptResource.getContents().get(0);
 			assertNotNull(script);
 
-			List<Issue> issues = this.validator.validate(script);
+			List<Issue> issues = this.helper.getValidator().validate(script);
 			StringBuilder issueLabels = new StringBuilder();
 			Iterator<Issue> issueIterator = issues.iterator();
 			List<IssueResolution> resolutions = null;

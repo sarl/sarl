@@ -41,7 +41,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class DefaultContextInteractionsTest extends AbstractSARLTest<Capacity> {
+public class DefaultContextInteractionsTest extends AbstractSarlCoreTest<Capacity> {
 
 	/**
 	 */

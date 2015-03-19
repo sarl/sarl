@@ -20,9 +20,7 @@
  */
 package io.sarl.lang.ui.tests.outline;
 
-import org.eclipse.xtext.junit4.XtextRunner;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /** Test the outline of the "skill" statement.
  * 
@@ -31,7 +29,6 @@ import org.junit.runner.RunWith;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(XtextRunner.class)
 public class SkillOutlineTest extends AbstractSARLOutlineTreeProviderTest { 
 	
 	/**

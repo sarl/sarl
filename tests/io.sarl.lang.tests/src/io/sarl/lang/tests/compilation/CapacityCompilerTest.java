@@ -48,8 +48,6 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class CapacityCompilerTest {
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class FieldTest extends AbstractSarlTest {
 
 		@Inject
@@ -113,8 +111,6 @@ public class CapacityCompilerTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class ActionTest extends AbstractSarlTest {
 
 		@Inject
@@ -197,8 +193,6 @@ public class CapacityCompilerTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class ReturnTypeTest extends AbstractSarlTest {
 
 		@Inject
@@ -527,8 +521,6 @@ public class CapacityCompilerTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class SkillTest extends AbstractSarlTest {
 
 		@Inject

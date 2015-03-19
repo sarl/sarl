@@ -60,8 +60,6 @@ public class SARLFormatterTest {
 		assertEquals(expected.toString(), actual);
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class AgentTest extends AbstractSarlTest {
 
 		@Inject
@@ -281,8 +279,6 @@ public class SARLFormatterTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class BehaviorTest extends AbstractSarlTest {
 
 		@Inject
@@ -349,8 +345,6 @@ public class SARLFormatterTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class SkillTest extends AbstractSarlTest {
 
 		@Inject
@@ -386,8 +380,6 @@ public class SARLFormatterTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class XbaseTest extends AbstractSarlTest {
 
 		@Inject
@@ -641,8 +633,6 @@ public class SARLFormatterTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CapacityTest extends AbstractSarlTest {
 
 		@Inject

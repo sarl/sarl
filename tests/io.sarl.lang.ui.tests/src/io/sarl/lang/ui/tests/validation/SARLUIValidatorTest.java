@@ -20,12 +20,7 @@ import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
-import org.eclipse.xtext.junit4.XtextRunner;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.google.inject.Inject;
 
 /**
  * @author $Author: sgalland$
@@ -33,11 +28,7 @@ import com.google.inject.Inject;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(XtextRunner.class)
 public class SARLUIValidatorTest extends AbstractSarlUiTest {
-
-	@Inject
-	private ValidationTestHelper validator;
 
 	/**
 	 * @throws Exception
@@ -47,7 +38,7 @@ public class SARLUIValidatorTest extends AbstractSarlUiTest {
 		SarlScript script = this.helper.createSARLScript(
 				pathStr("io","sarl","mypackage","test"), //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 				"package io.sarl.mypackage"); //$NON-NLS-1$
-		this.validator.assertNoIssues(script);
+		this.helper.getValidator().assertNoIssues(script);
 	}
 
 	/**
@@ -58,7 +49,7 @@ public class SARLUIValidatorTest extends AbstractSarlUiTest {
 		SarlScript script = this.helper.createSARLScript(
 				pathStr("io","sarl","mypackage","test"), //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 				"package io.sarl.myotherpackage"); //$NON-NLS-1$
-		this.validator.assertWarning(
+		this.helper.getValidator().assertWarning(
 				script,
 				SarlPackage.eINSTANCE.getSarlScript(),
 				IssueCodes.WRONG_PACKAGE,

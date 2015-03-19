@@ -23,7 +23,6 @@ package io.sarl.tests.api;
 import static com.google.common.collect.Sets.newHashSet;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.TopElement;
-import io.sarl.lang.ui.internal.SARLActivator;
 import io.sarl.lang.ui.preferences.SARLPreferences;
 
 import java.io.File;
@@ -55,6 +54,7 @@ import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil;
 import org.eclipse.xtext.junit4.ui.util.JavaProjectSetupUtil;
+import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.resource.FileExtensionProvider;
 import org.eclipse.xtext.ui.XtextProjectHelper;
 import org.eclipse.xtext.ui.resource.IResourceSetProvider;
@@ -108,7 +108,7 @@ public class WorkspaceTestHelper extends Assert {
 
 	private static boolean IS_WAITING_FOR_BUILD_AT_FILE_CREATION = false;
 	
-	private Set<IFile> files = newHashSet();
+	private final Set<IFile> files = newHashSet();
 
 	@Inject
 	@Named(Constants.LANGUAGE_NAME)
@@ -125,49 +125,34 @@ public class WorkspaceTestHelper extends Assert {
 
 	@Inject
 	private IResourceSetProvider resourceSetProvider;
-
-	/** Replies the SARL injector.
-	 * 
-	 * @return the injector.
-	 */
-	private static Injector getSARLInjector() {
-		return SARLActivator.getInstance().getInjector(SARLActivator.IO_SARL_LANG_SARL);
-	}
-
-	/** Replies the instance of the workbench test helper.
-	 * 
-	 * @param bindableObject - the object to bind.
-	 */
-	public static void bind(Object bindableObject) {
-		Injector injector = getSARLInjector();
-		if (bindableObject != null) {
-			injector.injectMembers(bindableObject);
-		}
-	}
-
+	
+	private ValidationTestHelper validationHelper;
+	
 	/** Create a project in the workspace with the dependencies
 	 * defined in {@link #DEFAULT_REQUIRED_BUNDLES}.
 	 * 
+	 * @param injector - the injector to use.
 	 * @param name - the name of the project.
 	 * @return the project.
 	 * @throws CoreException
-	 * @see #createProjectWithDependencies(String, String...)
+	 * @see #createProjectWithDependencies(Injector, String, String...)
 	 */
-	public static IProject createProject(String name) throws CoreException {
-		return createProjectWithDependencies(name, DEFAULT_REQUIRED_BUNDLES);
+	public static IProject createProject(Injector injector, String name) throws CoreException {
+		return createProjectWithDependencies(injector, name, DEFAULT_REQUIRED_BUNDLES);
 	}
 
 	/** Create a project in the workspace with the given dependencies.
 	 * 
+	 * @param injector - the injector to use.
 	 * @param name - the name of the project.
 	 * @param requiredBundles - the bundles required by the project. 
 	 * @return the project.
 	 * @throws CoreException
-	 * @see #createProject(String)
+	 * @see #createProject(Injector, String)
 	 * @see #DEFAULT_REQUIRED_BUNDLES
 	 */
-	public static IProject createProjectWithDependencies(String name, String... requiredBundles) throws CoreException {
-		Injector injector = getSARLInjector();
+	public static IProject createProjectWithDependencies(Injector injector, String name, String... requiredBundles)
+			throws CoreException {
 		JavaProjectFactory projectFactory = injector.getInstance(JavaProjectFactory.class);
 		projectFactory.setProjectName(name);
 		projectFactory.addFolders(Arrays.asList(SOURCE_FOLDER, GENERATED_SOURCE_FOLDER));
@@ -354,7 +339,7 @@ public class WorkspaceTestHelper extends Assert {
 		IProject project = this.workspace.getRoot().getProject(TESTPROJECT_NAME);
 		if (createOnDemand && !project.exists()) {
 			try {
-				project = createProject(TESTPROJECT_NAME);
+				project = createProject(this.injector, TESTPROJECT_NAME);
 			} catch (CoreException e) {
 				throw new RuntimeException(e);
 			}
@@ -723,5 +708,19 @@ public class WorkspaceTestHelper extends Assert {
 	public void waitForAutoBuild() {
 		IResourcesSetupUtil.waitForAutoBuild();
 	}
-
+	
+	/** Replies the resource validator for the workspace test helper.
+	 *
+	 * This implementation is adapted to the workspace validator.
+	 * This is not the case of the default {@link ValidationTestHelper}.
+	 *
+	 * @return the helper for validation test.
+	 */
+	public ValidationTestHelper getValidator() {
+		if (this.validationHelper == null) {
+			this.validationHelper = new ValidationTestHelper();
+		}
+		return this.validationHelper;
+	}
+	
 }

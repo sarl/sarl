@@ -60,8 +60,6 @@ import io.sarl.tests.api.AbstractSarlTest;
 @SuppressWarnings("all")
 public class VarArgsParsingTest {
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class AgentTest extends AbstractSarlTest {
 
 		@Inject
@@ -144,8 +142,6 @@ public class VarArgsParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class BehaviorTest extends AbstractSarlTest {
 
 		@Inject
@@ -395,8 +391,6 @@ public class VarArgsParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class SkillTest extends AbstractSarlTest {
 
 		@Inject
@@ -577,8 +571,6 @@ public class VarArgsParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CapacityTest extends AbstractSarlTest {
 
 		@Inject
@@ -656,8 +648,6 @@ public class VarArgsParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class EventTest extends AbstractSarlTest {
 
 		@Inject

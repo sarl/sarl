@@ -35,6 +35,7 @@ import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.TestClasspath;
+import io.sarl.tests.api.TestScope;
 
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Diagnostic;
@@ -73,8 +74,6 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class AgentParsingTest {
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class TopElementTest extends AbstractSarlTest {
 
 		@Inject
@@ -222,19 +221,17 @@ public class AgentParsingTest {
 	public static class TopElementUiBaseTest extends AbstractSarlUiTest {
 
 		@Inject 
-		private ValidationTestHelper validator;
+		private ValidationTestHelper _validator;
 
 		@Test
 		@TestClasspath("io.sarl.tests.testdata")
+		@TestScope(tycho=false)
 		public void invalidExtend() throws Exception {
-			// This test is working only in Eclipse, not in Maven.
-			Assume.assumeTrue(System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit."));
-			//
 			SarlScript script = parseWithProjectClasspath(
 					"import foo.MockFinalAgent",
 					"agent InvalidAgentDeclaration extends MockFinalAgent {",
 					"}");
-			this.validator.assertError(script,
+			this.helper.getValidator().assertError(script,
 					SarlPackage.eINSTANCE.getAgent(),
 					IssueCodes.OVERRIDDEN_FINAL_TYPE,
 					"Attempt to override final class");
@@ -242,8 +239,6 @@ public class AgentParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class BehaviorUnitTest extends AbstractSarlTest {
 
 		@Inject
@@ -382,8 +377,6 @@ public class AgentParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class AttributeTest extends AbstractSarlTest {
 
 		@Inject
@@ -580,8 +573,6 @@ public class AgentParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CapacityUseTest extends AbstractSarlTest {
 
 		@Inject
@@ -675,8 +666,6 @@ public class AgentParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class ActionTest extends AbstractSarlTest {
 
 		@Inject

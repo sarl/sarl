@@ -71,8 +71,6 @@ import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.common.types.util.TypeReferences;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.resource.IResourceFactory;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.xbase.XBlockExpression;
@@ -144,8 +142,6 @@ public class SARLCodeGeneratorTest {
 		}
 	}
 	
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class InjectedAttributes extends AbstractSarlTest {
 
 		@Inject
@@ -192,8 +188,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class DefaultTypeValue extends AbstractSarlTest {
 
 		@Inject
@@ -322,8 +316,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class References extends AbstractSarlTest {
 
 		@Inject
@@ -393,8 +385,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class Comments extends AbstractSarlTest {
 
 		@Inject
@@ -453,8 +443,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class ScriptLevel extends AbstractSarlTest {
 
 		@Inject
@@ -512,8 +500,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class AgentTopElement extends AbstractSarlTest {
 
 		@Inject
@@ -609,8 +595,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class BehaviorTopElement extends AbstractSarlTest {
 
 		@Inject
@@ -706,8 +690,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CapacityTopElement extends AbstractSarlTest {
 
 		@Inject
@@ -803,8 +785,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class EventTopElement extends AbstractSarlTest {
 
 		@Inject
@@ -900,8 +880,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class SkillTopElement extends AbstractSarlTest {
 
 		@Inject
@@ -1091,8 +1069,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class AgentFeatures extends AbstractSarlTest {
 
 		@Inject
@@ -1292,8 +1268,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class BehaviorFeatures extends AbstractSarlTest {
 
 		@Inject
@@ -1492,8 +1466,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CapacityFeatures extends AbstractSarlTest {
 
 		@Inject
@@ -1584,8 +1556,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class EventFeatures extends AbstractSarlTest {
 
 		@Inject
@@ -1729,8 +1699,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class SkillFeatures extends AbstractSarlTest {
 
 		@Inject
@@ -1908,8 +1876,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class Expressions extends AbstractSarlTest {
 
 		@Inject
@@ -1975,8 +1941,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class FormalParameters extends AbstractSarlTest {
 
 		@Inject
@@ -2124,7 +2088,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CreateActionFromJvmElement extends AbstractSarlUiTest {
 
 		@Inject
@@ -2753,7 +2716,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CreateConstructorFromJvmElement extends AbstractSarlUiTest {
 
 		@Inject
@@ -2899,7 +2861,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CreateActionSignatureFromJvmElement extends AbstractSarlUiTest {
 
 		@Inject

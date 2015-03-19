@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target includeMode="feature" name="io.sarl.lang.targetplatform" sequenceNumber="29">
+<?pde version="3.8"?><target includeMode="feature" name="io.sarl.lang.targetplatform" sequenceNumber="31">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.jdt.feature.group" version="3.10.0.v20140925-0400"/>
-<unit id="org.eclipse.jgit.feature.group" version="3.4.1.201406201815-r"/>
-<unit id="org.eclipse.m2e.feature.feature.group" version="1.5.0.20140606-0033"/>
-<unit id="org.eclipse.epp.mpc.feature.group" version="1.3.1.v20140908-1651"/>
-<unit id="org.eclipse.recommenders.rcp.feature.feature.group" version="2.1.9.v20140917-1240"/>
+<unit id="org.eclipse.jdt.feature.group" version="3.10.1.v20150204-1700"/>
+<unit id="org.eclipse.jgit.feature.group" version="3.4.2.201412180340-r"/>
+<unit id="org.eclipse.m2e.feature.feature.group" version="1.5.1.20150109-1820"/>
+<unit id="org.eclipse.epp.mpc.feature.group" version="1.3.2.v20150218-2039"/>
+<unit id="org.eclipse.recommenders.rcp.feature.feature.group" version="2.1.12.v20150218-0817"/>
 <repository location="http://download.eclipse.org/releases/luna"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -14,8 +14,8 @@
 <repository location="http://powermock-osgi.googlecode.com/svn/updateSite/1.5.4.1"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.xtext.redist.feature.group" version="2.7.3.v201411190455"/>
-<unit id="org.eclipse.xtend.sdk.feature.group" version="2.7.3.v201411190455"/>
+<unit id="org.eclipse.xtext.redist.feature.group" version="2.8.0.v201503090534"/>
+<unit id="org.eclipse.xtend.sdk.feature.group" version="2.8.0.v201503090534"/>
 <repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
 </location>
 </locations>

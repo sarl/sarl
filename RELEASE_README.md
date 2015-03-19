@@ -47,7 +47,7 @@ The steps for releasing SARL are:
 12) Close the milestones on Github.
 
 13) Revert steps 1 and 2; and change the following:
-    * Version anges in the Required-Bundles of MANIFEST.MF.
+    * Version ranges in the Required-Bundles of MANIFEST.MF.
     * Versions in the requirements of feature.xml.
 
 14) Compiling locally without error.

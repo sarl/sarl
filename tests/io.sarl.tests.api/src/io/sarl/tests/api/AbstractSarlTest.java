@@ -20,9 +20,14 @@
  */
 package io.sarl.tests.api;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.SARLUiInjectorProvider;
 import io.sarl.lang.sarl.FormalParameter;
-import io.sarl.lang.sarl.SarlScript;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -32,15 +37,20 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.junit4.InjectWith;
+import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
+import org.junit.Assume;
 import org.junit.Rule;
+import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+import org.junit.runner.RunWith;
+import org.junit.runners.model.Statement;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -64,6 +74,8 @@ import com.google.common.collect.Iterables;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@RunWith(XtextRunner.class)
+@InjectWith(SARLInjectorProvider.class)
 public abstract class AbstractSarlTest {
 
 	/** This rule permits to clean automatically the fields
@@ -89,6 +101,24 @@ public abstract class AbstractSarlTest {
 			if (isMockable()) {
 				MockitoAnnotations.initMocks(AbstractSarlTest.this);
 			}
+		}
+		@Override
+		public Statement apply(Statement base, Description description) {
+			// This test is working only in Eclipse, or Maven/Tycho.
+			TestScope scope = description.getAnnotation(TestScope.class);
+			if (scope != null) {
+				if (!scope.tycho() && !scope.eclipse()) {
+					throw new AssumptionViolatedException("not running on the current framework");
+				} else if (scope.tycho() || scope.eclipse()) {
+					boolean isEclipse = System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.");
+					if (scope.tycho()) {
+						Assume.assumeFalse(isEclipse);
+					} else {
+						Assume.assumeTrue(isEclipse);
+					}
+				}
+			}
+			return super.apply(base, description);
 		}
 		@Override
 		protected void finished(Description description) {

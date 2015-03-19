@@ -35,7 +35,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class MemberExcludedTest extends AbstractSARLTest<Event> {
+public class MemberExcludedTest extends AbstractSarlCoreTest<Event> {
 
 	/**
 	 */

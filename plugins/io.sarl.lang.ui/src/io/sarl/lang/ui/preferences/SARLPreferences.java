@@ -49,7 +49,7 @@ public final class SARLPreferences {
 
 	/** Define the configuration entry for project specific entries.
 	 *
-	 * FIXME: replace by {@link OptionsConfigurationBlock#IS_PROJECT_SPECIFIC}.
+	 * @see OptionsConfigurationBlock#IS_PROJECT_SPECIFIC
 	 */
 	public static final String IS_PROJECT_SPECIFIC = "is_project_specific"; //$NON-NLS-1$
 

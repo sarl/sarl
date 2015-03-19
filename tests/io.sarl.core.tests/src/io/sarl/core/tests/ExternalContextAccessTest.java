@@ -36,7 +36,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class ExternalContextAccessTest extends AbstractSARLTest<Capacity> {
+public class ExternalContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 
 	/**
 	 */
