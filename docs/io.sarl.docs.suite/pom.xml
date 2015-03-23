@@ -48,6 +48,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.tests.api</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>io.sarl.lang</groupId>
 			<artifactId>io.sarl.lang.tests</artifactId>
 			<version>${project.version}</version>
