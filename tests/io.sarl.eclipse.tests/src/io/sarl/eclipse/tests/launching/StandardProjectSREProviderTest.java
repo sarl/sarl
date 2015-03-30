@@ -28,7 +28,9 @@ import static org.mockito.Mockito.when;
 import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProvider;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.Nullable;
+import io.sarl.tests.api.TestScope;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.QualifiedName;
@@ -44,8 +46,9 @@ import org.mockito.stubbing.Answer;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@TestScope(tycho = false)
 @SuppressWarnings("all")
-public class StandardProjectSREProviderTest extends AbstractSarlTest {
+public class StandardProjectSREProviderTest extends AbstractSarlUiTest {
 
 	@Nullable
 	private String id;

@@ -106,6 +106,13 @@ public abstract class AbstractSarlTest {
 		public Statement apply(Statement base, Description description) {
 			// This test is working only in Eclipse, or Maven/Tycho.
 			TestScope scope = description.getAnnotation(TestScope.class);
+			if (scope == null) {
+				Class<?> enclosingType = description.getTestClass();
+				while (scope == null && enclosingType != null) {
+					scope = enclosingType.getAnnotation(TestScope.class);
+					enclosingType = enclosingType.getEnclosingClass();
+				}
+			}
 			if (scope != null) {
 				if (!scope.tycho() && !scope.eclipse()) {
 					throw new AssumptionViolatedException("not running on the current framework");
