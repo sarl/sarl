@@ -95,7 +95,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.2</version>
+					<version>3.3</version>
 					<configuration>
 						<source>${compiler.level}</source>
 						<target>${compiler.level}</target>
@@ -106,7 +106,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.1</version>
+					<version>2.10.2</version>
 				</plugin>
 
 				<plugin>
@@ -172,7 +172,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>2.14</version>
+					<version>2.15</version>
 					<executions>
 						<execution>
 							<phase>process-classes</phase>
