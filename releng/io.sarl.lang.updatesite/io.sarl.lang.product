@@ -36,7 +36,6 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
 
@@ -253,17 +252,16 @@
    <features>
       <feature id="io.sarl.lang.sdk" version="0.2.0.qualifier"/>
       <feature id="io.sarl.sdk" version="0.2.0.qualifier"/>
-      <feature id="org.eclipse.xtend.sdk" version="2.8.0.v201503090534"/>
-      <feature id="org.eclipse.xtext.redist" version="2.8.0.v201503090534"/>
+      <feature id="org.eclipse.xtend.sdk" version="2.8.1.v201503230617"/>
+      <feature id="org.eclipse.xtext.redist" version="2.8.1.v201503230617"/>
       <feature id="org.eclipse.platform" version="4.4.2.v20150204-1700"/>
       <feature id="org.eclipse.m2e.feature" version="1.5.1.20150109-1820"/>
       <feature id="org.eclipse.jgit" version="3.4.2.201412180340-r"/>
-      <feature id="org.eclipse.xtext.runtime"/>
-      <feature id="org.eclipse.xtext.ui"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
       <feature id="org.eclipse.ecf.filetransfer.feature"/>
       <feature id="org.eclipse.ecf.core.ssl.feature"/>
       <feature id="org.eclipse.equinox.p2.core.feature"/>
+      <feature id="org.eclipse.xtext.ui"/>
       <feature id="org.eclipse.rcp"/>
       <feature id="org.eclipse.jdt"/>
       <feature id="org.eclipse.ecf.core.feature"/>
@@ -273,6 +271,7 @@
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
       <feature id="org.eclipse.emf.common"/>
       <feature id="org.eclipse.equinox.p2.rcp.feature"/>
+      <feature id="org.eclipse.xtext.runtime"/>
       <feature id="org.eclipse.equinox.p2.user.ui"/>
       <feature id="org.eclipse.equinox.p2.extras.feature"/>
       <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>

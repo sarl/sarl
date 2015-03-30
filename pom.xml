@@ -27,8 +27,8 @@
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 		<buildId>${maven.build.timestamp}</buildId>
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.8.0</xtext.version>
-		<xtext.versionRange>[2.8.0,2.8.1)</xtext.versionRange>
+		<xtext.version>2.8.1</xtext.version>
+		<xtext.versionRange>[2.8.1,2.8.2)</xtext.versionRange>
 		<!-- Version of the Jnario PI -->
 		<jnario.version>1.0.0</jnario.version>
 		<jnario.report.version>1.0.1</jnario.report.version>
