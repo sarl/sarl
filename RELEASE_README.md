@@ -18,6 +18,7 @@ A.3) Update the graphical resources (splash screen, icons...)
 
 A.4) Compiling locally without error.
 
+    $> rm -rf $HOME/.m2/repository
     $> mvn clean install
 
     You may compile the documentation is a different process if Maven complains to be out of memory.
@@ -70,6 +71,7 @@ B.1) Revert steps 1 to 3; and change the following:
 
 B.2) Compiling locally without error.
 
+    $> rm -rf $HOME/.m2/repository
     $> mvn clean install
 
     You may compile the documentation is a different process if Maven complains to be out of memory.
