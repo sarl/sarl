@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>io.sarl.docs</artifactId>
 		<groupId>io.sarl</groupId>
-		<version>0.2.0-SNAPSHOT</version>
+		<version>0.2.0</version>
 	</parent>
 	
 	<groupId>io.sarl.docs</groupId>
@@ -152,7 +152,7 @@
 						</goals>
 						<configuration>
 							<source>
-								snapshotTag = "-SNAPSHOT"
+								snapshotTag = ""
 								endOfVersion = ""
 								if (project.version.endsWith(snapshotTag)) {
 									len = project.version.size() - snapshotTag.size()

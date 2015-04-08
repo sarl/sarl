@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="%product.name" uid="io.sarl.lang.product" id="io.sarl.eclipse.io_sarl_lang_product" application="org.eclipse.ui.ide.workbench" version="0.2.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="%product.name" uid="io.sarl.lang.product" id="io.sarl.eclipse.io_sarl_lang_product" application="org.eclipse.ui.ide.workbench" version="0.2.0" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/io.sarl.eclipse/icons/eclipse-about-banner.png"/>
@@ -250,8 +250,8 @@
    </plugins>
 
    <features>
-      <feature id="io.sarl.lang.sdk" version="0.2.0.qualifier"/>
-      <feature id="io.sarl.sdk" version="0.2.0.qualifier"/>
+      <feature id="io.sarl.lang.sdk" version="0.2.0"/>
+      <feature id="io.sarl.sdk" version="0.2.0"/>
       <feature id="org.eclipse.xtend.sdk" version="2.8.1.v201503230617"/>
       <feature id="org.eclipse.xtext.redist" version="2.8.1.v201503230617"/>
       <feature id="org.eclipse.platform" version="4.4.2.v20150204-1700"/>
