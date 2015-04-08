@@ -47,13 +47,13 @@ public class SARLClasspathContainerTest extends AbstractSarlTest {
 	private IPath containerPath;
 	@Nullable
 	private SARLClasspathContainer container;
-	
+
 	@Before
 	public void setUp() {
 		this.containerPath = mock(IPath.class);
 		this.container = new SARLClasspathContainer(this.containerPath);
 	}
-	
+
 	private static boolean isReferenceLibrary(String reference, IClasspathEntry entry) {
 		IPath path = entry.getPath();
 		String str = path.lastSegment();
@@ -63,7 +63,7 @@ public class SARLClasspathContainerTest extends AbstractSarlTest {
 		}
 		return str.startsWith(reference + "_");
 	}
-	
+
 	@Test
 	public void getDescription() {
 		assertEquals(Messages.SARLClasspathContainer_0, this.container.getDescription());

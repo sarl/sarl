@@ -24,7 +24,7 @@ package io.sarl.eclipse.launching.runner;
 import org.eclipse.osgi.util.NLS;
 
 /** Localized Messages.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

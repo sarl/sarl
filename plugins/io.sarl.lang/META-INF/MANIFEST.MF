@@ -21,6 +21,7 @@ Require-Bundle: io.sarl.lang.core;bundle-version="0.2.0",
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: io.sarl.lang,
+ io.sarl.lang.actionprototype,
  io.sarl.lang.bugfixes,
  io.sarl.lang.controlflow,
  io.sarl.lang.formatting,
@@ -34,7 +35,6 @@ Export-Package: io.sarl.lang,
  io.sarl.lang.scoping.batch,
  io.sarl.lang.serializer,
  io.sarl.lang.services,
- io.sarl.lang.signature,
  io.sarl.lang.util,
  io.sarl.lang.validation
 Bundle-Activator: io.sarl.lang.SARLLangActivator

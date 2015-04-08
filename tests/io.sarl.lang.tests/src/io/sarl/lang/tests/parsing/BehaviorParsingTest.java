@@ -61,10 +61,10 @@ import com.google.inject.Inject;
 public class BehaviorParsingTest {
 
 	public static class TopElementTest extends AbstractSarlTest {
-	
+
 		@Inject
 		private ParseHelper<SarlScript> parser;
-		
+
 		@Inject
 		private ValidationTestHelper validator;
 
@@ -172,12 +172,12 @@ public class BehaviorParsingTest {
 		}
 
 	}
-	
+
 	public static class ActionTest extends AbstractSarlTest {
-	
+
 		@Inject
 		private ParseHelper<SarlScript> parser;
-		
+
 		@Inject
 		private ValidationTestHelper validator;
 
@@ -386,10 +386,10 @@ public class BehaviorParsingTest {
 	}
 
 	public static class AttributeTest extends AbstractSarlTest {
-	
+
 		@Inject
 		private ParseHelper<SarlScript> parser;
-		
+
 		@Inject
 		private ValidationTestHelper validator;
 
@@ -466,7 +466,7 @@ public class BehaviorParsingTest {
 				org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_INITIALIZATION,
 				"The blank final field 'field2' may not have been initialized");
 		}
-		
+
 		@Test
 		public void completeFinalFieldInitialization() throws Exception {
 			SarlScript mas = this.parser.parse(multilineString(
@@ -517,10 +517,10 @@ public class BehaviorParsingTest {
 	}
 
 	public static class ConstructorTest extends AbstractSarlTest {
-	
+
 		@Inject
 		private ParseHelper<SarlScript> parser;
-		
+
 		@Inject
 		private ValidationTestHelper validator;
 
@@ -634,12 +634,12 @@ public class BehaviorParsingTest {
 		}
 
 	}
-	
+
 	public static class CapacityUsesTest extends AbstractSarlTest {
-	
+
 		@Inject
 		private ParseHelper<SarlScript> parser;
-		
+
 		@Inject
 		private ValidationTestHelper validator;
 
@@ -679,5 +679,5 @@ public class BehaviorParsingTest {
 		}
 
 	}
-	
+
 }

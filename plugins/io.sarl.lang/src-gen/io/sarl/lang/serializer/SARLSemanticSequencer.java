@@ -86,7 +86,7 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 
 	@Inject
 	private SARLGrammarAccess grammarAccess;
-	
+
 	public void createSequence(EObject context, EObject semanticObject) {
 		if(semanticObject.eClass().getEPackage() == SarlPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
 			case SarlPackage.ACTION:
@@ -94,21 +94,21 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getAgentFeatureRule() ||
 				   context == grammarAccess.getBehaviorFeatureRule() ||
 				   context == grammarAccess.getSkillFeatureRule()) {
-					sequence_Action(context, (Action) semanticObject); 
-					return; 
+					sequence_Action(context, (Action) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.ACTION_SIGNATURE:
 				if(context == grammarAccess.getActionSignatureRule()) {
-					sequence_ActionSignature(context, (ActionSignature) semanticObject); 
-					return; 
+					sequence_ActionSignature(context, (ActionSignature) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.AGENT:
 				if(context == grammarAccess.getAgentRule() ||
 				   context == grammarAccess.getTopElementRule()) {
-					sequence_Agent(context, (Agent) semanticObject); 
-					return; 
+					sequence_Agent(context, (Agent) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.ATTRIBUTE:
@@ -117,30 +117,30 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getBehaviorFeatureRule() ||
 				   context == grammarAccess.getEventFeatureRule() ||
 				   context == grammarAccess.getSkillFeatureRule()) {
-					sequence_Attribute(context, (Attribute) semanticObject); 
-					return; 
+					sequence_Attribute(context, (Attribute) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.BEHAVIOR:
 				if(context == grammarAccess.getBehaviorRule() ||
 				   context == grammarAccess.getTopElementRule()) {
-					sequence_Behavior(context, (Behavior) semanticObject); 
-					return; 
+					sequence_Behavior(context, (Behavior) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.BEHAVIOR_UNIT:
 				if(context == grammarAccess.getAgentFeatureRule() ||
 				   context == grammarAccess.getBehaviorFeatureRule() ||
 				   context == grammarAccess.getBehaviorUnitRule()) {
-					sequence_BehaviorUnit(context, (BehaviorUnit) semanticObject); 
-					return; 
+					sequence_BehaviorUnit(context, (BehaviorUnit) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.CAPACITY:
 				if(context == grammarAccess.getCapacityRule() ||
 				   context == grammarAccess.getTopElementRule()) {
-					sequence_Capacity(context, (Capacity) semanticObject); 
-					return; 
+					sequence_Capacity(context, (Capacity) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.CAPACITY_USES:
@@ -148,8 +148,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getBehaviorFeatureRule() ||
 				   context == grammarAccess.getCapacityUsesRule() ||
 				   context == grammarAccess.getSkillFeatureRule()) {
-					sequence_CapacityUses(context, (CapacityUses) semanticObject); 
-					return; 
+					sequence_CapacityUses(context, (CapacityUses) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.CONSTRUCTOR:
@@ -157,57 +157,57 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getConstructorRule() ||
 				   context == grammarAccess.getEventFeatureRule() ||
 				   context == grammarAccess.getSkillFeatureRule()) {
-					sequence_Constructor(context, (Constructor) semanticObject); 
-					return; 
+					sequence_Constructor(context, (Constructor) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.EVENT:
 				if(context == grammarAccess.getEventRule() ||
 				   context == grammarAccess.getTopElementRule()) {
-					sequence_Event(context, (Event) semanticObject); 
-					return; 
+					sequence_Event(context, (Event) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.FEATURE:
 				if(context == grammarAccess.getFeatureRule()) {
-					sequence_Feature(context, (Feature) semanticObject); 
-					return; 
+					sequence_Feature(context, (Feature) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.FEATURE_CONTAINER:
 				if(context == grammarAccess.getFeatureContainerRule()) {
-					sequence_FeatureContainer(context, (FeatureContainer) semanticObject); 
-					return; 
+					sequence_FeatureContainer(context, (FeatureContainer) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.FORMAL_PARAMETER:
 				if(context == grammarAccess.getFormalParameterRule()) {
-					sequence_FormalParameter(context, (FormalParameter) semanticObject); 
-					return; 
+					sequence_FormalParameter(context, (FormalParameter) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.IMPLEMENTING_ELEMENT:
 				if(context == grammarAccess.getImplementingElementRule()) {
-					sequence_ImplementingElement(context, (ImplementingElement) semanticObject); 
-					return; 
+					sequence_ImplementingElement(context, (ImplementingElement) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.INHERITING_ELEMENT:
 				if(context == grammarAccess.getInheritingElementRule()) {
-					sequence_InheritingElement(context, (InheritingElement) semanticObject); 
-					return; 
+					sequence_InheritingElement(context, (InheritingElement) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.NAMED_ELEMENT:
 				if(context == grammarAccess.getNamedElementRule()) {
-					sequence_NamedElement(context, (NamedElement) semanticObject); 
-					return; 
+					sequence_NamedElement(context, (NamedElement) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.PARAMETERIZED_FEATURE:
 				if(context == grammarAccess.getParameterizedFeatureRule()) {
-					sequence_ParameterizedFeature(context, (ParameterizedFeature) semanticObject); 
-					return; 
+					sequence_ParameterizedFeature(context, (ParameterizedFeature) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.REQUIRED_CAPACITY:
@@ -215,45 +215,45 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getBehaviorFeatureRule() ||
 				   context == grammarAccess.getRequiredCapacityRule() ||
 				   context == grammarAccess.getSkillFeatureRule()) {
-					sequence_RequiredCapacity(context, (RequiredCapacity) semanticObject); 
-					return; 
+					sequence_RequiredCapacity(context, (RequiredCapacity) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.SARL_SCRIPT:
 				if(context == grammarAccess.getSarlScriptRule()) {
-					sequence_SarlScript(context, (SarlScript) semanticObject); 
-					return; 
+					sequence_SarlScript(context, (SarlScript) semanticObject);
+					return;
 				}
 				else break;
 			case SarlPackage.SKILL:
 				if(context == grammarAccess.getSkillRule() ||
 				   context == grammarAccess.getTopElementRule()) {
-					sequence_Skill(context, (Skill) semanticObject); 
-					return; 
+					sequence_Skill(context, (Skill) semanticObject);
+					return;
 				}
 				else break;
 			}
 		else if(semanticObject.eClass().getEPackage() == TypesPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
 			case TypesPackage.JVM_FORMAL_PARAMETER:
 				if(context == grammarAccess.getFullJvmFormalParameterRule()) {
-					sequence_FullJvmFormalParameter(context, (JvmFormalParameter) semanticObject); 
-					return; 
+					sequence_FullJvmFormalParameter(context, (JvmFormalParameter) semanticObject);
+					return;
 				}
 				else if(context == grammarAccess.getJvmFormalParameterRule()) {
-					sequence_JvmFormalParameter(context, (JvmFormalParameter) semanticObject); 
-					return; 
+					sequence_JvmFormalParameter(context, (JvmFormalParameter) semanticObject);
+					return;
 				}
 				else if(context == grammarAccess.getXXLoopFormalParameterRule()) {
-					sequence_XXLoopFormalParameter(context, (JvmFormalParameter) semanticObject); 
-					return; 
+					sequence_XXLoopFormalParameter(context, (JvmFormalParameter) semanticObject);
+					return;
 				}
 				else break;
 			case TypesPackage.JVM_GENERIC_ARRAY_TYPE_REFERENCE:
 				if(context == grammarAccess.getJvmArgumentTypeReferenceRule() ||
 				   context == grammarAccess.getJvmTypeReferenceRule() ||
 				   context == grammarAccess.getJvmTypeReferenceAccess().getJvmGenericArrayTypeReferenceComponentTypeAction_0_1_0_0()) {
-					sequence_JvmTypeReference(context, (JvmGenericArrayTypeReference) semanticObject); 
-					return; 
+					sequence_JvmTypeReference(context, (JvmGenericArrayTypeReference) semanticObject);
+					return;
 				}
 				else break;
 			case TypesPackage.JVM_INNER_TYPE_REFERENCE:
@@ -263,18 +263,18 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getJvmSuperTypeReferenceRule() ||
 				   context == grammarAccess.getJvmTypeReferenceRule() ||
 				   context == grammarAccess.getJvmTypeReferenceAccess().getJvmGenericArrayTypeReferenceComponentTypeAction_0_1_0_0()) {
-					sequence_JvmParameterizedTypeReference(context, (JvmInnerTypeReference) semanticObject); 
-					return; 
+					sequence_JvmParameterizedTypeReference(context, (JvmInnerTypeReference) semanticObject);
+					return;
 				}
 				else break;
 			case TypesPackage.JVM_LOWER_BOUND:
 				if(context == grammarAccess.getJvmLowerBoundAndedRule()) {
-					sequence_JvmLowerBoundAnded(context, (JvmLowerBound) semanticObject); 
-					return; 
+					sequence_JvmLowerBoundAnded(context, (JvmLowerBound) semanticObject);
+					return;
 				}
 				else if(context == grammarAccess.getJvmLowerBoundRule()) {
-					sequence_JvmLowerBound(context, (JvmLowerBound) semanticObject); 
-					return; 
+					sequence_JvmLowerBound(context, (JvmLowerBound) semanticObject);
+					return;
 				}
 				else break;
 			case TypesPackage.JVM_PARAMETERIZED_TYPE_REFERENCE:
@@ -284,31 +284,31 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getJvmSuperTypeReferenceRule() ||
 				   context == grammarAccess.getJvmTypeReferenceRule() ||
 				   context == grammarAccess.getJvmTypeReferenceAccess().getJvmGenericArrayTypeReferenceComponentTypeAction_0_1_0_0()) {
-					sequence_JvmParameterizedTypeReference(context, (JvmParameterizedTypeReference) semanticObject); 
-					return; 
+					sequence_JvmParameterizedTypeReference(context, (JvmParameterizedTypeReference) semanticObject);
+					return;
 				}
 				else break;
 			case TypesPackage.JVM_TYPE_PARAMETER:
 				if(context == grammarAccess.getJvmTypeParameterRule()) {
-					sequence_JvmTypeParameter(context, (JvmTypeParameter) semanticObject); 
-					return; 
+					sequence_JvmTypeParameter(context, (JvmTypeParameter) semanticObject);
+					return;
 				}
 				else break;
 			case TypesPackage.JVM_UPPER_BOUND:
 				if(context == grammarAccess.getJvmUpperBoundAndedRule()) {
-					sequence_JvmUpperBoundAnded(context, (JvmUpperBound) semanticObject); 
-					return; 
+					sequence_JvmUpperBoundAnded(context, (JvmUpperBound) semanticObject);
+					return;
 				}
 				else if(context == grammarAccess.getJvmUpperBoundRule()) {
-					sequence_JvmUpperBound(context, (JvmUpperBound) semanticObject); 
-					return; 
+					sequence_JvmUpperBound(context, (JvmUpperBound) semanticObject);
+					return;
 				}
 				else break;
 			case TypesPackage.JVM_WILDCARD_TYPE_REFERENCE:
 				if(context == grammarAccess.getJvmArgumentTypeReferenceRule() ||
 				   context == grammarAccess.getJvmWildcardTypeReferenceRule()) {
-					sequence_JvmWildcardTypeReference(context, (JvmWildcardTypeReference) semanticObject); 
-					return; 
+					sequence_JvmWildcardTypeReference(context, (JvmWildcardTypeReference) semanticObject);
+					return;
 				}
 				else break;
 			}
@@ -343,8 +343,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XAssignment_XMemberFeatureCall(context, (XAssignment) semanticObject); 
-					return; 
+					sequence_XAssignment_XMemberFeatureCall(context, (XAssignment) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XBASIC_FOR_LOOP_EXPRESSION:
@@ -378,8 +378,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XBasicForLoopExpression(context, (XBasicForLoopExpression) semanticObject); 
-					return; 
+					sequence_XBasicForLoopExpression(context, (XBasicForLoopExpression) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XBINARY_OPERATION:
@@ -412,8 +412,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XAdditiveExpression_XAndExpression_XAssignment_XEqualityExpression_XMultiplicativeExpression_XOrExpression_XOtherOperatorExpression_XRelationalExpression(context, (XBinaryOperation) semanticObject); 
-					return; 
+					sequence_XAdditiveExpression_XAndExpression_XAssignment_XEqualityExpression_XMultiplicativeExpression_XOrExpression_XOtherOperatorExpression_XRelationalExpression(context, (XBinaryOperation) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XBLOCK_EXPRESSION:
@@ -447,12 +447,12 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XBlockExpression(context, (XBlockExpression) semanticObject); 
-					return; 
+					sequence_XBlockExpression(context, (XBlockExpression) semanticObject);
+					return;
 				}
 				else if(context == grammarAccess.getXExpressionInClosureRule()) {
-					sequence_XExpressionInClosure(context, (XBlockExpression) semanticObject); 
-					return; 
+					sequence_XExpressionInClosure(context, (XBlockExpression) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XBOOLEAN_LITERAL:
@@ -488,14 +488,14 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XBooleanLiteral(context, (XBooleanLiteral) semanticObject); 
-					return; 
+					sequence_XBooleanLiteral(context, (XBooleanLiteral) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XCASE_PART:
 				if(context == grammarAccess.getXCasePartRule()) {
-					sequence_XCasePart(context, (XCasePart) semanticObject); 
-					return; 
+					sequence_XCasePart(context, (XCasePart) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XCASTED_EXPRESSION:
@@ -528,14 +528,14 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XCastedExpression(context, (XCastedExpression) semanticObject); 
-					return; 
+					sequence_XCastedExpression(context, (XCastedExpression) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XCATCH_CLAUSE:
 				if(context == grammarAccess.getXCatchClauseRule()) {
-					sequence_XCatchClause(context, (XCatchClause) semanticObject); 
-					return; 
+					sequence_XCatchClause(context, (XCatchClause) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XCLOSURE:
@@ -571,12 +571,12 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XClosure(context, (XClosure) semanticObject); 
-					return; 
+					sequence_XClosure(context, (XClosure) semanticObject);
+					return;
 				}
 				else if(context == grammarAccess.getXShortClosureRule()) {
-					sequence_XShortClosure(context, (XClosure) semanticObject); 
-					return; 
+					sequence_XShortClosure(context, (XClosure) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XCONSTRUCTOR_CALL:
@@ -610,8 +610,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XConstructorCall(context, (XConstructorCall) semanticObject); 
-					return; 
+					sequence_XConstructorCall(context, (XConstructorCall) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XDO_WHILE_EXPRESSION:
@@ -645,8 +645,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XDoWhileExpression(context, (XDoWhileExpression) semanticObject); 
-					return; 
+					sequence_XDoWhileExpression(context, (XDoWhileExpression) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XFEATURE_CALL:
@@ -680,8 +680,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XFeatureCall(context, (XFeatureCall) semanticObject); 
-					return; 
+					sequence_XFeatureCall(context, (XFeatureCall) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XFOR_LOOP_EXPRESSION:
@@ -715,8 +715,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XForLoopExpression(context, (XForLoopExpression) semanticObject); 
-					return; 
+					sequence_XForLoopExpression(context, (XForLoopExpression) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XIF_EXPRESSION:
@@ -750,8 +750,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XIfExpression(context, (XIfExpression) semanticObject); 
-					return; 
+					sequence_XIfExpression(context, (XIfExpression) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XINSTANCE_OF_EXPRESSION:
@@ -784,8 +784,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XRelationalExpression(context, (XInstanceOfExpression) semanticObject); 
-					return; 
+					sequence_XRelationalExpression(context, (XInstanceOfExpression) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XLIST_LITERAL:
@@ -822,8 +822,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XListLiteral(context, (XListLiteral) semanticObject); 
-					return; 
+					sequence_XListLiteral(context, (XListLiteral) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XMEMBER_FEATURE_CALL:
@@ -856,8 +856,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XMemberFeatureCall(context, (XMemberFeatureCall) semanticObject); 
-					return; 
+					sequence_XMemberFeatureCall(context, (XMemberFeatureCall) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XNULL_LITERAL:
@@ -893,8 +893,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XNullLiteral(context, (XNullLiteral) semanticObject); 
-					return; 
+					sequence_XNullLiteral(context, (XNullLiteral) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XNUMBER_LITERAL:
@@ -930,8 +930,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XNumberLiteral(context, (XNumberLiteral) semanticObject); 
-					return; 
+					sequence_XNumberLiteral(context, (XNumberLiteral) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XPOSTFIX_OPERATION:
@@ -964,8 +964,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XPostfixOperation(context, (XPostfixOperation) semanticObject); 
-					return; 
+					sequence_XPostfixOperation(context, (XPostfixOperation) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XRETURN_EXPRESSION:
@@ -999,8 +999,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXReturnExpressionRule() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XReturnExpression(context, (XReturnExpression) semanticObject); 
-					return; 
+					sequence_XReturnExpression(context, (XReturnExpression) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XSET_LITERAL:
@@ -1037,8 +1037,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXSetLiteralRule() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XSetLiteral(context, (XSetLiteral) semanticObject); 
-					return; 
+					sequence_XSetLiteral(context, (XSetLiteral) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XSTRING_LITERAL:
@@ -1074,8 +1074,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXStringLiteralRule() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XStringLiteral(context, (XStringLiteral) semanticObject); 
-					return; 
+					sequence_XStringLiteral(context, (XStringLiteral) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XSWITCH_EXPRESSION:
@@ -1109,8 +1109,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXSwitchExpressionRule() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XSwitchExpression(context, (XSwitchExpression) semanticObject); 
-					return; 
+					sequence_XSwitchExpression(context, (XSwitchExpression) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XSYNCHRONIZED_EXPRESSION:
@@ -1144,8 +1144,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXSynchronizedExpressionRule() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XSynchronizedExpression(context, (XSynchronizedExpression) semanticObject); 
-					return; 
+					sequence_XSynchronizedExpression(context, (XSynchronizedExpression) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XTHROW_EXPRESSION:
@@ -1179,8 +1179,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXThrowExpressionRule() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XThrowExpression(context, (XThrowExpression) semanticObject); 
-					return; 
+					sequence_XThrowExpression(context, (XThrowExpression) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XTRY_CATCH_FINALLY_EXPRESSION:
@@ -1214,8 +1214,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXTryCatchFinallyExpressionRule() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XTryCatchFinallyExpression(context, (XTryCatchFinallyExpression) semanticObject); 
-					return; 
+					sequence_XTryCatchFinallyExpression(context, (XTryCatchFinallyExpression) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XTYPE_LITERAL:
@@ -1251,8 +1251,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXTypeLiteralRule() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XTypeLiteral(context, (XTypeLiteral) semanticObject); 
-					return; 
+					sequence_XTypeLiteral(context, (XTypeLiteral) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XUNARY_OPERATION:
@@ -1285,15 +1285,15 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0() ||
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule()) {
-					sequence_XUnaryOperation(context, (XUnaryOperation) semanticObject); 
-					return; 
+					sequence_XUnaryOperation(context, (XUnaryOperation) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XVARIABLE_DECLARATION:
 				if(context == grammarAccess.getXExpressionOrVarDeclarationRule() ||
 				   context == grammarAccess.getXVariableDeclarationRule()) {
-					sequence_XVariableDeclaration(context, (XVariableDeclaration) semanticObject); 
-					return; 
+					sequence_XVariableDeclaration(context, (XVariableDeclaration) semanticObject);
+					return;
 				}
 				else break;
 			case XbasePackage.XWHILE_EXPRESSION:
@@ -1327,8 +1327,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 				   context == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0() ||
 				   context == grammarAccess.getXUnaryOperationRule() ||
 				   context == grammarAccess.getXWhileExpressionRule()) {
-					sequence_XWhileExpression(context, (XWhileExpression) semanticObject); 
-					return; 
+					sequence_XWhileExpression(context, (XWhileExpression) semanticObject);
+					return;
 				}
 				else break;
 			}
@@ -1336,61 +1336,61 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 			case XtypePackage.XFUNCTION_TYPE_REF:
 				if(context == grammarAccess.getJvmSuperTypeReferenceRule() ||
 				   context == grammarAccess.getXFunctionSuperTypeRefRule()) {
-					sequence_XFunctionSuperTypeRef(context, (XFunctionTypeRef) semanticObject); 
-					return; 
+					sequence_XFunctionSuperTypeRef(context, (XFunctionTypeRef) semanticObject);
+					return;
 				}
 				else if(context == grammarAccess.getJvmArgumentTypeReferenceRule() ||
 				   context == grammarAccess.getJvmTypeReferenceRule() ||
 				   context == grammarAccess.getXFunctionTypeRefRule()) {
-					sequence_XFunctionTypeRef(context, (XFunctionTypeRef) semanticObject); 
-					return; 
+					sequence_XFunctionTypeRef(context, (XFunctionTypeRef) semanticObject);
+					return;
 				}
 				else break;
 			case XtypePackage.XIMPORT_DECLARATION:
 				if(context == grammarAccess.getXImportDeclarationRule()) {
-					sequence_XImportDeclaration(context, (XImportDeclaration) semanticObject); 
-					return; 
+					sequence_XImportDeclaration(context, (XImportDeclaration) semanticObject);
+					return;
 				}
 				else break;
 			case XtypePackage.XIMPORT_SECTION:
 				if(context == grammarAccess.getXImportSectionRule()) {
-					sequence_XImportSection(context, (XImportSection) semanticObject); 
-					return; 
+					sequence_XImportSection(context, (XImportSection) semanticObject);
+					return;
 				}
 				else break;
 			}
 		if (errorAcceptor != null) errorAcceptor.accept(diagnosticProvider.createInvalidContextOrTypeDiagnostic(semanticObject, context));
 	}
-	
+
 	/**
 	 * Constraint:
 	 *     (
-	 *         name=ValidID 
-	 *         (params+=FormalParameter params+=FormalParameter* varargs?=VarArgToken?)? 
-	 *         type=JvmTypeReference? 
+	 *         name=ValidID
+	 *         (params+=FormalParameter params+=FormalParameter* varargs?=VarArgToken?)?
+	 *         type=JvmTypeReference?
 	 *         (firedEvents+=JvmParameterizedTypeReference firedEvents+=JvmParameterizedTypeReference*)?
 	 *     )
 	 */
 	protected void sequence_ActionSignature(EObject context, ActionSignature semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (
-	 *         name=ValidID 
-	 *         (params+=FormalParameter params+=FormalParameter* varargs?=VarArgToken?)? 
-	 *         type=JvmTypeReference? 
-	 *         (firedEvents+=JvmParameterizedTypeReference firedEvents+=JvmParameterizedTypeReference*)? 
+	 *         name=ValidID
+	 *         (params+=FormalParameter params+=FormalParameter* varargs?=VarArgToken?)?
+	 *         type=JvmTypeReference?
+	 *         (firedEvents+=JvmParameterizedTypeReference firedEvents+=JvmParameterizedTypeReference*)?
 	 *         body=XBlockExpression
 	 *     )
 	 */
 	protected void sequence_Action(EObject context, Action semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (name=ValidID superTypes+=JvmParameterizedTypeReference? features+=AgentFeature*)
@@ -1398,8 +1398,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_Agent(EObject context, Agent semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (writeable?='var'? ((name=ValidID type=JvmTypeReference) | name=ValidID) initialValue=XExpression?)
@@ -1407,8 +1407,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_Attribute(EObject context, Attribute semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (name=JvmParameterizedTypeReference guard=XExpression? body=XBlockExpression)
@@ -1416,8 +1416,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_BehaviorUnit(EObject context, BehaviorUnit semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (name=ValidID superTypes+=JvmParameterizedTypeReference? features+=BehaviorFeature*)
@@ -1425,8 +1425,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_Behavior(EObject context, Behavior semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (capacitiesUsed+=JvmParameterizedTypeReference capacitiesUsed+=JvmParameterizedTypeReference*)
@@ -1434,8 +1434,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_CapacityUses(EObject context, CapacityUses semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (name=ValidID (superTypes+=JvmParameterizedTypeReference superTypes+=JvmParameterizedTypeReference*)? features+=ActionSignature*)
@@ -1443,8 +1443,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_Capacity(EObject context, Capacity semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     ((params+=FormalParameter params+=FormalParameter* varargs?=VarArgToken?)? body=XBlockExpression)
@@ -1452,8 +1452,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_Constructor(EObject context, Constructor semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (name=ValidID superTypes+=JvmParameterizedTypeReference? features+=EventFeature*)
@@ -1461,8 +1461,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_Event(EObject context, Event semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     features+=Feature
@@ -1470,8 +1470,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_FeatureContainer(EObject context, FeatureContainer semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     {Feature}
@@ -1479,8 +1479,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_Feature(EObject context, Feature semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (name=ValidID parameterType=JvmTypeReference defaultValue=DefaultParameterValue?)
@@ -1488,8 +1488,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_FormalParameter(EObject context, FormalParameter semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (name=ValidID parameterType=JvmTypeReference)
@@ -1497,8 +1497,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_FullJvmFormalParameter(EObject context, JvmFormalParameter semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     implementedTypes+=JvmParameterizedTypeReference
@@ -1506,8 +1506,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_ImplementingElement(EObject context, ImplementingElement semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     superTypes+=JvmParameterizedTypeReference
@@ -1515,8 +1515,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_InheritingElement(EObject context, InheritingElement semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (name=ValidID parameterType=JvmTypeReference?)
@@ -1524,8 +1524,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_JvmFormalParameter(EObject context, JvmFormalParameter semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     name=ValidID
@@ -1540,8 +1540,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 		feeder.accept(grammarAccess.getNamedElementAccess().getNameValidIDParserRuleCall_0(), semanticObject.getName());
 		feeder.finish();
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (params+=FormalParameter varargs?=ID)
@@ -1549,8 +1549,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_ParameterizedFeature(EObject context, ParameterizedFeature semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (requiredCapacities+=JvmParameterizedTypeReference requiredCapacities+=JvmParameterizedTypeReference*)
@@ -1558,8 +1558,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_RequiredCapacity(EObject context, RequiredCapacity semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (name=QualifiedName? importSection=XImportSection? elements+=TopElement*)
@@ -1567,22 +1567,22 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_SarlScript(EObject context, SarlScript semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (
-	 *         name=ValidID 
-	 *         superTypes+=JvmParameterizedTypeReference? 
-	 *         (implementedTypes+=JvmSuperTypeReference implementedTypes+=JvmSuperTypeReference*)? 
+	 *         name=ValidID
+	 *         superTypes+=JvmParameterizedTypeReference?
+	 *         (implementedTypes+=JvmSuperTypeReference implementedTypes+=JvmSuperTypeReference*)?
 	 *         features+=SkillFeature*
 	 *     )
 	 */
 	protected void sequence_Skill(EObject context, Skill semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (declaredParam=XXLoopFormalParameter forExpression=XExpression eachExpression=XExpression)
@@ -1603,8 +1603,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 		feeder.accept(grammarAccess.getXForLoopExpressionAccess().getEachExpressionXExpressionParserRuleCall_3_0(), semanticObject.getEachExpression());
 		feeder.finish();
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     ((instanceContext?='(' (paramTypes+=JvmTypeReference paramTypes+=JvmTypeReference*)?)? returnType=JvmTypeReference)
@@ -1612,8 +1612,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_XFunctionSuperTypeRef(EObject context, XFunctionTypeRef semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (writeable?='var'? ((name=ValidID type=JvmTypeReference) | name=ValidID) right=XExpression?)
@@ -1621,8 +1621,8 @@ public class SARLSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_XVariableDeclaration(EObject context, XVariableDeclaration semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
-	
-	
+
+
 	/**
 	 * Constraint:
 	 *     (name=ValidID parameterType=JvmTypeReference?)

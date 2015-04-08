@@ -37,7 +37,7 @@ public class SubEvent extends Event {
 	public SubEvent() {
 		super();
 	}
-	
+
 	public SubEvent(Address source) {
 		super(source);
 	}

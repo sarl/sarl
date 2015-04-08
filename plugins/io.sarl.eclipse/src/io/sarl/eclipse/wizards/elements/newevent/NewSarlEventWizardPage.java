@@ -25,9 +25,9 @@ import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
+import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.genmodel.GeneratedCode;
-import io.sarl.lang.signature.SignatureKey;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -87,13 +87,13 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 		io.sarl.lang.sarl.Event event = this.sarlGenerator.createEvent(code, getTypeName(), getSuperClass());
 		this.sarlGenerator.attachComment(code, event, typeComment);
 
-		Map<SignatureKey, IMethod> constructors;
+		Map<ActionParameterTypes, IMethod> constructors;
 
 		String superClass = getSuperClass();
 		if (Strings.isNullOrEmpty(superClass) || !isCreateConstructors()) {
 			constructors = null;
 		} else {
-			constructors = Maps.newTreeMap((Comparator<SignatureKey>) null);
+			constructors = Maps.newTreeMap((Comparator<ActionParameterTypes>) null);
 		}
 
 		populateInheritanceContext(

@@ -24,16 +24,16 @@ public abstract class AbstractSARLRuntimeModule extends DefaultRuntimeModule {
 		properties = tryBindProperties(binder, "io/sarl/lang/SARL.properties");
 		super.configure(binder);
 	}
-	
+
 	public void configureLanguageName(Binder binder) {
 		binder.bind(String.class).annotatedWith(Names.named(Constants.LANGUAGE_NAME)).toInstance("io.sarl.lang.SARL");
 	}
-	
+
 	public void configureFileExtensions(Binder binder) {
 		if (properties == null || properties.getProperty(Constants.FILE_EXTENSIONS) == null)
 			binder.bind(String.class).annotatedWith(Names.named(Constants.FILE_EXTENSIONS)).toInstance("sarl");
 	}
-	
+
 	// contributed by org.eclipse.xtext.generator.grammarAccess.GrammarAccessFragment
 	public Class<? extends org.eclipse.xtext.IGrammarAccess> bindIGrammarAccess() {
 		return io.sarl.lang.services.SARLGrammarAccess.class;

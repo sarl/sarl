@@ -37,7 +37,7 @@ public class SubSkill extends Skill {
 	public SubSkill() {
 		super();
 	}
-	
+
 	public SubSkill(Agent owner) {
 		super(owner);
 	}

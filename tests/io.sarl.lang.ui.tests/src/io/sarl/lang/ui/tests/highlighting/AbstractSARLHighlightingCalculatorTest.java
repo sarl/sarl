@@ -49,13 +49,13 @@ import com.google.common.collect.Multimap;
  * @mavenartifactid $ArtifactId$
  */
 public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSarlUiTest {
-	
+
 	/** Replies the instance of the calculator to test.
-	 * 
+	 *
 	 * @return the highlight calculator.
 	 */
 	protected abstract ISemanticHighlightingCalculator getCalculator();
-	
+
 	/**
 	 * @throws Exception
 	 */
@@ -63,9 +63,9 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 	public void setUp() throws Exception {
 		this.helper.waitForAutoBuild();
 	}
-	
+
 	/** Highlight the given text.
-	 * 
+	 *
 	 * @param code - the SARL script.
 	 * @return the assertion checker.
 	 */
@@ -80,24 +80,24 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	/** Provides tools for highlighting assertions.
-	 * 
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
 	protected static final class HighlightingAsserts implements IHighlightedPositionAcceptor {
-		
+
 		private final Multimap<TextRegion, String> regions = HashMultimap.create();
 
 		private int index = 0;
-		
+
 		private HighlightingAsserts() {
 			//
 		}
-		
+
 		/** {@inheritDoc}
 		 * Copied from Xtext.
 		 */
@@ -108,9 +108,9 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 			assertEquals(1, id.length);
 			this.regions.put(region, id[0]);
 		}
-		
+
 		/** Assert that the given region is marked with the given highlight id.
-		 * 
+		 *
 		 * @param offset
 		 * @param length
 		 * @param highlightID
@@ -137,7 +137,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 
 		/** Assert that the given region is marked with the given highlight id.
 		 * This function is using the offset embedded in this object.
-		 * 
+		 *
 		 * @param length
 		 * @param highlightID
 		 * @return this
@@ -147,7 +147,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 		}
 
 		/** Assert that the given region is not marked.
-		 * 
+		 *
 		 * @param offset
 		 * @param length
 		 * @return this
@@ -166,7 +166,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 
 		/** Assert that the given region is not marked.
 		 * This function is using the offset embedded in this object.
-		 * 
+		 *
 		 * @param length
 		 * @return this
 		 */
@@ -175,7 +175,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 		}
 
 		/** Assert that the given region is not marked with the given highlight id.
-		 * 
+		 *
 		 * @param offset
 		 * @param length
 		 * @param highlightID
@@ -201,7 +201,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 
 		/** Assert that the given region is not marked with the given highlight id.
 		 * This function is using the offset embedded in this object.
-		 * 
+		 *
 		 * @param length
 		 * @param highlightID
 		 * @return this
@@ -212,7 +212,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 
 		/** Assert that the given region is insignifiant.
 		 * A region is insignifiant if it is not highlighted.
-		 * 
+		 *
 		 * @param offset
 		 * @param length
 		 * @return this
@@ -224,7 +224,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 		/** Assert that the given region is insignifiant.
 		 * A region is insignifiant if it is not highlighted.
 		 * This function is using the offset embedded in this object.
-		 * 
+		 *
 		 * @param length
 		 * @return this
 		 */
@@ -233,7 +233,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 		}
 
 		/** Assert that the given region is a keyword.
-		 * 
+		 *
 		 * @param offset
 		 * @param length
 		 * @return this
@@ -244,7 +244,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 
 		/** Assert that the given region is a keyword.
 		 * This function is using the offset embedded in this object.
-		 * 
+		 *
 		 * @param length
 		 * @return this
 		 */
@@ -253,7 +253,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 		}
 
 		/** Assert that the given region is a punctuation.
-		 * 
+		 *
 		 * @param offset
 		 * @param length
 		 * @return this
@@ -264,7 +264,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 
 		/** Assert that the given region is a punctuation.
 		 * This function is using the offset embedded in this object.
-		 * 
+		 *
 		 * @param length
 		 * @return this
 		 */
@@ -273,7 +273,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 		}
 
 		/** Assert that the given region is a static method call.
-		 * 
+		 *
 		 * @param offset
 		 * @param length
 		 * @return this
@@ -284,7 +284,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 
 		/** Assert that the given region is a static method call.
 		 * This function is using the offset embedded in this object.
-		 * 
+		 *
 		 * @param length
 		 * @return this
 		 */
@@ -293,7 +293,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 		}
 
 		/** Assert that the given region is a static field call.
-		 * 
+		 *
 		 * @param offset
 		 * @param length
 		 * @return this
@@ -304,7 +304,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 
 		/** Assert that the given region is a static field call.
 		 * This function is using the offset embedded in this object.
-		 * 
+		 *
 		 * @param length
 		 * @return this
 		 */
@@ -313,5 +313,5 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 		}
 
 	}
-	
+
 }

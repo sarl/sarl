@@ -18,19 +18,19 @@ import com.google.inject.Inject;
 import io.sarl.lang.services.SARLGrammarAccess;
 
 public class SARLParser extends AbstractContentAssistParser {
-	
+
 	@Inject
 	private SARLGrammarAccess grammarAccess;
-	
+
 	private Map<AbstractElement, String> nameMappings;
-	
+
 	@Override
 	protected io.sarl.lang.ui.contentassist.antlr.internal.InternalSARLParser createParser() {
 		io.sarl.lang.ui.contentassist.antlr.internal.InternalSARLParser result = new io.sarl.lang.ui.contentassist.antlr.internal.InternalSARLParser(null);
 		result.setGrammarAccess(grammarAccess);
 		return result;
 	}
-	
+
 	@Override
 	protected String getRuleName(AbstractElement element) {
 		if (nameMappings == null) {
@@ -538,7 +538,7 @@ public class SARLParser extends AbstractContentAssistParser {
 		}
 		return nameMappings.get(element);
 	}
-	
+
 	@Override
 	protected Collection<FollowElement> getFollowElements(AbstractInternalContentAssistParser parser) {
 		try {
@@ -547,18 +547,18 @@ public class SARLParser extends AbstractContentAssistParser {
 			return typedParser.getFollowElements();
 		} catch(RecognitionException ex) {
 			throw new RuntimeException(ex);
-		}		
+		}
 	}
-	
+
 	@Override
 	protected String[] getInitialHiddenTokens() {
 		return new String[] { "RULE_WS", "RULE_ML_COMMENT", "RULE_SL_COMMENT" };
 	}
-	
+
 	public SARLGrammarAccess getGrammarAccess() {
 		return this.grammarAccess;
 	}
-	
+
 	public void setGrammarAccess(SARLGrammarAccess grammarAccess) {
 		this.grammarAccess = grammarAccess;
 	}

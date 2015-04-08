@@ -46,7 +46,7 @@ public class UnimplementedCapacityExceptionTest extends AbstractSarlTest {
 	private Class<? extends Capacity> capacity;
 	@Nullable
 	private UnimplementedCapacityException exception;
-	
+
 	/**
 	 */
 	@Before
@@ -57,7 +57,7 @@ public class UnimplementedCapacityExceptionTest extends AbstractSarlTest {
 				this.capacity,
 				this.agentID);
 	}
-	
+
 	/**
 	 */
 	@Test

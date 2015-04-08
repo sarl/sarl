@@ -49,7 +49,7 @@ public class InitializeTest extends AbstractSarlCoreTest<Event> {
 		assertEquals(2, this.type.getDeclaredFields().length);
 		assertEquals(2, this.type.getDeclaredConstructors().length);
 	}
-	
+
 	/**
 	 */
 	@Test

@@ -639,7 +639,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"System.out.println(arg)",
 					"}",
 					"}"
-					)); 
+					));
 			this.validator.assertError(mas,
 					SarlPackage.eINSTANCE.getConstructor(),
 					io.sarl.lang.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
@@ -1802,7 +1802,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			assertTypeReferenceIdentifier(signature.getType(), "void");
 			assertParameterNames(action2.getParams(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action2.getParams(), "int", "java.lang.String", "int", "int", "java.lang.String");
-			assertParameterDefaultValues(action2.getParams(), 
+			assertParameterDefaultValues(action2.getParams(),
 					null,
 					null,
 					null,

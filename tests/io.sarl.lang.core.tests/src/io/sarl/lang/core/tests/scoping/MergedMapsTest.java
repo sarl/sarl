@@ -414,7 +414,7 @@ public class MergedMapsTest extends Assert {
 		}
 		fail("Entry with key '" + k + "' and value '" + v + "' is not found");
 	}
-	
+
 	private void assertNotContains(String k, Set<Entry<String, String>> set) {
 		for(Entry<String, String> entry : set) {
 			if (Objects.equal(entry.getKey(), k)) {

@@ -23,14 +23,14 @@ package io.sarl.lang.ui.tests.outline;
 import org.junit.Test;
 
 /** Test the outline of the "skill" statement.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SkillOutlineTest extends AbstractSARLOutlineTreeProviderTest { 
-	
+public class SkillOutlineTest extends AbstractSARLOutlineTreeProviderTest {
+
 	/**
 	 * @throws Exception
 	 */
@@ -41,7 +41,7 @@ public class SkillOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		asserts.numChildren(1);
 		asserts.leaf(0, "S1"); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * @throws Exception
 	 */

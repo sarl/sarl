@@ -21,6 +21,10 @@
 package io.sarl.eclipse.util;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.actionprototype.FormalParameterProvider;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.Generated;
 import io.sarl.lang.genmodel.GeneratedCode;
@@ -28,10 +32,6 @@ import io.sarl.lang.sarl.Action;
 import io.sarl.lang.sarl.Constructor;
 import io.sarl.lang.sarl.FeatureContainer;
 import io.sarl.lang.sarl.ParameterizedFeature;
-import io.sarl.lang.signature.ActionKey;
-import io.sarl.lang.signature.ActionSignatureProvider;
-import io.sarl.lang.signature.ActionSignatureProvider.FormalParameterProvider;
-import io.sarl.lang.signature.SignatureKey;
 import io.sarl.lang.util.ModelUtil;
 
 import java.util.ArrayList;
@@ -48,6 +48,7 @@ import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IAnnotatable;
 import org.eclipse.jdt.core.IAnnotation;
@@ -64,6 +65,7 @@ import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
@@ -165,7 +167,7 @@ public final class Jdt2Ecore {
 	 * @throws JavaModelException if the Java model is invalid.
 	 */
 	public static FormalParameterProvider getFormalParameterProvider(IMethod operation) throws JavaModelException {
-		return new FormalParameterList(operation);
+		return new JdtFormalParameterList(operation);
 	}
 
 	/** Analyzing the type hierarchy of the given element, and
@@ -188,12 +190,12 @@ public final class Jdt2Ecore {
 	 */
 	public static IStatus populateInheritanceContext(
 			TypeFinder typeFinder,
-			Map<ActionKey, IMethod> finalOperations,
-			Map<ActionKey, IMethod> overridableOperations,
+			Map<ActionPrototype, IMethod> finalOperations,
+			Map<ActionPrototype, IMethod> overridableOperations,
 			Map<String, IField> inheritedFields,
-			Map<ActionKey, IMethod> operationsToImplement,
-			Map<SignatureKey, IMethod> superConstructors,
-			ActionSignatureProvider sarlSignatureProvider,
+			Map<ActionPrototype, IMethod> operationsToImplement,
+			Map<ActionParameterTypes, IMethod> superConstructors,
+			ActionPrototypeProvider sarlSignatureProvider,
 			String superClass,
 			List<String> superInterfaces) throws JavaModelException {
 		SARLEclipsePlugin plugin = SARLEclipsePlugin.getDefault();
@@ -208,9 +210,9 @@ public final class Jdt2Ecore {
 							&& !Flags.isFinal(operation.getFlags())
 							&& !operation.isLambdaMethod()
 							&& !operation.isConstructor()) {
-						SignatureKey sig = sarlSignatureProvider.createSignatureID(
+						ActionParameterTypes sig = sarlSignatureProvider.createParameterTypes(
 								Flags.isVarargs(operation.getFlags()), getFormalParameterProvider(operation));
-						ActionKey actionKey = sarlSignatureProvider.createActionID(
+						ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
 								operation.getElementName(),
 								sig);
 						if (!operationsToImplement.containsKey(actionKey)) {
@@ -234,9 +236,9 @@ public final class Jdt2Ecore {
 							&& isVisible(typeFinder, type, operation)) {
 						if (!operation.isConstructor()
 								&& !ModelUtil.isHiddenAction(operation.getElementName())) {
-							SignatureKey sig = sarlSignatureProvider.createSignatureID(
+							ActionParameterTypes sig = sarlSignatureProvider.createParameterTypes(
 									Flags.isVarargs(operation.getFlags()), getFormalParameterProvider(operation));
-							ActionKey actionKey = sarlSignatureProvider.createActionID(
+							ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
 									operation.getElementName(), sig);
 							int flags = operation.getFlags();
 							if (Flags.isAbstract(flags)) {
@@ -259,7 +261,7 @@ public final class Jdt2Ecore {
 								}
 							}
 						} else if (checkForConstructors && operation.isConstructor() && superConstructors != null) {
-							SignatureKey sig = sarlSignatureProvider.createSignatureID(
+							ActionParameterTypes sig = sarlSignatureProvider.createParameterTypes(
 									Flags.isVarargs(operation.getFlags()), getFormalParameterProvider(operation));
 							superConstructors.put(sig,  operation);
 						}
@@ -342,12 +344,12 @@ public final class Jdt2Ecore {
 					context);
 			if (type instanceof JvmDeclaredType) {
 				JvmDeclaredType declaredType = (JvmDeclaredType) type;
-				ActionSignatureProvider sigProvider = code.getCodeGenerator().getActionSignatureProvider();
-				SignatureKey jdtSignature = sigProvider.createSignatureID(
+				ActionPrototypeProvider sigProvider = code.getCodeGenerator().getActionSignatureProvider();
+				ActionParameterTypes jdtSignature = sigProvider.createParameterTypes(
 						Flags.isVarargs(constructor.getFlags()),
 						Jdt2Ecore.getFormalParameterProvider(constructor));
 				for (JvmConstructor jvmConstructor : declaredType.getDeclaredConstructors()) {
-					SignatureKey jvmSignature = sigProvider.createSignatureIDFromJvmModel(
+					ActionParameterTypes jvmSignature = sigProvider.createParameterTypesFromJvmModel(
 							jvmConstructor.isVarArgs(),
 							jvmConstructor.getParameters());
 					if (jvmSignature.equals(jdtSignature)) {
@@ -585,7 +587,7 @@ public final class Jdt2Ecore {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static class FormalParameterList implements FormalParameterProvider {
+	private static class JdtFormalParameterList implements FormalParameterProvider {
 
 		private final ILocalVariable[] parameters;
 
@@ -593,7 +595,7 @@ public final class Jdt2Ecore {
 		 * @param operation - the operation.
 		 * @throws JavaModelException if the parameters cannot be retreived.
 		 */
-		public FormalParameterList(IMethod operation) throws JavaModelException {
+		public JdtFormalParameterList(IMethod operation) throws JavaModelException {
 			this.parameters = operation.getParameters();
 		}
 
@@ -610,6 +612,32 @@ public final class Jdt2Ecore {
 		@Override
 		public String getFormalParameterType(int position, boolean isVarArgs) {
 			return Signature.toString(this.parameters[position].getTypeSignature());
+		}
+
+		@Override
+		public JvmTypeReference getFormalParameterTypeReference(int position, boolean isVarargs) {
+			throw new UnsupportedOperationException();
+		}
+
+		/** {@inheritDoc}
+		 */
+		@Override
+		public boolean hasFormalParameterDefaultValue(int position) {
+			throw new UnsupportedOperationException();
+		}
+
+		/** {@inheritDoc}
+		 */
+		@Override
+		public XExpression getFormalParameterDefaultValue(int position) {
+			throw new UnsupportedOperationException();
+		}
+
+		/** {@inheritDoc}
+		 */
+		@Override
+		public EObject getFormalParameter(int position) {
+			throw new UnsupportedOperationException();
 		}
 
 	}

@@ -61,7 +61,7 @@ public class ContentProviderTest extends AbstractSarlUiTest {
 	private Object other;
 	@Nullable
 	private Object[] children;
-	
+
 	@Before
 	public void setUp() {
 		this.provider = new ContentProvider();

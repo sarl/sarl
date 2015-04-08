@@ -44,18 +44,18 @@ public class AddressTest extends AbstractSarlTest {
 	private UUID agentID;
 	@Nullable
 	private Address adr;
-	
+
 	private static SpaceID mockSpaceID(final UUID agentUID, final UUID spaceUID) {
 		SpaceID spaceID = Mockito.mock(SpaceID.class);
 		Mockito.when(spaceID.getContextID()).thenReturn(agentUID);
 		Mockito.when(spaceID.getID()).thenReturn(spaceUID);
 		return spaceID;
 	}
-	
+
 	private static SpaceID mockSpaceID(UUID agentUID) {
 		return mockSpaceID(agentUID, UUID.randomUUID());
 	}
-	
+
 	/**
 	 */
 	@Before
@@ -64,7 +64,7 @@ public class AddressTest extends AbstractSarlTest {
 		this.spaceID = mockSpaceID(this.agentID);
 		this.adr = new Address(this.spaceID, this.agentID);
 	}
-	
+
 	/**
 	 */
 	@Test
@@ -148,5 +148,5 @@ public class AddressTest extends AbstractSarlTest {
 				this.agentID.compareTo(newAgentID2),
 				this.adr.compareTo(newAdr));
 	}
-	
+
 }

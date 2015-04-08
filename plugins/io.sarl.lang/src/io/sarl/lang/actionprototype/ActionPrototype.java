@@ -18,55 +18,55 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.signature;
+package io.sarl.lang.actionprototype;
 
 import java.io.Serializable;
 
 /**
- * A key for actions (name+signature).
+ * Definition of the prototype of an action (name+parameters).
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class ActionKey implements Cloneable, Serializable, Comparable<ActionKey> {
+public class ActionPrototype implements Cloneable, Serializable, Comparable<ActionPrototype> {
 
-	private static final long serialVersionUID = 1025783725060379851L;
+	private static final long serialVersionUID = -3797441140684942274L;
 
 	private String function;
-	private SignatureKey signature;
+	private ActionParameterTypes signature;
 
 	/**
 	 * @param function - name of the function for which this signature is created.
 	 * @param signature - description of the parameters of the function.
 	 */
-	protected ActionKey(String function, SignatureKey signature) {
+	public ActionPrototype(String function, ActionParameterTypes signature) {
 		this.function = function;
 		this.signature = signature;
 	}
 
-	/** Replies the name of the function for this key.
+	/** Replies the name of the action for this prototype.
 	 *
 	 * @return the name.
 	 */
-	public String getFunctionName() {
+	public String getActionName() {
 		return this.function;
 	}
 
-	/** Replies the name of the function for this key.
+	/** Replies the types of the formal parameters.
 	 *
 	 * @return the name.
 	 */
-	public SignatureKey getSignature() {
+	public ActionParameterTypes getParametersTypes() {
 		return this.signature;
 	}
 
 	@Override
-	public ActionKey clone() {
+	public ActionPrototype clone() {
 		try {
-			ActionKey k;
-			k = (ActionKey) super.clone();
+			ActionPrototype k;
+			k = (ActionPrototype) super.clone();
 			k.signature = this.signature.clone();
 			return k;
 		} catch (CloneNotSupportedException e) {
@@ -79,8 +79,8 @@ public class ActionKey implements Cloneable, Serializable, Comparable<ActionKey>
 		if (obj == this) {
 			return true;
 		}
-		if (obj instanceof ActionKey) {
-			ActionKey k = (ActionKey) obj;
+		if (obj instanceof ActionPrototype) {
+			ActionPrototype k = (ActionPrototype) obj;
 			return this.function.equals(k.function)
 					&& this.signature.equals(k.signature);
 		}
@@ -97,11 +97,11 @@ public class ActionKey implements Cloneable, Serializable, Comparable<ActionKey>
 
 	@Override
 	public String toString() {
-		return this.function + "(" + this.signature + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+		return this.function + "(" + this.signature + ")"; //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	@Override
-	public int compareTo(ActionKey o) {
+	public int compareTo(ActionPrototype o) {
 		if (o == null) {
 			return Integer.MAX_VALUE;
 		}
@@ -110,6 +110,24 @@ public class ActionKey implements Cloneable, Serializable, Comparable<ActionKey>
 			return cmp;
 		}
 		return this.signature.compareTo(o.signature);
+	}
+
+	/** Replies the string that permits to identify the action prototype according to the Java variable name.
+	 *
+	 * @return the identifier.
+	 */
+	public String toActionId() {
+		StringBuilder b = new StringBuilder();
+		b.append(getActionName());
+		for (String type : this.signature) {
+			b.append("_"); //$NON-NLS-1$
+			for (char c : type.replaceAll("(\\[\\])|\\*", "Array").toCharArray()) { //$NON-NLS-1$//$NON-NLS-2$
+				if (Character.isJavaIdentifierPart(c)) {
+					b.append(c);
+				}
+			}
+		}
+		return b.toString();
 	}
 
 }

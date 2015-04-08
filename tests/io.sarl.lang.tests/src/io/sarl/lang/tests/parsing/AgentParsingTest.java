@@ -79,7 +79,7 @@ public class AgentParsingTest {
 		@Inject
 		private ParseHelper<SarlScript> parser;
 
-		@Inject 
+		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
@@ -220,7 +220,7 @@ public class AgentParsingTest {
 
 	public static class TopElementUiBaseTest extends AbstractSarlUiTest {
 
-		@Inject 
+		@Inject
 		private ValidationTestHelper _validator;
 
 		@Test
@@ -244,7 +244,7 @@ public class AgentParsingTest {
 		@Inject
 		private ParseHelper<SarlScript> parser;
 
-		@Inject 
+		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
@@ -310,7 +310,7 @@ public class AgentParsingTest {
 					"on E  {}",
 					"}"
 					));
-			this.validator.assertError(mas, 
+			this.validator.assertError(mas,
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					Diagnostic.LINKING_DIAGNOSTIC,
 					"Couldn't resolve reference to JvmType 'E'.");
@@ -382,7 +382,7 @@ public class AgentParsingTest {
 		@Inject
 		private ParseHelper<SarlScript> parser;
 
-		@Inject 
+		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
@@ -578,7 +578,7 @@ public class AgentParsingTest {
 		@Inject
 		private ParseHelper<SarlScript> parser;
 
-		@Inject 
+		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
@@ -622,7 +622,7 @@ public class AgentParsingTest {
 					"agent A1 {",
 					"uses MyCap",
 					"}"
-					));		
+					));
 			this.validator.assertError(mas,
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					Diagnostic.LINKING_DIAGNOSTIC,
@@ -671,7 +671,7 @@ public class AgentParsingTest {
 		@Inject
 		private ParseHelper<SarlScript> parser;
 
-		@Inject 
+		@Inject
 		private ValidationTestHelper validator;
 
 		@Test

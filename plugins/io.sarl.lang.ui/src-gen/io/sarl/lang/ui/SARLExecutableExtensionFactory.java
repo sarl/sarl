@@ -12,7 +12,7 @@ import io.sarl.lang.ui.internal.SARLActivator;
 
 /**
  * This class was generated. Customizations should only happen in a newly
- * introduced subclass. 
+ * introduced subclass.
  */
 public class SARLExecutableExtensionFactory extends AbstractGuiceAwareExecutableExtensionFactory {
 
@@ -20,10 +20,10 @@ public class SARLExecutableExtensionFactory extends AbstractGuiceAwareExecutable
 	protected Bundle getBundle() {
 		return SARLActivator.getInstance().getBundle();
 	}
-	
+
 	@Override
 	protected Injector getInjector() {
 		return SARLActivator.getInstance().getInjector(SARLActivator.IO_SARL_LANG_SARL);
 	}
-	
+
 }

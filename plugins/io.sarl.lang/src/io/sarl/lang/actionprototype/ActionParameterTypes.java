@@ -18,23 +18,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.signature;
+package io.sarl.lang.actionprototype;
 
 import java.util.Iterator;
 
 import org.eclipse.emf.common.util.BasicEList;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
+
 /**
- * A key for signatures.
+ * A definition of the types of the formal parameters of an action.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SignatureKey extends BasicEList<String> implements Comparable<SignatureKey> {
+public class ActionParameterTypes extends BasicEList<String> implements Comparable<ActionParameterTypes> {
 
-	private static final long serialVersionUID = -7553816659790345857L;
+	private static final long serialVersionUID = 8389816963923769014L;
 
 	private final boolean isVarargs;
 
@@ -42,7 +45,7 @@ public class SignatureKey extends BasicEList<String> implements Comparable<Signa
 	 * @param isVarArgs - indicates if this signature has the varargs flag.
 	 * @param initialCapacity - initional capacity of the array.
 	 */
-	SignatureKey(boolean isVarArgs, int initialCapacity) {
+	public ActionParameterTypes(boolean isVarArgs, int initialCapacity) {
 		super(initialCapacity);
 		this.isVarargs = isVarArgs;
 	}
@@ -53,7 +56,7 @@ public class SignatureKey extends BasicEList<String> implements Comparable<Signa
 	 *
 	 * @param text - the text that contains the signature to parse.
 	 */
-	SignatureKey(String text) {
+	public ActionParameterTypes(String text) {
 		assert (text != null);
 		String[] elements = text.split("\\s*,\\s*"); //$NON-NLS-1$
 		this.isVarargs = (elements.length > 0
@@ -63,15 +66,31 @@ public class SignatureKey extends BasicEList<String> implements Comparable<Signa
 					"\\*$", "[]");  //$NON-NLS-1$//$NON-NLS-2$
 		}
 		for (String p : elements) {
-			add(p);
+			if (!Strings.isNullOrEmpty(p) && !"void".equals(p) && !"java.lang.Void".equals(p)) { //$NON-NLS-1$//$NON-NLS-2$
+				add(p);
+			}
 		}
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (super.equals(object) && object instanceof ActionParameterTypes) {
+			ActionParameterTypes types = (ActionParameterTypes) object;
+			return this.isVarargs == types.isVarargs;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(super.hashCode(), this.isVarargs);
 	}
 
 	/** Replies if this signature has a variatic parameter.
 	 *
 	 * @return <code>true</code> if the last element is variatic.
 	 */
-	public boolean isVarargs() {
+	public boolean isVarArg() {
 		return this.isVarargs;
 	}
 
@@ -84,8 +103,8 @@ public class SignatureKey extends BasicEList<String> implements Comparable<Signa
 	}
 
 	@Override
-	public SignatureKey clone() {
-		return (SignatureKey) super.clone();
+	public ActionParameterTypes clone() {
+		return (ActionParameterTypes) super.clone();
 	}
 
 	@Override
@@ -100,7 +119,7 @@ public class SignatureKey extends BasicEList<String> implements Comparable<Signa
 				b.append(get(i));
 			}
 			String lastElement = get(size);
-			if (isVarargs()) {
+			if (isVarArg()) {
 				lastElement = lastElement.replaceFirst("\\[\\]$", "*");  //$NON-NLS-1$//$NON-NLS-2$
 			}
 			if (size > 0) {
@@ -113,7 +132,7 @@ public class SignatureKey extends BasicEList<String> implements Comparable<Signa
 	}
 
 	@Override
-	public int compareTo(SignatureKey o) {
+	public int compareTo(ActionParameterTypes o) {
 		if (o == null) {
 			return Integer.MAX_VALUE;
 		}
@@ -136,13 +155,13 @@ public class SignatureKey extends BasicEList<String> implements Comparable<Signa
 		return 0;
 	}
 
-	/** Replies the action key associate to this signature key.
+	/** Replies the action prototype associate to this list of parameters.
 	 *
 	 * @param actionName - the id of the action.
 	 * @return the action key.
 	 */
-	public ActionKey toActionKey(String actionName) {
-		return new ActionKey(actionName, this);
+	public ActionPrototype toActionPrototype(String actionName) {
+		return new ActionPrototype(actionName, this);
 	}
 
 }

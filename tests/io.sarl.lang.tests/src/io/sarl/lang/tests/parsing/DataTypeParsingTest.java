@@ -49,7 +49,7 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Inject
 	private ParseHelper<SarlScript> parser;
-	
+
 	@Inject
 	private ValidationTestHelper validator;
 
@@ -65,7 +65,7 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 			IssueCodes.INCOMPATIBLE_TYPES,
 			"cannot convert from int to Double");
 	}
-	
+
 	@Test
 	public void doubleToDouble_1() throws Exception {
 		SarlScript mas = this.parser.parse(multilineString(

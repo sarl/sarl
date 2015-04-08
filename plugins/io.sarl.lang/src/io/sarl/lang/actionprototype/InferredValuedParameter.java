@@ -18,11 +18,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.signature;
+package io.sarl.lang.actionprototype;
 
-import io.sarl.lang.sarl.FormalParameter;
-
-import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 
 /**
  * This class permits to wrap a default value when building the function signatures.
@@ -34,27 +33,34 @@ import org.eclipse.xtext.xbase.XExpression;
  */
 public class InferredValuedParameter extends InferredStandardParameter {
 
+	/** The value of the calling argument.
+	 */
+	protected final String argument;
+
 	/**
-	 * @param parameter - the wrapper parameter.
+	 * @param source - the original parameter.
+	 * @param name - the name of the formal parameter.
+	 * @param type - the type of the formal parameter.
+	 * @param argument - the value of the calling argument for the formal parameter.
 	 */
-	protected InferredValuedParameter(FormalParameter parameter) {
-		super(parameter);
+	public InferredValuedParameter(EObject source, String name, JvmTypeReference type, String argument) {
+		super(source, name, type);
+		this.argument = argument;
 	}
 
-	/** Replies the default value.
+	/** Replies the value of the calling argument.
 	 *
-	 * @return the default value.
+	 * @return the value of the calling argument.
 	 */
-	public XExpression getExpr() {
-		return this.parameter.getDefaultValue();
+	public String getCallingArgument() {
+		return this.argument;
 	}
 
+	/** {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
-		if (this.parameter.getDefaultValue() == null) {
-			return super.toString();
-		}
-		return this.parameter.getDefaultValue().toString();
+		return super.toString() + " {" + this.argument + "}"; //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 }

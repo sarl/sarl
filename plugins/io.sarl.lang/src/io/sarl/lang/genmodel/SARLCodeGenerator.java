@@ -21,6 +21,7 @@
 package io.sarl.lang.genmodel;
 
 
+import io.sarl.lang.actionprototype.ActionPrototypeProvider;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.FiredEvent;
 import io.sarl.lang.annotation.Generated;
@@ -39,7 +40,6 @@ import io.sarl.lang.sarl.ParameterizedFeature;
 import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.Skill;
-import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.lang.util.ModelUtil;
 
 import java.util.Collection;
@@ -106,7 +106,7 @@ public class SARLCodeGenerator {
 	private IResourceFactory resourceFactory;
 
 	@Inject
-	private ActionSignatureProvider actionSignatureProvider;
+	private ActionPrototypeProvider actionSignatureProvider;
 
 	private final String sarlFileExtension;
 
@@ -162,7 +162,7 @@ public class SARLCodeGenerator {
 	 *
 	 * @return the signature provider.
 	 */
-	public ActionSignatureProvider getActionSignatureProvider() {
+	public ActionPrototypeProvider getActionSignatureProvider() {
 		return this.actionSignatureProvider;
 	}
 
@@ -850,9 +850,30 @@ public class SARLCodeGenerator {
 		}
 	}
 
-	private static String findDefaultValue(JvmDeclaredType container, String name) {
+	private String findDefaultValue(JvmDeclaredType container, String typeName, String dfName) {
+		JvmType type = this.typeReferences.findDeclaredType(typeName, container);
+		if (type instanceof JvmDeclaredType) {
+			for (JvmField field : ((JvmDeclaredType) type).getDeclaredFields()) {
+				if (field.getSimpleName().equals(dfName)) {
+					return ModelUtil.annotationString(field, Generated.class);
+				}
+			}
+		}
+		return null;
+	}
+
+	private String findDefaultValue(JvmDeclaredType container, String name) {
 		if (!Strings.isNullOrEmpty(name)) {
 			String dfName = ModelUtil.PREFIX_ATTRIBUTE_DEFAULT_VALUE + name;
+			int index = name.indexOf('#');
+			if (index >= 0) {
+				String typeName = name.substring(0, index);
+				dfName = ModelUtil.PREFIX_ATTRIBUTE_DEFAULT_VALUE + name.substring(index + 1);
+				String r = findDefaultValue(container, typeName, dfName);
+				if (r != null) {
+					return r;
+				}
+			}
 			for (JvmField field : container.getDeclaredFields()) {
 				if (field.getSimpleName().equals(dfName)) {
 					return ModelUtil.annotationString(field, Generated.class);

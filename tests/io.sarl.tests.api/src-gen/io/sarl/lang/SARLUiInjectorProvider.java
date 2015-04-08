@@ -8,9 +8,9 @@ import org.eclipse.xtext.junit4.IInjectorProvider;
 import com.google.inject.Injector;
 
 public class SARLUiInjectorProvider implements IInjectorProvider {
-	
+
 	public Injector getInjector() {
 		return io.sarl.lang.ui.internal.SARLActivator.getInstance().getInjector("io.sarl.lang.SARL");
 	}
-	
+
 }

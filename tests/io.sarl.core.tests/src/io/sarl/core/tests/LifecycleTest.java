@@ -50,7 +50,7 @@ public class LifecycleTest extends AbstractSarlCoreTest<Capacity> {
 	public void memberCount() {
 		assertEquals(3, this.type.getDeclaredMethods().length);
 	}
-	
+
 	/**
 	 */
 	@Test

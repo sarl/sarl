@@ -51,7 +51,7 @@ public class MemberExcludedTest extends AbstractSarlCoreTest<Event> {
 		assertEquals(4, this.type.getDeclaredFields().length);
 		assertEquals(1, this.type.getDeclaredConstructors().length);
 	}
-	
+
 	/**
 	 */
 	@Test

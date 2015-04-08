@@ -24,7 +24,7 @@ package io.sarl.eclipse.wizards.newfile;
 import org.eclipse.osgi.util.NLS;
 
 /** Localized messages.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

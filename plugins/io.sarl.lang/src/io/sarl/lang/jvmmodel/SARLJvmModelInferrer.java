@@ -21,6 +21,13 @@
 package io.sarl.lang.jvmmodel;
 
 import io.sarl.lang.SARLKeywords;
+import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.actionprototype.InferredPrototype;
+import io.sarl.lang.actionprototype.InferredStandardParameter;
+import io.sarl.lang.actionprototype.InferredValuedParameter;
+import io.sarl.lang.actionprototype.QualifiedActionName;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.DefaultValueSource;
 import io.sarl.lang.annotation.DefaultValueUse;
@@ -31,6 +38,7 @@ import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Percept;
+import io.sarl.lang.jvmmodel.JvmModelInferrerProber.Step;
 import io.sarl.lang.sarl.Action;
 import io.sarl.lang.sarl.ActionSignature;
 import io.sarl.lang.sarl.Agent;
@@ -48,26 +56,20 @@ import io.sarl.lang.sarl.InheritingElement;
 import io.sarl.lang.sarl.ParameterizedFeature;
 import io.sarl.lang.sarl.Skill;
 import io.sarl.lang.sarl.TopElement;
-import io.sarl.lang.signature.ActionKey;
-import io.sarl.lang.signature.ActionNameKey;
-import io.sarl.lang.signature.ActionSignatureProvider;
-import io.sarl.lang.signature.InferredActionSignature;
-import io.sarl.lang.signature.InferredStandardParameter;
-import io.sarl.lang.signature.InferredValuedParameter;
-import io.sarl.lang.signature.SignatureKey;
 import io.sarl.lang.util.ModelUtil;
 
 import java.lang.annotation.Annotation;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
@@ -91,6 +93,7 @@ import org.eclipse.xtext.xbase.compiler.XbaseCompiler;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor;
+import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider;
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypeExtensions;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
@@ -103,6 +106,7 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 
@@ -119,6 +123,11 @@ import com.google.inject.Inject;
  * @mavenartifactid $ArtifactId$
  */
 public class SARLJvmModelInferrer extends AbstractModelInferrer {
+
+	/** Tool for exploring the parse tree.
+	 */
+	@Inject
+	protected ILogicalContainerProvider logicalContainerProvider;
 
 	/** Generator of JVM elements.
 	 */
@@ -148,7 +157,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 	/** Manager of SARL action signatures.
 	 */
 	@Inject
-	protected ActionSignatureProvider sarlSignatureProvider;
+	protected ActionPrototypeProvider sarlSignatureProvider;
 
 	/** Tracker of field initialization.
 	 */
@@ -174,6 +183,11 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 */
 	@Inject
 	protected ISerializer sarlSerializer;
+
+	/** Prober for the internal behavior on this inferrer.
+	 */
+	@Inject
+	private Optional<JvmModelInferrerProber> inferrerProber;
 
 	@Override
 	public void infer(EObject object, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
@@ -359,10 +373,12 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 	@SuppressWarnings("unchecked")
 	protected GenerationInformation generateCodeForFeatures(JvmGenericType featureContainerType, InheritingElement topElement,
 			FeatureContainer featureContainer, boolean enableEventHandling,
-			Map<SignatureKey, JvmConstructor> generatedConstructors) {
-		final Map<ActionKey, JvmOperation> finalOperations = CollectionLiterals.newTreeMap(null);
-		final Map<ActionKey, JvmOperation>  overridableOperations = CollectionLiterals.newTreeMap(null);
-		final Map<ActionKey, JvmOperation>  operationsToImplement = CollectionLiterals.newTreeMap(null);
+			Map<ActionParameterTypes, JvmConstructor> generatedConstructors) {
+
+		final Map<ActionPrototype, JvmOperation> finalOperations = CollectionLiterals.newTreeMap(null);
+		final Map<ActionPrototype, JvmOperation>  overridableOperations = CollectionLiterals.newTreeMap(null);
+		final Map<ActionPrototype, JvmOperation>  operationsToImplement = CollectionLiterals.newTreeMap(null);
+
 		ModelUtil.populateInheritanceContext(
 				featureContainerType,
 				finalOperations,
@@ -372,9 +388,25 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 				null,
 				this.sarlSignatureProvider);
 
+		//*****************
+		// For Unit Tests
+		if (this.inferrerProber.isPresent()) {
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_0,
+					featureContainerType.getQualifiedName() + "#finalOperations", //$NON-NLS-1$
+					new TreeMap<>(finalOperations));
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_0,
+					featureContainerType.getQualifiedName() + "#overridableOperations", //$NON-NLS-1$
+					new TreeMap<>(overridableOperations));
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_0,
+					featureContainerType.getQualifiedName() + "#operationsToImplement", //$NON-NLS-1$
+					new TreeMap<>(operationsToImplement));
+		}
+		//*****************
+
 		int actionIndex = 0;
 		int behaviorUnitIndex = 0;
 		boolean hasConstructor = false;
+		List<Runnable> differedCodeGeneration = new ArrayList<>();
 
 		for (EObject feature : featureContainer.getFeatures()) {
 			if (feature instanceof Action) {
@@ -386,21 +418,23 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 						action.getType(),
 						action.getFiredEvents(),
 						action.getBody(),
-						actionIndex, false,
+						false,
 						operationsToImplement,
 						overridableOperations,
-						new Functions.Function1<ActionKey, Boolean>() {
+						new Functions.Function1<ActionPrototype, Boolean>() {
 							@Override
-							public Boolean apply(ActionKey it) {
+							public Boolean apply(ActionPrototype it) {
 								return !finalOperations.containsKey(it) && !overridableOperations.containsKey(it);
 							}
-						}) != null) {
+						},
+						differedCodeGeneration) != null) {
 					++actionIndex;
 				}
 			} else if (feature instanceof Constructor) {
 				Constructor constructor = (Constructor) feature;
 				if (generateConstructor(featureContainerType, topElement,
-						constructor, actionIndex, generatedConstructors) != null) {
+						constructor, actionIndex, generatedConstructors,
+						differedCodeGeneration) != null) {
 					++actionIndex;
 					hasConstructor = true;
 				}
@@ -421,6 +455,30 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 			}
 		}
 
+		//*****************
+		// For Unit Tests
+		if (this.inferrerProber.isPresent()) {
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_1,
+					featureContainerType.getQualifiedName() + "#finalOperations", //$NON-NLS-1$
+					new TreeMap<>(finalOperations));
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_1,
+					featureContainerType.getQualifiedName() + "#overridableOperations", //$NON-NLS-1$
+					new TreeMap<>(overridableOperations));
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_1,
+					featureContainerType.getQualifiedName() + "#operationsToImplement", //$NON-NLS-1$
+					new TreeMap<>(operationsToImplement));
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_1,
+					featureContainerType.getQualifiedName() + "#differedCodeGeneration", //$NON-NLS-1$
+					new ArrayList<>(differedCodeGeneration));
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_1,
+					featureContainerType.getQualifiedName() + "#actionIndex", actionIndex); //$NON-NLS-1$
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_1,
+					featureContainerType.getQualifiedName() + "#behaviorUnitIndex", behaviorUnitIndex); //$NON-NLS-1$
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_1,
+					featureContainerType.getQualifiedName() + "#hasConstructor", hasConstructor); //$NON-NLS-1$
+		}
+		//*****************
+
 		for (EObject feature : featureContainer.getFeatures()) {
 			if (feature instanceof CapacityUses) {
 				CapacityUses uses = (CapacityUses) feature;
@@ -432,91 +490,161 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 			}
 		}
 
-		actionIndex = generateMissedFunction(featureContainerType, featureContainer, actionIndex,
-				operationsToImplement, overridableOperations);
+		//*****************
+		// For Unit Tests
+		if (this.inferrerProber.isPresent()) {
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_2,
+					featureContainerType.getQualifiedName() + "#finalOperations", //$NON-NLS-1$
+					new TreeMap<>(finalOperations));
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_2,
+					featureContainerType.getQualifiedName() + "#overridableOperations", //$NON-NLS-1$
+					new TreeMap<>(overridableOperations));
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_2,
+					featureContainerType.getQualifiedName() + "#operationsToImplement", //$NON-NLS-1$
+					new TreeMap<>(operationsToImplement));
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_2,
+					featureContainerType.getQualifiedName() + "#actionIndex", actionIndex); //$NON-NLS-1$
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_2,
+					featureContainerType.getQualifiedName() + "#behaviorUnitIndex", behaviorUnitIndex); //$NON-NLS-1$
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_2,
+					featureContainerType.getQualifiedName() + "#hasConstructor", hasConstructor); //$NON-NLS-1$
+		}
+		//*****************
+
+		actionIndex = generateMissedAutomaticOperations(featureContainerType, featureContainer, actionIndex,
+				differedCodeGeneration, operationsToImplement, overridableOperations);
+
+		//*****************
+		// For Unit Tests
+		if (this.inferrerProber.isPresent()) {
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_3,
+					featureContainerType.getQualifiedName() + "#finalOperations", //$NON-NLS-1$
+					new TreeMap<>(finalOperations));
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_3,
+					featureContainerType.getQualifiedName() + "#overridableOperations", //$NON-NLS-1$
+					new TreeMap<>(overridableOperations));
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_3,
+					featureContainerType.getQualifiedName() + "#operationsToImplement", //$NON-NLS-1$
+					new TreeMap<>(operationsToImplement));
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_3,
+					featureContainerType.getQualifiedName() + "#actionIndex", actionIndex); //$NON-NLS-1$
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_3,
+					featureContainerType.getQualifiedName() + "#behaviorUnitIndex", behaviorUnitIndex); //$NON-NLS-1$
+			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_3,
+					featureContainerType.getQualifiedName() + "#hasConstructor", hasConstructor); //$NON-NLS-1$
+		}
+		//*****************
 
 		return new GenerationInformation(hasConstructor, actionIndex, behaviorUnitIndex);
 	}
 
-	/** Generate the missed functions.
+	/** Generate the missed operations that are the results from the generation of actions with default value parameters.
 	 *
 	 * @param output - the output type.
 	 * @param owner - the SARL owner.
 	 * @param actionIndex - the index of the late generated action.
+	 * @param differedCodeGeneration - the operations that were automatically added in the code,
+	 * but not automatically added for enabling the coder to override them.
 	 * @param operationsToImplement - if given, list of the operations that should be implemented in the container.
 	 * 			This function remove the generated action from the list.
 	 * @param overridableOperations - if given, the overrideable operations.
 	 * @return the number of generated operations.
 	 */
-	protected int generateMissedFunction(
+	private int generateMissedAutomaticOperations(
 			JvmGenericType output,
 			EObject owner,
 			int actionIndex,
-			Map<ActionKey, JvmOperation> operationsToImplement,
-			Map<ActionKey, JvmOperation> overridableOperations) {
+			List<Runnable> differedCodeGeneration,
+			Map<ActionPrototype, JvmOperation> operationsToImplement,
+			Map<ActionPrototype, JvmOperation> overridableOperations) {
 
+		assert (operationsToImplement != null);
+		assert (overridableOperations != null);
+
+		// Generate the different operations.
+		for (Runnable generation : differedCodeGeneration) {
+			generation.run();
+		}
+
+		// Generated the missed functions that are the result of the generation of operations
+		// with default values.
 		int actIndex = actionIndex;
-		String currentKeyStr = null;
-		JvmOperation originalOperation = null;
-		SignatureKey sigKey = null;
+		for (Entry<ActionPrototype, JvmOperation> missedOperation : operationsToImplement.entrySet()) {
 
-		for (Entry<ActionKey, JvmOperation> missedOperation : operationsToImplement.entrySet()) {
 			String originalSignature = ModelUtil.annotationString(missedOperation.getValue(), DefaultValueUse.class);
-			if (originalSignature != null) {
-				if (!Objects.equal(originalSignature, currentKeyStr)) {
-					currentKeyStr = originalSignature;
-					sigKey = this.sarlSignatureProvider.createSignatureIDFromString(originalSignature);
-					ActionKey key = this.sarlSignatureProvider.createActionID(
-							missedOperation.getKey().getFunctionName(), sigKey);
-					originalOperation = overridableOperations.get(key);
-				}
-				if (originalOperation != null) {
-					JvmOperation op = this.typeBuilder.toMethod(owner, originalOperation.getSimpleName(),
-							originalOperation.getReturnType(), null);
-					op.setVarArgs(originalOperation.isVarArgs());
+			if (!Strings.isNullOrEmpty(originalSignature)) {
+
+				// Find the definition of the operation from the inheritance context.
+				final JvmOperation redefinedOperation = overridableOperations.get(
+						this.sarlSignatureProvider.createActionPrototype(
+								missedOperation.getKey().getActionName(),
+								this.sarlSignatureProvider.createParameterTypesFromString(originalSignature)));
+				if (redefinedOperation != null) {
+					ActionParameterTypes parameterTypes = this.sarlSignatureProvider.createParameterTypesFromJvmModel(
+							redefinedOperation.isVarArgs(), redefinedOperation.getParameters());
+					QualifiedActionName qualifiedActionName = this.sarlSignatureProvider.createQualifiedActionName(
+							missedOperation.getValue().getDeclaringType(),
+							redefinedOperation.getSimpleName());
+
+					// Retreive the inferred prototype (including the prototypes with optional arguments)
+					InferredPrototype redefinedPrototype = this.sarlSignatureProvider.getPrototypes(
+							qualifiedActionName, parameterTypes);
+					if (redefinedPrototype == null) {
+						// The original operation was not parsed by the SARL compiler in the current run-time context.
+						redefinedPrototype = this.sarlSignatureProvider.createPrototypeFromJvmModel(
+								qualifiedActionName, redefinedOperation.isVarArgs(),
+								redefinedOperation.getParameters());
+					}
+
+					// Retreive the specification of the formal parameters that will be used for
+					// determining the calling arguments.
+					List<InferredStandardParameter> argumentSpec = redefinedPrototype.getInferredParameterTypes().get(
+							missedOperation.getKey().getParametersTypes());
+
+					// Create the missed java operation.
+					JvmOperation op = this.typeBuilder.toMethod(
+							owner,
+							missedOperation.getValue().getSimpleName(),
+							missedOperation.getValue().getReturnType(),
+							null);
+					op.setVarArgs(missedOperation.getValue().isVarArgs());
 					op.setFinal(true);
-					List<String> args = CollectionLiterals.newArrayList();
 
-					Iterator<JvmFormalParameter> it1 = missedOperation.getValue().getParameters().iterator();
-					Iterator<JvmFormalParameter>  it2 = originalOperation.getParameters().iterator();
-					JvmFormalParameter oparam = null;
+					final List<String> arguments = new ArrayList<>();
 
-					while (it2.hasNext()) {
-						JvmFormalParameter param = it2.next();
-						String vId = ModelUtil.annotationString(param, DefaultValue.class);
-						if (oparam == null && it1.hasNext()) {
-							oparam = it1.next();
-						}
-						if (oparam != null && Objects.equal(oparam.getSimpleName(), param.getSimpleName())) {
-							args.add(oparam.getSimpleName());
-							op.getParameters().add(this.typeBuilder.toParameter(owner,
-									oparam.getSimpleName(), oparam.getParameterType()));
-							oparam = null;
-						} else if (!Strings.isNullOrEmpty(vId)) {
-							args.add(
-									originalOperation.getDeclaringType().getQualifiedName()
-									+ "." //$NON-NLS-1$
-									+ ModelUtil.PREFIX_ATTRIBUTE_DEFAULT_VALUE
-									+ vId);
+					// Create the formal parameters.
+					for (InferredStandardParameter parameter : argumentSpec) {
+						if (parameter instanceof InferredValuedParameter) {
+							InferredValuedParameter p = (InferredValuedParameter) parameter;
+							arguments.add(
+									this.sarlSignatureProvider.toJavaArgument(
+											output.getIdentifier(),
+											p.getCallingArgument()));
 						} else {
-							throw new IllegalStateException(Messages.SARLJvmModelInferrer_8);
+							arguments.add(parameter.getName());
+							op.getParameters().add(this.typeBuilder.toParameter(owner,
+									parameter.getName(),
+									this.typeBuilder.cloneWithProxies(parameter.getType())));
 						}
 					}
 
-					final String tmpName = originalOperation.getSimpleName();
-					final List<String> tmpArgs = args;
+					// Create the body
 					this.typeBuilder.setBody(op, new Procedures.Procedure1<ITreeAppendable>() {
 						@Override
 						public void apply(ITreeAppendable it) {
-							it.append(tmpName);
+							it.append(redefinedOperation.getSimpleName());
 							it.append("("); //$NON-NLS-1$
-							it.append(IterableExtensions.join(tmpArgs, ", ")); //$NON-NLS-1$
+							it.append(IterableExtensions.join(arguments, ", ")); //$NON-NLS-1$
 							it.append(");"); //$NON-NLS-1$
 						}
 					});
+
+					// Add the annotations.
 					op.getAnnotations().add(this._annotationTypesBuilder.annotationRef(
 							DefaultValueUse.class, originalSignature));
 					op.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Generated.class));
+
+					// Add the operation in the container.
 					output.getMembers().add(op);
 					++actIndex;
 				}
@@ -637,13 +765,13 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 			final InheritingElement context,
 			final JvmParameterizedTypeReference capacityType,
 			int index,
-			Map<ActionKey, JvmOperation> operationsToImplement,
-			Map<ActionKey, JvmOperation> implementedOperations) {
+			Map<ActionPrototype, JvmOperation> operationsToImplement,
+			Map<ActionPrototype, JvmOperation> implementedOperations) {
 
 		if (capacityType.getType() instanceof JvmGenericType) {
 			LightweightTypeReference reference = ModelUtil.toLightweightTypeReference(capacityType, this.services);
 			if (reference.isSubtypeOf(io.sarl.lang.core.Capacity.class)) {
-				final Map<ActionKey, JvmOperation> capacityOperations = CollectionLiterals.newTreeMap(null);
+				final Map<ActionPrototype, JvmOperation> capacityOperations = CollectionLiterals.newTreeMap(null);
 
 				ModelUtil.populateInterfaceElements(
 						(JvmGenericType) capacityType.getType(),
@@ -652,7 +780,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 						this.sarlSignatureProvider);
 
 				int actionIndex = index;
-				for (final Entry<ActionKey, JvmOperation> entry : capacityOperations.entrySet()) {
+				for (final Entry<ActionPrototype, JvmOperation> entry : capacityOperations.entrySet()) {
 					if (implementedOperations == null || !implementedOperations.containsKey(entry.getKey())) {
 						JvmOperation op = this.typeBuilder.toMethod(context, entry.getValue().getSimpleName(),
 								entry.getValue().getReturnType(), new Procedures.Procedure1<JvmOperation>() {
@@ -836,32 +964,34 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 * @param params - the parameters.
 	 * @param isForInterface - indicates if the formal parameters are for an interface (<code>true</code>)
 	 * 							or a class (<code>false</code>).
-	 * @param actionIndex - the index of the generated action.
-	 * @return the names of the formal parameters.
+	 * @param paramSpec - the specification of the parameter as computed by a {@link AcionPrototypeProvider}.
 	 */
-	protected List<String> generateFormalParametersAndDefaultValueFields(
+	private void generateFormalParametersAndDefaultValueFieldsFromSARLDefinition(
 			JvmExecutable owner,
 			JvmGenericType actionContainer,
 			boolean varargs,
 			List<FormalParameter> params,
 			final boolean isForInterface,
-			int actionIndex) {
-
-		List<String> parameterTypes = CollectionLiterals.newArrayList();
+			List<InferredStandardParameter> paramSpec) {
 		JvmFormalParameter lastParam = null;
-		int paramIndex = 0;
 		boolean hasDefaultValue = false;
-		for (final FormalParameter param : params) {
+		for (int i = 0; i < params.size(); ++i) {
+			final FormalParameter param = params.get(i);
+			final InferredStandardParameter inferredParam = paramSpec.get(i);
 			final String paramName = param.getName();
 			JvmTypeReference paramType = param.getParameterType();
 
 			if (!Strings.isNullOrEmpty(paramName) && paramType != null) {
+				if (varargs && i == (params.size() - 1)) {
+					paramType = this.typeBuilder.addArrayTypeDimension(paramType);
+					assert (paramType != null);
+				}
 				lastParam = this.typeBuilder.toParameter(param, paramName, paramType);
 
 				if (param.getDefaultValue() != null) {
 					hasDefaultValue = true;
-					String namePostPart = actionIndex + "_" + paramIndex; //$NON-NLS-1$
-					String name = ModelUtil.PREFIX_ATTRIBUTE_DEFAULT_VALUE + namePostPart;
+					String namePostPart = inferredParam.getDefaultValueAnnotationValue();
+					String name = this.sarlSignatureProvider.createFieldNameForDefaultValueID(namePostPart);
 					// FIXME: Hide these attributes into an inner interface.
 					JvmField field = this.typeBuilder.toField(param.getDefaultValue(), name,
 							paramType, new Procedures.Procedure1<JvmField>() {
@@ -897,19 +1027,12 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 				}
 
 				owner.getParameters().add(lastParam);
-				parameterTypes.add(paramType.getIdentifier());
-
-				++paramIndex;
 			}
 		}
 
-		if (varargs && lastParam != null) {
-			lastParam.setParameterType(this.typeBuilder.addArrayTypeDimension(lastParam.getParameterType()));
-		}
 		if (hasDefaultValue) {
 			owner.getAnnotations().add(this._annotationTypesBuilder.annotationRef(DefaultValueSource.class));
 		}
-		return parameterTypes;
 	}
 
 	/** Generate a list of formal parameters with annotations for the default values.
@@ -919,30 +1042,28 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 * @param varargs - indicates if the signature has variadic parameter.
 	 * @param signature - the description of the parameters.
 	 * @param actionIndex - the index of the generated action.
-	 * @return the names of the formal parameters.
+	 * @return the arguments to pass to the original function.
 	 */
-	protected List<String> generateFormalParametersWithDefaultValue(JvmExecutable owner, JvmGenericType actionContainer,
-			boolean varargs, List<InferredStandardParameter> signature, int actionIndex) {
+	private List<String> generateFormalParametersForAdditionalOperation(JvmExecutable owner, JvmGenericType actionContainer,
+			boolean varargs, List<InferredStandardParameter> signature) {
 		JvmFormalParameter lastParam = null;
 		List<String> arguments = CollectionLiterals.newArrayList();
-		int paramIndex = 0;
 		for (InferredStandardParameter parameterSpec : signature) {
 			if (parameterSpec instanceof InferredValuedParameter) {
-				arguments.add(ModelUtil.PREFIX_ATTRIBUTE_DEFAULT_VALUE + actionIndex + "_" + paramIndex); //$NON-NLS-1$
+				arguments.add(
+						this.sarlSignatureProvider.toJavaArgument(
+								actionContainer.getIdentifier(),
+								((InferredValuedParameter) parameterSpec).getCallingArgument()));
 			} else {
-				FormalParameter param = parameterSpec.getParameter();
-				String paramName = param.getName();
-				JvmTypeReference paramType = param.getParameterType();
+				EObject param = parameterSpec.getParameter();
+				String paramName = parameterSpec.getName();
+				JvmTypeReference paramType = parameterSpec.getType();
 				if (!Strings.isNullOrEmpty(paramName) && paramType != null) {
 					lastParam = this.typeBuilder.toParameter(param, paramName, paramType);
 					owner.getParameters().add(lastParam);
 					arguments.add(paramName);
 				}
 			}
-			++paramIndex;
-		}
-		if (varargs && lastParam != null) {
-			lastParam.setParameterType(this.typeBuilder.addArrayTypeDimension(lastParam.getParameterType()));
 		}
 		return arguments;
 	}
@@ -955,12 +1076,14 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 * @param returnType - the return type, or <code>null</code>.
 	 * @param firedEvents - the fired events.
 	 * @param operationBody - the body's or <code>null</code>.
-	 * @param index - the index of the action in the container.
 	 * @param isAbstract - indicates if the operation is abstract.
 	 * @param operationsToImplement - if given, list of the operations that should be implemented in the container.
 	 * 			This function remove the generated action from the list.
 	 * @param implementedOperations - if given, the generated operation is added inside.
-	 * @param inheritedOperation - test if an action is inherited or not.
+	 * @param inheritedOperation - permits to detect if an action is inherited or not.
+	 * @param differedCodeGeneration - this list if fill by this function with the actions that should be present in the code,
+	 * but not automatically added for enabling the coder to override them. If <code>null</code>, the automatically generated
+	 * actions will be immediatelly added to the code.
 	 * @return the operation.
 	 */
 	protected JvmOperation generateAction(
@@ -968,121 +1091,188 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 			final String name,
 			final ParameterizedFeature params,
 			JvmTypeReference returnType,
-			List<JvmParameterizedTypeReference> firedEvents,
+			final List<JvmParameterizedTypeReference> firedEvents,
 			final XExpression operationBody,
-			final int index,
 			final boolean isAbstract,
-			Map<ActionKey, JvmOperation> operationsToImplement,
-			Map<ActionKey, JvmOperation> implementedOperations,
-			Functions.Function1<ActionKey, Boolean> inheritedOperation) {
+			final Map<ActionPrototype, JvmOperation> operationsToImplement,
+			final Map<ActionPrototype, JvmOperation> implementedOperations,
+			final Functions.Function1<ActionPrototype, Boolean> inheritedOperation,
+			List<Runnable> differedCodeGeneration) {
 
+		// Determine the real return type.
 		JvmTypeReference tmpReturnValueType = returnType;
 		if (returnType == null) {
 			tmpReturnValueType = this._typeReferenceBuilder.typeRef(Void.TYPE);
 		}
 		final JvmTypeReference returnValueType = tmpReturnValueType;
 
-		ActionNameKey actionKey = this.sarlSignatureProvider.createFunctionID(owner, name);
+		// Compute the identifier of the action.
+		QualifiedActionName actionKey = this.sarlSignatureProvider.createQualifiedActionName(owner, name);
 
+		// Compute the different action prototypes associated to the action to create.
+		final InferredPrototype actionSignatures = this.sarlSignatureProvider.createPrototypeFromSarlModel(
+				actionKey,
+				params.isVarargs(), params.getParams());
+
+		// Compute the action prototype of the action without optional parameter
+		final ActionPrototype actSigKey = this.sarlSignatureProvider.createActionPrototype(
+				name,
+				actionSignatures.getFormalParameterTypes());
+
+		// Create the Java code for the action.
 		JvmOperation mainOp = this.typeBuilder.toMethod(params, name, returnValueType,
 				new Procedures.Procedure1<JvmOperation>() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void apply(JvmOperation it) {
 				SARLJvmModelInferrer.this.typeBuilder.copyDocumentationTo(params, it);
 				it.setVarArgs(params.isVarargs());
 				it.setAbstract(isAbstract);
-				generateFormalParametersAndDefaultValueFields(
-						it, owner, params.isVarargs(), params.getParams(), isAbstract, index);
+				List<InferredStandardParameter> paramList = actionSignatures.getOriginalParameterTypes();
+				generateFormalParametersAndDefaultValueFieldsFromSARLDefinition(
+						it, owner, params.isVarargs(), params.getParams(), isAbstract, paramList);
 				SARLJvmModelInferrer.this.typeBuilder.setBody(it, operationBody);
 			}
 		});
+
+		// Detecting if the action is an early-exit action.
+		// If true, the Java code is annotated to be usable by the SARL validator.
 		//TODO: Generalize the detection of the EarlyExit
-		boolean isEarlyExit = false;
+		boolean tmpIsEarlyExit = false;
 		Iterator<JvmParameterizedTypeReference> eventIterator = firedEvents.iterator();
-		while (!isEarlyExit && eventIterator.hasNext()) {
+		while (!tmpIsEarlyExit && eventIterator.hasNext()) {
 			if (this.earlyExitComputer.isEarlyExitEvent(eventIterator.next())) {
 				mainOp.getAnnotations().add(this._annotationTypesBuilder.annotationRef(EarlyExit.class));
-				isEarlyExit = true;
+				tmpIsEarlyExit = true;
 			}
 		}
+		final boolean isEarlyExit = tmpIsEarlyExit;
 
+		// Put the fired SARL events as Java annotations for beeing usable by the SARL validator.
 		if (!firedEvents.isEmpty()) {
 			mainOp.getAnnotations().add(annotationClassRef(FiredEvent.class, firedEvents));
 		}
+
+		// Add the main Java operation for the action
 		owner.getMembers().add(mainOp);
 
-		final InferredActionSignature otherSignatures = this.sarlSignatureProvider.createSignature(
-				actionKey,
-				params.isVarargs(), params.getParams());
-
-		ActionKey actSigKey = this.sarlSignatureProvider.createActionID(
-				name,
-				otherSignatures.getFormalParameterKey());
-		if (operationsToImplement != null && actSigKey != null) {
-			JvmOperation removedOp = operationsToImplement.remove(actSigKey);
-			if (removedOp != null && implementedOperations != null) {
-				implementedOperations.put(actSigKey, removedOp);
+		// 1. Ensure that the Java annotations related to the default value are really present.
+		//    They may be not present if the generated action is a specific version of an inherited
+		//    action with default values for parameters.
+		// 2. Update the two collections that describes the implemented and implementable operations.
+		if (operationsToImplement != null) {
+			JvmOperation implementedOperation = operationsToImplement.remove(actSigKey);
+			// Put the annotations that were defined in the implemented operation
+			if (implementedOperation != null) {
+				if (ModelUtil.hasAnnotation(implementedOperation, DefaultValueSource.class)
+						&& !ModelUtil.hasAnnotation(mainOp, DefaultValueSource.class)) {
+					mainOp.getAnnotations().add(this._annotationTypesBuilder.annotationRef(
+							DefaultValueSource.class));
+				}
+				// Reinject the @DefaultValue annotations
+				List<JvmFormalParameter> oParams = implementedOperation.getParameters();
+				List<JvmFormalParameter> cParams = mainOp.getParameters();
+				assert (oParams.size() == cParams.size());
+				for (int i = 0; i < oParams.size(); ++i) {
+					JvmFormalParameter op = oParams.get(i);
+					JvmFormalParameter cp = cParams.get(i);
+					String ovalue = ModelUtil.annotationString(op, DefaultValue.class);
+					if (ovalue != null
+							&& !ModelUtil.hasAnnotation(cp, DefaultValue.class)) {
+						cp.getAnnotations().add(this._annotationTypesBuilder.annotationRef(
+								DefaultValue.class,
+								this.sarlSignatureProvider.qualifyDefaultValueID(
+										implementedOperation.getDeclaringType().getIdentifier(),
+										ovalue)));
+					}
+				}
 			}
 		}
+		if (implementedOperations != null) {
+			implementedOperations.put(actSigKey, mainOp);
+		}
 
-		for (final Entry<SignatureKey, EList<InferredStandardParameter>> otherSignature
-				: otherSignatures.getInferredSignatures().entrySet()) {
-			ActionKey ak = this.sarlSignatureProvider.createActionID(
-					name,
-					otherSignature.getKey());
-			if (ak != null
-					&& (inheritedOperation == null
-					|| inheritedOperation.apply(ak))) {
-				JvmOperation additionalOp = this.typeBuilder.toMethod(params, name, returnValueType,
-						new Procedures.Procedure1<JvmOperation>() {
-					@SuppressWarnings("synthetic-access")
-					@Override
-					public void apply(JvmOperation it) {
-						SARLJvmModelInferrer.this.typeBuilder.copyDocumentationTo(params, it);
-						it.setVarArgs(params.isVarargs());
-						it.setFinal(!isAbstract);
-						it.setAbstract(isAbstract);
-						final List<String> args = generateFormalParametersWithDefaultValue(
-								it, owner, params.isVarargs(), otherSignature.getValue(), index);
-						if (!isAbstract) {
-							SARLJvmModelInferrer.this.typeBuilder.setBody(it, new Procedures.Procedure1<ITreeAppendable>() {
-								@Override
-								public void apply(ITreeAppendable it) {
-									if (!Objects.equal("void", returnValueType.getIdentifier())) { //$NON-NLS-1$
-										it.append("return "); //$NON-NLS-1$
-									}
-									it.append(name);
-									it.append("("); //$NON-NLS-1$
-									it.append(IterableExtensions.join(args, ", ")); //$NON-NLS-1$
-									it.append(");"); //$NON-NLS-1$
+		Runnable differedGeneration = new Runnable() {
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void run() {
+				// Generate the Java functions that correspond to the action with the parameter default values applied.
+				for (final Entry<ActionParameterTypes, List<InferredStandardParameter>> otherSignature
+						: actionSignatures.getInferredParameterTypes().entrySet()) {
+					ActionPrototype ak = SARLJvmModelInferrer.this.sarlSignatureProvider.createActionPrototype(
+							name,
+							otherSignature.getKey());
+					if (ak != null
+						&& (inheritedOperation == null
+							|| inheritedOperation.apply(ak))) {
+
+						// Generate the additional operation, with a code that is invoking the main operation with
+						// the default values as arguments.
+						JvmOperation additionalOp = SARLJvmModelInferrer.this.typeBuilder.toMethod(
+								params, name, returnValueType,
+								new Procedures.Procedure1<JvmOperation>() {
+							@Override
+							public void apply(JvmOperation it) {
+								SARLJvmModelInferrer.this.typeBuilder.copyDocumentationTo(params, it);
+								it.setVarArgs(params.isVarargs());
+								it.setFinal(!isAbstract);
+								it.setAbstract(isAbstract);
+								final List<String> args = generateFormalParametersForAdditionalOperation(
+										it, owner, params.isVarargs(), otherSignature.getValue());
+								if (!isAbstract) {
+									SARLJvmModelInferrer.this.typeBuilder.setBody(it,
+											new Procedures.Procedure1<ITreeAppendable>() {
+										@Override
+										public void apply(ITreeAppendable it) {
+											if (!Objects.equal("void", returnValueType.getIdentifier())) { //$NON-NLS-1$
+												it.append("return "); //$NON-NLS-1$
+											}
+											it.append(name);
+											it.append("("); //$NON-NLS-1$
+											it.append(IterableExtensions.join(args, ", ")); //$NON-NLS-1$
+											it.append(");"); //$NON-NLS-1$
+										}
+									});
 								}
-							});
+								it.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
+										DefaultValueUse.class,
+										actionSignatures.getFormalParameterTypes().toString()));
+								it.getAnnotations().add(
+										SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Generated.class));
+							}
+
+						});
+
+						// If the main action is an early-exit action, the additional operation is also an early-exit operation.
+						//TODO: Generalize the detection of the EarlyExit
+						if (isEarlyExit) {
+							additionalOp.getAnnotations().add(
+									SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(EarlyExit.class));
 						}
-						it.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
-								DefaultValueUse.class,
-								otherSignatures.getFormalParameterKey().toString()));
-						it.getAnnotations().add(
-								SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Generated.class));
-					}
 
-				});
+						// Put the fired SARL events as Java annotations for beeing usable by the SARL validator.
+						if (!firedEvents.isEmpty()) {
+							additionalOp.getAnnotations().add(annotationClassRef(FiredEvent.class, firedEvents));
+						}
 
-				//TODO: Generalize the detection of the EarlyExit
-				if (isEarlyExit) {
-					mainOp.getAnnotations().add(this._annotationTypesBuilder.annotationRef(EarlyExit.class));
-				}
-				if (!firedEvents.isEmpty()) {
-					additionalOp.getAnnotations().add(annotationClassRef(FiredEvent.class, firedEvents));
-				}
-				owner.getMembers().add(additionalOp);
+						// Add the additional operation
+						owner.getMembers().add(additionalOp);
 
-				if (operationsToImplement != null) {
-					JvmOperation removedOp = operationsToImplement.remove(ak);
-					if (removedOp != null && implementedOperations != null) {
-						implementedOperations.put(ak, removedOp);
+						// Update the two collections that describes the implemented and implementable operations.
+						if (operationsToImplement != null) {
+							operationsToImplement.remove(ak);
+						}
+						if (implementedOperations != null) {
+							implementedOperations.put(ak, additionalOp);
+						}
 					}
 				}
 			}
+		};
+		if (differedCodeGeneration != null) {
+			differedCodeGeneration.add(differedGeneration);
+		} else {
+			differedGeneration.run();
 		}
 
 		return mainOp;
@@ -1095,68 +1285,102 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 	 * @param constructor - the constructor.
 	 * @param index - the index of the constructor.
 	 * @param generatedConstructors - a map to fill with the generated constructor.
+	 * @param differedCodeGeneration - this list if fill by this function with the constructors that should be present
+	 * in the code, but not automatically added for enabling the coder to override them. If <code>null</code>, the
+	 * automatically generated constructors will be immediatelly added to the code.
 	 * @return the signature of the constructor.
 	 */
-	protected SignatureKey generateConstructor(
+	protected ActionParameterTypes generateConstructor(
 			final JvmGenericType owner, TopElement context,
 			final Constructor constructor, final int index,
-			Map<SignatureKey, JvmConstructor> generatedConstructors) {
-		ActionNameKey actionKey = this.sarlSignatureProvider.createConstructorID(owner);
+			final Map<ActionParameterTypes, JvmConstructor> generatedConstructors,
+			List<Runnable> differedCodeGeneration) {
+		// Generate the unique identifier of the constructor.
+		QualifiedActionName actionKey = this.sarlSignatureProvider.createConstructorQualifiedName(owner);
+
+		// Generate all the constructor signatures related to the constructor to create.
+		final InferredPrototype constructorSignatures = this.sarlSignatureProvider.createPrototypeFromSarlModel(
+				actionKey,
+				constructor.isVarargs(), constructor.getParams());
+
+		// Generate the main Java constructor.
 		JvmConstructor cons = this.typeBuilder.toConstructor(constructor, new Procedures.Procedure1<JvmConstructor>() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void apply(JvmConstructor it) {
 				SARLJvmModelInferrer.this.typeBuilder.copyDocumentationTo(constructor, it);
 				it.setVarArgs(constructor.isVarargs());
-				generateFormalParametersAndDefaultValueFields(
+				List<InferredStandardParameter> paramList = constructorSignatures.getOriginalParameterTypes();
+				generateFormalParametersAndDefaultValueFieldsFromSARLDefinition(
 						it, owner, constructor.isVarargs(),
-						constructor.getParams(), false, index);
+						constructor.getParams(), false, paramList);
 				SARLJvmModelInferrer.this.typeBuilder.setBody(it, constructor.getBody());
 			}
 		});
+
+		// Add the generated constructor in its Java type.
 		owner.getMembers().add(cons);
+
+		// Update the list of generated constructors
 		if (generatedConstructors != null) {
-			SignatureKey sigKey = this.sarlSignatureProvider.createSignatureIDFromJvmModel(
+			ActionParameterTypes sigKey = this.sarlSignatureProvider.createParameterTypesFromJvmModel(
 					cons.isVarArgs(), cons.getParameters());
 			generatedConstructors.put(sigKey, cons);
 		}
 
-		final InferredActionSignature otherSignatures = this.sarlSignatureProvider.createSignature(
-				actionKey,
-				constructor.isVarargs(), constructor.getParams());
+		Runnable differedGeneration  = new Runnable() {
+			@Override
+			public void run() {
+				// Generate the Java functions that correspond to the action with the parameter default values applied.
+				for (Entry<ActionParameterTypes, List<InferredStandardParameter>> entry
+						: constructorSignatures.getInferredParameterTypes().entrySet()) {
 
-		for (final EList<InferredStandardParameter> otherSignature : otherSignatures) {
-			JvmConstructor op = this.typeBuilder.toConstructor(constructor, new Procedures.Procedure1<JvmConstructor>() {
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void apply(JvmConstructor it) {
-					SARLJvmModelInferrer.this.typeBuilder.copyDocumentationTo(constructor, it);
-					it.setVarArgs(constructor.isVarargs());
-					final List<String> args = generateFormalParametersWithDefaultValue(
-							it, owner, constructor.isVarargs(), otherSignature, index);
-					SARLJvmModelInferrer.this.typeBuilder.setBody(it, new Procedures.Procedure1<ITreeAppendable>() {
-						@Override
-						public void apply(ITreeAppendable it2) {
-							it2.append("this("); //$NON-NLS-1$
-							it2.append(IterableExtensions.join(args, ", ")); //$NON-NLS-1$
-							it2.append(");"); //$NON-NLS-1$
+					if (generatedConstructors == null || !generatedConstructors.containsKey(entry.getKey())) {
+						final List<InferredStandardParameter> otherSignature = entry.getValue();
+						// Generate the additional constructor that is invoke the main constructor previously generated.
+						JvmConstructor op = SARLJvmModelInferrer.this.typeBuilder.toConstructor(constructor,
+								new Procedures.Procedure1<JvmConstructor>() {
+							@SuppressWarnings("synthetic-access")
+							@Override
+							public void apply(JvmConstructor it) {
+								SARLJvmModelInferrer.this.typeBuilder.copyDocumentationTo(constructor, it);
+								it.setVarArgs(constructor.isVarargs());
+								final List<String> args = generateFormalParametersForAdditionalOperation(
+										it, owner, constructor.isVarargs(), otherSignature);
+								SARLJvmModelInferrer.this.typeBuilder.setBody(it, new Procedures.Procedure1<ITreeAppendable>() {
+									@Override
+									public void apply(ITreeAppendable it2) {
+										it2.append("this("); //$NON-NLS-1$
+										it2.append(IterableExtensions.join(args, ", ")); //$NON-NLS-1$
+										it2.append(");"); //$NON-NLS-1$
+									}
+								});
+								it.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
+										DefaultValueUse.class,
+										constructorSignatures.getFormalParameterTypes().toString()));
+								it.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
+										Generated.class));
+							}
+						});
+
+						// Add the additional constructor in the Java type.
+						owner.getMembers().add(op);
+
+						// Update the list of the generated constructors.
+						if (generatedConstructors != null) {
+							generatedConstructors.put(entry.getKey(), op);
 						}
-					});
-					it.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
-							DefaultValueUse.class,
-							otherSignatures.getFormalParameterKey().toString()));
-					it.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
-							Generated.class));
+					}
 				}
-			});
-			owner.getMembers().add(op);
-			if (generatedConstructors != null) {
-				SignatureKey sigKey = this.sarlSignatureProvider.createSignatureIDFromJvmModel(
-						op.isVarArgs(), op.getParameters());
-				generatedConstructors.put(sigKey, op);
 			}
+		};
+		if (differedCodeGeneration != null) {
+			differedCodeGeneration.add(differedGeneration);
+		} else {
+			differedGeneration.run();
 		}
 
-		return otherSignatures.getFormalParameterKey();
+		return constructorSignatures.getFormalParameterTypes();
 	}
 
 	/** Generate the "equals()" operation.
@@ -1398,7 +1622,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 		@Override
 		public final void apply(JvmGenericType it) {
 			// Reset the action registry
-			SARLJvmModelInferrer.this.sarlSignatureProvider.resetSignatures(it);
+			SARLJvmModelInferrer.this.sarlSignatureProvider.clear(it);
 			SARLJvmModelInferrer.this.typeBuilder.copyDocumentationTo(this.element, it);
 			generate(it);
 		}
@@ -1447,7 +1671,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 					}
 				} else if (feature instanceof Constructor) {
 					Constructor constructor = (Constructor) feature;
-					if (generateConstructor(it, this.element, constructor, actionIndex, null) != null) {
+					if (generateConstructor(it, this.element, constructor, actionIndex, null, null) != null) {
 						serial = serial + SARLJvmModelInferrer.this.nameProvider.getFullyQualifiedName(
 								this.element).hashCode();
 						++actionIndex;
@@ -1598,11 +1822,10 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 		public void generate(JvmGenericType it) {
 			generateExtendedTypes(it, this.element, io.sarl.lang.core.Capacity.class);
 
-			int actionIndex = 0;
 			for (EObject feature : this.element.getFeatures()) {
 				if (feature instanceof ActionSignature) {
 					ActionSignature signature = (ActionSignature) feature;
-					if (generateAction(
+					generateAction(
 							it,
 							// name
 							signature.getName(),
@@ -1614,8 +1837,6 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 							signature.getFiredEvents(),
 							// body
 							null,
-							// action index in the capacity
-							actionIndex,
 							// is abstract
 							true,
 							// operations to implement
@@ -1623,9 +1844,9 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 							// implemented operations
 							null,
 							// action filter
-							null) != null) {
-						++actionIndex;
-					}
+							null,
+							// Differed actions,
+							null);
 				}
 			}
 		}
@@ -1757,7 +1978,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 		public void generate(JvmGenericType it) {
 			generateExtendedTypes(it, this.element, io.sarl.lang.core.Agent.class);
 
-			Map<SignatureKey, JvmConstructor> generatedConstructors = CollectionLiterals.newTreeMap(null);
+			Map<ActionParameterTypes, JvmConstructor> generatedConstructors = CollectionLiterals.newTreeMap(null);
 			generateCodeForFeatures(it, this.element, this.element, true, generatedConstructors);
 
 
@@ -1774,7 +1995,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 							toStringConcatenation("super(parentID, null);")); //$NON-NLS-1$
 				}
 			});
-			SignatureKey sigCons1 = SARLJvmModelInferrer.this.sarlSignatureProvider.createSignatureIDFromJvmModel(
+			ActionParameterTypes sigCons1 = SARLJvmModelInferrer.this.sarlSignatureProvider.createParameterTypesFromJvmModel(
 					cons1.isVarArgs(), cons1.getParameters());
 			if (!generatedConstructors.containsKey(sigCons1)) {
 				cons1.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Generated.class));
@@ -1800,7 +2021,7 @@ public class SARLJvmModelInferrer extends AbstractModelInferrer {
 				}
 
 			});
-			SignatureKey sigCons2 = SARLJvmModelInferrer.this.sarlSignatureProvider.createSignatureIDFromJvmModel(
+			ActionParameterTypes sigCons2 = SARLJvmModelInferrer.this.sarlSignatureProvider.createParameterTypesFromJvmModel(
 					cons2.isVarArgs(), cons2.getParameters());
 			if (!generatedConstructors.containsKey(sigCons2)) {
 				cons2.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Generated.class));

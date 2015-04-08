@@ -341,5 +341,5 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 	}
-	
+
 }

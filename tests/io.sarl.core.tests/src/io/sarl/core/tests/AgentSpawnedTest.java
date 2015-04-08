@@ -51,7 +51,7 @@ public class AgentSpawnedTest extends AbstractSarlCoreTest<Event> {
 		assertEquals(3, this.type.getDeclaredFields().length);
 		assertEquals(1, this.type.getDeclaredConstructors().length);
 	}
-	
+
 	/**
 	 */
 	@Test

@@ -70,7 +70,7 @@ import com.google.inject.name.Named;
 
 /** Provides tools for setting up and managing the Eclipse workspace.
  * This class was adapted from the Xtext test suite.
- * 
+ *
  * @author $Author: sgalland$
  * @author $Author: ngaud$
  * @version $FullVersion$
@@ -107,7 +107,7 @@ public class WorkspaceTestHelper extends Assert {
 	public static String GENERATED_SOURCE_FOLDER= "src-gen"; //$NON-NLS-1$
 
 	private static boolean IS_WAITING_FOR_BUILD_AT_FILE_CREATION = false;
-	
+
 	private final Set<IFile> files = newHashSet();
 
 	@Inject
@@ -125,12 +125,12 @@ public class WorkspaceTestHelper extends Assert {
 
 	@Inject
 	private IResourceSetProvider resourceSetProvider;
-	
+
 	private ValidationTestHelper validationHelper;
-	
+
 	/** Create a project in the workspace with the dependencies
 	 * defined in {@link #DEFAULT_REQUIRED_BUNDLES}.
-	 * 
+	 *
 	 * @param injector - the injector to use.
 	 * @param name - the name of the project.
 	 * @return the project.
@@ -142,10 +142,10 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Create a project in the workspace with the given dependencies.
-	 * 
+	 *
 	 * @param injector - the injector to use.
 	 * @param name - the name of the project.
-	 * @param requiredBundles - the bundles required by the project. 
+	 * @param requiredBundles - the bundles required by the project.
 	 * @return the project.
 	 * @throws CoreException
 	 * @see #createProject(Injector, String)
@@ -284,7 +284,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Delete the given project, if it is existing, and the related directories.
-	 * 
+	 *
 	 * @param project - the project to delete.
 	 * @throws CoreException
 	 */
@@ -295,7 +295,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Replies the injector.
-	 * 
+	 *
 	 * @return the injector.
 	 */
 	public Injector getInjector() {
@@ -303,7 +303,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Create an instance of the given class.
-	 * 
+	 *
 	 * @param clazz - type of the instance to create.
 	 * @return the instance.
 	 */
@@ -312,7 +312,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Replies the list of the created files.
-	 * 
+	 *
 	 * @return the created files.
 	 */
 	public Set<IFile> getFiles() {
@@ -322,7 +322,7 @@ public class WorkspaceTestHelper extends Assert {
 	/** Replies the testing project.
 	 * If a project was not created, create
 	 * a new one.s
-	 * 
+	 *
 	 * @return the testing project.
 	 */
 	public IProject getProject() {
@@ -350,7 +350,7 @@ public class WorkspaceTestHelper extends Assert {
 	/** Replies the testing Java project.
 	 * If a project was not created, create
 	 * a new one.s
-	 * 
+	 *
 	 * @return the testing Java project.
 	 */
 	public IJavaProject getJavaProject() {
@@ -369,7 +369,7 @@ public class WorkspaceTestHelper extends Assert {
 
 	/** Replies the identifier of the editors that are supporting the
 	 * SARL language.
-	 * 
+	 *
 	 * @return the identifier for the SARL editors.
 	 */
 	public String getEditorID() {
@@ -377,7 +377,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Create a file inside the source folder.
-	 * 
+	 *
 	 * @param basename - the basename of the file in the source folder.
 	 * @param content - the content of the file.
 	 * @return the created file.
@@ -389,7 +389,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Create a file inside the workspace.
-	 * 
+	 *
 	 * @param filename - the name of the file relative to the workspace directory.
 	 * @param content - the content of the file.
 	 * @return the created file.
@@ -402,7 +402,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Replies if a file exists in the source folder.
-	 * 
+	 *
 	 * @param basename - the basename of the file in the source folder.
 	 * @return <code>true</code> if the file exists, otherwise <code>false</code>.
 	 */
@@ -412,7 +412,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Replies if a file exists in the generated source folder.
-	 * 
+	 *
 	 * @param basename - the basename of the file in the source folder.
 	 * @return <code>true</code> if the file exists, otherwise <code>false</code>.
 	 */
@@ -422,7 +422,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Replies a file in the source folder.
-	 * 
+	 *
 	 * @param basename - the basename of the file.
 	 * @return the filename relative to the workspace directory.
 	 */
@@ -431,7 +431,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Replies a file in the generated source folder.
-	 * 
+	 *
 	 * @param basename - the basename of the file.
 	 * @return the filename relative to the workspace directory.
 	 */
@@ -440,7 +440,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Replies a file in the workspace.
-	 * 
+	 *
 	 * @param filename - the filename relative to the workspace directory.
 	 * @return the file.
 	 */
@@ -449,7 +449,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Convert a filename from the source folder to the workspace.
-	 * 
+	 *
 	 * @param project - project that is containing the source folder.
 	 * @param basename - the filename without extension relative to the source folder.
 	 * @return the filename relative to the workspace.
@@ -462,7 +462,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Replies the basename from the given full name.
-	 * 
+	 *
 	 * @param fullName - the full name.
 	 * @param removeExtension - indicates if the file extension must be removed from the basename.
 	 * @return the basename.
@@ -486,7 +486,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Convert a filename from the generated source folder to the workspace.
-	 * 
+	 *
 	 * @param project - project that is containing the source folder.
 	 * @param basename - the filename without extension relative to the source folder.
 	 * @return the filename relative to the workspace.
@@ -499,7 +499,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Replies the file extension for a SARL script.
-	 * 
+	 *
 	 * @return the file extension for a SARL script.
 	 */
 	public String getFileExtension() {
@@ -507,7 +507,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Replies the URI of trhe given file.
-	 * 
+	 *
 	 * @param file - the file
 	 * @return the URI of the file.
 	 */
@@ -516,7 +516,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Replies the URI of trhe given file.
-	 * 
+	 *
 	 * @param file - the filename from the workspace.
 	 * @return the URI of the file.
 	 */
@@ -526,7 +526,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Replies the set of resources inside the current project.
-	 * 
+	 *
 	 * @return the set of resources.
 	 */
 	public ResourceSet getResourceSet() {
@@ -534,7 +534,7 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Replies the content of the given file.
-	 * 
+	 *
 	 * @param file - the filename.
 	 * @return the content of the file.
 	 * @throws Exception
@@ -555,8 +555,8 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Create and compile a SARL script in the source folder.
-	 * 
-	 * @param basename - the basename of the file in the source folder. 
+	 *
+	 * @param basename - the basename of the file in the source folder.
 	 * @param content - the content of the file.
 	 * @return the parsed SARL script.
 	 * @throws Exception
@@ -566,8 +566,8 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Create and compile a SARL script in the source folder.
-	 * 
-	 * @param file - the file in the source folder. 
+	 *
+	 * @param file - the file in the source folder.
 	 * @param content - the content of the file.
 	 * @return the parsed SARL script.
 	 * @throws Exception
@@ -583,8 +583,8 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Create and compile a SARL script in the source folder.
-	 * 
-	 * @param file - the file in the source folder. 
+	 *
+	 * @param file - the file in the source folder.
 	 * @param content - the content of the file.
 	 * @return the parsed SARL script resource.
 	 * @throws Exception
@@ -601,8 +601,8 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Create and compile a SARL script in the source folder.
-	 * 
-	 * @param basename - the basename of the file in the source folder. 
+	 *
+	 * @param basename - the basename of the file in the source folder.
 	 * @param content - the content of the file.
 	 * @return the parsed SARL script resource.
 	 * @throws Exception
@@ -613,8 +613,8 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Create and compile a SARL script in the source folder.
-	 * 
-	 * @param file - the file in the source folder. 
+	 *
+	 * @param file - the file in the source folder.
 	 * @param content - the content of the resource.
 	 * @return the parsed resource.
 	 * @throws Exception
@@ -629,8 +629,8 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Load an existing resource.
-	 * 
-	 * @param file - the file in the source folder. 
+	 *
+	 * @param file - the file in the source folder.
 	 * @return the resource.
 	 * @throws Exception
 	 */
@@ -641,7 +641,7 @@ public class WorkspaceTestHelper extends Assert {
 	/** Create and compile a SARL script in the source folder,
 	 * and reply the top element of the given type at the given
 	 * position in the SARL script.
-	 * 
+	 *
 	 * @param basename - the basename of the file in the source folder.
 	 * @param type - the type of the element to reply.
 	 * @param position -( the index of the top element to reply.
@@ -665,9 +665,9 @@ public class WorkspaceTestHelper extends Assert {
 
 	/** Create and compile a SARL script in the source folder,
 	 * and reply the first top element of the given type.
-	 * 
+	 *
 	 * @param basename - the basename of the file in the source folder.
-	 * @param type - the type of the element to reply 
+	 * @param type - the type of the element to reply
 	 * @param content - the content of the file.
 	 * @return the SARL top element.
 	 * @throws NoSuchElementException if there is no element of the given type.
@@ -679,9 +679,9 @@ public class WorkspaceTestHelper extends Assert {
 	}
 
 	/** Create and compile a SARL script in the source folder of the given project.
-	 * 
+	 *
 	 * @param project - the project in which creating the file.
-	 * @param basename - the basename of the file in the source folder. 
+	 * @param basename - the basename of the file in the source folder.
 	 * @param content - the content of the file.
 	 * @return the parsed SARL script.
 	 * @throws Exception
@@ -708,7 +708,7 @@ public class WorkspaceTestHelper extends Assert {
 	public void waitForAutoBuild() {
 		IResourcesSetupUtil.waitForAutoBuild();
 	}
-	
+
 	/** Replies the resource validator for the workspace test helper.
 	 *
 	 * This implementation is adapted to the workspace validator.
@@ -722,5 +722,5 @@ public class WorkspaceTestHelper extends Assert {
 		}
 		return this.validationHelper;
 	}
-	
+
 }

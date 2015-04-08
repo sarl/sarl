@@ -50,7 +50,7 @@ public class SpaceCreatedTest extends AbstractSarlCoreTest<Event> {
 		assertEquals(2, this.type.getDeclaredFields().length);
 		assertEquals(1, this.type.getDeclaredConstructors().length);
 	}
-	
+
 	/**
 	 */
 	@Test

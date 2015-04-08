@@ -23,14 +23,14 @@ package io.sarl.lang.ui.tests.outline;
 import org.junit.Test;
 
 /** Test the outline of a sarl script.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SarlScriptOutlineTest extends AbstractSARLOutlineTreeProviderTest { 
-	
+public class SarlScriptOutlineTest extends AbstractSARLOutlineTreeProviderTest {
+
 	/**
 	 * @throws Exception
 	 */
@@ -66,7 +66,7 @@ public class SarlScriptOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		asserts.numChildren(7);
 		OutlineAsserts c, cc;
 		asserts.leaf(0, "io.sarl.lang.ui.tests.outline.tests"); //$NON-NLS-1$
-		
+
 		c = asserts.nextChild("import declarations"); //$NON-NLS-1$
 		c.numChildren(1);
 		c.leaf(0, "io.sarl.lang.core.Event").leaf(); //$NON-NLS-1$

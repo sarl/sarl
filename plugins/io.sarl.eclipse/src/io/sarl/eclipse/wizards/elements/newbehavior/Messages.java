@@ -24,7 +24,7 @@ package io.sarl.eclipse.wizards.elements.newbehavior;
 import org.eclipse.osgi.util.NLS;
 
 /** Localized messages.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -40,7 +40,7 @@ public class Messages extends NLS {
 
 	private Messages() {
 	}
-	
+
 	public static String NewSarlBehavior_0;
 	public static String NewSarlBehaviorWizardPage_0;
 	public static String NewSarlBehaviorWizardPage_1;

@@ -17,8 +17,8 @@ import org.eclipse.xtext.xbase.services.XtypeGrammarAccess;
 
 @Singleton
 public class SARLGrammarAccess extends AbstractGrammarElementFinder {
-	
-	
+
+
 	public class SarlScriptElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "SarlScript");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -31,7 +31,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cImportSectionXImportSectionParserRuleCall_1_0 = (RuleCall)cImportSectionAssignment_1.eContents().get(0);
 		private final Assignment cElementsAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cElementsTopElementParserRuleCall_2_0 = (RuleCall)cElementsAssignment_2.eContents().get(0);
-		
+
 		//SarlScript:
 		//	("package" name=QualifiedName ";"?)? importSection=XImportSection? elements+=TopElement*;
 		public ParserRule getRule() { return rule; }
@@ -75,7 +75,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cAgentParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		private final RuleCall cBehaviorParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		private final RuleCall cSkillParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
-		
+
 		//TopElement:
 		//	Event | Capacity | Agent | Behavior | Skill;
 		public ParserRule getRule() { return rule; }
@@ -103,7 +103,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "NamedElement");
 		private final Assignment cNameAssignment = (Assignment)rule.eContents().get(1);
 		private final RuleCall cNameValidIDParserRuleCall_0 = (RuleCall)cNameAssignment.eContents().get(0);
-		
+
 		//// Define an interface that is providing the 'name' feature.
 		//// This rule is declared only for generated the Java interface
 		//// with the expected features.
@@ -125,7 +125,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Action cFeatureContainerAction_0 = (Action)cGroup.eContents().get(0);
 		private final Assignment cFeaturesAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cFeaturesFeatureParserRuleCall_1_0 = (RuleCall)cFeaturesAssignment_1.eContents().get(0);
-		
+
 		//// Define an interface that is providing the 'features' feature.
 		//// This rule is declared only for generated the Java interface
 		//// with the expected features.
@@ -150,7 +150,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public class FeatureElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Feature");
 		private final Action cFeatureAction = (Action)rule.eContents().get(1);
-		
+
 		//// Define an interface that is a feature.
 		//// This rule is declared only for generated the Java interface
 		//// with the expected features.
@@ -171,7 +171,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cParamsFormalParameterParserRuleCall_1_0 = (RuleCall)cParamsAssignment_1.eContents().get(0);
 		private final Assignment cVarargsAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cVarargsIDTerminalRuleCall_2_0 = (RuleCall)cVarargsAssignment_2.eContents().get(0);
-		
+
 		//// Define an interface that is a feature with parameters.
 		//// This rule is declared only for generated the Java interface
 		//// with the expected features.
@@ -205,7 +205,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Action cInheritingElementAction_0 = (Action)cGroup.eContents().get(0);
 		private final Assignment cSuperTypesAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cSuperTypesJvmParameterizedTypeReferenceParserRuleCall_1_0 = (RuleCall)cSuperTypesAssignment_1.eContents().get(0);
-		
+
 		//// Define an interface that is providing the 'superTypes' feature.
 		//// This rule is declared only for generated the Java interface
 		//// with the expected features.
@@ -233,7 +233,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Action cImplementingElementAction_0 = (Action)cGroup.eContents().get(0);
 		private final Assignment cImplementedTypesAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cImplementedTypesJvmParameterizedTypeReferenceParserRuleCall_1_0 = (RuleCall)cImplementedTypesAssignment_1.eContents().get(0);
-		
+
 		//// Define an interface that is providing the 'implementedTypes' feature.
 		//// This rule is declared only for generated the Java interface
 		//// with the expected features.
@@ -271,7 +271,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cFeaturesAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
 		private final RuleCall cFeaturesEventFeatureParserRuleCall_4_1_0 = (RuleCall)cFeaturesAssignment_4_1.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_4_2 = (Keyword)cGroup_4.eContents().get(2);
-		
+
 		//Event returns InheritingElement:
 		//	{Event} "event" name=ValidID ("extends" superTypes+=JvmParameterizedTypeReference)? ("{" features+=EventFeature*
 		//	"}")?;
@@ -339,7 +339,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cFeaturesAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final RuleCall cFeaturesActionSignatureParserRuleCall_5_0 = (RuleCall)cFeaturesAssignment_5.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
-		
+
 		//Capacity returns InheritingElement:
 		//	{Capacity} "capacity" name=ValidID ("extends" superTypes+=JvmParameterizedTypeReference (","
 		//	superTypes+=JvmParameterizedTypeReference)*)? "{" features+=ActionSignature* "}";
@@ -413,7 +413,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cFeaturesAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final RuleCall cFeaturesAgentFeatureParserRuleCall_5_0 = (RuleCall)cFeaturesAssignment_5.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
-		
+
 		//Agent returns InheritingElement:
 		//	{Agent} "agent" name=ValidID ("extends" superTypes+=JvmParameterizedTypeReference)? "{" features+=AgentFeature* "}";
 		public ParserRule getRule() { return rule; }
@@ -473,7 +473,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cFeaturesAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final RuleCall cFeaturesBehaviorFeatureParserRuleCall_5_0 = (RuleCall)cFeaturesAssignment_5.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
-		
+
 		//Behavior returns InheritingElement:
 		//	{Behavior} "behavior" name=ValidID ("extends" superTypes+=JvmParameterizedTypeReference)? "{"
 		//	features+=BehaviorFeature* "}";
@@ -545,7 +545,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cFeaturesAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final RuleCall cFeaturesSkillFeatureParserRuleCall_5_0 = (RuleCall)cFeaturesAssignment_5.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
-		
+
 		//Skill returns ImplementingElement:
 		//	{Skill} "skill" name=ValidID (("extends" superTypes+=JvmParameterizedTypeReference)? & ("implements"
 		//	(implementedTypes+=JvmSuperTypeReference ("," implementedTypes+=JvmSuperTypeReference)*))?) "{"
@@ -630,7 +630,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cAttributeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cConstructorParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		
+
 		//EventFeature:
 		//	Attribute | Constructor;
 		public ParserRule getRule() { return rule; }
@@ -653,7 +653,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cActionParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		private final RuleCall cCapacityUsesParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		private final RuleCall cRequiredCapacityParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
-		
+
 		//AgentFeature:
 		//	Attribute | BehaviorUnit | Action | CapacityUses | RequiredCapacity;
 		public ParserRule getRule() { return rule; }
@@ -686,7 +686,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cCapacityUsesParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		private final RuleCall cRequiredCapacityParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
 		private final RuleCall cConstructorParserRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
-		
+
 		//BehaviorFeature:
 		//	Attribute | BehaviorUnit | Action | CapacityUses | RequiredCapacity | Constructor;
 		public ParserRule getRule() { return rule; }
@@ -721,7 +721,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cRequiredCapacityParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		private final RuleCall cConstructorParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		private final RuleCall cCapacityUsesParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
-		
+
 		//SkillFeature:
 		//	Attribute | Action | RequiredCapacity | Constructor | CapacityUses;
 		public ParserRule getRule() { return rule; }
@@ -768,7 +768,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cInitialValueAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cInitialValueXExpressionParserRuleCall_3_1_0 = (RuleCall)cInitialValueAssignment_3_1.eContents().get(0);
 		private final Keyword cSemicolonKeyword_4 = (Keyword)cGroup.eContents().get(4);
-		
+
 		//Attribute returns Feature:
 		//	{Attribute} (writeable?="var" | "val") (=> (name=ValidID ":" type=JvmTypeReference) | name=ValidID) ("="
 		//	initialValue=XExpression)? ";"?;
@@ -851,7 +851,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cCapacitiesUsedAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cCapacitiesUsedJvmParameterizedTypeReferenceParserRuleCall_3_1_0 = (RuleCall)cCapacitiesUsedAssignment_3_1.eContents().get(0);
 		private final Keyword cSemicolonKeyword_4 = (Keyword)cGroup.eContents().get(4);
-		
+
 		//CapacityUses returns Feature:
 		//	{CapacityUses} "uses" capacitiesUsed+=JvmParameterizedTypeReference (","
 		//	capacitiesUsed+=JvmParameterizedTypeReference)* ";"?;
@@ -901,7 +901,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cRequiredCapacitiesAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cRequiredCapacitiesJvmParameterizedTypeReferenceParserRuleCall_3_1_0 = (RuleCall)cRequiredCapacitiesAssignment_3_1.eContents().get(0);
 		private final Keyword cSemicolonKeyword_4 = (Keyword)cGroup.eContents().get(4);
-		
+
 		//RequiredCapacity returns Feature:
 		//	{RequiredCapacity} "requires" requiredCapacities+=JvmParameterizedTypeReference (","
 		//	requiredCapacities+=JvmParameterizedTypeReference)* ";"?;
@@ -953,7 +953,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightSquareBracketKeyword_3_2 = (Keyword)cGroup_3.eContents().get(2);
 		private final Assignment cBodyAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cBodyXBlockExpressionParserRuleCall_4_0 = (RuleCall)cBodyAssignment_4.eContents().get(0);
-		
+
 		//BehaviorUnit returns Feature:
 		//	{BehaviorUnit} "on" name=JvmParameterizedTypeReference ("[" guard=XExpression "]")? body=XBlockExpression;
 		public ParserRule getRule() { return rule; }
@@ -1026,7 +1026,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cCommaKeyword_5_2_0 = (Keyword)cGroup_5_2.eContents().get(0);
 		private final Assignment cFiredEventsAssignment_5_2_1 = (Assignment)cGroup_5_2.eContents().get(1);
 		private final RuleCall cFiredEventsJvmParameterizedTypeReferenceParserRuleCall_5_2_1_0 = (RuleCall)cFiredEventsAssignment_5_2_1.eContents().get(0);
-		
+
 		//ActionSignature returns ParameterizedFeature:
 		//	{ActionSignature} "def" name=ValidID ("(" (params+=FormalParameter ("," params+=FormalParameter)*
 		//	varargs?=VarArgToken?)? ")")? (":" type=JvmTypeReference)? ("fires" firedEvents+=JvmParameterizedTypeReference (","
@@ -1156,7 +1156,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cFiredEventsJvmParameterizedTypeReferenceParserRuleCall_5_2_1_0 = (RuleCall)cFiredEventsAssignment_5_2_1.eContents().get(0);
 		private final Assignment cBodyAssignment_6 = (Assignment)cGroup.eContents().get(6);
 		private final RuleCall cBodyXBlockExpressionParserRuleCall_6_0 = (RuleCall)cBodyAssignment_6.eContents().get(0);
-		
+
 		//Action returns ParameterizedFeature:
 		//	{Action} "def" name=ValidID ("(" (params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken?)? ")")?
 		//	(":" type=JvmTypeReference)? ("fires" firedEvents+=JvmParameterizedTypeReference (","
@@ -1262,7 +1262,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public class VarArgTokenElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "VarArgToken");
 		private final Keyword cAsteriskKeyword = (Keyword)rule.eContents().get(1);
-		
+
 		//VarArgToken:
 		//	"*";
 		public ParserRule getRule() { return rule; }
@@ -1290,7 +1290,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightParenthesisKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
 		private final Assignment cBodyAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cBodyXBlockExpressionParserRuleCall_3_0 = (RuleCall)cBodyAssignment_3.eContents().get(0);
-		
+
 		//Constructor returns ParameterizedFeature:
 		//	{Constructor} "new" ("(" (params+=FormalParameter ("," params+=FormalParameter)* varargs?=VarArgToken?)? ")")?
 		//	body=XBlockExpression;
@@ -1361,7 +1361,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cEqualsSignKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
 		private final Assignment cDefaultValueAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cDefaultValueDefaultParameterValueParserRuleCall_3_1_0 = (RuleCall)cDefaultValueAssignment_3_1.eContents().get(0);
-		
+
 		//FormalParameter:
 		//	name=ValidID ":" parameterType=JvmTypeReference ("=" defaultValue=DefaultParameterValue)?;
 		public ParserRule getRule() { return rule; }
@@ -1400,7 +1400,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public class DefaultParameterValueElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "DefaultParameterValue");
 		private final RuleCall cXLiteralParserRuleCall = (RuleCall)rule.eContents().get(1);
-		
+
 		//DefaultParameterValue returns xbase::XExpression:
 		//	XLiteral;
 		public ParserRule getRule() { return rule; }
@@ -1414,7 +1414,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cJvmParameterizedTypeReferenceParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cXFunctionSuperTypeRefParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		
+
 		////-----------------------------------------------
 		//// BELOW THIS POINT, THE RULES FROM XTEND ARE COPIED/PASTED
 		//JvmSuperTypeReference returns jvm::JvmTypeReference:
@@ -1448,7 +1448,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cEqualsSignGreaterThanSignKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cReturnTypeAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cReturnTypeJvmTypeReferenceParserRuleCall_2_0 = (RuleCall)cReturnTypeAssignment_2.eContents().get(0);
-		
+
 		//XFunctionSuperTypeRef returns xtype::XFunctionTypeRef:
 		//	(instanceContext?="(" (paramTypes+=JvmTypeReference ("," paramTypes+=JvmTypeReference)*)? ")")? "=>"
 		//	returnType=JvmTypeReference;
@@ -1523,7 +1523,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cEqualsSignKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
 		private final Assignment cRightAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cRightXExpressionParserRuleCall_3_1_0 = (RuleCall)cRightAssignment_3_1.eContents().get(0);
-		
+
 		////-----------------------------------------------
 		//// BELOW THIS POINT, THE RULES FROM XBASE ARE OVERLOADED
 		//// Variable declaration according to the SARL syntax (not the Xtext/Xtend)
@@ -1604,7 +1604,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cColonKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
 		private final Assignment cParameterTypeAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
 		private final RuleCall cParameterTypeJvmTypeReferenceParserRuleCall_2_1_0 = (RuleCall)cParameterTypeAssignment_2_1.eContents().get(0);
-		
+
 		//// Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
 		//JvmFormalParameter returns jvm::JvmFormalParameter:
 		//	{jvm::JvmFormalParameter} name=ValidID (":" parameterType=JvmTypeReference)?;
@@ -1644,7 +1644,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cColonKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cParameterTypeAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cParameterTypeJvmTypeReferenceParserRuleCall_3_0 = (RuleCall)cParameterTypeAssignment_3.eContents().get(0);
-		
+
 		//// Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
 		//FullJvmFormalParameter returns jvm::JvmFormalParameter:
 		//	{jvm::JvmFormalParameter} name=ValidID ":" parameterType=JvmTypeReference;
@@ -1682,7 +1682,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cAsKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
 		private final Assignment cParameterTypeAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
 		private final RuleCall cParameterTypeJvmTypeReferenceParserRuleCall_2_1_0 = (RuleCall)cParameterTypeAssignment_2_1.eContents().get(0);
-		
+
 		//// The following rule is not provided by Xbase, but we use it
 		//// in the overloaded version of XForLoopExpression
 		//XXLoopFormalParameter returns jvm::JvmFormalParameter:
@@ -1730,7 +1730,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cEachExpressionAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cEachExpressionXExpressionParserRuleCall_3_0 = (RuleCall)cEachExpressionAssignment_3.eContents().get(0);
-		
+
 		//// The type of the for-loop's variable is following the SARL syntax (not the Xtext/Xtend)
 		//XForLoopExpression returns xbase::XExpression:
 		//	=> ({xbase::XForLoopExpression} "for" "(" declaredParam=XXLoopFormalParameter ":") forExpression=XExpression ")"
@@ -1780,8 +1780,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//XExpression
 		public RuleCall getEachExpressionXExpressionParserRuleCall_3_0() { return cEachExpressionXExpressionParserRuleCall_3_0; }
 	}
-	
-	
+
+
 	private final SarlScriptElements pSarlScript;
 	private final TopElementElements pTopElement;
 	private final NamedElementElements pNamedElement;
@@ -1816,7 +1816,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	private final FullJvmFormalParameterElements pFullJvmFormalParameter;
 	private final XXLoopFormalParameterElements pXXLoopFormalParameter;
 	private final XForLoopExpressionElements pXForLoopExpression;
-	
+
 	private final Grammar grammar;
 
 	private final XbaseGrammarAccess gaXbase;
@@ -1861,7 +1861,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		this.pXXLoopFormalParameter = new XXLoopFormalParameterElements();
 		this.pXForLoopExpression = new XForLoopExpressionElements();
 	}
-	
+
 	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
 		Grammar grammar = grammarProvider.getGrammar(this);
 		while (grammar != null) {
@@ -1877,24 +1877,24 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		}
 		return grammar;
 	}
-	
-	
+
+
 	public Grammar getGrammar() {
 		return grammar;
 	}
-	
+
 
 	public XbaseGrammarAccess getXbaseGrammarAccess() {
 		return gaXbase;
 	}
 
-	
+
 	//SarlScript:
 	//	("package" name=QualifiedName ";"?)? importSection=XImportSection? elements+=TopElement*;
 	public SarlScriptElements getSarlScriptAccess() {
 		return pSarlScript;
 	}
-	
+
 	public ParserRule getSarlScriptRule() {
 		return getSarlScriptAccess().getRule();
 	}
@@ -1904,7 +1904,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public TopElementElements getTopElementAccess() {
 		return pTopElement;
 	}
-	
+
 	public ParserRule getTopElementRule() {
 		return getTopElementAccess().getRule();
 	}
@@ -1918,7 +1918,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public NamedElementElements getNamedElementAccess() {
 		return pNamedElement;
 	}
-	
+
 	public ParserRule getNamedElementRule() {
 		return getNamedElementAccess().getRule();
 	}
@@ -1932,7 +1932,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public FeatureContainerElements getFeatureContainerAccess() {
 		return pFeatureContainer;
 	}
-	
+
 	public ParserRule getFeatureContainerRule() {
 		return getFeatureContainerAccess().getRule();
 	}
@@ -1946,7 +1946,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public FeatureElements getFeatureAccess() {
 		return pFeature;
 	}
-	
+
 	public ParserRule getFeatureRule() {
 		return getFeatureAccess().getRule();
 	}
@@ -1960,7 +1960,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public ParameterizedFeatureElements getParameterizedFeatureAccess() {
 		return pParameterizedFeature;
 	}
-	
+
 	public ParserRule getParameterizedFeatureRule() {
 		return getParameterizedFeatureAccess().getRule();
 	}
@@ -1974,7 +1974,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public InheritingElementElements getInheritingElementAccess() {
 		return pInheritingElement;
 	}
-	
+
 	public ParserRule getInheritingElementRule() {
 		return getInheritingElementAccess().getRule();
 	}
@@ -1988,7 +1988,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public ImplementingElementElements getImplementingElementAccess() {
 		return pImplementingElement;
 	}
-	
+
 	public ParserRule getImplementingElementRule() {
 		return getImplementingElementAccess().getRule();
 	}
@@ -1999,7 +1999,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public EventElements getEventAccess() {
 		return pEvent;
 	}
-	
+
 	public ParserRule getEventRule() {
 		return getEventAccess().getRule();
 	}
@@ -2010,7 +2010,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public CapacityElements getCapacityAccess() {
 		return pCapacity;
 	}
-	
+
 	public ParserRule getCapacityRule() {
 		return getCapacityAccess().getRule();
 	}
@@ -2020,7 +2020,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public AgentElements getAgentAccess() {
 		return pAgent;
 	}
-	
+
 	public ParserRule getAgentRule() {
 		return getAgentAccess().getRule();
 	}
@@ -2031,7 +2031,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public BehaviorElements getBehaviorAccess() {
 		return pBehavior;
 	}
-	
+
 	public ParserRule getBehaviorRule() {
 		return getBehaviorAccess().getRule();
 	}
@@ -2043,7 +2043,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public SkillElements getSkillAccess() {
 		return pSkill;
 	}
-	
+
 	public ParserRule getSkillRule() {
 		return getSkillAccess().getRule();
 	}
@@ -2053,7 +2053,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public EventFeatureElements getEventFeatureAccess() {
 		return pEventFeature;
 	}
-	
+
 	public ParserRule getEventFeatureRule() {
 		return getEventFeatureAccess().getRule();
 	}
@@ -2063,7 +2063,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public AgentFeatureElements getAgentFeatureAccess() {
 		return pAgentFeature;
 	}
-	
+
 	public ParserRule getAgentFeatureRule() {
 		return getAgentFeatureAccess().getRule();
 	}
@@ -2073,7 +2073,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public BehaviorFeatureElements getBehaviorFeatureAccess() {
 		return pBehaviorFeature;
 	}
-	
+
 	public ParserRule getBehaviorFeatureRule() {
 		return getBehaviorFeatureAccess().getRule();
 	}
@@ -2083,7 +2083,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public SkillFeatureElements getSkillFeatureAccess() {
 		return pSkillFeature;
 	}
-	
+
 	public ParserRule getSkillFeatureRule() {
 		return getSkillFeatureAccess().getRule();
 	}
@@ -2094,7 +2094,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public AttributeElements getAttributeAccess() {
 		return pAttribute;
 	}
-	
+
 	public ParserRule getAttributeRule() {
 		return getAttributeAccess().getRule();
 	}
@@ -2105,7 +2105,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public CapacityUsesElements getCapacityUsesAccess() {
 		return pCapacityUses;
 	}
-	
+
 	public ParserRule getCapacityUsesRule() {
 		return getCapacityUsesAccess().getRule();
 	}
@@ -2116,7 +2116,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public RequiredCapacityElements getRequiredCapacityAccess() {
 		return pRequiredCapacity;
 	}
-	
+
 	public ParserRule getRequiredCapacityRule() {
 		return getRequiredCapacityAccess().getRule();
 	}
@@ -2126,7 +2126,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public BehaviorUnitElements getBehaviorUnitAccess() {
 		return pBehaviorUnit;
 	}
-	
+
 	public ParserRule getBehaviorUnitRule() {
 		return getBehaviorUnitAccess().getRule();
 	}
@@ -2138,7 +2138,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public ActionSignatureElements getActionSignatureAccess() {
 		return pActionSignature;
 	}
-	
+
 	public ParserRule getActionSignatureRule() {
 		return getActionSignatureAccess().getRule();
 	}
@@ -2150,7 +2150,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public ActionElements getActionAccess() {
 		return pAction;
 	}
-	
+
 	public ParserRule getActionRule() {
 		return getActionAccess().getRule();
 	}
@@ -2160,7 +2160,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public VarArgTokenElements getVarArgTokenAccess() {
 		return pVarArgToken;
 	}
-	
+
 	public ParserRule getVarArgTokenRule() {
 		return getVarArgTokenAccess().getRule();
 	}
@@ -2171,7 +2171,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public ConstructorElements getConstructorAccess() {
 		return pConstructor;
 	}
-	
+
 	public ParserRule getConstructorRule() {
 		return getConstructorAccess().getRule();
 	}
@@ -2181,7 +2181,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public FormalParameterElements getFormalParameterAccess() {
 		return pFormalParameter;
 	}
-	
+
 	public ParserRule getFormalParameterRule() {
 		return getFormalParameterAccess().getRule();
 	}
@@ -2191,7 +2191,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public DefaultParameterValueElements getDefaultParameterValueAccess() {
 		return pDefaultParameterValue;
 	}
-	
+
 	public ParserRule getDefaultParameterValueRule() {
 		return getDefaultParameterValueAccess().getRule();
 	}
@@ -2203,7 +2203,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public JvmSuperTypeReferenceElements getJvmSuperTypeReferenceAccess() {
 		return pJvmSuperTypeReference;
 	}
-	
+
 	public ParserRule getJvmSuperTypeReferenceRule() {
 		return getJvmSuperTypeReferenceAccess().getRule();
 	}
@@ -2214,7 +2214,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XFunctionSuperTypeRefElements getXFunctionSuperTypeRefAccess() {
 		return pXFunctionSuperTypeRef;
 	}
-	
+
 	public ParserRule getXFunctionSuperTypeRefRule() {
 		return getXFunctionSuperTypeRefAccess().getRule();
 	}
@@ -2228,7 +2228,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XVariableDeclarationElements getXVariableDeclarationAccess() {
 		return pXVariableDeclaration;
 	}
-	
+
 	public ParserRule getXVariableDeclarationRule() {
 		return getXVariableDeclarationAccess().getRule();
 	}
@@ -2239,7 +2239,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public JvmFormalParameterElements getJvmFormalParameterAccess() {
 		return pJvmFormalParameter;
 	}
-	
+
 	public ParserRule getJvmFormalParameterRule() {
 		return getJvmFormalParameterAccess().getRule();
 	}
@@ -2250,7 +2250,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public FullJvmFormalParameterElements getFullJvmFormalParameterAccess() {
 		return pFullJvmFormalParameter;
 	}
-	
+
 	public ParserRule getFullJvmFormalParameterRule() {
 		return getFullJvmFormalParameterAccess().getRule();
 	}
@@ -2262,7 +2262,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XXLoopFormalParameterElements getXXLoopFormalParameterAccess() {
 		return pXXLoopFormalParameter;
 	}
-	
+
 	public ParserRule getXXLoopFormalParameterRule() {
 		return getXXLoopFormalParameterAccess().getRule();
 	}
@@ -2274,7 +2274,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XForLoopExpressionElements getXForLoopExpressionAccess() {
 		return pXForLoopExpression;
 	}
-	
+
 	public ParserRule getXForLoopExpressionRule() {
 		return getXForLoopExpressionAccess().getRule();
 	}
@@ -2284,7 +2284,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XExpressionElements getXExpressionAccess() {
 		return gaXbase.getXExpressionAccess();
 	}
-	
+
 	public ParserRule getXExpressionRule() {
 		return getXExpressionAccess().getRule();
 	}
@@ -2296,7 +2296,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XAssignmentElements getXAssignmentAccess() {
 		return gaXbase.getXAssignmentAccess();
 	}
-	
+
 	public ParserRule getXAssignmentRule() {
 		return getXAssignmentAccess().getRule();
 	}
@@ -2306,7 +2306,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.OpSingleAssignElements getOpSingleAssignAccess() {
 		return gaXbase.getOpSingleAssignAccess();
 	}
-	
+
 	public ParserRule getOpSingleAssignRule() {
 		return getOpSingleAssignAccess().getRule();
 	}
@@ -2316,7 +2316,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.OpMultiAssignElements getOpMultiAssignAccess() {
 		return gaXbase.getOpMultiAssignAccess();
 	}
-	
+
 	public ParserRule getOpMultiAssignRule() {
 		return getOpMultiAssignAccess().getRule();
 	}
@@ -2327,7 +2327,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XOrExpressionElements getXOrExpressionAccess() {
 		return gaXbase.getXOrExpressionAccess();
 	}
-	
+
 	public ParserRule getXOrExpressionRule() {
 		return getXOrExpressionAccess().getRule();
 	}
@@ -2337,7 +2337,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.OpOrElements getOpOrAccess() {
 		return gaXbase.getOpOrAccess();
 	}
-	
+
 	public ParserRule getOpOrRule() {
 		return getOpOrAccess().getRule();
 	}
@@ -2348,7 +2348,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XAndExpressionElements getXAndExpressionAccess() {
 		return gaXbase.getXAndExpressionAccess();
 	}
-	
+
 	public ParserRule getXAndExpressionRule() {
 		return getXAndExpressionAccess().getRule();
 	}
@@ -2358,7 +2358,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.OpAndElements getOpAndAccess() {
 		return gaXbase.getOpAndAccess();
 	}
-	
+
 	public ParserRule getOpAndRule() {
 		return getOpAndAccess().getRule();
 	}
@@ -2369,7 +2369,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XEqualityExpressionElements getXEqualityExpressionAccess() {
 		return gaXbase.getXEqualityExpressionAccess();
 	}
-	
+
 	public ParserRule getXEqualityExpressionRule() {
 		return getXEqualityExpressionAccess().getRule();
 	}
@@ -2379,7 +2379,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.OpEqualityElements getOpEqualityAccess() {
 		return gaXbase.getOpEqualityAccess();
 	}
-	
+
 	public ParserRule getOpEqualityRule() {
 		return getOpEqualityAccess().getRule();
 	}
@@ -2391,7 +2391,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XRelationalExpressionElements getXRelationalExpressionAccess() {
 		return gaXbase.getXRelationalExpressionAccess();
 	}
-	
+
 	public ParserRule getXRelationalExpressionRule() {
 		return getXRelationalExpressionAccess().getRule();
 	}
@@ -2401,7 +2401,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.OpCompareElements getOpCompareAccess() {
 		return gaXbase.getOpCompareAccess();
 	}
-	
+
 	public ParserRule getOpCompareRule() {
 		return getOpCompareAccess().getRule();
 	}
@@ -2412,7 +2412,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XOtherOperatorExpressionElements getXOtherOperatorExpressionAccess() {
 		return gaXbase.getXOtherOperatorExpressionAccess();
 	}
-	
+
 	public ParserRule getXOtherOperatorExpressionRule() {
 		return getXOtherOperatorExpressionAccess().getRule();
 	}
@@ -2422,7 +2422,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.OpOtherElements getOpOtherAccess() {
 		return gaXbase.getOpOtherAccess();
 	}
-	
+
 	public ParserRule getOpOtherRule() {
 		return getOpOtherAccess().getRule();
 	}
@@ -2433,7 +2433,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XAdditiveExpressionElements getXAdditiveExpressionAccess() {
 		return gaXbase.getXAdditiveExpressionAccess();
 	}
-	
+
 	public ParserRule getXAdditiveExpressionRule() {
 		return getXAdditiveExpressionAccess().getRule();
 	}
@@ -2443,7 +2443,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.OpAddElements getOpAddAccess() {
 		return gaXbase.getOpAddAccess();
 	}
-	
+
 	public ParserRule getOpAddRule() {
 		return getOpAddAccess().getRule();
 	}
@@ -2454,7 +2454,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XMultiplicativeExpressionElements getXMultiplicativeExpressionAccess() {
 		return gaXbase.getXMultiplicativeExpressionAccess();
 	}
-	
+
 	public ParserRule getXMultiplicativeExpressionRule() {
 		return getXMultiplicativeExpressionAccess().getRule();
 	}
@@ -2464,7 +2464,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.OpMultiElements getOpMultiAccess() {
 		return gaXbase.getOpMultiAccess();
 	}
-	
+
 	public ParserRule getOpMultiRule() {
 		return getOpMultiAccess().getRule();
 	}
@@ -2474,7 +2474,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XUnaryOperationElements getXUnaryOperationAccess() {
 		return gaXbase.getXUnaryOperationAccess();
 	}
-	
+
 	public ParserRule getXUnaryOperationRule() {
 		return getXUnaryOperationAccess().getRule();
 	}
@@ -2484,7 +2484,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.OpUnaryElements getOpUnaryAccess() {
 		return gaXbase.getOpUnaryAccess();
 	}
-	
+
 	public ParserRule getOpUnaryRule() {
 		return getOpUnaryAccess().getRule();
 	}
@@ -2494,7 +2494,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XCastedExpressionElements getXCastedExpressionAccess() {
 		return gaXbase.getXCastedExpressionAccess();
 	}
-	
+
 	public ParserRule getXCastedExpressionRule() {
 		return getXCastedExpressionAccess().getRule();
 	}
@@ -2504,7 +2504,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XPostfixOperationElements getXPostfixOperationAccess() {
 		return gaXbase.getXPostfixOperationAccess();
 	}
-	
+
 	public ParserRule getXPostfixOperationRule() {
 		return getXPostfixOperationAccess().getRule();
 	}
@@ -2514,7 +2514,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.OpPostfixElements getOpPostfixAccess() {
 		return gaXbase.getOpPostfixAccess();
 	}
-	
+
 	public ParserRule getOpPostfixRule() {
 		return getOpPostfixAccess().getRule();
 	}
@@ -2529,7 +2529,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XMemberFeatureCallElements getXMemberFeatureCallAccess() {
 		return gaXbase.getXMemberFeatureCallAccess();
 	}
-	
+
 	public ParserRule getXMemberFeatureCallRule() {
 		return getXMemberFeatureCallAccess().getRule();
 	}
@@ -2541,7 +2541,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XPrimaryExpressionElements getXPrimaryExpressionAccess() {
 		return gaXbase.getXPrimaryExpressionAccess();
 	}
-	
+
 	public ParserRule getXPrimaryExpressionRule() {
 		return getXPrimaryExpressionAccess().getRule();
 	}
@@ -2551,7 +2551,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XLiteralElements getXLiteralAccess() {
 		return gaXbase.getXLiteralAccess();
 	}
-	
+
 	public ParserRule getXLiteralRule() {
 		return getXLiteralAccess().getRule();
 	}
@@ -2561,7 +2561,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XCollectionLiteralElements getXCollectionLiteralAccess() {
 		return gaXbase.getXCollectionLiteralAccess();
 	}
-	
+
 	public ParserRule getXCollectionLiteralRule() {
 		return getXCollectionLiteralAccess().getRule();
 	}
@@ -2571,7 +2571,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XSetLiteralElements getXSetLiteralAccess() {
 		return gaXbase.getXSetLiteralAccess();
 	}
-	
+
 	public ParserRule getXSetLiteralRule() {
 		return getXSetLiteralAccess().getRule();
 	}
@@ -2581,7 +2581,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XListLiteralElements getXListLiteralAccess() {
 		return gaXbase.getXListLiteralAccess();
 	}
-	
+
 	public ParserRule getXListLiteralRule() {
 		return getXListLiteralAccess().getRule();
 	}
@@ -2592,7 +2592,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XClosureElements getXClosureAccess() {
 		return gaXbase.getXClosureAccess();
 	}
-	
+
 	public ParserRule getXClosureRule() {
 		return getXClosureAccess().getRule();
 	}
@@ -2602,7 +2602,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XExpressionInClosureElements getXExpressionInClosureAccess() {
 		return gaXbase.getXExpressionInClosureAccess();
 	}
-	
+
 	public ParserRule getXExpressionInClosureRule() {
 		return getXExpressionInClosureAccess().getRule();
 	}
@@ -2613,7 +2613,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XShortClosureElements getXShortClosureAccess() {
 		return gaXbase.getXShortClosureAccess();
 	}
-	
+
 	public ParserRule getXShortClosureRule() {
 		return getXShortClosureAccess().getRule();
 	}
@@ -2623,7 +2623,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XParenthesizedExpressionElements getXParenthesizedExpressionAccess() {
 		return gaXbase.getXParenthesizedExpressionAccess();
 	}
-	
+
 	public ParserRule getXParenthesizedExpressionRule() {
 		return getXParenthesizedExpressionAccess().getRule();
 	}
@@ -2633,7 +2633,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XIfExpressionElements getXIfExpressionAccess() {
 		return gaXbase.getXIfExpressionAccess();
 	}
-	
+
 	public ParserRule getXIfExpressionRule() {
 		return getXIfExpressionAccess().getRule();
 	}
@@ -2645,7 +2645,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XSwitchExpressionElements getXSwitchExpressionAccess() {
 		return gaXbase.getXSwitchExpressionAccess();
 	}
-	
+
 	public ParserRule getXSwitchExpressionRule() {
 		return getXSwitchExpressionAccess().getRule();
 	}
@@ -2655,7 +2655,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XCasePartElements getXCasePartAccess() {
 		return gaXbase.getXCasePartAccess();
 	}
-	
+
 	public ParserRule getXCasePartRule() {
 		return getXCasePartAccess().getRule();
 	}
@@ -2667,7 +2667,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XBasicForLoopExpressionElements getXBasicForLoopExpressionAccess() {
 		return gaXbase.getXBasicForLoopExpressionAccess();
 	}
-	
+
 	public ParserRule getXBasicForLoopExpressionRule() {
 		return getXBasicForLoopExpressionAccess().getRule();
 	}
@@ -2677,7 +2677,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XWhileExpressionElements getXWhileExpressionAccess() {
 		return gaXbase.getXWhileExpressionAccess();
 	}
-	
+
 	public ParserRule getXWhileExpressionRule() {
 		return getXWhileExpressionAccess().getRule();
 	}
@@ -2687,7 +2687,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XDoWhileExpressionElements getXDoWhileExpressionAccess() {
 		return gaXbase.getXDoWhileExpressionAccess();
 	}
-	
+
 	public ParserRule getXDoWhileExpressionRule() {
 		return getXDoWhileExpressionAccess().getRule();
 	}
@@ -2697,7 +2697,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XBlockExpressionElements getXBlockExpressionAccess() {
 		return gaXbase.getXBlockExpressionAccess();
 	}
-	
+
 	public ParserRule getXBlockExpressionRule() {
 		return getXBlockExpressionAccess().getRule();
 	}
@@ -2707,7 +2707,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XExpressionOrVarDeclarationElements getXExpressionOrVarDeclarationAccess() {
 		return gaXbase.getXExpressionOrVarDeclarationAccess();
 	}
-	
+
 	public ParserRule getXExpressionOrVarDeclarationRule() {
 		return getXExpressionOrVarDeclarationAccess().getRule();
 	}
@@ -2719,7 +2719,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XFeatureCallElements getXFeatureCallAccess() {
 		return gaXbase.getXFeatureCallAccess();
 	}
-	
+
 	public ParserRule getXFeatureCallRule() {
 		return getXFeatureCallAccess().getRule();
 	}
@@ -2729,7 +2729,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.FeatureCallIDElements getFeatureCallIDAccess() {
 		return gaXbase.getFeatureCallIDAccess();
 	}
-	
+
 	public ParserRule getFeatureCallIDRule() {
 		return getFeatureCallIDAccess().getRule();
 	}
@@ -2739,7 +2739,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.IdOrSuperElements getIdOrSuperAccess() {
 		return gaXbase.getIdOrSuperAccess();
 	}
-	
+
 	public ParserRule getIdOrSuperRule() {
 		return getIdOrSuperAccess().getRule();
 	}
@@ -2752,7 +2752,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XConstructorCallElements getXConstructorCallAccess() {
 		return gaXbase.getXConstructorCallAccess();
 	}
-	
+
 	public ParserRule getXConstructorCallRule() {
 		return getXConstructorCallAccess().getRule();
 	}
@@ -2762,7 +2762,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XBooleanLiteralElements getXBooleanLiteralAccess() {
 		return gaXbase.getXBooleanLiteralAccess();
 	}
-	
+
 	public ParserRule getXBooleanLiteralRule() {
 		return getXBooleanLiteralAccess().getRule();
 	}
@@ -2772,7 +2772,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XNullLiteralElements getXNullLiteralAccess() {
 		return gaXbase.getXNullLiteralAccess();
 	}
-	
+
 	public ParserRule getXNullLiteralRule() {
 		return getXNullLiteralAccess().getRule();
 	}
@@ -2782,7 +2782,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XNumberLiteralElements getXNumberLiteralAccess() {
 		return gaXbase.getXNumberLiteralAccess();
 	}
-	
+
 	public ParserRule getXNumberLiteralRule() {
 		return getXNumberLiteralAccess().getRule();
 	}
@@ -2792,7 +2792,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XStringLiteralElements getXStringLiteralAccess() {
 		return gaXbase.getXStringLiteralAccess();
 	}
-	
+
 	public ParserRule getXStringLiteralRule() {
 		return getXStringLiteralAccess().getRule();
 	}
@@ -2802,7 +2802,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XTypeLiteralElements getXTypeLiteralAccess() {
 		return gaXbase.getXTypeLiteralAccess();
 	}
-	
+
 	public ParserRule getXTypeLiteralRule() {
 		return getXTypeLiteralAccess().getRule();
 	}
@@ -2812,7 +2812,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XThrowExpressionElements getXThrowExpressionAccess() {
 		return gaXbase.getXThrowExpressionAccess();
 	}
-	
+
 	public ParserRule getXThrowExpressionRule() {
 		return getXThrowExpressionAccess().getRule();
 	}
@@ -2822,7 +2822,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XReturnExpressionElements getXReturnExpressionAccess() {
 		return gaXbase.getXReturnExpressionAccess();
 	}
-	
+
 	public ParserRule getXReturnExpressionRule() {
 		return getXReturnExpressionAccess().getRule();
 	}
@@ -2833,7 +2833,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XTryCatchFinallyExpressionElements getXTryCatchFinallyExpressionAccess() {
 		return gaXbase.getXTryCatchFinallyExpressionAccess();
 	}
-	
+
 	public ParserRule getXTryCatchFinallyExpressionRule() {
 		return getXTryCatchFinallyExpressionAccess().getRule();
 	}
@@ -2843,7 +2843,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XSynchronizedExpressionElements getXSynchronizedExpressionAccess() {
 		return gaXbase.getXSynchronizedExpressionAccess();
 	}
-	
+
 	public ParserRule getXSynchronizedExpressionRule() {
 		return getXSynchronizedExpressionAccess().getRule();
 	}
@@ -2853,7 +2853,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.XCatchClauseElements getXCatchClauseAccess() {
 		return gaXbase.getXCatchClauseAccess();
 	}
-	
+
 	public ParserRule getXCatchClauseRule() {
 		return getXCatchClauseAccess().getRule();
 	}
@@ -2863,7 +2863,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.QualifiedNameElements getQualifiedNameAccess() {
 		return gaXbase.getQualifiedNameAccess();
 	}
-	
+
 	public ParserRule getQualifiedNameRule() {
 		return getQualifiedNameAccess().getRule();
 	}
@@ -2873,20 +2873,20 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XbaseGrammarAccess.NumberElements getNumberAccess() {
 		return gaXbase.getNumberAccess();
 	}
-	
+
 	public ParserRule getNumberRule() {
 		return getNumberAccess().getRule();
 	}
 
 	/// **
-	// * Dummy rule, for "better" downwards compatibility, since GrammarAccess generates non-static inner classes, 
+	// * Dummy rule, for "better" downwards compatibility, since GrammarAccess generates non-static inner classes,
 	// * which makes downstream grammars break on classloading, when a rule is removed.
 	// * / StaticQualifier:
 	//	(ValidID "::")+;
 	public XbaseGrammarAccess.StaticQualifierElements getStaticQualifierAccess() {
 		return gaXbase.getStaticQualifierAccess();
 	}
-	
+
 	public ParserRule getStaticQualifierRule() {
 		return getStaticQualifierAccess().getRule();
 	}
@@ -2895,19 +2895,19 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//	("0x" | "0X") ("0".."9" | "a".."f" | "A".."F" | "_")+ ("#" (("b" | "B") ("i" | "I") | ("l" | "L")))?;
 	public TerminalRule getHEXRule() {
 		return gaXbase.getHEXRule();
-	} 
+	}
 
 	//terminal INT returns ecore::EInt:
 	//	"0".."9" ("0".."9" | "_")*;
 	public TerminalRule getINTRule() {
 		return gaXbase.getINTRule();
-	} 
+	}
 
 	//terminal DECIMAL:
 	//	INT (("e" | "E") ("+" | "-")? INT)? (("b" | "B") ("i" | "I" | "d" | "D") | ("l" | "L" | "d" | "D" | "f" | "F"))?;
 	public TerminalRule getDECIMALRule() {
 		return gaXbase.getDECIMALRule();
-	} 
+	}
 
 	//JvmTypeReference:
 	//	JvmParameterizedTypeReference => ({JvmGenericArrayTypeReference.componentType=current} ArrayBrackets)* |
@@ -2915,7 +2915,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XtypeGrammarAccess.JvmTypeReferenceElements getJvmTypeReferenceAccess() {
 		return gaXbase.getJvmTypeReferenceAccess();
 	}
-	
+
 	public ParserRule getJvmTypeReferenceRule() {
 		return getJvmTypeReferenceAccess().getRule();
 	}
@@ -2925,7 +2925,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XtypeGrammarAccess.ArrayBracketsElements getArrayBracketsAccess() {
 		return gaXbase.getArrayBracketsAccess();
 	}
-	
+
 	public ParserRule getArrayBracketsRule() {
 		return getArrayBracketsAccess().getRule();
 	}
@@ -2935,7 +2935,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XtypeGrammarAccess.XFunctionTypeRefElements getXFunctionTypeRefAccess() {
 		return gaXbase.getXFunctionTypeRefAccess();
 	}
-	
+
 	public ParserRule getXFunctionTypeRefRule() {
 		return getXFunctionTypeRefAccess().getRule();
 	}
@@ -2947,7 +2947,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XtypeGrammarAccess.JvmParameterizedTypeReferenceElements getJvmParameterizedTypeReferenceAccess() {
 		return gaXbase.getJvmParameterizedTypeReferenceAccess();
 	}
-	
+
 	public ParserRule getJvmParameterizedTypeReferenceRule() {
 		return getJvmParameterizedTypeReferenceAccess().getRule();
 	}
@@ -2957,7 +2957,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XtypeGrammarAccess.JvmArgumentTypeReferenceElements getJvmArgumentTypeReferenceAccess() {
 		return gaXbase.getJvmArgumentTypeReferenceAccess();
 	}
-	
+
 	public ParserRule getJvmArgumentTypeReferenceRule() {
 		return getJvmArgumentTypeReferenceAccess().getRule();
 	}
@@ -2968,7 +2968,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XtypeGrammarAccess.JvmWildcardTypeReferenceElements getJvmWildcardTypeReferenceAccess() {
 		return gaXbase.getJvmWildcardTypeReferenceAccess();
 	}
-	
+
 	public ParserRule getJvmWildcardTypeReferenceRule() {
 		return getJvmWildcardTypeReferenceAccess().getRule();
 	}
@@ -2978,7 +2978,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XtypeGrammarAccess.JvmUpperBoundElements getJvmUpperBoundAccess() {
 		return gaXbase.getJvmUpperBoundAccess();
 	}
-	
+
 	public ParserRule getJvmUpperBoundRule() {
 		return getJvmUpperBoundAccess().getRule();
 	}
@@ -2988,7 +2988,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XtypeGrammarAccess.JvmUpperBoundAndedElements getJvmUpperBoundAndedAccess() {
 		return gaXbase.getJvmUpperBoundAndedAccess();
 	}
-	
+
 	public ParserRule getJvmUpperBoundAndedRule() {
 		return getJvmUpperBoundAndedAccess().getRule();
 	}
@@ -2998,7 +2998,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XtypeGrammarAccess.JvmLowerBoundElements getJvmLowerBoundAccess() {
 		return gaXbase.getJvmLowerBoundAccess();
 	}
-	
+
 	public ParserRule getJvmLowerBoundRule() {
 		return getJvmLowerBoundAccess().getRule();
 	}
@@ -3008,7 +3008,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XtypeGrammarAccess.JvmLowerBoundAndedElements getJvmLowerBoundAndedAccess() {
 		return gaXbase.getJvmLowerBoundAndedAccess();
 	}
-	
+
 	public ParserRule getJvmLowerBoundAndedRule() {
 		return getJvmLowerBoundAndedAccess().getRule();
 	}
@@ -3018,7 +3018,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XtypeGrammarAccess.JvmTypeParameterElements getJvmTypeParameterAccess() {
 		return gaXbase.getJvmTypeParameterAccess();
 	}
-	
+
 	public ParserRule getJvmTypeParameterRule() {
 		return getJvmTypeParameterAccess().getRule();
 	}
@@ -3028,7 +3028,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XtypeGrammarAccess.QualifiedNameWithWildcardElements getQualifiedNameWithWildcardAccess() {
 		return gaXbase.getQualifiedNameWithWildcardAccess();
 	}
-	
+
 	public ParserRule getQualifiedNameWithWildcardRule() {
 		return getQualifiedNameWithWildcardAccess().getRule();
 	}
@@ -3038,7 +3038,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XtypeGrammarAccess.ValidIDElements getValidIDAccess() {
 		return gaXbase.getValidIDAccess();
 	}
-	
+
 	public ParserRule getValidIDRule() {
 		return getValidIDAccess().getRule();
 	}
@@ -3048,7 +3048,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XtypeGrammarAccess.XImportSectionElements getXImportSectionAccess() {
 		return gaXbase.getXImportSectionAccess();
 	}
-	
+
 	public ParserRule getXImportSectionRule() {
 		return getXImportSectionAccess().getRule();
 	}
@@ -3060,7 +3060,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XtypeGrammarAccess.XImportDeclarationElements getXImportDeclarationAccess() {
 		return gaXbase.getXImportDeclarationAccess();
 	}
-	
+
 	public ParserRule getXImportDeclarationRule() {
 		return getXImportDeclarationAccess().getRule();
 	}
@@ -3070,7 +3070,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public XtypeGrammarAccess.QualifiedNameInStaticImportElements getQualifiedNameInStaticImportAccess() {
 		return gaXbase.getQualifiedNameInStaticImportAccess();
 	}
-	
+
 	public ParserRule getQualifiedNameInStaticImportRule() {
 		return getQualifiedNameInStaticImportAccess().getRule();
 	}
@@ -3079,36 +3079,36 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//	"^"? ("a".."z" | "A".."Z" | "$" | "_") ("a".."z" | "A".."Z" | "$" | "_" | "0".."9")*;
 	public TerminalRule getIDRule() {
 		return gaXbase.getIDRule();
-	} 
+	}
 
 	//terminal STRING:
 	//	"\"" ("\\" . / * ('b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\') * / | !("\\" | "\""))* "\""? | "\'" ("\\" .
 	//	/ * ('b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\') * / | !("\\" | "\'"))* "\'"?;
 	public TerminalRule getSTRINGRule() {
 		return gaXbase.getSTRINGRule();
-	} 
+	}
 
 	//terminal ML_COMMENT:
 	//	"/ *"->"* /";
 	public TerminalRule getML_COMMENTRule() {
 		return gaXbase.getML_COMMENTRule();
-	} 
+	}
 
 	//terminal SL_COMMENT:
 	//	"//" !("\n" | "\r")* ("\r"? "\n")?;
 	public TerminalRule getSL_COMMENTRule() {
 		return gaXbase.getSL_COMMENTRule();
-	} 
+	}
 
 	//terminal WS:
 	//	(" " | "\t" | "\r" | "\n")+;
 	public TerminalRule getWSRule() {
 		return gaXbase.getWSRule();
-	} 
+	}
 
 	//terminal ANY_OTHER:
 	//	.;
 	public TerminalRule getANY_OTHERRule() {
 		return gaXbase.getANY_OTHERRule();
-	} 
+	}
 }

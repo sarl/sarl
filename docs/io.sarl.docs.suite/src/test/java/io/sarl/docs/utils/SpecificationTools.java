@@ -116,13 +116,13 @@ public final class SpecificationTools {
 	 * the class loader replied by {@link ClassLoaderFinder} is used.
 	 * If this last is <code>null</code>, the class loader of
 	 * the Resources class is used.
-	 * 
+	 *
 	 * Copied from https://github.com/gallandarakhneorg/afc/blob/master/core/vmutils/src/main/java/org/arakhne/afc/vmutil/Resources.java
 	 *
 	 * @param classLoader is the research scope. If <code>null</code>,
 	 * the class loader replied by {@link ClassLoaderFinder} is used.
 	 * @param packagename is the package in which the resource should be located.
-	 * @param path is the relative path of the resource in the package. 
+	 * @param path is the relative path of the resource in the package.
 	 * @return the url of the resource or <code>null</code> if the resource was
 	 * not found in class paths.
 	 */
@@ -472,7 +472,7 @@ public final class SpecificationTools {
 	}
 
 	/** Assert that two objects are equal.
-	 * 
+	 *
 	 * @param message - the error message.
 	 * @param expected - the expected value.
 	 * @param actual - the value to test.
@@ -551,7 +551,7 @@ public final class SpecificationTools {
 			}
 		}
 		Number aNumber = cleanNumber(actual.getValue());
-		return n.doubleValue() == aNumber.doubleValue(); 
+		return n.doubleValue() == aNumber.doubleValue();
 	}
 
 	/** Ensure that the given type literal is equal to the given type.
@@ -586,7 +586,7 @@ public final class SpecificationTools {
 		}
 		return should_iterate(
 				actual.getElements().iterator(),
-				expected, 
+				expected,
 				!(actual instanceof XSetLiteral));
 	}
 
@@ -643,7 +643,7 @@ public final class SpecificationTools {
 	 * <li>ID : TYPE</li>
 	 * <li>ID(TYPE, TYPE...) : TYPE</li>
 	 * </ul>
-	 * 
+	 *
 	 * @param type - the type to check.
 	 * @param name - the name and prototype, e.g. <code>fct(java.lang.String):int</code>.
 	 * @return the validation status.
@@ -677,7 +677,7 @@ public final class SpecificationTools {
 				} else {
 					params = paramText.split("\\s*,\\s*"); //$NON-NLS-1$
 				}
-				Class[] types = new Class[params.length]; 
+				Class[] types = new Class[params.length];
 				for(int i=0; i<params.length; ++i) {
 					types[i] = ReflectionUtil.forName(params[i]);
 				}
@@ -703,7 +703,7 @@ public final class SpecificationTools {
 	 * <li>ID</li>
 	 * <li>ID : TYPE</li>
 	 * </ul>
-	 * 
+	 *
 	 * @param type - the type to check.
 	 * @param name - the name and prototype, e.g. <code>x:int</code>.
 	 * @return the validation status.
@@ -739,7 +739,7 @@ public final class SpecificationTools {
 	}
 
 	/** Ensure that the given type extends specific types.
-	 * 
+	 *
 	 * @param type - the type to check.
 	 * @param expectedTypes - the qualified names of the expected types, separated by comas.
 	 * @return the validation status.
@@ -776,7 +776,7 @@ public final class SpecificationTools {
 	}
 
 	/** Ensure that the given string is a valid Maven version number.
-	 * 
+	 *
 	 * @param actual - the string to test.
 	 * @param allowSnapshot - indicates if the <code>-SNAPSHOT</code> postfix
 	 * is considered as valid.
@@ -828,16 +828,16 @@ public final class SpecificationTools {
 				if (v != null) {
 					return v;
 				}
-			}			
+			}
 		} catch (Exception _) {
 			//
 		}
 		return defaultVersion;
 	}
 
-	/** Ensure that the version of the current Java specification is in 
+	/** Ensure that the version of the current Java specification is in
 	 * the range given by the minVersion (inclusive) and maxVersion (exclusive).
-	 * If the maxVersion is not given and minVersion is <code>a.b.c</code>, 
+	 * If the maxVersion is not given and minVersion is <code>a.b.c</code>,
 	 * then maxVersion is <code>a.b+1.0</code>.
 	 *
 	 * @param minVersion - the minimal version.
@@ -862,7 +862,7 @@ public final class SpecificationTools {
 	}
 
 	/** Ensure that the given type has the number of members.
-	 * 
+	 *
 	 * @param type - the type to check.
 	 * @param expectedNbOfElements - the expected number of elements.
 	 * @return the validation status.
@@ -885,7 +885,7 @@ public final class SpecificationTools {
 	}
 
 	/** Ensure that the given map contains the elements.
-	 * 
+	 *
 	 * @param map - the map to check.
 	 * @param reference - the expected elements in the map.
 	 * @return the validation status.

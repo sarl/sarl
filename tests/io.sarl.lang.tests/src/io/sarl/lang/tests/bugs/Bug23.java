@@ -47,7 +47,7 @@ public class Bug23 extends AbstractSarlTest {
 	@Inject
 	private ValidationTestHelper validator;
 
-	@Inject 
+	@Inject
 	private CompilationTestHelper compiler;
 
 	private CharSequence snippet = multilineString(

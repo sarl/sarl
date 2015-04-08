@@ -24,7 +24,7 @@ package io.sarl.eclipse.wizards.elements.newcapacity;
 import org.eclipse.osgi.util.NLS;
 
 /** Localized messages.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -40,7 +40,7 @@ public class Messages extends NLS {
 
 	private Messages() {
 	}
-	
+
 	public static String NewSarlCapacity_0;
 	public static String NewSarlCapacityWizardPage_0;
 	public static String NewSarlCapacityWizardPage_1;

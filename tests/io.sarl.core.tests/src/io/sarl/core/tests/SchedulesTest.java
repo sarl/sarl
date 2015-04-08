@@ -49,7 +49,7 @@ public class SchedulesTest extends AbstractSarlCoreTest<Capacity> {
 	public void memberCount() {
 		assertEquals(7, this.type.getDeclaredMethods().length);
 	}
-	
+
 	/**
 	 */
 	@Test

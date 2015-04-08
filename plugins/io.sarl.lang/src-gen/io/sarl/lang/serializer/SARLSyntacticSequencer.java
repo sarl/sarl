@@ -32,7 +32,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_XImportDeclaration_SemicolonKeyword_2_q;
 	protected AbstractElementAlias match_XParenthesizedExpression_LeftParenthesisKeyword_0_a;
 	protected AbstractElementAlias match_XParenthesizedExpression_LeftParenthesisKeyword_0_p;
-	
+
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (SARLGrammarAccess) access;
@@ -51,7 +51,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_XParenthesizedExpression_LeftParenthesisKeyword_0_a = new TokenAlias(true, true, grammarAccess.getXParenthesizedExpressionAccess().getLeftParenthesisKeyword_0());
 		match_XParenthesizedExpression_LeftParenthesisKeyword_0_p = new TokenAlias(true, false, grammarAccess.getXParenthesizedExpressionAccess().getLeftParenthesisKeyword_0());
 	}
-	
+
 	@Override
 	protected String getUnassignedRuleCallToken(EObject semanticObject, RuleCall ruleCall, INode node) {
 		if(ruleCall.getRule() == grammarAccess.getArrayBracketsRule())
@@ -64,7 +64,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 			return getVarArgTokenToken(semanticObject, ruleCall, node);
 		return "";
 	}
-	
+
 	/**
 	 * ArrayBrackets :
 	 * 	'[' ']'
@@ -75,7 +75,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 			return getTokenText(node);
 		return "[]";
 	}
-	
+
 	/**
 	 * terminal ID:
 	 * 	'^'? ('a'..'z'|'A'..'Z'|'$'|'_') ('a'..'z'|'A'..'Z'|'$'|'_'|'0'..'9')*;
@@ -85,7 +85,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 			return getTokenText(node);
 		return "";
 	}
-	
+
 	/**
 	 * OpSingleAssign:
 	 * 	'='
@@ -96,7 +96,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 			return getTokenText(node);
 		return "=";
 	}
-	
+
 	/**
 	 * VarArgToken:
 	 * 	'*'
@@ -107,7 +107,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 			return getTokenText(node);
 		return "*";
 	}
-	
+
 	@Override
 	protected void emitUnassignedTokens(EObject semanticObject, ISynTransition transition, INode fromNode, INode toNode) {
 		if (transition.getAmbiguousSyntaxes().isEmpty()) return;
@@ -153,7 +153,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected void emit_ActionSignature___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
-	
+
 	/**
 	 * Syntax:
 	 *     ('(' ')')?
@@ -161,7 +161,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected void emit_Action___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
-	
+
 	/**
 	 * Syntax:
 	 *     ';'?
@@ -169,7 +169,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected void emit_Attribute_SemicolonKeyword_4_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
-	
+
 	/**
 	 * Syntax:
 	 *     ';'?
@@ -177,7 +177,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected void emit_CapacityUses_SemicolonKeyword_4_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
-	
+
 	/**
 	 * Syntax:
 	 *     ('(' ')')?
@@ -185,7 +185,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected void emit_Constructor___LeftParenthesisKeyword_2_0_RightParenthesisKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
-	
+
 	/**
 	 * Syntax:
 	 *     ('{' '}')?
@@ -193,7 +193,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected void emit_Event___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
-	
+
 	/**
 	 * Syntax:
 	 *     ';'?
@@ -201,7 +201,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected void emit_RequiredCapacity_SemicolonKeyword_4_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
-	
+
 	/**
 	 * Syntax:
 	 *     ';'?
@@ -209,7 +209,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected void emit_SarlScript_SemicolonKeyword_0_2_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
-	
+
 	/**
 	 * Syntax:
 	 *     ';'?
@@ -217,7 +217,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected void emit_XBlockExpression_SemicolonKeyword_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
-	
+
 	/**
 	 * Syntax:
 	 *     ';'?
@@ -225,7 +225,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected void emit_XExpressionInClosure_SemicolonKeyword_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
-	
+
 	/**
 	 * Syntax:
 	 *     ('(' ')')?
@@ -233,7 +233,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected void emit_XFunctionTypeRef___LeftParenthesisKeyword_0_0_RightParenthesisKeyword_0_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
-	
+
 	/**
 	 * Syntax:
 	 *     ';'?
@@ -241,7 +241,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected void emit_XImportDeclaration_SemicolonKeyword_2_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
-	
+
 	/**
 	 * Syntax:
 	 *     '('*
@@ -249,7 +249,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected void emit_XParenthesizedExpression_LeftParenthesisKeyword_0_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
-	
+
 	/**
 	 * Syntax:
 	 *     '('+
@@ -257,5 +257,5 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected void emit_XParenthesizedExpression_LeftParenthesisKeyword_0_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
-	
+
 }

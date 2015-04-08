@@ -12,12 +12,12 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 @SuppressWarnings("all")
 public abstract class AbstractSARLUiModule extends DefaultUiModule {
-	
+
 	public AbstractSARLUiModule(AbstractUIPlugin plugin) {
 		super(plugin);
 	}
-	
-	
+
+
 	// contributed by org.eclipse.xtext.ui.generator.ImplicitUiFragment
 	public com.google.inject.Provider<org.eclipse.xtext.resource.containers.IAllContainersState> provideIAllContainersState() {
 		return org.eclipse.xtext.ui.shared.Access.getJavaProjectsState();
@@ -310,9 +310,9 @@ public abstract class AbstractSARLUiModule extends DefaultUiModule {
 
 	// contributed by org.eclipse.xtext.generator.xbase.XbaseGeneratorFragment
 	public void configureLanguageSpecificURIEditorOpener(com.google.inject.Binder binder) {
-		if (org.eclipse.ui.PlatformUI.isWorkbenchRunning()) { 
-			binder.bind(org.eclipse.xtext.ui.editor.IURIEditorOpener.class).annotatedWith(org.eclipse.xtext.ui.LanguageSpecific.class).to(org.eclipse.xtext.xbase.ui.jvmmodel.navigation.DerivedMemberAwareEditorOpener.class); 
-			binder.bind(org.eclipse.xtext.common.types.ui.navigation.IDerivedMemberAwareEditorOpener.class).to(org.eclipse.xtext.xbase.ui.jvmmodel.navigation.DerivedMemberAwareEditorOpener.class); 
+		if (org.eclipse.ui.PlatformUI.isWorkbenchRunning()) {
+			binder.bind(org.eclipse.xtext.ui.editor.IURIEditorOpener.class).annotatedWith(org.eclipse.xtext.ui.LanguageSpecific.class).to(org.eclipse.xtext.xbase.ui.jvmmodel.navigation.DerivedMemberAwareEditorOpener.class);
+			binder.bind(org.eclipse.xtext.common.types.ui.navigation.IDerivedMemberAwareEditorOpener.class).to(org.eclipse.xtext.xbase.ui.jvmmodel.navigation.DerivedMemberAwareEditorOpener.class);
 		};
 	}
 

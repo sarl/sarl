@@ -39,5 +39,5 @@ public final class MockFinalAgent extends Agent {
 	public MockFinalAgent(UUID parent) {
 		super(parent);
 	}
-	
+
 }

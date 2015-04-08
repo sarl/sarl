@@ -24,7 +24,7 @@ package io.sarl.eclipse.wizards.elements.newevent;
 import org.eclipse.osgi.util.NLS;
 
 /** Localized messages.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -40,7 +40,7 @@ public class Messages extends NLS {
 
 	private Messages() {
 	}
-	
+
 	public static String NewSarlEvent_0;
 	public static String NewSarlEventWizardPage_0;
 	public static String NewSarlEventWizardPage_1;

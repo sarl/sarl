@@ -25,9 +25,9 @@ import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
+import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.genmodel.GeneratedCode;
-import io.sarl.lang.signature.ActionKey;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -86,10 +86,10 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 		io.sarl.lang.sarl.Agent agent = this.sarlGenerator.createAgent(code, getTypeName(), getSuperClass());
 		this.sarlGenerator.attachComment(code, agent, typeComment);
 
-		Map<ActionKey, IMethod> operationsToImplement;
+		Map<ActionPrototype, IMethod> operationsToImplement;
 
 		if (isCreateInherited()) {
-			operationsToImplement = Maps.newTreeMap((Comparator<ActionKey>) null);
+			operationsToImplement = Maps.newTreeMap((Comparator<ActionPrototype>) null);
 		} else {
 			operationsToImplement = null;
 		}

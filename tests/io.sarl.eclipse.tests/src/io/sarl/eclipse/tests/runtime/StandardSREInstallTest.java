@@ -329,7 +329,7 @@ public class StandardSREInstallTest {
 		@Nullable
 		private String id;
 
-		@Nullable 
+		@Nullable
 		private StandardSREInstall sre;
 
 		@Nullable

@@ -23,11 +23,11 @@ public class SARLStandaloneSetupGenerated implements ISetup {
 		register(injector);
 		return injector;
 	}
-	
+
 	public Injector createInjector() {
 		return Guice.createInjector(new io.sarl.lang.SARLRuntimeModule());
 	}
-	
+
 	public void register(Injector injector) {
 	if (!EPackage.Registry.INSTANCE.containsKey("http://www.sarl.io/lang/SARL")) {
 		EPackage.Registry.INSTANCE.put("http://www.sarl.io/lang/SARL", io.sarl.lang.sarl.SarlPackage.eINSTANCE);
@@ -37,7 +37,7 @@ public class SARLStandaloneSetupGenerated implements ISetup {
 		org.eclipse.xtext.resource.IResourceServiceProvider serviceProvider = injector.getInstance(org.eclipse.xtext.resource.IResourceServiceProvider.class);
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("sarl", resourceFactory);
 		org.eclipse.xtext.resource.IResourceServiceProvider.Registry.INSTANCE.getExtensionToFactoryMap().put("sarl", serviceProvider);
-		
+
 
 
 

@@ -53,7 +53,7 @@ import org.eclipse.xtext.validation.Issue;
 import com.google.inject.Inject;
 
 /** Abstract implementation for the quick fix tests.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -65,7 +65,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 	private SARLQuickfixProvider quickfixProvider;
 
 	/** Create the filename for the given basename.
-	 * 
+	 *
 	 * @param issueCode - the code of the issue.
 	 * @return the name of the file.
 	 */
@@ -80,7 +80,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 	}
 
 	/** Create an object that permits to test the details of a quick fix.
-	 * 
+	 *
 	 * @param issueCode - the code of the issue to test.
 	 * @param invalidCode - the code that is generating the issue.
 	 * @return the quick fixes for assertions.
@@ -131,7 +131,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 				fail("No resolution found for the issue '" + issueCode //$NON-NLS-1$
 					+ "'."); //$NON-NLS-1$
 			}
-			
+
 			QuickFixAsserts asserts = new QuickFixAsserts(
 					issueCode,
 					invalidCode,
@@ -145,7 +145,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 	}
 
 	/** Assert the quick fix is changing the document in the expected way.
-	 * 
+	 *
 	 * @param issueCode - the code of the issue to test.
 	 * @param invalidCode - the code that is generating the issue.
 	 * @param expectedLabel - the expected label for the quick fix.
@@ -192,7 +192,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 			this.scriptResource = scriptResource;
 			this.resolutions.addAll(resolutions);
 		}
-		
+
 		private IssueResolution findResolution(String label) {
 			Iterator<IssueResolution> iterator = this.resolutions.iterator();
 			while (iterator.hasNext()) {
@@ -207,7 +207,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 					+ "'.\nAvailable quick fix resolutions: " + toString() ); //$NON-NLS-1$
 			return null;
 		}
-		
+
 		@Override
 		public String toString() {
 			StringBuilder buffer = new StringBuilder();
@@ -223,7 +223,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 		}
 
 		/** Test the existence of a valid quick fix.
-		 * 
+		 *
 		 * @param expectedLabel - the expected label for the quick fix.
 		 * @param expectedDescription - the expected description for the quick fix.
 		 * @param expectedResolution - the expected code after fixing.
@@ -234,17 +234,17 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 				String expectedResolution) {
 			try {
 				IssueResolution resolution = findResolution(expectedLabel);
-				
+
 				assertEquals(expectedLabel, resolution.getLabel());
 				assertEquals(expectedDescription, resolution.getDescription());
-	
+
 				XtextResource xtextResource = new XtextResource(this.scriptResource.getURI());
 				xtextResource.setFragmentProvider(new TestFragmentProvider(this.scriptResource));
 				TestXtextDocument document = new TestXtextDocument(xtextResource, this.invalidCode);
 				TestModificationContext modificationContext = new TestModificationContext(document);
-	
+
 				resolution.getModification().apply(modificationContext);
-	
+
 				String content;
 				try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
 					this.scriptResource.save(os, null);
@@ -267,7 +267,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 					0, this.resolutions.size());
 
 		}
-		
+
 	} // class QuickFixAsserts
 
 	/**

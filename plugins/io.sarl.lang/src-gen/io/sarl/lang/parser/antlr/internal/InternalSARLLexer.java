@@ -1,6 +1,6 @@
 package io.sarl.lang.parser.antlr.internal;
 
-// Hack: Use our own Lexer superclass by means of import. 
+// Hack: Use our own Lexer superclass by means of import.
 // Currently there is no other way to specify the superclass for the lexer.
 import org.eclipse.xtext.parser.antlr.Lexer;
 
@@ -112,7 +112,7 @@ public class InternalSARLLexer extends Lexer {
     // delegates
     // delegators
 
-    public InternalSARLLexer() {;} 
+    public InternalSARLLexer() {;}
     public InternalSARLLexer(CharStream input) {
         this(input, new RecognizerSharedState());
     }
@@ -130,7 +130,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:11:7: ( 'package' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:11:9: 'package'
             {
-            match("package"); 
+            match("package");
 
 
             }
@@ -151,7 +151,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:12:7: ( ';' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:12:9: ';'
             {
-            match(';'); 
+            match(';');
 
             }
 
@@ -171,7 +171,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:13:7: ( 'event' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:13:9: 'event'
             {
-            match("event"); 
+            match("event");
 
 
             }
@@ -192,7 +192,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:14:7: ( 'extends' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:14:9: 'extends'
             {
-            match("extends"); 
+            match("extends");
 
 
             }
@@ -213,7 +213,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:15:7: ( '{' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:15:9: '{'
             {
-            match('{'); 
+            match('{');
 
             }
 
@@ -233,7 +233,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:16:7: ( '}' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:16:9: '}'
             {
-            match('}'); 
+            match('}');
 
             }
 
@@ -253,7 +253,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:17:7: ( 'capacity' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:17:9: 'capacity'
             {
-            match("capacity"); 
+            match("capacity");
 
 
             }
@@ -274,7 +274,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:18:7: ( ',' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:18:9: ','
             {
-            match(','); 
+            match(',');
 
             }
 
@@ -294,7 +294,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:19:7: ( 'agent' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:19:9: 'agent'
             {
-            match("agent"); 
+            match("agent");
 
 
             }
@@ -315,7 +315,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:20:7: ( 'behavior' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:20:9: 'behavior'
             {
-            match("behavior"); 
+            match("behavior");
 
 
             }
@@ -336,7 +336,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:21:7: ( 'skill' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:21:9: 'skill'
             {
-            match("skill"); 
+            match("skill");
 
 
             }
@@ -357,7 +357,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:22:7: ( 'implements' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:22:9: 'implements'
             {
-            match("implements"); 
+            match("implements");
 
 
             }
@@ -378,7 +378,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:23:7: ( 'var' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:23:9: 'var'
             {
-            match("var"); 
+            match("var");
 
 
             }
@@ -399,7 +399,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:24:7: ( 'val' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:24:9: 'val'
             {
-            match("val"); 
+            match("val");
 
 
             }
@@ -420,7 +420,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:25:7: ( ':' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:25:9: ':'
             {
-            match(':'); 
+            match(':');
 
             }
 
@@ -440,7 +440,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:26:7: ( '=' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:26:9: '='
             {
-            match('='); 
+            match('=');
 
             }
 
@@ -460,7 +460,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:27:7: ( 'uses' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:27:9: 'uses'
             {
-            match("uses"); 
+            match("uses");
 
 
             }
@@ -481,7 +481,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:28:7: ( 'requires' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:28:9: 'requires'
             {
-            match("requires"); 
+            match("requires");
 
 
             }
@@ -502,7 +502,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:29:7: ( 'on' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:29:9: 'on'
             {
-            match("on"); 
+            match("on");
 
 
             }
@@ -523,7 +523,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:30:7: ( '[' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:30:9: '['
             {
-            match('['); 
+            match('[');
 
             }
 
@@ -543,7 +543,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:31:7: ( ']' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:31:9: ']'
             {
-            match(']'); 
+            match(']');
 
             }
 
@@ -563,7 +563,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:32:7: ( 'def' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:32:9: 'def'
             {
-            match("def"); 
+            match("def");
 
 
             }
@@ -584,7 +584,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:33:7: ( '(' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:33:9: '('
             {
-            match('('); 
+            match('(');
 
             }
 
@@ -604,7 +604,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:34:7: ( ')' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:34:9: ')'
             {
-            match(')'); 
+            match(')');
 
             }
 
@@ -624,7 +624,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:35:7: ( 'fires' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:35:9: 'fires'
             {
-            match("fires"); 
+            match("fires");
 
 
             }
@@ -645,7 +645,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:36:7: ( '*' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:36:9: '*'
             {
-            match('*'); 
+            match('*');
 
             }
 
@@ -665,7 +665,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:37:7: ( 'new' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:37:9: 'new'
             {
-            match("new"); 
+            match("new");
 
 
             }
@@ -686,7 +686,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:38:7: ( '=>' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:38:9: '=>'
             {
-            match("=>"); 
+            match("=>");
 
 
             }
@@ -707,7 +707,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:39:7: ( 'as' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:39:9: 'as'
             {
-            match("as"); 
+            match("as");
 
 
             }
@@ -728,7 +728,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:40:7: ( 'for' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:40:9: 'for'
             {
-            match("for"); 
+            match("for");
 
 
             }
@@ -749,7 +749,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:41:7: ( '+=' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:41:9: '+='
             {
-            match("+="); 
+            match("+=");
 
 
             }
@@ -770,7 +770,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:42:7: ( '-=' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:42:9: '-='
             {
-            match("-="); 
+            match("-=");
 
 
             }
@@ -791,7 +791,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:43:7: ( '*=' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:43:9: '*='
             {
-            match("*="); 
+            match("*=");
 
 
             }
@@ -812,7 +812,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:44:7: ( '/=' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:44:9: '/='
             {
-            match("/="); 
+            match("/=");
 
 
             }
@@ -833,7 +833,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:45:7: ( '%=' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:45:9: '%='
             {
-            match("%="); 
+            match("%=");
 
 
             }
@@ -854,7 +854,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:46:7: ( '<' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:46:9: '<'
             {
-            match('<'); 
+            match('<');
 
             }
 
@@ -874,7 +874,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:47:7: ( '>' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:47:9: '>'
             {
-            match('>'); 
+            match('>');
 
             }
 
@@ -894,7 +894,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:48:7: ( '>=' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:48:9: '>='
             {
-            match(">="); 
+            match(">=");
 
 
             }
@@ -915,7 +915,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:49:7: ( '||' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:49:9: '||'
             {
-            match("||"); 
+            match("||");
 
 
             }
@@ -936,7 +936,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:50:7: ( '&&' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:50:9: '&&'
             {
-            match("&&"); 
+            match("&&");
 
 
             }
@@ -957,7 +957,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:51:7: ( '==' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:51:9: '=='
             {
-            match("=="); 
+            match("==");
 
 
             }
@@ -978,7 +978,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:52:7: ( '!=' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:52:9: '!='
             {
-            match("!="); 
+            match("!=");
 
 
             }
@@ -999,7 +999,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:53:7: ( '===' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:53:9: '==='
             {
-            match("==="); 
+            match("===");
 
 
             }
@@ -1020,7 +1020,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:54:7: ( '!==' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:54:9: '!=='
             {
-            match("!=="); 
+            match("!==");
 
 
             }
@@ -1041,7 +1041,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:55:7: ( 'instanceof' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:55:9: 'instanceof'
             {
-            match("instanceof"); 
+            match("instanceof");
 
 
             }
@@ -1062,7 +1062,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:56:7: ( '->' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:56:9: '->'
             {
-            match("->"); 
+            match("->");
 
 
             }
@@ -1083,7 +1083,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:57:7: ( '..<' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:57:9: '..<'
             {
-            match("..<"); 
+            match("..<");
 
 
             }
@@ -1104,7 +1104,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:58:7: ( '..' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:58:9: '..'
             {
-            match(".."); 
+            match("..");
 
 
             }
@@ -1125,7 +1125,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:59:7: ( '<>' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:59:9: '<>'
             {
-            match("<>"); 
+            match("<>");
 
 
             }
@@ -1146,7 +1146,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:60:7: ( '?:' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:60:9: '?:'
             {
-            match("?:"); 
+            match("?:");
 
 
             }
@@ -1167,7 +1167,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:61:7: ( '+' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:61:9: '+'
             {
-            match('+'); 
+            match('+');
 
             }
 
@@ -1187,7 +1187,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:62:7: ( '-' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:62:9: '-'
             {
-            match('-'); 
+            match('-');
 
             }
 
@@ -1207,7 +1207,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:63:7: ( '**' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:63:9: '**'
             {
-            match("**"); 
+            match("**");
 
 
             }
@@ -1228,7 +1228,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:64:7: ( '/' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:64:9: '/'
             {
-            match('/'); 
+            match('/');
 
             }
 
@@ -1248,7 +1248,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:65:7: ( '%' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:65:9: '%'
             {
-            match('%'); 
+            match('%');
 
             }
 
@@ -1268,7 +1268,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:66:7: ( '!' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:66:9: '!'
             {
-            match('!'); 
+            match('!');
 
             }
 
@@ -1288,7 +1288,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:67:7: ( '++' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:67:9: '++'
             {
-            match("++"); 
+            match("++");
 
 
             }
@@ -1309,7 +1309,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:68:7: ( '--' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:68:9: '--'
             {
-            match("--"); 
+            match("--");
 
 
             }
@@ -1330,7 +1330,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:69:7: ( '.' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:69:9: '.'
             {
-            match('.'); 
+            match('.');
 
             }
 
@@ -1350,7 +1350,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:70:7: ( '::' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:70:9: '::'
             {
-            match("::"); 
+            match("::");
 
 
             }
@@ -1371,7 +1371,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:71:7: ( '?.' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:71:9: '?.'
             {
-            match("?."); 
+            match("?.");
 
 
             }
@@ -1392,7 +1392,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:72:7: ( '#' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:72:9: '#'
             {
-            match('#'); 
+            match('#');
 
             }
 
@@ -1412,7 +1412,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:73:7: ( '|' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:73:9: '|'
             {
-            match('|'); 
+            match('|');
 
             }
 
@@ -1432,7 +1432,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:74:7: ( 'if' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:74:9: 'if'
             {
-            match("if"); 
+            match("if");
 
 
             }
@@ -1453,7 +1453,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:75:7: ( 'else' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:75:9: 'else'
             {
-            match("else"); 
+            match("else");
 
 
             }
@@ -1474,7 +1474,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:76:7: ( 'switch' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:76:9: 'switch'
             {
-            match("switch"); 
+            match("switch");
 
 
             }
@@ -1495,7 +1495,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:77:7: ( 'default' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:77:9: 'default'
             {
-            match("default"); 
+            match("default");
 
 
             }
@@ -1516,7 +1516,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:78:7: ( 'case' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:78:9: 'case'
             {
-            match("case"); 
+            match("case");
 
 
             }
@@ -1537,7 +1537,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:79:7: ( 'while' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:79:9: 'while'
             {
-            match("while"); 
+            match("while");
 
 
             }
@@ -1558,7 +1558,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:80:7: ( 'do' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:80:9: 'do'
             {
-            match("do"); 
+            match("do");
 
 
             }
@@ -1579,7 +1579,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:81:7: ( 'static' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:81:9: 'static'
             {
-            match("static"); 
+            match("static");
 
 
             }
@@ -1600,7 +1600,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:82:7: ( 'import' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:82:9: 'import'
             {
-            match("import"); 
+            match("import");
 
 
             }
@@ -1621,7 +1621,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:83:7: ( 'extension' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:83:9: 'extension'
             {
-            match("extension"); 
+            match("extension");
 
 
             }
@@ -1642,7 +1642,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:84:7: ( 'super' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:84:9: 'super'
             {
-            match("super"); 
+            match("super");
 
 
             }
@@ -1663,7 +1663,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:85:7: ( 'false' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:85:9: 'false'
             {
-            match("false"); 
+            match("false");
 
 
             }
@@ -1684,7 +1684,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:86:7: ( 'true' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:86:9: 'true'
             {
-            match("true"); 
+            match("true");
 
 
             }
@@ -1705,7 +1705,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:87:7: ( 'null' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:87:9: 'null'
             {
-            match("null"); 
+            match("null");
 
 
             }
@@ -1726,7 +1726,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:88:7: ( 'typeof' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:88:9: 'typeof'
             {
-            match("typeof"); 
+            match("typeof");
 
 
             }
@@ -1747,7 +1747,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:89:7: ( 'throw' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:89:9: 'throw'
             {
-            match("throw"); 
+            match("throw");
 
 
             }
@@ -1768,7 +1768,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:90:7: ( 'return' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:90:9: 'return'
             {
-            match("return"); 
+            match("return");
 
 
             }
@@ -1789,7 +1789,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:91:7: ( 'try' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:91:9: 'try'
             {
-            match("try"); 
+            match("try");
 
 
             }
@@ -1810,7 +1810,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:92:7: ( 'finally' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:92:9: 'finally'
             {
-            match("finally"); 
+            match("finally");
 
 
             }
@@ -1831,7 +1831,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:93:7: ( 'synchronized' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:93:9: 'synchronized'
             {
-            match("synchronized"); 
+            match("synchronized");
 
 
             }
@@ -1852,7 +1852,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:94:7: ( 'catch' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:94:9: 'catch'
             {
-            match("catch"); 
+            match("catch");
 
 
             }
@@ -1873,7 +1873,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:95:7: ( '?' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:95:9: '?'
             {
-            match('?'); 
+            match('?');
 
             }
 
@@ -1893,7 +1893,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:96:7: ( '&' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:96:9: '&'
             {
-            match('&'); 
+            match('&');
 
             }
 
@@ -1943,7 +1943,7 @@ public class InternalSARLLexer extends Lexer {
                 case 1 :
                     // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8838:13: '0x'
                     {
-                    match("0x"); 
+                    match("0x");
 
 
                     }
@@ -1951,7 +1951,7 @@ public class InternalSARLLexer extends Lexer {
                 case 2 :
                     // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8838:18: '0X'
                     {
-                    match("0X"); 
+                    match("0X");
 
 
                     }
@@ -2008,7 +2008,7 @@ public class InternalSARLLexer extends Lexer {
                 case 1 :
                     // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8838:59: '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
                     {
-                    match('#'); 
+                    match('#');
                     // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8838:63: ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
                     int alt3=2;
                     int LA3_0 = input.LA(1);
@@ -2093,7 +2093,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8840:10: ( '0' .. '9' ( '0' .. '9' | '_' )* )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8840:12: '0' .. '9' ( '0' .. '9' | '_' )*
             {
-            matchRange('0','9'); 
+            matchRange('0','9');
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8840:21: ( '0' .. '9' | '_' )*
             loop5:
             do {
@@ -2146,7 +2146,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8842:14: ( RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )? )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8842:16: RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
             {
-            mRULE_INT(); 
+            mRULE_INT();
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8842:25: ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )?
             int alt7=2;
             int LA7_0 = input.LA(1);
@@ -2193,7 +2193,7 @@ public class InternalSARLLexer extends Lexer {
 
                     }
 
-                    mRULE_INT(); 
+                    mRULE_INT();
 
                     }
                     break;
@@ -2283,7 +2283,7 @@ public class InternalSARLLexer extends Lexer {
                 case 1 :
                     // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8844:11: '^'
                     {
-                    match('^'); 
+                    match('^');
 
                     }
                     break;
@@ -2371,7 +2371,7 @@ public class InternalSARLLexer extends Lexer {
                 case 1 :
                     // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8846:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )?
                     {
-                    match('\"'); 
+                    match('\"');
                     // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8846:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
                     loop11:
                     do {
@@ -2390,8 +2390,8 @@ public class InternalSARLLexer extends Lexer {
                     	case 1 :
                     	    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8846:21: '\\\\' .
                     	    {
-                    	    match('\\'); 
-                    	    matchAny(); 
+                    	    match('\\');
+                    	    matchAny();
 
                     	    }
                     	    break;
@@ -2427,7 +2427,7 @@ public class InternalSARLLexer extends Lexer {
                         case 1 :
                             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8846:44: '\"'
                             {
-                            match('\"'); 
+                            match('\"');
 
                             }
                             break;
@@ -2440,7 +2440,7 @@ public class InternalSARLLexer extends Lexer {
                 case 2 :
                     // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8846:49: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )?
                     {
-                    match('\''); 
+                    match('\'');
                     // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8846:54: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
                     loop13:
                     do {
@@ -2459,8 +2459,8 @@ public class InternalSARLLexer extends Lexer {
                     	case 1 :
                     	    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8846:55: '\\\\' .
                     	    {
-                    	    match('\\'); 
-                    	    matchAny(); 
+                    	    match('\\');
+                    	    matchAny();
 
                     	    }
                     	    break;
@@ -2496,7 +2496,7 @@ public class InternalSARLLexer extends Lexer {
                         case 1 :
                             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8846:79: '\\''
                             {
-                            match('\''); 
+                            match('\'');
 
                             }
                             break;
@@ -2528,7 +2528,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8848:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8848:19: '/*' ( options {greedy=false; } : . )* '*/'
             {
-            match("/*"); 
+            match("/*");
 
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8848:24: ( options {greedy=false; } : . )*
             loop16:
@@ -2557,7 +2557,7 @@ public class InternalSARLLexer extends Lexer {
             	case 1 :
             	    // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8848:52: .
             	    {
-            	    matchAny(); 
+            	    matchAny();
 
             	    }
             	    break;
@@ -2567,7 +2567,7 @@ public class InternalSARLLexer extends Lexer {
                 }
             } while (true);
 
-            match("*/"); 
+            match("*/");
 
 
             }
@@ -2588,7 +2588,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8850:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8850:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
             {
-            match("//"); 
+            match("//");
 
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8850:24: (~ ( ( '\\n' | '\\r' ) ) )*
             loop17:
@@ -2645,14 +2645,14 @@ public class InternalSARLLexer extends Lexer {
                         case 1 :
                             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8850:41: '\\r'
                             {
-                            match('\r'); 
+                            match('\r');
 
                             }
                             break;
 
                     }
 
-                    match('\n'); 
+                    match('\n');
 
                     }
                     break;
@@ -2735,7 +2735,7 @@ public class InternalSARLLexer extends Lexer {
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8854:16: ( . )
             // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:8854:18: .
             {
-            matchAny(); 
+            matchAny();
 
             }
 
@@ -2755,665 +2755,665 @@ public class InternalSARLLexer extends Lexer {
             case 1 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:10: T__13
                 {
-                mT__13(); 
+                mT__13();
 
                 }
                 break;
             case 2 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:16: T__14
                 {
-                mT__14(); 
+                mT__14();
 
                 }
                 break;
             case 3 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:22: T__15
                 {
-                mT__15(); 
+                mT__15();
 
                 }
                 break;
             case 4 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:28: T__16
                 {
-                mT__16(); 
+                mT__16();
 
                 }
                 break;
             case 5 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:34: T__17
                 {
-                mT__17(); 
+                mT__17();
 
                 }
                 break;
             case 6 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:40: T__18
                 {
-                mT__18(); 
+                mT__18();
 
                 }
                 break;
             case 7 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:46: T__19
                 {
-                mT__19(); 
+                mT__19();
 
                 }
                 break;
             case 8 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:52: T__20
                 {
-                mT__20(); 
+                mT__20();
 
                 }
                 break;
             case 9 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:58: T__21
                 {
-                mT__21(); 
+                mT__21();
 
                 }
                 break;
             case 10 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:64: T__22
                 {
-                mT__22(); 
+                mT__22();
 
                 }
                 break;
             case 11 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:70: T__23
                 {
-                mT__23(); 
+                mT__23();
 
                 }
                 break;
             case 12 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:76: T__24
                 {
-                mT__24(); 
+                mT__24();
 
                 }
                 break;
             case 13 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:82: T__25
                 {
-                mT__25(); 
+                mT__25();
 
                 }
                 break;
             case 14 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:88: T__26
                 {
-                mT__26(); 
+                mT__26();
 
                 }
                 break;
             case 15 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:94: T__27
                 {
-                mT__27(); 
+                mT__27();
 
                 }
                 break;
             case 16 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:100: T__28
                 {
-                mT__28(); 
+                mT__28();
 
                 }
                 break;
             case 17 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:106: T__29
                 {
-                mT__29(); 
+                mT__29();
 
                 }
                 break;
             case 18 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:112: T__30
                 {
-                mT__30(); 
+                mT__30();
 
                 }
                 break;
             case 19 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:118: T__31
                 {
-                mT__31(); 
+                mT__31();
 
                 }
                 break;
             case 20 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:124: T__32
                 {
-                mT__32(); 
+                mT__32();
 
                 }
                 break;
             case 21 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:130: T__33
                 {
-                mT__33(); 
+                mT__33();
 
                 }
                 break;
             case 22 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:136: T__34
                 {
-                mT__34(); 
+                mT__34();
 
                 }
                 break;
             case 23 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:142: T__35
                 {
-                mT__35(); 
+                mT__35();
 
                 }
                 break;
             case 24 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:148: T__36
                 {
-                mT__36(); 
+                mT__36();
 
                 }
                 break;
             case 25 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:154: T__37
                 {
-                mT__37(); 
+                mT__37();
 
                 }
                 break;
             case 26 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:160: T__38
                 {
-                mT__38(); 
+                mT__38();
 
                 }
                 break;
             case 27 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:166: T__39
                 {
-                mT__39(); 
+                mT__39();
 
                 }
                 break;
             case 28 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:172: T__40
                 {
-                mT__40(); 
+                mT__40();
 
                 }
                 break;
             case 29 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:178: T__41
                 {
-                mT__41(); 
+                mT__41();
 
                 }
                 break;
             case 30 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:184: T__42
                 {
-                mT__42(); 
+                mT__42();
 
                 }
                 break;
             case 31 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:190: T__43
                 {
-                mT__43(); 
+                mT__43();
 
                 }
                 break;
             case 32 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:196: T__44
                 {
-                mT__44(); 
+                mT__44();
 
                 }
                 break;
             case 33 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:202: T__45
                 {
-                mT__45(); 
+                mT__45();
 
                 }
                 break;
             case 34 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:208: T__46
                 {
-                mT__46(); 
+                mT__46();
 
                 }
                 break;
             case 35 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:214: T__47
                 {
-                mT__47(); 
+                mT__47();
 
                 }
                 break;
             case 36 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:220: T__48
                 {
-                mT__48(); 
+                mT__48();
 
                 }
                 break;
             case 37 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:226: T__49
                 {
-                mT__49(); 
+                mT__49();
 
                 }
                 break;
             case 38 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:232: T__50
                 {
-                mT__50(); 
+                mT__50();
 
                 }
                 break;
             case 39 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:238: T__51
                 {
-                mT__51(); 
+                mT__51();
 
                 }
                 break;
             case 40 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:244: T__52
                 {
-                mT__52(); 
+                mT__52();
 
                 }
                 break;
             case 41 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:250: T__53
                 {
-                mT__53(); 
+                mT__53();
 
                 }
                 break;
             case 42 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:256: T__54
                 {
-                mT__54(); 
+                mT__54();
 
                 }
                 break;
             case 43 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:262: T__55
                 {
-                mT__55(); 
+                mT__55();
 
                 }
                 break;
             case 44 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:268: T__56
                 {
-                mT__56(); 
+                mT__56();
 
                 }
                 break;
             case 45 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:274: T__57
                 {
-                mT__57(); 
+                mT__57();
 
                 }
                 break;
             case 46 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:280: T__58
                 {
-                mT__58(); 
+                mT__58();
 
                 }
                 break;
             case 47 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:286: T__59
                 {
-                mT__59(); 
+                mT__59();
 
                 }
                 break;
             case 48 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:292: T__60
                 {
-                mT__60(); 
+                mT__60();
 
                 }
                 break;
             case 49 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:298: T__61
                 {
-                mT__61(); 
+                mT__61();
 
                 }
                 break;
             case 50 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:304: T__62
                 {
-                mT__62(); 
+                mT__62();
 
                 }
                 break;
             case 51 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:310: T__63
                 {
-                mT__63(); 
+                mT__63();
 
                 }
                 break;
             case 52 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:316: T__64
                 {
-                mT__64(); 
+                mT__64();
 
                 }
                 break;
             case 53 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:322: T__65
                 {
-                mT__65(); 
+                mT__65();
 
                 }
                 break;
             case 54 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:328: T__66
                 {
-                mT__66(); 
+                mT__66();
 
                 }
                 break;
             case 55 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:334: T__67
                 {
-                mT__67(); 
+                mT__67();
 
                 }
                 break;
             case 56 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:340: T__68
                 {
-                mT__68(); 
+                mT__68();
 
                 }
                 break;
             case 57 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:346: T__69
                 {
-                mT__69(); 
+                mT__69();
 
                 }
                 break;
             case 58 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:352: T__70
                 {
-                mT__70(); 
+                mT__70();
 
                 }
                 break;
             case 59 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:358: T__71
                 {
-                mT__71(); 
+                mT__71();
 
                 }
                 break;
             case 60 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:364: T__72
                 {
-                mT__72(); 
+                mT__72();
 
                 }
                 break;
             case 61 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:370: T__73
                 {
-                mT__73(); 
+                mT__73();
 
                 }
                 break;
             case 62 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:376: T__74
                 {
-                mT__74(); 
+                mT__74();
 
                 }
                 break;
             case 63 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:382: T__75
                 {
-                mT__75(); 
+                mT__75();
 
                 }
                 break;
             case 64 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:388: T__76
                 {
-                mT__76(); 
+                mT__76();
 
                 }
                 break;
             case 65 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:394: T__77
                 {
-                mT__77(); 
+                mT__77();
 
                 }
                 break;
             case 66 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:400: T__78
                 {
-                mT__78(); 
+                mT__78();
 
                 }
                 break;
             case 67 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:406: T__79
                 {
-                mT__79(); 
+                mT__79();
 
                 }
                 break;
             case 68 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:412: T__80
                 {
-                mT__80(); 
+                mT__80();
 
                 }
                 break;
             case 69 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:418: T__81
                 {
-                mT__81(); 
+                mT__81();
 
                 }
                 break;
             case 70 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:424: T__82
                 {
-                mT__82(); 
+                mT__82();
 
                 }
                 break;
             case 71 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:430: T__83
                 {
-                mT__83(); 
+                mT__83();
 
                 }
                 break;
             case 72 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:436: T__84
                 {
-                mT__84(); 
+                mT__84();
 
                 }
                 break;
             case 73 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:442: T__85
                 {
-                mT__85(); 
+                mT__85();
 
                 }
                 break;
             case 74 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:448: T__86
                 {
-                mT__86(); 
+                mT__86();
 
                 }
                 break;
             case 75 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:454: T__87
                 {
-                mT__87(); 
+                mT__87();
 
                 }
                 break;
             case 76 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:460: T__88
                 {
-                mT__88(); 
+                mT__88();
 
                 }
                 break;
             case 77 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:466: T__89
                 {
-                mT__89(); 
+                mT__89();
 
                 }
                 break;
             case 78 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:472: T__90
                 {
-                mT__90(); 
+                mT__90();
 
                 }
                 break;
             case 79 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:478: T__91
                 {
-                mT__91(); 
+                mT__91();
 
                 }
                 break;
             case 80 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:484: T__92
                 {
-                mT__92(); 
+                mT__92();
 
                 }
                 break;
             case 81 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:490: T__93
                 {
-                mT__93(); 
+                mT__93();
 
                 }
                 break;
             case 82 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:496: T__94
                 {
-                mT__94(); 
+                mT__94();
 
                 }
                 break;
             case 83 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:502: T__95
                 {
-                mT__95(); 
+                mT__95();
 
                 }
                 break;
             case 84 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:508: T__96
                 {
-                mT__96(); 
+                mT__96();
 
                 }
                 break;
             case 85 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:514: T__97
                 {
-                mT__97(); 
+                mT__97();
 
                 }
                 break;
             case 86 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:520: T__98
                 {
-                mT__98(); 
+                mT__98();
 
                 }
                 break;
             case 87 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:526: RULE_HEX
                 {
-                mRULE_HEX(); 
+                mRULE_HEX();
 
                 }
                 break;
             case 88 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:535: RULE_INT
                 {
-                mRULE_INT(); 
+                mRULE_INT();
 
                 }
                 break;
             case 89 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:544: RULE_DECIMAL
                 {
-                mRULE_DECIMAL(); 
+                mRULE_DECIMAL();
 
                 }
                 break;
             case 90 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:557: RULE_ID
                 {
-                mRULE_ID(); 
+                mRULE_ID();
 
                 }
                 break;
             case 91 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:565: RULE_STRING
                 {
-                mRULE_STRING(); 
+                mRULE_STRING();
 
                 }
                 break;
             case 92 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:577: RULE_ML_COMMENT
                 {
-                mRULE_ML_COMMENT(); 
+                mRULE_ML_COMMENT();
 
                 }
                 break;
             case 93 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:593: RULE_SL_COMMENT
                 {
-                mRULE_SL_COMMENT(); 
+                mRULE_SL_COMMENT();
 
                 }
                 break;
             case 94 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:609: RULE_WS
                 {
-                mRULE_WS(); 
+                mRULE_WS();
 
                 }
                 break;
             case 95 :
                 // ../io.sarl.lang/src-gen/io/sarl/lang/parser/antlr/internal/InternalSARL.g:1:617: RULE_ANY_OTHER
                 {
-                mRULE_ANY_OTHER(); 
+                mRULE_ANY_OTHER();
 
                 }
                 break;
@@ -3781,7 +3781,7 @@ public class InternalSARLLexer extends Lexer {
             IntStream input = _input;
         	int _s = s;
             switch ( s ) {
-                    case 0 : 
+                    case 0 :
                         int LA21_0 = input.LA(1);
 
                         s = -1;
@@ -3888,6 +3888,6 @@ public class InternalSARLLexer extends Lexer {
             throw nvae;
         }
     }
- 
+
 
 }

@@ -378,7 +378,7 @@ public class VarArgsParsingTest {
 					"	def myaction(arg0 : int, arg1 : int*) {",
 					"		System.out.println(\"invalid\")",
 					"	}",
-					"	def myaction(arg0 : int, arg1 : int) {",
+					"	def myaction(arg0 : int, arg1 : int*) {",
 					"		System.out.println(\"invalid\")",
 					"	}",
 					"}"
@@ -386,7 +386,7 @@ public class VarArgsParsingTest {
 			this.validator.assertError(mas,
 					SarlPackage.eINSTANCE.getAction(),
 					io.sarl.lang.validation.IssueCodes.DUPLICATE_METHOD,
-					"Duplicate action in 'B1': myaction(arg0 : int, arg1 : int)");
+					"Duplicate action in 'B1': myaction(arg0 : int, arg1 : int[])");
 		}
 
 	}

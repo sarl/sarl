@@ -40,13 +40,13 @@ import java.lang.annotation.Target;
 public @interface TestScope {
 
 	/** The test is valid for a run in Tycho.
-	 * 
+	 *
 	 * @return <code>true</code> if the unit test could be run in Tycho.
 	 */
 	boolean tycho() default true;
 
 	/** List of the bundles to add in the classpath.
-	 * 
+	 *
 	 * @return <code>true</code> if the unit test could be run in Eclipse.
 	 */
 	boolean eclipse() default true;

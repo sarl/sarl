@@ -23,14 +23,14 @@ package io.sarl.lang.ui.tests.outline;
 import org.junit.Test;
 
 /** Test the outline of the "event" statement.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class EventOutlineTest extends AbstractSARLOutlineTreeProviderTest { 
-	
+public class EventOutlineTest extends AbstractSARLOutlineTreeProviderTest {
+
 	/**
 	 * @throws Exception
 	 */
@@ -41,7 +41,7 @@ public class EventOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		asserts.numChildren(1);
 		asserts.leaf(0, "E1"); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * @throws Exception
 	 */

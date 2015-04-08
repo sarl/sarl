@@ -40,6 +40,7 @@ import java.util.List;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
+import org.eclipse.xtext.junit4.internal.InjectorProviders;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XNumberLiteral;
@@ -59,6 +60,8 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
+import com.google.inject.Guice;
+import com.google.inject.util.Modules;
 
 /** Abstract class that is providing useful tools for unit tests.
  *
@@ -154,7 +157,7 @@ public abstract class AbstractSarlTest {
 	};
 
 	/** Test if the actual collection/iterable contains all the expected objects.
-	 * 
+	 *
 	 * @param actual - the collection to test.
 	 * @param expected - the expected objects.
 	 */
@@ -163,7 +166,7 @@ public abstract class AbstractSarlTest {
 	}
 
 	/** Test if the actual collection/iterable contains all the expected objects.
-	 * 
+	 *
 	 * @param actual - the collection to test.
 	 * @param expected - the expected objects.
 	 */
@@ -179,6 +182,43 @@ public abstract class AbstractSarlTest {
 			Object ac = it1.next();
 			it1.remove();
 			if (!le.remove(ac)) {
+				fail("Unexpecting element: " + ac);
+				return;
+			}
+		}
+
+		if (!le.isEmpty()) {
+			fail("Expecting the following elements:\n" + le.toString() + "\nbut was:\n" +
+					Iterables.toString(actual));
+		}
+	}
+
+	/** Test if the actual collection/iterable contains all the expected objects.
+	 *
+	 * @param actual - the collection to test.
+	 * @param expected - the expected objects.
+	 */
+	public static void assertContainsStrings(Iterable<?> actual, String... expected) {
+		assertContainsStringCollection(actual, Arrays.asList(expected));
+	}
+
+	/** Test if the actual collection/iterable contains all the expected objects.
+	 *
+	 * @param actual - the collection to test.
+	 * @param expected - the expected objects.
+	 */
+	public static void assertContainsStringCollection(Iterable<?> actual, Iterable<String> expected) {
+		assertNotNull(actual);
+		Collection<Object> la = new ArrayList<>();
+		Iterables.addAll(la, actual);
+		Collection<String> le = new ArrayList<>();
+		Iterables.addAll(le, expected);
+
+		Iterator<?> it1 = la.iterator();
+		while (it1.hasNext()) {
+			Object ac = it1.next();
+			it1.remove();
+			if (!le.remove(ac.toString())) {
 				fail("Unexpecting element: " + ac);
 				return;
 			}
@@ -287,7 +327,7 @@ public abstract class AbstractSarlTest {
 	}
 
 	/** Assert that the given value is stricty positive.
-	 * 
+	 *
 	 * @param actual - the value to test.
 	 */
 	public static void assertStrictlyPositive(int actual) {
@@ -297,7 +337,7 @@ public abstract class AbstractSarlTest {
 	}
 
 	/** Assert that the given value is stricty negative.
-	 * 
+	 *
 	 * @param actual - the value to test.
 	 */
 	public static void assertStrictlyNegative(int actual) {
@@ -307,7 +347,7 @@ public abstract class AbstractSarlTest {
 	}
 
 	/** Assert that the given value is stricty positive.
-	 * 
+	 *
 	 * @param actual - the value to test.
 	 */
 	public static void assertPositiveOrZero(int actual) {
@@ -317,7 +357,7 @@ public abstract class AbstractSarlTest {
 	}
 
 	/** Assert that the given value is negative or zero.
-	 * 
+	 *
 	 * @param actual - the value to test.
 	 */
 	public static void assertNegativeOrZero(int actual) {
@@ -327,7 +367,7 @@ public abstract class AbstractSarlTest {
 	}
 
 	/** Assert that the given value is equal to zero.
-	 * 
+	 *
 	 * @param actual - the value to test.
 	 */
 	public static void assertZero(int actual) {
@@ -335,7 +375,7 @@ public abstract class AbstractSarlTest {
 	}
 
 	/** Assert that the given value is equal to zero.
-	 * 
+	 *
 	 * @param message - the error message.
 	 * @param actual - the value to test.
 	 */
@@ -387,9 +427,9 @@ public abstract class AbstractSarlTest {
 		fail("Unable to find the value in the array, value: " + actual //$NON-NLS-1$
 				+ "\narray: " + Arrays.toString(expected)); //$NON-NLS-1$
 	}
-	
+
 	/** Helper for writting a multiline string in unit tests.
-	 * 
+	 *
 	 * @param lines - the lines in the string.
 	 * @return the complete multiline string.
 	 */
@@ -400,7 +440,7 @@ public abstract class AbstractSarlTest {
 	/** Assert that the given iterable object replies the expected identifiers.
 	 *
 	 * The order of the identifier is significant.
-	 * 
+	 *
 	 * @param actualReferences - the actual elements.
 	 * @param expectedIdentifiers - the expected elements.
 	 * @see JvmTypeReference#getIdentifier()
@@ -514,7 +554,7 @@ public abstract class AbstractSarlTest {
 	}
 
 	/** Assert the actual XExpression is of the given type and initialized with the given literal.
-	 * 
+	 *
 	 * @param actualExpression - the expression to test.
 	 * @param expectedType - the expected type of expression.
 	 * @param expectedValue - the expected value.

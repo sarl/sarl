@@ -44,7 +44,7 @@ import com.google.inject.Inject;
  */
 @SuppressWarnings("all")
 public class SARLHiddenTokenSequencerTest extends AbstractSarlTest {
-	
+
 	@Inject
 	private ISerializer serializer;
 

@@ -25,11 +25,11 @@ import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
+import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.genmodel.GeneratedCode;
-import io.sarl.lang.signature.ActionKey;
-import io.sarl.lang.signature.SignatureKey;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -91,18 +91,18 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 				getSuperClass(), getSuperInterfaces());
 		this.sarlGenerator.attachComment(code, skill, typeComment);
 
-		Map<ActionKey, IMethod> operationsToImplement;
-		Map<SignatureKey, IMethod> constructors;
+		Map<ActionPrototype, IMethod> operationsToImplement;
+		Map<ActionParameterTypes, IMethod> constructors;
 
 		String superClass = getSuperClass();
 		if (Strings.isNullOrEmpty(superClass) || !isCreateConstructors()) {
 			constructors = null;
 		} else {
-			constructors = Maps.newTreeMap((Comparator<SignatureKey>) null);
+			constructors = Maps.newTreeMap((Comparator<ActionParameterTypes>) null);
 		}
 
 		if (isCreateInherited()) {
-			operationsToImplement = Maps.newTreeMap((Comparator<ActionKey>) null);
+			operationsToImplement = Maps.newTreeMap((Comparator<ActionPrototype>) null);
 		} else {
 			operationsToImplement = null;
 		}

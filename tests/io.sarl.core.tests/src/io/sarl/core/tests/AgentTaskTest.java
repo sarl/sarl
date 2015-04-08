@@ -46,7 +46,7 @@ public class AgentTaskTest extends AbstractSarlTest {
 
 	@Nullable
 	private AgentTask task;
-	
+
 	/**
 	 */
 	@Before
@@ -123,9 +123,9 @@ public class AgentTaskTest extends AbstractSarlTest {
 	public void unless_positive() {
 		Function1<Agent,Boolean> guard = Mockito.mock(Function1.class);
 		Mockito.doReturn(Boolean.TRUE).when(guard).apply(Matchers.any(Agent.class));
-		
+
 		assertSame(this.task, this.task.unless(guard));
-		
+
 		Function1<Agent,Boolean> negativeGuard = this.task.getGuard();
 		assertNotSame(guard, negativeGuard);
 		assertFalse(negativeGuard.apply(null));
@@ -137,9 +137,9 @@ public class AgentTaskTest extends AbstractSarlTest {
 	public void unless_negative() {
 		Function1<Agent,Boolean> guard = Mockito.mock(Function1.class);
 		Mockito.doReturn(Boolean.FALSE).when(guard).apply(Matchers.any(Agent.class));
-		
+
 		assertSame(this.task, this.task.unless(guard));
-		
+
 		Function1<Agent,Boolean> negativeGuard = this.task.getGuard();
 		assertNotSame(guard, negativeGuard);
 		assertTrue(negativeGuard.apply(null));
@@ -151,9 +151,9 @@ public class AgentTaskTest extends AbstractSarlTest {
 	public void ifTrue() {
 		Function1<Agent,Boolean> guard = Mockito.mock(Function1.class);
 		Mockito.doReturn(Boolean.TRUE).when(guard).apply(Matchers.any(Agent.class));
-		
+
 		assertSame(this.task, this.task.ifTrue(guard));
-		
+
 		Function1<Agent,Boolean> newGuard = this.task.getGuard();
 		assertSame(guard, newGuard);
 	}

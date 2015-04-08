@@ -45,7 +45,7 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 
 	@Inject
 	private ISerializer serializer;
-	
+
 	@Test
 	@TestScope(tycho=false)
 	public void earlyExistFunction_inAction_lastExpression_0() throws Exception {

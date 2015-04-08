@@ -11,7 +11,7 @@ import org.eclipse.xtext.junit4.IRegistryConfigurator;
 import com.google.inject.Injector;
 
 public class SARLInjectorProvider implements IInjectorProvider, IRegistryConfigurator {
-	
+
     protected GlobalStateMemento stateBeforeInjectorCreation;
 	protected GlobalStateMemento stateAfterInjectorCreation;
 	protected Injector injector;
@@ -29,7 +29,7 @@ public class SARLInjectorProvider implements IInjectorProvider, IRegistryConfigu
 		}
 		return injector;
 	}
-	
+
 	protected Injector internalCreateInjector() {
 	    return new SARLStandaloneSetup().createInjectorAndDoEMFRegistration();
 	}

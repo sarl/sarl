@@ -49,9 +49,9 @@ public abstract class AbstractSarlCoreTest<T> extends AbstractSarlTest {
 	 */
 	@Nullable
 	protected Class<? extends T> type;
-	
+
 	/** Load the given class, generated from the SARL code.
-	 * 
+	 *
 	 * @param classname - the name of the class.
 	 * @param expectedType - the type of the expected loaded class.
 	 */
@@ -72,9 +72,9 @@ public abstract class AbstractSarlCoreTest<T> extends AbstractSarlTest {
 		assertNotNull(this.classname);
 		assertNotNull(this.type);
 	}
-	
+
 	/** Assert the the specified method is defined in the loaded class.
-	 * 
+	 *
 	 * @param methodName - the name of the method.
 	 * @param returnType - the type of the returned value.
 	 * @param parameterTypes - the types of the paremeters.
@@ -93,7 +93,7 @@ public abstract class AbstractSarlCoreTest<T> extends AbstractSarlTest {
 	}
 
 	/** Assert the the specified field is defined in the loaded class.
-	 * 
+	 *
 	 * @param fieldName - the name of the field.
 	 * @param fieldType - the type of the field.
 	 * @return the field.
@@ -111,7 +111,7 @@ public abstract class AbstractSarlCoreTest<T> extends AbstractSarlTest {
 	}
 
 	/** Assert the the specified constructor is defined in the loaded class.
-	 * 
+	 *
 	 * @param parameterTypes - the types of the constructor parameters.
 	 * @return the constructor.
 	 */

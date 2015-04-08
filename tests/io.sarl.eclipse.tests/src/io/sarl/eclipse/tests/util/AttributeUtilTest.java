@@ -45,7 +45,7 @@ public final class AttributeUtilTest extends AbstractSarlTest {
 
 	@Nullable
 	private Map<String, String> mapStr;
-	
+
 	@Before
 	public void setUp() {
 		this.mapStr = new HashMap<>();
@@ -70,7 +70,7 @@ public final class AttributeUtilTest extends AbstractSarlTest {
 			this.mapStr.put(UUID.randomUUID().toString(), null);
 		}
 	}
-	
+
 	@Test
 	public void getMapStringString() {
 		String defaultValue = UUID.randomUUID().toString();

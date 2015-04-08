@@ -38,5 +38,5 @@ public final class MockFinalEvent extends Event {
 	public MockFinalEvent() {
 		//
 	}
-	
+
 }

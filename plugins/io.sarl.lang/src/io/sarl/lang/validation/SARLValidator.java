@@ -21,6 +21,11 @@
 package io.sarl.lang.validation;
 
 import io.sarl.lang.SARLLangActivator;
+import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.actionprototype.InferredPrototype;
+import io.sarl.lang.actionprototype.QualifiedActionName;
 import io.sarl.lang.annotation.Generated;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.core.Capacity;
@@ -46,11 +51,6 @@ import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.Skill;
 import io.sarl.lang.sarl.TopElement;
 import io.sarl.lang.services.SARLGrammarAccess;
-import io.sarl.lang.signature.ActionKey;
-import io.sarl.lang.signature.ActionNameKey;
-import io.sarl.lang.signature.ActionSignatureProvider;
-import io.sarl.lang.signature.InferredActionSignature;
-import io.sarl.lang.signature.SignatureKey;
 import io.sarl.lang.util.ModelUtil;
 
 import java.text.MessageFormat;
@@ -129,7 +129,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	private ILogicalContainerProvider logicalContainerProvider;
 
 	@Inject
-	private ActionSignatureProvider sarlSignatureProvider;
+	private ActionPrototypeProvider sarlSignatureProvider;
 
 	@Inject
 	private JvmModelAssociator jvmModelAssociator;
@@ -377,9 +377,9 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check(CheckType.FAST)
 	public void checkNoFeatureMultiDefinition(FeatureContainer featureContainer) {
 		Set<String> localFields = CollectionLiterals.newTreeSet((Comparator<String>) null);
-		Set<ActionKey> localFunctions = CollectionLiterals.newTreeSet((Comparator<ActionKey>) null);
-		ActionNameKey actionID;
-		SignatureKey signatureID;
+		Set<ActionPrototype> localFunctions = CollectionLiterals.newTreeSet((Comparator<ActionPrototype>) null);
+		QualifiedActionName actionID;
+		ActionParameterTypes signatureID;
 		String name;
 		EStructuralFeature errorStructFeature;
 		EObject errorFeature;
@@ -393,23 +393,24 @@ public class SARLValidator extends AbstractSARLValidator {
 			if (feature instanceof Action) {
 				Action action = (Action) feature;
 				name = action.getName();
-				actionID = this.sarlSignatureProvider.createFunctionID(container, name);
-				signatureID = this.sarlSignatureProvider.createSignatureIDFromSarlModel(action.isVarargs(), action.getParams());
+				actionID = this.sarlSignatureProvider.createQualifiedActionName(container, name);
+				signatureID = this.sarlSignatureProvider.createParameterTypesFromSarlModel(
+						action.isVarargs(), action.getParams());
 				errorFeature = action;
 				errorStructFeature = SarlPackage.Literals.ACTION__NAME;
 			} else if (feature instanceof ActionSignature) {
 				ActionSignature signature = (ActionSignature) feature;
 				name = signature.getName();
-				actionID = this.sarlSignatureProvider.createFunctionID(container, name);
-				signatureID = this.sarlSignatureProvider.createSignatureIDFromSarlModel(
+				actionID = this.sarlSignatureProvider.createQualifiedActionName(container, name);
+				signatureID = this.sarlSignatureProvider.createParameterTypesFromSarlModel(
 						signature.isVarargs(), signature.getParams());
 				errorFeature = signature;
 				errorStructFeature = SarlPackage.Literals.ACTION_SIGNATURE__NAME;
 			} else if (feature instanceof Constructor) {
 				Constructor constructor = (Constructor) feature;
 				name = this.grammarAccess.getConstructorAccess().getNewKeyword_1().getValue();
-				actionID = this.sarlSignatureProvider.createConstructorID(container);
-				signatureID = this.sarlSignatureProvider.createSignatureIDFromSarlModel(
+				actionID = this.sarlSignatureProvider.createConstructorQualifiedName(container);
+				signatureID = this.sarlSignatureProvider.createParameterTypesFromSarlModel(
 						constructor.isVarargs(), constructor.getParams());
 				errorFeature = constructor;
 				errorStructFeature = null;
@@ -437,23 +438,22 @@ public class SARLValidator extends AbstractSARLValidator {
 				}
 			}
 			if (actionID != null && signatureID != null) {
-				InferredActionSignature sig = this.sarlSignatureProvider.getSignatures(actionID, signatureID);
+				InferredPrototype sig = this.sarlSignatureProvider.getPrototypes(actionID, signatureID);
 				if (sig != null) {
-					for (SignatureKey key : sig.signatureKeys()) {
-						if (!localFunctions.add(key.toActionKey(name))) {
-							String funcName = name + "(" + sig.toString() + ")";  //$NON-NLS-1$//$NON-NLS-2$
-							error(
-									MessageFormat.format(
-											Messages.SARLValidator_6,
-											Messages.SARLValidator_8,
-											featureContainer.getName(),
-											funcName),
-											errorFeature,
-											errorStructFeature,
-											ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-											IssueCodes.DUPLICATE_METHOD,
-											funcName);
-						}
+					ActionParameterTypes key = sig.getFormalParameterTypes();
+					if (!localFunctions.add(key.toActionPrototype(name))) {
+						String funcName = name + "(" + sig.toString() + ")";  //$NON-NLS-1$//$NON-NLS-2$
+						error(
+								MessageFormat.format(
+										Messages.SARLValidator_6,
+										Messages.SARLValidator_8,
+										featureContainer.getName(),
+										funcName),
+										errorFeature,
+										errorStructFeature,
+										ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+										IssueCodes.DUPLICATE_METHOD,
+										funcName);
 					}
 				}
 			}
@@ -708,10 +708,14 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkInheritedFeatures(InheritingElement element) {
 		JvmGenericType jvmElement = getJvmGenericType(element);
 		if (jvmElement != null) {
-			Map<ActionKey, JvmOperation> finalOperations = CollectionLiterals.newTreeMap((Comparator<ActionKey>) null);
-			Map<ActionKey, JvmOperation> overridableOperations = CollectionLiterals.newTreeMap((Comparator<ActionKey>) null);
-			Map<String, JvmField> inheritedFields = CollectionLiterals.newTreeMap((Comparator<String>) null);
-			Map<ActionKey, JvmOperation> operationsToImplement = CollectionLiterals.newTreeMap((Comparator<ActionKey>) null);
+			Map<ActionPrototype, JvmOperation> finalOperations =
+					CollectionLiterals.newTreeMap((Comparator<ActionPrototype>) null);
+			Map<ActionPrototype, JvmOperation> overridableOperations =
+					CollectionLiterals.newTreeMap((Comparator<ActionPrototype>) null);
+			Map<String, JvmField> inheritedFields =
+					CollectionLiterals.newTreeMap((Comparator<String>) null);
+			Map<ActionPrototype, JvmOperation> operationsToImplement =
+					CollectionLiterals.newTreeMap((Comparator<ActionPrototype>) null);
 
 			ModelUtil.populateInheritanceContext(
 					jvmElement,
@@ -793,9 +797,9 @@ public class SARLValidator extends AbstractSARLValidator {
 				// The missed function may be generated on the Java side
 				// (see generateMissedFunction function in SARLJvmModelInferrer).
 				for (JvmOperation javaOp : jvmElement.getDeclaredOperations()) {
-					SignatureKey sig = this.sarlSignatureProvider.createSignatureIDFromJvmModel(
+					ActionParameterTypes sig = this.sarlSignatureProvider.createParameterTypesFromJvmModel(
 							javaOp.isVarArgs(), javaOp.getParameters());
-					ActionKey actionKey = this.sarlSignatureProvider.createActionID(javaOp.getSimpleName(), sig);
+					ActionPrototype actionKey = this.sarlSignatureProvider.createActionPrototype(javaOp.getSimpleName(), sig);
 					operationsToImplement.remove(actionKey);
 				}
 
@@ -869,18 +873,18 @@ public class SARLValidator extends AbstractSARLValidator {
 	}
 
 	private void checkInheritedActionElement(
-			Map<ActionKey, JvmOperation> finalOperations,
-			Map<ActionKey, JvmOperation> overridableOperations,
-			Map<ActionKey, JvmOperation> operationsToImplement,
+			Map<ActionPrototype, JvmOperation> finalOperations,
+			Map<ActionPrototype, JvmOperation> overridableOperations,
+			Map<ActionPrototype, JvmOperation> operationsToImplement,
 			EObject referenceObject,
 			String name,
 			ParameterizedFeature paramOwner,
 			JvmTypeReference type,
 			EAttribute nameAttribute,
 			EReference typeAttribute) {
-		SignatureKey sig = this.sarlSignatureProvider.createSignatureIDFromSarlModel(
+		ActionParameterTypes sig = this.sarlSignatureProvider.createParameterTypesFromSarlModel(
 				paramOwner.isVarargs(), paramOwner.getParams());
-		ActionKey actionKey = this.sarlSignatureProvider.createActionID(name, sig);
+		ActionPrototype actionKey = this.sarlSignatureProvider.createActionPrototype(name, sig);
 		if (finalOperations.containsKey(actionKey)) {
 			error(
 					MessageFormat.format(
@@ -939,24 +943,25 @@ public class SARLValidator extends AbstractSARLValidator {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void checkImplicitConstructorCall(FeatureContainer container, SignatureKey[] defaultSignatures) {
+	private void checkImplicitConstructorCall(FeatureContainer container, ActionParameterTypes[] defaultSignatures) {
 		JvmGenericType jvmElement = getJvmGenericType(container);
 		if (jvmElement != null) {
-			Map<SignatureKey, JvmConstructor> superConstructors = CollectionLiterals.newTreeMap((Comparator<SignatureKey>) null);
+			Map<ActionParameterTypes, JvmConstructor> superConstructors =
+					CollectionLiterals.newTreeMap((Comparator<ActionParameterTypes>) null);
 			JvmTypeReference typeRef = jvmElement.getExtendedClass();
 			JvmType supertype = (typeRef == null) ? null : typeRef.getType();
 			if (supertype != null) {
 				JvmGenericType jvmSuperElement = getJvmGenericType(supertype);
 				if (jvmSuperElement != null) {
 					for (JvmConstructor superConstructor : jvmSuperElement.getDeclaredConstructors()) {
-						SignatureKey sig = this.sarlSignatureProvider.createSignatureIDFromJvmModel(
+						ActionParameterTypes sig = this.sarlSignatureProvider.createParameterTypesFromJvmModel(
 								superConstructor.isVarArgs(), superConstructor.getParameters());
 						superConstructors.put(sig, superConstructor);
 					}
 				}
 			}
 
-			SignatureKey voidKey = this.sarlSignatureProvider.createSignatureIDForVoid();
+			ActionParameterTypes voidKey = this.sarlSignatureProvider.createParameterTypesForVoid();
 			boolean hasDeclaredConstructor = false;
 
 			for (EObject feature : container.getFeatures()) {
@@ -998,13 +1003,13 @@ public class SARLValidator extends AbstractSARLValidator {
 			}
 
 			if (!hasDeclaredConstructor) {
-				for (SignatureKey defaultSignature : defaultSignatures) {
+				for (ActionParameterTypes defaultSignature : defaultSignatures) {
 					if (!superConstructors.containsKey(defaultSignature)) {
 						assert (supertype != null);
 						error(
 								MessageFormat.format(
 										Messages.SARLValidator_20,
-										this.sarlSignatureProvider.createActionID(
+										this.sarlSignatureProvider.createActionPrototype(
 												supertype.getSimpleName(),
 												defaultSignature)),
 												container,
@@ -1024,9 +1029,9 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public void checkImplicitConstructorCall(io.sarl.lang.sarl.Event event) {
-		checkImplicitConstructorCall(event, new SignatureKey[] {
-				this.sarlSignatureProvider.createSignatureIDForVoid(),
-				this.sarlSignatureProvider.createSignatureIDFromString("io.sarl.lang.core.Address"), //$NON-NLS-1$
+		checkImplicitConstructorCall(event, new ActionParameterTypes[] {
+				this.sarlSignatureProvider.createParameterTypesForVoid(),
+				this.sarlSignatureProvider.createParameterTypesFromString("io.sarl.lang.core.Address"), //$NON-NLS-1$
 		});
 	}
 
@@ -1036,8 +1041,8 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public void checkImplicitConstructorCall(Behavior behavior) {
-		checkImplicitConstructorCall(behavior, new SignatureKey[] {
-				this.sarlSignatureProvider.createSignatureIDFromString("io.sarl.lang.core.Agent"), //$NON-NLS-1$
+		checkImplicitConstructorCall(behavior, new ActionParameterTypes[] {
+				this.sarlSignatureProvider.createParameterTypesFromString("io.sarl.lang.core.Agent"), //$NON-NLS-1$
 		});
 	}
 

@@ -51,7 +51,7 @@ import com.google.inject.Inject;
 public class VarDeclarationParsingTest extends AbstractSarlTest {
 	@Inject
 	private ParseHelper<SarlScript> parser;
-	
+
 	@Inject
 	private ValidationTestHelper validator;
 
@@ -531,5 +531,5 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		assertTypeReferenceIdentifier(action2.getType(), "void");
 		assertParameterNames(action2.getParams());
 	}
-	
+
 }

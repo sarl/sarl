@@ -45,12 +45,12 @@ public class StandardProjectSREProviderFactoryTest extends AbstractSarlTest {
 
 	@Nullable
 	private StandardProjectSREProviderFactory factory;
-	
+
 	@Before
 	public void setUp() {
 		this.factory = new StandardProjectSREProviderFactory();
 	}
-	
+
 	@Test
 	public void getProjectSREProvider() {
 		IProject project = mock(IProject.class);

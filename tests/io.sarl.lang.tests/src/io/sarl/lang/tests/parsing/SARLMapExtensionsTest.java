@@ -47,10 +47,10 @@ import com.google.inject.Inject;
  */
 @SuppressWarnings("all")
 public class SARLMapExtensionsTest extends AbstractSarlTest {
-	
+
 	@Inject
 	private ParseHelper<SarlScript> parser;
-	
+
 	@Inject
 	private ValidationTestHelper validator;
 

@@ -46,7 +46,7 @@ public class LabelProviderTest extends AbstractSarlTest {
 
 	@Nullable
 	private LabelProvider provider;
-	
+
 	@Before
 	public void setUp() {
 		this.provider = new LabelProvider();

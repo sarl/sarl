@@ -79,7 +79,7 @@ public class StandardProjectSREProviderTest extends AbstractSarlUiTest {
 		});
 		this.provider = new StandardProjectSREProvider(this.project);
 	}
-	
+
 	@Test
 	public void hasProjectSpecificSREConfiguration() {
 		assertTrue(this.provider.hasProjectSpecificSREConfiguration());

@@ -56,7 +56,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 
 	@Inject
 	private Injector injector;
-	
+
 	/** This rule permits to create a project and clean the workspace.
 	 */
 	@Rule
@@ -104,7 +104,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	protected WorkspaceTestHelper helper;
 
 	/** Merge two arrays.
-	 * 
+	 *
 	 * @param operand1 - the first array.
 	 * @param operand2 - the second array.
 	 * @return the merge.
@@ -132,7 +132,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	}
 
 	/** Create an instance of the given class.
-	 * 
+	 *
 	 * @param clazz - type of the instance to create.
 	 * @return the instance.
 	 */
@@ -141,7 +141,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	}
 
 	/** Parse the given code with the current project classpath.
-	 * 
+	 *
 	 * @param code - the multiline code to parse.
 	 * @return the parsed code tree.
 	 * @throws Exception - when parsing cannot be done.
@@ -153,7 +153,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	}
 
 	/** Build a path.
-	 * 
+	 *
 	 * @param path - path elements.
 	 * @return the path.
 	 */
@@ -167,7 +167,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	}
 
 	/** Build a path.
-	 * 
+	 *
 	 * @param path - path elements.
 	 * @return the path.
 	 */
@@ -206,9 +206,9 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 				actual.hashCode());
 		assertEquals(expectedFlags, ((JavaElementImageDescriptor) actual).getAdronments());
 	}
-	
+
 	/** Generate a filename for a resource that does not exist yet.
-	 * 
+	 *
 	 * @param pathElements - the elements of the path (directories and basename), without the extension.
 	 * @return the filename.
 	 */
@@ -226,7 +226,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	}
 
 	/** Generate a filename for a resource that does not exist yet.
-	 * 
+	 *
 	 * @return the filename.
 	 */
 	protected String generateFilename() {
