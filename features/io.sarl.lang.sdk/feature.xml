@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.lang.sdk"
       label="SARL Language Definition"
-      version="0.2.0"
+      version="1.0.0.qualifier"
       plugin="io.sarl.lang.ui">
 
    <description url="http://www.sarl.io/about/">
@@ -11,7 +11,7 @@ integrated tools for the Eclipse IDE.
    </description>
 
    <copyright url="http://www.sarl.io/about/">
-      Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+      Copyright 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
    </copyright>
 
    <license url="http://www.apache.org/licenses/LICENSE-2.0">
@@ -223,14 +223,14 @@ integrated tools for the Eclipse IDE.
    </url>
 
    <requires>
-      <import plugin="io.sarl.lang.core" version="0.2.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.lang.core" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.mwe2.launch" version="2.7.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.osgi" version="3.10.2" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.ecore" version="2.10.2" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.common" version="2.10.1" match="greaterOrEqual"/>
       <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
       <import plugin="org.apache.log4j"/>
-      <import plugin="io.sarl.lang" version="0.2.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.lang" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.compare" version="3.5.501" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.core" version="3.10.2" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.ui" version="3.10.2" match="greaterOrEqual"/>

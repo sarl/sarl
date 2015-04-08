@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: io.sarl.tests.testdata;singleton:=true
-Bundle-Version: 0.2.0
+Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Name: %Bundle-Name
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: io.sarl.lang.core;bundle-version="0.2.0",
- io.sarl.lang;bundle-version="0.2.0"
+Require-Bundle: io.sarl.lang.core;bundle-version="1.0.0",
+ io.sarl.lang;bundle-version="1.0.0"
 Export-Package: foo;uses:="io.sarl.lang.core"
 Bundle-ActivationPolicy: lazy
