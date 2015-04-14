@@ -5,7 +5,7 @@
 
 	<groupId>io.sarl</groupId>
 	<artifactId>io.sarl</artifactId>
-	<version>0.2.0-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 
 	<name>SARL Agent Oriented Programming Language</name>
 	<url>${sarl.url}</url>
@@ -27,14 +27,15 @@
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 		<buildId>${maven.build.timestamp}</buildId>
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.7.3</xtext.version>
-		<!-- Version of the Jnario API -->
+		<xtext.version>2.8.1</xtext.version>
+		<xtext.versionRange>[2.8.1,2.8.2)</xtext.versionRange>
+		<!-- Version of the Jnario PI -->
 		<jnario.version>1.0.0</jnario.version>
 		<jnario.report.version>1.0.1</jnario.report.version>
 		<!-- Version of the OSGi module that provides the NLS -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
 		<!-- Year of the release of SARL (used in Eclipse about, license management and documentation) -->
-		<year>2014</year>
+		<year>2015</year>
 		<!-- URL of the SARL project (use in POM, Eclipse about and documentation) -->
 		<sarl.url>http://www.sarl.io</sarl.url>
 		<!-- Default encoding of the source files -->
@@ -94,7 +95,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.2</version>
+					<version>3.3</version>
 					<configuration>
 						<source>${compiler.level}</source>
 						<target>${compiler.level}</target>
@@ -105,7 +106,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.1</version>
+					<version>2.10.2</version>
 				</plugin>
 
 				<plugin>
@@ -171,7 +172,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>2.14</version>
+					<version>2.15</version>
 					<executions>
 						<execution>
 							<phase>process-classes</phase>
@@ -401,7 +402,7 @@
 									println("\tbuildId: "+ project.properties.buildId)
 								}
 
-								snapshotTag = "-SNAPSHOT"
+								snapshotTag = ""
 								if (project.version.endsWith(snapshotTag)) {
 									len = project.version.size() - snapshotTag.size()
 									version = project.version.substring(0,len)
@@ -633,7 +634,7 @@
 			<url>${local.maven.repository.path}</url>
 		</repository>
 		<snapshotRepository>
-			<id>local-snapshot-repository</id>
+			<id>local-repository</id>
 			<url>${local.maven.repository.path}</url>
 		</snapshotRepository>
 	</distributionManagement>

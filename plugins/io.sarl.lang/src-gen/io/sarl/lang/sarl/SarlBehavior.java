@@ -2,8 +2,6 @@
  */
 package io.sarl.lang.sarl;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
@@ -27,19 +25,29 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 public interface SarlBehavior extends XtendTypeDeclaration
 {
   /**
-   * Returns the value of the '<em><b>Extends</b></em>' containment reference list.
-   * The list contents are of type {@link org.eclipse.xtext.common.types.JvmParameterizedTypeReference}.
+   * Returns the value of the '<em><b>Extends</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Extends</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Extends</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Extends</em>' containment reference list.
+   * @return the value of the '<em>Extends</em>' containment reference.
+   * @see #setExtends(JvmParameterizedTypeReference)
    * @see io.sarl.lang.sarl.SarlPackage#getSarlBehavior_Extends()
    * @model containment="true"
    * @generated
    */
-  EList<JvmParameterizedTypeReference> getExtends();
+  JvmParameterizedTypeReference getExtends();
+
+  /**
+   * Sets the value of the '{@link io.sarl.lang.sarl.SarlBehavior#getExtends <em>Extends</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Extends</em>' containment reference.
+   * @see #getExtends()
+   * @generated
+   */
+  void setExtends(JvmParameterizedTypeReference value);
 
 } // SarlBehavior

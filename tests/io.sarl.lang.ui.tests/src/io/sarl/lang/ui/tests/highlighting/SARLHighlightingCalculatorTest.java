@@ -44,7 +44,7 @@ public class SARLHighlightingCalculatorTest extends AbstractSARLHighlightingCalc
 	protected ISemanticHighlightingCalculator getCalculator() {
 		return this.calculator;
 	}
-	
+
 	/**
 	 */
 	@Test

@@ -31,7 +31,7 @@ class MockedSARLOutlineNodeComparator extends SARLOutlineNodeComparator {
 	public MockedSARLOutlineNodeComparator() {
 		//
 	}
-	
+
 	@Override
 	public boolean isEnabled() {
 		return true;

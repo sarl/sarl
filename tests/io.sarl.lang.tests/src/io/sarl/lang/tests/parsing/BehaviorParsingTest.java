@@ -16,8 +16,8 @@
 package io.sarl.lang.tests.parsing;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlPackage;
@@ -29,8 +29,6 @@ import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.common.types.TypesPackage;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.xbase.XNumberLiteral;
@@ -61,10 +59,8 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class BehaviorParsingTest {
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class TopElementTest extends AbstractSarlTest {
-	
+
 		@Inject
 		private ParseHelper<XtendFile> parser;
 		
@@ -175,14 +171,12 @@ public class BehaviorParsingTest {
 		}
 
 	}
-	
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
+
 	public static class ActionTest extends AbstractSarlTest {
-	
+
 		@Inject
 		private ParseHelper<XtendFile> parser;
-		
+
 		@Inject
 		private ValidationTestHelper validator;
 
@@ -303,12 +297,12 @@ public class BehaviorParsingTest {
 			//
 			SarlBehavior behavior1 = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior1.getName());
-			assertTypeReferenceIdentifiers(behavior1.getExtends());
+			assertNull(behavior1.getExtends());
 			assertEquals(1, behavior1.getMembers().size());
 			//
 			SarlAction action1 = (SarlAction) behavior1.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
-			assertTypeReferenceIdentifiers(action1.getFiredEvents());
+			assertNull(action1.getFiredEvents());
 			assertTypeReferenceIdentifier(action1.getReturnType(), "java.lang.Number");
 			assertParameterNames(action1.getParameters(), "a");
 			assertParameterTypes(action1.getParameters(), "int");
@@ -316,12 +310,12 @@ public class BehaviorParsingTest {
 			//
 			SarlBehavior behavior2= (SarlBehavior) mas.getXtendTypes().get(1);
 			assertEquals("B2", behavior2.getName());
-			assertTypeReferenceIdentifiers(behavior2.getExtends(), "B1");
+			assertTypeReferenceIdentifier(behavior2.getExtends(), "B1");
 			assertEquals(1, behavior2.getMembers().size());
 			//
 			SarlAction action2 = (SarlAction) behavior2.getMembers().get(0);
 			assertEquals("myaction", action2.getName());
-			assertTypeReferenceIdentifiers(action2.getFiredEvents());
+			assertNull(action2.getFiredEvents());
 			assertTypeReferenceIdentifier(action2.getReturnType(), "java.lang.Double");
 			assertParameterNames(action2.getParameters(), "a");
 			assertParameterTypes(action2.getParameters(), "int");
@@ -349,12 +343,12 @@ public class BehaviorParsingTest {
 			//
 			SarlBehavior behavior1 = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior1.getName());
-			assertTypeReferenceIdentifiers(behavior1.getExtends());
+			assertNull(behavior1.getExtends());
 			assertEquals(1, behavior1.getMembers().size());
 			//
 			SarlAction action1 = (SarlAction) behavior1.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
-			assertTypeReferenceIdentifiers(action1.getFiredEvents());
+			assertNull(action1.getFiredEvents());
 			assertTypeReferenceIdentifier(action1.getReturnType(), "float");
 			assertParameterNames(action1.getParameters(), "a");
 			assertParameterTypes(action1.getParameters(), "int");
@@ -362,12 +356,12 @@ public class BehaviorParsingTest {
 			//
 			SarlBehavior behavior2= (SarlBehavior) mas.getXtendTypes().get(1);
 			assertEquals("B2", behavior2.getName());
-			assertTypeReferenceIdentifiers(behavior2.getExtends(), "B1");
+			assertTypeReferenceIdentifier(behavior2.getExtends(), "B1");
 			assertEquals(1, behavior2.getMembers().size());
 			//
 			SarlAction action2 = (SarlAction) behavior2.getMembers().get(0);
 			assertEquals("myaction", action2.getName());
-			assertTypeReferenceIdentifiers(action2.getFiredEvents());
+			assertNull(action2.getFiredEvents());
 			assertTypeReferenceIdentifier(action2.getReturnType(), "float");
 			assertParameterNames(action2.getParameters(), "a");
 			assertParameterTypes(action2.getParameters(), "int");
@@ -390,13 +384,11 @@ public class BehaviorParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class AttributeTest extends AbstractSarlTest {
-	
+
 		@Inject
 		private ParseHelper<XtendFile> parser;
-		
+
 		@Inject
 		private ValidationTestHelper validator;
 
@@ -473,7 +465,7 @@ public class BehaviorParsingTest {
 				org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_INITIALIZATION,
 				"The blank final field 'field2' may not have been initialized");
 		}
-		
+
 		@Test
 		public void completeFinalFieldInitialization() throws Exception {
 			XtendFile mas = this.parser.parse(multilineString(
@@ -489,7 +481,7 @@ public class BehaviorParsingTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(2, behavior.getMembers().size());
 			//
 			XtendField attr1 = (XtendField) behavior.getMembers().get(0);
@@ -523,13 +515,11 @@ public class BehaviorParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class ConstructorTest extends AbstractSarlTest {
-	
+
 		@Inject
 		private ParseHelper<XtendFile> parser;
-		
+
 		@Inject
 		private ValidationTestHelper validator;
 
@@ -552,12 +542,12 @@ public class BehaviorParsingTest {
 			//
 			SarlBehavior behavior1 = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior1.getName());
-			assertTypeReferenceIdentifiers(behavior1.getExtends());
+			assertNull(behavior1.getExtends());
 			assertEquals(0, behavior1.getMembers().size());
 			//
 			SarlBehavior behavior2 = (SarlBehavior) mas.getXtendTypes().get(1);
 			assertEquals("B2", behavior2.getName());
-			assertTypeReferenceIdentifiers(behavior2.getExtends(), "io.sarl.test.B1");
+			assertTypeReferenceIdentifier(behavior2.getExtends(), "io.sarl.test.B1");
 			assertEquals(1, behavior2.getMembers().size());
 			//
 			XtendConstructor constructor = (XtendConstructor) behavior2.getMembers().get(0);
@@ -643,14 +633,12 @@ public class BehaviorParsingTest {
 		}
 
 	}
-	
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
+
 	public static class CapacityUsesTest extends AbstractSarlTest {
-	
+
 		@Inject
 		private ParseHelper<XtendFile> parser;
-		
+
 		@Inject
 		private ValidationTestHelper validator;
 
@@ -690,5 +678,5 @@ public class BehaviorParsingTest {
 		}
 
 	}
-	
+
 }

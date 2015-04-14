@@ -105,7 +105,7 @@ public final class SARLRuntimeTest {
 		}
 		return installs;
 	}
-	
+
 	/**
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -157,13 +157,13 @@ public final class SARLRuntimeTest {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	public static class GetterSetter extends AbstractSarlUiTest {
-		
+
 		@Nullable
 		private SARLEclipsePlugin plugin;
-		
+
 		@Nullable
 		private IEclipsePreferences preferences;
-		
+
 		@Nullable
 		private BundleContext bundleContext;
 
@@ -533,13 +533,13 @@ public final class SARLRuntimeTest {
 
 		@Nullable
 		private ISREInstallChangedListener listener;
-		
+
 		@Nullable
 		private SARLEclipsePlugin plugin;
-		
+
 		@Nullable
 		private IEclipsePreferences preferences;
-		
+
 		@Before
 		public void setUp() throws Exception {
 			this.preferences = mock(IEclipsePreferences.class);
@@ -603,10 +603,10 @@ public final class SARLRuntimeTest {
 
 		@Nullable
 		private SARLEclipsePlugin plugin;
-		
+
 		@Nullable
 		private IEclipsePreferences preferences;
-		
+
 		@Nullable
 		private BundleContext bundleContext;
 
@@ -823,7 +823,7 @@ public final class SARLRuntimeTest {
 			assertEquals("unpackedSRE", file.getName());
 			return file;
 		}
-		
+
 		private File getUnpackedJAR() throws Exception {
 			URL url = Foo.class.getResource("/foo/unpackedJAR/META-INF/MANIFEST.MF");
 			assertNotNull(url);
@@ -834,7 +834,7 @@ public final class SARLRuntimeTest {
 			assertEquals("unpackedJAR", file.getName());
 			return file;
 		}
-		
+
 		private File getPackedSRE() throws Exception {
 			URL url = Foo.class.getResource("/foo/foo2.jar");
 			assertNotNull(url);

@@ -42,12 +42,12 @@ public class SARLProjectNatureTest extends AbstractSarlTest {
 
 	@Nullable
 	private SARLProjectNature nature;
-	
+
 	@Before
 	public void setUp() {
 		this.nature = new SARLProjectNature();
 	}
-	
+
 	@Test
 	public void configure() {
 		//

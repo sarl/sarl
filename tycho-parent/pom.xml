@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>io.sarl</groupId>
 		<artifactId>io.sarl</artifactId>
-		<version>0.2.0-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>io.sarl.tycho-parent</artifactId>
@@ -91,6 +91,15 @@
 							<version>${project.version}</version>
 						</artifact>
 					</target>
+					<filters>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.xtext.xbase</id>
+							<restrictTo>
+								<versionRange>${xtext.versionRange}</versionRange>
+							</restrictTo>
+						</filter>
+					</filters>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -103,7 +112,10 @@
 					<version>${tycho.version}</version>
 					<configuration>
 						<useUIHarness>true</useUIHarness>
-						<useUIThread>false</useUIThread>
+						<useUIThread>true</useUIThread>
+						<runOrder>alphabetical</runOrder>
+						<product>io.sarl.eclipse.io_sarl_lang_product</product>
+						<application>org.eclipse.ui.ide.workbench</application>
 					</configuration>
 				</plugin>
 
@@ -147,6 +159,11 @@
 			<id>org.eclipse.xtext.update.lastest</id>
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/</url>
+		</repository>
+		<repository>
+			<id>org.jboss.m2e-jdt-compiler.update.lastest</id>
+			<layout>p2</layout>
+			<url>http://download.jboss.org/jbosstools/updates/m2e-extensions/m2e-jdt-compiler/</url>
 		</repository>
 		<repository>
 			<id>com.googlecode.powermock-osgi</id>

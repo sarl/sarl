@@ -7550,7 +7550,7 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
                       	        if (current==null) {
                       	            current = createModelElementForParent(grammarAccess.getEventRule());
                       	        }
-                             		add(
+                             		set(
                              			current, 
                              			"extends",
                               		lv_extends_7_0, 
@@ -8100,7 +8100,7 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
                       	        if (current==null) {
                       	            current = createModelElementForParent(grammarAccess.getAgentRule());
                       	        }
-                             		add(
+                             		set(
                              			current, 
                              			"extends",
                               		lv_extends_7_0, 
@@ -9250,7 +9250,7 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
                       	        if (current==null) {
                       	            current = createModelElementForParent(grammarAccess.getBehaviorRule());
                       	        }
-                             		add(
+                             		set(
                              			current, 
                              			"extends",
                               		lv_extends_7_0, 
@@ -9896,7 +9896,7 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
             	      	        if (current==null) {
             	      	            current = createModelElementForParent(grammarAccess.getSkillRule());
             	      	        }
-            	             		add(
+            	             		set(
             	             			current, 
             	             			"extends",
             	              		lv_extends_8_0, 

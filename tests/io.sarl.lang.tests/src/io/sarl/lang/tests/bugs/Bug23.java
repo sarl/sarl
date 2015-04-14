@@ -38,8 +38,6 @@ import com.google.inject.Inject;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(XtextRunner.class)
-@InjectWith(SARLInjectorProvider.class)
 @SuppressWarnings("all")
 public class Bug23 extends AbstractSarlTest {
 
@@ -49,7 +47,7 @@ public class Bug23 extends AbstractSarlTest {
 	@Inject
 	private ValidationTestHelper validator;
 
-	@Inject 
+	@Inject
 	private CompilationTestHelper compiler;
 
 	private CharSequence snippet = multilineString(

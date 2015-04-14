@@ -27,6 +27,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.actionprototype.ActionPrototypeProvider;
 import io.sarl.lang.genmodel.BlockInnerDocumentationAdapter;
 import io.sarl.lang.genmodel.GeneratedCode;
 import io.sarl.lang.genmodel.PostDocumentationAdapter;
@@ -39,7 +40,6 @@ import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.signature.ActionSignatureProvider;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.Nullable;
@@ -71,7 +71,6 @@ import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.resource.IResourceFactory;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.xbase.XBlockExpression;
@@ -142,9 +141,7 @@ public class SARLCodeGeneratorTest {
 					imports.contains(declaration));
 		}
 	}
-	
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
+
 	public static class InjectedAttributes extends AbstractSarlTest {
 
 		@Inject
@@ -157,7 +154,7 @@ public class SARLCodeGeneratorTest {
 		private IResourceFactory resourceFactory;
 
 		@Inject
-		ActionSignatureProvider actionSignatureProvider;
+		ActionPrototypeProvider actionSignatureProvider;
 
 		@Inject
 		private SARLCodeGenerator gen;
@@ -191,8 +188,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class DefaultTypeValue extends AbstractSarlTest {
 
 		@Inject
@@ -321,8 +316,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class References extends AbstractSarlTest {
 
 		@Inject
@@ -392,8 +385,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class Comments extends AbstractSarlTest {
 
 		@Inject
@@ -452,8 +443,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class ScriptLevel extends AbstractSarlTest {
 
 		@Inject
@@ -511,8 +500,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class AgentTopElement extends AbstractSarlTest {
 
 		@Inject
@@ -558,25 +545,25 @@ public class SARLCodeGeneratorTest {
 			when(context.getXtendTypes()).thenReturn(elements);
 		}
 
-		@Test	
+		@Test
 		public void nullSuperClass()  {
 			SarlAgent agent = gen.createAgent(code, "MyAgent", null);
 			assertNotNull(agent);
 			assertEquals("MyAgent", agent.getName());
-			assertTrue(agent.getExtends().isEmpty());
+			assertNull(agent.getExtends());
 			assertTrue(agent.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void agentSuperClass()  {
 			SarlAgent agent = gen.createAgent(code, "MyAgent", "io.sarl.lang.core.Agent");
 			assertNotNull(agent);
 			assertEquals("MyAgent", agent.getName());
-			assertTrue(agent.getExtends().isEmpty());
+			assertNull(agent.getExtends());
 			assertTrue(agent.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void subagentSuperClass()  {
 			when(jvmType.getIdentifier()).thenReturn("foo.ecore.SubAgent");
 			when(jvmType.getQualifiedName(Matchers.anyChar())).thenReturn("foo.ecore.SubAgent");
@@ -587,11 +574,11 @@ public class SARLCodeGeneratorTest {
 			//
 			assertNotNull(agent);
 			assertEquals("MyAgent", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends(), "foo.ecore.SubAgent");
+			assertTypeReferenceIdentifier(agent.getExtends(), "foo.ecore.SubAgent");
 			assertTrue(agent.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void otherSuperClass()  {
 			when(jvmType.getIdentifier()).thenReturn("foo.Foo");
 			when(jvmType.getQualifiedName(Matchers.anyChar())).thenReturn("foo.Foo");
@@ -602,14 +589,12 @@ public class SARLCodeGeneratorTest {
 			//
 			assertNotNull(agent);
 			assertEquals("MyAgent", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends(), "foo.Foo");
+			assertTypeReferenceIdentifier(agent.getExtends(), "foo.Foo");
 			assertTrue(agent.getMembers().isEmpty());
 		}
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class BehaviorTopElement extends AbstractSarlTest {
 
 		@Inject
@@ -655,25 +640,25 @@ public class SARLCodeGeneratorTest {
 			when(context.getXtendTypes()).thenReturn(elements);
 		}
 
-		@Test	
+		@Test
 		public void nullSuperClass()  {
 			SarlBehavior behavior = gen.createBehavior(code, "MyBehavior", null);
 			assertNotNull(behavior);
 			assertEquals("MyBehavior", behavior.getName());
-			assertTrue(behavior.getExtends().isEmpty());
+			assertNull(behavior.getExtends());
 			assertTrue(behavior.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void behaviorSuperClass()  {
 			SarlBehavior behavior = gen.createBehavior(code, "MyBehavior", "io.sarl.lang.core.Behavior");
 			assertNotNull(behavior);
 			assertEquals("MyBehavior", behavior.getName());
-			assertTrue(behavior.getExtends().isEmpty());
+			assertNull(behavior.getExtends());
 			assertTrue(behavior.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void subbehaviorSuperClass()  {
 			when(jvmType.getIdentifier()).thenReturn("foo.ecore.SubBehavior");
 			when(jvmType.getQualifiedName(Matchers.anyChar())).thenReturn("foo.ecore.SubBehavior");
@@ -684,11 +669,11 @@ public class SARLCodeGeneratorTest {
 			//
 			assertNotNull(behavior);
 			assertEquals("MyBehavior", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends(), "foo.ecore.SubBehavior");
+			assertTypeReferenceIdentifier(behavior.getExtends(), "foo.ecore.SubBehavior");
 			assertTrue(behavior.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void otherSuperClass()  {
 			when(jvmType.getIdentifier()).thenReturn("foo.Foo");
 			when(jvmType.getQualifiedName(Matchers.anyChar())).thenReturn("foo.Foo");
@@ -699,14 +684,12 @@ public class SARLCodeGeneratorTest {
 			//
 			assertNotNull(behavior);
 			assertEquals("MyBehavior", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends(), "foo.Foo");
+			assertTypeReferenceIdentifier(behavior.getExtends(), "foo.Foo");
 			assertTrue(behavior.getMembers().isEmpty());
 		}
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CapacityTopElement extends AbstractSarlTest {
 
 		@Inject
@@ -761,7 +744,7 @@ public class SARLCodeGeneratorTest {
 			assertTrue(capacity.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void behaviorSuperClass()  {
 			SarlCapacity capacity = gen.createCapacity(code, "MyCapacity", "io.sarl.lang.core.Capacity");
 			assertNotNull(capacity);
@@ -770,7 +753,7 @@ public class SARLCodeGeneratorTest {
 			assertTrue(capacity.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void subbehaviorSuperClass()  {
 			when(jvmType.getIdentifier()).thenReturn("foo.ecore.SubCapacity");
 			when(jvmType.getQualifiedName(Matchers.anyChar())).thenReturn("foo.ecore.SubCapacity");
@@ -785,7 +768,7 @@ public class SARLCodeGeneratorTest {
 			assertTrue(capacity.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void otherSuperClass()  {
 			when(jvmType.getIdentifier()).thenReturn("foo.Foo");
 			when(jvmType.getQualifiedName(Matchers.anyChar())).thenReturn("foo.Foo");
@@ -802,8 +785,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class EventTopElement extends AbstractSarlTest {
 
 		@Inject
@@ -849,25 +830,25 @@ public class SARLCodeGeneratorTest {
 			when(context.getXtendTypes()).thenReturn(elements);
 		}
 
-		@Test	
+		@Test
 		public void nullSuperClass()  {
 			SarlEvent event = gen.createEvent(code, "MyEvent", null);
 			assertNotNull(event);
 			assertEquals("MyEvent", event.getName());
-			assertTrue(event.getExtends().isEmpty());
+			assertNull(event.getExtends());
 			assertTrue(event.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void behaviorSuperClass()  {
 			SarlEvent event = gen.createEvent(code, "MyEvent", "io.sarl.lang.core.Event");
 			assertNotNull(event);
 			assertEquals("MyEvent", event.getName());
-			assertTrue(event.getExtends().isEmpty());
+			assertNull(event.getExtends());
 			assertTrue(event.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void subbehaviorSuperClass()  {
 			when(jvmType.getIdentifier()).thenReturn("foo.ecore.SubEvent");
 			when(jvmType.getQualifiedName(Matchers.anyChar())).thenReturn("foo.ecore.SubEvent");
@@ -878,11 +859,11 @@ public class SARLCodeGeneratorTest {
 			//
 			assertNotNull(event);
 			assertEquals("MyEvent", event.getName());
-			assertTypeReferenceIdentifiers(event.getExtends(), "foo.ecore.SubEvent");
+			assertTypeReferenceIdentifier(event.getExtends(), "foo.ecore.SubEvent");
 			assertTrue(event.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void otherSuperClass()  {
 			when(jvmType.getIdentifier()).thenReturn("foo.Foo");
 			when(jvmType.getQualifiedName(Matchers.anyChar())).thenReturn("foo.Foo");
@@ -893,14 +874,12 @@ public class SARLCodeGeneratorTest {
 			//
 			assertNotNull(event);
 			assertEquals("MyEvent", event.getName());
-			assertTypeReferenceIdentifiers(event.getExtends(), "foo.Foo");
+			assertTypeReferenceIdentifier(event.getExtends(), "foo.Foo");
 			assertTrue(event.getMembers().isEmpty());
 		}
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class SkillTopElement extends AbstractSarlTest {
 
 		@Inject
@@ -962,136 +941,134 @@ public class SARLCodeGeneratorTest {
 			when(context.getXtendTypes()).thenReturn(elements);
 		}
 
-		@Test	
+		@Test
 		public void nullSuperClass_noSuperInterfaces()  {
 			SarlSkill skill = gen.createSkill(code, "MySkill", null, Collections.<String>emptyList());
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTrue(skill.getExtends().isEmpty());
+			assertNull(skill.getExtends());
 			assertTrue(skill.getImplements().isEmpty());
 			assertTrue(skill.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void behaviorSuperClass_noSuperInterfaces()  {
 			SarlSkill skill = gen.createSkill(code, "MySkill", "io.sarl.lang.core.Skill", Collections.<String>emptyList());
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTrue(skill.getExtends().isEmpty());
+			assertNull(skill.getExtends());
 			assertTrue(skill.getImplements().isEmpty());
 			assertTrue(skill.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void subbehaviorSuperClass_noSuperInterface()  {
 			SarlSkill skill = gen.createSkill(code, "MySkill", "foo.ecore.SubSkill", Collections.<String>emptyList());
 			//
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends(), "foo.ecore.SubSkill");
+			assertTypeReferenceIdentifier(skill.getExtends(), "foo.ecore.SubSkill");
 			assertTrue(skill.getImplements().isEmpty());
 			assertTrue(skill.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void otherSuperClass_noSuperInterface()  {
 			SarlSkill skill = gen.createSkill(code, "MySkill", "foo.Foo", Collections.<String>emptyList());
 			//
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends(), "foo.Foo");
+			assertTypeReferenceIdentifier(skill.getExtends(), "foo.Foo");
 			assertTrue(skill.getImplements().isEmpty());
 			assertTrue(skill.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void nullSuperClass_oneSuperInterfaces()  {
 			SarlSkill skill = gen.createSkill(code, "MySkill", null, Collections.singleton("foo.ecore.SubCapacity"));
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTrue(skill.getExtends().isEmpty());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "foo.ecore.SubCapacity");
 			assertTrue(skill.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void behaviorSuperClass_oneSuperInterfaces()  {
 			SarlSkill skill = gen.createSkill(code, "MySkill", "io.sarl.lang.core.Skill", Collections.singleton("foo.ecore.SubCapacity"));
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTrue(skill.getExtends().isEmpty());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "foo.ecore.SubCapacity");
 			assertTrue(skill.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void subbehaviorSuperClass_oneSuperInterface()  {
 			SarlSkill skill = gen.createSkill(code, "MySkill", "foo.ecore.SubSkill", Collections.singleton("foo.ecore.SubCapacity"));
 			//
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends(), "foo.ecore.SubSkill");
+			assertTypeReferenceIdentifier(skill.getExtends(), "foo.ecore.SubSkill");
 			assertTypeReferenceIdentifiers(skill.getImplements(), "foo.ecore.SubCapacity");
 			assertTrue(skill.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void otherSuperClass_oneSuperInterface()  {
 			SarlSkill skill = gen.createSkill(code, "MySkill", "foo.Foo", Collections.singleton("foo.ecore.SubCapacity"));
 			//
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends(), "foo.Foo");
+			assertTypeReferenceIdentifier(skill.getExtends(), "foo.Foo");
 			assertTypeReferenceIdentifiers(skill.getImplements(), "foo.ecore.SubCapacity");
 			assertTrue(skill.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void nullSuperClass_twoSuperInterfaces()  {
 			SarlSkill skill = gen.createSkill(code, "MySkill", null, Arrays.asList("foo.ecore.SubCapacity", "foo.ecore.SubCapacity2"));
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTrue(skill.getExtends().isEmpty());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "foo.ecore.SubCapacity", "foo.ecore.SubCapacity2");
 			assertTrue(skill.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void behaviorSuperClass_twoSuperInterfaces()  {
 			SarlSkill skill = gen.createSkill(code, "MySkill", "io.sarl.lang.core.Skill", Arrays.asList("foo.ecore.SubCapacity", "foo.ecore.SubCapacity2"));
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTrue(skill.getExtends().isEmpty());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "foo.ecore.SubCapacity", "foo.ecore.SubCapacity2");
 			assertTrue(skill.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void subbehaviorSuperClass_twoSuperInterface()  {
 			SarlSkill skill = gen.createSkill(code, "MySkill", "foo.ecore.SubSkill", Arrays.asList("foo.ecore.SubCapacity", "foo.ecore.SubCapacity2"));
 			//
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends(), "foo.ecore.SubSkill");
+			assertTypeReferenceIdentifier(skill.getExtends(), "foo.ecore.SubSkill");
 			assertTypeReferenceIdentifiers(skill.getImplements(), "foo.ecore.SubCapacity", "foo.ecore.SubCapacity2");
 			assertTrue(skill.getMembers().isEmpty());
 		}
 
-		@Test	
+		@Test
 		public void otherSuperClass_twoSuperInterface()  {
 			SarlSkill skill = gen.createSkill(code, "MySkill", "foo.Foo", Arrays.asList("foo.ecore.SubCapacity", "foo.ecore.SubCapacity2"));
 			//
 			assertNotNull(skill);
 			assertEquals("MySkill", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends(), "foo.Foo");
+			assertTypeReferenceIdentifier(skill.getExtends(), "foo.Foo");
 			assertTypeReferenceIdentifiers(skill.getImplements(), "foo.ecore.SubCapacity", "foo.ecore.SubCapacity2");
 			assertTrue(skill.getMembers().isEmpty());
 		}
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class AgentFeatures extends AbstractSarlTest {
 
 		@Inject
@@ -1291,8 +1268,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class BehaviorFeatures extends AbstractSarlTest {
 
 		@Inject
@@ -1491,8 +1466,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CapacityFeatures extends AbstractSarlTest {
 
 		@Inject
@@ -1541,7 +1514,7 @@ public class SARLCodeGeneratorTest {
 					when(jvmType.getSimpleName()).thenReturn(simpleName);
 					return jvmType;
 				}
-			}); 
+			});
 			when(factoryMap.get(Matchers.any())).thenReturn(typeProvider);
 			when(registry.getProtocolToFactoryMap()).thenReturn(factoryMap);
 			when(eResourceSet.getResourceFactoryRegistry()).thenReturn(registry);
@@ -1586,8 +1559,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class EventFeatures extends AbstractSarlTest {
 
 		@Inject
@@ -1731,8 +1702,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class SkillFeatures extends AbstractSarlTest {
 
 		@Inject
@@ -1910,8 +1879,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class Expressions extends AbstractSarlTest {
 
 		@Inject
@@ -1958,7 +1925,7 @@ public class SARLCodeGeneratorTest {
 			when(eResourceSet.getResourceFactoryRegistry()).thenReturn(registry);
 			when(eResource.getResourceSet()).thenReturn(eResourceSet);
 		}
-		
+
 		@Test
 		public void createXExpression_null()  {
 			XExpression expr = gen.createXExpression(null, eResourceSet, this.importManager);
@@ -1977,8 +1944,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class FormalParameters extends AbstractSarlTest {
 
 		@Inject
@@ -2123,7 +2088,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CreateActionFromJvmElement extends AbstractSarlUiTest {
 
 		@Inject
@@ -2728,7 +2692,6 @@ public class SARLCodeGeneratorTest {
 
 	}
 
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CreateConstructorFromJvmElement extends AbstractSarlUiTest {
 
 		@Inject
@@ -2738,7 +2701,7 @@ public class SARLCodeGeneratorTest {
 		 */
 		@Inject
 		protected JvmModelAssociator jvmModelAssociator;
-		
+
 		@Inject
 		private ImportManager importManager;
 
@@ -2878,7 +2841,7 @@ public class SARLCodeGeneratorTest {
 		 */
 		@Inject
 		protected JvmModelAssociator jvmModelAssociator;
-		
+
 		@Inject
 		private ImportManager importManager;
 

@@ -33,7 +33,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class InitializeTest extends AbstractSARLTest<Event> {
+public class InitializeTest extends AbstractSarlCoreTest<Event> {
 
 	/**
 	 */
@@ -49,7 +49,7 @@ public class InitializeTest extends AbstractSARLTest<Event> {
 		assertEquals(2, this.type.getDeclaredFields().length);
 		assertEquals(2, this.type.getDeclaredConstructors().length);
 	}
-	
+
 	/**
 	 */
 	@Test

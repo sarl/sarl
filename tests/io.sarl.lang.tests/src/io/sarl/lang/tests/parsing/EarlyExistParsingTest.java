@@ -16,19 +16,19 @@
 package io.sarl.lang.tests.parsing;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.TestClasspath;
+import io.sarl.tests.api.TestScope;
 
 import org.eclipse.xtend.core.xtend.XtendFile;
-import org.eclipse.xtext.junit4.XtextRunner;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
+import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
@@ -39,15 +39,15 @@ import com.google.inject.Inject;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(XtextRunner.class)
 @SuppressWarnings("all")
 @TestClasspath("io.sarl.tests.testdata")
 public class EarlyExistParsingTest extends AbstractSarlUiTest {
 
 	@Inject
-	private ValidationTestHelper validator;
+	private ISerializer serializer;
 
 	@Test
+	@TestScope(tycho=false)
 	public void earlyExistFunction_inAction_lastExpression_0() throws Exception {
 		XtendFile mas = parseWithProjectClasspath(
 				"agent A1 {",
@@ -56,24 +56,25 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 				"	}",
 				"}"
 				);
-		this.validator.assertNoErrors(mas);
+		this.helper.getValidator().assertNoErrors(mas);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(1, agent.getMembers().size());
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(0);
 		assertEquals("caller", action.getName());
-		assertTypeReferenceIdentifiers(action.getFiredEvents());
+		assertNull(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "void");
 	}
 
 	@Test
+	@TestScope(tycho=false)
 	public void earlyExistFunction_inAction_lastExpression_1() throws Exception {
 		XtendFile mas = parseWithProjectClasspath(
 				"agent A1 {",
@@ -83,24 +84,25 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 				"	}",
 				"}"
 				);
-		this.validator.assertNoErrors(mas);
+		this.helper.getValidator().assertNoErrors(mas);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(1, agent.getMembers().size());
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(0);
 		assertEquals("caller", action.getName());
-		assertTypeReferenceIdentifiers(action.getFiredEvents());
+		assertNull(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "void");
 	}
 
 	@Test
+	@TestScope(tycho=false)
 	public void earlyExistFunction_inAction_penultimateExpression_0() throws Exception {
 		XtendFile mas = parseWithProjectClasspath(
 				"agent A1 {",
@@ -110,7 +112,7 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 				"	}",
 				"}"
 				);
-		this.validator.assertError(mas,
+		this.helper.getValidator().assertError(mas,
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
 				77,
@@ -119,6 +121,7 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 	}
 
 	@Test
+	@TestScope(tycho=false)
 	public void earlyExistFunction_inAction_penultimateExpression_1() throws Exception {
 		XtendFile mas = parseWithProjectClasspath(
 				"agent A1 {",
@@ -129,7 +132,7 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 				"	}",
 				"}"
 				);
-		this.validator.assertError(mas,
+		this.helper.getValidator().assertError(mas,
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
 				98,
@@ -138,6 +141,7 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 	}
 
 	@Test
+	@TestScope(tycho=false)
 	public void earlyExistFunction_inIf_0() throws Exception {
 		XtendFile mas = parseWithProjectClasspath(
 				"agent A1 {",
@@ -151,7 +155,7 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 				"	}",
 				"}"
 				);
-		this.validator.assertError(mas,
+		this.helper.getValidator().assertError(mas,
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
 				158,
@@ -160,6 +164,7 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 	}
 
 	@Test
+	@TestScope(tycho=false)
 	public void earlyExistFunction_inIf_1() throws Exception {
 		XtendFile mas = parseWithProjectClasspath(
 				"agent A1 {",
@@ -173,24 +178,25 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 				"	}",
 				"}"
 				);
-		this.validator.assertNoErrors(mas);
+		this.helper.getValidator().assertNoErrors(mas);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(1, agent.getMembers().size());
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(0);
 		assertEquals("caller", action.getName());
-		assertTypeReferenceIdentifiers(action.getFiredEvents());
+		assertNull(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "void");
 	}
 
 	@Test
+	@TestScope(tycho=false)
 	public void earlyExistFunction_inIf_2() throws Exception {
 		XtendFile mas = parseWithProjectClasspath(
 				"agent A1 {",
@@ -204,21 +210,42 @@ public class EarlyExistParsingTest extends AbstractSarlUiTest {
 				"	}",
 				"}"
 				);
-		this.validator.assertNoErrors(mas);
+		this.helper.getValidator().assertNoErrors(mas);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(1, agent.getMembers().size());
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(0);
 		assertEquals("caller", action.getName());
-		assertTypeReferenceIdentifiers(action.getFiredEvents());
+		assertNull(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "void");
+	}
+
+	@Test
+	@TestScope(tycho=false)
+	public void earlyExistFunction_inWhile_0() throws Exception {
+		XtendFile mas = parseWithProjectClasspath(
+				"agent A1 {",
+				"	def caller {",
+				"		while (true) {",
+				"			foo.EarlyExitFunctionDefinitions::killFunction2",
+				"		}",
+				"		println(\"Hello\")",
+				"	}",
+				"}"
+				);
+		this.helper.getValidator().assertError(mas,
+				XbasePackage.eINSTANCE.getXFeatureCall(),
+				IssueCodes.UNREACHABLE_CODE,
+				99,
+				16,
+				"Unreachable expression");
 	}
 
 }

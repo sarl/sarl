@@ -153,8 +153,6 @@ public class CapacityParsingTest {
 		}
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class TopElementTest extends AbstractSarlTest {
 
 		@Inject
@@ -606,12 +604,12 @@ public class CapacityParsingTest {
 			//
 			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("CapTest1", capacity1.getName());
-			assertTypeReferenceIdentifiers(capacity1.getExtends());
+			assertNull(capacity1.getExtends());
 			assertEquals(1, capacity1.getMembers().size());
 			//
 			SarlAction signature1 = (SarlAction) capacity1.getMembers().get(0);
 			assertEquals("func1", signature1.getName());
-			assertTypeReferenceIdentifiers(signature1.getFiredEvents());
+			assertNull(signature1.getFiredEvents());
 			assertTypeReferenceIdentifier(signature1.getReturnType(), "int");
 			assertParameterNames(signature1.getParameters());
 			//
@@ -622,7 +620,7 @@ public class CapacityParsingTest {
 			//
 			SarlAction signature2 = (SarlAction) capacity2.getMembers().get(0);
 			assertEquals("func2", signature2.getName());
-			assertTypeReferenceIdentifiers(signature2.getFiredEvents());
+			assertNull(signature2.getFiredEvents());
 			assertTypeReferenceIdentifier(signature2.getReturnType(), "void");
 			assertParameterNames(signature2.getParameters(), "a");
 			assertParameterTypes(signature2.getParameters(), "int");
@@ -655,24 +653,24 @@ public class CapacityParsingTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
 			assertEquals("myaction", signature.getName());
-			assertTypeReferenceIdentifiers(signature.getFiredEvents());
+			assertNull(signature.getFiredEvents());
 			assertTypeReferenceIdentifier(signature.getReturnType(), "void");
 			assertParameterNames(signature.getParameters());
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(1, skill.getMembers().size());
 			//
 			SarlAction action = (SarlAction) skill.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertNull(action.getFiredEvents());
 			assertTypeReferenceIdentifier(action.getReturnType(), "void");
 			assertParameterNames(action.getParameters());
 		}
@@ -697,36 +695,36 @@ public class CapacityParsingTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
 			assertEquals("myaction", signature.getName());
-			assertTypeReferenceIdentifiers(signature.getFiredEvents());
+			assertNull(signature.getFiredEvents());
 			assertTypeReferenceIdentifier(signature.getReturnType(), "void");
 			assertParameterNames(signature.getParameters());
 			//
 			SarlSkill skill1 = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill1.getName());
-			assertTypeReferenceIdentifiers(skill1.getExtends());
+			assertNull(skill1.getExtends());
 			assertTypeReferenceIdentifiers(skill1.getImplements(), "C1");
 			assertEquals(1, skill1.getMembers().size());
 			//
 			SarlAction action1 = (SarlAction) skill1.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
-			assertTypeReferenceIdentifiers(action1.getFiredEvents());
+			assertNull(action1.getFiredEvents());
 			assertTypeReferenceIdentifier(action1.getReturnType(), "void");
 			assertParameterNames(action1.getParameters());
 			//
 			SarlSkill skill2 = (SarlSkill) mas.getXtendTypes().get(2);
 			assertEquals("S2", skill2.getName());
-			assertTypeReferenceIdentifiers(skill2.getExtends(), "S1");
-			assertTypeReferenceIdentifiers(skill2.getImplements());
+			assertTypeReferenceIdentifier(skill2.getExtends(), "S1");
+			assertNull(skill2.getImplements());
 			assertEquals(1, skill2.getMembers().size());
 			//
 			SarlAction action2 = (SarlAction) skill2.getMembers().get(0);
 			assertEquals("myaction", action2.getName());
-			assertTypeReferenceIdentifiers(action2.getFiredEvents());
+			assertNull(action2.getFiredEvents());
 			assertTypeReferenceIdentifier(action2.getReturnType(), "void");
 			assertParameterNames(action2.getParameters());
 		}
@@ -755,53 +753,53 @@ public class CapacityParsingTest {
 			//
 			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity1.getName());
-			assertTypeReferenceIdentifiers(capacity1.getExtends());
+			assertNull(capacity1.getExtends());
 			assertEquals(1, capacity1.getMembers().size());
 			//
 			SarlAction signature1 = (SarlAction) capacity1.getMembers().get(0);
 			assertEquals("myaction", signature1.getName());
-			assertTypeReferenceIdentifiers(signature1.getFiredEvents());
+			assertNull(signature1.getFiredEvents());
 			assertTypeReferenceIdentifier(signature1.getReturnType(), "void");
 			assertParameterNames(signature1.getParameters());
 			//
 			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
 			assertEquals("C2", capacity2.getName());
-			assertTypeReferenceIdentifiers(capacity2.getExtends());
+			assertNull(capacity2.getExtends());
 			assertEquals(1, capacity2.getMembers().size());
 			//
 			SarlAction signature2 = (SarlAction) capacity2.getMembers().get(0);
 			assertEquals("myaction2", signature2.getName());
-			assertTypeReferenceIdentifiers(signature2.getFiredEvents());
+			assertNull(signature2.getFiredEvents());
 			assertTypeReferenceIdentifier(signature2.getReturnType(), "void");
 			assertParameterNames(signature2.getParameters());
 			//
 			SarlSkill skill1 = (SarlSkill) mas.getXtendTypes().get(2);
 			assertEquals("S1", skill1.getName());
-			assertTypeReferenceIdentifiers(skill1.getExtends());
+			assertNull(skill1.getExtends());
 			assertTypeReferenceIdentifiers(skill1.getImplements(), "C1");
 			assertEquals(1, skill1.getMembers().size());
 			//
 			SarlAction action1 = (SarlAction) skill1.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
-			assertTypeReferenceIdentifiers(action1.getFiredEvents());
+			assertNull(action1.getFiredEvents());
 			assertTypeReferenceIdentifier(action1.getReturnType(), "void");
 			assertParameterNames(action1.getParameters());
 			//
 			SarlSkill skill2 = (SarlSkill) mas.getXtendTypes().get(3);
 			assertEquals("S2", skill2.getName());
-			assertTypeReferenceIdentifiers(skill2.getExtends(), "S1");
+			assertTypeReferenceIdentifier(skill2.getExtends(), "S1");
 			assertTypeReferenceIdentifiers(skill2.getImplements(), "C2");
 			assertEquals(2, skill2.getMembers().size());
 			//
 			SarlAction action2 = (SarlAction) skill2.getMembers().get(0);
 			assertEquals("myaction", action2.getName());
-			assertTypeReferenceIdentifiers(action2.getFiredEvents());
+			assertNull(action2.getFiredEvents());
 			assertTypeReferenceIdentifier(action2.getReturnType(), "void");
 			assertParameterNames(action2.getParameters());
 			//
 			SarlAction action3 = (SarlAction) skill2.getMembers().get(1);
 			assertEquals("myaction2", action3.getName());
-			assertTypeReferenceIdentifiers(action3.getFiredEvents());
+			assertNull(action3.getFiredEvents());
 			assertTypeReferenceIdentifier(action3.getReturnType(), "void");
 			assertParameterNames(action3.getParameters());
 		}
@@ -821,8 +819,6 @@ public class CapacityParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class ActionTest extends AbstractSarlTest {
 
 		@Inject
@@ -920,12 +916,12 @@ public class CapacityParsingTest {
 			//
 			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity1.getName());
-			assertTypeReferenceIdentifiers(capacity1.getExtends());
+			assertNull(capacity1.getExtends());
 			assertEquals(1, capacity1.getMembers().size());
 			//
 			SarlAction signature1 = (SarlAction) capacity1.getMembers().get(0);
 			assertEquals("myaction1", signature1.getName());
-			assertTypeReferenceIdentifiers(signature1.getFiredEvents());
+			assertNull(signature1.getFiredEvents());
 			assertTypeReferenceIdentifier(signature1.getReturnType(), "void");
 			assertParameterNames(signature1.getParameters(), "a");
 			assertParameterTypes(signature1.getParameters(), "int");
@@ -933,12 +929,12 @@ public class CapacityParsingTest {
 			//
 			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
 			assertEquals("C2", capacity2.getName());
-			assertTypeReferenceIdentifiers(capacity2.getExtends());
+			assertNull(capacity2.getExtends());
 			assertEquals(1, capacity2.getMembers().size());
 			//
 			SarlAction signature2 = (SarlAction) capacity2.getMembers().get(0);
 			assertEquals("myaction2", signature2.getName());
-			assertTypeReferenceIdentifiers(signature2.getFiredEvents());
+			assertNull(signature2.getFiredEvents());
 			assertTypeReferenceIdentifier(signature2.getReturnType(), "void");
 			assertParameterNames(signature2.getParameters(), "b", "c");
 			assertParameterTypes(signature2.getParameters(), "float", "boolean");
@@ -946,13 +942,13 @@ public class CapacityParsingTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(2);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1", "C2");
 			assertEquals(2, skill.getMembers().size());
 			//
 			SarlAction action1 = (SarlAction) skill.getMembers().get(0);
 			assertEquals("myaction1", action1.getName());
-			assertTypeReferenceIdentifiers(action1.getFiredEvents());
+			assertNull(action1.getFiredEvents());
 			assertTypeReferenceIdentifier(action1.getReturnType(), "void");
 			assertParameterNames(action1.getParameters(), "x");
 			assertParameterTypes(action1.getParameters(), "int");
@@ -960,7 +956,7 @@ public class CapacityParsingTest {
 			//
 			SarlAction action2 = (SarlAction) skill.getMembers().get(1);
 			assertEquals("myaction2", action2.getName());
-			assertTypeReferenceIdentifiers(action2.getFiredEvents());
+			assertNull(action2.getFiredEvents());
 			assertTypeReferenceIdentifier(action2.getReturnType(), "void");
 			assertParameterNames(action2.getParameters(), "y", "z");
 			assertParameterTypes(action2.getParameters(), "float", "boolean");
@@ -1149,23 +1145,23 @@ public class CapacityParsingTest {
 			//
 			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity1.getName());
-			assertTypeReferenceIdentifiers(capacity1.getExtends());
+			assertNull(capacity1.getExtends());
 			assertEquals(0, capacity1.getMembers().size());
 			//
 			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
 			assertEquals("C2", capacity2.getName());
-			assertTypeReferenceIdentifiers(capacity2.getExtends());
+			assertNull(capacity2.getExtends());
 			assertEquals(0, capacity2.getMembers().size());
 			//
 			SarlSkill skill1 = (SarlSkill) mas.getXtendTypes().get(2);
 			assertEquals("S1", skill1.getName());
-			assertTypeReferenceIdentifiers(skill1.getExtends());
+			assertNull(skill1.getExtends());
 			assertTypeReferenceIdentifiers(skill1.getImplements(), "C1");
 			assertEquals(1, skill1.getMembers().size());
 			//
 			SarlAction action1 = (SarlAction) skill1.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
-			assertTypeReferenceIdentifiers(action1.getFiredEvents());
+			assertNull(action1.getFiredEvents());
 			assertTypeReferenceIdentifier(action1.getReturnType(), "java.lang.Number");
 			assertParameterNames(action1.getParameters(), "a");
 			assertParameterTypes(action1.getParameters(), "int");
@@ -1173,13 +1169,13 @@ public class CapacityParsingTest {
 			//
 			SarlSkill skill2 = (SarlSkill) mas.getXtendTypes().get(3);
 			assertEquals("S2", skill2.getName());
-			assertTypeReferenceIdentifiers(skill2.getExtends(), "S1");
+			assertTypeReferenceIdentifier(skill2.getExtends(), "S1");
 			assertTypeReferenceIdentifiers(skill2.getImplements(), "C2");
 			assertEquals(1, skill2.getMembers().size());
 			//
 			SarlAction action2 = (SarlAction) skill2.getMembers().get(0);
 			assertEquals("myaction", action2.getName());
-			assertTypeReferenceIdentifiers(action2.getFiredEvents());
+			assertNull(action2.getFiredEvents());
 			assertTypeReferenceIdentifier(action2.getReturnType(), "java.lang.Double");
 			assertParameterNames(action2.getParameters(), "a");
 			assertParameterTypes(action2.getParameters(), "int");
@@ -1209,23 +1205,23 @@ public class CapacityParsingTest {
 			//
 			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity1.getName());
-			assertTypeReferenceIdentifiers(capacity1.getExtends());
+			assertNull(capacity1.getExtends());
 			assertEquals(0, capacity1.getMembers().size());
 			//
 			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
 			assertEquals("C2", capacity2.getName());
-			assertTypeReferenceIdentifiers(capacity2.getExtends());
+			assertNull(capacity2.getExtends());
 			assertEquals(0, capacity2.getMembers().size());
 			//
 			SarlSkill skill1 = (SarlSkill) mas.getXtendTypes().get(2);
 			assertEquals("S1", skill1.getName());
-			assertTypeReferenceIdentifiers(skill1.getExtends());
+			assertNull(skill1.getExtends());
 			assertTypeReferenceIdentifiers(skill1.getImplements(), "C1");
 			assertEquals(1, skill1.getMembers().size());
 			//
 			SarlAction action1 = (SarlAction) skill1.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
-			assertTypeReferenceIdentifiers(action1.getFiredEvents());
+			assertNull(action1.getFiredEvents());
 			assertTypeReferenceIdentifier(action1.getReturnType(), "float");
 			assertParameterNames(action1.getParameters(), "a");
 			assertParameterTypes(action1.getParameters(), "int");
@@ -1233,13 +1229,13 @@ public class CapacityParsingTest {
 			//
 			SarlSkill skill2 = (SarlSkill) mas.getXtendTypes().get(3);
 			assertEquals("S2", skill2.getName());
-			assertTypeReferenceIdentifiers(skill2.getExtends(), "S1");
+			assertTypeReferenceIdentifier(skill2.getExtends(), "S1");
 			assertTypeReferenceIdentifiers(skill2.getImplements(), "C2");
 			assertEquals(1, skill2.getMembers().size());
 			//
 			SarlAction action2 = (SarlAction) skill2.getMembers().get(0);
 			assertEquals("myaction", action2.getName());
-			assertTypeReferenceIdentifiers(action2.getFiredEvents());
+			assertNull(action2.getFiredEvents());
 			assertTypeReferenceIdentifier(action2.getReturnType(), "float");
 			assertParameterNames(action2.getParameters(), "a");
 			assertParameterTypes(action2.getParameters(), "int");
@@ -1265,12 +1261,12 @@ public class CapacityParsingTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction action1 = (SarlAction) capacity.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
-			assertTypeReferenceIdentifiers(action1.getFiredEvents());
+			assertNull(action1.getFiredEvents());
 			assertTypeReferenceIdentifier(action1.getReturnType(), "java.lang.Number");
 			assertParameterNames(action1.getParameters(), "a");
 			assertParameterTypes(action1.getParameters(), "int");
@@ -1278,13 +1274,13 @@ public class CapacityParsingTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S2", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(1, skill.getMembers().size());
 			//
 			SarlAction action2 = (SarlAction) skill.getMembers().get(0);
 			assertEquals("myaction", action2.getName());
-			assertTypeReferenceIdentifiers(action2.getFiredEvents());
+			assertNull(action2.getFiredEvents());
 			assertTypeReferenceIdentifier(action2.getReturnType(), "java.lang.Double");
 			assertParameterNames(action2.getParameters(), "a");
 			assertParameterTypes(action2.getParameters(), "int");
@@ -1310,12 +1306,12 @@ public class CapacityParsingTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction action1 = (SarlAction) capacity.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
-			assertTypeReferenceIdentifiers(action1.getFiredEvents());
+			assertNull(action1.getFiredEvents());
 			assertTypeReferenceIdentifier(action1.getReturnType(), "float");
 			assertParameterNames(action1.getParameters(), "a");
 			assertParameterTypes(action1.getParameters(), "int");
@@ -1323,13 +1319,13 @@ public class CapacityParsingTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S2", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(1, skill.getMembers().size());
 			//
 			SarlAction action2 = (SarlAction) skill.getMembers().get(0);
 			assertEquals("myaction", action2.getName());
-			assertTypeReferenceIdentifiers(action2.getFiredEvents());
+			assertNull(action2.getFiredEvents());
 			assertTypeReferenceIdentifier(action2.getReturnType(), "float");
 			assertParameterNames(action2.getParameters(), "a");
 			assertParameterTypes(action2.getParameters(), "int");
@@ -1338,8 +1334,6 @@ public class CapacityParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class AttributeTest extends AbstractSarlTest {
 
 		@Inject
@@ -1411,12 +1405,12 @@ public class CapacityParsingTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(0, capacity.getMembers().size());
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -1453,8 +1447,6 @@ public class CapacityParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CapacityUsesTest extends AbstractSarlTest {
 
 		@Inject
@@ -1582,29 +1574,29 @@ public class CapacityParsingTest {
 			//
 			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity1.getName());
-			assertTypeReferenceIdentifiers(capacity1.getExtends());
+			assertNull(capacity1.getExtends());
 			assertEquals(1, capacity1.getMembers().size());
 			//
 			SarlAction signature1 = (SarlAction) capacity1.getMembers().get(0);
 			assertEquals("myfct", signature1.getName());
-			assertTypeReferenceIdentifiers(signature1.getFiredEvents());
+			assertNull(signature1.getFiredEvents());
 			assertTypeReferenceIdentifier(signature1.getReturnType(), "void");
 			assertParameterNames(signature1.getParameters());
 			//
 			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
 			assertEquals("C2", capacity2.getName());
-			assertTypeReferenceIdentifiers(capacity2.getExtends());
+			assertNull(capacity2.getExtends());
 			assertEquals(1, capacity2.getMembers().size());
 			//
 			SarlAction signature2 = (SarlAction) capacity2.getMembers().get(0);
 			assertEquals("myfct2", signature2.getName());
-			assertTypeReferenceIdentifiers(signature2.getFiredEvents());
+			assertNull(signature2.getFiredEvents());
 			assertTypeReferenceIdentifier(signature2.getReturnType(), "void");
 			assertParameterNames(signature2.getParameters());
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(2);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(2, agent.getMembers().size());
 			//
 			SarlCapacityUses uses = (SarlCapacityUses) agent.getMembers().get(0);

@@ -38,5 +38,5 @@ public final class MockFinalBehavior extends Behavior {
 	public MockFinalBehavior(Agent owner) {
 		super(owner);
 	}
-	
+
 }

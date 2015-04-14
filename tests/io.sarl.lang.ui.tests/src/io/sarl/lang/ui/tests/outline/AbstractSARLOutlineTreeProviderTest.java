@@ -45,13 +45,13 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 /** Abstract implementation for the outline tests.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUiTest { 
+public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUiTest {
 
 	@Inject
 	private SARLOutlineTreeProvider treeProvider;
@@ -61,7 +61,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 
 	@Inject
 	private MockedSARLOutlineNodeComparator comparator;
-	
+
 	@Inject
 	private Provider<XtextDocument> documentProvider;
 
@@ -77,16 +77,16 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 	};
 
 	/** Replies the outline sorted.
-	 * 
+	 *
 	 * @return the outline sorter.
 	 */
 	protected OutlineFilterAndSorter getSorter() {
 		return this.sorter;
 	}
-	
+
 	/** Create a new assertion tool on a specific code resource.
 	 * The code will be used for generating the outline.
-	 * 
+	 *
 	 * @param code - the code.
 	 * @return the assertion tool.
 	 * @throws Exception
@@ -98,7 +98,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 	}
 
 	/** Create a new assertion tool on a specific code resource.
-	 * 
+	 *
 	 * @param script - the script to consider for producing the outline.
 	 * @return the assertion tool.
 	 * @throws Exception
@@ -114,7 +114,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 
 	/** Provides tools for asserting on the outline structure.
 	 * Copied from Xtext project.
-	 * 
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -204,7 +204,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 		}
 
 		/** Assert that a text region is inside the node.
-		 * 
+		 *
 		 * @param hasTextRegion - expected value
 		 * @return this
 		 */
@@ -218,9 +218,9 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 		}
 
 		/** Replies an assert builder on a child.
-		 * 
+		 *
 		 * @param index - position of the child.
-		 * @param text - the text associated to the child in the outline. 
+		 * @param text - the text associated to the child in the outline.
 		 * @return the asserts for the child.
 		 */
 		public OutlineAsserts child(int index, StyledString text) {
@@ -231,7 +231,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 		}
 
 		/** Replies an assert builder on a child.
-		 * 
+		 *
 		 * @param index - position of the child.
 		 * @param text - the text associated to the child in the outline.
 		 * @return the asserts for the child.
@@ -245,8 +245,8 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 		}
 
 		/** Move to the next child.
-		 * 
-		 * @param text - the text associated to the child in the outline 
+		 *
+		 * @param text - the text associated to the child in the outline
 		 * @return the asserts for the child.
 		 */
 		public OutlineAsserts nextChild(String text) {
@@ -255,9 +255,9 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 		}
 
 		/** Assert that the child is a leaf.
-		 * 
+		 *
 		 * @param index - position of the child.
-		 * @param text - the text associated to the child. 
+		 * @param text - the text associated to the child.
 		 * @return the asserts for the child.
 		 */
 		public OutlineAsserts leaf(int index, String text) {
@@ -265,7 +265,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 		}
 
 		/** Assert that it is a leaf.
-		 * 
+		 *
 		 * @return this.
 		 */
 		public OutlineAsserts leaf() {
@@ -273,9 +273,9 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 		}
 
 		/** Assert that the child is a leaf.
-		 * 
+		 *
 		 * @param index - position of the child.
-		 * @param text - the text associated to the child. 
+		 * @param text - the text associated to the child.
 		 * @return the asserts for the child.
 		 */
 		public OutlineAsserts notLeaf(int index, String text) {

@@ -93,7 +93,7 @@ public class SARLParser {
 	private IExpressionInterpreter interpreter;
 
 	private boolean initial = true;
-	
+
 	/** Replies a path built from the given elements.
 	 *
 	 * @param element1 - first mandatory element.
@@ -335,7 +335,7 @@ public class SARLParser {
 		}
 		for(XImportDeclaration d : model.getImportSection().getImportDeclarations()) {
 			if (d != null && Objects.equals(name, d.getImportedName())) {
-				return !d.isStatic() && !d.isWildcard() && !d.isExtension(); 
+				return !d.isStatic() && !d.isWildcard() && !d.isExtension();
 			}
 		}
 		return false;
@@ -356,7 +356,7 @@ public class SARLParser {
 		}
 		for(XImportDeclaration d : model.getImportSection().getImportDeclarations()) {
 			if (d != null && Objects.equals(name, d.getImportedName())) {
-				return !d.isStatic() && d.isWildcard() && !d.isExtension(); 
+				return !d.isStatic() && d.isWildcard() && !d.isExtension();
 			}
 		}
 		return false;
@@ -377,7 +377,7 @@ public class SARLParser {
 		}
 		for(XImportDeclaration d : model.getImportSection().getImportDeclarations()) {
 			if (d != null && Objects.equals(name, d.getImportedName())) {
-				return d.isStatic() && d.isWildcard() && !d.isExtension(); 
+				return d.isStatic() && d.isWildcard() && !d.isExtension();
 			}
 		}
 		return false;
@@ -471,7 +471,7 @@ public class SARLParser {
 					superTypes,
 					false);
 		}
-		
+
 		return 0 == a.getSuperTypes().size();
 	}
 

@@ -22,11 +22,12 @@
 package io.sarl.lang.controlflow;
 
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.XFeatureCall;
-import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.typesystem.util.ExtendedEarlyExitComputer;
+
+import com.google.inject.Singleton;
 
 /** Compute the early-exit flag for the SARL statements.
  *
@@ -35,6 +36,7 @@ import org.eclipse.xtext.xbase.typesystem.util.ExtendedEarlyExitComputer;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@Singleton
 public class SARLExtendedEarlyExitComputer extends ExtendedEarlyExitComputer {
 
 	/** {@inheritDoc}
@@ -62,10 +64,11 @@ public class SARLExtendedEarlyExitComputer extends ExtendedEarlyExitComputer {
 	 * @param expression - the expression to test.
 	 * @return <code>true</code> if the given expression is a SARL early-exit
 	 * statement, <code>false</code> otherwise.
+	 * @see SARLEarlyExitComputerUtil#isEarlyExitAnnotatedElement(Object)
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean isEarlyExitSARLStatement(XExpression expression) {
-		if (expression instanceof XFeatureCall || expression instanceof XMemberFeatureCall) {
+		if (expression instanceof XAbstractFeatureCall) {
 			// Do not call expression.getFeature() since the feature may be unresolved.
 			// The type resolution at this point causes exceptions in the reentrant type resolver.
 			// The second parameter (false) forces to ignore feature resolution.
@@ -77,11 +80,12 @@ public class SARLExtendedEarlyExitComputer extends ExtendedEarlyExitComputer {
 		return false;
 	}
 
-	/** Replies if the given expression is a early-exit SARL statement.
+	/** Replies if the given type reference is a early-exit event.
 	 *
 	 * @param expression - the expression to test.
 	 * @return <code>true</code> if the given expression is a SARL early-exit
 	 * statement, <code>false</code> otherwise.
+	 * @see SARLEarlyExitComputerUtil#isEarlyExitEvent(JvmTypeReference)
 	 */
 	@SuppressWarnings("static-method")
 	public boolean isEarlyExitEvent(JvmTypeReference expression) {

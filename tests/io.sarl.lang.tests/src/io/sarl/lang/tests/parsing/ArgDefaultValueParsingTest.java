@@ -63,8 +63,6 @@ import io.sarl.tests.api.AbstractSarlTest;
 @SuppressWarnings("all")
 public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class AgentAction extends AbstractSarlTest {
 
 		@Inject
@@ -89,12 +87,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(1, agent.getMembers().size());
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertNull(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg");
 			assertParameterTypes(action.getParameters(), "int");
 			assertParameterDefaultValues(action.getParameters(), XNumberLiteral.class, "4");
@@ -148,12 +146,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(1, agent.getMembers().size());
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertNull(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg");
 			assertParameterTypes(action.getParameters(), "int");
 			assertParameterDefaultValues(action.getParameters(), XNumberLiteral.class, "4");
@@ -176,12 +174,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(1, agent.getMembers().size());
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertNull(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), XNumberLiteral.class, "4", null, null, null, null);
@@ -204,12 +202,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(1, agent.getMembers().size());
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertNull(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), null, XStringLiteral.class, "abc", null, null, null);
@@ -232,12 +230,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(1, agent.getMembers().size());
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertNull(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), null, null, XNumberLiteral.class, "18", null, null);
@@ -260,12 +258,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(1, agent.getMembers().size());
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertNull(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), null, null, null, XNumberLiteral.class, "34", null);
@@ -288,12 +286,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(1, agent.getMembers().size());
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertNull(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), null, null, null, null, XStringLiteral.class, "xyz");
@@ -316,12 +314,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(1, agent.getMembers().size());
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertNull(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), XNumberLiteral.class, "4", null, null, XNumberLiteral.class, "56", null);
@@ -344,12 +342,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(1, agent.getMembers().size());
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertNull(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), XNumberLiteral.class, "4", null, null, XNumberLiteral.class, "56", XStringLiteral.class, "def");
@@ -372,12 +370,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(1, agent.getMembers().size());
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertNull(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), XNumberLiteral.class, "4", null, XNumberLiteral.class, "18", null, XStringLiteral.class, "def");
@@ -400,12 +398,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(1, agent.getMembers().size());
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertNull(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), XNumberLiteral.class, "4", XStringLiteral.class, "ghj", XNumberLiteral.class, "18", XNumberLiteral.class, "98", null);
@@ -428,12 +426,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(1, agent.getMembers().size());
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertNull(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), XNumberLiteral.class, "4", XStringLiteral.class, "ghj", XNumberLiteral.class, "18", XNumberLiteral.class, "98", XStringLiteral.class, "klm");
@@ -471,12 +469,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(1, agent.getMembers().size());
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertNull(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2");
 			assertParameterTypes(action.getParameters(), "int", "int", "int");
 			assertParameterDefaultValues(action.getParameters(),
@@ -503,12 +501,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(1, agent.getMembers().size());
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertNull(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2");
 			assertParameterTypes(action.getParameters(), "int", "int", "int");
 			assertParameterDefaultValues(action.getParameters(),
@@ -535,12 +533,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(1, agent.getMembers().size());
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertNull(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2");
 			assertParameterTypes(action.getParameters(), "int", "int", "int");
 			assertParameterDefaultValues(action.getParameters(),
@@ -570,12 +568,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(2, agent.getMembers().size());
 			//
 			SarlAction action1 = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
-			assertTypeReferenceIdentifiers(action1.getFiredEvents());
+			assertNull(action1.getFiredEvents());
 			assertParameterNames(action1.getParameters(), "arg0", "arg1", "arg2");
 			assertParameterTypes(action1.getParameters(), "int", "int", "int");
 			assertParameterDefaultValues(action1.getParameters(),
@@ -587,7 +585,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action2 = (SarlAction) agent.getMembers().get(1);
 			assertEquals("myaction", action2.getName());
-			assertTypeReferenceIdentifiers(action2.getFiredEvents());
+			assertNull(action2.getFiredEvents());
 			assertParameterNames(action2.getParameters(), "arg0", "arg1");
 			assertParameterTypes(action2.getParameters(), "int", "int");
 			assertParameterDefaultValues(action2.getParameters(),
@@ -599,8 +597,6 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class BehaviorConstructor extends AbstractSarlTest {
 
 		@Inject
@@ -626,7 +622,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
 			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
@@ -643,7 +639,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"System.out.println(arg)",
 					"}",
 					"}"
-					)); 
+					));
 			this.validator.assertError(mas,
 					XtendPackage.eINSTANCE.getXtendConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
@@ -682,7 +678,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
 			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
@@ -708,7 +704,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
 			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
@@ -734,7 +730,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
 			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
@@ -760,7 +756,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
 			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
@@ -786,7 +782,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
 			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
@@ -812,7 +808,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
 			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
@@ -838,7 +834,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
 			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
@@ -869,7 +865,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
 			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
@@ -900,7 +896,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
 			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
@@ -926,7 +922,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
 			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
@@ -968,7 +964,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
 			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
@@ -998,7 +994,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
 			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
@@ -1028,7 +1024,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
 			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
@@ -1074,7 +1070,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
 			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
@@ -1100,8 +1096,6 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CapacityAction extends AbstractSarlTest {
 
 		@Inject
@@ -1124,7 +1118,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1173,7 +1167,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1196,7 +1190,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1219,7 +1213,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1242,7 +1236,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1265,7 +1259,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1288,7 +1282,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1311,7 +1305,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1334,7 +1328,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1357,7 +1351,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1385,7 +1379,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1421,7 +1415,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1445,7 +1439,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1469,7 +1463,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1484,8 +1478,6 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class SkillAction extends AbstractSarlTest {
 
 		@Inject
@@ -1512,7 +1504,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1521,7 +1513,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -1591,7 +1583,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1600,7 +1592,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -1640,7 +1632,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1649,7 +1641,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -1689,7 +1681,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1698,7 +1690,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -1738,7 +1730,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1747,7 +1739,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -1787,7 +1779,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1796,7 +1788,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -1836,7 +1828,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1845,7 +1837,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -1885,7 +1877,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1894,7 +1886,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -1934,7 +1926,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1943,7 +1935,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -1983,7 +1975,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1992,7 +1984,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -2032,7 +2024,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -2041,7 +2033,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -2098,7 +2090,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -2107,7 +2099,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -2146,7 +2138,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -2155,7 +2147,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -2194,7 +2186,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -2203,7 +2195,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -2246,7 +2238,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -2261,7 +2253,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -2299,12 +2291,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertNull(capacity.getExtends());
 			assertEquals(0, capacity.getMembers().size());
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -2349,7 +2341,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity1.getName());
-			assertTypeReferenceIdentifiers(capacity1.getExtends());
+			assertNull(capacity1.getExtends());
 			assertEquals(1, capacity1.getMembers().size());
 			//
 			SarlAction action1 = (SarlAction) capacity1.getMembers().get(0);
@@ -2361,7 +2353,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
 			assertEquals("C2", capacity2.getName());
-			assertTypeReferenceIdentifiers(capacity2.getExtends());
+			assertNull(capacity2.getExtends());
 			assertEquals(1, capacity2.getMembers().size());
 			//
 			SarlAction action2 = (SarlAction) capacity2.getMembers().get(0);
@@ -2373,7 +2365,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(2);
 			assertEquals("S1", skill.getName());
-			assertTypeReferenceIdentifiers(skill.getExtends());
+			assertNull(skill.getExtends());
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1", "C2");
 			assertEquals(2, skill.getMembers().size());
 			//
@@ -2433,8 +2425,6 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class BehaviorAction extends AbstractSarlTest {
 
 		@Inject
@@ -2474,7 +2464,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
 			SarlAction action = (SarlAction) behavior.getMembers().get(0);
@@ -2523,7 +2513,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertEquals("B1", behavior.getName());
-			assertTypeReferenceIdentifiers(behavior.getExtends());
+			assertNull(behavior.getExtends());
 			assertEquals(2, behavior.getMembers().size());
 			//
 			SarlAction action1 = (SarlAction) behavior.getMembers().get(0);

@@ -46,19 +46,19 @@ public class EventTest extends AbstractSarlTest {
 
 	@Nullable
 	private Event event;
-	
+
 	private static Event mockEvent() {
 		return new Event() {
 			private static final long serialVersionUID = -1997616003372673851L;
 			//
 		};
 	}
-	
+
 	@Before
 	public void setUp() {
 		this.event = mockEvent();
 	}
-	
+
 	private static Address mockAddress(UUID contextId, UUID spaceId, UUID agentID) {
 		SpaceID sid = new SpaceID(contextId, spaceId, null);
 		Address adr = new Address(Mockito.spy(sid), agentID);
@@ -120,15 +120,15 @@ public class EventTest extends AbstractSarlTest {
 		e.setSource(adr2);
 		assertNotEquals(this.event.hashCode(), e.hashCode());
 	}
-	
+
 	@Test
 	public void isFromAddress() {
 		Address adr = mockAddress(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID());
 		this.event.setSource(adr);
-		
+
 		Address adr0 = Mockito.mock(Address.class);
 		Address adr1 = Mockito.mock(Address.class);
-		
+
 		assertFalse(this.event.isFrom((Address) null));
 		assertTrue(this.event.isFrom(adr));
 		assertFalse(this.event.isFrom(adr0));
@@ -140,10 +140,10 @@ public class EventTest extends AbstractSarlTest {
 		UUID id = UUID.randomUUID();
 		Address adr = mockAddress(UUID.randomUUID(), UUID.randomUUID(), id);
 		this.event.setSource(adr);
-		
+
 		UUID id0 = UUID.randomUUID();
 		UUID id1 = UUID.randomUUID();
-		
+
 		assertFalse(this.event.isFrom((UUID) null));
 		assertTrue(this.event.isFrom(id));
 		assertFalse(this.event.isFrom(id0));

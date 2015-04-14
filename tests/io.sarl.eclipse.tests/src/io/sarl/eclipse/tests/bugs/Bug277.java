@@ -18,12 +18,12 @@ package io.sarl.eclipse.tests.bugs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import io.sarl.eclipse.util.Jdt2Ecore;
+import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.bugfixes.SARLContextPDAProvider;
 import io.sarl.lang.genmodel.GeneratedCode;
 import io.sarl.lang.genmodel.SARLCodeGenerator;
 import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.signature.ActionKey;
-import io.sarl.lang.signature.SignatureKey;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.TestClasspath;
 
@@ -57,7 +57,7 @@ public class Bug277 extends AbstractSarlUiTest {
 
 	@Inject
 	private SARLCodeGenerator sarlGenerator;
-	
+
 	@Test
 	public void testBugFixExist() {
 		assertNotNull(pdaProvider);
@@ -86,7 +86,7 @@ public class Bug277 extends AbstractSarlUiTest {
 	}
 
 	/**
-	 * @throws Exception 
+	 * @throws Exception
 	 * @see <a href="https://github.com/sarl/sarl/issues/277">issue #277</a>
 	 */
 	@Test
@@ -107,7 +107,7 @@ public class Bug277 extends AbstractSarlUiTest {
 						+"skill S1 implements Lifecycle, Schedules {}",
 						text);
 	}
-	
+
 	@Test
 	@TestClasspath("io.sarl.core")
 	public void similarToWizardCreation() throws Exception {
@@ -122,8 +122,8 @@ public class Bug277 extends AbstractSarlUiTest {
 				Arrays.asList("io.sarl.core.Lifecycle", "io.sarl.lang.tests.bug277.MyCapacity"));
 		this.sarlGenerator.attachComment(code, skill, "My Test");
 
-		Map<ActionKey, IMethod> operationsToImplement = Maps.newHashMap();
-		Map<SignatureKey, IMethod> constructors = Maps.newHashMap();
+		Map<ActionPrototype, IMethod> operationsToImplement = Maps.newHashMap();
+		Map<ActionParameterTypes, IMethod> constructors = Maps.newHashMap();
 
 		Jdt2Ecore.populateInheritanceContext(
 				Jdt2Ecore.toTypeFinder(this.helper.getJavaProject()),
@@ -143,7 +143,7 @@ public class Bug277 extends AbstractSarlUiTest {
 		Jdt2Ecore.createActions(code, operationsToImplement.values(), skill);
 
 		code.finalizeScript();
-		
+
 		//
 		resource.save(null);
 		String text = this.helper.getContents(file);

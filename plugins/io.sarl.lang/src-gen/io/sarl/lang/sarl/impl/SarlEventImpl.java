@@ -5,17 +5,13 @@ package io.sarl.lang.sarl.impl;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlPackage;
 
-import java.util.Collection;
-
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.xtend.core.xtend.impl.XtendTypeDeclarationImpl;
 
@@ -37,14 +33,14 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 public class SarlEventImpl extends XtendTypeDeclarationImpl implements SarlEvent
 {
   /**
-   * The cached value of the '{@link #getExtends() <em>Extends</em>}' containment reference list.
+   * The cached value of the '{@link #getExtends() <em>Extends</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getExtends()
    * @generated
    * @ordered
    */
-  protected EList<JvmParameterizedTypeReference> extends_;
+  protected JvmParameterizedTypeReference extends_;
 
   /**
    * <!-- begin-user-doc -->
@@ -72,13 +68,47 @@ public class SarlEventImpl extends XtendTypeDeclarationImpl implements SarlEvent
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<JvmParameterizedTypeReference> getExtends()
+  public JvmParameterizedTypeReference getExtends()
   {
-    if (extends_ == null)
-    {
-      extends_ = new EObjectContainmentEList<JvmParameterizedTypeReference>(JvmParameterizedTypeReference.class, this, SarlPackage.SARL_EVENT__EXTENDS);
-    }
     return extends_;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetExtends(JvmParameterizedTypeReference newExtends, NotificationChain msgs)
+  {
+    JvmParameterizedTypeReference oldExtends = extends_;
+    extends_ = newExtends;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SarlPackage.SARL_EVENT__EXTENDS, oldExtends, newExtends);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setExtends(JvmParameterizedTypeReference newExtends)
+  {
+    if (newExtends != extends_)
+    {
+      NotificationChain msgs = null;
+      if (extends_ != null)
+        msgs = ((InternalEObject)extends_).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SarlPackage.SARL_EVENT__EXTENDS, null, msgs);
+      if (newExtends != null)
+        msgs = ((InternalEObject)newExtends).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SarlPackage.SARL_EVENT__EXTENDS, null, msgs);
+      msgs = basicSetExtends(newExtends, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, SarlPackage.SARL_EVENT__EXTENDS, newExtends, newExtends));
   }
 
   /**
@@ -92,7 +122,7 @@ public class SarlEventImpl extends XtendTypeDeclarationImpl implements SarlEvent
     switch (featureID)
     {
       case SarlPackage.SARL_EVENT__EXTENDS:
-        return ((InternalEList<?>)getExtends()).basicRemove(otherEnd, msgs);
+        return basicSetExtends(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -118,15 +148,13 @@ public class SarlEventImpl extends XtendTypeDeclarationImpl implements SarlEvent
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
       case SarlPackage.SARL_EVENT__EXTENDS:
-        getExtends().clear();
-        getExtends().addAll((Collection<? extends JvmParameterizedTypeReference>)newValue);
+        setExtends((JvmParameterizedTypeReference)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -143,7 +171,7 @@ public class SarlEventImpl extends XtendTypeDeclarationImpl implements SarlEvent
     switch (featureID)
     {
       case SarlPackage.SARL_EVENT__EXTENDS:
-        getExtends().clear();
+        setExtends((JvmParameterizedTypeReference)null);
         return;
     }
     super.eUnset(featureID);
@@ -160,7 +188,7 @@ public class SarlEventImpl extends XtendTypeDeclarationImpl implements SarlEvent
     switch (featureID)
     {
       case SarlPackage.SARL_EVENT__EXTENDS:
-        return extends_ != null && !extends_.isEmpty();
+        return extends_ != null;
     }
     return super.eIsSet(featureID);
   }

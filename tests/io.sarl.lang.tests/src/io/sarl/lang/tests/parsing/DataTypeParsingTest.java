@@ -16,8 +16,8 @@
 package io.sarl.lang.tests.parsing;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
@@ -26,15 +26,12 @@ import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.diagnostics.Diagnostic;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
@@ -45,8 +42,6 @@ import com.google.inject.Inject;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(XtextRunner.class)
-@InjectWith(SARLInjectorProvider.class)
 @SuppressWarnings("all")
 public class DataTypeParsingTest extends AbstractSarlTest {
 
@@ -83,7 +78,7 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(1, agent.getMembers().size());
 		//
 		XtendField attr = (XtendField) agent.getMembers().get(0);
@@ -132,7 +127,7 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(1, agent.getMembers().size());
 		//
 		XtendField attr = (XtendField) agent.getMembers().get(0);

@@ -32,10 +32,8 @@ import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
-import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.xbase.XExpression;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import com.google.inject.Inject;
@@ -46,7 +44,6 @@ import com.google.inject.Inject;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(XtextRunner.class)
 public class SARLDescriptionLabelProviderTest extends AbstractSarlUiTest {
 
 	@Inject

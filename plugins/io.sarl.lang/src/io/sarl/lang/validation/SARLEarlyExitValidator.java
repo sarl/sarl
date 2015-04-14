@@ -33,12 +33,11 @@ import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.XFeatureCall;
-import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 /** Validation of the early-exit control flow.
  *
@@ -47,6 +46,7 @@ import com.google.inject.Inject;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@Singleton
 public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 
 	@Inject
@@ -55,19 +55,21 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 	@Override
 	@Check
 	public void checkDeadCode(XBlockExpression block) {
+		// The XAbstractFeatureCall are skipped in the super function.
+		// We need to mark the dead code for a early XAbstractFeatureCall.
 		EList<XExpression> expressions = block.getExpressions();
 		for (int i = 0, size = expressions.size(); i < size - 1; ++i) {
 			XExpression expression = expressions.get(i);
 			if (this.earlyExitComputer.isEarlyExit(expression)) {
-				if (!(expression instanceof XAbstractFeatureCall)) {
+				if (expression instanceof XAbstractFeatureCall) {
+					if (SARLEarlyExitComputerUtil.isEarlyExitAnnotatedElement(
+							((XAbstractFeatureCall) expression).getFeature())) {
+						markAsDeadCode(expressions.get(i + 1));
+					}
+				} else {
 					// XAbstractFeatureCall does already a decent job for its argument lists
 					// no additional error necessary
 					markAsDeadCode(expressions.get(i + 1));
-				} else if (expression instanceof XMemberFeatureCall || expression instanceof XFeatureCall) {
-					JvmIdentifiableElement element = ((XAbstractFeatureCall) expression).getFeature();
-					if (SARLEarlyExitComputerUtil.isEarlyExitAnnotatedElement(element)) {
-						markAsDeadCode(expressions.get(i + 1));
-					}
 				}
 				return;
 			}
@@ -76,34 +78,27 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 
 	@Override
 	protected void collectExits(EObject expr, List<XExpression> found) {
-		if (expr instanceof XMemberFeatureCall || expr instanceof XFeatureCall) {
+		super.collectExits(expr, found);
+		if (expr instanceof XAbstractFeatureCall) {
 			JvmIdentifiableElement element = ((XAbstractFeatureCall) expr).getFeature();
 			if (SARLEarlyExitComputerUtil.isEarlyExitAnnotatedElement(element)) {
 				found.add((XExpression) expr);
-				return;
 			}
 		}
-		super.collectExits(expr, found);
 	}
 
+	// This code is copied from the super type
 	private boolean markAsDeadCode(XExpression expression) {
 		if (expression instanceof XBlockExpression) {
 			XBlockExpression block = (XBlockExpression) expression;
 			EList<XExpression> expressions = block.getExpressions();
-			if (markAsDeadCode(expressions)) {
+			if (!expressions.isEmpty()) {
+				markAsDeadCode(expressions.get(0));
 				return true;
 			}
 		}
 		if (expression != null) {
 			error("Unreachable expression.", expression, null, IssueCodes.UNREACHABLE_CODE); //$NON-NLS-1$
-			return true;
-		}
-		return false;
-	}
-
-	private boolean markAsDeadCode(List<XExpression> expressions) {
-		if (!expressions.isEmpty()) {
-			markAsDeadCode(expressions.get(0));
 			return true;
 		}
 		return false;

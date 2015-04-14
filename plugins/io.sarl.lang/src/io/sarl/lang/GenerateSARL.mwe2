@@ -1,5 +1,10 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +30,8 @@ var fileExtensions = "sarl"
 var projectName = "io.sarl.lang"
 var grammarURI = "platform:/resource/${projectName}/src/io/sarl/lang/SARL.xtext"
 var runtimeProject = "../${projectName}"
-var testPluginPath = "../../tests/io.sarl.lang.tests"
+var testPluginPath = "../../tests/io.sarl.tests.api"
+var generateXtendStub = false
 var encoding = "UTF-8"
 
 Workflow {
@@ -99,7 +105,7 @@ Workflow {
     		// serializer 2.0
     		fragment = serializer.SerializerFragment auto-inject {
     			generateStub = false
-    			generateXtendStub = false
+    			generateXtendStub = generateXtendStub
     			//generateDebugData = true
     		}
     
@@ -121,7 +127,7 @@ Workflow {
     
     		// scoping and exporting API
     		fragment = scoping.ImportNamespacesScopingFragment auto-inject {
-    			generateXtendStub = false
+    			generateXtendStub = generateXtendStub
     		}
     		fragment = exporting.QualifiedNamesFragment auto-inject {}
     		fragment = builder.BuilderIntegrationFragment auto-inject {}
@@ -133,7 +139,7 @@ Workflow {
     
     		// formatter API
     		fragment = formatting.FormatterFragment auto-inject {
-    			generateXtendStub = false
+    			generateXtendStub = generateXtendStub
     		}
     		
 //    		// New formatter API
@@ -141,18 +147,18 @@ Workflow {
     
     		// labeling API
     		fragment = labeling.LabelProviderFragment auto-inject {
-    			generateXtendStub = false
+    			generateXtendStub = generateXtendStub
     		}
     
     		// outline API
     		fragment = outline.OutlineTreeProviderFragment auto-inject {
-    			generateXtendStub = false
+    			generateXtendStub = generateXtendStub
     		}
     		fragment = outline.QuickOutlineFragment auto-inject {}
     
     		// quickfix API
     		fragment = quickfix.QuickfixProviderFragment auto-inject {
-    			generateXtendStub = false
+    			generateXtendStub = generateXtendStub
     		}
     
     		// content assist API

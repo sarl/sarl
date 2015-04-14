@@ -20,14 +20,14 @@
  */
 package io.sarl.lang.util;
 
+import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.actionprototype.ActionPrototypeProvider;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.services.SARLGrammarAccess;
-import io.sarl.lang.services.SARLGrammarAccess.ParameterElements;
 import io.sarl.lang.services.SARLGrammarAccess.ActionElements;
-import io.sarl.lang.signature.ActionKey;
-import io.sarl.lang.signature.ActionSignatureProvider;
-import io.sarl.lang.signature.SignatureKey;
+import io.sarl.lang.services.SARLGrammarAccess.ParameterElements;
 
 import java.lang.reflect.Modifier;
 import java.security.MessageDigest;
@@ -109,16 +109,16 @@ public final class ModelUtil {
 	 */
 	public static void populateInterfaceElements(
 			JvmGenericType jvmElement,
-			Map<ActionKey, JvmOperation> operations,
+			Map<ActionPrototype, JvmOperation> operations,
 			Map<String, JvmField> fields,
-			ActionSignatureProvider sarlSignatureProvider) {
+			ActionPrototypeProvider sarlSignatureProvider) {
 		for (JvmFeature feature : jvmElement.getAllFeatures()) {
 			if (!"java.lang.Object".equals(feature.getDeclaringType().getQualifiedName())) { //$NON-NLS-1$
 				if (operations != null && feature instanceof JvmOperation) {
 					JvmOperation operation = (JvmOperation) feature;
-					SignatureKey sig = sarlSignatureProvider.createSignatureIDFromJvmModel(
+					ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
 							operation.isVarArgs(), operation.getParameters());
-					ActionKey actionKey = sarlSignatureProvider.createActionID(
+					ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
 							operation.getSimpleName(), sig);
 					operations.put(actionKey, operation);
 				} else if (fields != null && feature instanceof JvmField) {
@@ -141,12 +141,12 @@ public final class ModelUtil {
 	 */
 	public static void populateInheritanceContext(
 			JvmGenericType jvmElement,
-			Map<ActionKey, JvmOperation> finalOperations,
-			Map<ActionKey, JvmOperation> overridableOperations,
+			Map<ActionPrototype, JvmOperation> finalOperations,
+			Map<ActionPrototype, JvmOperation> overridableOperations,
 			Map<String, JvmField> inheritedFields,
-			Map<ActionKey, JvmOperation> operationsToImplement,
-			Map<SignatureKey, JvmConstructor> superConstructors,
-			ActionSignatureProvider sarlSignatureProvider) {
+			Map<ActionPrototype, JvmOperation> operationsToImplement,
+			Map<ActionParameterTypes, JvmConstructor> superConstructors,
+			ActionPrototypeProvider sarlSignatureProvider) {
 		// Get the operations that must be implemented
 		if (operationsToImplement != null) {
 			for (JvmTypeReference interfaceReference : jvmElement.getExtendedInterfaces()) {
@@ -155,9 +155,9 @@ public final class ModelUtil {
 							feature.getDeclaringType().getQualifiedName())) {
 						if (feature instanceof JvmOperation) {
 							JvmOperation operation = (JvmOperation) feature;
-							SignatureKey sig = sarlSignatureProvider.createSignatureIDFromJvmModel(
+							ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
 									operation.isVarArgs(), operation.getParameters());
-							ActionKey actionKey = sarlSignatureProvider.createActionID(
+							ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
 									operation.getSimpleName(), sig);
 							operationsToImplement.put(actionKey, operation);
 						}
@@ -176,9 +176,9 @@ public final class ModelUtil {
 					if (feature instanceof JvmOperation) {
 						if (!feature.isStatic()) {
 							JvmOperation operation = (JvmOperation) feature;
-							SignatureKey sig = sarlSignatureProvider.createSignatureIDFromJvmModel(
+							ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
 									operation.isVarArgs(), operation.getParameters());
-							ActionKey actionKey = sarlSignatureProvider.createActionID(
+							ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
 									feature.getSimpleName(), sig);
 							if (operation.isAbstract()) {
 								if (operationsToImplement != null) {
@@ -208,7 +208,7 @@ public final class ModelUtil {
 
 			if (superConstructors != null) {
 				for (JvmConstructor cons : parentType.getDeclaredConstructors()) {
-					SignatureKey sig = sarlSignatureProvider.createSignatureIDFromJvmModel(
+					ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
 							cons.isVarArgs(), cons.getParameters());
 					superConstructors.put(sig,  cons);
 				}

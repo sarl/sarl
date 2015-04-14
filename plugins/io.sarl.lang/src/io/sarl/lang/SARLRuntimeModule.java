@@ -20,13 +20,14 @@
  */
 package io.sarl.lang;
 
+import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.actionprototype.DefaultActionPrototypeProvider;
 import io.sarl.lang.bugfixes.SARLContextPDAProvider;
 import io.sarl.lang.controlflow.SARLEarlyExitComputer;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
 import io.sarl.lang.genmodel.SARLHiddenTokenSequencer;
+import io.sarl.lang.jvmmodel.JvmModelInferrerProber;
 import io.sarl.lang.scoping.batch.SARLImplicitlyImportedFeatures;
-import io.sarl.lang.signature.ActionSignatureProvider;
-import io.sarl.lang.signature.DefaultActionSignatureProvider;
 import io.sarl.lang.validation.SARLConfigurableIssueCodesProvider;
 import io.sarl.lang.validation.SARLEarlyExitValidator;
 import io.sarl.lang.validation.SARLFeatureNameValidator;
@@ -40,6 +41,9 @@ import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
 import org.eclipse.xtext.xbase.typesystem.util.ExtendedEarlyExitComputer;
 import org.eclipse.xtext.xbase.validation.EarlyExitValidator;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
+
+import com.google.common.base.Optional;
+import com.google.inject.Provides;
 
 /**
  * Use this class to register components to be used at runtime / without the
@@ -57,8 +61,8 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	 * @return the type of provider for inferred action signatures.
 	 */
 	@SuppressWarnings("static-method")
-	public Class<? extends ActionSignatureProvider> bindActionSignatureProvider() {
-		return DefaultActionSignatureProvider.class;
+	public Class<? extends ActionPrototypeProvider> bindActionSignatureProvider() {
+		return DefaultActionPrototypeProvider.class;
 	}
 
 	/** Replies the type of the extended component that computes the early-exit flags.
@@ -145,6 +149,16 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	@SuppressWarnings("static-method")
 	public Class<? extends IContextPDAProvider> bindContextPDAProvider() {
 		return SARLContextPDAProvider.class;
+	}
+
+	/** Provides an optional {@link JvmModelInferrerProber}.
+	 *
+	 * @return an optional {@link JvmModelInferrerProber}.
+	 */
+	@SuppressWarnings("static-method")
+	@Provides
+	public Optional<JvmModelInferrerProber> getOptionalJvmModelInferrerProber() {
+		return Optional.absent();
 	}
 
 }

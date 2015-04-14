@@ -49,7 +49,7 @@ public class SpaceIDWithoutSpecificationTest extends AbstractSarlTest {
 	private UUID id;
 	@Nullable
 	private SpaceID spaceID;
-	
+
 	private int cmp(UUID a, UUID b) {
 		int cmp = this.contextID.compareTo(a);
 		if (cmp == 0) {
@@ -57,7 +57,7 @@ public class SpaceIDWithoutSpecificationTest extends AbstractSarlTest {
 		}
 		return cmp;
 	}
-	
+
 	/**
 	 */
 	@Before
@@ -66,7 +66,7 @@ public class SpaceIDWithoutSpecificationTest extends AbstractSarlTest {
 		this.id = UUID.randomUUID();
 		this.spaceID = new SpaceID(this.contextID, this.id, null);
 	}
-	
+
 	/**
 	 */
 	@Test

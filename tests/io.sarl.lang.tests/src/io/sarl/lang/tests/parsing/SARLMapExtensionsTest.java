@@ -45,14 +45,12 @@ import com.google.inject.Inject;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(XtextRunner.class)
-@InjectWith(SARLInjectorProvider.class)
 @SuppressWarnings("all")
 public class SARLMapExtensionsTest extends AbstractSarlTest {
-	
+
 	@Inject
 	private ParseHelper<XtendFile> parser;
-	
+
 	@Inject
 	private ValidationTestHelper validator;
 
@@ -77,7 +75,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(4, agent.getMembers().size());
 		//
 		XtendField attr1 = (XtendField) agent.getMembers().get(0);
@@ -97,7 +95,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(3);
 		assertEquals("myaction0", action.getName());
-		assertTypeReferenceIdentifiers(action.getFiredEvents());
+		assertNull(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
@@ -124,7 +122,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(4, agent.getMembers().size());
 		//
 		XtendField attr1 = (XtendField) agent.getMembers().get(0);
@@ -144,7 +142,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(3);
 		assertEquals("myaction1", action.getName());
-		assertTypeReferenceIdentifiers(action.getFiredEvents());
+		assertNull(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
@@ -169,7 +167,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(3, agent.getMembers().size());
 		//
 		XtendField attr1 = (XtendField) agent.getMembers().get(0);
@@ -184,7 +182,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(2);
 		assertEquals("myaction0", action.getName());
-		assertTypeReferenceIdentifiers(action.getFiredEvents());
+		assertNull(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "void");
 	}
@@ -230,7 +228,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(5, agent.getMembers().size());
 		//
 		XtendField attr1 = (XtendField) agent.getMembers().get(0);
@@ -255,7 +253,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(4);
 		assertEquals("myaction0", action.getName());
-		assertTypeReferenceIdentifiers(action.getFiredEvents());
+		assertNull(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
@@ -283,7 +281,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(5, agent.getMembers().size());
 		//
 		XtendField attr1 = (XtendField) agent.getMembers().get(0);
@@ -308,7 +306,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(4);
 		assertEquals("myaction0", action.getName());
-		assertTypeReferenceIdentifiers(action.getFiredEvents());
+		assertNull(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
@@ -334,7 +332,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(4, agent.getMembers().size());
 		//
 		XtendField attr1 = (XtendField) agent.getMembers().get(0);
@@ -354,7 +352,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(3);
 		assertEquals("myaction0", action.getName());
-		assertTypeReferenceIdentifiers(action.getFiredEvents());
+		assertNull(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
@@ -380,7 +378,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(4, agent.getMembers().size());
 		//
 		XtendField attr1 = (XtendField) agent.getMembers().get(0);
@@ -400,7 +398,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(3);
 		assertEquals("myaction0", action.getName());
-		assertTypeReferenceIdentifiers(action.getFiredEvents());
+		assertNull(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 	}
 
@@ -445,7 +443,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(4, agent.getMembers().size());
 		//
 		XtendField attr1 = (XtendField) agent.getMembers().get(0);
@@ -465,7 +463,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(3);
 		assertEquals("myaction0", action.getName());
-		assertTypeReferenceIdentifiers(action.getFiredEvents());
+		assertNull(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
@@ -512,7 +510,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(5, agent.getMembers().size());
 		//
 		XtendField attr1 = (XtendField) agent.getMembers().get(0);
@@ -537,7 +535,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(4);
 		assertEquals("myaction0", action.getName());
-		assertTypeReferenceIdentifiers(action.getFiredEvents());
+		assertNull(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
@@ -585,7 +583,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(5, agent.getMembers().size());
 		//
 		XtendField attr1 = (XtendField) agent.getMembers().get(0);

@@ -459,7 +459,7 @@ public interface SarlPackage extends EPackage
   int SARL_EVENT__MEMBERS = XtendPackage.XTEND_TYPE_DECLARATION__MEMBERS;
 
   /**
-   * The feature id for the '<em><b>Extends</b></em>' containment reference list.
+   * The feature id for the '<em><b>Extends</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -541,7 +541,7 @@ public interface SarlPackage extends EPackage
   int SARL_AGENT__MEMBERS = XtendPackage.XTEND_TYPE_DECLARATION__MEMBERS;
 
   /**
-   * The feature id for the '<em><b>Extends</b></em>' containment reference list.
+   * The feature id for the '<em><b>Extends</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -705,7 +705,7 @@ public interface SarlPackage extends EPackage
   int SARL_BEHAVIOR__MEMBERS = XtendPackage.XTEND_TYPE_DECLARATION__MEMBERS;
 
   /**
-   * The feature id for the '<em><b>Extends</b></em>' containment reference list.
+   * The feature id for the '<em><b>Extends</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -787,7 +787,7 @@ public interface SarlPackage extends EPackage
   int SARL_SKILL__MEMBERS = XtendPackage.XTEND_TYPE_DECLARATION__MEMBERS;
 
   /**
-   * The feature id for the '<em><b>Extends</b></em>' containment reference list.
+   * The feature id for the '<em><b>Extends</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1004,10 +1004,10 @@ public interface SarlPackage extends EPackage
   EClass getSarlEvent();
 
   /**
-   * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.SarlEvent#getExtends <em>Extends</em>}'.
+   * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.SarlEvent#getExtends <em>Extends</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Extends</em>'.
+   * @return the meta object for the containment reference '<em>Extends</em>'.
    * @see io.sarl.lang.sarl.SarlEvent#getExtends()
    * @see #getSarlEvent()
    * @generated
@@ -1025,10 +1025,10 @@ public interface SarlPackage extends EPackage
   EClass getSarlAgent();
 
   /**
-   * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.SarlAgent#getExtends <em>Extends</em>}'.
+   * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.SarlAgent#getExtends <em>Extends</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Extends</em>'.
+   * @return the meta object for the containment reference '<em>Extends</em>'.
    * @see io.sarl.lang.sarl.SarlAgent#getExtends()
    * @see #getSarlAgent()
    * @generated
@@ -1067,10 +1067,10 @@ public interface SarlPackage extends EPackage
   EClass getSarlBehavior();
 
   /**
-   * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.SarlBehavior#getExtends <em>Extends</em>}'.
+   * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.SarlBehavior#getExtends <em>Extends</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Extends</em>'.
+   * @return the meta object for the containment reference '<em>Extends</em>'.
    * @see io.sarl.lang.sarl.SarlBehavior#getExtends()
    * @see #getSarlBehavior()
    * @generated
@@ -1088,10 +1088,10 @@ public interface SarlPackage extends EPackage
   EClass getSarlSkill();
 
   /**
-   * Returns the meta object for the containment reference list '{@link io.sarl.lang.sarl.SarlSkill#getExtends <em>Extends</em>}'.
+   * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.SarlSkill#getExtends <em>Extends</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Extends</em>'.
+   * @return the meta object for the containment reference '<em>Extends</em>'.
    * @see io.sarl.lang.sarl.SarlSkill#getExtends()
    * @see #getSarlSkill()
    * @generated
@@ -1252,7 +1252,7 @@ public interface SarlPackage extends EPackage
     EClass SARL_EVENT = eINSTANCE.getSarlEvent();
 
     /**
-     * The meta object literal for the '<em><b>Extends</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Extends</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -1270,7 +1270,7 @@ public interface SarlPackage extends EPackage
     EClass SARL_AGENT = eINSTANCE.getSarlAgent();
 
     /**
-     * The meta object literal for the '<em><b>Extends</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Extends</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -1306,7 +1306,7 @@ public interface SarlPackage extends EPackage
     EClass SARL_BEHAVIOR = eINSTANCE.getSarlBehavior();
 
     /**
-     * The meta object literal for the '<em><b>Extends</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Extends</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -1324,7 +1324,7 @@ public interface SarlPackage extends EPackage
     EClass SARL_SKILL = eINSTANCE.getSarlSkill();
 
     /**
-     * The meta object literal for the '<em><b>Extends</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Extends</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated

@@ -20,20 +20,17 @@
  */
 package io.sarl.lang.ui.tests.outline;
 
-import org.eclipse.xtext.junit4.XtextRunner;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /** Test the outline of the "event" statement.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(XtextRunner.class)
-public class EventOutlineTest extends AbstractSARLOutlineTreeProviderTest { 
-	
+public class EventOutlineTest extends AbstractSARLOutlineTreeProviderTest {
+
 	/**
 	 * @throws Exception
 	 */
@@ -44,7 +41,7 @@ public class EventOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		asserts.numChildren(1);
 		asserts.leaf(0, "E1"); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * @throws Exception
 	 */
@@ -132,7 +129,7 @@ public class EventOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		a = asserts.child(0, "E1"); //$NON-NLS-1$
 		a.numChildren(4);
 		a.leaf(0, "attr : boolean"); //$NON-NLS-1$
-		a.leaf(1, "xyz"); //$NON-NLS-1$
+		a.leaf(1, "xyz : int"); //$NON-NLS-1$
 		a.leaf(2, "E1(char)"); //$NON-NLS-1$
 		a.leaf(3, "E1(int)"); //$NON-NLS-1$
 	}

@@ -35,7 +35,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class AgentKilledTest extends AbstractSARLTest<Event> {
+public class AgentKilledTest extends AbstractSarlCoreTest<Event> {
 
 	/**
 	 */
@@ -51,7 +51,7 @@ public class AgentKilledTest extends AbstractSARLTest<Event> {
 		assertEquals(3, this.type.getDeclaredFields().length);
 		assertEquals(1, this.type.getDeclaredConstructors().length);
 	}
-	
+
 	/**
 	 */
 	@Test

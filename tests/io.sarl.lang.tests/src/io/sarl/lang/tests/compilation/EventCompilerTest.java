@@ -37,8 +37,6 @@ import com.google.inject.Inject;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(XtextRunner.class)
-@InjectWith(SARLInjectorProvider.class)
 @SuppressWarnings("all")
 public class EventCompilerTest extends AbstractSarlTest {
 	@Inject
@@ -102,7 +100,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  public E1() {",
 				"    super();",
 				"  }",
-				"  ",  
+				"  ",
 				"  /**",
 				"   * Construct an event.",
 				"   * @param source - address of the agent that is emitting this event.",
@@ -111,7 +109,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  public E1(final Address source) {",
 				"    super(source);",
 				"  }",
-				"  ",  
+				"  ",
 				"  @Override",
 				"  @Generated",
 				"  public boolean equals(final Object obj) {",
@@ -131,7 +129,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"      return false;",
 				"    return true;",
 				"  }",
-				"  ",  
+				"  ",
 				"  @Override",
 				"  @Generated",
 				"  public int hashCode() {",
@@ -140,7 +138,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"    result = prime * result + ((this.name== null) ? 0 : this.name.hashCode());",
 				"    return result;",
 				"  }",
-				"  ",  
+				"  ",
 				"  /**",
 				"   * Returns a String representation of the E1 event's attributes only.",
 				"   */",
@@ -150,7 +148,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"    result.append(\"name  = \").append(this.name);",
 				"    return result.toString();",
 				"  }",
-				"  ",  
+				"  ",
 				"  @Generated",
 				"  private final static long serialVersionUID = 591742169L;",
 				"}",

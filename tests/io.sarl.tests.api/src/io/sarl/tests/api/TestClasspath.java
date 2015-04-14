@@ -40,7 +40,7 @@ import java.lang.annotation.Target;
 public @interface TestClasspath {
 
 	/** List of the bundles to add in the classpath.
-	 * 
+	 *
 	 * @return bundles
 	 */
 	String[] value();

@@ -4,13 +4,17 @@
 	<parent>
 		<groupId>io.sarl</groupId>
 		<artifactId>io.sarl.tycho-parent</artifactId>
-		<version>0.2.0-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../tycho-parent</relativePath>
 	</parent>
 
 	<artifactId>io.sarl.tests</artifactId>
 	<packaging>pom</packaging>
 	<name>Tests Parent</name>
+
+	<properties>
+		<tycho-surefire-plugin-os-jvm-flags></tycho-surefire-plugin-os-jvm-flags>
+	</properties>
 
 	<modules>
 		<module>io.sarl.tests.testdata</module>
@@ -37,6 +41,18 @@
 	<!-- ==== Plugins Building Management === -->
 	<!-- ======================================= -->
 
+	<profiles>
+		<profile>
+			<id>tycho-surefire-plugin-macosx-jvm-flags</id>
+			<activation>
+				<os><family>mac</family></os>
+			</activation>
+			<properties>
+				<tycho-surefire-plugin-os-jvm-flags>-XstartOnFirstThread</tycho-surefire-plugin-os-jvm-flags>
+			</properties>
+		</profile>
+	</profiles>
+
 	<build>
 		<!-- The build configurations are inside the submodules for avoiding to 
 			propagate the information outside a specific module -->
@@ -46,7 +62,7 @@
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-surefire-plugin</artifactId>
 					<configuration>
-						<argLine>-ea</argLine>
+						<argLine>-ea ${tycho-surefire-plugin-os-jvm-flags}</argLine>
 					</configuration>
 				</plugin>
 			</plugins>

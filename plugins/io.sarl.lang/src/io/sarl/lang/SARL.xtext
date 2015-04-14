@@ -169,7 +169,7 @@ Event returns xtend::XtendTypeDeclaration:
 	annotations+=XAnnotation*
 	{SarlEvent.annotationInfo = current}
 	modifiers+=CommonModifier*
-	'event' name=ValidID ('extends' extends+=JvmParameterizedTypeReference)? 
+	'event' name=ValidID ('extends' extends=JvmParameterizedTypeReference)? 
 	('{' (members+=EventMember)* '}')?
 ;
 
@@ -183,7 +183,7 @@ Agent returns xtend::XtendTypeDeclaration:
 	{SarlAgent.annotationInfo = current}
 	modifiers+=CommonModifier*
 	'agent' name=ValidID 
-	('extends' extends+=JvmParameterizedTypeReference)?
+	('extends' extends=JvmParameterizedTypeReference)?
 	'{' (members+=AgentMember)* '}'
 ;
 
@@ -211,7 +211,7 @@ Behavior returns xtend::XtendTypeDeclaration:
 	annotations+=XAnnotation*
 	{SarlBehavior.annotationInfo = current}
 	modifiers+=CommonModifier*
-	'behavior' name=ValidID ('extends' extends+=JvmParameterizedTypeReference)?
+	'behavior' name=ValidID ('extends' extends=JvmParameterizedTypeReference)?
 	'{' (members+=BehaviorMember)* '}'
 ;
 
@@ -225,7 +225,7 @@ Skill returns xtend::XtendTypeDeclaration:
 	{SarlSkill.annotationInfo = current}
 	modifiers+=CommonModifier*
 	'skill' name=ValidID 
-	(	('extends' extends+=JvmParameterizedTypeReference)?
+	(	('extends' extends=JvmParameterizedTypeReference)?
 		&
 		(	'implements' 
 				(	implements+=JvmParameterizedTypeReference

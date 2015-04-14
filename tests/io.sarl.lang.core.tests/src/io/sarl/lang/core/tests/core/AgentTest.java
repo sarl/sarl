@@ -54,20 +54,20 @@ public class AgentTest extends AbstractSarlTest {
 	private UUID id;
 	@Nullable
 	private AgentMock agent;
-	
+
 	private static Address mockAddress(UUID agentID) {
 		Address adr = Mockito.mock(Address.class);
 		Mockito.doReturn(agentID).when(adr).getUUID();
 		return adr;
 	}
-	
+
 	private static Event mockEvent(UUID agentID) {
 		Address adr = mockAddress(agentID);
 		Event evt = Mockito.mock(Event.class);
 		Mockito.doReturn(adr).when(evt).getSource();
 		return evt;
 	}
-	
+
 	private void assertNoSkill(Class<? extends Capacity> c) {
 		try {
 			this.agent.getSkill(c);
@@ -110,18 +110,18 @@ public class AgentTest extends AbstractSarlTest {
 	public void getParentID() {
 		assertSame(this.id, this.agent.getParentID());
 	}
-	
+
 	/**
 	 */
 	@Test
 	public void setSkill() {
 		Skill s1, s2, r;
-		
+
 		assertNoSkill(Capacity1.class);
 		assertNoSkill(Capacity2.class);
 		assertNoSkill(Skill1.class);
 		assertNoSkill(Skill2.class);
-		
+
 		s1 = new Skill1();
 		r = this.agent.setSkill(Capacity1.class, s1);
 		assertSame(s1, r);
@@ -181,9 +181,9 @@ public class AgentTest extends AbstractSarlTest {
 		assertSkill(Capacity2.class);
 		assertNoSkill(Skill1.class);
 		assertNoSkill(Skill2.class);
-		
+
 		this.agent.clearSkill(Capacity1.class);
-		
+
 		assertNoSkill(Capacity1.class);
 		assertSkill(Capacity2.class);
 		assertNoSkill(Skill1.class);
@@ -191,14 +191,14 @@ public class AgentTest extends AbstractSarlTest {
 
 		// again
 		this.agent.clearSkill(Capacity1.class);
-		
+
 		assertNoSkill(Capacity1.class);
 		assertSkill(Capacity2.class);
 		assertNoSkill(Skill1.class);
 		assertNoSkill(Skill2.class);
 
 		this.agent.clearSkill(Capacity2.class);
-		
+
 		assertNoSkill(Capacity1.class);
 		assertNoSkill(Capacity2.class);
 		assertNoSkill(Skill1.class);
@@ -213,9 +213,9 @@ public class AgentTest extends AbstractSarlTest {
 		this.agent.setSkill(Capacity2.class, new Skill2());
 		assertTrue(this.agent.hasSkill(Capacity1.class));
 		assertTrue(this.agent.hasSkill(Capacity2.class));
-		
+
 		this.agent.clearSkill(Capacity1.class);
-		
+
 		assertFalse(this.agent.hasSkill(Capacity1.class));
 		assertTrue(this.agent.hasSkill(Capacity2.class));
 		assertFalse(this.agent.hasSkill(Skill1.class));
@@ -223,14 +223,14 @@ public class AgentTest extends AbstractSarlTest {
 
 		// again
 		this.agent.clearSkill(Capacity1.class);
-		
+
 		assertFalse(this.agent.hasSkill(Capacity1.class));
 		assertTrue(this.agent.hasSkill(Capacity2.class));
 		assertFalse(this.agent.hasSkill(Skill1.class));
 		assertFalse(this.agent.hasSkill(Skill2.class));
 
 		this.agent.clearSkill(Capacity2.class);
-		
+
 		assertFalse(this.agent.hasSkill(Capacity1.class));
 		assertFalse(this.agent.hasSkill(Capacity2.class));
 		assertFalse(this.agent.hasSkill(Skill1.class));
@@ -242,12 +242,12 @@ public class AgentTest extends AbstractSarlTest {
 	@Test
 	public void operator_mappedTo() {
 		Skill s1, s2;
-		
+
 		assertNoSkill(Capacity1.class);
 		assertNoSkill(Capacity2.class);
 		assertNoSkill(Skill1.class);
 		assertNoSkill(Skill2.class);
-		
+
 		s1 = new Skill1();
 		this.agent.operator_mappedTo(Capacity1.class, s1);
 		assertSkill(Capacity1.class, s1);
@@ -300,7 +300,7 @@ public class AgentTest extends AbstractSarlTest {
 	@Test
 	public void isMeAddress() {
 		Address adr;
-		
+
 		adr = mockAddress(this.agent.getID());
 		assertTrue(this.agent.isMe(adr));
 
@@ -325,7 +325,7 @@ public class AgentTest extends AbstractSarlTest {
 	@Test
 	public void isFromMeEvent() {
 		Event evt;
-		
+
 		evt = mockEvent(this.agent.getID());
 		assertTrue(this.agent.isFromMe(evt));
 
@@ -337,49 +337,49 @@ public class AgentTest extends AbstractSarlTest {
 	}
 
 	/** Only for making public several protected methods.
-	 * 
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
 	public static class AgentMock extends Agent {
-		
+
 		/**
 		 * @param parentID
 		 */
 		public AgentMock(UUID parentID) {
 			super(parentID);
 		}
-		
+
 		/** {@inheritDoc}
 		 */
 		@Override
 		public <S extends Skill> S setSkill(Class<? extends Capacity> capacity, S skill) {
 			return super.setSkill(capacity, skill);
 		}
-		
+
 		/** {@inheritDoc}
 		 */
 		@Override
 		public <S extends Capacity> S getSkill(Class<S> capacity) {
 			return super.getSkill(capacity);
 		}
-		
+
 		/** {@inheritDoc}
 		 */
 		@Override
 		public <S extends Skill & Capacity> S clearSkill(Class<? extends Capacity> capacity) {
 			return super.clearSkill(capacity);
 		}
-		
+
 		/** {@inheritDoc}
 		 */
 		@Override
 		public boolean hasSkill(Class<? extends Capacity> capacity) {
 			return super.hasSkill(capacity);
 		}
-		
+
 		/** {@inheritDoc}
 		 */
 		@Override
@@ -387,30 +387,30 @@ public class AgentTest extends AbstractSarlTest {
 				Class<? extends Capacity> capacity, S skill) {
 			super.operator_mappedTo(capacity, skill);
 		}
-		
+
 		/** {@inheritDoc}
 		 */
 		@Override
 		public boolean isMe(Address address) {
 			return super.isMe(address);
 		}
-		
+
 		/** {@inheritDoc}
 		 */
 		@Override
 		public boolean isMe(UUID id) {
 			return super.isMe(id);
 		}
-		
+
 		/** {@inheritDoc}
 		 */
 		@Override
 		protected boolean isFromMe(Event event) {
 			return super.isFromMe(event);
 		}
-		
+
 	}
-	
+
 	/**
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -420,7 +420,7 @@ public class AgentTest extends AbstractSarlTest {
 	private static interface Capacity1 extends Capacity {
 		//
 	}
-	
+
 	/**
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -442,7 +442,7 @@ public class AgentTest extends AbstractSarlTest {
 			//
 		}
 	}
-	
+
 	/**
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$

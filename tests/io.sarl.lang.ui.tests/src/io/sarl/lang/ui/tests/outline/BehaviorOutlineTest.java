@@ -20,20 +20,17 @@
  */
 package io.sarl.lang.ui.tests.outline;
 
-import org.eclipse.xtext.junit4.XtextRunner;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /** Test the outline of the "behavior" statement.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(XtextRunner.class)
-public class BehaviorOutlineTest extends AbstractSARLOutlineTreeProviderTest { 
-	
+public class BehaviorOutlineTest extends AbstractSARLOutlineTreeProviderTest {
+
 	/**
 	 * @throws Exception
 	 */
@@ -44,7 +41,7 @@ public class BehaviorOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		asserts.numChildren(1);
 		asserts.leaf(0, "B1"); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * @throws Exception
 	 */

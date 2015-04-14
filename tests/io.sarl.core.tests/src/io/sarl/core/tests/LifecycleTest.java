@@ -35,7 +35,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class LifecycleTest extends AbstractSARLTest<Capacity> {
+public class LifecycleTest extends AbstractSarlCoreTest<Capacity> {
 
 	/**
 	 */
@@ -50,7 +50,7 @@ public class LifecycleTest extends AbstractSARLTest<Capacity> {
 	public void memberCount() {
 		assertEquals(3, this.type.getDeclaredMethods().length);
 	}
-	
+
 	/**
 	 */
 	@Test

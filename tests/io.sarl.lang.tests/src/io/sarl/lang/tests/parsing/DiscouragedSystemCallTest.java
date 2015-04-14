@@ -52,8 +52,6 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class DiscouragedSystemCallTest {
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class ConsoleTest extends AbstractSarlTest {
 
 		@Inject
@@ -221,8 +219,6 @@ public class DiscouragedSystemCallTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class ErrCallTest extends AbstractSarlTest {
 
 		@Inject
@@ -466,8 +462,6 @@ public class DiscouragedSystemCallTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class OutCallTest extends AbstractSarlTest {
 
 		@Inject
@@ -711,8 +705,6 @@ public class DiscouragedSystemCallTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class SetErrCallTest extends AbstractSarlTest {
 
 		@Inject
@@ -956,8 +948,6 @@ public class DiscouragedSystemCallTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class SetOutCallTest extends AbstractSarlTest {
 
 		@Inject
@@ -1201,8 +1191,6 @@ public class DiscouragedSystemCallTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class OutputImplicitCallTest extends AbstractSarlTest {
 
 		@Inject
@@ -1326,8 +1314,6 @@ public class DiscouragedSystemCallTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class InheritedChannelCallTest extends AbstractSarlTest {
 
 		@Inject

@@ -26,10 +26,9 @@ import java.util.Collections;
 
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
-import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.XFeatureCall;
-import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.controlflow.DefaultEarlyExitComputer;
+
+import com.google.inject.Singleton;
 
 /** Compute the early-exit flag for the SARL statements.
  *
@@ -38,40 +37,20 @@ import org.eclipse.xtext.xbase.controlflow.DefaultEarlyExitComputer;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@Singleton
 public class SARLEarlyExitComputer extends DefaultEarlyExitComputer {
 
 	@Override
 	protected Collection<ExitPoint> _exitPoints(XAbstractFeatureCall expression) {
 		Collection<ExitPoint> exitPoints = super._exitPoints(expression);
-		if (!isNotEmpty(exitPoints)
-				&& (expression instanceof XMemberFeatureCall || expression instanceof XFeatureCall)) {
-			JvmIdentifiableElement element = expression.getFeature();
-			if (SARLEarlyExitComputerUtil.isEarlyExitAnnotatedElement(element)) {
-				exitPoints = Collections.<ExitPoint>singletonList(new SARLExitPoint(expression, false));
-			}
+		if (isNotEmpty(exitPoints)) {
+			return exitPoints;
 		}
-		return exitPoints;
-	}
-
-	/** Exit point description.
-	 * <p>
-	 * This class is defined for helping to override the standard Xbase exit point.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	protected static class SARLExitPoint extends ExitPoint {
-
-		/**
-		 * @param expression - the expressionthat causes the early exit.
-		 * @param exceptionalExit - flag that indicates if this is an exceptional exit.
-		 */
-		public SARLExitPoint(XExpression expression, boolean exceptionalExit) {
-			super(expression, exceptionalExit);
+		JvmIdentifiableElement element = expression.getFeature();
+		if (SARLEarlyExitComputerUtil.isEarlyExitAnnotatedElement(element)) {
+			return Collections.<ExitPoint>singletonList(new ExitPoint(expression, true));
 		}
-
+		return Collections.emptyList();
 	}
 
 }

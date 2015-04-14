@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.sarl.SarlFormalParameter;
 
 import java.lang.reflect.Field;
@@ -37,13 +38,19 @@ import java.util.List;
 
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.junit4.InjectWith;
+import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
+import org.junit.Assume;
 import org.junit.Rule;
+import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+import org.junit.runner.RunWith;
+import org.junit.runners.model.Statement;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -67,6 +74,8 @@ import com.google.common.collect.Iterables;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@RunWith(XtextRunner.class)
+@InjectWith(SARLInjectorProvider.class)
 public abstract class AbstractSarlTest {
 
 	/** This rule permits to clean automatically the fields
@@ -92,6 +101,31 @@ public abstract class AbstractSarlTest {
 			if (isMockable()) {
 				MockitoAnnotations.initMocks(AbstractSarlTest.this);
 			}
+		}
+		@Override
+		public Statement apply(Statement base, Description description) {
+			// This test is working only in Eclipse, or Maven/Tycho.
+			TestScope scope = description.getAnnotation(TestScope.class);
+			if (scope == null) {
+				Class<?> enclosingType = description.getTestClass();
+				while (scope == null && enclosingType != null) {
+					scope = enclosingType.getAnnotation(TestScope.class);
+					enclosingType = enclosingType.getEnclosingClass();
+				}
+			}
+			if (scope != null) {
+				if (!scope.tycho() && !scope.eclipse()) {
+					throw new AssumptionViolatedException("not running on the current framework");
+				} else if (scope.tycho() || scope.eclipse()) {
+					boolean isEclipse = System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.");
+					if (scope.tycho()) {
+						Assume.assumeFalse(isEclipse);
+					} else {
+						Assume.assumeTrue(isEclipse);
+					}
+				}
+			}
+			return super.apply(base, description);
 		}
 		@Override
 		protected void finished(Description description) {
@@ -120,7 +154,7 @@ public abstract class AbstractSarlTest {
 	};
 
 	/** Test if the actual collection/iterable contains all the expected objects.
-	 * 
+	 *
 	 * @param actual - the collection to test.
 	 * @param expected - the expected objects.
 	 */
@@ -129,7 +163,7 @@ public abstract class AbstractSarlTest {
 	}
 
 	/** Test if the actual collection/iterable contains all the expected objects.
-	 * 
+	 *
 	 * @param actual - the collection to test.
 	 * @param expected - the expected objects.
 	 */
@@ -145,6 +179,43 @@ public abstract class AbstractSarlTest {
 			Object ac = it1.next();
 			it1.remove();
 			if (!le.remove(ac)) {
+				fail("Unexpecting element: " + ac);
+				return;
+			}
+		}
+
+		if (!le.isEmpty()) {
+			fail("Expecting the following elements:\n" + le.toString() + "\nbut was:\n" +
+					Iterables.toString(actual));
+		}
+	}
+
+	/** Test if the actual collection/iterable contains all the expected objects.
+	 *
+	 * @param actual - the collection to test.
+	 * @param expected - the expected objects.
+	 */
+	public static void assertContainsStrings(Iterable<?> actual, String... expected) {
+		assertContainsStringCollection(actual, Arrays.asList(expected));
+	}
+
+	/** Test if the actual collection/iterable contains all the expected objects.
+	 *
+	 * @param actual - the collection to test.
+	 * @param expected - the expected objects.
+	 */
+	public static void assertContainsStringCollection(Iterable<?> actual, Iterable<String> expected) {
+		assertNotNull(actual);
+		Collection<Object> la = new ArrayList<>();
+		Iterables.addAll(la, actual);
+		Collection<String> le = new ArrayList<>();
+		Iterables.addAll(le, expected);
+
+		Iterator<?> it1 = la.iterator();
+		while (it1.hasNext()) {
+			Object ac = it1.next();
+			it1.remove();
+			if (!le.remove(ac.toString())) {
 				fail("Unexpecting element: " + ac);
 				return;
 			}
@@ -253,7 +324,7 @@ public abstract class AbstractSarlTest {
 	}
 
 	/** Assert that the given value is stricty positive.
-	 * 
+	 *
 	 * @param actual - the value to test.
 	 */
 	public static void assertStrictlyPositive(int actual) {
@@ -263,7 +334,7 @@ public abstract class AbstractSarlTest {
 	}
 
 	/** Assert that the given value is stricty negative.
-	 * 
+	 *
 	 * @param actual - the value to test.
 	 */
 	public static void assertStrictlyNegative(int actual) {
@@ -273,7 +344,7 @@ public abstract class AbstractSarlTest {
 	}
 
 	/** Assert that the given value is stricty positive.
-	 * 
+	 *
 	 * @param actual - the value to test.
 	 */
 	public static void assertPositiveOrZero(int actual) {
@@ -283,7 +354,7 @@ public abstract class AbstractSarlTest {
 	}
 
 	/** Assert that the given value is negative or zero.
-	 * 
+	 *
 	 * @param actual - the value to test.
 	 */
 	public static void assertNegativeOrZero(int actual) {
@@ -293,7 +364,7 @@ public abstract class AbstractSarlTest {
 	}
 
 	/** Assert that the given value is equal to zero.
-	 * 
+	 *
 	 * @param actual - the value to test.
 	 */
 	public static void assertZero(int actual) {
@@ -301,7 +372,7 @@ public abstract class AbstractSarlTest {
 	}
 
 	/** Assert that the given value is equal to zero.
-	 * 
+	 *
 	 * @param message - the error message.
 	 * @param actual - the value to test.
 	 */
@@ -353,9 +424,9 @@ public abstract class AbstractSarlTest {
 		fail("Unable to find the value in the array, value: " + actual //$NON-NLS-1$
 				+ "\narray: " + Arrays.toString(expected)); //$NON-NLS-1$
 	}
-	
+
 	/** Helper for writting a multiline string in unit tests.
-	 * 
+	 *
 	 * @param lines - the lines in the string.
 	 * @return the complete multiline string.
 	 */
@@ -366,7 +437,7 @@ public abstract class AbstractSarlTest {
 	/** Assert that the given iterable object replies the expected identifiers.
 	 *
 	 * The order of the identifier is significant.
-	 * 
+	 *
 	 * @param actualReferences - the actual elements.
 	 * @param expectedIdentifiers - the expected elements.
 	 * @see JvmTypeReference#getIdentifier()
@@ -513,7 +584,7 @@ public abstract class AbstractSarlTest {
 	}
 
 	/** Assert the actual XExpression is of the given type and initialized with the given literal.
-	 * 
+	 *
 	 * @param actualExpression - the expression to test.
 	 * @param expectedType - the expected type of expression.
 	 * @param expectedValue - the expected value.

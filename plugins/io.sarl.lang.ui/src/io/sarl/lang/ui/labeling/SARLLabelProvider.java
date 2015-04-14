@@ -53,8 +53,8 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.util.Exceptions;
 import org.eclipse.xtext.util.PolymorphicDispatcher;
 import org.eclipse.xtext.util.PolymorphicDispatcher.ErrorHandler;
+import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
 import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping;
-import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.validation.UIStrings;
 
 import com.google.common.base.Strings;
@@ -82,7 +82,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 	private OperatorMapping operatorMapping;
 
 	@Inject
-	private CommonTypeComputationServices services;
+	private JvmModelAssociator jvmModelAssociator;
 
 	@Inject
 	private SARLImages images;
@@ -193,7 +193,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 	 * @return the JVM element, or <code>null</code> if not found.
 	 */
 	protected <T> T getJvmElement(EObject element, Class<T> type) {
-		for (EObject obj : this.services.getJvmModelAssociations().getJvmElements(element)) {
+		for (EObject obj : this.jvmModelAssociator.getJvmElements(element)) {
 			if (type.isInstance(obj)) {
 				return type.cast(obj);
 			}

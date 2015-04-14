@@ -47,6 +47,12 @@ import com.google.inject.Injector;
  */
 public final class SARLPreferences {
 
+	/** Define the configuration entry for project specific entries.
+	 *
+	 * @see OptionsConfigurationBlock#IS_PROJECT_SPECIFIC
+	 */
+	public static final String IS_PROJECT_SPECIFIC = "is_project_specific"; //$NON-NLS-1$
+
 	private SARLPreferences() {
 		//
 	}
@@ -84,7 +90,7 @@ public final class SARLPreferences {
 	 */
 	public static void setSystemSARLConfigurationFor(IProject project) {
 		IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(project);
-		preferenceStore.setValue(OptionsConfigurationBlock.IS_PROJECT_SPECIFIC, false);
+		preferenceStore.setValue(IS_PROJECT_SPECIFIC, false);
 	}
 
 	/** Configure the given project for using a specific configuration
@@ -98,7 +104,7 @@ public final class SARLPreferences {
 			IPath outputPath) {
 		IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(project);
 		// Force to use a specific configuration for the SARL
-		preferenceStore.setValue(OptionsConfigurationBlock.IS_PROJECT_SPECIFIC, true);
+		preferenceStore.setValue(IS_PROJECT_SPECIFIC, true);
 
 		// Loop on the Xtext configurations embeded in the SARL compiler.
 		String key;
@@ -159,7 +165,7 @@ public final class SARLPreferences {
 			IProject project) {
 		assert (project != null);
 		IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(project);
-		if (preferenceStore.getBoolean(OptionsConfigurationBlock.IS_PROJECT_SPECIFIC)) {
+		if (preferenceStore.getBoolean(IS_PROJECT_SPECIFIC)) {
 			String key;
 			for (OutputConfiguration projectConfiguration
 					: SARLPreferences.getXtextConfigurationsFor(project)) {

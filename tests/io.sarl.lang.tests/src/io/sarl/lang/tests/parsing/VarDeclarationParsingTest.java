@@ -48,13 +48,11 @@ import com.google.inject.Inject;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(XtextRunner.class)
-@InjectWith(SARLInjectorProvider.class)
 @SuppressWarnings("all")
 public class VarDeclarationParsingTest extends AbstractSarlTest {
 	@Inject
 	private ParseHelper<XtendFile> parser;
-	
+
 	@Inject
 	private ValidationTestHelper validator;
 
@@ -123,7 +121,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(3, agent.getMembers().size());
 		//
 		XtendField attr1 = (XtendField) agent.getMembers().get(0);
@@ -164,7 +162,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(1, agent.getMembers().size());
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(0);
@@ -238,7 +236,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(3, agent.getMembers().size());
 		//
 		XtendField attr1 = (XtendField) agent.getMembers().get(0);
@@ -276,7 +274,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(1, agent.getMembers().size());
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(0);
@@ -324,7 +322,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(2, agent.getMembers().size());
 		//
 		XtendField attr = (XtendField) agent.getMembers().get(0);
@@ -358,7 +356,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(2, agent.getMembers().size());
 		//
 		XtendField attr = (XtendField) agent.getMembers().get(0);
@@ -413,7 +411,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(1, agent.getMembers().size());
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(0);
@@ -469,7 +467,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(1, agent.getMembers().size());
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(0);
@@ -519,7 +517,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		//
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals("A1", agent.getName());
-		assertTypeReferenceIdentifiers(agent.getExtends());
+		assertNull(agent.getExtends());
 		assertEquals(2, agent.getMembers().size());
 		//
 		SarlAction action1 = (SarlAction) agent.getMembers().get(0);
@@ -534,5 +532,5 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		assertTypeReferenceIdentifier(action2.getReturnType(), "void");
 		assertParameterNames(action2.getParameters());
 	}
-	
+
 }

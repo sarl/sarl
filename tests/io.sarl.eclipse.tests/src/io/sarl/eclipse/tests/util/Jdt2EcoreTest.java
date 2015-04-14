@@ -33,12 +33,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.util.Jdt2Ecore.TypeFinder;
+import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.actionprototype.FormalParameterProvider;
 import io.sarl.lang.genmodel.GeneratedCode;
 import io.sarl.lang.genmodel.SARLCodeGenerator;
-import io.sarl.lang.signature.ActionKey;
-import io.sarl.lang.signature.ActionSignatureProvider;
-import io.sarl.lang.signature.ActionSignatureProvider.FormalParameterProvider;
-import io.sarl.lang.signature.SignatureKey;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.CleanWorkspaceAfter;
 import io.sarl.tests.api.Nullable;
@@ -109,7 +109,7 @@ public class Jdt2EcoreTest {
 	 *
 	 * @param fullyQualifiedName - fully qualified name of the type.
 	 * @param superClass - fully qualified name of the super class.
-	 * @throws JavaModelException 
+	 * @throws JavaModelException
 	 */
 	protected static IType createITypeMock(String fullyQualifiedName, String superClass) throws JavaModelException {
 		IType type = mock(IType.class);
@@ -140,7 +140,7 @@ public class Jdt2EcoreTest {
 	 * @param type - the enclosing type of the method.
 	 * @param methodName - the name of the method.
 	 * @param returnType - the type of the returned value.
-	 * @throws JavaModelException 
+	 * @throws JavaModelException
 	 */
 	protected static IMethod createIMethodMock(IType type, String methodName, String returnType,
 			String[] parameterNames, String[] parameterTypes, int flags) throws JavaModelException {
@@ -153,11 +153,11 @@ public class Jdt2EcoreTest {
 	 * @param type - the enclosing type of the method.
 	 * @param methodName - the name of the method.
 	 * @param returnType - the type of the returned value.
-	 * @throws JavaModelException 
+	 * @throws JavaModelException
 	 */
 	protected static IMethod createIMethodMock(IType type, String methodName, String returnType,
 			String[] parameterNames, String[] parameterTypes,
-			IAnnotation[] parameterAnnotations, IAnnotation[] methodAnnotations, 
+			IAnnotation[] parameterAnnotations, IAnnotation[] methodAnnotations,
 			int flags) throws JavaModelException {
 		IMethod method = mock(IMethod.class);
 		when(method.getDeclaringType()).thenReturn(type);
@@ -216,13 +216,13 @@ public class Jdt2EcoreTest {
 	}
 
 	/** Assert the action keys. The order of the key is not important.
-	 * 
+	 *
 	 * @param actualKeys
 	 * @param expectedKeys
 	 */
-	protected static void assertActionKeys(Set<? extends ActionKey> actualKeys, String... expectedKeys) {
+	protected static void assertActionKeys(Set<? extends ActionPrototype> actualKeys, String... expectedKeys) {
 		Set<String> expected = Sets.newHashSet(expectedKeys);
-		for (ActionKey actualKey : actualKeys) {
+		for (ActionPrototype actualKey : actualKeys) {
 			Iterator<String> iterator = expected.iterator();
 			boolean cont = true;
 			while (cont && iterator.hasNext()) {
@@ -243,13 +243,13 @@ public class Jdt2EcoreTest {
 	}
 
 	/** Assert the signature keys. The order of the key is not important.
-	 * 
+	 *
 	 * @param actualKeys
 	 * @param expectedKeys
 	 */
-	protected static void assertSignatureKeys(Set<? extends SignatureKey> actualKeys, String... expectedKeys) {
+	protected static void assertSignatureKeys(Set<? extends ActionParameterTypes> actualKeys, String... expectedKeys) {
 		Set<String> expected = Sets.newHashSet(expectedKeys);
-		for (SignatureKey actualKey : actualKeys) {
+		for (ActionParameterTypes actualKey : actualKeys) {
 			Iterator<String> iterator = expected.iterator();
 			boolean cont = true;
 			while (cont && iterator.hasNext()) {
@@ -275,7 +275,7 @@ public class Jdt2EcoreTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class IsGeneratedOperation extends AbstractSarlUiTest {	
+	public static class IsGeneratedOperation extends AbstractSarlUiTest {
 
 		@Test
 		public void isGeneratedOperation_noAnnotation() throws JavaModelException {
@@ -315,7 +315,7 @@ public class Jdt2EcoreTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class GetAnnotation extends AbstractSarlUiTest {	
+	public static class GetAnnotation extends AbstractSarlUiTest {
 
 		@Test
 		public void getAnnotation_noAnnotation() throws JavaModelException {
@@ -357,7 +357,7 @@ public class Jdt2EcoreTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class FindType extends AbstractSarlUiTest {	
+	public static class FindType extends AbstractSarlUiTest {
 
 		@Nullable
 		private IJavaProject project;
@@ -393,7 +393,7 @@ public class Jdt2EcoreTest {
 		Jdt2EcoreTest.IsVisible.Package1Package2Nosubtype.class,
 		Jdt2EcoreTest.IsVisible.Package1Package2Subtype.class,
 	})
-	public static class IsVisible {	
+	public static class IsVisible {
 
 		/**
 		 * @author $Author: sgalland$
@@ -931,7 +931,7 @@ public class Jdt2EcoreTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class FormalParameter extends AbstractSarlUiTest {	
+	public static class FormalParameter extends AbstractSarlUiTest {
 
 		@Test
 		public void getFormalParameterProvider_noVarargs() throws JavaModelException {
@@ -1198,25 +1198,25 @@ public class Jdt2EcoreTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class PopulateInheritanceContext extends AbstractSarlUiTest {	
+	public static class PopulateInheritanceContext extends AbstractSarlUiTest {
 
 		@Inject
-		private ActionSignatureProvider sarlSignatureProvider;
+		private ActionPrototypeProvider sarlSignatureProvider;
 
 		@Nullable
-		private Map<ActionKey, IMethod> finalOperations;
+		private Map<ActionPrototype, IMethod> finalOperations;
 
 		@Nullable
-		private Map<ActionKey, IMethod> overridableOperations;
+		private Map<ActionPrototype, IMethod> overridableOperations;
 
 		@Nullable
 		private Map<String, IField> inheritedFields;
 
 		@Nullable
-		private Map<ActionKey, IMethod> operationsToImplement;
+		private Map<ActionPrototype, IMethod> operationsToImplement;
 
 		@Nullable
-		private Map<SignatureKey, IMethod> superConstructors;
+		private Map<ActionParameterTypes, IMethod> superConstructors;
 
 		@Before
 		public void setUp() throws Exception {

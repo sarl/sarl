@@ -32,6 +32,7 @@ import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.TestClasspath;
+import io.sarl.tests.api.TestScope;
 
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
@@ -73,14 +74,12 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class AgentParsingTest {
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class TopElementTest extends AbstractSarlTest {
 
 		@Inject
 		private ParseHelper<XtendFile> parser;
 
-		@Inject 
+		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
@@ -97,12 +96,12 @@ public class AgentParsingTest {
 			//
 			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent1.getName());
-			assertTypeReferenceIdentifiers(agent1.getExtends());
+			assertNull(agent1.getExtends());
 			assertEquals(0, agent1.getMembers().size());
 			//
 			SarlAgent agent2 = (SarlAgent) mas.getXtendTypes().get(1);
 			assertEquals("A2", agent2.getName());
-			assertTypeReferenceIdentifiers(agent2.getExtends());
+			assertNull(agent2.getExtends());
 			assertEquals(0, agent2.getMembers().size());
 		}
 
@@ -203,17 +202,17 @@ public class AgentParsingTest {
 			//
 			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A3", agent1.getName());
-			assertTypeReferenceIdentifiers(agent1.getExtends());
+			assertNull(agent1.getExtends());
 			assertTrue(agent1.getMembers().isEmpty());
 			//
 			SarlAgent agent2 = (SarlAgent) mas.getXtendTypes().get(1);
 			assertEquals("A2", agent2.getName());
-			assertTypeReferenceIdentifiers(agent2.getExtends(), "A3");
+			assertTypeReferenceIdentifier(agent2.getExtends(), "A3");
 			assertTrue(agent2.getMembers().isEmpty());
 			//
 			SarlAgent agent3 = (SarlAgent) mas.getXtendTypes().get(2);
 			assertEquals("A1", agent3.getName());
-			assertTypeReferenceIdentifiers(agent3.getExtends(), "A2");
+			assertTypeReferenceIdentifier(agent3.getExtends(), "A2");
 			assertTrue(agent3.getMembers().isEmpty());
 		}
 
@@ -221,11 +220,12 @@ public class AgentParsingTest {
 
 	public static class TopElementUiBaseTest extends AbstractSarlUiTest {
 
-		@Inject 
+		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
 		@TestClasspath("io.sarl.tests.testdata")
+		@TestScope(tycho=false)
 		public void invalidExtend() throws Exception {
 			// This test is working only in Eclipse, not in Maven.
 			Assume.assumeTrue(System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit."));
@@ -242,14 +242,12 @@ public class AgentParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class BehaviorUnitTest extends AbstractSarlTest {
 
 		@Inject
 		private ParseHelper<XtendFile> parser;
 
-		@Inject 
+		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
@@ -267,12 +265,12 @@ public class AgentParsingTest {
 			//
 			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
 			assertEquals("E", event.getName());
-			assertTypeReferenceIdentifiers(event.getExtends());
+			assertNull(event.getExtends());
 			assertTrue(event.getMembers().isEmpty());
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(1);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(1, agent.getMembers().size());
 			//
 			SarlBehaviorUnit eventHandler = (SarlBehaviorUnit) agent.getMembers().get(0);
@@ -295,12 +293,12 @@ public class AgentParsingTest {
 			//
 			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
 			assertEquals("E", event.getName());
-			assertTypeReferenceIdentifiers(event.getExtends());
+			assertNull(event.getExtends());
 			assertTrue(event.getMembers().isEmpty());
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(1);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(1, agent.getMembers().size());
 			//
 			SarlBehaviorUnit eventHandler = (SarlBehaviorUnit) agent.getMembers().get(0);
@@ -315,7 +313,7 @@ public class AgentParsingTest {
 					"on E  {}",
 					"}"
 					));
-			this.validator.assertError(mas, 
+			this.validator.assertError(mas,
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					Diagnostic.LINKING_DIAGNOSTIC,
 					"Couldn't resolve reference to JvmType 'E'.");
@@ -382,14 +380,12 @@ public class AgentParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class AttributeTest extends AbstractSarlTest {
 
 		@Inject
 		private ParseHelper<XtendFile> parser;
 
-		@Inject 
+		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
@@ -407,7 +403,7 @@ public class AgentParsingTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(2, agent.getMembers().size());
 			//
 			XtendField attr1 = (XtendField) agent.getMembers().get(0);
@@ -439,7 +435,7 @@ public class AgentParsingTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(2, agent.getMembers().size());
 			//
 			XtendField attr1 = (XtendField) agent.getMembers().get(0);
@@ -544,7 +540,7 @@ public class AgentParsingTest {
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent.getName());
-			assertTypeReferenceIdentifiers(agent.getExtends());
+			assertNull(agent.getExtends());
 			assertEquals(2, agent.getMembers().size());
 			//
 			XtendField attr1 = (XtendField) agent.getMembers().get(0);
@@ -580,14 +576,12 @@ public class AgentParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CapacityUseTest extends AbstractSarlTest {
 
 		@Inject
 		private ParseHelper<XtendFile> parser;
 
-		@Inject 
+		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
@@ -631,7 +625,7 @@ public class AgentParsingTest {
 					"agent A1 {",
 					"uses MyCap",
 					"}"
-					));		
+					));
 			this.validator.assertError(mas,
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					Diagnostic.LINKING_DIAGNOSTIC,
@@ -675,14 +669,12 @@ public class AgentParsingTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class ActionTest extends AbstractSarlTest {
 
 		@Inject
 		private ParseHelper<XtendFile> parser;
 
-		@Inject 
+		@Inject
 		private ValidationTestHelper validator;
 
 		@Test
@@ -802,7 +794,7 @@ public class AgentParsingTest {
 			//
 			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent1.getName());
-			assertTypeReferenceIdentifiers(agent1.getExtends());
+			assertNull(agent1.getExtends());
 			assertEquals(1, agent1.getMembers().size());
 			//
 			SarlAction action1 = (SarlAction) agent1.getMembers().get(0);
@@ -814,7 +806,7 @@ public class AgentParsingTest {
 			//
 			SarlAgent agent2 = (SarlAgent) mas.getXtendTypes().get(1);
 			assertEquals("A2", agent2.getName());
-			assertTypeReferenceIdentifiers(agent2.getExtends(), "A1");
+			assertTypeReferenceIdentifier(agent2.getExtends(), "A1");
 			assertEquals(1, agent2.getMembers().size());
 			//
 			SarlAction action2 = (SarlAction) agent2.getMembers().get(0);
@@ -846,7 +838,7 @@ public class AgentParsingTest {
 			//
 			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent1.getName());
-			assertTypeReferenceIdentifiers(agent1.getExtends());
+			assertNull(agent1.getExtends());
 			assertEquals(1, agent1.getMembers().size());
 			//
 			SarlAction action1 = (SarlAction) agent1.getMembers().get(0);
@@ -858,7 +850,7 @@ public class AgentParsingTest {
 			//
 			SarlAgent agent2 = (SarlAgent) mas.getXtendTypes().get(1);
 			assertEquals("A2", agent2.getName());
-			assertTypeReferenceIdentifiers(agent2.getExtends(), "A1");
+			assertTypeReferenceIdentifier(agent2.getExtends(), "A1");
 			assertEquals(1, agent2.getMembers().size());
 			//
 			SarlAction action2 = (SarlAction) agent2.getMembers().get(0);

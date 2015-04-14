@@ -16,6 +16,7 @@
 package io.sarl.lang.tests.parsing;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.sarl.SarlEvent;
@@ -58,8 +59,6 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class EventParsingTest extends AbstractSarlTest {
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class TopElementTest extends AbstractSarlTest {
 
 		@Inject
@@ -137,7 +136,7 @@ public class EventParsingTest extends AbstractSarlTest {
 			//
 			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
 			assertEquals("E1", event.getName());
-			assertTypeReferenceIdentifiers(event.getExtends());
+			assertNull(event.getExtends());
 			assertEquals(2, event.getMembers().size());
 			//
 			XtendField attr1 = (XtendField) event.getMembers().get(0);
@@ -230,8 +229,6 @@ public class EventParsingTest extends AbstractSarlTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class ConstructorTest extends AbstractSarlTest {
 
 		@Inject
@@ -258,12 +255,12 @@ public class EventParsingTest extends AbstractSarlTest {
 			//
 			SarlEvent event1 = (SarlEvent) mas.getXtendTypes().get(0);
 			assertEquals("E1", event1.getName());
-			assertTypeReferenceIdentifiers(event1.getExtends());
+			assertNull(event1.getExtends());
 			assertEquals(0, event1.getMembers().size());
 			//
 			SarlEvent event2 = (SarlEvent) mas.getXtendTypes().get(1);
 			assertEquals("E2", event2.getName());
-			assertTypeReferenceIdentifiers(event2.getExtends(), "io.sarl.test.E1");
+			assertTypeReferenceIdentifier(event2.getExtends(), "io.sarl.test.E1");
 			assertEquals(1, event2.getMembers().size());
 			//
 			XtendConstructor constructor = (XtendConstructor) event2.getMembers().get(0);
@@ -348,5 +345,5 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 	}
-	
+
 }

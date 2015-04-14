@@ -40,7 +40,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class InnerContextAccessTest extends AbstractSARLTest<Capacity> {
+public class InnerContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 
 	/**
 	 */

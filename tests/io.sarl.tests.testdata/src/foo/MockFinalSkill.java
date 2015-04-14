@@ -38,5 +38,5 @@ public final class MockFinalSkill extends Skill implements MockCapacity {
 	public MockFinalSkill(Agent owner) {
 		super(owner);
 	}
-	
+
 }

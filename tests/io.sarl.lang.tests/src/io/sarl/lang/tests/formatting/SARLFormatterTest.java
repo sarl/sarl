@@ -58,8 +58,6 @@ public class SARLFormatterTest {
 		assertEquals(expected.toString(), actual);
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class AgentTest extends AbstractSarlTest {
 
 		@Inject
@@ -161,7 +159,7 @@ public class SARLFormatterTest {
 		@Test
 		public void variableDeclaration() throws Exception {
 			String source = multilineString(
-					"agent A1 { var cmdAddr : Address var cmdAddr2 : Address", 
+					"agent A1 { var cmdAddr : Address var cmdAddr2 : Address",
 					"  on E {",
 					"  val cmd :Address",
 					"  val cmd2 : Address",
@@ -187,7 +185,7 @@ public class SARLFormatterTest {
 		@Test
 		public void variableAssignment() throws Exception {
 			String source = multilineString(
-					"agent A1 { var cmdAddr : Address var cmdAddr2 : Address", 
+					"agent A1 { var cmdAddr : Address var cmdAddr2 : Address",
 					"  on E {",
 					"  val cmd :Address",
 					"  val cmd2 : Address",
@@ -279,8 +277,6 @@ public class SARLFormatterTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class BehaviorTest extends AbstractSarlTest {
 
 		@Inject
@@ -306,7 +302,7 @@ public class SARLFormatterTest {
 		public void behaviorsDefinition_1() throws Exception {
 			String source = multilineString(
 					"behavior B1 { ",
-					"  requires Cap1, Cap2", 
+					"  requires Cap1, Cap2",
 					"  uses Cap1",
 					"  uses Cap2",
 					"",
@@ -347,8 +343,6 @@ public class SARLFormatterTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class SkillTest extends AbstractSarlTest {
 
 		@Inject
@@ -384,8 +378,6 @@ public class SARLFormatterTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class XbaseTest extends AbstractSarlTest {
 
 		@Inject
@@ -456,7 +448,7 @@ public class SARLFormatterTest {
 			String source = multilineString(
 					"import io.sarl.core.Agent import io.sarl.core.Event",
 					"",
-					"import io.sarl.core.Agent", 
+					"import io.sarl.core.Agent",
 					"import io.sarl.core.Event",
 					"",
 					"import static java.lang.String . *",
@@ -639,8 +631,6 @@ public class SARLFormatterTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CapacityTest extends AbstractSarlTest {
 
 		@Inject
@@ -679,7 +669,7 @@ public class SARLFormatterTest {
 					"def join(futureContext : UUID, futureContextDefaultSpaceID : UUID) fires ContextJoined, MemberJoined",
 					"  ",
 					"/**",
-					" * Leaves the parent's context.", 
+					" * Leaves the parent's context.",
 					" * @fires ContextLeft in its inner Context default space (Behaviors#wake).",
 					" * @fires MemberLeft in its parent Context default Space ",
 					" */",
@@ -715,7 +705,7 @@ public class SARLFormatterTest {
 					"	def join(futureContext : UUID, futureContextDefaultSpaceID : UUID) fires ContextJoined, MemberJoined",
 					"",
 					"	/**",
-					" * Leaves the parent's context.", 
+					" * Leaves the parent's context.",
 					" * @fires ContextLeft in its inner Context default space (Behaviors#wake).",
 					" * @fires MemberLeft in its parent Context default Space ",
 					" */",

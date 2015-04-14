@@ -52,7 +52,7 @@ public class SpaceIDWithSpecificationTest extends AbstractSarlTest {
 	private Class specification;
 	@Nullable
 	private SpaceID spaceID;
-	
+
 	private int cmp(UUID a, UUID b) {
 		int cmp = this.contextID.compareTo(a);
 		if (cmp == 0) {
@@ -60,7 +60,7 @@ public class SpaceIDWithSpecificationTest extends AbstractSarlTest {
 		}
 		return cmp;
 	}
-	
+
 	/**
 	 */
 	@Before
@@ -70,7 +70,7 @@ public class SpaceIDWithSpecificationTest extends AbstractSarlTest {
 		this.specification = SpaceSpecification.class;
 		this.spaceID = new SpaceID(this.contextID, this.id, this.specification);
 	}
-	
+
 	/**
 	 */
 	@Test
