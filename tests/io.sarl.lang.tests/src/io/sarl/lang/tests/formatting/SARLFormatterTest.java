@@ -417,7 +417,7 @@ public class SARLFormatterTest {
 					"",
 					"	on Initialize {",
 					"		if(!dir.exists) {",
-					"			throw new IllegalArgumentException(\"Path [\" + myPath + \"] is not a Directory\")",
+					"			throw new IllegalArgumentException ( \"Path [\" + myPath + \"] is not a Directory\" )",
 					"		}",
 					"",
 					"		for ( f : dir.listFiles() ) {",

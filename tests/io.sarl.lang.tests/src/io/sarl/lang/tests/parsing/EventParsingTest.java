@@ -95,6 +95,48 @@ public class EventParsingTest extends AbstractSarlTest {
 					"Supertype must be of type 'io.sarl.lang.core.Event'.");
 		}
 
+		@Test
+		public void invalidExtend_2() throws Exception {
+			XtendFile mas = this.parser.parse(multilineString(
+					"event E1 {",
+					"}",
+					"agent A1 extends E1 {",
+					"}"
+					));
+			this.validator.assertError(mas,
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					IssueCodes.INVALID_EXTENDED_TYPE,
+					"Supertype must be of type 'io.sarl.lang.core.Event'.");
+		}
+
+		@Test
+		public void invalidExtend_3() throws Exception {
+			XtendFile mas = this.parser.parse(multilineString(
+					"event E1 {",
+					"}",
+					"behavior B1 extends E1 {",
+					"}"
+					));
+			this.validator.assertError(mas,
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					IssueCodes.INVALID_EXTENDED_TYPE,
+					"Supertype must be of type 'io.sarl.lang.core.Event'.");
+		}
+
+		@Test
+		public void invalidExtend_4() throws Exception {
+			XtendFile mas = this.parser.parse(multilineString(
+					"event E1 {",
+					"}",
+					"skill S1 extends E1 {",
+					"}"
+					));
+			this.validator.assertError(mas,
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					IssueCodes.INVALID_EXTENDED_TYPE,
+					"Supertype must be of type 'io.sarl.lang.core.Event'.");
+		}
+
 	}
 
 	@RunWith(XtextRunner.class)

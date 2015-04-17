@@ -21,7 +21,7 @@ import org.eclipse.xtext.serializer.sequencer.AbstractSyntacticSequencer;
 public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected SARLGrammarAccess grammarAccess;
-	protected AbstractElementAlias match_Action_SemicolonKeyword_11_2_q;
+	protected AbstractElementAlias match_Action_SemicolonKeyword_11_0_2_q;
 	protected AbstractElementAlias match_Action___LeftParenthesisKeyword_8_0_RightParenthesisKeyword_8_2__q;
 	protected AbstractElementAlias match_AnnotationField_SemicolonKeyword_2_0_2_q;
 	protected AbstractElementAlias match_AnnotationField_SemicolonKeyword_2_3_6_q;
@@ -44,7 +44,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (SARLGrammarAccess) access;
-		match_Action_SemicolonKeyword_11_2_q = new TokenAlias(false, true, grammarAccess.getActionAccess().getSemicolonKeyword_11_2());
+		match_Action_SemicolonKeyword_11_0_2_q = new TokenAlias(false, true, grammarAccess.getActionAccess().getSemicolonKeyword_11_0_2());
 		match_Action___LeftParenthesisKeyword_8_0_RightParenthesisKeyword_8_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getActionAccess().getLeftParenthesisKeyword_8_0()), new TokenAlias(false, false, grammarAccess.getActionAccess().getRightParenthesisKeyword_8_2()));
 		match_AnnotationField_SemicolonKeyword_2_0_2_q = new TokenAlias(false, true, grammarAccess.getAnnotationFieldAccess().getSemicolonKeyword_2_0_2());
 		match_AnnotationField_SemicolonKeyword_2_3_6_q = new TokenAlias(false, true, grammarAccess.getAnnotationFieldAccess().getSemicolonKeyword_2_3_6());
@@ -115,8 +115,8 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 		List<INode> transitionNodes = collectNodes(fromNode, toNode);
 		for (AbstractElementAlias syntax : transition.getAmbiguousSyntaxes()) {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
-			if(match_Action_SemicolonKeyword_11_2_q.equals(syntax))
-				emit_Action_SemicolonKeyword_11_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			if(match_Action_SemicolonKeyword_11_0_2_q.equals(syntax))
+				emit_Action_SemicolonKeyword_11_0_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_Action___LeftParenthesisKeyword_8_0_RightParenthesisKeyword_8_2__q.equals(syntax))
 				emit_Action___LeftParenthesisKeyword_8_0_RightParenthesisKeyword_8_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_AnnotationField_SemicolonKeyword_2_0_2_q.equals(syntax))
@@ -162,15 +162,15 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     ';'?
 	 *
 	 * This ambiguous syntax occurs at:
-	 *     createExtensionInfo=CreateExtensionInfo (ambiguity) (rule end)
 	 *     exceptions+=JvmTypeReference (ambiguity) (rule end)
 	 *     firedEvents+=JvmTypeReference (ambiguity) (rule end)
 	 *     name=FunctionID ('(' ')')? (ambiguity) (rule end)
 	 *     parameters+=Parameter ')' (ambiguity) (rule end)
+	 *     returnType=JvmTypeReference (ambiguity) (rule end)
 	 *     returnType=TypeReferenceNoTypeArgs (ambiguity) (rule end)
 	 *     returnType=TypeReferenceWithTypeArgs (ambiguity) (rule end)
 	 */
-	protected void emit_Action_SemicolonKeyword_11_2_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_Action_SemicolonKeyword_11_0_2_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -183,7 +183,6 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     name=FunctionID (ambiguity) ';'? (rule end)
 	 *     name=FunctionID (ambiguity) 'fires' firedEvents+=JvmTypeReference
 	 *     name=FunctionID (ambiguity) 'throws' exceptions+=JvmTypeReference
-	 *     name=FunctionID (ambiguity) createExtensionInfo=CreateExtensionInfo
 	 *     name=FunctionID (ambiguity) expression=RichString
 	 *     name=FunctionID (ambiguity) expression=XBlockExpression
 	 *     name=FunctionID (ambiguity) returnType=TypeReferenceNoTypeArgs

@@ -412,20 +412,14 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_9_0 = (Group)cAlternatives_9.eContents().get(0);
 		private final Keyword cColonKeyword_9_0_0 = (Keyword)cGroup_9_0.eContents().get(0);
 		private final Group cGroup_9_0_1 = (Group)cGroup_9_0.eContents().get(1);
-		private final Group cGroup_9_0_1_0 = (Group)cGroup_9_0_1.eContents().get(0);
-		private final Assignment cReturnTypeAssignment_9_0_1_0_0 = (Assignment)cGroup_9_0_1_0.eContents().get(0);
-		private final RuleCall cReturnTypeJvmTypeReferenceParserRuleCall_9_0_1_0_0_0 = (RuleCall)cReturnTypeAssignment_9_0_1_0_0.eContents().get(0);
-		private final Assignment cCreateExtensionInfoAssignment_9_0_1_0_1 = (Assignment)cGroup_9_0_1_0.eContents().get(1);
-		private final RuleCall cCreateExtensionInfoCreateExtensionInfoParserRuleCall_9_0_1_0_1_0 = (RuleCall)cCreateExtensionInfoAssignment_9_0_1_0_1.eContents().get(0);
+		private final Assignment cReturnTypeAssignment_9_0_1_0 = (Assignment)cGroup_9_0_1.eContents().get(0);
+		private final RuleCall cReturnTypeJvmTypeReferenceParserRuleCall_9_0_1_0_0 = (RuleCall)cReturnTypeAssignment_9_0_1_0.eContents().get(0);
 		private final Group cGroup_9_1 = (Group)cAlternatives_9.eContents().get(1);
 		private final Assignment cReturnTypeAssignment_9_1_0 = (Assignment)cGroup_9_1.eContents().get(0);
 		private final RuleCall cReturnTypeTypeReferenceWithTypeArgsParserRuleCall_9_1_0_0 = (RuleCall)cReturnTypeAssignment_9_1_0.eContents().get(0);
 		private final Group cGroup_9_2 = (Group)cAlternatives_9.eContents().get(2);
 		private final Assignment cReturnTypeAssignment_9_2_0 = (Assignment)cGroup_9_2.eContents().get(0);
 		private final RuleCall cReturnTypeTypeReferenceNoTypeArgsParserRuleCall_9_2_0_0 = (RuleCall)cReturnTypeAssignment_9_2_0.eContents().get(0);
-		private final Group cGroup_9_3 = (Group)cAlternatives_9.eContents().get(3);
-		private final Assignment cCreateExtensionInfoAssignment_9_3_0 = (Assignment)cGroup_9_3.eContents().get(0);
-		private final RuleCall cCreateExtensionInfoCreateExtensionInfoParserRuleCall_9_3_0_0 = (RuleCall)cCreateExtensionInfoAssignment_9_3_0.eContents().get(0);
 		private final UnorderedGroup cUnorderedGroup_10 = (UnorderedGroup)cGroup.eContents().get(10);
 		private final Group cGroup_10_0 = (Group)cUnorderedGroup_10.eContents().get(0);
 		private final Keyword cThrowsKeyword_10_0_0 = (Keyword)cGroup_10_0.eContents().get(0);
@@ -443,32 +437,31 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cCommaKeyword_10_1_2_0 = (Keyword)cGroup_10_1_2.eContents().get(0);
 		private final Assignment cFiredEventsAssignment_10_1_2_1 = (Assignment)cGroup_10_1_2.eContents().get(1);
 		private final RuleCall cFiredEventsJvmTypeReferenceParserRuleCall_10_1_2_1_0 = (RuleCall)cFiredEventsAssignment_10_1_2_1.eContents().get(0);
-		private final Alternatives cAlternatives_11 = (Alternatives)cGroup.eContents().get(11);
-		private final Assignment cExpressionAssignment_11_0 = (Assignment)cAlternatives_11.eContents().get(0);
-		private final RuleCall cExpressionXBlockExpressionParserRuleCall_11_0_0 = (RuleCall)cExpressionAssignment_11_0.eContents().get(0);
-		private final Assignment cExpressionAssignment_11_1 = (Assignment)cAlternatives_11.eContents().get(1);
-		private final RuleCall cExpressionRichStringParserRuleCall_11_1_0 = (RuleCall)cExpressionAssignment_11_1.eContents().get(0);
-		private final Keyword cSemicolonKeyword_11_2 = (Keyword)cAlternatives_11.eContents().get(2);
+		private final Group cGroup_11 = (Group)cGroup.eContents().get(11);
+		private final Alternatives cAlternatives_11_0 = (Alternatives)cGroup_11.eContents().get(0);
+		private final Assignment cExpressionAssignment_11_0_0 = (Assignment)cAlternatives_11_0.eContents().get(0);
+		private final RuleCall cExpressionXBlockExpressionParserRuleCall_11_0_0_0 = (RuleCall)cExpressionAssignment_11_0_0.eContents().get(0);
+		private final Assignment cExpressionAssignment_11_0_1 = (Assignment)cAlternatives_11_0.eContents().get(1);
+		private final RuleCall cExpressionRichStringParserRuleCall_11_0_1_0 = (RuleCall)cExpressionAssignment_11_0_1.eContents().get(0);
+		private final Keyword cSemicolonKeyword_11_0_2 = (Keyword)cAlternatives_11_0.eContents().get(2);
 		
 		//Action returns xtend::XtendFunction:
 		//	{SarlAction} annotations+=XAnnotation* {SarlAction.annotationInfo=current} modifiers+=CommonModifier*
 		//	modifiers+=MethodModifier (modifiers+=CommonModifier | modifiers+=MethodModifier)* ("<"
 		//	typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* ">")? name=FunctionID ("("
-		//	(parameters+=Parameter ("," parameters+=Parameter)*)? ")")? (":" => (returnType=JvmTypeReference
-		//	createExtensionInfo=CreateExtensionInfo) | => (returnType=TypeReferenceWithTypeArgs) | =>
-		//	(returnType=TypeReferenceNoTypeArgs) | => (createExtensionInfo=CreateExtensionInfo))? (("throws"
+		//	(parameters+=Parameter ("," parameters+=Parameter)*)? ")")? (":" => (returnType=JvmTypeReference) | =>
+		//	(returnType=TypeReferenceWithTypeArgs) | => (returnType=TypeReferenceNoTypeArgs))? (("throws"
 		//	exceptions+=JvmTypeReference ("," exceptions+=JvmTypeReference)*)? & ("fires" firedEvents+=JvmTypeReference (","
-		//	firedEvents+=JvmTypeReference)*)?) (expression=XBlockExpression | expression=RichString | ";")?;
+		//	firedEvents+=JvmTypeReference)*)?) => (expression=XBlockExpression | expression=RichString | ";")?;
 		@Override public ParserRule getRule() { return rule; }
 
 		//{SarlAction} annotations+=XAnnotation* {SarlAction.annotationInfo=current} modifiers+=CommonModifier*
 		//modifiers+=MethodModifier (modifiers+=CommonModifier | modifiers+=MethodModifier)* ("<"
 		//typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* ">")? name=FunctionID ("("
-		//(parameters+=Parameter ("," parameters+=Parameter)*)? ")")? (":" => (returnType=JvmTypeReference
-		//createExtensionInfo=CreateExtensionInfo) | => (returnType=TypeReferenceWithTypeArgs) | =>
-		//(returnType=TypeReferenceNoTypeArgs) | => (createExtensionInfo=CreateExtensionInfo))? (("throws"
+		//(parameters+=Parameter ("," parameters+=Parameter)*)? ")")? (":" => (returnType=JvmTypeReference) | =>
+		//(returnType=TypeReferenceWithTypeArgs) | => (returnType=TypeReferenceNoTypeArgs))? (("throws"
 		//exceptions+=JvmTypeReference ("," exceptions+=JvmTypeReference)*)? & ("fires" firedEvents+=JvmTypeReference (","
-		//firedEvents+=JvmTypeReference)*)?) (expression=XBlockExpression | expression=RichString | ";")?
+		//firedEvents+=JvmTypeReference)*)?) => (expression=XBlockExpression | expression=RichString | ";")?
 		public Group getGroup() { return cGroup; }
 
 		//{SarlAction}
@@ -543,10 +536,10 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//FunctionID
 		public RuleCall getNameFunctionIDParserRuleCall_7_0() { return cNameFunctionIDParserRuleCall_7_0; }
 
-		//(=> "(" (parameters+=Parameter ("," parameters+=Parameter)*)? ")")?
+		//("(" (parameters+=Parameter ("," parameters+=Parameter)*)? ")")?
 		public Group getGroup_8() { return cGroup_8; }
 
-		//=> "("
+		//"("
 		public Keyword getLeftParenthesisKeyword_8_0() { return cLeftParenthesisKeyword_8_0; }
 
 		//(parameters+=Parameter ("," parameters+=Parameter)*)?
@@ -573,34 +566,24 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//")"
 		public Keyword getRightParenthesisKeyword_8_2() { return cRightParenthesisKeyword_8_2; }
 
-		//(":" => (returnType=JvmTypeReference createExtensionInfo=CreateExtensionInfo) | =>
-		//(returnType=TypeReferenceWithTypeArgs) | => (returnType=TypeReferenceNoTypeArgs) | =>
-		//(createExtensionInfo=CreateExtensionInfo))?
+		//(":" => (returnType=JvmTypeReference) | => (returnType=TypeReferenceWithTypeArgs) | =>
+		//(returnType=TypeReferenceNoTypeArgs))?
 		public Alternatives getAlternatives_9() { return cAlternatives_9; }
 
-		//":" => (returnType=JvmTypeReference createExtensionInfo=CreateExtensionInfo)
+		//":" => (returnType=JvmTypeReference)
 		public Group getGroup_9_0() { return cGroup_9_0; }
 
 		//":"
 		public Keyword getColonKeyword_9_0_0() { return cColonKeyword_9_0_0; }
 
-		//=> (returnType=JvmTypeReference createExtensionInfo=CreateExtensionInfo)
+		//=> (returnType=JvmTypeReference)
 		public Group getGroup_9_0_1() { return cGroup_9_0_1; }
 
-		//returnType=JvmTypeReference createExtensionInfo=CreateExtensionInfo
-		public Group getGroup_9_0_1_0() { return cGroup_9_0_1_0; }
-
 		//returnType=JvmTypeReference
-		public Assignment getReturnTypeAssignment_9_0_1_0_0() { return cReturnTypeAssignment_9_0_1_0_0; }
+		public Assignment getReturnTypeAssignment_9_0_1_0() { return cReturnTypeAssignment_9_0_1_0; }
 
 		//JvmTypeReference
-		public RuleCall getReturnTypeJvmTypeReferenceParserRuleCall_9_0_1_0_0_0() { return cReturnTypeJvmTypeReferenceParserRuleCall_9_0_1_0_0_0; }
-
-		//createExtensionInfo=CreateExtensionInfo
-		public Assignment getCreateExtensionInfoAssignment_9_0_1_0_1() { return cCreateExtensionInfoAssignment_9_0_1_0_1; }
-
-		//CreateExtensionInfo
-		public RuleCall getCreateExtensionInfoCreateExtensionInfoParserRuleCall_9_0_1_0_1_0() { return cCreateExtensionInfoCreateExtensionInfoParserRuleCall_9_0_1_0_1_0; }
+		public RuleCall getReturnTypeJvmTypeReferenceParserRuleCall_9_0_1_0_0() { return cReturnTypeJvmTypeReferenceParserRuleCall_9_0_1_0_0; }
 
 		//=> (returnType=TypeReferenceWithTypeArgs)
 		public Group getGroup_9_1() { return cGroup_9_1; }
@@ -619,15 +602,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 
 		//TypeReferenceNoTypeArgs
 		public RuleCall getReturnTypeTypeReferenceNoTypeArgsParserRuleCall_9_2_0_0() { return cReturnTypeTypeReferenceNoTypeArgsParserRuleCall_9_2_0_0; }
-
-		//=> (createExtensionInfo=CreateExtensionInfo)
-		public Group getGroup_9_3() { return cGroup_9_3; }
-
-		//createExtensionInfo=CreateExtensionInfo
-		public Assignment getCreateExtensionInfoAssignment_9_3_0() { return cCreateExtensionInfoAssignment_9_3_0; }
-
-		//CreateExtensionInfo
-		public RuleCall getCreateExtensionInfoCreateExtensionInfoParserRuleCall_9_3_0_0() { return cCreateExtensionInfoCreateExtensionInfoParserRuleCall_9_3_0_0; }
 
 		//("throws" exceptions+=JvmTypeReference ("," exceptions+=JvmTypeReference)*)? & ("fires" firedEvents+=JvmTypeReference
 		//("," firedEvents+=JvmTypeReference)*)?
@@ -681,23 +655,26 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//JvmTypeReference
 		public RuleCall getFiredEventsJvmTypeReferenceParserRuleCall_10_1_2_1_0() { return cFiredEventsJvmTypeReferenceParserRuleCall_10_1_2_1_0; }
 
-		//(expression=XBlockExpression | expression=RichString | ";")?
-		public Alternatives getAlternatives_11() { return cAlternatives_11; }
+		//=> (expression=XBlockExpression | expression=RichString | ";")?
+		public Group getGroup_11() { return cGroup_11; }
+
+		//expression=XBlockExpression | expression=RichString | ";"
+		public Alternatives getAlternatives_11_0() { return cAlternatives_11_0; }
 
 		//expression=XBlockExpression
-		public Assignment getExpressionAssignment_11_0() { return cExpressionAssignment_11_0; }
+		public Assignment getExpressionAssignment_11_0_0() { return cExpressionAssignment_11_0_0; }
 
 		//XBlockExpression
-		public RuleCall getExpressionXBlockExpressionParserRuleCall_11_0_0() { return cExpressionXBlockExpressionParserRuleCall_11_0_0; }
+		public RuleCall getExpressionXBlockExpressionParserRuleCall_11_0_0_0() { return cExpressionXBlockExpressionParserRuleCall_11_0_0_0; }
 
 		//expression=RichString
-		public Assignment getExpressionAssignment_11_1() { return cExpressionAssignment_11_1; }
+		public Assignment getExpressionAssignment_11_0_1() { return cExpressionAssignment_11_0_1; }
 
 		//RichString
-		public RuleCall getExpressionRichStringParserRuleCall_11_1_0() { return cExpressionRichStringParserRuleCall_11_1_0; }
+		public RuleCall getExpressionRichStringParserRuleCall_11_0_1_0() { return cExpressionRichStringParserRuleCall_11_0_1_0; }
 
 		//";"
-		public Keyword getSemicolonKeyword_11_2() { return cSemicolonKeyword_11_2; }
+		public Keyword getSemicolonKeyword_11_0_2() { return cSemicolonKeyword_11_0_2; }
 	}
 
 	public class ConstructorElements extends AbstractParserRuleElementFinder {
@@ -2830,11 +2807,10 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//	{SarlAction} annotations+=XAnnotation* {SarlAction.annotationInfo=current} modifiers+=CommonModifier*
 	//	modifiers+=MethodModifier (modifiers+=CommonModifier | modifiers+=MethodModifier)* ("<"
 	//	typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* ">")? name=FunctionID ("("
-	//	(parameters+=Parameter ("," parameters+=Parameter)*)? ")")? (":" => (returnType=JvmTypeReference
-	//	createExtensionInfo=CreateExtensionInfo) | => (returnType=TypeReferenceWithTypeArgs) | =>
-	//	(returnType=TypeReferenceNoTypeArgs) | => (createExtensionInfo=CreateExtensionInfo))? (("throws"
+	//	(parameters+=Parameter ("," parameters+=Parameter)*)? ")")? (":" => (returnType=JvmTypeReference) | =>
+	//	(returnType=TypeReferenceWithTypeArgs) | => (returnType=TypeReferenceNoTypeArgs))? (("throws"
 	//	exceptions+=JvmTypeReference ("," exceptions+=JvmTypeReference)*)? & ("fires" firedEvents+=JvmTypeReference (","
-	//	firedEvents+=JvmTypeReference)*)?) (expression=XBlockExpression | expression=RichString | ";")?;
+	//	firedEvents+=JvmTypeReference)*)?) => (expression=XBlockExpression | expression=RichString | ";")?;
 	public ActionElements getActionAccess() {
 		return pAction;
 	}

@@ -20,7 +20,18 @@
  */
 package io.sarl.lang.validation;
 
+import io.sarl.lang.SARLLangActivator;
+import io.sarl.lang.core.Capacity;
+import io.sarl.lang.util.ModelUtil;
+
+import java.text.MessageFormat;
+
+import org.eclipse.xtend.core.xtend.XtendFile;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.util.TypeReferences;
+import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
+import org.eclipse.xtext.xbase.lib.ReassignFirstArgument;
 
 /**
  * Validator for the SARL elements.
@@ -68,38 +79,42 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 //		}
 //		return typeRef.getHumanReadableName();
 //	}
-//
-//	/** Check if the SARL libraries are in the classpath.
-//	 *
-//	 * @param sarlScript - the SARL script.
-//	 */
-//	@Check(CheckType.NORMAL)
-//	public void checkClassPath(SarlScript sarlScript) {
-//		TypeReferences typeReferences = getServices().getTypeReferences();
-//
-//		String version = System.getProperty("java.specification.version"); //$NON-NLS-1$
-//
-//		SARLLangActivator sarlLangBundle = SARLLangActivator.getActivator();
-//		String minJdkVersion = sarlLangBundle.getMinimalJdkVersion();
-//		String minXtextVersion = sarlLangBundle.getMinimalXtextVersion();
-//
-//		if (version == null || version.isEmpty() || ModelUtil.compareVersions(version, minJdkVersion) < 0) {
-//			error(
-//					MessageFormat.format(Messages.SARLValidator_0, minJdkVersion),
-//					sarlScript,
-//					null,
-//					IssueCodes.JDK_NOT_ON_CLASSPATH);
-//		}
-//
-//		if (typeReferences.findDeclaredType(ReassignFirstArgument.class, sarlScript) == null) {
-//			error(
-//					MessageFormat.format(Messages.SARLValidator_1, minXtextVersion),
-//					sarlScript,
-//					null,
-//					IssueCodes.XBASE_LIB_NOT_ON_CLASSPATH);
-//		}
-//	}
-//
+
+	/** Check if the SARL libraries are in the classpath.
+	 *
+	 * This function is overriding the function given by the Xtend validator
+	 * for firing a warning in place of an error.
+	 *
+	 * @param sarlScript - the SARL script.
+	 */
+	@Check(CheckType.NORMAL)
+	@Override
+	public void checkClassPath(XtendFile sarlScript) {
+		TypeReferences typeReferences = getServices().getTypeReferences();
+
+		String version = System.getProperty("java.specification.version"); //$NON-NLS-1$
+
+		SARLLangActivator sarlLangBundle = SARLLangActivator.getActivator();
+		String minJdkVersion = sarlLangBundle.getMinimalJdkVersion();
+		String minXtextVersion = sarlLangBundle.getMinimalXtextVersion();
+
+		if (version == null || version.isEmpty() || ModelUtil.compareVersions(version, minJdkVersion) < 0) {
+			error(
+					MessageFormat.format(Messages.SARLValidator_0, minJdkVersion),
+					sarlScript,
+					null,
+					org.eclipse.xtend.core.validation.IssueCodes.JDK_NOT_ON_CLASSPATH);
+		}
+
+		if (typeReferences.findDeclaredType(ReassignFirstArgument.class, sarlScript) == null) {
+			error(
+					MessageFormat.format(Messages.SARLValidator_1, minXtextVersion),
+					sarlScript,
+					null,
+					org.eclipse.xtend.core.validation.IssueCodes.XBASE_LIB_NOT_ON_CLASSPATH);
+		}
+	}
+
 //	/** Check for duplicate top elements.
 //	 *
 //	 * @param script - the SARL script.
@@ -1096,106 +1111,106 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 //			}
 //		}
 //	}
-//
-//	/** Check the super type.
-//	 *
-//	 * @param element - the child type.
-//	 * @param expectedType - the expected root type.
-//	 * @param onlySubTypes - if <code>true</code> only the subtype of the <code>expectedType</code> are valid;
-//	 * <code>false</code> if the <code>expectedType</code> is allowed.
-//	 * @return the count of supertypes.
-//	 */
-//	protected int checkSuperTypes(InheritingElement element, Class<?> expectedType, boolean onlySubTypes) {
-//		int nbSuperTypes = 0;
-//		JvmGenericType inferredType = getJvmGenericType(element);
-//		if (inferredType != null) {
-//			LinkedList<JvmTypeReference> inferredSuperTypes = CollectionLiterals.newLinkedList();
-//			inferredSuperTypes.addAll(inferredType.getSuperTypes());
-//			boolean isExpectingInterface = expectedType.isInterface();
-//			int superTypeIndex = 0;
-//			for (JvmTypeReference superType : element.getSuperTypes()) {
-//				boolean success = true;
-//				JvmType jvmSuperType = (superType == null) ? null : superType.getType();
-//				if (jvmSuperType != null) {
-//					final JvmTypeReference inferredSuperType =
-//							(inferredSuperTypes.isEmpty()) ? null : inferredSuperTypes.removeFirst();
-//					LightweightTypeReference lighweightSuperType = toLightweightTypeReference(superType);
-//					if (!(jvmSuperType instanceof JvmGenericType)
-//							|| (isExpectingInterface != ((JvmGenericType) jvmSuperType).isInterface())) {
-//						if (isExpectingInterface) {
-//							error(
-//									MessageFormat.format(Messages.SARLValidator_27, Messages.SARLValidator_28),
-//									SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
-//									superTypeIndex,
-//									IssueCodes.INVALID_EXTENDED_TYPE,
-//									inferredType.getIdentifier(),
-//									jvmSuperType.getIdentifier());
-//						} else {
-//							error(
-//									MessageFormat.format(Messages.SARLValidator_27, Messages.SARLValidator_29),
-//									SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
-//									superTypeIndex,
-//									IssueCodes.INVALID_EXTENDED_TYPE,
-//									inferredType.getIdentifier(),
-//									jvmSuperType.getIdentifier());
-//						}
-//						success = false;
-//					} else if (isFinal(lighweightSuperType)) {
-//						error(Messages.SARLValidator_30,
-//								SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
-//								superTypeIndex,
-//								IssueCodes.OVERRIDDEN_FINAL_TYPE,
-//								inferredType.getIdentifier(),
-//								jvmSuperType.getIdentifier());
-//						success = false;
-//					} else if (!lighweightSuperType.isSubtypeOf(expectedType)
-//							|| ((onlySubTypes) && (lighweightSuperType.isType(expectedType)))) {
-//						if (onlySubTypes) {
-//							error(MessageFormat.format(Messages.SARLValidator_31, expectedType.getName()),
-//									SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
-//									superTypeIndex,
-//									IssueCodes.INVALID_EXTENDED_TYPE,
-//									inferredType.getIdentifier(),
-//									jvmSuperType.getIdentifier());
-//						} else {
-//							error(MessageFormat.format(Messages.SARLValidator_32, expectedType.getName()),
-//									SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
-//									superTypeIndex,
-//									IssueCodes.INVALID_EXTENDED_TYPE,
-//									inferredType.getIdentifier(),
-//									jvmSuperType.getIdentifier());
-//						}
-//						success = false;
-//					} else if (inferredSuperType == null
-//							|| !Objects.equal(inferredSuperType.getIdentifier(), jvmSuperType.getIdentifier())
-//							|| Objects.equal(inferredType.getIdentifier(), jvmSuperType.getIdentifier())) {
-//						error(MessageFormat.format(Messages.SARLValidator_33,
-//								inferredType.getQualifiedName()),
-//								SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
-//								superTypeIndex,
-//								IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
-//								inferredType.getIdentifier(),
-//								jvmSuperType.getIdentifier());
-//						success = false;
-//					}
-//				} else {
-//					error(MessageFormat.format(Messages.SARLValidator_33,
-//							inferredType.getQualifiedName()),
-//							SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
-//							superTypeIndex,
-//							IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
-//							inferredType.getIdentifier());
-//					success = false;
-//				}
-//				++superTypeIndex;
-//				if (success) {
-//					++nbSuperTypes;
-//				}
-//			}
-//		}
-//		return nbSuperTypes;
-//	}
-//
+
+	/** Check the super type.
+	 *
+	 * @param element - the child type.
+	 * @param expectedType - the expected root type.
+	 * @param onlySubTypes - if <code>true</code> only the subtype of the <code>expectedType</code> are valid;
+	 * <code>false</code> if the <code>expectedType</code> is allowed.
+	 * @return the count of supertypes.
+	 */
+	protected int checkSuperTypes(XtendTypeDeclaration element, Class<?> expectedType, boolean onlySubTypes) {
+		int nbSuperTypes = 0;
+		JvmGenericType inferredType = getJvmGenericType(element);
+		if (inferredType != null) {
+			LinkedList<JvmTypeReference> inferredSuperTypes = CollectionLiterals.newLinkedList();
+			inferredSuperTypes.addAll(inferredType.getSuperTypes());
+			boolean isExpectingInterface = expectedType.isInterface();
+			int superTypeIndex = 0;
+			for (JvmTypeReference superType : element.getSuperTypes()) {
+				boolean success = true;
+				JvmType jvmSuperType = (superType == null) ? null : superType.getType();
+				if (jvmSuperType != null) {
+					final JvmTypeReference inferredSuperType =
+							(inferredSuperTypes.isEmpty()) ? null : inferredSuperTypes.removeFirst();
+					LightweightTypeReference lighweightSuperType = toLightweightTypeReference(superType);
+					if (!(jvmSuperType instanceof JvmGenericType)
+							|| (isExpectingInterface != ((JvmGenericType) jvmSuperType).isInterface())) {
+						if (isExpectingInterface) {
+							error(
+									MessageFormat.format(Messages.SARLValidator_27, Messages.SARLValidator_28),
+									SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
+									superTypeIndex,
+									IssueCodes.INVALID_EXTENDED_TYPE,
+									inferredType.getIdentifier(),
+									jvmSuperType.getIdentifier());
+						} else {
+							error(
+									MessageFormat.format(Messages.SARLValidator_27, Messages.SARLValidator_29),
+									SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
+									superTypeIndex,
+									IssueCodes.INVALID_EXTENDED_TYPE,
+									inferredType.getIdentifier(),
+									jvmSuperType.getIdentifier());
+						}
+						success = false;
+					} else if (isFinal(lighweightSuperType)) {
+						error(Messages.SARLValidator_30,
+								SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
+								superTypeIndex,
+								IssueCodes.OVERRIDDEN_FINAL_TYPE,
+								inferredType.getIdentifier(),
+								jvmSuperType.getIdentifier());
+						success = false;
+					} else if (!lighweightSuperType.isSubtypeOf(expectedType)
+							|| ((onlySubTypes) && (lighweightSuperType.isType(expectedType)))) {
+						if (onlySubTypes) {
+							error(MessageFormat.format(Messages.SARLValidator_31, expectedType.getName()),
+									SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
+									superTypeIndex,
+									IssueCodes.INVALID_EXTENDED_TYPE,
+									inferredType.getIdentifier(),
+									jvmSuperType.getIdentifier());
+						} else {
+							error(MessageFormat.format(Messages.SARLValidator_32, expectedType.getName()),
+									SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
+									superTypeIndex,
+									IssueCodes.INVALID_EXTENDED_TYPE,
+									inferredType.getIdentifier(),
+									jvmSuperType.getIdentifier());
+						}
+						success = false;
+					} else if (inferredSuperType == null
+							|| !Objects.equal(inferredSuperType.getIdentifier(), jvmSuperType.getIdentifier())
+							|| Objects.equal(inferredType.getIdentifier(), jvmSuperType.getIdentifier())) {
+						error(MessageFormat.format(Messages.SARLValidator_33,
+								inferredType.getQualifiedName()),
+								SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
+								superTypeIndex,
+								IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+								inferredType.getIdentifier(),
+								jvmSuperType.getIdentifier());
+						success = false;
+					}
+				} else {
+					error(MessageFormat.format(Messages.SARLValidator_33,
+							inferredType.getQualifiedName()),
+							SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
+							superTypeIndex,
+							IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+							inferredType.getIdentifier());
+					success = false;
+				}
+				++superTypeIndex;
+				if (success) {
+					++nbSuperTypes;
+				}
+			}
+		}
+		return nbSuperTypes;
+	}
+
 //	/** Check the implemeted type.
 //	 *
 //	 * @param element - the child type.
@@ -1250,43 +1265,43 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 //		}
 //		return success;
 //	}
-//
-//	/** Check if the supertype of the given event is a subtype of Event.
-//	 *
-//	 * @param event - the type to test.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkEventSuperType(io.sarl.lang.sarl.Event event) {
-//		checkSuperTypes(event, Event.class, false);
-//	}
-//
-//	/** Check if the supertype of the given behavior is a subtype of Behavior.
-//	 *
-//	 * @param behavior - the type to test.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkBehaviorSuperType(Behavior behavior) {
-//		checkSuperTypes(behavior, io.sarl.lang.core.Behavior.class, false);
-//	}
-//
-//	/** Check if the supertype of the given agent is a subtype of Agent.
-//	 *
-//	 * @param agent - the type to test.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkAgentSuperType(Agent agent) {
-//		checkSuperTypes(agent, io.sarl.lang.core.Agent.class, false);
-//	}
-//
-//	/** Check if the supertype of the given capacity is a subtype of Capacity.
-//	 *
-//	 * @param capacity - the type to test.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkCapacitySuperType(io.sarl.lang.sarl.Capacity capacity) {
-//		checkSuperTypes(capacity, Capacity.class, false);
-//	}
-//
+
+	/** Check if the supertype of the given event is a subtype of Event.
+	 *
+	 * @param event - the type to test.
+	 */
+	@Check(CheckType.FAST)
+	public void checkEventSuperType(io.sarl.lang.sarl.Event event) {
+		checkSuperTypes(event, Event.class, false);
+	}
+
+	/** Check if the supertype of the given behavior is a subtype of Behavior.
+	 *
+	 * @param behavior - the type to test.
+	 */
+	@Check(CheckType.FAST)
+	public void checkBehaviorSuperType(Behavior behavior) {
+		checkSuperTypes(behavior, io.sarl.lang.core.Behavior.class, false);
+	}
+
+	/** Check if the supertype of the given agent is a subtype of Agent.
+	 *
+	 * @param agent - the type to test.
+	 */
+	@Check(CheckType.FAST)
+	public void checkAgentSuperType(Agent agent) {
+		checkSuperTypes(agent, io.sarl.lang.core.Agent.class, false);
+	}
+
+	/** Check if the supertype of the given capacity is a subtype of Capacity.
+	 *
+	 * @param capacity - the type to test.
+	 */
+	@Check(CheckType.FAST)
+	public void checkCapacitySuperType(Capacity capacity) {
+		checkSuperTypes(capacity, Capacity.class, false);
+	}
+
 //	/** Check if the supertype of the given skill is a subtype of Skill.
 //	 *
 //	 * @param skill - the type to test.

@@ -95,11 +95,6 @@ public final class IssueCodes {
 	public static final String INVALID_IMPLEMENTED_TYPE =
 			ISSUE_CODE_PREFIX + "invalid_implemented_type"; //$NON-NLS-1$
 
-	/** A type is invalid after the "extends" keyword.
-	 */
-	public static final String INVALID_EXTENDED_TYPE =
-			ISSUE_CODE_PREFIX + "invalid_extended_type"; //$NON-NLS-1$
-
 	/** A capacity was not used in the local context.
 	 */
 	public static final String UNUSED_AGENT_CAPACITY =

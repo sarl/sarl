@@ -83,13 +83,17 @@ import com.ibm.icu.util.VersionInfo;
  */
 public final class ModelUtil {
 
-	/** Préfix for the names of the hidden behavior units.
+	/** Prefix for the names of the hidden behavior units.
 	 */
 	public static final String PREFIX_ACTION_HANDLE = "_handle_"; //$NON-NLS-1$
 
-	/** Préfix for the names of the hidden behavior units.
+	/** Prefix for the names of the hidden behavior units.
 	 */
-	public static final String PREFIX_HANDLE_GUARD = "_guard_"; //$NON-NLS-1$
+	public static final String PREFIX_HANDLE_GUARD = "_eventhandler_guard_"; //$NON-NLS-1$
+
+	/** Prefix for the names of the hidden behavior units.
+	 */
+	public static final String PREFIX_HANDLE_BODY = "_eventhandler_body_"; //$NON-NLS-1$
 
 	/** Préfix for the names of the hidden fields related to the default values.
 	 */
@@ -255,7 +259,8 @@ public final class ModelUtil {
 	 * SARL.
 	 */
 	public static boolean isHiddenAction(String name) {
-		return name.startsWith(PREFIX_ACTION_HANDLE) || name.startsWith(PREFIX_HANDLE_GUARD);
+		return name.startsWith(PREFIX_ACTION_HANDLE) || name.startsWith(PREFIX_HANDLE_GUARD)
+				 || name.startsWith(PREFIX_HANDLE_BODY);
 	}
 
 	/** Replies a fixed version of the given name assuming
@@ -285,6 +290,15 @@ public final class ModelUtil {
 						PREFIX_HANDLE_GUARD.length(),
 						PREFIX_HANDLE_GUARD.length() + 1).toUpperCase()
 						+ name.substring(PREFIX_HANDLE_GUARD.length() + 1);
+			}
+			return "guard"; //$NON-NLS-1$
+		}
+		if (name.startsWith(PREFIX_HANDLE_BODY)) {
+			if (name.length() > PREFIX_HANDLE_BODY.length()) {
+				return "handlebody" + name.substring(//$NON-NLS-1$
+						PREFIX_HANDLE_BODY.length(),
+						PREFIX_HANDLE_BODY.length() + 1).toUpperCase()
+						+ name.substring(PREFIX_HANDLE_BODY.length() + 1);
 			}
 			return "guard"; //$NON-NLS-1$
 		}
@@ -319,6 +333,15 @@ public final class ModelUtil {
 						+ name.substring(PREFIX_HANDLE_GUARD.length() + 1);
 			}
 			return "guard"; //$NON-NLS-1$
+		}
+		if (name.startsWith(PREFIX_HANDLE_BODY)) {
+			if (name.length() > PREFIX_HANDLE_BODY.length()) {
+				return name.substring(
+						PREFIX_HANDLE_BODY.length(),
+						PREFIX_HANDLE_BODY.length() + 1).toLowerCase()
+						+ name.substring(PREFIX_HANDLE_BODY.length() + 1);
+			}
+			return "handlebody"; //$NON-NLS-1$
 		}
 		return name;
 	}

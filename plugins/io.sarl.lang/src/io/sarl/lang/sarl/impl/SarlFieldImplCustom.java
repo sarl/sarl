@@ -2,7 +2,10 @@
  */
 package io.sarl.lang.sarl.impl;
 
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlSkill;
 
 import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendInterface;
@@ -40,10 +43,15 @@ public class SarlFieldImplCustom extends XtendFieldImplCustom {
 	@Override
 	protected JvmVisibility getDefaultVisibility() {
 		XtendTypeDeclaration declaration = getDeclaringType();
-		if(declaration instanceof XtendInterface
+		if (declaration instanceof XtendInterface
 			|| declaration instanceof XtendAnnotationType
 			|| declaration instanceof SarlEvent) {
 			return JvmVisibility.PUBLIC;
+		}
+		if (declaration instanceof SarlSkill
+			|| declaration instanceof SarlBehavior
+			|| declaration instanceof SarlAgent) {
+			return JvmVisibility.PROTECTED;
 		}
 		return JvmVisibility.PRIVATE;
 	}

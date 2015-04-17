@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.eclipse.xtend.core.xtend.impl.XtendFunctionImpl;
+import org.eclipse.xtend.core.xtend.impl.XtendFunctionImplCustom;
 
 import org.eclipse.xtext.common.types.JvmTypeReference;
 
@@ -34,7 +34,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  *
  * @generated
  */
-public class SarlActionImpl extends XtendFunctionImpl implements SarlAction
+public class SarlActionImpl extends XtendFunctionImplCustom implements SarlAction
 {
   /**
    * The cached value of the '{@link #getFiredEvents() <em>Fired Events</em>}' containment reference list.

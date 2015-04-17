@@ -105,6 +105,8 @@ Workflow {
     		fragment = SARLEMFGeneratorFragment auto-inject {
     			jdkLevel = jdkCompatibility
     			customImplClass = "org.eclipse.xtend.core.xtend.impl.XtendTypeDeclarationImpl"
+    			customImplClass = "org.eclipse.xtend.core.xtend.impl.XtendFunctionImpl"
+    			customImplClass = "org.eclipse.xtend.core.xtend.impl.XtendFieldImpl"
     		}
     		
     		// serializer 2.0

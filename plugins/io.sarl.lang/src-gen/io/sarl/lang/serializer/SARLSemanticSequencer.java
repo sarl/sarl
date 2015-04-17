@@ -777,12 +777,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
 	 *         name=FunctionID 
 	 *         (parameters+=Parameter parameters+=Parameter*)? 
-	 *         (
-	 *             (returnType=JvmTypeReference createExtensionInfo=CreateExtensionInfo) | 
-	 *             returnType=TypeReferenceWithTypeArgs | 
-	 *             returnType=TypeReferenceNoTypeArgs | 
-	 *             createExtensionInfo=CreateExtensionInfo
-	 *         )? 
+	 *         (returnType=JvmTypeReference | returnType=TypeReferenceWithTypeArgs | returnType=TypeReferenceNoTypeArgs)? 
 	 *         ((exceptions+=JvmTypeReference exceptions+=JvmTypeReference*)? (firedEvents+=JvmTypeReference firedEvents+=JvmTypeReference*)?) 
 	 *         (expression=XBlockExpression | expression=RichString)?
 	 *     )
