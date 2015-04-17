@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.xtend.core.xtend.impl.XtendTypeDeclarationImpl;
+import org.eclipse.xtend.core.xtend.impl.XtendTypeDeclarationImplCustom;
 
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 
@@ -30,7 +30,7 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
  *
  * @generated
  */
-public class SarlEventImpl extends XtendTypeDeclarationImpl implements SarlEvent
+public class SarlEventImpl extends XtendTypeDeclarationImplCustom implements SarlEvent
 {
   /**
    * The cached value of the '{@link #getExtends() <em>Extends</em>}' containment reference.

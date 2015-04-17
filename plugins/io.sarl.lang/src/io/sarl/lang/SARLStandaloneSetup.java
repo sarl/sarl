@@ -20,21 +20,61 @@
  */
 package io.sarl.lang;
 
+import io.sarl.lang.sarl.impl.SarlXtendFactoryImpl;
+
+import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.xtend.core.xtend.XtendPackage;
+
+import com.google.inject.Injector;
+
 /**
  * Initialization support for running Xtext languages
  * without equinox extension registry.
  *
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public class SARLStandaloneSetup extends SARLStandaloneSetupGenerated {
 
+	@Override
+	public Injector createInjectorAndDoEMFRegistration() {
+		// Override the definition of the XtendFactory with the SARL-specific factory.
+		EPackage.Registry.INSTANCE.put(XtendPackage.eNS_URI, new SarlXtendPackageDescriptor());
+		return super.createInjectorAndDoEMFRegistration();
+	}
+
 	/**
 	 */
 	public static void doSetup() {
 		new SARLStandaloneSetup().createInjectorAndDoEMFRegistration();
+	}
+	
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class SarlXtendPackageDescriptor implements EPackage.Descriptor {
+
+		public SarlXtendPackageDescriptor() {
+			//
+		}
+
+		@Override
+		public EPackage getEPackage() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public EFactory getEFactory() {
+			return new SarlXtendFactoryImpl();
+		}
+		
 	}
 
 }

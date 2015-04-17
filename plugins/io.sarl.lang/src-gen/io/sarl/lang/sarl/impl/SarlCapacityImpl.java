@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.eclipse.xtend.core.xtend.impl.XtendTypeDeclarationImpl;
+import org.eclipse.xtend.core.xtend.impl.XtendTypeDeclarationImplCustom;
 
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 
@@ -34,7 +34,7 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
  *
  * @generated
  */
-public class SarlCapacityImpl extends XtendTypeDeclarationImpl implements SarlCapacity
+public class SarlCapacityImpl extends XtendTypeDeclarationImplCustom implements SarlCapacity
 {
   /**
    * The cached value of the '{@link #getExtends() <em>Extends</em>}' containment reference list.

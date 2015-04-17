@@ -20,7 +20,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.eclipse.xtend.core.xtend.impl.XtendTypeDeclarationImpl;
+import org.eclipse.xtend.core.xtend.impl.XtendTypeDeclarationImplCustom;
 
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 
@@ -38,7 +38,7 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
  *
  * @generated
  */
-public class SarlSkillImpl extends XtendTypeDeclarationImpl implements SarlSkill
+public class SarlSkillImpl extends XtendTypeDeclarationImplCustom implements SarlSkill
 {
   /**
    * The cached value of the '{@link #getExtends() <em>Extends</em>}' containment reference.

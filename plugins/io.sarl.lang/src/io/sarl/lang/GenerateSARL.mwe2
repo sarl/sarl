@@ -25,6 +25,7 @@ import org.eclipse.xtext.generator.*
 import org.eclipse.xtext.ui.generator.*
 import org.eclipse.xtend.core.*
 import org.eclipse.xtext.resource.XtextResourceSet 
+import io.sarl.lang.generator.ecore.* 
 
 var fileExtensions = "sarl"
 var projectName = "io.sarl.lang"
@@ -33,6 +34,7 @@ var runtimeProject = "../${projectName}"
 var testPluginPath = "../../tests/io.sarl.tests.api"
 var generateXtendStub = false
 var encoding = "UTF-8"
+var jdkCompatibility = "JDK70"
 
 Workflow {
     bean = StandaloneSetup {
@@ -100,7 +102,10 @@ Workflow {
     		fragment = grammarAccess.GrammarAccessFragment auto-inject {}
     
     		// generates Java API for the generated EPackages
-    		fragment = ecore.EMFGeneratorFragment auto-inject {}
+    		fragment = SARLEMFGeneratorFragment auto-inject {
+    			jdkLevel = jdkCompatibility
+    			customImplClass = "org.eclipse.xtend.core.xtend.impl.XtendTypeDeclarationImpl"
+    		}
     		
     		// serializer 2.0
     		fragment = serializer.SerializerFragment auto-inject {
