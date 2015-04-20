@@ -78,8 +78,8 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		}
 
 		/* The second step is the specification of the agent to launch.
-		 * Keep in mind that you can give to the runtime environment
-		 * only one start-up agent. The other agents will be spawn by the
+		 * Keep in mind that you can only give one start-up agent to 
+		 * the runtime environment. The other agents will be spawned by the
 		 * specified start-up agent.
 		 *
 		 * The start-up agent is given in the *Agent qualified name* field of
