@@ -23,6 +23,8 @@ package io.sarl.lang.core;
 import java.io.Serializable;
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Unique Identifier for a {@link Space}.
  *
@@ -59,6 +61,7 @@ public class SpaceID implements Serializable, Comparable<SpaceID> {
 	 *
 	 * @return this space's UUID
 	 */
+	@Pure
 	public UUID getID() {
 		return this.id;
 	}
@@ -68,6 +71,7 @@ public class SpaceID implements Serializable, Comparable<SpaceID> {
 	 *
 	 * @return the context's id
 	 */
+	@Pure
 	public UUID getContextID() {
 		return this.contextID;
 	}
@@ -77,11 +81,13 @@ public class SpaceID implements Serializable, Comparable<SpaceID> {
 	 *
 	 * @return The {@link SpaceSpecification} of this space
 	 */
+	@Pure
 	public Class<? extends SpaceSpecification<?>> getSpaceSpecification() {
 		return this.spaceSpec;
 	}
 
 	@Override
+	@Pure
 	public int hashCode() {
 		int result = 1;
 		result = 31 * result + ((this.contextID == null) ? 0 : this.contextID.hashCode());
@@ -90,6 +96,7 @@ public class SpaceID implements Serializable, Comparable<SpaceID> {
 	}
 
 	@Override
+	@Pure
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
@@ -133,6 +140,7 @@ public class SpaceID implements Serializable, Comparable<SpaceID> {
 	}
 
 	@Override
+	@Pure
 	public String toString() {
 		return "SpaceID [id=" + this.id //$NON-NLS-1$
 				+ ", contextID=" + this.contextID //$NON-NLS-1$
@@ -141,6 +149,7 @@ public class SpaceID implements Serializable, Comparable<SpaceID> {
 	}
 
 	@Override
+	@Pure
 	public int compareTo(SpaceID o) {
 		int cmp = this.contextID.compareTo(o.contextID);
 		if (cmp != 0) {

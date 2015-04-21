@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,80 +61,79 @@ public class EventParsingTest extends AbstractSarlTest {
 
 	public static class TopElementTest extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void invalidExtend_0() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"}",
 					"event E1 extends C1 {",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
-					IssueCodes.INVALID_EXTENDED_TYPE,
-					"Invalid supertype. Expecting: class");
+					org.eclipse.xtend.core.validation.IssueCodes.CLASS_EXPECTED,
+					33, 2,
+					"Invalid supertype. Expecting a class.");
 		}
 
 		@Test
 		public void invalidExtend_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"}",
 					"event E1 extends A1 {",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
+					30, 2,
 					"Supertype must be of type 'io.sarl.lang.core.Event'.");
 		}
 
 		@Test
 		public void invalidExtend_2() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 {",
 					"}",
 					"agent A1 extends E1 {",
 					"}"
 					));
-			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getSarlEvent(),
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAgent(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
-					"Supertype must be of type 'io.sarl.lang.core.Event'.");
+					30, 2,
+					"Supertype must be of type 'io.sarl.lang.core.Agent'.");
 		}
 
 		@Test
 		public void invalidExtend_3() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 {",
 					"}",
 					"behavior B1 extends E1 {",
 					"}"
 					));
-			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getSarlEvent(),
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlBehavior(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
-					"Supertype must be of type 'io.sarl.lang.core.Event'.");
+					33, 2,
+					"Supertype must be of type 'io.sarl.lang.core.Behavior'.");
 		}
 
 		@Test
 		public void invalidExtend_4() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 {",
 					"}",
 					"skill S1 extends E1 {",
 					"}"
 					));
-			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getSarlEvent(),
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
-					"Supertype must be of type 'io.sarl.lang.core.Event'.");
+					30, 2,
+					"Supertype must be of type 'io.sarl.lang.core.Skill'.");
 		}
 
 	}
@@ -143,35 +142,28 @@ public class EventParsingTest extends AbstractSarlTest {
 	@InjectWith(SARLInjectorProvider.class)
 	public static class XtendFieldTest extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void missedFinalFieldInitialization() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 {",
 					"val field1 : int = 5",
 					"val field2 : String",
 					"}"
 					));
-			this.validator.assertError(mas,
-					TypesPackage.eINSTANCE.getJvmConstructor(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_INITIALIZATION,
-					"The blank final field 'field2' may not have been initialized");
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					org.eclipse.xtend.core.validation.IssueCodes.FIELD_NOT_INITIALIZED,
+					"The blank final field field2 may not have been initialized");
 		}
 
 		@Test
 		public void completeFinalFieldInitialization() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 {",
 					"val field1 : int = 5",
 					"val field2 : String = \"\"",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -194,67 +186,119 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidXtendFieldName_0() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 {",
 					"var myfield1 = 4.5",
 					"var ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
 					"var myfield2 = true",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					XtendPackage.eINSTANCE.getXtendField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
-					"Invalid XtendField name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an XtendField a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
+					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
+					34, 41,
+					"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
 		}
 
 		@Test
 		public void invalidXtendFieldName_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 {",
 					"val myfield1 = 4.5",
 					"val ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
 					"val myfield2 = true",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					XtendPackage.eINSTANCE.getXtendField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
-					"Invalid XtendField name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an XtendField a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
+					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
+					34, 41,
+					"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
+		}
+
+		@Test
+		public void invalidXtendFieldName_2() throws Exception {
+			XtendFile mas = file(multilineString(
+					"event E1 {",
+					"var myfield1 = 4.5",
+					"var const = \"String\"",
+					"var myfield2 = true",
+					"}"
+					));
+			validate(mas).assertError(
+					XtendPackage.eINSTANCE.getXtendField(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_IDENTIFIER,
+					34, 5,
+					"'const' is not a valid identifier.");
+		}
+
+		@Test
+		public void invalidXtendFieldName_3() throws Exception {
+			XtendFile mas = file(multilineString(
+					"event E1 {",
+					"var myfield1 = 4.5",
+					"var this = \"String\"",
+					"var myfield2 = true",
+					"}"
+					));
+			validate(mas).assertError(
+					XtendPackage.eINSTANCE.getXtendField(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_IDENTIFIER,
+					34, 4,
+					"'this' is not a valid identifier");
+		}
+
+		@Test
+		public void discouragedXtendFieldName_0() throws Exception {
+			XtendFile mas = file(multilineString(
+					"event E1 {",
+					"val myfield1 = 4.5",
+					"val self = \"String\"",
+					"val myfield2 = true",
+					"}"
+					));
+			validate(mas).assertWarning(
+					XtendPackage.eINSTANCE.getXtendField(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISCOURAGED,
+					34, 4,
+					"'self' is a discouraged name");
 		}
 
 		@Test
 		public void multipleVariableDefinition() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 {",
 					"var myfield : int",
 					"var myfield1 : String",
 					"var myfield : double",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					XtendPackage.eINSTANCE.getXtendField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
-					"Duplicate field in 'E1': myfield");
+					55, 7,
+					"Duplicate field myfield");
 		}
 
 		@Test
 		public void multipleValueDefinition() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 {",
 					"val myfield : int = 4",
 					"val myfield1 : String = \"\"",
 					"val myfield : double = 5",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					XtendPackage.eINSTANCE.getXtendField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
-					"Duplicate field in 'E1': myfield");
+					64, 7,
+					"Duplicate field myfield");
 		}
 
 		@Test
 		public void fieldNameShadowing() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E0 {",
 					"val field1 : int = 5",
 					"val field2 : int = 6",
@@ -263,9 +307,10 @@ public class EventParsingTest extends AbstractSarlTest {
 					"val field1 : int = 5",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XtendPackage.eINSTANCE.getXtendField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
+					81, 6,
 					"The field 'field1' in 'E1' is hidding the inherited field 'E0.field1'.");
 		}
 
@@ -273,15 +318,9 @@ public class EventParsingTest extends AbstractSarlTest {
 
 	public static class ConstructorTest extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void validImplicitSuperConstructor() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"package io.sarl.test",
 					"event E1 {",
 					"}",
@@ -289,8 +328,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					"new (a : int) {",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.test", mas.getPackage());
@@ -313,7 +351,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void missedImplicitSuperConstructor_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"package io.sarl.test",
 					"event E1 {",
 					"new (a : char) {",
@@ -324,15 +362,16 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					XtendPackage.eINSTANCE.getXtendConstructor(),
-					org.eclipse.xtend.core.validation.IssueCodes.MISSING_CONSTRUCTOR,
+					org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
+					75, 17,
 					"Undefined default constructor in the super-type");
 		}
 
 		@Test
 		public void missedImplicitSuperConstructor_2() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"package io.sarl.test",
 					"event E1 {",
 					"new (a : int) {",
@@ -341,15 +380,16 @@ public class EventParsingTest extends AbstractSarlTest {
 					"event E2 extends E1 {",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_CONSTRUCTOR,
-					"The constructor E1() is undefined.");
+					58, 2,
+					"Undefined default constructor in the super-type.");
 		}
 
 		@Test
 		public void missedImplicitSuperConstructor_3() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"package io.sarl.test",
 					"event E1 {",
 					"new (a : int) {",
@@ -360,15 +400,16 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					XtendPackage.eINSTANCE.getXtendConstructor(),
-					org.eclipse.xtend.core.validation.IssueCodes.MISSING_CONSTRUCTOR,
+					org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
+					74, 17,
 					"Undefined default constructor in the super-type");
 		}
 
 		@Test
 		public void invalidArgumentTypeToSuperConstructor() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"package io.sarl.test",
 					"event E1 {",
 					"new (a : int) {",
@@ -380,9 +421,10 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					XbasePackage.eINSTANCE.getXStringLiteral(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
+					96, 2,
 					"Type mismatch: cannot convert from String to int");
 		}
 

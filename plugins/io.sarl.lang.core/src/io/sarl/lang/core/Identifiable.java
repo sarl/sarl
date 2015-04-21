@@ -22,6 +22,8 @@ package io.sarl.lang.core;
 
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Represents an entity that can be uniquely identified in the system.
  *
@@ -37,6 +39,7 @@ public interface Identifiable {
 	 *
 	 * @return entity's Identifier.
 	 */
+	@Pure
 	UUID getID();
 
 }

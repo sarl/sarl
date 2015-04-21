@@ -22,6 +22,8 @@ package io.sarl.lang.core;
 
 import java.util.Map;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 
 
 /** This interface represents a provider of built-in capacities.
@@ -40,6 +42,7 @@ public interface BuiltinCapacitiesProvider {
 	 * @param agent - the agent for which the built-in capacities must be retreived.
 	 * @return the built-in capacities for the given agent.
 	 */
+	@Pure
 	Map<Class<? extends Capacity>, Skill> getBuiltinCapacities(Agent agent);
 
 }

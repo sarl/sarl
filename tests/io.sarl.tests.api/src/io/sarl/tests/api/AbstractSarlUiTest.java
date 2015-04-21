@@ -29,8 +29,6 @@ import io.sarl.lang.SARLUiInjectorProvider;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -78,7 +76,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 				if (annot2 != null) {
 					classpath = merge(classpath, annot2.value());
 				}
-				WorkspaceTestHelper.createProjectWithDependencies(
+				AbstractSarlUiTest.this.helper.createProjectWithDependencies(
 						AbstractSarlUiTest.this.injector,
 						WorkspaceTestHelper.TESTPROJECT_NAME,
 						classpath);
@@ -152,29 +150,6 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 				multilineString(code));
 	}
 
-	/** Build a path.
-	 *
-	 * @param path - path elements.
-	 * @return the path.
-	 */
-	public static IPath path(String... path) {
-		assert(path != null && path.length > 0);
-		IPath p = new Path(path[0]);
-		for(int i=1; i<path.length; ++i) {
-			p = p.append(path[i]);
-		}
-		return p;
-	}
-
-	/** Build a path.
-	 *
-	 * @param path - path elements.
-	 * @return the path.
-	 */
-	public static String pathStr(String... path) {
-		return path(path).toOSString();
-	}
-
 	/** Assert the given image descriptor is for an image in a bundle.
 	 *
 	 * @param filename - the name of the image file.
@@ -205,33 +180,6 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 				expected.hashCode() | expectedFlags | JavaElementImageProvider.BIG_SIZE.hashCode(),
 				actual.hashCode());
 		assertEquals(expectedFlags, ((JavaElementImageDescriptor) actual).getAdronments());
-	}
-
-	/** Generate a filename for a resource that does not exist yet.
-	 *
-	 * @param pathElements - the elements of the path (directories and basename), without the extension.
-	 * @return the filename.
-	 */
-	protected String generateFilename(String... pathElements) {
-		int filenameCounter = 0;
-		String oFilename = pathStr(pathElements);
-		String filename = oFilename;
-		boolean foundFile = this.helper.isFileInSourceFolder(filename + ".sarl"); //$NON-NLS-1$
-		while (foundFile) {
-			++filenameCounter;
-			filename = oFilename + Integer.toString(filenameCounter);
-			foundFile = this.helper.isFileInSourceFolder(filename + ".sarl"); //$NON-NLS-1$
-		}
-		return filename;
-	}
-
-	/** Generate a filename for a resource that does not exist yet.
-	 *
-	 * @return the filename.
-	 */
-	protected String generateFilename() {
-		return generateFilename(
-				"io", "sarl", "tests", "basename"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
 }

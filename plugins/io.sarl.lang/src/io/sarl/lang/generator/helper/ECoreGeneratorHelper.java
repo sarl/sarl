@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.genmodel;
+package io.sarl.lang.generator.helper;
 
 
 import io.sarl.lang.actionprototype.ActionPrototypeProvider;
@@ -35,7 +35,7 @@ import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarAccess;
-import io.sarl.lang.util.ModelUtil;
+import io.sarl.lang.util.Utils;
 
 import java.util.Collection;
 import java.util.List;
@@ -47,11 +47,13 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
+import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.Constants;
@@ -66,8 +68,10 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.TypesFactory;
+import org.eclipse.xtext.common.types.util.Primitives;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.resource.IResourceFactory;
+import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.util.StringInputStream;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
@@ -77,6 +81,7 @@ import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XbaseFactory;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
+import org.eclipse.xtext.xbase.imports.IImportsConfiguration;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XImportSection;
@@ -93,7 +98,7 @@ import com.google.inject.Inject;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLCodeGenerator {
+public class ECoreGeneratorHelper {
 
 	@Inject
 	private TypesFactory typeFactory;
@@ -113,13 +118,19 @@ public class SARLCodeGenerator {
 	@Inject
 	private SARLGrammarAccess grammarAccess;
 
+	@Inject
+	private Primitives primitives;
+	
+	@Inject
+	private IImportsConfiguration importsConfiguration;
+
 	private final String sarlFileExtension;
 
 	/**
 	 * @param fileExtension - the file extension for SARL scripts.
 	 */
 	@Inject
-	public SARLCodeGenerator(@Named(Constants.FILE_EXTENSIONS) String fileExtension) {
+	public ECoreGeneratorHelper(@Named(Constants.FILE_EXTENSIONS) String fileExtension) {
 		this.sarlFileExtension = fileExtension;
 	}
 
@@ -180,7 +191,7 @@ public class SARLCodeGenerator {
 	 * @param comment - the comment.
 	 */
 	@SuppressWarnings("static-method")
-	public void attachComment(GeneratedCode code, EObject object, String comment) {
+	public void attachComment(SarlEcoreCode code, EObject object, String comment) {
 		if (object != null && !Strings.isNullOrEmpty(comment)) {
 			DocumentationAdapter documentationAdapter = new DocumentationAdapter();
 			documentationAdapter.setDocumentation(comment);
@@ -197,7 +208,7 @@ public class SARLCodeGenerator {
 	 * @param comment - the comment.
 	 */
 	@SuppressWarnings("static-method")
-	public void attachPostComment(GeneratedCode code, EObject object, String comment) {
+	public void attachPostComment(SarlEcoreCode code, EObject object, String comment) {
 		if (object != null && !Strings.isNullOrEmpty(comment)) {
 			PostDocumentationAdapter documentationAdapter = new PostDocumentationAdapter();
 			documentationAdapter.setDocumentation(comment);
@@ -214,7 +225,7 @@ public class SARLCodeGenerator {
 	 * @param comment - the comment.
 	 */
 	@SuppressWarnings("static-method")
-	public void attachInnerComment(GeneratedCode code, XBlockExpression object, String comment) {
+	public void attachInnerComment(SarlEcoreCode code, XBlockExpression object, String comment) {
 		if (object != null && !Strings.isNullOrEmpty(comment)) {
 			BlockInnerDocumentationAdapter documentationAdapter = new BlockInnerDocumentationAdapter();
 			documentationAdapter.setDocumentation(comment);
@@ -231,17 +242,17 @@ public class SARLCodeGenerator {
 	 * @param packageName - the name of the package in the script.
 	 * @return the SARL script.
 	 */
-	public GeneratedCode createScript(Resource resource, String packageName)  {
+	public SarlEcoreCode createScript(Resource resource, String packageName)  {
 		XtendFile script = XtendFactory.eINSTANCE.createXtendFile();
-		if (!Strings.isNullOrEmpty(packageName)) {
-			script.setPackage(packageName);
-		}
 		EList<EObject> content = resource.getContents();
 		if (!content.isEmpty()) {
 			content.clear();
 		}
 		content.add(script);
-		return new GeneratedCode(this, script, resource.getResourceSet(), getTypeReferences());
+		if (!Strings.isNullOrEmpty(packageName)) {
+			script.setPackage(packageName);
+		}
+		return new SarlEcoreCode(this, script, resource.getResourceSet(), getTypeReferences());
 	}
 
 	/** Create a SARL agent in the script.
@@ -251,14 +262,14 @@ public class SARLCodeGenerator {
 	 * @param superClass - the name of the super class, or <code>null</code> if the default Agent.
 	 * @return the SARL agent.
 	 */
-	public SarlAgent createAgent(GeneratedCode code, String agentName, String superClass)  {
+	public SarlAgent createAgent(SarlEcoreCode code, String agentName, String superClass)  {
 		SarlAgent agent = SarlFactory.eINSTANCE.createSarlAgent();
+		code.getSarlScript().getXtendTypes().add(agent);
 		agent.setName(agentName);
 		if (!Strings.isNullOrEmpty(superClass)
 				&& !io.sarl.lang.core.Agent.class.getName().equals(superClass)) {
 			agent.setExtends(newTypeRef(code, superClass, code.getSarlScript()));
 		}
-		code.getSarlScript().getXtendTypes().add(agent);
 		return agent;
 	}
 
@@ -269,14 +280,14 @@ public class SARLCodeGenerator {
 	 * @param superClass - the name of the super class, or <code>null</code> if the default Behavior.
 	 * @return the SARL behavior.
 	 */
-	public SarlBehavior createBehavior(GeneratedCode code, String behaviorName, String superClass)  {
+	public SarlBehavior createBehavior(SarlEcoreCode code, String behaviorName, String superClass)  {
 		SarlBehavior behavior = SarlFactory.eINSTANCE.createSarlBehavior();
+		code.getSarlScript().getXtendTypes().add(behavior);
 		behavior.setName(behaviorName);
 		if (!Strings.isNullOrEmpty(superClass)
 				&& !io.sarl.lang.core.Behavior.class.getName().equals(superClass)) {
 			behavior.setExtends(newTypeRef(code, superClass, code.getSarlScript()));
 		}
-		code.getSarlScript().getXtendTypes().add(behavior);
 		return behavior;
 	}
 
@@ -287,14 +298,14 @@ public class SARLCodeGenerator {
 	 * @param superClass - the name of the super class, or <code>null</code> if the default Capacity.
 	 * @return the SARL capacity.
 	 */
-	public SarlCapacity createCapacity(GeneratedCode code, String capacityName, String superClass)  {
+	public SarlCapacity createCapacity(SarlEcoreCode code, String capacityName, String superClass)  {
 		SarlCapacity capacity = SarlFactory.eINSTANCE.createSarlCapacity();
+		code.getSarlScript().getXtendTypes().add(capacity);
 		capacity.setName(capacityName);
 		if (!Strings.isNullOrEmpty(superClass)
 				&& !io.sarl.lang.core.Capacity.class.getName().equals(superClass)) {
 			capacity.getExtends().add(newTypeRef(code, superClass, code.getSarlScript()));
 		}
-		code.getSarlScript().getXtendTypes().add(capacity);
 		return capacity;
 	}
 
@@ -305,14 +316,14 @@ public class SARLCodeGenerator {
 	 * @param superClass - the name of the super class, or <code>null</code> if the default Event.
 	 * @return the SARL event.
 	 */
-	public SarlEvent createEvent(GeneratedCode code, String eventName, String superClass)  {
+	public SarlEvent createEvent(SarlEcoreCode code, String eventName, String superClass)  {
 		SarlEvent event = SarlFactory.eINSTANCE.createSarlEvent();
+		code.getSarlScript().getXtendTypes().add(event);
 		event.setName(eventName);
 		if (!Strings.isNullOrEmpty(superClass)
 				&& !io.sarl.lang.core.Event.class.getName().equals(superClass)) {
 			event.setExtends(newTypeRef(code, superClass, code.getSarlScript()));
 		}
-		code.getSarlScript().getXtendTypes().add(event);
 		return event;
 	}
 
@@ -324,8 +335,9 @@ public class SARLCodeGenerator {
 	 * @param superInterfaces - the names of the super interfaces of the implemented capacities.
 	 * @return the SARL skill.
 	 */
-	public SarlSkill createSkill(GeneratedCode code, String skillName, String superClass, Collection<String> superInterfaces)  {
+	public SarlSkill createSkill(SarlEcoreCode code, String skillName, String superClass, Collection<String> superInterfaces)  {
 		SarlSkill skill = SarlFactory.eINSTANCE.createSarlSkill();
+		code.getSarlScript().getXtendTypes().add(skill);
 		skill.setName(skillName);
 		if (!Strings.isNullOrEmpty(superClass)
 				&& !io.sarl.lang.core.Skill.class.getName().equals(superClass)) {
@@ -340,7 +352,6 @@ public class SARLCodeGenerator {
 				}
 			}
 		}
-		code.getSarlScript().getXtendTypes().add(skill);
 		return skill;
 	}
 
@@ -353,9 +364,10 @@ public class SARLCodeGenerator {
 	 * @param block - the code for the event handler, or <code>null</code> for an empty block.
 	 * @return the SARL behavior unit.
 	 */
-	public SarlBehaviorUnit createBehaviorUnit(GeneratedCode code, XtendTypeDeclaration container,
+	public SarlBehaviorUnit createBehaviorUnit(SarlEcoreCode code, XtendTypeDeclaration container,
 			String eventName, XExpression guard, XBlockExpression block)  {
 		SarlBehaviorUnit unit = SarlFactory.eINSTANCE.createSarlBehaviorUnit();
+		container.getMembers().add(unit);
 		unit.setName(newTypeRef(code, eventName, container));
 		if (guard != null) {
 			unit.setGuard(guard);
@@ -365,7 +377,6 @@ public class SARLCodeGenerator {
 			b = XbaseFactory.eINSTANCE.createXBlockExpression();
 		}
 		unit.setExpression(b);
-		container.getMembers().add(unit);
 		return unit;
 	}
 
@@ -377,15 +388,15 @@ public class SARLCodeGenerator {
 	 * @param type - the name of the return type, or <code>null</code> if the action's return type is void.
 	 * @return the SARL attribute.
 	 */
-	public XtendField createVariable(GeneratedCode code, XtendTypeDeclaration container, String name, String type)  {
+	public XtendField createVariable(SarlEcoreCode code, XtendTypeDeclaration container, String name, String type)  {
 		if (Strings.isNullOrEmpty(type)) {
 			throw new IllegalArgumentException("the parameter 'type' must contains a valid type"); //$NON-NLS-1$
 		}
 		XtendField attribute = XtendFactory.eINSTANCE.createXtendField();
+		container.getMembers().add(attribute);
 		attribute.getModifiers().add(this.grammarAccess.getFieldModifierAccess().getVarKeyword_1().getValue());
 		attribute.setName(name);
 		attribute.setType(newTypeRef(code, type, container));
-		container.getMembers().add(attribute);
 		return attribute;
 	}
 
@@ -397,15 +408,15 @@ public class SARLCodeGenerator {
 	 * @param initialValue - the initial value for the attribute.
 	 * @return the SARL attribute.
 	 */
-	public XtendField createVariable(GeneratedCode code, XtendTypeDeclaration container, String name, XExpression initialValue)  {
+	public XtendField createVariable(SarlEcoreCode code, XtendTypeDeclaration container, String name, XExpression initialValue)  {
 		if (initialValue == null) {
 			throw new IllegalArgumentException("the parameter 'initialValue' must not be null"); //$NON-NLS-1$
 		}
 		XtendField attribute = XtendFactory.eINSTANCE.createXtendField();
+		container.getMembers().add(attribute);
 		attribute.getModifiers().add(this.grammarAccess.getFieldModifierAccess().getVarKeyword_1().getValue());
 		attribute.setName(name);
 		attribute.setInitialValue(initialValue);
-		container.getMembers().add(attribute);
 		return attribute;
 	}
 
@@ -417,15 +428,15 @@ public class SARLCodeGenerator {
 	 * @param type - the name of the return type, or <code>null</code> if the action's return type is void.
 	 * @return the SARL attribute.
 	 */
-	public XtendField createValue(GeneratedCode code, XtendTypeDeclaration container, String name, String type)  {
+	public XtendField createValue(SarlEcoreCode code, XtendTypeDeclaration container, String name, String type)  {
 		if (Strings.isNullOrEmpty(type)) {
 			throw new IllegalArgumentException("the parameter 'type' must contains a valid type"); //$NON-NLS-1$
 		}
 		XtendField attribute = XtendFactory.eINSTANCE.createXtendField();
+		container.getMembers().add(attribute);
 		attribute.getModifiers().add(this.grammarAccess.getFieldModifierAccess().getValKeyword_0().getValue());
 		attribute.setName(name);
 		attribute.setType(newTypeRef(code, type, container));
-		container.getMembers().add(attribute);
 		return attribute;
 	}
 
@@ -437,15 +448,15 @@ public class SARLCodeGenerator {
 	 * @param initialValue - the initial value for the attribute.
 	 * @return the SARL attribute.
 	 */
-	public XtendField createValue(GeneratedCode code, XtendTypeDeclaration container, String name, XExpression initialValue)  {
+	public XtendField createValue(SarlEcoreCode code, XtendTypeDeclaration container, String name, XExpression initialValue)  {
 		if (initialValue == null) {
 			throw new IllegalArgumentException("the parameter 'initialValue' must not be null"); //$NON-NLS-1$
 		}
 		XtendField attribute = XtendFactory.eINSTANCE.createXtendField();
+		container.getMembers().add(attribute);
 		attribute.getModifiers().add(this.grammarAccess.getFieldModifierAccess().getValKeyword_0().getValue());
 		attribute.setName(name);
 		attribute.setInitialValue(initialValue);
-		container.getMembers().add(attribute);
 		return attribute;
 	}
 
@@ -458,18 +469,18 @@ public class SARLCodeGenerator {
 	 * @param defaultValue - the default value for the parameter.
 	 * @return the SARL formal parameter.
 	 */
-	public SarlFormalParameter createFormalParameter(GeneratedCode code, XtendExecutable container,
+	public SarlFormalParameter createFormalParameter(SarlEcoreCode code, XtendExecutable container,
 			String name, String type, XExpression defaultValue)  {
 		if (Strings.isNullOrEmpty(type)) {
 			throw new IllegalArgumentException("the parameter 'type' must contains a valid type"); //$NON-NLS-1$
 		}
 		SarlFormalParameter parameter = SarlFactory.eINSTANCE.createSarlFormalParameter();
+		container.getParameters().add(parameter);
 		parameter.setName(name);
 		parameter.setParameterType(newTypeRef(code, type, container));
 		if (defaultValue != null) {
 			parameter.setDefaultValue(defaultValue);
 		}
-		container.getParameters().add(parameter);
 		return parameter;
 	}
 
@@ -500,7 +511,7 @@ public class SARLCodeGenerator {
 	 * create temporary resources for compiling the default value.
 	 * @return the SARL formal parameter.
 	 */
-	public SarlFormalParameter createFormalParameter(GeneratedCode code, XtendExecutable container,
+	public SarlFormalParameter createFormalParameter(SarlEcoreCode code, XtendExecutable container,
 			String name, String type, String defaultValue, ResourceSet resourceSet)  {
 		if (Strings.isNullOrEmpty(type)) {
 			throw new IllegalArgumentException("the parameter 'type' must contains a valid type"); //$NON-NLS-1$
@@ -561,15 +572,15 @@ public class SARLCodeGenerator {
 	 * @param type - the name of the parameter type.
 	 * @return the SARL formal parameter.
 	 */
-	public SarlFormalParameter createVarArgs(GeneratedCode code, XtendExecutable container, String name, String type)  {
+	public SarlFormalParameter createVarArgs(SarlEcoreCode code, XtendExecutable container, String name, String type)  {
 		if (Strings.isNullOrEmpty(type)) {
 			throw new IllegalArgumentException("the parameter 'type' must contains a valid type"); //$NON-NLS-1$
 		}
 		SarlFormalParameter parameter = SarlFactory.eINSTANCE.createSarlFormalParameter();
+		container.getParameters().add(parameter);
 		parameter.setName(name);
 		parameter.setParameterType(newTypeRef(code, type, container));
 		parameter.setVarArg(true);
-		container.getParameters().add(parameter);
 		return parameter;
 	}
 
@@ -582,13 +593,18 @@ public class SARLCodeGenerator {
 	 * @param block - the code for the action, or <code>null</code> for an empty block.
 	 * @return the SARL action.
 	 */
-	public SarlAction createAction(GeneratedCode code, XtendTypeDeclaration container, String actionName,
+	public SarlAction createAction(SarlEcoreCode code, XtendTypeDeclaration container, String actionName,
 			String returnType, XBlockExpression block)  {
 		SarlAction action = SarlFactory.eINSTANCE.createSarlAction();
+		container.getMembers().add(action);
+		action.getModifiers().add(this.grammarAccess.getMethodModifierAccess().getDefKeyword_0().getValue());
 		action.setName(actionName);
+		String defaultValue = Utils.getDefaultValueForType(returnType);
+		if (!Strings.isNullOrEmpty(defaultValue)) {
+			action.setReturnType(newTypeRef(code, returnType, container));
+		}
 		XBlockExpression b = block;
-		String defaultValue = ModelUtil.getDefaultValueForType(returnType);
-		if (b == null) {
+		if (b == null && isActionBodyAllowed(container)) {
 			b = XbaseFactory.eINSTANCE.createXBlockExpression();
 			if (!Strings.isNullOrEmpty(defaultValue)) {
 				XExpression returnExpression = getDefaultXExpressionForType(code, container, returnType);
@@ -603,11 +619,20 @@ public class SARLCodeGenerator {
 			}
 		}
 		action.setExpression(b);
-		if (!Strings.isNullOrEmpty(defaultValue)) {
-			action.setReturnType(newTypeRef(code, returnType, container));
-		}
-		container.getMembers().add(action);
 		return action;
+	}
+	
+	/** Replies if the given container can contain action bodies.
+	 *
+	 * @param container the container.
+	 * @return <code>true</code> if the container can contain action bodies, <code>false</code> otherwise.
+	 */
+	@SuppressWarnings("static-method")
+	public boolean isActionBodyAllowed(XtendTypeDeclaration container) {
+		return !(container instanceof SarlCapacity
+				|| container instanceof SarlEvent
+				|| container instanceof XtendAnnotationType
+				|| container instanceof XtendInterface);
 	}
 
 	/** Create a SARL constructor in the script.
@@ -618,14 +643,14 @@ public class SARLCodeGenerator {
 	 * @return the SARL action.
 	 */
 	@SuppressWarnings("static-method")
-	public XtendConstructor createConstructor(GeneratedCode code, XtendTypeDeclaration container, XBlockExpression block)  {
+	public XtendConstructor createConstructor(SarlEcoreCode code, XtendTypeDeclaration container, XBlockExpression block)  {
 		XtendConstructor constructor = XtendFactory.eINSTANCE.createXtendConstructor();
+		container.getMembers().add(constructor);
 		XBlockExpression b = block;
 		if (b == null) {
 			b = XbaseFactory.eINSTANCE.createXBlockExpression();
 		}
 		constructor.setExpression(b);
-		container.getMembers().add(constructor);
 		return constructor;
 	}
 
@@ -636,7 +661,7 @@ public class SARLCodeGenerator {
 	 * @param type - the type for which the default value should be determined.
 	 * @return the default value.
 	 */
-	public XExpression getDefaultXExpressionForType(GeneratedCode code, EObject context, String type) {
+	public XExpression getDefaultXExpressionForType(SarlEcoreCode code, EObject context, String type) {
 		//TODO: Check if a similar function exists in the Xbase library.
 		XExpression expr = null;
 		if (type != null && !"void".equals(type) && !Void.class.getName().equals(type)) { //$NON-NLS-1$
@@ -690,6 +715,11 @@ public class SARLCodeGenerator {
 		return expr;
 	}
 
+	private static boolean isTypeReference(JvmTypeReference typeReference) {
+		return (typeReference != null && !typeReference.eIsProxy()
+				&& typeReference.getType() != null && !typeReference.getType().eIsProxy());
+	}
+	
 	/** Create a reference to the given type.
 	 *
 	 * @param code - the generated code in which the agent must be created.
@@ -697,23 +727,31 @@ public class SARLCodeGenerator {
 	 * @param context - the SARL context.
 	 * @return the type reference.
 	 */
-	public JvmParameterizedTypeReference newTypeRef(GeneratedCode code, String typeName, EObject context) {
+	public JvmParameterizedTypeReference newTypeRef(SarlEcoreCode code, String typeName, EObject context) {
 		TypeReferences typeRefs = getTypeReferences();
-		JvmType type = typeRefs.findDeclaredType(typeName, context);
-		if (type == null) {
-			type = typeRefs.findDeclaredType("java.lang." + typeName, context); //$NON-NLS-1$
-			if (type == null) {
-				type = typeRefs.findDeclaredType("java.lang.Object", context); //$NON-NLS-1$
+
+		JvmTypeReference typeReference = typeRefs.getTypeForName(typeName, context);
+		if (!isTypeReference(typeReference) && !this.primitives.isPrimitive(typeReference)) {
+			for (String packageName : this.importsConfiguration.getImplicitlyImportedPackages(
+					(XtextResource) code.getSarlScript().eResource())) {
+				typeReference = typeRefs.getTypeForName(packageName + "." + typeName, context); //$NON-NLS-1$
+				if (isTypeReference(typeReference)) {
+					return (JvmParameterizedTypeReference) typeReference;
+				}
 			}
-		} else {
-			code.getImportManager().addImportFor(type);
 		}
-		JvmParameterizedTypeReference reference = getTypesFactory().createJvmParameterizedTypeReference();
-		reference.setType(type);
-		return reference;
+		
+		if (!isTypeReference(typeReference)) {
+			typeReference = typeRefs.getTypeForName(Object.class, context);
+		}
+
+		return (JvmParameterizedTypeReference) typeReference;
 	}
 
 	private JvmTypeReference cloneType(JvmTypeReference type) {
+		if (type == null) {
+			return null;
+		}
 		// CAUTION: The following line is needed otherwise the clone of the type will failed.
 		type.getIdentifier();
 		return getTypesBuilder().cloneWithProxies(type);
@@ -728,6 +766,8 @@ public class SARLCodeGenerator {
 	 */
 	public SarlAction createAction(JvmOperation operation, ImportManager importManager) {
 		SarlAction action = SarlFactory.eINSTANCE.createSarlAction();
+		// Modifier
+		action.getModifiers().add(this.grammarAccess.getMethodModifierAccess().getDefKeyword_0().getValue());
 		// Name
 		action.setName(operation.getSimpleName());
 		// Return types
@@ -774,6 +814,7 @@ public class SARLCodeGenerator {
 		for (int i = 0; i < jvmParameters.size(); ++i) {
 			JvmFormalParameter jvmParameter = jvmParameters.get(i);
 			SarlFormalParameter parameter = SarlFactory.eINSTANCE.createSarlFormalParameter();
+			parameters.add(parameter);
 			parameter.setName(jvmParameter.getSimpleName());
 			JvmTypeReference typeReference = jvmParameter.getParameterType();
 			if (i == jvmParameters.size() - 1 && operation.isVarArgs()) {
@@ -787,7 +828,7 @@ public class SARLCodeGenerator {
 			// Default values
 			String defaultValue = findDefaultValue(
 					operation.getDeclaringType(),
-					ModelUtil.annotationString(jvmParameter, DefaultValue.class));
+					Utils.annotationString(jvmParameter, DefaultValue.class));
 			if (!Strings.isNullOrEmpty(defaultValue)) {
 				XExpression defaultValueExpr = createXExpression(
 						defaultValue,
@@ -795,20 +836,19 @@ public class SARLCodeGenerator {
 						importManager);
 				parameter.setDefaultValue(defaultValueExpr);
 			}
-			parameters.add(parameter);
 		}
 	}
 
 	private void createExecutableFeatureFireEvents(JvmExecutable operation, List<JvmTypeReference> events,
 			ImportManager importManager) {
-		List<JvmTypeReference> firedEvents = ModelUtil.annotationClasses(operation, FiredEvent.class);
+		List<JvmTypeReference> firedEvents = Utils.annotationClasses(operation, FiredEvent.class);
 		if (!firedEvents.isEmpty()) {
 			for (JvmTypeReference type : firedEvents) {
 				JvmTypeReference clone = cloneType(type);
 				if (clone instanceof JvmParameterizedTypeReference) {
 					JvmParameterizedTypeReference pRef = (JvmParameterizedTypeReference) clone;
-					updateImports(pRef, importManager);
 					events.add(pRef);
+					updateImports(pRef, importManager);
 				}
 			}
 		}
@@ -820,8 +860,8 @@ public class SARLCodeGenerator {
 		if (!jvmExceptions.isEmpty()) {
 			for (JvmTypeReference type : jvmExceptions) {
 				JvmTypeReference clone = cloneType(type);
-				updateImports(clone, importManager);
 				exceptions.add(clone);
+				updateImports(clone, importManager);
 			}
 		}
 	}
@@ -831,7 +871,7 @@ public class SARLCodeGenerator {
 		if (type instanceof JvmDeclaredType) {
 			for (JvmField field : ((JvmDeclaredType) type).getDeclaredFields()) {
 				if (field.getSimpleName().equals(dfName)) {
-					return ModelUtil.annotationString(field, Generated.class);
+					return Utils.annotationString(field, Generated.class);
 				}
 			}
 		}
@@ -840,11 +880,11 @@ public class SARLCodeGenerator {
 
 	private String findDefaultValue(JvmDeclaredType container, String name) {
 		if (!Strings.isNullOrEmpty(name)) {
-			String dfName = ModelUtil.PREFIX_ATTRIBUTE_DEFAULT_VALUE + name;
+			String dfName = Utils.PREFIX_ATTRIBUTE_DEFAULT_VALUE + name;
 			int index = name.indexOf('#');
 			if (index >= 0) {
 				String typeName = name.substring(0, index);
-				dfName = ModelUtil.PREFIX_ATTRIBUTE_DEFAULT_VALUE + name.substring(index + 1);
+				dfName = Utils.PREFIX_ATTRIBUTE_DEFAULT_VALUE + name.substring(index + 1);
 				String r = findDefaultValue(container, typeName, dfName);
 				if (r != null) {
 					return r;
@@ -852,7 +892,7 @@ public class SARLCodeGenerator {
 			}
 			for (JvmField field : container.getDeclaredFields()) {
 				if (field.getSimpleName().equals(dfName)) {
-					return ModelUtil.annotationString(field, Generated.class);
+					return Utils.annotationString(field, Generated.class);
 				}
 			}
 		}

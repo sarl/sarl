@@ -24,7 +24,7 @@ import io.sarl.eclipse.SARLConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.lang.core.Capacity;
-import io.sarl.lang.genmodel.GeneratedCode;
+import io.sarl.lang.generator.helper.SarlEcoreCode;
 import io.sarl.lang.sarl.SarlCapacity;
 
 import org.eclipse.core.runtime.CoreException;
@@ -71,7 +71,7 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 
 	@Override
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
-		GeneratedCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
+		SarlEcoreCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
 		SarlCapacity capacity = this.sarlGenerator.createCapacity(code, getTypeName(), getSuperClass());
 		this.sarlGenerator.attachComment(code, capacity, typeComment);
 		code.finalizeScript();

@@ -29,7 +29,7 @@ import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Skill;
-import io.sarl.lang.genmodel.GeneratedCode;
+import io.sarl.lang.generator.helper.SarlEcoreCode;
 import io.sarl.lang.sarl.SarlSkill;
 
 import java.util.Comparator;
@@ -87,7 +87,7 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 
 	@Override
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
-		GeneratedCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
+		SarlEcoreCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
 		SarlSkill skill = this.sarlGenerator.createSkill(code, getTypeName(),
 				getSuperClass(), getSuperInterfaces());
 		this.sarlGenerator.attachComment(code, skill, typeComment);

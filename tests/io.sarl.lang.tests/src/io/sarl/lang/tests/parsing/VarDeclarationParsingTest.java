@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
 
+import org.eclipse.xtend.core.validation.IssueCodes;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendPackage;
@@ -50,15 +51,10 @@ import com.google.inject.Inject;
  */
 @SuppressWarnings("all")
 public class VarDeclarationParsingTest extends AbstractSarlTest {
-	@Inject
-	private ParseHelper<XtendFile> parser;
-
-	@Inject
-	private ValidationTestHelper validator;
 
 	@Test
 	public void variableDeclaration_XtendFieldScope_xtend() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var List<Integer> list",
@@ -66,19 +62,20 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"var double j = 45",
 			"}"
 		));
-		this.validator.assertError(mas,
-			XtendPackage.eINSTANCE.getXtendField(),
-			Diagnostic.SYNTAX_DIAGNOSTIC,
-			"no viable alternative at input 'List'");
-		this.validator.assertError(mas,
-			XtendPackage.eINSTANCE.getXtendField(),
-			Diagnostic.SYNTAX_DIAGNOSTIC,
-			"no viable alternative at input 'double'");
+		validate(mas)
+			.assertError(
+				XtendPackage.eINSTANCE.getXtendField(),
+				Diagnostic.SYNTAX_DIAGNOSTIC,
+				"no viable alternative at input 'List'")
+			.assertError(
+				XtendPackage.eINSTANCE.getXtendField(),
+				Diagnostic.SYNTAX_DIAGNOSTIC,
+				"no viable alternative at input 'double'");
 	}
 
 	@Test
 	public void variableDeclaration_localScope_xtend() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"var int i",
@@ -90,31 +87,31 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
-			XbasePackage.eINSTANCE.getXFeatureCall(),
-			Diagnostic.LINKING_DIAGNOSTIC,
-			"Couldn't resolve reference to JvmIdentifiableElement 'i'");
-		this.validator.assertError(mas,
-			XbasePackage.eINSTANCE.getXAssignment(),
-			Diagnostic.LINKING_DIAGNOSTIC,
-			"The method k(int) is undefined");
-		this.validator.assertError(mas,
-			XbasePackage.eINSTANCE.getXFeatureCall(),
-			Diagnostic.LINKING_DIAGNOSTIC,
-			"Couldn't resolve reference to JvmIdentifiableElement 'k'");
+		validate(mas)
+			.assertError(
+				XbasePackage.eINSTANCE.getXFeatureCall(),
+				IssueCodes.FEATURECALL_LINKING_DIAGNOSTIC,
+				"The method or field i is undefined for the type A1")
+			.assertError(
+				XbasePackage.eINSTANCE.getXAssignment(),
+				IssueCodes.FEATURECALL_LINKING_DIAGNOSTIC,
+				"The method or field k is undefined for the type A1")
+			.assertError(
+				XbasePackage.eINSTANCE.getXFeatureCall(),
+				IssueCodes.FEATURECALL_LINKING_DIAGNOSTIC,
+				"The method or field k is undefined for the type A1");
 	}
 
 	@Test
 	public void variableDeclaration_XtendFieldScope() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var list : List<Integer>",
 				"var i = 45",
 				"var j : double = 45",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -142,7 +139,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void variableDeclaration_localScope() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"def myaction {",
@@ -154,8 +151,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 					"System.out.println(k)",
 				"}",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -173,7 +169,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void valueDeclaration_XtendFieldScope_xtend() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"val List<Integer> list",
@@ -181,19 +177,20 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"val double j = 45",
 			"}"
 		));
-		this.validator.assertError(mas,
-			XtendPackage.eINSTANCE.getXtendField(),
-			Diagnostic.SYNTAX_DIAGNOSTIC,
-			"no viable alternative at input 'List'");
-		this.validator.assertError(mas,
-			XtendPackage.eINSTANCE.getXtendField(),
-			Diagnostic.SYNTAX_DIAGNOSTIC,
-			"no viable alternative at input 'double'");
+		validate(mas)
+			.assertError(
+				XtendPackage.eINSTANCE.getXtendField(),
+				Diagnostic.SYNTAX_DIAGNOSTIC,
+				"no viable alternative at input 'List'")
+			.assertError(
+				XtendPackage.eINSTANCE.getXtendField(),
+				Diagnostic.SYNTAX_DIAGNOSTIC,
+				"no viable alternative at input 'double'");
 	}
 
 	@Test
 	public void valueDeclaration_localScope_xtend() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"val int i",
@@ -205,31 +202,31 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
-			XbasePackage.eINSTANCE.getXFeatureCall(),
-			Diagnostic.LINKING_DIAGNOSTIC,
-			"Couldn't resolve reference to JvmIdentifiableElement 'i'");
-		this.validator.assertError(mas,
-			XbasePackage.eINSTANCE.getXAssignment(),
-			Diagnostic.LINKING_DIAGNOSTIC,
-			"The method k(int) is undefined");
-		this.validator.assertError(mas,
-			XbasePackage.eINSTANCE.getXFeatureCall(),
-			Diagnostic.LINKING_DIAGNOSTIC,
-			"Couldn't resolve reference to JvmIdentifiableElement 'k'");
+		validate(mas)
+			.assertError(
+				XbasePackage.eINSTANCE.getXFeatureCall(),
+				IssueCodes.FEATURECALL_LINKING_DIAGNOSTIC,
+				"The method or field i is undefined for the type A1")
+			.assertError(
+				XbasePackage.eINSTANCE.getXAssignment(),
+				IssueCodes.FEATURECALL_LINKING_DIAGNOSTIC,
+				"The method or field k is undefined for the type A1")
+			.assertError(
+				XbasePackage.eINSTANCE.getXFeatureCall(),
+				IssueCodes.FEATURECALL_LINKING_DIAGNOSTIC,
+				"The method or field k is undefined for the type A1");
 	}
 
 	@Test
 	public void valueDeclaration_XtendFieldScope() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"val list : List<Integer> = null",
 				"val i = 45",
 				"val j : double = 45",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -257,7 +254,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void valueDeclaration_localScope() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"val j = 45",
@@ -266,8 +263,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 					"System.out.println(k)",
 				"}",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -285,7 +281,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void forLoop_xtend() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var list : List<Integer>",
@@ -296,15 +292,15 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
-			XbasePackage.eINSTANCE.getXFeatureCall(),
+		validate(mas).assertError(
+			SarlPackage.eINSTANCE.getSarlAgent(),
 			Diagnostic.SYNTAX_DIAGNOSTIC,
-			"missing ')' at 'i'");
+			"mismatched input '{' expecting '}'");
 	}
 
 	@Test
 	public void forLoop_inferredType() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var list : List<Integer>",
@@ -314,8 +310,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 					"}",
 				"}",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -338,7 +333,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void forLoop_explicitType() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var list : List<Integer>",
@@ -348,8 +343,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 					"}",
 				"}",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -372,7 +366,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void catch_xtend() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"try {",
@@ -384,15 +378,15 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
-			TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+		validate(mas).assertError(
+			SarlPackage.eINSTANCE.getSarlAgent(),
 			Diagnostic.SYNTAX_DIAGNOSTIC,
-			"missing ':' at 'e'");
+			"mismatched input '{' expecting '}'");
 	}
 
 	@Test
 	public void catch_oneType() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"try {",
@@ -403,8 +397,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 					"}",
 				"}",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -422,7 +415,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void multicatch_xtend() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"try {",
@@ -437,15 +430,15 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
-			TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+		validate(mas).assertError(
+			SarlPackage.eINSTANCE.getSarlAgent(),
 			Diagnostic.SYNTAX_DIAGNOSTIC,
-			"missing ':' at 'e'");
+			"mismatched input '{' expecting '}'");
 	}
 
 	@Test
 	public void multicatch_oneType() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"try {",
@@ -459,8 +452,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 					"}",
 				"}",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -478,7 +470,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void closure_xtend() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"agent A1 {",
 				"def mycall(a : int, f : (Number,Number) => int) {",
 					"return a + f.apply",
@@ -490,15 +482,15 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
-			XbasePackage.eINSTANCE.getXClosure(),
+		validate(mas).assertError(
+			SarlPackage.eINSTANCE.getSarlAgent(),
 			Diagnostic.SYNTAX_DIAGNOSTIC,
-			"mismatched input ',' expecting ']'");
+			"mismatched input '{' expecting '}'");
 	}
 
 	@Test
 	public void closure_twoParams() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"agent A1 {",
 				"def mycall(a : int, f : (Float,Integer) => float) : float {",
 					"return a + f.apply(5.45f, 6)",
@@ -509,8 +501,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 					"]",
 				"}",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));

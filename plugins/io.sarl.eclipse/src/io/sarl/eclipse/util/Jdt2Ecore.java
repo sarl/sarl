@@ -27,10 +27,10 @@ import io.sarl.lang.actionprototype.ActionPrototypeProvider;
 import io.sarl.lang.actionprototype.FormalParameterProvider;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.Generated;
-import io.sarl.lang.genmodel.GeneratedCode;
+import io.sarl.lang.generator.helper.SarlEcoreCode;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlFormalParameter;
-import io.sarl.lang.util.ModelUtil;
+import io.sarl.lang.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,13 +77,13 @@ import com.google.common.base.Strings;
 
 /** Utilities for creating Ecore SARL elements from the JDT model.
  *
- * This class extends the {@link ModelUtil} from the <code>io.sarl.lang</code> project.
+ * This class extends the {@link Utils} from the <code>io.sarl.lang</code> project.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see ModelUtil
+ * @see Utils
  */
 public final class Jdt2Ecore {
 
@@ -236,7 +236,7 @@ public final class Jdt2Ecore {
 							&& !operation.isLambdaMethod()
 							&& isVisible(typeFinder, type, operation)) {
 						if (!operation.isConstructor()
-								&& !ModelUtil.isHiddenAction(operation.getElementName())) {
+								&& !Utils.isHiddenAction(operation.getElementName())) {
 							ActionParameterTypes sig = sarlSignatureProvider.createParameterTypes(
 									Flags.isVarargs(operation.getFlags()), getFormalParameterProvider(operation));
 							ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
@@ -272,7 +272,7 @@ public final class Jdt2Ecore {
 				if (inheritedFields != null) {
 					for (IField field : type.getFields()) {
 						if (!Flags.isStatic(field.getFlags())
-								&& !ModelUtil.isHiddenAttribute(field.getElementName())
+								&& !Utils.isHiddenAttribute(field.getElementName())
 								&& isVisible(typeFinder, type, field)) {
 							inheritedFields.put(field.getElementName(), field);
 						}
@@ -337,7 +337,7 @@ public final class Jdt2Ecore {
 	 * @return the JvmConstructor
 	 * @throws JavaModelException if the Java model is invalid.
 	 */
-	public static JvmConstructor getJvmConstructor(GeneratedCode code, IMethod constructor, XtendTypeDeclaration context)
+	public static JvmConstructor getJvmConstructor(SarlEcoreCode code, IMethod constructor, XtendTypeDeclaration context)
 			throws JavaModelException {
 		if (constructor.isConstructor()) {
 			JvmType type = code.getCodeGenerator().getTypeReferences().findDeclaredType(
@@ -368,7 +368,7 @@ public final class Jdt2Ecore {
 		Object value = annotation.getMemberValuePairs()[0].getValue();
 		String fieldId = (value == null) ? null : value.toString();
 		if (!Strings.isNullOrEmpty(fieldId)) {
-			String fieldName = ModelUtil.PREFIX_ATTRIBUTE_DEFAULT_VALUE + fieldId;
+			String fieldName = Utils.PREFIX_ATTRIBUTE_DEFAULT_VALUE + fieldId;
 			IField field = operation.getDeclaringType().getField(fieldName);
 			if (field != null) {
 				annotation = Jdt2Ecore.getAnnotation(field, Generated.class.getName());
@@ -388,7 +388,7 @@ public final class Jdt2Ecore {
 	 * @throws JavaModelException if the Java model is invalid.
 	 * @throws IllegalArgumentException if the signature is not syntactically correct.
 	 */
-	public static void createFormalParameters(GeneratedCode code, IMethod operation,
+	public static void createFormalParameters(SarlEcoreCode code, IMethod operation,
 			XtendExecutable container) throws JavaModelException, IllegalArgumentException {
 		boolean isVarargs = Flags.isVarargs(operation.getFlags());
 		ILocalVariable[] parameters = operation.getParameters();
@@ -418,7 +418,7 @@ public final class Jdt2Ecore {
 	 * @param container - the container of the created constructors.
 	 * @throws JavaModelException if the Java model is invalid.
 	 */
-	public static void createStandardConstructors(GeneratedCode code,
+	public static void createStandardConstructors(SarlEcoreCode code,
 			Collection<IMethod> superClassConstructors, XtendTypeDeclaration container) throws JavaModelException {
 		if (superClassConstructors != null) {
 			for (IMethod constructor : superClassConstructors) {
@@ -452,7 +452,7 @@ public final class Jdt2Ecore {
 	 * @throws JavaModelException if the Java model is invalid.
 	 * @throws IllegalArgumentException if the signature is not syntactically correct.
 	 */
-	public static void createActions(GeneratedCode code,
+	public static void createActions(SarlEcoreCode code,
 			Collection<IMethod> methods, XtendTypeDeclaration container) throws JavaModelException, IllegalArgumentException {
 		if (methods != null) {
 			for (IMethod operation : methods) {

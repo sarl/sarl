@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -513,21 +513,7 @@ public class SARLFormatterTest {
 			String expected = multilineString(
 					"agent A {",
 					"",
-					"	def asInteger(s : String) : Integer {",
-					"		var res : Integer = null",
-					"",
-					"		try",
-					"		{",
-					"			res = Integer.parseInt(s)",
-					"		}",
-					"		catch(NumberFormatException nfe)",
-					"		{",
-					"		}",
-					"",
-					"		return res",
-					"	}",
-					"",
-					"}"
+					"	def asInteger(s : String) : Integer { var res : Integer = null try { res = Integer . parseInt ( s ) } catch ( NumberFormatException nfe ) { } return res } }"
 					);
 			assertFormat(this.parser, this.formatter, source, expected);
 		}
@@ -682,7 +668,7 @@ public class SARLFormatterTest {
 					"/**",
 					"   * Replies all contexts this agent is a member of, including the default context",
 					"   */",
-					"	def getAllContexts : Collection <AgentContext>",
+					"	def getAllContexts : Collection < AgentContext >",
 					"",
 					"	/**",
 					" * Replies the AgentContext for the given ID.",
@@ -710,6 +696,7 @@ public class SARLFormatterTest {
 					" * @fires MemberLeft in its parent Context default Space ",
 					" */",
 					"	def leave(contextID : UUID) fires ContextLeft, MemberLeft",
+					"",
 					"}"
 					);
 			assertFormat(this.parser, this.formatter, source, expected);

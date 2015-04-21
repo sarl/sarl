@@ -27,6 +27,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * The definition of the notion of Agent in SARL.
  * An agent is an autonomous entity having some intrinsic skills to realize
@@ -81,6 +83,7 @@ public class Agent implements Identifiable {
 	}
 
 	@Override
+	@Pure
 	public String toString() {
 		return getClass().getSimpleName()
 				+ " [" + attributesToString() //$NON-NLS-1$
@@ -92,11 +95,13 @@ public class Agent implements Identifiable {
 	 *
 	 * @return the identifier of the agent's spawner.
 	 */
+	@Pure
 	public UUID getParentID() {
 		return this.parentID;
 	}
 
 	@Override
+	@Pure
 	public UUID getID() {
 		return this.id;
 	}
@@ -167,6 +172,7 @@ public class Agent implements Identifiable {
 	 * @return the skill, never <code>null</code>
 	 * @throws UnimplementedCapacityException - if no skill is owned by the agent for the given capacity.
 	 */
+	@Pure
 	protected <S extends Capacity> S getSkill(Class<S> capacity) {
 		assert capacity != null;
 		S skill = capacity.cast(this.capacities.get(capacity));
@@ -184,6 +190,7 @@ public class Agent implements Identifiable {
 	 * @return <code>true</code> if it has a skill associate to this capacity,
 	 * <code>false</code> otherwise
 	 */
+	@Pure
 	protected boolean hasSkill(Class<? extends Capacity> capacity) {
 		assert capacity != null;
 		return this.capacities.containsKey(capacity);
@@ -205,6 +212,7 @@ public class Agent implements Identifiable {
 	 * @return <code>true</code> if the given address is one of this agent,
 	 * otherwise <code>false</code>.
 	 */
+	@Pure
 	protected boolean isMe(Address address) {
 		return (address != null) && (this.id.equals(address.getUUID()));
 	}
@@ -220,6 +228,7 @@ public class Agent implements Identifiable {
 	 * @return <code>true</code> if the given identifier is the one of this agent,
 	 * otherwise <code>false</code>.
 	 */
+	@Pure
 	protected boolean isMe(UUID id) {
 		return (id != null) && (this.id.equals(id));
 	}
@@ -230,6 +239,7 @@ public class Agent implements Identifiable {
 	 * @return <code>true</code> if the given event was emitted by
 	 * this agent; otherwise <code>false</code>.
 	 */
+	@Pure
 	protected boolean isFromMe(Event event) {
 		return (event != null) && isMe(event.getSource());
 	}

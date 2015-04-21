@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.bugfixes.SARLContextPDAProvider;
-import io.sarl.lang.genmodel.GeneratedCode;
-import io.sarl.lang.genmodel.SARLCodeGenerator;
+import io.sarl.lang.generator.helper.SarlEcoreCode;
+import io.sarl.lang.generator.helper.ECoreGeneratorHelper;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.TestClasspath;
@@ -56,7 +56,7 @@ public class Bug277 extends AbstractSarlUiTest {
 	private ISerializer serializer;
 
 	@Inject
-	private SARLCodeGenerator sarlGenerator;
+	private ECoreGeneratorHelper sarlGenerator;
 
 	@Test
 	public void testBugFixExist() {
@@ -117,7 +117,7 @@ public class Bug277 extends AbstractSarlUiTest {
 
 		IFile file = this.helper.createFileInSourceFolder("Bug277_1", "");
 		Resource resource = this.helper.createResource(file, "package io.sarl.lang.tests.bug277");
-		GeneratedCode code = this.sarlGenerator.createScript(resource, "io.sarl.lang.tests.bug277");
+		SarlEcoreCode code = this.sarlGenerator.createScript(resource, "io.sarl.lang.tests.bug277");
 		SarlSkill skill = this.sarlGenerator.createSkill(code, "MyS", null,
 				Arrays.asList("io.sarl.core.Lifecycle", "io.sarl.lang.tests.bug277.MyCapacity"));
 		this.sarlGenerator.attachComment(code, skill, "My Test");

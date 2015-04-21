@@ -21,7 +21,7 @@
 package io.sarl.eclipse.wizards.elements;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.lang.genmodel.SARLCodeGenerator;
+import io.sarl.lang.generator.helper.ECoreGeneratorHelper;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -104,7 +104,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	/** The generator for the SALR language.
 	 */
 	@Inject
-	protected SARLCodeGenerator sarlGenerator;
+	protected ECoreGeneratorHelper sarlGenerator;
 
 	@Inject
 	private FieldInitializerUtil fieldInitializer;

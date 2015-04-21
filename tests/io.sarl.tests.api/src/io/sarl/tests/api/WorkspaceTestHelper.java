@@ -137,7 +137,7 @@ public class WorkspaceTestHelper extends Assert {
 	 * @throws CoreException
 	 * @see #createProjectWithDependencies(Injector, String, String...)
 	 */
-	public static IProject createProject(Injector injector, String name) throws CoreException {
+	public IProject createProject(Injector injector, String name) throws CoreException {
 		return createProjectWithDependencies(injector, name, DEFAULT_REQUIRED_BUNDLES);
 	}
 
@@ -151,7 +151,8 @@ public class WorkspaceTestHelper extends Assert {
 	 * @see #createProject(Injector, String)
 	 * @see #DEFAULT_REQUIRED_BUNDLES
 	 */
-	public static IProject createProjectWithDependencies(Injector injector, String name, String... requiredBundles)
+	@SuppressWarnings("static-method")
+	public IProject createProjectWithDependencies(Injector injector, String name, String... requiredBundles)
 			throws CoreException {
 		JavaProjectFactory projectFactory = injector.getInstance(JavaProjectFactory.class);
 		projectFactory.setProjectName(name);

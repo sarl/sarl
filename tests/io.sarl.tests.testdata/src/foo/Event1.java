@@ -19,26 +19,24 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.genmodel;
+package foo;
 
-import org.eclipse.osgi.util.NLS;
+import io.sarl.lang.core.Address;
+import io.sarl.lang.core.Event;
 
-/** Localized Messages.
+
+/**
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @mavenartifactid $ArifactId$
  */
 @SuppressWarnings("all")
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.lang.genmodel.messages"; //$NON-NLS-1$
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+public class Event1 extends Event {
+	public Event1() {
+		super();
 	}
-
-	private Messages() {
+	public Event1(Address source) {
+		super(source);
 	}
-
-	public static String SARLCodeGenerator_0;
 }

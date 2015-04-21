@@ -20,18 +20,145 @@
  */
 package io.sarl.lang.validation;
 
+import static com.google.common.collect.Iterables.toArray;
+import static com.google.common.collect.Lists.newArrayList;
+import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_AGENT__EXTENDS;
+import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_BEHAVIOR__EXTENDS;
+import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_CAPACITY_USES__CAPACITIES;
+import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_CAPACITY__EXTENDS;
+import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_EVENT__EXTENDS;
+import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_FORMAL_PARAMETER__DEFAULT_VALUE;
+import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_SKILL__EXTENDS;
+import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_SKILL__IMPLEMENTS;
+import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION;
+import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_CAPACITY_DEFINITION;
+import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_FUNCTION_NAME;
+import static io.sarl.lang.validation.IssueCodes.INVALID_CAPACITY_TYPE;
+import static io.sarl.lang.validation.IssueCodes.INVALID_EXTENDED_TYPE;
+import static io.sarl.lang.validation.IssueCodes.INVALID_FIRING_EVENT_TYPE;
+import static io.sarl.lang.validation.IssueCodes.INVALID_IMPLEMENTED_TYPE;
+import static io.sarl.lang.validation.IssueCodes.INVALID_NESTED_DEFINITION;
+import static io.sarl.lang.validation.IssueCodes.REDUNDANT_CAPACITY_USE;
+import static io.sarl.lang.validation.IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION;
+import static io.sarl.lang.validation.IssueCodes.RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED;
+import static io.sarl.lang.validation.IssueCodes.UNREACHABLE_BEHAVIOR_UNIT;
+import static io.sarl.lang.validation.IssueCodes.UNUSED_AGENT_CAPACITY;
+import static org.eclipse.xtend.core.validation.IssueCodes.CLASS_EXPECTED;
+import static org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE;
+import static org.eclipse.xtend.core.validation.IssueCodes.INTERFACE_EXPECTED;
+import static org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME;
+import static org.eclipse.xtend.core.validation.IssueCodes.JDK_NOT_ON_CLASSPATH;
+import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_CONSTRUCTOR;
+import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE;
+import static org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR;
+import static org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE;
+import static org.eclipse.xtend.core.validation.IssueCodes.OVERRIDDEN_FINAL;
+import static org.eclipse.xtend.core.validation.IssueCodes.OVERRIDE_REDUCES_VISIBILITY;
+import static org.eclipse.xtend.core.validation.IssueCodes.XBASE_LIB_NOT_ON_CLASSPATH;
+import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_CLASS__IMPLEMENTS;
+import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FIELD__NAME;
+import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FUNCTION__NAME;
+import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_INTERFACE__EXTENDS;
+import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_TYPE_DECLARATION__NAME;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.DISCOURAGED_REFERENCE;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRESSION;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_TYPE;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISCOURAGED;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING;
 import io.sarl.lang.SARLLangActivator;
+import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.annotation.ImportedCapacityFeature;
+import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
-import io.sarl.lang.util.ModelUtil;
+import io.sarl.lang.core.Event;
+import io.sarl.lang.core.Skill;
+import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.services.SARLGrammarAccess;
+import io.sarl.lang.util.Utils;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
+import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtend.core.validation.ModifierValidator;
+import org.eclipse.xtend.core.xtend.XtendClass;
+import org.eclipse.xtend.core.xtend.XtendConstructor;
+import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
+import org.eclipse.xtend.core.xtend.XtendFunction;
+import org.eclipse.xtend.core.xtend.XtendInterface;
+import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.JvmAnnotationReference;
+import org.eclipse.xtext.common.types.JvmAnnotationValue;
+import org.eclipse.xtext.common.types.JvmConstructor;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmField;
+import org.eclipse.xtext.common.types.JvmGenericType;
+import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.TypeReferences;
+import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
+import org.eclipse.xtext.validation.ValidationMessageAcceptor;
+import org.eclipse.xtext.xbase.XAbstractFeatureCall;
+import org.eclipse.xtext.xbase.XBlockExpression;
+import org.eclipse.xtext.xbase.XBooleanLiteral;
+import org.eclipse.xtext.xbase.XConstructorCall;
+import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Functions;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.ReassignFirstArgument;
+import org.eclipse.xtext.xbase.typesystem.override.IOverrideCheckResult.OverrideCheckDetails;
+import org.eclipse.xtext.xbase.typesystem.override.IResolvedOperation;
+import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
+import org.eclipse.xtext.xbase.util.XExpressionHelper;
+import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
+
+import com.google.common.base.Objects;
+import com.google.common.base.Supplier;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+import com.google.common.collect.Sets;
+import com.google.inject.Inject;
 
 /**
  * Validator for the SARL elements.
@@ -50,36 +177,64 @@ import org.eclipse.xtext.xbase.lib.ReassignFirstArgument;
  */
 public class SARLJavaValidator extends AbstractSARLJavaValidator {
 
-//	@Inject
-//	private ILogicalContainerProvider logicalContainerProvider;
-//
-//	@Inject
-//	private ActionPrototypeProvider sarlSignatureProvider;
-//
-//	@Inject
-//	private JvmModelAssociator jvmModelAssociator;
-//
-//	@Inject
-//	private SARLGrammarAccess grammarAccess;
-//
-//	@Inject
-//	private SARLCodeGenerator codeGenerator;
-//
-//	@Inject
-//	private ISerializer serializer;
-//
-//	/** Replies the canonical name of the given type.
-//	 *
-//	 * @param typeRef - the type.
-//	 * @return the name of the given type.
-//	 */
-//	protected static String canonicalTypeName(LightweightTypeReference typeRef) {
-//		if (typeRef == null) {
-//			return "void"; //$NON-NLS-1$
-//		}
-//		return typeRef.getHumanReadableName();
-//	}
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator constructorModifierValidator = new SARLModifierValidator(
+			newArrayList(SARLJavaValidator.this.visibilityModifers));
 
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator agentModifierValidator = new SARLModifierValidator(
+			newArrayList("public", "package", "abstract")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator behaviorModifierValidator = new SARLModifierValidator(
+			newArrayList("public", "package", "abstract")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator capacityModifierValidator = new SARLModifierValidator(
+			newArrayList("public", "package")); //$NON-NLS-1$//$NON-NLS-2$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator eventModifierValidator = new SARLModifierValidator(
+			newArrayList("public", "package")); //$NON-NLS-1$//$NON-NLS-2$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator skillModifierValidator = new SARLModifierValidator(
+			newArrayList("public", "package", "abstract")); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+
+	@Inject
+	private SarlJvmModelAssociations associations;
+
+	@Inject
+	private FeatureNameValidator featureNames;
+
+	@Inject
+	private ActionPrototypeProvider sarlActionSignatures;
+
+	@Inject
+	private FeatureCallValidator featureCallValidator;
+
+	@Inject
+	private SARLGrammarAccess grammarAccess;
+
+	@Inject
+	private XExpressionHelper expressionHelper;
+
+	@Inject
+	private TypeReferences typeReferences;
+
+	/** Emit a warning when the "requires" keyword is used.
+	 *
+	 * @param statement
+	 */
+	@Check
+	public void checkRequiredCapacityUse(SarlRequiredCapacity statement) {
+		warning(MessageFormat.format(
+				Messages.SARLJavaValidator_20,
+				this.grammarAccess.getRequiredCapacityAccess().getRequiresKeyword_1().getValue()),
+				statement,
+				null);
+	}
+	
 	/** Check if the SARL libraries are in the classpath.
 	 *
 	 * This function is overriding the function given by the Xtend validator
@@ -98,12 +253,12 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 		String minJdkVersion = sarlLangBundle.getMinimalJdkVersion();
 		String minXtextVersion = sarlLangBundle.getMinimalXtextVersion();
 
-		if (version == null || version.isEmpty() || ModelUtil.compareVersions(version, minJdkVersion) < 0) {
+		if (version == null || version.isEmpty() || Utils.compareVersions(version, minJdkVersion) < 0) {
 			error(
 					MessageFormat.format(Messages.SARLValidator_0, minJdkVersion),
 					sarlScript,
 					null,
-					org.eclipse.xtend.core.validation.IssueCodes.JDK_NOT_ON_CLASSPATH);
+					JDK_NOT_ON_CLASSPATH);
 		}
 
 		if (typeReferences.findDeclaredType(ReassignFirstArgument.class, sarlScript) == null) {
@@ -111,1024 +266,825 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 					MessageFormat.format(Messages.SARLValidator_1, minXtextVersion),
 					sarlScript,
 					null,
-					org.eclipse.xtend.core.validation.IssueCodes.XBASE_LIB_NOT_ON_CLASSPATH);
+					XBASE_LIB_NOT_ON_CLASSPATH);
 		}
 	}
 
-//	/** Check for duplicate top elements.
-//	 *
-//	 * @param script - the SARL script.
-//	 */
-//	@Check(CheckType.NORMAL)
-//	public void checkDuplicateTopElements(SarlScript script) {
-//		QualifiedName packageName;
-//		if (script.getName() != null && !script.getName().isEmpty()) {
-//			packageName = QualifiedName.create(script.getName().split("\\.")); //$NON-NLS-1$
-//		} else {
-//			packageName = QualifiedName.create();
-//		}
-//		Set<QualifiedName> names = CollectionLiterals.newTreeSet((Comparator<QualifiedName>) null);
-//		for (TopElement feature : script.getElements()) {
-//			if (feature instanceof NamedElement) {
-//				NamedElement namedFeature = (NamedElement) feature;
-//				QualifiedName featureName = packageName.append(namedFeature.getName());
-//				// Check in the local file
-//				if (names.contains(featureName)) {
-//					error(
-//							MessageFormat.format(
-//									Messages.SARLValidator_2,
-//									featureName.toString()),
-//									feature,
-//									SarlPackage.Literals.NAMED_ELEMENT__NAME,
-//									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//									IssueCodes.DUPLICATE_TYPE_NAME,
-//									featureName.toString());
-//				} else {
-//					// Check in the rest of the class path
-//					names.add(featureName);
-//				}
-//			}
-//		}
-//	}
-//
-//	private void checkForbiddenFeatureCall(XAbstractFeatureCall expression) {
-//		String id = expression.getFeature().getQualifiedName();
-//		if ("java.lang.System.exit".equals(id)) { //$NON-NLS-1$
-//			error(
-//					Messages.SARLValidator_39,
-//					expression,
-//					null,
-//					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
-//		}
-//	}
-//
-//	/** Check if the call is forbidden.
-//	 * <p>
-//	 * One example of a forbidden feature is {@link System#exit(int)}.
-//	 *
-//	 * @param expression - the expression.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkForbiddenCalls(XMemberFeatureCall expression) {
-//		checkForbiddenFeatureCall(expression);
-//	}
-//
-//	/** Check if the call is forbidden.
-//	 * <p>
-//	 * One example of a forbidden feature is {@link System#exit(int)}.
-//	 *
-//	 * @param expression - the expression.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkForbiddenCalls(XFeatureCall expression) {
-//		checkForbiddenFeatureCall(expression);
-//	}
-//
-//	@Check(CheckType.FAST)
-//	private void checkDiscouragedFeatureCall(XAbstractFeatureCall expression) {
-//		String id = expression.getFeature().getQualifiedName();
-//		if (id != null) {
-//			switch (id) {
-//			case "java.lang.System.err": //$NON-NLS-1$
-//			case "java.lang.System.out": //$NON-NLS-1$
-//			case "java.lang.System.setErr": //$NON-NLS-1$
-//			case "java.lang.System.setOut": //$NON-NLS-1$
-//			case "java.lang.System.console": //$NON-NLS-1$
-//			case "java.lang.System.inheritedChannel": //$NON-NLS-1$
-//				addIssue(
-//						Messages.SARLValidator_40,
-//						expression,
-//						org.eclipse.xtext.xbase.validation.IssueCodes.DISCOURAGED_REFERENCE);
-//				break;
-//			default:
-//				if (id.startsWith("org.eclipse.xtext.xbase.lib.InputOutput")) { //$NON-NLS-1$
-//					addIssue(
-//							Messages.SARLValidator_41,
-//							expression,
-//							org.eclipse.xtext.xbase.validation.IssueCodes.DISCOURAGED_REFERENCE);
-//				}
-//			}
-//		}
-//	}
-//
-//	/** Check if the call is discouraged.
-//	 * <p>
-//	 * One example of a discouraged feature is {@link System#err}.
-//	 *
-//	 * @param expression - the expression.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkDiscouragedCalls(XMemberFeatureCall expression) {
-//		if (!isIgnored(org.eclipse.xtext.xbase.validation.IssueCodes.DISCOURAGED_REFERENCE)) {
-//			checkDiscouragedFeatureCall(expression);
-//		}
-//	}
-//
-//	/** Check if the call is discouraged.
-//	 * <p>
-//	 * One example of a discouraged feature is {@link System#err}.
-//	 *
-//	 * @param expression - the expression.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkDiscouragedCalls(XFeatureCall expression) {
-//		if (!isIgnored(org.eclipse.xtext.xbase.validation.IssueCodes.DISCOURAGED_REFERENCE)) {
-//			checkDiscouragedFeatureCall(expression);
-//		}
-//	}
-//
-//	/** Check if there is no default value specified for the variadic parameter.
-//	 *
-//	 * @param parameterContainer - the container of parameters.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkNoDefaultValueForVariadicParameter(ParameterizedFeature parameterContainer) {
-//		if (parameterContainer.isVarargs()) {
-//			EList<FormalParameter> params = parameterContainer.getParams();
-//			assert (params != null);
-//			FormalParameter lastParam = params.get(params.size() - 1);
-//			if (lastParam.getDefaultValue() != null) {
-//				error(
-//						MessageFormat.format(
-//								Messages.SARLValidator_3,
-//								lastParam.getName()),
-//								parameterContainer,
-//								SarlPackage.Literals.PARAMETERIZED_FEATURE__VARARGS,
-//								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//								IssueCodes.INVALID_USE_OF_VAR_ARG);
-//			}
-//		}
-//	}
-//
-//	private void checkDefaultValueTypeCompatibleWithParameterType(FormalParameter param) {
-//		JvmTypeReference rawType = param.getParameterType();
-//		if (rawType != null) {
-//			LightweightTypeReference toType = toLightweightTypeReference(rawType, true);
-//			LightweightTypeReference fromType = getActualType(param.getDefaultValue());
-//			if (!ModelUtil.canCast(fromType, toType, true, false, true)) {
-//				error(MessageFormat.format(
-//						Messages.SARLValidator_4,
-//						getNameOfTypes(fromType), canonicalName(toType)),
-//						param,
-//						SarlPackage.Literals.FORMAL_PARAMETER__DEFAULT_VALUE,
-//						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//						org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
-//						canonicalName(fromType),
-//						canonicalName(toType));
-//			}
-//		} else {
-//			error(Messages.SARLValidator_5,
-//					param,
-//					SarlPackage.Literals.FORMAL_PARAMETER__DEFAULT_VALUE,
-//					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_USE_OF_TYPE);
-//		}
-//	}
-//
-//	/** Check if the default values are compatible with the corresponding parameter types.
-//	 *
-//	 * @param parameterContainer - the container of parameters.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkDefaultValueTypeCompatibleWithParameterType(ParameterizedFeature parameterContainer) {
-//		for (FormalParameter param : parameterContainer.getParams()) {
-//			if (param.getDefaultValue() != null) {
-//				checkDefaultValueTypeCompatibleWithParameterType(param);
-//			}
-//		}
-//	}
-//
-//	/** Check that a feature is not multi-defined.
-//	 *
-//	 * @param featureContainer - the feature container.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkNoFeatureMultiDefinition(FeatureContainer featureContainer) {
-//		Set<String> localFields = CollectionLiterals.newTreeSet((Comparator<String>) null);
-//		Set<ActionPrototype> localFunctions = CollectionLiterals.newTreeSet((Comparator<ActionPrototype>) null);
-//		QualifiedActionName actionID;
-//		ActionParameterTypes signatureID;
-//		String name;
-//		EStructuralFeature errorStructFeature;
-//		EObject errorFeature;
-//
-//		JvmIdentifiableElement container = null;
-//
-//		for (EObject feature : featureContainer.getFeatures()) {
-//			if (container == null) {
-//				container = this.logicalContainerProvider.getNearestLogicalContainer(feature);
-//			}
-//			if (feature instanceof Action) {
-//				Action action = (Action) feature;
-//				name = action.getName();
-//				actionID = this.sarlSignatureProvider.createQualifiedActionName(container, name);
-//				signatureID = this.sarlSignatureProvider.createParameterTypesFromSarlModel(
-//						action.isVarargs(), action.getParams());
-//				errorFeature = action;
-//				errorStructFeature = SarlPackage.Literals.ACTION__NAME;
-//			} else if (feature instanceof ActionSignature) {
-//				ActionSignature signature = (ActionSignature) feature;
-//				name = signature.getName();
-//				actionID = this.sarlSignatureProvider.createQualifiedActionName(container, name);
-//				signatureID = this.sarlSignatureProvider.createParameterTypesFromSarlModel(
-//						signature.isVarargs(), signature.getParams());
-//				errorFeature = signature;
-//				errorStructFeature = SarlPackage.Literals.ACTION_SIGNATURE__NAME;
-//			} else if (feature instanceof Constructor) {
-//				Constructor constructor = (Constructor) feature;
-//				name = this.grammarAccess.getConstructorAccess().getNewKeyword_1().getValue();
-//				actionID = this.sarlSignatureProvider.createConstructorQualifiedName(container);
-//				signatureID = this.sarlSignatureProvider.createParameterTypesFromSarlModel(
-//						constructor.isVarargs(), constructor.getParams());
-//				errorFeature = constructor;
-//				errorStructFeature = null;
-//			} else {
-//				name = null;
-//				actionID = null;
-//				signatureID = null;
-//				errorFeature = null;
-//				errorStructFeature = null;
-//				if (feature instanceof Attribute) {
-//					Attribute attribute = (Attribute) feature;
-//					if (!localFields.add(attribute.getName())) {
-//						error(
-//								MessageFormat.format(
-//										Messages.SARLValidator_6,
-//										Messages.SARLValidator_7,
-//										featureContainer.getName(),
-//										attribute.getName()),
-//										attribute,
-//										SarlPackage.Literals.ATTRIBUTE__NAME,
-//										ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//										IssueCodes.DUPLICATE_FIELD,
-//										attribute.getName());
-//					}
-//				}
-//			}
-//			if (actionID != null && signatureID != null) {
-//				InferredPrototype sig = this.sarlSignatureProvider.getPrototypes(actionID, signatureID);
-//				if (sig != null) {
-//					ActionParameterTypes key = sig.getFormalParameterTypes();
-//					if (!localFunctions.add(key.toActionPrototype(name))) {
-//						String funcName = name + "(" + sig.toString() + ")";  //$NON-NLS-1$//$NON-NLS-2$
-//						error(
-//								MessageFormat.format(
-//										Messages.SARLValidator_6,
-//										Messages.SARLValidator_8,
-//										featureContainer.getName(),
-//										funcName),
-//										errorFeature,
-//										errorStructFeature,
-//										ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//										IssueCodes.DUPLICATE_METHOD,
-//										funcName);
-//					}
-//				}
-//			}
-//		}
-//	}
-//
-//	/** Check if the name of an action is valid.
-//	 * <p>
-//	 * Name prefixes are reserved by the SARL specification.
-//	 *
-//	 * @param action - the action to check.
-//	 * @see ModelUtil#isHiddenAction(String)
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkActionName(ActionSignature action) {
-//		if (ModelUtil.isHiddenAction(action.getName())) {
-//			String validName1 = ModelUtil.fixHiddenAction(action.getName());
-//			String validName2 = ModelUtil.removeHiddenAction(action.getName());
-//			error(
-//					MessageFormat.format(
-//							Messages.SARLValidator_9,
-//							action.getName()),
-//							action,
-//							SarlPackage.Literals.ACTION_SIGNATURE__NAME,
-//							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//							IssueCodes.INVALID_MEMBER_NAME,
-//							Messages.SARLValidator_8,
-//							action.getName(), validName1, validName2);
-//		}
-//	}
-//
-//	/** Check if the given action has a valid name.
-//	 *
-//	 * @param action - the action to test.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkActionName(Action action) {
-//		if (ModelUtil.isHiddenAction(action.getName())) {
-//			String validName1 = ModelUtil.fixHiddenAction(action.getName());
-//			String validName2 = ModelUtil.removeHiddenAction(action.getName());
-//			error(
-//					MessageFormat.format(
-//							Messages.SARLValidator_9,
-//							action.getName()),
-//							action,
-//							SarlPackage.Literals.ACTION__NAME,
-//							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//							IssueCodes.INVALID_MEMBER_NAME,
-//							Messages.SARLValidator_8,
-//							action.getName(), validName1, validName2);
-//		}
-//	}
-//
-//	/** Check if the given attribute has a valid name.
-//	 *
-//	 * @param attribute - the attribute to check.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkAttributeName(Attribute attribute) {
-//		if (ModelUtil.isHiddenAttribute(attribute.getName())) {
-//			String validName = ModelUtil.fixHiddenAttribute(attribute.getName());
-//			error(
-//					MessageFormat.format(
-//							Messages.SARLValidator_10,
-//							attribute.getName()),
-//							attribute,
-//							SarlPackage.Literals.ATTRIBUTE__NAME,
-//							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//							IssueCodes.INVALID_MEMBER_NAME,
-//							Messages.SARLValidator_11,
-//							attribute.getName(), validName);
-//		}
-//	}
-//
-//	/** Replies the JVM generic type for the given element.
-//	 *
-//	 * @param element - the element from which the JvmGenericType must be retreived.
-//	 * @return the generic type of the given element.
-//	 */
-//	protected JvmGenericType getJvmGenericType(EObject element) {
-//		if (element instanceof JvmGenericType) {
-//			return (JvmGenericType) element;
-//		}
-//		for (EObject obj : getServices().getJvmModelAssociations().getJvmElements(element)) {
-//			if (obj instanceof JvmGenericType) {
-//				return (JvmGenericType) obj;
-//			}
-//		}
-//		return null;
-//	}
-//
-//	/** Check of the final fields are initialized for the given event.
-//	 *
-//	 * @param event - the event to check.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkFinalFieldInitialization(io.sarl.lang.sarl.Event event) {
-//		JvmGenericType type = getJvmGenericType(event);
-//		if (type != null) {
-//			checkFinalFieldInitialization(type);
-//		}
-//	}
-//
-//	/** Check of the final fields are initialized for the given agent.
-//	 *
-//	 * @param agent - the agent to check.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkFinalFieldInitialization(Agent agent) {
-//		JvmGenericType type = getJvmGenericType(agent);
-//		if (type != null) {
-//			checkFinalFieldInitialization(type);
-//		}
-//	}
-//
-//	/** Check of the final fields are initialized for the given behavior.
-//	 *
-//	 * @param behavior - the behavior to check.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkFinalFieldInitialization(Behavior behavior) {
-//		JvmGenericType type = getJvmGenericType(behavior);
-//		if (type != null) {
-//			checkFinalFieldInitialization(type);
-//		}
-//	}
-//
-//	/** Check of the final fields are initialized for the given skill.
-//	 *
-//	 * @param skill - the skill to check.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkFinalFieldInitialization(Skill skill) {
-//		JvmGenericType type = getJvmGenericType(skill);
-//		if (type != null) {
-//			checkFinalFieldInitialization(type);
-//		}
-//	}
-//
-//	/** {@inheritDoc}
-//	 */
-//	@Override
-//	protected void reportUninitializedField(JvmField field) {
-//		EObject sarlElement = getServices().getJvmModelAssociations().getPrimarySourceElement(field);
-//		error(
-//				MessageFormat.format(
-//						Messages.SARLValidator_12,
-//						field.getSimpleName()),
-//						sarlElement,
-//						SarlPackage.Literals.ATTRIBUTE__NAME,
-//						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//						org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_INITIALIZATION);
-//	}
-//
-//	/** {@inheritDoc}
-//	 */
-//	@Override
-//	protected void reportUninitializedField(JvmField field, JvmConstructor constructor) {
-//		error(
-//				MessageFormat.format(
-//						Messages.SARLValidator_38,
-//						field.getSimpleName(),
-//						constructor.toString()),
-//						constructor,
-//						null,
-//						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//						org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_INITIALIZATION);
-//	}
-//
-//	private boolean checkRedundantInterface(
-//			InheritingElement element,
-//			EReference structuralElement,
-//			LightweightTypeReference lightweightInterfaceReference,
-//			List<LightweightTypeReference> knownInterfaces) {
-//		int index = 0;
-//		for (LightweightTypeReference previousInterface : knownInterfaces) {
-//			if (memberOfTypeHierarchy(previousInterface, lightweightInterfaceReference)) {
-//				error(
-//						MessageFormat.format(
-//								Messages.SARLValidator_13,
-//								canonicalName(lightweightInterfaceReference)),
-//								element,
-//								structuralElement,
-//								// The index of the element to highlight in the super-types
-//								knownInterfaces.size(),
-//								IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
-//								canonicalName(lightweightInterfaceReference),
-//						"pre"); //$NON-NLS-1$
-//				return true;
-//			} else if (memberOfTypeHierarchy(lightweightInterfaceReference, previousInterface)) {
-//				error(
-//						MessageFormat.format(
-//								Messages.SARLValidator_13,
-//								canonicalName(previousInterface)),
-//								element,
-//								structuralElement,
-//								index,
-//								IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
-//								canonicalName(previousInterface),
-//						"post"); //$NON-NLS-1$
-//			}
-//			++index;
-//		}
-//		return false;
-//	}
-//
-//	private void checkRedundantInterfaces(
-//			InheritingElement element,
-//			EReference structuralElement,
-//			Iterable<? extends JvmTypeReference> interfaces,
-//			Iterable<? extends JvmTypeReference> superTypes) {
-//		List<LightweightTypeReference> knownInterfaces = CollectionLiterals.newArrayList();
-//		for (JvmTypeReference interfaceRef : interfaces) {
-//			LightweightTypeReference lightweightInterfaceReference = toLightweightTypeReference(interfaceRef);
-//			// Check the interface against the other interfaces
-//			if (!checkRedundantInterface(
-//					element, structuralElement,
-//					lightweightInterfaceReference,
-//					knownInterfaces)) {
-//				// Check the interface against the super-types
-//				if (superTypes != null && !isIgnored(IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION)) {
-//					for (JvmTypeReference superType : superTypes) {
-//						LightweightTypeReference lightweightSuperType = toLightweightTypeReference(superType);
-//						if (memberOfTypeHierarchy(lightweightSuperType, lightweightInterfaceReference)) {
-//							addIssue(
-//									MessageFormat.format(
-//											Messages.SARLValidator_14,
-//											canonicalName(lightweightInterfaceReference),
-//											canonicalName(lightweightSuperType)),
-//											element,
-//											structuralElement,
-//											// The index of the element to highlight in the super-types
-//											knownInterfaces.size(),
-//											IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
-//											canonicalName(lightweightInterfaceReference),
-//									"unknow"); //$NON-NLS-1$
-//						}
-//					}
-//				}
-//			}
-//			// Prepare next loop
-//			knownInterfaces.add(lightweightInterfaceReference);
-//		}
-//	}
-//
-//	/** Check the inherited features.
-//	 *
-//	 * @param element - the child element.
-//	 */
-//	@SuppressWarnings("unchecked")
-//	@Check(CheckType.FAST)
-//	public void checkInheritedFeatures(InheritingElement element) {
-//		JvmGenericType jvmElement = getJvmGenericType(element);
-//		if (jvmElement != null) {
-//			Map<ActionPrototype, JvmOperation> finalOperations =
-//					CollectionLiterals.newTreeMap((Comparator<ActionPrototype>) null);
-//			Map<ActionPrototype, JvmOperation> overridableOperations =
-//					CollectionLiterals.newTreeMap((Comparator<ActionPrototype>) null);
-//			Map<String, JvmField> inheritedFields =
-//					CollectionLiterals.newTreeMap((Comparator<String>) null);
-//			Map<ActionPrototype, JvmOperation> operationsToImplement =
-//					CollectionLiterals.newTreeMap((Comparator<ActionPrototype>) null);
-//
-//			ModelUtil.populateInheritanceContext(
-//					jvmElement,
-//					finalOperations, overridableOperations,
-//					inheritedFields, operationsToImplement,
-//					null, this.sarlSignatureProvider);
-//
-//			if (jvmElement.isInterface()) {
-//				checkRedundantInterfaces(
-//						element, SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
-//						element.getSuperTypes(),
-//						null);
-//			} else if (element instanceof ImplementingElement) {
-//				ImplementingElement iElement = (ImplementingElement) element;
-//				checkRedundantInterfaces(
-//						iElement,
-//						SarlPackage.Literals.IMPLEMENTING_ELEMENT__IMPLEMENTED_TYPES,
-//						iElement.getImplementedTypes(),
-//						iElement.getSuperTypes());
-//			}
-//
-//			for (EObject feature : element.getFeatures()) {
-//				if (feature instanceof Attribute) {
-//					Attribute attribute = (Attribute) feature;
-//					if (!isIgnored(org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING)) {
-//						if (!ModelUtil.isHiddenAttribute(attribute.getName())) {
-//							JvmField inheritedField = inheritedFields.get(attribute.getName());
-//							if (inheritedField != null) {
-//								int nameIndex = 0;
-//								String newName = attribute.getName() + nameIndex;
-//								while (inheritedFields.containsKey(newName)) {
-//									++nameIndex;
-//									newName = attribute.getName() + nameIndex;
-//								}
-//								addIssue(
-//										MessageFormat.format(
-//												Messages.SARLValidator_15,
-//												attribute.getName(),
-//												jvmElement.getQualifiedName(),
-//												inheritedField.getQualifiedName()),
-//												feature,
-//												SarlPackage.Literals.ATTRIBUTE__NAME,
-//												ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//												org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
-//												attribute.getName(),
-//												newName);
-//							}
-//						}
-//					}
-//				} else if (feature instanceof Action) {
-//					Action action = (Action) feature;
-//					checkInheritedActionElement(
-//							finalOperations,
-//							overridableOperations,
-//							operationsToImplement,
-//							action,
-//							action.getName(),
-//							action,
-//							action.getType(),
-//							SarlPackage.Literals.ACTION__NAME,
-//							SarlPackage.Literals.ACTION__TYPE);
-//				} else if (feature instanceof ActionSignature) {
-//					ActionSignature signature = (ActionSignature) feature;
-//					checkInheritedActionElement(
-//							finalOperations,
-//							overridableOperations,
-//							operationsToImplement,
-//							signature,
-//							signature.getName(),
-//							signature,
-//							signature.getType(),
-//							SarlPackage.Literals.ACTION_SIGNATURE__NAME,
-//							SarlPackage.Literals.ACTION_SIGNATURE__TYPE);
-//				}
-//			}
-//
-//			if (!jvmElement.isAbstract() && !jvmElement.isInterface() && !operationsToImplement.isEmpty()) {
-//
-//				// The missed function may be generated on the Java side
-//				// (see generateMissedFunction function in SARLJvmModelInferrer).
-//				for (JvmOperation javaOp : jvmElement.getDeclaredOperations()) {
-//					ActionParameterTypes sig = this.sarlSignatureProvider.createParameterTypesFromJvmModel(
-//							javaOp.isVarArgs(), javaOp.getParameters());
-//					ActionPrototype actionKey = this.sarlSignatureProvider.createActionPrototype(javaOp.getSimpleName(), sig);
-//					operationsToImplement.remove(actionKey);
-//				}
-//
-//				// Now, we are sure that there is missed operations
-//				if (!operationsToImplement.isEmpty()) {
-//					ImportManager importManager = new ImportManager();
-//					List<String> data = CollectionLiterals.newLinkedList();
-//					Iterator<JvmOperation> iterator = operationsToImplement.values().iterator();
-//					while (iterator.hasNext()) {
-//						JvmOperation value = iterator.next();
-//						if (!ModelUtil.hasAnnotation(value, Generated.class)) {
-//							// Get quick fix information
-//							ActionSignature signature = this.codeGenerator.createActionSignature(value, importManager);
-//							String sarlCode = ModelUtil.getActionSignatureString(signature, this.serializer,
-//									this.grammarAccess, importManager);
-//							// Sometimes, the serializer added tabular and new line characters to the sarlCode
-//							// due to the formating rules.
-//							sarlCode = sarlCode.trim();
-//							// Add the data for the quick fix
-//							data.add(sarlCode);
-//							JvmTypeReference returnType = value.getReturnType();
-//							LightweightTypeReference lwRef;
-//							if (returnType == null) {
-//								lwRef = null;
-//							} else {
-//								lwRef = toLightweightTypeReference(returnType);
-//							}
-//							data.add(ModelUtil.getDefaultValueForType(lwRef));
-//							// Generate a simplified name
-//							String simplifiedName =
-//									sarlCode.replaceFirst(
-//											"^\\s*" //$NON-NLS-1$
-//											+ Pattern.quote(
-//													this.grammarAccess.getActionSignatureAccess().getDefKeyword_1().getValue())
-//											+ "\\s+", //$NON-NLS-1$
-//											""); //$NON-NLS-1$
-//							// Generate the error
-//							if (iterator.hasNext()) {
-//								// No need to quick fix
-//								error(
-//										MessageFormat.format(
-//												Messages.SARLValidator_18,
-//												simplifiedName),
-//										element,
-//										SarlPackage.Literals.NAMED_ELEMENT__NAME,
-//										ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//										IssueCodes.MISSING_METHOD_IMPLEMENTATION);
-//							} else {
-//								// Finalize the data collection to send to the quick fix module
-//								data.add(0, Strings.nullToEmpty(null));
-//								data.addAll(0, importManager.getImports());
-//								//
-//								String[] dataArray = new String[data.size()];
-//								data.toArray(dataArray);
-//								error(
-//										MessageFormat.format(
-//												Messages.SARLValidator_18,
-//												simplifiedName),
-//										element,
-//										SarlPackage.Literals.NAMED_ELEMENT__NAME,
-//										ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//										IssueCodes.MISSING_METHOD_IMPLEMENTATION,
-//										// Provides the prototypes for the quick fixes
-//										dataArray);
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
-//	}
-//
-//	private void checkInheritedActionElement(
-//			Map<ActionPrototype, JvmOperation> finalOperations,
-//			Map<ActionPrototype, JvmOperation> overridableOperations,
-//			Map<ActionPrototype, JvmOperation> operationsToImplement,
-//			EObject referenceObject,
-//			String name,
-//			ParameterizedFeature paramOwner,
-//			JvmTypeReference type,
-//			EAttribute nameAttribute,
-//			EReference typeAttribute) {
-//		ActionParameterTypes sig = this.sarlSignatureProvider.createParameterTypesFromSarlModel(
-//				paramOwner.isVarargs(), paramOwner.getParams());
-//		ActionPrototype actionKey = this.sarlSignatureProvider.createActionPrototype(name, sig);
-//		if (finalOperations.containsKey(actionKey)) {
-//			error(
-//					MessageFormat.format(
-//							Messages.SARLValidator_16,
-//							actionKey.toString()),
-//							referenceObject,
-//							nameAttribute,
-//							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//							IssueCodes.OVERRIDDEN_FINAL_OPERATION,
-//							actionKey.toString());
-//		} else {
-//			JvmOperation implementableFunction = operationsToImplement.remove(actionKey);
-//			if (implementableFunction != null) {
-//				LightweightTypeReference currentReturnType = (type == null) ? null : toLightweightTypeReference(type);
-//				JvmTypeReference typeRef = implementableFunction.getReturnType();
-//				LightweightTypeReference inheritedReturnType = (typeRef == null) ? null : toLightweightTypeReference(typeRef);
-//				if (!ModelUtil.canCast(currentReturnType, inheritedReturnType, false, true, true)) {
-//					assert (inheritedReturnType != null);
-//					error(
-//							MessageFormat.format(
-//									Messages.SARLValidator_17,
-//									canonicalTypeName(currentReturnType),
-//									canonicalTypeName(inheritedReturnType),
-//									actionKey.toString()),
-//									referenceObject,
-//									typeAttribute,
-//									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//									org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-//									canonicalTypeName(currentReturnType),
-//									inheritedReturnType.getIdentifier());
-//				}
-//			} else {
-//				JvmOperation superOperation = overridableOperations.get(actionKey);
-//				if (superOperation != null) {
-//					LightweightTypeReference currentReturnType = (type == null) ? null : toLightweightTypeReference(type);
-//					JvmTypeReference typeRef = superOperation.getReturnType();
-//					LightweightTypeReference inheritedReturnType = (typeRef == null) ? null : toLightweightTypeReference(typeRef);
-//					if (!ModelUtil.canCast(currentReturnType, inheritedReturnType, false, true, true)) {
-//						assert (inheritedReturnType != null);
-//						error(
-//								MessageFormat.format(
-//										Messages.SARLValidator_17,
-//										canonicalTypeName(currentReturnType),
-//										canonicalTypeName(inheritedReturnType),
-//										actionKey.toString()),
-//										referenceObject,
-//										typeAttribute,
-//										ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//										org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-//										canonicalTypeName(currentReturnType),
-//										inheritedReturnType.getIdentifier());
-//					}
-//				}
-//			}
-//		}
-//	}
-//
-//	@SuppressWarnings("unchecked")
-//	private void checkImplicitConstructorCall(FeatureContainer container, ActionParameterTypes[] defaultSignatures) {
-//		JvmGenericType jvmElement = getJvmGenericType(container);
-//		if (jvmElement != null) {
-//			Map<ActionParameterTypes, JvmConstructor> superConstructors =
-//					CollectionLiterals.newTreeMap((Comparator<ActionParameterTypes>) null);
-//			JvmTypeReference typeRef = jvmElement.getExtendedClass();
-//			JvmType supertype = (typeRef == null) ? null : typeRef.getType();
-//			if (supertype != null) {
-//				JvmGenericType jvmSuperElement = getJvmGenericType(supertype);
-//				if (jvmSuperElement != null) {
-//					for (JvmConstructor superConstructor : jvmSuperElement.getDeclaredConstructors()) {
-//						ActionParameterTypes sig = this.sarlSignatureProvider.createParameterTypesFromJvmModel(
-//								superConstructor.isVarArgs(), superConstructor.getParameters());
-//						superConstructors.put(sig, superConstructor);
-//					}
-//				}
-//			}
-//
-//			ActionParameterTypes voidKey = this.sarlSignatureProvider.createParameterTypesForVoid();
-//			boolean hasDeclaredConstructor = false;
-//
-//			for (EObject feature : container.getFeatures()) {
-//				if (feature instanceof Constructor) {
-//					Constructor constructor = (Constructor) feature;
-//					hasDeclaredConstructor = true;
-//					boolean invokeDefaultConstructor = true;
-//					XExpression body = constructor.getBody();
-//					if (body instanceof XBlockExpression) {
-//						XBlockExpression block = (XBlockExpression) body;
-//						if (!block.getExpressions().isEmpty()) {
-//							XExpression firstStatement = block.getExpressions().get(0);
-//							if (firstStatement instanceof XConstructorCall) {
-//								invokeDefaultConstructor = false;
-//							} else if (firstStatement instanceof XFeatureCall) {
-//								JvmIdentifiableElement calledFeature = ((XFeatureCall) firstStatement).getFeature();
-//								if (calledFeature instanceof JvmConstructor) {
-//									invokeDefaultConstructor = false;
-//								}
-//							}
-//						}
-//					} else if (body instanceof XConstructorCall) {
-//						invokeDefaultConstructor = false;
-//					} else if (body instanceof XFeatureCall) {
-//						JvmIdentifiableElement calledFeature = ((XFeatureCall) body).getFeature();
-//						if (calledFeature instanceof JvmConstructor) {
-//							invokeDefaultConstructor = false;
-//						}
-//					}
-//					if (invokeDefaultConstructor && !superConstructors.containsKey(voidKey)) {
-//						error(
-//								Messages.SARLValidator_19,
-//								feature,
-//								SarlPackage.Literals.CONSTRUCTOR__BODY,
-//								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//								IssueCodes.MISSING_CONSTRUCTOR);
-//					}
-//				}
-//			}
-//
-//			if (!hasDeclaredConstructor) {
-//				for (ActionParameterTypes defaultSignature : defaultSignatures) {
-//					if (!superConstructors.containsKey(defaultSignature)) {
-//						assert (supertype != null);
-//						error(
-//								MessageFormat.format(
-//										Messages.SARLValidator_20,
-//										this.sarlSignatureProvider.createActionPrototype(
-//												supertype.getSimpleName(),
-//												defaultSignature)),
-//												container,
-//												SarlPackage.Literals.NAMED_ELEMENT__NAME,
-//												ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//												IssueCodes.MISSING_CONSTRUCTOR);
-//					}
-//				}
-//			}
-//
-//		}
-//	}
-//
-//	/** Check the implicit call to the super constructor.
-//	 *
-//	 * @param event - the child type.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkImplicitConstructorCall(io.sarl.lang.sarl.Event event) {
-//		checkImplicitConstructorCall(event, new ActionParameterTypes[] {
-//				this.sarlSignatureProvider.createParameterTypesForVoid(),
-//				this.sarlSignatureProvider.createParameterTypesFromString("io.sarl.lang.core.Address"), //$NON-NLS-1$
-//		});
-//	}
-//
-//	/** Check the implicit call to the super constructor.
-//	 *
-//	 * @param behavior - the child type.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkImplicitConstructorCall(Behavior behavior) {
-//		checkImplicitConstructorCall(behavior, new ActionParameterTypes[] {
-//				this.sarlSignatureProvider.createParameterTypesFromString("io.sarl.lang.core.Agent"), //$NON-NLS-1$
-//		});
-//	}
-//
-//	/** Check the type of the behavior unit's guard.
-//	 *
-//	 * @param behaviorUnit - the behavior unit.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkBehaviorUnitGuardType(BehaviorUnit behaviorUnit) {
-//		XExpression guard = behaviorUnit.getGuard();
-//		if (guard != null) {
-//			if (guard instanceof XBooleanLiteral) {
-//				XBooleanLiteral bLiteral = (XBooleanLiteral) guard;
-//				if (bLiteral.isIsTrue()) {
-//					if (!isIgnored(IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION)) {
-//						addIssue(Messages.SARLValidator_21,
-//								bLiteral,
-//								null,
-//								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//								IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION);
-//					}
-//				} else if (!isIgnored(IssueCodes.UNREACHABLE_BEHAVIOR_UNIT)) {
-//					addIssue(Messages.SARLValidator_22,
-//							behaviorUnit,
-//							null,
-//							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//							IssueCodes.UNREACHABLE_BEHAVIOR_UNIT,
-//							behaviorUnit.getName().getSimpleName());
-//				}
-//				return;
-//			}
-//
-//			LightweightTypeReference fromType = getActualType(guard);
-//			if (!fromType.isAssignableFrom(Boolean.TYPE)) {
-//				error(MessageFormat.format(Messages.SARLValidator_23,
-//						getNameOfTypes(fromType), boolean.class.getName()),
-//						behaviorUnit.getGuard(),
-//						null,
-//						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//						org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES);
-//			}
-//		}
-//	}
-//
-//	/** Check the type of the capacity uses.
-//	 *
-//	 * @param uses - the capacity uses.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkCapacityTypeForUses(CapacityUses uses) {
-//		for (JvmParameterizedTypeReference usedType : uses.getCapacitiesUsed()) {
-//			LightweightTypeReference ref = toLightweightTypeReference(usedType);
-//			if (ref != null && !ref.isSubtypeOf(Capacity.class)) {
-//				error(
-//						MessageFormat.format(
-//								Messages.SARLValidator_24,
-//								usedType.getQualifiedName(),
-//								Messages.SARLValidator_25,
-//								this.grammarAccess.getCapacityUsesAccess().getUsesKeyword_1().getValue()),
-//								usedType,
-//								null,
-//								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//								IssueCodes.INVALID_CAPACITY_TYPE,
-//								usedType.getSimpleName());
-//			}
-//		}
-//	}
-//
-//	/** Check the types of the "requires" statement.
-//	 *
-//	 * @param requires - the "requires" statement.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkCapacityTypeForRequires(RequiredCapacity requires) {
-//		for (JvmParameterizedTypeReference requiredType : requires.getRequiredCapacities()) {
-//			LightweightTypeReference ref = toLightweightTypeReference(requiredType);
-//			if (ref != null && !ref.isSubtypeOf(Capacity.class)) {
-//				error(
-//						MessageFormat.format(
-//								Messages.SARLValidator_24,
-//								requiredType.getQualifiedName(),
-//								Messages.SARLValidator_25,
-//								this.grammarAccess.getRequiredCapacityAccess().getRequiresKeyword_1().getValue()),
-//								requiredType,
-//								null,
-//								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//								IssueCodes.INVALID_CAPACITY_TYPE,
-//								requiredType.getSimpleName());
-//			}
-//		}
-//	}
-//
-//	/** Check the types of the parameters of the "fires" statement.
-//	 *
-//	 * @param action - the signature that contains the "fires" statement.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkActionSignatureFires(ActionSignature action) {
-//		for (JvmParameterizedTypeReference event : action.getFiredEvents()) {
-//			LightweightTypeReference ref = toLightweightTypeReference(event);
-//			if (ref != null && !ref.isSubtypeOf(Event.class)) {
-//				error(
-//						MessageFormat.format(
-//								Messages.SARLValidator_24,
-//								event.getQualifiedName(),
-//								Messages.SARLValidator_26,
-//								this.grammarAccess.getActionSignatureAccess().getFiresKeyword_5_0().getValue()),
-//								event,
-//								null,
-//								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//								IssueCodes.INVALID_FIRING_EVENT_TYPE,
-//								event.getSimpleName());
-//			}
-//		}
-//	}
-//
-//	/** Check the types of the parameters of the "fires" statement.
-//	 *
-//	 * @param action - the signature that contains the "fires" statement.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkActionFires(Action action) {
-//		for (JvmParameterizedTypeReference event : action.getFiredEvents()) {
-//			LightweightTypeReference ref = toLightweightTypeReference(event);
-//			if (ref != null && !ref.isSubtypeOf(Event.class)) {
-//				error(
-//						MessageFormat.format(
-//								Messages.SARLValidator_24,
-//								event.getQualifiedName(),
-//								Messages.SARLValidator_26,
-//								this.grammarAccess.getActionSignatureAccess().getFiresKeyword_5_0().getValue()),
-//								event,
-//								null,
-//								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//								IssueCodes.INVALID_FIRING_EVENT_TYPE,
-//								event.getSimpleName());
-//			}
-//		}
-//	}
+	@Check
+	@Override
+	protected void checkModifiers(XtendConstructor constructor) {
+		XtendTypeDeclaration declaringType = constructor.getDeclaringType();
+		if (declaringType != null) {
+			if (declaringType instanceof SarlEvent
+					|| declaringType instanceof SarlAgent
+					|| declaringType instanceof SarlSkill
+					|| declaringType instanceof SarlBehavior) {
+				String typeName = ((XtendTypeDeclaration) constructor.eContainer()).getName();
+				this.constructorModifierValidator.checkModifiers(constructor,
+						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+			} else {
+				super.checkModifiers(constructor);
+			}
+		}
+	}
+
+	/** Check if the modifiers for the SARL events.
+	 * 
+	 * @param event the event.
+	 */
+	@Check
+	protected void checkModifiers(SarlEvent event) {
+		EObject eContainer = event.eContainer();
+		if (eContainer instanceof XtendFile) {
+			this.eventModifierValidator.checkModifiers(event,
+					MessageFormat.format(Messages.SARLJavaValidator_1, event.getName()));
+		} else {
+			error(Messages.SARLJavaValidator_2,
+					event,
+					null,
+					INVALID_NESTED_DEFINITION);
+		}
+	}
+
+	/** Check if the modifiers for the SARL agents.
+	 * 
+	 * @param agent the agent.
+	 */
+	@Check
+	protected void checkModifiers(SarlAgent agent) {
+		EObject eContainer = agent.eContainer();
+		if (eContainer instanceof XtendFile) {
+			this.agentModifierValidator.checkModifiers(agent,
+					MessageFormat.format(Messages.SARLJavaValidator_3, agent.getName()));
+		} else {
+			error(Messages.SARLJavaValidator_4,
+					agent,
+					null,
+					INVALID_NESTED_DEFINITION);
+		}
+	}
+
+	/** Check if the modifiers for the SARL behaviors.
+	 * 
+	 * @param behavior the behavior.
+	 */
+	@Check
+	protected void checkModifiers(SarlBehavior behavior) {
+		EObject eContainer = behavior.eContainer();
+		if (eContainer instanceof XtendFile) {
+			this.behaviorModifierValidator.checkModifiers(behavior,
+					MessageFormat.format(Messages.SARLJavaValidator_5, behavior.getName()));
+		} else {
+			error(Messages.SARLJavaValidator_6,
+					behavior,
+					null,
+					INVALID_NESTED_DEFINITION);
+		}
+	}
+
+	/** Check if the modifiers for the SARL capacities.
+	 * 
+	 * @param capacity the capacity.
+	 */
+	@Check
+	protected void checkModifiers(SarlCapacity capacity) {
+		EObject eContainer = capacity.eContainer();
+		if (eContainer instanceof XtendFile) {
+			this.capacityModifierValidator.checkModifiers(capacity,
+					MessageFormat.format(Messages.SARLJavaValidator_7, capacity.getName()));
+		} else {
+			error(Messages.SARLJavaValidator_8,
+					capacity,
+					null,
+					INVALID_NESTED_DEFINITION);
+		}
+	}
+
+	/** Check if the modifiers for the SARL skills.
+	 * 
+	 * @param skill the skill.
+	 */
+	@Check
+	protected void checkModifiers(SarlSkill skill) {
+		EObject eContainer = skill.eContainer();
+		if (eContainer instanceof XtendFile) {
+			this.skillModifierValidator.checkModifiers(skill,
+					MessageFormat.format(Messages.SARLJavaValidator_9, skill.getName()));
+		} else {
+			error(Messages.SARLJavaValidator_10,
+					skill,
+					null,
+					INVALID_NESTED_DEFINITION);
+		}
+	}
+
+	/** Check if all the fields are initialized in a SARL event.
+	 *
+	 * @param event the event.
+	 */
+	@Check
+	public void checkFinalFieldInitialization(SarlEvent event) {
+		JvmGenericType inferredType = this.associations.getInferredType(event);
+		if (inferredType != null) {
+			super.checkFinalFieldInitialization(inferredType);
+		}
+	}
+
+	/** Check if all the fields are initialized in a SARL behavior.
+	 *
+	 * @param behavior the behavior.
+	 */
+	@Check
+	public void checkFinalFieldInitialization(SarlBehavior behavior) {
+		JvmGenericType inferredType = this.associations.getInferredType(behavior);
+		if (inferredType != null) {
+			super.checkFinalFieldInitialization(inferredType);
+		}
+	}
+
+	/** Check if all the fields are initialized in a SARL skill.
+	 *
+	 * @param skill the skill.
+	 */
+	@Check
+	public void checkFinalFieldInitialization(SarlSkill skill) {
+		JvmGenericType inferredType = this.associations.getInferredType(skill);
+		if (inferredType != null) {
+			super.checkFinalFieldInitialization(inferredType);
+		}
+	}
+
+	/** Check if all the fields are initialized in a SARL agent.
+	 *
+	 * @param agent the agent.
+	 */
+	@Check
+	public void checkFinalFieldInitialization(SarlAgent agent) {
+		JvmGenericType inferredType = this.associations.getInferredType(agent);
+		if (inferredType != null) {
+			super.checkFinalFieldInitialization(inferredType);
+		}
+	}
+
+	/** Check the super constructors.
+	 *
+	 * @param container - the container.
+	 * @param feature - the syntactic feature related to the supertypes.
+	 * @param defaultSignatures - the signatures of the default constructors for the given container. 
+	 */
+	@SuppressWarnings("unchecked")
+	protected void checkSuperConstructor(
+			XtendTypeDeclaration container,
+			EStructuralFeature feature,
+			Collection<ActionParameterTypes> defaultSignatures) {
+		JvmDeclaredType jvmElement = this.associations.getInferredType(container);
+		if (jvmElement != null) {
+			Map<ActionParameterTypes, JvmConstructor> superConstructors =
+					CollectionLiterals.newTreeMap((Comparator<ActionParameterTypes>) null);
+			JvmTypeReference typeRef = jvmElement.getExtendedClass();
+			JvmType supertype = (typeRef == null) ? null : typeRef.getType();
+			if (supertype instanceof JvmGenericType) {
+				JvmGenericType jvmSuperElement = (JvmGenericType) supertype;
+				for (JvmConstructor superConstructor : jvmSuperElement.getDeclaredConstructors()) {
+					ActionParameterTypes sig = this.sarlActionSignatures.createParameterTypesFromJvmModel(
+							superConstructor.isVarArgs(), superConstructor.getParameters());
+					superConstructors.put(sig, superConstructor);
+				}
+			}
+
+			ActionParameterTypes voidKey = this.sarlActionSignatures.createParameterTypesForVoid();
+			boolean hasDeclaredConstructor = false;
+
+			for (XtendMember member : container.getMembers()) {
+				if (member instanceof XtendConstructor) {
+					XtendConstructor constructor = (XtendConstructor) member;
+					hasDeclaredConstructor = true;
+					boolean invokeDefaultConstructor = true;
+					XExpression body = constructor.getExpression();
+					if (body instanceof XBlockExpression) {
+						XBlockExpression block = (XBlockExpression) body;
+						if (!block.getExpressions().isEmpty()) {
+							XExpression firstStatement = block.getExpressions().get(0);
+							if (firstStatement instanceof XConstructorCall || isDelegateConstructorCall(firstStatement)) {
+								invokeDefaultConstructor = false;
+							}
+						}
+					} else if (body instanceof XConstructorCall || isDelegateConstructorCall(body)) {
+						invokeDefaultConstructor = false;
+					}
+					if (invokeDefaultConstructor && !superConstructors.containsKey(voidKey)) {
+						List<String> issueData = newArrayList();
+						for (ActionParameterTypes defaultSignature : defaultSignatures) {
+							issueData.add(defaultSignature.toString());
+						}
+						error(Messages.SARLValidator_19,
+								member,
+								null,
+								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+								MUST_INVOKE_SUPER_CONSTRUCTOR,
+								toArray(issueData, String.class));
+					}
+				}
+			}
+
+			if (!hasDeclaredConstructor) {
+				for (ActionParameterTypes defaultSignature : defaultSignatures) {
+					if (!superConstructors.containsKey(defaultSignature)) {
+						List<String> issueData = newArrayList();
+						for(JvmConstructor superConstructor : superConstructors.values()) {
+							issueData.add(EcoreUtil.getURI(superConstructor).toString());
+							issueData.add(doGetReadableSignature(container.getName(), superConstructor.getParameters()));
+						}
+						error(Messages.SARLValidator_19,
+								container, feature, MISSING_CONSTRUCTOR, toArray(issueData, String.class));
+					}
+				}
+			}
+		}
+	}
+
+	private Collection<ActionParameterTypes> doGetConstructorParameterTypes(Class<?> type, Notifier context) {
+		Collection<ActionParameterTypes> parameters = new ArrayList<>();
+		JvmTypeReference typeReference = this.typeReferences.getTypeForName(type, context);
+		JvmType jvmType = typeReference.getType();
+		if (jvmType instanceof JvmDeclaredType) {
+			JvmDeclaredType declaredType = (JvmDeclaredType) jvmType;
+			for (JvmConstructor constructor : declaredType.getDeclaredConstructors()) {
+				ActionParameterTypes types = this.sarlActionSignatures.createParameterTypesFromJvmModel(
+						constructor.isVarArgs(), constructor.getParameters());
+				if (types != null) {
+					parameters.add(types);
+				}
+			}
+		}
+		if (parameters.isEmpty()) {
+			parameters.add(this.sarlActionSignatures.createParameterTypesForVoid());
+		}
+		return parameters;
+	}
+
+	/** Check if the super default constructor is correctly invoked.
+	 *
+	 * @param xtendClass the Xtend element.
+	 */
+	@Check
+	@Override
+	public void checkDefaultSuperConstructor(XtendClass xtendClass) {
+		checkSuperConstructor(
+				xtendClass,
+				XTEND_TYPE_DECLARATION__NAME,
+				doGetConstructorParameterTypes(Object.class, xtendClass));
+	}
+
+	/** Check if the super default constructor is correctly invoked.
+	 *
+	 * @param agent the SARL element.
+	 */
+	@Check
+	public void checkSuperConstructor(SarlAgent agent) {
+		checkSuperConstructor(
+				agent,
+				XTEND_TYPE_DECLARATION__NAME,
+				doGetConstructorParameterTypes(Agent.class, agent));
+	}
+
+	/** Check if the super default constructor is correctly invoked.
+	 *
+	 * @param behavior the SARL element.
+	 */
+	@Check
+	public void checkSuperConstructor(SarlBehavior behavior) {
+		checkSuperConstructor(
+				behavior,
+				XTEND_TYPE_DECLARATION__NAME,
+				doGetConstructorParameterTypes(Behavior.class, behavior));
+	}
+
+	/** Check if the super default constructor is correctly invoked.
+	 *
+	 * @param skill the SARL element.
+	 */
+	@Check
+	public void checkSuperConstructor(SarlSkill skill) {
+		checkSuperConstructor(
+				skill,
+				XTEND_TYPE_DECLARATION__NAME,
+				doGetConstructorParameterTypes(Skill.class, skill));
+	}
+
+	/** Check if the super default constructor is correctly invoked.
+	 *
+	 * @param event the SARL element.
+	 */
+	@Check
+	public void checkSuperConstructor(SarlEvent event) {
+		checkSuperConstructor(
+				event,
+				XTEND_TYPE_DECLARATION__NAME,
+				doGetConstructorParameterTypes(Event.class, event));
+	}
+
+	/** Check if the call is forbidden.
+	 * <p>
+	 * One example of a forbidden feature is {@link System#exit(int)}.
+	 *
+	 * @param expression - the expression.
+	 */
+	@Check(CheckType.FAST)
+	public void checkForbiddenCalls(XAbstractFeatureCall expression) {
+		if (this.featureCallValidator.isDisallowedCall(expression)) {
+			error(
+					Messages.SARLValidator_39,
+					expression,
+					null,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+					FORBIDDEN_REFERENCE);
+		}
+	}
+
+	/** Check if the call is discouraged.
+	 * <p>
+	 * One example of a discouraged feature is {@link System#err}.
+	 *
+	 * @param expression - the expression.
+	 */
+	@Check(CheckType.FAST)
+	public void checkDiscouragedCalls(XAbstractFeatureCall expression) {
+		if (!isIgnored(DISCOURAGED_REFERENCE)
+				&& this.featureCallValidator.isDiscouragedCall(expression)) {
+			addIssue(
+					MessageFormat.format(Messages.SARLValidator_40,
+							expression.getConcreteSyntaxFeatureName()
+							/*this.serializer.serialize(expression)*/),
+							expression,
+							DISCOURAGED_REFERENCE);
+		}
+	}
+
+	/** Check if the default values of the formal parameters have a compatible type with the formal parameter.
+	 *
+	 * @param param
+	 */
+	@Check
+	public void checkDefaultValueTypeCompatibleWithParameterType(SarlFormalParameter param) {
+		if (param.getDefaultValue() != null) {
+			JvmTypeReference rawType = param.getParameterType();
+			assert (rawType != null);
+			LightweightTypeReference toType = toLightweightTypeReference(rawType, true);
+			LightweightTypeReference fromType = getActualType(param.getDefaultValue());
+			if (!Utils.canCast(fromType, toType, true, false, true)) {
+				error(MessageFormat.format(
+						Messages.SARLJavaValidator_19,
+						getNameOfTypes(fromType), canonicalName(toType)),
+						param,
+						SARL_FORMAL_PARAMETER__DEFAULT_VALUE,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						INCOMPATIBLE_TYPES,
+						canonicalName(fromType),
+						canonicalName(toType));
+			}
+		}
+	}
+
+	/** Check if the given action has a valid name.
+	 *
+	 * @param action - the action to test.
+	 * @see SARLFeatureNameValidator
+	 */
+	@Check(CheckType.FAST)
+	public void checkActionName(XtendFunction action) {
+		JvmOperation inferredType = this.associations.getDirectlyInferredOperation(action);
+		QualifiedName name = QualifiedName.create(inferredType.getQualifiedName('.').split("\\.")); //$NON-NLS-1$
+		if (this.featureNames.isDisallowedName(name)) {
+			String validName1 = Utils.fixHiddenAction(action.getName());
+			String validName2 = Utils.removeHiddenAction(action.getName());
+			error(
+					MessageFormat.format(
+							Messages.SARLValidator_9,
+							action.getName()),
+							action,
+							XTEND_FUNCTION__NAME,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							INVALID_MEMBER_NAME,
+							Messages.SARLValidator_8,
+							action.getName(), validName1, validName2);
+		} else if (!isIgnored(DISCOURAGED_FUNCTION_NAME)
+				&& this.featureNames.isDiscouragedName(name)) {
+			warning(
+					MessageFormat.format(
+							Messages.SARLValidator_9,
+							action.getName()),
+							action,
+							XTEND_FUNCTION__NAME,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							DISCOURAGED_FUNCTION_NAME);
+		}
+	}
+
+	/** Check if the given field has a valid name.
+	 *
+	 * @param field - the field to test.
+	 * @see SARLFeatureNameValidator
+	 */
+	@Check(CheckType.FAST)
+	public void checkFieldName(XtendField field) {
+		JvmField inferredType = this.associations.getJvmField(field);
+		QualifiedName name = Utils.getQualifiedName(inferredType);
+		if (this.featureNames.isDisallowedName(name)) {
+			String validName = Utils.fixHiddenAttribute(field.getName());
+			error(
+					MessageFormat.format(
+							Messages.SARLValidator_10,
+							field.getName()),
+							field,
+							XTEND_FIELD__NAME,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							VARIABLE_NAME_DISALLOWED,
+							Messages.SARLValidator_7,
+							field.getName(), validName);
+		} else if (!isIgnored(VARIABLE_NAME_DISCOURAGED)
+				&& this.featureNames.isDiscouragedName(name)) {
+			warning(
+					MessageFormat.format(
+							Messages.SARLValidator_19,
+							field.getName()),
+							field,
+							XTEND_FIELD__NAME,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							VARIABLE_NAME_DISCOURAGED);
+		}
+	}
+
+	/** Check if the given field has a name that is shadowing an inherited field.
+	 *
+	 * @param field - the field to test.
+	 */
+	@Check(CheckType.FAST)
+	public void checkFieldNameShadowing(XtendField field) {
+		if (!isIgnored(VARIABLE_NAME_SHADOWING)
+				&& !Utils.isHiddenAttribute(field.getName())) {
+			JvmField inferredField = this.associations.getJvmField(field);
+			Map<String, JvmField> inheritedFields = new TreeMap<>();
+			Utils.populateInheritanceContext(
+					(JvmGenericType) inferredField.getDeclaringType(),
+					null, null,
+					inheritedFields,
+					null, null,
+					this.sarlActionSignatures);
+
+			JvmField inheritedField = inheritedFields.get(field.getName());
+			if (inheritedField != null) {
+				int nameIndex = 0;
+				String newName = field.getName() + nameIndex;
+				while (inheritedFields.containsKey(newName)) {
+					++nameIndex;
+					newName = field.getName() + nameIndex;
+				}
+				addIssue(
+						MessageFormat.format(
+								Messages.SARLValidator_15,
+								field.getName(),
+								inferredField.getDeclaringType().getQualifiedName(),
+								inheritedField.getQualifiedName()),
+								field,
+								XTEND_FIELD__NAME,
+								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+								VARIABLE_NAME_SHADOWING,
+								field.getName(),
+								newName);
+			}
+		}
+	}
+
+	/** Caution: This function is overridden for translating the MISSING_OVERRIDE error into a warning,
+	 * and emit a warning when a return type should be specified.
+	 * 
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void doCheckFunctionOverrides(EObject sourceElement, IResolvedOperation resolved,
+			List<IResolvedOperation> allInherited) {
+		boolean overrideProblems = false;
+		List<IResolvedOperation> exceptionMismatch = null;
+		for(IResolvedOperation inherited: allInherited) {
+			if (inherited.getOverrideCheckResult().hasProblems()) {
+				overrideProblems = true;
+				EnumSet<OverrideCheckDetails> details = inherited.getOverrideCheckResult().getDetails();
+				if (details.contains(OverrideCheckDetails.IS_FINAL)) {
+					error(MessageFormat.format(Messages.SARLJavaValidator_11, inherited.getSimpleSignature()),
+							sourceElement,
+							nameFeature(sourceElement), OVERRIDDEN_FINAL);
+				} else if (details.contains(OverrideCheckDetails.REDUCED_VISIBILITY)) {
+					error(MessageFormat.format(Messages.SARLJavaValidator_12,
+							inherited.getSimpleSignature()),
+							sourceElement, nameFeature(sourceElement), OVERRIDE_REDUCES_VISIBILITY);
+				} else if (details.contains(OverrideCheckDetails.EXCEPTION_MISMATCH)) {
+					if (exceptionMismatch == null)
+						exceptionMismatch = Lists.newArrayListWithCapacity(allInherited.size());
+					exceptionMismatch.add(inherited);
+				} else if (details.contains(OverrideCheckDetails.RETURN_MISMATCH)) {
+					error(MessageFormat.format(Messages.SARLJavaValidator_13,
+							inherited.getSimpleSignature()),
+							sourceElement,
+							returnTypeFeature(sourceElement), INCOMPATIBLE_RETURN_TYPE);
+				}
+			} else if (!isIgnored(RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED)
+					&& sourceElement instanceof XtendFunction) {
+				XtendFunction function = (XtendFunction) sourceElement;
+				if (function.getReturnType() == null && !inherited.getResolvedReturnType().isPrimitiveVoid()) {
+					warning(MessageFormat.format(Messages.SARLJavaValidator_14,
+							resolved.getResolvedReturnType().getHumanReadableName()),
+							sourceElement,
+							returnTypeFeature(sourceElement), RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED);
+				}
+			}
+		}
+		if (exceptionMismatch != null) {
+			createExceptionMismatchError(resolved, sourceElement, exceptionMismatch);
+		}
+		if (sourceElement instanceof XtendFunction) {
+			XtendFunction function = (XtendFunction) sourceElement;
+			if (!overrideProblems && !function.isOverride() && !function.isStatic()
+					&& !isIgnored(MISSING_OVERRIDE)) {
+				warning(MessageFormat.format(Messages.SARLJavaValidator_15,
+						resolved.getSimpleSignature(),
+						getDeclaratorName(resolved)),
+						function,
+						XTEND_FUNCTION__NAME, MISSING_OVERRIDE);
+			} 
+			if (!overrideProblems && function.isOverride() && function.isStatic()) {
+				for(IResolvedOperation inherited: allInherited) {
+					error(MessageFormat.format(Messages.SARLJavaValidator_16,
+							resolved.getSimpleSignature(),
+							getDeclaratorName(resolved),
+							resolved.getSimpleSignature(),
+							getDeclaratorName(inherited)),
+							function, XTEND_FUNCTION__NAME, function.getModifiers().indexOf(Messages.SARLJavaValidator_17), OBSOLETE_OVERRIDE);
+				}
+			}
+		}
+	}
+
+	private boolean checkRedundantInterface(
+			XtendTypeDeclaration element,
+			EReference structuralElement,
+			LightweightTypeReference lightweightInterfaceReference,
+			List<LightweightTypeReference> knownInterfaces) {
+		int index = 0;
+		for (LightweightTypeReference previousInterface : knownInterfaces) {
+			if (memberOfTypeHierarchy(previousInterface, lightweightInterfaceReference)) {
+				error(
+						MessageFormat.format(
+								Messages.SARLValidator_13,
+								canonicalName(lightweightInterfaceReference)),
+								element,
+								structuralElement,
+								// The index of the element to highlight in the super-types
+								knownInterfaces.size(),
+								REDUNDANT_INTERFACE_IMPLEMENTATION,
+								canonicalName(lightweightInterfaceReference),
+						"pre"); //$NON-NLS-1$
+				return true;
+			} else if (memberOfTypeHierarchy(lightweightInterfaceReference, previousInterface)) {
+				error(
+						MessageFormat.format(
+								Messages.SARLValidator_13,
+								canonicalName(previousInterface)),
+								element,
+								structuralElement,
+								index,
+								REDUNDANT_INTERFACE_IMPLEMENTATION,
+								canonicalName(previousInterface),
+						"post"); //$NON-NLS-1$
+			}
+			++index;
+		}
+		return false;
+	}
+
+	private void checkRedundantInterfaces(
+			XtendTypeDeclaration element,
+			EReference structuralElement,
+			Iterable<? extends JvmTypeReference> interfaces,
+			Iterable<? extends JvmTypeReference> superTypes) {
+		List<LightweightTypeReference> knownInterfaces = CollectionLiterals.newArrayList();
+		for (JvmTypeReference interfaceRef : interfaces) {
+			LightweightTypeReference lightweightInterfaceReference = toLightweightTypeReference(interfaceRef);
+			// Check the interface against the other interfaces
+			if (!checkRedundantInterface(
+					element, structuralElement,
+					lightweightInterfaceReference,
+					knownInterfaces)) {
+				// Check the interface against the super-types
+				if (superTypes != null && !isIgnored(REDUNDANT_INTERFACE_IMPLEMENTATION)) {
+					for (JvmTypeReference superType : superTypes) {
+						LightweightTypeReference lightweightSuperType = toLightweightTypeReference(superType);
+						if (memberOfTypeHierarchy(lightweightSuperType, lightweightInterfaceReference)) {
+							addIssue(
+									MessageFormat.format(
+											Messages.SARLValidator_14,
+											canonicalName(lightweightInterfaceReference),
+											canonicalName(lightweightSuperType)),
+											element,
+											structuralElement,
+											// The index of the element to highlight in the super-types
+											knownInterfaces.size(),
+											REDUNDANT_INTERFACE_IMPLEMENTATION,
+											canonicalName(lightweightInterfaceReference),
+									"unknow"); //$NON-NLS-1$
+						}
+					}
+				}
+			}
+			// Prepare next loop
+			knownInterfaces.add(lightweightInterfaceReference);
+		}
+	}
+
+	/** Check if implemented interfaces of a skill are redundant.
+	 *
+	 * @param skill the skill.
+	 */
+	@Check
+	public void checkRedundantImplementedInterfaces(SarlSkill skill) {
+		checkRedundantInterfaces(
+				skill,
+				SARL_SKILL__IMPLEMENTS,
+				skill.getImplements(),
+				Utils.singletonList(skill.getExtends()));
+	}
+
+	/** Check if implemented interfaces of a Xtend Class are redundant.
+	 *
+	 * @param xtendClass the class.
+	 */
+	@Check
+	public void checkRedundantImplementedInterfaces(XtendClass xtendClass) {
+		checkRedundantInterfaces(
+				xtendClass,
+				XTEND_CLASS__IMPLEMENTS,
+				xtendClass.getImplements(),
+				Utils.singletonList(xtendClass.getExtends()));
+	}
+
+	/** Check if implemented interfaces of a Xtend Interface are redundant.
+	 *
+	 * @param xtendInterface the interface.
+	 */
+	@Check
+	public void checkRedundantImplementedInterfaces(XtendInterface xtendInterface) {
+		checkRedundantInterfaces(
+				xtendInterface,
+				XTEND_INTERFACE__EXTENDS,
+				xtendInterface.getExtends(),
+				Collections.<JvmTypeReference>emptyList());
+	}
+
+	/** Check the type of the behavior unit's guard.
+	 *
+	 * @param behaviorUnit - the behavior unit.
+	 */
+	@Check(CheckType.FAST)
+	public void checkBehaviorUnitGuardType(SarlBehaviorUnit behaviorUnit) {
+		XExpression guard = behaviorUnit.getGuard();
+		if (guard != null) {
+			if (this.expressionHelper.hasSideEffects(guard)) {
+				error(Messages.SARLJavaValidator_18,
+						guard,
+						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						INVALID_INNER_EXPRESSION);
+				return;
+			}
+			if (guard instanceof XBooleanLiteral) {
+				XBooleanLiteral bLiteral = (XBooleanLiteral) guard;
+				if (bLiteral.isIsTrue()) {
+					if (!isIgnored(DISCOURAGED_BOOLEAN_EXPRESSION)) {
+						addIssue(Messages.SARLValidator_21,
+								bLiteral,
+								null,
+								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+								DISCOURAGED_BOOLEAN_EXPRESSION);
+					}
+				} else if (!isIgnored(UNREACHABLE_BEHAVIOR_UNIT)) {
+					addIssue(Messages.SARLValidator_22,
+							behaviorUnit,
+							null,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							UNREACHABLE_BEHAVIOR_UNIT,
+							behaviorUnit.getName().getSimpleName());
+				}
+				return;
+			}
+
+			LightweightTypeReference fromType = getActualType(guard);
+			if (!fromType.isAssignableFrom(Boolean.TYPE)) {
+				error(MessageFormat.format(Messages.SARLValidator_23,
+						getNameOfTypes(fromType), boolean.class.getName()),
+						guard,
+						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						INCOMPATIBLE_TYPES);
+			}
+		}
+	}
+
+	/** Check the type of the capacity uses.
+	 *
+	 * @param uses - the capacity uses.
+	 */
+	@Check(CheckType.FAST)
+	public void checkCapacityTypeForUses(SarlCapacityUses uses) {
+		for (JvmParameterizedTypeReference usedType : uses.getCapacities()) {
+			LightweightTypeReference ref = toLightweightTypeReference(usedType);
+			if (ref != null && !ref.isSubtypeOf(Capacity.class)) {
+				error(
+						MessageFormat.format(
+								Messages.SARLValidator_24,
+								usedType.getQualifiedName(),
+								Messages.SARLValidator_25,
+								this.grammarAccess.getCapacityUsesAccess().getUsesKeyword_1().getValue()),
+								usedType,
+								null,
+								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+								INVALID_CAPACITY_TYPE,
+								usedType.getSimpleName());
+			}
+		}
+	}
+
+	/** Check the types of the "requires" statement.
+	 *
+	 * @param requires - the "requires" statement.
+	 */
+	@Check(CheckType.FAST)
+	public void checkCapacityTypeForRequires(SarlRequiredCapacity requires) {
+		for (JvmParameterizedTypeReference requiredType : requires.getCapacities()) {
+			LightweightTypeReference ref = toLightweightTypeReference(requiredType);
+			if (ref != null && !ref.isSubtypeOf(Capacity.class)) {
+				error(
+						MessageFormat.format(
+								Messages.SARLValidator_24,
+								requiredType.getQualifiedName(),
+								Messages.SARLValidator_25,
+								this.grammarAccess.getRequiredCapacityAccess().getRequiresKeyword_1().getValue()),
+								requiredType,
+								null,
+								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+								INVALID_CAPACITY_TYPE,
+								requiredType.getSimpleName());
+			}
+		}
+	}
+
+	/** Check the types of the parameters of the "fires" statement.
+	 *
+	 * @param action - the signature that contains the "fires" statement.
+	 */
+	@Check(CheckType.FAST)
+	public void checkActionFires(SarlAction action) {
+		for (JvmTypeReference event : action.getFiredEvents()) {
+			LightweightTypeReference ref = toLightweightTypeReference(event);
+			if (ref != null && !ref.isSubtypeOf(Event.class)) {
+				error(
+						MessageFormat.format(
+								Messages.SARLValidator_24,
+								event.getQualifiedName(),
+								Messages.SARLValidator_26,
+								this.grammarAccess.getActionAccess().getFiresKeyword_9_1_0().getValue()),
+								event,
+								null,
+								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+								INVALID_FIRING_EVENT_TYPE,
+								event.getSimpleName());
+			}
+		}
+	}
 
 	/** Check the super type.
 	 *
 	 * @param element - the child type.
+	 * @param feature - the syntactic feature related to the supertypes.
+	 * @param superTypes - the current super types.
 	 * @param expectedType - the expected root type.
 	 * @param onlySubTypes - if <code>true</code> only the subtype of the <code>expectedType</code> are valid;
 	 * <code>false</code> if the <code>expectedType</code> is allowed.
 	 * @return the count of supertypes.
 	 */
-	protected int checkSuperTypes(XtendTypeDeclaration element, Class<?> expectedType, boolean onlySubTypes) {
+	protected int checkSuperTypes(
+			XtendTypeDeclaration element,
+			EReference feature,
+			List<? extends JvmTypeReference> superTypes,
+			Class<?> expectedType,
+			boolean onlySubTypes) {
 		int nbSuperTypes = 0;
-		JvmGenericType inferredType = getJvmGenericType(element);
-		if (inferredType != null) {
+		JvmDeclaredType inferredType = this.associations.getInferredType(element);
+		if (inferredType instanceof JvmGenericType) {
 			LinkedList<JvmTypeReference> inferredSuperTypes = CollectionLiterals.newLinkedList();
 			inferredSuperTypes.addAll(inferredType.getSuperTypes());
 			boolean isExpectingInterface = expectedType.isInterface();
 			int superTypeIndex = 0;
-			for (JvmTypeReference superType : element.getSuperTypes()) {
+			for (JvmTypeReference superType : superTypes) {
 				boolean success = true;
 				JvmType jvmSuperType = (superType == null) ? null : superType.getType();
 				if (jvmSuperType != null) {
@@ -1140,26 +1096,26 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 						if (isExpectingInterface) {
 							error(
 									MessageFormat.format(Messages.SARLValidator_27, Messages.SARLValidator_28),
-									SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
+									feature,
 									superTypeIndex,
-									IssueCodes.INVALID_EXTENDED_TYPE,
+									INTERFACE_EXPECTED,
 									inferredType.getIdentifier(),
 									jvmSuperType.getIdentifier());
 						} else {
 							error(
 									MessageFormat.format(Messages.SARLValidator_27, Messages.SARLValidator_29),
-									SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
+									feature,
 									superTypeIndex,
-									IssueCodes.INVALID_EXTENDED_TYPE,
+									CLASS_EXPECTED,
 									inferredType.getIdentifier(),
 									jvmSuperType.getIdentifier());
 						}
 						success = false;
 					} else if (isFinal(lighweightSuperType)) {
 						error(Messages.SARLValidator_30,
-								SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
+								feature,
 								superTypeIndex,
-								IssueCodes.OVERRIDDEN_FINAL_TYPE,
+								OVERRIDDEN_FINAL,
 								inferredType.getIdentifier(),
 								jvmSuperType.getIdentifier());
 						success = false;
@@ -1167,28 +1123,29 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 							|| ((onlySubTypes) && (lighweightSuperType.isType(expectedType)))) {
 						if (onlySubTypes) {
 							error(MessageFormat.format(Messages.SARLValidator_31, expectedType.getName()),
-									SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
+									feature,
 									superTypeIndex,
-									IssueCodes.INVALID_EXTENDED_TYPE,
+									INVALID_EXTENDED_TYPE,
 									inferredType.getIdentifier(),
 									jvmSuperType.getIdentifier());
 						} else {
 							error(MessageFormat.format(Messages.SARLValidator_32, expectedType.getName()),
-									SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
+									feature,
 									superTypeIndex,
-									IssueCodes.INVALID_EXTENDED_TYPE,
+									INVALID_EXTENDED_TYPE,
 									inferredType.getIdentifier(),
 									jvmSuperType.getIdentifier());
 						}
 						success = false;
 					} else if (inferredSuperType == null
 							|| !Objects.equal(inferredSuperType.getIdentifier(), jvmSuperType.getIdentifier())
-							|| Objects.equal(inferredType.getIdentifier(), jvmSuperType.getIdentifier())) {
+							|| Objects.equal(inferredType.getIdentifier(), jvmSuperType.getIdentifier())
+							|| hasCycleInHierarchy((JvmGenericType) inferredType, Sets.<JvmGenericType> newHashSet())) {
 						error(MessageFormat.format(Messages.SARLValidator_33,
 								inferredType.getQualifiedName()),
-								SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
+								feature,
 								superTypeIndex,
-								IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+								CYCLIC_INHERITANCE,
 								inferredType.getIdentifier(),
 								jvmSuperType.getIdentifier());
 						success = false;
@@ -1196,12 +1153,13 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 				} else {
 					error(MessageFormat.format(Messages.SARLValidator_33,
 							inferredType.getQualifiedName()),
-							SarlPackage.Literals.INHERITING_ELEMENT__SUPER_TYPES,
+							feature,
 							superTypeIndex,
-							IssueCodes.INCONSISTENT_TYPE_HIERARCHY,
+							CYCLIC_INHERITANCE,
 							inferredType.getIdentifier());
 					success = false;
 				}
+				checkWildcardSupertype(element, superType, feature, superTypeIndex);
 				++superTypeIndex;
 				if (success) {
 					++nbSuperTypes;
@@ -1211,68 +1169,82 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 		return nbSuperTypes;
 	}
 
-//	/** Check the implemeted type.
-//	 *
-//	 * @param element - the child type.
-//	 * @param expectedType - the expected root type.
-//	 * @param mandatoryNumberOfTypes - the minimal number of implemented types.
-//	 * @param onlySubTypes - if <code>true</code> only the subtype of the <code>expectedType</code> are valid;
-//	 * <code>false</code> if the <code>expectedType</code> is allowed.
-//	 * @return the count of supertypes.
-//	 */
-//	protected boolean checkImplementedTypes(ImplementingElement element, Class<?> expectedType,
-//			int mandatoryNumberOfTypes, boolean onlySubTypes) {
-//		boolean success = true;
-//		int nb = 0;
-//		for (JvmTypeReference superType : element.getImplementedTypes()) {
-//			LightweightTypeReference  ref = toLightweightTypeReference(superType);
-//			if (ref != null
-//				&& (!ref.isInterfaceType() || !ref.isSubtypeOf(expectedType)
-//					|| (onlySubTypes && ref.isType(expectedType)))) {
-//				String msg;
-//				if (onlySubTypes) {
-//					msg = Messages.SARLValidator_34;
-//				} else {
-//					msg = Messages.SARLValidator_35;
-//				}
-//				error(
-//						MessageFormat.format(
-//								msg,
-//								superType.getQualifiedName(),
-//								expectedType.getName(),
-//								element.getName()),
-//								superType,
-//								null,
-//								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//								IssueCodes.INVALID_IMPLEMENTED_TYPE,
-//								superType.getSimpleName());
-//				success = false;
-//			} else {
-//				++nb;
-//			}
-//		}
-//		if (nb < mandatoryNumberOfTypes) {
-//			error(
-//					MessageFormat.format(
-//							Messages.SARLValidator_36,
-//							expectedType.getName(),
-//							element.getName()),
-//							element,
-//							SarlPackage.Literals.IMPLEMENTING_ELEMENT__IMPLEMENTED_TYPES,
-//							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//							org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_TYPE);
-//			success = false;
-//		}
-//		return success;
-//	}
+	/** Check the implemeted type.
+	 *
+	 * @param element - the child type.
+	 * @param feature - the syntactic feature related to the supertypes.
+	 * @param implementedTypes - the current super types.
+	 * @param expectedType - the expected root type.
+	 * @param mandatoryNumberOfTypes - the minimal number of implemented types.
+	 * @param onlySubTypes - if <code>true</code> only the subtype of the <code>expectedType</code> are valid;
+	 * <code>false</code> if the <code>expectedType</code> is allowed.
+	 * @return the count of supertypes.
+	 */
+	protected boolean checkImplementedTypes(
+			XtendTypeDeclaration element,
+			EReference feature,
+			List<? extends JvmTypeReference> implementedTypes,
+			Class<?> expectedType,
+			int mandatoryNumberOfTypes,
+			boolean onlySubTypes) {
+		boolean success = true;
+		int nb = 0;
+		int index = 0;
+		for (JvmTypeReference superType : implementedTypes) {
+			LightweightTypeReference  ref = toLightweightTypeReference(superType);
+			if (ref != null
+					&& (!ref.isInterfaceType() || !ref.isSubtypeOf(expectedType)
+							|| (onlySubTypes && ref.isType(expectedType)))) {
+				String msg;
+				if (onlySubTypes) {
+					msg = Messages.SARLValidator_34;
+				} else {
+					msg = Messages.SARLValidator_35;
+				}
+				error(
+						MessageFormat.format(
+								msg,
+								superType.getQualifiedName(),
+								expectedType.getName(),
+								element.getName()),
+								element,
+								feature,
+								index,
+								INVALID_IMPLEMENTED_TYPE,
+								superType.getSimpleName());
+				success = false;
+			} else {
+				++nb;
+			}
+			++index;
+		}
+		if (nb < mandatoryNumberOfTypes) {
+			error(
+					MessageFormat.format(
+							Messages.SARLValidator_36,
+							expectedType.getName(),
+							element.getName()),
+							element,
+							feature,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							MISSING_TYPE);
+			success = false;
+		}
+		return success;
+	}
 
 	/** Check if the supertype of the given event is a subtype of Event.
 	 *
 	 * @param event - the type to test.
 	 */
 	@Check(CheckType.FAST)
-	public void checkEventSuperType(io.sarl.lang.sarl.Event event) {
-		checkSuperTypes(event, Event.class, false);
+	public void checkSuperType(SarlEvent event) {
+		checkSuperTypes(
+				event,
+				SARL_EVENT__EXTENDS,
+				Utils.singletonList(event.getExtends()),
+				Event.class,
+				false);
 	}
 
 	/** Check if the supertype of the given behavior is a subtype of Behavior.
@@ -1280,8 +1252,13 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	 * @param behavior - the type to test.
 	 */
 	@Check(CheckType.FAST)
-	public void checkBehaviorSuperType(Behavior behavior) {
-		checkSuperTypes(behavior, io.sarl.lang.core.Behavior.class, false);
+	public void checkSuperType(SarlBehavior behavior) {
+		checkSuperTypes(
+				behavior,
+				SARL_BEHAVIOR__EXTENDS,
+				Utils.singletonList(behavior.getExtends()),
+				Behavior.class,
+				false);
 	}
 
 	/** Check if the supertype of the given agent is a subtype of Agent.
@@ -1289,8 +1266,13 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	 * @param agent - the type to test.
 	 */
 	@Check(CheckType.FAST)
-	public void checkAgentSuperType(Agent agent) {
-		checkSuperTypes(agent, io.sarl.lang.core.Agent.class, false);
+	public void checkSuperType(SarlAgent agent) {
+		checkSuperTypes(
+				agent,
+				SARL_AGENT__EXTENDS,
+				Utils.singletonList(agent.getExtends()),
+				Agent.class,
+				false);
 	}
 
 	/** Check if the supertype of the given capacity is a subtype of Capacity.
@@ -1298,198 +1280,232 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	 * @param capacity - the type to test.
 	 */
 	@Check(CheckType.FAST)
-	public void checkCapacitySuperType(Capacity capacity) {
-		checkSuperTypes(capacity, Capacity.class, false);
+	public void checkSuperTypes(SarlCapacity capacity) {
+		checkSuperTypes(
+				capacity,
+				SARL_CAPACITY__EXTENDS,
+				capacity.getExtends(),
+				Capacity.class,
+				false);
 	}
 
-//	/** Check if the supertype of the given skill is a subtype of Skill.
-//	 *
-//	 * @param skill - the type to test.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkSkillSuperType(Skill skill) {
-//		int nbSuperTypes = checkSuperTypes(skill, io.sarl.lang.core.Skill.class, false);
-//		checkImplementedTypes(skill, Capacity.class,
-//				(nbSuperTypes > 0) ? 0 : 1,
-//						true);
-//	}
-//
-//	/** Check if the parameter of the bahavior unit is an event.
-//	 *
-//	 * @param behaviorUnit - the behavior unit to test.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkBehaviorUnitEventType(BehaviorUnit behaviorUnit) {
-//		JvmTypeReference event = behaviorUnit.getName();
-//		LightweightTypeReference ref = toLightweightTypeReference(event);
-//		if (ref == null || ref.isInterfaceType() || !ref.isSubtypeOf(Event.class)) {
-//			error(
-//					MessageFormat.format(
-//							Messages.SARLValidator_24,
-//							event.getQualifiedName(),
-//							Messages.SARLValidator_26,
-//							this.grammarAccess.getBehaviorUnitAccess().getOnKeyword_1().getValue()),
-//							event,
-//							null,
-//							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//							org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH);
-//		}
-//	}
-//
-//	/** Check if a capacity has a feature defined inside.
-//	 *
-//	 * @param capacity - the capacity to test.
-//	 */
-//	@Check(CheckType.FAST)
-//	public void checkCapacityFeatures(io.sarl.lang.sarl.Capacity capacity) {
-//		if (capacity.getFeatures().isEmpty()) {
-//			if (!isIgnored(IssueCodes.DISCOURAGED_CAPACITY_DEFINITION)) {
-//				addIssue(Messages.SARLValidator_37,
-//						capacity,
-//						null,
-//						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-//						IssueCodes.DISCOURAGED_CAPACITY_DEFINITION,
-//						capacity.getName(),
-//						"aFunction"); //$NON-NLS-1$
-//			}
-//		}
-//	}
-//
-//	private static JvmAnnotationReference findFirstAnnotation(JvmOperation operation, final String annotationId) {
-//		return IterableExtensions.findFirst(operation.getAnnotations(),
-//				new Functions.Function1<JvmAnnotationReference, Boolean>() {
-//			@Override
-//			public Boolean apply(JvmAnnotationReference it) {
-//				return Objects.equal(it.getAnnotation().getIdentifier(), annotationId);
-//			}
-//		});
-//	}
-//
-//	private boolean findLocalUsage(Collection<JvmOperation> operations, EObject container) {
-//		Iterator<JvmOperation> iterator = operations.iterator();
-//		boolean found = false;
-//		while (!found && iterator.hasNext()) {
-//			JvmOperation operation = iterator.next();
-//			if (isLocallyUsed(operation, container)) {
-//				found = true;
-//			}
-//		}
-//		return found;
-//	}
-//
-//	/** Check for unused capacities.
-//	 *
-//	 * @param uses - the capacity use declaration.
-//	 */
-//	@SuppressWarnings("unchecked")
-//	@Check(CheckType.NORMAL)
-//	public void checkUnusedCapacities(CapacityUses uses) {
-//		if (!isIgnored(IssueCodes.UNUSED_AGENT_CAPACITY)) {
-//			JvmIdentifiableElement jvmContainer = this.logicalContainerProvider.getNearestLogicalContainer(uses);
-//			EObject container = this.jvmModelAssociator.getPrimarySourceElement(jvmContainer);
-//
-//			final String annotationId = ImportedCapacityFeature.class.getName();
-//			Multimap<String, JvmOperation> importedFeatures = Multimaps.newMultimap(
-//					CollectionLiterals.<String, Collection<JvmOperation>>newHashMap(),
-//					new Supplier<Collection<JvmOperation>>() {
-//						@Override
-//						public Collection<JvmOperation> get() {
-//							return CollectionLiterals.<JvmOperation>newArrayList();
-//						}
-//					});
-//			Iterable<EObject> fitleredObjects = IterableExtensions.filter(jvmContainer.eContents(),
-//					new Functions.Function1<EObject, Boolean>() {
-//				@SuppressWarnings("synthetic-access")
-//				@Override
-//				public Boolean apply(EObject it) {
-//					if (it instanceof JvmOperation) {
-//						JvmOperation operation = (JvmOperation) it;
-//						if (findFirstAnnotation(operation, annotationId) != null) {
-//							return Boolean.TRUE;
-//						}
-//					}
-//					return Boolean.FALSE;
-//				}
-//
-//			});
-//			for (EObject method : fitleredObjects) {
-//				JvmOperation m = (JvmOperation) method;
-//				EList<JvmAnnotationValue> annotationValues = findFirstAnnotation(m, annotationId).getValues();
-//				JvmTypeAnnotationValue annotationType = (JvmTypeAnnotationValue) annotationValues.get(0);
-//				JvmTypeReference capacityType = annotationType.getValues().get(0);
-//				importedFeatures.put(capacityType.getIdentifier(), m);
-//			}
-//
-//			int index = 0;
-//			for (JvmTypeReference capacity : uses.getCapacitiesUsed()) {
-//				Collection<JvmOperation> operations = importedFeatures.get(capacity.getIdentifier());
-//				if (!operations.isEmpty()) {
-//					if (!findLocalUsage(operations, container)) {
-//						addIssue(
-//								MessageFormat.format(
-//										Messages.SARLValidator_42,
-//										capacity.getSimpleName()),
-//										uses,
-//										SarlPackage.Literals.CAPACITY_USES__CAPACITIES_USED,
-//										index, IssueCodes.UNUSED_AGENT_CAPACITY,
-//										capacity.getSimpleName());
-//					}
-//				}
-//				++index;
-//			}
-//		}
-//	}
-//
-//	private static Set<String> findPreviousCapacities(CapacityUses uses, Iterator<EObject> iterator) {
-//		boolean continueToFill = true;
-//		Set<String> capacityUses = CollectionLiterals.newTreeSet((Comparator<String>) null);
-//		while (continueToFill && iterator.hasNext()) {
-//			EObject elt = iterator.next();
-//			if (elt instanceof CapacityUses) {
-//				CapacityUses usesElt = (CapacityUses) elt;
-//				if (usesElt == uses) {
-//					continueToFill = false;
-//				} else {
-//					for (JvmTypeReference use : usesElt.getCapacitiesUsed()) {
-//						capacityUses.add(use.getIdentifier());
-//					}
-//				}
-//			}
-//		}
-//		return capacityUses;
-//	}
-//
-//	/** Check for multiple capacity use declaration.
-//	 *
-//	 * @param uses - the capacity use declaration.
-//	 */
-//	@Check(CheckType.NORMAL)
-//	public void checkMultipleCapacityUses(CapacityUses uses) {
-//		if (!isIgnored(IssueCodes.REDUNDANT_CAPACITY_USE)) {
-//			JvmIdentifiableElement jvmContainer = this.logicalContainerProvider.getNearestLogicalContainer(uses);
-//			EObject container = this.jvmModelAssociator.getPrimarySourceElement(jvmContainer);
-//			if (container instanceof FeatureContainer) {
-//				FeatureContainer fContainer = (FeatureContainer) container;
-//				Set<String> previousCapacityUses = findPreviousCapacities(uses, fContainer.getFeatures().iterator());
-//				int index = 0;
-//				for (JvmTypeReference capacity : uses.getCapacitiesUsed()) {
-//					if (previousCapacityUses.contains(capacity.getIdentifier())) {
-//						addIssue(
-//								MessageFormat.format(
-//										Messages.SARLValidator_43,
-//										capacity.getSimpleName()),
-//										uses,
-//										SarlPackage.Literals.CAPACITY_USES__CAPACITIES_USED,
-//										index,
-//										IssueCodes.REDUNDANT_CAPACITY_USE,
-//										capacity.getSimpleName());
-//					} else {
-//						previousCapacityUses.add(capacity.getIdentifier());
-//					}
-//					++index;
-//				}
-//			}
-//		}
-//	}
+	/** Check if the supertype of the given skill is a subtype of Skill.
+	 *
+	 * @param skill - the type to test.
+	 */
+	@Check(CheckType.FAST)
+	public void checkSuperType(SarlSkill skill) {
+		int nbSuperTypes = checkSuperTypes(
+				skill,
+				SARL_SKILL__EXTENDS,
+				Utils.singletonList(skill.getExtends()),
+				Skill.class,
+				false);
+		checkImplementedTypes(
+				skill,
+				SARL_SKILL__IMPLEMENTS,
+				skill.getImplements(),
+				Capacity.class,
+				((nbSuperTypes > 0) ? 0 : 1),
+				true);
+	}
+
+	/** Check if the parameter of the bahavior unit is an event.
+	 *
+	 * @param behaviorUnit - the behavior unit to test.
+	 */
+	@Check(CheckType.FAST)
+	public void checkBehaviorUnitEventType(SarlBehaviorUnit behaviorUnit) {
+		JvmTypeReference event = behaviorUnit.getName();
+		LightweightTypeReference ref = toLightweightTypeReference(event);
+		if (ref == null || ref.isInterfaceType() || !ref.isSubtypeOf(Event.class)) {
+			error(
+					MessageFormat.format(
+							Messages.SARLValidator_24,
+							event.getQualifiedName(),
+							Messages.SARLValidator_26,
+							this.grammarAccess.getBehaviorUnitAccess().getOnKeyword_2().getValue()),
+							event,
+							null,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							TYPE_BOUNDS_MISMATCH);
+		}
+	}
+
+	/** Check if a capacity has a feature defined inside.
+	 *
+	 * @param capacity - the capacity to test.
+	 */
+	@Check(CheckType.FAST)
+	public void checkCapacityFeatures(SarlCapacity capacity) {
+		if (capacity.getMembers().isEmpty()) {
+			if (!isIgnored(DISCOURAGED_CAPACITY_DEFINITION)) {
+				addIssue(Messages.SARLValidator_37,
+						capacity,
+						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						DISCOURAGED_CAPACITY_DEFINITION,
+						capacity.getName(),
+						"aFunction"); //$NON-NLS-1$
+			}
+		}
+	}
+
+	private static JvmAnnotationReference doGetFirstAnnotation(JvmOperation operation, final String annotationId) {
+		return IterableExtensions.findFirst(operation.getAnnotations(),
+				new Functions.Function1<JvmAnnotationReference, Boolean>() {
+			@Override
+			public Boolean apply(JvmAnnotationReference it) {
+				return Objects.equal(it.getAnnotation().getIdentifier(), annotationId);
+			}
+		});
+	}
+
+	private boolean doGetLocalUsage(Collection<JvmOperation> operations, EObject container) {
+		Iterator<JvmOperation> iterator = operations.iterator();
+		boolean found = false;
+		while (!found && iterator.hasNext()) {
+			JvmOperation operation = iterator.next();
+			if (isLocallyUsed(operation, container)) {
+				found = true;
+			}
+		}
+		return found;
+	}
+
+	/** Check for unused capacities.
+	 *
+	 * @param uses - the capacity use declaration.
+	 */
+	@SuppressWarnings("unchecked")
+	@Check(CheckType.NORMAL)
+	public void checkUnusedCapacities(SarlCapacityUses uses) {
+		if (!isIgnored(UNUSED_AGENT_CAPACITY)) {
+			EObject container = uses.getDeclaringType();
+			EObject jvmContainer = this.associations.getPrimaryJvmElement(container);
+
+			final String annotationId = ImportedCapacityFeature.class.getName();
+			Multimap<String, JvmOperation> importedFeatures = Multimaps.newMultimap(
+					CollectionLiterals.<String, Collection<JvmOperation>>newHashMap(),
+					new Supplier<Collection<JvmOperation>>() {
+						@Override
+						public Collection<JvmOperation> get() {
+							return CollectionLiterals.<JvmOperation>newArrayList();
+						}
+					});
+			Iterable<EObject> fitleredObjects = IterableExtensions.filter(jvmContainer.eContents(),
+					new Functions.Function1<EObject, Boolean>() {
+				@SuppressWarnings("synthetic-access")
+				@Override
+				public Boolean apply(EObject it) {
+					if (it instanceof JvmOperation) {
+						JvmOperation operation = (JvmOperation) it;
+						if (doGetFirstAnnotation(operation, annotationId) != null) {
+							return Boolean.TRUE;
+						}
+					}
+					return Boolean.FALSE;
+				}
+
+			});
+			for (EObject method : fitleredObjects) {
+				JvmOperation m = (JvmOperation) method;
+				EList<JvmAnnotationValue> annotationValues = doGetFirstAnnotation(m, annotationId).getValues();
+				JvmTypeAnnotationValue annotationType = (JvmTypeAnnotationValue) annotationValues.get(0);
+				JvmTypeReference capacityType = annotationType.getValues().get(0);
+				importedFeatures.put(capacityType.getIdentifier(), m);
+			}
+
+			int index = 0;
+			for (JvmTypeReference capacity : uses.getCapacities()) {
+				Collection<JvmOperation> operations = importedFeatures.get(capacity.getIdentifier());
+				if (!operations.isEmpty()) {
+					if (!doGetLocalUsage(operations, container)) {
+						addIssue(
+								MessageFormat.format(
+										Messages.SARLValidator_42,
+										capacity.getSimpleName()),
+										uses,
+										SARL_CAPACITY_USES__CAPACITIES,
+										index, UNUSED_AGENT_CAPACITY,
+										capacity.getSimpleName());
+					}
+				}
+				++index;
+			}
+		}
+	}
+
+	private static Set<String> doGetPreviousCapacities(SarlCapacityUses uses, Iterator<XtendMember> iterator) {
+		boolean continueToFill = true;
+		Set<String> capacityUses = CollectionLiterals.newTreeSet((Comparator<String>) null);
+		while (continueToFill && iterator.hasNext()) {
+			XtendMember elt = iterator.next();
+			if (elt instanceof SarlCapacityUses) {
+				SarlCapacityUses usesElt = (SarlCapacityUses) elt;
+				if (usesElt == uses) {
+					continueToFill = false;
+				} else {
+					for (JvmTypeReference use : usesElt.getCapacities()) {
+						capacityUses.add(use.getIdentifier());
+					}
+				}
+			}
+		}
+		return capacityUses;
+	}
+
+	/** Check for multiple capacity use declaration.
+	 *
+	 * @param uses - the capacity use declaration.
+	 */
+	@Check(CheckType.NORMAL)
+	public void checkMultipleCapacityUses(SarlCapacityUses uses) {
+		if (!isIgnored(REDUNDANT_CAPACITY_USE)) {
+			XtendTypeDeclaration declaringType = uses.getDeclaringType();
+			if (declaringType != null) {
+				Set<String> previousCapacityUses = doGetPreviousCapacities(uses, declaringType.getMembers().iterator());
+				int index = 0;
+				for (JvmTypeReference capacity : uses.getCapacities()) {
+					if (previousCapacityUses.contains(capacity.getIdentifier())) {
+						addIssue(
+								MessageFormat.format(
+										Messages.SARLValidator_43,
+										capacity.getSimpleName()),
+										uses,
+										SARL_CAPACITY_USES__CAPACITIES,
+										index,
+										REDUNDANT_CAPACITY_USE,
+										capacity.getSimpleName());
+					} else {
+						previousCapacityUses.add(capacity.getIdentifier());
+					}
+					++index;
+				}
+			}
+		}
+	}
+
+	/** The modifier validator for constructors.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	protected class SARLModifierValidator extends ModifierValidator {
+
+		/**
+		 * @param modifiers - the list of the supported modifiers.
+		 */
+		private SARLModifierValidator(List<String> modifiers) {
+			super(modifiers, SARLJavaValidator.this);
+		}
+
+		@Override
+		public void checkModifiers(XtendMember member, String memberName) {
+			super.checkModifiers(member, memberName);
+		}
+	}
 
 }

@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.genmodel;
+package io.sarl.lang.generator.helper;
 
 import io.sarl.lang.services.SARLGrammarAccess;
 

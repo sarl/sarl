@@ -24,6 +24,8 @@ import io.sarl.lang.util.SynchronizedCollection;
 
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * An AgentContext defines the boundary of a sub-system, and gathers a collection of Spaces.
  * Each context has a default context that provides a basic interaction context.
@@ -39,6 +41,7 @@ public interface AgentContext {
 	 *
 	 * @return the identifier of the context.
 	 */
+	@Pure
 	UUID getID();
 
 	/** Replies the default space of the context.
@@ -46,12 +49,14 @@ public interface AgentContext {
 	 *
 	 * @return the default space.
 	 */
+	@Pure
 	EventSpace getDefaultSpace();
 
 	/** Replies all the spaces defined in this context.
 	 *
 	 * @return the spaces.
 	 */
+	@Pure
 	SynchronizedCollection<? extends Space> getSpaces();
 
 	/** Create an instance of space following the given specification.
@@ -78,6 +83,7 @@ public interface AgentContext {
 	 * @param spec - specification of the space to retreive.
 	 * @return the spaces associated to the given space specification.
 	 */
+	@Pure
 	<S extends Space> SynchronizedCollection<S> getSpaces(Class<? extends SpaceSpecification<S>> spec);
 
 	/** Retreive or create an instance of space which was created with the given specification.
@@ -155,6 +161,7 @@ public interface AgentContext {
 	 * @see #createSpace(Class, UUID, Object...)
 	 * @see #getOrCreateSpace(Class, UUID, Object...)
 	 */
+	@Pure
 	<S extends Space> S getSpace(UUID spaceUUID);
 
 }

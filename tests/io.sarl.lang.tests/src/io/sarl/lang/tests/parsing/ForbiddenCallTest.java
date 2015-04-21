@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,22 +39,16 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class ForbiddenCallTest extends AbstractSarlTest {
 
-	@Inject
-	private ParseHelper<XtendFile> parser;
-
-	@Inject
-	private ValidationTestHelper validator;
-
 	@Test
 	public void systemExit_agent_action() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"agent A1 {",
 				"def test {",
 					"System.exit(0)",
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -62,7 +56,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_agent_behaviorUnit() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"event E1 { }",
 			"agent A1 {",
 				"on E1 {",
@@ -70,7 +64,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -78,14 +72,14 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_action() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"behavior B1 {",
 				"def test {",
 					"System.exit(0)",
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -93,7 +87,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_behaviorUnit() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"event E1 { }",
 			"behavior B1 {",
 				"on E1 {",
@@ -101,7 +95,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -109,7 +103,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_constructor() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"event E1 { }",
 			"behavior B1 {",
 				"new (a : Agent) {",
@@ -118,7 +112,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -126,7 +120,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_action() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"capacity C1 { }",
 			"skill S1 implements C1 {",
 				"def test {",
@@ -134,7 +128,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -142,7 +136,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_constructor() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"capacity C1 { }",
 			"event E1 { }",
 			"skill S1 implements C1 {",
@@ -152,7 +146,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -160,7 +154,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_agent_action_staticImport() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import static java.lang.System.*",
 			"agent A1 {",
 				"def test {",
@@ -168,7 +162,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -176,7 +170,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_agent_behaviorUnit_staticImport() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import static java.lang.System.*",
 			"event E1 { }",
 			"agent A1 {",
@@ -185,7 +179,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -193,7 +187,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_action_staticImport() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import static java.lang.System.*",
 			"behavior B1 {",
 				"def test {",
@@ -201,7 +195,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -209,7 +203,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_behaviorUnit_staticImport() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import static java.lang.System.*",
 			"event E1 { }",
 			"behavior B1 {",
@@ -218,7 +212,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -226,7 +220,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_constructor_staticImport() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import io.sarl.lang.core.Agent",
 			"import static java.lang.System.*",
 			"event E1 { }",
@@ -237,7 +231,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -245,7 +239,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_action_staticImport() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import static java.lang.System.*",
 			"capacity C1 { }",
 			"skill S1 implements C1 {",
@@ -254,7 +248,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -262,7 +256,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_constructor_staticImport() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import io.sarl.lang.core.Agent",
 			"import static java.lang.System.*",
 			"capacity C1 { }",
@@ -274,7 +268,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -282,7 +276,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_agent_action_extension() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import static extension java.lang.System.*",
 			"agent A1 {",
 				"def test {",
@@ -290,7 +284,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -298,7 +292,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_agent_behaviorUnit_extension() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import static extension java.lang.System.*",
 			"event E1 { }",
 			"agent A1 {",
@@ -307,7 +301,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -315,7 +309,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_action_extension() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import static extension java.lang.System.*",
 			"behavior B1 {",
 				"def test {",
@@ -323,7 +317,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -331,7 +325,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_behaviorUnit_extension() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import static extension java.lang.System.*",
 			"event E1 { }",
 			"behavior B1 {",
@@ -340,7 +334,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -348,7 +342,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_constructor_extension() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import io.sarl.lang.core.Agent",
 			"import static extension java.lang.System.*",
 			"event E1 { }",
@@ -359,7 +353,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -367,7 +361,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_action_extension() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import static extension java.lang.System.*",
 			"capacity C1 { }",
 			"skill S1 implements C1 {",
@@ -376,7 +370,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");
@@ -384,7 +378,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_constructor_extension() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"import io.sarl.lang.core.Agent",
 			"import static extension java.lang.System.*",
 			"capacity C1 { }",
@@ -396,7 +390,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden call to the exit function. The killing feature of the agent must be used");

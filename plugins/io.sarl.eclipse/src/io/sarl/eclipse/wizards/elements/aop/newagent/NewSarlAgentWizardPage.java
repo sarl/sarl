@@ -27,7 +27,7 @@ import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.core.Agent;
-import io.sarl.lang.genmodel.GeneratedCode;
+import io.sarl.lang.generator.helper.SarlEcoreCode;
 import io.sarl.lang.sarl.SarlAgent;
 
 import java.util.Collections;
@@ -83,7 +83,7 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 
 	@Override
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
-		GeneratedCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
+		SarlEcoreCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
 		SarlAgent agent = this.sarlGenerator.createAgent(code, getTypeName(), getSuperClass());
 		this.sarlGenerator.attachComment(code, agent, typeComment);
 

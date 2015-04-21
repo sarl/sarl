@@ -18,43 +18,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.genmodel;
+
+package foo;
+
+import io.sarl.lang.core.Address;
+import io.sarl.lang.core.Event;
 
 
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
-
-/** Documentation at the beginning of an Ecore block.
- *
+/**
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- * @see DocumentationAdapter
+ * @mavenartifactid $ArifactId$
  */
-public class BlockInnerDocumentationAdapter extends AdapterImpl {
-
-	private String documentation;
-
-	/** Replies the documentation.
-	 *
-	 * @return the documentation.
-	 */
-	public String getDocumentation() {
-		return this.documentation;
+@SuppressWarnings("all")
+public class Event2 extends Event {
+	public Event2() {
+		super();
 	}
-
-	/** Change the documentation.
-	 *
-	 * @param documentation - the comment.
-	 */
-	public void setDocumentation(String documentation) {
-		this.documentation = documentation;
+	public Event2(Address source) {
+		super(source);
 	}
-
-	@Override
-	public boolean isAdapterForType(Object type) {
-		return type == BlockInnerDocumentationAdapter.class;
-	}
-
 }

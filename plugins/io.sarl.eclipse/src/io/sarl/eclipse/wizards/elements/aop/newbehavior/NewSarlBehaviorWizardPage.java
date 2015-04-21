@@ -28,7 +28,7 @@ import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.core.Behavior;
-import io.sarl.lang.genmodel.GeneratedCode;
+import io.sarl.lang.generator.helper.SarlEcoreCode;
 import io.sarl.lang.sarl.SarlBehavior;
 
 import java.util.Collections;
@@ -85,7 +85,7 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 
 	@Override
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
-		GeneratedCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
+		SarlEcoreCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
 		SarlBehavior behavior = this.sarlGenerator.createBehavior(code, getTypeName(), getSuperClass());
 		this.sarlGenerator.attachComment(code, behavior, typeComment);
 

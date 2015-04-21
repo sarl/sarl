@@ -28,10 +28,12 @@ import io.sarl.lang.ui.outline.SARLOutlineNodeComparator;
 import io.sarl.lang.ui.outline.SARLOutlinePage;
 import io.sarl.lang.ui.preferences.SARLPreferenceStoreInitializer;
 import io.sarl.lang.ui.preferences.SARLValidatorConfigurationBlock;
+import io.sarl.lang.ui.tasks.SarlTaskTagProvider;
 import io.sarl.lang.ui.validation.SARLUIValidator;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+import org.eclipse.xtext.tasks.ITaskTagProvider;
 import org.eclipse.xtext.ui.editor.outline.actions.IOutlineContribution;
 import org.eclipse.xtext.ui.editor.outline.impl.OutlineFilterAndSorter.IComparator;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
@@ -50,6 +52,7 @@ import com.google.inject.name.Names;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("static-method")
 public class SARLUiModule extends AbstractSARLUiModule {
 
 	/** Construct an injection module for the UI of SARL.
@@ -64,7 +67,6 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	 *
 	 * @return the type of the SARL validator configuration page.
 	 */
-	@SuppressWarnings("static-method")
 	public Class<? extends AbstractValidatorConfigurationBlock> bindAbstractValidatorConfigurationBlock() {
 		return SARLValidatorConfigurationBlock.class;
 	}
@@ -128,7 +130,6 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	 *
 	 * @param binder - the Google binder.
 	 */
-	@SuppressWarnings("static-method")
 	public void configureFilterOperationsContribution(Binder binder) {
 		binder.bind(IOutlineContribution.class).annotatedWith(
 				Names.named("SARLFieldOutlineFilter")) //$NON-NLS-1$
@@ -142,12 +143,18 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	}
 
 	/** Provides the tool for building the list of the proposals.
-	 *
 	 * @return the proposal provider.
 	 */
 	@Override
 	public Class<? extends org.eclipse.xtext.common.types.xtext.ui.ITypesProposalProvider> bindITypesProposalProvider() {
 		return ImportingTypesProposalProvider.class;
+	}
+
+	/** Provides the tool for providing task tags.
+	 * @return the proposal task tag provider.
+	 */
+	public Class<? extends ITaskTagProvider> bindTaskTagProvider() {
+		return SarlTaskTagProvider.class;
 	}
 
 }

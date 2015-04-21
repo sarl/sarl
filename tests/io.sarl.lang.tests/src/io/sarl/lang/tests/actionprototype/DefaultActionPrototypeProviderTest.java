@@ -230,9 +230,6 @@ public class DefaultActionPrototypeProviderTest {
 		@Inject
 		private DefaultActionPrototypeProvider provider;
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
 		@Nullable
 		private FormalParameterProvider parameterProvider;
 
@@ -241,11 +238,6 @@ public class DefaultActionPrototypeProviderTest {
 
 		@Nullable
 		private EList<JvmFormalParameter> jvmParameters;
-
-		private JvmTypeReference getType(String name) throws Exception {
-			XtendFile s = this.parser.parse("agent TMPAGENT { var attr : " + name + " }");
-			return ((XtendField) ((SarlAgent) s.getXtendTypes().get(0)).getMembers().get(0)).getType();
-		}
 
 		@Before
 		public void setUp() throws Exception {
@@ -323,7 +315,7 @@ public class DefaultActionPrototypeProviderTest {
 
 		@Test
 		public void validateTypeOfVarArgInSarl() throws Exception {
-			XtendFile s = this.parser.parse("agent TMPAGENT { def myfct(a : float, b : Object*) {} }");
+			XtendFile s = file("agent Foo { def fooFct(a : float, b : Object*) {} }");
 			SarlFormalParameter param = (SarlFormalParameter) ((SarlAction) ((SarlAgent) s.getXtendTypes().get(0))
 					.getMembers().get(0)).getParameters().get(1);
 			assertNotNull(param);
@@ -846,9 +838,6 @@ public class DefaultActionPrototypeProviderTest {
 		@Inject
 		private DefaultActionPrototypeProvider provider;
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
 		@Nullable
 		private FormalParameterProvider parameterProvider;
 
@@ -857,11 +846,6 @@ public class DefaultActionPrototypeProviderTest {
 
 		@Nullable
 		private EList<JvmFormalParameter> jvmParameters;
-
-		private JvmTypeReference getType(String name) throws Exception {
-			XtendFile s = this.parser.parse("agent TMPAGENT { var attr : " + name + " }");
-			return ((XtendField) ((SarlAgent) s.getXtendTypes().get(0)).getMembers().get(0)).getType();
-		}
 
 		@Before
 		public void setUp() throws Exception {
@@ -983,7 +967,7 @@ public class DefaultActionPrototypeProviderTest {
 
 		@Test
 		public void validateTypeOfVarArgInSarl() throws Exception {
-			XtendFile s = this.parser.parse("agent TMPAGENT { def myfct(a : float, b : Object*) {} }");
+			XtendFile s = file("agent Foo { def fooFct(a : float, b : Object*) {} }");
 			SarlFormalParameter param = (SarlFormalParameter) ((SarlAction) ((SarlAgent) s.getXtendTypes().get(0))
 					.getMembers().get(0)).getParameters().get(1);
 			assertNotNull(param);

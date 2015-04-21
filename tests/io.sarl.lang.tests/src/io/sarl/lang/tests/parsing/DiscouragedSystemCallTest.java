@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,30 +54,24 @@ public class DiscouragedSystemCallTest {
 
 	public static class ConsoleTest extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void systemConsole_agent_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.console().readLine();",
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemConsole_agent_behaviorUnit() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -85,30 +79,30 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemConsole_behavior_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.console().readLine();",
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemConsole_behavior_behaviorUnit() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -116,15 +110,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemConsole_behavior_constructor() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.SARLInjectorProvider;",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -134,15 +128,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemConsole_skill_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -150,15 +144,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemConsole_skill_constructor() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -168,15 +162,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemConsole_agent_action_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"import static java.lang.System.*",
 					"import static java.lang.System.*",
@@ -190,15 +184,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemConsole_skill_action_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"import io.sarl.tests.api.AbstractSarlTest",
@@ -211,40 +205,34 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 	}
 
 	public static class ErrCallTest extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void systemErr_agent_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.err.println(\"\")",
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemErr_agent_behaviorUnit() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -252,30 +240,30 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemErr_behavior_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.err.println(\"\")",
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemErr_behavior_behaviorUnit() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -283,15 +271,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemErr_behavior_constructor() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -300,15 +288,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemErr_skill_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -316,15 +304,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemErr_skill_constructor() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -334,15 +322,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemErr_agent_action_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"agent A1 {",
 					"	def test {",
@@ -350,15 +338,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemErr_agent_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"agent A1 {",
@@ -367,15 +355,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemErr_behavior_action_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"behavior B1 {",
 					"	def test {",
@@ -383,15 +371,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemErr_behavior_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"behavior B1 {",
@@ -400,15 +388,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemErr_behavior_constructor_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -418,15 +406,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemErr_skill_action_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -435,15 +423,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemErr_skill_constructor_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static java.lang.System.*",
 					"capacity C1 { }",
@@ -454,40 +442,34 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 	}
 
 	public static class OutCallTest extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void systemOut_agent_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.out.println(\"\")",
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemOut_agent_behaviorUnit() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -495,30 +477,30 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemOut_behavior_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.out.println(\"\")",
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemOut_behavior_behaviorUnit() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -526,15 +508,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemOut_behavior_constructor() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -543,15 +525,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemOut_skill_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -559,15 +541,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemOut_skill_constructor() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -577,15 +559,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemOut_agent_action_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"agent A1 {",
 					"	def test {",
@@ -593,15 +575,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemOut_agent_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"agent A1 {",
@@ -610,15 +592,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemOut_behavior_action_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"behavior B1 {",
 					"	def test {",
@@ -626,15 +608,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemOut_behavior_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"behavior B1 {",
@@ -643,15 +625,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemOut_behavior_constructor_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -661,15 +643,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemOut_skill_action_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -678,15 +660,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemOut_skill_constructor_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static java.lang.System.*",
 					"capacity C1 { }",
@@ -697,40 +679,34 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 	}
 
 	public static class SetErrCallTest extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void systemSetErr_agent_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.setErr(null)",
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetErr_agent_behaviorUnit() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -738,30 +714,30 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetErr_behavior_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.setErr(null)",
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetErr_behavior_behaviorUnit() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -769,15 +745,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetErr_behavior_constructor() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -786,15 +762,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetErr_skill_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -802,15 +778,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetErr_skill_constructor() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -820,15 +796,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetErr_agent_action_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"agent A1 {",
 					"	def test {",
@@ -836,15 +812,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetErr_agent_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"agent A1 {",
@@ -853,15 +829,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetErr_behavior_action_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"behavior B1 {",
 					"	def test {",
@@ -869,15 +845,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetErr_behavior_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"behavior B1 {",
@@ -886,15 +862,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetErr_behavior_constructor_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -904,15 +880,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetErr_skill_action_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -921,15 +897,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetErr_skill_constructor_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static java.lang.System.*",
 					"capacity C1 { }",
@@ -940,40 +916,34 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 	}
 
 	public static class SetOutCallTest extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void systemSetOut_agent_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.setOut(null)",
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetOut_agent_behaviorUnit() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -981,30 +951,30 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetOut_behavior_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.setOut(null)",
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetOut_behavior_behaviorUnit() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -1012,15 +982,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetOut_behavior_constructor() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -1029,15 +999,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetOut_skill_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -1045,15 +1015,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetOut_skill_constructor() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -1063,15 +1033,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetOut_agent_action_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"agent A1 {",
 					"	def test {",
@@ -1079,15 +1049,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetOut_agent_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"agent A1 {",
@@ -1096,15 +1066,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetOut_behavior_action_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"behavior B1 {",
 					"	def test {",
@@ -1112,15 +1082,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetOut_behavior_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"behavior B1 {",
@@ -1129,15 +1099,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetOut_behavior_constructor_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -1147,15 +1117,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetOut_skill_action_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -1164,15 +1134,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemSetOut_skill_constructor_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static java.lang.System.*",
 					"capacity C1 { }",
@@ -1183,40 +1153,34 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 	}
 
 	public static class OutputImplicitCallTest extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void println_agent_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		println(\"\")",
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the implicitly imported input/output functions");
+					"Discouraged feature use: println. You should use an agents capacity in place of this feature call");
 		}
 
 		@Test
 		public void println_agent_behaviorUnit() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -1224,30 +1188,30 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the implicitly imported input/output functions");
+					"Discouraged feature use: println. You should use an agents capacity in place of this feature call");
 		}
 
 		@Test
 		public void println_behavior_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		println(\"\")",
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the implicitly imported input/output functions");
+					"Discouraged feature use: println. You should use an agents capacity in place of this feature call");
 		}
 
 		@Test
 		public void println_behavior_behaviorUnit() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -1255,15 +1219,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the implicitly imported input/output functions");
+					"Discouraged feature use: println. You should use an agents capacity in place of this feature call");
 		}
 
 		@Test
 		public void println_behavior_constructor() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -1272,15 +1236,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the implicitly imported input/output functions");
+					"Discouraged feature use: println. You should use an agents capacity in place of this feature call");
 		}
 
 		@Test
 		public void println_skill_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -1288,15 +1252,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the implicitly imported input/output functions");
+					"Discouraged feature use: println. You should use an agents capacity in place of this feature call");
 		}
 
 		@Test
 		public void println_skill_constructor() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -1306,40 +1270,34 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the implicitly imported input/output functions");
+					"Discouraged feature use: println. You should use an agents capacity in place of this feature call");
 		}
 
 	}
 
 	public static class InheritedChannelCallTest extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void systemInheritedChannel_agent_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.inheritedChannel().isOpen();",
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemInheritedChannel_agent_behaviorUnit() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -1347,30 +1305,30 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemInheritedChannel_behavior_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.inheritedChannel().isOpen();",
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemInheritedChannel_behavior_behaviorUnit() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -1378,15 +1336,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemInheritedChannel_behavior_constructor() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -1395,15 +1353,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemInheritedChannel_skill_action() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -1411,15 +1369,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemInheritedChannel_skill_constructor() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -1429,15 +1387,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemInheritedChannel_agent_action_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"agent A1 {",
 					"	def test {",
@@ -1445,15 +1403,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemInheritedChannel_agent_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"agent A1 {",
@@ -1462,15 +1420,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemInheritedChannel_behavior_action_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"behavior B1 {",
 					"	def test {",
@@ -1478,15 +1436,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemInheritedChannel_behavior_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"behavior B1 {",
@@ -1495,15 +1453,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemInheritedChannel_behavior_constructor_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -1513,15 +1471,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemInheritedChannel_skill_action_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import static java.lang.System.*",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -1530,15 +1488,15 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 		@Test
 		public void systemInheritedChannel_skill_constructor_staticImport() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static java.lang.System.*",
 					"capacity C1 { }",
@@ -1549,10 +1507,10 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use. The agent's logging capacity should be used in place of the system outputs on the console");
+					"Discouraged feature use");
 		}
 
 	}

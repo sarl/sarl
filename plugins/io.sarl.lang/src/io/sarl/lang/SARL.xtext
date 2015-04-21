@@ -49,23 +49,19 @@ Member returns xtend::XtendMember:
 Field returns xtend::XtendMember:
 	{xtend::XtendField}
 	annotations+=XAnnotation*
-	{xtend::XtendField.annotationInfo = current} modifiers+=CommonModifier*
-	(
-		modifiers+=FieldModifier modifiers+=CommonModifier* 
-	|
-		modifiers+='extension' (modifiers+=FieldModifier | modifiers+=CommonModifier)* 
-	| 
-		modifiers+=FieldModifier (modifiers+=CommonModifier)* modifiers+='extension' (modifiers+=CommonModifier)*  
-	)
-    (=>(name=ValidID ':' type=JvmTypeReference) | name=ValidID) 
+	modifiers+=CommonModifier*
+	modifiers+=FieldModifier
+	modifiers+=CommonModifier*
+	(=>(name=ValidID ':' type=JvmTypeReference) | name=ValidID) 
 	('=' initialValue=XExpression)? ';'?
 ;
 
 Action returns xtend::XtendFunction:
 	{SarlAction}
 	annotations+=XAnnotation*
-	{SarlAction.annotationInfo = current} modifiers+=CommonModifier*
-	modifiers+=MethodModifier (modifiers+=CommonModifier | modifiers+=MethodModifier)* 
+	modifiers+=CommonModifier*
+	modifiers+=MethodModifier
+	modifiers+=CommonModifier* 
 	('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?
 	name=FunctionID
 	(
@@ -76,9 +72,8 @@ Action returns xtend::XtendFunction:
 		')'
 	)?
 	( ':'
-		=> (returnType=JvmTypeReference)
-	  | => (returnType=TypeReferenceWithTypeArgs)
-	  | => (returnType=TypeReferenceNoTypeArgs)
+	  (	(returnType=TypeReferenceWithTypeArgs)
+	  	| (returnType=TypeReferenceNoTypeArgs) )
 	)?
 	(	('throws' exceptions+=JvmTypeReference (',' exceptions+=JvmTypeReference)*)?
 		&
@@ -90,7 +85,6 @@ Action returns xtend::XtendFunction:
 Constructor returns xtend::XtendConstructor:
 	{xtend::XtendConstructor}
 	annotations+=XAnnotation*
-	{xtend::XtendConstructor.annotationInfo = current}
 	modifiers+=CommonModifier*
 	'new'
 	('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?
@@ -103,8 +97,7 @@ Constructor returns xtend::XtendConstructor:
 
 BehaviorUnit returns xtend::XtendMember:
 	{SarlBehaviorUnit}
-	annotations+=XAnnotation*
-	{SarlBehaviorUnit.annotationInfo = current} 
+	annotations+=XAnnotation* 
 	'on' name=JvmParameterizedTypeReference (=> '[' guard=XExpression ']')?
 	(expression=XBlockExpression | expression=RichString | ';')
 ;
@@ -124,7 +117,6 @@ RequiredCapacity returns xtend::XtendMember:
 Class returns xtend::XtendTypeDeclaration:
 	{xtend::XtendClass}
 	annotations+=XAnnotation*
-	{xtend::XtendClass.annotationInfo = current}
 	modifiers+=CommonModifier*
 	'class' name=ValidID ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?  
 	("extends" extends=JvmParameterizedTypeReference)? 
@@ -136,7 +128,6 @@ Class returns xtend::XtendTypeDeclaration:
 Interface returns xtend::XtendTypeDeclaration:
 	{xtend::XtendInterface}
 	annotations+=XAnnotation*
-	{xtend::XtendInterface.annotationInfo = current}
 	modifiers+=CommonModifier*
   	'interface' name=ValidID ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?  
    	('extends' extends+=JvmParameterizedTypeReference (',' extends+=JvmParameterizedTypeReference)*)?'{'
@@ -147,7 +138,6 @@ Interface returns xtend::XtendTypeDeclaration:
 Enum returns xtend::XtendTypeDeclaration:
 	{xtend::XtendEnum}
 	annotations+=XAnnotation*
-	{xtend::XtendEnum.annotationInfo = current}
 	modifiers+=CommonModifier*
   	'enum' name=ValidID '{'   
 	   (members+=XtendEnumLiteral (',' members+=XtendEnumLiteral)*)? ';'?
@@ -157,7 +147,6 @@ Enum returns xtend::XtendTypeDeclaration:
 AnnotationType returns xtend::XtendTypeDeclaration:
 	{xtend::XtendAnnotationType}
 	annotations+=XAnnotation*
- 	{xtend::XtendAnnotationType.annotationInfo = current}
  	modifiers+=CommonModifier*
 	'annotation' name=ValidID
 	'{' (members+=AnnotationField)* '}'
@@ -166,7 +155,6 @@ AnnotationType returns xtend::XtendTypeDeclaration:
 Event returns xtend::XtendTypeDeclaration:
 	{SarlEvent}
 	annotations+=XAnnotation*
-	{SarlEvent.annotationInfo = current}
 	modifiers+=CommonModifier*
 	'event' name=ValidID ('extends' extends=JvmParameterizedTypeReference)? 
 	('{' (members+=EventMember)* '}')?
@@ -179,7 +167,6 @@ EventMember returns xtend::XtendMember:
 Agent returns xtend::XtendTypeDeclaration:
 	{SarlAgent}
 	annotations+=XAnnotation*
-	{SarlAgent.annotationInfo = current}
 	modifiers+=CommonModifier*
 	'agent' name=ValidID 
 	('extends' extends=JvmParameterizedTypeReference)?
@@ -193,7 +180,6 @@ AgentMember returns xtend::XtendMember:
 Capacity returns xtend::XtendTypeDeclaration:
 	{SarlCapacity}
 	annotations+=XAnnotation*
-	{SarlCapacity.annotationInfo = current}
 	modifiers+=CommonModifier*
 	'capacity' name=ValidID
 	('extends' extends+=JvmParameterizedTypeReference
@@ -208,7 +194,6 @@ CapacityMember returns xtend::XtendMember:
 Behavior returns xtend::XtendTypeDeclaration:
 	{SarlBehavior}
 	annotations+=XAnnotation*
-	{SarlBehavior.annotationInfo = current}
 	modifiers+=CommonModifier*
 	'behavior' name=ValidID ('extends' extends=JvmParameterizedTypeReference)?
 	'{' (members+=BehaviorMember)* '}'
@@ -221,7 +206,6 @@ BehaviorMember returns xtend::XtendMember:
 Skill returns xtend::XtendTypeDeclaration:
 	{SarlSkill}
 	annotations+=XAnnotation*
-	{SarlSkill.annotationInfo = current}
 	modifiers+=CommonModifier*
 	'skill' name=ValidID 
 	(	('extends' extends=JvmParameterizedTypeReference)?
@@ -242,11 +226,9 @@ SkillMember returns xtend::XtendMember:
 Parameter returns xtend::XtendParameter:
 	{SarlFormalParameter}
 	annotations+=XAnnotation*
-	(extension?='extension' annotations+=XAnnotation*)?  
 	name=InnerVarID ':' parameterType=JvmTypeReference 
-	(	  ('=' defaultValue=DefaultParameterValue)
-		| (varArg?=VarArgToken)
-	)?
+	(   (varArg?=VarArgToken)
+	  | ('=' defaultValue=DefaultParameterValue))?
 ;
 
 DefaultParameterValue returns xbase::XExpression:
@@ -259,7 +241,7 @@ DefaultParameterValue returns xbase::XExpression:
 // Variable declaration according to the SARL syntax (not the Xtext/Xtend)
 XVariableDeclaration returns xbase::XExpression:
 	=>({xtend::XtendVariableDeclaration}
-	(((writeable?='var'|'val') extension?='extension'?) | (extension?='extension' (writeable?='var'|'val'))))
+	(writeable?='var'|'val') )
 	(=>name=InnerVarID)
 	(':' type=JvmTypeReference)?
 	('=' right=XExpression)?
@@ -267,12 +249,12 @@ XVariableDeclaration returns xbase::XExpression:
 
 // Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
 JvmFormalParameter returns xtend::XtendFormalParameter:
-	extension?='extension'? name=InnerVarID (=> ':' (parameterType=JvmTypeReference))?
+	name=InnerVarID (=> ':' (parameterType=JvmTypeReference))?
 ;
 	
 // Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
 FullJvmFormalParameter returns xtend::XtendFormalParameter:
-	extension?='extension'? name=InnerVarID ':' parameterType=JvmTypeReference
+	name=InnerVarID ':' parameterType=JvmTypeReference
 ;
 
 // The type of the for-loop's variable is following the SARL syntax (not the Xtext/Xtend)

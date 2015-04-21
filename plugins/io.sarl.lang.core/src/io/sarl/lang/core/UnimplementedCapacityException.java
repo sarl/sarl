@@ -22,6 +22,8 @@ package io.sarl.lang.core;
 
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Thrown when an {@link Agent} tries to access a skill associated to a Capacity
  * and no implementation has been mapped. To define the skill use
@@ -56,6 +58,7 @@ public class UnimplementedCapacityException extends RuntimeException {
 	 *
 	 * @return the calling agent.
 	 */
+	@Pure
 	public UUID getCallingAgent() {
 		return this.callingAgent;
 	}
@@ -65,6 +68,7 @@ public class UnimplementedCapacityException extends RuntimeException {
 	 *
 	 * @return the unimplemented capacity.
 	 */
+	@Pure
 	public Class<? extends Capacity> getUnimplementedCapacity() {
 		return this.unimplementedCapacity;
 	}

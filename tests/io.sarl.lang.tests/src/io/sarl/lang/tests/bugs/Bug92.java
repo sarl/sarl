@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -309,7 +309,7 @@ public class Bug92 extends AbstractSarlTest {
 				"   */",
 				"  @Generated",
 				"  @ImportedCapacityFeature(ComputeEnergyCapacity.class)",
-				"  protected Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {",
+				"  protected final Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {",
 				"    return getSkill(ComputeEnergyCapacity.class).getEnergy(currentTime, deltaTime, wantedEnergy);",
 				"  }",
 				"  ",
@@ -320,7 +320,7 @@ public class Bug92 extends AbstractSarlTest {
 				"   */",
 				"  @Generated",
 				"  @ImportedCapacityFeature(ComputeEnergyCapacity.class)",
-				"  protected void setVoltage(final Double currentVoltage) {",
+				"  protected final void setVoltage(final Double currentVoltage) {",
 				"    getSkill(ComputeEnergyCapacity.class).setVoltage(currentVoltage);",
 				"  }",
 				"  ",
@@ -426,7 +426,7 @@ public class Bug92 extends AbstractSarlTest {
 				"   */",
 				"  @Generated",
 				"  @ImportedCapacityFeature(ComputeEnergyCapacity.class)",
-				"  protected Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {",
+				"  protected final Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {",
 				"    return getSkill(ComputeEnergyCapacity.class).getEnergy(currentTime, deltaTime, wantedEnergy);",
 				"  }",
 				"  ",
@@ -437,7 +437,7 @@ public class Bug92 extends AbstractSarlTest {
 				"   */",
 				"  @Generated",
 				"  @ImportedCapacityFeature(ComputeEnergyCapacity.class)",
-				"  protected void setVoltage(final Double currentVoltage) {",
+				"  protected final void setVoltage(final Double currentVoltage) {",
 				"    getSkill(ComputeEnergyCapacity.class).setVoltage(currentVoltage);",
 				"  }",
 				"  ",

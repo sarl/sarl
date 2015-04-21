@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,15 +110,13 @@ public class Bug23 extends AbstractSarlTest {
 				"      return false;",
 				"    if (getClass() != obj.getClass())",
 				"      return false;",
-				"    if (!super.equals(obj))",
-				"      return false;",
 				"    MyAgentSpawned other = (MyAgentSpawned) obj;",
 				"    if (this.titi == null) {",
 				"      if (other.titi != null)",
 				"        return false;",
 				"    } else if (!this.titi.equals(other.titi))",
 				"      return false;",
-				"    return true;",
+				"    return super.equals(obj);",
 				"  }",
 				"  ",
 				"  @Override",
@@ -141,7 +139,7 @@ public class Bug23 extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @Generated",
-				"  private final static long serialVersionUID = -267285920L;",
+				"  private final static long serialVersionUID = -201217093L;",
 				"}",
 				""
 				);

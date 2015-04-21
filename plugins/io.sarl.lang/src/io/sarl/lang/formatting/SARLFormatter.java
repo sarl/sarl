@@ -110,9 +110,9 @@ public class SARLFormatter extends XbaseFormatter {
 	@SuppressWarnings("static-method")
 	public void configureConstructor(FormattingConfig c, ConstructorElements ele) {
 		c.setLinewrap(2).before(ele.getGroup());
-		c.setNoSpace().around(ele.getLeftParenthesisKeyword_6_0());
-		c.setNoSpace().before(ele.getRightParenthesisKeyword_6_2());
-		c.setNoSpace().before(ele.getCommaKeyword_5_2_0());
+		c.setNoSpace().around(ele.getLeftParenthesisKeyword_5_0());
+		c.setNoSpace().before(ele.getRightParenthesisKeyword_5_2());
+		c.setNoSpace().before(ele.getCommaKeyword_5_1_1_0());
 	}
 
 	/** Configure the skill formatting.
@@ -123,8 +123,8 @@ public class SARLFormatter extends XbaseFormatter {
 	@SuppressWarnings("static-method")
 	public void configureSkill(FormattingConfig c, SkillElements ele) {
 		c.setLinewrap(1, 1, 2).before(ele.getGroup());
-		c.setIndentation(ele.getLeftCurlyBracketKeyword_7(), ele.getRightCurlyBracketKeyword_9());
-		c.setLinewrap().around(ele.getRightCurlyBracketKeyword_9());
+		c.setIndentation(ele.getLeftCurlyBracketKeyword_6(), ele.getRightCurlyBracketKeyword_8());
+		c.setLinewrap().around(ele.getRightCurlyBracketKeyword_8());
 	}
 
 	/** Configure the capacity requirement formatting.
@@ -146,8 +146,8 @@ public class SARLFormatter extends XbaseFormatter {
 	@SuppressWarnings("static-method")
 	public void configureBehaviors(FormattingConfig c, BehaviorElements ele) {
 		c.setLinewrap(2).before(ele.getGroup());
-		c.setIndentation(ele.getLeftCurlyBracketKeyword_7(), ele.getRightCurlyBracketKeyword_9());
-		c.setLinewrap().around(ele.getRightCurlyBracketKeyword_9());
+		c.setIndentation(ele.getLeftCurlyBracketKeyword_6(), ele.getRightCurlyBracketKeyword_8());
+		c.setLinewrap().around(ele.getRightCurlyBracketKeyword_8());
 	}
 
 	/** Configure the capacity formatting.
@@ -158,8 +158,8 @@ public class SARLFormatter extends XbaseFormatter {
 	@SuppressWarnings("static-method")
 	public void configureCapacities(FormattingConfig c, CapacityElements ele) {
 		c.setLinewrap(1, 1, 2).before(ele.getGroup());
-		c.setIndentation(ele.getLeftCurlyBracketKeyword_7(), ele.getRightCurlyBracketKeyword_9());
-		c.setLinewrap().around(ele.getRightCurlyBracketKeyword_9());
+		c.setIndentation(ele.getLeftCurlyBracketKeyword_6(), ele.getRightCurlyBracketKeyword_8());
+		c.setLinewrap().around(ele.getRightCurlyBracketKeyword_8());
 	}
 
 	/** Configure the action formatting.
@@ -170,12 +170,12 @@ public class SARLFormatter extends XbaseFormatter {
 	@SuppressWarnings("static-method")
 	public void configureActions(FormattingConfig c, ActionElements ele) {
 		c.setLinewrap(2).before(ele.getGroup());
-		c.setNoSpace().around(ele.getLeftParenthesisKeyword_8_0());
-		c.setNoSpace().before(ele.getRightParenthesisKeyword_8_2());
-		c.setNoSpace().before(ele.getCommaKeyword_6_2_0());
-		c.setNoSpace().before(ele.getCommaKeyword_8_1_1_0());
-		c.setNoSpace().before(ele.getCommaKeyword_10_0_2_0());
-		c.setNoSpace().before(ele.getCommaKeyword_10_1_2_0());
+		c.setNoSpace().around(ele.getLeftParenthesisKeyword_7_0());
+		c.setNoSpace().before(ele.getRightParenthesisKeyword_7_2());
+		c.setNoSpace().before(ele.getCommaKeyword_5_2_0());
+		c.setNoSpace().before(ele.getCommaKeyword_7_1_1_0());
+		c.setNoSpace().before(ele.getCommaKeyword_9_0_2_0());
+		c.setNoSpace().before(ele.getCommaKeyword_9_1_2_0());
 	}
 
 	/** Configure the import formatting.
@@ -207,8 +207,8 @@ public class SARLFormatter extends XbaseFormatter {
 	@SuppressWarnings("static-method")
 	public void configureAgent(FormattingConfig c, AgentElements ele) {
 		c.setLinewrap(2).after(ele.getGroup());
-		c.setLinewrap().before(ele.getRightCurlyBracketKeyword_9());
-		c.setIndentation(ele.getLeftCurlyBracketKeyword_7(), ele.getRightCurlyBracketKeyword_9());
+		c.setLinewrap().before(ele.getRightCurlyBracketKeyword_8());
+		c.setIndentation(ele.getLeftCurlyBracketKeyword_6(), ele.getRightCurlyBracketKeyword_8());
 	}
 
 	/** Configure the event formatting.
@@ -219,8 +219,8 @@ public class SARLFormatter extends XbaseFormatter {
 	@SuppressWarnings("static-method")
 	public void configureEvents(FormattingConfig c, EventElements ele) {
 		c.setLinewrap(2).after(ele.getGroup());
-		c.setLinewrap().before(ele.getRightCurlyBracketKeyword_7_2());
-		c.setIndentation(ele.getLeftCurlyBracketKeyword_7_0(), ele.getRightCurlyBracketKeyword_7_2());
+		c.setLinewrap().before(ele.getRightCurlyBracketKeyword_6_2());
+		c.setIndentation(ele.getLeftCurlyBracketKeyword_6_0(), ele.getRightCurlyBracketKeyword_6_2());
 	}
 
 	/** Configure the capacity use formatting.
@@ -244,8 +244,8 @@ public class SARLFormatter extends XbaseFormatter {
 		c.setLinewrap(2).before(ele.getGroup());
 		c.setLinewrap().after(ele.getGroup());
 
-		c.setNoSpace().after(ele.getLeftSquareBracketKeyword_5_0());
-		c.setNoSpace().before(ele.getRightSquareBracketKeyword_5_2());
+		c.setNoSpace().after(ele.getLeftSquareBracketKeyword_4_0());
+		c.setNoSpace().before(ele.getRightSquareBracketKeyword_4_2());
 
 	}
 

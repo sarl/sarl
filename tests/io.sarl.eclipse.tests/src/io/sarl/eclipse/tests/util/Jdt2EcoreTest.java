@@ -37,8 +37,8 @@ import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.actionprototype.ActionPrototypeProvider;
 import io.sarl.lang.actionprototype.FormalParameterProvider;
-import io.sarl.lang.genmodel.GeneratedCode;
-import io.sarl.lang.genmodel.SARLCodeGenerator;
+import io.sarl.lang.generator.helper.SarlEcoreCode;
+import io.sarl.lang.generator.helper.ECoreGeneratorHelper;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.CleanWorkspaceAfter;
 import io.sarl.tests.api.Nullable;
@@ -993,8 +993,8 @@ public class Jdt2EcoreTest {
 		@Test
 		public void createFormalParameters_noDefault_noVarargs() throws JavaModelException, IllegalArgumentException {
 			ResourceSet resourceSet = mock(ResourceSet.class);
-			SARLCodeGenerator generator = mock(SARLCodeGenerator.class);
-			GeneratedCode code = mock(GeneratedCode.class);
+			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
+			SarlEcoreCode code = mock(SarlEcoreCode.class);
 			when(code.getCodeGenerator()).thenReturn(generator);
 			when(code.getResourceSet()).thenReturn(resourceSet);
 			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
@@ -1007,7 +1007,7 @@ public class Jdt2EcoreTest {
 			//
 			Jdt2Ecore.createFormalParameters(code, method, container);
 			//
-			ArgumentCaptor<GeneratedCode> arg0 = ArgumentCaptor.forClass(GeneratedCode.class);
+			ArgumentCaptor<SarlEcoreCode> arg0 = ArgumentCaptor.forClass(SarlEcoreCode.class);
 			ArgumentCaptor<XtendExecutable> arg1 = ArgumentCaptor.forClass(XtendExecutable.class);
 			ArgumentCaptor<String> arg2 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg3 = ArgumentCaptor.forClass(String.class);
@@ -1031,8 +1031,8 @@ public class Jdt2EcoreTest {
 		@Test
 		public void createFormalParameters_noDefault_varargs() throws JavaModelException, IllegalArgumentException {
 			ResourceSet resourceSet = mock(ResourceSet.class);
-			SARLCodeGenerator generator = mock(SARLCodeGenerator.class);
-			GeneratedCode code = mock(GeneratedCode.class);
+			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
+			SarlEcoreCode code = mock(SarlEcoreCode.class);
 			when(code.getCodeGenerator()).thenReturn(generator);
 			when(code.getResourceSet()).thenReturn(resourceSet);
 			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
@@ -1045,7 +1045,7 @@ public class Jdt2EcoreTest {
 			//
 			Jdt2Ecore.createFormalParameters(code, method, container);
 			//
-			ArgumentCaptor<GeneratedCode> arg0 = ArgumentCaptor.forClass(GeneratedCode.class);
+			ArgumentCaptor<SarlEcoreCode> arg0 = ArgumentCaptor.forClass(SarlEcoreCode.class);
 			ArgumentCaptor<XtendExecutable> arg1 = ArgumentCaptor.forClass(XtendExecutable.class);
 			ArgumentCaptor<String> arg2 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg3 = ArgumentCaptor.forClass(String.class);
@@ -1069,8 +1069,8 @@ public class Jdt2EcoreTest {
 		@Test
 		public void createFormalParameters_default_noVarargs() throws JavaModelException, IllegalArgumentException {
 			ResourceSet resourceSet = mock(ResourceSet.class);
-			SARLCodeGenerator generator = mock(SARLCodeGenerator.class);
-			GeneratedCode code = mock(GeneratedCode.class);
+			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
+			SarlEcoreCode code = mock(SarlEcoreCode.class);
 			when(code.getCodeGenerator()).thenReturn(generator);
 			when(code.getResourceSet()).thenReturn(resourceSet);
 			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
@@ -1107,7 +1107,7 @@ public class Jdt2EcoreTest {
 			//
 			Jdt2Ecore.createFormalParameters(code, method, container);
 			//
-			ArgumentCaptor<GeneratedCode> arg0 = ArgumentCaptor.forClass(GeneratedCode.class);
+			ArgumentCaptor<SarlEcoreCode> arg0 = ArgumentCaptor.forClass(SarlEcoreCode.class);
 			ArgumentCaptor<XtendExecutable> arg1 = ArgumentCaptor.forClass(XtendExecutable.class);
 			ArgumentCaptor<String> arg2 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg3 = ArgumentCaptor.forClass(String.class);
@@ -1131,8 +1131,8 @@ public class Jdt2EcoreTest {
 		@Test
 		public void createFormalParameters_default_varargs() throws JavaModelException, IllegalArgumentException {
 			ResourceSet resourceSet = mock(ResourceSet.class);
-			SARLCodeGenerator generator = mock(SARLCodeGenerator.class);
-			GeneratedCode code = mock(GeneratedCode.class);
+			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
+			SarlEcoreCode code = mock(SarlEcoreCode.class);
 			when(code.getCodeGenerator()).thenReturn(generator);
 			when(code.getResourceSet()).thenReturn(resourceSet);
 			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
@@ -1169,7 +1169,7 @@ public class Jdt2EcoreTest {
 			//
 			Jdt2Ecore.createFormalParameters(code, method, container);
 			//
-			ArgumentCaptor<GeneratedCode> arg0 = ArgumentCaptor.forClass(GeneratedCode.class);
+			ArgumentCaptor<SarlEcoreCode> arg0 = ArgumentCaptor.forClass(SarlEcoreCode.class);
 			ArgumentCaptor<XtendExecutable> arg1 = ArgumentCaptor.forClass(XtendExecutable.class);
 			ArgumentCaptor<String> arg2 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg3 = ArgumentCaptor.forClass(String.class);

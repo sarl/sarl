@@ -22,6 +22,8 @@ package io.sarl.lang.core;
 
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Event driven Interaction {@link Space} for agents.
  *
@@ -38,6 +40,7 @@ public interface EventSpace extends Space {
 	 * @param id - the agent's id.
 	 * @return the agent's address in this space.
 	 */
+	@Pure
 	Address getAddress(UUID id);
 
 	/**

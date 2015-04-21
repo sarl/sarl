@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,15 +48,9 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class SARLMapExtensionsTest extends AbstractSarlTest {
 
-	@Inject
-	private ParseHelper<XtendFile> parser;
-
-	@Inject
-	private ValidationTestHelper validator;
-
 	@Test
 	public void operator_addMapPair_0() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -67,8 +61,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 				"	map += str -> num",
 				"}",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertEquals("test", mas.getPackage());
@@ -95,14 +88,14 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(3);
 		assertEquals("myaction0", action.getName());
-		assertNull(action.getFiredEvents());
+		assertTypeReferenceIdentifiers(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
 
 	@Test
 	public void operator_addMapPair_1() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -114,8 +107,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 				"	map += p",
 				"}",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertEquals("test", mas.getPackage());
@@ -142,14 +134,14 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(3);
 		assertEquals("myaction1", action.getName());
-		assertNull(action.getFiredEvents());
+		assertTypeReferenceIdentifiers(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
 
 	@Test
 	public void operator_addMapMap_0() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -159,8 +151,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 				"	map1 += map2",
 				"}",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertEquals("test", mas.getPackage());
@@ -182,14 +173,14 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(2);
 		assertEquals("myaction0", action.getName());
-		assertNull(action.getFiredEvents());
+		assertTypeReferenceIdentifiers(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "void");
 	}
 
 	@Test
 	public void operator_addMapMap_1() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -200,7 +191,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.INCOMPATIBLE_TYPES,
 			"Type mismatch: cannot convert from Map<String, Number> to Pair<? extends String, ? extends Integer>");
@@ -208,7 +199,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 
 	@Test
 	public void operator_plusMapPair_0() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -220,8 +211,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 				"	r = map + (str -> num)",
 				"}",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertEquals("test", mas.getPackage());
@@ -253,14 +243,14 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(4);
 		assertEquals("myaction0", action.getName());
-		assertNull(action.getFiredEvents());
+		assertTypeReferenceIdentifiers(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
 
 	@Test
 	public void operator_plusMapPair_1() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -273,8 +263,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 				"	r = map + p",
 				"}",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertEquals("test", mas.getPackage());
@@ -306,14 +295,14 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(4);
 		assertEquals("myaction0", action.getName());
-		assertNull(action.getFiredEvents());
+		assertTypeReferenceIdentifiers(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
 
 	@Test
 	public void operator_plusMapMap_0() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -324,8 +313,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 				"	r = map1 + map2",
 				"}",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertEquals("test", mas.getPackage());
@@ -352,14 +340,14 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(3);
 		assertEquals("myaction0", action.getName());
-		assertNull(action.getFiredEvents());
+		assertTypeReferenceIdentifiers(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
 
 	@Test
 	public void operator_plusMapMap_1() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -370,8 +358,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 				"	r = map2 + map1",
 				"}",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertEquals("test", mas.getPackage());
@@ -398,13 +385,13 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(3);
 		assertEquals("myaction0", action.getName());
-		assertNull(action.getFiredEvents());
+		assertTypeReferenceIdentifiers(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 	}
 
 	@Test
 	public void operator_plusMapMap_2() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -416,7 +403,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.INCOMPATIBLE_TYPES,
 			"Type mismatch: cannot convert from Map<String, Number> to Pair<? extends String, ? extends Integer>");
@@ -424,7 +411,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 
 	@Test
 	public void operator_plusMapMap_3() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -435,8 +422,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 				"	r = map2 + map1",
 				"}",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertEquals("test", mas.getPackage());
@@ -463,14 +449,14 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(3);
 		assertEquals("myaction0", action.getName());
-		assertNull(action.getFiredEvents());
+		assertTypeReferenceIdentifiers(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
 
 	@Test
 	public void operator_plusMapMap_4() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -482,7 +468,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXBinaryOperation(),
 			IssueCodes.INCOMPATIBLE_TYPES,
 			"Type mismatch: cannot convert from String to Map<String, Integer>");
@@ -490,7 +476,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 
 	@Test
 	public void operator_removeMapK_0() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -503,7 +489,6 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertNoErrors(mas);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertEquals("test", mas.getPackage());
@@ -535,14 +520,14 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(4);
 		assertEquals("myaction0", action.getName());
-		assertNull(action.getFiredEvents());
+		assertTypeReferenceIdentifiers(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "java.lang.Object");
 	}
 
 	@Test
 	public void operator_removeMapK_1() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -555,7 +540,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.INCOMPATIBLE_TYPES,
 			"Type mismatch: cannot convert from int to Iterable<? super String>");
@@ -563,7 +548,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 
 	@Test
 	public void operator_minusMapK_0() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -575,8 +560,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 				"	r = map - str",
 				"}",
 			"}"
-		));
-		this.validator.assertNoErrors(mas);
+		), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertEquals("test", mas.getPackage());
@@ -615,7 +599,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 
 	@Test
 	public void operator_minusMapK_1() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -628,15 +612,15 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXBinaryOperation(),
 			Diagnostic.LINKING_DIAGNOSTIC,
-			"The method -(Map<String, Integer>) is undefined");
+			"- cannot be resolved");
 	}
 
 	@Test
 	public void operator_minusMapK_2() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -649,7 +633,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.INCOMPATIBLE_TYPES,
 			"Type mismatch: cannot convert from int to Map<? extends String, ? extends Integer>");
@@ -657,7 +641,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 
 	@Test
 	public void operator_minusMapK_3() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 			"package test",
 			"import java.util.Map",
 			"agent A1 {",
@@ -670,7 +654,7 @@ public class SARLMapExtensionsTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXBinaryOperation(),
 			IssueCodes.INCOMPATIBLE_TYPES,
 			"Type mismatch: cannot convert from int to Map<String, Integer>");

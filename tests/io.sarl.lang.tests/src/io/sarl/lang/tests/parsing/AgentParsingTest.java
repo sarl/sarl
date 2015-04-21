@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
@@ -30,23 +29,17 @@ import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.TestClasspath;
-import io.sarl.tests.api.TestScope;
 
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Diagnostic;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
-import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -65,7 +58,6 @@ import com.google.inject.Inject;
 @RunWith(Suite.class)
 @SuiteClasses({
 	AgentParsingTest.TopElementTest.class,
-	AgentParsingTest.TopElementUiBaseTest.class,
 	AgentParsingTest.BehaviorUnitTest.class,
 	AgentParsingTest.AttributeTest.class,
 	AgentParsingTest.CapacityUseTest.class,
@@ -76,20 +68,13 @@ public class AgentParsingTest {
 
 	public static class TopElementTest extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void declaration() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {}",
 					"agent A2 {}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -107,26 +92,27 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidExtend() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"}",
 					"agent A1 extends C1 {",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
-					IssueCodes.INVALID_EXTENDED_TYPE,
-					"Invalid supertype. Expecting: class");
+					org.eclipse.xtend.core.validation.IssueCodes.CLASS_EXPECTED,
+					33, 2,
+					"Invalid supertype. Expecting a class.");
 		}
 
 		@Test
 		public void recursiveAgentExtension_0() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 extends A1 {",
 					"}"
 					));
 
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
 					"The inheritance hierarchy of 'A1' is inconsistent");
@@ -134,14 +120,14 @@ public class AgentParsingTest {
 
 		@Test
 		public void recursiveAgentExtension_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 extends A2 {",
 					"}",
 					"agent A2 extends A1 {",
 					"}"
 					));
 
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
 					"The inheritance hierarchy of 'A1' is inconsistent");
@@ -149,7 +135,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void recursiveAgentExtension_2() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 extends A3 {",
 					"}",
 					"agent A2 extends A1 {",
@@ -158,7 +144,7 @@ public class AgentParsingTest {
 					"}"
 					));
 
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
 					"The inheritance hierarchy of 'A1' is inconsistent");
@@ -166,7 +152,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void sequenceAgentDefinition_invalid() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 extends A2 {",
 					"}",
 					"agent A2 extends A3 {",
@@ -175,11 +161,11 @@ public class AgentParsingTest {
 					"}"
 					));
 
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
 					"The inheritance hierarchy of 'A1' is inconsistent");
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
 					"The inheritance hierarchy of 'A2' is inconsistent");
@@ -187,15 +173,14 @@ public class AgentParsingTest {
 
 		@Test
 		public void sequenceAgentDefinition_valid() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A3 {",
 					"}",
 					"agent A2 extends A3 {",
 					"}",
 					"agent A1 extends A2 {",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(3, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -218,47 +203,16 @@ public class AgentParsingTest {
 
 	}
 
-	public static class TopElementUiBaseTest extends AbstractSarlUiTest {
-
-		@Inject
-		private ValidationTestHelper validator;
-
-		@Test
-		@TestClasspath("io.sarl.tests.testdata")
-		@TestScope(tycho=false)
-		public void invalidExtend() throws Exception {
-			// This test is working only in Eclipse, not in Maven.
-			Assume.assumeTrue(System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit."));
-			//
-			XtendFile script = parseWithProjectClasspath(
-					"import foo.MockFinalAgent",
-					"agent InvalidAgentDeclaration extends MockFinalAgent {",
-					"}");
-			this.validator.assertError(script,
-					SarlPackage.eINSTANCE.getSarlAgent(),
-					org.eclipse.xtend.core.validation.IssueCodes.OVERRIDDEN_FINAL,
-					"Attempt to override final class");
-		}
-
-	}
-
 	public static class BehaviorUnitTest extends AbstractSarlTest {
-
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
 
 		@Test
 		public void declarationWithoutGuard() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E {}",
 					"agent A1 {",
 					"on E {}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -280,13 +234,12 @@ public class AgentParsingTest {
 
 		@Test
 		public void declarationWithGuard() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E {}",
 					"agent A1 {",
 					"on E [ occurrence.source != null] {}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -308,26 +261,27 @@ public class AgentParsingTest {
 
 		@Test
 		public void missedEventDeclaration() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"on E  {}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					Diagnostic.LINKING_DIAGNOSTIC,
-					"Couldn't resolve reference to JvmType 'E'.");
+					14, 1,
+					"E cannot be resolved to a type");
 		}
 
 		@Test
 		public void invalidBehaviorUnit_EventType() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"on String {}",
 					"}"
 					));
 
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH,
 					"Invalid type: 'java.lang.String'. Only events can be used after the keyword 'on'");
@@ -335,14 +289,14 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidBehaviorUnit_GuardType() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1",
 					"agent A1 {",
 					"on E1 [ \"hello\" ] {}",
 					"}"
 					));
 
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					XbasePackage.eINSTANCE.getXExpression(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
 					"Type mismatch: cannot convert from String to boolean");
@@ -350,14 +304,14 @@ public class AgentParsingTest {
 
 		@Test
 		public void trueGuardBehaviorUnit() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1",
 					"agent A1 {",
 					"on E1 [ true ] {}",
 					"}"
 					));
 
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXBooleanLiteral(),
 					IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION,
 					"Discouraged boolean value. The guard is always true.");
@@ -365,38 +319,65 @@ public class AgentParsingTest {
 
 		@Test
 		public void falseGuardBehaviorUnit() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1",
 					"agent A1 {",
 					"on E1 [ false ] {}",
 					"}"
 					));
 
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlBehaviorUnit(),
 					IssueCodes.UNREACHABLE_BEHAVIOR_UNIT,
 					"Dead code. The guard is always false.");
+		}
+
+		@Test
+		public void invalidBehaviorUnit_SideEffect0() throws Exception {
+			XtendFile mas = file(multilineString(
+					"event E1",
+					"agent A1 {",
+					"var t = 5",
+					"on E1 [t += 5] {",
+					"}"
+					));
+
+			validate(mas).assertError(
+					XbasePackage.eINSTANCE.getXBinaryOperation(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRESSION,
+					37, 6,
+					"Expression with side effect is not allowed in guards");
+		}
+
+		@Test
+		public void invalidBehaviorUnit_SideEffect1() throws Exception {
+			XtendFile mas = file(multilineString(
+					"event E1",
+					"agent A1 {",
+					"var t = 5",
+					"on E1 [(t += 5) > 0] {",
+					"}"
+					));
+
+			validate(mas).assertError(
+					XbasePackage.eINSTANCE.getXBinaryOperation(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRESSION,
+					37, 12,
+					"Expression with side effect is not allowed in guards");
 		}
 
 	}
 
 	public static class AttributeTest extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void variableDefinition() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"var name : String = \"Hello\"",
 					"var number : Integer",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -422,13 +403,12 @@ public class AgentParsingTest {
 
 		@Test
 		public void valueDefinition() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"val name : String = \"Hello\"",
 					"var number : Integer",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -453,87 +433,89 @@ public class AgentParsingTest {
 
 		@Test
 		public void multipleVariableDefinition() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"var myfield : int",
 					"var myfield1 : String",
 					"var myfield : double",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					XtendPackage.eINSTANCE.getXtendField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
-					"Duplicate field in 'A1': myfield");
+					55, 7,
+					"Duplicate field myfield");
 		}
 
 		@Test
 		public void multipleValueDefinition() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"val myfield : int = 4",
 					"val myfield1 : String = \"\"",
 					"val myfield : double = 5",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					XtendPackage.eINSTANCE.getXtendField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
-					"Duplicate field in 'A1': myfield");
+					64, 7,
+					"Duplicate field myfield");
 		}
 
 		@Test
 		public void invalidAttributeName_0() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"var myfield1 = 4.5",
 					"var ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
 					"var myfield2 = true",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					XtendPackage.eINSTANCE.getXtendField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
+					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
 					"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
 		}
 
 		@Test
 		public void invalidAttributeName_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"val myfield1 = 4.5",
 					"val ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
 					"val myfield2 = true",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					XtendPackage.eINSTANCE.getXtendField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
+					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
 					"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
 		}
 
 		@Test
 		public void missedFinalFieldInitialization() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"val field1 : int = 5",
 					"val field2 : String",
 					"}"
 					));
-			this.validator.assertError(mas,
-					TypesPackage.eINSTANCE.getJvmConstructor(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_INITIALIZATION,
-					"The blank final field 'field2' may not have been initialized");
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAgent(),
+					org.eclipse.xtend.core.validation.IssueCodes.FIELD_NOT_INITIALIZED,
+					0, 53,
+					"The blank final field field2 may not have been initialized");
 		}
 
 		@Test
 		public void completeFinalFieldInitialization() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"val field1 : int = 5",
 					"val field2 : String = \"\"",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -558,7 +540,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void fieldNameShadowing() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"	val field1 : int = 5",
 					"	def myaction(a : int) { }",
@@ -568,7 +550,7 @@ public class AgentParsingTest {
 					"	def myaction(a : int) { }",
 					"}"
 					));
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					XtendPackage.eINSTANCE.getXtendField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
 					"The field 'field1' in 'A2' is hidding the inherited field 'A1.field1'.");
@@ -578,23 +560,16 @@ public class AgentParsingTest {
 
 	public static class CapacityUseTest extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void declarationInAgent() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity MyCap {",
 					"def my_operation",
 					"}",
 					"agent A1 {",
 					"uses MyCap",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -621,20 +596,21 @@ public class AgentParsingTest {
 
 		@Test
 		public void missedCapacityDeclaration() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"uses MyCap",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					Diagnostic.LINKING_DIAGNOSTIC,
-					"Couldn't resolve reference to JvmType 'MyCap'");
+					16, 5,
+					"MyCap cannot be resolved to a type");
 		}
 
 		@Test
 		public void multipleCapacityUses_0() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"agent A1 {",
@@ -643,7 +619,7 @@ public class AgentParsingTest {
 					"}"
 					));
 
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlCapacityUses(),
 					IssueCodes.REDUNDANT_CAPACITY_USE,
 					"Redundant use of the capacity 'C1'");
@@ -651,7 +627,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void multipleCapacityUses_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"agent A1 {",
@@ -661,7 +637,7 @@ public class AgentParsingTest {
 					"}"
 					));
 
-			this.validator.assertWarning(mas,
+			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlCapacityUses(),
 					IssueCodes.REDUNDANT_CAPACITY_USE,
 					"Redundant use of the capacity 'C2'");
@@ -671,30 +647,25 @@ public class AgentParsingTest {
 
 	public static class ActionTest extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void multipleActionDefinitionInAgent() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(a : int, b : int) { }",
 					"def myaction(a : int) { }",
 					"def myaction(a : int) { }",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
-					"Duplicate action in 'A1': myaction(a : int)");
+					50, 8,
+					"Duplicate method myaction(int) in type A1");
 		}
 
 		@Test
 		public void invalidActionName() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction {",
 					"System.out.println(\"ok\")",
@@ -707,7 +678,7 @@ public class AgentParsingTest {
 					"}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
 					"Invalid action name '_handle_myaction'.");
@@ -715,7 +686,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void incompatibleReturnType_0() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(a : int) : int {",
 					"return 0",
@@ -727,15 +698,16 @@ public class AgentParsingTest {
 					"}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					"Incompatible return type between 'float' and 'int' for myaction(int).");
+					100, 5,
+					"The return type is incompatible with myaction(int)");
 		}
 
 		@Test
 		public void incompatibleReturnType_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(a : int) {",
 					"// void",
@@ -747,15 +719,37 @@ public class AgentParsingTest {
 					"}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					"Incompatible return type between 'int' and 'void' for myaction(int).");
+					93, 3,
+					"The return type is incompatible with myaction(int)");
 		}
 
 		@Test
 		public void incompatibleReturnType_2() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
+					"agent A1 {",
+					"def myaction(a : int) : int {",
+					"return 0",
+					"}",
+					"}",
+					"agent A2 extends A1 {",
+					"def myaction(a : int) : void {",
+					"// void ",
+					"}",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
+					100, 4,
+					"The return type is incompatible with myaction(int)");
+		}
+
+		@Test
+		public void incompatibleReturnType_3() throws Exception {
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(a : int) : int {",
 					"return 0",
@@ -763,19 +757,20 @@ public class AgentParsingTest {
 					"}",
 					"agent A2 extends A1 {",
 					"def myaction(a : int) {",
-					"// void",
+					"// int return type is inferred",
 					"}",
 					"}"
 					));
-			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					"Incompatible return type between 'void' and 'int' for myaction(int).");
+			validate(mas).assertError(
+					XbasePackage.eINSTANCE.getXBlockExpression(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
+					98, 34,
+					"Type mismatch: cannot convert from null to int");
 		}
 
 		@Test
 		public void compatibleReturnType_0() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(a : int) : Number {",
 					"return 0.0",
@@ -786,8 +781,8 @@ public class AgentParsingTest {
 					"return 0.0",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -819,7 +814,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void compatibleReturnType_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(a : int) : float {",
 					"return 0f",
@@ -830,8 +825,8 @@ public class AgentParsingTest {
 					"return 0f",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -863,14 +858,14 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidFires() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"event E1",
 					"behavior B1 { }",
 					"agent A1 {",
 					"def myaction1 fires E1, B1 { }",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					IssueCodes.INVALID_FIRING_EVENT_TYPE,
 					"Invalid type: 'B1'. Only events can be used after the keyword 'fires'");

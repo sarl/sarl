@@ -22,7 +22,7 @@
 package io.sarl.lang.controlflow;
 
 import io.sarl.lang.annotation.EarlyExit;
-import io.sarl.lang.util.ModelUtil;
+import io.sarl.lang.util.Utils;
 
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmTypeReference;
@@ -65,7 +65,7 @@ public final class SARLEarlyExitComputerUtil {
 	 */
 	public static boolean isEarlyExitAnnotatedElement(Object element) {
 		return ((element instanceof JvmAnnotationTarget)
-				&& (ModelUtil.hasAnnotation((JvmAnnotationTarget) element, EarlyExit.class)));
+				&& (Utils.hasAnnotation((JvmAnnotationTarget) element, EarlyExit.class)));
 	}
 
 }

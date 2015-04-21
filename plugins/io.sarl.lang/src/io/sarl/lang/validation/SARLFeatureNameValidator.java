@@ -20,7 +20,7 @@
  */
 package io.sarl.lang.validation;
 
-import io.sarl.lang.util.ModelUtil;
+import io.sarl.lang.util.Utils;
 
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.xbase.validation.LogicalContainerAwareFeatureNameValidator;
@@ -44,8 +44,8 @@ public class SARLFeatureNameValidator extends LogicalContainerAwareFeatureNameVa
 	 */
 	@Override
 	public boolean isDisallowedName(QualifiedName name) {
-		if (ModelUtil.isHiddenAction(name.getLastSegment())
-			|| ModelUtil.isHiddenAttribute(name.getLastSegment())) {
+		if (Utils.isHiddenAction(name.getLastSegment())
+			|| Utils.isHiddenAttribute(name.getLastSegment())) {
 			return true;
 		}
 		return super.isDisallowedName(name);
@@ -55,10 +55,6 @@ public class SARLFeatureNameValidator extends LogicalContainerAwareFeatureNameVa
 	 */
 	@Override
 	public boolean isDiscouragedName(QualifiedName name) {
-		String n = name.getLastSegment();
-		if ("const".equals(n)) { //$NON-NLS-1$
-			return true;
-		}
 		return super.isDiscouragedName(name);
 	}
 

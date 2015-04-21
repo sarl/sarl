@@ -20,13 +20,24 @@
  */
 package io.sarl.tests.api;
 
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.isEmpty;
+import static com.google.common.collect.Lists.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.sarl.SarlSkill;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -35,15 +46,48 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtend.core.xtend.XtendAnnotationType;
+import org.eclipse.xtend.core.xtend.XtendClass;
+import org.eclipse.xtend.core.xtend.XtendConstructor;
+import org.eclipse.xtend.core.xtend.XtendEnum;
+import org.eclipse.xtend.core.xtend.XtendField;
+import org.eclipse.xtend.core.xtend.XtendFile;
+import org.eclipse.xtend.core.xtend.XtendFunction;
+import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtend.core.xtend.XtendParameter;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.JvmConstructor;
+import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.junit4.InjectWith;
+import org.eclipse.xtext.junit4.TemporaryFolder;
 import org.eclipse.xtext.junit4.XtextRunner;
+import org.eclipse.xtext.junit4.util.ParseHelper;
+import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
+import org.eclipse.xtext.resource.XtextResource;
+import org.eclipse.xtext.resource.XtextResourceSet;
+import org.eclipse.xtext.util.CancelIndicator;
+import org.eclipse.xtext.util.StringInputStream;
+import org.eclipse.xtext.validation.CheckMode;
+import org.eclipse.xtext.validation.IResourceValidator;
+import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.internal.AssumptionViolatedException;
@@ -57,8 +101,13 @@ import org.mockito.MockitoAnnotations;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 /** Abstract class that is providing useful tools for unit tests.
  *
@@ -78,6 +127,15 @@ import com.google.common.collect.Iterables;
 @InjectWith(SARLInjectorProvider.class)
 public abstract class AbstractSarlTest {
 
+	@Inject
+	private ValidationTestHelper validationHelper;
+	
+	@Inject
+	private ParseHelper<XtendFile> parser;
+	
+	@Inject
+	private SarlJvmModelAssociations associations;
+	
 	/** This rule permits to clean automatically the fields
 	 * at the end of the test.
 	 */
@@ -603,4 +661,432 @@ public abstract class AbstractSarlTest {
 		}
 	}
 
+	/** Create an instance of agent
+	 */
+	protected SarlAgent agent(String string) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string).getXtendTypes();
+		return (SarlAgent) decls.get(decls.size() - 1);
+	}
+
+	/** Create an instance of agent
+	 */
+	protected SarlAgent agent(String string, boolean validate) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string, validate).getXtendTypes();
+		return (SarlAgent) decls.get(decls.size() - 1);
+	}
+
+	/** Create an instance of capacity.
+	 */
+	protected SarlCapacity capacity(String string) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string).getXtendTypes();
+		return (SarlCapacity) decls.get(decls.size() - 1);
+	}
+
+	/** Create an instance of capacity.
+	 */
+	protected SarlCapacity capacity(String string, boolean validate) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string, validate).getXtendTypes();
+		return (SarlCapacity) decls.get(decls.size() - 1);
+	}
+
+	/** Create an instance of event.
+	 */
+	protected SarlEvent event(String string) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string).getXtendTypes();
+		return (SarlEvent) decls.get(decls.size() - 1);
+	}
+
+	/** Create an instance of event.
+	 */
+	protected SarlEvent event(String string, boolean validate) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string, validate).getXtendTypes();
+		return (SarlEvent) decls.get(decls.size() - 1);
+	}
+
+	/** Create an instance of skill.
+	 */
+	protected SarlSkill skill(String string) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string).getXtendTypes();
+		return (SarlSkill) decls.get(decls.size() - 1);
+	}
+
+	/** Create an instance of skill.
+	 */
+	protected SarlSkill skill(String string, boolean validate) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string, validate).getXtendTypes();
+		return (SarlSkill) decls.get(decls.size() - 1);
+	}
+
+	/** Create an instance of behavior.
+	 */
+	protected SarlBehavior behavior(String string) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string).getXtendTypes();
+		return (SarlBehavior) decls.get(decls.size() - 1);
+	}
+
+	/** Create an instance of behavior.
+	 */
+	protected SarlBehavior behavior(String string, boolean validate) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string, validate).getXtendTypes();
+		return (SarlBehavior) decls.get(decls.size() - 1);
+	}
+
+	/** Create an instance of class.
+	 */
+	protected XtendClass clazz(String string) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string).getXtendTypes();
+		return (XtendClass) decls.get(decls.size() - 1);
+	}
+
+	/** Create an instance of class.
+	 */
+	protected XtendClass clazz(String string, boolean validate) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string, validate).getXtendTypes();
+		return (XtendClass) decls.get(decls.size() - 1);
+	}
+
+	/** Create a SARL script.
+	 */
+	protected XtendFile file(String string) throws Exception {
+		return file(string, false);
+	}
+
+	/** Create an instance of class.
+	 */
+	protected XtendFile file(String string, boolean validate) throws Exception {
+		XtendFile script = this.parser.parse(string);
+		if (validate) {
+			Resource resource = script.eResource();
+			ResourceSet resourceSet = resource.getResourceSet();
+			if (resourceSet instanceof XtextResourceSet) {
+				((XtextResourceSet) resourceSet).setClasspathURIContext(getClass());
+			}
+			assertEquals(resource.getErrors().toString(), 0, resource.getErrors().size());
+			Collection<Issue> issues = Collections2.filter(issues(resource), new Predicate<Issue>() {
+				@Override
+				public boolean apply(Issue input) {
+					return input.getSeverity() == Severity.ERROR;
+				}
+			});
+			assertTrue("Resource contained errors : " + issues.toString(), issues.isEmpty());
+		}
+		return script;
+	}
+	
+	/** Validate the given file and reply the issues.
+	 */
+	protected List<Issue> issues(XtendFile file) {
+		return issues(file.eResource());
+	}
+
+	/** Validate the given resource and reply the issues.
+	 */
+	protected List<Issue> issues(Resource resource) {
+		return this.validationHelper.validate(resource);
+	}
+
+	/** Validate the given file and reply the validator.
+	 */
+	protected Validator validate(XtendFile file) {
+		return validate(file.eResource());
+	}
+
+	/** Validate the given resource and reply the validator.
+	 */
+	protected Validator validate(Resource resource) {
+		return new Validator(resource);
+	}
+
+	/** Create an instance of annotation type.
+	 */
+	protected XtendAnnotationType annotationType(String string) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string).getXtendTypes();
+		return (XtendAnnotationType) decls.get(decls.size() - 1);
+	}
+
+	/** Create an instance of annotation type.
+	 */
+	protected XtendAnnotationType annotationType(String string, boolean validate) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string, validate).getXtendTypes();
+		return (XtendAnnotationType) decls.get(decls.size() - 1);
+	}
+
+	/** Create an instance of interface.
+	 */
+	protected XtendInterface interfaze(String string) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string).getXtendTypes();
+		return (XtendInterface) decls.get(decls.size() - 1);
+	}
+
+	/** Create an instance of interface.
+	 */
+	protected XtendInterface interfaze(String string, boolean validate) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string, validate).getXtendTypes();
+		return (XtendInterface) decls.get(decls.size() - 1);
+	}
+
+	/** Create an instance of enumeration.
+	 */
+	protected XtendEnum enumeration(String string) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string).getXtendTypes();
+		return (XtendEnum) decls.get(decls.size() - 1);
+	}
+
+	/** Create an instance of enumeration.
+	 */
+	protected XtendEnum enumeration(String string, boolean validate) throws Exception {
+		List<XtendTypeDeclaration> decls = file(string, validate).getXtendTypes();
+		return (XtendEnum) decls.get(decls.size() - 1);
+	}
+
+	/** Create an instance of function.
+	 */
+	protected SarlAction function(String string, String... prefix) throws Exception {
+		XtendClass clazz = clazz(
+				IterableExtensions.join(Arrays.asList(prefix), "\n")
+				+ "\nclass Foo { " + string + "}");
+		return (SarlAction) clazz.getMembers().get(0);
+	}
+	
+	/** Create an instance of function.
+	 */
+	protected SarlAction function(String string, boolean validate, String... prefix) throws Exception {
+		XtendClass clazz = clazz(
+				IterableExtensions.join(Arrays.asList(prefix), "\n")
+				+ "\nclass Foo { " + string + "}");
+		return (SarlAction) clazz.getMembers().get(0);
+	}
+
+	/** Create an instance of JVM function.
+	 */
+	protected JvmOperation jvmOperation(String string, String... prefix) throws Exception {
+		SarlAction action = function(string, prefix);
+		return (JvmOperation) this.associations.getPrimaryJvmElement(action);
+	}
+
+	/** Create an instance of JVM function.
+	 */
+	protected JvmOperation jvmOperation(String string, boolean validate, String... prefix) throws Exception {
+		SarlAction action = function(string, validate, prefix);
+		return (JvmOperation) this.associations.getPrimaryJvmElement(action);
+	}
+
+	/** Create an instance of function signature.
+	 */
+	protected SarlAction functionSignature(String string, String... prefix) throws Exception {
+		XtendInterface interfaze = interfaze(
+				IterableExtensions.join(Arrays.asList(prefix), "\n")
+				+ "\ninterface Foo { " + string + "}");
+		return (SarlAction) interfaze.getMembers().get(0);
+	}
+	
+	/** Create an instance of function signature.
+	 */
+	protected SarlAction functionSignature(String string, boolean validate, String... prefix) throws Exception {
+		XtendInterface interfaze = interfaze(
+				IterableExtensions.join(Arrays.asList(prefix), "\n")
+				+ "\ninterface Foo { " + string + "}", validate);
+		return (SarlAction) interfaze.getMembers().get(0);
+	}
+
+	/** Create an instance of JVM function.
+	 */
+	protected JvmOperation jvmOperationSignature(String string, String... prefix) throws Exception {
+		SarlAction action = functionSignature(string, prefix);
+		return (JvmOperation) this.associations.getPrimaryJvmElement(action);
+	}
+
+	/** Create an instance of JVM function.
+	 */
+	protected JvmOperation jvmOperationSignature(String string, boolean validate, String... prefix) throws Exception {
+		SarlAction action = functionSignature(string, validate, prefix);
+		return (JvmOperation) this.associations.getPrimaryJvmElement(action);
+	}
+
+	/** Create an instance of constructor.
+	 */
+	protected XtendConstructor constructor(String string, String... prefix) throws Exception {
+		XtendClass clazz = clazz(
+				IterableExtensions.join(Arrays.asList(prefix), "\n")
+				+ "\nclass Foo { " + string + "}");
+		return (XtendConstructor) clazz.getMembers().get(0);
+	}
+
+	/** Create an instance of constructor.
+	 */
+	protected XtendConstructor constructor(String string, boolean validate, String... prefix) throws Exception {
+		XtendClass clazz = clazz(
+				IterableExtensions.join(Arrays.asList(prefix), "\n")
+				+ "\nclass Foo { " + string + "}", validate);
+		return (XtendConstructor) clazz.getMembers().get(0);
+	}
+
+	/** Create an instance of JVM constructor.
+	 */
+	protected JvmConstructor jvmConstructor(String string, String... prefix) throws Exception {
+		XtendConstructor constructor = constructor(string, prefix);
+		return (JvmConstructor) this.associations.getPrimaryJvmElement(constructor);
+	}
+
+	/** Create an instance of JVM constructor.
+	 */
+	protected JvmConstructor jvmConstructor(String string, boolean validate, String... prefix) throws Exception {
+		XtendConstructor constructor = constructor(string, validate, prefix);
+		return (JvmConstructor) this.associations.getPrimaryJvmElement(constructor);
+	}
+
+	/** Create an instance of field.
+	 */
+	protected XtendField field(String string, String... prefix) throws Exception {
+		XtendClass clazz = clazz(
+				IterableExtensions.join(Arrays.asList(prefix), "\n")
+				+ "\nclass Foo { " + string + "}");
+		return (XtendField) clazz.getMembers().get(0);
+	}
+
+	/** Create an instance of field.
+	 */
+	protected XtendField field(String string, boolean validate, String... prefix) throws Exception {
+		XtendClass clazz = clazz(
+				IterableExtensions.join(Arrays.asList(prefix), "\n")
+				+ "\nclass Foo { " + string + "}", validate);
+		return (XtendField) clazz.getMembers().get(0);
+	}
+
+	/** Create an instance of behavior unit.
+	 */
+	protected SarlBehaviorUnit behaviorUnit(String string, String... prefix) throws Exception {
+		SarlAgent agent = agent(
+				IterableExtensions.join(Arrays.asList(prefix), "\n")
+				+ "\nagent Foo { " + string + "}");
+		return (SarlBehaviorUnit) agent.getMembers().get(0);
+	}
+	
+	/** Create an instance of behavior unit.
+	 */
+	protected SarlBehaviorUnit behaviorUnit(String string, boolean validate, String... prefix) throws Exception {
+		SarlAgent agent = agent(
+				IterableExtensions.join(Arrays.asList(prefix), "\n")
+				+ "\nagent Foo { " + string + "}", validate);
+		return (SarlBehaviorUnit) agent.getMembers().get(0);
+	}
+
+	/** Create a type reference with the SARL parser.
+	 */
+	protected JvmTypeReference getType(String typeName, String... prefix) throws Exception {
+		SarlAgent agent = agent(
+				IterableExtensions.join(Arrays.asList(prefix), "\n")
+				+ "\nagent Foo { var fooAttr : " + typeName + " }");
+		return ((XtendField) agent.getMembers().get(0)).getType();
+	}
+
+	/** Wrapper for the validation helper on a specific resource.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public class Validator {
+
+		private final Resource resource;
+		
+		/**
+		 * @param resource - the resource to validate.
+		 */
+		private Validator(Resource resource) {
+			this.resource = resource;
+		}
+		
+		public List<Issue> validate() {
+			return AbstractSarlTest.this.validationHelper.validate(this.resource);
+		}
+		
+		public Validator assertNoIssues() {
+			AbstractSarlTest.this.validationHelper.assertNoIssues(this.resource);
+			return this;
+		}
+		
+		public Validator assertNoErrors() {
+			AbstractSarlTest.this.validationHelper.assertNoErrors(this.resource);
+			return this;
+		}
+
+		public Validator assertNoError(String issuecode) {
+			AbstractSarlTest.this.validationHelper.assertNoError(this.resource, issuecode);
+			return this;
+		}
+
+		public Validator assertNoErrors(EClass objectType, String code, String... messageParts) {
+			AbstractSarlTest.this.validationHelper.assertNoErrors(this.resource, objectType, code, messageParts);
+			return this;
+		}
+		
+		public Validator assertNoErrors(String code) {
+			AbstractSarlTest.this.validationHelper.assertNoErrors(this.resource, code);
+			return this;
+		}
+		
+		public Validator assertNoIssues(EClass objectType) {
+			AbstractSarlTest.this.validationHelper.assertNoIssues(this.resource, objectType);
+			return this;
+		}
+		
+		public Validator assertNoIssue(EClass objectType, String issuecode) {
+			AbstractSarlTest.this.validationHelper.assertNoIssue(this.resource, objectType, issuecode);
+			return this;
+		}
+
+		public Validator assertError(EClass objectType, String code, int offset, int length, String... messageParts) {
+			AbstractSarlTest.this.validationHelper.assertError(this.resource, objectType, code, offset, length, messageParts);
+			return this;
+		}
+
+		public Validator assertError(EClass objectType, String code, String... messageParts) {
+			AbstractSarlTest.this.validationHelper.assertError(this.resource, objectType, code, messageParts);
+			return this;
+		}
+		
+		public Validator assertIssue(EClass objectType, String code, Severity severity, String... messageParts) {
+			AbstractSarlTest.this.validationHelper.assertIssue(this.resource, objectType, code, severity, messageParts);
+			return this;
+		}
+		
+		public Validator assertIssue(EClass objectType, String code, int offset, int length,  Severity severity,
+				String... messageParts) {
+			AbstractSarlTest.this.validationHelper.assertIssue(this.resource, objectType, code, offset, length, severity,
+					messageParts);
+			return this;
+		}
+		
+		public Validator assertNoIssues(EClass objectType, String code, Severity severity, String... messageParts) {
+			AbstractSarlTest.this.validationHelper.assertNoIssues(this.resource, objectType, code, severity, messageParts);
+			return this;
+		}
+		
+		public Validator assertNoIssues(EClass objectType, String code, int offset, int length, Severity severity,
+				String... messageParts) {
+			AbstractSarlTest.this.validationHelper.assertNoIssues(this.resource, objectType, code, offset, length, severity,
+					messageParts);
+			return this;
+		}
+
+		public Validator assertWarning(EClass objectType, String code, String... messageParts) {
+			AbstractSarlTest.this.validationHelper.assertWarning(this.resource, objectType, code, messageParts);
+			return this;
+		}
+
+		public Validator assertNoWarnings(EClass objectType, String code, String... messageParts) {
+			AbstractSarlTest.this.validationHelper.assertNoWarnings(this.resource, objectType, code, messageParts);
+			return this;
+		}
+
+		public Validator assertWarning(EClass objectType, String code, int offset, int length, String... messageParts) {
+			AbstractSarlTest.this.validationHelper.assertWarning(this.resource, objectType, code, offset,
+					length, messageParts);
+			return this;
+		}
+
+	}
+	
 }

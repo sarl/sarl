@@ -23,6 +23,8 @@ package io.sarl.lang.core;
 import java.io.Serializable;
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This class describes all the addresses used by the kernel to identify its
  * elements.
@@ -60,6 +62,7 @@ public class Address implements Serializable, Comparable<Address> {
 	/** {@inheritDoc}
 	 */
 	@Override
+	@Pure
 	public String toString() {
 		return "Address [agentId=" + this.agentId //$NON-NLS-1$
 				+ ", spaceId=" + this.spaceId //$NON-NLS-1$
@@ -71,11 +74,13 @@ public class Address implements Serializable, Comparable<Address> {
 	 *
 	 * @return the identifier associated to this address.
 	 */
+	@Pure
 	public UUID getUUID() {
 		return this.agentId;
 	}
 
 	@Override
+	@Pure
 	public int hashCode() {
 		int result = 1;
 		result = 31 * result + ((this.agentId == null) ? 0 : this.agentId.hashCode());
@@ -85,6 +90,7 @@ public class Address implements Serializable, Comparable<Address> {
 
 
 	@Override
+	@Pure
 	public boolean equals(Object obj) {
 		if (obj instanceof Address) {
 			return equals((Address) obj);
@@ -99,6 +105,7 @@ public class Address implements Serializable, Comparable<Address> {
 	 * @return <code>true</code> if this address and the given one are equal,
 	 *         otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean equals(Address address) {
 		return address != null && this.spaceId.equals(address.getSpaceId())
 				&& this.agentId.equals(address.getUUID());
@@ -139,6 +146,7 @@ public class Address implements Serializable, Comparable<Address> {
 	 *         less than, equal to, or greater than the specified object.
 	 */
 	@Override
+	@Pure
 	public int compareTo(Address address) {
 		if (address == null) {
 			return 1;
@@ -150,6 +158,7 @@ public class Address implements Serializable, Comparable<Address> {
 	 *
 	 * @return the space ID.
 	 */
+	@Pure
 	public SpaceID getSpaceId() {
 		return this.spaceId;
 	}

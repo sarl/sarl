@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.genmodel;
+package io.sarl.lang.generator.helper;
 
 
 import java.lang.ref.WeakReference;
@@ -40,13 +40,13 @@ import org.eclipse.xtext.xtype.XtypeFactory;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class GeneratedCode {
+public class SarlEcoreCode {
 
 	private final ImportManager importManager = new ImportManager();
 	private final XtendFile script;
 	private final ResourceSet resourceSet;
 	private final TypeReferences typeReferences;
-	private final WeakReference<SARLCodeGenerator> generator;
+	private final WeakReference<ECoreGeneratorHelper> generator;
 
 	/**
 	 * @param generator - the SARL code generator;
@@ -54,7 +54,7 @@ public class GeneratedCode {
 	 * @param resourceSet - the resource set in which the script should be generated.
 	 * @param typeReferences - the accessor for exisiting types.
 	 */
-	GeneratedCode(SARLCodeGenerator generator, XtendFile script,
+	SarlEcoreCode(ECoreGeneratorHelper generator, XtendFile script,
 			ResourceSet resourceSet, TypeReferences typeReferences) {
 		this.generator = new WeakReference<>(generator);
 		this.script = script;
@@ -74,7 +74,7 @@ public class GeneratedCode {
 	 *
 	 * @return the SARL code generator.
 	 */
-	public SARLCodeGenerator getCodeGenerator() {
+	public ECoreGeneratorHelper getCodeGenerator() {
 		return this.generator.get();
 	}
 

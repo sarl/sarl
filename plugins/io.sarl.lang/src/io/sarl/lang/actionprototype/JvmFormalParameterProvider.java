@@ -21,7 +21,7 @@
 package io.sarl.lang.actionprototype;
 
 import io.sarl.lang.annotation.DefaultValue;
-import io.sarl.lang.util.ModelUtil;
+import io.sarl.lang.util.Utils;
 
 import java.util.List;
 
@@ -72,7 +72,7 @@ public class JvmFormalParameterProvider implements FormalParameterProvider {
 	@Override
 	public boolean hasFormalParameterDefaultValue(int position) {
 		JvmFormalParameter parameter = this.parameters.get(position);
-		return ModelUtil.hasAnnotation(parameter, DefaultValue.class);
+		return Utils.hasAnnotation(parameter, DefaultValue.class);
 	}
 
 	@Override

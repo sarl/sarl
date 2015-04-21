@@ -22,6 +22,8 @@ package io.sarl.lang.core;
 
 import java.lang.ref.WeakReference;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** This class represents a part of trait of an agent.
  *
  * @author $Author: srodriguez$
@@ -51,6 +53,7 @@ abstract class AgentTrait {
 	 *
 	 * @return the string representation of the attributes of this Event.
 	 */
+	@Pure
 	protected String attributesToString() {
 		StringBuilder result = new StringBuilder();
 		result.append("owner = "); //$NON-NLS-1$
@@ -59,6 +62,7 @@ abstract class AgentTrait {
 	}
 
 	@Override
+	@Pure
 	public String toString() {
 		return getClass().getSimpleName()
 				+ " [" + attributesToString() //$NON-NLS-1$
@@ -77,6 +81,7 @@ abstract class AgentTrait {
 	 *
 	 * @return the owner.
 	 */
+	@Pure
 	protected Agent getOwner() {
 		return this.agentRef.get();
 	}
@@ -93,6 +98,7 @@ abstract class AgentTrait {
 	 * @see Agent#getSkill(Class)
 	 * @throws UnimplementedCapacityException - if no skill is owned by the agent for the given capacity.
 	 */
+	@Pure
 	protected <S extends Capacity> S getSkill(Class<S> capacity) {
 		return getOwner().getSkill(capacity);
 	}

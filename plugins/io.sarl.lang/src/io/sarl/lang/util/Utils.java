@@ -34,6 +34,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -49,6 +50,7 @@ import org.eclipse.xtext.common.types.JvmFeature;
 import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
+import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmMember;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
@@ -57,6 +59,7 @@ import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmVisibility;
+import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.annotations.services.XbaseWithAnnotationsGrammarAccess.XAnnotationElements;
@@ -81,7 +84,7 @@ import com.ibm.icu.util.VersionInfo;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class ModelUtil {
+public final class Utils {
 
 	/** Prefix for the names of the hidden behavior units.
 	 */
@@ -99,7 +102,7 @@ public final class ModelUtil {
 	 */
 	public static final String PREFIX_ATTRIBUTE_DEFAULT_VALUE = "___FORMAL_PARAMETER_DEFAULT_VALUE_"; //$NON-NLS-1$
 
-	private ModelUtil() {
+	private Utils() {
 		//
 	}
 
@@ -745,52 +748,52 @@ public final class ModelUtil {
 		// Generic type
 		if (!signature.getTypeParameters().isEmpty()) {
 			boolean addComa = false;
-			textRepresentation.append(signatureElements.getLessThanSignKeyword_6_0().getValue());
+			textRepresentation.append(signatureElements.getLessThanSignKeyword_5_0().getValue());
 			for(JvmTypeParameter typeParameter : signature.getTypeParameters()) {
 				if (addComa) {
-					textRepresentation.append(signatureElements.getCommaKeyword_10_0_2_0().getValue());
+					textRepresentation.append(signatureElements.getCommaKeyword_5_2_0().getValue());
 					textRepresentation.append(' ');
 				} else {
 					addComa = true;
 				}
 				textRepresentation.append(getSignatureType(typeParameter, importManager));
 			}
-			textRepresentation.append(signatureElements.getLessThanSignKeyword_6_0().getValue());
+			textRepresentation.append(signatureElements.getLessThanSignKeyword_5_0().getValue());
 			textRepresentation.append(' ');
 		}
 		// Name
 		textRepresentation.append(signature.getName());
 		// Parameters
 		if (!signature.getParameters().isEmpty()) {
-			textRepresentation.append(signatureElements.getLeftParenthesisKeyword_8_0().getValue());
+			textRepresentation.append(signatureElements.getLeftParenthesisKeyword_7_0().getValue());
 			int idx = signature.getParameters().size() - 1;
 			for (int i = 0; i < idx; ++i) {
 				addParamToSignature(textRepresentation, signature.getParameters().get(i), grammarAccess,
 						importManager, serializer);
-				textRepresentation.append(signatureElements.getCommaKeyword_6_2_0().getValue());
+				textRepresentation.append(signatureElements.getCommaKeyword_9_0_2_0().getValue());
 				textRepresentation.append(' ');
 			}
 			addParamToSignature(textRepresentation, signature.getParameters().get(idx), grammarAccess,
 					importManager, serializer);
-			textRepresentation.append(signatureElements.getRightParenthesisKeyword_8_2().getValue());
+			textRepresentation.append(signatureElements.getRightParenthesisKeyword_7_2().getValue());
 		}
 		// Return type
 		JvmTypeReference returnType = signature.getReturnType();
 		if (returnType != null && !"void".equals(returnType.getIdentifier())) { //$NON-NLS-1$
 			textRepresentation.append(' ');
-			textRepresentation.append(signatureElements.getColonKeyword_9_0_0().getValue());
+			textRepresentation.append(signatureElements.getColonKeyword_8_0().getValue());
 			textRepresentation.append(' ');
 			textRepresentation.append(getSignatureType(returnType.getType(), importManager));
 		}
 		// Throws
 		if (!signature.getExceptions().isEmpty()) {
 			textRepresentation.append(' ');
-			textRepresentation.append(signatureElements.getThrowsKeyword_10_0_0().getValue());
+			textRepresentation.append(signatureElements.getThrowsKeyword_9_0_0().getValue());
 			textRepresentation.append(' ');
 			boolean addComa = false;
 			for (JvmTypeReference eventType : signature.getExceptions()) {
 				if (addComa) {
-					textRepresentation.append(signatureElements.getCommaKeyword_10_0_2_0().getValue());
+					textRepresentation.append(signatureElements.getCommaKeyword_9_0_2_0().getValue());
 					textRepresentation.append(' ');
 				} else {
 					addComa = true;
@@ -801,12 +804,12 @@ public final class ModelUtil {
 		// Fires
 		if (!signature.getFiredEvents().isEmpty()) {
 			textRepresentation.append(' ');
-			textRepresentation.append(signatureElements.getFiresKeyword_10_1_0().getValue());
+			textRepresentation.append(signatureElements.getFiresKeyword_9_1_0().getValue());
 			textRepresentation.append(' ');
 			boolean addComa = false;
 			for (JvmTypeReference eventType : signature.getFiredEvents()) {
 				if (addComa) {
-					textRepresentation.append(signatureElements.getCommaKeyword_10_1_2_0().getValue());
+					textRepresentation.append(signatureElements.getCommaKeyword_9_1_2_0().getValue());
 					textRepresentation.append(' ');
 				} else {
 					addComa = true;
@@ -822,7 +825,7 @@ public final class ModelUtil {
 		ParameterElements elements = grammarAccess.getParameterAccess();
 		signature.append(parameter.getName());
 		signature.append(' ');
-		signature.append(elements.getColonKeyword_4().getValue());
+		signature.append(elements.getColonKeyword_3().getValue());
 		signature.append(' ');
 		signature.append(getSignatureType(parameter.getParameterType().getType(), importManager));
 		if (parameter.isVarArg()) {
@@ -831,7 +834,7 @@ public final class ModelUtil {
 			SarlFormalParameter sarlParameter = (SarlFormalParameter) parameter;
 			if (sarlParameter.getDefaultValue() != null) {
 				signature.append(' ');
-				signature.append(elements.getEqualsSignKeyword_6_0_0().getValue());
+				signature.append(elements.getEqualsSignKeyword_5_1_0().getValue());
 				signature.append(' ');
 				signature.append(serializer.serialize(sarlParameter.getDefaultValue()).trim());
 			}
@@ -982,6 +985,28 @@ public final class ModelUtil {
 		}
 
 		return key;
+	}
+
+	/** Replies a singleton list with the given element, or the empty list if
+	 * the element is <code>null</code>.
+	 *
+	 * @param element the element.
+	 * @return the list with the element, or the empty list.
+	 */
+	public static <T> List<T> singletonList(T element) {
+		if (element == null) {
+			return Collections.emptyList();
+		}
+		return Collections.singletonList(element);
+	}
+
+	/** Replies the qualified name of the given element.
+	 *
+	 * @param element the element.
+	 * @return the qualified name of the element.
+	 */
+	public static QualifiedName getQualifiedName(JvmIdentifiableElement element) {
+		return QualifiedName.create(element.getQualifiedName('.').split("\\.")); //$NON-NLS-1$
 	}
 
 }

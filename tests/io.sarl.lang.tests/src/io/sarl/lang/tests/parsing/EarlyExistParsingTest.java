@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,10 @@ package io.sarl.lang.tests.parsing;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.TestClasspath;
 import io.sarl.tests.api.TestScope;
@@ -41,210 +43,243 @@ import com.google.inject.Inject;
  */
 @SuppressWarnings("all")
 @TestClasspath("io.sarl.tests.testdata")
-public class EarlyExistParsingTest extends AbstractSarlUiTest {
+public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Inject
 	private ISerializer serializer;
-
+	
 	@Test
-	@TestScope(tycho=false)
 	public void earlyExistFunction_inAction_lastExpression_0() throws Exception {
-		XtendFile mas = parseWithProjectClasspath(
+		XtendFile mas = file(multilineString(
+				"import io.sarl.lang.annotation.EarlyExit",
+				"class EarlyExitFunctionDefinitions {",
+				"	@EarlyExit",
+				"	static def killFunction2 {",
+				"	}",
+				"}",
 				"agent A1 {",
 				"	def caller {",
-				"		foo.EarlyExitFunctionDefinitions::killFunction2",
+				"		EarlyExitFunctionDefinitions::killFunction2",
 				"	}",
 				"}"
-				);
-		this.helper.getValidator().assertNoErrors(mas);
-		assertEquals(1, mas.getXtendTypes().size());
+				), true);
+		assertEquals(2, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(1);
 		assertEquals("A1", agent.getName());
 		assertNull(agent.getExtends());
 		assertEquals(1, agent.getMembers().size());
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(0);
 		assertEquals("caller", action.getName());
-		assertNull(action.getFiredEvents());
+		assertTypeReferenceIdentifiers(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "void");
 	}
 
 	@Test
-	@TestScope(tycho=false)
 	public void earlyExistFunction_inAction_lastExpression_1() throws Exception {
-		XtendFile mas = parseWithProjectClasspath(
+		XtendFile mas = file(multilineString(
+				"import io.sarl.lang.annotation.EarlyExit",
+				"class EarlyExitFunctionDefinitions {",
+				"	@EarlyExit",
+				"	def killFunction1 {",
+				"	}",
+				"}",
 				"agent A1 {",
 				"	def caller {",
-				"		var inst = new foo.EarlyExitFunctionDefinitions",
+				"		var inst = new EarlyExitFunctionDefinitions",
 				"		inst.killFunction1",
 				"	}",
 				"}"
-				);
-		this.helper.getValidator().assertNoErrors(mas);
-		assertEquals(1, mas.getXtendTypes().size());
+				), true);
+		assertEquals(2, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(1);
 		assertEquals("A1", agent.getName());
 		assertNull(agent.getExtends());
 		assertEquals(1, agent.getMembers().size());
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(0);
 		assertEquals("caller", action.getName());
-		assertNull(action.getFiredEvents());
+		assertTypeReferenceIdentifiers(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "void");
 	}
 
 	@Test
-	@TestScope(tycho=false)
 	public void earlyExistFunction_inAction_penultimateExpression_0() throws Exception {
-		XtendFile mas = parseWithProjectClasspath(
+		XtendFile mas = file(multilineString(
+				"import io.sarl.lang.annotation.EarlyExit",
+				"class EarlyExitFunctionDefinitions {",
+				"	@EarlyExit",
+				"	static def killFunction2 {",
+				"	}",
+				"}",
 				"agent A1 {",
 				"	def caller {",
-				"		foo.EarlyExitFunctionDefinitions::killFunction2",
+				"		EarlyExitFunctionDefinitions::killFunction2",
 				"		println(\"Hello\")",
 				"	}",
 				"}"
-				);
-		this.helper.getValidator().assertError(mas,
+				));
+		
+		validate(mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
-				77,
-				16,
+				196, 16,
 				"Unreachable expression");
 	}
 
 	@Test
-	@TestScope(tycho=false)
 	public void earlyExistFunction_inAction_penultimateExpression_1() throws Exception {
-		XtendFile mas = parseWithProjectClasspath(
+		XtendFile mas = file(multilineString(
+				"import io.sarl.lang.annotation.EarlyExit",
+				"class EarlyExitFunctionDefinitions {",
+				"	@EarlyExit",
+				"	def killFunction1 {",
+				"	}",
+				"}",
 				"agent A1 {",
 				"	def caller {",
-				"		var inst = new foo.EarlyExitFunctionDefinitions",
+				"		var inst = new EarlyExitFunctionDefinitions",
 				"		inst.killFunction1",
 				"		println(\"Hello\")",
 				"	}",
 				"}"
-				);
-		this.helper.getValidator().assertError(mas,
+				));
+		validate(mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
-				98,
-				16,
+				210, 16,
 				"Unreachable expression");
 	}
 
 	@Test
-	@TestScope(tycho=false)
 	public void earlyExistFunction_inIf_0() throws Exception {
-		XtendFile mas = parseWithProjectClasspath(
+		XtendFile mas = file(multilineString(
+				"import io.sarl.lang.annotation.EarlyExit",
+				"class EarlyExitFunctionDefinitions {",
+				"	@EarlyExit",
+				"	static def killFunction2 {",
+				"	}",
+				"}",
 				"agent A1 {",
 				"	def caller {",
 				"		if (true) {",
-				"			foo.EarlyExitFunctionDefinitions::killFunction2",
+				"			EarlyExitFunctionDefinitions::killFunction2",
 				"		} else {",
-				"			foo.EarlyExitFunctionDefinitions::killFunction2",
+				"			EarlyExitFunctionDefinitions::killFunction2",
 				"		}",
 				"		println(\"Hello\")",
 				"	}",
 				"}"
-				);
-		this.helper.getValidator().assertError(mas,
+				));
+		validate(mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
-				158,
-				16,
+				273, 16,
 				"Unreachable expression");
 	}
 
 	@Test
-	@TestScope(tycho=false)
 	public void earlyExistFunction_inIf_1() throws Exception {
-		XtendFile mas = parseWithProjectClasspath(
+		XtendFile mas = file(multilineString(
+				"import io.sarl.lang.annotation.EarlyExit",
+				"class EarlyExitFunctionDefinitions {",
+				"	@EarlyExit",
+				"	static def killFunction2 {",
+				"	}",
+				"}",
 				"agent A1 {",
 				"	def caller {",
 				"		if (true) {",
-				"			foo.EarlyExitFunctionDefinitions::killFunction2",
+				"			EarlyExitFunctionDefinitions::killFunction2",
 				"		} else {",
 				"			println(\"Hello\")",
 				"		}",
 				"		println(\"Bye bye\")",
 				"	}",
 				"}"
-				);
-		this.helper.getValidator().assertNoErrors(mas);
-		assertEquals(1, mas.getXtendTypes().size());
+				), true);
+		assertEquals(2, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(1);
 		assertEquals("A1", agent.getName());
 		assertNull(agent.getExtends());
 		assertEquals(1, agent.getMembers().size());
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(0);
 		assertEquals("caller", action.getName());
-		assertNull(action.getFiredEvents());
+		assertTypeReferenceIdentifiers(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "void");
 	}
 
 	@Test
-	@TestScope(tycho=false)
 	public void earlyExistFunction_inIf_2() throws Exception {
-		XtendFile mas = parseWithProjectClasspath(
+		XtendFile mas = file(multilineString(
+				"import io.sarl.lang.annotation.EarlyExit",
+				"class EarlyExitFunctionDefinitions {",
+				"	@EarlyExit",
+				"	static def killFunction2 {",
+				"	}",
+				"}",
 				"agent A1 {",
 				"	def caller {",
 				"		if (true) {",
 				"			println(\"Hello\")",
 				"		} else {",
-				"			foo.EarlyExitFunctionDefinitions::killFunction2",
+				"			EarlyExitFunctionDefinitions::killFunction2",
 				"		}",
 				"		println(\"Bye bye\")",
 				"	}",
 				"}"
-				);
-		this.helper.getValidator().assertNoErrors(mas);
-		assertEquals(1, mas.getXtendTypes().size());
+				), true);
+		assertEquals(2, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 		//
-		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
+		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(1);
 		assertEquals("A1", agent.getName());
 		assertNull(agent.getExtends());
 		assertEquals(1, agent.getMembers().size());
 		//
 		SarlAction action = (SarlAction) agent.getMembers().get(0);
 		assertEquals("caller", action.getName());
-		assertNull(action.getFiredEvents());
+		assertTypeReferenceIdentifiers(action.getFiredEvents());
 		assertParameterNames(action.getParameters());
 		assertTypeReferenceIdentifier(action.getReturnType(), "void");
 	}
 
 	@Test
-	@TestScope(tycho=false)
 	public void earlyExistFunction_inWhile_0() throws Exception {
-		XtendFile mas = parseWithProjectClasspath(
+		XtendFile mas = file(multilineString(
+				"import io.sarl.lang.annotation.EarlyExit",
+				"class EarlyExitFunctionDefinitions {",
+				"	@EarlyExit",
+				"	static def killFunction2 {",
+				"	}",
+				"}",
 				"agent A1 {",
 				"	def caller {",
 				"		while (true) {",
-				"			foo.EarlyExitFunctionDefinitions::killFunction2",
+				"			EarlyExitFunctionDefinitions::killFunction2",
 				"		}",
 				"		println(\"Hello\")",
 				"	}",
 				"}"
-				);
-		this.helper.getValidator().assertError(mas,
+				));
+		validate(mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
-				99,
-				16,
+				218, 16,
 				"Unreachable expression");
 	}
 

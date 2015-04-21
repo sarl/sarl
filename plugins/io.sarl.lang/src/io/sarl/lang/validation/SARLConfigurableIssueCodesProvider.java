@@ -49,12 +49,18 @@ public class SARLConfigurableIssueCodesProvider extends XtendConfigurableIssueCo
 		iAcceptor.accept(create(
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
 				SeverityConverter.SEVERITY_WARNING));
+		iAcceptor.accept(create(
+				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISCOURAGED,
+				SeverityConverter.SEVERITY_WARNING));
 
 		// Override the Xtend configuration
 		iAcceptor.accept(create(
 				org.eclipse.xtend.core.validation.IssueCodes.WRONG_PACKAGE,
 				SeverityConverter.SEVERITY_WARNING));
-
+		iAcceptor.accept(create(
+				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
+				SeverityConverter.SEVERITY_WARNING));
+		
 		// Add warnings from SARL
 		iAcceptor.accept(create(
 				IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
@@ -69,6 +75,10 @@ public class SARLConfigurableIssueCodesProvider extends XtendConfigurableIssueCo
 				SeverityConverter.SEVERITY_WARNING));
 
 		iAcceptor.accept(create(
+				IssueCodes.DISCOURAGED_FUNCTION_NAME,
+				SeverityConverter.SEVERITY_WARNING));
+
+		iAcceptor.accept(create(
 				IssueCodes.UNREACHABLE_BEHAVIOR_UNIT,
 				SeverityConverter.SEVERITY_WARNING));
 
@@ -78,6 +88,10 @@ public class SARLConfigurableIssueCodesProvider extends XtendConfigurableIssueCo
 
 		iAcceptor.accept(create(
 				IssueCodes.REDUNDANT_CAPACITY_USE,
+				SeverityConverter.SEVERITY_WARNING));
+
+		iAcceptor.accept(create(
+				IssueCodes.RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED,
 				SeverityConverter.SEVERITY_WARNING));
 	}
 

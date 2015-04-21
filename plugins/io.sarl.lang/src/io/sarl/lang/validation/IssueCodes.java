@@ -43,20 +43,6 @@ public final class IssueCodes {
 			ISSUE_CODE_PREFIX + "redundant_interface_implementation"; //$NON-NLS-1$
 
 	/**
-	 * An action must be implemented.
-	 * <p>
-	 * The following code causes a warning:<pre><code>
-	 * capacity C1 {
-	 *    def myaction
-	 * }
-	 * skill S2 implements C1 {
-	 * }
-	 * </code></pre>
-	 */
-	public static final String MISSING_METHOD_IMPLEMENTATION =
-			ISSUE_CODE_PREFIX + "missing_method_implementation"; //$NON-NLS-1$
-
-	/**
 	 * It is discouraged to have a true/false constant as conditions in guards, if...
 	 * <p>
 	 * The following code causes a warning:<pre><code>
@@ -74,6 +60,11 @@ public final class IssueCodes {
 	 */
 	public static final String DISCOURAGED_CAPACITY_DEFINITION =
 			ISSUE_CODE_PREFIX + "discouraged_capacity_definition"; //$NON-NLS-1$
+
+	/** A function was defined with a name that is discouraged.
+	 */
+	public static final String DISCOURAGED_FUNCTION_NAME =
+			ISSUE_CODE_PREFIX + "discouraged_function_name"; //$NON-NLS-1$
 
 	/** A behavior unit will be never executed due to its guard.
 	 */
@@ -105,6 +96,24 @@ public final class IssueCodes {
 	 */
 	public static final String REDUNDANT_CAPACITY_USE =
 			ISSUE_CODE_PREFIX + "redundant_capacity_use"; //$NON-NLS-1$
+
+	/**
+	 * A supertype is not a subtype of the expected type.
+	 */
+	public static final String INVALID_EXTENDED_TYPE =
+			ISSUE_CODE_PREFIX + "invalid_extended_type"; //$NON-NLS-1$
+	
+	/**
+	 * An element cannot be defined as a nested element. 
+	 */
+	public static final String INVALID_NESTED_DEFINITION =
+			ISSUE_CODE_PREFIX + "invalid_nested_definition"; //$NON-NLS-1$
+
+	/**
+	 * The specification of the return type is recommended.
+	 */
+	public static final String RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED =
+			ISSUE_CODE_PREFIX + "return_type_specification_is_recommended"; //$NON-NLS-1$
 
 	private IssueCodes() {
 		//

@@ -109,7 +109,7 @@ public final class MissingMethodImplementationModification extends SARLSemanticM
 			appendable.append(tools.getGrammarAccess().getXBlockExpressionAccess().getLeftCurlyBracketKeyword_1().getValue());
 			appendable.increaseIndentation().newLine();
 			appendable.append("// TODO ").append(//$NON-NLS-1$
-					io.sarl.lang.genmodel.Messages.SARLCodeGenerator_0);
+					io.sarl.lang.generator.helper.Messages.SARLCodeGenerator_0);
 			if (!com.google.common.base.Strings.isNullOrEmpty(data[j + 1])) {
 				appendable.newLine().append(data[j + 1]);
 			}

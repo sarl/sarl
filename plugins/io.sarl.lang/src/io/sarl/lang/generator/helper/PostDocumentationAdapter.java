@@ -18,32 +18,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.sarl.lang.generator.helper;
 
-package foo;
 
-import io.sarl.lang.annotation.EarlyExit;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 
-/** Several functions defined for unit test purpose.
+/** Postfix documentation for an Ecore element.
+ *
+ * The prefix document is supported by {@link DocumentationAdapter}.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @see DocumentationAdapter
  */
-public class EarlyExitFunctionDefinitions {
+public class PostDocumentationAdapter extends AdapterImpl {
 
-	/**
+	private String documentation;
+
+	/** Replies the documentation.
+	 *
+	 * @return the documentation.
 	 */
-	@EarlyExit
-	public static void killFunction2() {
-		//
+	public String getDocumentation() {
+		return this.documentation;
 	}
 
-	/**
+	/** Change the documentation.
+	 *
+	 * @param documentation - the comment.
 	 */
-	@EarlyExit
-	public void killFunction1() {
-		//
+	public void setDocumentation(String documentation) {
+		this.documentation = documentation;
+	}
+
+	@Override
+	public boolean isAdapterForType(Object type) {
+		return type == PostDocumentationAdapter.class;
 	}
 
 }

@@ -21,7 +21,7 @@
 package io.sarl.lang.actionprototype;
 
 import io.sarl.lang.services.SARLGrammarAccess;
-import io.sarl.lang.util.ModelUtil;
+import io.sarl.lang.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -242,7 +242,7 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 		return new QualifiedActionName(
 				container.eResource().getURI().toString(),
 				container.getQualifiedName(),
-				this.grammarAccess.getConstructorAccess().getNewKeyword_4().getValue());
+				this.grammarAccess.getConstructorAccess().getNewKeyword_3().getValue());
 	}
 
 	@Override
@@ -332,9 +332,9 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 	public String createFieldNameForDefaultValueID(String id) {
 		int index = id.indexOf('#');
 		if (index > 0) {
-			return ModelUtil.PREFIX_ATTRIBUTE_DEFAULT_VALUE + id.substring(index + 1);
+			return Utils.PREFIX_ATTRIBUTE_DEFAULT_VALUE + id.substring(index + 1);
 		}
-		return ModelUtil.PREFIX_ATTRIBUTE_DEFAULT_VALUE + id;
+		return Utils.PREFIX_ATTRIBUTE_DEFAULT_VALUE + id;
 	}
 
 	@Override
@@ -357,10 +357,10 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 				b.append(qn);
 				b.append("."); //$NON-NLS-1$
 			}
-			b.append(ModelUtil.PREFIX_ATTRIBUTE_DEFAULT_VALUE);
+			b.append(Utils.PREFIX_ATTRIBUTE_DEFAULT_VALUE);
 			b.append(id.substring(index + 1));
 		} else {
-			b.append(ModelUtil.PREFIX_ATTRIBUTE_DEFAULT_VALUE);
+			b.append(Utils.PREFIX_ATTRIBUTE_DEFAULT_VALUE);
 			b.append(id);
 		}
 		return b.toString();

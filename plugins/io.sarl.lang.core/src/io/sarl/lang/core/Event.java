@@ -23,6 +23,8 @@ package io.sarl.lang.core;
 import java.io.Serializable;
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Elementary interaction unit inside an {@link EventSpace} An event is the
  * specification of some occurrence in a Space that may potentially trigger
@@ -57,6 +59,7 @@ public abstract class Event implements Serializable {
 	}
 
 	@Override
+	@Pure
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
@@ -70,6 +73,7 @@ public abstract class Event implements Serializable {
 	}
 
 	@Override
+	@Pure
 	public int hashCode() {
 		int h = 31 + getClass().hashCode();
 		if (this.source != null) {
@@ -83,6 +87,7 @@ public abstract class Event implements Serializable {
 	 *
 	 * @return the source of the event.
 	 */
+	@Pure
 	public Address getSource() {
 		return this.source;
 	}
@@ -101,6 +106,7 @@ public abstract class Event implements Serializable {
 	 *
 	 * @return the string representation of the attributes of this Event.
 	 */
+	@Pure
 	protected String attributesToString() {
 		StringBuilder result = new StringBuilder();
 		result.append("source = "); //$NON-NLS-1$
@@ -109,6 +115,7 @@ public abstract class Event implements Serializable {
 	}
 
 	@Override
+	@Pure
 	public String toString() {
 		return getClass().getSimpleName()
 				+ " [" + attributesToString() //$NON-NLS-1$
@@ -122,6 +129,7 @@ public abstract class Event implements Serializable {
 	 * an entity with the given address; otherwise <code>false</code>.
 	 * @since 0.2
 	 */
+	@Pure
 	public boolean isFrom(Address address) {
 		return (address != null) && address.equals(getSource());
 	}
@@ -133,6 +141,7 @@ public abstract class Event implements Serializable {
 	 * an entity with the given identifier; otherwise <code>false</code>.
 	 * @since 0.2
 	 */
+	@Pure
 	public boolean isFrom(UUID entityId) {
 		Address source = getSource();
 		return (entityId != null) && (source != null)

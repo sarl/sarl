@@ -7,5 +7,6 @@ Bundle-Name: %Bundle-Name
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: io.sarl.lang.core;bundle-version="1.0.0",
  io.sarl.lang;bundle-version="1.0.0"
-Export-Package: foo;uses:="io.sarl.lang.core"
+Export-Package: foo;uses:="io.sarl.lang.core",
+ foo.ecore
 Bundle-ActivationPolicy: lazy

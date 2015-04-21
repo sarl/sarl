@@ -24,6 +24,8 @@ import io.sarl.lang.util.SynchronizedSet;
 
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Agents in SARL can interact only via Interaction Spaces.
  * A space is the support of the event-driven interaction between agents
@@ -41,6 +43,7 @@ public interface Space {
 	 *
 	 * @return the space's id
 	 */
+	@Pure
 	SpaceID getID();
 
 	/**
@@ -49,6 +52,7 @@ public interface Space {
 	 *
 	 * @return participants IDs
 	 */
+	@Pure
 	SynchronizedSet<UUID> getParticipants();
 
 }

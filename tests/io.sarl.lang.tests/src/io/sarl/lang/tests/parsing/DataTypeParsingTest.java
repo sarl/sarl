@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,20 +45,14 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class DataTypeParsingTest extends AbstractSarlTest {
 
-	@Inject
-	private ParseHelper<XtendFile> parser;
-
-	@Inject
-	private ValidationTestHelper validator;
-
 	@Test
 	public void intToDouble() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 				"agent A1 {",
 				"	var internalTime : Double = 0",
 				"}"
 				));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 				XbasePackage.eINSTANCE.getXNumberLiteral(),
 				IssueCodes.INCOMPATIBLE_TYPES,
 				"cannot convert from int to Double");
@@ -66,12 +60,11 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void doubleToDouble_1() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 				"agent A1 {",
 				"	var internalTime : Double = 0.0",
 				"}"
-				));
-		this.validator.assertNoErrors(mas);
+				), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -89,12 +82,12 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void doubleToDouble_2() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 				"agent A1 {",
 				"	var internalTime : Double = 0.",
 				"}"
 				));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAgent(),
 				Diagnostic.SYNTAX_DIAGNOSTIC,
 				"extraneous input '.' expecting '}'");
@@ -102,12 +95,12 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void doubleToDouble_3() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 				"agent A1 {",
 				"	var internalTime : Double = .0",
 				"}"
 				));
-		this.validator.assertError(mas,
+		validate(mas).assertError(
 				XtendPackage.eINSTANCE.getXtendField(),
 				Diagnostic.SYNTAX_DIAGNOSTIC,
 				"no viable alternative at input '.'");
@@ -115,12 +108,11 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void doubleToDouble_4() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		XtendFile mas = file(multilineString(
 				"agent A1 {",
 				"	var internalTime : Double = 0d",
 				"}"
-				));
-		this.validator.assertNoErrors(mas);
+				), true);
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));

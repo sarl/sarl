@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,22 +65,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 	public static class AgentAction extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void action_1p() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(arg : int=4) {",
 					"System.out.println(arg)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -92,7 +85,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertNull(action.getFiredEvents());
+			assertTypeReferenceIdentifiers(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg");
 			assertParameterTypes(action.getParameters(), "int");
 			assertParameterDefaultValues(action.getParameters(), XNumberLiteral.class, "4");
@@ -101,29 +94,29 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_1p_invalid1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(arg : int=4*) {",
 					"System.out.println(arg)",
 					"}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
-					"A default value cannot be declared for the variadic formal parameter");
+					Diagnostic.SYNTAX_DIAGNOSTIC,
+					"extraneous input '*' expecting ')'");
 		}
 
 		@Test
 		public void action_1p_invalid2() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(arg : int*=4) {",
 					"System.out.println(arg)",
 					"}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '*=' expecting ')'");
@@ -131,15 +124,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_1p_returnValue() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(arg : int=4) : boolean {",
 					"System.out.println(arg)",
 					"return true",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -151,7 +143,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertNull(action.getFiredEvents());
+			assertTypeReferenceIdentifiers(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg");
 			assertParameterTypes(action.getParameters(), "int");
 			assertParameterDefaultValues(action.getParameters(), XNumberLiteral.class, "4");
@@ -160,14 +152,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String) {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -179,7 +170,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertNull(action.getFiredEvents());
+			assertTypeReferenceIdentifiers(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), XNumberLiteral.class, "4", null, null, null, null);
@@ -188,14 +179,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int, arg1 : String=\"abc\", arg2 : int, arg3 : int, arg4 : String) {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -207,7 +197,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertNull(action.getFiredEvents());
+			assertTypeReferenceIdentifiers(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), null, XStringLiteral.class, "abc", null, null, null);
@@ -216,14 +206,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_2() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"	def myaction(arg0 : int, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String) {",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -235,7 +224,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertNull(action.getFiredEvents());
+			assertTypeReferenceIdentifiers(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), null, null, XNumberLiteral.class, "18", null, null);
@@ -244,14 +233,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_3() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int = 34, arg4 : String) {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -263,7 +251,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertNull(action.getFiredEvents());
+			assertTypeReferenceIdentifiers(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), null, null, null, XNumberLiteral.class, "34", null);
@@ -272,14 +260,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_4() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int, arg4 : String=\"xyz\") {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -291,7 +278,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertNull(action.getFiredEvents());
+			assertTypeReferenceIdentifiers(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), null, null, null, null, XStringLiteral.class, "xyz");
@@ -300,14 +287,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_3() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String) {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -319,7 +305,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertNull(action.getFiredEvents());
+			assertTypeReferenceIdentifiers(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), XNumberLiteral.class, "4", null, null, XNumberLiteral.class, "56", null);
@@ -328,14 +314,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_3_4() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String=\"def\") {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -347,7 +332,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertNull(action.getFiredEvents());
+			assertTypeReferenceIdentifiers(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), XNumberLiteral.class, "4", null, null, XNumberLiteral.class, "56", XStringLiteral.class, "def");
@@ -356,14 +341,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_2_4() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String=\"def\") {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -375,7 +359,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertNull(action.getFiredEvents());
+			assertTypeReferenceIdentifiers(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), XNumberLiteral.class, "4", null, XNumberLiteral.class, "18", null, XStringLiteral.class, "def");
@@ -384,14 +368,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_1_2_3() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String) {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -403,7 +386,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertNull(action.getFiredEvents());
+			assertTypeReferenceIdentifiers(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), XNumberLiteral.class, "4", XStringLiteral.class, "ghj", XNumberLiteral.class, "18", XNumberLiteral.class, "98", null);
@@ -412,14 +395,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_1_2_3_4() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String=\"klm\") {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -431,7 +413,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertNull(action.getFiredEvents());
+			assertTypeReferenceIdentifiers(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2", "arg3", "arg4");
 			assertParameterTypes(action.getParameters(), "int", "java.lang.String", "int", "int", "java.lang.String");
 			assertParameterDefaultValues(action.getParameters(), XNumberLiteral.class, "4", XStringLiteral.class, "ghj", XNumberLiteral.class, "18", XNumberLiteral.class, "98", XStringLiteral.class, "klm");
@@ -440,29 +422,28 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_2() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int, arg1 : int, arg2 : int=45*) {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
-					"A default value cannot be declared for the variadic formal parameter");
+					Diagnostic.SYNTAX_DIAGNOSTIC,
+					"extraneous input '*' expecting ')'");
 		}
 
 		@Test
 		public void action_3p_vararg_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"	def myaction(arg0 : int, arg1 : int=45, arg2 : int*) {",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -474,7 +455,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertNull(action.getFiredEvents());
+			assertTypeReferenceIdentifiers(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2");
 			assertParameterTypes(action.getParameters(), "int", "int", "int");
 			assertParameterDefaultValues(action.getParameters(),
@@ -487,14 +468,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_0() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"	def myaction(arg0 : int=45, arg1 : int, arg2 : int*) {",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -506,7 +486,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertNull(action.getFiredEvents());
+			assertTypeReferenceIdentifiers(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2");
 			assertParameterTypes(action.getParameters(), "int", "int", "int");
 			assertParameterDefaultValues(action.getParameters(),
@@ -519,14 +499,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_0_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*) {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -538,7 +517,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action.getName());
-			assertNull(action.getFiredEvents());
+			assertTypeReferenceIdentifiers(action.getFiredEvents());
 			assertParameterNames(action.getParameters(), "arg0", "arg1", "arg2");
 			assertParameterTypes(action.getParameters(), "int", "int", "int");
 			assertParameterDefaultValues(action.getParameters(),
@@ -551,7 +530,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void multipleActionDefinitionsInAgent() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"agent A1 {",
 					"	def myaction(arg0 : int, arg1 : int=42, arg2 : int*) {",
 					"		System.out.println(\"valid\")",
@@ -560,8 +539,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"		System.out.println(\"invalid\")",
 					"	}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -573,7 +551,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action1 = (SarlAction) agent.getMembers().get(0);
 			assertEquals("myaction", action1.getName());
-			assertNull(action1.getFiredEvents());
+			assertTypeReferenceIdentifiers(action1.getFiredEvents());
 			assertParameterNames(action1.getParameters(), "arg0", "arg1", "arg2");
 			assertParameterTypes(action1.getParameters(), "int", "int", "int");
 			assertParameterDefaultValues(action1.getParameters(),
@@ -585,7 +563,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlAction action2 = (SarlAction) agent.getMembers().get(1);
 			assertEquals("myaction", action2.getName());
-			assertNull(action2.getFiredEvents());
+			assertTypeReferenceIdentifiers(action2.getFiredEvents());
 			assertParameterNames(action2.getParameters(), "arg0", "arg1");
 			assertParameterTypes(action2.getParameters(), "int", "int");
 			assertParameterDefaultValues(action2.getParameters(),
@@ -599,23 +577,16 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 	public static class BehaviorConstructor extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void constructor_1p() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"new(arg : int=4) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -633,29 +604,29 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_1p_invalid1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"new(arg : int=4*) {",
 					"System.out.println(arg)",
 					"}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					XtendPackage.eINSTANCE.getXtendConstructor(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
-					"A default value cannot be declared for the variadic formal parameter 'arg'");
+					Diagnostic.SYNTAX_DIAGNOSTIC,
+					"extraneous input '*' expecting ')'");
 		}
 
 		@Test
 		public void constructor_1p_invalid2() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"new(arg : int*=4) {",
 					"System.out.println(arg)",
 					"}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					XtendPackage.eINSTANCE.getXtendConstructor(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '*=' expecting ')'");
@@ -663,15 +634,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_0() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"new(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -689,15 +659,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"new(arg0 : int, arg1 : String=\"abc\", arg2 : int, arg3 : int, arg4 : String) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -715,15 +684,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_2() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"new(arg0 : int, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -741,15 +709,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_3() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"new(arg0 : int, arg1 : String, arg2 : int, arg3 : int = 34, arg4 : String) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -767,15 +734,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_4() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"new(arg0 : int, arg1 : String, arg2 : int, arg3 : int, arg4 : String=\"xyz\") {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -793,15 +759,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_0_3() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"new(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -819,15 +784,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_0_3_4() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"	new(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String=\"def\") {",
 					"		super(null) // must be never null during runtime",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -850,15 +815,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_0_2_4() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"	new(arg0 : int=4, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String=\"def\") {",
 					"		super(null) // must be never null during runtime",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -881,15 +846,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_0_1_2_3() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"new(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -907,15 +872,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_0_1_2_3_4() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"new(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String=\"klm\") {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -933,7 +898,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_3p_vararg_2() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"new(arg0 : int, arg1 : int, arg2 : int=45*) {",
 					"super(null) // must be never null during runtime",
@@ -941,23 +906,24 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					XtendPackage.eINSTANCE.getXtendConstructor(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
-					"A default value cannot be declared for the variadic formal parameter 'arg2'");
+					Diagnostic.SYNTAX_DIAGNOSTIC,
+					55, 1,
+					"extraneous input '*' expecting ')'");
 		}
 
 		@Test
 		public void constructor_3p_vararg_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"new(arg0 : int, arg1 : int=45, arg2 : int*) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -979,15 +945,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_3p_vararg_0() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"new(arg0 : int=45, arg1 : int, arg2 : int*) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -1009,15 +975,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_3p_vararg_0_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"	new(arg0 : int=45, arg1 : int=56, arg2 : int*) {",
 					"		super(null) // must be never null during runtime",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -1039,7 +1005,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructorCast_String2int() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"package io.sarl.test",
 					"behavior B1 {",
 					"new(arg0 : int=45, arg1 : int=\"S\", arg2 : int) {",
@@ -1047,23 +1013,24 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"}",
 					"}"
 					));
-			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getSarlFormalParameter(),
+			validate(mas).assertError(
+					XbasePackage.eINSTANCE.getXStringLiteral(),
 					IssueCodes.INCOMPATIBLE_TYPES,
+					65, 3,
 					"Type mismatch: cannot convert from String to int");
 		}
 
 		@Test
 		public void constructorCast_int2double() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"new(arg0 : int=45, arg1 : double=18, arg2 : int) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -1081,14 +1048,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructorCast_double2int() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"new(arg0 : int=45, arg1 : int=18.0, arg2 : int) {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					XbasePackage.eINSTANCE.getXNumberLiteral(),
 					IssueCodes.INCOMPATIBLE_TYPES,
 					"Type mismatch: cannot convert from double to int");
@@ -1098,27 +1065,21 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 	public static class CapacityAction extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void action_1p() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"def myaction(arg : int=4)",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1129,25 +1090,26 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_1p_invalid1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"def myaction(arg : int=4*)",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
-					"A default value cannot be declared for the variadic formal parameter");
+					Diagnostic.SYNTAX_DIAGNOSTIC,
+					38, 1,
+					"extraneous input '*' expecting ')'");
 		}
 
 		@Test
 		public void action_1p_invalid2() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"def myaction(arg : int*=4)",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '*=' expecting ')'");
@@ -1155,19 +1117,19 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String)",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1178,19 +1140,19 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int, arg1 : String=\"abc\", arg2 : int, arg3 : int, arg4 : String)",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1201,19 +1163,19 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_2() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String)",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1224,19 +1186,19 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_3() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int = 34, arg4 : String)",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1247,19 +1209,19 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_4() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int, arg4 : String=\"xyz\")",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1270,19 +1232,19 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_3() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String)",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1293,19 +1255,19 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_3_4() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String=\"def\")",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1316,19 +1278,19 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_2_4() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String=\"def\")",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1339,19 +1301,19 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_1_2_3() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String)",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1367,19 +1329,19 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_1_2_3_4() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String=\"klm\")",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1390,32 +1352,33 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_2() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int, arg1 : int, arg2 : int=45*)",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
-					"A default value cannot be declared for the variadic formal parameter");
+					Diagnostic.SYNTAX_DIAGNOSTIC,
+					64, 1,
+					"extraneous input '*' expecting ')'");
 		}
 
 		@Test
 		public void action_3p_vararg_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int, arg1 : int=45, arg2 : int*)",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1427,19 +1390,19 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_0() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int=45, arg1 : int, arg2 : int*)",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1451,19 +1414,19 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_0_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*)",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1480,15 +1443,9 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 	public static class SkillAction extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void action_1p() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1496,15 +1453,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg : int=4) {}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1533,7 +1490,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_1p_invalid1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1542,15 +1499,16 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def myaction(arg : int=4*) {}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
-					"A default value cannot be declared for the variadic formal parameter");
+					Diagnostic.SYNTAX_DIAGNOSTIC,
+					99, 1,
+					"extraneous input '*' expecting ')'");
 		}
 
 		@Test
 		public void action_1p_invalid2() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1559,7 +1517,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def myaction(arg : int*=4) {}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '*=' expecting ')'");
@@ -1567,7 +1525,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1575,15 +1533,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String) {}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1616,7 +1574,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1624,15 +1582,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int, arg1 : String=\"abc\", arg2 : int, arg3 : int, arg4 : String) {}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1665,7 +1623,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_2() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1673,15 +1631,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String) {}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1714,7 +1672,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_3() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1722,15 +1680,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int = 34, arg4 : String) {}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1763,7 +1721,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_4() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1771,15 +1729,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int, arg4 : String=\"xyz\") {}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1812,7 +1770,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_3() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1820,15 +1778,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String) {}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1861,7 +1819,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_3_4() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1869,15 +1827,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String=\"def\") {}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1910,7 +1868,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_2_4() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1918,15 +1876,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int=4, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String=\"def\") {}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -1959,7 +1917,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_1_2_3() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1967,15 +1925,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String) {}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -2008,7 +1966,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_1_2_3_4() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -2016,15 +1974,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String=\"klm\") {}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -2057,7 +2015,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_2() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -2066,15 +2024,16 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def myaction(arg0 : int, arg1 : int, arg2 : int=45*) {}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_USE_OF_VAR_ARG,
-					"A default value cannot be declared for the variadic formal parameter");
+					Diagnostic.SYNTAX_DIAGNOSTIC,
+					125, 1,
+					"extraneous input '*' expecting ')'");
 		}
 
 		@Test
 		public void action_3p_vararg_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -2082,15 +2041,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int, arg1 : int=45, arg2 : int*) {}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -2122,7 +2081,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_0() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -2130,15 +2089,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int=45, arg1 : int, arg2 : int*) {}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -2170,7 +2129,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_0_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -2178,15 +2137,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*) {}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -2218,7 +2177,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void overridingCapacitySkill() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*)",
 					"}",
@@ -2230,15 +2189,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"		System.out.println(\"ok\");",
 					"	}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(1, capacity.getMembers().size());
 			//
 			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
@@ -2273,7 +2232,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void multipleActionDefinitionsInSkill() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	def myaction(arg0 : int, arg1 : int=42, arg2 : int*) {",
@@ -2283,15 +2242,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"		System.out.println(\"invalid\")",
 					"	}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity.getName());
-			assertNull(capacity.getExtends());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
 			assertEquals(0, capacity.getMembers().size());
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
@@ -2322,7 +2281,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void missedActionImplementation_0() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction1(a : int=4)",
 					"}",
@@ -2333,15 +2292,15 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def myaction1(x : int) { }",
 					"	def myaction2(y : float, z : boolean) { }",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(3, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
 			//
 			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertEquals("C1", capacity1.getName());
-			assertNull(capacity1.getExtends());
+			assertTypeReferenceIdentifiers(capacity1.getExtends());
 			assertEquals(1, capacity1.getMembers().size());
 			//
 			SarlAction action1 = (SarlAction) capacity1.getMembers().get(0);
@@ -2353,7 +2312,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			//
 			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
 			assertEquals("C2", capacity2.getName());
-			assertNull(capacity2.getExtends());
+			assertTypeReferenceIdentifiers(capacity2.getExtends());
 			assertEquals(1, capacity2.getMembers().size());
 			//
 			SarlAction action2 = (SarlAction) capacity2.getMembers().get(0);
@@ -2386,7 +2345,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void missedActionImplementation_1() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction1(a : int=4)",
 					"}",
@@ -2397,15 +2356,16 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def myaction2(b : float, c : boolean) { }",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					io.sarl.lang.validation.IssueCodes.MISSING_METHOD_IMPLEMENTATION,
-					"The operation myaction1(a : int = 4) must be implemented.");
+					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
+					105, 2,
+					"The class S1 must be defined abstract because it does not implement its inherited abstract methods");
 		}
 
 		@Test
 		public void missedActionImplementation_2() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction1(a : int=4)",
 					"}",
@@ -2417,47 +2377,43 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def myaction2(y : float, z : boolean) { }",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					io.sarl.lang.validation.IssueCodes.MISSING_METHOD_IMPLEMENTATION,
-					"The operation myaction1(a : int = 4) must be implemented.");
+					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
+					105, 2,
+					"The class S1 must be defined abstract because it does not implement its inherited abstract methods");
 		}
 
 	}
 
 	public static class BehaviorAction extends AbstractSarlTest {
 
-		@Inject
-		private ParseHelper<XtendFile> parser;
-
-		@Inject
-		private ValidationTestHelper validator;
-
 		@Test
 		public void actionCast_String2int() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int=45, arg1 : int=\"S\", arg2 : int) {",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
 					));
-			this.validator.assertError(mas,
-					SarlPackage.eINSTANCE.getSarlFormalParameter(),
+			validate(mas).assertError(
+					XbasePackage.eINSTANCE.getXStringLiteral(),
 					IssueCodes.INCOMPATIBLE_TYPES,
+					54, 3,
 					"Type mismatch: cannot convert from String to int");
 		}
 
 		@Test
 		public void actionCast_int2double() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int=45, arg1 : double=18, arg2 : int) {",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -2481,14 +2437,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void actionCast_double2int() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int=45, arg1 : int=18.0, arg2 : int) {",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
 					));
-			this.validator.assertError(mas,
+			validate(mas).assertError(
 					XbasePackage.eINSTANCE.getXNumberLiteral(),
 					IssueCodes.INCOMPATIBLE_TYPES,
 					"Type mismatch: cannot convert from double to int");
@@ -2496,7 +2452,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void multipleActionDefinitionsInBehavior() throws Exception {
-			XtendFile mas = this.parser.parse(multilineString(
+			XtendFile mas = file(multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int, arg1 : int=42, arg2 : int*) {",
 					"		System.out.println(\"valid\")",
@@ -2505,8 +2461,8 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"		System.out.println(\"invalid\")",
 					"	}",
 					"}"
-					));
-			this.validator.assertNoErrors(mas);
+					), true);
+
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));

@@ -22,6 +22,8 @@ package io.sarl.lang.core;
 
 import java.io.Serializable;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Defines the scope of an Event. Scopes are specialized based on the addressing
  * mechanism internally used by a {@link Space}.
@@ -43,6 +45,7 @@ public interface Scope<T> extends Serializable {
 	 * @param element - the element to test. <strong>It must NOT BE NULL</strong>.
 	 * @return true if the element is inside the scope, false otherwise
 	 */
+	@Pure
 	boolean matches(T element);
 
 }
