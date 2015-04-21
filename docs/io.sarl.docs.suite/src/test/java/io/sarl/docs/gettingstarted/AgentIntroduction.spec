@@ -369,7 +369,7 @@ describe "Agent Definition Introduction" {
 		 * `DefaultContextInteractions` built-in capacity
 		 * should be used.
 		 * 
-		 * Below, we define an agent that is used this
+		 * Below, we define an agent that is using this
 		 * capacity.
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
