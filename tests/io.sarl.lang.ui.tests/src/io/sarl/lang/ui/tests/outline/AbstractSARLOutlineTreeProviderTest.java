@@ -93,7 +93,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 	 * @throws CoreException
 	 */
 	protected OutlineAsserts newOutlineAsserts(String code) throws Exception, CoreException {
-		XtendFile script = this.helper.createSARLScript(generateFilename(), code);
+		XtendFile script = helper().sarlFile(helper().generateFilename(), code);
 		return newOutlineAsserts(script);
 	}
 

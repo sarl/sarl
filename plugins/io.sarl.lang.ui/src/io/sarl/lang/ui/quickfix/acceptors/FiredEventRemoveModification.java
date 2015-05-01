@@ -18,10 +18,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.quickfix.semantic;
+package io.sarl.lang.ui.quickfix.acceptors;
 
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
-import io.sarl.lang.validation.IssueCodes;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
@@ -30,36 +29,53 @@ import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
 
 /**
- * Quick fixes for {@link IssueCodes#DISCOURAGED_BOOLEAN_EXPRESSION}.
+ * Remove a fired event.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class DiscouragedBooleanExpressionModification extends SARLSemanticModification {
+public final class FiredEventRemoveModification extends SARLSemanticModification {
+
+	/**
+	 */
+	FiredEventRemoveModification() {
+		//
+	}
 
 	/** Create the quick fix if needed.
+	 *
+	 * No user data.
 	 *
 	 * @param provider - the quick fix provider.
 	 * @param issue - the issue to fix.
 	 * @param acceptor - the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
-		DiscouragedBooleanExpressionModification modification = new DiscouragedBooleanExpressionModification();
+		FiredEventRemoveModification modification = new FiredEventRemoveModification();
 		modification.setIssue(issue);
 		modification.setTools(provider);
 		acceptor.accept(issue,
-				Messages.SARLQuickfixProvider_9,
-				Messages.SARLQuickfixProvider_9,
+				Messages.SARLQuickfixProvider_0,
+				Messages.SARLQuickfixProvider_8,
 				null,
 				modification);
 	}
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
+		Issue issue = getIssue();
+		SARLQuickfixProvider tools = getTools();
 		IXtextDocument document = context.getXtextDocument();
-		getTools().removeBetweenSeparators(getIssue(), document, "[", "]"); //$NON-NLS-1$//$NON-NLS-2$
+		String sep = tools.getGrammarAccess().getActionAccess().getCommaKeyword_5_2_0().getValue();
+		if (!tools.removeToPreviousSeparator(issue, document, sep)) {
+			if (!tools.removeToNextSeparator(issue, document, sep)) {
+				tools.removeToPreviousKeyword(issue, document,
+						tools.getGrammarAccess().getActionAccess()
+						.getFiresKeyword_9_1_0().getValue());
+			}
+		}
 	}
 
 }

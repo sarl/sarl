@@ -20,12 +20,7 @@
  */
 package io.sarl.lang.ui.outline;
 
-import java.util.List;
-
-import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
-import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
-import org.eclipse.xtext.ui.editor.outline.impl.OutlinePage;
-import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtend.ide.outline.XtendOutlinePage;
 
 /**
  * Customize the outline page.
@@ -36,20 +31,6 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLOutlinePage extends OutlinePage {
-
-	@Override
-	protected List<IOutlineNode> getInitiallyExpandedNodes() {
-		IOutlineNode rootNode = getTreeProvider().createRoot(getXtextDocument());
-		List<IOutlineNode> result = CollectionLiterals.newArrayList(rootNode);
-
-		for (IOutlineNode firstLevelNode: rootNode.getChildren()) {
-			if (firstLevelNode instanceof EStructuralFeatureNode) {
-				result.add(firstLevelNode);
-			}
-		}
-
-		return result;
-	}
-
+public class SARLOutlinePage extends XtendOutlinePage {
+	//
 }

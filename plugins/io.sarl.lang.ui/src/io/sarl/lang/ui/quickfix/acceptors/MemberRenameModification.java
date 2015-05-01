@@ -18,11 +18,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.quickfix.semantic;
+package io.sarl.lang.ui.quickfix.acceptors;
 
-import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
-import io.sarl.lang.validation.IssueCodes;
 
 import java.text.MessageFormat;
 
@@ -31,41 +29,41 @@ import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
 
-import com.google.common.base.Strings;
-
 /**
- * Quick fixes for {@link IssueCodes#WRONG_PACKAGE}.
+ * Rename a member.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class WrongPackageModification extends SARLSemanticModification {
+public final class MemberRenameModification extends SARLSemanticModification {
 
-	private final String expectedPackage;
+	private final String validName;
 
-	private WrongPackageModification(String expectedPackage) {
-		this.expectedPackage = expectedPackage;
+	private MemberRenameModification(String validName) {
+		this.validName = validName;
 	}
 
 	/** Create the quick fix if needed.
+	 *
+	 * The user data ccontains the new names.
 	 *
 	 * @param provider - the quick fix provider.
 	 * @param issue - the issue to fix.
 	 * @param acceptor - the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
-		String[] data = issue.getData();
-		if (data != null && data.length >= 1) {
-			String expectedPackage = data[0];
-			String msg = MessageFormat.format(Messages.SARLQuickfixProvider_0, expectedPackage);
-			WrongPackageModification modification = new WrongPackageModification(expectedPackage);
+		for (String newName : issue.getData()) {
+			String msg = MessageFormat.format(
+					Messages.SARLQuickfixProvider_11,
+					newName);
+			MemberRenameModification modification = new MemberRenameModification(newName);
 			modification.setIssue(issue);
 			modification.setTools(provider);
 			acceptor.accept(issue,
 					msg,
-					msg,
+					MessageFormat.format(Messages.SARLQuickfixProvider_12, newName),
 					null,
 					modification);
 		}
@@ -73,13 +71,8 @@ public final class WrongPackageModification extends SARLSemanticModification {
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		String n;
-		if (Strings.isNullOrEmpty(this.expectedPackage)) {
-			n = null;
-		} else {
-			n = this.expectedPackage;
-		}
-		((SarlScript) element).setName(n);
+		Issue issue = getIssue();
+		context.getXtextDocument().replace(issue.getOffset(), issue.getLength(), this.validName);
 	}
 
 }

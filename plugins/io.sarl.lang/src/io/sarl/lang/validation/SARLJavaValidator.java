@@ -68,7 +68,6 @@ import static org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRES
 import static org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_TYPE;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED;
-import static org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISCOURAGED;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING;
 import io.sarl.lang.SARLLangActivator;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
@@ -666,8 +665,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 							XTEND_FUNCTION__NAME,
 							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 							INVALID_MEMBER_NAME,
-							Messages.SARLValidator_8,
-							action.getName(), validName1, validName2);
+							validName1, validName2);
 		} else if (!isIgnored(DISCOURAGED_FUNCTION_NAME)
 				&& this.featureNames.isDiscouragedName(name)) {
 			warning(
@@ -700,18 +698,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 							XTEND_FIELD__NAME,
 							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 							VARIABLE_NAME_DISALLOWED,
-							Messages.SARLValidator_7,
-							field.getName(), validName);
-		} else if (!isIgnored(VARIABLE_NAME_DISCOURAGED)
-				&& this.featureNames.isDiscouragedName(name)) {
-			warning(
-					MessageFormat.format(
-							Messages.SARLValidator_19,
-							field.getName()),
-							field,
-							XTEND_FIELD__NAME,
-							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-							VARIABLE_NAME_DISCOURAGED);
+							validName);
 		}
 	}
 
@@ -719,7 +706,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	 *
 	 * @param field - the field to test.
 	 */
-	@Check(CheckType.FAST)
+	@Check
 	public void checkFieldNameShadowing(XtendField field) {
 		if (!isIgnored(VARIABLE_NAME_SHADOWING)
 				&& !Utils.isHiddenAttribute(field.getName())) {
@@ -750,7 +737,6 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 								XTEND_FIELD__NAME,
 								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 								VARIABLE_NAME_SHADOWING,
-								field.getName(),
 								newName);
 			}
 		}
@@ -786,7 +772,8 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 					error(MessageFormat.format(Messages.SARLJavaValidator_13,
 							inherited.getSimpleSignature()),
 							sourceElement,
-							returnTypeFeature(sourceElement), INCOMPATIBLE_RETURN_TYPE);
+							returnTypeFeature(sourceElement), INCOMPATIBLE_RETURN_TYPE,
+							inherited.getResolvedReturnType().getIdentifier());
 				}
 			} else if (!isIgnored(RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED)
 					&& sourceElement instanceof XtendFunction) {
@@ -795,7 +782,8 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 					warning(MessageFormat.format(Messages.SARLJavaValidator_14,
 							resolved.getResolvedReturnType().getHumanReadableName()),
 							sourceElement,
-							returnTypeFeature(sourceElement), RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED);
+							returnTypeFeature(sourceElement), RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED,
+							inherited.getResolvedReturnType().getIdentifier());
 				}
 			}
 		}
@@ -837,12 +825,12 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 						MessageFormat.format(
 								Messages.SARLValidator_13,
 								canonicalName(lightweightInterfaceReference)),
-								element,
-								structuralElement,
-								// The index of the element to highlight in the super-types
-								knownInterfaces.size(),
-								REDUNDANT_INTERFACE_IMPLEMENTATION,
-								canonicalName(lightweightInterfaceReference),
+						element,
+						structuralElement,
+						// The index of the element to highlight in the super-types
+						knownInterfaces.size(),
+						REDUNDANT_INTERFACE_IMPLEMENTATION,
+						canonicalName(lightweightInterfaceReference),
 						"pre"); //$NON-NLS-1$
 				return true;
 			} else if (memberOfTypeHierarchy(lightweightInterfaceReference, previousInterface)) {
@@ -850,11 +838,11 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 						MessageFormat.format(
 								Messages.SARLValidator_13,
 								canonicalName(previousInterface)),
-								element,
-								structuralElement,
-								index,
-								REDUNDANT_INTERFACE_IMPLEMENTATION,
-								canonicalName(previousInterface),
+						element,
+						structuralElement,
+						index,
+						REDUNDANT_INTERFACE_IMPLEMENTATION,
+						canonicalName(previousInterface),
 						"post"); //$NON-NLS-1$
 			}
 			++index;
@@ -885,12 +873,12 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 											Messages.SARLValidator_14,
 											canonicalName(lightweightInterfaceReference),
 											canonicalName(lightweightSuperType)),
-											element,
-											structuralElement,
-											// The index of the element to highlight in the super-types
-											knownInterfaces.size(),
-											REDUNDANT_INTERFACE_IMPLEMENTATION,
-											canonicalName(lightweightInterfaceReference),
+									element,
+									structuralElement,
+									// The index of the element to highlight in the super-types
+									knownInterfaces.size(),
+									REDUNDANT_INTERFACE_IMPLEMENTATION,
+									canonicalName(lightweightInterfaceReference),
 									"unknow"); //$NON-NLS-1$
 						}
 					}
@@ -1099,7 +1087,6 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 									feature,
 									superTypeIndex,
 									INTERFACE_EXPECTED,
-									inferredType.getIdentifier(),
 									jvmSuperType.getIdentifier());
 						} else {
 							error(
@@ -1107,7 +1094,6 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 									feature,
 									superTypeIndex,
 									CLASS_EXPECTED,
-									inferredType.getIdentifier(),
 									jvmSuperType.getIdentifier());
 						}
 						success = false;
@@ -1126,14 +1112,12 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 									feature,
 									superTypeIndex,
 									INVALID_EXTENDED_TYPE,
-									inferredType.getIdentifier(),
 									jvmSuperType.getIdentifier());
 						} else {
 							error(MessageFormat.format(Messages.SARLValidator_32, expectedType.getName()),
 									feature,
 									superTypeIndex,
 									INVALID_EXTENDED_TYPE,
-									inferredType.getIdentifier(),
 									jvmSuperType.getIdentifier());
 						}
 						success = false;
@@ -1146,17 +1130,16 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 								feature,
 								superTypeIndex,
 								CYCLIC_INHERITANCE,
-								inferredType.getIdentifier(),
 								jvmSuperType.getIdentifier());
 						success = false;
 					}
-				} else {
+				} else if (superType != null) {
 					error(MessageFormat.format(Messages.SARLValidator_33,
 							inferredType.getQualifiedName()),
 							feature,
 							superTypeIndex,
 							CYCLIC_INHERITANCE,
-							inferredType.getIdentifier());
+							superType.getIdentifier());
 					success = false;
 				}
 				checkWildcardSupertype(element, superType, feature, superTypeIndex);

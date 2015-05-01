@@ -498,6 +498,7 @@ capacity Logging {
 	 * @param message - the elements to display.
 	 * @deprecated Use {@link #info(Object)}.
 	 */
+	@Deprecated
 	def println(message : Object)
 	
 	/** Print the given message at error logging level.

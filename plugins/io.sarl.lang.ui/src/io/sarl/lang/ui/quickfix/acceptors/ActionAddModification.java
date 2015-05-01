@@ -18,15 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.quickfix.semantic;
+package io.sarl.lang.ui.quickfix.acceptors;
 
-import io.sarl.lang.sarl.FeatureContainer;
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
-import io.sarl.lang.validation.IssueCodes;
 
 import java.text.MessageFormat;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
@@ -36,23 +35,27 @@ import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 
 /**
- * Quick fixes for {@link IssueCodes#DISCOURAGED_CAPACITY_DEFINITION} by adding a default function.
+ * Add an action.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see "http://www.eclipse.org/Xtext/documentation.html#quickfixes"
  */
-public final class DefaultActionDiscouragedCapacityDefinitionModification extends SARLSemanticModification {
+public final class ActionAddModification extends SARLSemanticModification {
 
-	private final String defaultActionName;
-
-	private DefaultActionDiscouragedCapacityDefinitionModification(String defaultActionName) {
-		this.defaultActionName = defaultActionName;
+	private final String actionName;
+	
+	/**
+	 * @param actionName the name of the action.
+	 */
+	private ActionAddModification(String actionName) {
+		this.actionName = actionName;
 	}
 
 	/** Create the quick fix if needed.
+	 *
+	 * The user data contains the name of the container type, and the name of the new action.
 	 *
 	 * @param provider - the quick fix provider.
 	 * @param issue - the issue to fix.
@@ -61,17 +64,13 @@ public final class DefaultActionDiscouragedCapacityDefinitionModification extend
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
 		String[] data = issue.getData();
 		if (data != null && data.length > 1) {
-			String defaultActionName = data[1];
-			String msg = MessageFormat.format(
-					Messages.SARLQuickfixProvider_13,
-					Messages.SARLQuickfixProvider_8, defaultActionName);
-			DefaultActionDiscouragedCapacityDefinitionModification modification =
-					new DefaultActionDiscouragedCapacityDefinitionModification(defaultActionName);
+			String actionName = data[1];
+			ActionAddModification modification = new ActionAddModification(actionName);
 			modification.setIssue(issue);
 			modification.setTools(provider);
 			acceptor.accept(issue,
-					msg,
-					msg,
+					MessageFormat.format(Messages.SARLQuickfixProvider_2, actionName),
+					MessageFormat.format(Messages.SARLQuickfixProvider_3, actionName),
 					null,
 					modification);
 		}
@@ -79,22 +78,23 @@ public final class DefaultActionDiscouragedCapacityDefinitionModification extend
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		FeatureContainer container = EcoreUtil2.getContainerOfType(element, FeatureContainer.class);
+		XtendTypeDeclaration container = EcoreUtil2.getContainerOfType(element, XtendTypeDeclaration.class);
 		if (container != null) {
 			int insertOffset = getTools().getInsertOffset(container);
 			IXtextDocument document = context.getXtextDocument();
 			int length = getTools().getSpaceSize(document, insertOffset);
 			ReplacingAppendable appendable = getTools().getAppendableFactory().create(document,
 					(XtextResource) element.eResource(), insertOffset, length);
-			boolean changeIndentation = container.getFeatures().isEmpty();
+			boolean changeIndentation = container.getMembers().isEmpty();
 			if (changeIndentation) {
 				appendable.increaseIndentation();
 			}
 			appendable.newLine();
 			appendable.append(
-					getTools().getGrammarAccess().getActionSignatureAccess().getDefKeyword_1().getValue());
+					getTools().getGrammarAccess().getXtendGrammarAccess().getMethodModifierAccess()
+					.getDefKeyword_0().getValue());
 			appendable.append(" "); //$NON-NLS-1$
-			appendable.append(this.defaultActionName);
+			appendable.append(this.actionName);
 			if (changeIndentation) {
 				appendable.decreaseIndentation();
 			}

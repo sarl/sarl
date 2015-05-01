@@ -45,7 +45,7 @@ public class SarlTaskTagProvider implements ITaskTagProvider {
 	
 	@Inject
 	private IPreferenceValuesProvider preferenceValuesProvider;
-	
+
 	@Override
 	public TaskTags getTaskTags(Resource resource) {
 		IPreferenceValues prefs = this.preferenceValuesProvider.getPreferenceValues(resource);

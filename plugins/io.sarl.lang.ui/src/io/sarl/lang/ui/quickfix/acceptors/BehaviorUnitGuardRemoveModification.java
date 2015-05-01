@@ -18,12 +18,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.quickfix.semantic;
+package io.sarl.lang.ui.quickfix.acceptors;
 
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
-import io.sarl.lang.validation.IssueCodes;
-
-import java.text.MessageFormat;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
@@ -32,14 +29,14 @@ import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
 
 /**
- * Quick fixes for {@link IssueCodes#REDUNDANT_INTERFACE_IMPLEMENTATION}.
+ * Remove behavior unit guard.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class PreRedundantInterfaceModification extends SARLSemanticModification {
+public final class BehaviorUnitGuardRemoveModification extends SARLSemanticModification {
 
 	/** Create the quick fix if needed.
 	 *
@@ -48,29 +45,20 @@ public final class PreRedundantInterfaceModification extends SARLSemanticModific
 	 * @param acceptor - the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
-		String[] data = issue.getData();
-		if (data != null && data.length >= 2) {
-			String mode = data[1];
-			if ("pre".equals(mode)) { //$NON-NLS-1$
-				String redundantName = data[0];
-				String msg = MessageFormat.format(Messages.SARLQuickfixProvider_6, redundantName);
-				PreRedundantInterfaceModification modification = new PreRedundantInterfaceModification();
-				modification.setIssue(issue);
-				modification.setTools(provider);
-				acceptor.accept(issue,
-						msg,
-						msg,
-						null,
-						modification);
-			}
-		}
+		BehaviorUnitGuardRemoveModification modification = new BehaviorUnitGuardRemoveModification();
+		modification.setIssue(issue);
+		modification.setTools(provider);
+		acceptor.accept(issue,
+				Messages.SARLQuickfixProvider_0,
+				Messages.SARLQuickfixProvider_4,
+				null,
+				modification);
 	}
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
 		IXtextDocument document = context.getXtextDocument();
-		getTools().removeToPreviousSeparator(getIssue(), document,
-				getTools().getGrammarAccess().getCapacityAccess().getCommaKeyword_3_2_0().getValue());
+		getTools().removeBetweenSeparators(getIssue(), document, "[", "]"); //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 }

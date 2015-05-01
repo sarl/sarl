@@ -21,7 +21,7 @@
 
 package org.eclipse.xtend.core.ui.contentassist;
 
-/** This class is defined for solving a big in the Xtext/Xtend generators.
+/** This class is defined for solving a bug in the Xtext/Xtend generators.
  *
  * See {@link "https://www.eclipse.org/forums/index.php?t=msg&th=303392&goto=812958&#msg_812958"}.
  *

@@ -35,9 +35,9 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
+import org.eclipse.xtend.ide.labeling.XtendDescriptionLabelProvider;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.resource.IEObjectDescription;
-import org.eclipse.xtext.xbase.annotations.ui.labeling.XbaseWithAnnotationsDescriptionLabelProvider;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 
 import com.google.inject.Inject;
@@ -53,7 +53,7 @@ import com.google.inject.Inject;
  * @mavenartifactid $ArtifactId$
  * @see "http://www.eclipse.org/Xtext/documentation.html#labelProvider"
  */
-public class SARLDescriptionLabelProvider extends XbaseWithAnnotationsDescriptionLabelProvider {
+public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider {
 
 	/** Provider of images.
 	 */

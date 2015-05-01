@@ -35,7 +35,6 @@ import org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightedPositionAcceptor;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.ISemanticHighlightingCalculator;
 import org.eclipse.xtext.util.TextRegion;
 import org.eclipse.xtext.xbase.ui.highlighting.XbaseHighlightingConfiguration;
-import org.junit.Before;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -56,14 +55,6 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 	 */
 	protected abstract ISemanticHighlightingCalculator getCalculator();
 
-	/**
-	 * @throws Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		this.helper.waitForAutoBuild();
-	}
-
 	/** Highlight the given text.
 	 *
 	 * @param code - the SARL script.
@@ -73,7 +64,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 	protected HighlightingAsserts highlight(String code) {
 		try {
 			HighlightingAsserts asserts = new HighlightingAsserts();
-			XtendFile script = this.helper.createSARLScript(generateFilename(), code);
+			XtendFile script = file(code);
 			getCalculator().provideHighlightingFor((XtextResource) script.eResource(), asserts);
 			return asserts;
 		} catch(Exception e) {

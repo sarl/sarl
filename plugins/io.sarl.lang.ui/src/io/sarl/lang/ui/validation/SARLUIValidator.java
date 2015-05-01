@@ -20,8 +20,6 @@
  */
 package io.sarl.lang.ui.validation;
 
-import static org.eclipse.xtext.util.Strings.isEmpty;
-import static org.eclipse.xtext.util.Strings.notNull;
 import io.sarl.lang.sarl.SarlPackage;
 
 import java.text.MessageFormat;
@@ -34,6 +32,9 @@ import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.ide.validator.XtendUIValidator;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
+
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 
 /** Validator based on the Eclipse UI.
  *
@@ -48,11 +49,11 @@ public class SARLUIValidator extends XtendUIValidator {
 	protected List<EPackage> getEPackages() {
 		List<EPackage> packages = super.getEPackages();
 		packages.add(SarlPackage.eINSTANCE);
-		//packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtend")); //$NON-NLS-1$
-	    packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtext/xbase/Xbase")); //$NON-NLS-1$
-	    packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtext/common/JavaVMTypes")); //$NON-NLS-1$
-	    packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtext/xbase/Xtype")); //$NON-NLS-1$
-	    packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/Xtext/Xbase/XAnnotations")); //$NON-NLS-1$
+		packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtend")); //$NON-NLS-1$
+		packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtext/xbase/Xbase")); //$NON-NLS-1$
+		packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtext/common/JavaVMTypes")); //$NON-NLS-1$
+		packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtext/xbase/Xtype")); //$NON-NLS-1$
+		packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/Xtext/Xbase/XAnnotations")); //$NON-NLS-1$
 		return packages;
 	}
 
@@ -62,19 +63,24 @@ public class SARLUIValidator extends XtendUIValidator {
 		//
 		// The wrong package is a warning in SARL (an error in Xtend).
 		//
-		String expectedPackage = getExpectedPackageName(xtendFile);
-		String declaredPackage = xtendFile.getPackage();
-		if(expectedPackage != null &&
-			!((isEmpty(expectedPackage) && declaredPackage == null) || expectedPackage.equals(declaredPackage))) {
-			warning(
-					MessageFormat.format(
-							Messages.SARLUIValidator_0,
-							notNull(declaredPackage),
-							notNull(expectedPackage)),
+		String expectedPackage = Strings.nullToEmpty(getExpectedPackageName(xtendFile));
+		String declaredPackage = Strings.nullToEmpty(xtendFile.getPackage());
+		if (!Objects.equal(expectedPackage, declaredPackage)) {
+			if (expectedPackage.isEmpty()) {
+				warning(Messages.SARLUIValidator_0,
+					xtendFile,
 					XtendPackage.Literals.XTEND_FILE__PACKAGE,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					IssueCodes.WRONG_PACKAGE,
 					expectedPackage);
+			} else {
+				warning(MessageFormat.format(Messages.SARLUIValidator_1, expectedPackage),
+						xtendFile,
+						XtendPackage.Literals.XTEND_FILE__PACKAGE,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						IssueCodes.WRONG_PACKAGE,
+						expectedPackage);
+			}
 		}
 	}
 

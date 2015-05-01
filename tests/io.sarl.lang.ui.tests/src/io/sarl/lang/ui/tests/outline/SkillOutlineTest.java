@@ -154,7 +154,7 @@ public class SkillOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		OutlineAsserts a;
 		a = asserts.child(0, "S1"); //$NON-NLS-1$
 		a.numChildren(1);
-		a.leaf(0, "S1(boolean)"); //$NON-NLS-1$
+		a.leaf(0, "new(boolean)"); //$NON-NLS-1$
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class SkillOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		OutlineAsserts a;
 		a = asserts.child(0, "S1"); //$NON-NLS-1$
 		a.numChildren(1);
-		a.leaf(0, "S1()"); //$NON-NLS-1$
+		a.leaf(0, "new()"); //$NON-NLS-1$
 	}
 
 	/**
@@ -182,8 +182,8 @@ public class SkillOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		OutlineAsserts a;
 		a = asserts.child(0, "S1"); //$NON-NLS-1$
 		a.numChildren(2);
-		a.leaf(0, "S1(char)"); //$NON-NLS-1$
-		a.leaf(1, "S1(float)"); //$NON-NLS-1$
+		a.leaf(0, "new(char)"); //$NON-NLS-1$
+		a.leaf(1, "new(float)"); //$NON-NLS-1$
 	}
 
 	/**

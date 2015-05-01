@@ -57,6 +57,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
+import org.eclipse.jdt.ui.JavaElementImageDescriptor;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
@@ -129,13 +132,13 @@ public abstract class AbstractSarlTest {
 
 	@Inject
 	private ValidationTestHelper validationHelper;
-	
+
 	@Inject
 	private ParseHelper<XtendFile> parser;
-	
+
 	@Inject
 	private SarlJvmModelAssociations associations;
-	
+
 	/** This rule permits to clean automatically the fields
 	 * at the end of the test.
 	 */
@@ -146,7 +149,7 @@ public abstract class AbstractSarlTest {
 			while (type != null && !Object.class.equals(type)) {
 				for (Field field : type.getDeclaredFields()) {
 					if (field.getAnnotation(Mock.class) != null
-						|| field.getAnnotation(InjectMocks.class) != null) {
+							|| field.getAnnotation(InjectMocks.class) != null) {
 						return true;
 					}
 				}
@@ -610,7 +613,7 @@ public abstract class AbstractSarlTest {
 					+ "Actual: " + Iterables.toString(actualFormalParameters));
 		}
 	}
-	
+
 	/** Assert that the last parameter in the given actual formal parameters is variadic.
 	 *
 	 * @param actualFormalParameters
@@ -772,7 +775,7 @@ public abstract class AbstractSarlTest {
 		}
 		return script;
 	}
-	
+
 	/** Validate the given file and reply the issues.
 	 */
 	protected List<Issue> issues(XtendFile file) {
@@ -847,7 +850,7 @@ public abstract class AbstractSarlTest {
 				+ "\nclass Foo { " + string + "}");
 		return (SarlAction) clazz.getMembers().get(0);
 	}
-	
+
 	/** Create an instance of function.
 	 */
 	protected SarlAction function(String string, boolean validate, String... prefix) throws Exception {
@@ -879,7 +882,7 @@ public abstract class AbstractSarlTest {
 				+ "\ninterface Foo { " + string + "}");
 		return (SarlAction) interfaze.getMembers().get(0);
 	}
-	
+
 	/** Create an instance of function signature.
 	 */
 	protected SarlAction functionSignature(String string, boolean validate, String... prefix) throws Exception {
@@ -961,7 +964,7 @@ public abstract class AbstractSarlTest {
 				+ "\nagent Foo { " + string + "}");
 		return (SarlBehaviorUnit) agent.getMembers().get(0);
 	}
-	
+
 	/** Create an instance of behavior unit.
 	 */
 	protected SarlBehaviorUnit behaviorUnit(String string, boolean validate, String... prefix) throws Exception {
@@ -980,6 +983,108 @@ public abstract class AbstractSarlTest {
 		return ((XtendField) agent.getMembers().get(0)).getType();
 	}
 
+	/** Merge two arrays.
+	 *
+	 * @param operand1 - the first array.
+	 * @param operand2 - the second array.
+	 * @return the merge.
+	 */
+	public static String[] merge(String[] operand1, String[] operand2) {
+		if (operand1 == null) {
+			if (operand2 == null) {
+				return new String[0];
+			}
+			return operand2;
+		}
+		if (operand2 == null) {
+			return operand1;
+		}
+		String[] tab = new String[operand1.length + operand2.length];
+		System.arraycopy(
+				operand1, 0,
+				tab, 0,
+				operand1.length);
+		System.arraycopy(
+				operand2, 0,
+				tab, operand1.length,
+				operand2.length);
+		return tab;
+	}
+
+	/** Compute the Levenshstein distance between two strings.
+	 *
+	 * Null string is assimilated to the empty string.
+	 *
+	 * @param s0 first string.
+	 * @param s1 second string.
+	 * @return the Levenshstein distance.
+	 * @see https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance
+	 */
+	public static int levenshteinDistance (String firstString, String secondString) {
+		String s0 = Strings.nullToEmpty(firstString);
+		String s1 = Strings.nullToEmpty(secondString);
+		int len0 = s0.length() + 1;                                                     
+		int len1 = s1.length() + 1;                                                     
+
+		// the array of distances                                                       
+		int[] cost = new int[len0];                                                     
+		int[] newcost = new int[len0];                                                  
+
+		// initial cost of skipping prefix in String s0                                 
+		for (int i = 0; i < len0; ++i) {
+			cost[i] = i;                                     
+		}
+
+		// dynamically computing the array of distances                                  
+
+		// transformation cost for each letter in s1                                    
+		for (int j = 1; j < len1; ++j) {                                                
+			// initial cost of skipping prefix in String s1                             
+			newcost[0] = j;                                                             
+
+			// transformation cost for each letter in s0                                
+			for(int i = 1; i < len0; ++i) {                                             
+				// matching current letters in both strings                             
+				int match = (s0.charAt(i - 1) == s1.charAt(j - 1)) ? 0 : 1;             
+
+				// computing cost for each transformation                               
+				int cost_replace = cost[i - 1] + match;                                 
+				int cost_insert  = cost[i] + 1;                                         
+				int cost_delete  = newcost[i - 1] + 1;                                  
+
+				// keep minimum cost                                                    
+				newcost[i] = Math.min(Math.min(cost_insert, cost_delete), cost_replace);
+			}                                                                           
+
+			// swap cost/newcost arrays                                                 
+			int[] swap = cost;
+			cost = newcost;
+			newcost = swap;                          
+		}                                                                               
+
+		// the distance is the cost for transforming all letters in both strings        
+		return cost[len0 - 1];                                                          
+	}
+
+	/** Replies the stack trace of the caller of this function.
+	 *
+	 * @return the stack trace.
+	 */
+	public static StackTraceElement[] getStackTrace() {
+		try {
+			throw new Exception();
+		} catch (Throwable e) {
+			List<StackTraceElement> types = new ArrayList<>();
+			StackTraceElement[] elements = e.getStackTrace();
+			for (int i = 1; i < elements.length; ++i) {
+				types.add(elements[i]);
+			}
+			StackTraceElement[] array = new StackTraceElement[types.size()];
+			types.toArray(array);
+			return array;
+		}
+	}
+
 	/** Wrapper for the validation helper on a specific resource.
 	 *
 	 * @author $Author: sgalland$
@@ -990,23 +1095,23 @@ public abstract class AbstractSarlTest {
 	public class Validator {
 
 		private final Resource resource;
-		
+
 		/**
 		 * @param resource - the resource to validate.
 		 */
 		private Validator(Resource resource) {
 			this.resource = resource;
 		}
-		
+
 		public List<Issue> validate() {
 			return AbstractSarlTest.this.validationHelper.validate(this.resource);
 		}
-		
+
 		public Validator assertNoIssues() {
 			AbstractSarlTest.this.validationHelper.assertNoIssues(this.resource);
 			return this;
 		}
-		
+
 		public Validator assertNoErrors() {
 			AbstractSarlTest.this.validationHelper.assertNoErrors(this.resource);
 			return this;
@@ -1021,17 +1126,17 @@ public abstract class AbstractSarlTest {
 			AbstractSarlTest.this.validationHelper.assertNoErrors(this.resource, objectType, code, messageParts);
 			return this;
 		}
-		
+
 		public Validator assertNoErrors(String code) {
 			AbstractSarlTest.this.validationHelper.assertNoErrors(this.resource, code);
 			return this;
 		}
-		
+
 		public Validator assertNoIssues(EClass objectType) {
 			AbstractSarlTest.this.validationHelper.assertNoIssues(this.resource, objectType);
 			return this;
 		}
-		
+
 		public Validator assertNoIssue(EClass objectType, String issuecode) {
 			AbstractSarlTest.this.validationHelper.assertNoIssue(this.resource, objectType, issuecode);
 			return this;
@@ -1046,24 +1151,24 @@ public abstract class AbstractSarlTest {
 			AbstractSarlTest.this.validationHelper.assertError(this.resource, objectType, code, messageParts);
 			return this;
 		}
-		
+
 		public Validator assertIssue(EClass objectType, String code, Severity severity, String... messageParts) {
 			AbstractSarlTest.this.validationHelper.assertIssue(this.resource, objectType, code, severity, messageParts);
 			return this;
 		}
-		
+
 		public Validator assertIssue(EClass objectType, String code, int offset, int length,  Severity severity,
 				String... messageParts) {
 			AbstractSarlTest.this.validationHelper.assertIssue(this.resource, objectType, code, offset, length, severity,
 					messageParts);
 			return this;
 		}
-		
+
 		public Validator assertNoIssues(EClass objectType, String code, Severity severity, String... messageParts) {
 			AbstractSarlTest.this.validationHelper.assertNoIssues(this.resource, objectType, code, severity, messageParts);
 			return this;
 		}
-		
+
 		public Validator assertNoIssues(EClass objectType, String code, int offset, int length, Severity severity,
 				String... messageParts) {
 			AbstractSarlTest.this.validationHelper.assertNoIssues(this.resource, objectType, code, offset, length, severity,
@@ -1088,5 +1193,5 @@ public abstract class AbstractSarlTest {
 		}
 
 	}
-	
+
 }

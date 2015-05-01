@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,21 +19,23 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.ui.quickfix.semantic;
+package io.sarl.lang.ui.quickfix.acceptors;
 
 import org.eclipse.osgi.util.NLS;
 
-/** Localized Messages.
+/** Messages for the quick fix objects.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("all")
+@SuppressWarnings("javadoc")
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.lang.ui.quickfix.semantic.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "io.sarl.lang.ui.quickfix.acceptors.messages"; //$NON-NLS-1$
 	public static String SARLQuickfixProvider_0;
 	public static String SARLQuickfixProvider_1;
+	public static String SARLQuickfixProvider_10;
 	public static String SARLQuickfixProvider_2;
 	public static String SARLQuickfixProvider_3;
 	public static String SARLQuickfixProvider_4;
@@ -42,7 +44,6 @@ public class Messages extends NLS {
 	public static String SARLQuickfixProvider_7;
 	public static String SARLQuickfixProvider_8;
 	public static String SARLQuickfixProvider_9;
-	public static String SARLQuickfixProvider_10;
 	public static String SARLQuickfixProvider_11;
 	public static String SARLQuickfixProvider_12;
 	public static String SARLQuickfixProvider_13;
@@ -50,8 +51,6 @@ public class Messages extends NLS {
 	public static String SARLQuickfixProvider_15;
 	public static String SARLQuickfixProvider_16;
 	public static String SARLQuickfixProvider_17;
-	public static String SARLQuickfixProvider_18;
-	public static String SARLQuickfixProvider_19;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

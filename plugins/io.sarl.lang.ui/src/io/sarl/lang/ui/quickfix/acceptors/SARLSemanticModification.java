@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.quickfix.semantic;
+package io.sarl.lang.ui.quickfix.acceptors;
 
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 
@@ -40,7 +40,7 @@ public abstract class SARLSemanticModification implements ISemanticModification 
 
 	private WeakReference<Issue> issue;
 	private WeakReference<SARLQuickfixProvider> tools;
-
+	
 	/** Set the issue fixed by this quick fix modification.
 	 *
 	 * @param issue - the fixed issue.

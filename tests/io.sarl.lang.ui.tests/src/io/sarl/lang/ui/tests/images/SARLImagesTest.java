@@ -39,7 +39,10 @@ public class SARLImagesTest extends AbstractSarlUiTest {
 	 */
 	@Test
 	public void forPackage() {
-		assertBundleImage("packd_obj.gif", this.images.forPackage()); //$NON-NLS-1$
+		//assertBundleImage("packd_obj.gif", this.images.forPackage()); //$NON-NLS-1$
+		assertJdtImage(
+				JavaPluginImages.DESC_OBJS_PACKDECL, 0,
+				this.images.forPackage());
 	}
 
 	/**

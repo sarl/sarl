@@ -18,10 +18,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.quickfix.semantic;
+package io.sarl.lang.ui.quickfix.acceptors;
 
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
-import io.sarl.lang.validation.IssueCodes;
 
 import java.text.MessageFormat;
 
@@ -32,16 +31,24 @@ import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
 
 /**
- * Quick fixes for {@link IssueCodes#INVALID_FIRING_EVENT_TYPE}.
+ * Replace the return type of an action.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class InvalidFiringEventTypeModification extends SARLSemanticModification {
+public final class ReturnTypeReplaceModification extends SARLSemanticModification {
+
+	private final String expectedType;
+
+	private ReturnTypeReplaceModification(String expectedType) {
+		this.expectedType = expectedType;
+	}
 
 	/** Create the quick fix if needed.
+	 *
+	 * User data contains the name of the expected type.
 	 *
 	 * @param provider - the quick fix provider.
 	 * @param issue - the issue to fix.
@@ -49,17 +56,15 @@ public final class InvalidFiringEventTypeModification extends SARLSemanticModifi
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
 		String[] data = issue.getData();
-		if (data != null && data.length >= 1) {
-			String typeName = data[0];
-			String msg = MessageFormat.format(
-					Messages.SARLQuickfixProvider_5,
-					Messages.SARLQuickfixProvider_11, typeName);
-			InvalidFiringEventTypeModification modification = new InvalidFiringEventTypeModification();
+		String expectedType = null;
+		if (data != null && data.length > 0) {
+			expectedType = data[0];
+			ReturnTypeReplaceModification modification = new ReturnTypeReplaceModification(expectedType);
 			modification.setIssue(issue);
 			modification.setTools(provider);
 			acceptor.accept(issue,
-					msg,
-					msg,
+					MessageFormat.format(Messages.SARLQuickfixProvider_15, expectedType),
+					Messages.SARLQuickfixProvider_16,
 					null,
 					modification);
 		}
@@ -67,17 +72,8 @@ public final class InvalidFiringEventTypeModification extends SARLSemanticModifi
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		Issue issue = getIssue();
-		SARLQuickfixProvider tools = getTools();
 		IXtextDocument document = context.getXtextDocument();
-		String sep = tools.getGrammarAccess().getActionSignatureAccess().getCommaKeyword_5_2_0().getValue();
-		if (!tools.removeToPreviousSeparator(issue, document, sep)) {
-			if (!tools.removeToNextSeparator(issue, document, sep)) {
-				tools.removeToPreviousKeyword(issue, document,
-						tools.getGrammarAccess().getActionSignatureAccess()
-						.getFiresKeyword_5_0().getValue());
-			}
-		}
+		document.replace(getIssue().getOffset(), getIssue().getLength(), this.expectedType);
 	}
 
 }

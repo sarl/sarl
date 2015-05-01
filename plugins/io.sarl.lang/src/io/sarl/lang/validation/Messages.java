@@ -55,8 +55,6 @@ public class Messages extends NLS {
 	public static String SARLJavaValidator_9;
 	public static String SARLValidator_0;
 	public static String SARLValidator_1;
-	public static String SARLValidator_7;
-	public static String SARLValidator_8;
 	public static String SARLValidator_9;
 	public static String SARLValidator_10;
 	public static String SARLValidator_13;

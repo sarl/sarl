@@ -108,7 +108,7 @@ public class SARLDescriptionLabelProviderTest extends AbstractSarlUiTest {
 	@Test
 	public void imageAttribute() {
 		assertJdtImage(
-				JavaPluginImages.DESC_FIELD_PROTECTED, JavaElementImageDescriptor.FINAL,
+				JavaPluginImages.DESC_FIELD_PROTECTED, 0,
 				this.provider.image(Mockito.mock(XtendField.class)));
 	}
 

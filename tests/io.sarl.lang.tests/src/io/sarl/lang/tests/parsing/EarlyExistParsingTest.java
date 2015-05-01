@@ -18,13 +18,9 @@ package io.sarl.lang.tests.parsing;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.TestClasspath;
-import io.sarl.tests.api.TestScope;
 
 import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.serializer.ISerializer;
@@ -42,7 +38,6 @@ import com.google.inject.Inject;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-@TestClasspath("io.sarl.tests.testdata")
 public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Inject

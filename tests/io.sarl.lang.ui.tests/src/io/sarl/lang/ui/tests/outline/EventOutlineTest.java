@@ -80,7 +80,7 @@ public class EventOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		OutlineAsserts a;
 		a = asserts.child(0, "E1"); //$NON-NLS-1$
 		a.numChildren(1);
-		a.leaf(0, "E1()"); //$NON-NLS-1$
+		a.leaf(0, "new()"); //$NON-NLS-1$
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class EventOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		OutlineAsserts a;
 		a = asserts.child(0, "E1"); //$NON-NLS-1$
 		a.numChildren(1);
-		a.leaf(0, "E1(float)"); //$NON-NLS-1$
+		a.leaf(0, "new(float)"); //$NON-NLS-1$
 	}
 
 	/**
@@ -108,8 +108,8 @@ public class EventOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		OutlineAsserts a;
 		a = asserts.child(0, "E1"); //$NON-NLS-1$
 		a.numChildren(2);
-		a.leaf(0, "E1()"); //$NON-NLS-1$
-		a.leaf(1, "E1(float)"); //$NON-NLS-1$
+		a.leaf(0, "new()"); //$NON-NLS-1$
+		a.leaf(1, "new(float)"); //$NON-NLS-1$
 	}
 
 	/**
@@ -130,8 +130,8 @@ public class EventOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		a.numChildren(4);
 		a.leaf(0, "attr : boolean"); //$NON-NLS-1$
 		a.leaf(1, "xyz : int"); //$NON-NLS-1$
-		a.leaf(2, "E1(char)"); //$NON-NLS-1$
-		a.leaf(3, "E1(int)"); //$NON-NLS-1$
+		a.leaf(2, "new(char)"); //$NON-NLS-1$
+		a.leaf(3, "new(int)"); //$NON-NLS-1$
 	}
 
 }

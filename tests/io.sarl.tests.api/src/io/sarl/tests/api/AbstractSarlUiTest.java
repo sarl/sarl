@@ -26,19 +26,38 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import io.sarl.lang.SARLUiInjectorProvider;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.xtend.core.xtend.XtendFile;
+import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil;
+import org.eclipse.xtext.resource.XtextResourceSet;
+import org.eclipse.xtext.validation.Issue;
+import org.junit.Assume;
+import org.junit.ClassRule;
 import org.junit.Rule;
+import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
@@ -50,106 +69,53 @@ import com.google.inject.Injector;
  * @mavenartifactid $ArtifactId$
  */
 @InjectWith(SARLUiInjectorProvider.class)
+@SuppressWarnings("all")
 public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 
-	@Inject
-	private Injector injector;
-
-	/** This rule permits to create a project and clean the workspace.
+	/** This rule permits to tear down the workbench helper.
 	 */
 	@Rule
-	public TestWatcher sarlUiWatchter = new TestWatcher() {
+	public TestWatcher rootSarlUiWatchter = new TestWatcher() {
 		@SuppressWarnings("synthetic-access")
 		@Override
 		protected void starting(Description description) {
 			try {
-				IResourcesSetupUtil.cleanWorkspace();
-				String[] classpath = WorkspaceTestHelper.DEFAULT_REQUIRED_BUNDLES;
-				TestClasspath annot2 = description.getAnnotation(TestClasspath.class);
-				if (annot2 == null) {
-					Class<?> type = description.getTestClass();
-					while (type != null && annot2 == null) {
-						annot2 = type.getAnnotation(TestClasspath.class);
-						type = type.getEnclosingClass();
-					}
-				}
-				if (annot2 != null) {
-					classpath = merge(classpath, annot2.value());
-				}
-				AbstractSarlUiTest.this.helper.createProjectWithDependencies(
-						AbstractSarlUiTest.this.injector,
-						WorkspaceTestHelper.TESTPROJECT_NAME,
-						classpath);
+				WorkbenchTestHelper.createPluginProject(getInjector(), WorkbenchTestHelper.TESTPROJECT_NAME);
 			} catch (CoreException e) {
 				throw new RuntimeException(e);
 			}
 		}
 		@Override
 		protected void finished(Description description) {
-			if (description.getAnnotation(CleanWorkspaceAfter.class) != null) {
-				try {
-					IResourcesSetupUtil.cleanWorkspace();
-				} catch (CoreException e) {
-					throw new RuntimeException(e);
-				}
+			try {
+				helper().tearDown();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			try {
+				IResourcesSetupUtil.cleanWorkspace();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
 			}
 		}
 	};
 
+	@Inject
+	private Injector injector;
+
 	/** Helper for interaction with the Eclipse workbench.
 	 */
 	@Inject
-	protected WorkspaceTestHelper helper;
-
-	/** Merge two arrays.
+	private WorkbenchTestHelper helper;
+	
+	/** Replies the injector.
 	 *
-	 * @param operand1 - the first array.
-	 * @param operand2 - the second array.
-	 * @return the merge.
+	 * @return the injector
 	 */
-	protected static String[] merge(String[] operand1, String[] operand2) {
-		if (operand1 == null) {
-			if (operand2 == null) {
-				return new String[0];
-			}
-			return operand2;
-		}
-		if (operand2 == null) {
-			return operand1;
-		}
-		String[] tab = new String[operand1.length + operand2.length];
-		System.arraycopy(
-				operand1, 0,
-				tab, 0,
-				operand1.length);
-		System.arraycopy(
-				operand2, 0,
-				tab, operand1.length,
-				operand2.length);
-		return tab;
+	public Injector getInjector() {
+		return injector;
 	}
-
-	/** Create an instance of the given class.
-	 *
-	 * @param clazz - type of the instance to create.
-	 * @return the instance.
-	 */
-	public <T> T get(Class<T> clazz) {
-		return this.helper.newInstance(clazz);
-	}
-
-	/** Parse the given code with the current project classpath.
-	 *
-	 * @param code - the multiline code to parse.
-	 * @return the parsed code tree.
-	 * @throws Exception - when parsing cannot be done.
-	 */
-	public XtendFile parseWithProjectClasspath(Object... code) throws Exception {
-		return this.helper.createSARLScript(
-				pathStr("io","sarl","mypackage","test"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-				multilineString(code));
-	}
-
+	
 	/** Assert the given image descriptor is for an image in a bundle.
 	 *
 	 * @param filename - the name of the image file.
@@ -180,6 +146,23 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 				expected.hashCode() | expectedFlags | JavaElementImageProvider.BIG_SIZE.hashCode(),
 				actual.hashCode());
 		assertEquals(expectedFlags, ((JavaElementImageDescriptor) actual).getAdronments());
+	}
+
+	/** Create an instance of class.
+	 */
+	@Override
+	protected XtendFile file(String string, boolean validate) throws Exception {
+		return helper().sarlFile(
+				helper().generateFilename("io", "sarl", "tests", getClass().getSimpleName()),
+				string);
+	}
+	
+	/** Replies the workspace test helper.
+	 *
+	 * @return the helper.
+	 */
+	protected WorkbenchTestHelper helper() {
+		return this.helper;
 	}
 
 }

@@ -18,55 +18,66 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.quickfix.semantic;
+package io.sarl.lang.ui.quickfix.acceptors;
 
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
-import io.sarl.lang.validation.IssueCodes;
-
-import java.text.MessageFormat;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
 
 /**
- * Quick fixes for {@link IssueCodes#OVERRIDDEN_FINAL_OPERATION}.
+ * Remove a super type.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class OverriddenFinalOperationModification extends SARLSemanticModification {
+public final class CapacityReferenceRemoveModification extends SARLSemanticModification {
+
+	/**
+	 */
+	CapacityReferenceRemoveModification() {
+		//
+	}
 
 	/** Create the quick fix if needed.
+	 *
+	 * No user data.
 	 *
 	 * @param provider - the quick fix provider.
 	 * @param issue - the issue to fix.
 	 * @param acceptor - the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
-		String[] data = issue.getData();
-		if (data != null && data.length >= 1) {
-			String signature = issue.getData()[0];
-			String msg = MessageFormat.format(
-					Messages.SARLQuickfixProvider_5,
-					Messages.SARLQuickfixProvider_8, signature);
-			OverriddenFinalOperationModification modification = new OverriddenFinalOperationModification();
-			modification.setIssue(issue);
-			modification.setTools(provider);
-			acceptor.accept(issue,
-					msg,
-					msg,
-					null,
-					modification);
-		}
+		CapacityReferenceRemoveModification modification = new CapacityReferenceRemoveModification();
+		modification.setIssue(issue);
+		modification.setTools(provider);
+		acceptor.accept(issue,
+				Messages.SARLQuickfixProvider_0,
+				Messages.SARLQuickfixProvider_5,
+				null,
+				modification);
 	}
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		getTools().removeExecutableFeature(element, context);
+		Issue issue = getIssue();
+		SARLQuickfixProvider tools = getTools();
+		IXtextDocument document = context.getXtextDocument();
+		String sep = tools.getGrammarAccess().getCapacityUsesAccess().getCommaKeyword_3_0().getValue();
+		if (!tools.removeToPreviousSeparator(issue, document, sep)) {
+			if (!tools.removeToNextSeparator(issue, document, sep)) {
+				tools.removeToPreviousKeyword(issue, document,
+						tools.getGrammarAccess().getRequiredCapacityAccess()
+						.getRequiresKeyword_1().getValue(),
+						tools.getGrammarAccess().getCapacityUsesAccess()
+						.getUsesKeyword_1().getValue());
+			}
+		}
 	}
 
 }

@@ -303,7 +303,7 @@ public final class Utils {
 						PREFIX_HANDLE_BODY.length() + 1).toUpperCase()
 						+ name.substring(PREFIX_HANDLE_BODY.length() + 1);
 			}
-			return "guard"; //$NON-NLS-1$
+			return "handlebody"; //$NON-NLS-1$
 		}
 		return name;
 	}
