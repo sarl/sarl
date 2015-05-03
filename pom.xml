@@ -27,8 +27,8 @@
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 		<buildId>${maven.build.timestamp}</buildId>
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.8.1</xtext.version>
-		<xtext.versionRange>[2.8.1,2.8.2)</xtext.versionRange>
+		<xtext.version>2.8.2</xtext.version>
+		<xtext.versionRange>[2.8.2,2.8.3)</xtext.versionRange>
 		<!-- Version of the Jnario PI -->
 		<jnario.version>1.0.0</jnario.version>
 		<jnario.report.version>1.0.1</jnario.report.version>
@@ -536,7 +536,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.5</version>
+						<version>1.6</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
@@ -550,7 +550,7 @@
 					<plugin>
 						<groupId>org.arakhne.afc.maven</groupId>
 						<artifactId>tag-replacer</artifactId>
-						<version>11.0</version>
+						<version>12.0</version>
 						<executions>
 							<execution>
 								<id>update-source-tags</id>
