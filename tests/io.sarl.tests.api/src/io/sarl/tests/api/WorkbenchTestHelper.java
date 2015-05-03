@@ -209,6 +209,14 @@ public class WorkbenchTestHelper {
 		return getProject(true);
 	}
 
+	/** Replies the current Java project.
+	 * 
+	 * @return the Java project.
+	 */
+	public IJavaProject getJavaProject() {
+		return JavaCore.create(getProject());
+	}
+
 	/** Replies the current project.
 	 * 
 	 * @param createOnDemand - create the project if it does not exist yet.
@@ -243,7 +251,7 @@ public class WorkbenchTestHelper {
 		return editor;
 	}
 
-	/** Create a file.
+	/** Create a file in the source folder.
 	 * 
 	 * @param fileName the name of the file to create.
 	 * @param content the content of the file.
@@ -356,6 +364,25 @@ public class WorkbenchTestHelper {
 			XtendFile xtendFile = (XtendFile) resource.getContents().get(0);
 			return xtendFile;
 		}
+	}
+	
+	/** Replies the resource associated to the given file in the given project.
+	 *
+	 * @param file the file in the project.
+	 * @return the resource.
+	 */
+	public Resource getResourceFor(IFile file) {
+		return getResourceFor(getProject(), file);
+	}
+
+	/** Replies the resource associated to the given file in the given project.
+	 *
+	 * @param project the project.
+	 * @param file the file in the project.
+	 * @return the resource.
+	 */
+	public Resource getResourceFor(IProject project, IFile file) {
+		return this.resourceSetProvider.get(project).createResource(uri(file));
 	}
 
 	/** Create a SARL file with a SARL agent inside.
@@ -813,6 +840,14 @@ public class WorkbenchTestHelper {
 	 */
 	public void awaitAutoBuild() {
 		IResourcesSetupUtil.waitForAutoBuild();
+	}
+
+	/** Do a full build.
+	 * 
+	 * @throws CoreException if the build cannot be done.
+	 */
+	public void fullBuild() throws CoreException {
+		IResourcesSetupUtil.fullBuild();
 	}
 
 	/** Generate a filename for a resource that does not exist yet.

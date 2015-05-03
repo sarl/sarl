@@ -21,8 +21,8 @@ import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.bugfixes.SARLContextPDAProvider;
-import io.sarl.lang.generator.helper.SarlEcoreCode;
 import io.sarl.lang.generator.helper.ECoreGeneratorHelper;
+import io.sarl.lang.generator.helper.SarlEcoreCode;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.TestClasspath;
@@ -69,7 +69,7 @@ public class Bug277 extends AbstractSarlUiTest {
 	 */
 	@Test
 	public void multipleCapacityImplementation_0() throws Exception {
-		XtendFile script = this.helper.createSARLScript("SARLContextPDAProviderTest0",
+		XtendFile script = helper().sarlFile("SARLContextPDAProviderTest0",
 				"package io.sarl.lang.tests.genmodel.serializer\n"
 						+"capacity C1 {}\n"
 						+"capacity C2 {}\n"
@@ -92,7 +92,7 @@ public class Bug277 extends AbstractSarlUiTest {
 	@Test
 	@TestClasspath("io.sarl.core")
 	public void multipleCapacityImplementation_1() throws Exception {
-		XtendFile script = this.helper.createSARLScript("SARLContextPDAProviderTest1",
+		XtendFile script = helper().sarlFile("SARLContextPDAProviderTest1",
 				"package io.sarl.lang.tests.genmodel.serializer\n"
 						+"import io.sarl.core.Lifecycle\n"
 						+"import io.sarl.core.Schedules\n"
@@ -111,12 +111,12 @@ public class Bug277 extends AbstractSarlUiTest {
 	@Test
 	@TestClasspath("io.sarl.core")
 	public void similarToWizardCreation() throws Exception {
-		this.helper.createSARLScript(
+		helper().sarlFile(
 				"Bug277_0", "package io.sarl.lang.tests.bug277\ncapacity MyCapacity { }");
-		this.helper.waitForAutoBuild();
+		helper().awaitAutoBuild();
 
-		IFile file = this.helper.createFileInSourceFolder("Bug277_1", "");
-		Resource resource = this.helper.createResource(file, "package io.sarl.lang.tests.bug277");
+		IFile file = helper().createFile("Bug277_1", "package io.sarl.lang.tests.bug277");
+		Resource resource = helper().getResourceFor(file);
 		SarlEcoreCode code = this.sarlGenerator.createScript(resource, "io.sarl.lang.tests.bug277");
 		SarlSkill skill = this.sarlGenerator.createSkill(code, "MyS", null,
 				Arrays.asList("io.sarl.core.Lifecycle", "io.sarl.lang.tests.bug277.MyCapacity"));
@@ -126,7 +126,7 @@ public class Bug277 extends AbstractSarlUiTest {
 		Map<ActionParameterTypes, IMethod> constructors = Maps.newHashMap();
 
 		Jdt2Ecore.populateInheritanceContext(
-				Jdt2Ecore.toTypeFinder(this.helper.getJavaProject()),
+				Jdt2Ecore.toTypeFinder(helper().getJavaProject()),
 				// Discarding final operation
 				null,
 				// Discarding overridable operation
@@ -146,7 +146,7 @@ public class Bug277 extends AbstractSarlUiTest {
 
 		//
 		resource.save(null);
-		String text = this.helper.getContents(file);
+		String text = helper().getContents(file);
 		//
 		assertEquals(
 				"package io.sarl.lang.tests.bug277\n"

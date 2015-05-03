@@ -79,8 +79,34 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 		@SuppressWarnings("synthetic-access")
 		@Override
 		protected void starting(Description description) {
+			TestClasspath classPathAnnotation = description.getAnnotation(TestClasspath.class);
+			if (classPathAnnotation == null) {
+				Class<?> type = description.getTestClass();
+				while (classPathAnnotation == null && type != null) {
+					classPathAnnotation = type.getAnnotation(TestClasspath.class);
+					type = type.getDeclaringClass();
+				}
+			}
+			
+			String[] buildPath;
+			if (classPathAnnotation != null) {
+				String[] addedBundles = classPathAnnotation.value();
+				buildPath = new String[WorkbenchTestHelper.DEFAULT_REQ_BUNDLES.size() + addedBundles.length];
+				WorkbenchTestHelper.DEFAULT_REQ_BUNDLES.toArray(buildPath);
+				for (int i = WorkbenchTestHelper.DEFAULT_REQ_BUNDLES.size(), j = 0;
+						i < buildPath.length && j < addedBundles.length; ++i, ++j) {
+					buildPath[i] = addedBundles[j];
+				}
+			} else {
+				buildPath = null;
+			}
+			
 			try {
-				WorkbenchTestHelper.createPluginProject(getInjector(), WorkbenchTestHelper.TESTPROJECT_NAME);
+				if (buildPath == null) {
+					WorkbenchTestHelper.createPluginProject(getInjector(), WorkbenchTestHelper.TESTPROJECT_NAME);
+				} else {
+					WorkbenchTestHelper.createPluginProject(getInjector(), WorkbenchTestHelper.TESTPROJECT_NAME, buildPath);
+				}
 			} catch (CoreException e) {
 				throw new RuntimeException(e);
 			}

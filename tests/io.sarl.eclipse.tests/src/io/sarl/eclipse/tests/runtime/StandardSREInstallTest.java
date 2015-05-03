@@ -283,20 +283,26 @@ public class StandardSREInstallTest {
 		}
 
 		@Test
-		public void getValidityInt() {
+		public void revalidate() {
+			IStatus s = this.sre.getValidity();
+			assertNotNull(s);
+			assertTrue(s.isOK());
+			this.sre.revalidate();
+			s = this.sre.getValidity();
+			assertNotNull(s);
+			assertTrue(s.isOK());
+		}
+
+		@Test
+		public void getValidity() {
 			IStatus s = this.sre.getValidity();
 			assertNotNull(s);
 			assertTrue(s.isOK());
 		}
 
 		@Test
-		public void revalidate() {
-			this.sre.revalidate();
-		}
-
-		@Test
-		public void getValidity() {
-			IStatus s = this.sre.getValidity();
+		public void getValidityInt() {
+			IStatus s = this.sre.getValidity(0);
 			assertNotNull(s);
 			assertTrue(s.isOK());
 		}

@@ -18,33 +18,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.tests;
+package io.sarl.tests.api;
 
-import static org.junit.Assert.assertEquals;
-import io.sarl.eclipse.SARLConfig;
-import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.WorkbenchTestHelper;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.eclipse.xtext.ui.XtextProjectHelper;
-import org.junit.Test;
 
-/**
+/** Annotation for specifying additional bundles in the classpath of the project.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("all")
-public final class SARLConfigTest extends AbstractSarlUiTest {
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.METHOD })
+public @interface TestClasspath {
 
-	@Test
-	public void sarlNature() {
-		assertEquals(WorkbenchTestHelper.NATURE_ID, SARLConfig.NATURE_ID);
-	}
-
-	@Test
-	public void xtextNature() {
-		assertEquals(XtextProjectHelper.NATURE_ID, SARLConfig.XTEXT_NATURE_ID);
-	}
+	/** The test is valid for a run in Tycho.
+	 *
+	 * @return <code>true</code> if the unit test could be run in Tycho.
+	 */
+	String[] value() default {};
 
 }

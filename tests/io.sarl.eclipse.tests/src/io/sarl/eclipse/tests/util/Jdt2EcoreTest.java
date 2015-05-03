@@ -37,10 +37,10 @@ import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.actionprototype.ActionPrototypeProvider;
 import io.sarl.lang.actionprototype.FormalParameterProvider;
-import io.sarl.lang.generator.helper.SarlEcoreCode;
 import io.sarl.lang.generator.helper.ECoreGeneratorHelper;
+import io.sarl.lang.generator.helper.SarlEcoreCode;
+import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.CleanWorkspaceAfter;
 import io.sarl.tests.api.Nullable;
 
 import java.util.Arrays;
@@ -63,6 +63,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
+import org.eclipse.xtext.xbase.XExpression;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -1032,6 +1033,18 @@ public class Jdt2EcoreTest {
 		public void createFormalParameters_noDefault_varargs() throws JavaModelException, IllegalArgumentException {
 			ResourceSet resourceSet = mock(ResourceSet.class);
 			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
+			when(generator.createFormalParameter(
+					Matchers.any(SarlEcoreCode.class),
+					Matchers.any(XtendExecutable.class),
+					Matchers.anyString(),
+					Matchers.anyString(),
+					Matchers.anyString(),
+					Matchers.any(ResourceSet.class))).thenAnswer(new Answer<SarlFormalParameter>() {
+						@Override
+						public SarlFormalParameter answer(InvocationOnMock invocation) throws Throwable {
+							return mock(SarlFormalParameter.class);
+						}
+					});
 			SarlEcoreCode code = mock(SarlEcoreCode.class);
 			when(code.getCodeGenerator()).thenReturn(generator);
 			when(code.getResourceSet()).thenReturn(resourceSet);
@@ -1132,6 +1145,18 @@ public class Jdt2EcoreTest {
 		public void createFormalParameters_default_varargs() throws JavaModelException, IllegalArgumentException {
 			ResourceSet resourceSet = mock(ResourceSet.class);
 			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
+			when(generator.createFormalParameter(
+					Matchers.any(SarlEcoreCode.class),
+					Matchers.any(XtendExecutable.class),
+					Matchers.anyString(),
+					Matchers.anyString(),
+					Matchers.anyString(),
+					Matchers.any(ResourceSet.class))).thenAnswer(new Answer<SarlFormalParameter>() {
+						@Override
+						public SarlFormalParameter answer(InvocationOnMock invocation) throws Throwable {
+							return mock(SarlFormalParameter.class);
+						}
+					});
 			SarlEcoreCode code = mock(SarlEcoreCode.class);
 			when(code.getCodeGenerator()).thenReturn(generator);
 			when(code.getResourceSet()).thenReturn(resourceSet);
@@ -1227,22 +1252,37 @@ public class Jdt2EcoreTest {
 			this.superConstructors = Maps.newHashMap();
 		}
 
-		private void loadSARLCode(int codeIndex) throws Exception {
-			this.helper.createSARLScript(
-					this.helper.getProject(),
-					"PopulateInherithanceContextTest" + codeIndex,
-					getResourceText("unit_test_code" + codeIndex));
-			this.helper.waitForAutoBuild();
-		}
-
 		@Test
-		@CleanWorkspaceAfter
 		public void populateInheritanceContext_0() throws Exception {
 			// Create the SARL scripts
-			loadSARLCode(0);
+			helper().sarlFile("populateInheritanceContext0.sarl", multilineString(
+						"package io.sarl.eclipse.tests.p0",
+						"capacity Capacity1 {",
+						"    def myFct1 : boolean",
+						"}",
+						"capacity Capacity2 extends Capacity1 {",
+						"    def myFct2 : boolean",
+						"}",
+						"capacity Capacity3 {",
+						"    def myFct3",
+						"}",
+						"skill Skill1 implements Capacity1 {",
+						"	var attr1 : int",
+						"	new(attr : int) {",
+						"		this.attr1 = attr",
+						"	}",
+						"	def myFct1 : boolean {",
+						"		return true",
+						"	}",
+						"	def skilFct(a : char) {",
+						"		System.out.println(a)",
+						"	}",
+						"}"));
+			helper().fullBuild();
+			helper().awaitAutoBuild();
 			//
 			IStatus s = Jdt2Ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(this.helper.getJavaProject()),
+					new UnitTestTypeFinder(helper().getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1266,10 +1306,10 @@ public class Jdt2EcoreTest {
 		@Test
 		public void populateInheritanceContext_1() throws Exception {
 			// Create the SARL scripts
-			loadSARLCode(1);
+			//TODO loadSARLCode(1);
 			//
 			IStatus s = Jdt2Ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(this.helper.getJavaProject()),
+					new UnitTestTypeFinder(helper().getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1294,10 +1334,10 @@ public class Jdt2EcoreTest {
 		@Test
 		public void populateInheritanceContext_2() throws Exception {
 			// Create the SARL scripts
-			loadSARLCode(2);
+			//TODO loadSARLCode(2);
 			//
 			IStatus s = Jdt2Ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(this.helper.getJavaProject()),
+					new UnitTestTypeFinder(helper().getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1321,10 +1361,10 @@ public class Jdt2EcoreTest {
 		@Test
 		public void populateInheritanceContext_3() throws Exception {
 			// Create the SARL scripts
-			loadSARLCode(3);
+			//TODO loadSARLCode(3);
 			//
 			IStatus s = Jdt2Ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(this.helper.getJavaProject()),
+					new UnitTestTypeFinder(helper().getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
