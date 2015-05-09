@@ -736,6 +736,7 @@ public class ECoreGeneratorHelper {
 					(XtextResource) code.getSarlScript().eResource())) {
 				typeReference = typeRefs.getTypeForName(packageName + "." + typeName, context); //$NON-NLS-1$
 				if (isTypeReference(typeReference)) {
+					code.getImportManager().addImportFor(typeReference.getType());
 					return (JvmParameterizedTypeReference) typeReference;
 				}
 			}
@@ -745,6 +746,8 @@ public class ECoreGeneratorHelper {
 			typeReference = typeRefs.getTypeForName(Object.class, context);
 		}
 
+		code.getImportManager().addImportFor(typeReference.getType());
+		
 		return (JvmParameterizedTypeReference) typeReference;
 	}
 

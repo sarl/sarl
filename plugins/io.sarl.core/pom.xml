@@ -78,7 +78,6 @@
 					</execution>
 				</executions>
 				<configuration>
-					<outputDirectory>xtend-gen</outputDirectory>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<compilerSourceLevel>${compiler.level}</compilerSourceLevel>
 					<compilerTargetLevel>${compiler.level}</compilerTargetLevel>
@@ -109,6 +108,11 @@
 						<groupId>org.eclipse</groupId>
 						<artifactId>osgi</artifactId>
 						<version>${osgi.nls.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.xtend</groupId>
+						<artifactId>org.eclipse.xtend.core</artifactId>
+						<version>${xtext.version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>

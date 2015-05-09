@@ -1267,7 +1267,7 @@ public class Jdt2EcoreTest {
 						"    def myFct3",
 						"}",
 						"skill Skill1 implements Capacity1 {",
-						"	var attr1 : int",
+						"	protected var attr1 : int",
 						"	new(attr : int) {",
 						"		this.attr1 = attr",
 						"	}",
@@ -1306,7 +1306,82 @@ public class Jdt2EcoreTest {
 		@Test
 		public void populateInheritanceContext_1() throws Exception {
 			// Create the SARL scripts
-			//TODO loadSARLCode(1);
+			helper().sarlFile("populateInheritanceContext0.sarl", multilineString(
+						"package io.sarl.eclipse.tests.p0",
+						"capacity Capacity1 {",
+						"    def myFct1 : boolean",
+						"}",
+						"capacity Capacity2 extends Capacity1 {",
+						"    def myFct2 : boolean",
+						"}",
+						"capacity Capacity3 {",
+						"    def myFct3",
+						"}",
+						"skill Skill1 implements Capacity1 {",
+						"	var attr1 : int",
+						"	new(attr : int) {",
+						"		this.attr1 = attr",
+						"	}",
+						"	def myFct1 : boolean {",
+						"		return true",
+						"	}",
+						"	def skilFct(a : char) {",
+						"		System.out.println(a)",
+						"	}",
+						"}"));
+			helper().fullBuild();
+			helper().awaitAutoBuild();
+			//
+			IStatus s = Jdt2Ecore.populateInheritanceContext(
+					new UnitTestTypeFinder(helper().getJavaProject()),
+					finalOperations,
+					overridableOperations,
+					inheritedFields,
+					operationsToImplement,
+					superConstructors,
+					this.sarlSignatureProvider,
+					"io.sarl.eclipse.tests.p0.Skill1",
+					Arrays.asList("io.sarl.eclipse.tests.p0.Capacity3", "io.sarl.eclipse.tests.p0.Capacity2"));
+			//
+			assertNotNull(s);
+			assertTrue(s.toString(), s.isOK());
+			//
+			assertTrue(this.finalOperations.isEmpty());
+			assertActionKeys(this.overridableOperations.keySet(),
+					"skilFct(char)", "myFct1()");
+			assertContains(this.inheritedFields.keySet());
+			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()");
+			assertSignatureKeys(this.superConstructors.keySet(), "int");
+		}
+
+		@Test
+		public void populateInheritanceContext_2() throws Exception {
+			// Create the SARL scripts
+			helper().sarlFile("populateInheritanceContext1.sarl", multilineString(
+				"package io.sarl.eclipse.tests.p1",
+				"capacity Capacity1 {",
+				"    def myFct1(a : int = 4) : boolean",
+				"}",
+				"capacity Capacity2 extends Capacity1 {",
+				"    def myFct2 : boolean",
+				"}",
+				"capacity Capacity3 {",
+				"    def myFct3",
+				"}",
+				"skill Skill1 implements Capacity1 {",
+				"	protected var attr1 : int",
+				"	new(attr : int) {",
+				"		this.attr1 = attr",
+				"	}",
+				"	def myFct1(a : int = 4) : boolean {",
+				"		return true",
+				"	}",
+				"	def skilFct(a : char) {",
+				"		System.out.println(a)",
+				"	}",
+				"}"));
+			helper().fullBuild();
+			helper().awaitAutoBuild();
 			//
 			IStatus s = Jdt2Ecore.populateInheritanceContext(
 					new UnitTestTypeFinder(helper().getJavaProject()),
@@ -1332,9 +1407,85 @@ public class Jdt2EcoreTest {
 		}
 
 		@Test
-		public void populateInheritanceContext_2() throws Exception {
+		public void populateInheritanceContext_3() throws Exception {
 			// Create the SARL scripts
-			//TODO loadSARLCode(2);
+			helper().sarlFile("populateInheritanceContext1.sarl", multilineString(
+				"package io.sarl.eclipse.tests.p1",
+				"capacity Capacity1 {",
+				"    def myFct1(a : int = 4) : boolean",
+				"}",
+				"capacity Capacity2 extends Capacity1 {",
+				"    def myFct2 : boolean",
+				"}",
+				"capacity Capacity3 {",
+				"    def myFct3",
+				"}",
+				"skill Skill1 implements Capacity1 {",
+				"	var attr1 : int",
+				"	new(attr : int) {",
+				"		this.attr1 = attr",
+				"	}",
+				"	def myFct1(a : int = 4) : boolean {",
+				"		return true",
+				"	}",
+				"	def skilFct(a : char) {",
+				"		System.out.println(a)",
+				"	}",
+				"}"));
+			helper().fullBuild();
+			helper().awaitAutoBuild();
+			//
+			IStatus s = Jdt2Ecore.populateInheritanceContext(
+					new UnitTestTypeFinder(helper().getJavaProject()),
+					finalOperations,
+					overridableOperations,
+					inheritedFields,
+					operationsToImplement,
+					superConstructors,
+					this.sarlSignatureProvider,
+					"io.sarl.eclipse.tests.p1.Skill1",
+					Arrays.asList("io.sarl.eclipse.tests.p1.Capacity3", "io.sarl.eclipse.tests.p1.Capacity2"));
+			//
+			assertNotNull(s);
+			assertTrue(s.toString(), s.isOK());
+			//
+			assertActionKeys(this.finalOperations.keySet(),
+					"myFct1()");
+			assertActionKeys(this.overridableOperations.keySet(),
+					"skilFct(char)", "myFct1(int)");
+			assertContains(this.inheritedFields.keySet());
+			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()");
+			assertSignatureKeys(this.superConstructors.keySet(), "int");
+		}
+
+		@Test
+		public void populateInheritanceContext_4() throws Exception {
+			// Create the SARL scripts
+			helper().sarlFile("populateInheritanceContext1.sarl", multilineString(
+					"package io.sarl.eclipse.tests.p2",
+					"capacity Capacity1 {",
+					"    def myFct1(a : int*) : boolean",
+					"}",
+					"capacity Capacity2 extends Capacity1 {",
+					"    def myFct2 : boolean",
+					"}",
+					"capacity Capacity3 {",
+					"    def myFct3",
+					"}",
+					"skill Skill1 implements Capacity1 {",
+					"	protected var attr1 : int",
+					"	new(attr : int) {",
+					"		this.attr1 = attr",
+					"	}",
+					"	def myFct1(a : int*) : boolean {",
+					"		return true",
+					"	}",
+					"	def skilFct(a : char) {",
+					"		System.out.println(a)",
+					"	}",
+					"}"));
+			helper().fullBuild();
+			helper().awaitAutoBuild();
 			//
 			IStatus s = Jdt2Ecore.populateInheritanceContext(
 					new UnitTestTypeFinder(helper().getJavaProject()),
@@ -1359,9 +1510,72 @@ public class Jdt2EcoreTest {
 		}
 
 		@Test
-		public void populateInheritanceContext_3() throws Exception {
+		public void populateInheritanceContext_5() throws Exception {
 			// Create the SARL scripts
-			//TODO loadSARLCode(3);
+			helper().sarlFile("populateInheritanceContext1.sarl", multilineString(
+					"package io.sarl.eclipse.tests.p2",
+					"capacity Capacity1 {",
+					"    def myFct1(a : int*) : boolean",
+					"}",
+					"capacity Capacity2 extends Capacity1 {",
+					"    def myFct2 : boolean",
+					"}",
+					"capacity Capacity3 {",
+					"    def myFct3",
+					"}",
+					"skill Skill1 implements Capacity1 {",
+					"	var attr1 : int",
+					"	new(attr : int) {",
+					"		this.attr1 = attr",
+					"	}",
+					"	def myFct1(a : int*) : boolean {",
+					"		return true",
+					"	}",
+					"	def skilFct(a : char) {",
+					"		System.out.println(a)",
+					"	}",
+					"}"));
+			helper().fullBuild();
+			helper().awaitAutoBuild();
+			//
+			IStatus s = Jdt2Ecore.populateInheritanceContext(
+					new UnitTestTypeFinder(helper().getJavaProject()),
+					finalOperations,
+					overridableOperations,
+					inheritedFields,
+					operationsToImplement,
+					superConstructors,
+					this.sarlSignatureProvider,
+					"io.sarl.eclipse.tests.p2.Skill1",
+					Arrays.asList("io.sarl.eclipse.tests.p2.Capacity3", "io.sarl.eclipse.tests.p2.Capacity2"));
+			//
+			assertNotNull(s);
+			assertTrue(s.toString(), s.isOK());
+			//
+			assertTrue(this.finalOperations.isEmpty());
+			assertActionKeys(this.overridableOperations.keySet(),
+					"skilFct(char)", "myFct1(int*)");
+			assertContains(this.inheritedFields.keySet());
+			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()");
+			assertSignatureKeys(this.superConstructors.keySet(), "int");
+		}
+
+		@Test
+		public void populateInheritanceContext_6() throws Exception {
+			// Create the SARL scripts
+			helper().sarlFile("populateInheritanceContext1.sarl", multilineString(
+					"package io.sarl.eclipse.tests.p3",
+					"capacity Capacity1 {",
+					"    def myFct1(a : int*) : boolean",
+					"}",
+					"capacity Capacity2 extends Capacity1 {",
+					"    def myFct2 : boolean",
+					"}",
+					"capacity Capacity3 {",
+					"    def myFct3",
+					"}"));
+			helper().fullBuild();
+			helper().awaitAutoBuild();
 			//
 			IStatus s = Jdt2Ecore.populateInheritanceContext(
 					new UnitTestTypeFinder(helper().getJavaProject()),

@@ -111,8 +111,10 @@ public class Bug277 extends AbstractSarlUiTest {
 	@Test
 	@TestClasspath("io.sarl.core")
 	public void similarToWizardCreation() throws Exception {
-		helper().sarlFile(
-				"Bug277_0", "package io.sarl.lang.tests.bug277\ncapacity MyCapacity { }");
+		helper().sarlFile("Bug277_0", multilineString(
+				"package io.sarl.lang.tests.bug277",
+				"capacity MyCapacity { }"));
+		helper().fullBuild();
 		helper().awaitAutoBuild();
 
 		IFile file = helper().createFile("Bug277_1", "package io.sarl.lang.tests.bug277");
@@ -158,7 +160,7 @@ public class Bug277 extends AbstractSarlUiTest {
 				+ "// My Test\n"
 				+ "skill MyS implements Lifecycle , MyCapacity {\n"
 				+ "\n"
-				+ "	def spawnInContextWithID(arg0 : Object, arg1 : UUID, arg2 : AgentContext, arg3 : Object *) : UUID {\n"
+				+ "	def spawnInContext(arg0 : Object, arg1 : AgentContext, arg2 : Object *) : UUID {\n"
 				+ "	// TODO Auto-generated action.\n"
 				+ "		null\n"
 				+ "	}\n"
@@ -168,7 +170,7 @@ public class Bug277 extends AbstractSarlUiTest {
 				+ "\n"
 				+ "	}\n"
 				+ "\n"
-				+ "	def spawnInContext(arg0 : Object, arg1 : AgentContext, arg2 : Object *) : UUID {\n"
+				+ "	def spawnInContextWithID(arg0 : Object, arg1 : UUID, arg2 : AgentContext, arg3 : Object *) : UUID {\n"
 				+ "	// TODO Auto-generated action.\n"
 				+ "		null\n"
 				+ "	}\n"
