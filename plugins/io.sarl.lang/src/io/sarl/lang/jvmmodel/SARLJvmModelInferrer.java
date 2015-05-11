@@ -298,13 +298,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			GenerationContext context = new GenerationContext() {
 				@Override
 				public boolean isSupportedMember(XtendMember member) {
-					return ((member instanceof XtendField)
-							|| (member instanceof XtendFunction
-									&& ((XtendFunction) member).getExpression() != null)
-									|| (member instanceof XtendConstructor)
-									|| (member instanceof SarlBehaviorUnit)
-									|| (member instanceof SarlCapacityUses)
-									|| (member instanceof SarlRequiredCapacity));
+					if ((member instanceof XtendField)
+						|| (member instanceof XtendConstructor)
+						|| (member instanceof SarlBehaviorUnit)
+						|| (member instanceof SarlCapacityUses)
+						|| (member instanceof SarlRequiredCapacity)) {
+						return true;
+					}
+					if (member instanceof XtendFunction
+						&& ((XtendFunction) member).getExpression() != null) {
+						return true;
+					}
+					return false;
 				}
 
 			};
@@ -397,13 +402,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			GenerationContext context = new GenerationContext() {
 				@Override
 				public boolean isSupportedMember(XtendMember member) {
-					return ((member instanceof XtendField)
-							|| (member instanceof XtendFunction
-									&& ((XtendFunction) member).getExpression() != null)
-									|| (member instanceof XtendConstructor)
-									|| (member instanceof SarlBehaviorUnit)
-									|| (member instanceof SarlCapacityUses)
-									|| (member instanceof SarlRequiredCapacity));
+					if ((member instanceof XtendField)
+						|| (member instanceof XtendConstructor)
+						|| (member instanceof SarlBehaviorUnit)
+						|| (member instanceof SarlCapacityUses)
+						|| (member instanceof SarlRequiredCapacity)) {
+						return true;
+					}
+					if (member instanceof XtendFunction
+						&& ((XtendFunction) member).getExpression() != null) {
+						return true;
+					}
+					return false;
 				}
 			};
 			openContext(inferredJvmType, context);
@@ -562,13 +572,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			GenerationContext context = new GenerationContext() {
 				@Override
 				public boolean isSupportedMember(XtendMember member) {
-					return ((member instanceof XtendField)
-							|| (member instanceof XtendFunction
-									&& ((XtendFunction) member).getExpression() != null)
-									|| (member instanceof XtendConstructor)
-									|| (member instanceof SarlBehaviorUnit)
-									|| (member instanceof SarlCapacityUses)
-									|| (member instanceof SarlRequiredCapacity));
+					if ((member instanceof XtendField)
+						|| (member instanceof XtendConstructor)
+						|| (member instanceof SarlBehaviorUnit)
+						|| (member instanceof SarlCapacityUses)
+						|| (member instanceof SarlRequiredCapacity)) {
+						return true;
+					}
+					if (member instanceof XtendFunction
+						&& ((XtendFunction) member).getExpression() != null) {
+						return true;
+					}
+					return false;
 				}
 			};
 			openContext(inferredJvmType, context);
@@ -846,8 +861,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		StringBuilder sourceNameBuffer = new StringBuilder(source.getName());
 		JvmVisibility visibility = source.getVisibility();
 		if (allowDispatch && source.isDispatch()) {
-			if (source.getDeclaredVisibility() == null)
+			if (source.getDeclaredVisibility() == null) {
 				visibility = JvmVisibility.PROTECTED;
+			}
 			sourceNameBuffer.insert(0, "_"); //$NON-NLS-1$
 		}
 		final String sourceName = sourceNameBuffer.toString();
@@ -873,14 +889,16 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		operation.setNative(source.isNative());
 		operation.setSynchronized(source.isSynchonized());
 		operation.setStrictFloatingPoint(source.isStrictFloatingPoint());
-		if (!source.isAbstract())
+		if (!source.isAbstract()) {
 			operation.setFinal(source.isFinal());
+		}
 		this.associator.associatePrimary(source, operation);
 		operation.setSimpleName(sourceName);
 		operation.setVisibility(visibility);
 		operation.setStatic(source.isStatic());
-		if (!operation.isAbstract() && !operation.isStatic() && container.isInterface())
+		if (!operation.isAbstract() && !operation.isStatic() && container.isInterface()) {
 			operation.setDefault(true);
+		}
 		this.typeBuilder.copyDocumentationTo(source, operation);
 
 		// Generate the parameters
@@ -908,13 +926,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			if (inheritedOperation != null) {
 				returnTypeCandidate = inheritedOperation.getReturnType();
 			} else if (expression != null
-					&&((!(expression instanceof XBlockExpression))
-							|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
+					&& ((!(expression instanceof XBlockExpression))
+						|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
 				returnTypeCandidate = this.typeBuilder.inferredType(expression);
 			}
 		} else if (expression != null
-				&&((!(expression instanceof XBlockExpression))
-						|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
+				&& ((!(expression instanceof XBlockExpression))
+					|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
 			returnTypeCandidate = this.typeBuilder.inferredType(expression);
 		}
 		final JvmTypeReference returnType;
@@ -934,7 +952,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 
 		// Annotations
-		translateAnnotationsTo(source.getAnnotations(), operation);		
+		translateAnnotationsTo(source.getAnnotations(), operation);
 		if (source.isOverride()
 				&& !Utils.hasAnnotation(operation, Override.class)
 				&& this.typeReferences.findDeclaredType(Override.class, source) != null) {
@@ -1037,7 +1055,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						operation2.setStrictFloatingPoint(false);
 						operation2.setSynchronized(false);
 
-						for(JvmTypeReference exception : operation.getExceptions()) {
+						for (JvmTypeReference exception : operation.getExceptions()) {
 							operation2.getExceptions().add(SARLJvmModelInferrer.this.typeBuilder.cloneWithProxies(exception));
 						}
 
@@ -1141,7 +1159,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			JvmOperation operation = this.typesFactory.createJvmOperation();
 
 			// Annotations from the code
-			translateAnnotationsTo(source.getAnnotations(), operation);		
+			translateAnnotationsTo(source.getAnnotations(), operation);
 
 			// Annotation for the event bus
 			operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Percept.class));
@@ -1418,7 +1436,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		for (XtendMember feature : container.getMembers()) {
 			if (context.isSupportedMember(feature)
 					&& ((feature instanceof SarlCapacityUses)
-							||(feature instanceof SarlRequiredCapacity))) {
+						|| (feature instanceof SarlRequiredCapacity))) {
 				transform(feature, featureContainerType, false);
 			}
 		}
@@ -1718,7 +1736,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param source the source object.
 	 * @param target the inferred JVM object.
 	 */
-	protected void appendToStringFunctions(GenerationContext context,XtendTypeDeclaration source, final JvmGenericType target) {
+	protected void appendToStringFunctions(GenerationContext context, XtendTypeDeclaration source,
+			final JvmGenericType target) {
 		// Create a list of the declared non-static fields.
 		final List<JvmField> declaredInstanceFields = new ArrayList<>();
 		for (JvmField field : target.getDeclaredFields()) {
@@ -2087,7 +2106,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	protected static abstract class GenerationContext {
+	protected abstract static class GenerationContext {
 
 		/** Compute serial number for serializable objects.
 		 */
@@ -2132,7 +2151,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 
 		/** Replies the computed serial number.
-		 * 
+		 *
 		 * @return the serial number.
 		 */
 		public long getSerial() {
@@ -2140,7 +2159,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 
 		/** Increment the serial number by the given ammount.
-		 * 
+		 *
 		 * @param value the value to add to the serial number.
 		 */
 		public void incrementSerial(long value) {
@@ -2204,7 +2223,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			this.differedCodeGeneration.add(element);
 		}
 
-		/** Replies the collection of the elements that must be generated at the end of 
+		/** Replies the collection of the elements that must be generated at the end of
 		 * the generation process.
 		 *
 		 * @return the original collection of elements.

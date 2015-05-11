@@ -39,14 +39,14 @@ import org.eclipse.xtext.validation.Issue;
 public final class MemberRemoveModification extends SARLSemanticModification {
 
 	private final Class<? extends XtendMember> type;
-	
+
 	/**
 	 * @param type the type of the element to remove.
 	 */
 	private MemberRemoveModification(Class<? extends XtendMember> type) {
 		this.type = type;
 	}
-	
+
 	/**
 	 */
 	public MemberRemoveModification() {
@@ -54,8 +54,8 @@ public final class MemberRemoveModification extends SARLSemanticModification {
 	}
 
 	/** Create the quick fix if needed.
-	 * 
-	 * No user data. 
+	 *
+	 * No user data.
 	 *
 	 * @param provider - the quick fix provider.
 	 * @param issue - the issue to fix.
@@ -75,8 +75,8 @@ public final class MemberRemoveModification extends SARLSemanticModification {
 	}
 
 	/** Create the quick fix if needed.
-	 * 
-	 * No user data. 
+	 *
+	 * No user data.
 	 *
 	 * @param provider - the quick fix provider.
 	 * @param issue - the issue to fix.

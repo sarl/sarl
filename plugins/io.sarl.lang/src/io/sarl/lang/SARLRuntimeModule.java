@@ -309,7 +309,7 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 		return JavaIOFileSystemSupport.class;
 	}
 
-	/** Replies the type of the component that dispatchs the changes in resources
+	/** Replies the type of the component that dispatchs the changes in resources.
 	 * @return the type of the resource change registry.
 	 */
 	public Class<? extends IResourceChangeRegistry> bindResourceChangeRegistry() {
@@ -408,7 +408,7 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	public Class<? extends ImportedTypesCollector> bindImportedTypesCollector() {
 		return XtendImportedTypesUsageCollector.class;
 	}
-	
+
 	@Override
 	public Class<? extends DefaultBatchTypeResolver> bindDefaultBatchTypeResolver() {
 		return TypeDeclarationAwareBatchTypeResolver.class;
@@ -430,27 +430,27 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	public Class<? extends ITypeComputer> bindITypeComputer() {
 		return XtendTypeComputer.class;
 	}
-	
+
 	@Override
 	public Class<? extends Manager> bindIResourceDescription$Manager() {
 		return XtendResourceDescriptionManager.class;
 	}
-	
+
 	@Override
 	public Class<? extends IResourceValidator> bindIResourceValidator() {
 		return CachingResourceValidatorImpl.class;
 	}
-	
+
 	@Override
 	public Class<? extends ILinker> bindILinker() {
 		return RuntimeLinker.class;
 	}
-	
+
 	@Override
 	public void configureIResourceDescriptions(Binder binder) {
 		binder.bind(IResourceDescriptions.class).to(EagerResourceSetBasedResourceDescriptions.class);
 	}
-	
+
 	/** Replies the type Grammar converter.
 	 * @return the type of the converter.
 	 */
@@ -471,7 +471,7 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	public Class<? extends IFileHeaderProvider> bindFileHeaderProvider() {
 		return XtendFileHeaderProvider.class;
 	}
-	
+
 	/** Replies the type of the converter for int-underscore values from the Grammar.
 	 * @return the type of the converter.
 	 */
@@ -479,7 +479,7 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 		return IntUnderscoreValueConverter.class;
 	}
 
-	/** Replies the type of the converter for rich strings
+	/** Replies the type of the converter for rich strings.
 	 * @return the type of the converter.
 	 */
 	public Class<? extends STRINGValueConverter> bindSTRINGValueConverter() {

@@ -120,7 +120,7 @@ public class ECoreGeneratorHelper {
 
 	@Inject
 	private Primitives primitives;
-	
+
 	@Inject
 	private IImportsConfiguration importsConfiguration;
 
@@ -621,7 +621,7 @@ public class ECoreGeneratorHelper {
 		action.setExpression(b);
 		return action;
 	}
-	
+
 	/** Replies if the given container can contain action bodies.
 	 *
 	 * @param container the container.
@@ -719,7 +719,7 @@ public class ECoreGeneratorHelper {
 		return (typeReference != null && !typeReference.eIsProxy()
 				&& typeReference.getType() != null && !typeReference.getType().eIsProxy());
 	}
-	
+
 	/** Create a reference to the given type.
 	 *
 	 * @param code - the generated code in which the agent must be created.
@@ -741,13 +741,13 @@ public class ECoreGeneratorHelper {
 				}
 			}
 		}
-		
+
 		if (!isTypeReference(typeReference)) {
 			typeReference = typeRefs.getTypeForName(Object.class, context);
 		}
 
 		code.getImportManager().addImportFor(typeReference.getType());
-		
+
 		return (JvmParameterizedTypeReference) typeReference;
 	}
 

@@ -267,14 +267,14 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	}
 
 	/** Configure the Override indicator.
-	 * 
+	 *
 	 * @param binder the binder.
 	 */
 	public void configureOverrideIndicatorSupport(Binder binder) {
 		binder.bind(IXtextEditorCallback.class).annotatedWith(Names.named("OverrideIndicatorModelListener")) //$NON-NLS-1$
 		.to(OverrideIndicatorModelListener.class);
-		binder.bind(IActionContributor.class).annotatedWith(Names.named("OverrideIndicatorRulerAction")).to( //$NON-NLS-1$
-				OverrideIndicatorRulerAction.class);
+		binder.bind(IActionContributor.class).annotatedWith(Names.named("OverrideIndicatorRulerAction")) //$NON-NLS-1$
+				.to(OverrideIndicatorRulerAction.class);
 	}
 
 	@Override
@@ -362,17 +362,20 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	//	}
 
 	//	// contributed by org.eclipse.xtext.generator.parser.antlr.XtextAntlrUiGeneratorFragment
-	//	public Class<? extends org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext.Factory> bindContentAssistContext$Factory() {
+	//	public Class<? extends org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext.Factory>
+	//				bindContentAssistContext$Factory() {
 	//		return org.eclipse.xtext.ui.editor.contentassist.antlr.DelegatingContentAssistContextFactory.class;
 	//	}
 
 	//	// contributed by org.eclipse.xtext.generator.parser.antlr.XtextAntlrUiGeneratorFragment
-	//	public Class<? extends org.eclipse.xtext.ide.editor.contentassist.antlr.ContentAssistContextFactory> bindContentAssistContextFactory() {
+	//	public Class<? extends org.eclipse.xtext.ide.editor.contentassist.antlr.ContentAssistContextFactory>
+	//				bindContentAssistContextFactory() {
 	//		return org.eclipse.xtext.ide.editor.contentassist.antlr.PartialContentAssistContextFactory.class;
 	//	}
 
 	//	// contributed by org.eclipse.xtext.ui.generator.templates.CodetemplatesGeneratorFragment
-	//	public Class<? extends org.eclipse.xtext.ui.codetemplates.ui.partialEditing.IPartialEditingContentAssistContextFactory> bindIPartialEditingContentAssistContextFactory() {
+	//	public Class<? extends org.eclipse.xtext.ui.codetemplates.ui.partialEditing.IPartialEditingContentAssistContextFactory>
+	//				bindIPartialEditingContentAssistContextFactory() {
 	//		return org.eclipse.xtext.ui.codetemplates.ui.partialEditing.PartialEditingContentAssistContextFactory.class;
 	//	}
 
@@ -438,14 +441,14 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	//	public java.lang.Class<? extends IDependentElementsCalculator> bindIDependentElementsCalculator() {
 	//		return XtendDependentElementsCalculator.class;
 	//	}
-	//	
+	//
 	//	@Override
 	//	public void configureJvmMemberRenameStrategy$Provider$Delegate(Binder binder) {
 	//		binder.bind(IRenameStrategy.Provider.class)
 	//			.annotatedWith(JvmMemberRenameStrategy.Provider.Delegate.class)
 	//			.to(XtendRenameStrategyProvider.class);
 	//	}
-	//		
+	//
 	//	/** Bind the processor for element renaming.
 	//	 *
 	//	 * @return the type.
@@ -453,7 +456,7 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	//	public Class<? extends JdtRenameRefactoringParticipantProcessor> bindJdtRenameRefactoringParticipantProcessor() {
 	//		return XtendJdtRenameParticipantProcessor.class;
 	//	}
-	//	
+	//
 	//	/** Bind the processor for element renaming.
 	//	 *
 	//	 * @return the type.
@@ -491,7 +494,7 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	//	}
 	//
 	//	/** Bind the initializer of the Java project preferences.
-	//	 * 
+	//	 *
 	//	 * @return the type.
 	//	 */
 	//	@SingletonBinding(eager = true)
@@ -500,15 +503,15 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	//	}
 	//
 	//	/** Bind the provider of issue severity.
-	//	 * 
+	//	 *
 	//	 * @return the type.
 	//	 */
 	//	public Class<? extends IssueSeveritiesProvider> bindIssueSeverityServiceProvider() {
 	//		return XbaseIssueSeveritiesProvider.class;
 	//	}
-	//	
+	//
 	//	/** Bind the provider of source viewer configuration.
-	//	 * 
+	//	 *
 	//	 * @return the type.
 	//	 */
 	//	public Class<? extends XtextSourceViewerConfiguration> bindSourceViewerConfiguration(){
@@ -516,15 +519,15 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	//	}
 	//
 	//	/** Bind the source of document token.
-	//	 * 
+	//	 *
 	//	 * @return the type.
 	//	 */
 	//	public Class<? extends DocumentTokenSource> bindDocumentTokenSource(){
 	//		return XtendDocumentTokenSource.class;
 	//	}
-	//	
+	//
 	//	/** Bind the provider of type instance for JVM type.
-	//	 * 
+	//	 *
 	//	 * @return the type.
 	//	 */
 	//	public Class<? extends ProcessorInstanceForJvmTypeProvider> bindProcessorInstanceForJvmTypeProvider() {
@@ -535,12 +538,12 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	//	public Class<? extends IContentAssistantFactory> bindIContentAssistantFactory() {
 	//		return XtendContentAssistFactory.class;
 	//	}
-	//	
+	//
 	//	@Override
 	//	public Class<? extends IResourceForEditorInputFactory> bindIResourceForEditorInputFactory() {
 	//		return XbaseResourceForEditorInputFactory.class;
 	//	}
-	//	
+	//
 	//	/** Bind the provider of context information.
 	//	 *
 	//	 * @return the type.
@@ -548,14 +551,14 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	//	public Class<? extends IContextInformationProvider> bindIContextInformationProvider() {
 	//		return ParameterContextInformationProvider.class;
 	//	}
-	//	
+	//
 	//	/** Bind the string matcher based on the Camel case heuristic.
 	//	 * @return the type.
 	//	 */
 	//	public Class<? extends PrefixMatcher.CamelCase> bindCamelCasePrefixMatcher() {
 	//		return EscapeSequenceAwarePrefixMatcher.class;
 	//	}
-	//	
+	//
 	//	/** Bind the finder of type reference.
 	//	 *
 	//	 * @return the type.
@@ -563,7 +566,7 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	//	public Class<? extends IReferenceFinder> bindIReferenceFinder() {
 	//		return DelegatingReferenceFinder.class;
 	//	}
-	//	
+	//
 	//	/** Bind the quick fix for mispelled and not yet imported Java types.
 	//	 *
 	//	 * @return the type.
@@ -571,7 +574,7 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	//	public Class<? extends JavaTypeQuickfixes> bindJavaTypeQuickfixes() {
 	//		return TypeLiteralAwareJavaTypeQuickfixes.class;
 	//	}
-	//	
+	//
 	//	/** Bind the comparator of auto-completion proposal
 	//	 *
 	//	 * @return the type.
@@ -579,17 +582,17 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	//	public Class<? extends ICompletionProposalComparator> bindICompletionProposalComparator() {
 	//		return OperatorAwareComparator.class;
 	//	}
-	//	
+	//
 	//	@Override
 	//	public Class<? extends CopyQualifiedNameService> bindCopyQualifiedNameService() {
 	//		return XtendCopyQualifiedNameService.class;
 	//	}
-	//	
+	//
 	//	@Override
 	//	public Class<? extends IContentAssistParser> bindIContentAssistParser() {
 	//		return FlexerBasedContentAssistParser.class;
 	//	}
-	//	
+	//
 	//	@Override
 	//	public void configureContentAssistLexerProvider(Binder binder) {
 	//		super.configureContentAssistLexerProvider(binder);
@@ -601,7 +604,7 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	//	public void configureContentAssistLexer(Binder binder) {
 	//		binder.bind(Lexer.class).annotatedWith(Names.named(LexerIdeBindings.CONTENT_ASSIST)).to(DisabledInternalLexer.class);
 	//	}
-	//	
+	//
 	//	@Override
 	//	public Class<? extends ContentAssistContextFactory> bindContentAssistContextFactory() {
 	//		return FlexerBasedContentAssistContextFactory.class;
@@ -611,7 +614,7 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	//	public Class<? extends IProposalConflictHelper> bindIProposalConflictHelper() {
 	//		return FlexProposalConflictHelper.class;
 	//	}
-	//	
+	//
 	//	public Class<? extends TemplateBodyHighlighter> bindTemplateBodyHighlighter() {
 	//		return FlexerBasedTemplateBodyHighlighter.class;
 	//	}
@@ -619,39 +622,39 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	//	public Class<? extends IPreferenceStoreAccess> bindPreferenceStoreAccess() {
 	//		return XtendPreferenceStoreAccess.class;
 	//	}
-	//	
+	//
 	//	public Class<? extends ExpressionUtil> bindExpressionUtil() {
 	//		return XtendExpressionUtil.class;
 	//	}
-	//	
+	//
 	//	public Class<? extends OutlineNodeFactory> bindOutlineNodeFactory() {
 	//		return XtendOutlineNodeFactory.class;
 	//	}
-	//	
+	//
 	//	@Override
 	//	public Class<? extends ITypesProposalProvider> bindITypesProposalProvider() {
 	//		return XtendImportingTypesProposalProvider.class;
 	//	}
-	//	
+	//
 	//	public Class<? extends IOutlineTreeProvider.ModeAware> bindIOutlineTreeProvider_ModeAware() {
 	//		return org.eclipse.xtend.ide.outline.XtendOutlineModes.class;
 	//	}
-	//	
+	//
 	//	public void configureSwitchOutlineModeContribution(Binder binder) {
 	//		binder.bind(IOutlineContribution.class).annotatedWith(Names.named("SwitchOutlineModeContribution"))
 	//		.to(SwitchOutlineModeContribution.class);
 	//	}
-	//	
+	//
 	//	public void configureSwitchQuickOutlineModeContribution(Binder binder) {
 	//		binder.bind(IQuickOutlineContribution.class).annotatedWith(Names.named("SwitchQuickOutlineModeContribution"))
 	//				.to(SwitchOutlineModeContribution.class);
 	//	}
-	//	
+	//
 	//	@org.eclipse.xtext.service.SingletonBinding(eager = true)
 	//	public Class<? extends IResourceChangeRegistry> bindResourceChangeRegistry() {
 	//		return UIResourceChangeRegistry.class;
 	//	}
-	//	
+	//
 	//	@Override
 	//	public Class<? extends  IPartialEditingContentAssistParser> bindIPartialEditingContentAssistParser() {
 	//		return FlexerBasedPartialXtendContentAssistParser.class;
@@ -660,11 +663,11 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	//	public Class<? extends ILinker> bindILinker() {
 	//		return Linker.class;
 	//	}
-	//	
+	//
 	//	public Class<? extends OutlineWithEditorLinker> bindOutlineWithEditorLinker() {
 	//		return XtendOutlineWithEditorLinker.class;
 	//	}
-	//	
+	//
 	//	public Class<? extends XtendResourceDescriptionManager> bindXtendUIResourceDescriptionManager() {
 	//		return XtendUIResourceDescriptionManager.class;
 	//	}

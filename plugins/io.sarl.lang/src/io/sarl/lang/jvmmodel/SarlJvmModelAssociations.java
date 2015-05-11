@@ -49,20 +49,20 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 	 * @return the inferred type.
 	 */
 	JvmGenericType getInferredType(SarlEvent obj);
-		
+
 	/** Replies the SARL event associated to the given type.
 	 *
 	 * @param jvmType - the JVM type.
 	 * @return the SARL element.
 	 */
 	SarlEvent getSarlEvent(JvmGenericType jvmType);
-		
+
 	/** Replies the inferrer type for the given agent.
 	 * @param obj the SARL object.
 	 * @return the inferred type.
 	 */
 	JvmGenericType getInferredType(SarlAgent obj);
-		
+
 	/** Replies the SARL agent associated to the given type.
 	 *
 	 * @param jvmType - the JVM type.
@@ -75,7 +75,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 	 * @return the inferred type.
 	 */
 	JvmGenericType getInferredType(SarlBehavior obj);
-		
+
 	/** Replies the SARL behavior associated to the given type.
 	 *
 	 * @param jvmType - the JVM type.
@@ -88,7 +88,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 	 * @return the inferred type.
 	 */
 	JvmGenericType getInferredType(SarlCapacity obj);
-		
+
 	/** Replies the SARL capacity associated to the given type.
 	 *
 	 * @param jvmType - the JVM type.
@@ -101,7 +101,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 	 * @return the inferred type.
 	 */
 	JvmGenericType getInferredType(SarlSkill obj);
-		
+
 	/** Replies the SARL skill associated to the given type.
 	 *
 	 * @param jvmType - the JVM type.
@@ -133,7 +133,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 		@Override
 		public SarlEvent getSarlEvent(JvmGenericType jvmType) {
 			EObject primarySourceElement = getPrimarySourceElement(jvmType);
-			if (primarySourceElement instanceof SarlEvent) { 
+			if (primarySourceElement instanceof SarlEvent) {
 				return (SarlEvent) primarySourceElement;
 			}
 			return null;
@@ -147,7 +147,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 		@Override
 		public SarlAgent getSarlAgent(JvmGenericType jvmType) {
 			EObject primarySourceElement = getPrimarySourceElement(jvmType);
-			if (primarySourceElement instanceof SarlAgent) { 
+			if (primarySourceElement instanceof SarlAgent) {
 				return (SarlAgent) primarySourceElement;
 			}
 			return null;
@@ -161,7 +161,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 		@Override
 		public SarlBehavior getSarlBehavior(JvmGenericType jvmType) {
 			EObject primarySourceElement = getPrimarySourceElement(jvmType);
-			if (primarySourceElement instanceof SarlBehavior) { 
+			if (primarySourceElement instanceof SarlBehavior) {
 				return (SarlBehavior) primarySourceElement;
 			}
 			return null;
@@ -175,7 +175,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 		@Override
 		public SarlCapacity getSarlCapacity(JvmGenericType jvmType) {
 			EObject primarySourceElement = getPrimarySourceElement(jvmType);
-			if (primarySourceElement instanceof SarlCapacity) { 
+			if (primarySourceElement instanceof SarlCapacity) {
 				return (SarlCapacity) primarySourceElement;
 			}
 			return null;
@@ -189,12 +189,12 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 		@Override
 		public SarlSkill getSarlSkill(JvmGenericType jvmType) {
 			EObject primarySourceElement = getPrimarySourceElement(jvmType);
-			if (primarySourceElement instanceof SarlSkill) { 
+			if (primarySourceElement instanceof SarlSkill) {
 				return (SarlSkill) primarySourceElement;
 			}
 			return null;
 		}
 
 	}
-	
+
 }

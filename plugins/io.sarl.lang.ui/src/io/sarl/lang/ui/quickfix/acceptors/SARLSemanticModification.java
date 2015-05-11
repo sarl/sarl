@@ -40,7 +40,7 @@ public abstract class SARLSemanticModification implements ISemanticModification 
 
 	private WeakReference<Issue> issue;
 	private WeakReference<SARLQuickfixProvider> tools;
-	
+
 	/** Set the issue fixed by this quick fix modification.
 	 *
 	 * @param issue - the fixed issue.

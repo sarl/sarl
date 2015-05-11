@@ -52,7 +52,7 @@ public class SARLStandaloneSetup extends SARLStandaloneSetupGenerated {
 	public static void doSetup() {
 		new SARLStandaloneSetup().createInjectorAndDoEMFRegistration();
 	}
-	
+
 	/**
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -74,7 +74,7 @@ public class SARLStandaloneSetup extends SARLStandaloneSetupGenerated {
 		public EFactory getEFactory() {
 			return new SarlXtendFactoryImpl();
 		}
-		
+
 	}
 
 }

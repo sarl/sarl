@@ -43,7 +43,7 @@ import com.google.common.base.Strings;
 public final class ImplementedTypeRemoveModification extends SARLSemanticModification {
 
 	private final RemovalType type;
-	
+
 	/**
 	 * @param type - the type of removal.
 	 */
@@ -100,7 +100,7 @@ public final class ImplementedTypeRemoveModification extends SARLSemanticModific
 		} else {
 			msg = MessageFormat.format(Messages.SARLQuickfixProvider_6, redundantName);
 		}
-			
+
 		ImplementedTypeRemoveModification modification = new ImplementedTypeRemoveModification(removalType);
 		modification.setIssue(issue);
 		modification.setTools(provider);
@@ -147,7 +147,7 @@ public final class ImplementedTypeRemoveModification extends SARLSemanticModific
 		/** Remove to the previous separator.
 		 */
 		PRE,
-		
+
 		/** Remove to the next separator.
 		 */
 		POST,

@@ -90,7 +90,7 @@ import com.google.inject.Inject;
  */
 @SuppressWarnings("static-method")
 public class SARLQuickfixProvider extends XtendQuickfixProvider {
-	
+
 	@Inject
 	private ReplacingAppendable.Factory appendableFactory;
 
@@ -105,13 +105,13 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	@Inject
 	private ITaskTagProvider taskTagProvider;
-	
+
 	@Inject
 	private ActionPrototypeProvider prototypeProvider;
 
 	@Inject
 	private IQualifiedNameProvider qualifiedNameProvider;
-	
+
 	/** Replies a provider of qualified name.
 	 *
 	 * @return the provider of qualified name.
@@ -119,7 +119,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	public IQualifiedNameProvider getQualifiedNameProvider() {
 		return this.qualifiedNameProvider;
 	}
-	
+
 	@Override
 	public IQualifiedNameConverter getQualifiedNameConverter() {
 		return super.getQualifiedNameConverter();
@@ -140,7 +140,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	public ITaskTagProvider getTaskTagProvider() {
 		return this.taskTagProvider;
 	}
-	
+
 	/** Replies the factory for appendable.
 	 *
 	 * @return the appendable factory.
@@ -156,7 +156,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	public CommonTypeComputationServices getTypeServices() {
 		return this.services;
 	}
-	
+
 	/** Replies the JVM associations.
 	 *
 	 * @return the JVM associations.
@@ -164,7 +164,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	public IXtendJvmAssociations getJvmAssociations() {
 		return this.associations;
 	}
-	
+
 	/** Replies the SARL grammar accessor.
 	 *
 	 * @return the SARL grammar accessor.
@@ -172,7 +172,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	public SARLGrammarAccess getGrammarAccess() {
 		return this.grammarAccess;
 	}
-	
+
 	/** Remove the element related to the issue, and the whitespaces before the element until the given separator.
 	 *
 	 * @param issue - the issue.
@@ -732,7 +732,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 			super.internalDoAddAbstractKeyword(container, context);
 		}
 	}
-	
+
 	private void addAbstractKeyword(XtendTypeDeclaration typeDeclaration, IXtextDocument document,
 			String declarationKeyword) throws BadLocationException {
 		ICompositeNode clazzNode = NodeModelUtils.findActualNodeFor(typeDeclaration);
@@ -756,5 +756,5 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 				.append(" "); //$NON-NLS-1$
 		appendable.commitChanges();
 	}
-	
+
 }

@@ -57,21 +57,21 @@ import org.eclipse.xtext.generator.ecore.EMFGeneratorFragment;
 public class SARLEMFGeneratorFragment extends EMFGeneratorFragment {
 
 	private GenRuntimeVersion emfRuntimeVerison;
-	
+
 	private final Set<String> customImplClasses = new TreeSet<>();
-	
+
 	private String customClassNamePattern;
 
 	/** Set the pattern that is used to build the classname of a custom implementation.
-	 * 
+	 *
 	 * @param pattern the pattern.
 	 */
 	public void setCustomClassNamePattern(String pattern) {
 		this.customClassNamePattern = pattern;
 	}
-	
+
 	/** Replies the pattern that is used to build the classname of a custom implementation.
-	 * 
+	 *
 	 * @return the pattern.
 	 */
 	public String getCustomClassNamePattern() {
@@ -81,18 +81,18 @@ public class SARLEMFGeneratorFragment extends EMFGeneratorFragment {
 	/** Add a qualified name in the list of classes for which the custom
 	 * implementation must be used.
 	 *
-	 * @param qualifiedName
+	 * @param qualifiedName - the qualified name to add.
 	 */
 	public void addCustomImplClass(String qualifiedName) {
 		if (qualifiedName != null && qualifiedName.length() > 0) {
 			this.customImplClasses.add(qualifiedName);
 		}
 	}
-	
+
 	/** Remove a qualified name from the list of classes for which the custom
 	 * implementation must be used.
 	 *
-	 * @param qualifiedName
+	 * @param qualifiedName - the qualified name to remove.
 	 */
 	public void removeCustomImplClass(String qualifiedName) {
 		if (qualifiedName != null && qualifiedName.length() > 0) {
@@ -156,7 +156,7 @@ public class SARLEMFGeneratorFragment extends EMFGeneratorFragment {
 		genModelFile.getContents().add(genModel);
 		return genModel;
 	}
-	
+
 	/** Create an instance of GenModel usable by this EMF fragment.
 	 *
 	 * FIXME: Remove when the function {@link #getGenModel(ResourceSet, Grammar, XpandExecutionContext, List)}
@@ -177,7 +177,7 @@ public class SARLEMFGeneratorFragment extends EMFGeneratorFragment {
 					}
 				};
 			}
-			
+
 			@Override
 			public String getImportedName(String qualifiedName) {
 				String qn = qualifiedName;
@@ -193,7 +193,7 @@ public class SARLEMFGeneratorFragment extends EMFGeneratorFragment {
 			}
 		};
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 *
@@ -205,7 +205,7 @@ public class SARLEMFGeneratorFragment extends EMFGeneratorFragment {
 		super.setEmfRuntimeVersion(emfRuntimeVersion);
 		this.emfRuntimeVerison = GenRuntimeVersion.get(emfRuntimeVersion);
 	}
-	
+
 	/**
 	 * FIXME: Remove when the function {@link #getGenModel(ResourceSet, Grammar, XpandExecutionContext, List)}
 	 * is moved to Xtext.
@@ -213,6 +213,6 @@ public class SARLEMFGeneratorFragment extends EMFGeneratorFragment {
 	private String getLineDelimiter() {
 		return getNaming().getLineDelimiter();
 	}
-	
+
 }
 

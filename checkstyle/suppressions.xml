@@ -13,13 +13,19 @@
 
 	<suppress checks="DeclarationOrder" files="IssueCodes.java"/>
 
-	<suppress checks="BooleanExpressionComplexity" files="ModelUtil.java"/>
-	<suppress checks="NestedIfDepth" files="ModelUtil.java"/>
-	<suppress checks="MethodLength" files="ModelUtil.java"/>
-	<suppress checks="CyclomaticComplexity" files="ModelUtil.java"/>
-	<suppress checks="NPathComplexity" files="ModelUtil.java"/>
+	<suppress checks="BooleanExpressionComplexity" files="Utils.java"/>
+	<suppress checks="NestedIfDepth" files="Utils.java"/>
+	<suppress checks="MethodLength" files="Utils.java"/>
+	<suppress checks="CyclomaticComplexity" files="Utils.java"/>
+	<suppress checks="NPathComplexity" files="Utils.java"/>
+	<suppress checks="ReturnCount" files="Utils.java"/>
+	<suppress checks="ClassFanOutComplexity" files="Utils.java"/>
+	<suppress checks="MagicNumber" files="Utils.java"/>
 
 	<suppress checks="MethodName" files="SARLUiModule.java"/>
+
+	<suppress checks="MethodName" files="SARLRuntimeModule.java"/>
+	<suppress checks="MethodCount" files="SARLRuntimeModule.java"/>
 
 	<suppress checks="AnonInnerLength" files="SARLJvmModelInferrer.java"/>
 	<suppress checks="MethodLength" files="SARLJvmModelInferrer.java"/>
@@ -30,6 +36,10 @@
 	<suppress checks="NestedIfDepth" files="SARLJvmModelInferrer.java"/>
 	<suppress checks="MethodCount" files="SARLJvmModelInferrer.java"/>
 	<suppress checks="FileLength" files="SARLJvmModelInferrer.java"/>
+	<suppress checks="ReturnCount" files="SARLJvmModelInferrer.java"/>
+
+	<suppress checks="CyclomaticComplexity" files="ECoreGeneratorHelper.java"/>
+	<suppress checks="ClassFanOutComplexity" files="ECoreGeneratorHelper.java"/>
 
 	<suppress checks="ExecutableStatementCount" files="MainProjectWizardPage.java"/>
 	<suppress checks="MagicNumber" files="MainProjectWizardPage.java"/>
@@ -43,6 +53,8 @@
 	<suppress checks="." files="SARLParser.java"/>
 
 	<suppress checks="." files="SpecificationTools.java"/>
+
+	<suppress checks="." files="MissedMethodAddModification.java"/>
 
 	<suppress checks="NPathComplexity" files="SARLDocGenerator.java"/>
 
@@ -90,14 +102,14 @@
 	<suppress checks="CyclomaticComplexity" files="SARLCodeGenerator.java"/>
 	<suppress checks="ClassFanOutComplexity" files="SARLCodeGenerator.java"/>
 
-	<suppress checks="NPathComplexity" files="SARLValidator.java"/>
-	<suppress checks="CyclomaticComplexity" files="SARLValidator.java"/>
-	<suppress checks="NestedIfDepth" files="SARLValidator.java"/>
-	<suppress checks="MethodLength" files="SARLValidator.java"/>
-	<suppress checks="ParameterNumber" files="SARLValidator.java"/>
-	<suppress checks="ClassFanOutComplexity" files="SARLValidator.java"/>
-	<suppress checks="MethodCount" files="SARLValidator.java"/>
-	<suppress checks="FileLength" files="SARLValidator.java"/>
+	<suppress checks="NPathComplexity" files="SARLJavaValidator.java"/>
+	<suppress checks="CyclomaticComplexity" files="SARLJavaValidator.java"/>
+	<suppress checks="NestedIfDepth" files="SARLJavaValidator.java"/>
+	<suppress checks="MethodLength" files="SARLJavaValidator.java"/>
+	<suppress checks="ParameterNumber" files="SARLJavaValidator.java"/>
+	<suppress checks="ClassFanOutComplexity" files="SARLJavaValidator.java"/>
+	<suppress checks="MethodCount" files="SARLJavaValidator.java"/>
+	<suppress checks="FileLength" files="SARLJavaValidator.java"/>
 
 	<suppress checks="NPathComplexity" files="Jdt2Ecore.java"/>
 	<suppress checks="CyclomaticComplexity" files="Jdt2Ecore.java"/>

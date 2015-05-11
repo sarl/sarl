@@ -102,9 +102,9 @@ public final class IssueCodes {
 	 */
 	public static final String INVALID_EXTENDED_TYPE =
 			ISSUE_CODE_PREFIX + "invalid_extended_type"; //$NON-NLS-1$
-	
+
 	/**
-	 * An element cannot be defined as a nested element. 
+	 * An element cannot be defined as a nested element.
 	 */
 	public static final String INVALID_NESTED_DEFINITION =
 			ISSUE_CODE_PREFIX + "invalid_nested_definition"; //$NON-NLS-1$

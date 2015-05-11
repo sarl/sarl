@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ import com.google.inject.Inject;
  * @mavenartifactid $ArtifactId$
  */
 public class SarlTaskTagProvider implements ITaskTagProvider {
-	
+
 	@Inject
 	private IPreferenceValuesProvider preferenceValuesProvider;
 
@@ -56,11 +56,11 @@ public class SarlTaskTagProvider implements ITaskTagProvider {
 		String caseSensitivePref = prefs.getPreference(new PreferenceKey(
 				JavaCore.COMPILER_TASK_CASE_SENSITIVE, JavaCore.ENABLED));
 		List<TaskTag> tags = PreferenceTaskTagProvider.parseTags(namePref, prioritiesPref);
-		
+
 		TaskTags taskTags = new TaskTags();
 		taskTags.setCaseSensitive(caseSensitivePref.equals(JavaCore.ENABLED));
 		taskTags.getTaskTags().addAll(tags);
 		return taskTags;
 	}
-	
+
 }

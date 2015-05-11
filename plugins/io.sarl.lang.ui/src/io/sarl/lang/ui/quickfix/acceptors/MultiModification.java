@@ -76,7 +76,7 @@ public final class MultiModification extends SARLSemanticModification {
 	public void apply(EObject element, IModificationContext context) throws Exception {
 		Class<? extends SARLSemanticModification> selected = null;
 		Class<?> deeperType = null;
-		
+
 		for (Entry<Class<?>, Class<? extends SARLSemanticModification>> entry : this.modificationTypes.entrySet()) {
 			if (entry.getKey().isInstance(element)) {
 				if (deeperType == null

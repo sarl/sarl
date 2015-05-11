@@ -45,7 +45,7 @@ import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 public final class ActionAddModification extends SARLSemanticModification {
 
 	private final String actionName;
-	
+
 	/**
 	 * @param actionName the name of the action.
 	 */

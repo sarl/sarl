@@ -67,7 +67,7 @@ import com.google.common.base.Strings;
 
 /**
  * Add missed methods.
- * 
+ *
  * FIXME: Use the CodeBuilder provided by Xtend.
  *
  * @author $Author: sgalland$
@@ -225,7 +225,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 								appendable.append(paramType);
 							}
 							importableTypes.add(paramType.getType());
-							
+
 							if (Utils.hasAnnotation(parameter, DefaultValue.class)) {
 								String defaultValue = null;
 								String key = Utils.annotationString(parameter, DefaultValue.class);

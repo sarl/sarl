@@ -35,16 +35,16 @@ public interface FeatureCallValidator {
 	 *
 	 * @param call the call to test.
 	 * @return <code>true</code> if the call is disallowed.
-	 * 
+	 *
 	 */
-	public boolean isDisallowedCall(XAbstractFeatureCall call);
+	boolean isDisallowedCall(XAbstractFeatureCall call);
 
 	/** Replies if the given call is discouraged or not.
 	 *
 	 * @param call the call to test.
 	 * @return <code>true</code> if the call is discouraged.
-	 * 
+	 *
 	 */
-	public boolean isDiscouragedCall(XAbstractFeatureCall call);
+	boolean isDiscouragedCall(XAbstractFeatureCall call);
 
 }

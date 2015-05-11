@@ -102,15 +102,15 @@ public class SarlEcoreCode {
 	 */
 	public void finalizeScript() {
 		ImportManager concreteImports = new ImportManager();
-	
+
 		XImportSection importSection = this.script.getImportSection();
-		
+
 		if (importSection != null) {
 			for (XImportDeclaration decl : importSection.getImportDeclarations()) {
 				concreteImports.addImportFor(decl.getImportedType());
 			}
 		}
-				
+
 		for (String importName : this.importManager.getImports()) {
 			JvmType type = this.typeReferences.findDeclaredType(importName, this.script);
 			if (type instanceof JvmDeclaredType

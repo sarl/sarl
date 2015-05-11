@@ -699,7 +699,7 @@ public final class Utils {
 			textRepresentation.append(annotationElements.getLeftParenthesisKeyword_3_0().getValue());
 			textRepresentation.append(serializer.serialize(value).trim());
 			textRepresentation.append(annotationElements.getRightParenthesisKeyword_3_2().getValue());
-		} else if (!annotation.getElementValuePairs().isEmpty()){
+		} else if (!annotation.getElementValuePairs().isEmpty()) {
 			textRepresentation.append(annotationElements.getLeftParenthesisKeyword_3_0().getValue());
 			boolean addComa = false;
 			for (XAnnotationElementValuePair pair : annotation.getElementValuePairs()) {
@@ -737,11 +737,11 @@ public final class Utils {
 		ActionElements signatureElements = grammarAccess.getActionAccess();
 		StringBuilder textRepresentation = new StringBuilder();
 		// Annotations
-		for(XAnnotation annotation : signature.getAnnotations()) {
+		for (XAnnotation annotation : signature.getAnnotations()) {
 			addAnnotationToSignature(textRepresentation, grammarAccess, serializer, importManager, annotation);
 		}
 		// Modifiers
-		for(String modifier : signature.getModifiers()) {
+		for (String modifier : signature.getModifiers()) {
 			textRepresentation.append(modifier);
 			textRepresentation.append(' ');
 		}
@@ -749,7 +749,7 @@ public final class Utils {
 		if (!signature.getTypeParameters().isEmpty()) {
 			boolean addComa = false;
 			textRepresentation.append(signatureElements.getLessThanSignKeyword_5_0().getValue());
-			for(JvmTypeParameter typeParameter : signature.getTypeParameters()) {
+			for (JvmTypeParameter typeParameter : signature.getTypeParameters()) {
 				if (addComa) {
 					textRepresentation.append(signatureElements.getCommaKeyword_5_2_0().getValue());
 					textRepresentation.append(' ');
@@ -972,16 +972,16 @@ public final class Utils {
 		try {
 			byte[] uniqueKey = serialVersionUIDBuffer.toString().getBytes();
 			byte[] sha = MessageDigest.getInstance("SHA").digest(uniqueKey); //$NON-NLS-1$
-			key = ((sha[0] >>> 24) & 0xFF) |
-					((sha[0] >>> 16) & 0xFF) << 8 |
-					((sha[0] >>> 8) & 0xFF) << 16 |
-					((sha[0] >>> 0) & 0xFF) << 24 |
-					((sha[1] >>> 24) & 0xFF) << 32 |
-					((sha[1] >>> 16) & 0xFF) << 40 |
-					((sha[1] >>> 8) & 0xFF) << 48 |
-					((sha[1] >>> 0) & 0xFF) << 56;		
+			key = ((sha[0] >>> 24) & 0xFF)
+					| ((sha[0] >>> 16) & 0xFF) << 8
+					| ((sha[0] >>> 8) & 0xFF) << 16
+					| ((sha[0] >>> 0) & 0xFF) << 24
+					| ((sha[1] >>> 24) & 0xFF) << 32
+					| ((sha[1] >>> 16) & 0xFF) << 40
+					| ((sha[1] >>> 8) & 0xFF) << 48
+					| ((sha[1] >>> 0) & 0xFF) << 56;
 		} catch (NoSuchAlgorithmException e) {
-			// 
+			//
 		}
 
 		return key;
@@ -990,6 +990,7 @@ public final class Utils {
 	/** Replies a singleton list with the given element, or the empty list if
 	 * the element is <code>null</code>.
 	 *
+	 * @param <T> the type of the element in the list.
 	 * @param element the element.
 	 * @return the list with the element, or the empty list.
 	 */

@@ -285,7 +285,7 @@
         <module name="MagicNumber">
             <property name="ignoreHashCodeMethod" value="true"/>
             <property name="ignoreAnnotation" value="true"/>
-            <property name="ignoreNumbers" value="-1 , 0 , 1 ,2 , 3"/>
+            <property name="ignoreNumbers" value="-1 , 0 , 1 , 2, 3"/>
         </module>
         <module name="EqualsHashCode"/>
         <module name="IllegalInstantiation"/>
