@@ -59,6 +59,7 @@ import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_CLASS__IM
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FIELD__NAME;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FUNCTION__NAME;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_INTERFACE__EXTENDS;
+import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_MEMBER__MODIFIERS;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_TYPE_DECLARATION__NAME;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.DISCOURAGED_REFERENCE;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE;
@@ -111,6 +112,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtend.core.validation.IssueCodes;
 import org.eclipse.xtend.core.validation.ModifierValidator;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
@@ -181,6 +183,26 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 			newArrayList(SARLJavaValidator.this.visibilityModifers));
 
 	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator methodInAgentModifierValidator = new SARLModifierValidator(
+			newArrayList(
+					"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator fieldInAgentModifierValidator = new SARLModifierValidator(
+			newArrayList(
+					"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"final", "val", "var", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"volatile", "transient")); //$NON-NLS-1$//$NON-NLS-2$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator fieldInEventModifierValidator = new SARLModifierValidator(
+			newArrayList(
+					"public", //$NON-NLS-1$
+					"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+
+	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator agentModifierValidator = new SARLModifierValidator(
 			newArrayList("public", "package", "abstract")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
@@ -223,7 +245,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 
 	/** Emit a warning when the "requires" keyword is used.
 	 *
-	 * @param statement
+	 * @param statement - the statement to check.
 	 */
 	@Check
 	public void checkRequiredCapacityUse(SarlRequiredCapacity statement) {
@@ -233,7 +255,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 				statement,
 				null);
 	}
-	
+
 	/** Check if the SARL libraries are in the classpath.
 	 *
 	 * This function is overriding the function given by the Xtend validator
@@ -287,8 +309,46 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 		}
 	}
 
+	@Check
+	@Override
+	protected void checkModifiers(XtendFunction function) {
+		XtendTypeDeclaration declaringType = function.getDeclaringType();
+		if (declaringType != null) {
+			if (declaringType instanceof SarlAgent
+				|| declaringType instanceof SarlSkill
+				|| declaringType instanceof SarlBehavior) {
+				String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
+				this.methodInAgentModifierValidator.checkModifiers(function,
+						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+			} else {
+				super.checkModifiers(function);
+			}
+		}
+	}
+
+	@Check
+	@Override
+	protected void checkModifiers(XtendField field) {
+		XtendTypeDeclaration declaringType = field.getDeclaringType();
+		if (declaringType != null) {
+			if (declaringType instanceof SarlEvent) {
+				String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
+				this.fieldInEventModifierValidator.checkModifiers(field,
+						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+			} else if (declaringType instanceof SarlAgent
+				|| declaringType instanceof SarlSkill
+				|| declaringType instanceof SarlBehavior) {
+				String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
+				this.fieldInAgentModifierValidator.checkModifiers(field,
+						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+			} else {
+				super.checkModifiers(field);
+			}
+		}
+	}
+
 	/** Check if the modifiers for the SARL events.
-	 * 
+	 *
 	 * @param event the event.
 	 */
 	@Check
@@ -296,7 +356,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 		EObject eContainer = event.eContainer();
 		if (eContainer instanceof XtendFile) {
 			this.eventModifierValidator.checkModifiers(event,
-					MessageFormat.format(Messages.SARLJavaValidator_1, event.getName()));
+					MessageFormat.format(Messages.SARLJavaValidator_0, event.getName()));
 		} else {
 			error(Messages.SARLJavaValidator_2,
 					event,
@@ -306,7 +366,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	}
 
 	/** Check if the modifiers for the SARL agents.
-	 * 
+	 *
 	 * @param agent the agent.
 	 */
 	@Check
@@ -324,7 +384,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	}
 
 	/** Check if the modifiers for the SARL behaviors.
-	 * 
+	 *
 	 * @param behavior the behavior.
 	 */
 	@Check
@@ -342,7 +402,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	}
 
 	/** Check if the modifiers for the SARL capacities.
-	 * 
+	 *
 	 * @param capacity the capacity.
 	 */
 	@Check
@@ -360,7 +420,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	}
 
 	/** Check if the modifiers for the SARL skills.
-	 * 
+	 *
 	 * @param skill the skill.
 	 */
 	@Check
@@ -429,7 +489,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	 *
 	 * @param container - the container.
 	 * @param feature - the syntactic feature related to the supertypes.
-	 * @param defaultSignatures - the signatures of the default constructors for the given container. 
+	 * @param defaultSignatures - the signatures of the default constructors for the given container.
 	 */
 	@SuppressWarnings("unchecked")
 	protected void checkSuperConstructor(
@@ -490,7 +550,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 				for (ActionParameterTypes defaultSignature : defaultSignatures) {
 					if (!superConstructors.containsKey(defaultSignature)) {
 						List<String> issueData = newArrayList();
-						for(JvmConstructor superConstructor : superConstructors.values()) {
+						for (JvmConstructor superConstructor : superConstructors.values()) {
 							issueData.add(EcoreUtil.getURI(superConstructor).toString());
 							issueData.add(doGetReadableSignature(container.getName(), superConstructor.getParameters()));
 						}
@@ -622,7 +682,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 
 	/** Check if the default values of the formal parameters have a compatible type with the formal parameter.
 	 *
-	 * @param param
+	 * @param param - the formal parameter to check.
 	 */
 	@Check
 	public void checkDefaultValueTypeCompatibleWithParameterType(SarlFormalParameter param) {
@@ -744,7 +804,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 
 	/** Caution: This function is overridden for translating the MISSING_OVERRIDE error into a warning,
 	 * and emit a warning when a return type should be specified.
-	 * 
+	 *
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -752,7 +812,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 			List<IResolvedOperation> allInherited) {
 		boolean overrideProblems = false;
 		List<IResolvedOperation> exceptionMismatch = null;
-		for(IResolvedOperation inherited: allInherited) {
+		for (IResolvedOperation inherited: allInherited) {
 			if (inherited.getOverrideCheckResult().hasProblems()) {
 				overrideProblems = true;
 				EnumSet<OverrideCheckDetails> details = inherited.getOverrideCheckResult().getDetails();
@@ -765,8 +825,9 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 							inherited.getSimpleSignature()),
 							sourceElement, nameFeature(sourceElement), OVERRIDE_REDUCES_VISIBILITY);
 				} else if (details.contains(OverrideCheckDetails.EXCEPTION_MISMATCH)) {
-					if (exceptionMismatch == null)
+					if (exceptionMismatch == null) {
 						exceptionMismatch = Lists.newArrayListWithCapacity(allInherited.size());
+					}
 					exceptionMismatch.add(inherited);
 				} else if (details.contains(OverrideCheckDetails.RETURN_MISMATCH)) {
 					error(MessageFormat.format(Messages.SARLJavaValidator_13,
@@ -799,15 +860,17 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 						getDeclaratorName(resolved)),
 						function,
 						XTEND_FUNCTION__NAME, MISSING_OVERRIDE);
-			} 
+			}
 			if (!overrideProblems && function.isOverride() && function.isStatic()) {
-				for(IResolvedOperation inherited: allInherited) {
+				for (IResolvedOperation inherited: allInherited) {
 					error(MessageFormat.format(Messages.SARLJavaValidator_16,
 							resolved.getSimpleSignature(),
 							getDeclaratorName(resolved),
 							resolved.getSimpleSignature(),
 							getDeclaratorName(inherited)),
-							function, XTEND_FUNCTION__NAME, function.getModifiers().indexOf(Messages.SARLJavaValidator_17), OBSOLETE_OVERRIDE);
+							function, XTEND_FUNCTION__NAME,
+							function.getModifiers().indexOf(Messages.SARLJavaValidator_17),
+							OBSOLETE_OVERRIDE);
 				}
 			}
 		}
@@ -1124,7 +1187,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 					} else if (inferredSuperType == null
 							|| !Objects.equal(inferredSuperType.getIdentifier(), jvmSuperType.getIdentifier())
 							|| Objects.equal(inferredType.getIdentifier(), jvmSuperType.getIdentifier())
-							|| hasCycleInHierarchy((JvmGenericType) inferredType, Sets.<JvmGenericType> newHashSet())) {
+							|| hasCycleInHierarchy((JvmGenericType) inferredType, Sets.<JvmGenericType>newHashSet())) {
 						error(MessageFormat.format(Messages.SARLValidator_33,
 								inferredType.getQualifiedName()),
 								feature,
@@ -1476,12 +1539,13 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	protected class SARLModifierValidator extends ModifierValidator {
+	protected final class SARLModifierValidator extends ModifierValidator {
 
 		/**
 		 * @param modifiers - the list of the supported modifiers.
 		 */
-		private SARLModifierValidator(List<String> modifiers) {
+		private SARLModifierValidator(
+				List<String> modifiers) {
 			super(modifiers, SARLJavaValidator.this);
 		}
 
@@ -1489,6 +1553,17 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 		public void checkModifiers(XtendMember member, String memberName) {
 			super.checkModifiers(member, memberName);
 		}
+
+		/** Generate a warning.
+		 *
+		 * @param message - the warning message.
+		 * @param source - the source of the warning.
+		 * @param index - the index of the modifier.
+		 */
+		protected void warning(String message, EObject source, int index) {
+			SARLJavaValidator.this.acceptWarning(message, source, XTEND_MEMBER__MODIFIERS, index, IssueCodes.INVALID_MODIFIER);
+		}
+
 	}
 
 }

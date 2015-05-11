@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.validation.IssueCodes;
@@ -28,6 +29,7 @@ import org.eclipse.xtend.core.xtend.XtendConstructor;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendPackage;
+import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
@@ -569,6 +571,140 @@ public class BehaviorParsingTest {
 				XtendPackage.eINSTANCE.getXtendField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
 				"The field 'field1' in 'B2' is hidding the inherited field 'B1.field1'.");
+		}
+
+		@Test
+		public void variableModifier_public() throws Exception {
+			XtendFile mas = file(multilineString(
+					"behavior B1 {",
+					"public var name : String = \"Hello\"",
+					"}"
+					), false);
+			//
+			validate(mas).assertError(
+					XtendPackage.eINSTANCE.getXtendField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					"Illegal modifier for the definition of B1; only protected, private, static, final, val, var, volatile & transient are permitted");
+		}
+
+		@Test
+		public void variableModifier_protected() throws Exception {
+			XtendFile mas = file(multilineString(
+					"behavior B1 {",
+					"protected var name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
+			XtendField attr1 = (XtendField) behavior.getMembers().get(0);
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+		}
+
+		@Test
+		public void variableModifier_package() throws Exception {
+			XtendFile mas = file(multilineString(
+					"behavior B1 {",
+					"package var name : String = \"Hello\"",
+					"}"
+					), false);
+			//
+			validate(mas).assertError(
+					XtendPackage.eINSTANCE.getXtendField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					"Illegal modifier for the definition of B1; only protected, private, static, final, val, var, volatile & transient are permitted");
+		}
+
+		@Test
+		public void variableModifier_private() throws Exception {
+			XtendFile mas = file(multilineString(
+					"behavior B1 {",
+					"private var name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
+			XtendField attr1 = (XtendField) behavior.getMembers().get(0);
+			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
+		}
+
+		@Test
+		public void variableModifier_default() throws Exception {
+			XtendFile mas = file(multilineString(
+					"behavior B1 {",
+					"var name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
+			XtendField attr1 = (XtendField) behavior.getMembers().get(0);
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+		}
+
+		@Test
+		public void valueModifier_public() throws Exception {
+			XtendFile mas = file(multilineString(
+					"behavior B1 {",
+					"public val name : String = \"Hello\"",
+					"}"
+					), false);
+			//
+			validate(mas).assertError(
+					XtendPackage.eINSTANCE.getXtendField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					"Illegal modifier for the definition of B1; only protected, private, static, final, val, var, volatile & transient are permitted");
+		}
+
+		@Test
+		public void valueModifier_protected() throws Exception {
+			XtendFile mas = file(multilineString(
+					"behavior B1 {",
+					"protected val name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
+			XtendField attr1 = (XtendField) behavior.getMembers().get(0);
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+		}
+
+		@Test
+		public void valueModifier_package() throws Exception {
+			XtendFile mas = file(multilineString(
+					"behavior B1 {",
+					"package val name : String = \"Hello\"",
+					"}"
+					), false);
+			//
+			validate(mas).assertError(
+					XtendPackage.eINSTANCE.getXtendField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					"Illegal modifier for the definition of B1; only protected, private, static, final, val, var, volatile & transient are permitted");
+		}
+
+		@Test
+		public void valueModifier_private() throws Exception {
+			XtendFile mas = file(multilineString(
+					"behavior B1 {",
+					"private val name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
+			XtendField attr1 = (XtendField) behavior.getMembers().get(0);
+			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
+		}
+
+		@Test
+		public void valueModifier_default() throws Exception {
+			XtendFile mas = file(multilineString(
+					"behavior B1 {",
+					"val name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
+			XtendField attr1 = (XtendField) behavior.getMembers().get(0);
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
 		}
 
 	}

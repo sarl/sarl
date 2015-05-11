@@ -24,6 +24,7 @@ import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.validation.IssueCodes;
@@ -34,6 +35,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendPackage;
+import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.junit4.InjectWith;
@@ -1503,6 +1505,150 @@ public class CapacityParsingTest {
 					XtendPackage.eINSTANCE.getXtendField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
 					"The field 'field1' in 'S2' is hidding the inherited field 'S1.field1'.");
+		}
+
+		@Test
+		public void variableModifier_public() throws Exception {
+			XtendFile mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"public var name : String = \"Hello\"",
+					"}"
+					), false);
+			//
+			validate(mas).assertError(
+					XtendPackage.eINSTANCE.getXtendField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					"Illegal modifier for the definition of S1; only protected, private, static, final, val, var, volatile & transient are permitted");
+		}
+
+		@Test
+		public void variableModifier_protected() throws Exception {
+			XtendFile mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"protected var name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			XtendField attr1 = (XtendField) skill.getMembers().get(0);
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+		}
+
+		@Test
+		public void variableModifier_package() throws Exception {
+			XtendFile mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"package var name : String = \"Hello\"",
+					"}"
+					), false);
+			//
+			validate(mas).assertError(
+					XtendPackage.eINSTANCE.getXtendField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					"Illegal modifier for the definition of S1; only protected, private, static, final, val, var, volatile & transient are permitted");
+		}
+
+		@Test
+		public void variableModifier_private() throws Exception {
+			XtendFile mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"private var name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			XtendField attr1 = (XtendField) skill.getMembers().get(0);
+			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
+		}
+
+		@Test
+		public void variableModifier_default() throws Exception {
+			XtendFile mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"var name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			XtendField attr1 = (XtendField) skill.getMembers().get(0);
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+		}
+
+		@Test
+		public void valueModifier_public() throws Exception {
+			XtendFile mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"public val name : String = \"Hello\"",
+					"}"
+					), false);
+			//
+			validate(mas).assertError(
+					XtendPackage.eINSTANCE.getXtendField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					"Illegal modifier for the definition of S1; only protected, private, static, final, val, var, volatile & transient are permitted");
+		}
+
+		@Test
+		public void valueModifier_protected() throws Exception {
+			XtendFile mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"protected val name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			XtendField attr1 = (XtendField) skill.getMembers().get(0);
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+		}
+
+		@Test
+		public void valueModifier_package() throws Exception {
+			XtendFile mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"package val name : String = \"Hello\"",
+					"}"
+					), false);
+			//
+			validate(mas).assertError(
+					XtendPackage.eINSTANCE.getXtendField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					"Illegal modifier for the definition of S1; only protected, private, static, final, val, var, volatile & transient are permitted");
+		}
+
+		@Test
+		public void valueModifier_private() throws Exception {
+			XtendFile mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"private val name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			XtendField attr1 = (XtendField) skill.getMembers().get(0);
+			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
+		}
+
+		@Test
+		public void valueModifier_default() throws Exception {
+			XtendFile mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"val name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			XtendField attr1 = (XtendField) skill.getMembers().get(0);
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
 		}
 
 	}

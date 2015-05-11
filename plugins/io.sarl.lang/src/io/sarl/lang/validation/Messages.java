@@ -33,7 +33,6 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "io.sarl.lang.validation.messages"; //$NON-NLS-1$
 	public static String SARLJavaValidator_0;
-	public static String SARLJavaValidator_1;
 	public static String SARLJavaValidator_10;
 	public static String SARLJavaValidator_11;
 	public static String SARLJavaValidator_12;
