@@ -24,6 +24,9 @@ import java.text.MessageFormat;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 
 /** Cleaning mojo for compiling SARL.
  *
@@ -31,14 +34,12 @@ import org.apache.maven.plugin.MojoFailureException;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @goal clean
- * @phase clean
- * @requiresDependencyResolution compile
  */
+@Mojo(name = "clean", defaultPhase = LifecyclePhase.CLEAN, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class CleanMojo extends AbstractSarlMojo {
 
 	@Override
-	public void executeMojo() throws MojoExecutionException, MojoFailureException {
+	protected void executeMojo() throws MojoExecutionException, MojoFailureException {
 		String cleanerGroupId = MavenHelper.getConfig("cleaner.groupId"); //$NON-NLS-1$
 		String cleanerArtifactId = MavenHelper.getConfig("cleaner.artifactId"); //$NON-NLS-1$
 		String cleanerVersion = this.mavenHelper.getPluginDependencyVersion(

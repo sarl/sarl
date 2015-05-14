@@ -20,7 +20,7 @@
 		<dependency.xtext-compiler.artifactId>xtext-maven-plugin</dependency.xtext-compiler.artifactId>
 		<dependency.xtext-compiler.mojo>generate</dependency.xtext-compiler.mojo>
 		<dependency.xtext-compiler.dependencies>
-			io.sarl.lang:io.sarl.lang|io.sarl.lang:io.sarl.lang.core|org.eclipse:osgi
+			io.sarl.lang:io.sarl.lang|io.sarl.lang:io.sarl.lang.core|org.eclipse.xtend:org.eclipse.xtend.core|org.eclipse:osgi
 		</dependency.xtext-compiler.dependencies>
 		<dependency.java-compiler.groupId>org.apache.maven.plugins</dependency.java-compiler.groupId>
 		<dependency.java-compiler.artifactId>maven-compiler-plugin</dependency.java-compiler.artifactId>
@@ -41,11 +41,16 @@
 			<artifactId>io.sarl.lang.core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
- 		<dependency> 
- 			<groupId>org.eclipse</groupId> 
- 			<artifactId>osgi</artifactId> 
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>osgi</artifactId>
 			<version>${osgi.nls.version}</version>
- 		</dependency> 
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtend</groupId>
+			<artifactId>org.eclipse.xtend.core</artifactId>
+			<version>${xtext.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.eclipse.xtext</groupId>
 			<artifactId>xtext-maven-plugin</artifactId>
@@ -60,6 +65,12 @@
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-clean-plugin</artifactId>
 			<version>2.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugin-tools</groupId>
+			<artifactId>maven-plugin-annotations</artifactId>
+			<version>3.4</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

@@ -20,11 +20,16 @@
  */
 package io.sarl.maven.compiler;
 
+import java.nio.charset.Charset;
 import java.text.MessageFormat;
 
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 
 /** Mojo for compiling SARL.
  *
@@ -32,35 +37,46 @@ import org.apache.maven.plugin.MojoFailureException;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @goal compile
- * @phase compile
- * @requiresDependencyResolution compile
  */
+@Mojo(name = "compile", defaultPhase = LifecyclePhase.COMPILE, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class CompileMojo extends AbstractSarlMojo {
 
-	/**
-	 * @parameter property="source" default-value="1.7"
-	 * @required
+	/** Version of the Java specification used for the source files.
 	 */
+	@Parameter(defaultValue = "1.7")
 	protected String source;
 
-	/**
-	 * @parameter property="target"
-	 * @required
+	/** Version of the Java specification used for the output files.
 	 */
+	@Parameter
 	protected String target;
 
-	/**
-	 * @parameter property="encoding" default-value="${project.build.sourceEncoding}"
-	 * @required
+	/** Encoding.
 	 */
+	@Parameter(defaultValue = "${project.build.sourceEncoding}")
 	protected String encoding;
 
 	@Override
-	public void executeMojo() throws MojoExecutionException, MojoFailureException {
+	protected void buildPropertyString(StringBuilder buffer) {
+		super.buildPropertyString(buffer);
+		buffer.append("source = ").append(this.source).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
+		buffer.append("target = ").append(this.target).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
+		buffer.append("encoding = ").append(this.encoding).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
+	}
+
+	@Override
+	protected void ensureDefaultParameterValues() {
+		super.ensureDefaultParameterValues();
+		if (this.encoding == null) {
+			this.encoding = Charset.defaultCharset().name();
+		}
 		if (this.target == null) {
 			this.target = this.source;
 		}
+	}
+
+	@Override
+	protected void executeMojo() throws MojoExecutionException, MojoFailureException {
 		compileSARL();
 		compileJava();
 	}

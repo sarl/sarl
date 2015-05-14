@@ -41,7 +41,10 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.Xpp3DomUtils;
@@ -78,45 +81,51 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 
 	/**
 	 * The current Maven session.
-	 *
-	 * @parameter default-value="${session}"
-	 * @required
-	 * @readonly
 	 */
+	@Parameter(defaultValue = "${session}", required = true, readonly = true)
 	private MavenSession session;
 
 	/**
 	 * The Build PluginManager component.
-	 *
-	 * @component
-	 * @required
 	 */
+	@Component
 	private BuildPluginManager buildPluginManager;
 
-	/**
-	 * @parameter property="output"
+	/** Output directory.
 	 */
+	@Parameter
 	private File output;
 
 	/**
-	 * @parameter property="input"
+	 * Input directory.
 	 */
+	@Parameter
 	private File input;
 
 	/**
-	 * @parameter property="testOutput"
+	 * Output directory for tests.
 	 */
+	@Parameter
 	private File testOutput;
 
 	/**
-	 * @parameter property="testInput"
+	 * Input directory for tests.
 	 */
+	@Parameter
 	private File testInput;
 
 	@Override
 	public final void execute() throws MojoExecutionException, MojoFailureException {
 		this.mavenHelper = new MavenHelper(this.session, this.buildPluginManager, getLog());
+		ensureDefaultParameterValues();
+		getLog().info(toString());
 		executeMojo();
+	}
+
+	/** Ensure the mojo parameters have at least their default values.
+	 */
+	protected void ensureDefaultParameterValues() {
+		//
 	}
 
 	/** Execute the mojo.
@@ -207,7 +216,12 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 			throw new MojoExecutionException("Could not find the goal '" + goal + "'"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
-		Xpp3Dom mojoXml = toXpp3Dom(mojoDescriptor.getMojoConfiguration());
+		Xpp3Dom mojoXml;
+		try {
+			mojoXml = toXpp3Dom(mojoDescriptor.getMojoConfiguration());
+		} catch (PlexusConfigurationException e1) {
+			throw new MojoExecutionException(e1.getLocalizedMessage(), e1);
+		}
 		Xpp3Dom configurationXml = null;
 		if (configuration != null && !configuration.isEmpty()) {
 			try (StringReader sr = new StringReader(configuration)) {
@@ -234,7 +248,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 		this.mavenHelper.executeMojo(execution);
 	}
 
-	private Xpp3Dom toXpp3Dom(PlexusConfiguration config) {
+	private Xpp3Dom toXpp3Dom(PlexusConfiguration config) throws PlexusConfigurationException {
 		Xpp3Dom result = new Xpp3Dom(config.getName());
 		result.setValue(config.getValue(null));
 		for (String name : config.getAttributeNames()) {
@@ -283,6 +297,22 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 		Dependency[] dependencyArray = new Dependency[dependencies.size()];
 		dependencies.toArray(dependencyArray);
 		return dependencyArray;
+	}
+
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+
+	/** Put the string representation of the properties of this object into the given buffer.
+	 *
+	 * @param buffer the buffer.
+	 */
+	protected void buildPropertyString(StringBuilder buffer) {
+		buffer.append("input = ").append(this.input).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
+		buffer.append("output = ").append(this.output).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
+		buffer.append("testInput = ").append(this.testInput).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
+		buffer.append("testOutput = ").append(this.testOutput).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 }

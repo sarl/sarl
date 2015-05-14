@@ -51,6 +51,23 @@
 			<groupId>org.eclipse.xtext</groupId>
 			<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
 			<version>${xtext.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtend</groupId>
+			<artifactId>org.eclipse.xtend.core</artifactId>
+			<version>${xtext.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
  		<dependency> 
  			<groupId>org.eclipse</groupId> 
@@ -60,7 +77,7 @@
  		<dependency> 
  			<groupId>com.google.guava</groupId> 
  			<artifactId>guava</artifactId> 
-			<version>18.0</version>
+			<version>${guava.version}</version>
  		</dependency> 
 	</dependencies>
 </project>

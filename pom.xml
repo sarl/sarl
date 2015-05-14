@@ -52,6 +52,10 @@
 		<local.maven.repository.path>file:///var/www/sarl-maven-repository/</local.maven.repository.path>
 		<!-- Local path to the P2 repository -->
 		<local.p2.repository.path>file:///var/www/sarl-p2-repository/</local.p2.repository.path>
+		<!-- Version of the Arakhne Foundation classes -->
+		<afc.version>12.0</afc.version>
+		<!-- Version of the Guava API -->
+		<guava.version>18.0</guava.version>
 	</properties>
 
 	<!-- ======================================= -->
@@ -443,12 +447,12 @@
 				<module>features</module>
 				<!-- Eclipse plugins -->
 				<module>plugins</module>
+				<!-- Maven plugins and artifacts dedicated to SARL -->
+				<module>maven</module>
 				<!-- Testing suite -->
 				<module>tests</module>
 				<!-- Definition of the Eclipse platform, the products and the update sites -->
 				<module>releng</module>
-				<!-- Maven plugins and artifacts dedicated to SARL -->
-				<module>maven</module>
 				<!-- Documentation of SARL -->
 				<module>docs</module>
 			</modules>
@@ -550,7 +554,7 @@
 					<plugin>
 						<groupId>org.arakhne.afc.maven</groupId>
 						<artifactId>tag-replacer</artifactId>
-						<version>12.0</version>
+						<version>${afc.version}</version>
 						<executions>
 							<execution>
 								<id>update-source-tags</id>

@@ -120,5 +120,7 @@
 	<suppress checks="MethodLength" files="SARLQuickfixProvider.java"/>
 	<suppress checks="MethodCount" files="SARLQuickfixProvider.java"/>
 
+	<suppress checks="NPathComplexity" files="AbstractSarlMojo.java"/>
+
 </suppressions>
 
