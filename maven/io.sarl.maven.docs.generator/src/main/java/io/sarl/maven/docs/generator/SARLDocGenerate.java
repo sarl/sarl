@@ -31,6 +31,9 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend.core.compiler.batch.XtendBatchCompiler;
@@ -66,72 +69,59 @@ import com.google.inject.Provider;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- *
- * @requiresDependencyResolution test
- * @goal generate
  */
+@Mojo(name = "generate", requiresDependencyResolution = ResolutionScope.TEST)
 public class SARLDocGenerate extends XtendTestCompile {
 
 	/**
 	 * Location of the generated documentation.
-	 *
-	 * @parameter default-value="${basedir}/target/jnario-doc"
-	 * @required
 	 */
+	@Parameter(defaultValue = "${basedir}/target/jnario-doc", required = true)
 	protected String docOutputDirectory;
 
 	/**
 	 * Location of the generated JUnit XML reports.
-	 *
-	 * @parameter default-value="${basedir}/target/surefire-reports"
-	 * @required
 	 */
+	@Parameter(defaultValue = "${basedir}/target/surefire-reports", required = true)
 	protected String reportsDirectory;
 
 	/**
 	 * Location of the generated JUnit XML reports.
-	 *
-	 * @parameter
 	 */
+	@Parameter
 	protected String sourceDirectory;
 
 	/**
 	 * Location of the generated JUnit XML reports.
-	 *
-	 * @parameter default-value="true"
 	 */
+	@Parameter(defaultValue = "true")
 	protected boolean sectionNumbering;
 
 	/**
 	 * The project itself. This parameter is set by maven.
-	 *
-	 * @parameter property="project"
-	 * @required
 	 */
+	@Parameter(required = true)
 	@SuppressWarnings("hiding")
 	protected MavenProject project;
 
 	/**
 	 * Set this to true to skip compiling Xtend sources.
-	 *
-	 * @parameter default-value="false" property="skipXtend"
 	 */
+	@Parameter(defaultValue = "false")
 	@SuppressWarnings("hiding")
 	protected boolean skipXtend;
 
 	/**
 	 * Xtend-File encoding argument for the compiler.
-	 *
-	 * @parameter property="encoding" default-value="${project.build.sourceEncoding}"
 	 */
+	@Parameter(defaultValue = "${project.build.sourceEncoding}")
 	@SuppressWarnings("hiding")
 	protected String encoding;
 
 	/**
 	 * Set this to false to suppress the creation of *._trace files.
-	 *
-	 * @parameter default-value="true" property="writeTraceFiles"
 	 */
+	@Parameter(defaultValue = "true")
 	@SuppressWarnings("hiding")
 	protected boolean writeTraceFiles;
 

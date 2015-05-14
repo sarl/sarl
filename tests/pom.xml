@@ -64,8 +64,8 @@
 					<artifactId>tycho-surefire-plugin</artifactId>
 					<configuration>
 						<argLine>-ea ${tycho-surefire-plugin-os-jvm-flags}</argLine>
-						<parallel>true</parallel>
-						<threadCount>15</threadCount>
+<!-- 						<parallel>classes</parallel> -->
+<!-- 						<threadCount>5</threadCount> -->
 					</configuration>
 				</plugin>
 			</plugins>
