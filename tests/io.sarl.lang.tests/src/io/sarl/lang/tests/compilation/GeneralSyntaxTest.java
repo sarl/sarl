@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.tests.parsing;
+package io.sarl.lang.tests.compilation;
 
 import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.tests.api.AbstractSarlTest;
@@ -26,6 +26,7 @@ import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.xbase.XbasePackage;
+import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.eclipse.xtext.xtype.XtypePackage;
 import org.junit.Test;
@@ -45,41 +46,47 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class GeneralSyntaxTest extends AbstractSarlTest {
 
-	@Test
-	public void wildCardImports() throws Exception {
-		XtendFile mas = file(multilineString(
-				"package io.sarl.docs.reference.gsr",
-				"import org.eclipse.xtext.xbase.lib.Procedures.*",
-				"agent A {",
-				"}",
-				""));
-		validate(mas).assertWarning(
-				XtypePackage.eINSTANCE.getXImportDeclaration(),
-				IssueCodes.IMPORT_WILDCARD_DEPRECATED,
-				35, 47,
-				"The use of wildcard imports is deprecated");
-	}
+	@Inject
+	private CompilationTestHelper compiler;
 
 	@Test
 	public void noParamNoReturnActionInClass() throws Exception {
-		XtendFile mas = file(multilineString(
+		String source = multilineString(
 				"abstract class Light {",
 				"	def turnOn",
 				"	def turnOff",
 				"}",
-				""));
-		validate(mas).assertNoIssues();
+				"");
+		String expected = multilineString(
+				"@SuppressWarnings(\"all\")",
+				"public abstract class Light {",
+				"  public abstract void turnOn();",
+				"  ",
+				"  public abstract void turnOff();",
+				"}",
+				""
+				);
+		this.compiler.assertCompilesTo(source, expected);
 	}
 
 	@Test
 	public void noParamNoReturnActionInInterface() throws Exception {
-		XtendFile mas = file(multilineString(
+		String source = multilineString(
 				"interface Light {",
 				"	def turnOn",
 				"	def turnOff",
 				"}",
-				""));
-		validate(mas).assertNoIssues();
+				"");
+		String expected = multilineString(
+				"@SuppressWarnings(\"all\")",
+				"public interface Light {",
+				"  public abstract void turnOn();",
+				"  ",
+				"  public abstract void turnOff();",
+				"}",
+				""
+				);
+		this.compiler.assertCompilesTo(source, expected);
 	}
 
 }

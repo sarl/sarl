@@ -43,11 +43,16 @@ import static io.sarl.lang.validation.IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTAT
 import static io.sarl.lang.validation.IssueCodes.RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED;
 import static io.sarl.lang.validation.IssueCodes.UNREACHABLE_BEHAVIOR_UNIT;
 import static io.sarl.lang.validation.IssueCodes.UNUSED_AGENT_CAPACITY;
+import static org.eclipse.xtend.core.validation.IssueCodes.ABSTRACT_METHOD_WITH_BODY;
 import static org.eclipse.xtend.core.validation.IssueCodes.CLASS_EXPECTED;
+import static org.eclipse.xtend.core.validation.IssueCodes.CREATE_FUNCTIONS_MUST_NOT_BE_ABSTRACT;
 import static org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE;
+import static org.eclipse.xtend.core.validation.IssueCodes.DISPATCH_FUNCTIONS_MUST_NOT_BE_ABSTRACT;
 import static org.eclipse.xtend.core.validation.IssueCodes.INTERFACE_EXPECTED;
 import static org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME;
 import static org.eclipse.xtend.core.validation.IssueCodes.JDK_NOT_ON_CLASSPATH;
+import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT;
+import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT_IN_ANONYMOUS;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_CONSTRUCTOR;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE;
 import static org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR;
@@ -61,6 +66,7 @@ import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FUNCTION_
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_INTERFACE__EXTENDS;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_MEMBER__MODIFIERS;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_TYPE_DECLARATION__NAME;
+import static org.eclipse.xtext.xbase.compiler.JavaVersion.JAVA8;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.DISCOURAGED_REFERENCE;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE;
@@ -112,6 +118,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtend.core.typesystem.LocalClassAwareTypeNames;
 import org.eclipse.xtend.core.validation.IssueCodes;
 import org.eclipse.xtend.core.validation.ModifierValidator;
 import org.eclipse.xtend.core.xtend.XtendClass;
@@ -242,6 +249,9 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 
 	@Inject
 	private TypeReferences typeReferences;
+
+	@Inject
+	private LocalClassAwareTypeNames localClassAwareTypeNames;
 
 	/** Emit a warning when the "requires" keyword is used.
 	 *
@@ -1528,6 +1538,76 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 					}
 					++index;
 				}
+			}
+		}
+	}
+
+	/** Override the Xtend behavior for not generating an error when a return type is missed.
+	 * Indeed, the return type if "void" by default.
+	 */
+	@Check
+	@Override
+	public void checkAbstract(XtendFunction function) {
+		XtendTypeDeclaration declarator = function.getDeclaringType();
+		if (function.getExpression() == null) {
+			if (declarator instanceof XtendClass || declarator.isAnonymous()) {
+				if (function.isDispatch()) {
+					error(MessageFormat.format(
+							Messages.SARLJavaValidator_1,
+							function.getName(),
+							this.localClassAwareTypeNames.getReadableName(declarator)),
+						XTEND_FUNCTION__NAME, -1, DISPATCH_FUNCTIONS_MUST_NOT_BE_ABSTRACT);
+					return;
+				}
+				if (function.getCreateExtensionInfo() != null) {
+					error(MessageFormat.format(
+							Messages.SARLJavaValidator_21,
+							function.getName(),
+							this.localClassAwareTypeNames.getReadableName(declarator)),
+						XTEND_FUNCTION__NAME, -1, CREATE_FUNCTIONS_MUST_NOT_BE_ABSTRACT);
+					return;
+				}
+				if (declarator.isAnonymous()) {
+					error(MessageFormat.format(
+							Messages.SARLJavaValidator_22,
+							function.getName(),
+							this.localClassAwareTypeNames.getReadableName(declarator)),
+						XTEND_FUNCTION__NAME, -1, MISSING_ABSTRACT_IN_ANONYMOUS);
+				} else if (!((XtendClass) declarator).isAbstract() && !function.isNative()) {
+					error(MessageFormat.format(
+							Messages.SARLJavaValidator_23,
+							function.getName(),
+							this.localClassAwareTypeNames.getReadableName(declarator)),
+						XTEND_FUNCTION__NAME, -1, MISSING_ABSTRACT);
+				}
+//				if (function.getReturnType() == null && !function.isOverride()) {
+//					error(MessageFormat.format(
+//							"The {0} method {1} in type {2} must declare a return type",
+//							(function.isNative() ? "native" : "abstract"),
+//							function.getName(),
+//							this.localClassAwareTypeNames.getReadableName(declarator)),
+//						XTEND_FUNCTION__NAME, -1, ABSTRACT_METHOD_MISSING_RETURN_TYPE);
+//				}
+			} else if (declarator instanceof XtendInterface) {
+				if (function.getCreateExtensionInfo() != null) {
+					error(MessageFormat.format(
+							Messages.SARLJavaValidator_24,
+							function.getName()),
+						XTEND_FUNCTION__NAME, -1, CREATE_FUNCTIONS_MUST_NOT_BE_ABSTRACT);
+					return;
+				}
+//				if (function.getReturnType() == null && !function.isOverride()) {
+//					error(MessageFormat.format(
+//							"The abstract method {0} in type {1} must declare a return type",
+//							function.getName(),
+//							this.localClassAwareTypeNames.getReadableName(declarator)),
+//						XTEND_FUNCTION__NAME, -1, ABSTRACT_METHOD_MISSING_RETURN_TYPE);
+//				}
+			}
+		} else if (declarator instanceof XtendInterface) {
+			if (!getGeneratorConfig(function).getJavaSourceVersion().isAtLeast(JAVA8)) {
+				error(Messages.SARLJavaValidator_25,
+						XTEND_FUNCTION__NAME, -1, ABSTRACT_METHOD_WITH_BODY);
 			}
 		}
 	}
