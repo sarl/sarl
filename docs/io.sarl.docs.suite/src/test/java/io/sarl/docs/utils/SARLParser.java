@@ -42,8 +42,10 @@ import java.util.Objects;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
+import org.eclipse.xtend.core.xtend.XtendEnum;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
@@ -1092,6 +1094,62 @@ public class SARLParser {
 			return n.toString();
 		}
 		return null;
+	}
+
+	/** Ensure that the given object is the SARL "class" top element.
+	 *
+	 * @param o - the object to test.
+	 * @param name - the expected name of the agent.
+	 * @return validation status
+	 */
+	public boolean should_beClass(EObject o, String name) {
+		if (!(o instanceof XtendClass)) {
+			return false;
+		}
+		XtendClass a = (XtendClass) o;
+		return Objects.equals(name, a.getName());
+	}
+
+	/** Ensure that the given object is the SARL "interface" top element.
+	 *
+	 * @param o - the object to test.
+	 * @param name - the expected name of the agent.
+	 * @return validation status
+	 */
+	public boolean should_beInterface(EObject o, String name) {
+		if (!(o instanceof XtendInterface)) {
+			return false;
+		}
+		XtendInterface a = (XtendInterface) o;
+		return Objects.equals(name, a.getName());
+	}
+
+	/** Ensure that the given object is the SARL "enumeration" top element.
+	 *
+	 * @param o - the object to test.
+	 * @param name - the expected name of the agent.
+	 * @return validation status
+	 */
+	public boolean should_beEnumeration(EObject o, String name) {
+		if (!(o instanceof XtendEnum)) {
+			return false;
+		}
+		XtendEnum a = (XtendEnum) o;
+		return Objects.equals(name, a.getName());
+	}
+
+	/** Ensure that the given object is the SARL "enumeration" top element.
+	 *
+	 * @param o - the object to test.
+	 * @param name - the expected name of the agent.
+	 * @return validation status
+	 */
+	public boolean should_beAnnotation(EObject o, String name) {
+		if (!(o instanceof XtendAnnotationType)) {
+			return false;
+		}
+		XtendAnnotationType a = (XtendAnnotationType) o;
+		return Objects.equals(name, a.getName());
 	}
 
 }
