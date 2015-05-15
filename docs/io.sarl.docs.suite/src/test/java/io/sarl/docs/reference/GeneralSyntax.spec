@@ -23,13 +23,14 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import io.sarl.lang.sarl.Action
-import io.sarl.lang.sarl.Agent
-import io.sarl.lang.sarl.Constructor
-import io.sarl.lang.sarl.Event
+import io.sarl.lang.sarl.SarlAction
+import io.sarl.lang.sarl.SarlAgent
+import io.sarl.lang.sarl.SarlEvent
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.util.List
+import java.util.Map
+import org.eclipse.xtend.core.xtend.XtendConstructor
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
 import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XbasePackage
@@ -37,7 +38,6 @@ import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.assumeFalse
-import java.util.Map
 
 /* @outline
  * 
@@ -156,7 +156,7 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 			
-			model.elements.get(0) => [
+			model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should haveNbElements 0
 			]
@@ -201,7 +201,7 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1;
 			]
 			
-			model.elements.get(0) => [
+			model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 0
@@ -268,13 +268,13 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 			
-			var a = model.elements.get(0) => [
+			var a = model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 1
 			]
 			
-			var sig = (a as Agent).features.get(0) => [
+			var sig = (a as SarlAgent).members.get(0) => [
 				it should beAction "example";
 				it should reply _;
 				it should haveNbParameters 0
@@ -282,7 +282,7 @@ describe "General Syntax Reference" {
 			]
 			
 			// Do not test the block content since it should be validated by the Xbase library.
-			(sig as Action).body should be XBlockExpression
+			(sig as SarlAction).expression should be XBlockExpression
 		}	 
 
 		/* A large part of a SARL script contains the definitions of
@@ -323,19 +323,19 @@ describe "General Syntax Reference" {
 				it should haveNbElements 5
 			]
 			
-			model.elements.get(0) => [
+			model.xtendTypes.get(0) => [
 				it should beEvent "E"
 				it should extend _
 				it should haveNbElements 0
 			]
 			
-			model.elements.get(1) => [
+			model.xtendTypes.get(1) => [
 				it should beCapacity "C"
 				it should extend _
 				it should haveNbElements 0
 			]
 			
-			model.elements.get(2) => [
+			model.xtendTypes.get(2) => [
 				it should beSkill "S"
 				it should extend _
 				it should haveNbImplements 1
@@ -343,14 +343,14 @@ describe "General Syntax Reference" {
 				it should haveNbElements 0
 			]
 			
-			model.elements.get(3) => [
+			model.xtendTypes.get(3) => [
 				it should beBehavior "B"
 				it should extend _
 				it should haveNbElements 0
 			]
 			
-			model.elements.get(4) => [
-				it should be Agent "A"
+			model.xtendTypes.get(4) => [
+				it should be SarlAgent "A"
 				it should extend _
 				it should haveNbElements 0
 			]
@@ -395,37 +395,37 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 			
-			var a = model.elements.get(0) => [
+			var a = model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 5
 			]
 
-			(a as Agent).features.get(0) => [
+			(a as SarlAgent).members.get(0) => [
 				it should beVariable "a"
 				it should haveType _;
 				it should haveInitialValue "Hello World!"
 			]
 
-			(a as Agent).features.get(1) => [
+			(a as SarlAgent).members.get(1) => [
 				it should beVariable "b"
 				it should haveType _
 				it should haveInitialValue "Hello World!"
 			]
 
-			(a as Agent).features.get(2) => [
+			(a as SarlAgent).members.get(2) => [
 				it should beVariable "c"
 				it should haveType _
 				it should haveInitialValue "Hello \"World!\""
 			]
 
-			(a as Agent).features.get(3) => [
+			(a as SarlAgent).members.get(3) => [
 				it should beVariable "d"
 				it should haveType _
 				it should haveInitialValue "Hello \"World!\""
 			]
 
-			(a as Agent).features.get(4) => [
+			(a as SarlAgent).members.get(4) => [
 				it should beVariable "e"
 				it should haveType _
 				it should haveInitialValue "Hello \n			World!"
@@ -457,19 +457,19 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 			
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 			
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType "char"
 				it should haveInitialValue 'a'
 			]
 			
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType "char"
 				it should haveInitialValue 'b'
@@ -502,37 +502,37 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 			
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 5
-			]) as Agent
+			]) as SarlAgent
 			
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType _
 				it should haveInitialValue (42 as Object)
 			]
 			
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType _
 				it should haveInitialValue (0xbeef as Object)
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beVariable "c"
 				it should haveType _
 				it should haveInitialValue (77 as Object)
 			]
 
-			a.features.get(3) => [
+			a.members.get(3) => [
 				it should beVariable "d"
 				it should haveType _
 				it should haveInitialValue (0.1 as Object)
 			]
 
-			a.features.get(4) => [
+			a.members.get(4) => [
 				it should beVariable "e"
 				it should haveType _
 				it should haveInitialValue (1.0 as Object)
@@ -560,13 +560,13 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 			
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 1
-			]) as Agent
+			]) as SarlAgent
 			
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType _
 				it should haveInitialValue (12345678l as Object)
@@ -598,25 +598,25 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 3
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "anInteger"
 				it should haveType _
 				it should haveInitialValue (1234 as Object)
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "aLong"
 				it should haveType _
 				it should haveInitialValue (1234l as Object)
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beVariable "aBigInteger"
 				it should haveType _
 				it should haveInitialValue new BigInteger("1234")
@@ -651,37 +651,37 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 5
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "aDouble"
 				it should haveType _
 				it should haveInitialValue (1234.0 as Object)
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "anotherDouble"
 				it should haveType _
 				it should haveInitialValue (5678d as Object)
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beVariable "aFloat"
 				it should haveType _
 				it should haveInitialValue (1234f as Object)
 			]
 
-			a.features.get(3) => [
+			a.members.get(3) => [
 				it should beVariable "anotherFloat"
 				it should haveType _
 				it should haveInitialValue (5678f as Object)
 			]
 
-			a.features.get(4) => [
+			a.members.get(4) => [
 				it should beVariable "aBigDecimal"
 				it should haveType _
 				it should haveInitialValue new BigDecimal("1234")
@@ -709,19 +709,19 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType _
 				it should haveInitialValue (true as Object)
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType _
 				it should haveInitialValue(false as Object)
@@ -749,13 +749,13 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 1
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType _;
 				it should haveInitialValue "null"
@@ -795,25 +795,25 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 3
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType _
 				it should haveInitialValue "java.lang.String"
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType _
 				it should haveInitialValue "java.lang.Integer"
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beVariable "c"
 				it should haveType _;
 				it should haveInitialValue "java.lang.Class.getDeclaredFields"
@@ -849,19 +849,19 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "myList"
 				it should haveType _
 				it should haveInitialValue "org.eclipse.xtext.xbase.lib.CollectionLiterals.newArrayList"
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "myMap"
 				it should haveType _
 				it should haveInitialValue "org.eclipse.xtext.xbase.lib.CollectionLiterals.newLinkedHashMap"
@@ -896,25 +896,25 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 3
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType _
 				it should haveInitialValue #['Hello','World']
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType _
 				it should haveInitialValue #{'Hello','World'}
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beVariable "c"
 				it should haveType _
 				it should haveInitialValue #{'a' -> 1 ,'b' ->2}
@@ -955,19 +955,19 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType "java.lang.String[]"
 				it should haveInitialValue "org.eclipse.xtext.xbase.lib.ArrayLiterals.newArrayOfSize"
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType "int[]"
 				it should haveInitialValue "org.eclipse.xtext.xbase.lib.ArrayLiterals.newIntArrayOfSize"
@@ -1002,25 +1002,25 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 3
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType _
 				it should haveInitialValue #['Hello', 'world', '!']
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType _
 				it should haveInitialValue "java.util.List.get"
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beVariable "c"
 				it should haveType _
 				it should haveInitialValue"org.eclipse.xtext.xbase.lib.ArrayExtensions.length"
@@ -1053,19 +1053,19 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beValue "myArray"
 				it should haveType "int[]"
 				it should haveInitialValue #[1,2,3]
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beValue "myList"
 				it should haveType "java.util.List<java.lang.Integer>"
 				it should haveInitialValue "io.sarl.docs.reference.gsr.A.myArray"
@@ -1106,25 +1106,25 @@ describe "General Syntax Reference" {
 			it should haveNbElements 1
 		]
 
-		var a = (model.elements.get(0) => [
+		var a = (model.xtendTypes.get(0) => [
 			it should beAgent "A"
 			it should extend _
 			it should haveNbElements 3
-		]) as Agent
+		]) as SarlAgent
 
-		a.features.get(0) => [
+		a.members.get(0) => [
 			it should beVariable "something"
 			it should haveType "java.lang.Number"
 			it should haveInitialValue "java.lang.Integer.Integer"
 		]
 
-		a.features.get(1) => [
+		a.members.get(1) => [
 			it should beVariable "a"
 			it should haveType _
 			it should haveInitialValue "java.lang.Integer"
 		]
 
-		a.features.get(2) => [
+		a.members.get(2) => [
 			it should beVariable "b"
 			it should haveType _
 			it should haveInitialValue (56 as Object)
@@ -1617,30 +1617,30 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 	
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 	
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beAction "operator_plus"
 				it should reply "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>"
 				it should haveNbParameters 2
 				it should beVariadic false
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "a"
 					it should haveType "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>"
 					it should haveDefaultValue _
 				]
-				(it as Action).params.get(1) => [
+				(it as SarlAction).parameters.get(1) => [
 					it should beParameter "b"
 					it should haveType "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>"
 					it should haveDefaultValue _
 				]
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beAction "example"
 				it should reply _
 				it should haveNbParameters 0
@@ -1734,13 +1734,13 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 	
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 1
-			]) as Agent
+			]) as SarlAgent
 	
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beAction "example"
 				it should reply _
 				it should haveNbParameters 0
@@ -1771,19 +1771,19 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 	
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType "java.lang.String"
 				it should haveInitialValue "abc"
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType _
 				it should haveInitialValue "abc"
@@ -1857,78 +1857,78 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 	
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 6
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beAction "action1"
 				it should reply _
 				it should haveNbParameters 0
 				it should beVariadic false
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beAction "action2"
 				it should reply "int"
 				it should haveNbParameters 0
 				it should beVariadic false
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beAction "action3"
 				it should reply _
 				it should haveNbParameters 1
 				it should beVariadic false
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "a"
 					it should haveType "int"
 					it should haveDefaultValue _
 				]
 			]
 
-			a.features.get(3) => [
+			a.members.get(3) => [
 				it should beAction "action4"
 				it should reply _
 				it should haveNbParameters 2
 				it should beVariadic false
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "a"
 					it should haveType "int"
 					it should haveDefaultValue _
 				]
-				(it as Action).params.get(1) => [
+				(it as SarlAction).parameters.get(1) => [
 					it should beParameter "b"
 					it should haveType "java.lang.String"
 					it should haveDefaultValue _
 				]
 			]
 
-			a.features.get(4) => [
+			a.members.get(4) => [
 				it should beAction "action5"
 				it should reply "double"
 				it should haveNbParameters 1
 				it should beVariadic false
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "a"
 					it should haveType "int"
 					it should haveDefaultValue _
 				]
 			]
 
-			a.features.get(5) => [
+			a.members.get(5) => [
 				it should beAction "action6"
 				it should reply "java.lang.String"
 				it should haveNbParameters 2
 				it should beVariadic false
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "a"
 					it should haveType "int"
 					it should haveDefaultValue _
 				]
-				(it as Action).params.get(1) => [
+				(it as SarlAction).parameters.get(1) => [
 					it should beParameter "b"
 					it should haveType "java.lang.String"
 					it should haveDefaultValue _
@@ -1979,47 +1979,47 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 	
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 3
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beAction "action1"
 				it should reply _
 				it should haveNbParameters 1
 				it should beVariadic true
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "v"
 					it should haveType "int"
 					it should haveDefaultValue _
 				]
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beAction "action2"
 				it should reply _
 				it should haveNbParameters 3
 				it should beVariadic true
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "a"
 					it should haveType "boolean"
 					it should haveDefaultValue _
 				]
-				(it as Action).params.get(1) => [
+				(it as SarlAction).parameters.get(1) => [
 					it should beParameter "b"
 					it should haveType "double"
 					it should haveDefaultValue _
 				]
-				(it as Action).params.get(2) => [
+				(it as SarlAction).parameters.get(2) => [
 					it should beParameter "c"
 					it should haveType "int"
 					it should haveDefaultValue _
 				]
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beAction "calls"
 				it should reply _
 				it should haveNbParameters 0
@@ -2078,47 +2078,47 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 	
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 3
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beAction "action1"
 				it should reply _
 				it should haveNbParameters 1
 				it should beVariadic false
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "v"
 					it should haveType "int"
 					it should haveDefaultValue "5"
 				]
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beAction "action2"
 				it should reply _
 				it should haveNbParameters 3
 				it should beVariadic false
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "a"
 					it should haveType "boolean"
 					it should haveDefaultValue "true"
 				]
-				(it as Action).params.get(1) => [
+				(it as SarlAction).parameters.get(1) => [
 					it should beParameter "b"
 					it should haveType "double"
 					it should haveDefaultValue _
 				]
-				(it as Action).params.get(2) => [
+				(it as SarlAction).parameters.get(2) => [
 					it should beParameter "c"
 					it should haveType "int"
 					it should haveDefaultValue "7"
 				]
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beAction "calls"
 				it should reply _
 				it should haveNbParameters 0
@@ -2159,23 +2159,23 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 	
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beAction "action"
 				it should reply _
 				it should haveNbParameters 2
 				it should beVariadic true
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "v"
 					it should haveType "int"
 					it should haveDefaultValue "5"
 				]
-				(it as Action).params.get(1) => [
+				(it as SarlAction).parameters.get(1) => [
 					it should beParameter "a"
 					it should haveType "float"
 					it should haveDefaultValue _
@@ -2285,19 +2285,19 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 	
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType _
 				it should haveInitialValue "java.lang.Integer.TYPE"
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType _
 				it should haveInitialValue "java.lang.Integer.TYPE"
@@ -2360,11 +2360,11 @@ describe "General Syntax Reference" {
 				it should haveNbElements 2
 			]
 	
-			model.elements.get(0) => [
+			model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 1
-				(it as Agent).features.get(0) => [
+				(it as SarlAgent).members.get(0) => [
 					it should beAction "anAction"
 					it should reply _
 					it should haveNbParameters 0
@@ -2372,11 +2372,11 @@ describe "General Syntax Reference" {
 				]
 			]
 
-			model.elements.get(1) => [
+			model.xtendTypes.get(1) => [
 				it should beAgent "B"
 				it should extend "io.sarl.docs.reference.gsr.A"
 				it should haveNbElements 1
-				(it as Agent).features.get(0) => [
+				(it as SarlAgent).members.get(0) => [
 					it should beAction "anAction"
 					it should reply _
 					it should haveNbParameters 0
@@ -2419,25 +2419,25 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 	
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 3
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType _
 				it should haveInitialValue "java.lang.Integer.Integer"
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType _
 				it should haveInitialValue "java.util.ArrayList.ArrayList"
 			]
 			
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beVariable "c"
 				it should haveType _
 				it should haveInitialValue "java.util.ArrayList.ArrayList"
@@ -2480,26 +2480,26 @@ describe "General Syntax Reference" {
 				it should haveNbElements 2
 			]
 	
-			model.elements.get(0) => [
+			model.xtendTypes.get(0) => [
 				it should beEvent "E1"
 				it should extend _
 				it should haveNbElements 0
 			]
 
-			model.elements.get(1) => [
+			model.xtendTypes.get(1) => [
 				it should beEvent "E2"
 				it should extend "io.sarl.docs.reference.gsr.E1"
 				it should haveNbElements 2
-				(it as Event).features.get(0) => [
+				(it as SarlEvent).members.get(0) => [
 					it should beConstructor _
 					it should haveNbParameters 0
 					it should beVariadic false 
 				] 
-				(it as Event).features.get(1) => [
+				(it as SarlEvent).members.get(1) => [
 					it should beConstructor _
 					it should haveNbParameters 1
 					it should beVariadic false
-					(it as Constructor).params.get(0) => [
+					(it as XtendConstructor).parameters.get(0) => [
 						it should beParameter "param"
 						it should haveType "io.sarl.lang.core.Address"
 						it should haveDefaultValue _
@@ -3214,56 +3214,56 @@ describe "General Syntax Reference" {
 		fact "Procedure and Function extensions" {
 			'''
 			package io.sarl.docs.reference.gsr
-			import org.eclipse.xtext.xbase.lib.Procedures.*
-			import org.eclipse.xtext.xbase.lib.Functions.*
+			import org.eclipse.xtext.xbase.lib.Procedures
+			import org.eclipse.xtext.xbase.lib.Functions
 			agent A {
 				var n : Integer
 				def example0_0 {
-					var cproc : Procedure1<Integer>
+					var cproc : Procedures.Procedure1<Integer>
 					cproc.curry(n).apply
 				}
 				def example0_1 {
-					var cproc : Procedure2<Integer,Integer>
+					var cproc : Procedures.Procedure2<Integer,Integer>
 					cproc.curry(n).apply(1)
 				}
 				def example0_2 {
-					var cproc : Procedure3<Integer,Integer,Integer>
+					var cproc : Procedures.Procedure3<Integer,Integer,Integer>
 					cproc.curry(n).apply(1,2)
 				}
 				def example0_3 {
-					var cproc : Procedure4<Integer,Integer,Integer,Integer>
+					var cproc : Procedures.Procedure4<Integer,Integer,Integer,Integer>
 					cproc.curry(n).apply(1,2,3)
 				}
 				def example0_4 {
-					var cproc : Procedure5<Integer,Integer,Integer,Integer,Integer>
+					var cproc : Procedures.Procedure5<Integer,Integer,Integer,Integer,Integer>
 					cproc.curry(n).apply(1,2,3,4)
 				}
 				def example0_5 {
-					var cproc : Procedure6<Integer,Integer,Integer,Integer,Integer,Integer>
+					var cproc : Procedures.Procedure6<Integer,Integer,Integer,Integer,Integer,Integer>
 					cproc.curry(n).apply(1,2,3,4,5)
 				}
 				def example1_0 : Integer {
-					var cfunc : Function1<Integer,Integer>
+					var cfunc : Functions.Function1<Integer,Integer>
 					cfunc.curry(n).apply
 				}
 				def example1_1 : Integer {
-					var cfunc : Function2<Integer,Integer,Integer>
+					var cfunc : Functions.Function2<Integer,Integer,Integer>
 					cfunc.curry(n).apply(1)
 				}
 				def example1_2 : Integer {
-					var cfunc : Function3<Integer,Integer,Integer,Integer>
+					var cfunc : Functions.Function3<Integer,Integer,Integer,Integer>
 					cfunc.curry(n).apply(1,2)
 				}
 				def example1_3 : Integer {
-					var cfunc : Function4<Integer,Integer,Integer,Integer,Integer>
+					var cfunc : Functions.Function4<Integer,Integer,Integer,Integer,Integer>
 					cfunc.curry(n).apply(1,2,3)
 				}
 				def example1_4 : Integer {
-					var cfunc : Function5<Integer,Integer,Integer,Integer,Integer,Integer>
+					var cfunc : Functions.Function5<Integer,Integer,Integer,Integer,Integer,Integer>
 					cfunc.curry(n).apply(1,2,3,4)
 				}
 				def example1_5 : Integer {
-					var cfunc : Function6<Integer,Integer,Integer,Integer,Integer,Integer,Integer>
+					var cfunc : Functions.Function6<Integer,Integer,Integer,Integer,Integer,Integer,Integer>
 					cfunc.curry(n).apply(1,2,3,4,5)
 				}
 			}
@@ -3485,8 +3485,8 @@ describe "General Syntax Reference" {
 			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
-					var e1
-					var e2
+					var e1 : Object
+					var e2 : Object
 					def example {",
 				// TEXT
 				"} }"

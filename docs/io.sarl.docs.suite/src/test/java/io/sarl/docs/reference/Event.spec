@@ -23,9 +23,9 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import io.sarl.lang.sarl.Agent
-import io.sarl.lang.sarl.Constructor
-import io.sarl.lang.sarl.Event
+import io.sarl.lang.sarl.SarlAgent
+import io.sarl.lang.sarl.SarlEvent
+import org.eclipse.xtend.core.xtend.XtendConstructor
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
@@ -126,13 +126,13 @@ describe "Event Reference"{
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "Event1"
 					it should extend _
 					it should haveNbElements 0
 				]
 				
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beEvent "Event2"
 					it should extend _
 					it should haveNbElements 0
@@ -170,7 +170,7 @@ describe "Event Reference"{
 				event MyEvent {
 					var number : Integer
 					var string = "abc"
-					var something
+					var something : Object
 				}
 				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.er",
@@ -184,23 +184,23 @@ describe "Event Reference"{
 					it should haveNbElements 1
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "MyEvent"
 					it should extend _
 					it should haveNbElements 3
-					(it as Event).features.get(0) => [
+					(it as SarlEvent).members.get(0) => [
 						it should beVariable "number"
 						it should haveType "java.lang.Integer"
 						it should haveInitialValue _
 					]
-					(it as Event).features.get(1) => [
+					(it as SarlEvent).members.get(1) => [
 						it should beVariable "string"
 						it should haveType _
 						it should haveInitialValue "abc"
 					]
-					(it as Event).features.get(2) => [
+					(it as SarlEvent).members.get(2) => [
 						it should beVariable "something"
-						it should haveType _
+						it should haveType "java.lang.Object"
 						it should haveInitialValue _
 					]
 				]
@@ -248,25 +248,25 @@ describe "Event Reference"{
 					it should haveNbElements 1
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "MyEvent"
 					it should extend _
 					it should haveNbElements 3
-					(it as Event).features.get(0) => [
+					(it as SarlEvent).members.get(0) => [
 						it should beValue "string"
 						it should haveType _
 						it should haveInitialValue "abcd"
 					]
-					(it as Event).features.get(1) => [
+					(it as SarlEvent).members.get(1) => [
 						it should beValue "number"
 						it should haveType "java.lang.Integer"
 						it should haveInitialValue _
 					]
-					(it as Event).features.get(2) => [
+					(it as SarlEvent).members.get(2) => [
 						it should beConstructor _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Constructor).params.get(0) => [
+						(it as XtendConstructor).parameters.get(0) => [
 							it should beParameter "nb"
 							it should haveType "java.lang.Integer"
 							it should haveDefaultValue _
@@ -324,22 +324,22 @@ describe "Event Reference"{
 						it should haveNbElements 2
 					]
 					
-					model.elements.get(0) => [
+					model.xtendTypes.get(0) => [
 						it should beEvent "Event1"
 						it should extend _
 						it should haveNbElements 1
-						(it as Event).features.get(0) => [
+						(it as SarlEvent).members.get(0) => [
 							it should beVariable "string"
 							it should haveType "java.lang.String"
 							it should haveInitialValue _
 						]
 					]
 					
-					model.elements.get(1) => [
+					model.xtendTypes.get(1) => [
 						it should beEvent "Event2"
 						it should extend "io.sarl.docs.reference.er.Event1"
 						it should haveNbElements 1
-						(it as Event).features.get(0) => [
+						(it as SarlEvent).members.get(0) => [
 							it should beVariable "number"
 							it should haveType "int"
 							it should haveInitialValue _
@@ -379,33 +379,33 @@ describe "Event Reference"{
 						it should haveNbElements 3
 					]
 					
-					model.elements.get(0) => [
+					model.xtendTypes.get(0) => [
 						it should beEvent "Event1"
 						it should extend _
 						it should haveNbElements 1
-						(it as Event).features.get(0) => [
+						(it as SarlEvent).members.get(0) => [
 							it should beVariable "string"
 							it should haveType "java.lang.String"
 							it should haveInitialValue _
 						]
 					]
 					
-					model.elements.get(1) => [
+					model.xtendTypes.get(1) => [
 						it should beEvent "Event2"
 						it should extend "io.sarl.docs.reference.er.Event1"
 						it should haveNbElements 1
-						(it as Event).features.get(0) => [
+						(it as SarlEvent).members.get(0) => [
 							it should beVariable "number"
 							it should haveType "int"
 							it should haveInitialValue _
 						]
 					]
 
-					model.elements.get(2) => [
+					model.xtendTypes.get(2) => [
 						it should beAgent "A"
 						it should extend _
 						it should haveNbElements 1
-						(it as Agent).features.get(0) => [
+						(it as SarlAgent).members.get(0) => [
 							it should beAction "example"
 							it should reply _
 							it should haveNbParameters 0

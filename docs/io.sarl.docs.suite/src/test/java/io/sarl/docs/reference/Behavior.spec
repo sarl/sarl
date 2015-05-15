@@ -23,15 +23,14 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
+import io.sarl.lang.sarl.SarlAction
+import io.sarl.lang.sarl.SarlAgent
+import io.sarl.lang.sarl.SarlBehavior
+import io.sarl.lang.sarl.SarlCapacity
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.assumeFalse
-
-import io.sarl.lang.sarl.Behavior
-import io.sarl.lang.sarl.Action
-import io.sarl.lang.sarl.Agent
-import io.sarl.lang.sarl.Capacity
 
 /* @outline
  *
@@ -83,7 +82,7 @@ describe "Behavior Reference" {
 					it should haveNbElements 1
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 0
@@ -125,19 +124,19 @@ describe "Behavior Reference" {
 					it should haveNbElements 1
 				]
 				
-				var b = (model.elements.get(0) => [
+				var b = (model.xtendTypes.get(0) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 2
-				]) as Behavior
+				]) as SarlBehavior
 				
-				b.features.get(0) => [
+				b.members.get(0) => [
 					it should beVariable "mentalStateElement1"
 					it should haveType "java.lang.String"
 					it should haveInitialValue _
 				]
 
-				b.features.get(1) => [
+				b.members.get(1) => [
 					it should beValue "mentalStateElement2"
 					it should haveType "boolean"
 					it should haveInitialValue "true"
@@ -181,29 +180,29 @@ describe "Behavior Reference" {
 					it should haveNbElements 1
 				]
 				
-				var b = (model.elements.get(0) => [
+				var b = (model.xtendTypes.get(0) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 3
-				]) as Behavior
+				]) as SarlBehavior
 				
-				b.features.get(0) => [
+				b.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
 
-				b.features.get(1) => [
+				b.members.get(1) => [
 					it should beAction "myAction1"
 					it should reply _
 					it should haveNbParameters 0
 					it should beVariadic false
 				]
 
-				b.features.get(2) => [
+				b.members.get(2) => [
 					it should beAction "myAction2"
 					it should reply _
 					it should haveNbParameters 1
 					it should beVariadic true
-					(it as Action).params.get(0) => [
+					(it as SarlAction).parameters.get(0) => [
 						it should beParameter "param"
 						it should haveType "int"
 						it should haveDefaultValue _
@@ -257,25 +256,25 @@ describe "Behavior Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 1
-					(it as Behavior).features.get(0) => [
+					(it as SarlBehavior).members.get(0) => [
 						it should beVariable "attr"
 						it should haveType "java.lang.String"
 						it should haveInitialValue _
 					]
 				]
 				
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beBehavior "MySubBehavior"
 					it should extend "io.sarl.docs.reference.br.MyBehavior"
 					it should haveNbElements 2
-					(it as Behavior).features.get(0) => [
+					(it as SarlBehavior).members.get(0) => [
 						it should beCapacityUse "io.sarl.core.Logging"
 					]
-					(it as Behavior).features.get(1) => [
+					(it as SarlBehavior).members.get(1) => [
 						it should beAction "action"
 						it should reply _
 						it should haveNbParameters 0
@@ -325,18 +324,18 @@ describe "Behavior Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 0
 				]
 				
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 2
-					(it as Agent).features.get(0) should beCapacityUse #["io.sarl.core.Behaviors"]
-					(it as Agent).features.get(1) => [
+					(it as SarlAgent).members.get(0) should beCapacityUse #["io.sarl.core.Behaviors"]
+					(it as SarlAgent).members.get(1) => [
 						it should beBehaviorUnit "io.sarl.core.Initialize"
 						it should beGuardedWith _
 					]
@@ -418,20 +417,20 @@ describe "Behavior Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "SomethingChanged"
 					it should extend _
 					it should haveNbElements 0
 				]
 				
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 2
-					(it as Behavior).features.get(0) => [
+					(it as SarlBehavior).members.get(0) => [
 						it should beCapacityUse "io.sarl.core.Logging"
 					]
-					(it as Behavior).features.get(1) => [
+					(it as SarlBehavior).members.get(1) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.br.SomethingChanged"
 						it should beGuardedWith _
 					]
@@ -474,24 +473,24 @@ describe "Behavior Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "SomethingChanged"
 					it should extend _
 					it should haveNbElements 0
 				]
 				
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 3
-					(it as Behavior).features.get(0) => [
+					(it as SarlBehavior).members.get(0) => [
 						it should beCapacityUse "io.sarl.core.Logging"
 					]
-					(it as Behavior).features.get(1) => [
+					(it as SarlBehavior).members.get(1) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.br.SomethingChanged"
 						it should beGuardedWith _
 					]
-					(it as Behavior).features.get(2) => [
+					(it as SarlBehavior).members.get(2) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.br.SomethingChanged"
 						it should beGuardedWith _
 					]
@@ -542,12 +541,12 @@ describe "Behavior Reference" {
 					it should haveNbElements 1
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 2
-					(it as Behavior).features.get(0) should beCapacityUse #["io.sarl.core.Schedules", "io.sarl.core.Logging"]
-					(it as Behavior).features.get(1) => [
+					(it as SarlBehavior).members.get(0) should beCapacityUse #["io.sarl.core.Schedules", "io.sarl.core.Logging"]
+					(it as SarlBehavior).members.get(1) => [
 						it should beBehaviorUnit "io.sarl.core.Initialize"
 						it should beGuardedWith _
 					]
@@ -665,11 +664,11 @@ describe "Behavior Reference" {
 					it should haveNbElements 3
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beCapacity "Cap"
 					it should extend _
 					it should haveNbElements 1
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "action"
 						it should reply _
 						it should haveNbParameters 0
@@ -677,17 +676,17 @@ describe "Behavior Reference" {
 					]
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beEvent "SomeEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				model.elements.get(2) => [
+				model.xtendTypes.get(2) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 1
-					(it as Behavior).features.get(0) => [
+					(it as SarlBehavior).members.get(0) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.br.SomeEvent"
 						it should beGuardedWith _
 					]
@@ -742,11 +741,11 @@ describe "Behavior Reference" {
 					it should haveNbElements 3
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beCapacity "Cap"
 					it should extend _
 					it should haveNbElements 1
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "action"
 						it should reply _
 						it should haveNbParameters 0
@@ -754,18 +753,18 @@ describe "Behavior Reference" {
 					]
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beEvent "SomeEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				model.elements.get(2) => [
+				model.xtendTypes.get(2) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 2
-					(it as Behavior).features.get(0) should beCapacityUse #["io.sarl.docs.reference.br.Cap"]
-					(it as Behavior).features.get(1) => [
+					(it as SarlBehavior).members.get(0) should beCapacityUse #["io.sarl.docs.reference.br.Cap"]
+					(it as SarlBehavior).members.get(1) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.br.SomeEvent"
 						it should beGuardedWith _
 					]

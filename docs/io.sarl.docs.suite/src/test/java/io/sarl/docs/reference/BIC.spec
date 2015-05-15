@@ -23,7 +23,6 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import io.sarl.lang.sarl.FeatureContainer
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
@@ -203,11 +202,11 @@ describe "Built-in Capacity Reference" {
 					import io.sarl.core.Logging
 					agent A {
 						uses Logging
-						def myaction {
-							isErrorLogEnabled
-							isWarningLogEnabled
-							isInfoLogEnabled
-							isDebugLogEnabled
+						def myaction : boolean {
+							   isErrorLogEnabled
+							|| isWarningLogEnabled
+							|| isInfoLogEnabled
+							|| isDebugLogEnabled
 						}
 					}".parseSuccessfully
 			}
@@ -418,30 +417,30 @@ describe "Built-in Capacity Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "AnEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 4
 					
-					(it as FeatureContainer).features.get(0) => [
+					it.members.get(0) => [
 						it should beCapacityUse "io.sarl.core.ExternalContextAccess"
 					]
 
-					(it as FeatureContainer).features.get(1) => [
+					it.members.get(1) => [
 						it should beVariable "myspace"
 					]
 
-					(it as FeatureContainer).features.get(2) => [
+					it.members.get(2) => [
 						it should beAction "testOtherFunctions"
 					]
 
-					(it as FeatureContainer).features.get(3) => [
+					it.members.get(3) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.bic.AnEvent"
 						it should beGuardedWith "isInSpace(occurrence, myspace)"
 					]
@@ -578,26 +577,26 @@ describe "Built-in Capacity Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "AnEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 3
 					
-					(it as FeatureContainer).features.get(0) => [
+					it.members.get(0) => [
 						it should beCapacityUse "io.sarl.core.InnerContextAccess"
 					]
 
-					(it as FeatureContainer).features.get(1) => [
+					it.members.get(1) => [
 						it should beAction "testOtherFunctions"
 					]
 
-					(it as FeatureContainer).features.get(2) => [
+					it.members.get(2) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.bic.AnEvent"
 						it should beGuardedWith "occurrence.inInnerDefaultSpace"
 					]
@@ -849,26 +848,26 @@ describe "Built-in Capacity Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "AnEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 3
 					
-					(it as FeatureContainer).features.get(0) => [
+					it.members.get(0) => [
 						it should beCapacityUse "io.sarl.core.DefaultContextInteractions"
 					]
 
-					(it as FeatureContainer).features.get(1) => [
+					it.members.get(1) => [
 						it should beAction "testOtherFunctions"
 					]
 
-					(it as FeatureContainer).features.get(2) => [
+					it.members.get(2) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.bic.AnEvent"
 						it should beGuardedWith "occurrence.inDefaultSpace"
 					]

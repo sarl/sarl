@@ -23,13 +23,12 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
+import io.sarl.lang.sarl.SarlAction
+import io.sarl.lang.sarl.SarlCapacity
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.assumeFalse
-
-import io.sarl.lang.sarl.ActionSignature;
-import io.sarl.lang.sarl.Capacity;
 
 /* @outline
  *
@@ -100,27 +99,27 @@ describe "Capacity Reference"{
 					it should haveNbElements 1
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beCapacity "Logging"
 					it should extend _
 					it should haveNbElements 2
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "info"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						]
 					]
-					(it as Capacity).features.get(1) => [
+					(it as SarlCapacity).members.get(1) => [
 						it should beActionSignature "debug"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -171,27 +170,27 @@ describe "Capacity Reference"{
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beCapacity "Logging"
 					it should extend _
 					it should haveNbElements 2
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "info"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						]
 					]
-					(it as Capacity).features.get(1) => [
+					(it as SarlCapacity).members.get(1) => [
 						it should beActionSignature "debug"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -199,16 +198,16 @@ describe "Capacity Reference"{
 					]
 				]
 				
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beCapacity "ErrorLogging"
 					it should extend "io.sarl.docs.reference.cr.Logging"
 					it should haveNbElements 1
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "error"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -248,11 +247,11 @@ describe "Capacity Reference"{
 					it should haveNbElements 3
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beCapacity "Cap1"
 					it should extend _
 					it should haveNbElements 1
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "action1"
 						it should reply _
 						it should haveNbParameters 0
@@ -260,11 +259,11 @@ describe "Capacity Reference"{
 					]
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beCapacity "Cap2"
 					it should extend _
 					it should haveNbElements 1
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "action2"
 						it should reply _
 						it should haveNbParameters 0
@@ -272,11 +271,11 @@ describe "Capacity Reference"{
 					]
 				]
 
-				model.elements.get(2) => [
+				model.xtendTypes.get(2) => [
 					it should beCapacity "Cap3"
 					it should extend #["io.sarl.docs.reference.cr.Cap1", "io.sarl.docs.reference.cr.Cap2"]
 					it should haveNbElements 1
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "action3"
 						it should reply _
 						it should haveNbParameters 0

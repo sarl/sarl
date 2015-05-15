@@ -23,8 +23,8 @@ package io.sarl.docs.gettingstarted
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import io.sarl.lang.sarl.Action
-import io.sarl.lang.sarl.Agent
+import io.sarl.lang.sarl.SarlAction
+import io.sarl.lang.sarl.SarlAgent
 import org.eclipse.xtext.xbase.XBlockExpression
 import org.jnario.runner.CreateWith
 
@@ -65,7 +65,7 @@ describe "Agent Definition Introduction" {
 			it should haveNbElements 1
 		]
 		
-		model.elements.get(0) => [
+		model.xtendTypes.get(0) => [
 			it should beAgent "MyAgent"
 			it should extend _
 			it should haveNbElements 0
@@ -105,13 +105,13 @@ describe "Agent Definition Introduction" {
 			it should haveNbElements 2
 		]
 		
-		model.elements.get(0) => [
+		model.xtendTypes.get(0) => [
 			it should beAgent "MyAgent"
 			it should extend _
 			it should haveNbElements 0
 		]
 
-		model.elements.get(1) => [
+		model.xtendTypes.get(1) => [
 			it should beAgent "SecondAgent"
 			it should extend _
 			it should haveNbElements 0
@@ -151,7 +151,7 @@ describe "Agent Definition Introduction" {
 				it should haveNbElements 1
 			]
 			
-			model.elements.get(0) => [
+			model.xtendTypes.get(0) => [
 				it should beEvent "MyEvent"
 				it should extend _
 				it should haveNbElements 0
@@ -195,20 +195,20 @@ describe "Agent Definition Introduction" {
 				it should haveNbElements 2
 			]
 			
-			model.elements.get(0) => [
+			model.xtendTypes.get(0) => [
 				it should beEvent "MyEvent"
 				it should extend _
 				it should haveNbElements 0
 			]
 
-			model.elements.get(1) => [
+			model.xtendTypes.get(1) => [
 				it should beAgent "MyAgent"
 				it should extend _
 				it should haveNbElements 2
-				(it as Agent).features.get(0) => [
+				(it as SarlAgent).members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				(it as Agent).features.get(1) => [
+				(it as SarlAgent).members.get(1) => [
 					it should beBehaviorUnit "io.sarl.docs.gettingstarted.agent.MyEvent"
 					it should beGuardedWith _
 				]
@@ -265,18 +265,18 @@ describe "Agent Definition Introduction" {
 				it should haveNbElements 1
 			]
 			
-			model.elements.get(0) => [
+			model.xtendTypes.get(0) => [
 				it should beAgent "MyAgent"
 				it should extend _
 				it should haveNbElements 3
-				(it as Agent).features.get(0) => [
+				(it as SarlAgent).members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				(it as Agent).features.get(1) => [
+				(it as SarlAgent).members.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]
-				(it as Agent).features.get(2) => [
+				(it as SarlAgent).members.get(2) => [
 					it should beBehaviorUnit "io.sarl.core.Destroy"
 					it should beGuardedWith _
 				]
@@ -327,18 +327,18 @@ describe "Agent Definition Introduction" {
 				it should haveNbElements 1
 			]
 			
-			model.elements.get(0) => [
+			model.xtendTypes.get(0) => [
 				it should beAgent "MyAgent"
 				it should extend _
 				it should haveNbElements 3
-				(it as Agent).features.get(0) => [
+				(it as SarlAgent).members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				(it as Agent).features.get(1) => [
+				(it as SarlAgent).members.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]
-				(it as Agent).features.get(2) => [
+				(it as SarlAgent).members.get(2) => [
 					it should beBehaviorUnit "io.sarl.core.Destroy"
 					it should beGuardedWith _
 				]
@@ -397,11 +397,11 @@ describe "Agent Definition Introduction" {
 				it should haveNbElements 1
 			]
 			
-			model.elements.get(0) => [
+			model.xtendTypes.get(0) => [
 				it should beAgent "MyAgent"
 				it should extend _
 				it should haveNbElements 1
-				(it as Agent).features.get(0) should beCapacityUse "io.sarl.core.DefaultContextInteractions"
+				(it as SarlAgent).members.get(0) should beCapacityUse "io.sarl.core.DefaultContextInteractions"
 			]
 		}
 		
@@ -443,23 +443,23 @@ describe "Agent Definition Introduction" {
 				it should haveNbElements 2
 			]
 			
-			model.elements.get(0) => [
+			model.xtendTypes.get(0) => [
 				it should beEvent "MyEvent"
 				it should extend _
 				it should haveNbElements 0
 			]
 
-			model.elements.get(1) => [
+			model.xtendTypes.get(1) => [
 				it should beAgent "MyAgent"
 				it should extend _
 				it should haveNbElements 2
-				(it as Agent).features.get(0) should beCapacityUse "io.sarl.core.DefaultContextInteractions"
-				(it as Agent).features.get(1) => [
+				(it as SarlAgent).members.get(0) should beCapacityUse "io.sarl.core.DefaultContextInteractions"
+				(it as SarlAgent).members.get(1) => [
 					it should beAction "doSomething"
 					it should reply _
 					it should haveNbParameters 0
 					it should beVariadic false
-					(it as Action).body should be typeof(XBlockExpression)
+					(it as SarlAction).expression should be typeof(XBlockExpression)
 				]
 			]
 		}

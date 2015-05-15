@@ -23,16 +23,16 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import io.sarl.lang.sarl.Action
-import io.sarl.lang.sarl.Agent
-import io.sarl.lang.sarl.Attribute
-import io.sarl.lang.sarl.Capacity
-import io.sarl.lang.sarl.Skill
+import io.sarl.lang.sarl.SarlAction
+import io.sarl.lang.sarl.SarlAgent
+import io.sarl.lang.sarl.SarlSkill
+import org.eclipse.xtend.core.xtend.XtendField
 import org.eclipse.xtext.xbase.XBooleanLiteral
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.assumeFalse
+import io.sarl.lang.sarl.SarlCapacity
 
 /** @outline
  * 
@@ -250,7 +250,7 @@ describe "Agent Reference"{
 					it should haveNbElements 1
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 0
@@ -291,22 +291,22 @@ describe "Agent Reference"{
 					it should haveNbElements 1
 				]
 				
-				var a = (model.elements.get(0) => [
+				var a = (model.xtendTypes.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 2
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beVariable "mentalStateElement1"
 					it should haveType "java.lang.String"
-					(it as Attribute).initialValue should be null
+					(it as XtendField).initialValue should be null
 				]
 
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beValue "mentalStateElement2"
 					it should haveType "boolean"
-					(it as Attribute).initialValue => [
+					(it as XtendField).initialValue => [
 						it should be typeof(XBooleanLiteral)
 						it should beLiteral (true as Object)
 					]
@@ -348,29 +348,29 @@ describe "Agent Reference"{
 					it should haveNbElements 1
 				]
 				
-				var a = (model.elements.get(0) => [
+				var a = (model.xtendTypes.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 3
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
 
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beAction "myAction1"
 					it should reply _;
 					it should haveNbParameters 0
 					it should beVariadic false
 				]
 
-				a.features.get(2) => [
+				a.members.get(2) => [
 					it should beAction "myAction2"
 					it should reply _;
 					it should haveNbParameters 1
 					it should beVariadic true
-					(it as Action).params.get(0) => [
+					(it as SarlAction).parameters.get(0) => [
 						it should beParameter "param"
 						it should haveType "int"
 						it should haveDefaultValue _
@@ -424,28 +424,28 @@ describe "Agent Reference"{
 					it should haveNbElements 2
 				]
 				
-				var a1 = (model.elements.get(0) => [
+				var a1 = (model.xtendTypes.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 1
-				]) as Agent
+				]) as SarlAgent
 
-				a1.features.get(0) => [
+				a1.members.get(0) => [
 					it should beVariable "attr"
 					it should haveType "java.lang.String"
 					it should haveInitialValue _
 				]
 
-				var a2 = (model.elements.get(1) => [
+				var a2 = (model.xtendTypes.get(1) => [
 					it should beAgent "MySubAgent"
 					it should extend "io.sarl.docs.reference.ar.MyAgent"
 					it should haveNbElements 2
-				]) as Agent
+				]) as SarlAgent
 
-				a2.features.get(0) => [
+				a2.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				a2.features.get(1) => [
+				a2.members.get(1) => [
 					it should beAction "action"
 					it should reply _
 					it should haveNbParameters 0
@@ -538,16 +538,16 @@ describe "Agent Reference"{
 					it should haveNbElements 1
 				]
 				
-				var a = (model.elements.get(0) => [
+				var a = (model.xtendTypes.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 2
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]
@@ -593,20 +593,20 @@ describe "Agent Reference"{
 					it should haveNbElements 1
 				]
 				
-				var a = (model.elements.get(0) => [
+				var a = (model.xtendTypes.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 3
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith "occurrence.parameters.empty"
 				]
-				a.features.get(2) => [
+				a.members.get(2) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith "! occurrence.parameters.empty"
 				]
@@ -645,16 +645,16 @@ describe "Agent Reference"{
 					it should haveNbElements 1
 				]
 				
-				var a = (model.elements.get(0) => [
+				var a = (model.xtendTypes.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 2
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Destroy"
 					it should beGuardedWith _
 				]
@@ -698,25 +698,25 @@ describe "Agent Reference"{
 					it should haveNbElements 1
 				]
 				
-				var a = (model.elements.get(0) => [
+				var a = (model.xtendTypes.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 4
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beVariable "resource"
 					it should haveType "java.lang.Object"
 					it should haveInitialValue _
 				]
-				a.features.get(2) => [
+				a.members.get(2) => [
 					it should beBehaviorUnit "io.sarl.core.Destroy"
 					it should beGuardedWith "resource !== null"
 				]
-				a.features.get(3) => [
+				a.members.get(3) => [
 					it should beBehaviorUnit "io.sarl.core.Destroy"
 					it should beGuardedWith "resource === null"
 				]
@@ -757,20 +757,20 @@ describe "Agent Reference"{
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "SomethingChanged"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 2
-					(it as Agent).features.get(0) => [
+					(it as SarlAgent).members.get(0) => [
 						it should beCapacityUse "io.sarl.core.Logging"
 					]
-					(it as Agent).features.get(1) => [
+					(it as SarlAgent).members.get(1) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.ar.SomethingChanged"
 						it should beGuardedWith _
 					]
@@ -813,24 +813,24 @@ describe "Agent Reference"{
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "SomethingChanged"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 3
-					(it as Agent).features.get(0) => [
+					(it as SarlAgent).members.get(0) => [
 						it should beCapacityUse "io.sarl.core.Logging"
 					]
-					(it as Agent).features.get(1) => [
+					(it as SarlAgent).members.get(1) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.ar.SomethingChanged"
 						it should beGuardedWith _
 					]
-					(it as Agent).features.get(2) => [
+					(it as SarlAgent).members.get(2) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.ar.SomethingChanged"
 						it should beGuardedWith _
 					]
@@ -881,14 +881,14 @@ describe "Agent Reference"{
 					it should haveNbElements 1
 				]
 				
-				var a = (model.elements.get(0) => [
+				var a = (model.xtendTypes.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 2
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) should beCapacityUse #["io.sarl.core.Schedules", "io.sarl.core.Logging"]
-				a.features.get(1) => [
+				a.members.get(0) should beCapacityUse #["io.sarl.core.Schedules", "io.sarl.core.Logging"]
+				a.members.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]
@@ -977,43 +977,43 @@ describe "Agent Reference"{
 					it should haveNbElements 3
 				]
 				
-				var c = (model.elements.get(0) => [
+				var c = (model.xtendTypes.get(0) => [
 					it should beCapacity "Cap"
 					it should extend _
 					it should haveNbElements 1
-				]) as Capacity
+				]) as SarlCapacity
 				
-				c.features.get(0) => [
+				c.members.get(0) => [
 					it should beActionSignature "action"
 					it should reply _
 					it should haveNbParameters 0
 					it should beVariadic false
 				]
 
-				var s = (model.elements.get(1) => [
+				var s = (model.xtendTypes.get(1) => [
 					it should beSkill "Ski"
 					it should extend _
 					it should implement #["io.sarl.docs.reference.ar.Cap"]
 					it should haveNbElements 2
-				]) as Skill
+				]) as SarlSkill
 				
-				s.features.get(0) => [
+				s.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				s.features.get(1) => [
+				s.members.get(1) => [
 					it should beAction "action"
 					it should reply _
 					it should haveNbParameters 0
 					it should beVariadic false
 				]
 
-				var a = (model.elements.get(2) => [
+				var a = (model.xtendTypes.get(2) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 1
-				]) as Agent
+				]) as SarlAgent
 				
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]
@@ -1091,54 +1091,54 @@ describe "Agent Reference"{
 					it should haveNbElements 4
 				]
 				
-				var c = (model.elements.get(0) => [
+				var c = (model.xtendTypes.get(0) => [
 					it should beCapacity "Cap"
 					it should extend _
 					it should haveNbElements 1
-				]) as Capacity
+				]) as SarlCapacity
 				
-				c.features.get(0) => [
+				c.members.get(0) => [
 					it should beActionSignature "action"
 					it should reply _
 					it should haveNbParameters 0
 					it should beVariadic false
 				]
 				
-				var s = (model.elements.get(1) => [
+				var s = (model.xtendTypes.get(1) => [
 					it should beSkill "Ski"
 					it should extend _
 					it should implement #["io.sarl.docs.reference.ar.Cap"]
 					it should haveNbElements 2
-				]) as Skill
+				]) as SarlSkill
 				
-				s.features.get(0) => [
+				s.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				s.features.get(1) => [
+				s.members.get(1) => [
 					it should beAction "action"
 					it should reply _
 					it should haveNbParameters 0
 					it should beVariadic false
 				]
 
-				model.elements.get(2) => [
+				model.xtendTypes.get(2) => [
 					it should beEvent "SomeEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				var a = (model.elements.get(3) => [
+				var a = (model.xtendTypes.get(3) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 2
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]
 
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beBehaviorUnit "io.sarl.docs.reference.ar.SomeEvent"
 					it should beGuardedWith _
 				]
@@ -1174,19 +1174,19 @@ describe "Agent Reference"{
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "SomeEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				var a = (model.elements.get(1) => [
+				var a = (model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 1
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beBehaviorUnit "io.sarl.docs.reference.ar.SomeEvent"
 					it should beGuardedWith _
 				]
@@ -1252,11 +1252,11 @@ describe "Agent Reference"{
 					it should haveNbElements 4
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beCapacity "Cap"
 					it should extend _
 					it should haveNbElements 1
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "action"
 						it should reply _
 						it should haveNbParameters 0
@@ -1264,15 +1264,15 @@ describe "Agent Reference"{
 					]
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beSkill "Ski"
 					it should extend _
 					it should implement #["io.sarl.docs.reference.ar.Cap"]
 					it should haveNbElements 2
-					(it as Skill).features.get(0) => [
+					(it as SarlSkill).members.get(0) => [
 						it should beCapacityUse "io.sarl.core.Logging"
 					]
-					(it as Skill).features.get(1) => [
+					(it as SarlSkill).members.get(1) => [
 						it should beAction "action"
 						it should reply _
 						it should haveNbParameters 0
@@ -1280,26 +1280,26 @@ describe "Agent Reference"{
 					]
 				]
 
-				model.elements.get(2) => [
+				model.xtendTypes.get(2) => [
 					it should beEvent "SomeEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				var a = (model.elements.get(3) => [
+				var a = (model.xtendTypes.get(3) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 3
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) should beCapacityUse #["io.sarl.docs.reference.ar.Cap"]
+				a.members.get(0) should beCapacityUse #["io.sarl.docs.reference.ar.Cap"]
 
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]
 
-				a.features.get(2) => [
+				a.members.get(2) => [
 					it should beBehaviorUnit "io.sarl.docs.reference.ar.SomeEvent"
 					it should beGuardedWith _
 				]
@@ -1334,21 +1334,21 @@ describe "Agent Reference"{
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "SomeEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				var a = (model.elements.get(1) => [
+				var a = (model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 2
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) should beCapacityUse #["io.sarl.core.Lifecycle"]
+				a.members.get(0) should beCapacityUse #["io.sarl.core.Lifecycle"]
 
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beBehaviorUnit "io.sarl.docs.reference.ar.SomeEvent"
 					it should beGuardedWith _
 				]

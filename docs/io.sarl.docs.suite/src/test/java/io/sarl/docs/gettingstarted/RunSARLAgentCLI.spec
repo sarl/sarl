@@ -23,7 +23,7 @@ package io.sarl.docs.gettingstarted
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import io.sarl.lang.sarl.Agent
+import io.sarl.lang.sarl.SarlAgent
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
@@ -134,14 +134,14 @@ describe "Run SARL Agent from the Command Line" {
 				it should haveNbElements 1
 			]
 
-			model.elements.get(0) => [
+			model.xtendTypes.get(0) => [
 				it should beAgent "MyAgent"
 				it should extend _
 				it should haveNbElements 2
-				(it as Agent).features.get(0) => [
+				(it as SarlAgent).members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				(it as Agent).features.get(1) => [
+				(it as SarlAgent).members.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]

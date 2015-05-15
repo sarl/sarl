@@ -23,11 +23,10 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import io.sarl.lang.sarl.ActionSignature
-import io.sarl.lang.sarl.Capacity
-import io.sarl.lang.sarl.Skill
-import io.sarl.lang.sarl.Action
-import io.sarl.lang.sarl.Constructor
+import io.sarl.lang.sarl.SarlAction
+import io.sarl.lang.sarl.SarlCapacity
+import io.sarl.lang.sarl.SarlSkill
+import org.eclipse.xtend.core.xtend.XtendConstructor
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
@@ -97,27 +96,27 @@ describe "Skill Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beCapacity "Logging"
 					it should extend _
 					it should haveNbElements 2
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "info"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						] 
 					]
-					(it as Capacity).features.get(1) => [
+					(it as SarlCapacity).members.get(1) => [
 						it should beActionSignature "debug"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -125,28 +124,28 @@ describe "Skill Reference" {
 					]
 				]
 				
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beSkill "ConsoleLogging"
 					it should extend _
 					it should implement #["io.sarl.docs.reference.sr.Logging"]
 					it should haveNbElements 2
-					(it as Skill).features.get(0) => [
+					(it as SarlSkill).members.get(0) => [
 						it should beAction "info"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						] 
 					]
-					(it as Skill).features.get(1) => [
+					(it as SarlSkill).members.get(1) => [
 						it should beAction "debug"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -199,27 +198,27 @@ describe "Skill Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beCapacity "Logging"
 					it should extend _
 					it should haveNbElements 2
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "info"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						] 
 					]
-					(it as Capacity).features.get(1) => [
+					(it as SarlCapacity).members.get(1) => [
 						it should beActionSignature "debug"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -227,33 +226,33 @@ describe "Skill Reference" {
 					]
 				]
 				
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beSkill "StandardJavaLogging"
 					it should extend _
 					it should implement #["io.sarl.docs.reference.sr.Logging"]
 					it should haveNbElements 3
-					(it as Skill).features.get(0) => [
+					(it as SarlSkill).members.get(0) => [
 						it should beValue "logger"
 						it should haveType _
 						it should haveInitialValue "java.util.logging.Logger.getAnonymousLogger"
 					]
-					(it as Skill).features.get(1) => [
+					(it as SarlSkill).members.get(1) => [
 						it should beAction "info"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						] 
 					]
-					(it as Skill).features.get(2) => [
+					(it as SarlSkill).members.get(2) => [
 						it should beAction "debug"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -301,27 +300,27 @@ describe "Skill Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beCapacity "Logging"
 					it should extend _
 					it should haveNbElements 2
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "info"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						] 
 					]
-					(it as Capacity).features.get(1) => [
+					(it as SarlCapacity).members.get(1) => [
 						it should beActionSignature "debug"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -329,39 +328,39 @@ describe "Skill Reference" {
 					]
 				]
 				
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beSkill "MyLogging"
 					it should extend _
 					it should implement #["io.sarl.docs.reference.sr.Logging"]
 					it should haveNbElements 3
-					(it as Skill).features.get(0) => [
+					(it as SarlSkill).members.get(0) => [
 						it should beAction "info"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						] 
 					]
-					(it as Skill).features.get(1) => [
+					(it as SarlSkill).members.get(1) => [
 						it should beAction "debug"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						] 
 					]
-					(it as Skill).features.get(2) => [
+					(it as SarlSkill).members.get(2) => [
 						it should beAction "output"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "t"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -422,27 +421,27 @@ describe "Skill Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beCapacity "Logging"
 					it should extend _
 					it should haveNbElements 2
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "info"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						] 
 					]
-					(it as Capacity).features.get(1) => [
+					(it as SarlCapacity).members.get(1) => [
 						it should beActionSignature "debug"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -450,43 +449,43 @@ describe "Skill Reference" {
 					]
 				]
 				
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beSkill "StandardJavaLogging"
 					it should extend _
 					it should implement #["io.sarl.docs.reference.sr.Logging"]
 					it should haveNbElements 4
-					(it as Skill).features.get(0) => [
+					(it as SarlSkill).members.get(0) => [
 						it should beValue "logger"
 						it should haveType "java.util.logging.Logger"
 						it should haveInitialValue _
 					]
-					(it as Skill).features.get(1) => [
+					(it as SarlSkill).members.get(1) => [
 						it should beConstructor _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Constructor).params.get(0) => [
+						(it as XtendConstructor).parameters.get(0) => [
 							it should beParameter "l"
 							it should haveType "java.util.logging.Logger"
 							it should haveDefaultValue _
 						]
 					]
-					(it as Skill).features.get(2) => [
+					(it as SarlSkill).members.get(2) => [
 						it should beAction "info"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						] 
 					]
-					(it as Skill).features.get(3) => [
+					(it as SarlSkill).members.get(3) => [
 						it should beAction "debug"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -547,27 +546,27 @@ describe "Skill Reference" {
 					it should haveNbElements 3
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beCapacity "Logging"
 					it should extend _
 					it should haveNbElements 2
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "info"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						] 
 					]
-					(it as Capacity).features.get(1) => [
+					(it as SarlCapacity).members.get(1) => [
 						it should beActionSignature "debug"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -575,38 +574,38 @@ describe "Skill Reference" {
 					]
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beCapacity "LogReader"
 					it should extend _
 					it should haveNbElements 3
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "open"
 						it should reply "int"
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "filename"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						] 
 					]
-					(it as Capacity).features.get(1) => [
+					(it as SarlCapacity).members.get(1) => [
 						it should beActionSignature "info"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "t"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						] 
 					]
-					(it as Capacity).features.get(2) => [
+					(it as SarlCapacity).members.get(2) => [
 						it should beActionSignature "close"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "fid"
 							it should haveType "int"
 							it should haveDefaultValue _
@@ -614,50 +613,50 @@ describe "Skill Reference" {
 					]
 				]
 
-				model.elements.get(2) => [
+				model.xtendTypes.get(2) => [
 					it should beSkill "MyLogging"
 					it should extend _
 					it should implement #["io.sarl.docs.reference.sr.Logging", "io.sarl.docs.reference.sr.LogReader"]
 					it should haveNbElements 4
-					(it as Skill).features.get(0) => [
+					(it as SarlSkill).members.get(0) => [
 						it should beAction "info"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						] 
 					]
-					(it as Skill).features.get(1) => [
+					(it as SarlSkill).members.get(1) => [
 						it should beAction "debug"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						] 
 					]
-					(it as Skill).features.get(2) => [
+					(it as SarlSkill).members.get(2) => [
 						it should beAction "open"
 						it should reply "int"
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "filename"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						] 
 					]
-					(it as Skill).features.get(3) => [
+					(it as SarlSkill).members.get(3) => [
 						it should beAction "close"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "fid"
 							it should haveType "int"
 							it should haveDefaultValue _
@@ -717,27 +716,27 @@ describe "Skill Reference" {
 					it should haveNbElements 3
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beCapacity "Logging"
 					it should extend _
 					it should haveNbElements 2
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "info"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						] 
 					]
-					(it as Capacity).features.get(1) => [
+					(it as SarlCapacity).members.get(1) => [
 						it should beActionSignature "debug"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as ActionSignature).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -745,28 +744,28 @@ describe "Skill Reference" {
 					]
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beSkill "StandardJavaLogging"
 					it should extend _
 					it should implement #["io.sarl.docs.reference.sr.Logging"]
 					it should haveNbElements 2
-					(it as Skill).features.get(0) => [
+					(it as SarlSkill).members.get(0) => [
 						it should beAction "info"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
 						] 
 					]
-					(it as Skill).features.get(1) => [
+					(it as SarlSkill).members.get(1) => [
 						it should beAction "debug"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _
@@ -774,17 +773,17 @@ describe "Skill Reference" {
 					]
 				]
 
-				model.elements.get(2) => [
+				model.xtendTypes.get(2) => [
 					it should beSkill "ExtendedLogging"
 					it should extend "io.sarl.docs.reference.sr.StandardJavaLogging"
 					it should implement _
 					it should haveNbElements 1
-					(it as Skill).features.get(0) => [
+					(it as SarlSkill).members.get(0) => [
 						it should beAction "info"
 						it should reply _
 						it should haveNbParameters 1
 						it should beVariadic false
-						(it as Action).params.get(0) => [
+						(it as SarlAction).parameters.get(0) => [
 							it should beParameter "text"
 							it should haveType "java.lang.String"
 							it should haveDefaultValue _

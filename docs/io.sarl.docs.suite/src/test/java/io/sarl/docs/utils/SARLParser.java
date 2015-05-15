@@ -23,32 +23,34 @@ package io.sarl.docs.utils;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.isEmpty;
 import static org.jnario.lib.Assert.fail;
-import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.ActionSignature;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.Attribute;
-import io.sarl.lang.sarl.Behavior;
-import io.sarl.lang.sarl.BehaviorUnit;
-import io.sarl.lang.sarl.Capacity;
-import io.sarl.lang.sarl.CapacityUses;
-import io.sarl.lang.sarl.Constructor;
-import io.sarl.lang.sarl.Event;
-import io.sarl.lang.sarl.FeatureContainer;
-import io.sarl.lang.sarl.FormalParameter;
-import io.sarl.lang.sarl.ImplementingElement;
-import io.sarl.lang.sarl.InheritingElement;
-import io.sarl.lang.sarl.ParameterizedFeature;
-import io.sarl.lang.sarl.RequiredCapacity;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.Skill;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlSkill;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtend.core.xtend.XtendClass;
+import org.eclipse.xtend.core.xtend.XtendConstructor;
+import org.eclipse.xtend.core.xtend.XtendExecutable;
+import org.eclipse.xtend.core.xtend.XtendField;
+import org.eclipse.xtend.core.xtend.XtendFile;
+import org.eclipse.xtend.core.xtend.XtendFunction;
+import org.eclipse.xtend.core.xtend.XtendInterface;
+import org.eclipse.xtend.core.xtend.XtendParameter;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.junit4.util.ParseHelper;
@@ -84,7 +86,7 @@ import com.google.inject.Inject;
 public class SARLParser {
 
 	@Inject
-	private ParseHelper<SarlScript> sarlParser;
+	private ParseHelper<XtendFile> sarlParser;
 	@Inject
 	private XtextResourceSet xtextResourceSet;
 	@Inject
@@ -93,6 +95,30 @@ public class SARLParser {
 	private IExpressionInterpreter interpreter;
 
 	private boolean initial = true;
+
+	/** Replies a list with the given element, if not <code>null</code>.
+	 *
+	 * @param element the element.
+	 * @return the list with the element, or an empty list if the element is <code>null</code>.
+	 */
+	public <T> List<T> safeSingleton(T element) {
+		if (element == null) {
+			return Collections.emptyList();
+		}
+		return Collections.singletonList(element);
+	}
+
+	/** Replies a list with the given element, if not <code>null</code>.
+	 *
+	 * @param element the element.
+	 * @return the list with the element, or an empty list if the element is <code>null</code>.
+	 */
+	public <T> List<T> safeList(List<T> element) {
+		if (element == null) {
+			return Collections.emptyList();
+		}
+		return element;
+	}
 
 	/** Replies a path built from the given elements.
 	 *
@@ -126,7 +152,7 @@ public class SARLParser {
 	 * @return the SARL model.
 	 * @throws Exception - on parsing error.
 	 */
-	public SarlScript parse(CharSequence text) throws Exception {
+	public XtendFile parse(CharSequence text) throws Exception {
 		if (this.initial) {
 			this.initial = false;
 			return this.sarlParser.parse(text, getResourceSetWithDefaultModels());
@@ -140,8 +166,8 @@ public class SARLParser {
 	 * @return the SARL model.
 	 * @throws Exception - on parsing error.
 	 */
-	public SarlScript parseSuccessfully(CharSequence text) throws Exception {
-		SarlScript model = parse(text);
+	public XtendFile parseSuccessfully(CharSequence text) throws Exception {
+		XtendFile model = parse(text);
 		this.validationTestHelper.assertNoErrors(model);
 		return model;
 	}
@@ -152,7 +178,7 @@ public class SARLParser {
 	 * @throws Exception - on parsing error.
 	 */
 	public void parseWithError(CharSequence text) throws Exception {
-		SarlScript model = parse(text);
+		XtendFile model = parse(text);
 
 		List<Issue> validate = this.validationTestHelper.validate(model);
 		Iterable<Issue> issues = filter(validate, new Predicate<Issue>() {
@@ -176,7 +202,7 @@ public class SARLParser {
 	 * @return the SARL model.
 	 * @throws Exception - on parsing error.
 	 */
-	public SarlScript parseSuccessfully(CharSequence outputText, CharSequence postfix) throws Exception {
+	public XtendFile parseSuccessfully(CharSequence outputText, CharSequence postfix) throws Exception {
 		StringBuilder b = new StringBuilder(outputText);
 		if (postfix != null && postfix.length() > 0) {
 			b.append("\n"); //$NON-NLS-1$
@@ -214,7 +240,7 @@ public class SARLParser {
 	 * @return the SARL model.
 	 * @throws Exception - on parsing error.
 	 */
-	public SarlScript parseSuccessfully(CharSequence outputText, CharSequence prefix, CharSequence postfix) throws Exception {
+	public XtendFile parseSuccessfully(CharSequence outputText, CharSequence prefix, CharSequence postfix) throws Exception {
 		StringBuilder b = new StringBuilder();
 		if (prefix != null && prefix.length() > 0) {
 			b.append(prefix);
@@ -267,8 +293,8 @@ public class SARLParser {
 	 * @param name - the name of the package.
 	 * @return validation status
 	 */
-	public boolean should_havePackage(SarlScript s, String name) {
-		return Objects.equals(s.getName(), name);
+	public boolean should_havePackage(XtendFile s, String name) {
+		return Objects.equals(s.getPackage(), name);
 	}
 
 	/** Ensure that the given SARL script has number of import statements.
@@ -277,11 +303,11 @@ public class SARLParser {
 	 * @param numberOfImports - the expected number of imports.
 	 * @return validation status
 	 */
-	public boolean should_haveNbImports(SarlScript s, int numberOfImports) {
+	public boolean should_haveNbImports(XtendFile s, int numberOfImports) {
 		int nb = 0;
 		if (s != null
-			&& s.getImportSection() != null
-			&& s.getImportSection().getImportDeclarations() != null) {
+				&& s.getImportSection() != null
+				&& s.getImportSection().getImportDeclarations() != null) {
 			nb = s.getImportSection().getImportDeclarations().size();
 		}
 		return numberOfImports == nb;
@@ -294,11 +320,11 @@ public class SARLParser {
 	 * @return the validation status.
 	 */
 	public boolean should_haveNbElements(EObject s, int numberOfElements) {
-		if (s instanceof SarlScript) {
-			return numberOfElements == ((SarlScript) s).getElements().size();
+		if (s instanceof XtendFile) {
+			return numberOfElements == ((XtendFile) s).getXtendTypes().size();
 		}
-		if (s instanceof FeatureContainer) {
-			return numberOfElements == ((FeatureContainer) s).getFeatures().size();
+		if (s instanceof XtendTypeDeclaration) {
+			return numberOfElements == ((XtendTypeDeclaration) s).getMembers().size();
 		}
 		return false;
 	}
@@ -312,10 +338,10 @@ public class SARLParser {
 	public boolean should_haveNbParameters(EObject s, int numberOfParameters) {
 		int nb = 0;
 		EObject obj = s;
-		if (obj instanceof ParameterizedFeature) {
-			ParameterizedFeature f = (ParameterizedFeature) obj;
-			if (f.getParams() != null) {
-				nb = f.getParams().size();
+		if (obj instanceof XtendExecutable) {
+			XtendExecutable f = (XtendExecutable) obj;
+			if (f.getParameters() != null) {
+				nb = f.getParameters().size();
 			}
 		}
 		return nb == numberOfParameters;
@@ -327,10 +353,10 @@ public class SARLParser {
 	 * @param name - the name of the imported type.
 	 * @return model
 	 */
-	public boolean should_importClass(SarlScript model, String name) {
+	public boolean should_importClass(XtendFile model, String name) {
 		if (model == null
-			|| model.getImportSection() == null
-			|| model.getImportSection().getImportDeclarations() == null) {
+				|| model.getImportSection() == null
+				|| model.getImportSection().getImportDeclarations() == null) {
 			return false;
 		}
 		for(XImportDeclaration d : model.getImportSection().getImportDeclarations()) {
@@ -348,10 +374,10 @@ public class SARLParser {
 	 * @param name - the name of the package.
 	 * @return model
 	 */
-	public boolean should_importClassesFrom(SarlScript model, String name) {
+	public boolean should_importClassesFrom(XtendFile model, String name) {
 		if (model == null
-			|| model.getImportSection() == null
-			|| model.getImportSection().getImportDeclarations() == null) {
+				|| model.getImportSection() == null
+				|| model.getImportSection().getImportDeclarations() == null) {
 			return false;
 		}
 		for(XImportDeclaration d : model.getImportSection().getImportDeclarations()) {
@@ -369,10 +395,10 @@ public class SARLParser {
 	 * @param name - the name of the type.
 	 * @return model
 	 */
-	public boolean should_importMembers(SarlScript model, String name) {
+	public boolean should_importMembers(XtendFile model, String name) {
 		if (model == null
-			|| model.getImportSection() == null
-			|| model.getImportSection().getImportDeclarations() == null) {
+				|| model.getImportSection() == null
+				|| model.getImportSection().getImportDeclarations() == null) {
 			return false;
 		}
 		for(XImportDeclaration d : model.getImportSection().getImportDeclarations()) {
@@ -390,10 +416,10 @@ public class SARLParser {
 	 * @return the validation status
 	 */
 	public boolean should_beEvent(EObject o, String name) {
-		if (!(o instanceof Event)) {
+		if (!(o instanceof SarlEvent)) {
 			return false;
 		}
-		Event e = (Event) o;
+		SarlEvent e = (SarlEvent) o;
 		return Objects.equals(name, e.getName());
 	}
 
@@ -404,10 +430,10 @@ public class SARLParser {
 	 * @return the validation status
 	 */
 	public boolean should_beCapacity(EObject o, String name) {
-		if (!(o instanceof Capacity)) {
+		if (!(o instanceof SarlCapacity)) {
 			return false;
 		}
-		Capacity c = (Capacity) o;
+		SarlCapacity c = (SarlCapacity) o;
 		return Objects.equals(name, c.getName());
 	}
 
@@ -418,10 +444,10 @@ public class SARLParser {
 	 * @return the validation status
 	 */
 	public boolean should_beSkill(EObject o, String name) {
-		if (!(o instanceof Skill)) {
+		if (!(o instanceof SarlSkill)) {
 			return false;
 		}
-		Skill s = (Skill) o;
+		SarlSkill s = (SarlSkill) o;
 		return Objects.equals(name, s.getName());
 	}
 
@@ -432,10 +458,10 @@ public class SARLParser {
 	 * @return the validation status
 	 */
 	public boolean should_beBehavior(EObject o, String name) {
-		if (!(o instanceof Behavior)) {
+		if (!(o instanceof SarlBehavior)) {
 			return false;
 		}
-		Behavior b = (Behavior) o;
+		SarlBehavior b = (SarlBehavior) o;
 		return Objects.equals(name, b.getName());
 	}
 
@@ -446,10 +472,10 @@ public class SARLParser {
 	 * @return validation status
 	 */
 	public boolean should_beAgent(EObject o, String name) {
-		if (!(o instanceof Agent)) {
+		if (!(o instanceof SarlAgent)) {
 			return false;
 		}
-		Agent a = (Agent) o;
+		SarlAgent a = (SarlAgent) o;
 		return Objects.equals(name, a.getName());
 	}
 
@@ -461,18 +487,31 @@ public class SARLParser {
 	 * @return o
 	 */
 	public boolean should_extend(EObject o, Object superTypes) {
-		if (!(o instanceof InheritingElement)) {
+		Iterator<? extends JvmTypeReference> it;
+		if (o instanceof SarlAgent) {
+			it = safeSingleton(((SarlAgent) o).getExtends()).iterator();
+		} else if (o instanceof SarlBehavior) {
+			it = safeSingleton(((SarlBehavior) o).getExtends()).iterator();
+		} else if (o instanceof SarlCapacity) {
+			it = safeList(((SarlCapacity) o).getExtends()).iterator();
+		} else if (o instanceof SarlEvent) {
+			it = safeSingleton(((SarlEvent) o).getExtends()).iterator();
+		} else if (o instanceof SarlSkill) {
+			it = safeSingleton(((SarlSkill) o).getExtends()).iterator();
+		} else if (o instanceof XtendClass) {
+			it = safeSingleton(((XtendClass) o).getExtends()).iterator();
+		} else if (o instanceof XtendInterface) {
+			it = safeList(((XtendInterface) o).getExtends()).iterator();
+		} else {
 			return false;
 		}
-		InheritingElement a = (InheritingElement) o;
 		if (superTypes != null) {
 			return SpecificationTools.should_iterate(
-					a.getSuperTypes().iterator(),
+					it,
 					superTypes,
 					false);
 		}
-
-		return 0 == a.getSuperTypes().size();
+		return !it.hasNext();
 	}
 
 	/** Ensure that the given object is extending the given type.
@@ -483,17 +522,21 @@ public class SARLParser {
 	 * @return o
 	 */
 	public boolean should_implement(EObject o, Object superTypes) {
-		if (!(o instanceof ImplementingElement)) {
+		Iterator<? extends JvmTypeReference> it;
+		if (o instanceof SarlSkill) {
+			it = safeList(((SarlSkill) o).getImplements()).iterator();
+		} else if (o instanceof XtendClass) {
+			it = safeList(((XtendClass) o).getImplements()).iterator();
+		} else {
 			return false;
 		}
-		ImplementingElement a = (ImplementingElement) o;
 		if (superTypes != null) {
 			return SpecificationTools.should_iterate(
-					a.getImplementedTypes().iterator(),
+					it,
 					superTypes,
 					false);
 		}
-		return 0 == a.getImplementedTypes().size();
+		return !it.hasNext();
 	}
 
 	/** Ensure that the given object is implementing the the given number
@@ -504,11 +547,15 @@ public class SARLParser {
 	 * @return o
 	 */
 	public boolean should_haveNbImplements(EObject o, int numberOfImplements) {
-		if (!(o instanceof ImplementingElement)) {
+		int n;
+		if (o instanceof SarlSkill) {
+			n = safeList(((SarlSkill) o).getImplements()).size();
+		} else if (o instanceof XtendClass) {
+			n = safeList(((XtendClass) o).getImplements()).size();
+		} else {
 			return false;
 		}
-		ImplementingElement a = (ImplementingElement) o;
-		return numberOfImplements == a.getImplementedTypes().size();
+		return n == numberOfImplements;
 	}
 
 	/** Ensure that the given object is the SARL "var" statement.
@@ -518,12 +565,12 @@ public class SARLParser {
 	 * @return the validation status.
 	 */
 	public boolean should_beVariable(EObject o, String name) {
-		if (!(o instanceof Attribute)) {
+		if (!(o instanceof XtendField)) {
 			return false;
 		}
-		Attribute attr = (Attribute) o;
+		XtendField attr = (XtendField) o;
 		return Objects.equals(name, attr.getName())
-				&& attr.isWriteable();
+				&& !attr.isFinal();
 	}
 
 	/** Ensure that the given object is the SARL "val" statement.
@@ -533,12 +580,12 @@ public class SARLParser {
 	 * @return the validation status.
 	 */
 	public boolean should_beValue(EObject o, String name) {
-		if (!(o instanceof Attribute)) {
+		if (!(o instanceof XtendField)) {
 			return false;
 		}
-		Attribute attr = (Attribute) o;
+		XtendField attr = (XtendField) o;
 		return Objects.equals(name, attr.getName())
-				&& !attr.isWriteable();
+				&& attr.isFinal();
 	}
 
 	/** Ensure that the given object is the SARL "var" or "val" statement
@@ -549,20 +596,20 @@ public class SARLParser {
 	 * @return the validation status.
 	 */
 	public boolean should_haveType(EObject o, String type) {
-		if (o instanceof Attribute) {
-			Attribute attr = (Attribute) o;
+		if (o instanceof XtendField) {
+			XtendField attr = (XtendField) o;
 			if (type == null) {
 				return attr.getType() == null;
 			}
 			return attr.getType() != null
-				&& Objects.equals(type, attr.getType().getQualifiedName());
-		} else if (o instanceof FormalParameter) {
-			FormalParameter param = (FormalParameter) o;
+					&& Objects.equals(type, attr.getType().getQualifiedName());
+		} else if (o instanceof XtendParameter) {
+			XtendParameter param = (XtendParameter) o;
 			if (type == null) {
 				return param.getParameterType() == null;
 			}
 			return param.getParameterType() != null
-						&& Objects.equals(type, param.getParameterType().getQualifiedName());
+					&& Objects.equals(type, param.getParameterType().getQualifiedName());
 		}
 		return false;
 	}
@@ -574,11 +621,11 @@ public class SARLParser {
 	 * @return validation status
 	 */
 	public boolean should_beAction(EObject o, String name) {
-		if (!(o instanceof Action)) {
+		if (!(o instanceof XtendFunction)) {
 			return false;
 		}
-		Action act = (Action) o;
-		return Objects.equals(name, act.getName());
+		XtendFunction act = (XtendFunction) o;
+		return Objects.equals(name, act.getName()) && act.getExpression() != null;
 	}
 
 	/** Ensure that the given object is the SARL "def" statement (without body).
@@ -588,11 +635,11 @@ public class SARLParser {
 	 * @return validation status
 	 */
 	public boolean should_beActionSignature(EObject o, String name) {
-		if (!(o instanceof ActionSignature)) {
+		if (!(o instanceof XtendFunction)) {
 			return false;
 		}
-		ActionSignature sig = (ActionSignature) o;
-		return Objects.equals(name, sig.getName());
+		XtendFunction sig = (XtendFunction) o;
+		return Objects.equals(name, sig.getName()) && sig.getExpression() == null;
 	}
 
 	/** Ensure that the given object is the SARL "on" statement.
@@ -602,10 +649,10 @@ public class SARLParser {
 	 * @return validation status
 	 */
 	public boolean should_beBehaviorUnit(EObject o, String event) {
-		if (!(o instanceof BehaviorUnit)) {
+		if (!(o instanceof SarlBehaviorUnit)) {
 			return false;
 		}
-		BehaviorUnit bu = (BehaviorUnit) o;
+		SarlBehaviorUnit bu = (SarlBehaviorUnit) o;
 		return Objects.equals(event, bu.getName().getQualifiedName());
 	}
 
@@ -616,13 +663,13 @@ public class SARLParser {
 	 * @return validation status
 	 */
 	public boolean should_beCapacityUse(EObject o, Object capacities) {
-		if (!(o instanceof CapacityUses)) {
+		if (!(o instanceof SarlCapacityUses)) {
 			return false;
 		}
-		CapacityUses uses = (CapacityUses) o;
-		if (uses.getCapacitiesUsed() != null) {
+		SarlCapacityUses uses = (SarlCapacityUses) o;
+		if (uses.getCapacities() != null) {
 			return SpecificationTools.should_iterate(
-					uses.getCapacitiesUsed().iterator(),
+					uses.getCapacities().iterator(),
 					capacities,
 					false);
 		}
@@ -636,13 +683,13 @@ public class SARLParser {
 	 * @return validation status
 	 */
 	public boolean should_beCapacityRequirement(EObject o, Object capacities) {
-		if (!(o instanceof RequiredCapacity)) {
+		if (!(o instanceof SarlRequiredCapacity)) {
 			return false;
 		}
-		RequiredCapacity reqs = (RequiredCapacity) o;
-		if (reqs.getRequiredCapacities() != null) {
+		SarlRequiredCapacity reqs = (SarlRequiredCapacity) o;
+		if (reqs.getCapacities() != null) {
 			return SpecificationTools.should_iterate(
-					reqs.getRequiredCapacities().iterator(),
+					reqs.getCapacities().iterator(),
 					capacities);
 		}
 		return false;
@@ -656,10 +703,10 @@ public class SARLParser {
 	 * @return validation status
 	 */
 	public boolean should_beGuardedWith(EObject o, String guard) {
-		if (!(o instanceof BehaviorUnit)) {
+		if (!(o instanceof SarlBehaviorUnit)) {
 			return false;
 		}
-		BehaviorUnit bu = (BehaviorUnit) o;
+		SarlBehaviorUnit bu = (SarlBehaviorUnit) o;
 		XExpression actualGuard = bu.getGuard();
 		if (guard == null) {
 			return actualGuard == null;
@@ -688,7 +735,7 @@ public class SARLParser {
 	 * @return validation status
 	 */
 	public boolean should_beConstructor(EObject o, Object something) {
-		if (!(o instanceof Constructor)) {
+		if (!(o instanceof XtendConstructor)) {
 			return false;
 		}
 		return true;
@@ -702,13 +749,19 @@ public class SARLParser {
 	 * @return validation status
 	 */
 	public boolean should_beVariadic(EObject o, boolean isVariadic) {
-		ParameterizedFeature f;
-		if (o instanceof ParameterizedFeature) {
-			f = (ParameterizedFeature) o;
+		XtendExecutable f;
+		if (o instanceof XtendExecutable) {
+			f = (XtendExecutable) o;
 		} else {
 			return false;
 		}
-		return f.isVarargs() == isVariadic;
+		boolean i;
+		if (f.getParameters() == null || f.getParameters().isEmpty()) {
+			i = false;
+		} else {
+			i = f.getParameters().get(f.getParameters().size() - 1).isVarArg();
+		}
+		return i == isVariadic;
 	}
 
 	/** Ensure that the given object is the SARL "def" statement (with body)
@@ -720,10 +773,8 @@ public class SARLParser {
 	 */
 	public boolean should_reply(EObject o, String returnType) {
 		JvmTypeReference rType;
-		if (o instanceof Action) {
-			rType = ((Action) o).getType();
-		} else if (o instanceof ActionSignature) {
-			rType = ((ActionSignature) o).getType();
+		if (o instanceof XtendFunction) {
+			rType = ((XtendFunction) o).getReturnType();
 		} else {
 			return false;
 		}
@@ -741,10 +792,10 @@ public class SARLParser {
 	 * @return the validation status
 	 */
 	public boolean should_beParameter(EObject o, String name) {
-		if (!(o instanceof FormalParameter)) {
+		if (!(o instanceof XtendParameter)) {
 			return false;
 		}
-		FormalParameter p = (FormalParameter) o;
+		XtendParameter p = (XtendParameter) o;
 		return Objects.equals(name, p.getName());
 	}
 
@@ -755,10 +806,10 @@ public class SARLParser {
 	 * @return the validation status
 	 */
 	public boolean should_haveDefaultValue(EObject o, Object name) {
-		if (!(o instanceof FormalParameter)) {
+		if (!(o instanceof SarlFormalParameter)) {
 			return false;
 		}
-		FormalParameter p = (FormalParameter) o;
+		SarlFormalParameter p = (SarlFormalParameter) o;
 		if (name == null) {
 			return p.getDefaultValue() == null;
 		}
@@ -772,16 +823,16 @@ public class SARLParser {
 	 * @return the validation status
 	 */
 	public boolean should_haveInitialValue(EObject o, Object initialValue) {
-		if (!(o instanceof Attribute)) {
+		if (!(o instanceof XtendField)) {
 			return false;
 		}
-		Attribute p = (Attribute) o;
+		XtendField p = (XtendField) o;
 		if (initialValue == null) {
 			return p.getInitialValue() == null;
 		}
 		XExpression expr = p.getInitialValue();
 		if ((expr instanceof XFeatureCall) || (expr instanceof XMemberFeatureCall)
-			|| (expr instanceof XConstructorCall)) {
+				|| (expr instanceof XConstructorCall)) {
 			return should_call(expr, initialValue.toString());
 		}
 		if (expr instanceof XCastedExpression) {
@@ -815,7 +866,7 @@ public class SARLParser {
 		if (actual instanceof XConstructorCall) {
 			XConstructorCall c = (XConstructorCall) actual;
 			String consName = c.getConstructor().getQualifiedName() +
-							"." + c.getConstructor().getSimpleName(); //$NON-NLS-1$
+					"." + c.getConstructor().getSimpleName(); //$NON-NLS-1$
 			return Objects.equals(expected, consName);
 		}
 		return false;
@@ -843,8 +894,8 @@ public class SARLParser {
 		String code = "def ____TeStInG_FuNcTiOn() : Object {\n" //$NON-NLS-1$
 				+ expression
 				+ "\n}"; //$NON-NLS-1$
-		Action action = (Action) agentCode("AgentXXXXX", code, resolve).get(0); //$NON-NLS-1$
-		XBlockExpression block = (XBlockExpression) action.getBody();
+		XtendFunction action = (XtendFunction) agentCode("AgentXXXXX", code, resolve).get(0); //$NON-NLS-1$
+		XBlockExpression block = (XBlockExpression) action.getExpression();
 		if (block.getExpressions().size() == 1) {
 			return block.getExpressions().get(0);
 		}
@@ -861,16 +912,16 @@ public class SARLParser {
 	 * @return the statements in the agent definition.
 	 * @throws Exception if the code cannot be parsed.
 	 */
-	public List<EObject> agentCode(String agentTypeName, String code, boolean resolve) throws Exception {
+	public List<? extends EObject> agentCode(String agentTypeName, String code, boolean resolve) throws Exception {
 		String fullCode = "agent " + agentTypeName //$NON-NLS-1$
 				+ " {\n" + code //$NON-NLS-1$
 				+ "\n}\n"; //$NON-NLS-1$
-		SarlScript script = parse(fullCode);
+		XtendFile script = parse(fullCode);
 		if (resolve) {
 			this.validationTestHelper.assertNoErrors(script);
 		}
-		Agent agent = (Agent) script.getElements().get(0);
-		return agent.getFeatures();
+		SarlAgent agent = (SarlAgent) script.getXtendTypes().get(0);
+		return agent.getMembers();
 	}
 
 	/** Evaluate an expression and reply the result.
