@@ -32,6 +32,7 @@ import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.scoping.batch.SARLImplicitlyImportedFeatures;
+import io.sarl.lang.typing.SARLExpressionHelper;
 import io.sarl.lang.validation.DefaultFeatureCallValidator;
 import io.sarl.lang.validation.FeatureCallValidator;
 import io.sarl.lang.validation.SARLConfigurableIssueCodesProvider;
@@ -66,7 +67,6 @@ import org.eclipse.xtend.core.typesystem.LocalClassAwareTypeNames;
 import org.eclipse.xtend.core.typesystem.TypeDeclarationAwareBatchTypeResolver;
 import org.eclipse.xtend.core.typesystem.XtendReentrantTypeResolver;
 import org.eclipse.xtend.core.typesystem.XtendTypeComputer;
-import org.eclipse.xtend.core.typing.XtendExpressionHelper;
 import org.eclipse.xtend.core.validation.CachingResourceValidatorImpl;
 import org.eclipse.xtend.core.validation.XtendImplicitReturnFinder;
 import org.eclipse.xtend.core.xtend.XtendFactory;
@@ -320,7 +320,7 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	 * @return the type of the XExpression helper.
 	 */
 	public Class<? extends XExpressionHelper> bindXExpressionHelper() {
-		return XtendExpressionHelper.class;
+		return SARLExpressionHelper.class;
 	}
 
 	@Override

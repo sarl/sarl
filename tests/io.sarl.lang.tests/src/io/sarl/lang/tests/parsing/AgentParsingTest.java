@@ -367,6 +367,20 @@ public class AgentParsingTest {
 					"Expression with side effect is not allowed in guards");
 		}
 
+		@Test
+		public void invalidBehaviorUnit_SideEffect2() throws Exception {
+			XtendFile mas = file(multilineString(
+					"import java.util.List",
+					"event E1 { var parameters : List<Object> }",
+					"agent A1 {",
+					"	on E1 [ occurrence.parameters.empty ] {",
+					"	}",
+					"}"
+					));
+
+			validate(mas).assertNoIssues();
+		}
+
 	}
 
 	public static class AttributeTest extends AbstractSarlTest {
