@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.navigator;
 
-import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.navigator.node.SARLProjectParent;
 
@@ -120,7 +120,7 @@ public class ContentProvider implements ITreeContentProvider {
 		List<SARLProjectParent> list = new ArrayList<>();
 		for (int i = 0; i < projects.length; i++) {
 			try {
-				if (projects[i].getNature(SARLConfig.NATURE_ID) != null) {
+				if (projects[i].getNature(SARLEclipseConfig.NATURE_ID) != null) {
 					list.add(new SARLProjectParent(projects[i]));
 				}
 			} catch (CoreException e) {

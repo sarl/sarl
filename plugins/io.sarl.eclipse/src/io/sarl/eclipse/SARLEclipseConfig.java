@@ -29,41 +29,9 @@ package io.sarl.eclipse;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @see io.sarl.lang.SARLConfig
  */
-public final class SARLConfig {
-
-	/** Path of the Java source files.
-	 */
-	public static final String FOLDER_SOURCE_JAVA = "src/main/java"; //$NON-NLS-1$
-
-	/** Path of the SARL source files.
-	 */
-	public static final String FOLDER_SOURCE_SARL = "src/main/sarl"; //$NON-NLS-1$
-
-	/** Path of the generated source files.
-	 */
-	public static final String FOLDER_SOURCE_GENERATED = "src/main/generated-sources/xtend"; //$NON-NLS-1$
-
-	/** Path of the Java source files.
-	 */
-	public static final String FOLDER_TEST_SOURCE_SARL = "src/test/sarl"; //$NON-NLS-1$
-
-	/** Path of the SARL source files.
-	 */
-	public static final String FOLDER_TEST_SOURCE_GENERATED = "src/test/generated-sources/xtend"; //$NON-NLS-1$
-
-	/** Path of the generated source files that should be no more used when creating
-	 * new projects. This value is the default generation folder form Xtext.
-	 */
-	public static final String FOLDER_SOURCE_GENERATED_XTEXT = "src-gen"; //$NON-NLS-1$
-
-	/** Path of the resource files.
-	 */
-	public static final String FOLDER_RESOURCES = "src/main/resources"; //$NON-NLS-1$
-
-	/** Path of the binary files.
-	 */
-	public static final String FOLDER_BIN = "target/classes"; //$NON-NLS-1$
+public final class SARLEclipseConfig {
 
 	/**
 	 * ID of the project nature defined by XText.
@@ -210,7 +178,7 @@ public final class SARLConfig {
 	 */
 	public static final String EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY = "projectSREProviderFactory"; //$NON-NLS-1$
 
-	private SARLConfig() {
+	private SARLEclipseConfig() {
 		//
 	}
 

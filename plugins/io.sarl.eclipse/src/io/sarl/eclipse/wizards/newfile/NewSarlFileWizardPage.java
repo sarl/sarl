@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.wizards.newfile;
 
-import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.lang.services.SARLGrammarAccess;
 
@@ -60,7 +60,7 @@ public class NewSarlFileWizardPage extends WizardNewFileCreationPage {
 		setTitle(Messages.NewSarlFileWizardPage_1);
 		setDescription(Messages.NewSarlFileWizardPage_2);
 		setFileExtension(fileExtension);
-		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(SARLConfig.NEW_FILE_WIZARD_DIALOG_IMAGE));
+		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(SARLEclipseConfig.NEW_FILE_WIZARD_DIALOG_IMAGE));
 	}
 
 	private static IPath determinePackageName(IPath path) {

@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.wizards.elements.aop.newcapacity;
 
-import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.lang.core.Capacity;
@@ -50,7 +50,7 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 		super(INTERFACE_TYPE, Messages.NewSarlCapacity_0);
 		setTitle(Messages.NewSarlCapacity_0);
 		setDescription(Messages.NewSarlCapacityWizardPage_0);
-		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(SARLConfig.NEW_CAPACITY_WIZARD_DIALOG_IMAGE));
+		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(SARLEclipseConfig.NEW_CAPACITY_WIZARD_DIALOG_IMAGE));
 	}
 
 	@Override

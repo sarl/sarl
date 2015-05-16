@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.launching.dialog;
 
-import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipseConfig;
 
 import java.text.MessageFormat;
 
@@ -219,7 +219,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		super.setDefaults(config);
-		config.setAttribute(SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS, (String) null);
+		config.setAttribute(SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS, (String) null);
 	}
 
 	@Override
@@ -227,7 +227,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 		super.initializeFrom(configuration);
 		try {
 			this.sreArgumentsText.setText(configuration.getAttribute(
-					SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS, Strings.emptyIfNull(null)));
+					SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS, Strings.emptyIfNull(null)));
 		} catch (CoreException e) {
 			setErrorMessage(MessageFormat.format(
 					io.sarl.eclipse.launching.dialog.LauncherMessages.SARLArgumentsTab_4,
@@ -238,7 +238,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS,
+		configuration.setAttribute(SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS,
 				getAttributeValueFrom(this.sreArgumentsText));
 		super.performApply(configuration);
 	}

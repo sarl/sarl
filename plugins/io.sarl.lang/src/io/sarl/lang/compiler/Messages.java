@@ -18,33 +18,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.tests;
 
-import static org.junit.Assert.assertEquals;
-import io.sarl.eclipse.SARLEclipseConfig;
-import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.WorkbenchTestHelper;
+package io.sarl.lang.compiler;
 
-import org.eclipse.xtext.ui.XtextProjectHelper;
-import org.junit.Test;
+import org.eclipse.osgi.util.NLS;
 
-/**
+/** Localized Messages.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public final class SARLConfigTest extends AbstractSarlUiTest {
-
-	@Test
-	public void sarlNature() {
-		assertEquals(WorkbenchTestHelper.NATURE_ID, SARLEclipseConfig.NATURE_ID);
+public class Messages extends NLS {
+	private static final String BUNDLE_NAME = "io.sarl.lang.compiler.messages"; //$NON-NLS-1$
+	public static String SarlOutputConfigurationProvider_0;
+	static {
+		// initialize resource bundle
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
 	}
 
-	@Test
-	public void xtextNature() {
-		assertEquals(XtextProjectHelper.NATURE_ID, SARLEclipseConfig.XTEXT_NATURE_ID);
+	private Messages() {
 	}
-
 }

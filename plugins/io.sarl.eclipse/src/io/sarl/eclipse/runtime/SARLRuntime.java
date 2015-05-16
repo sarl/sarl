@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.runtime;
 
-import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 
 import java.io.BufferedInputStream;
@@ -83,7 +83,7 @@ import com.google.common.base.Strings;
 /**
  * The central access point for launching support. This class manages
  * the registered SRE types contributed through the
- * extension point with the name {@link SARLConfig#EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT}.
+ * extension point with the name {@link SARLEclipseConfig#EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT}.
  * As well, this class provides SRE install change notification.
  * <p>
  * This class was inspired from <code>JavaRuntime</code>.
@@ -384,7 +384,7 @@ public final class SARLRuntime {
 
 	/**
 	 * Returns the list of registered SREs. SRE types are registered via
-	 * extension point with the name {@link SARLConfig#EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT}.
+	 * extension point with the name {@link SARLEclipseConfig#EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT}.
 	 * Returns an empty list if there are no registered SREs.
 	 *
 	 * @return the list of registered SREs.
@@ -455,7 +455,7 @@ public final class SARLRuntime {
 		MultiStatus status = new MultiStatus(SARLEclipsePlugin.PLUGIN_ID,
 				IStatus.OK, "Exceptions occurred", null);  //$NON-NLS-1$
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-				SARLEclipsePlugin.PLUGIN_ID, SARLConfig.EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT);
+				SARLEclipsePlugin.PLUGIN_ID, SARLEclipseConfig.EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT);
 		if (extensionPoint != null) {
 			Object obj;
 			for (IConfigurationElement element : extensionPoint.getConfigurationElements()) {

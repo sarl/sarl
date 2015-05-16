@@ -20,11 +20,12 @@
  */
 package io.sarl.eclipse.wizards.newproject;
 
-import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SREConfigurationBlock;
+import io.sarl.lang.SARLConfig;
 
 import java.io.File;
 import java.io.IOException;
@@ -174,7 +175,7 @@ public class MainProjectWizardPage extends WizardPage {
 		setTitle(Messages.SARLProjectNewWizard_3);
 		setDescription(Messages.SARLProjectNewWizard_1);
 		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(
-				SARLConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
+				SARLEclipseConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
 
 	/**

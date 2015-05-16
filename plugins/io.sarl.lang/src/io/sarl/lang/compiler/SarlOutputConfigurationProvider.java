@@ -21,6 +21,7 @@
 package io.sarl.lang.compiler;
 
 import static com.google.common.collect.Sets.newHashSet;
+import io.sarl.lang.SARLConfig;
 
 import java.util.Set;
 
@@ -44,8 +45,8 @@ public class SarlOutputConfigurationProvider extends OutputConfigurationProvider
 	@Override
 	public Set<OutputConfiguration> getOutputConfigurations() {
 		OutputConfiguration defaultOutput = new OutputConfiguration(IFileSystemAccess.DEFAULT_OUTPUT);
-		defaultOutput.setDescription("Output folder for generated Java files"); //$NON-NLS-1$
-		defaultOutput.setOutputDirectory("src-gen"); //$NON-NLS-1$
+		defaultOutput.setDescription(Messages.SarlOutputConfigurationProvider_0);
+		defaultOutput.setOutputDirectory(SARLConfig.FOLDER_SOURCE_GENERATED);
 		defaultOutput.setOverrideExistingResources(true);
 		defaultOutput.setCreateOutputDirectory(true);
 		defaultOutput.setCanClearOutputDirectory(false);

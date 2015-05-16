@@ -20,8 +20,9 @@
  */
 package io.sarl.eclipse.wizards.newproject;
 
-import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.lang.SARLConfig;
 import io.sarl.lang.ui.preferences.SARLPreferences;
 
 import java.io.File;
@@ -126,7 +127,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		setTitle(Messages.SARLProjectNewWizard_3);
 		setDescription(Messages.SARLProjectNewWizard_2);
 		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(
-				SARLConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
+				SARLEclipseConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
 
 	@Override

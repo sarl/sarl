@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.wizards.newproject;
 
-import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
 import io.sarl.eclipse.runtime.ISREInstall;
@@ -94,7 +94,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	 */
 	public NewSarlProjectWizard(MainProjectWizardPage pageOne, BuildSettingWizardPage pageTwo) {
 		setDefaultPageImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(
-				SARLConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
+				SARLEclipseConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());
 		setWindowTitle(Messages.SARLProjectNewWizard_0);
 
@@ -310,8 +310,8 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	private static void addNatures(IProject project) throws CoreException {
 		final IProjectDescription description = project.getDescription();
 		final List<String> natures = new ArrayList<>(Arrays.asList(description.getNatureIds()));
-		natures.add(0, SARLConfig.NATURE_ID);
-		natures.add(1, SARLConfig.XTEXT_NATURE_ID);
+		natures.add(0, SARLEclipseConfig.NATURE_ID);
+		natures.add(1, SARLEclipseConfig.XTEXT_NATURE_ID);
 		// natures.add(2, JavaCore.NATURE_ID); not necessary since the project is already a java project
 
 		final String[] newNatures = natures.toArray(new String[natures.size()]);

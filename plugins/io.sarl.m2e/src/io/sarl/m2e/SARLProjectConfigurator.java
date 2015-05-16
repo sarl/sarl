@@ -20,9 +20,10 @@
  */
 package io.sarl.m2e;
 
-import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
 import io.sarl.eclipse.util.Utilities;
+import io.sarl.lang.SARLConfig;
 import io.sarl.lang.ui.preferences.SARLPreferences;
 
 import java.io.File;
@@ -99,8 +100,8 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	@SuppressWarnings("static-method")
 	protected void addNatures(IMavenProjectFacade facade,
 			SARLConfiguration config, IProgressMonitor monitor) throws CoreException {
-		addNature(facade.getProject(), SARLConfig.NATURE_ID, monitor);
-		addNature(facade.getProject(), SARLConfig.XTEXT_NATURE_ID, monitor);
+		addNature(facade.getProject(), SARLEclipseConfig.NATURE_ID, monitor);
+		addNature(facade.getProject(), SARLEclipseConfig.XTEXT_NATURE_ID, monitor);
 	}
 
 	private static IPath makeFullPath(IMavenProjectFacade facade, File file) {
@@ -141,8 +142,8 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 			IClasspathDescriptor classpath, IProgressMonitor monitor)
 					throws CoreException {
 
-		assertHasNature(facade.getProject(), SARLConfig.NATURE_ID);
-		assertHasNature(facade.getProject(), SARLConfig.XTEXT_NATURE_ID);
+		assertHasNature(facade.getProject(), SARLEclipseConfig.NATURE_ID);
+		assertHasNature(facade.getProject(), SARLEclipseConfig.XTEXT_NATURE_ID);
 		assertHasNature(facade.getProject(), JavaCore.NATURE_ID);
 
 		String encoding = config.getEncoding();
@@ -361,9 +362,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	private static void forceMavenCompilerConfiguration(IMavenProjectFacade facade, SARLConfiguration config) {
 		Properties props = facade.getMavenProject().getProperties();
 		setVersion(props, "maven.compiler.source", config.getInputCompliance(), //$NON-NLS-1$
-				SARLConfig.MINIMAL_JRE_VERSION);
+				SARLEclipseConfig.MINIMAL_JRE_VERSION);
 		setVersion(props, "maven.compiler.target", config.getOutputCompliance(), //$NON-NLS-1$
-				SARLConfig.MINIMAL_JRE_VERSION);
+				SARLEclipseConfig.MINIMAL_JRE_VERSION);
 		String encoding = config.getEncoding();
 		if (encoding != null && !encoding.isEmpty()) {
 			props.setProperty("maven.compiler.encoding", encoding); //$NON-NLS-1$

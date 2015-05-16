@@ -21,7 +21,7 @@
 package io.sarl.eclipse.wizards.elements.aop.newevent;
 
 import static io.sarl.eclipse.util.Jdt2Ecore.populateInheritanceContext;
-import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
@@ -61,7 +61,7 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 		super(CLASS_TYPE, Messages.NewSarlEvent_0);
 		setTitle(Messages.NewSarlEvent_0);
 		setDescription(Messages.NewSarlEventWizardPage_0);
-		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(SARLConfig.NEW_EVENT_WIZARD_DIALOG_IMAGE));
+		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(SARLEclipseConfig.NEW_EVENT_WIZARD_DIALOG_IMAGE));
 	}
 
 	@Override

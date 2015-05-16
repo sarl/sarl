@@ -21,7 +21,7 @@
 package io.sarl.eclipse.wizards.elements.aop.newbehavior;
 
 import static io.sarl.eclipse.util.Jdt2Ecore.populateInheritanceContext;
-import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
@@ -62,7 +62,7 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 		super(CLASS_TYPE, Messages.NewSarlBehavior_0);
 		setTitle(Messages.NewSarlBehavior_0);
 		setDescription(Messages.NewSarlBehaviorWizardPage_0);
-		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(SARLConfig.NEW_BEHAVIOR_WIZARD_DIALOG_IMAGE));
+		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(SARLEclipseConfig.NEW_BEHAVIOR_WIZARD_DIALOG_IMAGE));
 	}
 
 	@Override

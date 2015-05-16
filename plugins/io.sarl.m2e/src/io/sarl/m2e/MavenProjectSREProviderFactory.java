@@ -20,7 +20,7 @@
  */
 package io.sarl.m2e;
 
-import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.ProjectSREProvider;
 import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
@@ -57,7 +57,7 @@ public class MavenProjectSREProviderFactory implements ProjectSREProviderFactory
 		try {
 			if (project.hasNature(IMavenConstants.NATURE_ID)
 					&& project.hasNature(JavaCore.NATURE_ID)
-					&& project.hasNature(SARLConfig.NATURE_ID)) {
+					&& project.hasNature(SARLEclipseConfig.NATURE_ID)) {
 				IMavenProjectFacade facade = MavenPluginActivator.getDefault()
 						.getMavenProjectManager().getProject(project);
 				if (facade == null) {

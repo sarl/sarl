@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.wizards.sreinstall;
 
-import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SREException;
@@ -95,7 +95,7 @@ public abstract class SREInstallWizard extends Wizard {
 	public AbstractSREInstallPage getPage(ISREInstall sre) {
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
 				SARLEclipsePlugin.PLUGIN_ID,
-				SARLConfig.EXTENSION_POINT_SRE_INSTALL_PAGES);
+				SARLEclipseConfig.EXTENSION_POINT_SRE_INSTALL_PAGES);
 		if (sre != null && extensionPoint != null) {
 			IConfigurationElement firstTypeMatching = null;
 			for (IConfigurationElement info : extensionPoint.getConfigurationElements()) {

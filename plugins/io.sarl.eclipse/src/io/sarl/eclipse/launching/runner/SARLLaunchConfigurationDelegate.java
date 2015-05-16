@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.launching.runner;
 
-import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
 import io.sarl.eclipse.launching.dialog.RootContextIdentifierType;
@@ -135,7 +135,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	@SuppressWarnings("static-method")
 	protected String getAgentName(ILaunchConfiguration configuration) throws CoreException {
 		String agentName = configuration.getAttribute(
-				SARLConfig.ATTR_AGENT_NAME,
+				SARLEclipseConfig.ATTR_AGENT_NAME,
 				(String) null);
 		if (agentName == null) {
 			return null;
@@ -158,7 +158,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			abort(
 					io.sarl.eclipse.launching.dialog.Messages.MainLaunchConfigurationTab_2,
 					null,
-					SARLConfig.ERR_UNSPECIFIED_AGENT_NAME);
+					SARLEclipseConfig.ERR_UNSPECIFIED_AGENT_NAME);
 		}
 	}
 
@@ -181,7 +181,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		IRuntimeClasspathEntry[] entries = computeUnresolvedSARLRuntimeClasspath(configuration);
 		entries = JavaRuntime.resolveRuntimeClasspath(entries, configuration);
 
-		boolean isMavenProject = getJavaProject(configuration).getProject().hasNature(SARLConfig.MAVEN_NATURE_ID);
+		boolean isMavenProject = getJavaProject(configuration).getProject().hasNature(SARLEclipseConfig.MAVEN_NATURE_ID);
 		boolean needSREEntry = isMavenProject;
 
 		// Store in a list for preserving the order of the entries.
@@ -386,7 +386,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	private static ISREInstall getSREFromExtension(IProject project, boolean verify) {
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
 				SARLEclipsePlugin.PLUGIN_ID,
-				SARLConfig.EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY);
+				SARLEclipseConfig.EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY);
 		if (extensionPoint != null) {
 			for (IConfigurationElement element : extensionPoint.getConfigurationElements()) {
 				try {
@@ -454,10 +454,10 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 */
 	private ISREInstall getSREInstallFor(ILaunchConfiguration configuration) throws CoreException {
 		String useSystemSRE = configuration.getAttribute(
-				SARLConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
+				SARLEclipseConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
 				Boolean.TRUE.toString());
 		String useProjectSRE = configuration.getAttribute(
-				SARLConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
+				SARLEclipseConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
 				Boolean.FALSE.toString());
 		ISREInstall sre = null;
 		if (Boolean.parseBoolean(useSystemSRE)) {
@@ -466,7 +466,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		} else if (Boolean.parseBoolean(useProjectSRE)) {
 			sre = getProjectSpecificSRE(configuration, true);
 		} else  {
-			String runtime = configuration.getAttribute(SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT, (String) null);
+			String runtime = configuration.getAttribute(SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT, (String) null);
 			sre = SARLRuntime.getSREFromId(runtime);
 			verifySREValidity(sre, runtime, true);
 		}
@@ -601,7 +601,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 		// Retreive the SRE arguments from the launch configuration
 		String sreArgs2 = substitutor.performStringSubstitution(configuration.getAttribute(
-						SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS,
+						SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS,
 						Strings.nullToEmpty(null)));
 
 		// Retreive the classname of the boot agent.
@@ -612,24 +612,24 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		assert (cliOptions != null);
 		String options = null;
 
-		if (configuration.getAttribute(SARLConfig.ATTR_SHOW_LOGO_OPTION, false)) {
+		if (configuration.getAttribute(SARLEclipseConfig.ATTR_SHOW_LOGO_OPTION, false)) {
 			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_SHOW_LOGO));
 		} else {
 			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_HIDE_LOGO));
 		}
 
-		if (configuration.getAttribute(SARLConfig.ATTR_SHOW_LOG_INFO, true)) {
+		if (configuration.getAttribute(SARLEclipseConfig.ATTR_SHOW_LOG_INFO, true)) {
 			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_SHOW_INFO));
 		} else {
 			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_HIDE_INFO));
 		}
 
-		if (configuration.getAttribute(SARLConfig.ATTR_SRE_OFFLINE, true)) {
+		if (configuration.getAttribute(SARLEclipseConfig.ATTR_SRE_OFFLINE, true)) {
 			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_SRE_OFFLINE));
 		}
 
 		RootContextIdentifierType type = RootContextIdentifierType.DEFAULT_CONTEXT_ID;
-		String typeName = configuration.getAttribute(SARLConfig.ATTR_ROOT_CONTEXT_ID_TYPE, (String) null);
+		String typeName = configuration.getAttribute(SARLEclipseConfig.ATTR_ROOT_CONTEXT_ID_TYPE, (String) null);
 		if (!Strings.isNullOrEmpty(typeName)) {
 			try {
 				type = RootContextIdentifierType.valueOf(typeName);

@@ -20,7 +20,7 @@
  */
 package io.sarl.eclipse.launching.dialog;
 
-import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Utilities;
 
@@ -96,7 +96,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	public Image getImage() {
 		Image img = (this.image == null) ? null : this.image.get();
 		if (img == null) {
-			img = SARLEclipsePlugin.getDefault().getImage(SARLConfig.SARL_LOGO_IMAGE);
+			img = SARLEclipsePlugin.getDefault().getImage(SARLEclipseConfig.SARL_LOGO_IMAGE);
 			this.image = new SoftReference<>(img);
 		}
 		return img;
@@ -219,7 +219,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	protected void updateContextIdentifierTypeFromConfig(ILaunchConfiguration config) {
 		RootContextIdentifierType type = RootContextIdentifierType.DEFAULT_CONTEXT_ID;
 		try {
-			String typeName = config.getAttribute(SARLConfig.ATTR_ROOT_CONTEXT_ID_TYPE, (String) null);
+			String typeName = config.getAttribute(SARLEclipseConfig.ATTR_ROOT_CONTEXT_ID_TYPE, (String) null);
 			if (!Strings.isNullOrEmpty(typeName)) {
 				type = RootContextIdentifierType.valueOf(typeName);
 			}
@@ -249,19 +249,19 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	protected void updateLaunchOptionsFromConfig(ILaunchConfiguration config) {
 		boolean showLogo = false;
 		try {
-			showLogo = config.getAttribute(SARLConfig.ATTR_SHOW_LOGO_OPTION, false);
+			showLogo = config.getAttribute(SARLEclipseConfig.ATTR_SHOW_LOGO_OPTION, false);
 		} catch (CoreException ce) {
 			SARLEclipsePlugin.getDefault().log(ce);
 		}
 		boolean showLogInfo = true;
 		try {
-			showLogInfo = config.getAttribute(SARLConfig.ATTR_SHOW_LOG_INFO, false);
+			showLogInfo = config.getAttribute(SARLEclipseConfig.ATTR_SHOW_LOG_INFO, false);
 		} catch (CoreException ce) {
 			SARLEclipsePlugin.getDefault().log(ce);
 		}
 		boolean offline = true;
 		try {
-			offline = config.getAttribute(SARLConfig.ATTR_SRE_OFFLINE, true);
+			offline = config.getAttribute(SARLEclipseConfig.ATTR_SRE_OFFLINE, true);
 		} catch (CoreException ce) {
 			SARLEclipsePlugin.getDefault().log(ce);
 		}
@@ -279,7 +279,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 		String agentName = null;
 		try {
 			agentName = config.getAttribute(
-					SARLConfig.ATTR_AGENT_NAME,
+					SARLEclipseConfig.ATTR_AGENT_NAME,
 					(String) null);
 		} catch (CoreException ce) {
 			SARLEclipsePlugin.getDefault().log(ce);
@@ -380,19 +380,19 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 				IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME,
 				Strings.emptyToNull(this.fProjText.getText().trim()));
 		config.setAttribute(
-				SARLConfig.ATTR_AGENT_NAME,
+				SARLEclipseConfig.ATTR_AGENT_NAME,
 				Strings.emptyToNull(this.agentNameTextField.getText().trim()));
 		config.setAttribute(
-				SARLConfig.ATTR_ROOT_CONTEXT_ID_TYPE,
+				SARLEclipseConfig.ATTR_ROOT_CONTEXT_ID_TYPE,
 				getSelectedContextIdentifierType().name());
 		config.setAttribute(
-				SARLConfig.ATTR_SHOW_LOGO_OPTION,
+				SARLEclipseConfig.ATTR_SHOW_LOGO_OPTION,
 				this.showLogoOptionButton.getSelection());
 		config.setAttribute(
-				SARLConfig.ATTR_SHOW_LOG_INFO,
+				SARLEclipseConfig.ATTR_SHOW_LOG_INFO,
 				this.showLogInfoButton.getSelection());
 		config.setAttribute(
-				SARLConfig.ATTR_SRE_OFFLINE,
+				SARLEclipseConfig.ATTR_SRE_OFFLINE,
 				this.offlineButton.getSelection());
 		mapResources(config);
 	}
@@ -417,7 +417,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	 */
 	@SuppressWarnings("static-method")
 	protected void initializeContextIdentifierType(ILaunchConfigurationWorkingCopy config) {
-		config.setAttribute(SARLConfig.ATTR_ROOT_CONTEXT_ID_TYPE, RootContextIdentifierType.DEFAULT_CONTEXT_ID.name());
+		config.setAttribute(SARLEclipseConfig.ATTR_ROOT_CONTEXT_ID_TYPE, RootContextIdentifierType.DEFAULT_CONTEXT_ID.name());
 	}
 
 	/**
@@ -427,9 +427,9 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	 */
 	@SuppressWarnings("static-method")
 	protected void initializeLaunchOptions(ILaunchConfigurationWorkingCopy config) {
-		config.setAttribute(SARLConfig.ATTR_SHOW_LOGO_OPTION, false);
-		config.setAttribute(SARLConfig.ATTR_SHOW_LOG_INFO, true);
-		config.setAttribute(SARLConfig.ATTR_SRE_OFFLINE, true);
+		config.setAttribute(SARLEclipseConfig.ATTR_SHOW_LOGO_OPTION, false);
+		config.setAttribute(SARLEclipseConfig.ATTR_SHOW_LOG_INFO, true);
+		config.setAttribute(SARLEclipseConfig.ATTR_SRE_OFFLINE, true);
 	}
 
 	private String extractNameFromJavaElement(final IJavaElement javaElement) {
@@ -469,7 +469,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 		String name = extractNameFromJavaElement(javaElement);
 
 		// Set the attribute
-		config.setAttribute(SARLConfig.ATTR_AGENT_NAME, name);
+		config.setAttribute(SARLEclipseConfig.ATTR_AGENT_NAME, name);
 
 		// Rename the launch configuration
 		if (name.length() > 0) {
