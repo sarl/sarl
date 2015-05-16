@@ -22,7 +22,9 @@ Require-Bundle: io.sarl.lang.ui;bundle-version="1.0.0",
  org.eclipse.equinox.bidi;bundle-version="0.10.0",
  org.eclipse.core.filesystem;bundle-version="1.4.100",
  org.eclipse.jdt.debug.ui;bundle-version="3.6.300",
- org.eclipse.core.variables;bundle-version="3.2.800"
+ org.eclipse.core.variables;bundle-version="3.2.800",
+ org.eclipse.emf.codegen;bundle-version="2.10.0",
+ org.eclipse.emf.codegen.ecore;bundle-version="2.10.2"
 Export-Package: io.sarl.eclipse,
  io.sarl.eclipse.buildpath,
  io.sarl.eclipse.dialog,

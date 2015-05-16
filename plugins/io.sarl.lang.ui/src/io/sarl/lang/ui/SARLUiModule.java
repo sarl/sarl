@@ -63,8 +63,10 @@ import org.eclipse.xtext.ide.editor.bracketmatching.IBracePairProvider;
 import org.eclipse.xtext.service.SingletonBinding;
 import org.eclipse.xtext.tasks.ITaskTagProvider;
 import org.eclipse.xtext.ui.editor.IXtextEditorCallback;
+import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.XtextSourceViewer;
 import org.eclipse.xtext.ui.editor.actions.IActionContributor;
+import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategy;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategyProvider;
 import org.eclipse.xtext.ui.editor.doubleClicking.DoubleClickStrategyProvider;
 import org.eclipse.xtext.ui.editor.hover.IEObjectHoverProvider;
@@ -203,19 +205,19 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	//
 	// THE FOLLOWING ELEMENTS ARE COPIED FROM Xtend Modules
 
-	//	/** Configure the debug mode.
-	//	 *
-	//	 * @param binder the binder.
-	//	 */
-	//	public void configureDebugMode(Binder binder) {
-	//		if (Boolean.getBoolean("io.sarl.lang.debug") //$NON-NLS-1$
-	//			|| Boolean.getBoolean("org.eclipse.xtext.xtend.debug")) { //$NON-NLS-1$
-	//			binder.bindConstant().annotatedWith(Names.named(AbstractEditStrategy.DEBUG)).to(true);
-	//		}
-	//		// matches ID of org.eclipse.ui.contexts extension registered in plugin.xml
-	//		binder.bindConstant().annotatedWith(Names.named(XtextEditor.KEY_BINDING_SCOPE))
-	//						.to("org.eclipse.xtend.ide.XtendEditorScope");
-	//	}
+	/** Configure the debug mode.
+	 *
+	 * @param binder the binder.
+	 */
+	public void configureDebugMode(Binder binder) {
+		if (Boolean.getBoolean("io.sarl.lang.debug") //$NON-NLS-1$
+				|| Boolean.getBoolean("org.eclipse.xtext.xtend.debug")) { //$NON-NLS-1$
+			binder.bindConstant().annotatedWith(Names.named(AbstractEditStrategy.DEBUG)).to(true);
+		}
+		// matches ID of org.eclipse.ui.contexts extension registered in plugin.xml
+		binder.bindConstant().annotatedWith(Names.named(XtextEditor.KEY_BINDING_SCOPE))
+			.to("io.sarl.lang.ui.scoping.SARLEditorScope"); //$NON-NLS-1$
+	}
 
 	/** Replies the type of the provider of output configurations.
 	 * @return the type of the provider of output configurations.
@@ -274,7 +276,7 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		binder.bind(IXtextEditorCallback.class).annotatedWith(Names.named("OverrideIndicatorModelListener")) //$NON-NLS-1$
 		.to(OverrideIndicatorModelListener.class);
 		binder.bind(IActionContributor.class).annotatedWith(Names.named("OverrideIndicatorRulerAction")) //$NON-NLS-1$
-				.to(OverrideIndicatorRulerAction.class);
+		.to(OverrideIndicatorRulerAction.class);
 	}
 
 	@Override
