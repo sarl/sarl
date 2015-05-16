@@ -66,5 +66,5 @@ public class SarlInterfaceImplCustom extends XtendInterfaceImplCustom {
 		}
 		return super.getDefaultVisibility();
 	}
-	
+
 }

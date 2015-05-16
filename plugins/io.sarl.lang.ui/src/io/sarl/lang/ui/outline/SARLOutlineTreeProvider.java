@@ -20,29 +20,33 @@
  */
 package io.sarl.lang.ui.outline;
 
-import io.sarl.lang.sarl.SarlAction;
-import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
-import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
-import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
-import io.sarl.lang.sarl.SarlSkill;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
+import org.eclipse.xtend.core.xtend.XtendFunction;
+import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmFeature;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.nodemodel.ICompositeNode;
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
+import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode;
 import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
 import org.eclipse.xtext.xbase.annotations.ui.outline.XbaseWithAnnotationsOutlineTreeProvider;
 
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
 
 /**
  * Customization of the default outline structure.
@@ -54,6 +58,9 @@ import com.google.common.base.Strings;
  * @see "http://www.eclipse.org/Xtext/documentation.html#outline"
  */
 public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProvider {
+
+	@Inject
+	private SarlJvmModelAssociations associations;
 
 	/** Create a node for the SARL script.
 	 *
@@ -97,13 +104,11 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 			EObjectNode capacityRequirementNode = null;
 
 			for (EObject feature : modelElement.getMembers()) {
-				if (feature instanceof XtendField) {
-					createNode(elementNode, feature);
-				} else if (feature instanceof SarlAction) {
-					createNode(elementNode, feature);
-				} else if (feature instanceof SarlBehaviorUnit) {
-					createNode(elementNode, feature);
-				} else if (feature instanceof XtendConstructor) {
+				if (feature instanceof XtendField
+						|| feature instanceof XtendFunction
+						|| feature instanceof SarlBehaviorUnit
+						|| feature instanceof XtendConstructor
+						|| feature instanceof XtendTypeDeclaration) {
 					createNode(elementNode, feature);
 				} else if (feature instanceof SarlCapacityUses) {
 					capacityUseNode = createCapacityUseNode(elementNode, (SarlCapacityUses) feature, capacityUseNode);
@@ -155,94 +160,67 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 		return capacityRequirementNode;
 	}
 
-	/** Replies if the agent element is a leaf in the outline.
+	/** Replies if the type declaration element is a leaf in the outline.
 	 *
 	 * @param modelElement - the model element.
 	 * @return <code>true</code> if it is a leaf, <code>false</code> otherwise.
 	 */
 	@SuppressWarnings("static-method")
-	protected boolean _isLeaf(SarlAgent modelElement) {
+	protected boolean _isLeaf(XtendTypeDeclaration modelElement) {
 		return modelElement.getMembers().isEmpty();
 	}
 
-	/** Replies if the capacity element is a leaf in the outline.
+	/** Replies if the member element is a leaf in the outline.
 	 *
 	 * @param modelElement - the model element.
 	 * @return <code>true</code> if it is a leaf, <code>false</code> otherwise.
 	 */
 	@SuppressWarnings("static-method")
-	protected boolean _isLeaf(SarlCapacity modelElement) {
-		return modelElement.getMembers().isEmpty();
-	}
-
-	/** Replies if the skill element is a leaf in the outline.
-	 *
-	 * @param modelElement - the model element.
-	 * @return <code>true</code> if it is a leaf, <code>false</code> otherwise.
-	 */
-	@SuppressWarnings("static-method")
-	protected boolean _isLeaf(SarlSkill modelElement) {
-		return modelElement.getMembers().isEmpty();
-	}
-
-	/** Replies if the event element is a leaf in the outline.
-	 *
-	 * @param modelElement - the model element.
-	 * @return <code>true</code> if it is a leaf, <code>false</code> otherwise.
-	 */
-	@SuppressWarnings("static-method")
-	protected boolean _isLeaf(SarlEvent modelElement) {
-		return modelElement.getMembers().isEmpty();
-	}
-
-	/** Replies if the behavior element is a leaf in the outline.
-	 *
-	 * @param modelElement - the model element.
-	 * @return <code>true</code> if it is a leaf, <code>false</code> otherwise.
-	 */
-	@SuppressWarnings("static-method")
-	protected boolean _isLeaf(SarlBehavior modelElement) {
-		return modelElement.getMembers().isEmpty();
-	}
-
-	/** Replies if the action element is a leaf in the outline.
-	 *
-	 * @param modelElement - the model element.
-	 * @return <code>true</code> if it is a leaf, <code>false</code> otherwise.
-	 */
-	@SuppressWarnings("static-method")
-	protected boolean _isLeaf(SarlAction modelElement) {
+	protected boolean _isLeaf(XtendMember modelElement) {
 		return true;
 	}
 
-	/** Replies if the constructor element is a leaf in the outline.
-	 *
-	 * @param modelElement - the model element.
-	 * @return <code>true</code> if it is a leaf, <code>false</code> otherwise.
-	 */
-	@SuppressWarnings("static-method")
-	protected boolean _isLeaf(XtendConstructor modelElement) {
-		return true;
+	@Override
+	protected EObjectNode createEObjectNode(
+			IOutlineNode parentNode,
+			EObject modelElement, Image image, Object text,
+			boolean isLeaf) {
+		SARLEObjectNode eObjectNode = new SARLEObjectNode(modelElement, parentNode, image, text, isLeaf);
+		configureNode(parentNode, modelElement, eObjectNode);
+		return eObjectNode;
 	}
 
-	/** Replies if the behabior unit element is a leaf in the outline.
-	 *
-	 * @param modelElement - the model element.
-	 * @return <code>true</code> if it is a leaf, <code>false</code> otherwise.
-	 */
-	@SuppressWarnings("static-method")
-	protected boolean _isLeaf(SarlBehaviorUnit modelElement) {
-		return true;
+	private void configureNode(IOutlineNode parentNode, EObject modelElement, SARLEObjectNode eObjectNode) {
+		EObject primarySourceElement = this.associations.getPrimarySourceElement(modelElement);
+		ICompositeNode parserNode = NodeModelUtils.getNode(
+				(primarySourceElement == null) ? modelElement : primarySourceElement);
+
+		if (parserNode != null) {
+			eObjectNode.setTextRegion(parserNode.getTextRegion());
+		}
+
+		if (isLocalElement(parentNode, modelElement)) {
+			eObjectNode.setShortTextRegion(this.locationInFileProvider.getSignificantTextRegion(modelElement));
+		}
+
+		eObjectNode.setStatic(isStatic(modelElement));
 	}
 
-	/** Replies if the attribute element is a leaf in the outline.
-	 *
-	 * @param modelElement - the model element.
-	 * @return <code>true</code> if it is a leaf, <code>false</code> otherwise.
-	 */
-	@SuppressWarnings("static-method")
-	protected boolean _isLeaf(XtendField modelElement) {
-		return true;
+	private static boolean isStatic(EObject element) {
+		if (element instanceof JvmFeature) {
+			return ((JvmFeature) element).isStatic();
+		}
+		if (element instanceof JvmDeclaredType) {
+			return ((JvmDeclaredType) element).isStatic();
+		}
+		if (element instanceof XtendMember) {
+			try {
+				return ((XtendMember) element).isStatic();
+			} catch (Exception _) {
+				// Some XtendMember does not support
+			}
+		}
+		return false;
 	}
 
 }

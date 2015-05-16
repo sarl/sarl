@@ -20,7 +20,6 @@
  */
 package io.sarl.lang.ui.outline;
 
-import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_ACTION;
 import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_BEHAVIOR_UNIT;
 import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_CAPACITY_USES;
 import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_REQUIRED_CAPACITY;
@@ -32,6 +31,8 @@ import static org.eclipse.xtext.xtype.XtypePackage.Literals.XIMPORT_SECTION;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.xtend.core.xtend.XtendPackage;
+import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
 import org.eclipse.xtext.ui.editor.outline.actions.SortOutlineContribution.DefaultComparator;
 import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
@@ -50,18 +51,17 @@ public class SARLOutlineNodeComparator extends DefaultComparator {
 	private static final int SCRIPT_PRIORITY = 0;
 	private static final int IMPORT_PRIORITY = 10;
 	private static final int TOPELEMENT_PRIORITY = 20;
-
-	private static final int PRIORITY_STEP = 10;
-
-	private final EClass[] types = new EClass[] {
-			SARL_CAPACITY_USES,
-			SARL_REQUIRED_CAPACITY,
-			XTEND_FIELD,
-			XTEND_CONSTRUCTOR,
-			SARL_BEHAVIOR_UNIT,
-			SARL_ACTION,
-			XTEND_FUNCTION,
-	};
+	
+	private static final int CAPACITY_USE_PRIORITY = 30;
+	private static final int CAPACITY_REQUIREMENT_PRIORITY = 40;
+	private static final int STATIC_INNER_TYPE_PRIORITY = 50;
+	private static final int INNER_TYPE_PRIORITY = 60;
+	private static final int STATIC_FIELD_PRIORITY = 70;
+	private static final int STATIC_METHOD_PRIORITY = 80;
+	private static final int FIELD_PRIORITY = 90;
+	private static final int CONSTRUCTOR_PRIORITY = 100;
+	private static final int BEHAVIOR_UNIT_PRIORITY = 110;
+	private static final int METHOD_PRIORITY = 120;
 
 	/**
 	 */
@@ -79,19 +79,52 @@ public class SARLOutlineNodeComparator extends DefaultComparator {
 			return TOPELEMENT_PRIORITY;
 		}
 		if (node instanceof EObjectNode) {
-			EClass eClass = ((EObjectNode) node).getEClass();
+			EObjectNode objectNode = (EObjectNode) node;
+			EClass eClass = objectNode.getEClass();
 			if (XIMPORT_SECTION.isSuperTypeOf(eClass)) {
 				return IMPORT_PRIORITY;
 			}
-			int priority = 0;
-			for (EClass type : this.types) {
-				priority += PRIORITY_STEP;
-				if (type.isSuperTypeOf(eClass)) {
-					return priority;
+			if (XtendPackage.Literals.XTEND_TYPE_DECLARATION.isSuperTypeOf(eClass)
+				|| TypesPackage.Literals.JVM_DECLARED_TYPE.isSuperTypeOf(eClass)
+				|| TypesPackage.Literals.JVM_ENUMERATION_LITERAL.isSuperTypeOf(eClass)) {
+				if (isStatic(objectNode)) {
+					return STATIC_INNER_TYPE_PRIORITY;
 				}
+				return INNER_TYPE_PRIORITY;
+			}
+			if (SARL_CAPACITY_USES.isSuperTypeOf(eClass)) {
+				return CAPACITY_USE_PRIORITY;
+			}
+			if (SARL_REQUIRED_CAPACITY.isSuperTypeOf(eClass)) {
+				return CAPACITY_REQUIREMENT_PRIORITY;
+			}
+			if (XTEND_FIELD.isSuperTypeOf(eClass)) {
+				if (isStatic(objectNode)) {
+					return STATIC_FIELD_PRIORITY;
+				}
+				return FIELD_PRIORITY;
+			}
+			if (XTEND_FUNCTION.isSuperTypeOf(eClass)) {
+				if (isStatic(objectNode)) {
+					return STATIC_METHOD_PRIORITY;
+				}
+				return METHOD_PRIORITY;
+			}
+			if (XTEND_CONSTRUCTOR.isSuperTypeOf(eClass)) {
+				return CONSTRUCTOR_PRIORITY;
+			}
+			if (SARL_BEHAVIOR_UNIT.isSuperTypeOf(eClass)) {
+				return BEHAVIOR_UNIT_PRIORITY;
 			}
 		}
 		return Integer.MAX_VALUE;
+	}
+	
+	private static boolean isStatic(EObjectNode eobjectNode) {
+		if (eobjectNode instanceof SARLEObjectNode) {
+			return ((SARLEObjectNode) eobjectNode).isStatic();
+		}
+		return false;
 	}
 
 }
