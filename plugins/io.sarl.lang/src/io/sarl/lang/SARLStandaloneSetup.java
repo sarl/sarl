@@ -20,6 +20,8 @@
  */
 package io.sarl.lang;
 
+import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.impl.SarlFactoryImplCustom;
 import io.sarl.lang.sarl.impl.SarlXtendFactoryImpl;
 
 import org.eclipse.emf.ecore.EFactory;
@@ -44,6 +46,8 @@ public class SARLStandaloneSetup extends SARLStandaloneSetupGenerated {
 	public Injector createInjectorAndDoEMFRegistration() {
 		// Override the definition of the XtendFactory with the SARL-specific factory.
 		EPackage.Registry.INSTANCE.put(XtendPackage.eNS_URI, new SarlXtendPackageDescriptor());
+		// Override the definition of the SarlFactory with the custom factory.
+		EPackage.Registry.INSTANCE.put(SarlPackage.eNS_URI, new SarlCustomPackageDescriptor());
 		return super.createInjectorAndDoEMFRegistration();
 	}
 
@@ -73,6 +77,30 @@ public class SARLStandaloneSetup extends SARLStandaloneSetupGenerated {
 		@Override
 		public EFactory getEFactory() {
 			return new SarlXtendFactoryImpl();
+		}
+
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class SarlCustomPackageDescriptor implements EPackage.Descriptor {
+
+		public SarlCustomPackageDescriptor() {
+			//
+		}
+
+		@Override
+		public EPackage getEPackage() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public EFactory getEFactory() {
+			return new SarlFactoryImplCustom();
 		}
 
 	}

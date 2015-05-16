@@ -26,8 +26,8 @@ import io.sarl.lang.bugfixes.SARLContextPDAProvider;
 import io.sarl.lang.compiler.SarlOutputConfigurationProvider;
 import io.sarl.lang.controlflow.SARLEarlyExitComputer;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
+import io.sarl.lang.findReferences.SARLReferenceFinder;
 import io.sarl.lang.generator.helper.SARLHiddenTokenSequencer;
-import io.sarl.lang.jvmmodel.JvmModelInferrerProber;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlFactory;
@@ -75,6 +75,7 @@ import org.eclipse.xtext.conversion.impl.IDValueConverter;
 import org.eclipse.xtext.conversion.impl.STRINGValueConverter;
 import org.eclipse.xtext.documentation.IEObjectDocumentationProvider;
 import org.eclipse.xtext.documentation.IFileHeaderProvider;
+import org.eclipse.xtext.findReferences.ReferenceFinder;
 import org.eclipse.xtext.findReferences.TargetURICollector;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.linking.ILinker;
@@ -123,9 +124,7 @@ import org.eclipse.xtext.xbase.validation.EarlyExitValidator;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 import org.eclipse.xtext.xbase.validation.ImplicitReturnFinder;
 
-import com.google.common.base.Optional;
 import com.google.inject.Binder;
-import com.google.inject.Provides;
 import com.google.inject.name.Names;
 
 /**
@@ -146,10 +145,12 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 //		return XtendPartialParsingHelper.class;
 //	}
 
-
-//	public Class<? extends ReferenceFinder> bindReferenceFinder() {
-//		return XtendReferenceFinder.class;
-//	}
+	/** Replies the finder of type references used by the SARL tools.
+	 * @return the finder.
+	 */
+	public Class<? extends ReferenceFinder> bindReferenceFinder() {
+		return SARLReferenceFinder.class;
+	}
 
 	@Override
 	public void configure(Binder binder) {
@@ -277,18 +278,6 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	 */
 	public Class<? extends IContextPDAProvider> bindContextPDAProvider() {
 		return SARLContextPDAProvider.class;
-	}
-
-	/** Provides an optional {@link JvmModelInferrerProber}.
-	 *
-	 * By default, no prober is provided (it is absent).
-	 * The prober is provided during unit tests.
-	 *
-	 * @return an optional {@link JvmModelInferrerProber}.
-	 */
-	@Provides
-	public Optional<JvmModelInferrerProber> getOptionalJvmModelInferrerProber() {
-		return Optional.absent();
 	}
 
 	/** Bind to the SARL JVM model inferred.

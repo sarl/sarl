@@ -190,8 +190,13 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 			newArrayList(SARLJavaValidator.this.visibilityModifers));
 
 	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator agentModifierValidator = new SARLModifierValidator(
+			newArrayList("public", "package", "abstract")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+
+	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInAgentModifierValidator = new SARLModifierValidator(
 			newArrayList(
+					"package",  //$NON-NLS-1$
 					"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 					"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 					"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
@@ -199,9 +204,44 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInAgentModifierValidator = new SARLModifierValidator(
 			newArrayList(
+					"package",  //$NON-NLS-1$
 					"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 					"final", "val", "var", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 					"volatile", "transient")); //$NON-NLS-1$//$NON-NLS-2$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator behaviorModifierValidator = new SARLModifierValidator(
+			newArrayList("public", "package", "abstract")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator methodInBehaviorModifierValidator = new SARLModifierValidator(
+			newArrayList(
+					"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
+					"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator fieldInBehaviorModifierValidator = new SARLModifierValidator(
+			newArrayList(
+					"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
+					"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"final", "val", "var", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"volatile", "transient")); //$NON-NLS-1$//$NON-NLS-2$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator capacityModifierValidator = new SARLModifierValidator(
+			newArrayList("public", "package")); //$NON-NLS-1$//$NON-NLS-2$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator methodInCapacityModifierValidator = new SARLModifierValidator(
+			newArrayList(
+					"public", "abstract", "dispatch", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"def", "override")); //$NON-NLS-1$//$NON-NLS-2$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator eventModifierValidator = new SARLModifierValidator(
+			newArrayList("public", "package")); //$NON-NLS-1$//$NON-NLS-2$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInEventModifierValidator = new SARLModifierValidator(
@@ -210,24 +250,24 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 					"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
-	private final SARLModifierValidator agentModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "package", "abstract")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-
-	@SuppressWarnings("synthetic-access")
-	private final SARLModifierValidator behaviorModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "package", "abstract")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-
-	@SuppressWarnings("synthetic-access")
-	private final SARLModifierValidator capacityModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "package")); //$NON-NLS-1$//$NON-NLS-2$
-
-	@SuppressWarnings("synthetic-access")
-	private final SARLModifierValidator eventModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "package")); //$NON-NLS-1$//$NON-NLS-2$
-
-	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator skillModifierValidator = new SARLModifierValidator(
 			newArrayList("public", "package", "abstract")); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator methodInSkillModifierValidator = new SARLModifierValidator(
+			newArrayList(
+					"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
+					"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator fieldInSkillModifierValidator = new SARLModifierValidator(
+			newArrayList(
+					"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
+					"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"final", "val", "var", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"volatile", "transient")); //$NON-NLS-1$//$NON-NLS-2$
 
 	@Inject
 	private SarlJvmModelAssociations associations;
@@ -324,11 +364,21 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	protected void checkModifiers(XtendFunction function) {
 		XtendTypeDeclaration declaringType = function.getDeclaringType();
 		if (declaringType != null) {
-			if (declaringType instanceof SarlAgent
-				|| declaringType instanceof SarlSkill
-				|| declaringType instanceof SarlBehavior) {
+			if (declaringType instanceof SarlAgent) {
 				String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
 				this.methodInAgentModifierValidator.checkModifiers(function,
+						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+			} else if (declaringType instanceof SarlCapacity) {
+					String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
+					this.methodInCapacityModifierValidator.checkModifiers(function,
+							MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+			} else if (declaringType instanceof SarlSkill) {
+				String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
+				this.methodInSkillModifierValidator.checkModifiers(function,
+						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+			} else if (declaringType instanceof SarlBehavior) {
+				String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
+				this.methodInBehaviorModifierValidator.checkModifiers(function,
 						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
 			} else {
 				super.checkModifiers(function);
@@ -345,11 +395,17 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 				String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
 				this.fieldInEventModifierValidator.checkModifiers(field,
 						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
-			} else if (declaringType instanceof SarlAgent
-				|| declaringType instanceof SarlSkill
-				|| declaringType instanceof SarlBehavior) {
+			} else if (declaringType instanceof SarlAgent) {
 				String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
 				this.fieldInAgentModifierValidator.checkModifiers(field,
+						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+			} else if (declaringType instanceof SarlSkill) {
+				String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
+				this.fieldInSkillModifierValidator.checkModifiers(field,
+						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+			} else if (declaringType instanceof SarlBehavior) {
+				String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
+				this.fieldInBehaviorModifierValidator.checkModifiers(field,
 						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
 			} else {
 				super.checkModifiers(field);

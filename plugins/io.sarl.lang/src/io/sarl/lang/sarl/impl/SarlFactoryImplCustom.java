@@ -20,57 +20,38 @@
  */
 package io.sarl.lang.sarl.impl;
 
-import org.eclipse.xtend.core.xtend.XtendAnnotationType;
-import org.eclipse.xtend.core.xtend.XtendClass;
-import org.eclipse.xtend.core.xtend.XtendEnum;
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFunction;
-import org.eclipse.xtend.core.xtend.impl.XtendFactoryImpl;
+import io.sarl.lang.sarl.SarlAction;
 
 /**
  * <!-- begin-user-doc -->
- * Custom implementation of the XtendFactory for SARL.
+ * Custom implementation of the SarlFactoryImpl.
  * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * <ul>
+ *   <li>{@link #createSarlAction() <em>Custom SARL action</em>}</li>
+ * </ul>
+ * </p>
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SarlXtendFactoryImpl extends XtendFactoryImpl {
+public class SarlFactoryImplCustom extends SarlFactoryImpl {
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * Constructor.
 	 * <!-- end-user-doc -->
 	 */
-	public SarlXtendFactoryImpl() {
+	public SarlFactoryImplCustom() {
 		super();
 	}
 
 	@Override
-	public XtendField createXtendField() {
-		return new SarlFieldImplCustom();
-	}
-
-	@Override
-	public XtendFunction createXtendFunction() {
+	public SarlAction createSarlAction() {
 		return new SarlActionImplCustom();
-	}
-
-	@Override
-	public XtendClass createXtendClass() {
-		return new SarlClassImplCustom();
-	}
-
-	@Override
-	public XtendEnum createXtendEnum() {
-		return new SarlEnumImplCustom();
-	}
-
-	@Override
-	public XtendAnnotationType createXtendAnnotationType() {
-		return new SarlAnnotationTypeImplCustom();
 	}
 
 }

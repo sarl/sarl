@@ -18,7 +18,8 @@ Require-Bundle: io.sarl.lang.core;bundle-version="1.0.0",
  org.eclipse.emf.ecore;bundle-version="2.10.2",
  org.eclipse.emf.common;bundle-version="2.10.1",
  org.antlr.runtime;bundle-version="3.2.0",
- org.objectweb.asm;bundle-version="5.0.1";resolution:=optional
+ org.objectweb.asm;bundle-version="5.0.1";resolution:=optional,
+ org.eclipse.equinox.common;bundle-version="3.6.200"
 Import-Package: org.apache.log4j,
  org.eclipse.jdt.core.formatter
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
@@ -27,6 +28,7 @@ Export-Package: io.sarl.lang,
  io.sarl.lang.bugfixes,
  io.sarl.lang.compiler,
  io.sarl.lang.controlflow,
+ io.sarl.lang.findReferences,
  io.sarl.lang.formatting,
  io.sarl.lang.generator.ecore,
  io.sarl.lang.generator.helper,
@@ -39,6 +41,7 @@ Export-Package: io.sarl.lang,
  io.sarl.lang.scoping.batch,
  io.sarl.lang.serializer,
  io.sarl.lang.services,
+ io.sarl.lang.typing,
  io.sarl.lang.util,
  io.sarl.lang.validation
 Bundle-Activator: io.sarl.lang.SARLLangActivator

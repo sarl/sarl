@@ -581,10 +581,7 @@ public class BehaviorParsingTest {
 					"}"
 					), false);
 			//
-			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the definition of B1; only protected, private, static, final, val, var, volatile & transient are permitted");
+			validate(mas).assertNoErrors();
 		}
 
 		@Test
@@ -608,10 +605,7 @@ public class BehaviorParsingTest {
 					"}"
 					), false);
 			//
-			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the definition of B1; only protected, private, static, final, val, var, volatile & transient are permitted");
+			validate(mas).assertNoErrors();
 		}
 
 		@Test
@@ -648,10 +642,7 @@ public class BehaviorParsingTest {
 					"}"
 					), false);
 			//
-			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the definition of B1; only protected, private, static, final, val, var, volatile & transient are permitted");
+			validate(mas).assertNoErrors();
 		}
 
 		@Test
@@ -675,10 +666,7 @@ public class BehaviorParsingTest {
 					"}"
 					), false);
 			//
-			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the definition of B1; only protected, private, static, final, val, var, volatile & transient are permitted");
+			validate(mas).assertNoErrors();
 		}
 
 		@Test

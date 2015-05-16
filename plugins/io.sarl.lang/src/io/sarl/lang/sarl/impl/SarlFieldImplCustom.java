@@ -25,8 +25,6 @@ import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlSkill;
 
-import org.eclipse.xtend.core.xtend.XtendAnnotationType;
-import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend.core.xtend.impl.XtendFieldImplCustom;
 import org.eclipse.xtext.common.types.JvmVisibility;
@@ -62,9 +60,7 @@ public class SarlFieldImplCustom extends XtendFieldImplCustom {
 	@Override
 	protected JvmVisibility getDefaultVisibility() {
 		XtendTypeDeclaration declaration = getDeclaringType();
-		if (declaration instanceof XtendInterface
-			|| declaration instanceof XtendAnnotationType
-			|| declaration instanceof SarlEvent) {
+		if (declaration instanceof SarlEvent) {
 			return JvmVisibility.PUBLIC;
 		}
 		if (declaration instanceof SarlSkill
@@ -72,7 +68,7 @@ public class SarlFieldImplCustom extends XtendFieldImplCustom {
 			|| declaration instanceof SarlAgent) {
 			return JvmVisibility.PROTECTED;
 		}
-		return JvmVisibility.PRIVATE;
+		return super.getDefaultVisibility();
 	}
 
 }

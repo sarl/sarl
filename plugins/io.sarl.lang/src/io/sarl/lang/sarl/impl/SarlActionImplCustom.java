@@ -20,57 +20,54 @@
  */
 package io.sarl.lang.sarl.impl;
 
-import org.eclipse.xtend.core.xtend.XtendAnnotationType;
-import org.eclipse.xtend.core.xtend.XtendClass;
-import org.eclipse.xtend.core.xtend.XtendEnum;
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFunction;
-import org.eclipse.xtend.core.xtend.impl.XtendFactoryImpl;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlSkill;
+
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.JvmVisibility;
 
 /**
  * <!-- begin-user-doc -->
- * Custom implementation of the XtendFactory for SARL.
+ * Custom implementation of the XtendFunction grammar element for SARL.
  * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * <ul>
+ *   <li>{@link #getDefaultVisibility() <em>Default visibility of fields in SARL elements</em>}</li>
+ * </ul>
+ * </p>
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SarlXtendFactoryImpl extends XtendFactoryImpl {
+public class SarlActionImplCustom extends SarlActionImpl {
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * Constructor.
 	 * <!-- end-user-doc -->
+	 * @generated
 	 */
-	public SarlXtendFactoryImpl() {
+	protected SarlActionImplCustom() {
 		super();
 	}
 
 	@Override
-	public XtendField createXtendField() {
-		return new SarlFieldImplCustom();
-	}
-
-	@Override
-	public XtendFunction createXtendFunction() {
-		return new SarlActionImplCustom();
-	}
-
-	@Override
-	public XtendClass createXtendClass() {
-		return new SarlClassImplCustom();
-	}
-
-	@Override
-	public XtendEnum createXtendEnum() {
-		return new SarlEnumImplCustom();
-	}
-
-	@Override
-	public XtendAnnotationType createXtendAnnotationType() {
-		return new SarlAnnotationTypeImplCustom();
+	protected JvmVisibility getDefaultVisibility() {
+		XtendTypeDeclaration declaration = getDeclaringType();
+		if (declaration instanceof SarlBehavior
+			|| declaration instanceof SarlAgent) {
+			return JvmVisibility.PROTECTED;
+		}
+		if (declaration instanceof SarlSkill
+			|| declaration instanceof SarlCapacity) {
+			return JvmVisibility.PUBLIC;
+		}
+		return super.getDefaultVisibility();
 	}
 
 }

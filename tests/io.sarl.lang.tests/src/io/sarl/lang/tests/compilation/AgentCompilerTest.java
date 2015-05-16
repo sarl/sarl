@@ -363,4 +363,246 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		});
 	}
 
+	@Test
+	public void valueVisibility_0() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"agent A1 {",
+				" val myval = 1",
+				"}"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Agent;",
+				"import java.util.UUID;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public class A1 extends Agent {",
+				"  protected final int myval = 1;",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   */",
+				"  @Generated",
+				"  public A1(final UUID parentID) {",
+				"    super(parentID, null);",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+				"   */",
+				"  @Generated",
+				"  public A1(final UUID parentID, final UUID agentID) {",
+				"    super(parentID, agentID);",
+				"  }",
+				"}",
+				""
+			));
+	}
+
+	@Test
+	public void variableVisibility_0() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"agent A1 {",
+				" var myval = 1",
+				"}"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Agent;",
+				"import java.util.UUID;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public class A1 extends Agent {",
+				"  protected int myval = 1;",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   */",
+				"  @Generated",
+				"  public A1(final UUID parentID) {",
+				"    super(parentID, null);",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+				"   */",
+				"  @Generated",
+				"  public A1(final UUID parentID, final UUID agentID) {",
+				"    super(parentID, agentID);",
+				"  }",
+				"}",
+				""
+			));
+	}
+
+	@Test
+	public void actionVisibility_0() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"agent A1 {",
+				" def myfct { }",
+				"}"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Agent;",
+				"import java.util.UUID;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public class A1 extends Agent {",
+				"  protected void myfct() {",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   */",
+				"  @Generated",
+				"  public A1(final UUID parentID) {",
+				"    super(parentID, null);",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+				"   */",
+				"  @Generated",
+				"  public A1(final UUID parentID, final UUID agentID) {",
+				"    super(parentID, agentID);",
+				"  }",
+				"}",
+				""
+			));
+	}
+
+	@Test
+	public void valueVisibility_1() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"agent A1 {",
+				" private val myval = 1",
+				"}"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Agent;",
+				"import java.util.UUID;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public class A1 extends Agent {",
+				"  private final int myval = 1;",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   */",
+				"  @Generated",
+				"  public A1(final UUID parentID) {",
+				"    super(parentID, null);",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+				"   */",
+				"  @Generated",
+				"  public A1(final UUID parentID, final UUID agentID) {",
+				"    super(parentID, agentID);",
+				"  }",
+				"}",
+				""
+			));
+	}
+
+	@Test
+	public void variableVisibility_1() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"agent A1 {",
+				" private var myval = 1",
+				"}"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Agent;",
+				"import java.util.UUID;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public class A1 extends Agent {",
+				"  private int myval = 1;",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   */",
+				"  @Generated",
+				"  public A1(final UUID parentID) {",
+				"    super(parentID, null);",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+				"   */",
+				"  @Generated",
+				"  public A1(final UUID parentID, final UUID agentID) {",
+				"    super(parentID, agentID);",
+				"  }",
+				"}",
+				""
+			));
+	}
+
+	@Test
+	public void actionVisibility_1() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"agent A1 {",
+				" private def myfct { }",
+				"}"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Agent;",
+				"import java.util.UUID;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public class A1 extends Agent {",
+				"  private void myfct() {",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   */",
+				"  @Generated",
+				"  public A1(final UUID parentID) {",
+				"    super(parentID, null);",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+				"   */",
+				"  @Generated",
+				"  public A1(final UUID parentID, final UUID agentID) {",
+				"    super(parentID, agentID);",
+				"  }",
+				"}",
+				""
+			));
+	}
+
 }

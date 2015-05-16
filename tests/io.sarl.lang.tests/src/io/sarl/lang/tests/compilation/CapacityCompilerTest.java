@@ -44,6 +44,7 @@ import com.google.inject.Inject;
 	CapacityCompilerTest.ActionTest.class,
 	CapacityCompilerTest.ReturnTypeTest.class,
 	CapacityCompilerTest.SkillTest.class,
+	CapacityCompilerTest.Visibility.class,
 })
 @SuppressWarnings("all")
 public class CapacityCompilerTest {
@@ -669,6 +670,57 @@ public class CapacityCompilerTest {
 					assertEquals(expectedC2,r.getGeneratedCode("CapTest2"));
 				}
 			});
+		}
+
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class Visibility extends AbstractSarlTest {
+		
+		@Inject
+		private CompilationTestHelper compiler;
+
+		@Test
+		public void actionVisibility_0() throws Exception {
+			this.compiler.assertCompilesTo(
+				multilineString(
+					"capacity C1 {",
+					" def myfct",
+					"}"
+				),
+				multilineString(
+					"import io.sarl.lang.core.Capacity;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public interface C1 extends Capacity {",
+					"  public abstract void myfct();",
+					"}",
+					""
+				));
+		}
+
+		@Test
+		public void actionVisibility_1() throws Exception {
+			this.compiler.assertCompilesTo(
+					multilineString(
+						"capacity C1 {",
+						" public def myfct",
+						"}"
+					),
+					multilineString(
+						"import io.sarl.lang.core.Capacity;",
+						"",
+						"@SuppressWarnings(\"all\")",
+						"public interface C1 extends Capacity {",
+						"  public abstract void myfct();",
+						"}",
+						""
+					));
 		}
 
 	}

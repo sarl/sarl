@@ -26,7 +26,9 @@ import org.eclipse.xtext.junit4.InjectWith;
 import io.sarl.lang.SARLInjectorProvider;
 
 import org.junit.Test;
+import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
+import org.eclipse.xtext.xbase.compiler.CompilationTestHelper.Result;
 
 import io.sarl.tests.api.AbstractSarlTest;
 import static org.junit.Assert.*;
@@ -69,7 +71,7 @@ public class VarArgsCompilerTest {
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class A1 extends Agent {",
-					"  public void myaction(final int... arg) {",
+					"  protected void myaction(final int... arg) {",
 					"    System.out.println(arg);",
 					"  }",
 					"  ",
@@ -113,7 +115,7 @@ public class VarArgsCompilerTest {
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class A1 extends Agent {",
-					"  public void myaction(final char arg1, final boolean arg2, final int... arg3) {",
+					"  protected void myaction(final char arg1, final boolean arg2, final int... arg3) {",
 					"    System.out.println(arg3);",
 					"  }",
 					"  ",
@@ -164,7 +166,7 @@ public class VarArgsCompilerTest {
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class B1 extends Behavior {",
-					"  public void myaction(final int... arg) {",
+					"  protected void myaction(final int... arg) {",
 					"    System.out.println(arg);",
 					"  }",
 					"  ",
@@ -198,7 +200,7 @@ public class VarArgsCompilerTest {
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class B1 extends Behavior {",
-					"  public void myaction(final char arg1, final boolean arg2, final int... arg3) {",
+					"  protected void myaction(final char arg1, final boolean arg2, final int... arg3) {",
 					"    System.out.println(arg3);",
 					"  }",
 					"  ",
@@ -389,19 +391,15 @@ public class VarArgsCompilerTest {
 					"  }",
 					"}"
 					);
-			String expected = multilineString(
-					"MULTIPLE FILES WERE GENERATED",
-					"",
-					"File 1 : /myProject/src-gen/C1.java",
-					"",
+			final String expectedC1 = multilineString(
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"}",
-					"",
-					"File 2 : /myProject/src-gen/S1.java",
-					"",
+					""
+					);
+			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
@@ -429,10 +427,15 @@ public class VarArgsCompilerTest {
 					"    super(owner);",
 					"  }",
 					"}",
-					"",
 					""
 					);
-			this.compiler.assertCompilesTo(source, expected);
+			this.compiler.compile(source, new IAcceptor<Result>() {
+				@Override
+				public void accept(Result r) {
+					assertEquals(expectedC1,r.getGeneratedCode("C1"));
+					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+				}
+			});
 		}
 
 		@Test
@@ -445,19 +448,7 @@ public class VarArgsCompilerTest {
 					"  }",
 					"}"
 					);
-			String expected = multilineString(
-					"MULTIPLE FILES WERE GENERATED",
-					"",
-					"File 1 : /myProject/src-gen/C1.java",
-					"",
-					"import io.sarl.lang.core.Capacity;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public interface C1 extends Capacity {",
-					"}",
-					"",
-					"File 2 : /myProject/src-gen/S1.java",
-					"",
+			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
@@ -485,10 +476,14 @@ public class VarArgsCompilerTest {
 					"    super(owner);",
 					"  }",
 					"}",
-					"",
 					""
 					);
-			this.compiler.assertCompilesTo(source, expected);
+			this.compiler.compile(source, new IAcceptor<Result>() {
+				@Override
+				public void accept(Result r) {
+					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+				}
+			});
 		}
 
 		@Test
@@ -501,19 +496,7 @@ public class VarArgsCompilerTest {
 					"  }",
 					"}"
 					);
-			String expected = multilineString(
-					"MULTIPLE FILES WERE GENERATED",
-					"",
-					"File 1 : /myProject/src-gen/C1.java",
-					"",
-					"import io.sarl.lang.core.Capacity;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public interface C1 extends Capacity {",
-					"}",
-					"",
-					"File 2 : /myProject/src-gen/S1.java",
-					"",
+			final String expectedS1 = multilineString(
 					"import io.sarl.lang.core.Skill;",
 					"",
 					"@SuppressWarnings(\"all\")",
@@ -522,10 +505,14 @@ public class VarArgsCompilerTest {
 					"    System.out.println(arg);",
 					"  }",
 					"}",
-					"",
 					""
 					);
-			this.compiler.assertCompilesTo(source, expected);
+			this.compiler.compile(source, new IAcceptor<Result>() {
+				@Override
+				public void accept(Result r) {
+					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+				}
+			});
 		}
 
 		@Test
@@ -538,19 +525,7 @@ public class VarArgsCompilerTest {
 					"  }",
 					"}"
 					);
-			String expected = multilineString(
-					"MULTIPLE FILES WERE GENERATED",
-					"",
-					"File 1 : /myProject/src-gen/C1.java",
-					"",
-					"import io.sarl.lang.core.Capacity;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public interface C1 extends Capacity {",
-					"}",
-					"",
-					"File 2 : /myProject/src-gen/S1.java",
-					"",
+			final String expected = multilineString(
 					"import io.sarl.lang.core.Skill;",
 					"",
 					"@SuppressWarnings(\"all\")",
@@ -559,10 +534,14 @@ public class VarArgsCompilerTest {
 					"    System.out.println(arg3);",
 					"  }",
 					"}",
-					"",
 					""
 					);
-			this.compiler.assertCompilesTo(source, expected);
+			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
+				@Override
+				public void accept(Result r) {
+					assertEquals(expected,r.getGeneratedCode("S1"));
+				}
+			});
 		}
 
 	}

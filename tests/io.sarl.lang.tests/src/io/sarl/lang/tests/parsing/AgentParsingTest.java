@@ -669,7 +669,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					XtendPackage.eINSTANCE.getXtendField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the definition of A1; only protected, private, static, final, val, var, volatile & transient are permitted");
+					"Illegal modifier for the definition of A1; only package, protected, private, static, final, val, var, volatile & transient are permitted");
 		}
 
 		@Test
@@ -693,10 +693,7 @@ public class AgentParsingTest {
 					"}"
 					), false);
 			//
-			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the definition of A1; only protected, private, static, final, val, var, volatile & transient are permitted");
+			validate(mas).assertNoErrors();
 		}
 
 		@Test
@@ -736,7 +733,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					XtendPackage.eINSTANCE.getXtendField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the definition of A1; only protected, private, static, final, val, var, volatile & transient are permitted");
+					"Illegal modifier for the definition of A1; only package, protected, private, static, final, val, var, volatile & transient are permitted");
 		}
 
 		@Test
@@ -760,10 +757,7 @@ public class AgentParsingTest {
 					"}"
 					), false);
 			//
-			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the definition of A1; only protected, private, static, final, val, var, volatile & transient are permitted");
+			validate(mas).assertNoErrors();
 		}
 
 		@Test

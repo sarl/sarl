@@ -43,7 +43,6 @@ import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Percept;
 import io.sarl.lang.core.Skill;
-import io.sarl.lang.jvmmodel.JvmModelInferrerProber.Step;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
@@ -111,7 +110,6 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
@@ -171,11 +169,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	@Inject
 	private ISerializer sarlSerializer;
-
-	/** Prober for the internal behavior on this inferrer.
-	 */
-	@Inject
-	private Optional<JvmModelInferrerProber> inferrerProber;
 
 	@Inject
 	private TypesFactory typesFactory;
@@ -1386,21 +1379,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				null,
 				this.sarlSignatureProvider);
 
-		//*****************
-		// For Unit Tests
-		if (this.inferrerProber.isPresent()) {
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_0,
-					featureContainerType.getQualifiedName() + "#finalOperations", //$NON-NLS-1$
-					new TreeMap<>(context.getInheritedFinalOperations()));
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_0,
-					featureContainerType.getQualifiedName() + "#overridableOperations", //$NON-NLS-1$
-					new TreeMap<>(context.getInheritedOverridableOperations()));
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_0,
-					featureContainerType.getQualifiedName() + "#operationsToImplement", //$NON-NLS-1$
-					new TreeMap<>(context.getInheritedOperationsToImplement()));
-		}
-		//*****************
-
 		for (XtendMember feature : container.getMembers()) {
 			if (context.isSupportedMember(feature)
 					&& (!(feature instanceof SarlCapacityUses))
@@ -1408,30 +1386,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				transform(feature, featureContainerType, true);
 			}
 		}
-
-		//*****************
-		// For Unit Tests
-		if (this.inferrerProber.isPresent()) {
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_1,
-					featureContainerType.getQualifiedName() + "#finalOperations", //$NON-NLS-1$
-					new TreeMap<>(context.getInheritedFinalOperations()));
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_1,
-					featureContainerType.getQualifiedName() + "#overridableOperations", //$NON-NLS-1$
-					new TreeMap<>(context.getInheritedOverridableOperations()));
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_1,
-					featureContainerType.getQualifiedName() + "#operationsToImplement", //$NON-NLS-1$
-					new TreeMap<>(context.getInheritedOperationsToImplement()));
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_1,
-					featureContainerType.getQualifiedName() + "#differedCodeGeneration", //$NON-NLS-1$
-					new ArrayList<>(context.getDifferedGenerationElements()));
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_1,
-					featureContainerType.getQualifiedName() + "#actionIndex", context.getActionIndex()); //$NON-NLS-1$
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_1,
-					featureContainerType.getQualifiedName() + "#behaviorUnitIndex", context.getBehaviorUnitIndex()); //$NON-NLS-1$
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_1,
-					featureContainerType.getQualifiedName() + "#hasConstructor", context.hasConstructor()); //$NON-NLS-1$
-		}
-		//*****************
 
 		for (XtendMember feature : container.getMembers()) {
 			if (context.isSupportedMember(feature)
@@ -1441,27 +1395,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 		}
 
-		//*****************
-		// For Unit Tests
-		if (this.inferrerProber.isPresent()) {
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_2,
-					featureContainerType.getQualifiedName() + "#finalOperations", //$NON-NLS-1$
-					new TreeMap<>(context.getInheritedFinalOperations()));
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_2,
-					featureContainerType.getQualifiedName() + "#overridableOperations", //$NON-NLS-1$
-					new TreeMap<>(context.getInheritedOverridableOperations()));
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_2,
-					featureContainerType.getQualifiedName() + "#operationsToImplement", //$NON-NLS-1$
-					new TreeMap<>(context.getInheritedOperationsToImplement()));
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_2,
-					featureContainerType.getQualifiedName() + "#actionIndex", context.getActionIndex()); //$NON-NLS-1$
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_2,
-					featureContainerType.getQualifiedName() + "#behaviorUnitIndex", context.getBehaviorUnitIndex()); //$NON-NLS-1$
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_2,
-					featureContainerType.getQualifiedName() + "#hasConstructor", context.hasConstructor()); //$NON-NLS-1$
-		}
-		//*****************
-
 		// Add dispatch methods
 		appendSyntheticDispatchMethods(container, featureContainerType);
 
@@ -1470,27 +1403,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				container,
 				featureContainerType,
 				context);
-
-		//*****************
-		// For Unit Tests
-		if (this.inferrerProber.isPresent()) {
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_3,
-					featureContainerType.getQualifiedName() + "#finalOperations", //$NON-NLS-1$
-					new TreeMap<>(context.getInheritedFinalOperations()));
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_3,
-					featureContainerType.getQualifiedName() + "#overridableOperations", //$NON-NLS-1$
-					new TreeMap<>(context.getInheritedOverridableOperations()));
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_3,
-					featureContainerType.getQualifiedName() + "#operationsToImplement", //$NON-NLS-1$
-					new TreeMap<>(context.getInheritedOperationsToImplement()));
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_3,
-					featureContainerType.getQualifiedName() + "#actionIndex", context.getActionIndex()); //$NON-NLS-1$
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_3,
-					featureContainerType.getQualifiedName() + "#behaviorUnitIndex", context.getBehaviorUnitIndex()); //$NON-NLS-1$
-			this.inferrerProber.get().register(Step.GENERATE_CODE_FOR_FEATURES_3,
-					featureContainerType.getQualifiedName() + "#hasConstructor", context.hasConstructor()); //$NON-NLS-1$
-		}
-		//*****************
 	}
 
 	/** Generate the missed operations that are the results from the generation of actions with default value parameters.

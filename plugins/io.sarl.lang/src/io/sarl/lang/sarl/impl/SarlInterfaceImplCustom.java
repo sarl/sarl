@@ -20,57 +20,51 @@
  */
 package io.sarl.lang.sarl.impl;
 
-import org.eclipse.xtend.core.xtend.XtendAnnotationType;
-import org.eclipse.xtend.core.xtend.XtendClass;
-import org.eclipse.xtend.core.xtend.XtendEnum;
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFunction;
-import org.eclipse.xtend.core.xtend.impl.XtendFactoryImpl;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlSkill;
+
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtend.core.xtend.impl.XtendInterfaceImplCustom;
+import org.eclipse.xtext.common.types.JvmVisibility;
 
 /**
  * <!-- begin-user-doc -->
- * Custom implementation of the XtendFactory for SARL.
+ * Custom implementation of the XtendInterface grammar element for SARL.
  * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * <ul>
+ *   <li>{@link #getDefaultVisibility() <em>Default visibility of fields in SARL elements</em>}</li>
+ * </ul>
+ * </p>
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SarlXtendFactoryImpl extends XtendFactoryImpl {
+public class SarlInterfaceImplCustom extends XtendInterfaceImplCustom {
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * Constructor.
 	 * <!-- end-user-doc -->
+	 * @generated
 	 */
-	public SarlXtendFactoryImpl() {
+	protected SarlInterfaceImplCustom() {
 		super();
 	}
 
 	@Override
-	public XtendField createXtendField() {
-		return new SarlFieldImplCustom();
+	protected JvmVisibility getDefaultVisibility() {
+		XtendTypeDeclaration declaration = getDeclaringType();
+		if (declaration instanceof SarlSkill
+			|| declaration instanceof SarlBehavior
+			|| declaration instanceof SarlAgent) {
+			return JvmVisibility.PROTECTED;
+		}
+		return super.getDefaultVisibility();
 	}
-
-	@Override
-	public XtendFunction createXtendFunction() {
-		return new SarlActionImplCustom();
-	}
-
-	@Override
-	public XtendClass createXtendClass() {
-		return new SarlClassImplCustom();
-	}
-
-	@Override
-	public XtendEnum createXtendEnum() {
-		return new SarlEnumImplCustom();
-	}
-
-	@Override
-	public XtendAnnotationType createXtendAnnotationType() {
-		return new SarlAnnotationTypeImplCustom();
-	}
-
+	
 }
