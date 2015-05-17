@@ -51,7 +51,7 @@ public class SARLOutlineNodeComparator extends DefaultComparator {
 	private static final int SCRIPT_PRIORITY = 0;
 	private static final int IMPORT_PRIORITY = 10;
 	private static final int TOPELEMENT_PRIORITY = 20;
-	
+
 	private static final int CAPACITY_USE_PRIORITY = 30;
 	private static final int CAPACITY_REQUIREMENT_PRIORITY = 40;
 	private static final int STATIC_INNER_TYPE_PRIORITY = 50;
@@ -119,7 +119,7 @@ public class SARLOutlineNodeComparator extends DefaultComparator {
 		}
 		return Integer.MAX_VALUE;
 	}
-	
+
 	private static boolean isStatic(EObjectNode eobjectNode) {
 		if (eobjectNode instanceof SARLEObjectNode) {
 			return ((SARLEObjectNode) eobjectNode).isStatic();

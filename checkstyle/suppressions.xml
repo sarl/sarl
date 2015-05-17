@@ -111,6 +111,10 @@
 	<suppress checks="MethodCount" files="SARLJavaValidator.java"/>
 	<suppress checks="FileLength" files="SARLJavaValidator.java"/>
 
+	<suppress checks="NPathComplexity" files="SARLOutlineNodeComparator.java"/>
+	<suppress checks="CyclomaticComplexity" files="SARLOutlineNodeComparator.java"/>
+	<suppress checks="ReturnCount" files="SARLOutlineNodeComparator.java"/>
+
 	<suppress checks="NPathComplexity" files="Jdt2Ecore.java"/>
 	<suppress checks="CyclomaticComplexity" files="Jdt2Ecore.java"/>
 	<suppress checks="MethodLength" files="Jdt2Ecore.java"/>

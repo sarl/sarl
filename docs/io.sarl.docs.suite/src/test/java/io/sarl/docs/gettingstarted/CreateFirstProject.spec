@@ -27,7 +27,7 @@ import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.*
-import io.sarl.eclipse.SARLConfig
+import io.sarl.lang.SARLConfig
 
 /* @outline
  *
