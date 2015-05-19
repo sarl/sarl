@@ -59,23 +59,23 @@ public class SARLUIValidator extends XtendUIValidator {
 
 	@Check
 	@Override
-	public void checkFileNamingConventions(XtendFile xtendFile) {
+	public void checkFileNamingConventions(XtendFile sarlFile) {
 		//
 		// The wrong package is a warning in SARL (an error in Xtend).
 		//
-		String expectedPackage = Strings.nullToEmpty(getExpectedPackageName(xtendFile));
-		String declaredPackage = Strings.nullToEmpty(xtendFile.getPackage());
+		String expectedPackage = Strings.nullToEmpty(getExpectedPackageName(sarlFile));
+		String declaredPackage = Strings.nullToEmpty(sarlFile.getPackage());
 		if (!Objects.equal(expectedPackage, declaredPackage)) {
 			if (expectedPackage.isEmpty()) {
 				warning(Messages.SARLUIValidator_0,
-					xtendFile,
+					sarlFile,
 					XtendPackage.Literals.XTEND_FILE__PACKAGE,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					IssueCodes.WRONG_PACKAGE,
 					expectedPackage);
 			} else {
 				warning(MessageFormat.format(Messages.SARLUIValidator_1, expectedPackage),
-						xtendFile,
+						sarlFile,
 						XtendPackage.Literals.XTEND_FILE__PACKAGE,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 						IssueCodes.WRONG_PACKAGE,

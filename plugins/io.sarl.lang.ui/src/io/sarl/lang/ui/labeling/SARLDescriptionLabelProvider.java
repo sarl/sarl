@@ -26,23 +26,21 @@ import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.ui.images.SARLImages;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.xtend.core.xtend.XtendConstructor;
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.ide.labeling.XtendDescriptionLabelProvider;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 
 import com.google.inject.Inject;
-
-//import org.eclipse.xtext.resource.IEObjectDescription
 
 /**
  * Provides labels for a IEObjectDescriptions and IResourceDescriptions.
@@ -65,7 +63,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @param script - the SARL script.
 	 * @return the image descriptor.
 	 */
-	public ImageDescriptor image(XtendFile script) {
+	public ImageDescriptor image(SarlScript script) {
 		return this.images.forFile();
 	}
 
@@ -167,7 +165,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @param attribute - describes the attribute.
 	 * @return the image descriptor.
 	 */
-	public ImageDescriptor image(XtendField attribute) {
+	public ImageDescriptor image(SarlField attribute) {
 		return this.images.forAttribute(
 				(attribute == null)
 				|| (!attribute.isFinal()));
@@ -178,7 +176,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @param constructor - describes the constructor.
 	 * @return the image descriptor.
 	 */
-	public ImageDescriptor image(XtendConstructor constructor) {
+	public ImageDescriptor image(SarlConstructor constructor) {
 		return this.images.forConstructor(JvmVisibility.PUBLIC, 0);
 	}
 

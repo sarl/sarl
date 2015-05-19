@@ -23,6 +23,7 @@ import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.bugfixes.SARLContextPDAProvider;
 import io.sarl.lang.generator.helper.ECoreGeneratorHelper;
 import io.sarl.lang.generator.helper.SarlEcoreCode;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.TestClasspath;
@@ -33,7 +34,6 @@ import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IMethod;
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.junit.Test;
 
@@ -69,7 +69,7 @@ public class Bug277 extends AbstractSarlUiTest {
 	 */
 	@Test
 	public void multipleCapacityImplementation_0() throws Exception {
-		XtendFile script = helper().sarlFile("SARLContextPDAProviderTest0",
+		SarlScript script = helper().sarlScript("SARLContextPDAProviderTest0",
 				"package io.sarl.lang.tests.genmodel.serializer\n"
 						+"capacity C1 {}\n"
 						+"capacity C2 {}\n"
@@ -92,7 +92,7 @@ public class Bug277 extends AbstractSarlUiTest {
 	@Test
 	@TestClasspath("io.sarl.core")
 	public void multipleCapacityImplementation_1() throws Exception {
-		XtendFile script = helper().sarlFile("SARLContextPDAProviderTest1",
+		SarlScript script = helper().sarlScript("SARLContextPDAProviderTest1",
 				"package io.sarl.lang.tests.genmodel.serializer\n"
 						+"import io.sarl.core.Lifecycle\n"
 						+"import io.sarl.core.Schedules\n"
@@ -111,7 +111,7 @@ public class Bug277 extends AbstractSarlUiTest {
 	@Test
 	@TestClasspath("io.sarl.core")
 	public void similarToWizardCreation() throws Exception {
-		helper().sarlFile("Bug277_0", multilineString(
+		helper().sarlScript("Bug277_0", multilineString(
 				"package io.sarl.lang.tests.bug277",
 				"capacity MyCapacity { }"));
 		helper().fullBuild();

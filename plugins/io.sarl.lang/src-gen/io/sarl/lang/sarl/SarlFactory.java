@@ -23,6 +23,24 @@ public interface SarlFactory extends EFactory
   SarlFactory eINSTANCE = io.sarl.lang.sarl.impl.SarlFactoryImpl.init();
 
   /**
+   * Returns a new object of class '<em>Script</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Script</em>'.
+   * @generated
+   */
+  SarlScript createSarlScript();
+
+  /**
+   * Returns a new object of class '<em>Field</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Field</em>'.
+   * @generated
+   */
+  SarlField createSarlField();
+
+  /**
    * Returns a new object of class '<em>Action</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -30,6 +48,15 @@ public interface SarlFactory extends EFactory
    * @generated
    */
   SarlAction createSarlAction();
+
+  /**
+   * Returns a new object of class '<em>Constructor</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Constructor</em>'.
+   * @generated
+   */
+  SarlConstructor createSarlConstructor();
 
   /**
    * Returns a new object of class '<em>Behavior Unit</em>'.
@@ -57,6 +84,42 @@ public interface SarlFactory extends EFactory
    * @generated
    */
   SarlRequiredCapacity createSarlRequiredCapacity();
+
+  /**
+   * Returns a new object of class '<em>Class</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Class</em>'.
+   * @generated
+   */
+  SarlClass createSarlClass();
+
+  /**
+   * Returns a new object of class '<em>Interface</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Interface</em>'.
+   * @generated
+   */
+  SarlInterface createSarlInterface();
+
+  /**
+   * Returns a new object of class '<em>Enumeration</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Enumeration</em>'.
+   * @generated
+   */
+  SarlEnumeration createSarlEnumeration();
+
+  /**
+   * Returns a new object of class '<em>Annotation Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Annotation Type</em>'.
+   * @generated
+   */
+  SarlAnnotationType createSarlAnnotationType();
 
   /**
    * Returns a new object of class '<em>Event</em>'.

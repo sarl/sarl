@@ -23,14 +23,13 @@ import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 
 import org.eclipse.xtend.core.validation.IssueCodes;
-import org.eclipse.xtend.core.xtend.XtendConstructor;
-import org.eclipse.xtend.core.xtend.XtendFile;
-import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
@@ -65,7 +64,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action_singleParam() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"	def myaction(arg : int*) {",
 					"		System.out.println(arg)",
@@ -92,7 +91,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void inAgentAction() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"	def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {",
 					"		System.out.println(arg3)",
@@ -120,7 +119,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action_invalid() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"	def myaction(arg1 : char, arg2 : boolean*, arg3 : int) {",
 					"		System.out.println(arg3)",
@@ -140,7 +139,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action_singleParam() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"	def myaction(arg : int*) {",
 					"		System.out.println(arg)",
@@ -168,7 +167,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"	def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {",
 					"		System.out.println(arg3)",
@@ -196,7 +195,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action_invalid() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"	def myaction(arg1 : char, arg2 : boolean*, arg3 : int) {",
 					"		System.out.println(arg3)",
@@ -211,7 +210,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void constructor_singleParam() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"	new(arg : int*) {",
 					"		super(null) // must be never null during runtime",
@@ -228,7 +227,7 @@ public class VarArgsParsingTest {
 			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
-			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
+			SarlConstructor constructor = (SarlConstructor) behavior.getMembers().get(0);
 			assertParameterNames(constructor.getParameters(), "arg");
 			assertParameterTypes(constructor.getParameters(), "int");
 			assertParameterDefaultValues(constructor.getParameters(), (Object) null);
@@ -237,7 +236,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void constructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"	new (arg1 : char, arg2 : boolean, arg3 : int*) {",
 					"		super(null) // must be never null during runtime",
@@ -254,7 +253,7 @@ public class VarArgsParsingTest {
 			assertNull(behavior.getExtends());
 			assertEquals(1, behavior.getMembers().size());
 			//
-			XtendConstructor constructor = (XtendConstructor) behavior.getMembers().get(0);
+			SarlConstructor constructor = (SarlConstructor) behavior.getMembers().get(0);
 			assertParameterNames(constructor.getParameters(), "arg1", "arg2", "arg3");
 			assertParameterTypes(constructor.getParameters(), "char", "boolean", "int");
 			assertParameterDefaultValues(constructor.getParameters(), null, null, null);
@@ -263,7 +262,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void constructor_invalid() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"	new (arg1 : char, arg2 : boolean*, arg3 : int) {",
 					"		super(null) // must be never null during runtime",
@@ -279,7 +278,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void multipleActionDefinitionsInBehavior_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int, arg1 : int*) {",
 					"		System.out.println(\"invalid\")",
@@ -316,7 +315,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void multipleActionDefinitionsInBehavior_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int, arg1 : int*) {",
 					"		System.out.println(\"invalid\")",
@@ -355,7 +354,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void multipleActionDefinitionsInBehavior_2() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int, arg1 : int*) {",
 					"		System.out.println(\"invalid\")",
@@ -377,7 +376,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action_singleParam() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	def myaction(arg : int*) {",
@@ -412,7 +411,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {",
@@ -447,7 +446,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action_invalid() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	def myaction(arg1 : char, arg2 : boolean*, arg3 : int) {",
@@ -463,7 +462,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void constructor_singleParam() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	new(arg : int*) {",
@@ -486,7 +485,7 @@ public class VarArgsParsingTest {
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(1, skill.getMembers().size());
 			//
-			XtendConstructor constructor = (XtendConstructor) skill.getMembers().get(0);
+			SarlConstructor constructor = (SarlConstructor) skill.getMembers().get(0);
 			assertParameterNames(constructor.getParameters(), "arg");
 			assertParameterTypes(constructor.getParameters(), "int");
 			assertParameterDefaultValues(constructor.getParameters(), (Object) null);
@@ -495,7 +494,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void constructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	new (arg1 : char, arg2 : boolean, arg3 : int*) {",
@@ -518,7 +517,7 @@ public class VarArgsParsingTest {
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(1, skill.getMembers().size());
 			//
-			XtendConstructor constructor = (XtendConstructor) skill.getMembers().get(0);
+			SarlConstructor constructor = (SarlConstructor) skill.getMembers().get(0);
 			assertParameterNames(constructor.getParameters(), "arg1", "arg2", "arg3");
 			assertParameterTypes(constructor.getParameters(), "char", "boolean", "int");
 			assertParameterDefaultValues(constructor.getParameters(), null, null, null);
@@ -527,7 +526,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void constructor_invalid() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	new (arg1 : char, arg2 : boolean*, arg3 : int) {",
@@ -547,7 +546,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action_singleParam() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction(arg : int*)",
 					"}"
@@ -573,7 +572,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction(arg1 : char, arg2 : boolean, arg3 : int*)",
 					"}"
@@ -599,7 +598,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action_invalid() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction(arg1 : char, arg2 : boolean*, arg3 : int)",
 					"}"
@@ -616,7 +615,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void constructor_singleParam() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"	new(arg : int*) {",
 					"		System.out.println(arg)",
@@ -632,7 +631,7 @@ public class VarArgsParsingTest {
 			assertNull(event.getExtends());
 			assertEquals(1, event.getMembers().size());
 			//
-			XtendConstructor constructor = (XtendConstructor) event.getMembers().get(0);
+			SarlConstructor constructor = (SarlConstructor) event.getMembers().get(0);
 			assertParameterNames(constructor.getParameters(), "arg");
 			assertParameterTypes(constructor.getParameters(), "int");
 			assertParameterDefaultValues(constructor.getParameters(), (Object) null);
@@ -641,7 +640,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void constructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"	new (arg1 : char, arg2 : boolean, arg3 : int*) {",
 					"		System.out.println(arg3)",
@@ -657,7 +656,7 @@ public class VarArgsParsingTest {
 			assertNull(event.getExtends());
 			assertEquals(1, event.getMembers().size());
 			//
-			XtendConstructor constructor = (XtendConstructor) event.getMembers().get(0);
+			SarlConstructor constructor = (SarlConstructor) event.getMembers().get(0);
 			assertParameterNames(constructor.getParameters(), "arg1", "arg2", "arg3");
 			assertParameterTypes(constructor.getParameters(), "char", "boolean", "int");
 			assertParameterDefaultValues(constructor.getParameters(), null, null, null);
@@ -666,7 +665,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void constructor_invalid() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"	new (arg1 : char, arg2 : boolean*, arg3 : int) {",
 					"		System.out.println(arg3)",

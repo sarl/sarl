@@ -6383,11 +6383,11 @@ rule__SarlScript__Group__0__Impl
     }
 :
 (
-{ before(grammarAccess.getSarlScriptAccess().getXtendFileAction_0()); }
+{ before(grammarAccess.getSarlScriptAccess().getSarlScriptAction_0()); }
 (
 
 )
-{ after(grammarAccess.getSarlScriptAccess().getXtendFileAction_0()); }
+{ after(grammarAccess.getSarlScriptAccess().getSarlScriptAction_0()); }
 )
 
 ;
@@ -6604,11 +6604,11 @@ rule__Field__Group__0__Impl
     }
 :
 (
-{ before(grammarAccess.getFieldAccess().getXtendFieldAction_0()); }
+{ before(grammarAccess.getFieldAccess().getSarlFieldAction_0()); }
 (
 
 )
-{ after(grammarAccess.getFieldAccess().getXtendFieldAction_0()); }
+{ after(grammarAccess.getFieldAccess().getSarlFieldAction_0()); }
 )
 
 ;
@@ -8201,11 +8201,11 @@ rule__Constructor__Group__0__Impl
     }
 :
 (
-{ before(grammarAccess.getConstructorAccess().getXtendConstructorAction_0()); }
+{ before(grammarAccess.getConstructorAccess().getSarlConstructorAction_0()); }
 (
 
 )
-{ after(grammarAccess.getConstructorAccess().getXtendConstructorAction_0()); }
+{ after(grammarAccess.getConstructorAccess().getSarlConstructorAction_0()); }
 )
 
 ;
@@ -9750,11 +9750,11 @@ rule__Class__Group__0__Impl
     }
 :
 (
-{ before(grammarAccess.getClassAccess().getXtendClassAction_0()); }
+{ before(grammarAccess.getClassAccess().getSarlClassAction_0()); }
 (
 
 )
-{ after(grammarAccess.getClassAccess().getXtendClassAction_0()); }
+{ after(grammarAccess.getClassAccess().getSarlClassAction_0()); }
 )
 
 ;
@@ -10508,11 +10508,11 @@ rule__Interface__Group__0__Impl
     }
 :
 (
-{ before(grammarAccess.getInterfaceAccess().getXtendInterfaceAction_0()); }
+{ before(grammarAccess.getInterfaceAccess().getSarlInterfaceAction_0()); }
 (
 
 )
-{ after(grammarAccess.getInterfaceAccess().getXtendInterfaceAction_0()); }
+{ after(grammarAccess.getInterfaceAccess().getSarlInterfaceAction_0()); }
 )
 
 ;
@@ -11172,11 +11172,11 @@ rule__Enum__Group__0__Impl
     }
 :
 (
-{ before(grammarAccess.getEnumAccess().getXtendEnumAction_0()); }
+{ before(grammarAccess.getEnumAccess().getSarlEnumerationAction_0()); }
 (
 
 )
-{ after(grammarAccess.getEnumAccess().getXtendEnumAction_0()); }
+{ after(grammarAccess.getEnumAccess().getSarlEnumerationAction_0()); }
 )
 
 ;
@@ -11584,11 +11584,11 @@ rule__AnnotationType__Group__0__Impl
     }
 :
 (
-{ before(grammarAccess.getAnnotationTypeAccess().getXtendAnnotationTypeAction_0()); }
+{ before(grammarAccess.getAnnotationTypeAccess().getSarlAnnotationTypeAction_0()); }
 (
 
 )
-{ after(grammarAccess.getAnnotationTypeAccess().getXtendAnnotationTypeAction_0()); }
+{ after(grammarAccess.getAnnotationTypeAccess().getSarlAnnotationTypeAction_0()); }
 )
 
 ;

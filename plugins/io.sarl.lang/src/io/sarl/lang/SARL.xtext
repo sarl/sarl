@@ -28,7 +28,7 @@ import "http://www.eclipse.org/xtext/xbase/Xtype" as xtype
 import "http://www.eclipse.org/xtend" as xtend
 
 SarlScript returns xtend::XtendFile:
-	{xtend::XtendFile}
+	{SarlScript}
 	('package' package=QualifiedName ';'?)?
 	importSection=XImportSection?
 	xtendTypes+=Type*
@@ -46,8 +46,8 @@ Member returns xtend::XtendMember:
 	Field | Constructor | Action | Class | Interface | Enum | AnnotationType 
 ; 
 
-Field returns xtend::XtendMember:
-	{xtend::XtendField}
+Field returns xtend::XtendField:
+	{SarlField}
 	annotations+=XAnnotation*
 	modifiers+=CommonModifier*
 	modifiers+=FieldModifier
@@ -83,7 +83,7 @@ Action returns xtend::XtendFunction:
 ;
 
 Constructor returns xtend::XtendConstructor:
-	{xtend::XtendConstructor}
+	{SarlConstructor}
 	annotations+=XAnnotation*
 	modifiers+=CommonModifier*
 	'new'
@@ -114,8 +114,8 @@ RequiredCapacity returns xtend::XtendMember:
 	(',' capacities+=JvmParameterizedTypeReference)* ';'?
 ;
 
-Class returns xtend::XtendTypeDeclaration:
-	{xtend::XtendClass}
+Class returns xtend::XtendClass:
+	{SarlClass}
 	annotations+=XAnnotation*
 	modifiers+=CommonModifier*
 	'class' name=ValidID ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?  
@@ -125,8 +125,8 @@ Class returns xtend::XtendTypeDeclaration:
 	'}'
 ;
 
-Interface returns xtend::XtendTypeDeclaration:
-	{xtend::XtendInterface}
+Interface returns xtend::XtendInterface:
+	{SarlInterface}
 	annotations+=XAnnotation*
 	modifiers+=CommonModifier*
   	'interface' name=ValidID ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?  
@@ -135,8 +135,8 @@ Interface returns xtend::XtendTypeDeclaration:
    	'}'
 ;
 
-Enum returns xtend::XtendTypeDeclaration:
-	{xtend::XtendEnum}
+Enum returns xtend::XtendEnum:
+	{SarlEnumeration}
 	annotations+=XAnnotation*
 	modifiers+=CommonModifier*
   	'enum' name=ValidID '{'   
@@ -144,8 +144,8 @@ Enum returns xtend::XtendTypeDeclaration:
    	'}'
 ;
 
-AnnotationType returns xtend::XtendTypeDeclaration:
-	{xtend::XtendAnnotationType}
+AnnotationType returns xtend::XtendAnnotationType:
+	{SarlAnnotationType}
 	annotations+=XAnnotation*
  	modifiers+=CommonModifier*
 	'annotation' name=ValidID

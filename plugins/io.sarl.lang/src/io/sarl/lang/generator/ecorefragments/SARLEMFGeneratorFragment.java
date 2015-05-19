@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.generator.ecore;
+package io.sarl.lang.generator.ecorefragments;
 
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -48,6 +48,9 @@ import org.eclipse.xtext.generator.ecore.EMFGeneratorFragment;
  * A {@link IGeneratorFragment} that saves the generated Ecore models and creates appropriate EMF generators with
  * a configuration suitable for SARL. Then it
  * runs the EMF generator to create the EMF classes for the generated Ecore models.
+ * 
+ * This implementation forces the Ecore factory to create instances of the custom Ecore elements that
+ * are defined in the package <code>io.sarl.lang.sarl.impl</code>.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

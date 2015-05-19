@@ -21,6 +21,11 @@
 package io.sarl.lang.sarl.impl;
 
 import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAnnotationType;
+import io.sarl.lang.sarl.SarlClass;
+import io.sarl.lang.sarl.SarlEnumeration;
+import io.sarl.lang.sarl.SarlField;
+import io.sarl.lang.sarl.SarlInterface;
 
 /**
  * <!-- begin-user-doc -->
@@ -52,6 +57,31 @@ public class SarlFactoryImplCustom extends SarlFactoryImpl {
 	@Override
 	public SarlAction createSarlAction() {
 		return new SarlActionImplCustom();
+	}
+
+	@Override
+	public SarlAnnotationType createSarlAnnotationType() {
+		return new SarlAnnotationTypeImplCustom();
+	}
+
+	@Override
+	public SarlClass createSarlClass() {
+		return new SarlClassImplCustom();
+	}
+
+	@Override
+	public SarlEnumeration createSarlEnumeration() {
+		return new SarlEnumerationImplCustom();
+	}
+
+	@Override
+	public SarlField createSarlField() {
+		return new SarlFieldImplCustom();
+	}
+
+	@Override
+	public SarlInterface createSarlInterface() {
+		return new SarlInterfaceImplCustom();
 	}
 
 }

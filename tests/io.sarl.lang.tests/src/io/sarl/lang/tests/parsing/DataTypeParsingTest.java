@@ -19,12 +19,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFile;
-import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
@@ -47,7 +46,7 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void intToDouble() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 				"agent A1 {",
 				"	var internalTime : Double = 0",
 				"}"
@@ -60,7 +59,7 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void doubleToDouble_1() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 				"agent A1 {",
 				"	var internalTime : Double = 0.0",
 				"}"
@@ -74,7 +73,7 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 		assertNull(agent.getExtends());
 		assertEquals(1, agent.getMembers().size());
 		//
-		XtendField attr = (XtendField) agent.getMembers().get(0);
+		SarlField attr = (SarlField) agent.getMembers().get(0);
 		assertEquals("internalTime", attr.getName());
 		assertTypeReferenceIdentifier(attr.getType(), "java.lang.Double");
 		assertXExpression(attr.getInitialValue(), XNumberLiteral.class, "0.0");
@@ -82,7 +81,7 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void doubleToDouble_2() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 				"agent A1 {",
 				"	var internalTime : Double = 0.",
 				"}"
@@ -95,20 +94,20 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void doubleToDouble_3() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 				"agent A1 {",
 				"	var internalTime : Double = .0",
 				"}"
 				));
 		validate(mas).assertError(
-				XtendPackage.eINSTANCE.getXtendField(),
+				SarlPackage.eINSTANCE.getSarlField(),
 				Diagnostic.SYNTAX_DIAGNOSTIC,
 				"no viable alternative at input '.'");
 	}
 
 	@Test
 	public void doubleToDouble_4() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 				"agent A1 {",
 				"	var internalTime : Double = 0d",
 				"}"
@@ -122,7 +121,7 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 		assertNull(agent.getExtends());
 		assertEquals(1, agent.getMembers().size());
 		//
-		XtendField attr = (XtendField) agent.getMembers().get(0);
+		SarlField attr = (SarlField) agent.getMembers().get(0);
 		assertEquals("internalTime", attr.getName());
 		assertTypeReferenceIdentifier(attr.getType(), "java.lang.Double");
 		assertXExpression(attr.getInitialValue(), XNumberLiteral.class, "0d");

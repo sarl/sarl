@@ -40,7 +40,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
     {
       EcorePlugin.INSTANCE.log(exception);
     }
-    return new SarlFactoryImpl();
+    return new SarlFactoryImplCustom();
   }
 
   /**
@@ -64,10 +64,17 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
   {
     switch (eClass.getClassifierID())
     {
+      case SarlPackage.SARL_SCRIPT: return createSarlScript();
+      case SarlPackage.SARL_FIELD: return createSarlField();
       case SarlPackage.SARL_ACTION: return createSarlAction();
+      case SarlPackage.SARL_CONSTRUCTOR: return createSarlConstructor();
       case SarlPackage.SARL_BEHAVIOR_UNIT: return createSarlBehaviorUnit();
       case SarlPackage.SARL_CAPACITY_USES: return createSarlCapacityUses();
       case SarlPackage.SARL_REQUIRED_CAPACITY: return createSarlRequiredCapacity();
+      case SarlPackage.SARL_CLASS: return createSarlClass();
+      case SarlPackage.SARL_INTERFACE: return createSarlInterface();
+      case SarlPackage.SARL_ENUMERATION: return createSarlEnumeration();
+      case SarlPackage.SARL_ANNOTATION_TYPE: return createSarlAnnotationType();
       case SarlPackage.SARL_EVENT: return createSarlEvent();
       case SarlPackage.SARL_AGENT: return createSarlAgent();
       case SarlPackage.SARL_CAPACITY: return createSarlCapacity();
@@ -84,10 +91,43 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public SarlScript createSarlScript()
+  {
+    SarlScriptImpl sarlScript = new SarlScriptImpl();
+    return sarlScript;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public SarlField createSarlField()
+  {
+    SarlFieldImpl sarlField = new SarlFieldImpl();
+    return sarlField;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public SarlAction createSarlAction()
   {
     SarlActionImpl sarlAction = new SarlActionImpl();
     return sarlAction;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public SarlConstructor createSarlConstructor()
+  {
+    SarlConstructorImpl sarlConstructor = new SarlConstructorImpl();
+    return sarlConstructor;
   }
 
   /**
@@ -121,6 +161,50 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
   {
     SarlRequiredCapacityImpl sarlRequiredCapacity = new SarlRequiredCapacityImpl();
     return sarlRequiredCapacity;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public SarlClass createSarlClass()
+  {
+    SarlClassImpl sarlClass = new SarlClassImpl();
+    return sarlClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public SarlInterface createSarlInterface()
+  {
+    SarlInterfaceImpl sarlInterface = new SarlInterfaceImpl();
+    return sarlInterface;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public SarlEnumeration createSarlEnumeration()
+  {
+    SarlEnumerationImpl sarlEnumeration = new SarlEnumerationImpl();
+    return sarlEnumeration;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public SarlAnnotationType createSarlAnnotationType()
+  {
+    SarlAnnotationTypeImpl sarlAnnotationType = new SarlAnnotationTypeImpl();
+    return sarlAnnotationType;
   }
 
   /**

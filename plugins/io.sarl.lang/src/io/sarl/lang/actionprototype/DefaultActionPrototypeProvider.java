@@ -20,6 +20,7 @@
  */
 package io.sarl.lang.actionprototype;
 
+import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.services.SARLGrammarAccess;
 import io.sarl.lang.util.Utils;
 
@@ -219,7 +220,8 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 	@Override
 	public final InferredPrototype createPrototypeFromSarlModel(QualifiedActionName id,
 			boolean isVarargs, List<? extends XtendParameter> parameters) {
-		return createPrototype(id, isVarargs, new SarlFormalParameterProvider(parameters, this.references));
+		return createPrototype(id, isVarargs,
+				new SarlFormalParameterProvider(parameters, this.references));
 	}
 
 	@Override
@@ -247,17 +249,17 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 
 	@Override
 	public ActionParameterTypes createParameterTypesFromSarlModel(boolean isVarargs,
-			List<? extends XtendParameter> parameters) {
+			List<? extends SarlFormalParameter> parameters) {
 		ActionParameterTypes sig = new ActionParameterTypes(isVarargs, parameters.size());
 		if (!parameters.isEmpty()) {
 			int lastIndex = parameters.size() - 1;
 			for (int i = 0; i < lastIndex; ++i) {
-				XtendParameter p = parameters.get(i);
+				SarlFormalParameter p = parameters.get(i);
 				if (p.getParameterType() != null) {
 					sig.add(p.getParameterType().getIdentifier());
 				}
 			}
-			XtendParameter p = parameters.get(lastIndex);
+			SarlFormalParameter p = parameters.get(lastIndex);
 			if (p.getParameterType() != null) {
 				JvmTypeReference type = p.getParameterType();
 				if (isVarargs) {

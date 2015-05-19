@@ -16,10 +16,10 @@
 package io.sarl.lang.ui.tests.parsing;
 
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.TestScope;
 
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.junit.Assume;
 import org.junit.Test;
@@ -47,7 +47,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidExtend() throws Exception {
-			XtendFile script = file(multilineString(
+			SarlScript script = file(multilineString(
 					"import foo.MockFinalAgent",
 					"agent InvalidAgentDeclaration extends MockFinalAgent {",
 					"}"));

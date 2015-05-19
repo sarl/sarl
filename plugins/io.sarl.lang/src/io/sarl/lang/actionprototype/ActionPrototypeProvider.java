@@ -20,6 +20,8 @@
  */
 package io.sarl.lang.actionprototype;
 
+import io.sarl.lang.sarl.SarlFormalParameter;
+
 import java.util.List;
 
 import org.eclipse.xtend.core.xtend.XtendParameter;
@@ -64,7 +66,7 @@ public interface ActionPrototypeProvider {
 	 * @param parameters - the list of the formal parameter to put in the signature key.
 	 * @return the list of the parameters' types.
 	 */
-	ActionParameterTypes createParameterTypesFromSarlModel(boolean isVarargs, List<? extends XtendParameter> parameters);
+	ActionParameterTypes createParameterTypesFromSarlModel(boolean isVarargs, List<? extends SarlFormalParameter> parameters);
 
 	/** Build an identifier with the given parameters.
 	 *

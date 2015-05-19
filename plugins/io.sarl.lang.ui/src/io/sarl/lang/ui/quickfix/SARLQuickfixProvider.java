@@ -21,9 +21,11 @@
 package io.sarl.lang.ui.quickfix;
 
 import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarAccess;
 import io.sarl.lang.ui.quickfix.acceptors.ActionAddModification;
@@ -49,8 +51,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
 import org.eclipse.xtend.core.validation.IssueCodes;
-import org.eclipse.xtend.core.xtend.XtendFile;
-import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
@@ -228,7 +228,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param script - the script to consider for the insertion
 	 * @return the insertion index.
 	 */
-	public int getImportInsertOffset(XtendFile script) {
+	public int getImportInsertOffset(SarlScript script) {
 		ICompositeNode node = NodeModelUtils.findActualNodeFor(script.getImportSection());
 		if (node == null) {
 			List<INode> children = NodeModelUtils.findNodesForFeature(script, XtendPackage.eINSTANCE.getXtendFile_Package());
@@ -441,7 +441,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 */
 	public void removeExecutableFeature(EObject element, IModificationContext context) throws BadLocationException {
 		ICompositeNode node = null;
-		XtendFunction action = EcoreUtil2.getContainerOfType(element, XtendFunction.class);
+		SarlAction action = EcoreUtil2.getContainerOfType(element, SarlAction.class);
 		if (action == null) {
 			XtendMember feature = EcoreUtil2.getContainerOfType(element, XtendMember.class);
 			node = NodeModelUtils.findActualNodeFor(feature);
@@ -710,7 +710,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	protected void internalDoAddAbstractKeyword(EObject element, IModificationContext context)
 			throws BadLocationException {
 		EObject container = element;
-		if (element instanceof XtendFunction) {
+		if (element instanceof SarlAction) {
 			container = element.eContainer();
 		}
 		XtendTypeDeclaration declaration = null;

@@ -90,7 +90,7 @@ ruleSarlScript returns [EObject current=null]
 	}
     {
         $current = forceCreateModelElement(
-            grammarAccess.getSarlScriptAccess().getXtendFileAction_0(),
+            grammarAccess.getSarlScriptAccess().getSarlScriptAction_0(),
             $current);
     }
 )(	otherlv_1='package' 
@@ -457,7 +457,7 @@ ruleField returns [EObject current=null]
 	}
     {
         $current = forceCreateModelElement(
-            grammarAccess.getFieldAccess().getXtendFieldAction_0(),
+            grammarAccess.getFieldAccess().getSarlFieldAction_0(),
             $current);
     }
 )(
@@ -1106,7 +1106,7 @@ ruleConstructor returns [EObject current=null]
 	}
     {
         $current = forceCreateModelElement(
-            grammarAccess.getConstructorAccess().getXtendConstructorAction_0(),
+            grammarAccess.getConstructorAccess().getSarlConstructorAction_0(),
             $current);
     }
 )(
@@ -1630,7 +1630,7 @@ ruleClass returns [EObject current=null]
 	}
     {
         $current = forceCreateModelElement(
-            grammarAccess.getClassAccess().getXtendClassAction_0(),
+            grammarAccess.getClassAccess().getSarlClassAction_0(),
             $current);
     }
 )(
@@ -1858,7 +1858,7 @@ ruleInterface returns [EObject current=null]
 	}
     {
         $current = forceCreateModelElement(
-            grammarAccess.getInterfaceAccess().getXtendInterfaceAction_0(),
+            grammarAccess.getInterfaceAccess().getSarlInterfaceAction_0(),
             $current);
     }
 )(
@@ -2064,7 +2064,7 @@ ruleEnum returns [EObject current=null]
 	}
     {
         $current = forceCreateModelElement(
-            grammarAccess.getEnumAccess().getXtendEnumAction_0(),
+            grammarAccess.getEnumAccess().getSarlEnumerationAction_0(),
             $current);
     }
 )(
@@ -2204,7 +2204,7 @@ ruleAnnotationType returns [EObject current=null]
 	}
     {
         $current = forceCreateModelElement(
-            grammarAccess.getAnnotationTypeAccess().getXtendAnnotationTypeAction_0(),
+            grammarAccess.getAnnotationTypeAccess().getSarlAnnotationTypeAction_0(),
             $current);
     }
 )(

@@ -58,6 +58,134 @@ public interface SarlPackage extends EPackage
   SarlPackage eINSTANCE = io.sarl.lang.sarl.impl.SarlPackageImpl.init();
 
   /**
+   * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlScriptImpl <em>Script</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see io.sarl.lang.sarl.impl.SarlScriptImpl
+   * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlScript()
+   * @generated
+   */
+  int SARL_SCRIPT = 0;
+
+  /**
+   * The feature id for the '<em><b>Import Section</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_SCRIPT__IMPORT_SECTION = XtendPackage.XTEND_FILE__IMPORT_SECTION;
+
+  /**
+   * The feature id for the '<em><b>Xtend Types</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_SCRIPT__XTEND_TYPES = XtendPackage.XTEND_FILE__XTEND_TYPES;
+
+  /**
+   * The feature id for the '<em><b>Package</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_SCRIPT__PACKAGE = XtendPackage.XTEND_FILE__PACKAGE;
+
+  /**
+   * The number of structural features of the '<em>Script</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_SCRIPT_FEATURE_COUNT = XtendPackage.XTEND_FILE_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlFieldImpl <em>Field</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see io.sarl.lang.sarl.impl.SarlFieldImpl
+   * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlField()
+   * @generated
+   */
+  int SARL_FIELD = 1;
+
+  /**
+   * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_FIELD__ANNOTATIONS = XtendPackage.XTEND_FIELD__ANNOTATIONS;
+
+  /**
+   * The feature id for the '<em><b>Annotation Info</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_FIELD__ANNOTATION_INFO = XtendPackage.XTEND_FIELD__ANNOTATION_INFO;
+
+  /**
+   * The feature id for the '<em><b>Modifiers</b></em>' attribute list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_FIELD__MODIFIERS = XtendPackage.XTEND_FIELD__MODIFIERS;
+
+  /**
+   * The feature id for the '<em><b>Declaring Type</b></em>' container reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_FIELD__DECLARING_TYPE = XtendPackage.XTEND_FIELD__DECLARING_TYPE;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_FIELD__NAME = XtendPackage.XTEND_FIELD__NAME;
+
+  /**
+   * The feature id for the '<em><b>Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_FIELD__TYPE = XtendPackage.XTEND_FIELD__TYPE;
+
+  /**
+   * The feature id for the '<em><b>Initial Value</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_FIELD__INITIAL_VALUE = XtendPackage.XTEND_FIELD__INITIAL_VALUE;
+
+  /**
+   * The number of structural features of the '<em>Field</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_FIELD_FEATURE_COUNT = XtendPackage.XTEND_FIELD_FEATURE_COUNT + 0;
+
+  /**
    * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlActionImpl <em>Action</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -65,7 +193,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlAction()
    * @generated
    */
-  int SARL_ACTION = 0;
+  int SARL_ACTION = 2;
 
   /**
    * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -185,6 +313,97 @@ public interface SarlPackage extends EPackage
   int SARL_ACTION_FEATURE_COUNT = XtendPackage.XTEND_FUNCTION_FEATURE_COUNT + 1;
 
   /**
+   * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlConstructorImpl <em>Constructor</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see io.sarl.lang.sarl.impl.SarlConstructorImpl
+   * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlConstructor()
+   * @generated
+   */
+  int SARL_CONSTRUCTOR = 3;
+
+  /**
+   * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CONSTRUCTOR__ANNOTATIONS = XtendPackage.XTEND_CONSTRUCTOR__ANNOTATIONS;
+
+  /**
+   * The feature id for the '<em><b>Annotation Info</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CONSTRUCTOR__ANNOTATION_INFO = XtendPackage.XTEND_CONSTRUCTOR__ANNOTATION_INFO;
+
+  /**
+   * The feature id for the '<em><b>Modifiers</b></em>' attribute list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CONSTRUCTOR__MODIFIERS = XtendPackage.XTEND_CONSTRUCTOR__MODIFIERS;
+
+  /**
+   * The feature id for the '<em><b>Declaring Type</b></em>' container reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CONSTRUCTOR__DECLARING_TYPE = XtendPackage.XTEND_CONSTRUCTOR__DECLARING_TYPE;
+
+  /**
+   * The feature id for the '<em><b>Exceptions</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CONSTRUCTOR__EXCEPTIONS = XtendPackage.XTEND_CONSTRUCTOR__EXCEPTIONS;
+
+  /**
+   * The feature id for the '<em><b>Type Parameters</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CONSTRUCTOR__TYPE_PARAMETERS = XtendPackage.XTEND_CONSTRUCTOR__TYPE_PARAMETERS;
+
+  /**
+   * The feature id for the '<em><b>Expression</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CONSTRUCTOR__EXPRESSION = XtendPackage.XTEND_CONSTRUCTOR__EXPRESSION;
+
+  /**
+   * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CONSTRUCTOR__PARAMETERS = XtendPackage.XTEND_CONSTRUCTOR__PARAMETERS;
+
+  /**
+   * The number of structural features of the '<em>Constructor</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CONSTRUCTOR_FEATURE_COUNT = XtendPackage.XTEND_CONSTRUCTOR_FEATURE_COUNT + 0;
+
+  /**
    * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlBehaviorUnitImpl <em>Behavior Unit</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -192,7 +411,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlBehaviorUnit()
    * @generated
    */
-  int SARL_BEHAVIOR_UNIT = 1;
+  int SARL_BEHAVIOR_UNIT = 4;
 
   /**
    * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -274,7 +493,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlCapacityUses()
    * @generated
    */
-  int SARL_CAPACITY_USES = 2;
+  int SARL_CAPACITY_USES = 5;
 
   /**
    * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -338,7 +557,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlRequiredCapacity()
    * @generated
    */
-  int SARL_REQUIRED_CAPACITY = 3;
+  int SARL_REQUIRED_CAPACITY = 6;
 
   /**
    * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -395,6 +614,343 @@ public interface SarlPackage extends EPackage
   int SARL_REQUIRED_CAPACITY_FEATURE_COUNT = XtendPackage.XTEND_MEMBER_FEATURE_COUNT + 1;
 
   /**
+   * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlClassImpl <em>Class</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see io.sarl.lang.sarl.impl.SarlClassImpl
+   * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlClass()
+   * @generated
+   */
+  int SARL_CLASS = 7;
+
+  /**
+   * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CLASS__ANNOTATIONS = XtendPackage.XTEND_CLASS__ANNOTATIONS;
+
+  /**
+   * The feature id for the '<em><b>Annotation Info</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CLASS__ANNOTATION_INFO = XtendPackage.XTEND_CLASS__ANNOTATION_INFO;
+
+  /**
+   * The feature id for the '<em><b>Modifiers</b></em>' attribute list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CLASS__MODIFIERS = XtendPackage.XTEND_CLASS__MODIFIERS;
+
+  /**
+   * The feature id for the '<em><b>Declaring Type</b></em>' container reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CLASS__DECLARING_TYPE = XtendPackage.XTEND_CLASS__DECLARING_TYPE;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CLASS__NAME = XtendPackage.XTEND_CLASS__NAME;
+
+  /**
+   * The feature id for the '<em><b>Members</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CLASS__MEMBERS = XtendPackage.XTEND_CLASS__MEMBERS;
+
+  /**
+   * The feature id for the '<em><b>Extends</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CLASS__EXTENDS = XtendPackage.XTEND_CLASS__EXTENDS;
+
+  /**
+   * The feature id for the '<em><b>Implements</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CLASS__IMPLEMENTS = XtendPackage.XTEND_CLASS__IMPLEMENTS;
+
+  /**
+   * The feature id for the '<em><b>Type Parameters</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CLASS__TYPE_PARAMETERS = XtendPackage.XTEND_CLASS__TYPE_PARAMETERS;
+
+  /**
+   * The number of structural features of the '<em>Class</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_CLASS_FEATURE_COUNT = XtendPackage.XTEND_CLASS_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlInterfaceImpl <em>Interface</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see io.sarl.lang.sarl.impl.SarlInterfaceImpl
+   * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlInterface()
+   * @generated
+   */
+  int SARL_INTERFACE = 8;
+
+  /**
+   * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_INTERFACE__ANNOTATIONS = XtendPackage.XTEND_INTERFACE__ANNOTATIONS;
+
+  /**
+   * The feature id for the '<em><b>Annotation Info</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_INTERFACE__ANNOTATION_INFO = XtendPackage.XTEND_INTERFACE__ANNOTATION_INFO;
+
+  /**
+   * The feature id for the '<em><b>Modifiers</b></em>' attribute list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_INTERFACE__MODIFIERS = XtendPackage.XTEND_INTERFACE__MODIFIERS;
+
+  /**
+   * The feature id for the '<em><b>Declaring Type</b></em>' container reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_INTERFACE__DECLARING_TYPE = XtendPackage.XTEND_INTERFACE__DECLARING_TYPE;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_INTERFACE__NAME = XtendPackage.XTEND_INTERFACE__NAME;
+
+  /**
+   * The feature id for the '<em><b>Members</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_INTERFACE__MEMBERS = XtendPackage.XTEND_INTERFACE__MEMBERS;
+
+  /**
+   * The feature id for the '<em><b>Extends</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_INTERFACE__EXTENDS = XtendPackage.XTEND_INTERFACE__EXTENDS;
+
+  /**
+   * The feature id for the '<em><b>Type Parameters</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_INTERFACE__TYPE_PARAMETERS = XtendPackage.XTEND_INTERFACE__TYPE_PARAMETERS;
+
+  /**
+   * The number of structural features of the '<em>Interface</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_INTERFACE_FEATURE_COUNT = XtendPackage.XTEND_INTERFACE_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlEnumerationImpl <em>Enumeration</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see io.sarl.lang.sarl.impl.SarlEnumerationImpl
+   * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlEnumeration()
+   * @generated
+   */
+  int SARL_ENUMERATION = 9;
+
+  /**
+   * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_ENUMERATION__ANNOTATIONS = XtendPackage.XTEND_ENUM__ANNOTATIONS;
+
+  /**
+   * The feature id for the '<em><b>Annotation Info</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_ENUMERATION__ANNOTATION_INFO = XtendPackage.XTEND_ENUM__ANNOTATION_INFO;
+
+  /**
+   * The feature id for the '<em><b>Modifiers</b></em>' attribute list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_ENUMERATION__MODIFIERS = XtendPackage.XTEND_ENUM__MODIFIERS;
+
+  /**
+   * The feature id for the '<em><b>Declaring Type</b></em>' container reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_ENUMERATION__DECLARING_TYPE = XtendPackage.XTEND_ENUM__DECLARING_TYPE;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_ENUMERATION__NAME = XtendPackage.XTEND_ENUM__NAME;
+
+  /**
+   * The feature id for the '<em><b>Members</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_ENUMERATION__MEMBERS = XtendPackage.XTEND_ENUM__MEMBERS;
+
+  /**
+   * The number of structural features of the '<em>Enumeration</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_ENUMERATION_FEATURE_COUNT = XtendPackage.XTEND_ENUM_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlAnnotationTypeImpl <em>Annotation Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see io.sarl.lang.sarl.impl.SarlAnnotationTypeImpl
+   * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlAnnotationType()
+   * @generated
+   */
+  int SARL_ANNOTATION_TYPE = 10;
+
+  /**
+   * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_ANNOTATION_TYPE__ANNOTATIONS = XtendPackage.XTEND_ANNOTATION_TYPE__ANNOTATIONS;
+
+  /**
+   * The feature id for the '<em><b>Annotation Info</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_ANNOTATION_TYPE__ANNOTATION_INFO = XtendPackage.XTEND_ANNOTATION_TYPE__ANNOTATION_INFO;
+
+  /**
+   * The feature id for the '<em><b>Modifiers</b></em>' attribute list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_ANNOTATION_TYPE__MODIFIERS = XtendPackage.XTEND_ANNOTATION_TYPE__MODIFIERS;
+
+  /**
+   * The feature id for the '<em><b>Declaring Type</b></em>' container reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_ANNOTATION_TYPE__DECLARING_TYPE = XtendPackage.XTEND_ANNOTATION_TYPE__DECLARING_TYPE;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_ANNOTATION_TYPE__NAME = XtendPackage.XTEND_ANNOTATION_TYPE__NAME;
+
+  /**
+   * The feature id for the '<em><b>Members</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_ANNOTATION_TYPE__MEMBERS = XtendPackage.XTEND_ANNOTATION_TYPE__MEMBERS;
+
+  /**
+   * The number of structural features of the '<em>Annotation Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SARL_ANNOTATION_TYPE_FEATURE_COUNT = XtendPackage.XTEND_ANNOTATION_TYPE_FEATURE_COUNT + 0;
+
+  /**
    * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlEventImpl <em>Event</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -402,7 +958,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlEvent()
    * @generated
    */
-  int SARL_EVENT = 4;
+  int SARL_EVENT = 11;
 
   /**
    * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -484,7 +1040,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlAgent()
    * @generated
    */
-  int SARL_AGENT = 5;
+  int SARL_AGENT = 12;
 
   /**
    * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -566,7 +1122,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlCapacity()
    * @generated
    */
-  int SARL_CAPACITY = 6;
+  int SARL_CAPACITY = 13;
 
   /**
    * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -648,7 +1204,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlBehavior()
    * @generated
    */
-  int SARL_BEHAVIOR = 7;
+  int SARL_BEHAVIOR = 14;
 
   /**
    * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -730,7 +1286,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlSkill()
    * @generated
    */
-  int SARL_SKILL = 8;
+  int SARL_SKILL = 15;
 
   /**
    * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -821,7 +1377,7 @@ public interface SarlPackage extends EPackage
    * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlFormalParameter()
    * @generated
    */
-  int SARL_FORMAL_PARAMETER = 9;
+  int SARL_FORMAL_PARAMETER = 16;
 
   /**
    * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -888,6 +1444,26 @@ public interface SarlPackage extends EPackage
 
 
   /**
+   * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlScript <em>Script</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Script</em>'.
+   * @see io.sarl.lang.sarl.SarlScript
+   * @generated
+   */
+  EClass getSarlScript();
+
+  /**
+   * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlField <em>Field</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Field</em>'.
+   * @see io.sarl.lang.sarl.SarlField
+   * @generated
+   */
+  EClass getSarlField();
+
+  /**
    * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlAction <em>Action</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -907,6 +1483,16 @@ public interface SarlPackage extends EPackage
    * @generated
    */
   EReference getSarlAction_FiredEvents();
+
+  /**
+   * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlConstructor <em>Constructor</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Constructor</em>'.
+   * @see io.sarl.lang.sarl.SarlConstructor
+   * @generated
+   */
+  EClass getSarlConstructor();
 
   /**
    * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlBehaviorUnit <em>Behavior Unit</em>}'.
@@ -992,6 +1578,46 @@ public interface SarlPackage extends EPackage
    * @generated
    */
   EReference getSarlRequiredCapacity_Capacities();
+
+  /**
+   * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlClass <em>Class</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Class</em>'.
+   * @see io.sarl.lang.sarl.SarlClass
+   * @generated
+   */
+  EClass getSarlClass();
+
+  /**
+   * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlInterface <em>Interface</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Interface</em>'.
+   * @see io.sarl.lang.sarl.SarlInterface
+   * @generated
+   */
+  EClass getSarlInterface();
+
+  /**
+   * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlEnumeration <em>Enumeration</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Enumeration</em>'.
+   * @see io.sarl.lang.sarl.SarlEnumeration
+   * @generated
+   */
+  EClass getSarlEnumeration();
+
+  /**
+   * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlAnnotationType <em>Annotation Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Annotation Type</em>'.
+   * @see io.sarl.lang.sarl.SarlAnnotationType
+   * @generated
+   */
+  EClass getSarlAnnotationType();
 
   /**
    * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlEvent <em>Event</em>}'.
@@ -1154,6 +1780,26 @@ public interface SarlPackage extends EPackage
   interface Literals
   {
     /**
+     * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlScriptImpl <em>Script</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see io.sarl.lang.sarl.impl.SarlScriptImpl
+     * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlScript()
+     * @generated
+     */
+    EClass SARL_SCRIPT = eINSTANCE.getSarlScript();
+
+    /**
+     * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlFieldImpl <em>Field</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see io.sarl.lang.sarl.impl.SarlFieldImpl
+     * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlField()
+     * @generated
+     */
+    EClass SARL_FIELD = eINSTANCE.getSarlField();
+
+    /**
      * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlActionImpl <em>Action</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1170,6 +1816,16 @@ public interface SarlPackage extends EPackage
      * @generated
      */
     EReference SARL_ACTION__FIRED_EVENTS = eINSTANCE.getSarlAction_FiredEvents();
+
+    /**
+     * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlConstructorImpl <em>Constructor</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see io.sarl.lang.sarl.impl.SarlConstructorImpl
+     * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlConstructor()
+     * @generated
+     */
+    EClass SARL_CONSTRUCTOR = eINSTANCE.getSarlConstructor();
 
     /**
      * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlBehaviorUnitImpl <em>Behavior Unit</em>}' class.
@@ -1240,6 +1896,46 @@ public interface SarlPackage extends EPackage
      * @generated
      */
     EReference SARL_REQUIRED_CAPACITY__CAPACITIES = eINSTANCE.getSarlRequiredCapacity_Capacities();
+
+    /**
+     * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlClassImpl <em>Class</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see io.sarl.lang.sarl.impl.SarlClassImpl
+     * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlClass()
+     * @generated
+     */
+    EClass SARL_CLASS = eINSTANCE.getSarlClass();
+
+    /**
+     * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlInterfaceImpl <em>Interface</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see io.sarl.lang.sarl.impl.SarlInterfaceImpl
+     * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlInterface()
+     * @generated
+     */
+    EClass SARL_INTERFACE = eINSTANCE.getSarlInterface();
+
+    /**
+     * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlEnumerationImpl <em>Enumeration</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see io.sarl.lang.sarl.impl.SarlEnumerationImpl
+     * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlEnumeration()
+     * @generated
+     */
+    EClass SARL_ENUMERATION = eINSTANCE.getSarlEnumeration();
+
+    /**
+     * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlAnnotationTypeImpl <em>Annotation Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see io.sarl.lang.sarl.impl.SarlAnnotationTypeImpl
+     * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlAnnotationType()
+     * @generated
+     */
+    EClass SARL_ANNOTATION_TYPE = eINSTANCE.getSarlAnnotationType();
 
     /**
      * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlEventImpl <em>Event</em>}' class.

@@ -145,14 +145,14 @@ public class SARLOutlineNodeComparatorTest {
 		when(this.capacityRequirementFeature2.getEClass()).thenReturn(SarlPackage.Literals.SARL_REQUIRED_CAPACITY);
 
 		this.attributeFeature1 = mock(EObjectNode.class);
-		when(this.attributeFeature1.getEClass()).thenReturn(XtendPackage.Literals.XTEND_FIELD);
+		when(this.attributeFeature1.getEClass()).thenReturn(SarlPackage.Literals.SARL_FIELD);
 		this.attributeFeature2 = mock(EObjectNode.class);
-		when(this.attributeFeature2.getEClass()).thenReturn(XtendPackage.Literals.XTEND_FIELD);
+		when(this.attributeFeature2.getEClass()).thenReturn(SarlPackage.Literals.SARL_FIELD);
 
 		this.constructorFeature1 = mock(EObjectNode.class);
-		when(this.constructorFeature1.getEClass()).thenReturn(XtendPackage.Literals.XTEND_CONSTRUCTOR);
+		when(this.constructorFeature1.getEClass()).thenReturn(SarlPackage.Literals.SARL_CONSTRUCTOR);
 		this.constructorFeature2 = mock(EObjectNode.class);
-		when(this.constructorFeature2.getEClass()).thenReturn(XtendPackage.Literals.XTEND_CONSTRUCTOR);
+		when(this.constructorFeature2.getEClass()).thenReturn(SarlPackage.Literals.SARL_CONSTRUCTOR);
 
 		this.actionFeature1 = mock(EObjectNode.class);
 		when(this.actionFeature1.getEClass()).thenReturn(SarlPackage.Literals.SARL_ACTION);

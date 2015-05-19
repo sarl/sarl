@@ -34,8 +34,11 @@ import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.Nullable;
@@ -47,10 +50,7 @@ import java.util.List;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.xtend.core.xtend.XtendConstructor;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
@@ -384,7 +384,7 @@ public class EcoreGeneratorHelperTest {
 
 		@Test
 		public void sarlScript()  {
-			XtendFile script = code.getSarlScript();
+			SarlScript script = code.getSarlScript();
 			assertNotNull(script);
 			assertEquals("io.sarl.lang.tests", script.getPackage());
 			assertTrue(script.getXtendTypes().isEmpty());
@@ -762,7 +762,7 @@ public class EcoreGeneratorHelperTest {
 
 		@Test
 		public void createConstructor()  {
-			XtendConstructor constructor = generator.createConstructor(code, agent, block);
+			SarlConstructor constructor = generator.createConstructor(code, agent, block);
 			//
 			assertNotNull(constructor);
 			assertTrue(constructor.getParameters().isEmpty());
@@ -803,7 +803,7 @@ public class EcoreGeneratorHelperTest {
 
 		@Test
 		public void createVariableGeneratedCodeFeatureContainerStringString()  {
-			XtendField variable = generator.createVariable(code, agent, "myVar", "java.lang.String");
+			SarlField variable = generator.createVariable(code, agent, "myVar", "java.lang.String");
 			//
 			assertNotNull(variable);
 			assertEquals("myVar", variable.getName());
@@ -817,7 +817,7 @@ public class EcoreGeneratorHelperTest {
 			XNumberLiteral numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 			numberLiteral.setValue("2.3f"); //$NON-NLS-1$
 			//
-			XtendField variable = generator.createVariable(code, agent, "myVar", numberLiteral);
+			SarlField variable = generator.createVariable(code, agent, "myVar", numberLiteral);
 			//
 			assertNotNull(variable);
 			assertEquals("myVar", variable.getName());
@@ -838,7 +838,7 @@ public class EcoreGeneratorHelperTest {
 
 		@Test
 		public void createValueGeneratedCodeFeatureContainerStringString()  {
-			XtendField value = generator.createValue(code, agent, "myConst", "java.lang.String");
+			SarlField value = generator.createValue(code, agent, "myConst", "java.lang.String");
 			//
 			assertNotNull(value);
 			assertEquals("myConst", value.getName());
@@ -852,7 +852,7 @@ public class EcoreGeneratorHelperTest {
 			XNumberLiteral  numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 			numberLiteral.setValue("2.3f"); //$NON-NLS-1$
 			//
-			XtendField value = generator.createValue(code, agent, "myConst", numberLiteral);
+			SarlField value = generator.createValue(code, agent, "myConst", numberLiteral);
 			//
 			assertNotNull(value);
 			assertEquals("myConst", value.getName());
@@ -924,7 +924,7 @@ public class EcoreGeneratorHelperTest {
 
 		@Test
 		public void createConstructor()  {
-			XtendConstructor constructor = generator.createConstructor(code, behavior, block);
+			SarlConstructor constructor = generator.createConstructor(code, behavior, block);
 			//
 			assertNotNull(constructor);
 			assertTrue(constructor.getParameters().isEmpty());
@@ -965,7 +965,7 @@ public class EcoreGeneratorHelperTest {
 
 		@Test
 		public void createVariableGeneratedCodeFeatureContainerStringString()  {
-			XtendField variable = generator.createVariable(code, behavior, "myVar", "java.lang.String");
+			SarlField variable = generator.createVariable(code, behavior, "myVar", "java.lang.String");
 			//
 			assertNotNull(variable);
 			assertEquals("myVar", variable.getName());
@@ -979,7 +979,7 @@ public class EcoreGeneratorHelperTest {
 			XNumberLiteral numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 			numberLiteral.setValue("2.3f"); //$NON-NLS-1$
 			//
-			XtendField variable = generator.createVariable(code, behavior, "myVar", numberLiteral);
+			SarlField variable = generator.createVariable(code, behavior, "myVar", numberLiteral);
 			//
 			assertNotNull(variable);
 			assertEquals("myVar", variable.getName());
@@ -1000,7 +1000,7 @@ public class EcoreGeneratorHelperTest {
 
 		@Test
 		public void createValueGeneratedCodeFeatureContainerStringString()  {
-			XtendField value = generator.createValue(code, behavior, "myConst", "java.lang.String");
+			SarlField value = generator.createValue(code, behavior, "myConst", "java.lang.String");
 			//
 			assertNotNull(value);
 			assertEquals("myConst", value.getName());
@@ -1014,7 +1014,7 @@ public class EcoreGeneratorHelperTest {
 			XNumberLiteral numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 			numberLiteral.setValue("2.3f"); //$NON-NLS-1$
 			//
-			XtendField value = generator.createValue(code, behavior, "myConst", numberLiteral);
+			SarlField value = generator.createValue(code, behavior, "myConst", numberLiteral);
 			//
 			assertNotNull(value);
 			assertEquals("myConst", value.getName());
@@ -1100,7 +1100,7 @@ public class EcoreGeneratorHelperTest {
 
 		@Test
 		public void createConstructor()  {
-			XtendConstructor constructor = generator.createConstructor(code, event, block);
+			SarlConstructor constructor = generator.createConstructor(code, event, block);
 			//
 			assertNotNull(constructor);
 			assertTrue(constructor.getParameters().isEmpty());
@@ -1119,7 +1119,7 @@ public class EcoreGeneratorHelperTest {
 
 		@Test
 		public void createVariableGeneratedCodeFeatureContainerStringString()  {
-			XtendField variable = generator.createVariable(code, event, "myVar", "java.lang.String");
+			SarlField variable = generator.createVariable(code, event, "myVar", "java.lang.String");
 			//
 			assertNotNull(variable);
 			assertEquals("myVar", variable.getName());
@@ -1133,7 +1133,7 @@ public class EcoreGeneratorHelperTest {
 			XNumberLiteral numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 			numberLiteral.setValue("2.3f"); //$NON-NLS-1$
 			//
-			XtendField variable = generator.createVariable(code, event, "myVar", numberLiteral);
+			SarlField variable = generator.createVariable(code, event, "myVar", numberLiteral);
 			//
 			assertNotNull(variable);
 			assertEquals("myVar", variable.getName());
@@ -1154,7 +1154,7 @@ public class EcoreGeneratorHelperTest {
 
 		@Test
 		public void createValueGeneratedCodeFeatureContainerStringString()  {
-			XtendField value = generator.createValue(code, event, "myConst", "java.lang.String");
+			SarlField value = generator.createValue(code, event, "myConst", "java.lang.String");
 			//
 			assertNotNull(value);
 			assertEquals("myConst", value.getName());
@@ -1168,7 +1168,7 @@ public class EcoreGeneratorHelperTest {
 			XNumberLiteral numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 			numberLiteral.setValue("2.3f"); //$NON-NLS-1$
 			//
-			XtendField value = generator.createValue(code, event, "myConst", numberLiteral);
+			SarlField value = generator.createValue(code, event, "myConst", numberLiteral);
 			//
 			assertNotNull(value);
 			assertEquals("myConst", value.getName());
@@ -1235,7 +1235,7 @@ public class EcoreGeneratorHelperTest {
 
 		@Test
 		public void createConstructor()  {
-			XtendConstructor constructor = generator.createConstructor(code, skill, block);
+			SarlConstructor constructor = generator.createConstructor(code, skill, block);
 			//
 			assertNotNull(constructor);
 			assertTrue(constructor.getParameters().isEmpty());
@@ -1254,7 +1254,7 @@ public class EcoreGeneratorHelperTest {
 
 		@Test
 		public void createVariableGeneratedCodeFeatureContainerStringString()  {
-			XtendField variable = generator.createVariable(code, skill, "myVar", "java.lang.String");
+			SarlField variable = generator.createVariable(code, skill, "myVar", "java.lang.String");
 			//
 			assertNotNull(variable);
 			assertEquals("myVar", variable.getName());
@@ -1268,7 +1268,7 @@ public class EcoreGeneratorHelperTest {
 			XNumberLiteral numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 			numberLiteral.setValue("2.3f"); //$NON-NLS-1$
 			//
-			XtendField variable = generator.createVariable(code, skill, "myVar", numberLiteral);
+			SarlField variable = generator.createVariable(code, skill, "myVar", numberLiteral);
 			//
 			assertNotNull(variable);
 			assertEquals("myVar", variable.getName());
@@ -1289,7 +1289,7 @@ public class EcoreGeneratorHelperTest {
 
 		@Test
 		public void createValueGeneratedCodeFeatureContainerStringString()  {
-			XtendField value = generator.createValue(code, skill, "myConst", "java.lang.String");
+			SarlField value = generator.createValue(code, skill, "myConst", "java.lang.String");
 			//
 			assertNotNull(value);
 			assertEquals("myConst", value.getName());
@@ -1303,7 +1303,7 @@ public class EcoreGeneratorHelperTest {
 			XNumberLiteral numberLiteral = XbaseFactory.eINSTANCE.createXNumberLiteral();
 			numberLiteral.setValue("2.3f"); //$NON-NLS-1$
 			//
-			XtendField value = generator.createValue(code, skill, "myConst", numberLiteral);
+			SarlField value = generator.createValue(code, skill, "myConst", numberLiteral);
 			//
 			assertNotNull(value);
 			assertEquals("myConst", value.getName());
@@ -1959,7 +1959,7 @@ public class EcoreGeneratorHelperTest {
 			JvmConstructor cons = jvmConstructor(
 					"new() {}");
 			//
-			XtendConstructor action = this.generator.createConstructor(cons, this.code.getImportManager());
+			SarlConstructor action = this.generator.createConstructor(cons, this.code.getImportManager());
 			//
 			assertNotNull(action);
 			//
@@ -1974,7 +1974,7 @@ public class EcoreGeneratorHelperTest {
 					"new (a : URL, b : int) {}",
 					"import java.net.URL");
 			//
-			XtendConstructor action = this.generator.createConstructor(cons, this.code.getImportManager());
+			SarlConstructor action = this.generator.createConstructor(cons, this.code.getImportManager());
 			//
 			assertNotNull(action);
 			//
@@ -1995,7 +1995,7 @@ public class EcoreGeneratorHelperTest {
 					"new (a : URL, b : int*) {}",
 					"import java.net.URL");
 			//
-			XtendConstructor action = this.generator.createConstructor(cons, this.code.getImportManager());
+			SarlConstructor action = this.generator.createConstructor(cons, this.code.getImportManager());
 			//
 			assertNotNull(action);
 			//
@@ -2016,7 +2016,7 @@ public class EcoreGeneratorHelperTest {
 					"new (a : URL, b : int=4, c : char) {}",
 					"import java.net.URL");
 			//
-			XtendConstructor action = this.generator.createConstructor(cons, this.code.getImportManager());
+			SarlConstructor action = this.generator.createConstructor(cons, this.code.getImportManager());
 			//
 			assertNotNull(action);
 			//
@@ -2038,7 +2038,7 @@ public class EcoreGeneratorHelperTest {
 					"new (a : URL, b : int=4, c : char*) {}",
 					"import java.net.URL");
 			//
-			XtendConstructor action = this.generator.createConstructor(cons, this.code.getImportManager());
+			SarlConstructor action = this.generator.createConstructor(cons, this.code.getImportManager());
 			//
 			assertNotNull(action);
 			//
@@ -2056,7 +2056,6 @@ public class EcoreGeneratorHelperTest {
 
 	}
 
-	@InjectWith(SARLInjectorProvider.class)
 	public static class CreateActionSignatureFromJvmElement extends AbstractCodeGeneratorTest {
 
 		@Test

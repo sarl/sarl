@@ -25,16 +25,15 @@ import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.validation.IssueCodes;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFile;
-import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Severity;
@@ -160,7 +159,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void capacityDirectImplementation() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Capacity",
 					"skill S1 implements Capacity {",
 					"}"
@@ -174,7 +173,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void redundantCapacity_fromSuperType() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"skill S1 implements C1 { }",
@@ -188,7 +187,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void redundantCapacity_duplicate() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"capacity C3 {}",
@@ -203,7 +202,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void redundantCapacity_fromPreviousCapacity() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"capacity C3 extends C2 {}",
@@ -218,7 +217,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 extends A1 {",
@@ -232,7 +231,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 {",
@@ -249,7 +248,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_2() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 {",
@@ -266,7 +265,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_3() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 {",
@@ -285,7 +284,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_4() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 {",
@@ -304,7 +303,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_5() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 {",
@@ -323,7 +322,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_6() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 extends java.lang.Cloneable {",
 					"}"
 					));
@@ -335,7 +334,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_7() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 extends java.lang.Cloneable, C1 {",
@@ -349,7 +348,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_8() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 extends C1, java.lang.Cloneable {",
@@ -363,7 +362,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_9() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 {",
@@ -379,7 +378,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_10() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 {",
@@ -395,7 +394,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_11() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 {",
@@ -411,7 +410,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_12() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 extends C1 {",
 					"}"
 					));
@@ -423,7 +422,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_13() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 extends C2 {",
 					"}",
 					"capacity C2 extends C1 {",
@@ -437,7 +436,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_14() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 extends C3 {",
 					"}",
 					"capacity C2 extends C1 {",
@@ -453,7 +452,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_15() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"capacity C3 extends C1, C2, C3 { }"
@@ -466,7 +465,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_16() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"capacity C3 extends C1, C3, C2 { }"
@@ -479,7 +478,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_17() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"capacity C3 extends C3, C1, C3 { }"
@@ -492,7 +491,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidSkillExtend_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"}",
 					"agent A1 {",
@@ -508,7 +507,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidSkillExtend_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 {",
@@ -525,7 +524,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidSkillImplement_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"}",
 					"skill S1 implements B1 {",
@@ -540,7 +539,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidSkillImplement_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"}",
 					"capacity C1 {",
@@ -559,7 +558,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidSkillImplement_2() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"}",
 					"capacity C1 {",
@@ -578,7 +577,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidSkillImplement_3() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"}",
 					"capacity C1 {",
@@ -597,7 +596,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void inheritance() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity CapTest1 {",
 					"	def func1 : int",
 					"}",
@@ -636,7 +635,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void emptyCapacity() throws Exception {
-			XtendFile mas = file("capacity C1 { }");
+			SarlScript mas = file("capacity C1 { }");
 			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.DISCOURAGED_CAPACITY_DEFINITION,
@@ -645,7 +644,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void skillImplementCapacity() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction",
 					"}",
@@ -683,7 +682,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void skillExtendSkill() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction",
 					"}",
@@ -736,7 +735,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void skillExtendSkillImplementCapacity() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction",
 					"}",
@@ -810,7 +809,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void skillNoExtendSkillNoImplementCapacity() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"skill S1 {",
 					"	def myaction { }",
 					"}"
@@ -827,7 +826,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void multipleActionDefinitionInCapacity() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int, b : int)",
 					"	def myaction(a : int)",
@@ -843,7 +842,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void multipleActionDefinitionInSkill() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def myaction(a : int, b : int) { }",
@@ -860,7 +859,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidActionNameInCapacity() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction",
 					"	def _handle_myaction",
@@ -875,7 +874,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidActionNameInSkill() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def myaction {",
@@ -897,7 +896,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void missedActionImplementation_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction1(a : int)",
 					"}",
@@ -964,7 +963,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void missedActionImplementation_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction1(a : int)",
 					"}",
@@ -984,7 +983,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void missedActionImplementation_2() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction1(a : int)",
 					"}",
@@ -1005,7 +1004,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void incompatibleReturnType_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1028,7 +1027,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void incompatibleReturnType_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1051,7 +1050,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void incompatibleReturnType_2() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1074,7 +1073,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void incompatibleReturnType_3() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1096,7 +1095,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void incompatibleReturnType_4() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : int",
 					"}",
@@ -1115,7 +1114,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void incompatibleReturnType_5() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) // void",
 					"}",
@@ -1134,7 +1133,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void incompatibleReturnType_6() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : int",
 					"}",
@@ -1152,7 +1151,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void incompatibleReturnType_7() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : int",
 					"}",
@@ -1171,7 +1170,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void expectingReturnType_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1194,7 +1193,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void compatibleReturnType_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1253,7 +1252,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void compatibleReturnType_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1312,7 +1311,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void compatibleReturnType_2() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : Number",
 					"}",
@@ -1356,7 +1355,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void compatibleReturnType_3() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : float",
 					"}",
@@ -1404,7 +1403,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void multipleVariableDefinitionInSkill() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	var myfield : int",
@@ -1413,7 +1412,7 @@ public class CapacityParsingTest {
 					"}"
 					));
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 					88, 7,
 					"Duplicate field myfield");
@@ -1421,7 +1420,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void multipleValueDefinitionInSkill() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	val myfield : int = 4",
@@ -1430,7 +1429,7 @@ public class CapacityParsingTest {
 					"}"
 					));
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 					97, 7,
 					"Duplicate field myfield");
@@ -1438,7 +1437,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void missedFinalFieldInitialization() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	val field1 : int = 5",
@@ -1454,7 +1453,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void completeFinalFieldInitialization() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	val field1 : int = 5",
@@ -1476,12 +1475,12 @@ public class CapacityParsingTest {
 			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
 			assertEquals(2, skill.getMembers().size());
 			//
-			XtendField attr1 = (XtendField) skill.getMembers().get(0);
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
 			assertEquals("field1", attr1.getName());
 			assertTypeReferenceIdentifier(attr1.getType(), "int");
 			assertXExpression(attr1.getInitialValue(), XNumberLiteral.class, "5");
 			//
-			XtendField attr2 = (XtendField) skill.getMembers().get(1);
+			SarlField attr2 = (SarlField) skill.getMembers().get(1);
 			assertEquals("field2", attr2.getName());
 			assertTypeReferenceIdentifier(attr2.getType(), "java.lang.String");
 			assertXExpression(attr2.getInitialValue(), XStringLiteral.class, "");
@@ -1489,7 +1488,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void fieldNameShadowingInSkill() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1502,14 +1501,14 @@ public class CapacityParsingTest {
 					"}"
 					));
 			validate(mas).assertWarning(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
 					"The field 'field1' in 'S2' is hidding the inherited field 'S1.field1'.");
 		}
 
 		@Test
 		public void variableModifier_public() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"public var name : String = \"Hello\"",
@@ -1521,7 +1520,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void variableModifier_protected() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"protected var name : String = \"Hello\"",
@@ -1529,13 +1528,13 @@ public class CapacityParsingTest {
 					), true);
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
-			XtendField attr1 = (XtendField) skill.getMembers().get(0);
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
 		}
 
 		@Test
 		public void variableModifier_package() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"package var name : String = \"Hello\"",
@@ -1547,7 +1546,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void variableModifier_private() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"private var name : String = \"Hello\"",
@@ -1555,13 +1554,13 @@ public class CapacityParsingTest {
 					), true);
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
-			XtendField attr1 = (XtendField) skill.getMembers().get(0);
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
 			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
 		}
 
 		@Test
 		public void variableModifier_default() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"var name : String = \"Hello\"",
@@ -1569,13 +1568,13 @@ public class CapacityParsingTest {
 					), true);
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
-			XtendField attr1 = (XtendField) skill.getMembers().get(0);
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
 		}
 
 		@Test
 		public void valueModifier_public() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"public val name : String = \"Hello\"",
@@ -1587,7 +1586,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void valueModifier_protected() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"protected val name : String = \"Hello\"",
@@ -1595,13 +1594,13 @@ public class CapacityParsingTest {
 					), true);
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
-			XtendField attr1 = (XtendField) skill.getMembers().get(0);
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
 		}
 
 		@Test
 		public void valueModifier_package() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"package val name : String = \"Hello\"",
@@ -1613,7 +1612,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void valueModifier_private() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"private val name : String = \"Hello\"",
@@ -1621,13 +1620,13 @@ public class CapacityParsingTest {
 					), true);
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
-			XtendField attr1 = (XtendField) skill.getMembers().get(0);
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
 			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
 		}
 
 		@Test
 		public void valueModifier_default() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"val name : String = \"Hello\"",
@@ -1635,7 +1634,7 @@ public class CapacityParsingTest {
 					), true);
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
-			XtendField attr1 = (XtendField) skill.getMembers().get(0);
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
 		}
 
@@ -1645,7 +1644,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityTypeForUses() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : float",
 					"}",
@@ -1664,7 +1663,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityTypeForRequires() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : float",
 					"}",
@@ -1683,7 +1682,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void agentUnsuedCapacity_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myfct",
 					"}",
@@ -1709,7 +1708,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void agentUnsuedCapacity_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myfct",
 					"}",
@@ -1740,7 +1739,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void agentUnsuedCapacity_2() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myfct",
 					"}",
@@ -1798,7 +1797,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void multipleCapacityUses_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"capacity C3 { def testFct }",
@@ -1815,7 +1814,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void multipleCapacityUses_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"capacity C3 { def testFct }",

@@ -21,12 +21,12 @@
 package io.sarl.lang.ui.tests.tasks;
 
 import static org.junit.Assert.*;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.ui.tasks.SarlTaskTagProvider;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
 import java.util.Iterator;
 
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.tasks.Priority;
 import org.eclipse.xtext.tasks.TaskTag;
 import org.eclipse.xtext.tasks.TaskTags;
@@ -48,7 +48,7 @@ public class SarlTaskTagProviderTest extends AbstractSarlUiTest {
 	
 	@Test
 	public void getTaskTags() throws Exception {
-		XtendFile script = file(multilineString(
+		SarlScript script = file(multilineString(
 				"/** TODO This is a comment */",
 				"agent Foo {",
 				"/** FIXME You must fix this!",

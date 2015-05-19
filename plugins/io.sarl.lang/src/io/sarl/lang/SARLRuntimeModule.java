@@ -125,6 +125,7 @@ import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 import org.eclipse.xtext.xbase.validation.ImplicitReturnFinder;
 
 import com.google.inject.Binder;
+import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 
 /**
@@ -140,6 +141,8 @@ import com.google.inject.name.Names;
 @SuppressWarnings("static-method")
 public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 
+	
+	
 //	@Override
 //	public Class<? extends IPartialParsingHelper> bindIPartialParserHelper() {
 //		return XtendPartialParsingHelper.class;
@@ -162,6 +165,7 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	/** Replies the Xbase factory.
 	 * @return the Xbase factory.
 	 */
+	@Singleton
 	public XbaseFactory bindXbaseFactory() {
 		return XbaseFactory.eINSTANCE;
 	}
@@ -169,6 +173,7 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	/** Replies the Xtend factory.
 	 * @return the Xtend factory.
 	 */
+	@Singleton
 	public XtendFactory bindXtendFactory() {
 		return XtendFactory.eINSTANCE;
 	}
@@ -176,7 +181,9 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	/** Replies the SARL factory.
 	 * @return the SARL factory.
 	 */
+	@Singleton
 	public SarlFactory bindSarlFactory() {
+		// Initialize simple dependencies
 		return SarlFactory.eINSTANCE;
 	}
 

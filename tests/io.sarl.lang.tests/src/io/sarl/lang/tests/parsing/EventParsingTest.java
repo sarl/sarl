@@ -18,23 +18,15 @@ package io.sarl.lang.tests.parsing;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
 
-import org.eclipse.xtend.core.xtend.XtendConstructor;
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFile;
-import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.common.types.JvmVisibility;
-import org.eclipse.xtext.common.types.TypesPackage;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
-import org.eclipse.xtext.junit4.util.ParseHelper;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
@@ -44,7 +36,6 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import com.google.common.base.Strings;
-import com.google.inject.Inject;
 
 /**
  * @author $Author: sgalland$
@@ -55,7 +46,7 @@ import com.google.inject.Inject;
 @RunWith(Suite.class)
 @SuiteClasses({
 	EventParsingTest.TopElementTest.class,
-	EventParsingTest.XtendFieldTest.class,
+	EventParsingTest.SarlFieldTest.class,
 	EventParsingTest.ConstructorTest.class,
 	EventParsingTest.AttributeTest.class,
 })
@@ -66,7 +57,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidExtend_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"}",
 					"event E1 extends C1 {",
@@ -81,7 +72,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidExtend_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"}",
 					"event E1 extends A1 {",
@@ -96,7 +87,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidExtend_2() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"}",
 					"agent A1 extends E1 {",
@@ -111,7 +102,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidExtend_3() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"}",
 					"behavior B1 extends E1 {",
@@ -126,7 +117,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidExtend_4() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"}",
 					"skill S1 extends E1 {",
@@ -141,13 +132,11 @@ public class EventParsingTest extends AbstractSarlTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
-	public static class XtendFieldTest extends AbstractSarlTest {
+	public static class SarlFieldTest extends AbstractSarlTest {
 
 		@Test
 		public void missedFinalFieldInitialization() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"val field1 : int = 5",
 					"val field2 : String",
@@ -161,7 +150,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void completeFinalFieldInitialization() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"val field1 : int = 5",
 					"val field2 : String = \"\"",
@@ -176,20 +165,20 @@ public class EventParsingTest extends AbstractSarlTest {
 			assertNull(event.getExtends());
 			assertEquals(2, event.getMembers().size());
 			//
-			XtendField attr1 = (XtendField) event.getMembers().get(0);
+			SarlField attr1 = (SarlField) event.getMembers().get(0);
 			assertEquals("field1", attr1.getName());
 			assertTypeReferenceIdentifier(attr1.getType(), "int");
 			assertXExpression(attr1.getInitialValue(), XNumberLiteral.class, "5");
 			//
-			XtendField attr2 = (XtendField) event.getMembers().get(1);
+			SarlField attr2 = (SarlField) event.getMembers().get(1);
 			assertEquals("field2", attr2.getName());
 			assertTypeReferenceIdentifier(attr2.getType(), "java.lang.String");
 			assertXExpression(attr2.getInitialValue(), XStringLiteral.class, "");
 		}
 
 		@Test
-		public void invalidXtendFieldName_0() throws Exception {
-			XtendFile mas = file(multilineString(
+		public void invalidSarlFieldName_0() throws Exception {
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"var myfield1 = 4.5",
 					"var ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
@@ -197,15 +186,15 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}"
 					));
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
 					34, 41,
 					"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
 		}
 
 		@Test
-		public void invalidXtendFieldName_1() throws Exception {
-			XtendFile mas = file(multilineString(
+		public void invalidSarlFieldName_1() throws Exception {
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"val myfield1 = 4.5",
 					"val ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
@@ -213,15 +202,15 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}"
 					));
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
 					34, 41,
 					"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
 		}
 
 		@Test
-		public void invalidXtendFieldName_2() throws Exception {
-			XtendFile mas = file(multilineString(
+		public void invalidSarlFieldName_2() throws Exception {
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"var myfield1 = 4.5",
 					"var const = \"String\"",
@@ -229,15 +218,15 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}"
 					));
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_IDENTIFIER,
 					34, 5,
 					"'const' is not a valid identifier.");
 		}
 
 		@Test
-		public void invalidXtendFieldName_3() throws Exception {
-			XtendFile mas = file(multilineString(
+		public void invalidSarlFieldName_3() throws Exception {
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"var myfield1 = 4.5",
 					"var this = \"String\"",
@@ -245,15 +234,15 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}"
 					));
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_IDENTIFIER,
 					34, 4,
 					"'this' is not a valid identifier");
 		}
 
 		@Test
-		public void discouragedXtendFieldName_0() throws Exception {
-			XtendFile mas = file(multilineString(
+		public void discouragedSarlFieldName_0() throws Exception {
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"val myfield1 = 4.5",
 					"val self = \"String\"",
@@ -261,7 +250,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}"
 					));
 			validate(mas).assertWarning(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISCOURAGED,
 					34, 4,
 					"'self' is a discouraged name");
@@ -269,7 +258,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void multipleVariableDefinition() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"var myfield : int",
 					"var myfield1 : String",
@@ -277,7 +266,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}"
 					));
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 					55, 7,
 					"Duplicate field myfield");
@@ -285,7 +274,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void multipleValueDefinition() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"val myfield : int = 4",
 					"val myfield1 : String = \"\"",
@@ -293,7 +282,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}"
 					));
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 					64, 7,
 					"Duplicate field myfield");
@@ -301,7 +290,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void fieldNameShadowing() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E0 {",
 					"val field1 : int = 5",
 					"val field2 : int = 6",
@@ -311,7 +300,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}"
 					));
 			validate(mas).assertWarning(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
 					81, 6,
 					"The field 'field1' in 'E1' is hidding the inherited field 'E0.field1'.");
@@ -323,7 +312,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void validImplicitSuperConstructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"package io.sarl.test",
 					"event E1 {",
 					"}",
@@ -346,7 +335,7 @@ public class EventParsingTest extends AbstractSarlTest {
 			assertTypeReferenceIdentifier(event2.getExtends(), "io.sarl.test.E1");
 			assertEquals(1, event2.getMembers().size());
 			//
-			XtendConstructor constructor = (XtendConstructor) event2.getMembers().get(0);
+			SarlConstructor constructor = (SarlConstructor) event2.getMembers().get(0);
 			assertParameterNames(constructor.getParameters(), "a");
 			assertParameterTypes(constructor.getParameters(), "int");
 			assertParameterDefaultValues(constructor.getParameters(), (Object) null);
@@ -354,7 +343,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void missedImplicitSuperConstructor_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"package io.sarl.test",
 					"event E1 {",
 					"new (a : char) {",
@@ -366,7 +355,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}"
 					));
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendConstructor(),
+					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
 					75, 17,
 					"Undefined default constructor in the super-type");
@@ -374,7 +363,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void missedImplicitSuperConstructor_2() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"package io.sarl.test",
 					"event E1 {",
 					"new (a : int) {",
@@ -392,7 +381,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void missedImplicitSuperConstructor_3() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"package io.sarl.test",
 					"event E1 {",
 					"new (a : int) {",
@@ -404,7 +393,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}"
 					));
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendConstructor(),
+					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
 					74, 17,
 					"Undefined default constructor in the super-type");
@@ -412,7 +401,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidArgumentTypeToSuperConstructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"package io.sarl.test",
 					"event E1 {",
 					"new (a : int) {",
@@ -437,137 +426,137 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void variableModifier_public() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"public var name : String = \"Hello\"",
 					"}"
 					), true);
 			//
 			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
-			XtendField attr1 = (XtendField) event.getMembers().get(0);
+			SarlField attr1 = (SarlField) event.getMembers().get(0);
 			assertEquals(JvmVisibility.PUBLIC, attr1.getVisibility());
 		}
 
 		@Test
 		public void variableModifier_package() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"package var name : String = \"Hello\"",
 					"}"
 					), false);
 			//
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of E1; only public, final, val & var are permitted");
 		}
 
 		@Test
 		public void variableModifier_protected() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"protected var name : String = \"Hello\"",
 					"}"
 					), false);
 			//
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of E1; only public, final, val & var are permitted");
 		}
 
 		@Test
 		public void variableModifier_private() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"private var name : String = \"Hello\"",
 					"}"
 					), false);
 			//
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of E1; only public, final, val & var are permitted");
 		}
 
 		@Test
 		public void variableModifier_default() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"var name : String = \"Hello\"",
 					"}"
 					), true);
 			//
 			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
-			XtendField attr1 = (XtendField) event.getMembers().get(0);
+			SarlField attr1 = (SarlField) event.getMembers().get(0);
 			assertEquals(JvmVisibility.PUBLIC, attr1.getVisibility());
 		}
 
 		@Test
 		public void valueModifier_public() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"public val name : String = \"Hello\"",
 					"}"
 					), true);
 			//
 			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
-			XtendField attr1 = (XtendField) event.getMembers().get(0);
+			SarlField attr1 = (SarlField) event.getMembers().get(0);
 			assertEquals(JvmVisibility.PUBLIC, attr1.getVisibility());
 		}
 
 		@Test
 		public void valueModifier_package() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"package val name : String = \"Hello\"",
 					"}"
 					), false);
 			//
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of E1; only public, final, val & var are permitted");
 		}
 
 		@Test
 		public void valueModifier_protected() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"protected val name : String = \"Hello\"",
 					"}"
 					), false);
 			//
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of E1; only public, final, val & var are permitted");
 		}
 
 		@Test
 		public void valueModifier_private() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"private val name : String = \"Hello\"",
 					"}"
 					), false);
 			//
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of E1; only public, final, val & var are permitted");
 		}
 
 		@Test
 		public void valueModifier_default() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"val name : String = \"Hello\"",
 					"}"
 					), true);
 			//
 			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
-			XtendField attr1 = (XtendField) event.getMembers().get(0);
+			SarlField attr1 = (SarlField) event.getMembers().get(0);
 			assertEquals(JvmVisibility.PUBLIC, attr1.getVisibility());
 		}
 

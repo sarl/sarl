@@ -18,6 +18,7 @@ package io.sarl.lang.ui.tests.quickfix;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
@@ -38,7 +39,6 @@ import org.eclipse.jface.text.ILineTracker;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextStore;
 import org.eclipse.jface.text.Region;
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.resource.IFragmentProvider;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
@@ -96,7 +96,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 			String filename = helper().generateFilename(
 					"io", "sarl", "tests", "quickfix", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 					packageName, baseName);
-			XtendFile script = helper().sarlFile(filename, invalidCode, failOnErrorInCode);
+			SarlScript script = helper().sarlScript(filename, invalidCode, failOnErrorInCode);
 			assertNotNull(script);
 			Resource scriptResource = script.eResource();
 

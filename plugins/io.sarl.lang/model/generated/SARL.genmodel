@@ -7,9 +7,12 @@
     editorPluginID="io.sarl.lang.editor" runtimeVersion="2.10" usedGenPackages="platform:/resource/org.eclipse.xtend.core/model/Xtend.genmodel#//xtend platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel#//xbase">
   <genPackages prefix="Sarl" basePackage="io.sarl.lang" disposableProviderFactory="true"
       fileExtensions="sarl" ecorePackage="SARL.ecore#/">
+    <genClasses ecoreClass="SARL.ecore#//SarlScript"/>
+    <genClasses ecoreClass="SARL.ecore#//SarlField"/>
     <genClasses ecoreClass="SARL.ecore#//SarlAction">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAction/firedEvents"/>
     </genClasses>
+    <genClasses ecoreClass="SARL.ecore#//SarlConstructor"/>
     <genClasses ecoreClass="SARL.ecore#//SarlBehaviorUnit">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlBehaviorUnit/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlBehaviorUnit/guard"/>
@@ -21,6 +24,10 @@
     <genClasses ecoreClass="SARL.ecore#//SarlRequiredCapacity">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlRequiredCapacity/capacities"/>
     </genClasses>
+    <genClasses ecoreClass="SARL.ecore#//SarlClass"/>
+    <genClasses ecoreClass="SARL.ecore#//SarlInterface"/>
+    <genClasses ecoreClass="SARL.ecore#//SarlEnumeration"/>
+    <genClasses ecoreClass="SARL.ecore#//SarlAnnotationType"/>
     <genClasses ecoreClass="SARL.ecore#//SarlEvent">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlEvent/extends"/>
     </genClasses>

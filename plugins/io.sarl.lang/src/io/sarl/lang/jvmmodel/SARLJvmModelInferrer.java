@@ -49,7 +49,9 @@ import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
@@ -291,15 +293,15 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			GenerationContext context = new GenerationContext() {
 				@Override
 				public boolean isSupportedMember(XtendMember member) {
-					if ((member instanceof XtendField)
-						|| (member instanceof XtendConstructor)
+					if ((member instanceof SarlField)
+						|| (member instanceof SarlConstructor)
 						|| (member instanceof SarlBehaviorUnit)
 						|| (member instanceof SarlCapacityUses)
 						|| (member instanceof SarlRequiredCapacity)) {
 						return true;
 					}
-					if (member instanceof XtendFunction
-						&& ((XtendFunction) member).getExpression() != null) {
+					if (member instanceof SarlAction
+						&& ((SarlAction) member).getExpression() != null) {
 						return true;
 					}
 					return false;
@@ -395,15 +397,15 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			GenerationContext context = new GenerationContext() {
 				@Override
 				public boolean isSupportedMember(XtendMember member) {
-					if ((member instanceof XtendField)
-						|| (member instanceof XtendConstructor)
+					if ((member instanceof SarlField)
+						|| (member instanceof SarlConstructor)
 						|| (member instanceof SarlBehaviorUnit)
 						|| (member instanceof SarlCapacityUses)
 						|| (member instanceof SarlRequiredCapacity)) {
 						return true;
 					}
-					if (member instanceof XtendFunction
-						&& ((XtendFunction) member).getExpression() != null) {
+					if (member instanceof SarlAction
+						&& ((SarlAction) member).getExpression() != null) {
 						return true;
 					}
 					return false;
@@ -475,8 +477,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			GenerationContext context = new GenerationContext() {
 				@Override
 				public boolean isSupportedMember(XtendMember member) {
-					return ((member instanceof XtendField)
-							|| (member instanceof XtendConstructor));
+					return ((member instanceof SarlField)
+							|| (member instanceof SarlConstructor));
 				}
 			};
 			openContext(inferredJvmType, context);
@@ -565,15 +567,15 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			GenerationContext context = new GenerationContext() {
 				@Override
 				public boolean isSupportedMember(XtendMember member) {
-					if ((member instanceof XtendField)
-						|| (member instanceof XtendConstructor)
+					if ((member instanceof SarlField)
+						|| (member instanceof SarlConstructor)
 						|| (member instanceof SarlBehaviorUnit)
 						|| (member instanceof SarlCapacityUses)
 						|| (member instanceof SarlRequiredCapacity)) {
 						return true;
 					}
-					if (member instanceof XtendFunction
-						&& ((XtendFunction) member).getExpression() != null) {
+					if (member instanceof SarlAction
+						&& ((SarlAction) member).getExpression() != null) {
 						return true;
 					}
 					return false;
@@ -656,8 +658,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			GenerationContext context = new GenerationContext() {
 				@Override
 				public boolean isSupportedMember(XtendMember member) {
-					return (member instanceof XtendFunction
-							&& ((XtendFunction) member).getExpression() == null);
+					return (member instanceof SarlAction
+							&& ((SarlAction) member).getExpression() == null);
 				}
 			};
 			openContext(inferredJvmType, context);

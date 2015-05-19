@@ -7,14 +7,21 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlAnnotationType;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlClass;
+import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlEnumeration;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarAccess;
 import org.eclipse.emf.ecore.EObject;
@@ -28,7 +35,6 @@ import org.eclipse.xtend.core.xtend.RichStringIf;
 import org.eclipse.xtend.core.xtend.RichStringLiteral;
 import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendClass;
-import org.eclipse.xtend.core.xtend.XtendConstructor;
 import org.eclipse.xtend.core.xtend.XtendEnum;
 import org.eclipse.xtend.core.xtend.XtendEnumLiteral;
 import org.eclipse.xtend.core.xtend.XtendField;
@@ -107,6 +113,9 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 			case SarlPackage.SARL_AGENT:
 				sequence_Agent(context, (SarlAgent) semanticObject); 
 				return; 
+			case SarlPackage.SARL_ANNOTATION_TYPE:
+				sequence_AnnotationType(context, (SarlAnnotationType) semanticObject); 
+				return; 
 			case SarlPackage.SARL_BEHAVIOR:
 				sequence_Behavior(context, (SarlBehavior) semanticObject); 
 				return; 
@@ -119,14 +128,32 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 			case SarlPackage.SARL_CAPACITY_USES:
 				sequence_CapacityUses(context, (SarlCapacityUses) semanticObject); 
 				return; 
+			case SarlPackage.SARL_CLASS:
+				sequence_Class(context, (SarlClass) semanticObject); 
+				return; 
+			case SarlPackage.SARL_CONSTRUCTOR:
+				sequence_Constructor(context, (SarlConstructor) semanticObject); 
+				return; 
+			case SarlPackage.SARL_ENUMERATION:
+				sequence_Enum(context, (SarlEnumeration) semanticObject); 
+				return; 
 			case SarlPackage.SARL_EVENT:
 				sequence_Event(context, (SarlEvent) semanticObject); 
+				return; 
+			case SarlPackage.SARL_FIELD:
+				sequence_Field(context, (SarlField) semanticObject); 
 				return; 
 			case SarlPackage.SARL_FORMAL_PARAMETER:
 				sequence_Parameter(context, (SarlFormalParameter) semanticObject); 
 				return; 
+			case SarlPackage.SARL_INTERFACE:
+				sequence_Interface(context, (SarlInterface) semanticObject); 
+				return; 
 			case SarlPackage.SARL_REQUIRED_CAPACITY:
 				sequence_RequiredCapacity(context, (SarlRequiredCapacity) semanticObject); 
+				return; 
+			case SarlPackage.SARL_SCRIPT:
+				sequence_SarlScript(context, (SarlScript) semanticObject); 
 				return; 
 			case SarlPackage.SARL_SKILL:
 				sequence_Skill(context, (SarlSkill) semanticObject); 
@@ -540,81 +567,23 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 				}
 				else break;
 			case XtendPackage.XTEND_ANNOTATION_TYPE:
-				if(context == grammarAccess.getAnnotationFieldRule()) {
-					sequence_AnnotationField(context, (XtendAnnotationType) semanticObject); 
-					return; 
-				}
-				else if(context == grammarAccess.getAgentMemberRule() ||
-				   context == grammarAccess.getAnnotationTypeRule() ||
-				   context == grammarAccess.getBehaviorMemberRule() ||
-				   context == grammarAccess.getMemberRule() ||
-				   context == grammarAccess.getSkillMemberRule() ||
-				   context == grammarAccess.getTypeRule()) {
-					sequence_AnnotationType(context, (XtendAnnotationType) semanticObject); 
-					return; 
-				}
-				else break;
+				sequence_AnnotationField(context, (XtendAnnotationType) semanticObject); 
+				return; 
 			case XtendPackage.XTEND_CLASS:
-				if(context == grammarAccess.getAnnotationFieldRule()) {
-					sequence_AnnotationField(context, (XtendClass) semanticObject); 
-					return; 
-				}
-				else if(context == grammarAccess.getAgentMemberRule() ||
-				   context == grammarAccess.getBehaviorMemberRule() ||
-				   context == grammarAccess.getClassRule() ||
-				   context == grammarAccess.getMemberRule() ||
-				   context == grammarAccess.getSkillMemberRule() ||
-				   context == grammarAccess.getTypeRule()) {
-					sequence_Class(context, (XtendClass) semanticObject); 
-					return; 
-				}
-				else break;
-			case XtendPackage.XTEND_CONSTRUCTOR:
-				sequence_Constructor(context, (XtendConstructor) semanticObject); 
+				sequence_AnnotationField(context, (XtendClass) semanticObject); 
 				return; 
 			case XtendPackage.XTEND_ENUM:
-				if(context == grammarAccess.getAnnotationFieldRule()) {
-					sequence_AnnotationField(context, (XtendEnum) semanticObject); 
-					return; 
-				}
-				else if(context == grammarAccess.getAgentMemberRule() ||
-				   context == grammarAccess.getBehaviorMemberRule() ||
-				   context == grammarAccess.getEnumRule() ||
-				   context == grammarAccess.getMemberRule() ||
-				   context == grammarAccess.getSkillMemberRule() ||
-				   context == grammarAccess.getTypeRule()) {
-					sequence_Enum(context, (XtendEnum) semanticObject); 
-					return; 
-				}
-				else break;
+				sequence_AnnotationField(context, (XtendEnum) semanticObject); 
+				return; 
 			case XtendPackage.XTEND_ENUM_LITERAL:
 				sequence_XtendEnumLiteral(context, (XtendEnumLiteral) semanticObject); 
 				return; 
 			case XtendPackage.XTEND_FIELD:
-				if(context == grammarAccess.getAnnotationFieldRule()) {
-					sequence_AnnotationField(context, (XtendField) semanticObject); 
-					return; 
-				}
-				else if(context == grammarAccess.getAgentMemberRule() ||
-				   context == grammarAccess.getBehaviorMemberRule() ||
-				   context == grammarAccess.getEventMemberRule() ||
-				   context == grammarAccess.getFieldRule() ||
-				   context == grammarAccess.getMemberRule() ||
-				   context == grammarAccess.getSkillMemberRule()) {
-					sequence_Field(context, (XtendField) semanticObject); 
-					return; 
-				}
-				else break;
+				sequence_AnnotationField(context, (XtendField) semanticObject); 
+				return; 
 			case XtendPackage.XTEND_FILE:
-				if(context == grammarAccess.getFileRule()) {
-					sequence_File(context, (XtendFile) semanticObject); 
-					return; 
-				}
-				else if(context == grammarAccess.getSarlScriptRule()) {
-					sequence_SarlScript(context, (XtendFile) semanticObject); 
-					return; 
-				}
-				else break;
+				sequence_File(context, (XtendFile) semanticObject); 
+				return; 
 			case XtendPackage.XTEND_FORMAL_PARAMETER:
 				if(context == grammarAccess.getFullJvmFormalParameterRule()) {
 					sequence_FullJvmFormalParameter(context, (XtendFormalParameter) semanticObject); 
@@ -626,20 +595,8 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 				}
 				else break;
 			case XtendPackage.XTEND_INTERFACE:
-				if(context == grammarAccess.getAnnotationFieldRule()) {
-					sequence_AnnotationField(context, (XtendInterface) semanticObject); 
-					return; 
-				}
-				else if(context == grammarAccess.getAgentMemberRule() ||
-				   context == grammarAccess.getBehaviorMemberRule() ||
-				   context == grammarAccess.getInterfaceRule() ||
-				   context == grammarAccess.getMemberRule() ||
-				   context == grammarAccess.getSkillMemberRule() ||
-				   context == grammarAccess.getTypeRule()) {
-					sequence_Interface(context, (XtendInterface) semanticObject); 
-					return; 
-				}
-				else break;
+				sequence_AnnotationField(context, (XtendInterface) semanticObject); 
+				return; 
 			case XtendPackage.XTEND_MEMBER:
 				sequence_AnnotationField_XtendAnnotationType_2_4_0_XtendClass_2_1_0_XtendEnum_2_3_0_XtendField_2_0_0_0_0_XtendField_2_0_0_1_0_XtendInterface_2_2_0(context, (XtendMember) semanticObject); 
 				return; 
@@ -706,7 +663,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 * Constraint:
 	 *     (annotations+=XAnnotation* modifiers+=CommonModifier* name=ValidID members+=AnnotationField*)
 	 */
-	protected void sequence_AnnotationType(EObject context, XtendAnnotationType semanticObject) {
+	protected void sequence_AnnotationType(EObject context, SarlAnnotationType semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -765,7 +722,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *         members+=Member*
 	 *     )
 	 */
-	protected void sequence_Class(EObject context, XtendClass semanticObject) {
+	protected void sequence_Class(EObject context, SarlClass semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -781,7 +738,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *         expression=XBlockExpression
 	 *     )
 	 */
-	protected void sequence_Constructor(EObject context, XtendConstructor semanticObject) {
+	protected void sequence_Constructor(EObject context, SarlConstructor semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -790,7 +747,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 * Constraint:
 	 *     (annotations+=XAnnotation* modifiers+=CommonModifier* name=ValidID (members+=XtendEnumLiteral members+=XtendEnumLiteral*)?)
 	 */
-	protected void sequence_Enum(EObject context, XtendEnum semanticObject) {
+	protected void sequence_Enum(EObject context, SarlEnumeration semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -815,7 +772,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *         initialValue=XExpression?
 	 *     )
 	 */
-	protected void sequence_Field(EObject context, XtendField semanticObject) {
+	protected void sequence_Field(EObject context, SarlField semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -840,7 +797,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *         members+=Member*
 	 *     )
 	 */
-	protected void sequence_Interface(EObject context, XtendInterface semanticObject) {
+	protected void sequence_Interface(EObject context, SarlInterface semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -876,7 +833,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 * Constraint:
 	 *     (package=QualifiedName? importSection=XImportSection? xtendTypes+=Type*)
 	 */
-	protected void sequence_SarlScript(EObject context, XtendFile semanticObject) {
+	protected void sequence_SarlScript(EObject context, SarlScript semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

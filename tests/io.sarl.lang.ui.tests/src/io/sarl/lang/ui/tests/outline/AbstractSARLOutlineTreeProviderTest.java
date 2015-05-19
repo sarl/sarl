@@ -26,12 +26,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.ui.outline.SARLOutlineTreeProvider;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.StyledString;
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.XtextDocument;
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
@@ -93,7 +93,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 	 * @throws CoreException
 	 */
 	protected OutlineAsserts newOutlineAsserts(String code) throws Exception, CoreException {
-		XtendFile script = helper().sarlFile(helper().generateFilename(), code);
+		SarlScript script = helper().sarlScript(helper().generateFilename(), code);
 		return newOutlineAsserts(script);
 	}
 
@@ -104,7 +104,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 	 * @throws Exception
 	 * @throws CoreException
 	 */
-	protected OutlineAsserts newOutlineAsserts(XtendFile script) throws Exception, CoreException {
+	protected OutlineAsserts newOutlineAsserts(SarlScript script) throws Exception, CoreException {
 		XtextDocument document = this.documentProvider.get();
 		document.setInput((XtextResource) script.eResource());
 		IOutlineNode root = this.treeProvider.createRoot(document);

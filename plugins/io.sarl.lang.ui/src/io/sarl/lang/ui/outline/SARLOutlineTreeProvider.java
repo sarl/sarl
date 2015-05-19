@@ -21,16 +21,16 @@
 package io.sarl.lang.ui.outline;
 
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
+import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlScript;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.xtend.core.xtend.XtendConstructor;
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFile;
-import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
@@ -67,7 +67,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	 * @param parentNode - the parent node.
 	 * @param modelElement - the feature container for which a node should be created.
 	 */
-	protected void _createChildren(DocumentRootNode parentNode, XtendFile modelElement) {
+	protected void _createChildren(DocumentRootNode parentNode, SarlScript modelElement) {
 		if (!Strings.isNullOrEmpty(modelElement.getPackage())) {
 			createEStructuralFeatureNode(
 					parentNode, modelElement,
@@ -104,10 +104,10 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 			EObjectNode capacityRequirementNode = null;
 
 			for (EObject feature : modelElement.getMembers()) {
-				if (feature instanceof XtendField
-						|| feature instanceof XtendFunction
+				if (feature instanceof SarlField
+						|| feature instanceof SarlAction
 						|| feature instanceof SarlBehaviorUnit
-						|| feature instanceof XtendConstructor
+						|| feature instanceof SarlConstructor
 						|| feature instanceof XtendTypeDeclaration) {
 					createNode(elementNode, feature);
 				} else if (feature instanceof SarlCapacityUses) {

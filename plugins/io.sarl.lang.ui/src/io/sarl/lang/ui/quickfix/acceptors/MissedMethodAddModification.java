@@ -27,6 +27,7 @@ import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.annotation.FiredEvent;
 import io.sarl.lang.annotation.Generated;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 import io.sarl.lang.util.Utils;
 
@@ -38,7 +39,6 @@ import java.util.TreeSet;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
@@ -111,7 +111,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
 		XtendTypeDeclaration clazz = (XtendTypeDeclaration) element;
-		XtendFile script = EcoreUtil2.getContainerOfType(element, XtendFile.class);
+		SarlScript script = EcoreUtil2.getContainerOfType(element, SarlScript.class);
 		IXtextDocument document = context.getXtextDocument();
 		Set<JvmType> importableTypes = new HashSet<>();
 		addMissedFunctions(script, clazz, document, importableTypes);
@@ -119,7 +119,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 	}
 
 	private void addMissedFunctions(
-			XtendFile script,
+			SarlScript script,
 			XtendTypeDeclaration container, IXtextDocument document,
 			Set<JvmType> importableTypes) throws Exception {
 		SARLQuickfixProvider tools = getTools();
@@ -362,7 +362,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 		appendable.commitChanges();
 	}
 
-	private void addMissedImports(XtendFile script,
+	private void addMissedImports(SarlScript script,
 			IXtextDocument document, Set<JvmType> importableTypes) throws Exception {
 		SARLQuickfixProvider tools = getTools();
 		int insertOffset = tools.getImportInsertOffset(script);

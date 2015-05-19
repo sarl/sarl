@@ -21,13 +21,12 @@ import static org.junit.Assert.assertTrue;
 import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
 import org.eclipse.xtend.core.validation.IssueCodes;
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFile;
-import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.junit4.InjectWith;
@@ -53,8 +52,8 @@ import com.google.inject.Inject;
 public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
-	public void variableDeclaration_XtendFieldScope_xtend() throws Exception {
-		XtendFile mas = file(multilineString(
+	public void variableDeclaration_SarlFieldScope_xtend() throws Exception {
+		SarlScript mas = file(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var List<Integer> list",
@@ -64,18 +63,18 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		));
 		validate(mas)
 			.assertError(
-				XtendPackage.eINSTANCE.getXtendField(),
+				SarlPackage.eINSTANCE.getSarlField(),
 				Diagnostic.SYNTAX_DIAGNOSTIC,
 				"no viable alternative at input 'List'")
 			.assertError(
-				XtendPackage.eINSTANCE.getXtendField(),
+				SarlPackage.eINSTANCE.getSarlField(),
 				Diagnostic.SYNTAX_DIAGNOSTIC,
 				"no viable alternative at input 'double'");
 	}
 
 	@Test
 	public void variableDeclaration_localScope_xtend() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"var int i",
@@ -103,8 +102,8 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void variableDeclaration_XtendFieldScope() throws Exception {
-		XtendFile mas = file(multilineString(
+	public void variableDeclaration_SarlFieldScope() throws Exception {
+		SarlScript mas = file(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var list : List<Integer>",
@@ -121,17 +120,17 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		assertNull(agent.getExtends());
 		assertEquals(3, agent.getMembers().size());
 		//
-		XtendField attr1 = (XtendField) agent.getMembers().get(0);
+		SarlField attr1 = (SarlField) agent.getMembers().get(0);
 		assertEquals("list", attr1.getName());
 		assertTypeReferenceIdentifier(attr1.getType(), "java.util.List<java.lang.Integer>");
 		assertNull(attr1.getInitialValue());
 		//
-		XtendField attr2 = (XtendField) agent.getMembers().get(1);
+		SarlField attr2 = (SarlField) agent.getMembers().get(1);
 		assertEquals("i", attr2.getName());
 		assertNull(attr2.getType());
 		assertXExpression(attr2.getInitialValue(), XNumberLiteral.class, "45");
 		//
-		XtendField attr3 = (XtendField) agent.getMembers().get(2);
+		SarlField attr3 = (SarlField) agent.getMembers().get(2);
 		assertEquals("j", attr3.getName());
 		assertTypeReferenceIdentifier(attr3.getType(), "double");
 		assertXExpression(attr3.getInitialValue(), XNumberLiteral.class, "45");
@@ -139,7 +138,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void variableDeclaration_localScope() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"def myaction {",
@@ -168,8 +167,8 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void valueDeclaration_XtendFieldScope_xtend() throws Exception {
-		XtendFile mas = file(multilineString(
+	public void valueDeclaration_SarlFieldScope_xtend() throws Exception {
+		SarlScript mas = file(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"val List<Integer> list",
@@ -179,18 +178,18 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		));
 		validate(mas)
 			.assertError(
-				XtendPackage.eINSTANCE.getXtendField(),
+				SarlPackage.eINSTANCE.getSarlField(),
 				Diagnostic.SYNTAX_DIAGNOSTIC,
 				"no viable alternative at input 'List'")
 			.assertError(
-				XtendPackage.eINSTANCE.getXtendField(),
+				SarlPackage.eINSTANCE.getSarlField(),
 				Diagnostic.SYNTAX_DIAGNOSTIC,
 				"no viable alternative at input 'double'");
 	}
 
 	@Test
 	public void valueDeclaration_localScope_xtend() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"val int i",
@@ -218,8 +217,8 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void valueDeclaration_XtendFieldScope() throws Exception {
-		XtendFile mas = file(multilineString(
+	public void valueDeclaration_SarlFieldScope() throws Exception {
+		SarlScript mas = file(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"val list : List<Integer> = null",
@@ -236,17 +235,17 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		assertNull(agent.getExtends());
 		assertEquals(3, agent.getMembers().size());
 		//
-		XtendField attr1 = (XtendField) agent.getMembers().get(0);
+		SarlField attr1 = (SarlField) agent.getMembers().get(0);
 		assertEquals("list", attr1.getName());
 		assertTypeReferenceIdentifier(attr1.getType(), "java.util.List<java.lang.Integer>");
 		assertXExpression(attr1.getInitialValue(), XNullLiteral.class, null);
 		//
-		XtendField attr2 = (XtendField) agent.getMembers().get(1);
+		SarlField attr2 = (SarlField) agent.getMembers().get(1);
 		assertEquals("i", attr2.getName());
 		assertNull(attr2.getType());
 		assertXExpression(attr2.getInitialValue(), XNumberLiteral.class, "45");
 		//
-		XtendField attr3 = (XtendField) agent.getMembers().get(2);
+		SarlField attr3 = (SarlField) agent.getMembers().get(2);
 		assertEquals("j", attr3.getName());
 		assertTypeReferenceIdentifier(attr3.getType(), "double");
 		assertXExpression(attr3.getInitialValue(), XNumberLiteral.class, "45");
@@ -254,7 +253,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void valueDeclaration_localScope() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"val j = 45",
@@ -281,7 +280,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void forLoop_xtend() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var list : List<Integer>",
@@ -300,7 +299,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void forLoop_inferredType() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var list : List<Integer>",
@@ -320,7 +319,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		assertNull(agent.getExtends());
 		assertEquals(2, agent.getMembers().size());
 		//
-		XtendField attr = (XtendField) agent.getMembers().get(0);
+		SarlField attr = (SarlField) agent.getMembers().get(0);
 		assertEquals("list", attr.getName());
 		assertTypeReferenceIdentifier(attr.getType(), "java.util.List<java.lang.Integer>");
 		assertNull(attr.getInitialValue());
@@ -333,7 +332,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void forLoop_explicitType() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var list : List<Integer>",
@@ -353,7 +352,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		assertNull(agent.getExtends());
 		assertEquals(2, agent.getMembers().size());
 		//
-		XtendField attr = (XtendField) agent.getMembers().get(0);
+		SarlField attr = (SarlField) agent.getMembers().get(0);
 		assertEquals("list", attr.getName());
 		assertTypeReferenceIdentifier(attr.getType(), "java.util.List<java.lang.Integer>");
 		assertNull(attr.getInitialValue());
@@ -366,7 +365,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void catch_xtend() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"try {",
@@ -386,7 +385,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void catch_oneType() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"try {",
@@ -415,7 +414,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void multicatch_xtend() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"try {",
@@ -438,7 +437,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void multicatch_oneType() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"try {",
@@ -470,7 +469,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void closure_xtend() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 			"agent A1 {",
 				"def mycall(a : int, f : (Number,Number) => int) {",
 					"return a + f.apply",
@@ -490,7 +489,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void closure_twoParams() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 			"agent A1 {",
 				"def mycall(a : int, f : (Float,Integer) => float) : float {",
 					"return a + f.apply(5.45f, 6)",

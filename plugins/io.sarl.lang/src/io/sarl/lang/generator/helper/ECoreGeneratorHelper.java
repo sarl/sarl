@@ -27,12 +27,17 @@ import io.sarl.lang.annotation.FiredEvent;
 import io.sarl.lang.annotation.Generated;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlAnnotationType;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlFactory;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.sarl.SarlInterface;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarAccess;
 import io.sarl.lang.util.Utils;
@@ -47,13 +52,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.xtend.core.xtend.XtendAnnotationType;
-import org.eclipse.xtend.core.xtend.XtendConstructor;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
-import org.eclipse.xtend.core.xtend.XtendFactory;
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFile;
-import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.Constants;
@@ -243,7 +242,7 @@ public class ECoreGeneratorHelper {
 	 * @return the SARL script.
 	 */
 	public SarlEcoreCode createScript(Resource resource, String packageName)  {
-		XtendFile script = XtendFactory.eINSTANCE.createXtendFile();
+		SarlScript script = SarlFactory.eINSTANCE.createSarlScript();
 		EList<EObject> content = resource.getContents();
 		if (!content.isEmpty()) {
 			content.clear();
@@ -388,11 +387,11 @@ public class ECoreGeneratorHelper {
 	 * @param type - the name of the return type, or <code>null</code> if the action's return type is void.
 	 * @return the SARL attribute.
 	 */
-	public XtendField createVariable(SarlEcoreCode code, XtendTypeDeclaration container, String name, String type)  {
+	public SarlField createVariable(SarlEcoreCode code, XtendTypeDeclaration container, String name, String type)  {
 		if (Strings.isNullOrEmpty(type)) {
 			throw new IllegalArgumentException("the parameter 'type' must contains a valid type"); //$NON-NLS-1$
 		}
-		XtendField attribute = XtendFactory.eINSTANCE.createXtendField();
+		SarlField attribute = SarlFactory.eINSTANCE.createSarlField();
 		container.getMembers().add(attribute);
 		attribute.getModifiers().add(this.grammarAccess.getFieldModifierAccess().getVarKeyword_1().getValue());
 		attribute.setName(name);
@@ -408,11 +407,11 @@ public class ECoreGeneratorHelper {
 	 * @param initialValue - the initial value for the attribute.
 	 * @return the SARL attribute.
 	 */
-	public XtendField createVariable(SarlEcoreCode code, XtendTypeDeclaration container, String name, XExpression initialValue)  {
+	public SarlField createVariable(SarlEcoreCode code, XtendTypeDeclaration container, String name, XExpression initialValue)  {
 		if (initialValue == null) {
 			throw new IllegalArgumentException("the parameter 'initialValue' must not be null"); //$NON-NLS-1$
 		}
-		XtendField attribute = XtendFactory.eINSTANCE.createXtendField();
+		SarlField attribute = SarlFactory.eINSTANCE.createSarlField();
 		container.getMembers().add(attribute);
 		attribute.getModifiers().add(this.grammarAccess.getFieldModifierAccess().getVarKeyword_1().getValue());
 		attribute.setName(name);
@@ -428,11 +427,11 @@ public class ECoreGeneratorHelper {
 	 * @param type - the name of the return type, or <code>null</code> if the action's return type is void.
 	 * @return the SARL attribute.
 	 */
-	public XtendField createValue(SarlEcoreCode code, XtendTypeDeclaration container, String name, String type)  {
+	public SarlField createValue(SarlEcoreCode code, XtendTypeDeclaration container, String name, String type)  {
 		if (Strings.isNullOrEmpty(type)) {
 			throw new IllegalArgumentException("the parameter 'type' must contains a valid type"); //$NON-NLS-1$
 		}
-		XtendField attribute = XtendFactory.eINSTANCE.createXtendField();
+		SarlField attribute = SarlFactory.eINSTANCE.createSarlField();
 		container.getMembers().add(attribute);
 		attribute.getModifiers().add(this.grammarAccess.getFieldModifierAccess().getValKeyword_0().getValue());
 		attribute.setName(name);
@@ -448,11 +447,11 @@ public class ECoreGeneratorHelper {
 	 * @param initialValue - the initial value for the attribute.
 	 * @return the SARL attribute.
 	 */
-	public XtendField createValue(SarlEcoreCode code, XtendTypeDeclaration container, String name, XExpression initialValue)  {
+	public SarlField createValue(SarlEcoreCode code, XtendTypeDeclaration container, String name, XExpression initialValue)  {
 		if (initialValue == null) {
 			throw new IllegalArgumentException("the parameter 'initialValue' must not be null"); //$NON-NLS-1$
 		}
-		XtendField attribute = XtendFactory.eINSTANCE.createXtendField();
+		SarlField attribute = SarlFactory.eINSTANCE.createSarlField();
 		container.getMembers().add(attribute);
 		attribute.getModifiers().add(this.grammarAccess.getFieldModifierAccess().getValKeyword_0().getValue());
 		attribute.setName(name);
@@ -544,9 +543,9 @@ public class ECoreGeneratorHelper {
 				resource.load(is, null);
 				EObject content = resource.getContents().isEmpty() ? null : resource.getContents().get(0);
 				if (content != null) {
-					XtendFile script = (XtendFile) content;
+					SarlScript script = (SarlScript) content;
 					SarlAgent ag = (SarlAgent) script.getXtendTypes().get(0);
-					XtendField attr = (XtendField) ag.getMembers().get(0);
+					SarlField attr = (SarlField) ag.getMembers().get(0);
 					xExpression = attr.getInitialValue();
 					XImportSection importSection = script.getImportSection();
 					if (importManager != null && importSection != null) {
@@ -631,8 +630,8 @@ public class ECoreGeneratorHelper {
 	public boolean isActionBodyAllowed(XtendTypeDeclaration container) {
 		return !(container instanceof SarlCapacity
 				|| container instanceof SarlEvent
-				|| container instanceof XtendAnnotationType
-				|| container instanceof XtendInterface);
+				|| container instanceof SarlAnnotationType
+				|| container instanceof SarlInterface);
 	}
 
 	/** Create a SARL constructor in the script.
@@ -643,8 +642,8 @@ public class ECoreGeneratorHelper {
 	 * @return the SARL action.
 	 */
 	@SuppressWarnings("static-method")
-	public XtendConstructor createConstructor(SarlEcoreCode code, XtendTypeDeclaration container, XBlockExpression block)  {
-		XtendConstructor constructor = XtendFactory.eINSTANCE.createXtendConstructor();
+	public SarlConstructor createConstructor(SarlEcoreCode code, XtendTypeDeclaration container, XBlockExpression block)  {
+		SarlConstructor constructor = SarlFactory.eINSTANCE.createSarlConstructor();
 		container.getMembers().add(constructor);
 		XBlockExpression b = block;
 		if (b == null) {
@@ -802,8 +801,8 @@ public class ECoreGeneratorHelper {
 	 * This parameter could be <code>null</code>.
 	 * @return the SARL Ecore element.
 	 */
-	public XtendConstructor createConstructor(JvmConstructor constructor, ImportManager importManager) {
-		XtendConstructor cons = XtendFactory.eINSTANCE.createXtendConstructor();
+	public SarlConstructor createConstructor(JvmConstructor constructor, ImportManager importManager) {
+		SarlConstructor cons = SarlFactory.eINSTANCE.createSarlConstructor();
 		// Parameters
 		createExecutableFeatureParameters(constructor, cons.getParameters(), importManager);
 		// Throws

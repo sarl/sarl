@@ -25,7 +25,6 @@ import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlSkill;
 
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
-import org.eclipse.xtend.core.xtend.impl.XtendInterfaceImplCustom;
 import org.eclipse.xtext.common.types.JvmVisibility;
 
 /**
@@ -44,7 +43,7 @@ import org.eclipse.xtext.common.types.JvmVisibility;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SarlInterfaceImplCustom extends XtendInterfaceImplCustom {
+public class SarlInterfaceImplCustom extends SarlInterfaceImpl {
 
 	/**
 	 * <!-- begin-user-doc -->

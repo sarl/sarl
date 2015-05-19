@@ -20,9 +20,9 @@
  */
 package io.sarl.lang.util;
 
-import java.util.Comparator;
+import io.sarl.lang.sarl.SarlConstructor;
 
-import org.eclipse.xtend.core.xtend.XtendConstructor;
+import java.util.Comparator;
 
 /**
  * Comparator of Constructors.
@@ -32,7 +32,7 @@ import org.eclipse.xtend.core.xtend.XtendConstructor;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class ConstructorComparator implements Comparator<XtendConstructor> {
+public class ConstructorComparator implements Comparator<SarlConstructor> {
 
 	private final FormalParameterListComparator comparator = new FormalParameterListComparator();
 
@@ -43,7 +43,7 @@ public class ConstructorComparator implements Comparator<XtendConstructor> {
 	}
 
 	@Override
-	public int compare(XtendConstructor o1, XtendConstructor o2) {
+	public int compare(SarlConstructor o1, SarlConstructor o2) {
 		if (o1 == o2) {
 			return 0;
 		}

@@ -24,11 +24,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
 import java.util.Collection;
 
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.DefaultHighlightingConfiguration;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightedPositionAcceptor;
@@ -64,7 +64,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 	protected HighlightingAsserts highlight(String code) {
 		try {
 			HighlightingAsserts asserts = new HighlightingAsserts();
-			XtendFile script = file(code);
+			SarlScript script = file(code);
 			getCalculator().provideHighlightingFor((XtextResource) script.eResource(), asserts);
 			return asserts;
 		} catch(Exception e) {

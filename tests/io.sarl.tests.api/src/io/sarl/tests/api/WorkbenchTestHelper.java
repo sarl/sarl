@@ -23,6 +23,7 @@ package io.sarl.tests.api;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.ui.preferences.SARLPreferences;
 
 import java.io.ByteArrayInputStream;
@@ -71,7 +72,6 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.ErrorEditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil;
 import org.eclipse.xtext.junit4.ui.util.JavaProjectSetupUtil;
@@ -321,8 +321,8 @@ public class WorkbenchTestHelper {
 	 * @return the SARL script.
 	 * @throws Exception
 	 */
-	public XtendFile sarlFile(String fileName, String content) throws Exception {
-		return sarlFile(fileName, content, true);
+	public SarlScript sarlScript(String fileName, String content) throws Exception {
+		return sarlScript(fileName, content, true);
 	}
 
 	/** Create a SARL file.
@@ -334,7 +334,7 @@ public class WorkbenchTestHelper {
 	 * @return the SARL script.
 	 * @throws Exception
 	 */
-	public XtendFile sarlFile(String fileName, String content, boolean assertNoError) throws Exception {
+	public SarlScript sarlScript(String fileName, String content, boolean assertNoError) throws Exception {
 		IFile file = createFile(fileName, content);
 		Resource resource = getResourceSet().createResource(uri(file));
 		try (InputStream is = new StringInputStream(content)) {
@@ -342,7 +342,7 @@ public class WorkbenchTestHelper {
 			if (assertNoError) {
 				assertEquals(resource.getErrors().toString(), 0, resource.getErrors().size());
 			}
-			XtendFile xtendFile = (XtendFile) resource.getContents().get(0);
+			SarlScript xtendFile = (SarlScript) resource.getContents().get(0);
 			return xtendFile;
 		}
 	}
@@ -355,13 +355,13 @@ public class WorkbenchTestHelper {
 	 * @return the SARL script.
 	 * @throws Exception
 	 */
-	public XtendFile sarlFile(IProject project, String fileName, String content) throws Exception {
+	public SarlScript sarlScript(IProject project, String fileName, String content) throws Exception {
 		IFile file = createFileImpl(project.getName() + "/src/" + fileName, content); //$NON-NLS-1$
 		Resource resource = this.resourceSetProvider.get(project).createResource(uri(file));
 		try (InputStream is = new StringInputStream(content)) {
 			resource.load(is, null);
 			assertEquals(resource.getErrors().toString(), 0, resource.getErrors().size());
-			XtendFile xtendFile = (XtendFile) resource.getContents().get(0);
+			SarlScript xtendFile = (SarlScript) resource.getContents().get(0);
 			return xtendFile;
 		}
 	}
@@ -396,7 +396,7 @@ public class WorkbenchTestHelper {
 	public <T extends XtendTypeDeclaration> T sarlTypeDeclaration(
 			String fileName, Class<T> type,
 			String content) throws Exception {
-		XtendFile script = sarlFile(fileName, content);
+		SarlScript script = sarlScript(fileName, content);
 		T latest = null;
 		for (XtendTypeDeclaration declaration : script.getXtendTypes()) {
 			if (type.isInstance(declaration)) {

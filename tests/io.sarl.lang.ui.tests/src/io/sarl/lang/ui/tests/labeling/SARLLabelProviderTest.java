@@ -24,8 +24,11 @@ import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.ui.labeling.SARLLabelProvider;
 import io.sarl.tests.api.AbstractSarlUiTest;
@@ -34,9 +37,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
-import org.eclipse.xtend.core.xtend.XtendConstructor;
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeReference;
@@ -74,7 +74,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 	public void getImageDescriptorSarlScript() {
 		assertBundleImage(
 				"sarl-file.png", //$NON-NLS-1$
-				this.provider.getImageDescriptor(Mockito.mock(XtendFile.class)));
+				this.provider.getImageDescriptor(Mockito.mock(SarlScript.class)));
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 	public void getImageDescriptorAttribute() {
 		assertJdtImage(
 				JavaPluginImages.DESC_FIELD_PROTECTED, 0,
-				this.provider.getImageDescriptor(Mockito.mock(XtendField.class)));
+				this.provider.getImageDescriptor(Mockito.mock(SarlField.class)));
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 	public void getImageDescriptorConstructor() {
 		assertJdtImage(
 				JavaPluginImages.DESC_MISC_PUBLIC, JavaElementImageDescriptor.CONSTRUCTOR,
-				this.provider.getImageDescriptor(Mockito.mock(XtendConstructor.class)));
+				this.provider.getImageDescriptor(Mockito.mock(SarlConstructor.class)));
 	}
 
 	/**
@@ -223,8 +223,8 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 		assertNotNull(features);
 		assertEquals(1, features.size());
 		EObject eObject = features.get(0);
-		assertTrue(eObject instanceof XtendField);
-		XtendField attr = (XtendField)eObject;
+		assertTrue(eObject instanceof SarlField);
+		SarlField attr = (SarlField)eObject;
 		JvmTypeReference typeReference = attr.getType();
 		assertTrue(typeReference instanceof JvmParameterizedTypeReference);
 		JvmParameterizedTypeReference parametizedTypeReference = (JvmParameterizedTypeReference)typeReference;
@@ -256,7 +256,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 	 */
 	@Test
 	public void getTextSarlScript() throws Exception {
-		XtendFile script = helper().sarlFile(
+		SarlScript script = helper().sarlScript(
 				helper().generateFilename(),
 				PACKAGE_STATEMENT);
 		validate(script.eResource()).assertNoErrors();
@@ -353,7 +353,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 		validate(agent.eResource()).assertNoErrors();
 		Object feature = agent.getMembers().get(0);
 		assertNotNull(feature);
-		assertTrue(feature instanceof XtendField);
+		assertTrue(feature instanceof SarlField);
 		Object text = this.provider.getText(feature);
 		assertNotNull(text);
 		assertEquals("myAttr : boolean", text); //$NON-NLS-1$
@@ -371,7 +371,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 		validate(event.eResource()).assertNoErrors();
 		Object feature = event.getMembers().get(0);
 		assertNotNull(feature);
-		assertTrue(feature instanceof XtendConstructor);
+		assertTrue(feature instanceof SarlConstructor);
 		Object text = this.provider.getText(feature);
 		assertNotNull(text);
 		assertEquals("new(int)", text); //$NON-NLS-1$

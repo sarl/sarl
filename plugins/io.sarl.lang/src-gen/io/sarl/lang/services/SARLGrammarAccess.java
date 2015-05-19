@@ -24,7 +24,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public class SarlScriptElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "SarlScript");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cXtendFileAction_0 = (Action)cGroup.eContents().get(0);
+		private final Action cSarlScriptAction_0 = (Action)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
 		private final Keyword cPackageKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
 		private final Assignment cPackageAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
@@ -36,14 +36,14 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cXtendTypesTypeParserRuleCall_3_0 = (RuleCall)cXtendTypesAssignment_3.eContents().get(0);
 		
 		//SarlScript returns xtend::XtendFile:
-		//	{xtend::XtendFile} ("package" package=QualifiedName ";"?)? importSection=XImportSection? xtendTypes+=Type*;
+		//	{SarlScript} ("package" package=QualifiedName ";"?)? importSection=XImportSection? xtendTypes+=Type*;
 		@Override public ParserRule getRule() { return rule; }
 
-		//{xtend::XtendFile} ("package" package=QualifiedName ";"?)? importSection=XImportSection? xtendTypes+=Type*
+		//{SarlScript} ("package" package=QualifiedName ";"?)? importSection=XImportSection? xtendTypes+=Type*
 		public Group getGroup() { return cGroup; }
 
-		//{xtend::XtendFile}
-		public Action getXtendFileAction_0() { return cXtendFileAction_0; }
+		//{SarlScript}
+		public Action getSarlScriptAction_0() { return cSarlScriptAction_0; }
 
 		//("package" package=QualifiedName ";"?)?
 		public Group getGroup_1() { return cGroup_1; }
@@ -176,7 +176,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public class FieldElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Field");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cXtendFieldAction_0 = (Action)cGroup.eContents().get(0);
+		private final Action cSarlFieldAction_0 = (Action)cGroup.eContents().get(0);
 		private final Assignment cAnnotationsAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cAnnotationsXAnnotationParserRuleCall_1_0 = (RuleCall)cAnnotationsAssignment_1.eContents().get(0);
 		private final Assignment cModifiersAssignment_2 = (Assignment)cGroup.eContents().get(2);
@@ -201,19 +201,17 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cInitialValueXExpressionParserRuleCall_6_1_0 = (RuleCall)cInitialValueAssignment_6_1.eContents().get(0);
 		private final Keyword cSemicolonKeyword_7 = (Keyword)cGroup.eContents().get(7);
 		
-		//Field returns xtend::XtendMember:
-		//	{xtend::XtendField} annotations+=XAnnotation* modifiers+=CommonModifier* modifiers+=FieldModifier
-		//	modifiers+=CommonModifier* (=> (name=ValidID ":" type=JvmTypeReference) | name=ValidID) ("="
-		//	initialValue=XExpression)? ";"?;
+		//Field returns xtend::XtendField:
+		//	{SarlField} annotations+=XAnnotation* modifiers+=CommonModifier* modifiers+=FieldModifier modifiers+=CommonModifier*
+		//	(=> (name=ValidID ":" type=JvmTypeReference) | name=ValidID) ("=" initialValue=XExpression)? ";"?;
 		@Override public ParserRule getRule() { return rule; }
 
-		//{xtend::XtendField} annotations+=XAnnotation* modifiers+=CommonModifier* modifiers+=FieldModifier
-		//modifiers+=CommonModifier* (=> (name=ValidID ":" type=JvmTypeReference) | name=ValidID) ("=" initialValue=XExpression)?
-		//";"?
+		//{SarlField} annotations+=XAnnotation* modifiers+=CommonModifier* modifiers+=FieldModifier modifiers+=CommonModifier* (=>
+		//(name=ValidID ":" type=JvmTypeReference) | name=ValidID) ("=" initialValue=XExpression)? ";"?
 		public Group getGroup() { return cGroup; }
 
-		//{xtend::XtendField}
-		public Action getXtendFieldAction_0() { return cXtendFieldAction_0; }
+		//{SarlField}
+		public Action getSarlFieldAction_0() { return cSarlFieldAction_0; }
 
 		//annotations+=XAnnotation*
 		public Assignment getAnnotationsAssignment_1() { return cAnnotationsAssignment_1; }
@@ -555,7 +553,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public class ConstructorElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Constructor");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cXtendConstructorAction_0 = (Action)cGroup.eContents().get(0);
+		private final Action cSarlConstructorAction_0 = (Action)cGroup.eContents().get(0);
 		private final Assignment cAnnotationsAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cAnnotationsXAnnotationParserRuleCall_1_0 = (RuleCall)cAnnotationsAssignment_1.eContents().get(0);
 		private final Assignment cModifiersAssignment_2 = (Assignment)cGroup.eContents().get(2);
@@ -592,20 +590,18 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cExpressionXBlockExpressionParserRuleCall_7_0 = (RuleCall)cExpressionAssignment_7.eContents().get(0);
 		
 		//Constructor returns xtend::XtendConstructor:
-		//	{xtend::XtendConstructor} annotations+=XAnnotation* modifiers+=CommonModifier* "new" ("<"
-		//	typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* ">")? ("(" (parameters+=Parameter (","
-		//	parameters+=Parameter)*)? ")")? ("throws" exceptions+=JvmTypeReference ("," exceptions+=JvmTypeReference)*)?
-		//	expression=XBlockExpression;
+		//	{SarlConstructor} annotations+=XAnnotation* modifiers+=CommonModifier* "new" ("<" typeParameters+=JvmTypeParameter
+		//	("," typeParameters+=JvmTypeParameter)* ">")? ("(" (parameters+=Parameter ("," parameters+=Parameter)*)? ")")?
+		//	("throws" exceptions+=JvmTypeReference ("," exceptions+=JvmTypeReference)*)? expression=XBlockExpression;
 		@Override public ParserRule getRule() { return rule; }
 
-		//{xtend::XtendConstructor} annotations+=XAnnotation* modifiers+=CommonModifier* "new" ("<"
-		//typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* ">")? ("(" (parameters+=Parameter (","
-		//parameters+=Parameter)*)? ")")? ("throws" exceptions+=JvmTypeReference ("," exceptions+=JvmTypeReference)*)?
-		//expression=XBlockExpression
+		//{SarlConstructor} annotations+=XAnnotation* modifiers+=CommonModifier* "new" ("<" typeParameters+=JvmTypeParameter (","
+		//typeParameters+=JvmTypeParameter)* ">")? ("(" (parameters+=Parameter ("," parameters+=Parameter)*)? ")")? ("throws"
+		//exceptions+=JvmTypeReference ("," exceptions+=JvmTypeReference)*)? expression=XBlockExpression
 		public Group getGroup() { return cGroup; }
 
-		//{xtend::XtendConstructor}
-		public Action getXtendConstructorAction_0() { return cXtendConstructorAction_0; }
+		//{SarlConstructor}
+		public Action getSarlConstructorAction_0() { return cSarlConstructorAction_0; }
 
 		//annotations+=XAnnotation*
 		public Assignment getAnnotationsAssignment_1() { return cAnnotationsAssignment_1; }
@@ -895,7 +891,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public class ClassElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Class");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cXtendClassAction_0 = (Action)cGroup.eContents().get(0);
+		private final Action cSarlClassAction_0 = (Action)cGroup.eContents().get(0);
 		private final Assignment cAnnotationsAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cAnnotationsXAnnotationParserRuleCall_1_0 = (RuleCall)cAnnotationsAssignment_1.eContents().get(0);
 		private final Assignment cModifiersAssignment_2 = (Assignment)cGroup.eContents().get(2);
@@ -929,21 +925,21 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cMembersMemberParserRuleCall_9_0 = (RuleCall)cMembersAssignment_9.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_10 = (Keyword)cGroup.eContents().get(10);
 		
-		//Class returns xtend::XtendTypeDeclaration:
-		//	{xtend::XtendClass} annotations+=XAnnotation* modifiers+=CommonModifier* "class" name=ValidID ("<"
+		//Class returns xtend::XtendClass:
+		//	{SarlClass} annotations+=XAnnotation* modifiers+=CommonModifier* "class" name=ValidID ("<"
 		//	typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* ">")? ("extends"
 		//	extends=JvmParameterizedTypeReference)? ("implements" implements+=JvmParameterizedTypeReference (","
 		//	implements+=JvmParameterizedTypeReference)*)? "{" members+=Member* "}";
 		@Override public ParserRule getRule() { return rule; }
 
-		//{xtend::XtendClass} annotations+=XAnnotation* modifiers+=CommonModifier* "class" name=ValidID ("<"
+		//{SarlClass} annotations+=XAnnotation* modifiers+=CommonModifier* "class" name=ValidID ("<"
 		//typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* ">")? ("extends"
 		//extends=JvmParameterizedTypeReference)? ("implements" implements+=JvmParameterizedTypeReference (","
 		//implements+=JvmParameterizedTypeReference)*)? "{" members+=Member* "}"
 		public Group getGroup() { return cGroup; }
 
-		//{xtend::XtendClass}
-		public Action getXtendClassAction_0() { return cXtendClassAction_0; }
+		//{SarlClass}
+		public Action getSarlClassAction_0() { return cSarlClassAction_0; }
 
 		//annotations+=XAnnotation*
 		public Assignment getAnnotationsAssignment_1() { return cAnnotationsAssignment_1; }
@@ -1045,7 +1041,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public class InterfaceElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Interface");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cXtendInterfaceAction_0 = (Action)cGroup.eContents().get(0);
+		private final Action cSarlInterfaceAction_0 = (Action)cGroup.eContents().get(0);
 		private final Assignment cAnnotationsAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cAnnotationsXAnnotationParserRuleCall_1_0 = (RuleCall)cAnnotationsAssignment_1.eContents().get(0);
 		private final Assignment cModifiersAssignment_2 = (Assignment)cGroup.eContents().get(2);
@@ -1075,19 +1071,19 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cMembersMemberParserRuleCall_8_0 = (RuleCall)cMembersAssignment_8.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_9 = (Keyword)cGroup.eContents().get(9);
 		
-		//Interface returns xtend::XtendTypeDeclaration:
-		//	{xtend::XtendInterface} annotations+=XAnnotation* modifiers+=CommonModifier* "interface" name=ValidID ("<"
+		//Interface returns xtend::XtendInterface:
+		//	{SarlInterface} annotations+=XAnnotation* modifiers+=CommonModifier* "interface" name=ValidID ("<"
 		//	typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* ">")? ("extends"
 		//	extends+=JvmParameterizedTypeReference ("," extends+=JvmParameterizedTypeReference)*)? "{" members+=Member* "}";
 		@Override public ParserRule getRule() { return rule; }
 
-		//{xtend::XtendInterface} annotations+=XAnnotation* modifiers+=CommonModifier* "interface" name=ValidID ("<"
+		//{SarlInterface} annotations+=XAnnotation* modifiers+=CommonModifier* "interface" name=ValidID ("<"
 		//typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* ">")? ("extends"
 		//extends+=JvmParameterizedTypeReference ("," extends+=JvmParameterizedTypeReference)*)? "{" members+=Member* "}"
 		public Group getGroup() { return cGroup; }
 
-		//{xtend::XtendInterface}
-		public Action getXtendInterfaceAction_0() { return cXtendInterfaceAction_0; }
+		//{SarlInterface}
+		public Action getSarlInterfaceAction_0() { return cSarlInterfaceAction_0; }
 
 		//annotations+=XAnnotation*
 		public Assignment getAnnotationsAssignment_1() { return cAnnotationsAssignment_1; }
@@ -1177,7 +1173,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public class EnumElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Enum");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cXtendEnumAction_0 = (Action)cGroup.eContents().get(0);
+		private final Action cSarlEnumerationAction_0 = (Action)cGroup.eContents().get(0);
 		private final Assignment cAnnotationsAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cAnnotationsXAnnotationParserRuleCall_1_0 = (RuleCall)cAnnotationsAssignment_1.eContents().get(0);
 		private final Assignment cModifiersAssignment_2 = (Assignment)cGroup.eContents().get(2);
@@ -1196,17 +1192,17 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cSemicolonKeyword_7 = (Keyword)cGroup.eContents().get(7);
 		private final Keyword cRightCurlyBracketKeyword_8 = (Keyword)cGroup.eContents().get(8);
 		
-		//Enum returns xtend::XtendTypeDeclaration:
-		//	{xtend::XtendEnum} annotations+=XAnnotation* modifiers+=CommonModifier* "enum" name=ValidID "{"
+		//Enum returns xtend::XtendEnum:
+		//	{SarlEnumeration} annotations+=XAnnotation* modifiers+=CommonModifier* "enum" name=ValidID "{"
 		//	(members+=XtendEnumLiteral ("," members+=XtendEnumLiteral)*)? ";"? "}";
 		@Override public ParserRule getRule() { return rule; }
 
-		//{xtend::XtendEnum} annotations+=XAnnotation* modifiers+=CommonModifier* "enum" name=ValidID "{"
+		//{SarlEnumeration} annotations+=XAnnotation* modifiers+=CommonModifier* "enum" name=ValidID "{"
 		//(members+=XtendEnumLiteral ("," members+=XtendEnumLiteral)*)? ";"? "}"
 		public Group getGroup() { return cGroup; }
 
-		//{xtend::XtendEnum}
-		public Action getXtendEnumAction_0() { return cXtendEnumAction_0; }
+		//{SarlEnumeration}
+		public Action getSarlEnumerationAction_0() { return cSarlEnumerationAction_0; }
 
 		//annotations+=XAnnotation*
 		public Assignment getAnnotationsAssignment_1() { return cAnnotationsAssignment_1; }
@@ -1263,7 +1259,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public class AnnotationTypeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "AnnotationType");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cXtendAnnotationTypeAction_0 = (Action)cGroup.eContents().get(0);
+		private final Action cSarlAnnotationTypeAction_0 = (Action)cGroup.eContents().get(0);
 		private final Assignment cAnnotationsAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cAnnotationsXAnnotationParserRuleCall_1_0 = (RuleCall)cAnnotationsAssignment_1.eContents().get(0);
 		private final Assignment cModifiersAssignment_2 = (Assignment)cGroup.eContents().get(2);
@@ -1276,17 +1272,17 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cMembersAnnotationFieldParserRuleCall_6_0 = (RuleCall)cMembersAssignment_6.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_7 = (Keyword)cGroup.eContents().get(7);
 		
-		//AnnotationType returns xtend::XtendTypeDeclaration:
-		//	{xtend::XtendAnnotationType} annotations+=XAnnotation* modifiers+=CommonModifier* "annotation" name=ValidID "{"
+		//AnnotationType returns xtend::XtendAnnotationType:
+		//	{SarlAnnotationType} annotations+=XAnnotation* modifiers+=CommonModifier* "annotation" name=ValidID "{"
 		//	members+=AnnotationField* "}";
 		@Override public ParserRule getRule() { return rule; }
 
-		//{xtend::XtendAnnotationType} annotations+=XAnnotation* modifiers+=CommonModifier* "annotation" name=ValidID "{"
+		//{SarlAnnotationType} annotations+=XAnnotation* modifiers+=CommonModifier* "annotation" name=ValidID "{"
 		//members+=AnnotationField* "}"
 		public Group getGroup() { return cGroup; }
 
-		//{xtend::XtendAnnotationType}
-		public Action getXtendAnnotationTypeAction_0() { return cXtendAnnotationTypeAction_0; }
+		//{SarlAnnotationType}
+		public Action getSarlAnnotationTypeAction_0() { return cSarlAnnotationTypeAction_0; }
 
 		//annotations+=XAnnotation*
 		public Assignment getAnnotationsAssignment_1() { return cAnnotationsAssignment_1; }
@@ -2493,7 +2489,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 
 	
 	//SarlScript returns xtend::XtendFile:
-	//	{xtend::XtendFile} ("package" package=QualifiedName ";"?)? importSection=XImportSection? xtendTypes+=Type*;
+	//	{SarlScript} ("package" package=QualifiedName ";"?)? importSection=XImportSection? xtendTypes+=Type*;
 	public SarlScriptElements getSarlScriptAccess() {
 		return pSarlScript;
 	}
@@ -2532,10 +2528,9 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getMemberAccess().getRule();
 	}
 
-	//Field returns xtend::XtendMember:
-	//	{xtend::XtendField} annotations+=XAnnotation* modifiers+=CommonModifier* modifiers+=FieldModifier
-	//	modifiers+=CommonModifier* (=> (name=ValidID ":" type=JvmTypeReference) | name=ValidID) ("="
-	//	initialValue=XExpression)? ";"?;
+	//Field returns xtend::XtendField:
+	//	{SarlField} annotations+=XAnnotation* modifiers+=CommonModifier* modifiers+=FieldModifier modifiers+=CommonModifier*
+	//	(=> (name=ValidID ":" type=JvmTypeReference) | name=ValidID) ("=" initialValue=XExpression)? ";"?;
 	public FieldElements getFieldAccess() {
 		return pField;
 	}
@@ -2560,10 +2555,9 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Constructor returns xtend::XtendConstructor:
-	//	{xtend::XtendConstructor} annotations+=XAnnotation* modifiers+=CommonModifier* "new" ("<"
-	//	typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* ">")? ("(" (parameters+=Parameter (","
-	//	parameters+=Parameter)*)? ")")? ("throws" exceptions+=JvmTypeReference ("," exceptions+=JvmTypeReference)*)?
-	//	expression=XBlockExpression;
+	//	{SarlConstructor} annotations+=XAnnotation* modifiers+=CommonModifier* "new" ("<" typeParameters+=JvmTypeParameter
+	//	("," typeParameters+=JvmTypeParameter)* ">")? ("(" (parameters+=Parameter ("," parameters+=Parameter)*)? ")")?
+	//	("throws" exceptions+=JvmTypeReference ("," exceptions+=JvmTypeReference)*)? expression=XBlockExpression;
 	public ConstructorElements getConstructorAccess() {
 		return pConstructor;
 	}
@@ -2605,8 +2599,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getRequiredCapacityAccess().getRule();
 	}
 
-	//Class returns xtend::XtendTypeDeclaration:
-	//	{xtend::XtendClass} annotations+=XAnnotation* modifiers+=CommonModifier* "class" name=ValidID ("<"
+	//Class returns xtend::XtendClass:
+	//	{SarlClass} annotations+=XAnnotation* modifiers+=CommonModifier* "class" name=ValidID ("<"
 	//	typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* ">")? ("extends"
 	//	extends=JvmParameterizedTypeReference)? ("implements" implements+=JvmParameterizedTypeReference (","
 	//	implements+=JvmParameterizedTypeReference)*)? "{" members+=Member* "}";
@@ -2618,8 +2612,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getClassAccess().getRule();
 	}
 
-	//Interface returns xtend::XtendTypeDeclaration:
-	//	{xtend::XtendInterface} annotations+=XAnnotation* modifiers+=CommonModifier* "interface" name=ValidID ("<"
+	//Interface returns xtend::XtendInterface:
+	//	{SarlInterface} annotations+=XAnnotation* modifiers+=CommonModifier* "interface" name=ValidID ("<"
 	//	typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* ">")? ("extends"
 	//	extends+=JvmParameterizedTypeReference ("," extends+=JvmParameterizedTypeReference)*)? "{" members+=Member* "}";
 	public InterfaceElements getInterfaceAccess() {
@@ -2630,8 +2624,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getInterfaceAccess().getRule();
 	}
 
-	//Enum returns xtend::XtendTypeDeclaration:
-	//	{xtend::XtendEnum} annotations+=XAnnotation* modifiers+=CommonModifier* "enum" name=ValidID "{"
+	//Enum returns xtend::XtendEnum:
+	//	{SarlEnumeration} annotations+=XAnnotation* modifiers+=CommonModifier* "enum" name=ValidID "{"
 	//	(members+=XtendEnumLiteral ("," members+=XtendEnumLiteral)*)? ";"? "}";
 	public EnumElements getEnumAccess() {
 		return pEnum;
@@ -2641,8 +2635,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getEnumAccess().getRule();
 	}
 
-	//AnnotationType returns xtend::XtendTypeDeclaration:
-	//	{xtend::XtendAnnotationType} annotations+=XAnnotation* modifiers+=CommonModifier* "annotation" name=ValidID "{"
+	//AnnotationType returns xtend::XtendAnnotationType:
+	//	{SarlAnnotationType} annotations+=XAnnotation* modifiers+=CommonModifier* "annotation" name=ValidID "{"
 	//	members+=AnnotationField* "}";
 	public AnnotationTypeElements getAnnotationTypeAccess() {
 		return pAnnotationType;

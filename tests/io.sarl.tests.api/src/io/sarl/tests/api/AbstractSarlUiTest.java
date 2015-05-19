@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import io.sarl.lang.SARLUiInjectorProvider;
+import io.sarl.lang.sarl.SarlScript;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -39,7 +40,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil;
@@ -177,8 +177,8 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	/** Create an instance of class.
 	 */
 	@Override
-	protected XtendFile file(String string, boolean validate) throws Exception {
-		return helper().sarlFile(
+	protected SarlScript file(String string, boolean validate) throws Exception {
+		return helper().sarlScript(
 				helper().generateFilename("io", "sarl", "tests", getClass().getSimpleName()),
 				string);
 	}

@@ -15,25 +15,12 @@
  */
 package io.sarl.lang.tests.parsing;
 
-import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
-import org.eclipse.xtend.core.xtend.XtendFile;
-import org.eclipse.xtend.core.xtend.XtendPackage;
-import org.eclipse.xtext.XtextPackage;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
-import org.eclipse.xtext.junit4.util.ParseHelper;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
-import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.eclipse.xtext.xtype.XtypePackage;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-
-import com.google.inject.Inject;
 
 
 /**
@@ -47,7 +34,7 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 
 	@Test
 	public void wildCardImports() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 				"package io.sarl.docs.reference.gsr",
 				"import org.eclipse.xtext.xbase.lib.Procedures.*",
 				"agent A {",
@@ -62,7 +49,7 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 
 	@Test
 	public void noParamNoReturnActionInClass() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 				"abstract class Light {",
 				"	def turnOn",
 				"	def turnOff",
@@ -73,7 +60,7 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 
 	@Test
 	public void noParamNoReturnActionInInterface() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 				"interface Light {",
 				"	def turnOn",
 				"	def turnOff",

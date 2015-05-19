@@ -21,14 +21,13 @@ import static org.junit.Assert.assertTrue;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
 
-import org.eclipse.xtend.core.xtend.XtendConstructor;
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFile;
-import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.junit4.util.ParseHelper;
@@ -65,7 +64,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidExtend_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"capacity C1 {",
 				"}",
 				"behavior B1 extends C1 {",
@@ -80,7 +79,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidExtend_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"agent A1 {",
 				"}",
 				"behavior B3 extends A1 {",
@@ -94,7 +93,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidExtend_2() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 extends B1 {",
 				"}"
 			));
@@ -106,7 +105,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidExtend_3() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 extends B2 {",
 				"}",
 				"behavior B2 extends B1 {",
@@ -120,7 +119,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidExtend_4() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 extends B2 {",
 				"}",
 				"behavior B2 extends B1 {",
@@ -136,7 +135,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidExtend_5() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B3 extends B2 {",
 				"}",
 				"behavior B2 extends B1 {",
@@ -152,7 +151,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void duplicateTypeNames() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"package io.sarl.test",
 				"behavior B1 {",
 				"}",
@@ -174,7 +173,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void multipleActionDefinition() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	def myaction(a : int, b : int) { }",
 				"	def myaction(a : int) { }",
@@ -190,7 +189,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidActionName() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	def myaction {",
 				"		System.out.println(\"ok\")",
@@ -211,7 +210,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void incompatibleReturnType_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	def myaction(a : int) : int {",
 				"		return 0",
@@ -232,7 +231,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void incompatibleReturnType_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	def myaction(a : int) {",
 				"		// void",
@@ -253,7 +252,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void incompatibleReturnType_2() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	def myaction(a : int) : int {",
 				"		return 0",
@@ -273,7 +272,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void incompatibleReturnType_3() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	def myaction(a : int) : int {",
 				"		return 0",
@@ -294,7 +293,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void compatibleReturnType_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	def myaction(a : int) : Number {",
 				"		return 0.0",
@@ -339,7 +338,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void compatibleReturnType_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	def myaction(a : int) : float {",
 				"		return 0f",
@@ -384,7 +383,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void multipleParameterNames() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	def myaction(a : int, b : int, c : int, b : int) {",
 				"	}",
@@ -402,7 +401,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void multipleVariableDefinition() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	var myfield : int",
 				"	var myfield1 : String",
@@ -410,7 +409,7 @@ public class BehaviorParsingTest {
 				"}"
 			));
 			validate(mas).assertError(
-				XtendPackage.eINSTANCE.getXtendField(),
+				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 				61, 7,
 				"Duplicate field myfield");
@@ -418,7 +417,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void multipleValueDefinition() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	val myfield : int = 4",
 				"	val myfield1 : String = \"\"",
@@ -426,7 +425,7 @@ public class BehaviorParsingTest {
 				"}"
 			));
 			validate(mas).assertError(
-				XtendPackage.eINSTANCE.getXtendField(),
+				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 				70, 7,
 				"Duplicate field myfield");
@@ -434,7 +433,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidAttributeName_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	var myfield1 = 4.5",
 				"	var ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
@@ -442,7 +441,7 @@ public class BehaviorParsingTest {
 				"}"
 			));
 			validate(mas).assertError(
-				XtendPackage.eINSTANCE.getXtendField(),
+				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
 				39, 41,
 				"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
@@ -450,7 +449,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidAttributeName_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	val myfield1 = 4.5",
 				"	val ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
@@ -458,7 +457,7 @@ public class BehaviorParsingTest {
 				"}"
 			));
 			validate(mas).assertError(
-				XtendPackage.eINSTANCE.getXtendField(),
+				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
 				39, 41,
 				"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
@@ -466,7 +465,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidAttributeName_2() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	val myfield1 = 4.5",
 				"	val this = \"String\"",
@@ -474,7 +473,7 @@ public class BehaviorParsingTest {
 				"}"
 			));
 			validate(mas).assertError(
-				XtendPackage.eINSTANCE.getXtendField(),
+				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_IDENTIFIER,
 				39, 4,
 				"'this' is not a valid identifier");
@@ -482,7 +481,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidAttributeName_3() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	val myfield1 = 4.5",
 				"	val const = \"String\"",
@@ -490,7 +489,7 @@ public class BehaviorParsingTest {
 				"}"
 			));
 			validate(mas).assertError(
-				XtendPackage.eINSTANCE.getXtendField(),
+				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_IDENTIFIER,
 				39, 5,
 				"'const' is not a valid identifier.");
@@ -498,7 +497,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidAttributeName_4() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	val myfield1 = 4.5",
 				"	val self = \"String\"",
@@ -506,7 +505,7 @@ public class BehaviorParsingTest {
 				"}"
 			));
 			validate(mas).assertWarning(
-				XtendPackage.eINSTANCE.getXtendField(),
+				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISCOURAGED,
 				39, 4,
 				"'self' is a discouraged name");
@@ -514,7 +513,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void missedFinalFieldInitialization() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	val field1 : int = 5",
 				"	val field2 : String",
@@ -529,7 +528,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void completeFinalFieldInitialization() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	val field1 : int = 5",
 				"	val field2 : String = \"\"",
@@ -544,12 +543,12 @@ public class BehaviorParsingTest {
 			assertNull(behavior.getExtends());
 			assertEquals(2, behavior.getMembers().size());
 			//
-			XtendField attr1 = (XtendField) behavior.getMembers().get(0);
+			SarlField attr1 = (SarlField) behavior.getMembers().get(0);
 			assertEquals("field1", attr1.getName());
 			assertTypeReferenceIdentifier(attr1.getType(), "int");
 			assertXExpression(attr1.getInitialValue(), XNumberLiteral.class, "5");
 			//
-			XtendField attr2 = (XtendField) behavior.getMembers().get(1);
+			SarlField attr2 = (SarlField) behavior.getMembers().get(1);
 			assertEquals("field2", attr2.getName());
 			assertTypeReferenceIdentifier(attr2.getType(), "java.lang.String");
 			assertXExpression(attr2.getInitialValue(), XStringLiteral.class, "");
@@ -557,7 +556,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void fieldNameShadowing() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	val field1 : int = 5",
 				"	def myaction(a : int) { }",
@@ -568,14 +567,14 @@ public class BehaviorParsingTest {
 				"}"
 			));
 			validate(mas).assertWarning(
-				XtendPackage.eINSTANCE.getXtendField(),
+				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
 				"The field 'field1' in 'B2' is hidding the inherited field 'B1.field1'.");
 		}
 
 		@Test
 		public void variableModifier_public() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"public var name : String = \"Hello\"",
 					"}"
@@ -586,20 +585,20 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void variableModifier_protected() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"protected var name : String = \"Hello\"",
 					"}"
 					), true);
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
-			XtendField attr1 = (XtendField) behavior.getMembers().get(0);
+			SarlField attr1 = (SarlField) behavior.getMembers().get(0);
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
 		}
 
 		@Test
 		public void variableModifier_package() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"package var name : String = \"Hello\"",
 					"}"
@@ -610,33 +609,33 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void variableModifier_private() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"private var name : String = \"Hello\"",
 					"}"
 					), true);
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
-			XtendField attr1 = (XtendField) behavior.getMembers().get(0);
+			SarlField attr1 = (SarlField) behavior.getMembers().get(0);
 			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
 		}
 
 		@Test
 		public void variableModifier_default() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"var name : String = \"Hello\"",
 					"}"
 					), true);
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
-			XtendField attr1 = (XtendField) behavior.getMembers().get(0);
+			SarlField attr1 = (SarlField) behavior.getMembers().get(0);
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
 		}
 
 		@Test
 		public void valueModifier_public() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"public val name : String = \"Hello\"",
 					"}"
@@ -647,20 +646,20 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void valueModifier_protected() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"protected val name : String = \"Hello\"",
 					"}"
 					), true);
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
-			XtendField attr1 = (XtendField) behavior.getMembers().get(0);
+			SarlField attr1 = (SarlField) behavior.getMembers().get(0);
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
 		}
 
 		@Test
 		public void valueModifier_package() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"package val name : String = \"Hello\"",
 					"}"
@@ -671,27 +670,27 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void valueModifier_private() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"private val name : String = \"Hello\"",
 					"}"
 					), true);
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
-			XtendField attr1 = (XtendField) behavior.getMembers().get(0);
+			SarlField attr1 = (SarlField) behavior.getMembers().get(0);
 			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
 		}
 
 		@Test
 		public void valueModifier_default() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"val name : String = \"Hello\"",
 					"}"
 					), true);
 			//
 			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
-			XtendField attr1 = (XtendField) behavior.getMembers().get(0);
+			SarlField attr1 = (SarlField) behavior.getMembers().get(0);
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
 		}
 
@@ -701,7 +700,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void validImplicitSuperConstructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"package io.sarl.test",
 				"behavior B1 {",
 				"}",
@@ -725,7 +724,7 @@ public class BehaviorParsingTest {
 			assertTypeReferenceIdentifier(behavior2.getExtends(), "io.sarl.test.B1");
 			assertEquals(1, behavior2.getMembers().size());
 			//
-			XtendConstructor constructor = (XtendConstructor) behavior2.getMembers().get(0);
+			SarlConstructor constructor = (SarlConstructor) behavior2.getMembers().get(0);
 			assertParameterNames(constructor.getParameters(), "a");
 			assertParameterTypes(constructor.getParameters(), "int");
 			assertParameterDefaultValues(constructor.getParameters(), (Object) null);
@@ -733,7 +732,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void missedImplicitSuperConstructor_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"package io.sarl.test",
 				"behavior B1 {",
 				"}",
@@ -743,7 +742,7 @@ public class BehaviorParsingTest {
 				"}"
 			));
 			validate(mas).assertError(
-				XtendPackage.eINSTANCE.getXtendConstructor(),
+				SarlPackage.eINSTANCE.getSarlConstructor(),
 				org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
 				63, 18,
 				"Undefined default constructor in the super-type");
@@ -751,7 +750,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void missedImplicitSuperConstructor_2() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"package io.sarl.test",
 				"behavior B1 {",
 				"	new (a : int) {",
@@ -770,7 +769,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void missedImplicitSuperConstructor_3() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"package io.sarl.test",
 				"behavior B1 {",
 				"	new (a : int) {",
@@ -783,7 +782,7 @@ public class BehaviorParsingTest {
 				"}"
 			));
 			validate(mas).assertError(
-				XtendPackage.eINSTANCE.getXtendConstructor(),
+				SarlPackage.eINSTANCE.getSarlConstructor(),
 				org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
 				97, 18,
 				"Undefined default constructor in the super-type");
@@ -791,7 +790,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidArgumentTypeToSuperConstructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"package io.sarl.test",
 				"behavior B1 {",
 				"	new (a : int) {",
@@ -816,7 +815,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void multipleCapacityUses_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"capacity C1 {}",
 				"capacity C2 {}",
 				"behavior B1 {",
@@ -833,7 +832,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void multipleCapacityUses_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 				"capacity C1 {}",
 				"capacity C2 {}",
 				"behavior B1 {",

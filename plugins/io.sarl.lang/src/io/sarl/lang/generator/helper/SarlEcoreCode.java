@@ -21,10 +21,11 @@
 package io.sarl.lang.generator.helper;
 
 
+import io.sarl.lang.sarl.SarlScript;
+
 import java.lang.ref.WeakReference;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.util.TypeReferences;
@@ -43,7 +44,7 @@ import org.eclipse.xtext.xtype.XtypeFactory;
 public class SarlEcoreCode {
 
 	private final ImportManager importManager = new ImportManager();
-	private final XtendFile script;
+	private final SarlScript script;
 	private final ResourceSet resourceSet;
 	private final TypeReferences typeReferences;
 	private final WeakReference<ECoreGeneratorHelper> generator;
@@ -54,7 +55,7 @@ public class SarlEcoreCode {
 	 * @param resourceSet - the resource set in which the script should be generated.
 	 * @param typeReferences - the accessor for exisiting types.
 	 */
-	SarlEcoreCode(ECoreGeneratorHelper generator, XtendFile script,
+	SarlEcoreCode(ECoreGeneratorHelper generator, SarlScript script,
 			ResourceSet resourceSet, TypeReferences typeReferences) {
 		this.generator = new WeakReference<>(generator);
 		this.script = script;
@@ -82,7 +83,7 @@ public class SarlEcoreCode {
 	 *
 	 * @return the SARL script.
 	 */
-	public XtendFile getSarlScript() {
+	public SarlScript getSarlScript() {
 		return this.script;
 	}
 

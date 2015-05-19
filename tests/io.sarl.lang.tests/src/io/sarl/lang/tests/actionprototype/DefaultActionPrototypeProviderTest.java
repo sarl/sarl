@@ -20,7 +20,13 @@
  */
 package io.sarl.lang.tests.actionprototype;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
@@ -37,11 +43,11 @@ import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -52,16 +58,12 @@ import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFile;
-import org.eclipse.xtend.core.xtend.XtendFormalParameter;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationType;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmTypeReference;
-import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.xbase.XExpression;
 import org.junit.Before;
 import org.junit.Test;
@@ -234,7 +236,7 @@ public class DefaultActionPrototypeProviderTest {
 		private FormalParameterProvider parameterProvider;
 
 		@Nullable
-		private EList<XtendParameter> sarlParameters;
+		private EList<SarlFormalParameter> sarlParameters;
 
 		@Nullable
 		private EList<JvmFormalParameter> jvmParameters;
@@ -315,7 +317,7 @@ public class DefaultActionPrototypeProviderTest {
 
 		@Test
 		public void validateTypeOfVarArgInSarl() throws Exception {
-			XtendFile s = file("agent Foo { def fooFct(a : float, b : Object*) {} }");
+			SarlScript s = file("agent Foo { def fooFct(a : float, b : Object*) {} }");
 			SarlFormalParameter param = (SarlFormalParameter) ((SarlAction) ((SarlAgent) s.getXtendTypes().get(0))
 					.getMembers().get(0)).getParameters().get(1);
 			assertNotNull(param);
@@ -519,7 +521,7 @@ public class DefaultActionPrototypeProviderTest {
 		@Test
 		public void createParameterTypesFromSarlModell_void() {
 			ActionParameterTypes key = this.provider.createParameterTypesFromSarlModel(false,
-					new BasicEList<XtendParameter>());
+					new BasicEList<SarlFormalParameter>());
 			assertNotNull(key);
 			assertFalse(key.isVarArg());
 			assertTrue(key.isVoid());
@@ -967,7 +969,7 @@ public class DefaultActionPrototypeProviderTest {
 
 		@Test
 		public void validateTypeOfVarArgInSarl() throws Exception {
-			XtendFile s = file("agent Foo { def fooFct(a : float, b : Object*) {} }");
+			SarlScript s = file("agent Foo { def fooFct(a : float, b : Object*) {} }");
 			SarlFormalParameter param = (SarlFormalParameter) ((SarlAction) ((SarlAgent) s.getXtendTypes().get(0))
 					.getMembers().get(0)).getParameters().get(1);
 			assertNotNull(param);

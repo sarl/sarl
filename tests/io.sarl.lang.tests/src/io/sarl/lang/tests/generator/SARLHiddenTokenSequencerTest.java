@@ -30,6 +30,7 @@ import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.Nullable;
@@ -38,7 +39,6 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
-import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.resource.XtextResource;
@@ -301,7 +301,7 @@ public class SARLHiddenTokenSequencerTest {
 	public static class ValueComments extends AbstractMemberTokenSequencerTest {
 
 		@Nullable
-		private XtendField field;
+		private SarlField field;
 		
 		@Before
 		public void setUp() {
@@ -334,7 +334,7 @@ public class SARLHiddenTokenSequencerTest {
 	public static class VariableComments extends AbstractMemberTokenSequencerTest {
 
 		@Nullable
-		private XtendField field;
+		private SarlField field;
 		
 		@Before
 		public void setUp() {

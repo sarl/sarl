@@ -26,13 +26,12 @@ import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
 
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFile;
-import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Diagnostic;
@@ -71,7 +70,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void declaration() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {}",
 					"agent A2 {}"
@@ -93,7 +92,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidExtend() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"}",
 					"agent A1 extends C1 {",
@@ -108,7 +107,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void recursiveAgentExtension_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 extends A1 {",
 					"}"
 					));
@@ -121,7 +120,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void recursiveAgentExtension_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 extends A2 {",
 					"}",
 					"agent A2 extends A1 {",
@@ -136,7 +135,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void recursiveAgentExtension_2() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 extends A3 {",
 					"}",
 					"agent A2 extends A1 {",
@@ -153,7 +152,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void sequenceAgentDefinition_invalid() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 extends A2 {",
 					"}",
 					"agent A2 extends A3 {",
@@ -174,7 +173,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void sequenceAgentDefinition_valid() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A3 {",
 					"}",
 					"agent A2 extends A3 {",
@@ -208,7 +207,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void declarationWithoutGuard() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E {}",
 					"agent A1 {",
 					"on E {}",
@@ -235,7 +234,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void declarationWithGuard() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E {}",
 					"agent A1 {",
 					"on E [ occurrence.source != null] {}",
@@ -262,7 +261,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void missedEventDeclaration() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"on E  {}",
 					"}"
@@ -276,7 +275,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidBehaviorUnit_EventType() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"on String {}",
 					"}"
@@ -290,7 +289,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidBehaviorUnit_GuardType() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1",
 					"agent A1 {",
 					"on E1 [ \"hello\" ] {}",
@@ -305,7 +304,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void trueGuardBehaviorUnit() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1",
 					"agent A1 {",
 					"on E1 [ true ] {}",
@@ -320,7 +319,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void falseGuardBehaviorUnit() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1",
 					"agent A1 {",
 					"on E1 [ false ] {}",
@@ -335,7 +334,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidBehaviorUnit_SideEffect0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1",
 					"agent A1 {",
 					"var t = 5",
@@ -352,7 +351,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidBehaviorUnit_SideEffect1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1",
 					"agent A1 {",
 					"var t = 5",
@@ -369,7 +368,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidBehaviorUnit_SideEffect2() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import java.util.List",
 					"event E1 { var parameters : List<Object> }",
 					"agent A1 {",
@@ -387,7 +386,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void variableDefinition() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"var name : String = \"Hello\"",
 					"var number : Integer",
@@ -402,14 +401,14 @@ public class AgentParsingTest {
 			assertNull(agent.getExtends());
 			assertEquals(2, agent.getMembers().size());
 			//
-			XtendField attr1 = (XtendField) agent.getMembers().get(0);
+			SarlField attr1 = (SarlField) agent.getMembers().get(0);
 			assertEquals("name", attr1.getName());
 			assertTypeReferenceIdentifier(attr1.getType(), "java.lang.String");
 			assertTrue(attr1.getInitialValue() instanceof XStringLiteral);
 			assertEquals("Hello", ((XStringLiteral) attr1.getInitialValue()).getValue());
 			assertFalse(attr1.isFinal());
 			//
-			XtendField attr2 = (XtendField) agent.getMembers().get(1);
+			SarlField attr2 = (SarlField) agent.getMembers().get(1);
 			assertEquals("number", attr2.getName());
 			assertTypeReferenceIdentifier(attr2.getType(), "java.lang.Integer");
 			assertNull(attr2.getInitialValue());
@@ -418,7 +417,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void valueDefinition() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"val name : String = \"Hello\"",
 					"var number : Integer",
@@ -433,13 +432,13 @@ public class AgentParsingTest {
 			assertNull(agent.getExtends());
 			assertEquals(2, agent.getMembers().size());
 			//
-			XtendField attr1 = (XtendField) agent.getMembers().get(0);
+			SarlField attr1 = (SarlField) agent.getMembers().get(0);
 			assertEquals("name", attr1.getName());
 			assertTypeReferenceIdentifier(attr1.getType(), "java.lang.String");
 			assertXExpression(attr1.getInitialValue(), XStringLiteral.class, "Hello");
 			assertTrue(attr1.isFinal());
 			//
-			XtendField attr2 = (XtendField) agent.getMembers().get(1);
+			SarlField attr2 = (SarlField) agent.getMembers().get(1);
 			assertEquals("number", attr2.getName());
 			assertTypeReferenceIdentifier(attr2.getType(), "java.lang.Integer");
 			assertNull(attr2.getInitialValue());
@@ -448,7 +447,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void multipleVariableDefinition() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"var myfield : int",
 					"var myfield1 : String",
@@ -456,7 +455,7 @@ public class AgentParsingTest {
 					"}"
 					));
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 					55, 7,
 					"Duplicate field myfield");
@@ -464,7 +463,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void multipleValueDefinition() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"val myfield : int = 4",
 					"val myfield1 : String = \"\"",
@@ -472,7 +471,7 @@ public class AgentParsingTest {
 					"}"
 					));
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 					64, 7,
 					"Duplicate field myfield");
@@ -480,7 +479,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidAttributeName_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"var myfield1 = 4.5",
 					"var ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
@@ -488,14 +487,14 @@ public class AgentParsingTest {
 					"}"
 					));
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
 					"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
 		}
 
 		@Test
 		public void invalidAttributeName_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"val myfield1 = 4.5",
 					"val ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
@@ -503,14 +502,14 @@ public class AgentParsingTest {
 					"}"
 					));
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
 					"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
 		}
 
 		@Test
 		public void missedFinalFieldInitialization() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"val field1 : int = 5",
 					"val field2 : String",
@@ -525,7 +524,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void completeFinalFieldInitialization() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"val field1 : int = 5",
 					"val field2 : String = \"\"",
@@ -540,13 +539,13 @@ public class AgentParsingTest {
 			assertNull(agent.getExtends());
 			assertEquals(2, agent.getMembers().size());
 			//
-			XtendField attr1 = (XtendField) agent.getMembers().get(0);
+			SarlField attr1 = (SarlField) agent.getMembers().get(0);
 			assertEquals("field1", attr1.getName());
 			assertTypeReferenceIdentifier(attr1.getType(), "int");
 			assertXExpression(attr1.getInitialValue(), XNumberLiteral.class, "5");
 			assertTrue(attr1.isFinal());
 			//
-			XtendField attr2 = (XtendField) agent.getMembers().get(1);
+			SarlField attr2 = (SarlField) agent.getMembers().get(1);
 			assertEquals("field2", attr2.getName());
 			assertTypeReferenceIdentifier(attr2.getType(), "java.lang.String");
 			assertXExpression(attr2.getInitialValue(), XStringLiteral.class, "");
@@ -555,7 +554,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void fieldNameShadowing() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"	val field1 : int = 5",
 					"	def myaction(a : int) { }",
@@ -566,7 +565,7 @@ public class AgentParsingTest {
 					"}"
 					));
 			validate(mas).assertWarning(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
 					"The field 'field1' in 'A2' is hidding the inherited field 'A1.field1'.");
 		}
@@ -577,7 +576,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void declarationInAgent() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity MyCap {",
 					"def my_operation",
 					"}",
@@ -611,7 +610,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void missedCapacityDeclaration() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"uses MyCap",
 					"}"
@@ -625,7 +624,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void multipleCapacityUses_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"agent A1 {",
@@ -642,7 +641,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void multipleCapacityUses_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"agent A1 {",
@@ -660,34 +659,34 @@ public class AgentParsingTest {
 
 		@Test
 		public void variableModifier_public() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"public var name : String = \"Hello\"",
 					"}"
 					), false);
 			//
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of A1; only package, protected, private, static, final, val, var, volatile & transient are permitted");
 		}
 
 		@Test
 		public void variableModifier_protected() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"protected var name : String = \"Hello\"",
 					"}"
 					), true);
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
-			XtendField attr1 = (XtendField) agent.getMembers().get(0);
+			SarlField attr1 = (SarlField) agent.getMembers().get(0);
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
 		}
 
 		@Test
 		public void variableModifier_package() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"package var name : String = \"Hello\"",
 					"}"
@@ -698,60 +697,60 @@ public class AgentParsingTest {
 
 		@Test
 		public void variableModifier_private() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"private var name : String = \"Hello\"",
 					"}"
 					), true);
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
-			XtendField attr1 = (XtendField) agent.getMembers().get(0);
+			SarlField attr1 = (SarlField) agent.getMembers().get(0);
 			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
 		}
 
 		@Test
 		public void variableModifier_default() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"var name : String = \"Hello\"",
 					"}"
 					), true);
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
-			XtendField attr1 = (XtendField) agent.getMembers().get(0);
+			SarlField attr1 = (SarlField) agent.getMembers().get(0);
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
 		}
 
 		@Test
 		public void valueModifier_public() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"public val name : String = \"Hello\"",
 					"}"
 					), false);
 			//
 			validate(mas).assertError(
-					XtendPackage.eINSTANCE.getXtendField(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of A1; only package, protected, private, static, final, val, var, volatile & transient are permitted");
 		}
 
 		@Test
 		public void valueModifier_protected() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"protected val name : String = \"Hello\"",
 					"}"
 					), true);
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
-			XtendField attr1 = (XtendField) agent.getMembers().get(0);
+			SarlField attr1 = (SarlField) agent.getMembers().get(0);
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
 		}
 
 		@Test
 		public void valueModifier_package() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"package val name : String = \"Hello\"",
 					"}"
@@ -762,27 +761,27 @@ public class AgentParsingTest {
 
 		@Test
 		public void valueModifier_private() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"private val name : String = \"Hello\"",
 					"}"
 					), true);
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
-			XtendField attr1 = (XtendField) agent.getMembers().get(0);
+			SarlField attr1 = (SarlField) agent.getMembers().get(0);
 			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
 		}
 
 		@Test
 		public void valueModifier_default() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"val name : String = \"Hello\"",
 					"}"
 					), true);
 			//
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
-			XtendField attr1 = (XtendField) agent.getMembers().get(0);
+			SarlField attr1 = (SarlField) agent.getMembers().get(0);
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
 		}
 
@@ -792,7 +791,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void multipleActionDefinitionInAgent() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(a : int, b : int) { }",
 					"def myaction(a : int) { }",
@@ -808,7 +807,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidActionName() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"def myaction {",
 					"System.out.println(\"ok\")",
@@ -829,7 +828,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void incompatibleReturnType_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(a : int) : int {",
 					"return 0",
@@ -850,7 +849,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void incompatibleReturnType_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(a : int) {",
 					"// void",
@@ -871,7 +870,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void incompatibleReturnType_2() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(a : int) : int {",
 					"return 0",
@@ -892,7 +891,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void incompatibleReturnType_3() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(a : int) : int {",
 					"return 0",
@@ -913,7 +912,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void compatibleReturnType_0() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(a : int) : Number {",
 					"return 0.0",
@@ -957,7 +956,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void compatibleReturnType_1() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"def myaction(a : int) : float {",
 					"return 0f",
@@ -1001,7 +1000,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidFires() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1",
 					"behavior B1 { }",
 					"agent A1 {",

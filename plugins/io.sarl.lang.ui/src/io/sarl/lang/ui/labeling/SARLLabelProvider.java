@@ -26,8 +26,11 @@ import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.ui.images.SARLImages;
 
@@ -39,9 +42,6 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.xtend.core.xtend.XtendConstructor;
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.ide.labeling.XtendLabelProvider;
 import org.eclipse.xtext.common.types.JvmExecutable;
 import org.eclipse.xtext.common.types.JvmType;
@@ -237,7 +237,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(XtendFile element) {
+	protected ImageDescriptor imageDescriptor(SarlScript element) {
 		return this.images.forFile();
 	}
 
@@ -309,7 +309,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(XtendField element) {
+	protected ImageDescriptor imageDescriptor(SarlField element) {
 		return this.images.forAttribute(!element.isFinal());
 	}
 
@@ -321,7 +321,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(XtendConstructor element) {
+	protected ImageDescriptor imageDescriptor(SarlConstructor element) {
 		return this.images.forConstructor(JvmVisibility.PUBLIC, 0);
 	}
 

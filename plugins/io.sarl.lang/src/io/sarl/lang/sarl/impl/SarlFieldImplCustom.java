@@ -26,7 +26,6 @@ import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlSkill;
 
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
-import org.eclipse.xtend.core.xtend.impl.XtendFieldImplCustom;
 import org.eclipse.xtext.common.types.JvmVisibility;
 
 /**
@@ -45,7 +44,7 @@ import org.eclipse.xtext.common.types.JvmVisibility;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SarlFieldImplCustom extends XtendFieldImplCustom {
+public class SarlFieldImplCustom extends SarlFieldImpl {
 
 	/**
 	 * <!-- begin-user-doc -->

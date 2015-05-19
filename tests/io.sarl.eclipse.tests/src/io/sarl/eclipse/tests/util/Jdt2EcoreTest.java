@@ -1255,7 +1255,7 @@ public class Jdt2EcoreTest {
 		@Test
 		public void populateInheritanceContext_0() throws Exception {
 			// Create the SARL scripts
-			helper().sarlFile("populateInheritanceContext0.sarl", multilineString(
+			helper().sarlScript("populateInheritanceContext0.sarl", multilineString(
 						"package io.sarl.eclipse.tests.p0",
 						"capacity Capacity1 {",
 						"    def myFct1 : boolean",
@@ -1306,7 +1306,7 @@ public class Jdt2EcoreTest {
 		@Test
 		public void populateInheritanceContext_1() throws Exception {
 			// Create the SARL scripts
-			helper().sarlFile("populateInheritanceContext0.sarl", multilineString(
+			helper().sarlScript("populateInheritanceContext0.sarl", multilineString(
 						"package io.sarl.eclipse.tests.p0",
 						"capacity Capacity1 {",
 						"    def myFct1 : boolean",
@@ -1349,7 +1349,7 @@ public class Jdt2EcoreTest {
 			assertTrue(this.finalOperations.isEmpty());
 			assertActionKeys(this.overridableOperations.keySet(),
 					"skilFct(char)", "myFct1()");
-			assertContains(this.inheritedFields.keySet());
+			assertContains(this.inheritedFields.keySet(), "attr1");
 			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()");
 			assertSignatureKeys(this.superConstructors.keySet(), "int");
 		}
@@ -1357,7 +1357,7 @@ public class Jdt2EcoreTest {
 		@Test
 		public void populateInheritanceContext_2() throws Exception {
 			// Create the SARL scripts
-			helper().sarlFile("populateInheritanceContext1.sarl", multilineString(
+			helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
 				"package io.sarl.eclipse.tests.p1",
 				"capacity Capacity1 {",
 				"    def myFct1(a : int = 4) : boolean",
@@ -1409,7 +1409,7 @@ public class Jdt2EcoreTest {
 		@Test
 		public void populateInheritanceContext_3() throws Exception {
 			// Create the SARL scripts
-			helper().sarlFile("populateInheritanceContext1.sarl", multilineString(
+			helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
 				"package io.sarl.eclipse.tests.p1",
 				"capacity Capacity1 {",
 				"    def myFct1(a : int = 4) : boolean",
@@ -1453,7 +1453,7 @@ public class Jdt2EcoreTest {
 					"myFct1()");
 			assertActionKeys(this.overridableOperations.keySet(),
 					"skilFct(char)", "myFct1(int)");
-			assertContains(this.inheritedFields.keySet());
+			assertContains(this.inheritedFields.keySet(), "attr1");
 			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()");
 			assertSignatureKeys(this.superConstructors.keySet(), "int");
 		}
@@ -1461,7 +1461,7 @@ public class Jdt2EcoreTest {
 		@Test
 		public void populateInheritanceContext_4() throws Exception {
 			// Create the SARL scripts
-			helper().sarlFile("populateInheritanceContext1.sarl", multilineString(
+			helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
 					"package io.sarl.eclipse.tests.p2",
 					"capacity Capacity1 {",
 					"    def myFct1(a : int*) : boolean",
@@ -1512,7 +1512,7 @@ public class Jdt2EcoreTest {
 		@Test
 		public void populateInheritanceContext_5() throws Exception {
 			// Create the SARL scripts
-			helper().sarlFile("populateInheritanceContext1.sarl", multilineString(
+			helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
 					"package io.sarl.eclipse.tests.p2",
 					"capacity Capacity1 {",
 					"    def myFct1(a : int*) : boolean",
@@ -1555,7 +1555,7 @@ public class Jdt2EcoreTest {
 			assertTrue(this.finalOperations.isEmpty());
 			assertActionKeys(this.overridableOperations.keySet(),
 					"skilFct(char)", "myFct1(int*)");
-			assertContains(this.inheritedFields.keySet());
+			assertContains(this.inheritedFields.keySet(), "attr1");
 			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()");
 			assertSignatureKeys(this.superConstructors.keySet(), "int");
 		}
@@ -1563,7 +1563,7 @@ public class Jdt2EcoreTest {
 		@Test
 		public void populateInheritanceContext_6() throws Exception {
 			// Create the SARL scripts
-			helper().sarlFile("populateInheritanceContext1.sarl", multilineString(
+			helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
 					"package io.sarl.eclipse.tests.p3",
 					"capacity Capacity1 {",
 					"    def myFct1(a : int*) : boolean",

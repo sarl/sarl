@@ -17,9 +17,9 @@ package io.sarl.lang.tests.formatting;
 
 import static org.junit.Assert.assertEquals;
 import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.formatting.INodeModelFormatter;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
@@ -51,7 +51,7 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class SARLFormatterTest {
 
-	protected static void assertFormat(ParseHelper<XtendFile> parser, INodeModelFormatter formatter,
+	protected static void assertFormat(ParseHelper<SarlScript> parser, INodeModelFormatter formatter,
 			CharSequence input, CharSequence expected) throws Exception {
 		ICompositeNode node = ((XtextResource) parser.parse(input).eResource()).getParseResult().getRootNode();
 		String actual = formatter.format(node, 0, input.length()).getFormattedText();
@@ -61,7 +61,7 @@ public class SARLFormatterTest {
 	public static class AgentTest extends AbstractSarlTest {
 
 		@Inject
-		private ParseHelper<XtendFile> parser;
+		private ParseHelper<SarlScript> parser;
 
 		@Inject
 		private INodeModelFormatter formatter;
@@ -280,7 +280,7 @@ public class SARLFormatterTest {
 	public static class BehaviorTest extends AbstractSarlTest {
 
 		@Inject
-		private ParseHelper<XtendFile> parser;
+		private ParseHelper<SarlScript> parser;
 
 		@Inject
 		private INodeModelFormatter formatter;
@@ -346,7 +346,7 @@ public class SARLFormatterTest {
 	public static class SkillTest extends AbstractSarlTest {
 
 		@Inject
-		private ParseHelper<XtendFile> parser;
+		private ParseHelper<SarlScript> parser;
 
 		@Inject
 		private INodeModelFormatter formatter;
@@ -381,7 +381,7 @@ public class SARLFormatterTest {
 	public static class XbaseTest extends AbstractSarlTest {
 
 		@Inject
-		private ParseHelper<XtendFile> parser;
+		private ParseHelper<SarlScript> parser;
 
 		@Inject
 		private INodeModelFormatter formatter;
@@ -520,12 +520,10 @@ public class SARLFormatterTest {
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class EventTest extends AbstractSarlTest {
 
 		@Inject
-		private ParseHelper<XtendFile> parser;
+		private ParseHelper<SarlScript> parser;
 
 		@Inject
 		private INodeModelFormatter formatter;
@@ -620,7 +618,7 @@ public class SARLFormatterTest {
 	public static class CapacityTest extends AbstractSarlTest {
 
 		@Inject
-		private ParseHelper<XtendFile> parser;
+		private ParseHelper<SarlScript> parser;
 
 		@Inject
 		private INodeModelFormatter formatter;

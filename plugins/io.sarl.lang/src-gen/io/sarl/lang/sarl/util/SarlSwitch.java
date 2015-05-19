@@ -10,8 +10,15 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 
 import org.eclipse.xtend.core.xtend.XtendAnnotationTarget;
+import org.eclipse.xtend.core.xtend.XtendAnnotationType;
+import org.eclipse.xtend.core.xtend.XtendClass;
+import org.eclipse.xtend.core.xtend.XtendConstructor;
+import org.eclipse.xtend.core.xtend.XtendEnum;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
+import org.eclipse.xtend.core.xtend.XtendField;
+import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendFunction;
+import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
@@ -79,6 +86,24 @@ public class SarlSwitch<T> extends Switch<T>
   {
     switch (classifierID)
     {
+      case SarlPackage.SARL_SCRIPT:
+      {
+        SarlScript sarlScript = (SarlScript)theEObject;
+        T result = caseSarlScript(sarlScript);
+        if (result == null) result = caseXtendFile(sarlScript);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case SarlPackage.SARL_FIELD:
+      {
+        SarlField sarlField = (SarlField)theEObject;
+        T result = caseSarlField(sarlField);
+        if (result == null) result = caseXtendField(sarlField);
+        if (result == null) result = caseXtendMember(sarlField);
+        if (result == null) result = caseXtendAnnotationTarget(sarlField);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case SarlPackage.SARL_ACTION:
       {
         SarlAction sarlAction = (SarlAction)theEObject;
@@ -87,6 +112,17 @@ public class SarlSwitch<T> extends Switch<T>
         if (result == null) result = caseXtendExecutable(sarlAction);
         if (result == null) result = caseXtendMember(sarlAction);
         if (result == null) result = caseXtendAnnotationTarget(sarlAction);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case SarlPackage.SARL_CONSTRUCTOR:
+      {
+        SarlConstructor sarlConstructor = (SarlConstructor)theEObject;
+        T result = caseSarlConstructor(sarlConstructor);
+        if (result == null) result = caseXtendConstructor(sarlConstructor);
+        if (result == null) result = caseXtendExecutable(sarlConstructor);
+        if (result == null) result = caseXtendMember(sarlConstructor);
+        if (result == null) result = caseXtendAnnotationTarget(sarlConstructor);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -114,6 +150,50 @@ public class SarlSwitch<T> extends Switch<T>
         T result = caseSarlRequiredCapacity(sarlRequiredCapacity);
         if (result == null) result = caseXtendMember(sarlRequiredCapacity);
         if (result == null) result = caseXtendAnnotationTarget(sarlRequiredCapacity);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case SarlPackage.SARL_CLASS:
+      {
+        SarlClass sarlClass = (SarlClass)theEObject;
+        T result = caseSarlClass(sarlClass);
+        if (result == null) result = caseXtendClass(sarlClass);
+        if (result == null) result = caseXtendTypeDeclaration(sarlClass);
+        if (result == null) result = caseXtendMember(sarlClass);
+        if (result == null) result = caseXtendAnnotationTarget(sarlClass);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case SarlPackage.SARL_INTERFACE:
+      {
+        SarlInterface sarlInterface = (SarlInterface)theEObject;
+        T result = caseSarlInterface(sarlInterface);
+        if (result == null) result = caseXtendInterface(sarlInterface);
+        if (result == null) result = caseXtendTypeDeclaration(sarlInterface);
+        if (result == null) result = caseXtendMember(sarlInterface);
+        if (result == null) result = caseXtendAnnotationTarget(sarlInterface);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case SarlPackage.SARL_ENUMERATION:
+      {
+        SarlEnumeration sarlEnumeration = (SarlEnumeration)theEObject;
+        T result = caseSarlEnumeration(sarlEnumeration);
+        if (result == null) result = caseXtendEnum(sarlEnumeration);
+        if (result == null) result = caseXtendTypeDeclaration(sarlEnumeration);
+        if (result == null) result = caseXtendMember(sarlEnumeration);
+        if (result == null) result = caseXtendAnnotationTarget(sarlEnumeration);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case SarlPackage.SARL_ANNOTATION_TYPE:
+      {
+        SarlAnnotationType sarlAnnotationType = (SarlAnnotationType)theEObject;
+        T result = caseSarlAnnotationType(sarlAnnotationType);
+        if (result == null) result = caseXtendAnnotationType(sarlAnnotationType);
+        if (result == null) result = caseXtendTypeDeclaration(sarlAnnotationType);
+        if (result == null) result = caseXtendMember(sarlAnnotationType);
+        if (result == null) result = caseXtendAnnotationTarget(sarlAnnotationType);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -181,6 +261,38 @@ public class SarlSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Script</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Script</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSarlScript(SarlScript object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Field</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Field</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSarlField(SarlField object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Action</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -192,6 +304,22 @@ public class SarlSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseSarlAction(SarlAction object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Constructor</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Constructor</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSarlConstructor(SarlConstructor object)
   {
     return null;
   }
@@ -240,6 +368,70 @@ public class SarlSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseSarlRequiredCapacity(SarlRequiredCapacity object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Class</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Class</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSarlClass(SarlClass object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Interface</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Interface</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSarlInterface(SarlInterface object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Enumeration</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Enumeration</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSarlEnumeration(SarlEnumeration object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Annotation Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Annotation Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSarlAnnotationType(SarlAnnotationType object)
   {
     return null;
   }
@@ -341,6 +533,22 @@ public class SarlSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>File</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>File</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseXtendFile(XtendFile object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Annotation Target</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -368,6 +576,22 @@ public class SarlSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseXtendMember(XtendMember object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Field</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Field</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseXtendField(XtendField object)
   {
     return null;
   }
@@ -405,6 +629,22 @@ public class SarlSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Constructor</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Constructor</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseXtendConstructor(XtendConstructor object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Type Declaration</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -416,6 +656,70 @@ public class SarlSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseXtendTypeDeclaration(XtendTypeDeclaration object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Class</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Class</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseXtendClass(XtendClass object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Interface</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Interface</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseXtendInterface(XtendInterface object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Enum</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Enum</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseXtendEnum(XtendEnum object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Annotation Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Annotation Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseXtendAnnotationType(XtendAnnotationType object)
   {
     return null;
   }

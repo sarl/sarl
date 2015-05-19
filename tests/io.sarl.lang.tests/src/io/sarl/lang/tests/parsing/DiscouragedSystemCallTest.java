@@ -16,9 +16,9 @@
 package io.sarl.lang.tests.parsing;
 
 import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
@@ -56,7 +56,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemConsole_agent_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.console().readLine();",
@@ -71,7 +71,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemConsole_agent_behaviorUnit() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -87,7 +87,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemConsole_behavior_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.console().readLine();",
@@ -102,7 +102,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemConsole_behavior_behaviorUnit() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -118,7 +118,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemConsole_behavior_constructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.SARLInjectorProvider;",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -136,7 +136,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemConsole_skill_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -152,7 +152,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemConsole_skill_constructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -170,7 +170,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemConsole_agent_action_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"import static java.lang.System.*",
 					"import static java.lang.System.*",
@@ -192,7 +192,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemConsole_skill_action_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"import io.sarl.tests.api.AbstractSarlTest",
@@ -217,7 +217,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_agent_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.err.println(\"\")",
@@ -232,7 +232,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_agent_behaviorUnit() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -248,7 +248,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_behavior_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.err.println(\"\")",
@@ -263,7 +263,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_behavior_behaviorUnit() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -279,7 +279,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_behavior_constructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -296,7 +296,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_skill_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -312,7 +312,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_skill_constructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -330,7 +330,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_agent_action_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"agent A1 {",
 					"	def test {",
@@ -346,7 +346,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_agent_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"agent A1 {",
@@ -363,7 +363,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_behavior_action_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"behavior B1 {",
 					"	def test {",
@@ -379,7 +379,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_behavior_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"behavior B1 {",
@@ -396,7 +396,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_behavior_constructor_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -414,7 +414,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_skill_action_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -431,7 +431,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_skill_constructor_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static java.lang.System.*",
 					"capacity C1 { }",
@@ -454,7 +454,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_agent_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.out.println(\"\")",
@@ -469,7 +469,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_agent_behaviorUnit() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -485,7 +485,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_behavior_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.out.println(\"\")",
@@ -500,7 +500,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_behavior_behaviorUnit() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -516,7 +516,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_behavior_constructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -533,7 +533,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_skill_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -549,7 +549,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_skill_constructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -567,7 +567,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_agent_action_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"agent A1 {",
 					"	def test {",
@@ -583,7 +583,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_agent_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"agent A1 {",
@@ -600,7 +600,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_behavior_action_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"behavior B1 {",
 					"	def test {",
@@ -616,7 +616,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_behavior_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"behavior B1 {",
@@ -633,7 +633,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_behavior_constructor_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -651,7 +651,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_skill_action_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -668,7 +668,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_skill_constructor_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static java.lang.System.*",
 					"capacity C1 { }",
@@ -691,7 +691,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_agent_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.setErr(null)",
@@ -706,7 +706,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_agent_behaviorUnit() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -722,7 +722,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_behavior_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.setErr(null)",
@@ -737,7 +737,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_behavior_behaviorUnit() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -753,7 +753,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_behavior_constructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -770,7 +770,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_skill_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -786,7 +786,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_skill_constructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -804,7 +804,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_agent_action_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"agent A1 {",
 					"	def test {",
@@ -820,7 +820,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_agent_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"agent A1 {",
@@ -837,7 +837,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_behavior_action_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"behavior B1 {",
 					"	def test {",
@@ -853,7 +853,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_behavior_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"behavior B1 {",
@@ -870,7 +870,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_behavior_constructor_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -888,7 +888,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_skill_action_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -905,7 +905,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_skill_constructor_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static java.lang.System.*",
 					"capacity C1 { }",
@@ -928,7 +928,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_agent_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.setOut(null)",
@@ -943,7 +943,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_agent_behaviorUnit() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -959,7 +959,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_behavior_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.setOut(null)",
@@ -974,7 +974,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_behavior_behaviorUnit() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -990,7 +990,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_behavior_constructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -1007,7 +1007,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_skill_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -1023,7 +1023,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_skill_constructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -1041,7 +1041,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_agent_action_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"agent A1 {",
 					"	def test {",
@@ -1057,7 +1057,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_agent_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"agent A1 {",
@@ -1074,7 +1074,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_behavior_action_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"behavior B1 {",
 					"	def test {",
@@ -1090,7 +1090,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_behavior_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"behavior B1 {",
@@ -1107,7 +1107,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_behavior_constructor_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -1125,7 +1125,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_skill_action_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -1142,7 +1142,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_skill_constructor_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static java.lang.System.*",
 					"capacity C1 { }",
@@ -1165,7 +1165,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void println_agent_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		println(\"\")",
@@ -1180,7 +1180,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void println_agent_behaviorUnit() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -1196,7 +1196,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void println_behavior_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		println(\"\")",
@@ -1211,7 +1211,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void println_behavior_behaviorUnit() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -1227,7 +1227,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void println_behavior_constructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -1244,7 +1244,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void println_skill_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -1260,7 +1260,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void println_skill_constructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -1282,7 +1282,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_agent_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.inheritedChannel().isOpen();",
@@ -1297,7 +1297,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_agent_behaviorUnit() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -1313,7 +1313,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_behavior_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.inheritedChannel().isOpen();",
@@ -1328,7 +1328,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_behavior_behaviorUnit() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -1344,7 +1344,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_behavior_constructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -1361,7 +1361,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_skill_action() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -1377,7 +1377,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_skill_constructor() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -1395,7 +1395,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_agent_action_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"agent A1 {",
 					"	def test {",
@@ -1411,7 +1411,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_agent_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"agent A1 {",
@@ -1428,7 +1428,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_behavior_action_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"behavior B1 {",
 					"	def test {",
@@ -1444,7 +1444,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_behavior_behaviorUnit_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"behavior B1 {",
@@ -1461,7 +1461,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_behavior_constructor_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -1479,7 +1479,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_skill_action_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import static java.lang.System.*",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -1496,7 +1496,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_skill_constructor_staticImport() throws Exception {
-			XtendFile mas = file(multilineString(
+			SarlScript mas = file(multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static java.lang.System.*",
 					"capacity C1 { }",

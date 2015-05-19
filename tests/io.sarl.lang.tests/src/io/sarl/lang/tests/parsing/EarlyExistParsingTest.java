@@ -20,9 +20,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
@@ -45,7 +45,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 	
 	@Test
 	public void earlyExistFunction_inAction_lastExpression_0() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
 				"class EarlyExitFunctionDefinitions {",
 				"	@EarlyExit",
@@ -76,7 +76,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void earlyExistFunction_inAction_lastExpression_1() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
 				"class EarlyExitFunctionDefinitions {",
 				"	@EarlyExit",
@@ -108,7 +108,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void earlyExistFunction_inAction_penultimateExpression_0() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
 				"class EarlyExitFunctionDefinitions {",
 				"	@EarlyExit",
@@ -132,7 +132,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void earlyExistFunction_inAction_penultimateExpression_1() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
 				"class EarlyExitFunctionDefinitions {",
 				"	@EarlyExit",
@@ -156,7 +156,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void earlyExistFunction_inIf_0() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
 				"class EarlyExitFunctionDefinitions {",
 				"	@EarlyExit",
@@ -183,7 +183,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void earlyExistFunction_inIf_1() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
 				"class EarlyExitFunctionDefinitions {",
 				"	@EarlyExit",
@@ -219,7 +219,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void earlyExistFunction_inIf_2() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
 				"class EarlyExitFunctionDefinitions {",
 				"	@EarlyExit",
@@ -255,7 +255,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void earlyExistFunction_inWhile_0() throws Exception {
-		XtendFile mas = file(multilineString(
+		SarlScript mas = file(multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
 				"class EarlyExitFunctionDefinitions {",
 				"	@EarlyExit",

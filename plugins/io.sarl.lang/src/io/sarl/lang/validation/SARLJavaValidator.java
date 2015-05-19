@@ -92,9 +92,14 @@ import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlClass;
+import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarAccess;
 import io.sarl.lang.util.Utils;
@@ -126,7 +131,6 @@ import org.eclipse.xtend.core.xtend.XtendConstructor;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendFunction;
-import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
@@ -420,7 +424,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	@Check
 	protected void checkModifiers(SarlEvent event) {
 		EObject eContainer = event.eContainer();
-		if (eContainer instanceof XtendFile) {
+		if (eContainer instanceof SarlScript) {
 			this.eventModifierValidator.checkModifiers(event,
 					MessageFormat.format(Messages.SARLJavaValidator_0, event.getName()));
 		} else {
@@ -456,7 +460,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	@Check
 	protected void checkModifiers(SarlBehavior behavior) {
 		EObject eContainer = behavior.eContainer();
-		if (eContainer instanceof XtendFile) {
+		if (eContainer instanceof SarlScript) {
 			this.behaviorModifierValidator.checkModifiers(behavior,
 					MessageFormat.format(Messages.SARLJavaValidator_5, behavior.getName()));
 		} else {
@@ -474,7 +478,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	@Check
 	protected void checkModifiers(SarlCapacity capacity) {
 		EObject eContainer = capacity.eContainer();
-		if (eContainer instanceof XtendFile) {
+		if (eContainer instanceof SarlScript) {
 			this.capacityModifierValidator.checkModifiers(capacity,
 					MessageFormat.format(Messages.SARLJavaValidator_7, capacity.getName()));
 		} else {
@@ -581,8 +585,8 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 			boolean hasDeclaredConstructor = false;
 
 			for (XtendMember member : container.getMembers()) {
-				if (member instanceof XtendConstructor) {
-					XtendConstructor constructor = (XtendConstructor) member;
+				if (member instanceof SarlConstructor) {
+					SarlConstructor constructor = (SarlConstructor) member;
 					hasDeclaredConstructor = true;
 					boolean invokeDefaultConstructor = true;
 					XExpression body = constructor.getExpression();
@@ -777,7 +781,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	 * @see SARLFeatureNameValidator
 	 */
 	@Check(CheckType.FAST)
-	public void checkActionName(XtendFunction action) {
+	public void checkActionName(SarlAction action) {
 		JvmOperation inferredType = this.associations.getDirectlyInferredOperation(action);
 		QualifiedName name = QualifiedName.create(inferredType.getQualifiedName('.').split("\\.")); //$NON-NLS-1$
 		if (this.featureNames.isDisallowedName(name)) {
@@ -811,7 +815,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	 * @see SARLFeatureNameValidator
 	 */
 	@Check(CheckType.FAST)
-	public void checkFieldName(XtendField field) {
+	public void checkFieldName(SarlField field) {
 		JvmField inferredType = this.associations.getJvmField(field);
 		QualifiedName name = Utils.getQualifiedName(inferredType);
 		if (this.featureNames.isDisallowedName(name)) {
@@ -833,7 +837,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	 * @param field - the field to test.
 	 */
 	@Check
-	public void checkFieldNameShadowing(XtendField field) {
+	public void checkFieldNameShadowing(SarlField field) {
 		if (!isIgnored(VARIABLE_NAME_SHADOWING)
 				&& !Utils.isHiddenAttribute(field.getName())) {
 			JvmField inferredField = this.associations.getJvmField(field);
@@ -903,8 +907,8 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 							inherited.getResolvedReturnType().getIdentifier());
 				}
 			} else if (!isIgnored(RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED)
-					&& sourceElement instanceof XtendFunction) {
-				XtendFunction function = (XtendFunction) sourceElement;
+					&& sourceElement instanceof SarlAction) {
+				SarlAction function = (SarlAction) sourceElement;
 				if (function.getReturnType() == null && !inherited.getResolvedReturnType().isPrimitiveVoid()) {
 					warning(MessageFormat.format(Messages.SARLJavaValidator_14,
 							resolved.getResolvedReturnType().getHumanReadableName()),
@@ -917,8 +921,8 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 		if (exceptionMismatch != null) {
 			createExceptionMismatchError(resolved, sourceElement, exceptionMismatch);
 		}
-		if (sourceElement instanceof XtendFunction) {
-			XtendFunction function = (XtendFunction) sourceElement;
+		if (sourceElement instanceof SarlAction) {
+			SarlAction function = (SarlAction) sourceElement;
 			if (!overrideProblems && !function.isOverride() && !function.isStatic()
 					&& !isIgnored(MISSING_OVERRIDE)) {
 				warning(MessageFormat.format(Messages.SARLJavaValidator_15,
@@ -1036,7 +1040,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	 * @param xtendClass the class.
 	 */
 	@Check
-	public void checkRedundantImplementedInterfaces(XtendClass xtendClass) {
+	public void checkRedundantImplementedInterfaces(SarlClass xtendClass) {
 		checkRedundantInterfaces(
 				xtendClass,
 				XTEND_CLASS__IMPLEMENTS,
@@ -1049,7 +1053,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	 * @param xtendInterface the interface.
 	 */
 	@Check
-	public void checkRedundantImplementedInterfaces(XtendInterface xtendInterface) {
+	public void checkRedundantImplementedInterfaces(SarlInterface xtendInterface) {
 		checkRedundantInterfaces(
 				xtendInterface,
 				XTEND_INTERFACE__EXTENDS,
@@ -1606,7 +1610,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	public void checkAbstract(XtendFunction function) {
 		XtendTypeDeclaration declarator = function.getDeclaringType();
 		if (function.getExpression() == null) {
-			if (declarator instanceof XtendClass || declarator.isAnonymous()) {
+			if (declarator instanceof SarlClass || declarator.isAnonymous()) {
 				if (function.isDispatch()) {
 					error(MessageFormat.format(
 							Messages.SARLJavaValidator_1,
@@ -1629,7 +1633,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 							function.getName(),
 							this.localClassAwareTypeNames.getReadableName(declarator)),
 						XTEND_FUNCTION__NAME, -1, MISSING_ABSTRACT_IN_ANONYMOUS);
-				} else if (!((XtendClass) declarator).isAbstract() && !function.isNative()) {
+				} else if (!((SarlClass) declarator).isAbstract() && !function.isNative()) {
 					error(MessageFormat.format(
 							Messages.SARLJavaValidator_23,
 							function.getName(),
@@ -1644,7 +1648,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 //							this.localClassAwareTypeNames.getReadableName(declarator)),
 //						XTEND_FUNCTION__NAME, -1, ABSTRACT_METHOD_MISSING_RETURN_TYPE);
 //				}
-			} else if (declarator instanceof XtendInterface) {
+			} else if (declarator instanceof SarlInterface) {
 				if (function.getCreateExtensionInfo() != null) {
 					error(MessageFormat.format(
 							Messages.SARLJavaValidator_24,
@@ -1660,7 +1664,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 //						XTEND_FUNCTION__NAME, -1, ABSTRACT_METHOD_MISSING_RETURN_TYPE);
 //				}
 			}
-		} else if (declarator instanceof XtendInterface) {
+		} else if (declarator instanceof SarlInterface) {
 			if (!getGeneratorConfig(function).getJavaSourceVersion().isAtLeast(JAVA8)) {
 				error(Messages.SARLJavaValidator_25,
 						XTEND_FUNCTION__NAME, -1, ABSTRACT_METHOD_WITH_BODY);

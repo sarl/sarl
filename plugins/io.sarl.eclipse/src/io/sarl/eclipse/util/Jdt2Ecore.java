@@ -29,6 +29,7 @@ import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.Generated;
 import io.sarl.lang.generator.helper.SarlEcoreCode;
 import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.util.Utils;
 
@@ -59,7 +60,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
-import org.eclipse.xtend.core.xtend.XtendConstructor;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmConstructor;
@@ -437,7 +437,7 @@ public final class Jdt2Ecore {
 					}
 					block.getExpressions().add(call);
 					//
-					XtendConstructor cons = code.getCodeGenerator().createConstructor(code, container, block);
+					SarlConstructor cons = code.getCodeGenerator().createConstructor(code, container, block);
 					createFormalParameters(code, constructor, cons);
 				}
 			}

@@ -15,10 +15,10 @@
  */
 package io.sarl.lang.ui.tests.validation;
 
+import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
-import org.eclipse.xtend.core.xtend.XtendFile;
-import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.junit.Test;
 
 /**
@@ -34,7 +34,7 @@ public class SARLUIValidatorTest extends AbstractSarlUiTest {
 	 */
 	@Test
 	public void checkFileNamingConventions_validPackageName() throws Exception {
-		XtendFile script = helper().sarlFile(
+		SarlScript script = helper().sarlScript(
 				helper().generateFilename(),
 				"package " + helper().getDefaultTestPackage()); //$NON-NLS-1$
 		validate(script).assertNoIssues();
@@ -45,11 +45,11 @@ public class SARLUIValidatorTest extends AbstractSarlUiTest {
 	 */
 	@Test
 	public void checkFileNamingConventions_wrongPackageName() throws Exception {
-		XtendFile script = helper().sarlFile(
+		SarlScript script = helper().sarlScript(
 				helper().generateFilename(),
 				"package fake." + helper().getDefaultTestPackage()); //$NON-NLS-1$
 		validate(script).assertWarning(
-				XtendPackage.eINSTANCE.getXtendFile(),
+				SarlPackage.eINSTANCE.getSarlScript(),
 				org.eclipse.xtend.core.validation.IssueCodes.WRONG_PACKAGE,
 				"Expecting package definition io.sarl.tests"); //$NON-NLS-1$
 	}

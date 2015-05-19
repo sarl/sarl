@@ -19,9 +19,9 @@ import com.google.inject.Inject;
 
 import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlField;
+import io.sarl.lang.sarl.SarlScript;
 
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmPrimitiveType;
@@ -50,7 +50,7 @@ import io.sarl.tests.api.AbstractSarlTest;
 @SuppressWarnings("all")
 public class Bug92 extends AbstractSarlTest {
 	@Inject
-	private ParseHelper<XtendFile> parser;
+	private ParseHelper<SarlScript> parser;
 
 	@Inject
 	private ValidationTestHelper validator;
@@ -79,7 +79,7 @@ public class Bug92 extends AbstractSarlTest {
 
 	@Test
 	public void attributeDeclarationSyntax_inferredDouble() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		SarlScript mas = this.parser.parse(multilineString(
 				"agent A1 {",
 				"  var myDouble = 0d",
 				"}"
@@ -89,8 +89,8 @@ public class Bug92 extends AbstractSarlTest {
 		assertInstance(SarlAgent.class, mas.getXtendTypes().get(0));
 		SarlAgent ag = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals(1, ag.getMembers().size());
-		assertInstance(XtendField.class, ag.getMembers().get(0));
-		XtendField attr = (XtendField) ag.getMembers().get(0);
+		assertInstance(SarlField.class, ag.getMembers().get(0));
+		SarlField attr = (SarlField) ag.getMembers().get(0);
 		assertEquals("myDouble", attr.getName());
 		assertFalse(attr.isFinal());
 		assertNull(attr.getType());
@@ -101,7 +101,7 @@ public class Bug92 extends AbstractSarlTest {
 
 	@Test
 	public void attributeDeclarationSyntax_Double() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		SarlScript mas = this.parser.parse(multilineString(
 				"agent A1 {",
 				"  var myDouble : Double = 0d",
 				"}"
@@ -111,8 +111,8 @@ public class Bug92 extends AbstractSarlTest {
 		assertInstance(SarlAgent.class, mas.getXtendTypes().get(0));
 		SarlAgent ag = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals(1, ag.getMembers().size());
-		assertInstance(XtendField.class, ag.getMembers().get(0));
-		XtendField attr = (XtendField) ag.getMembers().get(0);
+		assertInstance(SarlField.class, ag.getMembers().get(0));
+		SarlField attr = (SarlField) ag.getMembers().get(0);
 		assertEquals("myDouble", attr.getName());
 		assertFalse(attr.isFinal());
 		assertInstance(JvmParameterizedTypeReference.class, attr.getType());
@@ -125,7 +125,7 @@ public class Bug92 extends AbstractSarlTest {
 
 	@Test
 	public void attributeDeclarationSyntax_double() throws Exception {
-		XtendFile mas = this.parser.parse(multilineString(
+		SarlScript mas = this.parser.parse(multilineString(
 				"agent A1 {",
 				"  var myDouble : double = 0d",
 				"}"
@@ -136,8 +136,8 @@ public class Bug92 extends AbstractSarlTest {
 		assertInstance(SarlAgent.class, mas.getXtendTypes().get(0));
 		SarlAgent ag = (SarlAgent) mas.getXtendTypes().get(0);
 		assertEquals(1, ag.getMembers().size());
-		assertInstance(XtendField.class, ag.getMembers().get(0));
-		XtendField attr = (XtendField) ag.getMembers().get(0);
+		assertInstance(SarlField.class, ag.getMembers().get(0));
+		SarlField attr = (SarlField) ag.getMembers().get(0);
 		assertEquals("myDouble", attr.getName());
 		assertFalse(attr.isFinal());
 		assertInstance(JvmParameterizedTypeReference.class, attr.getType());

@@ -32,11 +32,18 @@ import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlAnnotationType;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlClass;
+import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlEnumeration;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.sarl.SarlInterface;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 
 import java.lang.reflect.Field;
@@ -60,14 +67,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.xtend.core.xtend.XtendAnnotationType;
-import org.eclipse.xtend.core.xtend.XtendClass;
-import org.eclipse.xtend.core.xtend.XtendConstructor;
-import org.eclipse.xtend.core.xtend.XtendEnum;
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFile;
-import org.eclipse.xtend.core.xtend.XtendFunction;
-import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmConstructor;
@@ -92,6 +91,7 @@ import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.junit.Assume;
+import org.junit.ComparisonFailure;
 import org.junit.Rule;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.TestWatcher;
@@ -134,7 +134,7 @@ public abstract class AbstractSarlTest {
 	private ValidationTestHelper validationHelper;
 
 	@Inject
-	private ParseHelper<XtendFile> parser;
+	private ParseHelper<SarlScript> parser;
 
 	@Inject
 	private SarlJvmModelAssociations associations;
@@ -664,6 +664,22 @@ public abstract class AbstractSarlTest {
 		}
 	}
 
+	/** Assert the actual object is a not-null instance of the given type.
+	 *
+	 * @param actualExpression - the expected type.
+	 * @param expectedType - the instance.
+	 */
+	public static void assertInstanceOf(Class<?> expected, Object actual) {
+		if (actual == null) {
+			fail("Expecting a not-null instance of " + expected.getName());
+		} else if (!expected.isInstance(actual)) {
+			throw new ComparisonFailure(
+					"Unexpected object type.",
+					expected.getName(),
+					actual.getClass().getName());
+		}
+	}
+	
 	/** Create an instance of agent
 	 */
 	protected SarlAgent agent(String string) throws Exception {
@@ -736,28 +752,28 @@ public abstract class AbstractSarlTest {
 
 	/** Create an instance of class.
 	 */
-	protected XtendClass clazz(String string) throws Exception {
+	protected SarlClass clazz(String string) throws Exception {
 		List<XtendTypeDeclaration> decls = file(string).getXtendTypes();
-		return (XtendClass) decls.get(decls.size() - 1);
+		return (SarlClass) decls.get(decls.size() - 1);
 	}
 
 	/** Create an instance of class.
 	 */
-	protected XtendClass clazz(String string, boolean validate) throws Exception {
+	protected SarlClass clazz(String string, boolean validate) throws Exception {
 		List<XtendTypeDeclaration> decls = file(string, validate).getXtendTypes();
-		return (XtendClass) decls.get(decls.size() - 1);
+		return (SarlClass) decls.get(decls.size() - 1);
 	}
 
 	/** Create a SARL script.
 	 */
-	protected XtendFile file(String string) throws Exception {
+	protected SarlScript file(String string) throws Exception {
 		return file(string, false);
 	}
 
 	/** Create an instance of class.
 	 */
-	protected XtendFile file(String string, boolean validate) throws Exception {
-		XtendFile script = this.parser.parse(string);
+	protected SarlScript file(String string, boolean validate) throws Exception {
+		SarlScript script = this.parser.parse(string);
 		if (validate) {
 			Resource resource = script.eResource();
 			ResourceSet resourceSet = resource.getResourceSet();
@@ -778,7 +794,7 @@ public abstract class AbstractSarlTest {
 
 	/** Validate the given file and reply the issues.
 	 */
-	protected List<Issue> issues(XtendFile file) {
+	protected List<Issue> issues(SarlScript file) {
 		return issues(file.eResource());
 	}
 
@@ -790,7 +806,7 @@ public abstract class AbstractSarlTest {
 
 	/** Validate the given file and reply the validator.
 	 */
-	protected Validator validate(XtendFile file) {
+	protected Validator validate(SarlScript file) {
 		return validate(file.eResource());
 	}
 
@@ -802,50 +818,50 @@ public abstract class AbstractSarlTest {
 
 	/** Create an instance of annotation type.
 	 */
-	protected XtendAnnotationType annotationType(String string) throws Exception {
+	protected SarlAnnotationType annotationType(String string) throws Exception {
 		List<XtendTypeDeclaration> decls = file(string).getXtendTypes();
-		return (XtendAnnotationType) decls.get(decls.size() - 1);
+		return (SarlAnnotationType) decls.get(decls.size() - 1);
 	}
 
 	/** Create an instance of annotation type.
 	 */
-	protected XtendAnnotationType annotationType(String string, boolean validate) throws Exception {
+	protected SarlAnnotationType annotationType(String string, boolean validate) throws Exception {
 		List<XtendTypeDeclaration> decls = file(string, validate).getXtendTypes();
-		return (XtendAnnotationType) decls.get(decls.size() - 1);
+		return (SarlAnnotationType) decls.get(decls.size() - 1);
 	}
 
 	/** Create an instance of interface.
 	 */
-	protected XtendInterface interfaze(String string) throws Exception {
+	protected SarlInterface interfaze(String string) throws Exception {
 		List<XtendTypeDeclaration> decls = file(string).getXtendTypes();
-		return (XtendInterface) decls.get(decls.size() - 1);
+		return (SarlInterface) decls.get(decls.size() - 1);
 	}
 
 	/** Create an instance of interface.
 	 */
-	protected XtendInterface interfaze(String string, boolean validate) throws Exception {
+	protected SarlInterface interfaze(String string, boolean validate) throws Exception {
 		List<XtendTypeDeclaration> decls = file(string, validate).getXtendTypes();
-		return (XtendInterface) decls.get(decls.size() - 1);
+		return (SarlInterface) decls.get(decls.size() - 1);
 	}
 
 	/** Create an instance of enumeration.
 	 */
-	protected XtendEnum enumeration(String string) throws Exception {
+	protected SarlEnumeration enumeration(String string) throws Exception {
 		List<XtendTypeDeclaration> decls = file(string).getXtendTypes();
-		return (XtendEnum) decls.get(decls.size() - 1);
+		return (SarlEnumeration) decls.get(decls.size() - 1);
 	}
 
 	/** Create an instance of enumeration.
 	 */
-	protected XtendEnum enumeration(String string, boolean validate) throws Exception {
+	protected SarlEnumeration enumeration(String string, boolean validate) throws Exception {
 		List<XtendTypeDeclaration> decls = file(string, validate).getXtendTypes();
-		return (XtendEnum) decls.get(decls.size() - 1);
+		return (SarlEnumeration) decls.get(decls.size() - 1);
 	}
 
 	/** Create an instance of function.
 	 */
 	protected SarlAction function(String string, String... prefix) throws Exception {
-		XtendClass clazz = clazz(
+		SarlClass clazz = clazz(
 				IterableExtensions.join(Arrays.asList(prefix), "\n")
 				+ "\nclass Foo { " + string + "}");
 		return (SarlAction) clazz.getMembers().get(0);
@@ -854,7 +870,7 @@ public abstract class AbstractSarlTest {
 	/** Create an instance of function.
 	 */
 	protected SarlAction function(String string, boolean validate, String... prefix) throws Exception {
-		XtendClass clazz = clazz(
+		SarlClass clazz = clazz(
 				IterableExtensions.join(Arrays.asList(prefix), "\n")
 				+ "\nclass Foo { " + string + "}");
 		return (SarlAction) clazz.getMembers().get(0);
@@ -877,7 +893,7 @@ public abstract class AbstractSarlTest {
 	/** Create an instance of function signature.
 	 */
 	protected SarlAction functionSignature(String string, String... prefix) throws Exception {
-		XtendInterface interfaze = interfaze(
+		SarlInterface interfaze = interfaze(
 				IterableExtensions.join(Arrays.asList(prefix), "\n")
 				+ "\ninterface Foo { " + string + "}");
 		return (SarlAction) interfaze.getMembers().get(0);
@@ -886,7 +902,7 @@ public abstract class AbstractSarlTest {
 	/** Create an instance of function signature.
 	 */
 	protected SarlAction functionSignature(String string, boolean validate, String... prefix) throws Exception {
-		XtendInterface interfaze = interfaze(
+		SarlInterface interfaze = interfaze(
 				IterableExtensions.join(Arrays.asList(prefix), "\n")
 				+ "\ninterface Foo { " + string + "}", validate);
 		return (SarlAction) interfaze.getMembers().get(0);
@@ -908,52 +924,52 @@ public abstract class AbstractSarlTest {
 
 	/** Create an instance of constructor.
 	 */
-	protected XtendConstructor constructor(String string, String... prefix) throws Exception {
-		XtendClass clazz = clazz(
+	protected SarlConstructor constructor(String string, String... prefix) throws Exception {
+		SarlClass clazz = clazz(
 				IterableExtensions.join(Arrays.asList(prefix), "\n")
 				+ "\nclass Foo { " + string + "}");
-		return (XtendConstructor) clazz.getMembers().get(0);
+		return (SarlConstructor) clazz.getMembers().get(0);
 	}
 
 	/** Create an instance of constructor.
 	 */
-	protected XtendConstructor constructor(String string, boolean validate, String... prefix) throws Exception {
-		XtendClass clazz = clazz(
+	protected SarlConstructor constructor(String string, boolean validate, String... prefix) throws Exception {
+		SarlClass clazz = clazz(
 				IterableExtensions.join(Arrays.asList(prefix), "\n")
 				+ "\nclass Foo { " + string + "}", validate);
-		return (XtendConstructor) clazz.getMembers().get(0);
+		return (SarlConstructor) clazz.getMembers().get(0);
 	}
 
 	/** Create an instance of JVM constructor.
 	 */
 	protected JvmConstructor jvmConstructor(String string, String... prefix) throws Exception {
-		XtendConstructor constructor = constructor(string, prefix);
+		SarlConstructor constructor = constructor(string, prefix);
 		return (JvmConstructor) this.associations.getPrimaryJvmElement(constructor);
 	}
 
 	/** Create an instance of JVM constructor.
 	 */
 	protected JvmConstructor jvmConstructor(String string, boolean validate, String... prefix) throws Exception {
-		XtendConstructor constructor = constructor(string, validate, prefix);
+		SarlConstructor constructor = constructor(string, validate, prefix);
 		return (JvmConstructor) this.associations.getPrimaryJvmElement(constructor);
 	}
 
 	/** Create an instance of field.
 	 */
-	protected XtendField field(String string, String... prefix) throws Exception {
-		XtendClass clazz = clazz(
+	protected SarlField field(String string, String... prefix) throws Exception {
+		SarlClass clazz = clazz(
 				IterableExtensions.join(Arrays.asList(prefix), "\n")
 				+ "\nclass Foo { " + string + "}");
-		return (XtendField) clazz.getMembers().get(0);
+		return (SarlField) clazz.getMembers().get(0);
 	}
 
 	/** Create an instance of field.
 	 */
-	protected XtendField field(String string, boolean validate, String... prefix) throws Exception {
-		XtendClass clazz = clazz(
+	protected SarlField field(String string, boolean validate, String... prefix) throws Exception {
+		SarlClass clazz = clazz(
 				IterableExtensions.join(Arrays.asList(prefix), "\n")
 				+ "\nclass Foo { " + string + "}", validate);
-		return (XtendField) clazz.getMembers().get(0);
+		return (SarlField) clazz.getMembers().get(0);
 	}
 
 	/** Create an instance of behavior unit.
@@ -980,7 +996,7 @@ public abstract class AbstractSarlTest {
 		SarlAgent agent = agent(
 				IterableExtensions.join(Arrays.asList(prefix), "\n")
 				+ "\nagent Foo { var fooAttr : " + typeName + " }");
-		return ((XtendField) agent.getMembers().get(0)).getType();
+		return ((SarlField) agent.getMembers().get(0)).getType();
 	}
 
 	/** Merge two arrays.

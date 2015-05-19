@@ -21,17 +21,17 @@ import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.ui.labeling.SARLDescriptionLabelProvider;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
-import org.eclipse.xtend.core.xtend.XtendConstructor;
-import org.eclipse.xtend.core.xtend.XtendField;
-import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtext.xbase.XExpression;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -55,7 +55,7 @@ public class SARLDescriptionLabelProviderTest extends AbstractSarlUiTest {
 	public void imageSarlScript() {
 		assertBundleImage(
 				"sarl-file.png", //$NON-NLS-1$
-				this.provider.image(Mockito.mock(XtendFile.class)));
+				this.provider.image(Mockito.mock(SarlScript.class)));
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class SARLDescriptionLabelProviderTest extends AbstractSarlUiTest {
 	public void imageAttribute() {
 		assertJdtImage(
 				JavaPluginImages.DESC_FIELD_PROTECTED, 0,
-				this.provider.image(Mockito.mock(XtendField.class)));
+				this.provider.image(Mockito.mock(SarlField.class)));
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class SARLDescriptionLabelProviderTest extends AbstractSarlUiTest {
 	public void imageConstructor() {
 		assertJdtImage(
 				JavaPluginImages.DESC_MISC_PUBLIC, JavaElementImageDescriptor.CONSTRUCTOR,
-				this.provider.image(Mockito.mock(XtendConstructor.class)));
+				this.provider.image(Mockito.mock(SarlConstructor.class)));
 	}
 
 	/**

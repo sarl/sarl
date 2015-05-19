@@ -278,7 +278,7 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
             if ( state.backtracking==0 ) {
 
                       current = forceCreateModelElement(
-                          grammarAccess.getSarlScriptAccess().getXtendFileAction_0(),
+                          grammarAccess.getSarlScriptAccess().getSarlScriptAction_0(),
                           current);
                   
             }
@@ -1289,7 +1289,7 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
             if ( state.backtracking==0 ) {
 
                       current = forceCreateModelElement(
-                          grammarAccess.getFieldAccess().getXtendFieldAction_0(),
+                          grammarAccess.getFieldAccess().getSarlFieldAction_0(),
                           current);
                   
             }
@@ -3222,7 +3222,7 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
             if ( state.backtracking==0 ) {
 
                       current = forceCreateModelElement(
-                          grammarAccess.getConstructorAccess().getXtendConstructorAction_0(),
+                          grammarAccess.getConstructorAccess().getSarlConstructorAction_0(),
                           current);
                   
             }
@@ -4755,7 +4755,7 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
             if ( state.backtracking==0 ) {
 
                       current = forceCreateModelElement(
-                          grammarAccess.getClassAccess().getXtendClassAction_0(),
+                          grammarAccess.getClassAccess().getSarlClassAction_0(),
                           current);
                   
             }
@@ -5396,7 +5396,7 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
             if ( state.backtracking==0 ) {
 
                       current = forceCreateModelElement(
-                          grammarAccess.getInterfaceAccess().getXtendInterfaceAction_0(),
+                          grammarAccess.getInterfaceAccess().getSarlInterfaceAction_0(),
                           current);
                   
             }
@@ -5970,7 +5970,7 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
             if ( state.backtracking==0 ) {
 
                       current = forceCreateModelElement(
-                          grammarAccess.getEnumAccess().getXtendEnumAction_0(),
+                          grammarAccess.getEnumAccess().getSarlEnumerationAction_0(),
                           current);
                   
             }
@@ -6375,7 +6375,7 @@ public class InternalSARLParser extends AbstractInternalAntlrParser {
             if ( state.backtracking==0 ) {
 
                       current = forceCreateModelElement(
-                          grammarAccess.getAnnotationTypeAccess().getXtendAnnotationTypeAction_0(),
+                          grammarAccess.getAnnotationTypeAccess().getSarlAnnotationTypeAction_0(),
                           current);
                   
             }

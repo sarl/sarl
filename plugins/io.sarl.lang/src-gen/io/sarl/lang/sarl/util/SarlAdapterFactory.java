@@ -12,8 +12,15 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 
 import org.eclipse.xtend.core.xtend.XtendAnnotationTarget;
+import org.eclipse.xtend.core.xtend.XtendAnnotationType;
+import org.eclipse.xtend.core.xtend.XtendClass;
+import org.eclipse.xtend.core.xtend.XtendConstructor;
+import org.eclipse.xtend.core.xtend.XtendEnum;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
+import org.eclipse.xtend.core.xtend.XtendField;
+import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendFunction;
+import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
@@ -82,9 +89,24 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
     new SarlSwitch<Adapter>()
     {
       @Override
+      public Adapter caseSarlScript(SarlScript object)
+      {
+        return createSarlScriptAdapter();
+      }
+      @Override
+      public Adapter caseSarlField(SarlField object)
+      {
+        return createSarlFieldAdapter();
+      }
+      @Override
       public Adapter caseSarlAction(SarlAction object)
       {
         return createSarlActionAdapter();
+      }
+      @Override
+      public Adapter caseSarlConstructor(SarlConstructor object)
+      {
+        return createSarlConstructorAdapter();
       }
       @Override
       public Adapter caseSarlBehaviorUnit(SarlBehaviorUnit object)
@@ -100,6 +122,26 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
       public Adapter caseSarlRequiredCapacity(SarlRequiredCapacity object)
       {
         return createSarlRequiredCapacityAdapter();
+      }
+      @Override
+      public Adapter caseSarlClass(SarlClass object)
+      {
+        return createSarlClassAdapter();
+      }
+      @Override
+      public Adapter caseSarlInterface(SarlInterface object)
+      {
+        return createSarlInterfaceAdapter();
+      }
+      @Override
+      public Adapter caseSarlEnumeration(SarlEnumeration object)
+      {
+        return createSarlEnumerationAdapter();
+      }
+      @Override
+      public Adapter caseSarlAnnotationType(SarlAnnotationType object)
+      {
+        return createSarlAnnotationTypeAdapter();
       }
       @Override
       public Adapter caseSarlEvent(SarlEvent object)
@@ -132,6 +174,11 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
         return createSarlFormalParameterAdapter();
       }
       @Override
+      public Adapter caseXtendFile(XtendFile object)
+      {
+        return createXtendFileAdapter();
+      }
+      @Override
       public Adapter caseXtendAnnotationTarget(XtendAnnotationTarget object)
       {
         return createXtendAnnotationTargetAdapter();
@@ -140,6 +187,11 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
       public Adapter caseXtendMember(XtendMember object)
       {
         return createXtendMemberAdapter();
+      }
+      @Override
+      public Adapter caseXtendField(XtendField object)
+      {
+        return createXtendFieldAdapter();
       }
       @Override
       public Adapter caseXtendExecutable(XtendExecutable object)
@@ -152,9 +204,34 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
         return createXtendFunctionAdapter();
       }
       @Override
+      public Adapter caseXtendConstructor(XtendConstructor object)
+      {
+        return createXtendConstructorAdapter();
+      }
+      @Override
       public Adapter caseXtendTypeDeclaration(XtendTypeDeclaration object)
       {
         return createXtendTypeDeclarationAdapter();
+      }
+      @Override
+      public Adapter caseXtendClass(XtendClass object)
+      {
+        return createXtendClassAdapter();
+      }
+      @Override
+      public Adapter caseXtendInterface(XtendInterface object)
+      {
+        return createXtendInterfaceAdapter();
+      }
+      @Override
+      public Adapter caseXtendEnum(XtendEnum object)
+      {
+        return createXtendEnumAdapter();
+      }
+      @Override
+      public Adapter caseXtendAnnotationType(XtendAnnotationType object)
+      {
+        return createXtendAnnotationTypeAdapter();
       }
       @Override
       public Adapter caseXtendParameter(XtendParameter object)
@@ -184,6 +261,36 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 
 
   /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlScript <em>Script</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.SarlScript
+   * @generated
+   */
+  public Adapter createSarlScriptAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlField <em>Field</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.SarlField
+   * @generated
+   */
+  public Adapter createSarlFieldAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlAction <em>Action</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -194,6 +301,21 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createSarlActionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlConstructor <em>Constructor</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.SarlConstructor
+   * @generated
+   */
+  public Adapter createSarlConstructorAdapter()
   {
     return null;
   }
@@ -239,6 +361,66 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createSarlRequiredCapacityAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlClass <em>Class</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.SarlClass
+   * @generated
+   */
+  public Adapter createSarlClassAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlInterface <em>Interface</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.SarlInterface
+   * @generated
+   */
+  public Adapter createSarlInterfaceAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlEnumeration <em>Enumeration</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.SarlEnumeration
+   * @generated
+   */
+  public Adapter createSarlEnumerationAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlAnnotationType <em>Annotation Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see io.sarl.lang.sarl.SarlAnnotationType
+   * @generated
+   */
+  public Adapter createSarlAnnotationTypeAdapter()
   {
     return null;
   }
@@ -334,6 +516,21 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link org.eclipse.xtend.core.xtend.XtendFile <em>File</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.eclipse.xtend.core.xtend.XtendFile
+   * @generated
+   */
+  public Adapter createXtendFileAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link org.eclipse.xtend.core.xtend.XtendAnnotationTarget <em>Annotation Target</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -359,6 +556,21 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createXtendMemberAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.eclipse.xtend.core.xtend.XtendField <em>Field</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.eclipse.xtend.core.xtend.XtendField
+   * @generated
+   */
+  public Adapter createXtendFieldAdapter()
   {
     return null;
   }
@@ -394,6 +606,21 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link org.eclipse.xtend.core.xtend.XtendConstructor <em>Constructor</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.eclipse.xtend.core.xtend.XtendConstructor
+   * @generated
+   */
+  public Adapter createXtendConstructorAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link org.eclipse.xtend.core.xtend.XtendTypeDeclaration <em>Type Declaration</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -404,6 +631,66 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createXtendTypeDeclarationAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.eclipse.xtend.core.xtend.XtendClass <em>Class</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.eclipse.xtend.core.xtend.XtendClass
+   * @generated
+   */
+  public Adapter createXtendClassAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.eclipse.xtend.core.xtend.XtendInterface <em>Interface</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.eclipse.xtend.core.xtend.XtendInterface
+   * @generated
+   */
+  public Adapter createXtendInterfaceAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.eclipse.xtend.core.xtend.XtendEnum <em>Enum</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.eclipse.xtend.core.xtend.XtendEnum
+   * @generated
+   */
+  public Adapter createXtendEnumAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.eclipse.xtend.core.xtend.XtendAnnotationType <em>Annotation Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.eclipse.xtend.core.xtend.XtendAnnotationType
+   * @generated
+   */
+  public Adapter createXtendAnnotationTypeAdapter()
   {
     return null;
   }

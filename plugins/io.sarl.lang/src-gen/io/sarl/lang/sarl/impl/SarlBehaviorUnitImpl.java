@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.xtend.core.xtend.impl.XtendMemberImpl;
+import org.eclipse.xtend.core.xtend.impl.XtendMemberImplCustom;
 
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 
@@ -34,7 +34,7 @@ import org.eclipse.xtext.xbase.XExpression;
  *
  * @generated
  */
-public class SarlBehaviorUnitImpl extends XtendMemberImpl implements SarlBehaviorUnit
+public class SarlBehaviorUnitImpl extends XtendMemberImplCustom implements SarlBehaviorUnit
 {
   /**
    * The cached value of the '{@link #getName() <em>Name</em>}' containment reference.

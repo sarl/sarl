@@ -25,7 +25,7 @@ import org.eclipse.xtext.generator.*
 import org.eclipse.xtext.ui.generator.*
 import org.eclipse.xtend.core.*
 import org.eclipse.xtext.resource.XtextResourceSet 
-import io.sarl.lang.generator.ecore.* 
+import io.sarl.lang.generator.ecorefragments.* 
 
 var fileExtensions = "sarl"
 var projectName = "io.sarl.lang"
@@ -104,7 +104,16 @@ Workflow {
     		// generates Java API for the generated EPackages
     		fragment = SARLEMFGeneratorFragment auto-inject {
     			jdkLevel = jdkCompatibility
+    			
+    			customImplClass = "io.sarl.lang.sarl.impl.SarlFactoryImpl"
+    			
     			customImplClass = "org.eclipse.xtend.core.xtend.impl.XtendTypeDeclarationImpl"
+    			customImplClass = "org.eclipse.xtend.core.xtend.impl.XtendClassImpl"
+    			customImplClass = "org.eclipse.xtend.core.xtend.impl.XtendInterfaceImpl"
+    			customImplClass = "org.eclipse.xtend.core.xtend.impl.XtendEnumImpl"
+    			customImplClass = "org.eclipse.xtend.core.xtend.impl.XtendAnnotationTypeImpl"
+    			
+    			customImplClass = "org.eclipse.xtend.core.xtend.impl.XtendMemberImpl"
     			customImplClass = "org.eclipse.xtend.core.xtend.impl.XtendFunctionImpl"
     			customImplClass = "org.eclipse.xtend.core.xtend.impl.XtendFieldImpl"
     		}
