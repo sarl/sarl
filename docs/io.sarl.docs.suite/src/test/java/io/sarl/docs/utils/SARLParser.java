@@ -23,25 +23,38 @@ package io.sarl.docs.utils;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.isEmpty;
 import static org.jnario.lib.Assert.fail;
+import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlAnnotationType;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlClass;
+import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlEnumeration;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtend.core.xtend.XtendExecutable;
+import org.eclipse.xtend.core.xtend.XtendMember;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.junit4.util.ParseHelper;
@@ -77,7 +90,7 @@ import com.google.inject.Inject;
 public class SARLParser {
 
 	@Inject
-	private ParseHelper<XtendFile> sarlParser;
+	private ParseHelper<SarlScript> sarlParser;
 	@Inject
 	private XtextResourceSet xtextResourceSet;
 	@Inject
@@ -143,7 +156,7 @@ public class SARLParser {
 	 * @return the SARL model.
 	 * @throws Exception - on parsing error.
 	 */
-	public XtendFile parse(CharSequence text) throws Exception {
+	public SarlScript parse(CharSequence text) throws Exception {
 		if (this.initial) {
 			this.initial = false;
 			return this.sarlParser.parse(text, getResourceSetWithDefaultModels());
@@ -157,8 +170,8 @@ public class SARLParser {
 	 * @return the SARL model.
 	 * @throws Exception - on parsing error.
 	 */
-	public XtendFile parseSuccessfully(CharSequence text) throws Exception {
-		XtendFile model = parse(text);
+	public SarlScript parseSuccessfully(CharSequence text) throws Exception {
+		SarlScript model = parse(text);
 		this.validationTestHelper.assertNoErrors(model);
 		return model;
 	}
@@ -169,7 +182,7 @@ public class SARLParser {
 	 * @throws Exception - on parsing error.
 	 */
 	public void parseWithError(CharSequence text) throws Exception {
-		XtendFile model = parse(text);
+		SarlScript model = parse(text);
 
 		List<Issue> validate = this.validationTestHelper.validate(model);
 		Iterable<Issue> issues = filter(validate, new Predicate<Issue>() {
@@ -193,7 +206,7 @@ public class SARLParser {
 	 * @return the SARL model.
 	 * @throws Exception - on parsing error.
 	 */
-	public XtendFile parseSuccessfully(CharSequence outputText, CharSequence postfix) throws Exception {
+	public SarlScript parseSuccessfully(CharSequence outputText, CharSequence postfix) throws Exception {
 		StringBuilder b = new StringBuilder(outputText);
 		if (postfix != null && postfix.length() > 0) {
 			b.append("\n"); //$NON-NLS-1$
@@ -231,7 +244,7 @@ public class SARLParser {
 	 * @return the SARL model.
 	 * @throws Exception - on parsing error.
 	 */
-	public XtendFile parseSuccessfully(CharSequence outputText, CharSequence prefix, CharSequence postfix) throws Exception {
+	public SarlScript parseSuccessfully(CharSequence outputText, CharSequence prefix, CharSequence postfix) throws Exception {
 		StringBuilder b = new StringBuilder();
 		if (prefix != null && prefix.length() > 0) {
 			b.append(prefix);
@@ -284,7 +297,7 @@ public class SARLParser {
 	 * @param name - the name of the package.
 	 * @return validation status
 	 */
-	public boolean should_havePackage(XtendFile s, String name) {
+	public boolean should_havePackage(SarlScript s, String name) {
 		return Objects.equals(s.getPackage(), name);
 	}
 
@@ -294,7 +307,7 @@ public class SARLParser {
 	 * @param numberOfImports - the expected number of imports.
 	 * @return validation status
 	 */
-	public boolean should_haveNbImports(XtendFile s, int numberOfImports) {
+	public boolean should_haveNbImports(SarlScript s, int numberOfImports) {
 		int nb = 0;
 		if (s != null
 				&& s.getImportSection() != null
@@ -311,8 +324,8 @@ public class SARLParser {
 	 * @return the validation status.
 	 */
 	public boolean should_haveNbElements(EObject s, int numberOfElements) {
-		if (s instanceof XtendFile) {
-			return numberOfElements == ((XtendFile) s).getXtendTypes().size();
+		if (s instanceof SarlScript) {
+			return numberOfElements == ((SarlScript) s).getXtendTypes().size();
 		}
 		if (s instanceof XtendTypeDeclaration) {
 			return numberOfElements == ((XtendTypeDeclaration) s).getMembers().size();
@@ -344,7 +357,7 @@ public class SARLParser {
 	 * @param name - the name of the imported type.
 	 * @return model
 	 */
-	public boolean should_importClass(XtendFile model, String name) {
+	public boolean should_importClass(SarlScript model, String name) {
 		if (model == null
 				|| model.getImportSection() == null
 				|| model.getImportSection().getImportDeclarations() == null) {
@@ -365,7 +378,7 @@ public class SARLParser {
 	 * @param name - the name of the package.
 	 * @return model
 	 */
-	public boolean should_importClassesFrom(XtendFile model, String name) {
+	public boolean should_importClassesFrom(SarlScript model, String name) {
 		if (model == null
 				|| model.getImportSection() == null
 				|| model.getImportSection().getImportDeclarations() == null) {
@@ -386,7 +399,7 @@ public class SARLParser {
 	 * @param name - the name of the type.
 	 * @return model
 	 */
-	public boolean should_importMembers(XtendFile model, String name) {
+	public boolean should_importMembers(SarlScript model, String name) {
 		if (model == null
 				|| model.getImportSection() == null
 				|| model.getImportSection().getImportDeclarations() == null) {
@@ -489,10 +502,10 @@ public class SARLParser {
 			it = safeSingleton(((SarlEvent) o).getExtends()).iterator();
 		} else if (o instanceof SarlSkill) {
 			it = safeSingleton(((SarlSkill) o).getExtends()).iterator();
-		} else if (o instanceof XtendClass) {
-			it = safeSingleton(((XtendClass) o).getExtends()).iterator();
-		} else if (o instanceof XtendInterface) {
-			it = safeList(((XtendInterface) o).getExtends()).iterator();
+		} else if (o instanceof SarlClass) {
+			it = safeSingleton(((SarlClass) o).getExtends()).iterator();
+		} else if (o instanceof SarlInterface) {
+			it = safeList(((SarlInterface) o).getExtends()).iterator();
 		} else {
 			return false;
 		}
@@ -516,8 +529,8 @@ public class SARLParser {
 		Iterator<? extends JvmTypeReference> it;
 		if (o instanceof SarlSkill) {
 			it = safeList(((SarlSkill) o).getImplements()).iterator();
-		} else if (o instanceof XtendClass) {
-			it = safeList(((XtendClass) o).getImplements()).iterator();
+		} else if (o instanceof SarlClass) {
+			it = safeList(((SarlClass) o).getImplements()).iterator();
 		} else {
 			return false;
 		}
@@ -541,8 +554,8 @@ public class SARLParser {
 		int n;
 		if (o instanceof SarlSkill) {
 			n = safeList(((SarlSkill) o).getImplements()).size();
-		} else if (o instanceof XtendClass) {
-			n = safeList(((XtendClass) o).getImplements()).size();
+		} else if (o instanceof SarlClass) {
+			n = safeList(((SarlClass) o).getImplements()).size();
 		} else {
 			return false;
 		}
@@ -556,10 +569,10 @@ public class SARLParser {
 	 * @return the validation status.
 	 */
 	public boolean should_beVariable(EObject o, String name) {
-		if (!(o instanceof XtendField)) {
+		if (!(o instanceof SarlField)) {
 			return false;
 		}
-		XtendField attr = (XtendField) o;
+		SarlField attr = (SarlField) o;
 		return Objects.equals(name, attr.getName())
 				&& !attr.isFinal();
 	}
@@ -571,10 +584,10 @@ public class SARLParser {
 	 * @return the validation status.
 	 */
 	public boolean should_beValue(EObject o, String name) {
-		if (!(o instanceof XtendField)) {
+		if (!(o instanceof SarlField)) {
 			return false;
 		}
-		XtendField attr = (XtendField) o;
+		SarlField attr = (SarlField) o;
 		return Objects.equals(name, attr.getName())
 				&& attr.isFinal();
 	}
@@ -587,15 +600,15 @@ public class SARLParser {
 	 * @return the validation status.
 	 */
 	public boolean should_haveType(EObject o, String type) {
-		if (o instanceof XtendField) {
-			XtendField attr = (XtendField) o;
+		if (o instanceof SarlField) {
+			SarlField attr = (SarlField) o;
 			if (type == null) {
 				return attr.getType() == null;
 			}
 			return attr.getType() != null
 					&& Objects.equals(type, attr.getType().getQualifiedName());
-		} else if (o instanceof XtendParameter) {
-			XtendParameter param = (XtendParameter) o;
+		} else if (o instanceof SarlFormalParameter) {
+			SarlFormalParameter param = (SarlFormalParameter) o;
 			if (type == null) {
 				return param.getParameterType() == null;
 			}
@@ -612,11 +625,41 @@ public class SARLParser {
 	 * @return validation status
 	 */
 	public boolean should_beAction(EObject o, String name) {
-		if (!(o instanceof XtendFunction)) {
+		if (!(o instanceof SarlAction)) {
 			return false;
 		}
-		XtendFunction act = (XtendFunction) o;
+		SarlAction act = (SarlAction) o;
 		return Objects.equals(name, act.getName()) && act.getExpression() != null;
+	}
+
+	/** Ensure that the given object is the SARL "def" statement with the given modifiers.
+	 *
+	 * @param o - the object to test.
+	 * @param modifiers - the string that describes the modifier, or a collection of strings.
+	 * @return validation status
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean should_haveModifiers(EObject o, Object modifiers) {
+		if ((!(o instanceof XtendMember)) || modifiers == null) {
+			return false;
+		}
+		XtendMember member = (XtendMember) o;
+		EList<String> currentModifiers = member.getModifiers();
+		Iterable<String> it;
+		if (modifiers instanceof String[]) {
+			it = Arrays.asList((String[]) modifiers);
+		} else if (modifiers instanceof Iterable) {
+			it = (Iterable<String>) modifiers;
+		} else {
+			return currentModifiers.contains(modifiers.toString());
+		}
+		
+		for (String expected : it) {
+			if (!currentModifiers.contains(expected)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/** Ensure that the given object is the SARL "def" statement (without body).
@@ -626,10 +669,10 @@ public class SARLParser {
 	 * @return validation status
 	 */
 	public boolean should_beActionSignature(EObject o, String name) {
-		if (!(o instanceof XtendFunction)) {
+		if (!(o instanceof SarlAction)) {
 			return false;
 		}
-		XtendFunction sig = (XtendFunction) o;
+		SarlAction sig = (SarlAction) o;
 		return Objects.equals(name, sig.getName()) && sig.getExpression() == null;
 	}
 
@@ -726,7 +769,7 @@ public class SARLParser {
 	 * @return validation status
 	 */
 	public boolean should_beConstructor(EObject o, Object something) {
-		if (!(o instanceof XtendConstructor)) {
+		if (!(o instanceof SarlConstructor)) {
 			return false;
 		}
 		return true;
@@ -764,8 +807,8 @@ public class SARLParser {
 	 */
 	public boolean should_reply(EObject o, String returnType) {
 		JvmTypeReference rType;
-		if (o instanceof XtendFunction) {
-			rType = ((XtendFunction) o).getReturnType();
+		if (o instanceof SarlAction) {
+			rType = ((SarlAction) o).getReturnType();
 		} else {
 			return false;
 		}
@@ -783,10 +826,10 @@ public class SARLParser {
 	 * @return the validation status
 	 */
 	public boolean should_beParameter(EObject o, String name) {
-		if (!(o instanceof XtendParameter)) {
+		if (!(o instanceof SarlFormalParameter)) {
 			return false;
 		}
-		XtendParameter p = (XtendParameter) o;
+		SarlFormalParameter p = (SarlFormalParameter) o;
 		return Objects.equals(name, p.getName());
 	}
 
@@ -814,10 +857,10 @@ public class SARLParser {
 	 * @return the validation status
 	 */
 	public boolean should_haveInitialValue(EObject o, Object initialValue) {
-		if (!(o instanceof XtendField)) {
+		if (!(o instanceof SarlField)) {
 			return false;
 		}
-		XtendField p = (XtendField) o;
+		SarlField p = (SarlField) o;
 		if (initialValue == null) {
 			return p.getInitialValue() == null;
 		}
@@ -885,7 +928,7 @@ public class SARLParser {
 		String code = "def ____TeStInG_FuNcTiOn() : Object {\n" //$NON-NLS-1$
 				+ expression
 				+ "\n}"; //$NON-NLS-1$
-		XtendFunction action = (XtendFunction) agentCode("AgentXXXXX", code, resolve).get(0); //$NON-NLS-1$
+		SarlAction action = (SarlAction) agentCode("AgentXXXXX", code, resolve).get(0); //$NON-NLS-1$
 		XBlockExpression block = (XBlockExpression) action.getExpression();
 		if (block.getExpressions().size() == 1) {
 			return block.getExpressions().get(0);
@@ -907,7 +950,7 @@ public class SARLParser {
 		String fullCode = "agent " + agentTypeName //$NON-NLS-1$
 				+ " {\n" + code //$NON-NLS-1$
 				+ "\n}\n"; //$NON-NLS-1$
-		XtendFile script = parse(fullCode);
+		SarlScript script = parse(fullCode);
 		if (resolve) {
 			this.validationTestHelper.assertNoErrors(script);
 		}
@@ -1092,10 +1135,10 @@ public class SARLParser {
 	 * @return validation status
 	 */
 	public boolean should_beClass(EObject o, String name) {
-		if (!(o instanceof XtendClass)) {
+		if (!(o instanceof SarlClass)) {
 			return false;
 		}
-		XtendClass a = (XtendClass) o;
+		SarlClass a = (SarlClass) o;
 		return Objects.equals(name, a.getName());
 	}
 
@@ -1106,10 +1149,10 @@ public class SARLParser {
 	 * @return validation status
 	 */
 	public boolean should_beInterface(EObject o, String name) {
-		if (!(o instanceof XtendInterface)) {
+		if (!(o instanceof SarlInterface)) {
 			return false;
 		}
-		XtendInterface a = (XtendInterface) o;
+		SarlInterface a = (SarlInterface) o;
 		return Objects.equals(name, a.getName());
 	}
 
@@ -1120,10 +1163,10 @@ public class SARLParser {
 	 * @return validation status
 	 */
 	public boolean should_beEnumeration(EObject o, String name) {
-		if (!(o instanceof XtendEnum)) {
+		if (!(o instanceof SarlEnumeration)) {
 			return false;
 		}
-		XtendEnum a = (XtendEnum) o;
+		SarlEnumeration a = (SarlEnumeration) o;
 		return Objects.equals(name, a.getName());
 	}
 
@@ -1134,10 +1177,10 @@ public class SARLParser {
 	 * @return validation status
 	 */
 	public boolean should_beAnnotation(EObject o, String name) {
-		if (!(o instanceof XtendAnnotationType)) {
+		if (!(o instanceof SarlAnnotationType)) {
 			return false;
 		}
-		XtendAnnotationType a = (XtendAnnotationType) o;
+		SarlAnnotationType a = (SarlAnnotationType) o;
 		return Objects.equals(name, a.getName());
 	}
 

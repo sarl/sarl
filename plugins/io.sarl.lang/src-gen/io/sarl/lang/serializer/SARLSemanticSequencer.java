@@ -33,15 +33,9 @@ import org.eclipse.xtend.core.xtend.RichStringElseIf;
 import org.eclipse.xtend.core.xtend.RichStringForLoop;
 import org.eclipse.xtend.core.xtend.RichStringIf;
 import org.eclipse.xtend.core.xtend.RichStringLiteral;
-import org.eclipse.xtend.core.xtend.XtendAnnotationType;
-import org.eclipse.xtend.core.xtend.XtendClass;
-import org.eclipse.xtend.core.xtend.XtendEnum;
 import org.eclipse.xtend.core.xtend.XtendEnumLiteral;
-import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendFormalParameter;
-import org.eclipse.xtend.core.xtend.XtendInterface;
-import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.core.xtend.XtendVariableDeclaration;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
@@ -141,8 +135,20 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 				sequence_Event(context, (SarlEvent) semanticObject); 
 				return; 
 			case SarlPackage.SARL_FIELD:
-				sequence_Field(context, (SarlField) semanticObject); 
-				return; 
+				if(context == grammarAccess.getAnnotationFieldRule()) {
+					sequence_AnnotationField(context, (SarlField) semanticObject); 
+					return; 
+				}
+				else if(context == grammarAccess.getAgentMemberRule() ||
+				   context == grammarAccess.getBehaviorMemberRule() ||
+				   context == grammarAccess.getEventMemberRule() ||
+				   context == grammarAccess.getFieldRule() ||
+				   context == grammarAccess.getMemberRule() ||
+				   context == grammarAccess.getSkillMemberRule()) {
+					sequence_Field(context, (SarlField) semanticObject); 
+					return; 
+				}
+				else break;
 			case SarlPackage.SARL_FORMAL_PARAMETER:
 				sequence_Parameter(context, (SarlFormalParameter) semanticObject); 
 				return; 
@@ -566,20 +572,8 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 					return; 
 				}
 				else break;
-			case XtendPackage.XTEND_ANNOTATION_TYPE:
-				sequence_AnnotationField(context, (XtendAnnotationType) semanticObject); 
-				return; 
-			case XtendPackage.XTEND_CLASS:
-				sequence_AnnotationField(context, (XtendClass) semanticObject); 
-				return; 
-			case XtendPackage.XTEND_ENUM:
-				sequence_AnnotationField(context, (XtendEnum) semanticObject); 
-				return; 
 			case XtendPackage.XTEND_ENUM_LITERAL:
 				sequence_XtendEnumLiteral(context, (XtendEnumLiteral) semanticObject); 
-				return; 
-			case XtendPackage.XTEND_FIELD:
-				sequence_AnnotationField(context, (XtendField) semanticObject); 
 				return; 
 			case XtendPackage.XTEND_FILE:
 				sequence_File(context, (XtendFile) semanticObject); 
@@ -594,12 +588,6 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 					return; 
 				}
 				else break;
-			case XtendPackage.XTEND_INTERFACE:
-				sequence_AnnotationField(context, (XtendInterface) semanticObject); 
-				return; 
-			case XtendPackage.XTEND_MEMBER:
-				sequence_AnnotationField_XtendAnnotationType_2_4_0_XtendClass_2_1_0_XtendEnum_2_3_0_XtendField_2_0_0_0_0_XtendField_2_0_0_1_0_XtendInterface_2_2_0(context, (XtendMember) semanticObject); 
-				return; 
 			case XtendPackage.XTEND_VARIABLE_DECLARATION:
 				sequence_XVariableDeclaration(context, (XtendVariableDeclaration) semanticObject); 
 				return; 
@@ -655,6 +643,23 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     (annotations+=XAnnotation* modifiers+=CommonModifier* name=ValidID extends=JvmParameterizedTypeReference? members+=AgentMember*)
 	 */
 	protected void sequence_Agent(EObject context, SarlAgent semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (
+	 *         annotations+=XAnnotation* 
+	 *         modifiers+=CommonModifier* 
+	 *         modifiers+=FieldModifier 
+	 *         modifiers+=CommonModifier* 
+	 *         name=ValidID 
+	 *         type=JvmTypeReference? 
+	 *         initialValue=XAnnotationElementValue?
+	 *     )
+	 */
+	protected void sequence_AnnotationField(EObject context, SarlField semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

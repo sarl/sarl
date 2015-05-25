@@ -141,8 +141,8 @@ import com.google.inject.name.Names;
 @SuppressWarnings("static-method")
 public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 
-	
-	
+
+
 //	@Override
 //	public Class<? extends IPartialParsingHelper> bindIPartialParserHelper() {
 //		return XtendPartialParsingHelper.class;

@@ -56,6 +56,23 @@ Field returns xtend::XtendField:
 	('=' initialValue=XExpression)? ';'?
 ;
 
+AnnotationField returns xtend::XtendMember:
+	(
+		{SarlField}
+		annotations+=XAnnotation* 
+		modifiers+=CommonModifier*
+		modifiers+=FieldModifier
+		modifiers+=CommonModifier*
+		=> name=ValidID
+		(':' type=JvmTypeReference)? 
+		('=' initialValue=XAnnotationElementValue)? ';'?
+	)
+	| Class
+	| Interface
+	| Enum
+ 	| AnnotationType
+;
+
 Action returns xtend::XtendFunction:
 	{SarlAction}
 	annotations+=XAnnotation*

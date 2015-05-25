@@ -139,6 +139,7 @@ import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmGenericType;
+import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
@@ -297,6 +298,22 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	@Inject
 	private LocalClassAwareTypeNames localClassAwareTypeNames;
 
+	/** Replies the canonical name of the given object.
+	 *
+	 * @param object - the object.
+	 * @return the canonical name or <code>null</code> if it cannot be computed.
+	 */
+	protected String canonicalName(EObject object) {
+		if (object instanceof JvmIdentifiableElement) {
+			return ((JvmIdentifiableElement) object).getQualifiedName();
+		}
+		EObject jvmElement = this.associations.getPrimaryJvmElement(object);
+		if (jvmElement instanceof JvmIdentifiableElement) {
+			return ((JvmIdentifiableElement) jvmElement).getQualifiedName();
+		}
+		return null;
+	}
+
 	/** Emit a warning when the "requires" keyword is used.
 	 *
 	 * @param statement - the statement to check.
@@ -373,9 +390,9 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 				this.methodInAgentModifierValidator.checkModifiers(function,
 						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
 			} else if (declaringType instanceof SarlCapacity) {
-					String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
-					this.methodInCapacityModifierValidator.checkModifiers(function,
-							MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+				String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
+				this.methodInCapacityModifierValidator.checkModifiers(function,
+						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
 			} else if (declaringType instanceof SarlSkill) {
 				String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
 				this.methodInSkillModifierValidator.checkModifiers(function,
@@ -442,11 +459,11 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	@Check
 	protected void checkModifiers(SarlAgent agent) {
 		EObject eContainer = agent.eContainer();
-		if (eContainer instanceof XtendFile) {
+		if (eContainer instanceof SarlScript) {
 			this.agentModifierValidator.checkModifiers(agent,
 					MessageFormat.format(Messages.SARLJavaValidator_3, agent.getName()));
 		} else {
-			error(Messages.SARLJavaValidator_4,
+			error(MessageFormat.format(Messages.SARLJavaValidator_4, canonicalName(eContainer)),
 					agent,
 					null,
 					INVALID_NESTED_DEFINITION);
@@ -464,7 +481,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 			this.behaviorModifierValidator.checkModifiers(behavior,
 					MessageFormat.format(Messages.SARLJavaValidator_5, behavior.getName()));
 		} else {
-			error(Messages.SARLJavaValidator_6,
+			error(MessageFormat.format(Messages.SARLJavaValidator_6, canonicalName(eContainer)),
 					behavior,
 					null,
 					INVALID_NESTED_DEFINITION);
@@ -482,7 +499,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 			this.capacityModifierValidator.checkModifiers(capacity,
 					MessageFormat.format(Messages.SARLJavaValidator_7, capacity.getName()));
 		} else {
-			error(Messages.SARLJavaValidator_8,
+			error(MessageFormat.format(Messages.SARLJavaValidator_8, canonicalName(eContainer)),
 					capacity,
 					null,
 					INVALID_NESTED_DEFINITION);
@@ -496,7 +513,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	@Check
 	protected void checkModifiers(SarlSkill skill) {
 		EObject eContainer = skill.eContainer();
-		if (eContainer instanceof XtendFile) {
+		if (eContainer instanceof SarlScript) {
 			this.skillModifierValidator.checkModifiers(skill,
 					MessageFormat.format(Messages.SARLJavaValidator_9, skill.getName()));
 		} else {
@@ -958,12 +975,12 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 						MessageFormat.format(
 								Messages.SARLValidator_13,
 								canonicalName(lightweightInterfaceReference)),
-						element,
-						structuralElement,
-						// The index of the element to highlight in the super-types
-						knownInterfaces.size(),
-						REDUNDANT_INTERFACE_IMPLEMENTATION,
-						canonicalName(lightweightInterfaceReference),
+								element,
+								structuralElement,
+								// The index of the element to highlight in the super-types
+								knownInterfaces.size(),
+								REDUNDANT_INTERFACE_IMPLEMENTATION,
+								canonicalName(lightweightInterfaceReference),
 						"pre"); //$NON-NLS-1$
 				return true;
 			} else if (memberOfTypeHierarchy(lightweightInterfaceReference, previousInterface)) {
@@ -971,11 +988,11 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 						MessageFormat.format(
 								Messages.SARLValidator_13,
 								canonicalName(previousInterface)),
-						element,
-						structuralElement,
-						index,
-						REDUNDANT_INTERFACE_IMPLEMENTATION,
-						canonicalName(previousInterface),
+								element,
+								structuralElement,
+								index,
+								REDUNDANT_INTERFACE_IMPLEMENTATION,
+								canonicalName(previousInterface),
 						"post"); //$NON-NLS-1$
 			}
 			++index;
@@ -1006,12 +1023,12 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 											Messages.SARLValidator_14,
 											canonicalName(lightweightInterfaceReference),
 											canonicalName(lightweightSuperType)),
-									element,
-									structuralElement,
-									// The index of the element to highlight in the super-types
-									knownInterfaces.size(),
-									REDUNDANT_INTERFACE_IMPLEMENTATION,
-									canonicalName(lightweightInterfaceReference),
+											element,
+											structuralElement,
+											// The index of the element to highlight in the super-types
+											knownInterfaces.size(),
+											REDUNDANT_INTERFACE_IMPLEMENTATION,
+											canonicalName(lightweightInterfaceReference),
 									"unknow"); //$NON-NLS-1$
 						}
 					}
@@ -1616,7 +1633,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 							Messages.SARLJavaValidator_1,
 							function.getName(),
 							this.localClassAwareTypeNames.getReadableName(declarator)),
-						XTEND_FUNCTION__NAME, -1, DISPATCH_FUNCTIONS_MUST_NOT_BE_ABSTRACT);
+							XTEND_FUNCTION__NAME, -1, DISPATCH_FUNCTIONS_MUST_NOT_BE_ABSTRACT);
 					return;
 				}
 				if (function.getCreateExtensionInfo() != null) {
@@ -1624,7 +1641,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 							Messages.SARLJavaValidator_21,
 							function.getName(),
 							this.localClassAwareTypeNames.getReadableName(declarator)),
-						XTEND_FUNCTION__NAME, -1, CREATE_FUNCTIONS_MUST_NOT_BE_ABSTRACT);
+							XTEND_FUNCTION__NAME, -1, CREATE_FUNCTIONS_MUST_NOT_BE_ABSTRACT);
 					return;
 				}
 				if (declarator.isAnonymous()) {
@@ -1632,37 +1649,37 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 							Messages.SARLJavaValidator_22,
 							function.getName(),
 							this.localClassAwareTypeNames.getReadableName(declarator)),
-						XTEND_FUNCTION__NAME, -1, MISSING_ABSTRACT_IN_ANONYMOUS);
+							XTEND_FUNCTION__NAME, -1, MISSING_ABSTRACT_IN_ANONYMOUS);
 				} else if (!((SarlClass) declarator).isAbstract() && !function.isNative()) {
 					error(MessageFormat.format(
 							Messages.SARLJavaValidator_23,
 							function.getName(),
 							this.localClassAwareTypeNames.getReadableName(declarator)),
-						XTEND_FUNCTION__NAME, -1, MISSING_ABSTRACT);
+							XTEND_FUNCTION__NAME, -1, MISSING_ABSTRACT);
 				}
-//				if (function.getReturnType() == null && !function.isOverride()) {
-//					error(MessageFormat.format(
-//							"The {0} method {1} in type {2} must declare a return type",
-//							(function.isNative() ? "native" : "abstract"),
-//							function.getName(),
-//							this.localClassAwareTypeNames.getReadableName(declarator)),
-//						XTEND_FUNCTION__NAME, -1, ABSTRACT_METHOD_MISSING_RETURN_TYPE);
-//				}
+				//				if (function.getReturnType() == null && !function.isOverride()) {
+				//					error(MessageFormat.format(
+				//							"The {0} method {1} in type {2} must declare a return type",
+				//							(function.isNative() ? "native" : "abstract"),
+				//							function.getName(),
+				//							this.localClassAwareTypeNames.getReadableName(declarator)),
+				//						XTEND_FUNCTION__NAME, -1, ABSTRACT_METHOD_MISSING_RETURN_TYPE);
+				//				}
 			} else if (declarator instanceof SarlInterface) {
 				if (function.getCreateExtensionInfo() != null) {
 					error(MessageFormat.format(
 							Messages.SARLJavaValidator_24,
 							function.getName()),
-						XTEND_FUNCTION__NAME, -1, CREATE_FUNCTIONS_MUST_NOT_BE_ABSTRACT);
+							XTEND_FUNCTION__NAME, -1, CREATE_FUNCTIONS_MUST_NOT_BE_ABSTRACT);
 					return;
 				}
-//				if (function.getReturnType() == null && !function.isOverride()) {
-//					error(MessageFormat.format(
-//							"The abstract method {0} in type {1} must declare a return type",
-//							function.getName(),
-//							this.localClassAwareTypeNames.getReadableName(declarator)),
-//						XTEND_FUNCTION__NAME, -1, ABSTRACT_METHOD_MISSING_RETURN_TYPE);
-//				}
+				//				if (function.getReturnType() == null && !function.isOverride()) {
+				//					error(MessageFormat.format(
+				//							"The abstract method {0} in type {1} must declare a return type",
+				//							function.getName(),
+				//							this.localClassAwareTypeNames.getReadableName(declarator)),
+				//						XTEND_FUNCTION__NAME, -1, ABSTRACT_METHOD_MISSING_RETURN_TYPE);
+				//				}
 			}
 		} else if (declarator instanceof SarlInterface) {
 			if (!getGeneratorConfig(function).getJavaSourceVersion().isAtLeast(JAVA8)) {

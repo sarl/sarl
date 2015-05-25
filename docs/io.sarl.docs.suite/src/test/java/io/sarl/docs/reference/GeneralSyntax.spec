@@ -109,6 +109,33 @@ describe "General Syntax Reference" {
 		model should havePackage "io.sarl.event.ActionEvent"
 	}
 
+	/* In SARL, the statements are the instructions that must be executed.
+	 * The statement may be one of the elements described in the rest of
+	 * this document.
+	 * 
+	 * In the opposite as programming languages as Java and C++, there is no
+	 * need to terminate a statement with the ```;``` character.
+	 * But, you are still able to put it in your code.
+	 * 
+	 * For instance, the two following statements are equivalent:
+	 * 
+	 *     var myVariable : int = 5
+	 *
+	 *     var myVariable : int = 5;
+	 * 
+	 * @filter(.*)
+	 */
+	fact "Statement Syntax" {
+		'''var myVariable : int = 5'''.parseSuccessfully(
+			"agent A1 {",
+			"}"
+		)
+		'''var myVariable : int = 5;'''.parseSuccessfully(
+			"agent A1 {",
+			"}"
+		)
+	}
+
 	/* A script is a file in which you must type the SARL code.
 	 * Each script must follow the format:
 	 * 
@@ -289,13 +316,22 @@ describe "General Syntax Reference" {
 		 * the top-level features. These features are the core concepts
 		 * of SARL, such as `agent`, `event`, or
 		 * `capacity`.
-		 * 
 		 * All these top-level features are documented in their own
 		 * reference document.
+		 *
+		 * Additionally, it is possible to write object-oriented statements with
+		 * the SARL syntax: `class`, `interface`, `enum`, `annotation`.
+		 * The inclusion of the object-oriented statements will help you to
+		 * write your application  with a single language.
+		 * This support is described in the
+		 * [reference documentation](./BasicObjectOrientedProgrammingSupportSpec.html)
+		 * on object-oriented programming support of SARL.
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Top-Level Features" {
+			"./BasicObjectOrientedProgrammingSupportSpec.html" should beAccessibleFrom this
+			//
 			var model = '''
 			event E {
 			}

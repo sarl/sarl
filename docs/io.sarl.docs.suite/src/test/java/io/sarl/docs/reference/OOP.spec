@@ -107,6 +107,7 @@ describe "Basic Object-Oriented Programming Support" {
 		fact "Class Inheritance" {
 			val model = '''
 			class Person {
+				
 				var firstName : String
 				var lastName : String
 				
@@ -114,9 +115,14 @@ describe "Basic Object-Oriented Programming Support" {
 					this.firstName + " " + this.lastName
 				}
 			}
+			
+			
 			class Employee extends Person {
+				
 				var position : String
+				
 				var salary : float
+			
 			}
 			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.oop",
@@ -167,6 +173,117 @@ describe "Basic Object-Oriented Programming Support" {
 				it.members.get(1) => [
 					it should beVariable "salary"
 					it should haveType "float"
+				]
+			]
+		}
+
+		/* Method overriding is a language feature that allows a subclass or child class
+		 * to provide a specific implementation of a method that is already provided by
+		 * one of its superclasses or parent classes.
+		 *
+		 * The implementation in the subclass overrides (replaces) the implementation in
+		 * the superclass by providing a method that has same name, same parameters or
+		 * signature, and same return type as the method in the parent class.
+		 * 
+		 * The version of a method that is executed will be determined by the object that is
+		 * used to invoke it. If an object of a parent class is used to invoke the method,
+		 * then the version in the parent class will be executed, but if an object of the
+		 * subclass is used to invoke the method, then the version in the child class
+		 * will be executed.
+		 *
+		 * The following code defines the class ```PersonEx``` as a subclass of ```Person```,
+		 * and in which the title (mister, madam, miss) is added.
+		 * Then the full name of the person becomes the sequence of the title, first name
+		 * and last name.
+		 * Since the first name and last name are already sequenced in the function
+		 * ```getFullName``` of the superclass, we should override this function for changing
+		 * its behavior. The ```override``` keyword is specified for clearly marking this
+		 * implementation of ```getFullName``` as an override of the parent's implementation.
+		 * 
+		 * <note>The return type of the ```getFullName``` method (called with the name ```fullName``,
+		 * according to the
+		 * [property access syntax](./GeneralSyntaxReferenceFieldAccessAndMethodInvocationSpec.html#Property_Access))
+		 * is not specified in the overriding
+		 * prototype since it could be inferred by the SARL compiler.</note>  
+		 *  
+		 * @filter(.* = '''|'''|.parseSuccessfully.*)
+		 * 
+		 * For preventing a function to be overriden, you should add the modifier ```final```
+		 * in the signature of the method (as in Java).
+		 */
+		fact "Method Overriding" {
+			"./GeneralSyntaxReferenceFieldAccessAndMethodInvocationSpec.html"
+					should beAccessibleFrom this
+			//
+			val model = '''
+			class PersonEx extends Person {
+				
+				var title : String
+				
+				override getFullName {
+					return title + " " + super.fullName
+				} 
+			}
+			'''.parseSuccessfully('''
+				package io.sarl.docs.reference.oop
+				class Person {
+					var firstName : String
+					var lastName : String
+				
+					def getFullName : String {
+						this.firstName + " " + this.lastName
+					}
+				}
+				''',
+				// TEXT
+				""
+			)
+			
+			model => [
+				it should havePackage "io.sarl.docs.reference.oop"
+				it should haveNbImports 0
+				it should haveNbElements 2
+			]
+			
+			model.xtendTypes.get(0) => [
+				it should beClass "Person"
+				it should extend _
+				it should implement _
+				it should haveNbElements 3
+				
+				it.members.get(0) => [
+					it should beVariable "firstName"
+					it should haveType "java.lang.String"
+				]
+
+				it.members.get(1) => [
+					it should beVariable "lastName"
+					it should haveType "java.lang.String"
+				]
+
+				it.members.get(2) => [
+					it should beAction "getFullName"
+					it should haveNbParameters 0
+					it should reply "java.lang.String"
+				]
+			]
+
+			model.xtendTypes.get(1) => [
+				it should beClass "PersonEx"
+				it should extend "io.sarl.docs.reference.oop.Person"
+				it should implement _
+				it should haveNbElements 2
+				
+				it.members.get(0) => [
+					it should beVariable "title"
+					it should haveType "java.lang.String"
+				]
+
+				it.members.get(1) => [
+					it should beAction "getFullName"
+					it should haveNbParameters 0
+					it should reply _
+					it should haveModifiers "override"
 				]
 			]
 		}
@@ -414,9 +531,9 @@ describe "Basic Object-Oriented Programming Support" {
 		fact "Define an Annotation" {
 			val model = '''
 				annotation MyAnnotation {
-				  String[] value
-				  boolean isTricky = false
-				  int[] lotteryNumbers = #[ 42, 137 ]
+				  val value : String[]
+				  val isTricky : boolean = false
+				  val lotteryNumbers : int[] = #[ 42, 137 ]
 				}
 			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.oop",
@@ -454,6 +571,127 @@ describe "Basic Object-Oriented Programming Support" {
 			]
 		}
 
+	}
+	
+	/** Classes, enum, annotation and interface declarations can be nested.
+	 * Just as in Java nested enums, annotations and interfaces are always static.
+	 * In SARL nested classes are also always static. Nested types are
+	 * public by default and can only be nested within a class, an interface or
+	 * an annotation declaration.
+	 *
+	 * @filter(.* = '''|'''|.parseSuccessfully.*)
+	 */
+	fact "Nested Type Declarations" {
+		val model = '''
+		class MyClass {
+		  static class NestedClass {}
+		  annotation NestedAnnotation {}
+		  enum NestedEnum {}
+		  interface NestedInterface {}
+		}
+		 
+		interface MyInterface {
+		  static class NestedClass {}
+		  annotation NestedAnnotation {}
+		  enum NestedEnum {}
+		  interface NestedInterface {}
+		}
+		 
+		annotation MyAnnotation {
+		  static class NestedClass {}
+		  annotation NestedAnnotation {}
+		  enum NestedEnum {}
+		  interface NestedInterface {}
+		}
+		'''.parseSuccessfully(
+			"package io.sarl.docs.reference.oop",
+			// TEXT
+			""
+		)
+		
+		model => [
+			it should havePackage "io.sarl.docs.reference.oop"
+			it should haveNbImports 0
+			it should haveNbElements 3
+		]
+		
+		model.xtendTypes.get(0) => [
+			it should beClass "MyClass"
+			it should haveNbElements 4
+			
+			it.members.get(0) => [
+				it should beClass "NestedClass"
+				it should haveNbElements 0
+				it should haveModifiers "static"
+			]
+
+			it.members.get(1) => [
+				it should beAnnotation "NestedAnnotation"
+				it should haveNbElements 0
+			]
+
+			it.members.get(2) => [
+				it should beEnumeration "NestedEnum"
+				it should haveNbElements 0
+			]
+
+			it.members.get(3) => [
+				it should beInterface "NestedInterface"
+				it should haveNbElements 0
+			]
+		]		
+
+		model.xtendTypes.get(1) => [
+			it should beInterface "MyInterface"
+			it should haveNbElements 4
+			
+			it.members.get(0) => [
+				it should beClass "NestedClass"
+				it should haveNbElements 0
+				it should haveModifiers "static"
+			]
+
+			it.members.get(1) => [
+				it should beAnnotation "NestedAnnotation"
+				it should haveNbElements 0
+			]
+
+			it.members.get(2) => [
+				it should beEnumeration "NestedEnum"
+				it should haveNbElements 0
+			]
+
+			it.members.get(3) => [
+				it should beInterface "NestedInterface"
+				it should haveNbElements 0
+			]
+		]		
+
+		model.xtendTypes.get(2) => [
+			it should beAnnotation "MyAnnotation"
+			it should haveNbElements 4
+			
+			it.members.get(0) => [
+				it should beClass "NestedClass"
+				it should haveNbElements 0
+				it should haveModifiers "static"
+			]
+
+			it.members.get(1) => [
+				it should beAnnotation "NestedAnnotation"
+				it should haveNbElements 0
+			]
+
+			it.members.get(2) => [
+				it should beEnumeration "NestedEnum"
+				it should haveNbElements 0
+			]
+
+			it.members.get(3) => [
+				it should beInterface "NestedInterface"
+				it should haveNbElements 0
+			]
+		]		
 	}
 
 }

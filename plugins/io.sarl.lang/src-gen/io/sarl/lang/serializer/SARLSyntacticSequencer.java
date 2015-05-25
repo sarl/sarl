@@ -23,8 +23,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected SARLGrammarAccess grammarAccess;
 	protected AbstractElementAlias match_Action_SemicolonKeyword_10_0_2_q;
 	protected AbstractElementAlias match_Action___LeftParenthesisKeyword_7_0_RightParenthesisKeyword_7_2__q;
-	protected AbstractElementAlias match_AnnotationField_SemicolonKeyword_2_0_2_q;
-	protected AbstractElementAlias match_AnnotationField_SemicolonKeyword_2_3_6_q;
+	protected AbstractElementAlias match_AnnotationField_SemicolonKeyword_0_8_q;
 	protected AbstractElementAlias match_CapacityUses_SemicolonKeyword_4_q;
 	protected AbstractElementAlias match_Constructor___LeftParenthesisKeyword_5_0_RightParenthesisKeyword_5_2__q;
 	protected AbstractElementAlias match_Enum_SemicolonKeyword_7_q;
@@ -46,8 +45,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 		grammarAccess = (SARLGrammarAccess) access;
 		match_Action_SemicolonKeyword_10_0_2_q = new TokenAlias(false, true, grammarAccess.getActionAccess().getSemicolonKeyword_10_0_2());
 		match_Action___LeftParenthesisKeyword_7_0_RightParenthesisKeyword_7_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getActionAccess().getLeftParenthesisKeyword_7_0()), new TokenAlias(false, false, grammarAccess.getActionAccess().getRightParenthesisKeyword_7_2()));
-		match_AnnotationField_SemicolonKeyword_2_0_2_q = new TokenAlias(false, true, grammarAccess.getAnnotationFieldAccess().getSemicolonKeyword_2_0_2());
-		match_AnnotationField_SemicolonKeyword_2_3_6_q = new TokenAlias(false, true, grammarAccess.getAnnotationFieldAccess().getSemicolonKeyword_2_3_6());
+		match_AnnotationField_SemicolonKeyword_0_8_q = new TokenAlias(false, true, grammarAccess.getAnnotationFieldAccess().getSemicolonKeyword_0_8());
 		match_CapacityUses_SemicolonKeyword_4_q = new TokenAlias(false, true, grammarAccess.getCapacityUsesAccess().getSemicolonKeyword_4());
 		match_Constructor___LeftParenthesisKeyword_5_0_RightParenthesisKeyword_5_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getConstructorAccess().getLeftParenthesisKeyword_5_0()), new TokenAlias(false, false, grammarAccess.getConstructorAccess().getRightParenthesisKeyword_5_2()));
 		match_Enum_SemicolonKeyword_7_q = new TokenAlias(false, true, grammarAccess.getEnumAccess().getSemicolonKeyword_7());
@@ -119,10 +117,8 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_Action_SemicolonKeyword_10_0_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_Action___LeftParenthesisKeyword_7_0_RightParenthesisKeyword_7_2__q.equals(syntax))
 				emit_Action___LeftParenthesisKeyword_7_0_RightParenthesisKeyword_7_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_AnnotationField_SemicolonKeyword_2_0_2_q.equals(syntax))
-				emit_AnnotationField_SemicolonKeyword_2_0_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_AnnotationField_SemicolonKeyword_2_3_6_q.equals(syntax))
-				emit_AnnotationField_SemicolonKeyword_2_3_6_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_AnnotationField_SemicolonKeyword_0_8_q.equals(syntax))
+				emit_AnnotationField_SemicolonKeyword_0_8_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_CapacityUses_SemicolonKeyword_4_q.equals(syntax))
 				emit_CapacityUses_SemicolonKeyword_4_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_Constructor___LeftParenthesisKeyword_5_0_RightParenthesisKeyword_5_2__q.equals(syntax))
@@ -197,20 +193,9 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * This ambiguous syntax occurs at:
 	 *     initialValue=XAnnotationElementValue (ambiguity) (rule end)
 	 *     name=ValidID (ambiguity) (rule end)
+	 *     type=JvmTypeReference (ambiguity) (rule end)
 	 */
-	protected void emit_AnnotationField_SemicolonKeyword_2_0_2_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Ambiguous syntax:
-	 *     ';'?
-	 *
-	 * This ambiguous syntax occurs at:
-	 *     members+=XtendEnumLiteral (ambiguity) '}' (rule end)
-	 *     name=ValidID '{' (ambiguity) '}' (rule end)
-	 */
-	protected void emit_AnnotationField_SemicolonKeyword_2_3_6_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_AnnotationField_SemicolonKeyword_0_8_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

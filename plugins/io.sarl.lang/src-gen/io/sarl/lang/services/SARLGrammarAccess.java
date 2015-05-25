@@ -283,6 +283,123 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getSemicolonKeyword_7() { return cSemicolonKeyword_7; }
 	}
 
+	public class AnnotationFieldElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "AnnotationField");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
+		private final Action cSarlFieldAction_0_0 = (Action)cGroup_0.eContents().get(0);
+		private final Assignment cAnnotationsAssignment_0_1 = (Assignment)cGroup_0.eContents().get(1);
+		private final RuleCall cAnnotationsXAnnotationParserRuleCall_0_1_0 = (RuleCall)cAnnotationsAssignment_0_1.eContents().get(0);
+		private final Assignment cModifiersAssignment_0_2 = (Assignment)cGroup_0.eContents().get(2);
+		private final RuleCall cModifiersCommonModifierParserRuleCall_0_2_0 = (RuleCall)cModifiersAssignment_0_2.eContents().get(0);
+		private final Assignment cModifiersAssignment_0_3 = (Assignment)cGroup_0.eContents().get(3);
+		private final RuleCall cModifiersFieldModifierParserRuleCall_0_3_0 = (RuleCall)cModifiersAssignment_0_3.eContents().get(0);
+		private final Assignment cModifiersAssignment_0_4 = (Assignment)cGroup_0.eContents().get(4);
+		private final RuleCall cModifiersCommonModifierParserRuleCall_0_4_0 = (RuleCall)cModifiersAssignment_0_4.eContents().get(0);
+		private final Assignment cNameAssignment_0_5 = (Assignment)cGroup_0.eContents().get(5);
+		private final RuleCall cNameValidIDParserRuleCall_0_5_0 = (RuleCall)cNameAssignment_0_5.eContents().get(0);
+		private final Group cGroup_0_6 = (Group)cGroup_0.eContents().get(6);
+		private final Keyword cColonKeyword_0_6_0 = (Keyword)cGroup_0_6.eContents().get(0);
+		private final Assignment cTypeAssignment_0_6_1 = (Assignment)cGroup_0_6.eContents().get(1);
+		private final RuleCall cTypeJvmTypeReferenceParserRuleCall_0_6_1_0 = (RuleCall)cTypeAssignment_0_6_1.eContents().get(0);
+		private final Group cGroup_0_7 = (Group)cGroup_0.eContents().get(7);
+		private final Keyword cEqualsSignKeyword_0_7_0 = (Keyword)cGroup_0_7.eContents().get(0);
+		private final Assignment cInitialValueAssignment_0_7_1 = (Assignment)cGroup_0_7.eContents().get(1);
+		private final RuleCall cInitialValueXAnnotationElementValueParserRuleCall_0_7_1_0 = (RuleCall)cInitialValueAssignment_0_7_1.eContents().get(0);
+		private final Keyword cSemicolonKeyword_0_8 = (Keyword)cGroup_0.eContents().get(8);
+		private final RuleCall cClassParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cInterfaceParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cEnumParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
+		private final RuleCall cAnnotationTypeParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
+		
+		//AnnotationField returns xtend::XtendMember:
+		//	{SarlField} annotations+=XAnnotation* modifiers+=CommonModifier* modifiers+=FieldModifier modifiers+=CommonModifier*
+		//	=> name=ValidID (":" type=JvmTypeReference)? ("=" initialValue=XAnnotationElementValue)? ";"? | Class | Interface |
+		//	Enum | AnnotationType;
+		@Override public ParserRule getRule() { return rule; }
+
+		//{SarlField} annotations+=XAnnotation* modifiers+=CommonModifier* modifiers+=FieldModifier modifiers+=CommonModifier* =>
+		//name=ValidID (":" type=JvmTypeReference)? ("=" initialValue=XAnnotationElementValue)? ";"? | Class | Interface | Enum |
+		//AnnotationType
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//{SarlField} annotations+=XAnnotation* modifiers+=CommonModifier* modifiers+=FieldModifier modifiers+=CommonModifier* =>
+		//name=ValidID (":" type=JvmTypeReference)? ("=" initialValue=XAnnotationElementValue)? ";"?
+		public Group getGroup_0() { return cGroup_0; }
+
+		//{SarlField}
+		public Action getSarlFieldAction_0_0() { return cSarlFieldAction_0_0; }
+
+		//annotations+=XAnnotation*
+		public Assignment getAnnotationsAssignment_0_1() { return cAnnotationsAssignment_0_1; }
+
+		//XAnnotation
+		public RuleCall getAnnotationsXAnnotationParserRuleCall_0_1_0() { return cAnnotationsXAnnotationParserRuleCall_0_1_0; }
+
+		//modifiers+=CommonModifier*
+		public Assignment getModifiersAssignment_0_2() { return cModifiersAssignment_0_2; }
+
+		//CommonModifier
+		public RuleCall getModifiersCommonModifierParserRuleCall_0_2_0() { return cModifiersCommonModifierParserRuleCall_0_2_0; }
+
+		//modifiers+=FieldModifier
+		public Assignment getModifiersAssignment_0_3() { return cModifiersAssignment_0_3; }
+
+		//FieldModifier
+		public RuleCall getModifiersFieldModifierParserRuleCall_0_3_0() { return cModifiersFieldModifierParserRuleCall_0_3_0; }
+
+		//modifiers+=CommonModifier*
+		public Assignment getModifiersAssignment_0_4() { return cModifiersAssignment_0_4; }
+
+		//CommonModifier
+		public RuleCall getModifiersCommonModifierParserRuleCall_0_4_0() { return cModifiersCommonModifierParserRuleCall_0_4_0; }
+
+		//=> name=ValidID
+		public Assignment getNameAssignment_0_5() { return cNameAssignment_0_5; }
+
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_0_5_0() { return cNameValidIDParserRuleCall_0_5_0; }
+
+		//(":" type=JvmTypeReference)?
+		public Group getGroup_0_6() { return cGroup_0_6; }
+
+		//":"
+		public Keyword getColonKeyword_0_6_0() { return cColonKeyword_0_6_0; }
+
+		//type=JvmTypeReference
+		public Assignment getTypeAssignment_0_6_1() { return cTypeAssignment_0_6_1; }
+
+		//JvmTypeReference
+		public RuleCall getTypeJvmTypeReferenceParserRuleCall_0_6_1_0() { return cTypeJvmTypeReferenceParserRuleCall_0_6_1_0; }
+
+		//("=" initialValue=XAnnotationElementValue)?
+		public Group getGroup_0_7() { return cGroup_0_7; }
+
+		//"="
+		public Keyword getEqualsSignKeyword_0_7_0() { return cEqualsSignKeyword_0_7_0; }
+
+		//initialValue=XAnnotationElementValue
+		public Assignment getInitialValueAssignment_0_7_1() { return cInitialValueAssignment_0_7_1; }
+
+		//XAnnotationElementValue
+		public RuleCall getInitialValueXAnnotationElementValueParserRuleCall_0_7_1_0() { return cInitialValueXAnnotationElementValueParserRuleCall_0_7_1_0; }
+
+		//";"?
+		public Keyword getSemicolonKeyword_0_8() { return cSemicolonKeyword_0_8; }
+
+		//Class
+		public RuleCall getClassParserRuleCall_1() { return cClassParserRuleCall_1; }
+
+		//Interface
+		public RuleCall getInterfaceParserRuleCall_2() { return cInterfaceParserRuleCall_2; }
+
+		//Enum
+		public RuleCall getEnumParserRuleCall_3() { return cEnumParserRuleCall_3; }
+
+		//AnnotationType
+		public RuleCall getAnnotationTypeParserRuleCall_4() { return cAnnotationTypeParserRuleCall_4; }
+	}
+
 	public class ActionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Action");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -2390,6 +2507,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	private final TypeElements pType;
 	private final MemberElements pMember;
 	private final FieldElements pField;
+	private final AnnotationFieldElements pAnnotationField;
 	private final ActionElements pAction;
 	private final ConstructorElements pConstructor;
 	private final BehaviorUnitElements pBehaviorUnit;
@@ -2432,6 +2550,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		this.pType = new TypeElements();
 		this.pMember = new MemberElements();
 		this.pField = new FieldElements();
+		this.pAnnotationField = new AnnotationFieldElements();
 		this.pAction = new ActionElements();
 		this.pConstructor = new ConstructorElements();
 		this.pBehaviorUnit = new BehaviorUnitElements();
@@ -2537,6 +2656,18 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getFieldRule() {
 		return getFieldAccess().getRule();
+	}
+
+	//AnnotationField returns xtend::XtendMember:
+	//	{SarlField} annotations+=XAnnotation* modifiers+=CommonModifier* modifiers+=FieldModifier modifiers+=CommonModifier*
+	//	=> name=ValidID (":" type=JvmTypeReference)? ("=" initialValue=XAnnotationElementValue)? ";"? | Class | Interface |
+	//	Enum | AnnotationType;
+	public AnnotationFieldElements getAnnotationFieldAccess() {
+		return pAnnotationField;
+	}
+	
+	public ParserRule getAnnotationFieldRule() {
+		return getAnnotationFieldAccess().getRule();
 	}
 
 	//Action returns xtend::XtendFunction:
@@ -2876,28 +3007,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getXFunctionSuperTypeRefRule() {
 		return getXFunctionSuperTypeRefAccess().getRule();
-	}
-
-	//AnnotationField returns XtendMember:
-	//	{XtendMember} annotations+=XAnnotation* (({XtendField.annotationInfo=current} modifiers+=CommonModifier*
-	//	modifiers+=FieldModifier modifiers+=CommonModifier* type=JvmTypeReference? name=ValidID |
-	//	{XtendField.annotationInfo=current} modifiers+=CommonModifier* type=JvmTypeReference name=ValidID) ("="
-	//	initialValue=XAnnotationElementValue)? ";"? | {XtendClass.annotationInfo=current} modifiers+=CommonModifier* "class"
-	//	name=ValidID ("<" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* ">")? ("extends"
-	//	extends=JvmParameterizedTypeReference)? ("implements" implements+=JvmParameterizedTypeReference (","
-	//	implements+=JvmParameterizedTypeReference)*)? "{" members+=Member* "}" | {XtendInterface.annotationInfo=current}
-	//	modifiers+=CommonModifier* "interface" name=ValidID ("<" typeParameters+=JvmTypeParameter (","
-	//	typeParameters+=JvmTypeParameter)* ">")? ("extends" extends+=JvmParameterizedTypeReference (","
-	//	extends+=JvmParameterizedTypeReference)*)? "{" members+=Member* "}" | {XtendEnum.annotationInfo=current}
-	//	modifiers+=CommonModifier* "enum" name=ValidID "{" (members+=XtendEnumLiteral ("," members+=XtendEnumLiteral)*)? ";"?
-	//	"}" | {XtendAnnotationType.annotationInfo=current} modifiers+=CommonModifier* "annotation" name=ValidID "{"
-	//	members+=AnnotationField* "}");
-	public XtendGrammarAccess.AnnotationFieldElements getAnnotationFieldAccess() {
-		return gaXtend.getAnnotationFieldAccess();
-	}
-	
-	public ParserRule getAnnotationFieldRule() {
-		return getAnnotationFieldAccess().getRule();
 	}
 
 	//TypeReferenceNoTypeArgs returns types::JvmParameterizedTypeReference:
