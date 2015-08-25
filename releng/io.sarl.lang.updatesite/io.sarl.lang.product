@@ -275,6 +275,10 @@
       <feature id="org.eclipse.emf.common"/>
       <feature id="org.eclipse.xtext.runtime"/>
       <feature id="org.eclipse.equinox.p2.extras.feature"/>
+      <feature id="org.eclipse.m2e.logback.feature"/>
+      <feature id="org.eclipse.m2e.sdk.feature"/>
+      <feature id="org.eclipse.egit" version="4.0.0.201506090130-r"/>
+      <feature id="org.eclipse.egit.gitflow.feature" version="4.0.0.201506090130-r"/>
    </features>
 
    <configurations>

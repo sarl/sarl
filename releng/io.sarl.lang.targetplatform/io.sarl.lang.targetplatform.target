@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target includeMode="feature" name="io.sarl.lang.targetplatform" sequenceNumber="38">
+<?pde version="3.8"?><target includeMode="feature" name="io.sarl.lang.targetplatform" sequenceNumber="41">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.powermock.mockito-junit.feature.feature.group" version="1.5.4.1"/>
@@ -17,11 +17,13 @@
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.equinox.sdk.feature.group" version="3.11.0.v20150602-1417"/>
 <unit id="org.eclipse.recommenders.rcp.feature.feature.group" version="2.2.0.v20150609-1848"/>
+<unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.6.0.20150526-2032"/>
 <unit id="org.eclipse.mylyn.github.feature.feature.group" version="4.0.0.201506090130-r"/>
+<unit id="org.eclipse.m2e.logback.feature.feature.group" version="1.6.0.20150526-2032"/>
 <unit id="org.eclipse.egit.feature.group" version="4.0.0.201506090130-r"/>
 <unit id="org.eclipse.jdt.feature.group" version="3.11.0.v20150603-2000"/>
 <unit id="org.eclipse.epp.mpc.feature.group" version="1.4.0.v20150618-1659"/>
-<unit id="org.eclipse.egit.mylyn.feature.group" version="4.0.0.201506090130-r"/>
+<unit id="org.eclipse.egit.gitflow.feature.feature.group" version="4.0.0.201506090130-r"/>
 <unit id="org.eclipse.m2e.feature.feature.group" version="1.6.0.20150526-2032"/>
 <repository location="http://download.eclipse.org/releases/mars"/>
 </location>
