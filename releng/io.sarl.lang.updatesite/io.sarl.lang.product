@@ -14,8 +14,7 @@
    </configIni>
 
    <launcherArgs>
-      <vmArgs>-XX:MaxPermSize=256m
--Xms40m
+      <vmArgs>-Xms40m
 -Xmx512m
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
@@ -27,11 +26,11 @@
    <splash
       location="io.sarl.eclipse" />
    <launcher name="eclipse-sarl">
-      <linux icon="../../../icons/sarl.xpm"/>
-      <macosx icon="../../../icons/sarl.icns"/>
+      <linux icon="icons/sarl.xpm"/>
+      <macosx icon="icons/sarl.icns"/>
       <solaris/>
       <win useIco="true">
-         <ico path="../../../icons/sarl.ico"/>
+         <ico path="icons/sarl.ico"/>
          <bmp/>
       </win>
    </launcher>
@@ -254,9 +253,9 @@
       <feature id="io.sarl.sdk" version="1.0.0.qualifier"/>
       <feature id="org.eclipse.xtend.sdk" version="2.8.4.v201508050135"/>
       <feature id="org.eclipse.xtext.redist" version="2.8.4.v201508050135"/>
-      <feature id="org.eclipse.platform" version="4.4.2.v20150204-1700"/>
-      <feature id="org.eclipse.m2e.feature" version="1.5.1.20150109-1820"/>
-      <feature id="org.eclipse.jgit" version="3.4.2.201412180340-r"/>
+      <feature id="org.eclipse.platform" version="4.5.0.v20150603-2358"/>
+      <feature id="org.eclipse.m2e.feature" version="1.6.0.20150526-2032"/>
+      <feature id="org.eclipse.jgit" version="4.0.0.201506090130-r"/>
       <feature id="org.jboss.tools.m2e.jdt.feature" version="1.0.1.201209200903"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
       <feature id="org.eclipse.equinox.p2.core.feature"/>
@@ -291,5 +290,12 @@
       <repository location="http://updates.sarl.io/composite/snapshots/" enabled="true" />
       <repository location="http://updates.sarl.io/composite/releases/" enabled="false" />
    </repositories>
+
+   <preferencesInfo>
+      <targetfile overwrite="false"/>
+   </preferencesInfo>
+
+   <cssInfo>
+   </cssInfo>
 
 </product>
