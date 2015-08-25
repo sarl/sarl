@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target includeMode="feature" name="io.sarl.lang.targetplatform" sequenceNumber="35">
+<?pde version="3.8"?><target includeMode="feature" name="io.sarl.lang.targetplatform" sequenceNumber="36">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.feature.group" version="3.10.1.v20150204-1700"/>
@@ -14,13 +14,13 @@
 <repository location="http://powermock-osgi.googlecode.com/svn/updateSite/1.5.4.1"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.xtext.redist.feature.group" version="2.8.1.v201503230617"/>
-<unit id="org.eclipse.xtend.sdk.feature.group" version="2.8.1.v201503230617"/>
-<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.jboss.tools.m2e.jdt.feature.feature.group" version="1.0.1.201209200903"/>
 <repository location="http://download.jboss.org/jbosstools/updates/m2e-extensions/m2e-jdt-compiler/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.xtend.sdk.feature.group" version="2.8.4.v201508050135"/>
+<unit id="org.eclipse.xtext.redist.feature.group" version="2.8.4.v201508050135"/>
+<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
 </location>
 </locations>
 </target>

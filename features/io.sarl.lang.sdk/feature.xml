@@ -224,7 +224,7 @@ integrated tools for the Eclipse IDE.
 
    <requires>
       <import plugin="io.sarl.lang.core" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.mwe2.launch" version="2.7.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.mwe2.launch" version="2.8.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.osgi" version="3.10.2" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.ecore" version="2.10.2" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.common" version="2.10.1" match="greaterOrEqual"/>
@@ -239,18 +239,18 @@ integrated tools for the Eclipse IDE.
       <import plugin="org.eclipse.jdt.debug.ui" version="3.6.300" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.doc.user" version="3.10.1" match="greaterOrEqual"/>
       <import plugin="javax.inject"/>
-      <import plugin="org.eclipse.xtext.xbase" version="2.8.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.generator" version="2.8.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext" version="2.8.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.util" version="2.8.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.xbase.lib" version="2.8.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.common.types" version="2.8.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.ui" version="2.8.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.ui.shared" version="2.8.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.xbase.ui" version="2.8.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.builder" version="2.8.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.common.types.ui" version="2.8.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.ui.codetemplates.ui" version="2.8.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.xbase" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.generator" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.util" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.xbase.lib" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.common.types" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.ui" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.ui.shared" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.xbase.ui" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.builder" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.common.types.ui" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.ui.codetemplates.ui" version="2.8.4" match="greaterOrEqual"/>
    </requires>
 
    <plugin

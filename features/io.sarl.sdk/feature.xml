@@ -224,9 +224,9 @@
    <requires>
       <import plugin="io.sarl.lang.ui" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.lang.core" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.xbase" version="2.8.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.ui" version="2.8.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.builder" version="2.8.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.xbase" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.ui" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.builder" version="2.8.4" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.ide" version="3.10.2" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.navigator" version="3.5.401" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.ui" version="3.10.2" match="greaterOrEqual"/>
@@ -236,7 +236,7 @@
       <import plugin="org.eclipse.core.filesystem" version="1.4.100" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.debug.ui" version="3.6.300" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.variables" version="3.2.800" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.xbase.lib" version="2.8.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.xbase.lib" version="2.8.4" match="greaterOrEqual"/>
       <import plugin="io.sarl.eclipse" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2e.core" version="1.5.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2e.maven.runtime" version="1.5.1" match="greaterOrEqual"/>
