@@ -20,6 +20,7 @@ import io.sarl.tests.api.AbstractSarlUiTest;
 
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
+import org.eclipse.xtext.common.types.JvmVisibility;
 import org.junit.Test;
 
 import com.google.inject.Inject;
@@ -49,35 +50,40 @@ public class SARLImagesTest extends AbstractSarlUiTest {
 	 */
 	@Test
 	public void forAgent() {
-		assertBundleImage("sarl-agent.png", this.images.forAgent()); //$NON-NLS-1$
+		assertBundleImage("sarl-agent.png", //$NON-NLS-1$
+				this.images.forAgent(JvmVisibility.PUBLIC, 0));
 	}
 
 	/**
 	 */
 	@Test
 	public void forBehavior() {
-		assertBundleImage("sarl-behavior.png", this.images.forBehavior()); //$NON-NLS-1$
+		assertBundleImage("sarl-behavior.png", //$NON-NLS-1$
+				this.images.forBehavior(JvmVisibility.PUBLIC, 0));
 	}
 
 	/**
 	 */
 	@Test
 	public void forCapacity() {
-		assertBundleImage("sarl-capacity.png", this.images.forCapacity()); //$NON-NLS-1$
+		assertBundleImage("sarl-capacity.png", //$NON-NLS-1$
+				this.images.forCapacity(JvmVisibility.PUBLIC, 0));
 	}
 
 	/**
 	 */
 	@Test
 	public void forSkill() {
-		assertBundleImage("sarl-skill.png", this.images.forSkill()); //$NON-NLS-1$
+		assertBundleImage("sarl-skill.png", //$NON-NLS-1$
+				this.images.forSkill(JvmVisibility.PUBLIC, 0));
 	}
 
 	/**
 	 */
 	@Test
 	public void forEvent() {
-		assertBundleImage("sarl-event.png", this.images.forEvent()); //$NON-NLS-1$
+		assertBundleImage("sarl-event.png", //$NON-NLS-1$
+				this.images.forEvent(JvmVisibility.PUBLIC, 0));
 	}
 
 	/**
@@ -93,7 +99,7 @@ public class SARLImagesTest extends AbstractSarlUiTest {
 	public void forAction() {
 		assertJdtImage(
 				JavaPluginImages.DESC_MISC_PUBLIC, 0,
-				this.images.forAction());
+				this.images.forOperation(JvmVisibility.PUBLIC, 0));
 	}
 
 	/**
@@ -102,9 +108,9 @@ public class SARLImagesTest extends AbstractSarlUiTest {
 	public void forActionSignature() {
 		assertJdtImage(
 				JavaPluginImages.DESC_MISC_PUBLIC, JavaElementImageDescriptor.ABSTRACT,
-				this.images.forActionSignature());
+				this.images.forOperation(JvmVisibility.PUBLIC, JavaElementImageDescriptor.ABSTRACT));
 	}
-
+	
 	/**
 	 */
 	@Test
@@ -115,19 +121,19 @@ public class SARLImagesTest extends AbstractSarlUiTest {
 	/**
 	 */
 	@Test
-	public void forAttribute_writable() {
+	public void forField_writable() {
 		assertJdtImage(
 				JavaPluginImages.DESC_FIELD_PROTECTED, 0,
-				this.images.forAttribute(true));
+				this.images.forField(JvmVisibility.PROTECTED, 0));
 	}
 
 	/**
 	 */
 	@Test
-	public void forAttribute_notWritable() {
+	public void forField_notWritable() {
 		assertJdtImage(
 				JavaPluginImages.DESC_FIELD_PROTECTED, JavaElementImageDescriptor.FINAL,
-				this.images.forAttribute(false));
+				this.images.forField(JvmVisibility.PROTECTED, JavaElementImageDescriptor.FINAL));
 	}
 
 	/**

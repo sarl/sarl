@@ -35,9 +35,12 @@ import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.ui.images.SARLImages;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
 import org.eclipse.xtend.ide.labeling.XtendDescriptionLabelProvider;
-import org.eclipse.xtext.common.types.JvmVisibility;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.resource.IEObjectDescription;
+import org.eclipse.xtext.xbase.ui.labeling.XbaseImageAdornments;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 
 import com.google.inject.Inject;
@@ -53,10 +56,14 @@ import com.google.inject.Inject;
  */
 public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider {
 
-	/** Provider of images.
-	 */
 	@Inject
-	protected SARLImages images;
+	private IXtendJvmAssociations jvmModelAssociations;
+
+	@Inject
+	private SARLImages images;
+	
+	@Inject
+	private XbaseImageAdornments adornments;
 
 	/** Replies the image for a SARL script.
 	 *
@@ -82,7 +89,10 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlAgent agent) {
-		return this.images.forAgent();
+		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(agent);
+		return this.images.forAgent(
+				agent.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for a behavior.
@@ -91,7 +101,10 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlBehavior behavior) {
-		return this.images.forBehavior();
+		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(behavior);
+		return this.images.forBehavior(
+				behavior.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for a capacity.
@@ -100,7 +113,10 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlCapacity capacity) {
-		return this.images.forCapacity();
+		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(capacity);
+		return this.images.forCapacity(
+				capacity.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for a skill.
@@ -109,7 +125,10 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlSkill skill) {
-		return this.images.forSkill();
+		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(skill);
+		return this.images.forSkill(
+				skill.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for an event.
@@ -118,7 +137,10 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlEvent event) {
-		return this.images.forEvent();
+		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(event);
+		return this.images.forEvent(
+				event.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for an action.
@@ -127,10 +149,10 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlAction action) {
-		if (action.getExpression() == null) {
-			return this.images.forActionSignature();
-		}
-		return this.images.forAction();
+		JvmOperation jvmElement = this.jvmModelAssociations.getDirectlyInferredOperation(action);
+		return this.images.forOperation(
+				action.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for a capacity use.
@@ -166,9 +188,9 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlField attribute) {
-		return this.images.forAttribute(
-				(attribute == null)
-				|| (!attribute.isFinal()));
+		return this.images.forField(
+				attribute.getVisibility(),
+				this.adornments.get(this.jvmModelAssociations.getJvmField(attribute)));
 	}
 
 	/** Replies the image for a constructor.
@@ -177,7 +199,9 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlConstructor constructor) {
-		return this.images.forConstructor(JvmVisibility.PUBLIC, 0);
+		return this.images.forConstructor(
+				constructor.getVisibility(),
+				this.adornments.get(this.jvmModelAssociations.getInferredConstructor(constructor)));
 	}
 
 	@Override
