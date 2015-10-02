@@ -19,7 +19,7 @@
 	<!-- ======================================= -->
 
 	<properties>
-		<tycho.version>0.22.0</tycho.version>
+		<tycho.version>0.23.1</tycho.version>
 		<jre.environment>JavaSE-1.7</jre.environment>
 	</properties>
 
@@ -168,7 +168,7 @@
 		<repository>
 			<id>com.googlecode.powermock-osgi</id>
 			<layout>p2</layout>
-			<url>http://powermock-osgi.googlecode.com/svn/updateSite/1.5.4.1</url>
+			<url>http://powermock-osgi.googlecode.com/svn/updateSite/1.5.6.0</url>
 		</repository>
 	</repositories>
 

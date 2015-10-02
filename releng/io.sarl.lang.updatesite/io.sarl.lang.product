@@ -252,30 +252,30 @@
    <features>
       <feature id="io.sarl.lang.sdk" version="1.0.0.qualifier"/>
       <feature id="io.sarl.sdk" version="1.0.0.qualifier"/>
-      <feature id="org.eclipse.xtext.redist" version="2.8.2.v201504100559"/>
-      <feature id="org.eclipse.xtend.sdk" version="2.8.2.v201504100559"/>
+      <feature id="org.eclipse.xtext.redist" version="2.8.4.v201508050135"/>
+      <feature id="org.eclipse.xtend.sdk" version="2.8.4.v201508050135"/>
       <feature id="org.eclipse.platform" version="4.4.2.v20150204-1700"/>
       <feature id="org.eclipse.m2e.feature" version="1.5.1.20150109-1820"/>
       <feature id="org.eclipse.jgit" version="3.4.2.201412180340-r"/>
       <feature id="org.jboss.tools.m2e.jdt.feature" version="1.0.1.201209200903"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
+      <feature id="org.eclipse.help"/>
+      <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
+      <feature id="org.eclipse.jdt"/>
+      <feature id="org.eclipse.emf.common"/>
       <feature id="org.eclipse.equinox.p2.core.feature"/>
       <feature id="org.eclipse.ecf.core.ssl.feature"/>
-      <feature id="org.eclipse.help"/>
-      <feature id="org.eclipse.emf.ecore"/>
-      <feature id="org.eclipse.equinox.p2.rcp.feature"/>
-      <feature id="org.eclipse.equinox.p2.user.ui"/>
       <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>
-      <feature id="org.eclipse.ecf.filetransfer.feature"/>
-      <feature id="org.eclipse.xtext.ui"/>
+      <feature id="org.eclipse.xtext.runtime"/>
+      <feature id="org.eclipse.emf.ecore"/>
+      <feature id="org.eclipse.equinox.p2.user.ui"/>
+      <feature id="org.eclipse.equinox.p2.extras.feature"/>
       <feature id="org.eclipse.rcp"/>
       <feature id="org.eclipse.ecf.core.feature"/>
-      <feature id="org.eclipse.jdt"/>
+      <feature id="org.eclipse.equinox.p2.rcp.feature"/>
+      <feature id="org.eclipse.ecf.filetransfer.feature"/>
+      <feature id="org.eclipse.xtext.ui"/>
       <feature id="org.eclipse.e4.rcp"/>
-      <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
-      <feature id="org.eclipse.emf.common"/>
-      <feature id="org.eclipse.xtext.runtime"/>
-      <feature id="org.eclipse.equinox.p2.extras.feature"/>
    </features>
 
    <configurations>
