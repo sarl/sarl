@@ -17,6 +17,8 @@ package io.sarl.eclipse.tests.bugs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.spy;
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
@@ -26,6 +28,7 @@ import io.sarl.lang.generator.helper.SarlEcoreCode;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.tests.api.AbstractSarlUiTest;
+import io.sarl.tests.api.Nullable;
 import io.sarl.tests.api.TestClasspath;
 
 import java.util.Arrays;
@@ -35,6 +38,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.xtext.serializer.ISerializer;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.Maps;
@@ -49,6 +53,9 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class Bug277 extends AbstractSarlUiTest {
 
+	@Nullable
+	private SARLEclipsePlugin plugin;
+	
 	@Inject
 	private SARLContextPDAProvider pdaProvider;
 
@@ -58,6 +65,19 @@ public class Bug277 extends AbstractSarlUiTest {
 	@Inject
 	private ECoreGeneratorHelper sarlGenerator;
 
+	private void ensureEclipsePlugin() {
+		this.plugin = SARLEclipsePlugin.getDefault();
+		if (this.plugin == null) {
+			this.plugin = spy(new SARLEclipsePlugin());
+			SARLEclipsePlugin.setDefault(this.plugin);
+		}
+	}
+	
+	@Before
+	public void setUp() throws Exception {
+		ensureEclipsePlugin();
+	}
+	
 	@Test
 	public void testBugFixExist() {
 		assertNotNull(pdaProvider);

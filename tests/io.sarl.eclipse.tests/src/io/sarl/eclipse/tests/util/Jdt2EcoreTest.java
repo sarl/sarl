@@ -28,9 +28,11 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.util.Jdt2Ecore.TypeFinder;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
@@ -1225,6 +1227,9 @@ public class Jdt2EcoreTest {
 	 */
 	public static class PopulateInheritanceContext extends AbstractSarlUiTest {
 
+		@Nullable
+		private SARLEclipsePlugin plugin;
+		
 		@Inject
 		private ActionPrototypeProvider sarlSignatureProvider;
 
@@ -1243,6 +1248,14 @@ public class Jdt2EcoreTest {
 		@Nullable
 		private Map<ActionParameterTypes, IMethod> superConstructors;
 
+		private void ensureEclipsePlugin() {
+			this.plugin = SARLEclipsePlugin.getDefault();
+			if (this.plugin == null) {
+				this.plugin = spy(new SARLEclipsePlugin());
+				SARLEclipsePlugin.setDefault(this.plugin);
+			}
+		}
+		
 		@Before
 		public void setUp() throws Exception {
 			this.finalOperations = Maps.newHashMap();
@@ -1250,6 +1263,7 @@ public class Jdt2EcoreTest {
 			this.inheritedFields = Maps.newHashMap();
 			this.operationsToImplement = Maps.newHashMap();
 			this.superConstructors = Maps.newHashMap();
+			ensureEclipsePlugin();
 		}
 
 		@Test
