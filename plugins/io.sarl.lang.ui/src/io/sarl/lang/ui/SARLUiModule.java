@@ -51,13 +51,11 @@ import org.eclipse.xtend.ide.hover.XtendHoverProvider;
 import org.eclipse.xtend.ide.hyperlinking.HyperLinkingLabelProvider;
 import org.eclipse.xtend.ide.hyperlinking.XtendHyperlinkHelper;
 import org.eclipse.xtend.ide.refactoring.XtendRefactoringPreferences;
-import org.eclipse.xtext.builder.EclipseOutputConfigurationProvider;
 import org.eclipse.xtext.builder.EclipseResourceFileSystemAccess2;
 import org.eclipse.xtext.builder.EclipseSourceFolderProvider;
 import org.eclipse.xtext.builder.JDTAwareSourceFolderProvider;
 import org.eclipse.xtext.builder.trace.TraceForStorageProvider;
 import org.eclipse.xtext.generator.AbstractFileSystemAccess2;
-import org.eclipse.xtext.generator.IContextualOutputConfigurationProvider;
 import org.eclipse.xtext.generator.trace.ITraceForStorageProvider;
 import org.eclipse.xtext.ide.editor.bracketmatching.IBracePairProvider;
 import org.eclipse.xtext.service.SingletonBinding;
@@ -218,14 +216,6 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		binder.bindConstant().annotatedWith(Names.named(XtextEditor.KEY_BINDING_SCOPE))
 			.to("io.sarl.lang.ui.scoping.SARLEditorScope"); //$NON-NLS-1$
 	}
-
-	/** Replies the type of the provider of output configurations.
-	 * @return the type of the provider of output configurations.
-	 */
-	public Class<? extends IContextualOutputConfigurationProvider> bindIContextualOutputConfigurationProvider() {
-		return EclipseOutputConfigurationProvider.class;
-	}
-
 
 	@Override
 	public Class<? extends AbstractEditStrategyProvider> bindAbstractEditStrategyProvider() {

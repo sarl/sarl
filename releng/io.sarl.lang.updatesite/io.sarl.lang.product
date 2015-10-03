@@ -256,8 +256,8 @@
       <feature id="org.eclipse.xtend.sdk" version="2.8.4.v201508050135"/>
       <feature id="org.eclipse.platform" version="4.4.2.v20150204-1700"/>
       <feature id="org.eclipse.m2e.feature" version="1.5.1.20150109-1820"/>
-      <feature id="org.eclipse.jgit" version="3.4.2.201412180340-r"/>
       <feature id="org.jboss.tools.m2e.jdt.feature" version="1.0.1.201209200903"/>
+      <feature id="org.eclipse.jgit" version="3.4.2.201412180340-r"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
       <feature id="org.eclipse.help"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
