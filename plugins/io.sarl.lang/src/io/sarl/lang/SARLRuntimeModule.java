@@ -20,10 +20,6 @@
  */
 package io.sarl.lang;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import io.sarl.lang.actionprototype.ActionPrototypeProvider;
 import io.sarl.lang.actionprototype.DefaultActionPrototypeProvider;
 import io.sarl.lang.bugfixes.SARLContextPDAProvider;
@@ -43,7 +39,6 @@ import io.sarl.lang.validation.SARLConfigurableIssueCodesProvider;
 import io.sarl.lang.validation.SARLEarlyExitValidator;
 import io.sarl.lang.validation.SARLFeatureNameValidator;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.compiler.UnicodeAwarePostProcessor;
 import org.eclipse.xtend.core.compiler.XtendCompiler;
 import org.eclipse.xtend.core.compiler.XtendGenerator;
@@ -62,6 +57,7 @@ import org.eclipse.xtend.core.linking.XtendLinkingDiagnosticMessageProvider;
 import org.eclipse.xtend.core.macro.declaration.IResourceChangeRegistry;
 import org.eclipse.xtend.core.macro.declaration.NopResourceChangeRegistry;
 import org.eclipse.xtend.core.naming.XtendQualifiedNameProvider;
+import org.eclipse.xtend.core.parser.XtendPartialParsingHelper;
 import org.eclipse.xtend.core.resource.XtendLocationInFileProvider;
 import org.eclipse.xtend.core.resource.XtendResourceDescriptionManager;
 import org.eclipse.xtend.core.resource.XtendResourceDescriptionStrategy;
@@ -75,11 +71,9 @@ import org.eclipse.xtend.core.typesystem.XtendTypeComputer;
 import org.eclipse.xtend.core.validation.CachingResourceValidatorImpl;
 import org.eclipse.xtend.core.validation.XtendImplicitReturnFinder;
 import org.eclipse.xtend.core.xtend.XtendFactory;
-import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.conversion.IValueConverterService;
 import org.eclipse.xtext.conversion.impl.IDValueConverter;
 import org.eclipse.xtext.conversion.impl.STRINGValueConverter;
-import org.eclipse.xtext.diagnostics.AbstractDiagnostic;
 import org.eclipse.xtext.documentation.IEObjectDocumentationProvider;
 import org.eclipse.xtext.documentation.IFileHeaderProvider;
 import org.eclipse.xtext.findReferences.ReferenceFinder;
@@ -88,6 +82,7 @@ import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.linking.ILinker;
 import org.eclipse.xtext.linking.ILinkingDiagnosticMessageProvider;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
+import org.eclipse.xtext.parser.antlr.IPartialParsingHelper;
 import org.eclipse.xtext.resource.EObjectAtOffsetHelper;
 import org.eclipse.xtext.resource.IDefaultResourceDescriptionStrategy;
 import org.eclipse.xtext.resource.ILocationInFileProvider;
@@ -101,13 +96,9 @@ import org.eclipse.xtext.serializer.acceptor.ISyntacticSequenceAcceptor;
 import org.eclipse.xtext.serializer.analysis.IContextPDAProvider;
 import org.eclipse.xtext.serializer.sequencer.IHiddenTokenSequencer;
 import org.eclipse.xtext.serializer.tokens.SerializerScopeProviderBinding;
-import org.eclipse.xtext.util.CancelIndicator;
 import org.eclipse.xtext.validation.CompositeEValidator;
 import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
 import org.eclipse.xtext.validation.IResourceValidator;
-import org.eclipse.xtext.xbase.XAbstractFeatureCall;
-import org.eclipse.xtext.xbase.XConstructorCall;
-import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XbaseFactory;
 import org.eclipse.xtext.xbase.compiler.JvmModelGenerator;
 import org.eclipse.xtext.xbase.compiler.XbaseCompiler;
@@ -125,18 +116,10 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmModelTargetURICollector;
 import org.eclipse.xtext.xbase.resource.BatchLinkableResourceStorageFacade;
 import org.eclipse.xtext.xbase.scoping.batch.ConstructorScopes;
 import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
-import org.eclipse.xtext.xbase.typesystem.IExpressionScope;
-import org.eclipse.xtext.xbase.typesystem.IExpressionScope.Anchor;
-import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
-import org.eclipse.xtext.xbase.typesystem.computation.IAmbiguousLinkingCandidate;
-import org.eclipse.xtext.xbase.typesystem.computation.IConstructorLinkingCandidate;
-import org.eclipse.xtext.xbase.typesystem.computation.IFeatureLinkingCandidate;
-import org.eclipse.xtext.xbase.typesystem.computation.ILinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.computation.ITypeComputer;
 import org.eclipse.xtext.xbase.typesystem.internal.CachingBatchTypeResolver;
 import org.eclipse.xtext.xbase.typesystem.internal.DefaultBatchTypeResolver;
 import org.eclipse.xtext.xbase.typesystem.internal.DefaultReentrantTypeResolver;
-import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.ExtendedEarlyExitComputer;
 import org.eclipse.xtext.xbase.typesystem.util.HumanReadableTypeNames;
 import org.eclipse.xtext.xbase.util.XExpressionHelper;
@@ -160,32 +143,18 @@ import com.google.inject.name.Names;
  */
 @SuppressWarnings("static-method")
 public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
-
-
-	public static class XXX extends CachingBatchTypeResolver {
-		
-		/** {@inheritDoc}
-		 */
-		@Override
-		protected IResolvedTypes doResolveTypes(EObject object,
-				CancelIndicator monitor) {
-			if ("state".equals(object.toString())) {
-				System.err.println("DEBUG");
-			}
-			return super.doResolveTypes(object, monitor);
-		}
-		
-	}
 	
+	/** Replies the resolver of types that uses caching data.
+	 * @return the resolver.
+	 */
 	public Class<? extends CachingBatchTypeResolver> bindCachingBatchTypeResolver() {
-		return XXX.class;
+		return CachingBatchTypeResolver.class;
 	}
 	
-
-//	@Override
-//	public Class<? extends IPartialParsingHelper> bindIPartialParserHelper() {
-//		return XtendPartialParsingHelper.class;
-//	}
+	@Override
+	public Class<? extends IPartialParsingHelper> bindIPartialParserHelper() {
+		return XtendPartialParsingHelper.class;
+	}
 
 	/** Replies the finder of type references used by the SARL tools.
 	 * @return the finder.
