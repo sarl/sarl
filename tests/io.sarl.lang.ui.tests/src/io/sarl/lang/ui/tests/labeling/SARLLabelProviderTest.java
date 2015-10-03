@@ -33,14 +33,23 @@ import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.ui.labeling.SARLLabelProvider;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.xtend.core.xtend.XtendMember;
+import org.eclipse.xtext.common.types.JvmAnnotationReference;
+import org.eclipse.xtext.common.types.JvmMember;
+import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.JvmVisibility;
+import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociator;
+import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -59,15 +68,53 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 	@Inject
 	private SARLLabelProvider provider;
 
+	@Inject
+	private IJvmModelAssociator jvmModelAssociator;
+
+	private <T extends XtendMember> T mockMember(Class<T> type, JvmVisibility visibility) {
+		return mockMember(type, visibility, null);
+	}
+
+	private <T extends XtendMember> T mockMember(Class<T> type, JvmVisibility visibility, JvmMember member) {
+		T m = Mockito.mock(type);
+		Mockito.when(m.getVisibility()).thenReturn(visibility);
+		if (member != null) {
+			EList<Adapter> adapters = new BasicEList<>();
+			adapters.add(new JvmModelAssociator.Adapter());
+			XtextResource r = Mockito.mock(XtextResource.class);
+			Mockito.when(r.getLanguageName()).thenReturn("io.sarl.lang.SARL"); //$NON-NLS-1$
+			Mockito.when(r.eAdapters()).thenReturn(adapters);
+			Mockito.when(member.eResource()).thenReturn(r);
+			Mockito.when(m.eResource()).thenReturn(r);
+			this.jvmModelAssociator.associate(m, member);
+		}
+		return m;
+	}
+	
+	private static JvmOperation mockJvmOperation(String name, boolean isAbstract) {
+		JvmOperation operation = Mockito.mock(JvmOperation.class);
+		Mockito.when(operation.isAbstract()).thenReturn(isAbstract);
+		Mockito.when(operation.isStatic()).thenReturn(false);
+		Mockito.when(operation.isDefault()).thenReturn(false);
+		Mockito.when(operation.isDeprecated()).thenReturn(false);
+		Mockito.when(operation.isFinal()).thenReturn(false);
+		Mockito.when(operation.isSynchronized()).thenReturn(false);
+		Mockito.when(operation.isNative()).thenReturn(false);
+		Mockito.when(operation.getSimpleName()).thenReturn(name);
+		Mockito.when(operation.getAnnotations()).thenReturn(new BasicEList<JvmAnnotationReference>());
+		return operation;
+	}
+	
 	/**
+	 * @throws Exception
 	 */
 	@Test
-	public void getImageDescriptorPackage() {
+	public void getImageDescriptorPackage() throws Exception {
 		assertJdtImage(
 				JavaPluginImages.DESC_OBJS_PACKDECL, 0,
 				this.provider.getImageDescriptor(getClass().getPackage()));
 	}
-
+	
 	/**
 	 */
 	@Test
@@ -83,7 +130,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 	public void getImageDescriptorAgent() {
 		assertBundleImage(
 				"sarl-agent.png", //$NON-NLS-1$
-				this.provider.getImageDescriptor(Mockito.mock(SarlAgent.class)));
+				this.provider.getImageDescriptor(mockMember(SarlAgent.class, JvmVisibility.PUBLIC)));
 	}
 
 	/**
@@ -92,7 +139,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 	public void getImageDescriptorEvent() {
 		assertBundleImage(
 				"sarl-event.png", //$NON-NLS-1$
-				this.provider.getImageDescriptor(Mockito.mock(SarlEvent.class)));
+				this.provider.getImageDescriptor(mockMember(SarlEvent.class, JvmVisibility.PUBLIC)));
 	}
 
 	/**
@@ -101,7 +148,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 	public void getImageDescriptorCapacity() {
 		assertBundleImage(
 				"sarl-capacity.png", //$NON-NLS-1$
-				this.provider.getImageDescriptor(Mockito.mock(SarlCapacity.class)));
+				this.provider.getImageDescriptor(mockMember(SarlCapacity.class, JvmVisibility.PUBLIC)));
 	}
 
 	/**
@@ -110,7 +157,7 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 	public void getImageDescriptorSkill() {
 		assertBundleImage(
 				"sarl-skill.png", //$NON-NLS-1$
-				this.provider.getImageDescriptor(Mockito.mock(SarlSkill.class)));
+				this.provider.getImageDescriptor(mockMember(SarlSkill.class, JvmVisibility.PUBLIC)));
 	}
 
 	/**
@@ -119,62 +166,71 @@ public class SARLLabelProviderTest extends AbstractSarlUiTest {
 	public void getImageDescriptorBehavior() {
 		assertBundleImage(
 				"sarl-behavior.png", //$NON-NLS-1$
-				this.provider.getImageDescriptor(Mockito.mock(SarlBehavior.class)));
+				this.provider.getImageDescriptor(mockMember(SarlBehavior.class, JvmVisibility.PUBLIC)));
 	}
 
 	/**
+	 * @throws Exception
 	 */
 	@Test
-	public void getImageDescriptorAttribute() {
+	public void getImageDescriptorAttribute() throws Exception {
 		assertJdtImage(
 				JavaPluginImages.DESC_FIELD_PROTECTED, 0,
-				this.provider.getImageDescriptor(Mockito.mock(SarlField.class)));
+				this.provider.getImageDescriptor(mockMember(SarlField.class, JvmVisibility.PROTECTED)));
 	}
 
 	/**
+	 * @throws Exception
 	 */
 	@Test
-	public void getImageDescriptorConstructor() {
+	public void getImageDescriptorConstructor() throws Exception {
 		assertJdtImage(
 				JavaPluginImages.DESC_MISC_PUBLIC, JavaElementImageDescriptor.CONSTRUCTOR,
-				this.provider.getImageDescriptor(Mockito.mock(SarlConstructor.class)));
+				this.provider.getImageDescriptor(mockMember(SarlConstructor.class, JvmVisibility.PUBLIC)));
 	}
 
 	/**
+	 * @throws Exception
 	 */
 	@Test
-	public void getImageDescriptorAction() {
-		SarlAction action = Mockito.mock(SarlAction.class);
+	public void getImageDescriptorAction() throws Exception {
+		SarlAction action = mockMember(SarlAction.class, JvmVisibility.PROTECTED, mockJvmOperation("fct", false)); //$NON-NLS-1$
+		Mockito.when(action.getName()).thenReturn("fct"); //$NON-NLS-1$
 		Mockito.when(action.getExpression()).thenReturn(Mockito.mock(XExpression.class));
 		assertJdtImage(
-				JavaPluginImages.DESC_MISC_PUBLIC, 0,
+				JavaPluginImages.DESC_MISC_PROTECTED, 0,
 				this.provider.getImageDescriptor(action));
 	}
 
 	/**
+	 * @throws Exception
 	 */
 	@Test
-	public void getImageDescriptorActionSignature() {
-		SarlAction action = Mockito.mock(SarlAction.class);
+	public void getImageDescriptorActionSignature() throws Exception {
+		SarlAction action = mockMember(SarlAction.class, JvmVisibility.PUBLIC, mockJvmOperation("fct", true)); //$NON-NLS-1$
+		Mockito.when(action.getName()).thenReturn("fct"); //$NON-NLS-1$
 		Mockito.when(action.getExpression()).thenReturn(null);
+		//
 		assertJdtImage(
 				JavaPluginImages.DESC_MISC_PUBLIC, JavaElementImageDescriptor.ABSTRACT,
 				this.provider.getImageDescriptor(action));
 	}
 
 	/**
+	 * @throws Exception
 	 */
 	@Test
-	public void getImageDescriptorCapacityUses() {
+	public void getImageDescriptorCapacityUses() throws Exception {
 		assertJdtImage(
 				JavaPluginImages.DESC_OBJS_IMPCONT, 0,
 				this.provider.getImageDescriptor(Mockito.mock(SarlCapacityUses.class)));
 	}
 
 	/**
+	 * @throws Exception 
 	 */
 	@Test
-	public void getImageDescriptorRequiredCapacity() {
+	public void getImageDescriptorRequiredCapacity() throws Exception {
 		assertJdtImage(
 				JavaPluginImages.DESC_OBJS_IMPCONT, 0,
 				this.provider.getImageDescriptor(Mockito.mock(SarlRequiredCapacity.class)));

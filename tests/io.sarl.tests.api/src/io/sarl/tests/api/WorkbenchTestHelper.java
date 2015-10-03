@@ -153,13 +153,22 @@ public class WorkbenchTestHelper {
 
 	private boolean isLazyCreatedProject = false;
 
+	/** Init the helper for the unit test.
+	 * 
+	 * @throws Exception
+	 */
+	public void setUp() throws Exception {
+		//
+	}
+	
 	/** Dispose the helper for the unit test.
 	 * 
 	 * @throws Exception
 	 */
 	public void tearDown() throws Exception {
-		if (this.workbench.getActiveWorkbenchWindow() != null)
+		if (this.workbench.getActiveWorkbenchWindow() != null) {
 			this.workbench.getActiveWorkbenchWindow().getActivePage().closeAllEditors(false);
+		}
 		new WorkspaceModifyOperation() {
 
 			@SuppressWarnings("synthetic-access")
@@ -189,8 +198,9 @@ public class WorkbenchTestHelper {
 					WorkbenchTestHelper.this.isLazyCreatedProject = false;
 				}
 			}
+
 		}.run(null);
-		IResourcesSetupUtil.waitForAutoBuild();
+		IResourcesSetupUtil.reallyWaitForAutoBuild();
 	}
 
 	/** Replies the ccreated files.
@@ -839,7 +849,7 @@ public class WorkbenchTestHelper {
 	/** Wait for the end of auto-build.
 	 */
 	public void awaitAutoBuild() {
-		IResourcesSetupUtil.waitForAutoBuild();
+		IResourcesSetupUtil.reallyWaitForAutoBuild();
 	}
 
 	/** Do a full build.

@@ -53,20 +53,25 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.PlatformResourceURIHandlerImpl.WorkbenchHelper;
 import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmConstructor;
@@ -76,6 +81,7 @@ import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.TemporaryFolder;
 import org.eclipse.xtext.junit4.XtextRunner;
+import org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.resource.XtextResource;
@@ -91,6 +97,7 @@ import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.junit.Assume;
+import org.junit.ClassRule;
 import org.junit.ComparisonFailure;
 import org.junit.Rule;
 import org.junit.internal.AssumptionViolatedException;
@@ -138,7 +145,7 @@ public abstract class AbstractSarlTest {
 
 	@Inject
 	private SarlJvmModelAssociations associations;
-
+	
 	/** This rule permits to clean automatically the fields
 	 * at the end of the test.
 	 */
@@ -188,6 +195,7 @@ public abstract class AbstractSarlTest {
 			}
 			return super.apply(base, description);
 		}
+
 		@Override
 		protected void finished(Description description) {
 			// Clear the references to the mock objects or the injected objects
@@ -212,6 +220,7 @@ public abstract class AbstractSarlTest {
 				type = type.getSuperclass();
 			}
 		}
+		
 	};
 
 	/** Test if the actual collection/iterable contains all the expected objects.
@@ -670,16 +679,30 @@ public abstract class AbstractSarlTest {
 	 * @param expectedType - the instance.
 	 */
 	public static void assertInstanceOf(Class<?> expected, Object actual) {
+		assertInstanceOf(null, expected, actual);
+	}
+	
+	/** Assert the actual object is a not-null instance of the given type.
+	 *
+	 * @param message - the error message.
+	 * @param actualExpression - the expected type.
+	 * @param expectedType - the instance.
+	 */
+	public static void assertInstanceOf(String message, Class<?> expected, Object actual) {
+		String m = message;
+		if (m == null) {
+			m = "Unexpected object type.";
+		}
 		if (actual == null) {
-			fail("Expecting a not-null instance of " + expected.getName());
+			fail(m);
 		} else if (!expected.isInstance(actual)) {
 			throw new ComparisonFailure(
-					"Unexpected object type.",
+					m,
 					expected.getName(),
 					actual.getClass().getName());
 		}
 	}
-	
+
 	/** Create an instance of agent
 	 */
 	protected SarlAgent agent(String string) throws Exception {

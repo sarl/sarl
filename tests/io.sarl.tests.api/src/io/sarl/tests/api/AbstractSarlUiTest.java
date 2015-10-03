@@ -24,12 +24,14 @@ package io.sarl.tests.api;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import io.sarl.lang.SARLUiInjectorProvider;
 import io.sarl.lang.sarl.SarlScript;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
@@ -44,9 +46,11 @@ import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil;
 import org.eclipse.xtext.resource.XtextResourceSet;
+import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.validation.Issue;
 import org.junit.Assume;
 import org.junit.ClassRule;
+import org.junit.ComparisonFailure;
 import org.junit.Rule;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.TestWatcher;
@@ -79,6 +83,11 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 		@SuppressWarnings("synthetic-access")
 		@Override
 		protected void starting(Description description) {
+			try {
+				helper().setUp();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 			TestClasspath classPathAnnotation = description.getAnnotation(TestClasspath.class);
 			if (classPathAnnotation == null) {
 				Class<?> type = description.getTestClass();
@@ -114,12 +123,12 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 		@Override
 		protected void finished(Description description) {
 			try {
-				helper().tearDown();
+				IResourcesSetupUtil.cleanWorkspace();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 			try {
-				IResourcesSetupUtil.cleanWorkspace();
+				helper().tearDown();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -155,8 +164,70 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 				+ Pattern.quote("/icons/") //$NON-NLS-1$
 				+ "([^/]+[/])*" //$NON-NLS-1$
 				+ Pattern.quote(filename + ")"); //$NON-NLS-1$
-		assertTrue("Image not found: " + filename //$NON-NLS-1$
-				+ ". Actual: " + s, Pattern.matches(regex, s)); //$NON-NLS-1$
+		if (!Pattern.matches(regex, s)) {
+			if (desc instanceof JavaElementImageDescriptor) {
+				JavaElementImageDescriptor jeid = (JavaElementImageDescriptor) desc;
+				try {
+					Field field = JavaElementImageDescriptor.class.getDeclaredField("fBaseImage");
+					boolean isAcc = field.isAccessible(); 
+					field.setAccessible(true);
+					try {
+						ImageDescriptor id = (ImageDescriptor) field.get(jeid);
+						s = id.toString();
+						assertTrue("Invalid image: " + filename //$NON-NLS-1$
+								+ ". Actual: " + s, Pattern.matches(regex, s)); //$NON-NLS-1$
+					} finally {
+						field.setAccessible(isAcc);
+					}
+				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+					fail("Invalid background image descriptor: " + jeid.getClass().getName());
+				}
+			}
+		}
+	}
+	
+	private static String getImage(ImageDescriptor d) throws Exception {
+		String regex = Pattern.quote("URLImageDescriptor(bundleentry://") //$NON-NLS-1$
+				+ "[^/]+" //$NON-NLS-1$
+				+ Pattern.quote("/icons/") //$NON-NLS-1$
+				+ "(?:[^/]+[/])*" //$NON-NLS-1$
+				+ "(.+?)" //$NON-NLS-1$
+				+ Pattern.quote(")"); //$NON-NLS-1$
+		Pattern pattern = Pattern.compile(regex);
+		if (d instanceof JavaElementImageDescriptor) {
+			JavaElementImageDescriptor expectedDescriptor = (JavaElementImageDescriptor) d;
+			Field field = JavaElementImageDescriptor.class.getDeclaredField("fBaseImage");
+			boolean isAcc = field.isAccessible(); 
+			field.setAccessible(true);
+			try {
+				ImageDescriptor id = (ImageDescriptor) field.get(expectedDescriptor);
+				Matcher matcher = pattern.matcher(id.toString());
+				if (matcher.find()) {
+					return matcher.group(1);
+				}
+			} finally {
+				field.setAccessible(isAcc);
+			}
+		}
+		Matcher matcher = pattern.matcher(d.toString());
+		if (matcher.find()) {
+			return matcher.group(1);
+		}
+		return "";
+	}
+	
+	/** Assert the given image descriptors are the equal.
+	 *
+	 * @param expected - the expected image descriptor.
+	 * @param actual - the current image descriptor.
+	 * @throws Exception if the test cannot be done.
+	 */
+	protected static void assertImageDescriptors(ImageDescriptor expected, ImageDescriptor actual) throws Exception {
+		String expectedImage = getImage(expected);
+		String actualImage = getImage(actual);
+		if (!Strings.equal(expectedImage, actualImage)) {
+			throw new ComparisonFailure("Not same image descriptors", expectedImage, actualImage);
+		}
 	}
 
 	/** Assert the given image descriptor is for an image given by JDT.
@@ -164,14 +235,16 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	 * @param expected - the expected base image descriptor.
 	 * @param expectedFlags - the additional expected flags.
 	 * @param actual - the image descriptor to test.
+	 * @throws Exception if the test cannot be done.
 	 */
-	protected static void assertJdtImage(ImageDescriptor expected, int expectedFlags, ImageDescriptor actual) {
+	protected static void assertJdtImage(ImageDescriptor expected, int expectedFlags, ImageDescriptor actual) throws Exception {
 		assertNotNull(actual);
 		assertTrue(actual instanceof JavaElementImageDescriptor);
-		assertEquals("Not the same JDT image descriptor.", //$NON-NLS-1$
-				expected.hashCode() | expectedFlags | JavaElementImageProvider.BIG_SIZE.hashCode(),
-				actual.hashCode());
-		assertEquals(expectedFlags, ((JavaElementImageDescriptor) actual).getAdronments());
+		assertImageDescriptors(expected, actual);
+		assertEquals("Not the same flags", expectedFlags,
+				((JavaElementImageDescriptor) actual).getAdronments());
+		assertEquals("Not the same size.", JavaElementImageProvider.BIG_SIZE,
+				((JavaElementImageDescriptor) actual).getImageSize());
 	}
 
 	/** Create an instance of class.

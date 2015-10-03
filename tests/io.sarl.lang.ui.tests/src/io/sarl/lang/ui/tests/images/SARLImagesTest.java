@@ -37,9 +37,10 @@ public class SARLImagesTest extends AbstractSarlUiTest {
 	private SARLImages images;
 
 	/**
+	 * @throws Exception
 	 */
 	@Test
-	public void forPackage() {
+	public void forPackage() throws Exception {
 		//assertBundleImage("packd_obj.gif", this.images.forPackage()); //$NON-NLS-1$
 		assertJdtImage(
 				JavaPluginImages.DESC_OBJS_PACKDECL, 0,
@@ -94,18 +95,20 @@ public class SARLImagesTest extends AbstractSarlUiTest {
 	}
 
 	/**
+	 * @throws Exception
 	 */
 	@Test
-	public void forAction() {
+	public void forAction() throws Exception {
 		assertJdtImage(
 				JavaPluginImages.DESC_MISC_PUBLIC, 0,
 				this.images.forOperation(JvmVisibility.PUBLIC, 0));
 	}
 
 	/**
+	 * @throws Exception
 	 */
 	@Test
-	public void forActionSignature() {
+	public void forActionSignature() throws Exception {
 		assertJdtImage(
 				JavaPluginImages.DESC_MISC_PUBLIC, JavaElementImageDescriptor.ABSTRACT,
 				this.images.forOperation(JvmVisibility.PUBLIC, JavaElementImageDescriptor.ABSTRACT));
@@ -119,27 +122,30 @@ public class SARLImagesTest extends AbstractSarlUiTest {
 	}
 
 	/**
+	 * @throws Exception
 	 */
 	@Test
-	public void forField_writable() {
+	public void forField_writable() throws Exception {
 		assertJdtImage(
 				JavaPluginImages.DESC_FIELD_PROTECTED, 0,
 				this.images.forField(JvmVisibility.PROTECTED, 0));
 	}
 
 	/**
+	 * @throws Exception
 	 */
 	@Test
-	public void forField_notWritable() {
+	public void forField_notWritable() throws Exception {
 		assertJdtImage(
 				JavaPluginImages.DESC_FIELD_PROTECTED, JavaElementImageDescriptor.FINAL,
 				this.images.forField(JvmVisibility.PROTECTED, JavaElementImageDescriptor.FINAL));
 	}
 
 	/**
+	 * @throws Exception
 	 */
 	@Test
-	public void forCapacityUses() {
+	public void forCapacityUses() throws Exception {
 		assertJdtImage(
 				JavaPluginImages.DESC_OBJS_IMPCONT, 0,
 				this.images.forCapacityUses());
@@ -153,9 +159,10 @@ public class SARLImagesTest extends AbstractSarlUiTest {
 	}
 
 	/**
+	 * @throws Exception 
 	 */
 	@Test
-	public void forCapacityRequirements() {
+	public void forCapacityRequirements() throws Exception {
 		assertJdtImage(
 				JavaPluginImages.DESC_OBJS_IMPCONT, 0,
 				this.images.forCapacityRequirements());
