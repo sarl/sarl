@@ -34,7 +34,8 @@
 		<jnario.report.version>1.0.1</jnario.report.version>
 		<!-- Version of the OSGi module that provides the NLS -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
-		<!-- Year of the release of SARL (used in Eclipse about, license management and documentation) -->
+		<!-- Year of the release of SARL (used in Eclipse about, license management 
+			and documentation) -->
 		<year>2015</year>
 		<!-- URL of the SARL project (use in POM, Eclipse about and documentation) -->
 		<sarl.url>http://www.sarl.io</sarl.url>
@@ -42,9 +43,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- JRE Configuration -->
 		<compiler.level>1.7</compiler.level>
-		<!-- Path to the root directory  -->
+		<!-- Path to the root directory -->
 		<main.basedir>${project.basedir}</main.basedir>
-		<!-- String to put after the copyright sign  -->
+		<!-- String to put after the copyright sign -->
 		<copyrighters>Sebastian RODRIGUEZ, Nicolas GAUD, Stephane GALLAND</copyrighters>
 		<!-- URL of the Maven repositories of SARL (use in POM and documentation) -->
 		<sarl.maven.repository.url>http://maven.sarl.io</sarl.maven.repository.url>
@@ -91,9 +92,8 @@
 
 	<build>
 		<pluginManagement>
-			<!-- The other plugin configurations are inside the submodules
-			     for avoiding to propagate the information outside a
-			     specific module -->
+			<!-- The other plugin configurations are inside the submodules for avoiding 
+				to propagate the information outside a specific module -->
 
 			<plugins>
 				<plugin>
@@ -177,6 +177,13 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
 					<version>2.16</version>
+					<dependencies>
+						<dependency>
+							<groupId>com.puppycrawl.tools</groupId>
+							<artifactId>checkstyle</artifactId>
+							<version>6.11.1</version>
+						</dependency>
+					</dependencies>
 					<executions>
 						<execution>
 							<phase>process-classes</phase>
@@ -186,9 +193,9 @@
 						</execution>
 					</executions>
 					<configuration>
-						<configLocation>${main.basedir}/checkstyle/checkstyle.xml</configLocation>
+						<configLocation>${main.basedir}/checkstyle/checks.xml</configLocation>
 						<suppressionsLocation>${main.basedir}/checkstyle/suppressions.xml</suppressionsLocation>
-						<headerLocation>${main.basedir}/checkstyle/ClassHeader.txt</headerLocation>
+						<headerLocation>${main.basedir}/checkstyle/class_header.txt</headerLocation>
 						<enableRSS>true</enableRSS>
 						<linkXRef>true</linkXRef>
 						<consoleOutput>true</consoleOutput>
@@ -231,8 +238,8 @@
 					<version>${xtext.version}</version>
 				</plugin>
 
-				<!-- This plugin's configuration is used to store Eclipse m2e settings only.
-				     It has no influence on the Maven build itself. -->
+				<!-- This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -324,13 +331,13 @@
 										<include>NOTICE</include>
 									</includes>
 								</resource>
-<!-- 								<resource> -->
-<!-- 									<directory>${main.basedir}/licenses</directory> -->
-<!-- 									<filtering>false</filtering> -->
-<!-- 									<includes> -->
-<!-- 										<include>LICENSE</include> -->
-<!-- 									</includes> -->
-<!-- 								</resource> -->
+								<!-- <resource> -->
+								<!-- <directory>${main.basedir}/licenses</directory> -->
+								<!-- <filtering>false</filtering> -->
+								<!-- <includes> -->
+								<!-- <include>LICENSE</include> -->
+								<!-- </includes> -->
+								<!-- </resource> -->
 							</resources>
 						</configuration>
 					</execution>
@@ -381,7 +388,8 @@
 				</executions>
 			</plugin>
 
-			<!-- Compute additional version numbers for the SARL (specification, release, buildId) -->
+			<!-- Compute additional version numbers for the SARL (specification, release, 
+				buildId) -->
 			<plugin>
 				<groupId>org.codehaus.gmaven</groupId>
 				<artifactId>groovy-maven-plugin</artifactId>
@@ -393,36 +401,7 @@
 							<goal>execute</goal>
 						</goals>
 						<configuration>
-							<source>
-								now = session.getStartTime()
-
-								// Bug in Jenkins/Hudson: the buildId property is not correctly set
-								// since maven.build.timestamp is skipped by Jenkins/Hudson.
-								if (project.properties.buildId == "\${maven.build.timestamp}") {
-									project.properties.buildId =
-										(new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(now)
-									println("\tbuildId: "+ project.properties.buildId + " (reset for Hudson)")
-								} else {
-									println("\tbuildId: "+ project.properties.buildId)
-								}
-
-								snapshotTag = ""
-								if (project.version.endsWith(snapshotTag)) {
-									len = project.version.size() - snapshotTag.size()
-									version = project.version.substring(0,len)
-								}
-								else {
-									version = project.version
-								}
-								versionFields = version.split("\\.")
-								project.properties.sarlspecificationreleaseversion = versionFields[0]+"."+versionFields[1]
-								println("\tsarlspecificationreleaseversion: "+ project.properties.sarlspecificationreleaseversion)
-								project.properties.sarlreleaseversion = project.properties.sarlspecificationreleaseversion+"."+versionFields[2]
-								println("\tsarlreleaseversion: "+ project.properties.sarlreleaseversion)
-								project.properties.sarlspecificationreleasedate =
-									(new java.text.SimpleDateFormat("yyyy-MM-dd")).format(now)
-								println("\tsarlspecificationreleasedate: "+ project.properties.sarlspecificationreleasedate)
-							</source>
+							<source>${project.basedir}/scripts/sarl_property_setting.groovy</source>
 						</configuration>
 					</execution>
 				</executions>
@@ -451,7 +430,8 @@
 				<module>maven</module>
 				<!-- Testing suite -->
 				<module>tests</module>
-				<!-- Definition of the Eclipse platform, the products and the update sites -->
+				<!-- Definition of the Eclipse platform, the products and the update 
+					sites -->
 				<module>releng</module>
 				<!-- Documentation of SARL -->
 				<module>docs</module>

@@ -130,8 +130,7 @@ describe "General FAQ on SARL" {
 			 * A part of the grammar of SARL is inherited from the
 			 * [Xbase partial programming language](https://wiki.eclipse.org/Xbase),
 			 * provided by the [Xtext framework](http://www.eclipse.org/Xtext).
-			 * It provides statements and rules that are close to
-			 * object-oriented languages.
+			 * It provides statements and rules that correspond to object-oriented languages.
 			 * 
 			 * @filter(.*) 
 			 */
