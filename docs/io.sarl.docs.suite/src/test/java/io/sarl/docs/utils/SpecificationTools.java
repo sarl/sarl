@@ -87,6 +87,23 @@ public final class SpecificationTools {
 	private SpecificationTools() {
 		//
 	}
+	
+	/** Print the given message if the debug flag is set.
+	 * The debug flags are the system property <code>jnario.debug</code>,
+	 * and the environment variable <code>JNARIO_DEBUG</code>.
+	 *
+	 * @param message - the message to print.
+	 */
+	public static void printDebug(Object... message) {
+		if (Boolean.getBoolean("jnario.debug") || Boolean.parseBoolean(System.getenv("JNARIO_DEBUG"))) { //$NON-NLS-1$//$NON-NLS-2$
+			for (Object m : message) {
+				if (m != null) {
+					System.err.print(m.toString());
+				}
+			}
+			System.err.println();
+		}
+	}
 
 	/** Ensure that the given caller specification has a valid link
 	 * to another Jnario specification with the given name.
@@ -837,25 +854,32 @@ public final class SpecificationTools {
 
 	/** Ensure that the version of the current Java specification is in
 	 * the range given by the minVersion (inclusive) and maxVersion (exclusive).
-	 * If the maxVersion is not given and minVersion is <code>a.b.c</code>,
-	 * then maxVersion is <code>a.b+1.0</code>.
+	 * If the maxVersion is not given or is not a properly formated version
+	 * number, then all versions after the minVersion are valid.
 	 *
 	 * @param minVersion - the minimal version.
 	 * @param maxVersion - the maximal version.
 	 * @return the validation status.
 	 */
 	public static boolean should_beJavaRange(String minVersion, String maxVersion) {
-		if (minVersion != null) {
+		Version jreV = parseJavaVersion(System.getProperty("java.version"), null); //$NON-NLS-1$
+		printDebug("Current Java version: ", jreV); //$NON-NLS-1$
+		if (jreV != null && minVersion != null) {
 			Version minV = parseJavaVersion(minVersion, null);
+			printDebug("Min version:", minV); //$NON-NLS-1$
 			if (minV != null) {
-				Version maxV = parseJavaVersion(maxVersion, null);
+				Version maxV = null;
+				if (maxVersion != null) {
+					maxV = parseJavaVersion(maxVersion, null);
+				}
 				if (maxV == null) {
-					maxV = new Version(minV.getMajor(), minV.getMinor() + 1, 0);
+					printDebug("Max version: none"); //$NON-NLS-1$
+					printDebug(minV, "<=", jreV); //$NON-NLS-1$
+					return jreV.compareTo(minV) >= 0;
 				}
-				Version jreV = parseJavaVersion(System.getProperty("java.version"), null); //$NON-NLS-1$
-				if (jreV != null) {
-					return jreV.compareTo(minV) >= 0 && jreV.compareTo(maxV) < 0;
-				}
+				printDebug("Max version:", maxV); //$NON-NLS-1$
+				printDebug(minV, "<=", jreV, "<", maxV); //$NON-NLS-1$//$NON-NLS-2$
+				return jreV.compareTo(minV) >= 0 && jreV.compareTo(maxV) < 0;
 			}
 		}
 		return false;
