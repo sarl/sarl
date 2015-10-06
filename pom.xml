@@ -43,8 +43,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- JRE Configuration -->
 		<compiler.level>1.7</compiler.level>
-		<!-- Path to the root directory -->
-		<main.basedir>${project.basedir}</main.basedir>
 		<!-- String to put after the copyright sign -->
 		<copyrighters>Sebastian RODRIGUEZ, Nicolas GAUD, Stephane GALLAND</copyrighters>
 		<!-- URL of the Maven repositories of SARL (use in POM and documentation) -->
@@ -94,7 +92,6 @@
 		<pluginManagement>
 			<!-- The other plugin configurations are inside the submodules for avoiding 
 				to propagate the information outside a specific module -->
-
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -150,9 +147,9 @@
 				</plugin>
 
 				<plugin>
-					<groupId>org.codehaus.gmaven</groupId>
-					<artifactId>groovy-maven-plugin</artifactId>
-					<version>2.0</version>
+					<groupId>org.codehaus.gmavenplus</groupId>
+					<artifactId>gmavenplus-plugin</artifactId>
+					<version>1.5</version>
 				</plugin>
 
 				<plugin>
@@ -179,9 +176,14 @@
 					<version>2.16</version>
 					<dependencies>
 						<dependency>
+							<groupId>io.sarl</groupId>
+							<artifactId>io.sarl.checkstyle</artifactId>
+							<version>${project.version}</version>
+						</dependency>
+						<dependency>
 							<groupId>com.puppycrawl.tools</groupId>
 							<artifactId>checkstyle</artifactId>
-							<version>6.11.1</version>
+							<version>6.11.2</version>
 						</dependency>
 					</dependencies>
 					<executions>
@@ -193,9 +195,9 @@
 						</execution>
 					</executions>
 					<configuration>
-						<configLocation>${main.basedir}/checkstyle/checks.xml</configLocation>
-						<suppressionsLocation>${main.basedir}/checkstyle/suppressions.xml</suppressionsLocation>
-						<headerLocation>${main.basedir}/checkstyle/class_header.txt</headerLocation>
+						<configLocation>io/sarl/checkstyle/checks.xml</configLocation>
+						<suppressionsLocation>io/sarl/checkstyle/suppressions.xml</suppressionsLocation>
+						<headerLocation>io/sarl/checkstyle/class_header.txt</headerLocation>
 						<enableRSS>true</enableRSS>
 						<linkXRef>true</linkXRef>
 						<consoleOutput>true</consoleOutput>
@@ -205,7 +207,7 @@
 						<includeTestSourceDirectory>false</includeTestSourceDirectory>
 						<includeTestResources>false</includeTestResources>
 						<enableRulesSummary>true</enableRulesSummary>
-						<propertyExpansion>main.basedir=${main.basedir}</propertyExpansion>
+						<propertyExpansion>mainbasedir=${mainbasedir}</propertyExpansion>
 					</configuration>
 				</plugin>
 
@@ -262,15 +264,15 @@
 								</pluginExecution>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>org.codehaus.gmaven</groupId>
-										<artifactId>groovy-maven-plugin</artifactId>
-										<versionRange>[2.0,)</versionRange>
+										<groupId>org.codehaus.gmavenplus</groupId>
+										<artifactId>gmavenplus-plugin</artifactId>
+										<version>[1.5,)</version>
 										<goals>
 											<goal>execute</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<execute></execute>
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -294,6 +296,87 @@
 		</pluginManagement>
 
 		<plugins>
+			<!-- Compute additional version numbers for the SARL (specification, release, 
+				buildId) -->
+			<plugin>
+				<groupId>org.codehaus.gmavenplus</groupId>
+				<artifactId>gmavenplus-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>compute-sarl-properties</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<scripts>
+						<script><![CDATA[
+							def now = session.getStartTime();
+							//************************
+							// Detect root directory
+							//
+							def currentDirectory = project.basedir;
+							def previousDirectory = null;
+				            def fileObj = new File(currentDirectory, "pom.xml");
+							while (fileObj.isFile()) {
+								previousDirectory = currentDirectory;
+								currentDirectory = fileObj.getParent();
+								currentDirectory = new File(currentDirectory).getParent();
+					            fileObj = new File(currentDirectory, "pom.xml");
+						    }
+						    if (previousDirectory == null || !(new File(previousDirectory, "pom.xml").isFile())) {
+						    	throw new Exception("Unable to detect root directory");
+						    }
+						    project.properties.mainbasedir = previousDirectory;
+						    println("\tset mainbasedir to: " + project.properties.mainbasedir);
+							//************************
+							// Bug in Jenkins/Hudson
+							//
+							// The buildId property is not correctly set since
+							// "maven.build.timestamp" is skipped by Jenkins/Hudson.
+							//
+							if (project.properties.buildId == "\${maven.build.timestamp}"
+							    || project.properties.buildId == "\$maven.build.timestamp") {
+								project.properties.buildId = (new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(now);
+								println("\tset buildId to: " + project.properties.buildId + " (reset for Jenkins/Hudson)");
+							} else {
+								println("\tset buildId to: " + project.properties.buildId);
+							}
+							//************************
+							// Compute version and snapshot tag
+							//
+							snapshotTag = "";
+							if (project.version.endsWith(snapshotTag)) {
+								len = project.version.size() - snapshotTag.size();
+								version = project.version.substring(0, len);
+							} else {
+								version = project.version;
+							}
+							versionFields = version.split("\\.");
+							//************************
+							// Set SARL properties
+							//
+							project.properties.sarlspecificationreleaseversion = versionFields[0] + "." + versionFields[1];
+							project.properties.sarlreleaseversion = project.properties.sarlspecificationreleaseversion + "." + versionFields[2];
+							project.properties.sarlspecificationreleasedate = (new java.text.SimpleDateFormat("yyyy-MM-dd")).format(now);
+							println("\tset sarlspecificationreleaseversion to: " + project.properties.sarlspecificationreleaseversion);
+							println("\tset sarlreleaseversion to: " + project.properties.sarlreleaseversion);
+							println("\tset sarlspecificationreleasedate to: " + project.properties.sarlspecificationreleasedate);
+						]]></script>
+					</scripts>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.groovy</groupId>
+						<artifactId>groovy-all-minimal</artifactId>
+						<version>1.5.8</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+
 			<!-- Automatic creation of the Jar archive with the source code inside. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -331,13 +414,6 @@
 										<include>NOTICE</include>
 									</includes>
 								</resource>
-								<!-- <resource> -->
-								<!-- <directory>${main.basedir}/licenses</directory> -->
-								<!-- <filtering>false</filtering> -->
-								<!-- <includes> -->
-								<!-- <include>LICENSE</include> -->
-								<!-- </includes> -->
-								<!-- </resource> -->
 							</resources>
 						</configuration>
 					</execution>
@@ -356,10 +432,10 @@
 						</goals>
 						<configuration>
 							<generateChildNotices>true</generateChildNotices>
-							<noticeTemplate>${main.basedir}/licenses/NOTICE.template</noticeTemplate>
+							<noticeTemplate>${mainbasedir}/licenses/NOTICE.template</noticeTemplate>
 							<licenseMapping>
-								<param>${main.basedir}/licenses/license-mappings-sarl.xml</param>
-								<param>${main.basedir}/licenses/license-mappings.xml</param>
+								<param>${mainbasedir}/licenses/license-mappings-sarl.xml</param>
+								<param>${mainbasedir}/licenses/license-mappings.xml</param>
 							</licenseMapping>
 						</configuration>
 					</execution>
@@ -388,24 +464,6 @@
 				</executions>
 			</plugin>
 
-			<!-- Compute additional version numbers for the SARL (specification, release, 
-				buildId) -->
-			<plugin>
-				<groupId>org.codehaus.gmaven</groupId>
-				<artifactId>groovy-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>compute-sarl-version-properties</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>execute</goal>
-						</goals>
-						<configuration>
-							<source>${project.basedir}/scripts/sarl_property_setting.groovy</source>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 
@@ -420,6 +478,8 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
+				<!-- Check-style configuration -->
+				<module>checkstyle</module>
 				<!-- Parent configuration for tycho modules -->
 				<module>tycho-parent</module>
 				<!-- Eclipse features for SARL (SDK and IDE contributions) -->

@@ -12,11 +12,6 @@
 	<packaging>eclipse-plugin</packaging>
 	<name>UI Contributions for SARL Language</name>
 
-	<properties>
-		<!-- needed for checkstyle/findbugs and other plugins -->
-		<main.basedir>${project.basedir}/../..</main.basedir>
-	</properties>
-
 	<build>
 		<resources>
 			<resource>

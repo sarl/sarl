@@ -10,11 +10,6 @@
 	<packaging>eclipse-plugin</packaging>
 	<name>SDK Core Library</name>
 
-	<properties>
-		<!-- needed for checkstyle/findbugs and other plugins -->
-		<main.basedir>${project.basedir}/../..</main.basedir>
-	</properties>
-
 	<build>
 		<resources>
 			<resource>

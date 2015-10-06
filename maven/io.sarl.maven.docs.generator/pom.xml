@@ -13,11 +13,6 @@
 	<name>Documentation Generator</name>
 	<description>Provides Maven tools for generating the SARL documentation.</description>
 
-	<properties>
-		<!-- needed for checkstyle/findbugs and other plugins-->
-		<main.basedir>${project.basedir}/../..</main.basedir>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.jnario</groupId>

@@ -10,18 +10,8 @@
 	<!-- Default charset (Google). -->
 	<property name="charset" value="UTF-8" />
 
-	<!-- Extensions of the files to check (Google). -->
-	<property name="fileExtensions" value="java, properties, xml" />
-
 	<!-- Default severity is error. -->
 	<property name="severity" value="error" />
-
-	<!-- Activation here (in addition to the pom.xml) is needed for IntelliJ 
-		CheckstyleIDEA plugin. -->
-	<module name="SuppressionFilter">
-		<property name="file"
-			value="${main.basedir}/checkstyle/suppressions.xml" />
-	</module>
 
 	<!-- Enable suppression of file contents using //CHECKSTYLE:[ON|OFF] comments. -->
 	<module name="SuppressionCommentFilter" />
@@ -47,8 +37,7 @@
 
 	<!-- Checks for Headers. -->
 	<module name="Header">
-		<property name="headerFile"
-			value="${main.basedir}/checkstyle/class_header.txt" />
+		<property name="headerFile" value="${mainbasedir}/checkstyle/src/main/resources/io/sarl/checkstyle/class_header.txt" />
 		<property name="fileExtensions" value="java,sarl,xtend,xtext,suite,spec" />
 	</module>
 
@@ -127,9 +116,7 @@
 		</module>
 
 		<!-- Ensure every paragraphs is followed by a blank line. -->
-		<module name="JavadocParagraph">
-			<property name="tagImmediatelyBeforeFirstWord" value="false" />
-		</module>
+		<module name="JavadocParagraph"/>
 
 		<!-- Check the order of the @ clauses -->
 		<module name="AtclauseOrder">
@@ -546,11 +533,6 @@
 
 		<!-- Ensure a package is declared for every type. -->
 		<module name="PackageDeclaration" />
-
-		<!-- Avoid redundant throws. -->
-		<module name="RedundantThrows">
-			<property name="allowUnchecked" value="true" />
-		</module>
 
 		<!-- Avoid unnecessray too complex boolean expressions. -->
 		<module name="SimplifyBooleanExpression" />

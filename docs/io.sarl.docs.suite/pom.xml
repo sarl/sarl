@@ -8,15 +8,13 @@
 		<groupId>io.sarl</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	
+
 	<groupId>io.sarl.docs</groupId>
 	<artifactId>io.sarl.docs.suite</artifactId>
 	<packaging>jar</packaging>
-	<name>Documentation Suite</name>
+	<name>Documentation with Jnario</name>
 
 	<properties>
-		<!-- needed for checkstyle/findbugs and other plugins -->
-		<main.basedir>${project.basedir}/../..</main.basedir>
 		<!-- URL of the maven repository of Janus -->
 		<janus.maven.repository.url>http://maven.janusproject.io</janus.maven.repository.url>
 	</properties>
@@ -141,8 +139,8 @@
 
 			<!-- Compute the target folder -->
 			<plugin>
-				<groupId>org.codehaus.gmaven</groupId>
-				<artifactId>groovy-maven-plugin</artifactId>
+				<groupId>org.codehaus.gmavenplus</groupId>
+				<artifactId>gmavenplus-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>add-documentation-dynamic-properties</id>
@@ -150,26 +148,35 @@
 						<goals>
 							<goal>execute</goal>
 						</goals>
-						<configuration>
-							<source>
-								snapshotTag = ""
-								endOfVersion = ""
-								if (project.version.endsWith(snapshotTag)) {
-									len = project.version.size() - snapshotTag.size()
-									version = project.version.substring(0,len)
-									project.properties.sarlspecificationreleasestatus = "Draft Release"
-									endOfVersion = snapshotTag
-								}
-								else {
-									version = project.version
-									project.properties.sarlspecificationreleasestatus = "Final Release"
-								}
-								versionFields = version.split("\\.")
-								project.properties.janusversion = "2."+versionFields[0]+"."+versionFields[1]+".0"+endOfVersion
-							</source>
-						</configuration>
 					</execution>
 				</executions>
+				<configuration>
+					<scripts>
+						<script><![CDATA[
+							snapshotTag = ""
+							endOfVersion = ""
+							if (project.version.endsWith(snapshotTag)) {
+								len = project.version.size() - snapshotTag.size()
+								version = project.version.substring(0,len)
+								project.properties.sarlspecificationreleasestatus = "Draft Release"
+								endOfVersion = snapshotTag
+							}
+							else {
+								version = project.version
+								project.properties.sarlspecificationreleasestatus = "Final Release"
+							}
+							versionFields = version.split("\\.")
+							project.properties.janusversion = "2."+versionFields[0]+"."+versionFields[1]+".0"+endOfVersion
+						]]></script>
+					</scripts>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.groovy</groupId>
+						<artifactId>groovy-all-minimal</artifactId>
+						<version>1.5.8</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 
 			<plugin>
@@ -349,9 +356,9 @@
 						<sourceDirectory>${project.basedir}/target/generated-test-sources/reports-jnario</sourceDirectory>
 					</configuration>
 				</plugin>
-				
-				<!-- This plugin's configuration is used to store Eclipse m2e settings only.
-				     It has no influence on the Maven build itself. -->
+
+				<!-- This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>

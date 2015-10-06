@@ -13,8 +13,6 @@
 	<packaging>maven-plugin</packaging>
 
 	<properties>
-		<!-- needed for checkstyle/findbugs and other plugins -->
-		<main.basedir>${project.basedir}/../..</main.basedir>
 		<!-- Needed for replacements in config.properties -->
 		<dependency.xtext-compiler.groupId>org.eclipse.xtext</dependency.xtext-compiler.groupId>
 		<dependency.xtext-compiler.artifactId>xtext-maven-plugin</dependency.xtext-compiler.artifactId>
