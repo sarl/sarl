@@ -19,31 +19,25 @@
  * limitations under the License.
  */
 
-package io.sarl.util;
+package io.sarl.lang.scoping.batch;
+
+import com.google.common.annotations.GwtCompatible;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Static methods to convert different time units to milliseconds.
  *
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated see SARLTimeExtensions
  */
-@Deprecated
-public final class TimeExtensions {
+@GwtCompatible
+public final class SARLTimeExtensions {
 
-	private static final long MILLIS_IN_SECOND = 1000;
-
-	private static final long MILLIS_IN_MINUTE = 60 * MILLIS_IN_SECOND;
-
-	private static final long MILLIS_IN_HOUR = 60 * MILLIS_IN_MINUTE;
-
-	private static final long MILLIS_IN_DAY = 24 * MILLIS_IN_HOUR;
-
-	private static final long MILLIS_IN_WEEK = 7 * MILLIS_IN_DAY;
-
-	private TimeExtensions() {
+	private SARLTimeExtensions() {
 		//
 	}
 
@@ -52,6 +46,8 @@ public final class TimeExtensions {
 	 * @param milis - number of milliseconds to convert.
 	 * @return the number of milliseconds in <code>milis</code>.
 	 */
+	@Pure
+	@Inline(value = "$1")
 	public static long milliseconds(Integer milis) {
 		return milis;
 	}
@@ -61,8 +57,11 @@ public final class TimeExtensions {
 	 * @param secs - number of seconds to convert.
 	 * @return the number of milliseconds in seconds.
 	 */
+	@Pure
+	@Inline(value = "$1 * TimeExtensionsConstants.MILLIS_IN_SECOND",
+			imported = { TimeExtensionsConstants.class })
 	public static long seconds(Integer secs) {
-		return secs * MILLIS_IN_SECOND;
+		return secs * TimeExtensionsConstants.MILLIS_IN_SECOND;
 	}
 
 	/** Convert minutes to milliseconds.
@@ -70,8 +69,11 @@ public final class TimeExtensions {
 	 * @param mins - number of minutes to convert.
 	 * @return the number of milliseconds in <code>mins</code>
 	 */
+	@Pure
+	@Inline(value = "$1 * TimeExtensionsConstants.MILLIS_IN_MINUTE",
+			imported = { TimeExtensionsConstants.class })
 	public static long minutes(Integer mins) {
-		return mins * MILLIS_IN_MINUTE;
+		return mins * TimeExtensionsConstants.MILLIS_IN_MINUTE;
 	}
 
 	/** Convert hours to milliseconds.
@@ -79,8 +81,11 @@ public final class TimeExtensions {
 	 * @param hours - number of hours to convert.
 	 * @return the number of milliseconds in <code>hours</code>
 	 */
+	@Pure
+	@Inline(value = "$1 * TimeExtensionsConstants.MILLIS_IN_HOUR",
+			imported = { TimeExtensionsConstants.class })
 	public static long hours(Integer hours) {
-		return hours * MILLIS_IN_HOUR;
+		return hours * TimeExtensionsConstants.MILLIS_IN_HOUR;
 	}
 
 	/** Convert days to milliseconds.
@@ -88,8 +93,11 @@ public final class TimeExtensions {
 	 * @param days - number of days to convert.
 	 * @return the number of days in <code>days</code>
 	 */
+	@Pure
+	@Inline(value = "$1 * TimeExtensionsConstants.MILLIS_IN_DAY",
+			imported = { TimeExtensionsConstants.class })
 	public static long days(Integer days) {
-		return days * MILLIS_IN_DAY;
+		return days * TimeExtensionsConstants.MILLIS_IN_DAY;
 	}
 
 	/** Convert weeks to milliseconds.
@@ -97,8 +105,48 @@ public final class TimeExtensions {
 	 * @param weeks - number of weeks to convert.
 	 * @return the number of milliseconds in <code>weeks</code>
 	 */
+	@Pure
+	@Inline(value = "$1 * TimeExtensionsConstants.MILLIS_IN_WEEK",
+			imported = { TimeExtensionsConstants.class })
 	public static long weeks(Integer weeks) {
-		return weeks * MILLIS_IN_WEEK;
+		return weeks * TimeExtensionsConstants.MILLIS_IN_WEEK;
+	}
+
+	/**
+	 * Constants for the SARL time extensions.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	@GwtCompatible
+	public final class TimeExtensionsConstants {
+
+		/** Number of millis in a second.
+		 */
+		public static final long MILLIS_IN_SECOND = 1000;
+
+		/** Number of millis in a minute.
+		 */
+		public static final long MILLIS_IN_MINUTE = 60 * MILLIS_IN_SECOND;
+
+		/** Number of millis in an hour.
+		 */
+		public static final long MILLIS_IN_HOUR = 60 * MILLIS_IN_MINUTE;
+
+		/** Number of millis in a day.
+		 */
+		public static final long MILLIS_IN_DAY = 24 * MILLIS_IN_HOUR;
+
+		/** Number of millis in a week.
+		 */
+		public static final long MILLIS_IN_WEEK = 7 * MILLIS_IN_DAY;
+
+		private TimeExtensionsConstants() {
+			//
+		}
+
 	}
 
 }
