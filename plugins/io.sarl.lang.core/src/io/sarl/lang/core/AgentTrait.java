@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.core;
 
 import java.lang.ref.WeakReference;
@@ -35,16 +36,17 @@ abstract class AgentTrait {
 
 	private WeakReference<Agent> agentRef;
 
-	/**
+	/** Construct a trait to the given agent.
+	 *
 	 * @param agent - the owner of this trait.
 	 */
-	public AgentTrait(Agent agent) {
+	AgentTrait(Agent agent) {
 		this.agentRef = new WeakReference<>(agent);
 	}
 
-	/**
+	/** Construct a trait.
 	 */
-	public AgentTrait() {
+	AgentTrait() {
 		this.agentRef = new WeakReference<>(null);
 	}
 
@@ -88,7 +90,7 @@ abstract class AgentTrait {
 
 	/** Replies the skill corresponding to the given capacity.
 	 *
-	 * The return may never be <code>null</code>. If not capacity
+	 * <p>The return may never be <code>null</code>. If not capacity
 	 * was set, the exception {@link UnimplementedCapacityException}
 	 * is thrown.
 	 *

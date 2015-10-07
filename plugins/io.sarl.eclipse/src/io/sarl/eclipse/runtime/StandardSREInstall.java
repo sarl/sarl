@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.runtime;
 
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.util.Utilities;
+package io.sarl.eclipse.runtime;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,11 +50,14 @@ import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Utilities;
+
 
 /**
  * Standard SRE install.
- * <p>
- * The standard SRE install assumes: <ul>
+ *
+ * <p>The standard SRE install assumes: <ul>
  * <li>The SRE is based on a single JAR file.</li>
  * <li>The main class of the SRE is defined in the Manifest field <code>"Main-Class"</code>.</li>
  * <li>The Manifest contains a section named <code>"SARL-Runtime-Environment"</code>. This
@@ -89,20 +90,31 @@ import com.google.common.collect.Maps;
 public class StandardSREInstall extends AbstractSREInstall {
 
 	private IPath jarFile;
+
 	private String vmArguments = Utilities.EMPTY_STRING;
+
 	private String programArguments = Utilities.EMPTY_STRING;
 
 	private String cliLogoOff;
+
 	private String cliLogoOn;
+
 	private String cliShowInfo;
+
 	private String cliHideInfo;
+
 	private String cliDefaultContextID;
+
 	private String cliRandomContextID;
+
 	private String cliBootAgentContextID;
+
 	private String cliSreOffline;
+
 	private String cliNoMoreOption;
 
 	private String manifestMainClass;
+
 	private String manifestName;
 
 	private transient SoftReference<Map<String, String>> optionBuffer;
@@ -164,16 +176,16 @@ public class StandardSREInstall extends AbstractSREInstall {
 
 	@Override
 	public String getName() {
-		String n = super.getName();
-		if (Strings.isNullOrEmpty(n)) {
-			IPath p = getJarFile();
-			if (p != null) {
-				n = p.removeFileExtension().lastSegment();
+		String nam = super.getName();
+		if (Strings.isNullOrEmpty(nam)) {
+			IPath path = getJarFile();
+			if (path != null) {
+				nam = path.removeFileExtension().lastSegment();
 			} else {
-				n = getId();
+				nam = getId();
 			}
 		}
-		return n;
+		return nam;
 	}
 
 	@Override
@@ -182,6 +194,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:cyclomaticomplexity")
 	protected void resolveDirtyFields(boolean forceSettings) {
 		if (this.jarFile != null) {
 			try (JarFile jFile = new JarFile(this.jarFile.toFile())) {
@@ -283,8 +296,8 @@ public class StandardSREInstall extends AbstractSREInstall {
 					String classPathStr = manifest.getMainAttributes().getValue(SREConstants.MANIFEST_CLASS_PATH);
 					if (!Strings.isNullOrEmpty(classPathStr)) {
 						for (String cpElement : classPathStr.split(Pattern.quote(":"))) { //$NON-NLS-1$
-							IPath p = Path.fromPortableString(cpElement);
-							classPath.add(new LibraryLocation(p, Path.EMPTY, Path.EMPTY));
+							IPath path = Path.fromPortableString(cpElement);
+							classPath.add(new LibraryLocation(path, Path.EMPTY, Path.EMPTY));
 						}
 					}
 					LibraryLocation[] locations = classPath.toArray(new LibraryLocation[classPath.size()]);
@@ -340,8 +353,6 @@ public class StandardSREInstall extends AbstractSREInstall {
 		return super.getValidity(ignoreCauses);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void getAsXML(Document document, Element element) throws IOException {
 		if (isDirty()) {
@@ -376,8 +387,6 @@ public class StandardSREInstall extends AbstractSREInstall {
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void setFromXML(Element element) throws IOException {
 		IPath path = parsePath(element.getAttribute(SREConstants.XML_LIBRARY_PATH), null);
@@ -448,9 +457,9 @@ public class StandardSREInstall extends AbstractSREInstall {
 	private static IPath parsePath(String path, IPath defaultPath) {
 		if (!Strings.isNullOrEmpty(path)) {
 			try {
-				IPath p = Path.fromPortableString(path);
-				if (p != null) {
-					return p;
+				IPath pathObject = Path.fromPortableString(path);
+				if (pathObject != null) {
+					return pathObject;
 				}
 			} catch (Throwable _) {
 				//

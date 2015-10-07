@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.runtime;
 
-import io.sarl.eclipse.SARLEclipsePlugin;
+package io.sarl.eclipse.runtime;
 
 import java.util.EventListener;
 
 import org.eclipse.jdt.launching.PropertyChangeEvent;
+
+import io.sarl.eclipse.SARLEclipsePlugin;
 
 /**
  * A SRE install changed listener is notified when
@@ -100,9 +101,9 @@ public interface ISREInstallChangedListener extends EventListener {
 	 * has changed.
 	 *
 	 * @param previous - the SRE install that was previously assigned
-	 * 	to the workspace, possibly <code>null</code>
+	 * 	   to the workspace, possibly <code>null</code>
 	 * @param current - the SRE install that is currently assigned to the
-	 * 	workspace, possibly <code>null</code>
+	 * 	   workspace, possibly <code>null</code>
 	 */
 	void defaultSREInstallChanged(ISREInstall previous, ISREInstall current);
 
@@ -110,7 +111,7 @@ public interface ISREInstallChangedListener extends EventListener {
 	 * Notification that a property of a SRE install has changed.
 	 *
 	 * @param event event describing the change. The SRE that has changed
-	 * 	is the source object associated with the event.
+	 * 	   is the source object associated with the event.
 	 */
 	void sreChanged(PropertyChangeEvent event);
 

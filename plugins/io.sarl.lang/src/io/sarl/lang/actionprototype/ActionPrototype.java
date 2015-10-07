@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.actionprototype;
 
 import java.io.Serializable;
@@ -35,6 +36,7 @@ public class ActionPrototype implements Cloneable, Serializable, Comparable<Acti
 	private static final long serialVersionUID = -3797441140684942274L;
 
 	private String function;
+
 	private ActionParameterTypes signature;
 
 	/**
@@ -89,10 +91,10 @@ public class ActionPrototype implements Cloneable, Serializable, Comparable<Acti
 
 	@Override
 	public int hashCode() {
-		int h = 1;
-		h = 31 * h + this.function.hashCode();
-		h = 31 * h + this.signature.hashCode();
-		return h;
+		int hash = 1;
+		hash = 31 * hash + this.function.hashCode();
+		hash = 31 * hash + this.signature.hashCode();
+		return hash;
 	}
 
 	@Override
@@ -101,15 +103,15 @@ public class ActionPrototype implements Cloneable, Serializable, Comparable<Acti
 	}
 
 	@Override
-	public int compareTo(ActionPrototype o) {
-		if (o == null) {
+	public int compareTo(ActionPrototype otherProto) {
+		if (otherProto == null) {
 			return Integer.MAX_VALUE;
 		}
-		int cmp = this.function.compareTo(o.function);
+		int cmp = this.function.compareTo(otherProto.function);
 		if (cmp != 0) {
 			return cmp;
 		}
-		return this.signature.compareTo(o.signature);
+		return this.signature.compareTo(otherProto.signature);
 	}
 
 	/** Replies the string that permits to identify the action prototype according to the Java variable name.

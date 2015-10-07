@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.quickfix.acceptors;
 
-import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
+package io.sarl.lang.ui.quickfix.acceptors;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +29,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
+
+import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 
 /**
  * A Semantic modificaton that contains multiple modifications that are selecting
@@ -80,7 +81,7 @@ public final class MultiModification extends SARLSemanticModification {
 		for (Entry<Class<?>, Class<? extends SARLSemanticModification>> entry : this.modificationTypes.entrySet()) {
 			if (entry.getKey().isInstance(element)) {
 				if (deeperType == null
-					|| deeperType.isAssignableFrom(entry.getKey())) {
+						|| deeperType.isAssignableFrom(entry.getKey())) {
 					deeperType = entry.getKey();
 					selected = entry.getValue();
 				}

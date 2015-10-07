@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.wizards.newproject;
 
-import io.sarl.eclipse.SARLEclipseConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
-import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.util.Utilities;
-import io.sarl.lang.ui.preferences.SARLPreferences;
+package io.sarl.eclipse.wizards.newproject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
@@ -63,6 +57,13 @@ import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.util.Utilities;
+import io.sarl.lang.ui.preferences.SARLPreferences;
+
 /**
  * SARL new project wizard.
  * Most part of the code of this class comes from {@link JavaProjectWizard}.
@@ -76,6 +77,7 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 public class NewSarlProjectWizard extends NewElementWizard implements IExecutableExtension {
 
 	private MainProjectWizardPage fFirstPage;
+
 	private BuildSettingWizardPage fSecondPage;
 
 	private IConfigurationElement fConfigElement;
@@ -260,10 +262,10 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	}
 
 	@Override
-	protected void handleFinishException(Shell shell, InvocationTargetException e) {
+	protected void handleFinishException(Shell shell, InvocationTargetException exception) {
 		String title = NewWizardMessages.JavaProjectWizard_op_error_title;
 		String message = NewWizardMessages.JavaProjectWizard_op_error_create_message;
-		ExceptionHandler.handle(e, getShell(), title, message);
+		ExceptionHandler.handle(exception, getShell(), title, message);
 	}
 
 	@Override

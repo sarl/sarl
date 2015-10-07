@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,17 +18,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.ui.outline;
 
-import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
-import io.sarl.lang.sarl.SarlAction;
-import io.sarl.lang.sarl.SarlBehaviorUnit;
-import io.sarl.lang.sarl.SarlCapacityUses;
-import io.sarl.lang.sarl.SarlConstructor;
-import io.sarl.lang.sarl.SarlField;
-import io.sarl.lang.sarl.SarlRequiredCapacity;
-import io.sarl.lang.sarl.SarlScript;
-
+import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.xtend.core.xtend.XtendMember;
@@ -45,8 +39,14 @@ import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
 import org.eclipse.xtext.xbase.annotations.ui.outline.XbaseWithAnnotationsOutlineTreeProvider;
 
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
+import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlField;
+import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlScript;
 
 /**
  * Customization of the default outline structure.
@@ -185,25 +185,25 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 			IOutlineNode parentNode,
 			EObject modelElement, Image image, Object text,
 			boolean isLeaf) {
-		SARLEObjectNode eObjectNode = new SARLEObjectNode(modelElement, parentNode, image, text, isLeaf);
-		configureNode(parentNode, modelElement, eObjectNode);
-		return eObjectNode;
+		SARLEObjectNode objectNode = new SARLEObjectNode(modelElement, parentNode, image, text, isLeaf);
+		configureNode(parentNode, modelElement, objectNode);
+		return objectNode;
 	}
 
-	private void configureNode(IOutlineNode parentNode, EObject modelElement, SARLEObjectNode eObjectNode) {
+	private void configureNode(IOutlineNode parentNode, EObject modelElement, SARLEObjectNode objectNode) {
 		EObject primarySourceElement = this.associations.getPrimarySourceElement(modelElement);
 		ICompositeNode parserNode = NodeModelUtils.getNode(
 				(primarySourceElement == null) ? modelElement : primarySourceElement);
 
 		if (parserNode != null) {
-			eObjectNode.setTextRegion(parserNode.getTextRegion());
+			objectNode.setTextRegion(parserNode.getTextRegion());
 		}
 
 		if (isLocalElement(parentNode, modelElement)) {
-			eObjectNode.setShortTextRegion(this.locationInFileProvider.getSignificantTextRegion(modelElement));
+			objectNode.setShortTextRegion(this.locationInFileProvider.getSignificantTextRegion(modelElement));
 		}
 
-		eObjectNode.setStatic(isStatic(modelElement));
+		objectNode.setStatic(isStatic(modelElement));
 	}
 
 	private static boolean isStatic(EObject element) {

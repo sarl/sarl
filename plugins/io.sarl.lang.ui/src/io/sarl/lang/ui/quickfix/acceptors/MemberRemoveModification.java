@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,15 +18,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.quickfix.acceptors;
 
-import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
+package io.sarl.lang.ui.quickfix.acceptors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
+
+import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 
 /**
  * Remove a member.
@@ -47,7 +48,7 @@ public final class MemberRemoveModification extends SARLSemanticModification {
 		this.type = type;
 	}
 
-	/**
+	/** Construct a modification description.
 	 */
 	public MemberRemoveModification() {
 		this(XtendMember.class);
@@ -55,7 +56,7 @@ public final class MemberRemoveModification extends SARLSemanticModification {
 
 	/** Create the quick fix if needed.
 	 *
-	 * No user data.
+	 * <p>No user data.
 	 *
 	 * @param provider - the quick fix provider.
 	 * @param issue - the issue to fix.
@@ -76,7 +77,7 @@ public final class MemberRemoveModification extends SARLSemanticModification {
 
 	/** Create the quick fix if needed.
 	 *
-	 * No user data.
+	 * <p>No user data.
 	 *
 	 * @param provider - the quick fix provider.
 	 * @param issue - the issue to fix.

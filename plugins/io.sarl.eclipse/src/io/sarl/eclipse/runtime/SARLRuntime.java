@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.eclipse.runtime;
 
 import io.sarl.eclipse.SARLEclipseConfig;
@@ -85,8 +86,8 @@ import com.google.common.base.Strings;
  * the registered SRE types contributed through the
  * extension point with the name {@link SARLEclipseConfig#EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT}.
  * As well, this class provides SRE install change notification.
- * <p>
- * This class was inspired from <code>JavaRuntime</code>.
+ *
+ * <p>This class was inspired from <code>JavaRuntime</code>.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -94,6 +95,7 @@ import com.google.common.base.Strings;
  * @mavenartifactid $ArtifactId$
  * @noinstantiate This class is not intended to be instantiated by clients.
  */
+@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public final class SARLRuntime {
 
 	/**
@@ -107,7 +109,9 @@ public final class SARLRuntime {
 	 * SRE change listeners.
 	 */
 	private static final ListenerList SRE_LISTENERS = new ListenerList();
+
 	private static final Map<String, ISREInstall> ALL_SRE_INSTALLS = new HashMap<>();
+
 	private static Set<String> platformSREInstalls;
 
 	private static String defaultSREId;
@@ -135,7 +139,7 @@ public final class SARLRuntime {
 	/** Change the key used for storing the SARL runtime configuration
 	 * into the preferences.
 	 *
-	 * If the given key is <code>null</code> or empty, the preference key
+	 * <p>If the given key is <code>null</code> or empty, the preference key
 	 * is reset to the {@link #DEFAULT_PREFERENCE_KEY}.
 	 *
 	 * @param key - the new key or <code>null</code>.
@@ -240,7 +244,7 @@ public final class SARLRuntime {
 	 * Return the default SRE set with <code>setDefaultSRE()</code>.
 	 *
 	 * @return	Returns the default SRE. May return <code>null</code> when no default
-	 * 			SRE was set or when the default SRE has been disposed.
+	 *     SRE was set or when the default SRE has been disposed.
 	 */
 	public static ISREInstall getDefaultSREInstall() {
 		ISREInstall install = getSREFromId(getDefaultSREId());
@@ -267,6 +271,7 @@ public final class SARLRuntime {
 	 *        reported and that the operation cannot be cancelled.
 	 * @throws CoreException if trying to set the default SRE install encounters problems
 	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static void setSREInstalls(ISREInstall[] sres, IProgressMonitor monitor) throws CoreException {
 		SubMonitor mon = SubMonitor.convert(monitor,
 				io.sarl.eclipse.runtime.Messages.SARLRuntime_0,
@@ -404,7 +409,7 @@ public final class SARLRuntime {
 	 *
 	 * @param sre - the sre.
 	 * @return <code>true</code> if the SRE was provided through an extension
-	 * point.
+	 *     point.
 	 */
 	public static boolean isPlatformSRE(ISREInstall sre) {
 		if (sre != null) {
@@ -625,6 +630,7 @@ public final class SARLRuntime {
 	 * This method loads installed SREs based an existing user preference
 	 * or old SRE configurations file.
 	 */
+	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	private static String initializePersistedSREs() {
 		//		// FOR DEBUG
 		//		try {
@@ -670,18 +676,17 @@ public final class SARLRuntime {
 								ISREInstall sre = createSRE(
 										element.getAttribute("class"), //$NON-NLS-1$
 										id);
-								if (sre != null) {
-									try {
-										sre.setFromXML(element);
-									} catch (IOException e) {
-										SARLEclipsePlugin.getDefault().log(e);
-									}
-									ALL_SRE_INSTALLS.put(id, sre);
-									if (isPlatform) {
-										platformSREInstalls.add(id);
-									}
-								} else {
+								if (sre == null) {
 									throw new IOException("Invalid XML format of the SRE preferences of " + id); //$NON-NLS-1$
+								}
+								try {
+									sre.setFromXML(element);
+								} catch (IOException e) {
+									SARLEclipsePlugin.getDefault().log(e);
+								}
+								ALL_SRE_INSTALLS.put(id, sre);
+								if (isPlatform) {
+									platformSREInstalls.add(id);
 								}
 							} else {
 								ISREInstall sre = ALL_SRE_INSTALLS.get(id);
@@ -712,11 +717,12 @@ public final class SARLRuntime {
 	 *
 	 * @since 3.2
 	 */
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity","checkstyle:variabledeclarationusagedistance"})
 	private static void initializeSREs() {
 		ISREInstall[] newSREs = new ISREInstall[0];
 		boolean savePrefs = false;
-		String previousDefault = defaultSREId;
 		LOCK.lock();
+		String previousDefault = defaultSREId;
 		try {
 			if (platformSREInstalls == null) {
 				platformSREInstalls = new HashSet<>();
@@ -815,6 +821,7 @@ public final class SARLRuntime {
 	 *
 	 * @throws CoreException if a problem occurs during the reset.
 	 */
+	@SuppressWarnings("checkstyle:variabledeclarationusagedistance")
 	public static void reset() throws CoreException {
 		LOCK.lock();
 		try {

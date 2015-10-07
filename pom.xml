@@ -196,7 +196,6 @@
 					</executions>
 					<configuration>
 						<configLocation>io/sarl/checkstyle/checks.xml</configLocation>
-						<suppressionsLocation>io/sarl/checkstyle/suppressions.xml</suppressionsLocation>
 						<headerLocation>io/sarl/checkstyle/class_header.txt</headerLocation>
 						<enableRSS>true</enableRSS>
 						<linkXRef>true</linkXRef>
@@ -266,13 +265,13 @@
 									<pluginExecutionFilter>
 										<groupId>org.codehaus.gmavenplus</groupId>
 										<artifactId>gmavenplus-plugin</artifactId>
-										<version>[1.5,)</version>
+										<versionRange>[1.5,)</versionRange>
 										<goals>
 											<goal>execute</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<execute></execute>
+										<ignore></ignore>
 									</action>
 								</pluginExecution>
 								<pluginExecution>

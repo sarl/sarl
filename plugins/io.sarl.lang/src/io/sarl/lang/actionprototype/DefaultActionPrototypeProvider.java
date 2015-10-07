@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.actionprototype;
 
-import io.sarl.lang.sarl.SarlFormalParameter;
-import io.sarl.lang.services.SARLGrammarAccess;
-import io.sarl.lang.util.Utils;
+package io.sarl.lang.actionprototype;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,15 +28,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import com.google.common.base.Objects;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 
-import com.google.common.base.Objects;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.services.SARLGrammarAccess;
+import io.sarl.lang.util.Utils;
 
 /**
  * Provides additional function signatures according the semantic
@@ -61,7 +61,7 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 
 	private final Map<String, Map<String, Map<ActionParameterTypes, InferredPrototype>>> prototypes = new TreeMap<>();
 
-	/**
+	/** Construct a provider of action prototypes.
 	 */
 	public DefaultActionPrototypeProvider() {
 		//
@@ -75,8 +75,8 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 			Map<ActionParameterTypes, List<InferredStandardParameter>> signatures,
 			ActionParameterTypes fillSignatureKeyOutputParameter) {
 		boolean isOptional = (params.hasFormalParameterDefaultValue(parameterIndex)
-			&& ((parameterIndex < lastParameterIndex)
-					|| (!fillSignatureKeyOutputParameter.isVarArg())));
+				&& ((parameterIndex < lastParameterIndex)
+				|| (!fillSignatureKeyOutputParameter.isVarArg())));
 		boolean isVarArg = (parameterIndex >= lastParameterIndex && fillSignatureKeyOutputParameter.isVarArg());
 		String name = params.getFormalParameterName(parameterIndex);
 		JvmTypeReference type = params.getFormalParameterTypeReference(parameterIndex, isVarArg);
@@ -116,11 +116,11 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 				ActionParameterTypes key = new ActionParameterTypes(isVarArg, entry.getKey().size() + 1);
 				key.addAll(entry.getKey());
 				key.add(type.getIdentifier());
-				List<InferredStandardParameter> l = entry.getValue();
-				l.add(new InferredStandardParameter(
+				List<InferredStandardParameter> paramList = entry.getValue();
+				paramList.add(new InferredStandardParameter(
 						params.getFormalParameter(parameterIndex),
 						name, type));
-				tmpSignatures.put(key, l);
+				tmpSignatures.put(key, paramList);
 			}
 		}
 		return tmpSignatures;
@@ -196,7 +196,7 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 				key.toActionPrototype(id.getActionName()).toActionId(),
 				parameters, key);
 		List<InferredStandardParameter> op = ip.remove(key);
-		InferredPrototype s = new DefaultInferredPrototype(
+		InferredPrototype proto = new DefaultInferredPrototype(
 				id,
 				parameters,
 				key,
@@ -213,8 +213,8 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 			list = new TreeMap<>();
 			c.put(id.getActionName(), list);
 		}
-		list.put(key, s);
-		return s;
+		list.put(key, proto);
+		return proto;
 	}
 
 	@Override
@@ -254,14 +254,14 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 		if (!parameters.isEmpty()) {
 			int lastIndex = parameters.size() - 1;
 			for (int i = 0; i < lastIndex; ++i) {
-				SarlFormalParameter p = parameters.get(i);
-				if (p.getParameterType() != null) {
-					sig.add(p.getParameterType().getIdentifier());
+				SarlFormalParameter param = parameters.get(i);
+				if (param.getParameterType() != null) {
+					sig.add(param.getParameterType().getIdentifier());
 				}
 			}
-			SarlFormalParameter p = parameters.get(lastIndex);
-			if (p.getParameterType() != null) {
-				JvmTypeReference type = p.getParameterType();
+			SarlFormalParameter param = parameters.get(lastIndex);
+			if (param.getParameterType() != null) {
+				JvmTypeReference type = param.getParameterType();
 				if (isVarargs) {
 					type = this.references.createArrayType(type);
 				}
@@ -347,7 +347,6 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 		}
 		return containerQualifiedName + "#" + id; //$NON-NLS-1$
 	}
-
 
 	@Override
 	public String toJavaArgument(String callerQualifiedName, String id) {

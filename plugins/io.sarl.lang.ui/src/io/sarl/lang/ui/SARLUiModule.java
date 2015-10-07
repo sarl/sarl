@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,19 +18,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.ui;
 
-import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
-import io.sarl.lang.ui.outline.SARLBehaviorUnitOutlineFilter;
-import io.sarl.lang.ui.outline.SARLFieldOutlineFilter;
-import io.sarl.lang.ui.outline.SARLOperationOutlineFilter;
-import io.sarl.lang.ui.outline.SARLOutlineNodeComparator;
-import io.sarl.lang.ui.outline.SARLOutlinePage;
-import io.sarl.lang.ui.preferences.SARLPreferenceStoreInitializer;
-import io.sarl.lang.ui.preferences.SARLValidatorConfigurationBlock;
-import io.sarl.lang.ui.tasks.SarlTaskTagProvider;
-import io.sarl.lang.ui.validation.SARLUIValidator;
-
+import com.google.inject.Binder;
+import com.google.inject.name.Names;
 import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -83,8 +75,16 @@ import org.eclipse.xtext.xbase.file.AbstractFileSystemSupport;
 import org.eclipse.xtext.xbase.ui.contentassist.ImportingTypesProposalProvider;
 import org.eclipse.xtext.xbase.ui.file.EclipseFileSystemSupportImpl;
 
-import com.google.inject.Binder;
-import com.google.inject.name.Names;
+import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
+import io.sarl.lang.ui.outline.SARLBehaviorUnitOutlineFilter;
+import io.sarl.lang.ui.outline.SARLFieldOutlineFilter;
+import io.sarl.lang.ui.outline.SARLOperationOutlineFilter;
+import io.sarl.lang.ui.outline.SARLOutlineNodeComparator;
+import io.sarl.lang.ui.outline.SARLOutlinePage;
+import io.sarl.lang.ui.preferences.SARLPreferenceStoreInitializer;
+import io.sarl.lang.ui.preferences.SARLValidatorConfigurationBlock;
+import io.sarl.lang.ui.tasks.SarlTaskTagProvider;
+import io.sarl.lang.ui.validation.SARLUIValidator;
 
 /**
  * Use this class to register components to be used within the IDE.
@@ -272,10 +272,9 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	@Override
 	public void configureHyperlinkLabelProvider(com.google.inject.Binder binder) {
 		binder.bind(org.eclipse.jface.viewers.ILabelProvider.class)
-		.annotatedWith(org.eclipse.xtext.ui.editor.hyperlinking.HyperlinkLabelProvider.class)
-		.to(HyperLinkingLabelProvider.class);
+				.annotatedWith(org.eclipse.xtext.ui.editor.hyperlinking.HyperlinkLabelProvider.class)
+				.to(HyperLinkingLabelProvider.class);
 	}
-
 
 	@Override
 	public Class<? extends IHyperlinkHelper> bindIHyperlinkHelper() {
@@ -327,8 +326,8 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	@Override
 	public void configureIPreferenceStoreInitializer(Binder binder) {
 		binder.bind(IPreferenceStoreInitializer.class)
-		.annotatedWith(Names.named("RefactoringPreferences")) //$NON-NLS-1$
-		.to(XtendRefactoringPreferences.Initializer.class);
+				.annotatedWith(Names.named("RefactoringPreferences")) //$NON-NLS-1$
+				.to(XtendRefactoringPreferences.Initializer.class);
 	}
 
 	/** Bind the provider of the UI services related to the resources.
@@ -347,6 +346,7 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		return TraceForStorageProvider.class;
 	}
 
+	//FIXME: Complete
 	//	// contributed by org.eclipse.xtext.generator.formatting2.Formatter2Fragment
 	//	public Class<? extends org.eclipse.xtext.ui.editor.formatting.IContentFormatterFactory> bindIContentFormatterFactory() {
 	//		super.bindIContentFormatterFactory()

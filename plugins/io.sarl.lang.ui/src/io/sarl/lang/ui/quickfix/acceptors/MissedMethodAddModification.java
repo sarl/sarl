@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,18 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.quickfix.acceptors;
 
-import io.sarl.lang.annotation.DefaultValue;
-import io.sarl.lang.annotation.DefaultValueSource;
-import io.sarl.lang.annotation.DefaultValueUse;
-import io.sarl.lang.annotation.EarlyExit;
-import io.sarl.lang.annotation.FiredEvent;
-import io.sarl.lang.annotation.Generated;
-import io.sarl.lang.annotation.ImportedCapacityFeature;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
-import io.sarl.lang.util.Utils;
+package io.sarl.lang.ui.quickfix.acceptors;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -37,6 +27,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.google.common.base.Strings;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
@@ -63,12 +54,21 @@ import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XImportSection;
 
-import com.google.common.base.Strings;
+import io.sarl.lang.annotation.DefaultValue;
+import io.sarl.lang.annotation.DefaultValueSource;
+import io.sarl.lang.annotation.DefaultValueUse;
+import io.sarl.lang.annotation.EarlyExit;
+import io.sarl.lang.annotation.FiredEvent;
+import io.sarl.lang.annotation.Generated;
+import io.sarl.lang.annotation.ImportedCapacityFeature;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
+import io.sarl.lang.util.Utils;
 
 /**
  * Add missed methods.
  *
- * FIXME: Use the CodeBuilder provided by Xtend.
+ * <p>FIXME: Use the CodeBuilder provided by Xtend.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -85,7 +85,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 
 	/** Create the quick fix if needed.
 	 *
-	 * User data contains the name of the expected type.
+	 * <p>User data contains the name of the expected type.
 	 *
 	 * @param provider - the quick fix provider.
 	 * @param issue - the issue to fix.
@@ -118,6 +118,8 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 		addMissedImports(script, document, importableTypes);
 	}
 
+	@SuppressWarnings({"checkstyle:methodlength", "checkstyle:cyclomaticcomplexity",
+			"checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
 	private void addMissedFunctions(
 			SarlScript script,
 			XtendTypeDeclaration container, IXtextDocument document,
@@ -148,10 +150,10 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 					appendable.newLine();
 					// Annotations
 					for (JvmAnnotationReference annotation : operation.getAnnotations()) {
-						JvmAnnotationType aType = annotation.getAnnotation();
-						if (!hiddenAnnotations.contains(aType.getQualifiedName())) {
-							appendable.append("@").append(aType.getSimpleName()).newLine(); //$NON-NLS-1$
-							importableTypes.add(aType);
+						JvmAnnotationType annotationType = annotation.getAnnotation();
+						if (!hiddenAnnotations.contains(annotationType.getQualifiedName())) {
+							appendable.append("@").append(annotationType.getSimpleName()).newLine(); //$NON-NLS-1$
+							importableTypes.add(annotationType);
 						}
 					}
 					// Modifiers

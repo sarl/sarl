@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.bugfixes;
 
+import com.google.inject.Singleton;
 import org.eclipse.xtext.Action;
 import org.eclipse.xtext.ParserRule;
 import org.eclipse.xtext.RuleCall;
@@ -31,17 +33,15 @@ import org.eclipse.xtext.serializer.analysis.SerializerPDA.SerializerPDAGetToken
 import org.eclipse.xtext.util.formallang.FollowerFunctionImpl;
 import org.eclipse.xtext.util.formallang.Pda;
 
-import com.google.inject.Singleton;
-
 /** This class is used by the serializer for fixing the
  * <a href="https://github.com/sarl/sarl/issues/277">issue #277</a>.
  *
- * This issue is due to an invalid behavior of the Xtext serializer
+ * <p>This issue is due to an invalid behavior of the Xtext serializer
  * against the interpretation of <code>('a' & 'b')</code>.
  *
- * This class provides a temporary workaround.
+ * <p>This class provides a temporary workaround.
  *
- * FIXME: Remove this class when the Xtext serializer is fixed.
+ * <p>FIXME: Remove this class when the Xtext serializer is fixed.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -51,7 +51,7 @@ import com.google.inject.Singleton;
 @Singleton
 public class SARLContextPDAProvider extends ContextPDAProvider {
 
-	/**
+	/** Construct a provider of PDA context.
 	 */
 	public SARLContextPDAProvider() {
 		//

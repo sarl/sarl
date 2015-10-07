@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.eclipse.runtime;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ import org.w3c.dom.Element;
  * SRE instances can be created and configured dynamically at run-time.
  * This is typically done by the user interactively in the UI.
  *
- * Rather than implementing this interface directly, it is strongly recommended that
+ * <p>Rather than implementing this interface directly, it is strongly recommended that
  * clients subclass {@link AbstractSREInstall} to be insulated
  * from potential API additions.
  *
@@ -100,8 +101,8 @@ public interface ISREInstall extends Cloneable {
 	/**
 	 * Returns the display name of this SRE.
 	 * The SRE name is intended to be presented to users.
-	 * <p>
-	 * This function replies the name of the SRE, or
+	 *
+	 * <p>This function replies the name of the SRE, or
 	 * a default value if there is no name replied by {@link #getNameNoDefault()}.
 	 * Consequently, this function never replies <code>null</code>.
 	 *
@@ -113,8 +114,8 @@ public interface ISREInstall extends Cloneable {
 	/**
 	 * Returns the display name of this SRE by not
 	 * any default value.
-	 * <p>
-	 * This function replies the name of the SRE but never
+	 *
+	 * <p>This function replies the name of the SRE but never
 	 * any default value replied by {@link #getName()}.
 	 * Consequently, this function could reply <code>null</code>.
 	 *
@@ -128,7 +129,7 @@ public interface ISREInstall extends Cloneable {
 	 * the runtime environment.
 	 *
 	 * @return the fully qualified name of the main class of the SRE.
-	 *  Must not return <code>null</code>.
+	 *      Must not return <code>null</code>.
 	 */
 	String getMainClass();
 
@@ -160,13 +161,13 @@ public interface ISREInstall extends Cloneable {
 	 * Returns the library locations of this ISREInstall.
 	 *
 	 * @return 	The library locations of this ISREInstall.
-	 * Must not return <code>null</code>.
+	 *     Must not return <code>null</code>.
 	 */
 	LibraryLocation[] getLibraryLocations();
 
 	/** Replies the available command line options for this SRE.
 	 *
-	 * The replied map describes the CLI options to use in specific use cases.
+	 * <p>The replied map describes the CLI options to use in specific use cases.
 	 * The keys are defined in the {@link SREConstants SRE constants}, where
 	 * the key names are started by <code>MANIFEST_CLI_</code>.
 	 *
@@ -210,7 +211,7 @@ public interface ISREInstall extends Cloneable {
 	 * Change the library locations of this ISREInstall.
 	 *
 	 * @param libraries - The library locations of this ISREInstall.
-	 * Must not be <code>null</code>.
+	 *     Must not be <code>null</code>.
 	 */
 	void setLibraryLocations(LibraryLocation... libraries);
 
@@ -235,7 +236,7 @@ public interface ISREInstall extends Cloneable {
 	 * the runtime environment.
 	 *
 	 * @param mainClass - the fully qualified name of the main class of the SRE.
-	 *  Must not be <code>null</code>.
+	 *      Must not be <code>null</code>.
 	 */
 	void setMainClass(String mainClass);
 
@@ -305,7 +306,7 @@ public interface ISREInstall extends Cloneable {
 	 * running the SRE.
 	 *
 	 * @return <code>true</code> if the SRE Install corresponds to a
-	 * standalone SRE; otherwise <code>false</code>.
+	 *     standalone SRE; otherwise <code>false</code>.
 	 */
 	boolean isStandalone();
 
@@ -314,7 +315,7 @@ public interface ISREInstall extends Cloneable {
 	 * running the SRE.
 	 *
 	 * @param isStandalone - flag that is <code>true</code> if the SRE Install corresponds to a
-	 * standalone SRE; otherwise <code>false</code>.
+	 *     standalone SRE; otherwise <code>false</code>.
 	 */
 	void setStandalone(boolean isStandalone);
 

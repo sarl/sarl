@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.validation;
 
-import io.sarl.lang.sarl.SarlPackage;
+package io.sarl.lang.ui.validation;
 
 import java.text.MessageFormat;
 import java.util.List;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.xtend.core.validation.IssueCodes;
 import org.eclipse.xtend.core.xtend.XtendFile;
@@ -33,8 +34,7 @@ import org.eclipse.xtend.ide.validator.XtendUIValidator;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Strings;
+import io.sarl.lang.sarl.SarlPackage;
 
 /** Validator based on the Eclipse UI.
  *
@@ -68,11 +68,11 @@ public class SARLUIValidator extends XtendUIValidator {
 		if (!Objects.equal(expectedPackage, declaredPackage)) {
 			if (expectedPackage.isEmpty()) {
 				warning(Messages.SARLUIValidator_0,
-					sarlFile,
-					XtendPackage.Literals.XTEND_FILE__PACKAGE,
-					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-					IssueCodes.WRONG_PACKAGE,
-					expectedPackage);
+						sarlFile,
+						XtendPackage.Literals.XTEND_FILE__PACKAGE,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						IssueCodes.WRONG_PACKAGE,
+						expectedPackage);
 			} else {
 				warning(MessageFormat.format(Messages.SARLUIValidator_1, expectedPackage),
 						sarlFile,

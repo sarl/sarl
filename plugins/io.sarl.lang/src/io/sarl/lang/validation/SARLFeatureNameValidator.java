@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.validation;
 
-import io.sarl.lang.util.Utils;
+package io.sarl.lang.validation;
 
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.xbase.validation.LogicalContainerAwareFeatureNameValidator;
+
+import io.sarl.lang.util.Utils;
 
 /** Validator of the feature names.
  *
@@ -40,19 +41,15 @@ public class SARLFeatureNameValidator extends LogicalContainerAwareFeatureNameVa
 		//
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean isDisallowedName(QualifiedName name) {
 		if (Utils.isHiddenAction(name.getLastSegment())
-			|| Utils.isHiddenAttribute(name.getLastSegment())) {
+				|| Utils.isHiddenAttribute(name.getLastSegment())) {
 			return true;
 		}
 		return super.isDisallowedName(name);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean isDiscouragedName(QualifiedName name) {
 		return super.isDiscouragedName(name);

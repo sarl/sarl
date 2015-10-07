@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.util;
 
-import io.sarl.lang.sarl.SarlBehaviorUnit;
+package io.sarl.lang.util;
 
 import java.util.Comparator;
 
 import org.eclipse.xtext.xbase.XExpression;
+
+import io.sarl.lang.sarl.SarlBehaviorUnit;
 
 /**
  * Comparator of BehaviorUnit.
@@ -35,12 +36,6 @@ import org.eclipse.xtext.xbase.XExpression;
  * @mavenartifactid $ArtifactId$
  */
 public class BehaviorUnitComparator implements Comparator<SarlBehaviorUnit> {
-
-	/** Construct a comparator of behavior units.
-	 */
-	public BehaviorUnitComparator() {
-		//
-	}
 
 	@Override
 	public int compare(SarlBehaviorUnit o1, SarlBehaviorUnit o2) {
@@ -67,9 +62,9 @@ public class BehaviorUnitComparator implements Comparator<SarlBehaviorUnit> {
 	 * @param e1 - the first expression to compare.
 	 * @param e2 - the second expression to compare.
 	 * @return A negative value if <code>e1</code> is
-	 * lower than <code>e2</code>, a positive value if
-	 * <code>e1</code> is greater than <code>e2</code>,
-	 * otherwise <code>0</code>.
+	 *     lower than <code>e2</code>, a positive value if
+	 *     <code>e1</code> is greater than <code>e2</code>,
+	 *     otherwise <code>0</code>.
 	 */
 	public static int compare(XExpression e1, XExpression e2) {
 		if (e1 == e2) {

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.preferences;
 
-import io.sarl.lang.validation.IssueCodes;
+package io.sarl.lang.ui.preferences;
 
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.SWT;
@@ -30,6 +29,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.xtend.ide.validator.preferences.XtendValidatorConfigurationBlock;
 import org.eclipse.xtext.validation.SeverityConverter;
+
+import io.sarl.lang.validation.IssueCodes;
 
 /** Preference page that permits to configure the SARL validator.
  *
@@ -59,33 +60,33 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 	}
 
 	@Override
-	protected void addAdditionalComponentsToSettingsPage(Composite settingsPage, int nColumns, int defaultIndent) {
-		super.addAdditionalComponentsToSettingsPage(settingsPage, nColumns, defaultIndent);
-		createHorizontalLine(settingsPage, nColumns);
+	protected void addAdditionalComponentsToSettingsPage(Composite settingsPage, int nbColumns, int defaultIndent) {
+		super.addAdditionalComponentsToSettingsPage(settingsPage, nbColumns, defaultIndent);
+		createHorizontalLine(settingsPage, nbColumns);
+		Composite composite = new Composite(settingsPage, SWT.NONE);
+		GridLayout layout = new GridLayout(nbColumns, false);
+		layout.marginHeight = 0;
+		composite.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, nbColumns, 1));
+		composite.setLayout(layout);
 		String[] values = new String[] {
-				SeverityConverter.SEVERITY_ERROR,
-				SeverityConverter.SEVERITY_WARNING,
-				SeverityConverter.SEVERITY_IGNORE,
+			SeverityConverter.SEVERITY_ERROR,
+			SeverityConverter.SEVERITY_WARNING,
+			SeverityConverter.SEVERITY_IGNORE,
 		};
 		String[] valueLabels = new String[] {
-				Messages.SARLValidatorConfigurationBlock_6,
-				Messages.SARLValidatorConfigurationBlock_7,
-				Messages.SARLValidatorConfigurationBlock_8,
+			Messages.SARLValidatorConfigurationBlock_6,
+			Messages.SARLValidatorConfigurationBlock_7,
+			Messages.SARLValidatorConfigurationBlock_8,
 		};
-		Composite composite = new Composite(settingsPage, SWT.NONE);
-		GridLayout layout = new GridLayout(nColumns, false);
-		layout.marginHeight = 0;
-		composite.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, nColumns, 1));
-		composite.setLayout(layout);
 		addComboBox(composite,
 				Messages.SARLValidatorConfigurationBlock_9,
 				org.eclipse.xtext.xbase.validation.IssueCodes.COPY_JAVA_PROBLEMS,
 				defaultIndent, values, valueLabels);
 	}
 
-	private static void createHorizontalLine(Composite settingsPage, int nColumns) {
+	private static void createHorizontalLine(Composite settingsPage, int nbColumns) {
 		Label horizontalLine = new Label(settingsPage, SWT.SEPARATOR | SWT.HORIZONTAL);
-		horizontalLine.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, nColumns, 1));
+		horizontalLine.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, nbColumns, 1));
 		horizontalLine.setFont(settingsPage.getFont());
 	}
 

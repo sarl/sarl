@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.actionprototype;
 
 import java.util.Iterator;
 
-import org.eclipse.emf.common.util.BasicEList;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
+import org.eclipse.emf.common.util.BasicEList;
 
 /**
  * A definition of the types of the formal parameters of an action.
@@ -51,8 +51,8 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 	}
 
 	/** Parse the given string and create a signature.
-	 * <p>
-	 * The format of the text is the same as the one replied by {@link #toString()}.
+	 *
+	 * <p>The format of the text is the same as the one replied by {@link #toString()}.
 	 *
 	 * @param text - the text that contains the signature to parse.
 	 */
@@ -132,16 +132,16 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 	}
 
 	@Override
-	public int compareTo(ActionParameterTypes o) {
-		if (o == null) {
+	public int compareTo(ActionParameterTypes otherTypes) {
+		if (otherTypes == null) {
 			return Integer.MAX_VALUE;
 		}
-		int cmp = Integer.compare(size(), o.size());
+		int cmp = Integer.compare(size(), otherTypes.size());
 		if (cmp != 0) {
 			return cmp;
 		}
 		Iterator<String> i1 = iterator();
-		Iterator<String> i2 = o.iterator();
+		Iterator<String> i2 = otherTypes.iterator();
 		String s1;
 		String s2;
 		while (i1.hasNext() && i2.hasNext()) {

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,11 @@
 
 package io.sarl.lang.controlflow;
 
-import io.sarl.lang.annotation.EarlyExit;
-import io.sarl.lang.util.Utils;
-
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+
+import io.sarl.lang.annotation.EarlyExit;
+import io.sarl.lang.util.Utils;
 
 /** Utilities related to early-exit flags.
  *
@@ -47,7 +47,7 @@ public final class SARLEarlyExitComputerUtil {
 	 *
 	 * @param reference - the event reference.
 	 * @return <code>true</code> if the event may causes early exit of the function,
-	 * otherwise <code>false</code>.
+	 *     otherwise <code>false</code>.
 	 */
 	public static boolean isEarlyExitEvent(JvmTypeReference reference) {
 		if (reference != null) {
@@ -61,7 +61,7 @@ public final class SARLEarlyExitComputerUtil {
 	 *
 	 * @param element - the element to test.
 	 * @return <code>true</code> if the given element is annotated with the "early-flag"
-	 * annotation, otherwise <code>false</code>.
+	 *     annotation, otherwise <code>false</code>.
 	 */
 	public static boolean isEarlyExitAnnotatedElement(Object element) {
 		return ((element instanceof JvmAnnotationTarget)

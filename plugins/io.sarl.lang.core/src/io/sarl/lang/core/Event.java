@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.core;
 
 import java.io.Serializable;
@@ -25,8 +26,7 @@ import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/**
- * Elementary interaction unit inside an {@link EventSpace} An event is the
+/** Elementary interaction unit inside an {@link EventSpace} An event is the
  * specification of some occurrence in a Space that may potentially trigger
  * effects by a listener. Within a Space, the notion of {@link Scope} enables to
  * precisely control/filter the potential recipients of an event.
@@ -65,9 +65,9 @@ public abstract class Event implements Serializable {
 			return true;
 		}
 		if (obj != null && getClass().equals(obj.getClass())) {
-			Event e = (Event) obj;
-			return (this.source == null && e.source == null)
-					|| (this.source != null && this.source.equals(e.source));
+			Event event = (Event) obj;
+			return (this.source == null && event.source == null)
+					|| (this.source != null && this.source.equals(event.source));
 		}
 		return false;
 	}
@@ -75,11 +75,11 @@ public abstract class Event implements Serializable {
 	@Override
 	@Pure
 	public int hashCode() {
-		int h = 31 + getClass().hashCode();
+		int hash = 31 + getClass().hashCode();
 		if (this.source != null) {
-			h = h * 31 + this.source.hashCode();
+			hash = hash * 31 + this.source.hashCode();
 		}
-		return h;
+		return hash;
 	}
 
 	/**
@@ -126,7 +126,7 @@ public abstract class Event implements Serializable {
 	 *
 	 * @param address - the address of the emitter to test.
 	 * @return <code>true</code> if the given event was emitted by
-	 * an entity with the given address; otherwise <code>false</code>.
+	 *     an entity with the given address; otherwise <code>false</code>.
 	 * @since 0.2
 	 */
 	@Pure
@@ -138,7 +138,7 @@ public abstract class Event implements Serializable {
 	 *
 	 * @param entityId - the identifier of the emitter to test.
 	 * @return <code>true</code> if the given event was emitted by
-	 * an entity with the given identifier; otherwise <code>false</code>.
+	 *     an entity with the given identifier; otherwise <code>false</code>.
 	 * @since 0.2
 	 */
 	@Pure

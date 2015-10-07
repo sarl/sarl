@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.wizards.newproject;
 
-import io.sarl.eclipse.SARLEclipseConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
-import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.runtime.SREConfigurationBlock;
-import io.sarl.lang.SARLConfig;
+package io.sarl.eclipse.wizards.newproject;
 
 import java.io.File;
 import java.io.IOException;
@@ -111,11 +105,18 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.dialogs.WorkingSetConfigurationBlock;
 
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.SREConfigurationBlock;
+import io.sarl.lang.SARLConfig;
+
 /**
  * The first page of the SARL new project wizard. Most part of the code of this class
  * is copy/paste from {@link NewJavaProjectWizardPageOne}
  *
- * This version removes the choice of the project structure and update the structure of
+ * <p>This version removes the choice of the project structure and update the structure of
  * the source folder of the project
  * {@link MainProjectWizardPage#getSourceClasspathEntries()}
  *
@@ -130,11 +131,17 @@ public class MainProjectWizardPage extends WizardPage {
 	private static final IWorkingSet[] EMPTY_WORKING_SET_ARRAY = new IWorkingSet[0];
 
 	private final NameGroup fNameGroup;
+
 	private final LocationGroup fLocationGroup;
+
 	private final SREConfigurationBlock fSREGroup;
+
 	private final JREGroup fJREGroup;
+
 	private final DetectGroup fDetectGroup;
+
 	private final Validator fValidator;
+
 	private final WorkingSetGroup fWorkingSetGroup;
 
 	/**
@@ -576,12 +583,15 @@ public class MainProjectWizardPage extends WizardPage {
 
 	/**
 	 * Request a project name. Fires an event whenever the text field is changed, regardless of its content.
+	 *
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
 	 */
 	private final class NameGroup extends Observable implements IDialogFieldListener {
 
 		protected final StringDialogField fNameField;
 
-		public NameGroup() {
+		NameGroup() {
 			// text field for project name
 			this.fNameField = new StringDialogField();
 			this.fNameField.setLabelText(NewWizardMessages.NewJavaProjectWizardPageOne_NameGroup_label_text);
@@ -626,17 +636,21 @@ public class MainProjectWizardPage extends WizardPage {
 	 * Request a location. Fires an event whenever the checkbox or the location
 	 * field is changed, regardless of whether the change originates from the user
 	 * or has been invoked programmatically.
+	 *
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
 	 */
 	private final class LocationGroup extends Observable implements Observer, IStringButtonAdapter, IDialogFieldListener {
 
 		private static final String DIALOGSTORE_LAST_EXTERNAL_LOC = JavaUI.ID_PLUGIN + ".last.external.project"; //$NON-NLS-1$
 
 		protected final SelectionButtonDialogField fUseDefaults;
+
 		protected final StringButtonDialogField fLocation;
 
 		private String fPreviousExternalLocation;
 
-		public LocationGroup() {
+		LocationGroup() {
 			this.fUseDefaults = new SelectionButtonDialogField(SWT.CHECK);
 			this.fUseDefaults.setDialogFieldListener(this);
 			this.fUseDefaults.setLabelText(NewWizardMessages.NewJavaProjectWizardPageOne_LocationGroup_location_desc);
@@ -677,7 +691,7 @@ public class MainProjectWizardPage extends WizardPage {
 
 		@SuppressWarnings("synthetic-access")
 		@Override
-		public void update(Observable o, Object arg) {
+		public void update(Observable observable, Object arg) {
 			if (isUseDefaultSelected()) {
 				this.fLocation.setText(getDefaultPath(MainProjectWizardPage.this.fNameGroup.getName()));
 			}
@@ -757,7 +771,8 @@ public class MainProjectWizardPage extends WizardPage {
 		}
 	}
 
-	/**
+	/** Group that contains the configuration of the JRE.
+	 *
 	 * @author $Author: ngaud$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -767,28 +782,42 @@ public class MainProjectWizardPage extends WizardPage {
 
 		private static final String LAST_SELECTED_EE_SETTINGS_KEY =
 				JavaUI.ID_PLUGIN + ".last.selected.execution.enviroment"; //$NON-NLS-1$
+
 		private static final String LAST_SELECTED_JRE_SETTINGS_KEY =
 				JavaUI.ID_PLUGIN + ".last.selected.project.jre"; //$NON-NLS-1$
+
 		private static final String LAST_SELECTED_JRE_KIND2 =
 				JavaUI.ID_PLUGIN + ".last.selected.jre.kind2"; //$NON-NLS-1$
 
 		private static final int DEFAULT_JRE = 0;
+
 		private static final int PROJECT_JRE = 1;
+
 		private static final int EE_JRE = 2;
 
 		private final SelectionButtonDialogField fUseDefaultJRE;
+
 		private final SelectionButtonDialogField fUseProjectJRE;
+
 		private final SelectionButtonDialogField fUseEEJRE;
+
 		private final ComboDialogField fJRECombo;
+
 		private final ComboDialogField fEECombo;
+
 		private Group fGroup;
+
 		private Link fPreferenceLink;
+
 		private IVMInstall[] fInstalledJVMs;
+
 		private String[] fJRECompliance;
+
 		private IExecutionEnvironment[] fInstalledEEs;
+
 		private String[] fEECompliance;
 
-		public JREGroup() {
+		JREGroup() {
 			this.fUseDefaultJRE = new SelectionButtonDialogField(SWT.RADIO);
 			this.fUseDefaultJRE.setLabelText(getDefaultJVMLabel());
 
@@ -1003,7 +1032,7 @@ public class MainProjectWizardPage extends WizardPage {
 		}
 
 		@Override
-		public void update(Observable o, Object arg) {
+		public void update(Observable observable, Object arg) {
 			updateEnableState();
 		}
 
@@ -1024,13 +1053,13 @@ public class MainProjectWizardPage extends WizardPage {
 		}
 
 		@Override
-		public void widgetSelected(SelectionEvent e) {
-			widgetDefaultSelected(e);
+		public void widgetSelected(SelectionEvent event) {
+			widgetDefaultSelected(event);
 		}
 
 		@SuppressWarnings("synthetic-access")
 		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
+		public void widgetDefaultSelected(SelectionEvent event) {
 			String jreID = BuildPathSupport.JRE_PREF_PAGE_ID;
 			String eeID = BuildPathSupport.EE_PREF_PAGE_ID;
 			String complianceId = CompliancePreferencePage.PREF_ID;
@@ -1121,9 +1150,7 @@ public class MainProjectWizardPage extends WizardPage {
 					// paranoia
 					return this.fInstalledJVMs[index];
 				}
-			} /*else if (this.fUseEEJRE.isSelected()) {
-
-			}*/
+			}
 			return null;
 		}
 
@@ -1162,11 +1189,19 @@ public class MainProjectWizardPage extends WizardPage {
 		}
 	}
 
+	/** Group of configuration for the working set.
+	 *
+	 * @author $Author: ngaud$
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
 	private final class WorkingSetGroup {
 
 		private WorkingSetConfigurationBlock fWorkingSetBlock;
 
-		public WorkingSetGroup() {
+		WorkingSetGroup() {
 			String[] workingSetIds = new String[] {IWorkingSetIDs.JAVA, IWorkingSetIDs.RESOURCE};
 			this.fWorkingSetBlock = new WorkingSetConfigurationBlock(workingSetIds, JavaPlugin.getDefault().getDialogSettings());
 			// fWorkingSetBlock.setDialogMessage(NewWizardMessages.NewJavaProjectWizardPageOne_WorkingSetSelection_message);
@@ -1194,14 +1229,28 @@ public class MainProjectWizardPage extends WizardPage {
 
 	/**
 	 * Show a warning when the project location contains files.
+	 *
+	 * @author $Author: ngaud$
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
 	 */
 	private final class DetectGroup extends Observable implements Observer, SelectionListener {
 
+		private static final int HORIZONTAL_SPACING = 10;
+
+		private static final int WIDTH_HINT = 50;
+
+		private static final int HEIGHT_HINT = 3;
+
 		private Link fHintText;
+
 		private Label fIcon;
+
 		private boolean fDetect;
 
-		public DetectGroup() {
+		DetectGroup() {
 			this.fDetect = false;
 		}
 
@@ -1211,7 +1260,7 @@ public class MainProjectWizardPage extends WizardPage {
 			Composite composite = new Composite(parent, SWT.NONE);
 			composite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 			GridLayout layout = new GridLayout(2, false);
-			layout.horizontalSpacing = 10;
+			layout.horizontalSpacing = HORIZONTAL_SPACING;
 			composite.setLayout(layout);
 
 			this.fIcon = new Label(composite, SWT.LEFT);
@@ -1223,8 +1272,8 @@ public class MainProjectWizardPage extends WizardPage {
 			this.fHintText.setFont(composite.getFont());
 			this.fHintText.addSelectionListener(this);
 			gridData = new GridData(GridData.FILL, SWT.FILL, true, true);
-			gridData.widthHint = convertWidthInCharsToPixels(50);
-			gridData.heightHint = convertHeightInCharsToPixels(3);
+			gridData.widthHint = convertWidthInCharsToPixels(WIDTH_HINT);
+			gridData.heightHint = convertHeightInCharsToPixels(HEIGHT_HINT);
 			this.fHintText.setLayoutData(gridData);
 
 			handlePossibleJVMChange();
@@ -1271,7 +1320,7 @@ public class MainProjectWizardPage extends WizardPage {
 			}
 			if (!selectedCompliance.equals(jvmCompliance)
 					&& (JavaModelUtil.is50OrHigher(selectedCompliance)
-							|| JavaModelUtil.is50OrHigher(jvmCompliance))) {
+					|| JavaModelUtil.is50OrHigher(jvmCompliance))) {
 				this.fHintText.setText(MessageFormat.format(
 						NewWizardMessages.NewJavaProjectWizardPageOne_DetectGroup_jre_message,
 						BasicElementLabels.getVersionName(selectedCompliance),
@@ -1303,8 +1352,8 @@ public class MainProjectWizardPage extends WizardPage {
 		}
 
 		@Override
-		public void update(Observable o, Object arg) {
-			if (o instanceof LocationGroup) {
+		public void update(Observable observable, Object arg) {
+			if (observable instanceof LocationGroup) {
 				boolean oldDetectState = this.fDetect;
 				this.fDetect = computeDetectState();
 
@@ -1329,19 +1378,19 @@ public class MainProjectWizardPage extends WizardPage {
 		}
 
 		@Override
-		public void widgetSelected(SelectionEvent e) {
-			widgetDefaultSelected(e);
+		public void widgetSelected(SelectionEvent event) {
+			widgetDefaultSelected(event);
 		}
 
 		@SuppressWarnings("synthetic-access")
 		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
+		public void widgetDefaultSelected(SelectionEvent event) {
 			String jreID = BuildPathSupport.JRE_PREF_PAGE_ID;
 			String eeID = BuildPathSupport.EE_PREF_PAGE_ID;
 			String complianceId = CompliancePreferencePage.PREF_ID;
 			Map<String, Boolean> data = new HashMap<>();
 			data.put(PropertyAndPreferencePage.DATA_NO_LINK, Boolean.TRUE);
-			String id = "JRE".equals(e.text) ? jreID : complianceId; //$NON-NLS-1$
+			String id = "JRE".equals(event.text) ? jreID : complianceId; //$NON-NLS-1$
 			PreferencesUtil.createPreferenceDialogOn(getShell(), id,
 					new String[] {jreID, complianceId, eeID},
 					data).open();
@@ -1353,12 +1402,18 @@ public class MainProjectWizardPage extends WizardPage {
 
 	/**
 	 * Validate this page and show appropriate warnings and error NewWizardMessages.
+	 *
+	 * @author $Author: ngaud$
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
 	 */
 	private final class Validator implements Observer {
 
 		@SuppressWarnings("synthetic-access")
 		@Override
-		public void update(Observable o, Object arg) {
+		public void update(Observable observable, Object arg) {
 			try {
 				IWorkspace workspace = JavaPlugin.getWorkspace();
 				String name = MainProjectWizardPage.this.fNameGroup.getName();
@@ -1496,17 +1551,18 @@ public class MainProjectWizardPage extends WizardPage {
 		}
 
 		private boolean canCreate(File file) {
-			File f = file;
-			while (!f.exists()) {
-				f = f.getParentFile();
-				if (f == null) {
+			File fileInHierarchy = file;
+			while (!fileInHierarchy.exists()) {
+				fileInHierarchy = fileInHierarchy.getParentFile();
+				if (fileInHierarchy == null) {
 					return false;
 				}
 			}
-			return f.canWrite();
+			return fileInHierarchy.canWrite();
 		}
 
-		/**
+		/** Exception that contains any validation error.
+		 *
 		 * @author $Author: sgalland$
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
@@ -1518,7 +1574,7 @@ public class MainProjectWizardPage extends WizardPage {
 
 			private final String errorMessage;
 
-			public ValidationException(String message, String errorMessage) {
+			ValidationException(String message, String errorMessage) {
 				super(message);
 				this.errorMessage = errorMessage;
 			}

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,20 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.util;
 
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.actionprototype.ActionPrototypeProvider;
-import io.sarl.lang.actionprototype.FormalParameterProvider;
-import io.sarl.lang.annotation.DefaultValue;
-import io.sarl.lang.annotation.Generated;
-import io.sarl.lang.generator.helper.SarlEcoreCode;
-import io.sarl.lang.sarl.SarlAction;
-import io.sarl.lang.sarl.SarlConstructor;
-import io.sarl.lang.sarl.SarlFormalParameter;
-import io.sarl.lang.util.Utils;
+package io.sarl.eclipse.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -74,10 +62,23 @@ import org.eclipse.xtext.xbase.XbaseFactory;
 
 import com.google.common.base.Strings;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.actionprototype.FormalParameterProvider;
+import io.sarl.lang.annotation.DefaultValue;
+import io.sarl.lang.annotation.Generated;
+import io.sarl.lang.generator.helper.SarlEcoreCode;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.util.Utils;
+
 
 /** Utilities for creating Ecore SARL elements from the JDT model.
  *
- * This class extends the {@link Utils} from the <code>io.sarl.lang</code> project.
+ * <p>This class extends the {@link Utils} from the <code>io.sarl.lang</code> project.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -93,7 +94,7 @@ public final class Jdt2Ecore {
 
 	/** Create a {@link TypeFinder} wrapper for the given Java project.
 	 *
-	 * The wrapper invokes {@link IJavaProject#findType(String)} on the given project.
+	 * <p>The wrapper invokes {@link IJavaProject#findType(String)} on the given project.
 	 *
 	 * @param project - the project to wrap.
 	 * @return the type finder based on the given Java project.
@@ -109,7 +110,7 @@ public final class Jdt2Ecore {
 
 	/** Replies if the given type name is valid for a super-type.
 	 *
-	 * The type name is valid if it is not empty and not the <code>Object</code> classname.
+	 * <p>The type name is valid if it is not empty and not the <code>Object</code> classname.
 	 *
 	 * @param typeName - the name of the type to test.
 	 * @return <code>true</code> if the given type name is valid.
@@ -120,7 +121,7 @@ public final class Jdt2Ecore {
 
 	/** Replies if the target feature is visible from the type.
 	 *
-	 * The type finder could be obtained with {@link #toTypeFinder(IJavaProject)}.
+	 * <p>The type finder could be obtained with {@link #toTypeFinder(IJavaProject)}.
 	 *
 	 * @param typeFinder - the type finder to be used for finding the type definitions.
 	 * @param fromType - the type from which the feature visibility is tested.
@@ -174,7 +175,7 @@ public final class Jdt2Ecore {
 	/** Analyzing the type hierarchy of the given element, and
 	 * extract any type-related information.
 	 *
-	 * The type finder could be obtained with {@link #toTypeFinder(IJavaProject)}.
+	 * <p>The type finder could be obtained with {@link #toTypeFinder(IJavaProject)}.
 	 *
 	 * @param typeFinder - the type finder to be used for finding the type definitions.
 	 * @param finalOperations - filled with the final operations inherited by the element.
@@ -189,6 +190,8 @@ public final class Jdt2Ecore {
 	 * @throws JavaModelException if the Java model is invalid.
 	 * @see #toTypeFinder(IJavaProject)
 	 */
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
+			"checkstyle:nestedifdepth", "checkstyle:maximumparameters"})
 	public static IStatus populateInheritanceContext(
 			TypeFinder typeFinder,
 			Map<ActionPrototype, IMethod> finalOperations,
@@ -294,7 +297,7 @@ public final class Jdt2Ecore {
 	 *
 	 * @param method - the method to check.
 	 * @return <code>true</code> if the method is annoted with Generated; <code>false</code>
-	 * otherwise.
+	 *     otherwise.
 	 */
 	public static boolean isGeneratedOperation(IMethod method) {
 		return getAnnotation(method, Generated.class.getName()) != null;
@@ -423,8 +426,6 @@ public final class Jdt2Ecore {
 		if (superClassConstructors != null) {
 			for (IMethod constructor : superClassConstructors) {
 				if (!isGeneratedOperation(constructor)) {
-					XBlockExpression block = XbaseFactory.eINSTANCE.createXBlockExpression();
-					//
 					JvmConstructor jvmConstructor = getJvmConstructor(code, constructor, container);
 					XFeatureCall call = XbaseFactory.eINSTANCE.createXFeatureCall();
 					call.setFeature(jvmConstructor);
@@ -435,6 +436,7 @@ public final class Jdt2Ecore {
 						paramRef.setFeature(param);
 						arguments.add(paramRef);
 					}
+					XBlockExpression block = XbaseFactory.eINSTANCE.createXBlockExpression();
 					block.getExpressions().add(call);
 					//
 					SarlConstructor cons = code.getCodeGenerator().createConstructor(code, container, block);
@@ -467,7 +469,8 @@ public final class Jdt2Ecore {
 		}
 	}
 
-	/**
+	/** Iterator on the super types of a given type.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -476,10 +479,15 @@ public final class Jdt2Ecore {
 	private static class SuperTypeIterator implements Iterator<IType> {
 
 		private final TypeFinder typeFinder;
+
 		private final Set<String> encountered = new TreeSet<>();
+
 		private final Deque<String> queue = new LinkedList<>();
+
 		private final boolean isInterface;
+
 		private final List<IStatus> statuses = new ArrayList<>();
+
 		private IType current;
 
 		/**
@@ -487,7 +495,7 @@ public final class Jdt2Ecore {
 		 * @param isInterface - indicates if the exploration is for interfaces or for classes.
 		 * @param typeNames - the initial types.
 		 */
-		public SuperTypeIterator(TypeFinder typeFinder, boolean isInterface, String... typeNames) {
+		SuperTypeIterator(TypeFinder typeFinder, boolean isInterface, String... typeNames) {
 			this(typeFinder, isInterface, Arrays.asList(typeNames));
 		}
 
@@ -496,7 +504,7 @@ public final class Jdt2Ecore {
 		 * @param isInterface - indicates if the exploration is for interfaces or for classes.
 		 * @param typeNames - the initial types.
 		 */
-		public SuperTypeIterator(TypeFinder typeFinder, boolean isInterface, Collection<String> typeNames) {
+		SuperTypeIterator(TypeFinder typeFinder, boolean isInterface, Collection<String> typeNames) {
 			this.isInterface = isInterface;
 			this.typeFinder = typeFinder;
 			this.queue.addAll(typeNames);
@@ -584,7 +592,8 @@ public final class Jdt2Ecore {
 
 	}
 
-	/**
+	/** Provider of SARL formal parameters from a the JDT formal parameter list.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -598,7 +607,7 @@ public final class Jdt2Ecore {
 		 * @param operation - the operation.
 		 * @throws JavaModelException if the parameters cannot be retreived.
 		 */
-		public JdtFormalParameterList(IMethod operation) throws JavaModelException {
+		JdtFormalParameterList(IMethod operation) throws JavaModelException {
 			this.parameters = operation.getParameters();
 		}
 
@@ -622,22 +631,16 @@ public final class Jdt2Ecore {
 			throw new UnsupportedOperationException();
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public boolean hasFormalParameterDefaultValue(int position) {
 			throw new UnsupportedOperationException();
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public XExpression getFormalParameterDefaultValue(int position) {
 			throw new UnsupportedOperationException();
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public EObject getFormalParameter(int position) {
 			throw new UnsupportedOperationException();
@@ -659,7 +662,7 @@ public final class Jdt2Ecore {
 		 * @param typeName - the name of the type to search for.
 		 * @return the type, or <code>null</code> if the type was not found.
 		 * @throws JavaModelException if this project does not exist or if an
-		 *		exception occurs while accessing its corresponding resource.
+		 *     exception occurs while accessing its corresponding resource.
 		 */
 		IType findType(String typeName) throws JavaModelException;
 

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.util;
 
-import io.sarl.lang.sarl.SarlAction;
-
 import java.util.Comparator;
+
+import io.sarl.lang.sarl.SarlAction;
 
 /**
  * Comparator of ActionSignature.
@@ -36,24 +37,18 @@ public class ActionComparator implements Comparator<SarlAction> {
 
 	private final FormalParameterListComparator comparator = new FormalParameterListComparator();
 
-	/** Construct a comparator of action signatures.
-	 */
-	public ActionComparator() {
-		//
-	}
-
 	@Override
-	public int compare(SarlAction a, SarlAction b) {
-		if (a == b) {
+	public int compare(SarlAction left, SarlAction right) {
+		if (left == right) {
 			return 0;
 		}
-		if (a == null) {
+		if (left == null) {
 			return Integer.MIN_VALUE;
 		}
-		if (b == null) {
+		if (right == null) {
 			return Integer.MAX_VALUE;
 		}
-		return this.comparator.compare(a.getParameters(), b.getParameters());
+		return this.comparator.compare(left.getParameters(), right.getParameters());
 	}
 
 }

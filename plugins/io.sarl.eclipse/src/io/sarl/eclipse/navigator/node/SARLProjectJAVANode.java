@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.navigator.node;
 
-import io.sarl.eclipse.navigator.ISARLProjectElement;
+package io.sarl.eclipse.navigator.node;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.swt.graphics.Image;
+
+import io.sarl.eclipse.navigator.ISARLProjectElement;
 
 /**
  * The node of SARL Project called JAVA just below the root node.
@@ -38,6 +39,7 @@ public class SARLProjectJAVANode implements ISARLProjectElement {
 	private static final String NAME = "JAVA"; //$NON-NLS-1$
 
 	private ISARLProjectElement parent;
+
 	private ISARLProjectElement[] children;
 
 	/** Construct a node in a SARL project for Java elements.

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.runtime;
 
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.preferences.SREsPreferencePage;
+package io.sarl.eclipse.runtime;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -50,6 +48,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 import com.google.common.base.Objects;
+
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.preferences.SREsPreferencePage;
 
 /**
  * Block of widgets that permits to select and
@@ -81,17 +82,23 @@ public class SREConfigurationBlock {
 	private ISREInstallChangedListener sreListener;
 
 	private final boolean enableSystemWideSelector;
+
 	private final List<ProjectSREProviderFactory> projectProviderFactories;
+
 	private final ProjectProvider project;
 
 	private ProjectSREProvider projectProvider;
 
 	private Button systemSREButton;
+
 	private Button projectSREButton;
+
 	private Button specificSREButton;
 
 	private final List<ISREInstall> runtimeEnvironments = new ArrayList<>();
+
 	private Combo runtimeEnvironmentCombo;
+
 	private Button runtimeEnvironmentSearchButton;
 
 	private boolean notify = true;
@@ -99,9 +106,9 @@ public class SREConfigurationBlock {
 	/**
 	 * @param enableSystemWideSelector - indicates if the system-wide configuration selector must be enabled.
 	 * @param project - the provider of the project that may be associated to the block. If <code>null</code> the components
-	 * related to the project are hidden.
+	 *     related to the project are hidden.
 	 * @param projectProviderFactories - the factories of  the provider of a project that may give SRE configuration.
-	 * If <code>null</code> the components related to the project are hidden.
+	 *     If <code>null</code> the components related to the project are hidden.
 	 */
 	public SREConfigurationBlock(boolean enableSystemWideSelector,
 			ProjectProvider project,
@@ -113,9 +120,9 @@ public class SREConfigurationBlock {
 	 * @param title - the title of the group.
 	 * @param enableSystemWideSelector - indicates if the system-wide configuration selector must be enabled.
 	 * @param project - the provider of the project that may be associated to the block. If <code>null</code> the components
-	 * related to the project are hidden.
+	 *     related to the project are hidden.
 	 * @param projectProviderFactories - the factories of  the provider of a project that may give SRE configuration.
-	 * If <code>null</code> the components related to the project are hidden.
+	 *     If <code>null</code> the components related to the project are hidden.
 	 */
 	public SREConfigurationBlock(String title, boolean enableSystemWideSelector,
 			ProjectProvider project,
@@ -247,7 +254,7 @@ public class SREConfigurationBlock {
 			this.systemSREButton.addSelectionListener(new SelectionAdapter() {
 				@SuppressWarnings("synthetic-access")
 				@Override
-				public void widgetSelected(SelectionEvent e) {
+				public void widgetSelected(SelectionEvent event) {
 					if (SREConfigurationBlock.this.systemSREButton.getSelection()) {
 						handleSystemWideConfigurationSelected();
 					}
@@ -265,7 +272,7 @@ public class SREConfigurationBlock {
 		this.runtimeEnvironmentCombo.addSelectionListener(new SelectionAdapter() {
 			@SuppressWarnings("synthetic-access")
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent event) {
 				firePropertyChange();
 			}
 		});
@@ -275,7 +282,7 @@ public class SREConfigurationBlock {
 				parent, Messages.SREConfigurationBlock_4, null);
 		this.runtimeEnvironmentSearchButton.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent event) {
 				handleInstalledSREsButtonSelected();
 			}
 		});
@@ -289,7 +296,7 @@ public class SREConfigurationBlock {
 			this.projectSREButton.addSelectionListener(new SelectionAdapter() {
 				@SuppressWarnings("synthetic-access")
 				@Override
-				public void widgetSelected(SelectionEvent e) {
+				public void widgetSelected(SelectionEvent event) {
 					if (SREConfigurationBlock.this.projectSREButton.getSelection()) {
 						handleProjectConfigurationSelected();
 					}
@@ -309,10 +316,10 @@ public class SREConfigurationBlock {
 		this.control = SWTFactory.createComposite(
 				parent, parent.getFont(), 1, 1, GridData.FILL_HORIZONTAL);
 
-		int nColumns = this.enableSystemWideSelector ? 3 : 2;
+		int nbColumns = this.enableSystemWideSelector ? 3 : 2;
 		Group group = SWTFactory.createGroup(this.control,
 				Objects.firstNonNull(this.title, Messages.SREConfigurationBlock_7),
-				nColumns, 1, GridData.FILL_HORIZONTAL);
+				nbColumns, 1, GridData.FILL_HORIZONTAL);
 
 		if (this.enableSystemWideSelector || !this.projectProviderFactories.isEmpty()) {
 			createSystemWideSelector(group);
@@ -322,7 +329,7 @@ public class SREConfigurationBlock {
 			this.specificSREButton.addSelectionListener(new SelectionAdapter() {
 				@SuppressWarnings("synthetic-access")
 				@Override
-				public void widgetSelected(SelectionEvent e) {
+				public void widgetSelected(SelectionEvent event) {
 					if (SREConfigurationBlock.this.specificSREButton.getSelection()) {
 						handleSpecificConfigurationSelected();
 					}
@@ -438,6 +445,7 @@ public class SREConfigurationBlock {
 	 * @param sre - the sre, if <code>null</code> reset to default.
 	 * @return <code>true</code> if the selection changed.
 	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	public boolean selectSpecificSRE(ISREInstall sre) {
 		ISREInstall theSRE = sre;
 		if (theSRE == null) {
@@ -484,8 +492,8 @@ public class SREConfigurationBlock {
 		if (sre != null) {
 			Iterator<ISREInstall> iterator = this.runtimeEnvironments.iterator();
 			for (int i = 0; iterator.hasNext(); ++i) {
-				ISREInstall s = iterator.next();
-				if  (s.getId().equals(sre.getId())) {
+				ISREInstall knownSRE = iterator.next();
+				if  (knownSRE.getId().equals(sre.getId())) {
 					return i;
 				}
 			}
@@ -504,7 +512,7 @@ public class SREConfigurationBlock {
 	/** Replies if the user has selected the default system-wide SRE.
 	 *
 	 * @return <code>true</code> if the user has selected the default
-	 * system-wide SRE.
+	 *     system-wide SRE.
 	 * @see #getSelectedSRE()
 	 */
 	public boolean isSystemWideDefaultSRE() {
@@ -523,7 +531,7 @@ public class SREConfigurationBlock {
 	/** Replies the selected SARL runtime environment.
 	 *
 	 * @return the SARL runtime environment or <code>null</code> if
-	 * there is no selected SRE.
+	 *     there is no selected SRE.
 	 * @see #isSystemWideDefaultSRE()
 	 */
 	public ISREInstall getSelectedSRE() {
@@ -539,7 +547,7 @@ public class SREConfigurationBlock {
 	/** Replies the specific SARL runtime environment.
 	 *
 	 * @return the SARL runtime environment or <code>null</code> if
-	 * there is no selected SRE.
+	 *     there is no selected SRE.
 	 * @see #isSystemWideDefaultSRE()
 	 */
 	public ISREInstall getSpecificSRE() {
@@ -680,7 +688,8 @@ public class SREConfigurationBlock {
 		return status;
 	}
 
-	/**
+	/** Listener of changes in the configuration block for SREs.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -688,9 +697,7 @@ public class SREConfigurationBlock {
 	 */
 	private class InstallChange implements ISREInstallChangedListener {
 
-		/**
-		 */
-		public InstallChange() {
+		InstallChange() {
 			//
 		}
 
@@ -735,7 +742,7 @@ public class SREConfigurationBlock {
 			}
 		}
 
-		@SuppressWarnings("synthetic-access")
+		@SuppressWarnings({"synthetic-access","checkstyle:variabledeclarationusagedistance"})
 		@Override
 		public void sreAdded(ISREInstall sre) {
 			if (sre.getValidity().isOK()) {
@@ -745,7 +752,7 @@ public class SREConfigurationBlock {
 				updateEnableState();
 				int index = indexOf(current);
 				if (index < 0
-					&& SREConfigurationBlock.this.runtimeEnvironmentCombo.getItemCount() > 0) {
+						&& SREConfigurationBlock.this.runtimeEnvironmentCombo.getItemCount() > 0) {
 					index = 0;
 				}
 				if (index >= 0) {
@@ -754,8 +761,6 @@ public class SREConfigurationBlock {
 			}
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public void defaultSREInstallChanged(ISREInstall previous, ISREInstall current) {
 			updateExternalSREButtonLabels();

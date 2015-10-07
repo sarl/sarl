@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,10 +28,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pair;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
@@ -39,16 +35,18 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pair;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /** This is an extension library for {@link Map maps} in the SARL language.
- * <p>
- * This extension is provided for the elements that are not (yet) provided
- * by the Xbase API.
- * The enhancement of Xbase is asked in the issue
- * {@link "https://bugs.eclipse.org/bugs/show_bug.cgi?id=454319"}.
  *
- * FIXME: Remove if Xbase or Xtend are providing these functions.
+ * <p>This extension is provided for the elements that are not (yet) provided
+ * by the Xbase API.
+ * The enhancement of Xbase is asked in <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=454319>this issue</a>.
+ *
+ * <p>FIXME: Remove if Xbase or Xtend are providing these functions.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -64,7 +62,7 @@ public final class SARLMapExtensions {
 
 	/** Add the given pair into the map.
 	 *
-	 * If the pair key already exists in the map, its value is replaced
+	 * <p>If the pair key already exists in the map, its value is replaced
 	 * by the value in the pair, and the old value in the map is returned.
 	 *
 	 * @param <K> - type of the map keys.
@@ -72,7 +70,7 @@ public final class SARLMapExtensions {
 	 * @param map - the map to update.
 	 * @param entry - the entry (key, value) to add into the map.
 	 * @return the value previously associated to the key, or <code>null</code>
-	 * if the key was not present in the map before the addition.
+	 *     if the key was not present in the map before the addition.
 	 */
 	@Inline(value = "$1.put($2.getKey(), $2.getValue())", statementExpression = true)
 	public static <K, V> V operator_add(Map<K, V> map, Pair<? extends K, ? extends V> entry) {
@@ -81,7 +79,7 @@ public final class SARLMapExtensions {
 
 	/** Add the given entries of the input map into the output map.
 	 *
-	 * If a key in the inputMap already exists in the outputMap, its value is
+	 * <p>If a key in the inputMap already exists in the outputMap, its value is
 	 * replaced in the outputMap by the value from the inputMap.
 	 *
 	 * @param <K> - type of the map keys.
@@ -96,10 +94,10 @@ public final class SARLMapExtensions {
 
 	/** Add the given pair to a given map for obtaining a new map.
 	 *
-	 * The replied map is a view on the given map. It means that any change
+	 * <p>The replied map is a view on the given map. It means that any change
 	 * in the original map is reflected to the result of this operation.
 	 *
-	 * Even if the key of the right operand exists in the left operand, the value in the right operand is preferred.
+	 * <p>Even if the key of the right operand exists in the left operand, the value in the right operand is preferred.
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
@@ -110,17 +108,17 @@ public final class SARLMapExtensions {
 	 */
 	@Pure
 	@Inline(value = "SARLMapExtensions.union($1, Collections.singletonMap($2.getKey(), $2.getValue()))",
-	imported = { SARLMapExtensions.class, Collections.class })
+			imported = { SARLMapExtensions.class, Collections.class })
 	public static <K, V> Map<K, V> operator_plus(Map<K, V> left, final Pair<? extends K, ? extends V> right) {
 		return union(left, Collections.singletonMap(right.getKey(), right.getValue()));
 	}
 
 	/** Merge the two maps.
 	 *
-	 * The replied map is a view on the given map. It means that any change
+	 * <p>The replied map is a view on the given map. It means that any change
 	 * in the original map is reflected to the result of this operation.
 	 *
-	 * If a key exists in the left and right operands, the value in the right operand is preferred.
+	 * <p>If a key exists in the left and right operands, the value in the right operand is preferred.
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
@@ -142,7 +140,7 @@ public final class SARLMapExtensions {
 	 * @param map - the map to update.
 	 * @param key - the key to remove.
 	 * @return the removed value, or <code>null</code> if the key was not
-	 * present in the map.
+	 *     present in the map.
 	 * @since 2.8
 	 */
 	@Inline(value = "$1.remove($2)", statementExpression = true)
@@ -166,7 +164,7 @@ public final class SARLMapExtensions {
 
 	/** Replies the elements of the given map except the pair with the given key.
 	 *
-	 * The replied map is a view on the given map. It means that any change
+	 * <p>The replied map is a view on the given map. It means that any change
 	 * in the original map is reflected to the result of this operation.
 	 *
 	 * @param <K> - type of the map keys.
@@ -187,11 +185,11 @@ public final class SARLMapExtensions {
 
 	/** Replies the elements of the left map without the pairs in the right map.
 	 *
-	 * The difference is an immutable
+	 * <p>The difference is an immutable
 	 * snapshot of the state of the maps at the time this method is called. It
 	 * will never change, even if the maps change at a later time.
 	 *
-	 * Since this method uses {@code HashMap} instances internally, the keys of
+	 * <p>Since this method uses {@code HashMap} instances internally, the keys of
 	 * the supplied maps must be well-behaved with respect to
 	 * {@link Object#equals} and {@link Object#hashCode}.
 	 *
@@ -209,7 +207,7 @@ public final class SARLMapExtensions {
 
 	/** Replies the elements of the given map except the pairs with the given keys.
 	 *
-	 * The replied map is a view on the given map. It means that any change
+	 * <p>The replied map is a view on the given map. It means that any change
 	 * in the original map is reflected to the result of this operation.
 	 *
 	 * @param <K> - type of the map keys.
@@ -235,7 +233,7 @@ public final class SARLMapExtensions {
 	 * @param map - the map to consider.
 	 * @param key - the key of the value.
 	 * @return the value associated to the key, or <code>null</code> if
-	 * the key was not found.
+	 *     the key was not found.
 	 */
 	@Pure
 	@Inline(value = "$1.get($2)")
@@ -245,10 +243,10 @@ public final class SARLMapExtensions {
 
 	/** Merge the given maps.
 	 *
-	 * The replied map is a view on the given two maps.
+	 * <p>The replied map is a view on the given two maps.
 	 * If a key exsits in the two maps, the replied value is the value of the right operand.
 	 *
-	 * The replied map is unmodifiable.
+	 * <p>The replied map is unmodifiable.
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
@@ -260,25 +258,29 @@ public final class SARLMapExtensions {
 		return new MergingMap<>(left, right);
 	}
 
-	/**
+	/** Map implementation that is merging two maps.
+	 *
+	 * @param <K> the type of the keys.
+	 * @param <V> the type of the values in the maps.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
-	 * @param <K>
-	 * @param <V>
 	 */
 	private static class MergingMap<K, V> implements Map<K, V> {
 
 		private final Map<? extends K, ? extends V> left;
+
 		private final Map<? extends K, ? extends V> filteredLeft;
+
 		private final Map<? extends K, ? extends V> right;
 
-		/**
+		/** Construct the wrapping map.
+		 *
 		 * @param left - the left operand to merge.
 		 * @param right - the right operand to merge.
 		 */
-		public MergingMap(Map<? extends K, ? extends V> left, Map<? extends K, ? extends V> right) {
+		MergingMap(Map<? extends K, ? extends V> left, Map<? extends K, ? extends V> right) {
 			this.left = left;
 			this.right = right;
 			this.filteredLeft = Maps.filterKeys(this.left, new Predicate<K>() {
@@ -333,7 +335,7 @@ public final class SARLMapExtensions {
 		}
 
 		@Override
-		public void putAll(Map<? extends K, ? extends V> m) {
+		public void putAll(Map<? extends K, ? extends V> map) {
 			throw new UnsupportedOperationException();
 		}
 
@@ -360,7 +362,9 @@ public final class SARLMapExtensions {
 			return Sets.union(ks1, ks2);
 		}
 
-		/**
+		/** Implementation of the collection of values in a map
+		 * that is representing the merging of two maps.
+		 *
 		 * @author $Author: sgalland$
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
@@ -369,7 +373,7 @@ public final class SARLMapExtensions {
 		@SuppressWarnings("synthetic-access")
 		private class MergingCollection implements Collection<V> {
 
-			public MergingCollection() {
+			MergingCollection() {
 				//
 			}
 
@@ -384,8 +388,8 @@ public final class SARLMapExtensions {
 			}
 
 			@Override
-			public boolean contains(Object o) {
-				return MergingMap.this.containsValue(o);
+			public boolean contains(Object object) {
+				return MergingMap.this.containsValue(object);
 			}
 
 			@Override
@@ -407,8 +411,8 @@ public final class SARLMapExtensions {
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public <T> T[] toArray(T[] a) {
-				T[] tab = a;
+			public <T> T[] toArray(T[] output) {
+				T[] tab = output;
 				int size = MergingMap.this.size();
 				if (tab == null || tab.length < size) {
 					tab = (T[]) Array.newInstance(Object.class, size);
@@ -421,8 +425,8 @@ public final class SARLMapExtensions {
 			}
 
 			@Override
-			public boolean containsAll(Collection<?> c) {
-				for (Object o : c) {
+			public boolean containsAll(Collection<?> collection) {
+				for (Object o : collection) {
 					if (!MergingMap.this.containsValue(o)) {
 						return false;
 					}
@@ -431,27 +435,27 @@ public final class SARLMapExtensions {
 			}
 
 			@Override
-			public boolean add(V e) {
+			public boolean add(V element) {
 				throw new UnsupportedOperationException();
 			}
 
 			@Override
-			public boolean remove(Object o) {
+			public boolean remove(Object object) {
 				throw new UnsupportedOperationException();
 			}
 
 			@Override
-			public boolean addAll(Collection<? extends V> c) {
+			public boolean addAll(Collection<? extends V> collection) {
 				throw new UnsupportedOperationException();
 			}
 
 			@Override
-			public boolean removeAll(Collection<?> c) {
+			public boolean removeAll(Collection<?> collection) {
 				throw new UnsupportedOperationException();
 			}
 
 			@Override
-			public boolean retainAll(Collection<?> c) {
+			public boolean retainAll(Collection<?> collection) {
 				throw new UnsupportedOperationException();
 			}
 

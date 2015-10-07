@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,12 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.findReferences;
+package io.sarl.lang.findreferences;
 
 import java.util.Collections;
 import java.util.Set;
 
+import com.google.inject.Inject;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -36,11 +37,9 @@ import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 
-import com.google.inject.Inject;
-
 /** Helper for finding declarator data.
  *
- * This class is adapted from the Xtend private API.
+ * <p>This class is adapted from the Xtend private API.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

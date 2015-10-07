@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.validation;
 
 import org.eclipse.xtend.core.validation.XtendConfigurableIssueCodes;
@@ -42,55 +43,55 @@ public class SARLConfigurableIssueCodesProvider extends XtendConfigurableIssueCo
 	}
 
 	@Override
-	protected void initialize(IAcceptor<PreferenceKey> iAcceptor) {
-		super.initialize(iAcceptor);
+	protected void initialize(IAcceptor<PreferenceKey> acceptor) {
+		super.initialize(acceptor);
 
 		// Override the Xbase configuration
-		iAcceptor.accept(create(
+		acceptor.accept(create(
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
 				SeverityConverter.SEVERITY_WARNING));
-		iAcceptor.accept(create(
+		acceptor.accept(create(
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISCOURAGED,
 				SeverityConverter.SEVERITY_WARNING));
 
 		// Override the Xtend configuration
-		iAcceptor.accept(create(
+		acceptor.accept(create(
 				org.eclipse.xtend.core.validation.IssueCodes.WRONG_PACKAGE,
 				SeverityConverter.SEVERITY_WARNING));
-		iAcceptor.accept(create(
+		acceptor.accept(create(
 				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
 				SeverityConverter.SEVERITY_WARNING));
 
 		// Add warnings from SARL
-		iAcceptor.accept(create(
+		acceptor.accept(create(
 				IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
 				SeverityConverter.SEVERITY_WARNING));
 
-		iAcceptor.accept(create(
+		acceptor.accept(create(
 				IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION,
 				SeverityConverter.SEVERITY_WARNING));
 
-		iAcceptor.accept(create(
+		acceptor.accept(create(
 				IssueCodes.DISCOURAGED_CAPACITY_DEFINITION,
 				SeverityConverter.SEVERITY_WARNING));
 
-		iAcceptor.accept(create(
+		acceptor.accept(create(
 				IssueCodes.DISCOURAGED_FUNCTION_NAME,
 				SeverityConverter.SEVERITY_WARNING));
 
-		iAcceptor.accept(create(
+		acceptor.accept(create(
 				IssueCodes.UNREACHABLE_BEHAVIOR_UNIT,
 				SeverityConverter.SEVERITY_WARNING));
 
-		iAcceptor.accept(create(
+		acceptor.accept(create(
 				IssueCodes.UNUSED_AGENT_CAPACITY,
 				SeverityConverter.SEVERITY_WARNING));
 
-		iAcceptor.accept(create(
+		acceptor.accept(create(
 				IssueCodes.REDUNDANT_CAPACITY_USE,
 				SeverityConverter.SEVERITY_WARNING));
 
-		iAcceptor.accept(create(
+		acceptor.accept(create(
 				IssueCodes.RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED,
 				SeverityConverter.SEVERITY_WARNING));
 	}

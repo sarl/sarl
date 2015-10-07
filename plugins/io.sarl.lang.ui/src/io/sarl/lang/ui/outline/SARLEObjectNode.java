@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.ui.outline;
 
 import org.eclipse.emf.ecore.EObject;
@@ -39,15 +40,15 @@ class SARLEObjectNode extends EObjectNode {
 	private boolean isStatic;
 
 	/**
-	 * @param eObject - the object represented by the node.
+	 * @param object - the object represented by the node.
 	 * @param parent - the parent node.
 	 * @param imageDescriptor - the descriptor of the image related to the node..
 	 * @param text - the text for the node.
 	 * @param isLeaf - indicates if the node is a leaf.
 	 */
-	public SARLEObjectNode(EObject eObject, IOutlineNode parent, Image imageDescriptor, Object text,
+	SARLEObjectNode(EObject object, IOutlineNode parent, Image imageDescriptor, Object text,
 			boolean isLeaf) {
-		super(eObject, parent, imageDescriptor, text, isLeaf);
+		super(object, parent, imageDescriptor, text, isLeaf);
 	}
 
 	/** Change the static flag for the node.

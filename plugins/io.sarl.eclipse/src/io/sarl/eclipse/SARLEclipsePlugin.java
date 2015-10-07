@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.eclipse;
 
 import java.util.Arrays;
@@ -55,7 +56,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 
 	private static SARLEclipsePlugin instance;
 
-	/**
+	/** Construct an Eclipse plugin for SARL.
 	 */
 	public SARLEclipsePlugin() {
 		setDefault(this);
@@ -63,7 +64,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 
 	/** Replies the logger.
 	 *
-	 * Thus function is a non-final version of {@link #getLog()}.
+	 * <p>Thus function is a non-final version of {@link #getLog()}.
 	 *
 	 * @return the logger.
 	 */
@@ -161,14 +162,14 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @return the status.
 	 */
 	public IStatus createStatus(int severity, Throwable cause) {
-		String m = cause.getLocalizedMessage();
-		if (Strings.isNullOrEmpty(m)) {
-			m = cause.getMessage();
+		String message = cause.getLocalizedMessage();
+		if (Strings.isNullOrEmpty(message)) {
+			message = cause.getMessage();
 		}
-		if (Strings.isNullOrEmpty(m)) {
-			m = cause.getClass().getSimpleName();
+		if (Strings.isNullOrEmpty(message)) {
+			message = cause.getClass().getSimpleName();
 		}
-		return createStatus(severity, m, cause);
+		return createStatus(severity, message, cause);
 	}
 
 	/** Create a status.
@@ -179,23 +180,14 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @return the status.
 	 */
 	public IStatus createStatus(int severity, int code, Throwable cause) {
-		String m = cause.getLocalizedMessage();
-		if (Strings.isNullOrEmpty(m)) {
-			m = cause.getMessage();
+		String message = cause.getLocalizedMessage();
+		if (Strings.isNullOrEmpty(message)) {
+			message = cause.getMessage();
 		}
-		if (Strings.isNullOrEmpty(m)) {
-			m = cause.getClass().getSimpleName();
+		if (Strings.isNullOrEmpty(message)) {
+			message = cause.getClass().getSimpleName();
 		}
-		return createStatus(severity, code, m, cause);
-	}
-
-	/** Create a ok status.
-	 *
-	 * @return the status.
-	 */
-	@SuppressWarnings("static-method")
-	public IStatus createOkStatus() {
-		return Status.OK_STATUS;
+		return createStatus(severity, code, message, cause);
 	}
 
 	/** Create a status.
@@ -221,6 +213,15 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 		return new Status(severity, PLUGIN_ID, code, message, null);
 	}
 
+	/** Create a ok status.
+	 *
+	 * @return the status.
+	 */
+	@SuppressWarnings("static-method")
+	public IStatus createOkStatus() {
+		return Status.OK_STATUS;
+	}
+
 	/** Create a multistatus.
 	 *
 	 * @param status - the status to put in the same status instance.
@@ -238,16 +239,16 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	@SuppressWarnings("static-method")
 	public IStatus createMultiStatus(Iterable<? extends IStatus> status) {
 		IStatus max = findMax(status);
-		MultiStatus mStatus;
+		MultiStatus multiStatus;
 		if (max == null) {
-			mStatus = new MultiStatus(PLUGIN_ID, 0, null, null);
+			multiStatus = new MultiStatus(PLUGIN_ID, 0, null, null);
 		} else {
-			mStatus = new MultiStatus(PLUGIN_ID, 0, max.getMessage(), max.getException());
+			multiStatus = new MultiStatus(PLUGIN_ID, 0, max.getMessage(), max.getException());
 		}
 		for (IStatus s : status) {
-			mStatus.add(s);
+			multiStatus.add(s);
 		}
-		return mStatus;
+		return multiStatus;
 	}
 
 	private static IStatus findMax(Iterable<? extends IStatus> status) {
@@ -310,18 +311,19 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	/**
 	 * Logs an internal error with the specified throwable.
 	 *
-	 * @param e the exception to be logged
+	 * @param exception the exception to be logged
 	 */
-	public void log(Throwable e) {
-		if (e instanceof CoreException) {
+	public void log(Throwable exception) {
+		if (exception instanceof CoreException) {
 			getILog().log(new Status(IStatus.ERROR, PLUGIN_ID,
-					e.getMessage(), e.getCause()));
-		} else if (e != null) {
+					exception.getMessage(),
+					exception.getCause()));
+		} else if (exception != null) {
 			getILog().log(new Status(IStatus.ERROR, PLUGIN_ID,
-					e.getMessage(), e));
+					exception.getMessage(), exception));
 		} else {
 			getILog().log(new Status(IStatus.ERROR, PLUGIN_ID,
-					"Internal Error", e));   //$NON-NLS-1$
+					"Internal Error", exception));   //$NON-NLS-1$
 		}
 	}
 

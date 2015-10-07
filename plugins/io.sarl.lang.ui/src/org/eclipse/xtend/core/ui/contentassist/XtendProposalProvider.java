@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,9 @@ package org.eclipse.xtend.core.ui.contentassist;
 
 /** This class is defined for solving a bug in the Xtext/Xtend generators.
  *
- * See {@link "https://www.eclipse.org/forums/index.php?t=msg&th=303392&goto=812958&#msg_812958"}.
+ * <p>See <a href="https://www.eclipse.org/forums/index.php?t=msg&th=303392&goto=812958&#msg_812958">the discussion</a>.
  *
- * FIXME: Remove this class when the MWE2 generator fragment will no more extends the "xtend.core.ui" class.
+ * <p>FIXME: Remove this class when the MWE2 generator fragment will no more extends the "xtend.core.ui" class.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

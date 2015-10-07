@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.core;
 
 import java.io.Serializable;
@@ -38,7 +39,9 @@ public class SpaceID implements Serializable, Comparable<SpaceID> {
 	private static final long serialVersionUID = 8764568066583474825L;
 
 	private final UUID id;
+
 	private final UUID contextID;
+
 	private final transient Class<? extends SpaceSpecification<?>> spaceSpec;
 
 	/** Constructs a space ID.
@@ -46,7 +49,7 @@ public class SpaceID implements Serializable, Comparable<SpaceID> {
 	 * @param contextID - the unique ID of the context that contains the space (cannot be <code>null</code>).
 	 * @param id - the unique ID of the space (cannot be <code>null</code>).
 	 * @param spaceSpec - the specification of the space for which the ID must be created
-	 * 	(could be <code>null</code>).
+	 * 	   (could be <code>null</code>).
 	 */
 	public SpaceID(UUID contextID, UUID id, Class<? extends SpaceSpecification<?>> spaceSpec) {
 		assert (contextID != null);
@@ -150,12 +153,12 @@ public class SpaceID implements Serializable, Comparable<SpaceID> {
 
 	@Override
 	@Pure
-	public int compareTo(SpaceID o) {
-		int cmp = this.contextID.compareTo(o.contextID);
+	public int compareTo(SpaceID otherID) {
+		int cmp = this.contextID.compareTo(otherID.contextID);
 		if (cmp != 0) {
 			return cmp;
 		}
-		return this.id.compareTo(o.id);
+		return this.id.compareTo(otherID.id);
 	}
 
 }

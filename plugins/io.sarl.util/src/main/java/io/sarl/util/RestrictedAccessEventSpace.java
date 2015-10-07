@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.util;
+
+import java.security.Principal;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.EventSpace;
-
-import java.security.Principal;
 
 
 
@@ -45,7 +46,7 @@ public interface RestrictedAccessEventSpace extends EventSpace {
 	 * After registering a new agent, the Space should emit a MemberJoined
 	 * event where the source is the address of the newly registered agent.
 	 *
-	 * If the agent is already registered the address is return, but the listener is not replaced.
+	 * <p>If the agent is already registered the address is return, but the listener is not replaced.
 	 *
 	 * @param entity - the event listener to register.
 	 * @param requester - object that is requesting the access.
@@ -59,7 +60,7 @@ public interface RestrictedAccessEventSpace extends EventSpace {
 	 * After registering a new agent, the Space should emit a MemberJoined
 	 * event where the source is the address of the newly registered agent.
 	 *
-	 * If the agent is already registered the address is return, but the listener is not replaced.
+	 * <p>If the agent is already registered the address is return, but the listener is not replaced.
 	 *
 	 * @param <P> - type of the entity to register.
 	 * @param entity - object that is requesting the access.

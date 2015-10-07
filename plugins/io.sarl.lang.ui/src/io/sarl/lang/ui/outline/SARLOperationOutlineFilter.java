@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.ui.outline;
 
 import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_ACTION;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_CONSTRUCTOR;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FUNCTION;
 
+import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.jface.action.Action;
 import org.eclipse.xtext.ui.IImageHelper.IImageDescriptorHelper;
@@ -32,12 +34,10 @@ import org.eclipse.xtext.ui.editor.outline.actions.AbstractFilterOutlineContribu
 import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
 
-import com.google.inject.Inject;
-
 /**
  * Customize the filter/sorter of the outline.
  *
- * This filter permits to hide/show the actions.
+ * <p>This filter permits to hide/show the actions.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

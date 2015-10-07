@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.annotation;
 
-import io.sarl.lang.core.Capacity;
+package io.sarl.lang.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import io.sarl.lang.core.Capacity;
 
 /** Annotation for marking a function as imported due to a capacity use.
  *
@@ -39,6 +40,8 @@ import java.lang.annotation.Target;
 public @interface ImportedCapacityFeature {
 
 	/** Replies the capacity that is the source of the annotated method.
+	 *
+	 * @return the capacity.
 	 */
 	Class<? extends Capacity> value();
 

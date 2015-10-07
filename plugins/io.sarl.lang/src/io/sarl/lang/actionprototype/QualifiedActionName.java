@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.actionprototype;
 
 import java.io.Serializable;
@@ -37,7 +38,9 @@ public class QualifiedActionName implements Cloneable, Serializable, Comparable<
 	private static final long serialVersionUID = -5590450855487852546L;
 
 	private String resourceID;
+
 	private String declaringType;
+
 	private String functionName;
 
 	/**
@@ -100,11 +103,11 @@ public class QualifiedActionName implements Cloneable, Serializable, Comparable<
 
 	@Override
 	public int hashCode() {
-		int h = 1;
-		h = 31 * h + this.resourceID.hashCode();
-		h = 31 * h + this.declaringType.hashCode();
-		h = 31 * h + this.functionName.hashCode();
-		return h;
+		int hash = 1;
+		hash = 31 * hash + this.resourceID.hashCode();
+		hash = 31 * hash + this.declaringType.hashCode();
+		hash = 31 * hash + this.functionName.hashCode();
+		return hash;
 	}
 
 	@Override
@@ -121,19 +124,19 @@ public class QualifiedActionName implements Cloneable, Serializable, Comparable<
 	}
 
 	@Override
-	public int compareTo(QualifiedActionName o) {
-		if (o == null) {
+	public int compareTo(QualifiedActionName otherName) {
+		if (otherName == null) {
 			return Integer.MAX_VALUE;
 		}
-		int cmp = this.resourceID.compareTo(o.resourceID);
+		int cmp = this.resourceID.compareTo(otherName.resourceID);
 		if (cmp != 0) {
 			return cmp;
 		}
-		cmp = this.declaringType.compareTo(o.declaringType);
+		cmp = this.declaringType.compareTo(otherName.declaringType);
 		if (cmp != 0) {
 			return cmp;
 		}
-		return this.functionName.compareTo(o.functionName);
+		return this.functionName.compareTo(otherName.functionName);
 	}
 
 }

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.wizards.sreinstall;
 
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.runtime.ISREInstall;
+package io.sarl.eclipse.wizards.sreinstall;
 
 import java.text.MessageFormat;
 
@@ -34,6 +32,9 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 
 import com.google.common.base.Strings;
+
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.runtime.ISREInstall;
 
 /**
  * Abstract implementation of a page for the SRE installation wizard.
@@ -63,9 +64,9 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 *
 	 * @param pageName the name of the page
 	 * @param title the title for this wizard page,
-	 *   or <code>null</code> if none
+	 *     or <code>null</code> if none.
 	 * @param titleImage the image descriptor for the title of this wizard page,
-	 *   or <code>null</code> if none
+	 *     or <code>null</code> if none.
 	 */
 	protected AbstractSREInstallPage(String pageName, String title, ImageDescriptor titleImage) {
 		super(pageName, title, titleImage);
@@ -123,11 +124,11 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 					ISREInstall.CODE_NAME,
 					Messages.SREInstallWizard_1);
 		} else {
-			IStatus s = ResourcesPlugin.getWorkspace().validateName(name, IResource.FILE);
-			if (!s.isOK()) {
+			IStatus status = ResourcesPlugin.getWorkspace().validateName(name, IResource.FILE);
+			if (!status.isOK()) {
 				nameStatus = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 						ISREInstall.CODE_NAME,
-						MessageFormat.format(Messages.SREInstallWizard_2, s.getMessage()));
+						MessageFormat.format(Messages.SREInstallWizard_2, status.getMessage()));
 			}
 		}
 		return nameStatus;
@@ -135,8 +136,8 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 
 	/** Change the status associated to this page.
 	 * Any previous status is overrided by the given value.
-	 * <p>
-	 * You must call {@link #updatePageStatus()} after
+	 *
+	 * <p>You must call {@link #updatePageStatus()} after
 	 * invoking this methid.
 	 *
 	 * @param status - the new status.
@@ -153,9 +154,9 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 */
 	private boolean isDuplicateName(String name) {
 		if (this.existingNames != null) {
-			String n = Strings.nullToEmpty(name);
-			for (String eName : this.existingNames) {
-				if (n.equals(eName)) {
+			String newName = Strings.nullToEmpty(name);
+			for (String existingName : this.existingNames) {
+				if (newName.equals(existingName)) {
 					return true;
 				}
 			}

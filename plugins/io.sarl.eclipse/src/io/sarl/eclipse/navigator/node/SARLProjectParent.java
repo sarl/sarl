@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,15 +18,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.eclipse.navigator.node;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.swt.graphics.Image;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.navigator.ISARLProjectElement;
 import io.sarl.eclipse.navigator.SARLProjectNavigator;
-
-import org.eclipse.core.resources.IProject;
-import org.eclipse.swt.graphics.Image;
 
 /**
  * Provides the project parent of a SARL custom project to enable a custom
@@ -50,10 +51,10 @@ public class SARLProjectParent implements ISARLProjectElement {
 
 	/** Construct a parent element in a SARL project.
 	 *
-	 * @param iProject - the project.
+	 * @param project - the project.
 	 */
-	public SARLProjectParent(IProject iProject) {
-		this.project = iProject;
+	public SARLProjectParent(IProject project) {
+		this.project = project;
 	}
 
 	@Override
@@ -66,8 +67,8 @@ public class SARLProjectParent implements ISARLProjectElement {
 
 	private ISARLProjectElement[] initializeChildren() {
 		ISARLProjectElement[] ichildren = {
-				new SARLProjectSARLNode(this),
-				new SARLProjectJAVANode(this),
+			new SARLProjectSARLNode(this),
+			new SARLProjectJAVANode(this),
 		};
 		return ichildren;
 	}

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.util;
 
 import java.util.Comparator;
@@ -37,27 +38,21 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  */
 public class FormalParameterListComparator implements Comparator<EList<? extends XtendParameter>> {
 
-	/** Construct a comparator of formal parameter lists.
-	 */
-	public FormalParameterListComparator() {
-		//
-	}
-
 	@Override
-	public int compare(EList<? extends XtendParameter> a, EList<? extends XtendParameter> b) {
-		if (a == b) {
+	public int compare(EList<? extends XtendParameter> left, EList<? extends XtendParameter> right) {
+		if (left == right) {
 			return 0;
 		}
-		if (a == null) {
+		if (left == null) {
 			return Integer.MIN_VALUE;
 		}
-		if (b == null) {
+		if (right == null) {
 			return Integer.MAX_VALUE;
 		}
-		int cmp = Integer.compare(a.size(), b.size());
+		int cmp = Integer.compare(left.size(), right.size());
 		if (cmp == 0) {
-			Iterator<? extends XtendParameter> i1 = a.iterator();
-			Iterator<? extends XtendParameter> i2 = b.iterator();
+			Iterator<? extends XtendParameter> i1 = left.iterator();
+			Iterator<? extends XtendParameter> i2 = right.iterator();
 			while (cmp == 0 && i1.hasNext() && i2.hasNext()) {
 				cmp = compare(i1.next(), i2.next());
 			}
@@ -70,9 +65,9 @@ public class FormalParameterListComparator implements Comparator<EList<? extends
 	 * @param p1 - the first parameter to compare.
 	 * @param p2 - the second parameter to compare.
 	 * @return A negative value if <code>p1</code> is
-	 * lower than <code>p2</code>, a positive value if
-	 * <code>p1</code> is greater than <code>p2</code>,
-	 * otherwise <code>0</code>.
+	 *     lower than <code>p2</code>, a positive value if
+	 *     <code>p1</code> is greater than <code>p2</code>,
+	 *     otherwise <code>0</code>.
 	 */
 	public static int compare(XtendParameter p1, XtendParameter p2) {
 		if (p1 != p2) {

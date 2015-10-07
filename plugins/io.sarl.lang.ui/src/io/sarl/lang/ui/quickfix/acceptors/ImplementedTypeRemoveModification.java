@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,19 +18,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.quickfix.acceptors;
 
-import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
+package io.sarl.lang.ui.quickfix.acceptors;
 
 import java.text.MessageFormat;
 
+import com.google.common.base.Strings;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
 
-import com.google.common.base.Strings;
+import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 
 /**
  * Remove an implemented type.
@@ -53,7 +53,7 @@ public final class ImplementedTypeRemoveModification extends SARLSemanticModific
 
 	/** Create the quick fix if needed.
 	 *
-	 * The first user data is the name of the type to remove.
+	 * <p>The first user data is the name of the type to remove.
 	 * The second parameter may be the type of the removal (see {@link RemovalType}).
 	 *
 	 * @param provider - the quick fix provider.
@@ -66,7 +66,7 @@ public final class ImplementedTypeRemoveModification extends SARLSemanticModific
 
 	/** Create the quick fix if needed.
 	 *
-	 * The first user data is the name of the type to remove.
+	 * <p>The first user data is the name of the type to remove.
 	 * The second parameter may be the type of the removal (see {@link RemovalType}).
 	 *
 	 * @param provider - the quick fix provider.
@@ -143,7 +143,7 @@ public final class ImplementedTypeRemoveModification extends SARLSemanticModific
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static enum RemovalType {
+	public enum RemovalType {
 		/** Remove to the previous separator.
 		 */
 		PRE,

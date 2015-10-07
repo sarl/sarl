@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,18 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launching.runner;
 
-import io.sarl.eclipse.SARLEclipseConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
-import io.sarl.eclipse.launching.dialog.RootContextIdentifierType;
-import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProvider;
-import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.runtime.ProjectSREProvider;
-import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
-import io.sarl.eclipse.runtime.SARLRuntime;
-import io.sarl.eclipse.runtime.SREConstants;
+package io.sarl.eclipse.launching.runner;
 
 import java.io.File;
 import java.lang.ref.SoftReference;
@@ -70,8 +60,22 @@ import org.eclipse.xtext.xbase.lib.Pair;
 
 import com.google.common.base.Strings;
 
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
+import io.sarl.eclipse.launching.dialog.RootContextIdentifierType;
+import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProvider;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.ProjectSREProvider;
+import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
+import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.eclipse.runtime.SREConstants;
+
 /**
  * Implementation of an eclipse LauncConfigurationDelegate to launch SARL.
+ *
+ * <p>This delegate is in charge of running a SARL application with the specific
+ * SRE.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -81,9 +85,10 @@ import com.google.common.base.Strings;
 public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigurationDelegate {
 
 	private SoftReference<IRuntimeClasspathEntry[]> unresolvedClasspathEntries;
+
 	private SoftReference<String[]> classpathEntries;
 
-	/**
+	/** Construct a delegate for running a SARL application.
 	 */
 	public SARLLaunchConfigurationDelegate() {
 		//
@@ -103,8 +108,8 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			SubMonitor progressMonitor = SubMonitor.convert(
 					monitor,
 					MessageFormat.format(Messages.SARLLaunchConfigurationDelegate_1,
-							configuration.getName()),
-							process.getStepNumber());
+					configuration.getName()),
+					process.getStepNumber());
 			while (process.prepare(progressMonitor.newChild(1))) {
 				if (progressMonitor.isCanceled()) {
 					return;
@@ -150,7 +155,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 *
 	 * @param configuration - launch configuration
 	 * @throws CoreException if unable to retrieve the attribute or the attribute is
-	 * unspecified
+	 *     unspecified
 	 */
 	protected void verifyAgentName(ILaunchConfiguration configuration) throws CoreException {
 		String name = getAgentName(configuration);
@@ -221,8 +226,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		return userEntries;
 	}
 
-	private static Pair<IRuntimeClasspathEntry, Integer>
-	getJreEntry(IRuntimeClasspathEntry[] entries,
+	private static Pair<IRuntimeClasspathEntry, Integer> getJreEntry(IRuntimeClasspathEntry[] entries,
 			List<IRuntimeClasspathEntry> bootEntriesPrepend) {
 		int index = 0;
 		IRuntimeClasspathEntry jreEntry = null;
@@ -240,6 +244,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		return Pair.of(jreEntry, index);
 	}
 
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	private void getBootpathExtForJRE(ILaunchConfiguration configuration,
 			IRuntimeClasspathEntry[] entries, IRuntimeClasspathEntry jreEntry, int idx,
 			String[] entriesPrep, IRuntimeClasspathEntry[] bootEntriesPrep, String[][] bootpathInfo)
@@ -586,6 +591,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 * {@inheritDoc}
 	 */
 	@Override
+	@SuppressWarnings("checkstyle:variabledeclarationusagedistance")
 	public String getProgramArguments(ILaunchConfiguration configuration) throws CoreException {
 		// The following line get the boot agent arguments
 		String bootAgentArgs = super.getProgramArguments(configuration);
@@ -601,8 +607,8 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 		// Retreive the SRE arguments from the launch configuration
 		String sreArgs2 = substitutor.performStringSubstitution(configuration.getAttribute(
-						SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS,
-						Strings.nullToEmpty(null)));
+				SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS,
+				Strings.nullToEmpty(null)));
 
 		// Retreive the classname of the boot agent.
 		String bootAgent = getAgentName(configuration);
@@ -671,16 +677,16 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	}
 
 	private static String join(String... values) {
-		StringBuilder b = new StringBuilder();
+		StringBuilder buffer = new StringBuilder();
 		for (String value : values) {
 			if (!Strings.isNullOrEmpty(value)) {
-				if (b.length() > 0) {
-					b.append(" "); //$NON-NLS-1$
+				if (buffer.length() > 0) {
+					buffer.append(" "); //$NON-NLS-1$
 				}
-				b.append(value);
+				buffer.append(value);
 			}
 		}
-		return b.toString();
+		return buffer.toString();
 	}
 
 	/** Definition of the launching process splitted in separated steps for
@@ -694,19 +700,29 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	private class LaunchProcess {
 
 		private final ILaunchConfiguration configuration;
+
 		private final String mode;
+
 		private final ILaunch launch;
 
 		private PreparationProcessState preparationState = PreparationProcessState.STEP_0;
+
 		private RunProcessState runState = RunProcessState.STEP_0;
 
 		private String mainTypeName;
+
 		private IVMRunner runner;
+
 		private String workingDirName;
+
 		private String[] envp;
+
 		private ExecutionArguments execArgs;
+
 		private Map<String, Object> vmAttributesMap;
+
 		private String[] classpath;
+
 		private VMRunnerConfiguration runConfig;
 
 		/**
@@ -714,7 +730,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		 * @param mode - the launching mode.
 		 * @param launch - the launching
 		 */
-		public LaunchProcess(ILaunchConfiguration configuration, String mode, ILaunch launch) {
+		LaunchProcess(ILaunchConfiguration configuration, String mode, ILaunch launch) {
 			this.configuration = configuration;
 			this.mode = mode;
 			this.launch = launch;
@@ -877,7 +893,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static enum PreparationProcessState {
+	private enum PreparationProcessState {
 		STEP_0, STEP_1, STEP_2, STEP_3, STEP_4, STEP_5;
 
 		public PreparationProcessState next() {
@@ -898,7 +914,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static enum RunProcessState {
+	private enum RunProcessState {
 		STEP_0, STEP_1;
 
 		public RunProcessState next() {

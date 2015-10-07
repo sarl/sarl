@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.core;
 
 
 /**
  * The Specification of an Interaction Space.
  *
- * The {@link SpaceSpecification} defines the rules (including action and
+ * <p>The {@link SpaceSpecification} defines the rules (including action and
  * perception) for interacting within a given set of Spaces respecting this
  * specification.
  *

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,15 +18,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.actionprototype;
 
-import io.sarl.lang.sarl.SarlFormalParameter;
+package io.sarl.lang.actionprototype;
 
 import java.util.List;
 
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+
+import io.sarl.lang.sarl.SarlFormalParameter;
 
 /**
  * Provides additional function signatures according the semantic
@@ -85,8 +86,8 @@ public interface ActionPrototypeProvider {
 	ActionParameterTypes createParameterTypes(boolean isVarargs, FormalParameterProvider provider);
 
 	/** Build an identifier with the given parameters.
-	 * <p>
-	 * The given parameter must following the format of the value given
+	 *
+	 * <p>The given parameter must following the format of the value given
 	 * by {@link ActionParameterTypes#toString()}.
 	 *
 	 * @param parameters - the string representation of the parameters.

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.generator.helper;
-
-
-import io.sarl.lang.sarl.SarlScript;
 
 import java.lang.ref.WeakReference;
 
@@ -34,6 +32,8 @@ import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XImportSection;
 import org.eclipse.xtext.xtype.XtypeFactory;
 
+import io.sarl.lang.sarl.SarlScript;
+
 /** Describes a generated code.
  *
  * @author $Author: sgalland$
@@ -44,9 +44,13 @@ import org.eclipse.xtext.xtype.XtypeFactory;
 public class SarlEcoreCode {
 
 	private final ImportManager importManager = new ImportManager();
+
 	private final SarlScript script;
+
 	private final ResourceSet resourceSet;
+
 	private final TypeReferences typeReferences;
+
 	private final WeakReference<ECoreGeneratorHelper> generator;
 
 	/**
@@ -97,7 +101,7 @@ public class SarlEcoreCode {
 
 	/** Finialize the script.
 	 *
-	 * The finalization includes: <ul>
+	 * <p>The finalization includes: <ul>
 	 * <li>The import section is created.</li>
 	 * </ul>
 	 */
@@ -115,7 +119,7 @@ public class SarlEcoreCode {
 		for (String importName : this.importManager.getImports()) {
 			JvmType type = this.typeReferences.findDeclaredType(importName, this.script);
 			if (type instanceof JvmDeclaredType
-				&& concreteImports.addImportFor(type)) {
+					&& concreteImports.addImportFor(type)) {
 				XImportDeclaration declaration = XtypeFactory.eINSTANCE.createXImportDeclaration();
 				declaration.setImportedType((JvmDeclaredType) type);
 				if (importSection == null) {

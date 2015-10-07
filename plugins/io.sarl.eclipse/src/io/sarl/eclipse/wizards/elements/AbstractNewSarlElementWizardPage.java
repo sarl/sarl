@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.wizards.elements;
 
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.lang.generator.helper.ECoreGeneratorHelper;
+package io.sarl.eclipse.wizards.elements;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -79,6 +77,9 @@ import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
 
 import com.google.common.base.Strings;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.lang.generator.helper.ECoreGeneratorHelper;
+
 /**
  * Abstract implementation of a wizard page for creating new SARL elements.
  *
@@ -98,7 +99,9 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	protected static final int COLUMNS = 4;
 
 	private static final int STEPS = 4;
+
 	private static final String SETTINGS_CREATECONSTR = "create_constructor"; //$NON-NLS-1$
+
 	private static final String SETTINGS_CREATEUNIMPLEMENTED = "create_unimplemented"; //$NON-NLS-1$
 
 	/** The generator for the SALR language.
@@ -119,9 +122,13 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	private IWhitespaceInformationProvider whitespaceInformationProvider;
 
 	private String sarlFileExtension;
+
 	private IResource resource;
+
 	private SelectionButtonDialogFieldGroup methodStubsButtons;
+
 	private boolean isConstructorCreationEnabled;
+
 	private boolean isInheritedCreationEnabled;
 
 	/**
@@ -248,7 +255,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	/** Invoked for obtaining the error message related to an existing type.
 	 *
-	 * The following parameters will be replaced in the error message according to
+	 * <p>The following parameters will be replaced in the error message according to
 	 * the {@link MessageFormat} utility class: <ul>
 	 * <li><code>{0}</code>: the name of the type.</li>
 	 * </ul>
@@ -259,7 +266,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	/** Invoked for obtaining the error message related to an invalid subtype for the new element.
 	 *
-	 * The following parameters will be replaced in the error message according to
+	 * <p>The following parameters will be replaced in the error message according to
 	 * the {@link MessageFormat} utility class: <ul>
 	 * <li><code>{0}</code>: the name of the selected type.</li>
 	 * </ul>
@@ -273,7 +280,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	/** Invoked for obtaining the error message related to an invalid sub-interface for the new element.
 	 *
-	 * The following parameters will be replaced in the error message according to
+	 * <p>The following parameters will be replaced in the error message according to
 	 * the {@link MessageFormat} utility class: <ul>
 	 * <li><code>{0}</code>: the name of the selected type.</li>
 	 * </ul>
@@ -287,7 +294,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	/** Invoked for obtaining the error message related to a missed super-interface.
 	 *
-	 * The following parameters will be replaced in the error message according to
+	 * <p>The following parameters will be replaced in the error message according to
 	 * the {@link MessageFormat} utility class: <ul>
 	 * <li><code>{0}</code>: the name of the missed type.</li>
 	 * </ul>
@@ -336,7 +343,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 *
 	 * @param className - the name of the class to be tested.
 	 * @return <code>true</code> if the given name is the one of a subtype
-	 * of the expected root type.
+	 *     of the expected root type.
 	 * @throws JavaModelException if there is a problem for retreiving the Java information.
 	 */
 	protected boolean isValidExtendedType(String className) throws JavaModelException {
@@ -360,7 +367,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 *
 	 * @param className - the name of the class to be tested.
 	 * @return <code>true</code> if the given name implements a type
-	 * of the expected root type.
+	 *     of the expected root type.
 	 * @throws JavaModelException if there is a problem for retreiving the Java information.
 	 */
 	protected boolean isValidImplementedType(String className) throws JavaModelException {
@@ -412,8 +419,8 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			try {
 				status.add(SARLEclipsePlugin.getDefault().createStatus(
 						IStatus.ERROR, MessageFormat.format(
-								getMissedSuperInterfaceErrorMessage(),
-								getRootSuperInterface().getFullyQualifiedName())));
+						getMissedSuperInterfaceErrorMessage(),
+						getRootSuperInterface().getFullyQualifiedName())));
 			} catch (Throwable _) {
 				//
 			}
@@ -459,8 +466,8 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 					if (!isValidImplementedType(superInterface)) {
 						statusInfo.add(SARLEclipsePlugin.getDefault().createStatus(
 								IStatus.ERROR, MessageFormat.format(
-										getInvalidInterfaceTypeErrorMessage(),
-										superInterface)));
+								getInvalidInterfaceTypeErrorMessage(),
+								superInterface)));
 					} else {
 						hasInterface = true;
 					}
@@ -472,8 +479,8 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 				try {
 					statusInfo.add(SARLEclipsePlugin.getDefault().createStatus(
 							IStatus.ERROR, MessageFormat.format(
-									getMissedSuperInterfaceErrorMessage(),
-									getRootSuperInterface().getFullyQualifiedName())));
+							getMissedSuperInterfaceErrorMessage(),
+							getRootSuperInterface().getFullyQualifiedName())));
 				} catch (Throwable _) {
 					//
 				}
@@ -517,7 +524,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	/** Create the components that are common to the creation of all
 	 * the SARL elements.
 	 *
-	 * You should invoke this from the {@link #createControl(Composite)} of
+	 * <p>You should invoke this from the {@link #createControl(Composite)} of
 	 * the child class.
 	 *
 	 * @param parent - the component in which the common controls are added.
@@ -693,40 +700,40 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	/** Create the controls related to the behavior units to generate.
 	 *
 	 * @param composite - the container of the controls.
-	 * @param nColumns - the number of columns.
+	 * @param columns - the number of columns.
 	 * @param enableConstructors - indicates if the constructor creation is enable.
 	 * @param enableInherited - indicates if the inherited operation creation is enable.
 	 */
-	protected void createMethodStubControls(Composite composite, int nColumns,
+	protected void createMethodStubControls(Composite composite, int columns,
 			boolean enableConstructors, boolean enableInherited) {
 		this.isConstructorCreationEnabled = enableConstructors;
 		this.isInheritedCreationEnabled = enableInherited;
 		String[] buttonNames;
 		if (enableConstructors && enableInherited) {
 			buttonNames = new String[] {
-					Messages.AbstractNewSarlElementWizardPage_0,
-					Messages.AbstractNewSarlElementWizardPage_1,
+				Messages.AbstractNewSarlElementWizardPage_0,
+				Messages.AbstractNewSarlElementWizardPage_1,
 			};
 		} else if (enableInherited && !enableConstructors) {
 			buttonNames = new String[] {
-					Messages.AbstractNewSarlElementWizardPage_1,
+				Messages.AbstractNewSarlElementWizardPage_1,
 			};
 		} else {
 			assert (enableConstructors);
 			buttonNames = new String[] {
-					Messages.AbstractNewSarlElementWizardPage_0,
+				Messages.AbstractNewSarlElementWizardPage_0,
 			};
 		}
 		this.methodStubsButtons = new SelectionButtonDialogFieldGroup(SWT.CHECK, buttonNames, 1);
 		this.methodStubsButtons.setLabelText(Messages.AbstractNewSarlElementWizardPage_2);
 
 		Control labelControl = this.methodStubsButtons.getLabelControl(composite);
-		LayoutUtil.setHorizontalSpan(labelControl, nColumns);
+		LayoutUtil.setHorizontalSpan(labelControl, columns);
 
 		DialogField.createEmptySpace(composite);
 
 		Control buttonGroup = this.methodStubsButtons.getSelectionButtonsGroup(composite);
-		LayoutUtil.setHorizontalSpan(buttonGroup, nColumns - 1);
+		LayoutUtil.setHorizontalSpan(buttonGroup, columns - 1);
 	}
 
 	/**
@@ -755,7 +762,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param createConstructors initial selection state of the 'Create Constructors' checkbox.
 	 * @param createInherited initial selection state of the 'Create inherited abstract methods' checkbox.
 	 * @param canBeModified if <code>true</code> the method stub checkboxes can be changed by
-	 * the user. If <code>false</code> the buttons are "read-only"
+	 *     the user. If <code>false</code> the buttons are "read-only"
 	 */
 	protected void setMethodStubSelection(boolean createConstructors, boolean createInherited, boolean canBeModified) {
 		if (this.methodStubsButtons != null) {

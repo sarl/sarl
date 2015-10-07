@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.m2e;
 
-import io.sarl.eclipse.SARLEclipseConfig;
-import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
-import io.sarl.eclipse.util.Utilities;
-import io.sarl.lang.SARLConfig;
-import io.sarl.lang.ui.preferences.SARLPreferences;
+package io.sarl.m2e;
 
 import java.io.File;
 import java.text.MessageFormat;
@@ -57,6 +52,12 @@ import org.eclipse.m2e.jdt.internal.ClasspathDescriptor;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
+import io.sarl.eclipse.util.Utilities;
+import io.sarl.lang.SARLConfig;
+import io.sarl.lang.ui.preferences.SARLPreferences;
+
 /** Project configuration for the M2E.
  *
  * @author $Author: sgalland$
@@ -67,10 +68,15 @@ import org.osgi.framework.Version;
 public class SARLProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
 
 	private static final String SARL_LANG_BUNDLE_NAME = "io.sarl.lang.core"; //$NON-NLS-1$
+
 	private static final String SARL_GROUP_ID = "io.sarl.lang"; //$NON-NLS-1$
+
 	private static final String SARL_ARTIFACT_ID = "io.sarl.lang.core"; //$NON-NLS-1$
+
 	private static final String GROUPID_ATTR_NAME = "maven.groupId"; //$NON-NLS-1$
+
 	private static final String ARTIFACTID_ATTR_NAME = "maven.artifactId"; //$NON-NLS-1$
+
 	private static final String VERSION_ATTR_NAME = "maven.version"; //$NON-NLS-1$
 
 	/** Invoked to add the preferences dedicated to SARL, JRE, etc.
@@ -256,7 +262,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 * @param mojo - the mojo execution.
 	 * @param monitor - the monitor.
 	 * @return the configuration.
-	 * @throws CoreException
+	 * @throws CoreException error in the eCore configuration.
 	 */
 	private SARLConfiguration readInitializeConfiguration(
 			ProjectConfigurationRequest request, MojoExecution mojo, IProgressMonitor monitor)
@@ -288,7 +294,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 * @param mojo - the mojo execution.
 	 * @param monitor - the monitor.
 	 * @return the configuration.
-	 * @throws CoreException
+	 * @throws CoreException error in the eCore configuration.
 	 */
 	private SARLConfiguration readCompileConfiguration(
 			ProjectConfigurationRequest request, MojoExecution mojo, IProgressMonitor monitor)

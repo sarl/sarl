@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.quickfix.acceptors;
 
-import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
+package io.sarl.lang.ui.quickfix.acceptors;
 
 import java.text.MessageFormat;
 
@@ -29,6 +28,8 @@ import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
+
+import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 
 /**
  * Replace the return type of an action.
@@ -48,7 +49,7 @@ public final class ReturnTypeReplaceModification extends SARLSemanticModificatio
 
 	/** Create the quick fix if needed.
 	 *
-	 * User data contains the name of the expected type.
+	 * <p>User data contains the name of the expected type.
 	 *
 	 * @param provider - the quick fix provider.
 	 * @param issue - the issue to fix.

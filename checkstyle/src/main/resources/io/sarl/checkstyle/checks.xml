@@ -7,14 +7,26 @@
 
 <module name="Checker">
 
+	<!-- TMP -->
+	<module name="SuppressionFilter">
+    	<property name="file" value="${mainbasedir}/checkstyle/src/main/resources/io/sarl/checkstyle/suppressions_tmp.xml"/>
+	</module>
+
 	<!-- Default charset (Google). -->
 	<property name="charset" value="UTF-8" />
 
 	<!-- Default severity is error. -->
 	<property name="severity" value="error" />
 
-	<!-- Enable suppression of file contents using //CHECKSTYLE:[ON|OFF] comments. -->
-	<module name="SuppressionCommentFilter" />
+	<!-- Specification of the filename extensions for the files to check. -->
+	<property name="fileExtensions" value="java" />
+
+	<!-- Checks for Headers. -->
+	<module name="Header">
+		<property name="headerFile"
+			value="${mainbasedir}/checkstyle/src/main/resources/io/sarl/checkstyle/class_header.txt" />
+		<property name="fileExtensions" value="java,sarl,xtend,xtext,suite,spec" />
+	</module>
 
 	<!-- Checks whether files end with a new line. -->
 	<module name="NewlineAtEndOfFile" />
@@ -35,23 +47,17 @@
 		<property name="message" value="Line has trailing spaces." />
 	</module>
 
-	<!-- Checks for Headers. -->
-	<module name="Header">
-		<property name="headerFile" value="${mainbasedir}/checkstyle/src/main/resources/io/sarl/checkstyle/class_header.txt" />
-		<property name="fileExtensions" value="java,sarl,xtend,xtext,suite,spec" />
-	</module>
-
 	<!-- Avoid tab characters in the code (Google). -->
 	<!-- <module name="FileTabCharacter"> <property name="eachLine" value="true"/> 
 		</module> -->
+
+	<!-- Activate the suppressions of the warnings with the holder for @SuppressWarnings -->
+	<module name="SuppressWarningsFilter" />
 
 	<module name="TreeWalker">
 
 		<!-- Size of the tab characters. -->
 		<property name="tabWidth" value="4" />
-
-		<!-- Enable access to the file content for other modules. -->
-		<module name="FileContentsHolder" />
 
 		<!-- *************** *** JAVADOC *** *************** -->
 
@@ -60,7 +66,7 @@
 			<property name="tag" value="@mavengroupid" />
 			<property name="tagFormat" value="\$GroupId\$" />
 			<property name="severity" value="error" />
-			<property name="tagSeverity" value="error" />
+			<property name="tagSeverity" value="ignore" />
 		</module>
 
 		<!-- Check if the value of the tag @mavenartifactid is "$ArtifactId$" -->
@@ -68,7 +74,7 @@
 			<property name="tag" value="@mavenartifactid" />
 			<property name="tagFormat" value="\$ArtifactId\$" />
 			<property name="severity" value="error" />
-			<property name="tagSeverity" value="error" />
+			<property name="tagSeverity" value="ignore" />
 		</module>
 
 		<!-- Javadoc must be present for public/package/protected classes/methods/fields. -->
@@ -116,7 +122,7 @@
 		</module>
 
 		<!-- Ensure every paragraphs is followed by a blank line. -->
-		<module name="JavadocParagraph"/>
+		<module name="JavadocParagraph" />
 
 		<!-- Check the order of the @ clauses -->
 		<module name="AtclauseOrder">
@@ -126,7 +132,8 @@
 				value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF, VARIABLE_DEF" />
 		</module>
 
-		<!-- Check that any documentation with @ clause must have more than one line. -->
+		<!-- Check that any documentation with @ clause must have more than one 
+			line. -->
 		<module name="SingleLineJavadoc" />
 
 		<!-- Ensure comments are at the same level as the commented code. -->
@@ -184,7 +191,7 @@
 		<!-- Check variable names. -->
 		<module name="LocalVariableName">
 			<property name="tokens" value="VARIABLE_DEF" />
-			<property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9]*$" />
+			<property name="format" value="^([a-z][a-z0-9][a-zA-Z0-9]*)|[abcijktuvwxyz]$" />
 			<property name="allowOneCharVarInForLoop" value="true" />
 			<message key="name.invalidPattern"
 				value="Local variable name ''{0}'' must match pattern ''{1}''." />
@@ -241,10 +248,10 @@
 
 		<!-- Specify a custom order for SARL imports. -->
 		<module name="CustomImportOrder">
-			<property name="specialImportsRegExp" value="io.sarl" />
-			<property name="sortImportsInGroupAlphabetically" value="true" />
 			<property name="customImportOrderRules"
-				value="STATIC###SPECIAL_IMPORTS###THIRD_PARTY_PACKAGE###STANDARD_JAVA_PACKAGE" />
+				value="STATIC###STANDARD_JAVA_PACKAGE###THIRD_PARTY_PACKAGE###SPECIAL_IMPORTS" />
+			<property name="specialImportsRegExp" value="^io\.sarl\." />
+			<property name="sortImportsInGroupAlphabetically" value="true" />
 		</module>
 
 		<!-- ************* *** SIZES *** ************* -->
@@ -295,7 +302,7 @@
 		<!-- Max number of statements in constructors, instance initializers, and 
 			static initializers. -->
 		<module name="ExecutableStatementCount">
-			<property name="max" value="20" />
+			<property name="max" value="40" />
 			<property name="tokens" value="CTOR_DEF, INSTANCE_INIT, STATIC_INIT" />
 		</module>
 
@@ -335,7 +342,14 @@
 		<module name="WhitespaceAround" />
 
 		<!-- Check indentation. -->
-		<module name="Indentation" />
+		<module name="Indentation">
+			<property name="basicOffset" value="4" />
+			<property name="caseIndent" value="0" />
+			<property name="throwsIndent" value="4" />
+			<property name="arrayInitIndent" value="4" />
+			<property name="lineWrappingIndentation" value="2" />
+			<property name="forceStrictCondition" value="true" />
+		</module>
 
 		<!-- Ensure empty lines between the major declarations. -->
 		<module name="EmptyLineSeparator">
@@ -628,6 +642,10 @@
 		<!-- Annotations must be after the documentation block and before the annotated 
 			element. Each annotation is on a separate line. -->
 		<module name="AnnotationLocation" />
+
+		<!-- Enable to suppress checkstyle warnings via @SuppressWarnings annotation. 
+			Syntax is: @SuppressWarnings("checkstyle:<id>") -->
+		<module name="SuppressWarningsHolder" />
 
 	</module>
 

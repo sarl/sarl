@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,18 +18,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.compiler;
 
 import static com.google.common.collect.Sets.newHashSet;
-import io.sarl.lang.SARLConfig;
 
 import java.util.Set;
 
+import com.google.inject.Singleton;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.OutputConfiguration;
 import org.eclipse.xtext.generator.OutputConfigurationProvider;
 
-import com.google.inject.Singleton;
+import io.sarl.lang.SARLConfig;
 
 
 /** Provide the output configuration from the SARL code to the Java code.

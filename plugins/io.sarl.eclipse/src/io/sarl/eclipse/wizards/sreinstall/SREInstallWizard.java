@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.wizards.sreinstall;
 
-import io.sarl.eclipse.SARLEclipseConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.runtime.SREException;
-import io.sarl.eclipse.runtime.StandardSREInstall;
+package io.sarl.eclipse.wizards.sreinstall;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -38,6 +33,12 @@ import org.eclipse.jface.wizard.Wizard;
 
 import com.google.common.base.Strings;
 
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.SREException;
+import io.sarl.eclipse.runtime.StandardSREInstall;
+
 /**
  * Wiazrd for SRE installation.
  *
@@ -49,6 +50,7 @@ import com.google.common.base.Strings;
 public abstract class SREInstallWizard extends Wizard {
 
 	private ISREInstall sre;
+
 	private String[] names;
 
 	/**
@@ -140,8 +142,8 @@ public abstract class SREInstallWizard extends Wizard {
 	private static boolean isInstance(String classname, ISREInstall sre) {
 		if (!Strings.isNullOrEmpty(classname)) {
 			try {
-				Class<?> cType = Class.forName(classname);
-				return cType.isInstance(sre);
+				Class<?> type = Class.forName(classname);
+				return type.isInstance(sre);
 			} catch (Throwable e) {
 				SARLEclipsePlugin.getDefault().log(e);
 			}

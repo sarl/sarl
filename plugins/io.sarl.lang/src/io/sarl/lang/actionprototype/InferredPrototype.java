@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.actionprototype;
 
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.Map;
  * Provides additional function signatures according the semantic
  * associated to the parameter's default values.
  *
- * The parameter types are classified into two categories:<ol>
+ * <p>The parameter types are classified into two categories:<ol>
  * <li>the parameter types of the action that are defined by the SARL programmer:
  *     the <strong>original parameter types</strong>; and</li>
  * <li>the parameter types that are inferred and computed by the SARL compiler according to
@@ -35,7 +36,7 @@ import java.util.Map;
  *     the <strong>inferred parameter types</strong>.</li>
  * </ol>
  *
- * Example: <pre><code>
+ * <p>Example: <pre><code>
  * def myfct(a : int, b : float = 0, c : char, d : int = 0)
  * </code></pre>
  * The parameter types are:<ol>
@@ -65,7 +66,7 @@ public interface InferredPrototype {
 	/** Replies the prototypes that were inferred according to the semantic
 	 * of the parameter's default value.
 	 *
-	 * This function replies the inferred parameters types (see the documentation of the class for details).
+	 * <p>This function replies the inferred parameters types (see the documentation of the class for details).
 	 *
 	 * @return the inferred prototypes.
 	 * @see #getOriginalParameterTypes()
@@ -105,7 +106,7 @@ public interface InferredPrototype {
 	/** Replies if the prototype has a vararg.
 	 *
 	 * @return <code>true</code> if the last parameter is a vararg, <code>false</code>
-	 * otherwise.
+	 *     otherwise.
 	 */
 	boolean isVarargs();
 

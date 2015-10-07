@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.validation;
 
 /**
@@ -33,7 +34,7 @@ public final class IssueCodes {
 
 	/** Prefix related to SARL for the issue codes.
 	 */
-	protected static final String ISSUE_CODE_PREFIX = "io.sarl.lang.validation.IssueCodes."; //$NON-NLS-1$
+	public static final String ISSUE_CODE_PREFIX = "io.sarl.lang.validation.IssueCodes."; //$NON-NLS-1$
 
 	/**
 	 * An interface is implemented, but it is already implemented by the super type,
@@ -44,8 +45,8 @@ public final class IssueCodes {
 
 	/**
 	 * It is discouraged to have a true/false constant as conditions in guards, if...
-	 * <p>
-	 * The following code causes a warning:<pre><code>
+	 *
+	 * <p>The following code causes a warning:<pre><code>
 	 * event E1
 	 * agent A1 {
 	 *    on E1 [true] { }

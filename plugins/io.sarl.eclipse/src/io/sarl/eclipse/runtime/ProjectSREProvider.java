@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.eclipse.runtime;
 
 
@@ -34,7 +35,7 @@ public interface ProjectSREProvider {
 	/** Replies if the project has a specific project configuration.
 	 *
 	 * @return <code>true</code> if the project has a specific configuration;
-	 * otherwise <code>false</code>.
+	 *     otherwise <code>false</code>.
 	 */
 	boolean hasProjectSpecificSREConfiguration();
 
@@ -42,8 +43,8 @@ public interface ProjectSREProvider {
 	 * using the system SRE.
 	 *
 	 * @return <code>true</code> if the project has a specific configuration AND
-	 * this configuration specifies that the system SRE is used; <code>false</code>
-	 * in the other cases.
+	 *     this configuration specifies that the system SRE is used; <code>false</code>
+	 *     in the other cases.
 	 */
 	boolean isSystemSREUsed();
 
@@ -51,7 +52,7 @@ public interface ProjectSREProvider {
 	 * configuration.
 	 *
 	 * @return the identifier of the SRE used by the project when it has a specific
-	 * configuration AND not using the system SRE; otherwise <code>null</code>.
+	 *     configuration AND not using the system SRE; otherwise <code>null</code>.
 	 */
 	String getSREInstallIdentifier();
 

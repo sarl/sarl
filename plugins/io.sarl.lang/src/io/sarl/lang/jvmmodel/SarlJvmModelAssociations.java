@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,21 +18,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.jvmmodel;
+
+import com.google.inject.ImplementedBy;
+import com.google.inject.Singleton;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
+import org.eclipse.xtend.core.xtend.XtendClass;
+import org.eclipse.xtext.common.types.JvmGenericType;
 
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlSkill;
-
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
-import org.eclipse.xtend.core.xtend.XtendClass;
-import org.eclipse.xtext.common.types.JvmGenericType;
-
-import com.google.inject.ImplementedBy;
-import com.google.inject.Singleton;
 
 /** Associations between the SARL elements and the JVM elements.
  *
@@ -44,24 +44,12 @@ import com.google.inject.Singleton;
 @ImplementedBy(SarlJvmModelAssociations.Impl.class)
 public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
-	/** Replies the inferrer type for the given event.
-	 * @param obj the SARL object.
-	 * @return the inferred type.
-	 */
-	JvmGenericType getInferredType(SarlEvent obj);
-
 	/** Replies the SARL event associated to the given type.
 	 *
 	 * @param jvmType - the JVM type.
 	 * @return the SARL element.
 	 */
 	SarlEvent getSarlEvent(JvmGenericType jvmType);
-
-	/** Replies the inferrer type for the given agent.
-	 * @param obj the SARL object.
-	 * @return the inferred type.
-	 */
-	JvmGenericType getInferredType(SarlAgent obj);
 
 	/** Replies the SARL agent associated to the given type.
 	 *
@@ -70,24 +58,12 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 	 */
 	SarlAgent getSarlAgent(JvmGenericType jvmType);
 
-	/** Replies the inferrer type for the given behavior.
-	 * @param obj the SARL object.
-	 * @return the inferred type.
-	 */
-	JvmGenericType getInferredType(SarlBehavior obj);
-
 	/** Replies the SARL behavior associated to the given type.
 	 *
 	 * @param jvmType - the JVM type.
 	 * @return the SARL element.
 	 */
 	SarlBehavior getSarlBehavior(JvmGenericType jvmType);
-
-	/** Replies the inferrer type for the given capacity.
-	 * @param obj the SARL object.
-	 * @return the inferred type.
-	 */
-	JvmGenericType getInferredType(SarlCapacity obj);
 
 	/** Replies the SARL capacity associated to the given type.
 	 *
@@ -96,18 +72,42 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 	 */
 	SarlCapacity getSarlCapacity(JvmGenericType jvmType);
 
-	/** Replies the inferrer type for the given skill.
-	 * @param obj the SARL object.
-	 * @return the inferred type.
-	 */
-	JvmGenericType getInferredType(SarlSkill obj);
-
 	/** Replies the SARL skill associated to the given type.
 	 *
 	 * @param jvmType - the JVM type.
 	 * @return the SARL element.
 	 */
 	SarlSkill getSarlSkill(JvmGenericType jvmType);
+
+	/** Replies the inferrer type for the given event.
+	 * @param obj the SARL object.
+	 * @return the inferred type.
+	 */
+	JvmGenericType getInferredType(SarlEvent obj);
+
+	/** Replies the inferrer type for the given agent.
+	 * @param obj the SARL object.
+	 * @return the inferred type.
+	 */
+	JvmGenericType getInferredType(SarlAgent obj);
+
+	/** Replies the inferrer type for the given behavior.
+	 * @param obj the SARL object.
+	 * @return the inferred type.
+	 */
+	JvmGenericType getInferredType(SarlBehavior obj);
+
+	/** Replies the inferrer type for the given capacity.
+	 * @param obj the SARL object.
+	 * @return the inferred type.
+	 */
+	JvmGenericType getInferredType(SarlCapacity obj);
+
+	/** Replies the inferrer type for the given skill.
+	 * @param obj the SARL object.
+	 * @return the inferred type.
+	 */
+	JvmGenericType getInferredType(SarlSkill obj);
 
 	/** Associations between the SARL elements and the JVM elements.
 	 *
@@ -117,18 +117,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	@Singleton
-	public static class Impl extends IXtendJvmAssociations.Impl implements SarlJvmModelAssociations {
-
-		@Override
-		public JvmGenericType getInferredType(XtendClass xtendClass) {
-			final JvmGenericType firstOrNull = getFirstOrNull(getJvmElements(xtendClass), JvmGenericType.class);
-			return firstOrNull;
-		}
-
-		@Override
-		public JvmGenericType getInferredType(SarlEvent obj) {
-			return getFirstOrNull(getJvmElements(obj), JvmGenericType.class);
-		}
+	class Impl extends IXtendJvmAssociations.Impl implements SarlJvmModelAssociations {
 
 		@Override
 		public SarlEvent getSarlEvent(JvmGenericType jvmType) {
@@ -137,11 +126,6 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 				return (SarlEvent) primarySourceElement;
 			}
 			return null;
-		}
-
-		@Override
-		public JvmGenericType getInferredType(SarlAgent obj) {
-			return getFirstOrNull(getJvmElements(obj), JvmGenericType.class);
 		}
 
 		@Override
@@ -154,11 +138,6 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 		}
 
 		@Override
-		public JvmGenericType getInferredType(SarlBehavior obj) {
-			return getFirstOrNull(getJvmElements(obj), JvmGenericType.class);
-		}
-
-		@Override
 		public SarlBehavior getSarlBehavior(JvmGenericType jvmType) {
 			EObject primarySourceElement = getPrimarySourceElement(jvmType);
 			if (primarySourceElement instanceof SarlBehavior) {
@@ -168,17 +147,38 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 		}
 
 		@Override
-		public JvmGenericType getInferredType(SarlCapacity obj) {
-			return getFirstOrNull(getJvmElements(obj), JvmGenericType.class);
-		}
-
-		@Override
 		public SarlCapacity getSarlCapacity(JvmGenericType jvmType) {
 			EObject primarySourceElement = getPrimarySourceElement(jvmType);
 			if (primarySourceElement instanceof SarlCapacity) {
 				return (SarlCapacity) primarySourceElement;
 			}
 			return null;
+		}
+
+		@Override
+		public JvmGenericType getInferredType(SarlEvent obj) {
+			return getFirstOrNull(getJvmElements(obj), JvmGenericType.class);
+		}
+
+		@Override
+		public JvmGenericType getInferredType(XtendClass xtendClass) {
+			final JvmGenericType firstOrNull = getFirstOrNull(getJvmElements(xtendClass), JvmGenericType.class);
+			return firstOrNull;
+		}
+
+		@Override
+		public JvmGenericType getInferredType(SarlAgent obj) {
+			return getFirstOrNull(getJvmElements(obj), JvmGenericType.class);
+		}
+
+		@Override
+		public JvmGenericType getInferredType(SarlBehavior obj) {
+			return getFirstOrNull(getJvmElements(obj), JvmGenericType.class);
+		}
+
+		@Override
+		public JvmGenericType getInferredType(SarlCapacity obj) {
+			return getFirstOrNull(getJvmElements(obj), JvmGenericType.class);
 		}
 
 		@Override

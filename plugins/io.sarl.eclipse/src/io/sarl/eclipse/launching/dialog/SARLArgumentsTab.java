@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launching.dialog;
 
-import io.sarl.eclipse.SARLEclipseConfig;
+package io.sarl.eclipse.launching.dialog;
 
 import java.text.MessageFormat;
 
@@ -49,6 +48,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.xtext.util.Strings;
 
+import io.sarl.eclipse.SARLEclipseConfig;
+
 /**
  * Class for the configuration tab for the SARL arguments.
  *
@@ -60,6 +61,7 @@ import org.eclipse.xtext.util.Strings;
 public class SARLArgumentsTab extends JavaArgumentsTab {
 
 	private static final int HEIGHT_HINT = 40;
+
 	private static final int WIDTH_HINT = 100;
 
 
@@ -67,7 +69,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 	 */
 	protected Text sreArgumentsText;
 
-	/**
+	/** Construct a configuration tab for the SARL arguments.
 	 */
 	public SARLArgumentsTab() {
 		//
@@ -120,21 +122,21 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 		this.sreArgumentsText = new Text(group, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
 		this.sreArgumentsText.addTraverseListener(new TraverseListener() {
 			@Override
-			public void keyTraversed(TraverseEvent e) {
-				switch (e.detail) {
+			public void keyTraversed(TraverseEvent event) {
+				switch (event.detail) {
 				case SWT.TRAVERSE_ESCAPE:
 				case SWT.TRAVERSE_PAGE_NEXT:
 				case SWT.TRAVERSE_PAGE_PREVIOUS:
-					e.doit = true;
+					event.doit = true;
 					break;
 				case SWT.TRAVERSE_RETURN:
 				case SWT.TRAVERSE_TAB_NEXT:
 				case SWT.TRAVERSE_TAB_PREVIOUS:
 					if ((SARLArgumentsTab.this.sreArgumentsText.getStyle() & SWT.SINGLE) != 0) {
-						e.doit = true;
+						event.doit = true;
 					} else {
-						if (!SARLArgumentsTab.this.sreArgumentsText.isEnabled() || (e.stateMask & SWT.MODIFIER_MASK) != 0) {
-							e.doit = true;
+						if (!SARLArgumentsTab.this.sreArgumentsText.isEnabled() || (event.stateMask & SWT.MODIFIER_MASK) != 0) {
+							event.doit = true;
 						}
 					}
 					break;
@@ -164,7 +166,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 		sreArgVariableButton.addSelectionListener(new SelectionAdapter() {
 			@SuppressWarnings("synthetic-access")
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent event) {
 				StringVariableSelectionDialog dialog = new StringVariableSelectionDialog(getShell());
 				dialog.open();
 				String variable = dialog.getVariableExpression();
@@ -189,7 +191,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 	 */
 	private static class JVMArgsBlock extends VMArgumentsBlock {
 
-		public JVMArgsBlock() {
+		JVMArgsBlock() {
 			//
 		}
 
@@ -198,8 +200,6 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 			return io.sarl.eclipse.launching.dialog.LauncherMessages.SARLArgumentsTab_2;
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public void createControl(Composite parent) {
 			super.createControl(parent);

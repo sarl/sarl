@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.core;
 
 import java.security.InvalidParameterException;
@@ -152,18 +153,18 @@ public class Agent implements Identifiable {
 	@SuppressWarnings("unchecked")
 	protected <S extends Skill & Capacity> S clearSkill(Class<? extends Capacity> capacity) {
 		assert capacity != null;
-		Skill s = this.capacities.remove(capacity);
-		if (s != null) {
-			s.uninstall();
+		Skill skill = this.capacities.remove(capacity);
+		if (skill != null) {
+			skill.uninstall();
 		}
-		return (S) s;
+		return (S) skill;
 	}
 
 	/**
 	 * Replies with the skill associated to the {@link Capacity}
 	 * <code>capacity</code>.
 	 *
-	 * The return may never be <code>null</code>. If not capacity
+	 * <p>The return may never be <code>null</code>. If not capacity
 	 * was set, the exception {@link UnimplementedCapacityException}
 	 * is thrown.
 	 *
@@ -210,7 +211,7 @@ public class Agent implements Identifiable {
 	 *
 	 * @param address - the address to test.
 	 * @return <code>true</code> if the given address is one of this agent,
-	 * otherwise <code>false</code>.
+	 *     otherwise <code>false</code>.
 	 */
 	@Pure
 	protected boolean isMe(Address address) {
@@ -219,14 +220,14 @@ public class Agent implements Identifiable {
 
 	/** Replies if the given identifier corresponds to the identifier
 	 * of this agent.
-	 * <p>
-	 * This function is equivalent to:<pre><code>
+	 *
+	 * <p>This function is equivalent to:<pre><code>
 	 * id.equals( agent.getID() )
 	 * </code></pre>
 	 *
 	 * @param id - the identifier to test.
 	 * @return <code>true</code> if the given identifier is the one of this agent,
-	 * otherwise <code>false</code>.
+	 *     otherwise <code>false</code>.
 	 */
 	@Pure
 	protected boolean isMe(UUID id) {
@@ -237,7 +238,7 @@ public class Agent implements Identifiable {
 	 *
 	 * @param event - the event to test.
 	 * @return <code>true</code> if the given event was emitted by
-	 * this agent; otherwise <code>false</code>.
+	 *     this agent; otherwise <code>false</code>.
 	 */
 	@Pure
 	protected boolean isFromMe(Event event) {

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.generator.ecorefragments;
 
 import java.io.IOException;
@@ -49,7 +50,7 @@ import org.eclipse.xtext.generator.ecore.EMFGeneratorFragment;
  * a configuration suitable for SARL. Then it
  * runs the EMF generator to create the EMF classes for the generated Ecore models.
  *
- * This implementation forces the Ecore factory to create instances of the custom Ecore elements that
+ * <p>This implementation forces the Ecore factory to create instances of the custom Ecore elements that
  * are defined in the package <code>io.sarl.lang.sarl.impl</code>.
  *
  * @author $Author: sgalland$
@@ -162,7 +163,7 @@ public class SARLEMFGeneratorFragment extends EMFGeneratorFragment {
 
 	/** Create an instance of GenModel usable by this EMF fragment.
 	 *
-	 * FIXME: Remove when the function {@link #getGenModel(ResourceSet, Grammar, XpandExecutionContext, List)}
+	 * <p>FIXME: Remove when the function {@link #getGenModel(ResourceSet, Grammar, XpandExecutionContext, List)}
 	 * is moved to Xtext.
 	 *
 	 * @return the new instance.
@@ -200,7 +201,7 @@ public class SARLEMFGeneratorFragment extends EMFGeneratorFragment {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * FIXME: Remove when the function {@link #getGenModel(ResourceSet, Grammar, XpandExecutionContext, List)}
+	 * <p>FIXME: Remove when the function {@link #getGenModel(ResourceSet, Grammar, XpandExecutionContext, List)}
 	 * is moved to Xtext.
 	 */
 	@Override

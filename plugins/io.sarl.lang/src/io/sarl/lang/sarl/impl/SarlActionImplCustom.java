@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,15 +18,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.sarl.impl;
+
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.JvmVisibility;
 
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlSkill;
-
-import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
-import org.eclipse.xtext.common.types.JvmVisibility;
 
 /**
  * <!-- begin-user-doc -->
@@ -59,12 +60,10 @@ public class SarlActionImplCustom extends SarlActionImpl {
 	@Override
 	protected JvmVisibility getDefaultVisibility() {
 		XtendTypeDeclaration declaration = getDeclaringType();
-		if (declaration instanceof SarlBehavior
-			|| declaration instanceof SarlAgent) {
+		if (declaration instanceof SarlBehavior || declaration instanceof SarlAgent) {
 			return JvmVisibility.PROTECTED;
 		}
-		if (declaration instanceof SarlSkill
-			|| declaration instanceof SarlCapacity) {
+		if (declaration instanceof SarlSkill || declaration instanceof SarlCapacity) {
 			return JvmVisibility.PUBLIC;
 		}
 		return super.getDefaultVisibility();

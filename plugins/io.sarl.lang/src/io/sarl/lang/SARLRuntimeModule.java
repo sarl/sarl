@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,27 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang;
 
-import io.sarl.lang.actionprototype.ActionPrototypeProvider;
-import io.sarl.lang.actionprototype.DefaultActionPrototypeProvider;
-import io.sarl.lang.bugfixes.SARLContextPDAProvider;
-import io.sarl.lang.compiler.SarlOutputConfigurationProvider;
-import io.sarl.lang.controlflow.SARLEarlyExitComputer;
-import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
-import io.sarl.lang.findReferences.SARLReferenceFinder;
-import io.sarl.lang.generator.helper.SARLHiddenTokenSequencer;
-import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
-import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
-import io.sarl.lang.sarl.SarlFactory;
-import io.sarl.lang.scoping.batch.SARLImplicitlyImportedFeatures;
-import io.sarl.lang.typing.SARLExpressionHelper;
-import io.sarl.lang.validation.DefaultFeatureCallValidator;
-import io.sarl.lang.validation.FeatureCallValidator;
-import io.sarl.lang.validation.SARLConfigurableIssueCodesProvider;
-import io.sarl.lang.validation.SARLEarlyExitValidator;
-import io.sarl.lang.validation.SARLFeatureNameValidator;
-
+import com.google.inject.Binder;
+import com.google.inject.Singleton;
+import com.google.inject.name.Names;
 import org.eclipse.xtend.core.compiler.UnicodeAwarePostProcessor;
 import org.eclipse.xtend.core.compiler.XtendCompiler;
 import org.eclipse.xtend.core.compiler.XtendGenerator;
@@ -127,9 +112,24 @@ import org.eclipse.xtext.xbase.validation.EarlyExitValidator;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 import org.eclipse.xtext.xbase.validation.ImplicitReturnFinder;
 
-import com.google.inject.Binder;
-import com.google.inject.Singleton;
-import com.google.inject.name.Names;
+import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.actionprototype.DefaultActionPrototypeProvider;
+import io.sarl.lang.bugfixes.SARLContextPDAProvider;
+import io.sarl.lang.compiler.SarlOutputConfigurationProvider;
+import io.sarl.lang.controlflow.SARLEarlyExitComputer;
+import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
+import io.sarl.lang.findreferences.SARLReferenceFinder;
+import io.sarl.lang.generator.helper.SARLHiddenTokenSequencer;
+import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
+import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
+import io.sarl.lang.sarl.SarlFactory;
+import io.sarl.lang.scoping.batch.SARLImplicitlyImportedFeatures;
+import io.sarl.lang.typing.SARLExpressionHelper;
+import io.sarl.lang.validation.DefaultFeatureCallValidator;
+import io.sarl.lang.validation.FeatureCallValidator;
+import io.sarl.lang.validation.SARLConfigurableIssueCodesProvider;
+import io.sarl.lang.validation.SARLEarlyExitValidator;
+import io.sarl.lang.validation.SARLFeatureNameValidator;
 
 /**
  * Use this class to register components to be used at runtime / without the
@@ -141,16 +141,16 @@ import com.google.inject.name.Names;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("static-method")
+@SuppressWarnings({"static-method", "checkstyle:methodcount"})
 public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
-	
+
 	/** Replies the resolver of types that uses caching data.
 	 * @return the resolver.
 	 */
 	public Class<? extends CachingBatchTypeResolver> bindCachingBatchTypeResolver() {
 		return CachingBatchTypeResolver.class;
 	}
-	
+
 	@Override
 	public Class<? extends IPartialParsingHelper> bindIPartialParserHelper() {
 		return XtendPartialParsingHelper.class;
@@ -263,13 +263,12 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	 */
 	@Override
 	public Class<? extends FeatureNameValidator> bindFeatureNameValidator() {
-		assert (
-				super.bindFeatureNameValidator().isAssignableFrom(
-						SARLFeatureNameValidator.class))
-						: "The class SARLFeatureNameValidator does not extend " //$NON-NLS-1$
-							+ "the class provided by default by Xbase"; //$NON-NLS-1$
-				//
-				return SARLFeatureNameValidator.class;
+		assert (super.bindFeatureNameValidator().isAssignableFrom(
+			SARLFeatureNameValidator.class))
+			: "The class SARLFeatureNameValidator does not extend " //$NON-NLS-1$
+				+ "the class provided by default by Xbase"; //$NON-NLS-1$
+		//
+		return SARLFeatureNameValidator.class;
 	}
 
 	/** Replies the provider of hidden token sequencer.
@@ -297,7 +296,7 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 
 	/** Bind to the SARL JVM model inferred.
 	 *
-	 * This should be contributed by org.eclipse.xtext.generator.xbase.XbaseGeneratorFragment
+	 * <p>This should be contributed by org.eclipse.xtext.generator.xbase.XbaseGeneratorFragment
 	 * in the supertype, but is not since SARL extends the Xtend model inferrer.
 	 *
 	 * @return the type of the SARL model inferrer.

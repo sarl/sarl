@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,35 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.quickfix;
 
-import io.sarl.lang.actionprototype.ActionPrototypeProvider;
-import io.sarl.lang.sarl.SarlAction;
-import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlBehavior;
-import io.sarl.lang.sarl.SarlCapacity;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.services.SARLGrammarAccess;
-import io.sarl.lang.ui.quickfix.acceptors.ActionAddModification;
-import io.sarl.lang.ui.quickfix.acceptors.BehaviorUnitGuardRemoveModification;
-import io.sarl.lang.ui.quickfix.acceptors.CapacityReferenceRemoveModification;
-import io.sarl.lang.ui.quickfix.acceptors.ExtendedTypeRemoveModification;
-import io.sarl.lang.ui.quickfix.acceptors.FiredEventRemoveModification;
-import io.sarl.lang.ui.quickfix.acceptors.ImplementedTypeRemoveModification;
-import io.sarl.lang.ui.quickfix.acceptors.ImplementedTypeRemoveModification.RemovalType;
-import io.sarl.lang.ui.quickfix.acceptors.MemberRemoveModification;
-import io.sarl.lang.ui.quickfix.acceptors.MemberRenameModification;
-import io.sarl.lang.ui.quickfix.acceptors.Messages;
-import io.sarl.lang.ui.quickfix.acceptors.MissedMethodAddModification;
-import io.sarl.lang.ui.quickfix.acceptors.MultiModification;
-import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeAddModification;
-import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeReplaceModification;
-import io.sarl.lang.ui.quickfix.acceptors.SuperTypeRemoveModification;
+package io.sarl.lang.ui.quickfix;
 
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
@@ -77,7 +55,29 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 
-import com.google.inject.Inject;
+import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.services.SARLGrammarAccess;
+import io.sarl.lang.ui.quickfix.acceptors.ActionAddModification;
+import io.sarl.lang.ui.quickfix.acceptors.BehaviorUnitGuardRemoveModification;
+import io.sarl.lang.ui.quickfix.acceptors.CapacityReferenceRemoveModification;
+import io.sarl.lang.ui.quickfix.acceptors.ExtendedTypeRemoveModification;
+import io.sarl.lang.ui.quickfix.acceptors.FiredEventRemoveModification;
+import io.sarl.lang.ui.quickfix.acceptors.ImplementedTypeRemoveModification;
+import io.sarl.lang.ui.quickfix.acceptors.ImplementedTypeRemoveModification.RemovalType;
+import io.sarl.lang.ui.quickfix.acceptors.MemberRemoveModification;
+import io.sarl.lang.ui.quickfix.acceptors.MemberRenameModification;
+import io.sarl.lang.ui.quickfix.acceptors.Messages;
+import io.sarl.lang.ui.quickfix.acceptors.MissedMethodAddModification;
+import io.sarl.lang.ui.quickfix.acceptors.MultiModification;
+import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeAddModification;
+import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeReplaceModification;
+import io.sarl.lang.ui.quickfix.acceptors.SuperTypeRemoveModification;
 
 /**
  * Custom quickfixes.
@@ -88,7 +88,7 @@ import com.google.inject.Inject;
  * @mavenartifactid $ArtifactId$
  * @see "http://www.eclipse.org/Xtext/documentation.html#quickfixes"
  */
-@SuppressWarnings("static-method")
+@SuppressWarnings({"static-method", "checkstyle:methodcount"})
 public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	@Inject
@@ -388,11 +388,11 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 			ICompositeNode node = NodeModelUtils.findActualNodeFor(container);
 			ILeafNode openingBraceNode = IterableExtensions.findFirst(node.getLeafNodes(),
 					new Functions.Function1<ILeafNode, Boolean>() {
-				@Override
-				public Boolean apply(ILeafNode p) {
-					return "{".equals(p.getText()); //$NON-NLS-1$
-				}
-			});
+						@Override
+						public Boolean apply(ILeafNode node) {
+							return "{".equals(node.getText()); //$NON-NLS-1$
+						}
+					});
 			if (openingBraceNode != null) {
 				return openingBraceNode.getOffset() + 1;
 			}

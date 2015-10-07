@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launching.dialog;
 
-import io.sarl.eclipse.SARLEclipseConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.util.Utilities;
+package io.sarl.eclipse.launching.dialog;
 
 import java.lang.ref.SoftReference;
 import java.lang.reflect.InvocationTargetException;
@@ -63,8 +60,15 @@ import org.eclipse.swt.widgets.Text;
 
 import com.google.common.base.Strings;
 
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Utilities;
+
 /**
- * Class for the main launch configuration tab.
+ * The main launch configuration tab.
+ *
+ * <p>This configuration tab enables to enter the name of the agent to launch,
+ * the launching parameters, and the SRE.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -74,19 +78,28 @@ import com.google.common.base.Strings;
 public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 
 	private volatile SoftReference<Image> image;
+
 	private volatile String lastAgentNameError;
+
 	private Text agentNameTextField;
+
 	private Button agentNameSearchButton;
+
 	private Button showLogoOptionButton;
+
 	private Button showLogInfoButton;
+
 	private Button offlineButton;
+
 	private Button defaultContextIdentifierButton;
+
 	private Button randomContextIdentifierButton;
+
 	private Button bootContextIdentifierButton;
 
 	private final WidgetListener defaultListener = new WidgetListener();
 
-	/**
+	/** Construct a main configuration tab for SARL project.
 	 */
 	public SARLMainLaunchConfigurationTab() {
 		//
@@ -138,7 +151,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 		this.agentNameTextField.addModifyListener(new ModifyListener() {
 			@SuppressWarnings("synthetic-access")
 			@Override
-			public void modifyText(ModifyEvent e) {
+			public void modifyText(ModifyEvent event) {
 				SARLMainLaunchConfigurationTab.this.lastAgentNameError = null;
 				updateLaunchConfigurationDialog();
 			}
@@ -147,11 +160,12 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 		this.agentNameSearchButton = createPushButton(group, Messages.MainLaunchConfigurationTab_1, null);
 		this.agentNameSearchButton.addSelectionListener(new SelectionListener() {
 			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
+			public void widgetDefaultSelected(SelectionEvent event) {
 				//
 			}
+
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent event) {
 				handleAgentNameSearchButtonSelected();
 			}
 		});
@@ -341,8 +355,8 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	}
 
 	/** Replies if the project name is valid.
-	 * <p>
-	 * Copied from JDT.
+	 *
+	 * <p>Copied from JDT.
 	 *
 	 * @return the validity state.
 	 */
@@ -560,7 +574,8 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 		}
 	}
 
-	/**
+	/** Listener of events in internal components for refreshing the tab.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -568,20 +583,18 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	 */
 	private class WidgetListener implements SelectionListener {
 
-		/**
-		 */
-		public WidgetListener() {
+		WidgetListener() {
 			//
 		}
 
 		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
+		public void widgetDefaultSelected(SelectionEvent event) {
 			//
 		}
 
 		@SuppressWarnings("synthetic-access")
 		@Override
-		public void widgetSelected(SelectionEvent e) {
+		public void widgetSelected(SelectionEvent event) {
 			updateLaunchConfigurationDialog();
 		}
 

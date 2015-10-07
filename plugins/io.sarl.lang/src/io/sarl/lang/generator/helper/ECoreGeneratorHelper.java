@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,35 +18,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.generator.helper;
-
-
-import io.sarl.lang.actionprototype.ActionPrototypeProvider;
-import io.sarl.lang.annotation.DefaultValue;
-import io.sarl.lang.annotation.FiredEvent;
-import io.sarl.lang.annotation.Generated;
-import io.sarl.lang.sarl.SarlAction;
-import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlAnnotationType;
-import io.sarl.lang.sarl.SarlBehavior;
-import io.sarl.lang.sarl.SarlBehaviorUnit;
-import io.sarl.lang.sarl.SarlCapacity;
-import io.sarl.lang.sarl.SarlConstructor;
-import io.sarl.lang.sarl.SarlEvent;
-import io.sarl.lang.sarl.SarlFactory;
-import io.sarl.lang.sarl.SarlField;
-import io.sarl.lang.sarl.SarlFormalParameter;
-import io.sarl.lang.sarl.SarlInterface;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.services.SARLGrammarAccess;
-import io.sarl.lang.util.Utils;
 
 import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Named;
 
+import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -85,18 +66,37 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XImportSection;
 
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
+import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.annotation.DefaultValue;
+import io.sarl.lang.annotation.FiredEvent;
+import io.sarl.lang.annotation.Generated;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlAnnotationType;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlFactory;
+import io.sarl.lang.sarl.SarlField;
+import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.sarl.SarlInterface;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.services.SARLGrammarAccess;
+import io.sarl.lang.util.Utils;
 
 /** Utilities for creating SARL elements.
  *
- * This class may use the XtendTypeCreatorUtil.
+ * <p>This class may use the XtendTypeCreatorUtil.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public class ECoreGeneratorHelper {
 
 	@Inject
@@ -183,7 +183,7 @@ public class ECoreGeneratorHelper {
 
 	/** Attach the given comment to the Ecore element.
 	 *
-	 * The comment will be displayed just before the Ecore element.
+	 * <p>The comment will be displayed just before the Ecore element.
 	 *
 	 * @param code - the generated code in which the agent must be created.
 	 * @param object - the Ecore element to which the comment must be associated.
@@ -200,7 +200,7 @@ public class ECoreGeneratorHelper {
 
 	/** Attach the given comment to the Ecore element.
 	 *
-	 * The comment will be displayed just after the Ecore element.
+	 * <p>The comment will be displayed just after the Ecore element.
 	 *
 	 * @param code - the generated code in which the agent must be created.
 	 * @param object - the Ecore element to which the comment must be associated.
@@ -217,7 +217,7 @@ public class ECoreGeneratorHelper {
 
 	/** Attach the given comment to the Ecore block.
 	 *
-	 * The comment will be displayed inside the block, as the first element inside.
+	 * <p>The comment will be displayed inside the block, as the first element inside.
 	 *
 	 * @param code - the generated code in which the agent must be created.
 	 * @param object - the Ecore element to which the comment must be associated.
@@ -234,7 +234,7 @@ public class ECoreGeneratorHelper {
 
 	/** Create an empty SARL script, and put it in the given resource.
 	 *
-	 * If the given resource has already a content, it is removed and replaced
+	 * <p>If the given resource has already a content, it is removed and replaced
 	 * by the new SARL script.
 	 *
 	 * @param resource - the Ecore resource for the script.
@@ -483,6 +483,26 @@ public class ECoreGeneratorHelper {
 		return parameter;
 	}
 
+	/** Create a formal parameter.
+	 *
+	 * @param code - the generated code in which the agent must be created.
+	 * @param container - the container of the formal parameter.
+	 * @param name - the name of the formal parameter.
+	 * @param type - the name of the parameter type.
+	 * @param defaultValue - the default value for the parameter.
+	 * @param resourceSet - the set of resources in which this function could
+	 *     create temporary resources for compiling the default value.
+	 * @return the SARL formal parameter.
+	 */
+	public SarlFormalParameter createFormalParameter(SarlEcoreCode code, XtendExecutable container,
+			String name, String type, String defaultValue, ResourceSet resourceSet)  {
+		if (Strings.isNullOrEmpty(type)) {
+			throw new IllegalArgumentException("the parameter 'type' must contains a valid type"); //$NON-NLS-1$
+		}
+		return createFormalParameter(code, container, name, type,
+				createXExpression(defaultValue, resourceSet, code.getImportManager()));
+	}
+
 	/** Compute a unused URI for a synthetic resource.
 	 *
 	 * @param resourceSet - the resource set in which the resource should be located.
@@ -499,38 +519,18 @@ public class ECoreGeneratorHelper {
 		throw new IllegalStateException();
 	}
 
-	/** Create a formal parameter.
-	 *
-	 * @param code - the generated code in which the agent must be created.
-	 * @param container - the container of the formal parameter.
-	 * @param name - the name of the formal parameter.
-	 * @param type - the name of the parameter type.
-	 * @param defaultValue - the default value for the parameter.
-	 * @param resourceSet - the set of resources in which this function could
-	 * create temporary resources for compiling the default value.
-	 * @return the SARL formal parameter.
-	 */
-	public SarlFormalParameter createFormalParameter(SarlEcoreCode code, XtendExecutable container,
-			String name, String type, String defaultValue, ResourceSet resourceSet)  {
-		if (Strings.isNullOrEmpty(type)) {
-			throw new IllegalArgumentException("the parameter 'type' must contains a valid type"); //$NON-NLS-1$
-		}
-		return createFormalParameter(code, container, name, type,
-				createXExpression(defaultValue, resourceSet, code.getImportManager()));
-	}
-
 	/** Create an expression.
 	 *
 	 * @param expression - the texutal representation of the expression.
 	 * @param resourceSet - the set of resources in which this function could
-	 * create temporary resources for compiling the default value.
+	 *     create temporary resources for compiling the default value.
 	 * @param importManager - the manager of the imports that is used for importing the types.
-	 * This parameter could be <code>null</code>.
+	 *     This parameter could be <code>null</code>.
 	 * @return the SARL formal parameter.
 	 */
 	public XExpression createXExpression(String expression, ResourceSet resourceSet,
 			ImportManager importManager)  {
-		XExpression xExpression = null;
+		XExpression xexpression = null;
 		if (!Strings.isNullOrEmpty(expression)) {
 			URI uri = computeUnusedUri(resourceSet);
 			Resource resource = getResourceFactory().createResource(uri);
@@ -546,7 +546,7 @@ public class ECoreGeneratorHelper {
 					SarlScript script = (SarlScript) content;
 					SarlAgent ag = (SarlAgent) script.getXtendTypes().get(0);
 					SarlField attr = (SarlField) ag.getMembers().get(0);
-					xExpression = attr.getInitialValue();
+					xexpression = attr.getInitialValue();
 					XImportSection importSection = script.getImportSection();
 					if (importManager != null && importSection != null) {
 						for (XImportDeclaration importDeclaration : importSection.getImportDeclarations()) {
@@ -560,7 +560,7 @@ public class ECoreGeneratorHelper {
 				resourceSet.getResources().remove(resource);
 			}
 		}
-		return xExpression;
+		return xexpression;
 	}
 
 	/** Create a formal parameter.
@@ -621,6 +621,32 @@ public class ECoreGeneratorHelper {
 		return action;
 	}
 
+	/** Replies the SARL Ecore equivalent for the givne JVM Ecore element.
+	 *
+	 * @param operation - the JVM Ecore element.
+	 * @param importManager - the manager of the imports that is used for importing the types.
+	 *     This parameter could be <code>null</code>.
+	 * @return the SARL Ecore element.
+	 */
+	public SarlAction createAction(JvmOperation operation, ImportManager importManager) {
+		SarlAction action = SarlFactory.eINSTANCE.createSarlAction();
+		// Modifier
+		action.getModifiers().add(this.grammarAccess.getMethodModifierAccess().getDefKeyword_0().getValue());
+		// Name
+		action.setName(operation.getSimpleName());
+		// Return types
+		JvmTypeReference typeReference = cloneType(operation.getReturnType());
+		action.setReturnType(typeReference);
+		updateImports(typeReference, importManager);
+		// Parameters
+		createExecutableFeatureParameters(operation, action.getParameters(), importManager);
+		// Throws
+		createExecutableFeatureExceptions(operation, action.getExceptions(), importManager);
+		// Fired events
+		createExecutableFeatureFireEvents(operation, action.getFiredEvents(), importManager);
+		return action;
+	}
+
 	/** Replies if the given container can contain action bodies.
 	 *
 	 * @param container the container.
@@ -653,6 +679,22 @@ public class ECoreGeneratorHelper {
 		return constructor;
 	}
 
+	/** Replies the SARL Ecore equivalent for the givne JVM Ecore element.
+	 *
+	 * @param constructor - the JVM Ecore element.
+	 * @param importManager - the manager of the imports that is used for importing the types.
+	 *     This parameter could be <code>null</code>.
+	 * @return the SARL Ecore element.
+	 */
+	public SarlConstructor createConstructor(JvmConstructor constructor, ImportManager importManager) {
+		SarlConstructor cons = SarlFactory.eINSTANCE.createSarlConstructor();
+		// Parameters
+		createExecutableFeatureParameters(constructor, cons.getParameters(), importManager);
+		// Throws
+		createExecutableFeatureExceptions(constructor, cons.getExceptions(), importManager);
+		return cons;
+	}
+
 	/** Replies the default value for the given type.
 	 *
 	 * @param code - the generated code in which the agent must be created.
@@ -660,6 +702,7 @@ public class ECoreGeneratorHelper {
 	 * @param type - the type for which the default value should be determined.
 	 * @return the default value.
 	 */
+	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public XExpression getDefaultXExpressionForType(SarlEcoreCode code, EObject context, String type) {
 		//TODO: Check if a similar function exists in the Xbase library.
 		XExpression expr = null;
@@ -759,32 +802,6 @@ public class ECoreGeneratorHelper {
 		return getTypesBuilder().cloneWithProxies(type);
 	}
 
-	/** Replies the SARL Ecore equivalent for the givne JVM Ecore element.
-	 *
-	 * @param operation - the JVM Ecore element.
-	 * @param importManager - the manager of the imports that is used for importing the types.
-	 * This parameter could be <code>null</code>.
-	 * @return the SARL Ecore element.
-	 */
-	public SarlAction createAction(JvmOperation operation, ImportManager importManager) {
-		SarlAction action = SarlFactory.eINSTANCE.createSarlAction();
-		// Modifier
-		action.getModifiers().add(this.grammarAccess.getMethodModifierAccess().getDefKeyword_0().getValue());
-		// Name
-		action.setName(operation.getSimpleName());
-		// Return types
-		JvmTypeReference typeReference = cloneType(operation.getReturnType());
-		action.setReturnType(typeReference);
-		updateImports(typeReference, importManager);
-		// Parameters
-		createExecutableFeatureParameters(operation, action.getParameters(), importManager);
-		// Throws
-		createExecutableFeatureExceptions(operation, action.getExceptions(), importManager);
-		// Fired events
-		createExecutableFeatureFireEvents(operation, action.getFiredEvents(), importManager);
-		return action;
-	}
-
 	private static void updateImports(JvmTypeReference type, ImportManager manager) {
 		if (manager != null && type != null) {
 			JvmType t = type.getType();
@@ -792,22 +809,6 @@ public class ECoreGeneratorHelper {
 				manager.addImportFor(t);
 			}
 		}
-	}
-
-	/** Replies the SARL Ecore equivalent for the givne JVM Ecore element.
-	 *
-	 * @param constructor - the JVM Ecore element.
-	 * @param importManager - the manager of the imports that is used for importing the types.
-	 * This parameter could be <code>null</code>.
-	 * @return the SARL Ecore element.
-	 */
-	public SarlConstructor createConstructor(JvmConstructor constructor, ImportManager importManager) {
-		SarlConstructor cons = SarlFactory.eINSTANCE.createSarlConstructor();
-		// Parameters
-		createExecutableFeatureParameters(constructor, cons.getParameters(), importManager);
-		// Throws
-		createExecutableFeatureExceptions(constructor, cons.getExceptions(), importManager);
-		return cons;
 	}
 
 	private void createExecutableFeatureParameters(JvmExecutable operation, List<XtendParameter> parameters,
@@ -848,9 +849,9 @@ public class ECoreGeneratorHelper {
 			for (JvmTypeReference type : firedEvents) {
 				JvmTypeReference clone = cloneType(type);
 				if (clone instanceof JvmParameterizedTypeReference) {
-					JvmParameterizedTypeReference pRef = (JvmParameterizedTypeReference) clone;
-					events.add(pRef);
-					updateImports(pRef, importManager);
+					JvmParameterizedTypeReference pref = (JvmParameterizedTypeReference) clone;
+					events.add(pref);
+					updateImports(pref, importManager);
 				}
 			}
 		}
@@ -887,9 +888,9 @@ public class ECoreGeneratorHelper {
 			if (index >= 0) {
 				String typeName = name.substring(0, index);
 				dfName = Utils.PREFIX_ATTRIBUTE_DEFAULT_VALUE + name.substring(index + 1);
-				String r = findDefaultValue(container, typeName, dfName);
-				if (r != null) {
-					return r;
+				String defaultValue = findDefaultValue(container, typeName, dfName);
+				if (defaultValue != null) {
+					return defaultValue;
 				}
 			}
 			for (JvmField field : container.getDeclaredFields()) {

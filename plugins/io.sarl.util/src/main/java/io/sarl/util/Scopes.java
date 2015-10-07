@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.util;
 
 import io.sarl.lang.core.Address;
@@ -56,13 +57,19 @@ public final class Scopes {
 		return new AddressScope(addresses);
 	}
 
+	/** A scope that is matching all the elements.
+	 *
+	 * @param <T> - the type of the elements to match to.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
 	private static class AlwaysTrueScope<T> implements Scope<T> {
 
 		private static final long serialVersionUID = -3193147362292037L;
 
-		/**
-		 */
-		public AlwaysTrueScope() {
+		AlwaysTrueScope() {
 			//
 		}
 
@@ -75,6 +82,7 @@ public final class Scopes {
 		public boolean matches(T element) {
 			return true;
 		}
+
 	}
 
 }

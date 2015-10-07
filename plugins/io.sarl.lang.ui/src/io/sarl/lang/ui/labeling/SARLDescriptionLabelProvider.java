@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.ui.labeling;
+
+import com.google.inject.Inject;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
+import org.eclipse.xtend.ide.labeling.XtendDescriptionLabelProvider;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.resource.IEObjectDescription;
+import org.eclipse.xtext.xbase.ui.labeling.XbaseImageAdornments;
+import org.eclipse.xtext.xtype.XImportDeclaration;
 
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
@@ -33,17 +44,6 @@ import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.ui.images.SARLImages;
-
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
-import org.eclipse.xtend.ide.labeling.XtendDescriptionLabelProvider;
-import org.eclipse.xtext.common.types.JvmDeclaredType;
-import org.eclipse.xtext.common.types.JvmOperation;
-import org.eclipse.xtext.resource.IEObjectDescription;
-import org.eclipse.xtext.xbase.ui.labeling.XbaseImageAdornments;
-import org.eclipse.xtext.xtype.XImportDeclaration;
-
-import com.google.inject.Inject;
 
 /**
  * Provides labels for a IEObjectDescriptions and IResourceDescriptions.
@@ -61,7 +61,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 
 	@Inject
 	private SARLImages images;
-	
+
 	@Inject
 	private XbaseImageAdornments adornments;
 

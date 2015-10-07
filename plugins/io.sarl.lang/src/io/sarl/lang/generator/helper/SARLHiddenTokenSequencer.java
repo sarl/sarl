@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.generator.helper;
 
-import io.sarl.lang.services.SARLGrammarAccess;
-
+import com.google.common.base.Strings;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.AbstractElement;
@@ -37,13 +39,11 @@ import org.eclipse.xtext.serializer.sequencer.HiddenTokenSequencer;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import io.sarl.lang.services.SARLGrammarAccess;
 
 /** Sequencer for hidden tokens related to the SARL language.
  *
- * This implementation enables the output of the comments associated to the SARL Ecore elements.
+ * <p>This implementation enables the output of the comments associated to the SARL Ecore elements.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -54,13 +54,16 @@ import com.google.inject.Singleton;
 public class SARLHiddenTokenSequencer extends HiddenTokenSequencer {
 
 	private AbstractRule mlRule;
+
 	private AbstractRule slRule;
+
 	private String mlPrefix;
+
 	private String slPrefix;
 
 	private String bufferedComment;
 
-	/**
+	/** Construct a token sequencer.
 	 */
 	public SARLHiddenTokenSequencer() {
 		//

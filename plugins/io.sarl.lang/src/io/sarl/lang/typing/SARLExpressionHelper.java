@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.typing;
 
 import java.util.regex.Pattern;
@@ -40,7 +41,7 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 
 	private final Pattern pattern;
 
-	/**
+	/** Construct the helper.
 	 */
 	public SARLExpressionHelper() {
 		this.pattern = Pattern.compile("^(is)|(get)|(has)[A-Z]"); //$NON-NLS-1$

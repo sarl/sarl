@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,25 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.labeling;
 
-import io.sarl.lang.sarl.SarlAction;
-import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlBehavior;
-import io.sarl.lang.sarl.SarlBehaviorUnit;
-import io.sarl.lang.sarl.SarlCapacity;
-import io.sarl.lang.sarl.SarlCapacityUses;
-import io.sarl.lang.sarl.SarlConstructor;
-import io.sarl.lang.sarl.SarlEvent;
-import io.sarl.lang.sarl.SarlField;
-import io.sarl.lang.sarl.SarlRequiredCapacity;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.ui.images.SARLImages;
+package io.sarl.lang.ui.labeling;
 
 import java.util.Collections;
 import java.util.concurrent.locks.ReentrantLock;
 
+import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.StyledString;
@@ -59,8 +48,19 @@ import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping;
 import org.eclipse.xtext.xbase.ui.labeling.XbaseImageAdornments;
 import org.eclipse.xtext.xbase.validation.UIStrings;
 
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
+import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.ui.images.SARLImages;
 
 /**
  * Provides labels for a EObjects.
@@ -88,11 +88,12 @@ public class SARLLabelProvider extends XtendLabelProvider {
 
 	@Inject
 	private SARLImages images;
-	
+
 	@Inject
 	private XbaseImageAdornments adornments;
 
 	private final PolymorphicDispatcher<ImageDescriptor> imageDescriptorDispatcher;
+
 	private final ReentrantLock imageDescriptorLock = new ReentrantLock();
 
 	/**
@@ -107,8 +108,8 @@ public class SARLLabelProvider extends XtendLabelProvider {
 				Collections.singletonList(this),
 				new ErrorHandler<ImageDescriptor>() {
 					@Override
-					public ImageDescriptor handle(Object[] params, Throwable e) {
-						return handleImageDescriptorError(params, e);
+					public ImageDescriptor handle(Object[] params, Throwable exception) {
+						return handleImageDescriptorError(params, exception);
 					}
 				});
 	}
@@ -125,21 +126,21 @@ public class SARLLabelProvider extends XtendLabelProvider {
 	/** Invoked when an image descriptor cannot be found.
 	 *
 	 * @param params - the parameters given to the method polymorphic dispatcher.
-	 * @param e - the cause of the error.
+	 * @param exception - the cause of the error.
 	 * @return the image descriptor for the error.
 	 */
-	protected ImageDescriptor handleImageDescriptorError(Object[] params, Throwable e) {
-		if (e instanceof NullPointerException) {
-			Object o = getDefaultImage();
-			if (o instanceof ImageDescriptor) {
-				return (ImageDescriptor) o;
+	protected ImageDescriptor handleImageDescriptorError(Object[] params, Throwable exception) {
+		if (exception instanceof NullPointerException) {
+			Object defaultImage = getDefaultImage();
+			if (defaultImage instanceof ImageDescriptor) {
+				return (ImageDescriptor) defaultImage;
 			}
-			if (o instanceof Image) {
-				return ImageDescriptor.createFromImage((Image) o);
+			if (defaultImage instanceof Image) {
+				return ImageDescriptor.createFromImage((Image) defaultImage);
 			}
 			return super.imageDescriptor(params[0]);
 		}
-		return Exceptions.throwUncheckedException(e);
+		return Exceptions.throwUncheckedException(exception);
 	}
 
 	/** Create a string representation of a signature without the return type.
@@ -207,7 +208,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
@@ -220,7 +221,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
@@ -232,7 +233,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
@@ -247,7 +248,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
@@ -262,7 +263,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
@@ -277,7 +278,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
@@ -292,7 +293,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
@@ -307,7 +308,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
@@ -321,7 +322,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
@@ -335,7 +336,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
@@ -350,7 +351,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
@@ -362,7 +363,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
@@ -374,7 +375,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
@@ -486,8 +487,8 @@ public class SARLLabelProvider extends XtendLabelProvider {
 	 * @return the text.
 	 */
 	protected StyledString text(SarlBehaviorUnit element) {
-		StyledString s = new StyledString("on ", StyledString.DECORATIONS_STYLER); //$NON-NLS-1$
-		s.append(getHumanReadableName(element.getName()));
+		StyledString text = new StyledString("on ", StyledString.DECORATIONS_STYLER); //$NON-NLS-1$
+		text.append(getHumanReadableName(element.getName()));
 		if (element.getGuard() != null) {
 			String txt = null;
 			ICompositeNode node = NodeModelUtils.getNode(element.getGuard());
@@ -505,10 +506,10 @@ public class SARLLabelProvider extends XtendLabelProvider {
 					txt = "[" + txt + "]"; //$NON-NLS-1$//$NON-NLS-2$
 				}
 			}
-			s.append(" "); //$NON-NLS-1$
-			s.append(txt, StyledString.DECORATIONS_STYLER);
+			text.append(" "); //$NON-NLS-1$
+			text.append(txt, StyledString.DECORATIONS_STYLER);
 		}
-		return s;
+		return text;
 	}
 
 }

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,19 +18,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.eclipse.wizards.elements.aop.newskill;
 
 import static io.sarl.eclipse.util.Jdt2Ecore.populateInheritanceContext;
-import io.sarl.eclipse.SARLEclipseConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.util.Jdt2Ecore;
-import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.core.Capacity;
-import io.sarl.lang.core.Skill;
-import io.sarl.lang.generator.helper.SarlEcoreCode;
-import io.sarl.lang.sarl.SarlSkill;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -46,6 +37,18 @@ import org.eclipse.swt.widgets.Composite;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Jdt2Ecore;
+import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
+import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.Skill;
+import io.sarl.lang.generator.helper.SarlEcoreCode;
+import io.sarl.lang.sarl.SarlSkill;
+
+
 /**
  * Wizard page for creating a new SARL skill.
  *
@@ -56,7 +59,7 @@ import com.google.common.collect.Maps;
  */
 public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 
-	/**
+	/** Construct a wizard page for creating a SARL skill.
 	 */
 	public NewSarlSkillWizardPage() {
 		super(CLASS_TYPE, Messages.NewSarlSkill_0);
@@ -76,11 +79,11 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 	@Override
 	protected void doStatusUpdate() {
 		IStatus[] status = new IStatus[] {
-				this.fContainerStatus,
-				this.fPackageStatus,
-				this.fTypeNameStatus,
-				this.fSuperClassStatus,
-				this.fSuperInterfacesStatus,
+			this.fContainerStatus,
+			this.fPackageStatus,
+			this.fTypeNameStatus,
+			this.fSuperClassStatus,
+			this.fSuperInterfacesStatus,
 		};
 		updateStatus(status);
 	}

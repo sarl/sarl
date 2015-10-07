@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,17 +18,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.ui.images;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.xtend.ide.labeling.XtendImages;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.ui.IImageHelper.IImageDescriptorHelper;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 /**
  * Providers of images for the SARL IDE.
@@ -45,7 +45,7 @@ public class SARLImages extends XtendImages {
 	private IImageDescriptorHelper imageHelper;
 
 	/** Replies the image descriptor for the given element.
-	 * 
+	 *
 	 * @param type - the type of the SARL element, or <code>null</code> if unknown.
 	 * @param isInner - indicates if the element is inner.
 	 * @param isInInterfaceOrAnnotation - indicates if the element is defined inside an interface or an annotation.
@@ -56,8 +56,8 @@ public class SARLImages extends XtendImages {
 	protected ImageDescriptor getTypeImageDescriptor(
 			SarlElementType type,
 			boolean isInner, boolean isInInterfaceOrAnnotation, int flags, boolean useLightIcons) {
-		if (type !=null) {
-			switch(type) {
+		if (type != null) {
+			switch (type) {
 			case AGENT:
 				return this.imageHelper.getImageDescriptor("sarl-agent.png"); //$NON-NLS-1$
 			case BEHAVIOR:
@@ -75,7 +75,7 @@ public class SARLImages extends XtendImages {
 		}
 		return JavaElementImageProvider.getTypeImageDescriptor(isInner, isInInterfaceOrAnnotation, flags, useLightIcons);
 	}
-	
+
 	/** Replies the image descriptor for the "agents".
 	 *
 	 * @param visibility - the visibility of the agent.
@@ -195,7 +195,7 @@ public class SARLImages extends XtendImages {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	protected static enum SarlElementType {
+	protected enum SarlElementType {
 		/** Agent.
 		 */
 		AGENT,

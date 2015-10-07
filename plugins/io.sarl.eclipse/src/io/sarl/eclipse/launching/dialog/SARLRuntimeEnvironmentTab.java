@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,16 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launching.dialog;
 
-import io.sarl.eclipse.SARLEclipseConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProviderFactory;
-import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.runtime.ProjectProvider;
-import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
-import io.sarl.eclipse.runtime.SARLRuntime;
-import io.sarl.eclipse.runtime.SREConfigurationBlock;
+package io.sarl.eclipse.launching.dialog;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -54,8 +46,17 @@ import org.osgi.framework.Version;
 
 import com.google.common.base.Strings;
 
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProviderFactory;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.ProjectProvider;
+import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
+import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.eclipse.runtime.SREConfigurationBlock;
+
 /**
- * Class for the configuration tab for the JRE and the SARL runtime environment.
+ * Configuration tab for the JRE and the SARL runtime environment.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -65,9 +66,10 @@ import com.google.common.base.Strings;
 public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 
 	private SREConfigurationBlock sreBlock;
+
 	private IPropertyChangeListener listener;
 
-	/**
+	/** Construct the tab for configuration the SRE.
 	 */
 	public SARLRuntimeEnvironmentTab() {
 		//
@@ -110,8 +112,6 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
-		Composite oldComp = (Composite) getControl();
-		Control[] children = oldComp.getChildren();
 
 		ProjectProvider projectProvider = new ProjectAdapter();
 		List<ProjectSREProviderFactory> sreProviderFactories = getProviderFromExtension();
@@ -119,6 +119,8 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 
 		this.sreBlock = new SREConfigurationBlock(true, projectProvider, sreProviderFactories);
 		this.sreBlock.createControl(parent);
+		Composite oldComp = (Composite) getControl();
+		Control[] children = oldComp.getChildren();
 		for (Control ctl : children) {
 			ctl.setParent(this.sreBlock.getControl());
 		}
@@ -332,7 +334,9 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 				Boolean.FALSE.toString());
 	}
 
-	/**
+	/** Adapter that permits to provide a reference on a SARL project to the configuration
+	 * tab that is using it.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -340,9 +344,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 	 */
 	private class ProjectAdapter implements ProjectProvider {
 
-		/**
-		 */
-		public ProjectAdapter() {
+		ProjectAdapter() {
 			//
 		}
 

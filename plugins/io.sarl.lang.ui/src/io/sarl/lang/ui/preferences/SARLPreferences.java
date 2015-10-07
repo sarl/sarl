@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.preferences;
 
-import io.sarl.lang.ui.internal.SARLActivator;
+package io.sarl.lang.ui.preferences;
 
 import java.util.Set;
 
+import com.google.common.base.Strings;
+import com.google.inject.Injector;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -35,8 +36,7 @@ import org.eclipse.xtext.generator.OutputConfiguration;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock;
 
-import com.google.common.base.Strings;
-import com.google.inject.Injector;
+import io.sarl.lang.ui.internal.SARLActivator;
 
 /** Utilities related to the preferences related to SARL.
  *
@@ -159,7 +159,7 @@ public final class SARLPreferences {
 	 *
 	 * @param project - the project.
 	 * @return the output path for SARL compiler if the project has a specific configuration,
-	 * otherwise <code>null</code>.
+	 *     otherwise <code>null</code>.
 	 */
 	public static IPath getSARLOutputPathFor(
 			IProject project) {
@@ -192,9 +192,9 @@ public final class SARLPreferences {
 		for (OutputConfiguration config : configurationProvider.getOutputConfigurations()) {
 			String path = config.getOutputDirectory();
 			if (!Strings.isNullOrEmpty(path)) {
-				IPath iPath = Path.fromOSString(path);
-				if (iPath != null) {
-					return iPath;
+				IPath pathObject = Path.fromOSString(path);
+				if (pathObject != null) {
+					return pathObject;
 				}
 			}
 		}
