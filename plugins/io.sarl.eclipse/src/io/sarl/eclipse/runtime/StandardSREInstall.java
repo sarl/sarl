@@ -35,6 +35,9 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.regex.Pattern;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -45,10 +48,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import com.google.common.base.Objects;
-import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Utilities;
@@ -193,8 +192,8 @@ public class StandardSREInstall extends AbstractSREInstall {
 		return super.getName();
 	}
 
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	@Override
-	@SuppressWarnings("checkstyle:cyclomaticomplexity")
 	protected void resolveDirtyFields(boolean forceSettings) {
 		if (this.jarFile != null) {
 			try (JarFile jFile = new JarFile(this.jarFile.toFile())) {

@@ -26,6 +26,8 @@ import static io.sarl.eclipse.util.Jdt2Ecore.populateInheritanceContext;
 import java.util.Comparator;
 import java.util.Map;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -33,9 +35,6 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.swt.widgets.Composite;
-
-import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;

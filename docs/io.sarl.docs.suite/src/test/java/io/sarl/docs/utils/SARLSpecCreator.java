@@ -18,16 +18,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.docs.utils;
 
-
-import io.sarl.lang.SARLInjectorProvider;
-
+import com.google.inject.Injector;
 import org.eclipse.xtext.junit4.IInjectorProvider;
 import org.eclipse.xtext.junit4.IRegistryConfigurator;
 import org.jnario.lib.AbstractSpecCreator;
 
-import com.google.inject.Injector;
+import io.sarl.lang.SARLInjectorProvider;
 
 /** Creator of specification model dedicated to SARL.
  *

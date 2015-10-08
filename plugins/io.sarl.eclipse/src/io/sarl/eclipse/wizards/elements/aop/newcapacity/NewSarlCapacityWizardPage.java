@@ -18,14 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.wizards.elements.aop.newcapacity;
 
-import io.sarl.eclipse.SARLEclipseConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
-import io.sarl.lang.core.Capacity;
-import io.sarl.lang.generator.helper.SarlEcoreCode;
-import io.sarl.lang.sarl.SarlCapacity;
+package io.sarl.eclipse.wizards.elements.aop.newcapacity;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -33,6 +27,13 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.swt.widgets.Composite;
+
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
+import io.sarl.lang.core.Capacity;
+import io.sarl.lang.generator.helper.SarlEcoreCode;
+import io.sarl.lang.sarl.SarlCapacity;
 
 /**
  * Wizard page for creating a new SARL behavior.
@@ -44,7 +45,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage {
 
-	/**
+	/** Construct a wizard page.
 	 */
 	public NewSarlCapacityWizardPage() {
 		super(INTERFACE_TYPE, Messages.NewSarlCapacity_0);
@@ -61,10 +62,10 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 	@Override
 	protected void doStatusUpdate() {
 		IStatus[] status = new IStatus[] {
-				this.fContainerStatus,
-				this.fPackageStatus,
-				this.fTypeNameStatus,
-				this.fSuperClassStatus,
+			this.fContainerStatus,
+			this.fPackageStatus,
+			this.fTypeNameStatus,
+			this.fSuperClassStatus,
 		};
 		updateStatus(status);
 	}

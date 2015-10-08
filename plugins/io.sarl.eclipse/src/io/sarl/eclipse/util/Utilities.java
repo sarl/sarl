@@ -21,9 +21,8 @@
 
 package io.sarl.eclipse.util;
 
-import org.osgi.framework.Version;
-
 import com.google.common.base.Strings;
+import org.osgi.framework.Version;
 
 
 /** Utilities.

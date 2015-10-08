@@ -29,6 +29,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.common.base.Objects;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
@@ -46,8 +47,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.dialogs.PreferencesUtil;
-
-import com.google.common.base.Objects;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.preferences.SREsPreferencePage;
@@ -742,7 +741,7 @@ public class SREConfigurationBlock {
 			}
 		}
 
-		@SuppressWarnings({"synthetic-access","checkstyle:variabledeclarationusagedistance"})
+		@SuppressWarnings({"synthetic-access", "checkstyle:variabledeclarationusagedistance"})
 		@Override
 		public void sreAdded(ISREInstall sre) {
 			if (sre.getValidity().isOK()) {

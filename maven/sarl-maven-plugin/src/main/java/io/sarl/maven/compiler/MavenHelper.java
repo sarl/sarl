@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.maven.compiler;
 
 import java.lang.reflect.InvocationTargetException;
@@ -57,10 +58,13 @@ public class MavenHelper {
 	private static Map<String, Dependency> pluginDependencies;
 
 	private final MavenSession session;
+
 	private final BuildPluginManager buildPluginManager;
+
 	private final Log log;
 
 	private final Method getRepositorySessionMethod;
+
 	private final Method loadPluginMethod;
 
 	/**
@@ -208,23 +212,23 @@ public class MavenHelper {
 			if (pluginDependencies == null) {
 				Map<String, Dependency> deps = new TreeMap<>();
 				String dependencies = getConfig("plugin.dependencies"); //$NON-NLS-1$
-				Pattern p = Pattern.compile("^\\s*\\[\\s*(.*?)\\s*\\]\\s*$", Pattern.DOTALL); //$NON-NLS-1$
-				Matcher m = p.matcher(dependencies);
-				if (m.matches()) {
-					dependencies = m.group(1);
-					p = Pattern.compile("Dependency\\s*\\{\\s*(.+?)\\s*\\}", Pattern.DOTALL); //$NON-NLS-1$
-					m = p.matcher(dependencies);
-					while (m.find()) {
-						String element = m.group(1);
+				Pattern pattern = Pattern.compile("^\\s*\\[\\s*(.*?)\\s*\\]\\s*$", Pattern.DOTALL); //$NON-NLS-1$
+				Matcher matcher = pattern.matcher(dependencies);
+				if (matcher.matches()) {
+					dependencies = matcher.group(1);
+					pattern = Pattern.compile("Dependency\\s*\\{\\s*(.+?)\\s*\\}", Pattern.DOTALL); //$NON-NLS-1$
+					matcher = pattern.matcher(dependencies);
+					while (matcher.find()) {
 						Dependency dep = new Dependency();
 						dep.setClassifier(""); //$NON-NLS-1$
 						dep.setOptional(false);
 						dep.setScope("compile"); //$NON-NLS-1$
 						String groupId = null;
 						String artifactId = null;
+						String element = matcher.group(1);
 						for (String entry : element.split(",\\s")) { //$NON-NLS-1$
 							String[] pair = entry.trim().split("="); //$NON-NLS-1$
-							switch(pair[0]) {
+							switch (pair[0]) {
 							case "groupId": //$NON-NLS-1$
 								groupId = pair[1].trim();
 								dep.setGroupId(groupId);

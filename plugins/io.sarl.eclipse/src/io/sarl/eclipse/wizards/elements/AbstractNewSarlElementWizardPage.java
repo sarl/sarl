@@ -33,6 +33,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.google.common.base.Strings;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
@@ -74,8 +75,6 @@ import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.formatting.IWhitespaceInformationProvider;
 import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
-
-import com.google.common.base.Strings;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.lang.generator.helper.ECoreGeneratorHelper;

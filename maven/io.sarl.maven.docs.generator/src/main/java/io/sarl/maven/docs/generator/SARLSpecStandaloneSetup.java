@@ -21,14 +21,13 @@
 
 package io.sarl.maven.docs.generator;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.util.Modules;
 import org.eclipse.emf.ecore.EPackage;
 import org.jnario.spec.SpecRuntimeModule;
 import org.jnario.spec.SpecStandaloneSetupGenerated;
 import org.jnario.spec.spec.SpecPackage;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.util.Modules;
 
 /** Class for setting up the injection mechanism in the Maven plugin.
  *
@@ -41,14 +40,12 @@ class SARLSpecStandaloneSetup extends SpecStandaloneSetupGenerated {
 
 	private static Injector injector;
 
-	/**
+	/** Construct a setup configuration.
 	 */
-	public SARLSpecStandaloneSetup() {
+	SARLSpecStandaloneSetup() {
 		//
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public Injector createInjectorAndDoEMFRegistration() {
 		if (injector != null) {

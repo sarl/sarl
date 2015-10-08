@@ -18,22 +18,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.eclipse.wizards.elements.aop.newevent;
 
 import static io.sarl.eclipse.util.Jdt2Ecore.populateInheritanceContext;
-import io.sarl.eclipse.SARLEclipseConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.util.Jdt2Ecore;
-import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.core.Event;
-import io.sarl.lang.generator.helper.SarlEcoreCode;
-import io.sarl.lang.sarl.SarlEvent;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -42,8 +37,14 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.swt.widgets.Composite;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Jdt2Ecore;
+import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
+import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.core.Event;
+import io.sarl.lang.generator.helper.SarlEcoreCode;
+import io.sarl.lang.sarl.SarlEvent;
 
 /**
  * Wizard page for creating a new SARL event.
@@ -55,7 +56,7 @@ import com.google.common.collect.Maps;
  */
 public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 
-	/**
+	/** Construct a wizard page.
 	 */
 	public NewSarlEventWizardPage() {
 		super(CLASS_TYPE, Messages.NewSarlEvent_0);
@@ -74,10 +75,10 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 	@Override
 	protected void doStatusUpdate() {
 		IStatus[] status = new IStatus[] {
-				this.fContainerStatus,
-				this.fPackageStatus,
-				this.fTypeNameStatus,
-				this.fSuperClassStatus,
+			this.fContainerStatus,
+			this.fPackageStatus,
+			this.fTypeNameStatus,
+			this.fSuperClassStatus,
 		};
 		updateStatus(status);
 	}

@@ -21,9 +21,6 @@
 
 package io.sarl.eclipse.runtime;
 
-import io.sarl.eclipse.SARLEclipseConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -55,6 +52,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -78,8 +77,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Strings;
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
 
 /**
  * The central access point for launching support. This class manages
@@ -95,7 +94,7 @@ import com.google.common.base.Strings;
  * @mavenartifactid $ArtifactId$
  * @noinstantiate This class is not intended to be instantiated by clients.
  */
-@SuppressWarnings("checkstyle:classfanoutcomplexity")
+@SuppressWarnings({"checkstyle:classfanoutcomplexity", "checkstyle:classdataabstractioncoupling"})
 public final class SARLRuntime {
 
 	/**
@@ -717,7 +716,8 @@ public final class SARLRuntime {
 	 *
 	 * @since 3.2
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity","checkstyle:variabledeclarationusagedistance"})
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:variabledeclarationusagedistance",
+			"checkstyle:npathcomplexity"})
 	private static void initializeSREs() {
 		ISREInstall[] newSREs = new ISREInstall[0];
 		boolean savePrefs = false;

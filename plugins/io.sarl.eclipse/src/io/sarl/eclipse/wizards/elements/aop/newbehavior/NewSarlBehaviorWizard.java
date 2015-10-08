@@ -18,13 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.wizards.elements.aop.newbehavior;
 
-import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizard;
+package io.sarl.eclipse.wizards.elements.aop.newbehavior;
 
 import javax.inject.Inject;
 
 import org.eclipse.xtext.ui.IImageHelper.IImageDescriptorHelper;
+
+import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizard;
 
 /**
  * Wizard for creating a new SARL behavior.

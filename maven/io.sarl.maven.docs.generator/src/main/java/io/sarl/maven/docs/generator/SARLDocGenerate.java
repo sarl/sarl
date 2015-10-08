@@ -30,6 +30,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.Provider;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -54,16 +60,9 @@ import org.jnario.report.HashBasedSpec2ResultMapping;
 import org.jnario.report.SpecResultParser;
 import org.jnario.suite.SuiteStandaloneSetup;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.Provider;
-
 /** Maven MOJO that is generating the documentation for the SARL project.
- * <p>
- * Copied from JnarioDocGenerate (version 1.0.1).
+ *
+ * <p>Copied from JnarioDocGenerate (version 1.0.1).
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -228,8 +227,8 @@ public class SARLDocGenerate extends XtendTestCompile {
 		if (Iterables.isEmpty(filtered)) {
 			getLog().info(
 					"skip compiling sources because the configured directory '" //$NON-NLS-1$
-							+ Iterables.toString(sourceDirectories)
-							+ "' does not exists."); //$NON-NLS-1$
+					+ Iterables.toString(sourceDirectories)
+					+ "' does not exists."); //$NON-NLS-1$
 			return;
 		}
 		getLog().debug("Set temp directory: " + getTempDirectory()); //$NON-NLS-1$
@@ -298,13 +297,16 @@ public class SARLDocGenerate extends XtendTestCompile {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	private final class XmlFiles implements FilenameFilter {
-		public XmlFiles() {
+
+		XmlFiles() {
 			//
 		}
+
 		@Override
 		public boolean accept(File dir, String name) {
 			return name.endsWith("xml"); //$NON-NLS-1$
 		}
+
 	}
 
 }

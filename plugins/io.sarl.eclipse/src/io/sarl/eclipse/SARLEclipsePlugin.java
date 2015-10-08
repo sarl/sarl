@@ -23,6 +23,7 @@ package io.sarl.eclipse;
 
 import java.util.Arrays;
 
+import com.google.common.base.Strings;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
@@ -36,8 +37,6 @@ import org.eclipse.osgi.internal.debug.Debug;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.service.prefs.BackingStoreException;
-
-import com.google.common.base.Strings;
 
 
 /**
@@ -283,29 +282,25 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	/**
 	 * Logs an internal debug message with the specified message.
 	 *
-	 * @param message - the debug message to log
 	 * @param cause - the cause of the message log.
 	 */
-	@SuppressWarnings("static-method")
-	public void logDebugMessage(String message, Throwable cause) {
-		Debug.println(message);
-		if (cause != null) {
-			//CHECKSTYLE:OFF
-			Debug.printStackTrace(cause);
-			//CHECKSTYLE:ON
-		}
+	@SuppressWarnings({"static-method", "checkstyle:regexp"})
+	public void logDebugMessage(Throwable cause) {
+		Debug.printStackTrace(cause);
 	}
 
 	/**
 	 * Logs an internal debug message with the specified message.
 	 *
+	 * @param message - the debug message to log
 	 * @param cause - the cause of the message log.
 	 */
-	@SuppressWarnings("static-method")
-	public void logDebugMessage(Throwable cause) {
-		//CHECKSTYLE:OFF
-		Debug.printStackTrace(cause);
-		//CHECKSTYLE:ON
+	@SuppressWarnings({"static-method", "checkstyle:regexp"})
+	public void logDebugMessage(String message, Throwable cause) {
+		Debug.println(message);
+		if (cause != null) {
+			Debug.printStackTrace(cause);
+		}
 	}
 
 	/**

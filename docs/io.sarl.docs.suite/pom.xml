@@ -137,48 +137,6 @@
 				</executions>
 			</plugin>
 
-			<!-- Compute the target folder -->
-			<plugin>
-				<groupId>org.codehaus.gmavenplus</groupId>
-				<artifactId>gmavenplus-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>add-documentation-dynamic-properties</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>execute</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<scripts>
-						<script><![CDATA[
-							snapshotTag = ""
-							endOfVersion = ""
-							if (project.version.endsWith(snapshotTag)) {
-								len = project.version.size() - snapshotTag.size()
-								version = project.version.substring(0,len)
-								project.properties.sarlspecificationreleasestatus = "Draft Release"
-								endOfVersion = snapshotTag
-							}
-							else {
-								version = project.version
-								project.properties.sarlspecificationreleasestatus = "Final Release"
-							}
-							versionFields = version.split("\\.")
-							project.properties.janusversion = "2."+versionFields[0]+"."+versionFields[1]+".0"+endOfVersion
-						]]></script>
-					</scripts>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.codehaus.groovy</groupId>
-						<artifactId>groovy-all-minimal</artifactId>
-						<version>1.5.8</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-
 			<plugin>
 				<groupId>com.google.code.maven-replacer-plugin</groupId>
 				<artifactId>replacer</artifactId>

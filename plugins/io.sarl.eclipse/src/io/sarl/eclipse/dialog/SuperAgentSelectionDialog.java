@@ -21,6 +21,7 @@
 
 package io.sarl.eclipse.dialog;
 
+import com.google.common.annotations.Beta;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -33,8 +34,6 @@ import org.eclipse.jdt.internal.ui.dialogs.OpenTypeSelectionDialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.swt.widgets.Shell;
-
-import com.google.common.annotations.Beta;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.lang.core.Agent;

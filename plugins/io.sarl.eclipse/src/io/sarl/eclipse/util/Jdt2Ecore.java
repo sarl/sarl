@@ -33,6 +33,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.google.common.base.Strings;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -59,8 +60,6 @@ import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XbaseFactory;
-
-import com.google.common.base.Strings;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
@@ -191,7 +190,7 @@ public final class Jdt2Ecore {
 	 * @see #toTypeFinder(IJavaProject)
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
-			"checkstyle:nestedifdepth", "checkstyle:maximumparameters"})
+			"checkstyle:nestedifdepth", "checkstyle:parameternumber"})
 	public static IStatus populateInheritanceContext(
 			TypeFinder typeFinder,
 			Map<ActionPrototype, IMethod> finalOperations,

@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.maven.compiler;
 
 import java.nio.charset.Charset;
@@ -91,11 +92,11 @@ public class CompileMojo extends AbstractSarlMojo {
 		executeMojo(
 				xtextGroupId, xtextArtifactId, xtextVersion, xtextMojo,
 				MessageFormat.format(
-						MavenHelper.getConfig("xtext-compiler.configuration"), //$NON-NLS-1$
-						this.source,
-						this.target,
-						this.encoding,
-						getOutput().getAbsolutePath()),
+				MavenHelper.getConfig("xtext-compiler.configuration"), //$NON-NLS-1$
+				this.source,
+				this.target,
+				this.encoding,
+				getOutput().getAbsolutePath()),
 				dependencies);
 	}
 
@@ -109,10 +110,10 @@ public class CompileMojo extends AbstractSarlMojo {
 		executeMojo(
 				javaGroupId, javaArtifactId, javaVersion, javaMojo,
 				MessageFormat.format(
-						MavenHelper.getConfig("java-compiler.configuration"), //$NON-NLS-1$
-						this.source,
-						this.target,
-						this.encoding));
+				MavenHelper.getConfig("java-compiler.configuration"), //$NON-NLS-1$
+				this.source,
+				this.target,
+				this.encoding));
 	}
 
 }

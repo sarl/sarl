@@ -47,10 +47,10 @@ final class MavenConfig {
 
 	/** Set if the section are automatically numbered.
 	 *
-	 * @param e - <code>true</code> if sections are numbered.
+	 * @param enable - <code>true</code> if sections are numbered.
 	 */
-	public static void setSectionNumbering(boolean e) {
-		isSectionNumbering = e;
+	public static void setSectionNumbering(boolean enable) {
+		isSectionNumbering = enable;
 	}
 
 }

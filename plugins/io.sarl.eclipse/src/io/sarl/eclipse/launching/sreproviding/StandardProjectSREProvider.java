@@ -21,12 +21,11 @@
 
 package io.sarl.eclipse.launching.sreproviding;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
-
-import com.google.common.base.Objects;
-import com.google.common.base.Strings;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;

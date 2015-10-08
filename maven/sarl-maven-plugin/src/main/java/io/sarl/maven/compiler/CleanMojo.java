@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.maven.compiler;
 
 import java.text.MessageFormat;
@@ -48,9 +49,9 @@ public class CleanMojo extends AbstractSarlMojo {
 		executeMojo(
 				cleanerGroupId, cleanerArtifactId, cleanerVersion, cleanerMojo,
 				MessageFormat.format(
-						MavenHelper.getConfig("cleaner.configuration"), //$NON-NLS-1$
-						getOutput().getAbsolutePath(),
-						getTestOutput().getAbsolutePath()));
+				MavenHelper.getConfig("cleaner.configuration"), //$NON-NLS-1$
+				getOutput().getAbsolutePath(),
+				getTestOutput().getAbsolutePath()));
 	}
 
 }

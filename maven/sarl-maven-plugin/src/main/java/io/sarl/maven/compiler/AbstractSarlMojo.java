@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.maven.compiler;
 
 import java.io.File;
@@ -128,15 +129,6 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 		//
 	}
 
-	/** Execute the mojo.
-	 *
-	 * @throws MojoExecutionException if an unexpected problem occurs. Throwing this
-	 * exception causes a "BUILD ERROR" message to be displayed.
-	 * @throws MojoFailureException if an expected problem (such as a compilation failure)
-	 * occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed.
-	 */
-	protected abstract void executeMojo() throws MojoExecutionException, MojoFailureException;
-
 	/** Make absolute the given filename, relatively to the project's folder.
 	 *
 	 * @param file - the file to convert.
@@ -181,6 +173,15 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	protected File getTestOutput() {
 		return makeAbsolute((this.testOutput == null) ? new File(DEFAULT_TEST_OUTPUT) : this.testOutput);
 	}
+
+	/** Execute the mojo.
+	 *
+	 * @throws MojoExecutionException if an unexpected problem occurs. Throwing this
+	 *     exception causes a "BUILD ERROR" message to be displayed.
+	 * @throws MojoFailureException if an expected problem (such as a compilation failure)
+	 *     occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed.
+	 */
+	protected abstract void executeMojo() throws MojoExecutionException, MojoFailureException;
 
 	/** Execute another MOJO.
 	 *

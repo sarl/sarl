@@ -346,12 +346,19 @@
 							//************************
 							// Compute version and snapshot tag
 							//
-							snapshotTag = "";
+							def snapshotTag = "-SNAPSHOT";
+							def version;
+							def releaseStatus;
+							def endOfVersion;
 							if (project.version.endsWith(snapshotTag)) {
-								len = project.version.size() - snapshotTag.size();
+								def len = project.version.size() - snapshotTag.size();
 								version = project.version.substring(0, len);
+								releaseStatus = "Draft Release";
+								endOfVersion = snapshotTag;
 							} else {
 								version = project.version;
+								releaseStatus = "Stable Release";
+								endOfVersion = "";
 							}
 							versionFields = version.split("\\.");
 							//************************
@@ -360,9 +367,14 @@
 							project.properties.sarlspecificationreleaseversion = versionFields[0] + "." + versionFields[1];
 							project.properties.sarlreleaseversion = project.properties.sarlspecificationreleaseversion + "." + versionFields[2];
 							project.properties.sarlspecificationreleasedate = (new java.text.SimpleDateFormat("yyyy-MM-dd")).format(now);
+							project.properties.sarlspecificationreleasestatus = releaseStatus;
+							project.properties.janusversion = "2."+versionFields[0]+"."+versionFields[1]+".0"+endOfVersion;
+
 							println("\tset sarlspecificationreleaseversion to: " + project.properties.sarlspecificationreleaseversion);
 							println("\tset sarlreleaseversion to: " + project.properties.sarlreleaseversion);
 							println("\tset sarlspecificationreleasedate to: " + project.properties.sarlspecificationreleasedate);
+							println("\tset sarlspecificationreleasestatus to: " + project.properties.sarlspecificationreleasestatus);
+							println("\tset janusversion to: " + project.properties.janusversion);
 						]]></script>
 					</scripts>
 				</configuration>
