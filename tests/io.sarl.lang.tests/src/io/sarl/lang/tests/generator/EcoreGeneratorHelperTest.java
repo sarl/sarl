@@ -23,12 +23,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
 import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.actionprototype.ActionPrototypeProvider;
-import io.sarl.lang.generator.helper.BlockInnerDocumentationAdapter;
-import io.sarl.lang.generator.helper.ECoreGeneratorHelper;
-import io.sarl.lang.generator.helper.PostDocumentationAdapter;
-import io.sarl.lang.generator.helper.SarlEcoreCode;
+import io.sarl.lang.ecoregenerator.helper.BlockInnerDocumentationAdapter;
+import io.sarl.lang.ecoregenerator.helper.ECoreGeneratorHelper;
+import io.sarl.lang.ecoregenerator.helper.PostDocumentationAdapter;
+import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
@@ -73,7 +74,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-
 import com.google.inject.Inject;
 
 /** This class tests the functions of {@link ECoreGeneratorHelper}.

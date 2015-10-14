@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.generator;
+package io.sarl.lang.ecoregenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +29,8 @@ import org.eclipse.xtext.util.Strings;
 
 /**
  * A class annotation configuration for the <code>@SuppressWarnings</code> annotation.
+ *
+ * <p>FIXME: Use this class in the GenerateSARL workflow when JDAVA 8 is supported.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

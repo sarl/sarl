@@ -31,6 +31,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
+import org.eclipse.xtend.core.xtend.XtendFunction;
+
+import org.eclipse.xtend.core.xtend.XtendMember;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import com.google.common.base.Strings;
 import com.ibm.icu.util.VersionInfo;
 import org.eclipse.xtend.core.xtend.XtendParameter;
@@ -1018,6 +1022,24 @@ public final class Utils {
 	 */
 	public static QualifiedName getQualifiedName(JvmIdentifiableElement element) {
 		return QualifiedName.create(element.getQualifiedName('.').split("\\.")); //$NON-NLS-1$
+	}
+
+	/** Replies if the given declaration has an abstract member.
+	 *
+	 * @param declaration - the declaration.
+	 * @return <code>true</code> if the given type has an abstract function.
+	 */
+	public static boolean hasAbstractMember(XtendTypeDeclaration declaration) {
+		if (declaration != null) {
+			for (XtendMember member : declaration.getMembers()) {
+				if (member instanceof XtendFunction) {
+					if (((XtendFunction) member).isAbstract()) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 }

@@ -68,7 +68,7 @@ import io.sarl.lang.actionprototype.ActionPrototypeProvider;
 import io.sarl.lang.actionprototype.FormalParameterProvider;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.Generated;
-import io.sarl.lang.generator.helper.SarlEcoreCode;
+import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlFormalParameter;

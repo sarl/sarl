@@ -16,7 +16,17 @@
 package io.sarl.lang.tests.compilation.aop;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import org.eclipse.xtext.common.types.JvmVisibility;
+
 import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
 
 import org.eclipse.xtext.junit4.InjectWith;
@@ -28,7 +38,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-
 import com.google.inject.Inject;
 
 /**
@@ -38,691 +47,91 @@ import com.google.inject.Inject;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	CapacityCompilerTest.FieldTest.class,
-	CapacityCompilerTest.ActionTest.class,
-	CapacityCompilerTest.ReturnTypeTest.class,
-	CapacityCompilerTest.SkillTest.class,
-	CapacityCompilerTest.Visibility.class,
-})
 @SuppressWarnings("all")
-public class CapacityCompilerTest {
+public class CapacityCompilerTest extends AbstractSarlTest {
 
-	public static class FieldTest extends AbstractSarlTest {
+	@Inject
+	private CompilationTestHelper compiler;
 
-		@Inject
-		private CompilationTestHelper compiler;
-
-		@Test
-		public void completeFinalFieldInitialization() throws Exception {
-			final String expectedC1 = multilineString(
-					"import io.sarl.lang.core.Capacity;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public interface C1 extends Capacity {",
-					"}",
-					""
-					);
-			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
-					"import io.sarl.lang.core.Agent;",
-					"import io.sarl.lang.core.Skill;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public class S1 extends Skill implements C1 {",
-					"  protected final int field1 = 5;",
-					"  ",
-					"  protected final String field2 = \"\";",
-					"  ",
-					"  /**",
-					"   * Construct a skill. The owning agent is unknown.",
-					"   */",
-					"  @Generated",
-					"  public S1() {",
-					"    super();",
-					"  }",
-					"  ",
-					"  /**",
-					"   * Construct a skill.",
-					"   * @param owner - agent that is owning this skill.",
-					"   */",
-					"  @Generated",
-					"  public S1(final Agent owner) {",
-					"    super(owner);",
-					"  }",
-					"}",
-					""
-					);
-			String source = multilineString(
-					"capacity C1 { }",
-					"skill S1 implements C1 {",
-					"  val field1 : int = 5",
-					"  val field2 : String = \"\"",
-					"}"
-					);
-			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-				@Override
-				public void accept(Result r) {
-					assertEquals(expectedC1,r.getGeneratedCode("C1"));
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
-				}
-			});
-		}
-
+	@Test
+	public void basicCapacityCompile() throws Exception {
+		String source = "capacity C1 { }";
+		String expected = multilineString(
+				"import io.sarl.lang.core.Capacity;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public interface C1 extends Capacity {",
+				"}",
+				""
+				);
+		this.compiler.assertCompilesTo(source, expected);
 	}
 
-	public static class ActionTest extends AbstractSarlTest {
-
-		@Inject
-		private CompilationTestHelper compiler;
-
-
-		@Test
-		public void missedActionImplementation_0() throws Exception {
-			final String expectedC1 = multilineString(
-					"import io.sarl.lang.core.Capacity;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public interface C1 extends Capacity {",
-					"  public abstract void myaction1(final int a);",
-					"}",
-					""
-					);
-			final String expectedC2 = multilineString(
-					"import io.sarl.lang.core.Capacity;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public interface C2 extends Capacity {",
-					"  public abstract void myaction2(final float b, final boolean c);",
-					"}",
-					""
-					);
-			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
-					"import io.sarl.lang.core.Agent;",
-					"import io.sarl.lang.core.Skill;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public class S1 extends Skill implements C1, C2 {",
-					"  public void myaction1(final int x) {",
-					"  }",
-					"  ",
-					"  public void myaction2(final float y, final boolean z) {",
-					"  }",
-					"  ",
-					"  /**",
-					"   * Construct a skill. The owning agent is unknown.",
-					"   */",
-					"  @Generated",
-					"  public S1() {",
-					"    super();",
-					"  }",
-					"  ",
-					"  /**",
-					"   * Construct a skill.",
-					"   * @param owner - agent that is owning this skill.",
-					"   */",
-					"  @Generated",
-					"  public S1(final Agent owner) {",
-					"    super(owner);",
-					"  }",
-					"}",
-					""
-					);
-			String source = multilineString(
-					"capacity C1 {",
-					"  def myaction1(a : int)",
-					"}",
-					"capacity C2 {",
-					"  def myaction2(b : float, c : boolean)",
-					"}",
-					"skill S1 implements C1, C2 {",
-					"  def myaction1(x : int) { }",
-					"  def myaction2(y : float, z : boolean) { }",
-					"}"
-					);
-			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-				@Override
-				public void accept(Result r) {
-					assertEquals(expectedC1,r.getGeneratedCode("C1"));
-					assertEquals(expectedC2,r.getGeneratedCode("C2"));
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
-				}
-			});
-		}
-
+	@Test
+	public void capacitymodifier_none() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"capacity C1 { }"
+			),
+			multilineString(
+				"import io.sarl.lang.core.Capacity;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public interface C1 extends Capacity {",
+				"}",
+				""
+			));
 	}
 
-	public static class ReturnTypeTest extends AbstractSarlTest {
-
-		@Inject
-		private CompilationTestHelper compiler;
-
-		@Test
-		public void compatibleReturnType_0() throws Exception {
-			final String expectedC1 = multilineString(
-					"import io.sarl.lang.core.Capacity;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public interface C1 extends Capacity {",
-					"}",
-					""
-					);
-			final String expectedC2 = multilineString(
-					"import io.sarl.lang.core.Capacity;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public interface C2 extends Capacity {",
-					"}",
-					""
-					);
-			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
-					"import io.sarl.lang.core.Agent;",
-					"import io.sarl.lang.core.Skill;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public class S1 extends Skill implements C1 {",
-					"  public Number myaction(final int a) {",
-					"    return Double.valueOf(0.0);",
-					"  }",
-					"  ",
-					"  /**",
-					"   * Construct a skill. The owning agent is unknown.",
-					"   */",
-					"  @Generated",
-					"  public S1() {",
-					"    super();",
-					"  }",
-					"  ",
-					"  /**",
-					"   * Construct a skill.",
-					"   * @param owner - agent that is owning this skill.",
-					"   */",
-					"  @Generated",
-					"  public S1(final Agent owner) {",
-					"    super(owner);",
-					"  }",
-					"}",
-					""
-					);
-			final String expectedS2 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
-					"import io.sarl.lang.core.Agent;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public class S2 extends S1 implements C2 {",
-					"  public Double myaction(final int a) {",
-					"    return Double.valueOf(0.0);",
-					"  }",
-					"  ",
-					"  /**",
-					"   * Construct a skill. The owning agent is unknown.",
-					"   */",
-					"  @Generated",
-					"  public S2() {",
-					"    super();",
-					"  }",
-					"  ",
-					"  /**",
-					"   * Construct a skill.",
-					"   * @param owner - agent that is owning this skill.",
-					"   */",
-					"  @Generated",
-					"  public S2(final Agent owner) {",
-					"    super(owner);",
-					"  }",
-					"}",
-					""
-					);
-			String source = multilineString(
-					"capacity C1 { }",
-					"capacity C2 { }",
-					"skill S1 implements C1 {",
-					"  def myaction(a : int) : Number {",
-					"    return 0.0",
-					"  }",
-					"}",
-					"skill S2 extends S1 implements C2 {",
-					"  def myaction(a : int) : Double {",
-					"    return 0.0",
-					"  }",
-					"}"
-					);
-			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-				@Override
-				public void accept(Result r) {
-					assertEquals(expectedC1,r.getGeneratedCode("C1"));
-					assertEquals(expectedC2,r.getGeneratedCode("C2"));
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
-					assertEquals(expectedS2,r.getGeneratedCode("S2"));
-				}
-			});
-		}
-
-		@Test
-		public void compatibleReturnType_1() throws Exception {
-			final String expectedC1 = multilineString(
-					"import io.sarl.lang.core.Capacity;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public interface C1 extends Capacity {",
-					"}",
-					""
-					);
-			final String expectedC2 = multilineString(
-					"import io.sarl.lang.core.Capacity;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public interface C2 extends Capacity {",
-					"}",
-					""
-					);
-			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
-					"import io.sarl.lang.core.Agent;",
-					"import io.sarl.lang.core.Skill;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public class S1 extends Skill implements C1 {",
-					"  public float myaction(final int a) {",
-					"    return 0f;",
-					"  }",
-					"  ",
-					"  /**",
-					"   * Construct a skill. The owning agent is unknown.",
-					"   */",
-					"  @Generated",
-					"  public S1() {",
-					"    super();",
-					"  }",
-					"  ",
-					"  /**",
-					"   * Construct a skill.",
-					"   * @param owner - agent that is owning this skill.",
-					"   */",
-					"  @Generated",
-					"  public S1(final Agent owner) {",
-					"    super(owner);",
-					"  }",
-					"}",
-					""
-					);
-			final String expectedS2 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
-					"import io.sarl.lang.core.Agent;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public class S2 extends S1 implements C2 {",
-					"  public float myaction(final int a) {",
-					"    return 0f;",
-					"  }",
-					"  ",
-					"  /**",
-					"   * Construct a skill. The owning agent is unknown.",
-					"   */",
-					"  @Generated",
-					"  public S2() {",
-					"    super();",
-					"  }",
-					"  ",
-					"  /**",
-					"   * Construct a skill.",
-					"   * @param owner - agent that is owning this skill.",
-					"   */",
-					"  @Generated",
-					"  public S2(final Agent owner) {",
-					"    super(owner);",
-					"  }",
-					"}",
-					""
-					);
-			String source = multilineString(
-					"capacity C1 { }",
-					"capacity C2 { }",
-					"skill S1 implements C1 {",
-					"  def myaction(a : int) : float {",
-					"    return 0f",
-					"  }",
-					"}",
-					"skill S2 extends S1 implements C2 {",
-					"  def myaction(a : int) : float {",
-					"    return 0f",
-					"  }",
-					"}"
-					);
-			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-				@Override
-				public void accept(Result r) {
-					assertEquals(expectedC1,r.getGeneratedCode("C1"));
-					assertEquals(expectedC2,r.getGeneratedCode("C2"));
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
-					assertEquals(expectedS2,r.getGeneratedCode("S2"));
-				}
-			});
-		}
-
-		@Test
-		public void compatibleReturnType_2() throws Exception {
-			final String expectedC1 = multilineString(
-					"import io.sarl.lang.core.Capacity;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public interface C1 extends Capacity {",
-					"}",
-					""
-					);
-			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
-					"import io.sarl.lang.core.Agent;",
-					"import io.sarl.lang.core.Skill;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public class S1 extends Skill implements C1 {",
-					"  public float myaction(final int a) {",
-					"    return 0f;",
-					"  }",
-					"  ",
-					"  /**",
-					"   * Construct a skill. The owning agent is unknown.",
-					"   */",
-					"  @Generated",
-					"  public S1() {",
-					"    super();",
-					"  }",
-					"  ",
-					"  /**",
-					"   * Construct a skill.",
-					"   * @param owner - agent that is owning this skill.",
-					"   */",
-					"  @Generated",
-					"  public S1(final Agent owner) {",
-					"    super(owner);",
-					"  }",
-					"}",
-					""
-					);
-			String source = multilineString(
-					"capacity C1 { }",
-					"skill S1 implements C1 {",
-					"  def myaction(a : int) : float {",
-					"    return 0f",
-					"  }",
-					"}"
-					);
-			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-				@Override
-				public void accept(Result r) {
-					assertEquals(expectedC1,r.getGeneratedCode("C1"));
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
-				}
-			});
-		}
-
-		@Test
-		public void compatibleReturnType_3() throws Exception {
-			final String expectedC1 = multilineString(
-					"import io.sarl.lang.core.Capacity;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public interface C1 extends Capacity {",
-					"  public abstract float myaction(final int a);",
-					"}",
-					""
-					);
-			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
-					"import io.sarl.lang.core.Agent;",
-					"import io.sarl.lang.core.Skill;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public class S1 extends Skill implements C1 {",
-					"  public float myaction(final int a) {",
-					"    return 0f;",
-					"  }",
-					"  ",
-					"  /**",
-					"   * Construct a skill. The owning agent is unknown.",
-					"   */",
-					"  @Generated",
-					"  public S1() {",
-					"    super();",
-					"  }",
-					"  ",
-					"  /**",
-					"   * Construct a skill.",
-					"   * @param owner - agent that is owning this skill.",
-					"   */",
-					"  @Generated",
-					"  public S1(final Agent owner) {",
-					"    super(owner);",
-					"  }",
-					"}",
-					""
-					);
-			String source = multilineString(
-					"capacity C1 {",
-					"  def myaction(a : int) : float",
-					"}",
-					"skill S1 implements C1 {",
-					"  def myaction(a : int) : float {",
-					"    return 0f",
-					"  }",
-					"}"
-					);
-			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-				@Override
-				public void accept(Result r) {
-					assertEquals(expectedC1,r.getGeneratedCode("C1"));
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
-				}
-			});
-		}
-
+	@Test
+	public void capacitymodifier_public() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"public capacity C1 { }"
+			),
+			multilineString(
+				"import io.sarl.lang.core.Capacity;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public interface C1 extends Capacity {",
+				"}",
+				""
+			));
 	}
 
-	public static class SkillTest extends AbstractSarlTest {
-
-		@Inject
-		private CompilationTestHelper compiler;
-
-		@Test
-		public void capacityAccessors_inSkill() throws Exception {
-			final String expectedC1 = multilineString(
-					"import io.sarl.lang.core.Capacity;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public interface C1 extends Capacity {",
-					"  public abstract float myaction(final int a);",
-					"  ",
-					"  public abstract void myaction2(final boolean a);",
-					"}",
-					""
-					);
-			final String expectedC2 = multilineString(
-					"import io.sarl.lang.core.Capacity;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public interface C2 extends Capacity {",
-					"  public abstract float myaction3(final int a);",
-					"  ",
-					"  public abstract void myaction4(final boolean a);",
-					"}",
-					""
-					);
-			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
-					"import io.sarl.lang.annotation.ImportedCapacityFeature;",
-					"import io.sarl.lang.core.Agent;",
-					"import io.sarl.lang.core.Skill;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public class S1 extends Skill implements C1 {",
-					"  public float myaction(final int a) {",
-					"    return this.myaction3(a);",
-					"  }",
-					"  ",
-					"  public void myaction2(final boolean a) {",
-					"    this.myaction4(a);",
-					"  }",
-					"  ",
-					"  /**",
-					"   * See the capacity {@link C2#myaction3(int)}.",
-					"   * ",
-					"   * @see C2#myaction3(int)",
-					"   */",
-					"  @Generated",
-					"  @ImportedCapacityFeature(C2.class)",
-					"  protected final float myaction3(final int a) {",
-					"    return getSkill(C2.class).myaction3(a);",
-					"  }",
-					"  ",
-					"  /**",
-					"   * See the capacity {@link C2#myaction4(boolean)}.",
-					"   * ",
-					"   * @see C2#myaction4(boolean)",
-					"   */",
-					"  @Generated",
-					"  @ImportedCapacityFeature(C2.class)",
-					"  protected final void myaction4(final boolean a) {",
-					"    getSkill(C2.class).myaction4(a);",
-					"  }",
-					"  ",
-					"  /**",
-					"   * Construct a skill. The owning agent is unknown.",
-					"   */",
-					"  @Generated",
-					"  public S1() {",
-					"    super();",
-					"  }",
-					"  ",
-					"  /**",
-					"   * Construct a skill.",
-					"   * @param owner - agent that is owning this skill.",
-					"   */",
-					"  @Generated",
-					"  public S1(final Agent owner) {",
-					"    super(owner);",
-					"  }",
-					"}",
-					""
-					);
-			String source = multilineString(
-					"capacity C1 {",
-					"  def myaction(a : int) : float",
-					"  def myaction2(a : boolean)",
-					"}",
-					"capacity C2 {",
-					"  def myaction3(a : int) : float",
-					"  def myaction4(a : boolean)",
-					"}",
-					"skill S1 implements C1 {",
-					"  uses C2",
-					"  def myaction(a : int) : float {",
-					"    return myaction3(a)",
-					"  }",
-					"  def myaction2(a : boolean) {",
-					"    myaction4(a)",
-					"  }",
-					"}"
-					);
-			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-				@Override
-				public void accept(Result r) {
-					assertEquals(expectedC1,r.getGeneratedCode("C1"));
-					assertEquals(expectedC2,r.getGeneratedCode("C2"));
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
-				}
-			});
-		}
-
-		@Test
-		public void inheritance() throws Exception {
-			final String expectedC1 = multilineString(
-					"import io.sarl.lang.core.Capacity;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public interface CapTest1 extends Capacity {",
-					"  public abstract int func1();",
-					"}",
-					""
-					);
-			final String expectedC2 = multilineString(
-					"@SuppressWarnings(\"all\")",
-					"public interface CapTest2 extends CapTest1 {",
-					"  public abstract void func2(final int a);",
-					"}",
-					""
-					);
-			String source = multilineString(
-					"capacity CapTest1 {",
-					"  def func1 : int",
-					"}",
-					"capacity CapTest2 extends CapTest1 {",
-					"  def func2(a : int)",
-					"}"
-					);
-			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-				@Override
-				public void accept(Result r) {
-					assertEquals(expectedC1,r.getGeneratedCode("CapTest1"));
-					assertEquals(expectedC2,r.getGeneratedCode("CapTest2"));
-				}
-			});
-		}
-
+	@Test
+	public void capacitymodifier_private() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"private capacity C1 { }"
+			),
+			multilineString(
+				"import io.sarl.lang.core.Capacity;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"interface C1 extends Capacity {",
+				"}",
+				""
+			));
 	}
 
-	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	public static class Visibility extends AbstractSarlTest {
-		
-		@Inject
-		private CompilationTestHelper compiler;
-
-		@Test
-		public void actionVisibility_0() throws Exception {
-			this.compiler.assertCompilesTo(
-				multilineString(
-					"capacity C1 {",
-					" def myfct",
-					"}"
-				),
-				multilineString(
-					"import io.sarl.lang.core.Capacity;",
-					"",
-					"@SuppressWarnings(\"all\")",
-					"public interface C1 extends Capacity {",
-					"  public abstract void myfct();",
-					"}",
-					""
-				));
-		}
-
-		@Test
-		public void actionVisibility_1() throws Exception {
-			this.compiler.assertCompilesTo(
-					multilineString(
-						"capacity C1 {",
-						" public def myfct",
-						"}"
-					),
-					multilineString(
-						"import io.sarl.lang.core.Capacity;",
-						"",
-						"@SuppressWarnings(\"all\")",
-						"public interface C1 extends Capacity {",
-						"  public abstract void myfct();",
-						"}",
-						""
-					));
-		}
-
+	@Test
+	public void actionmodifier_none() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"capacity C1 {",
+				"	def name {}",
+				"}"
+			),
+			multilineString(
+				"import io.sarl.lang.core.Capacity;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public interface C1 extends Capacity {",
+				"  public abstract void name();",
+				"}",
+				""
+			));
 	}
 
 }

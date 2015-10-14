@@ -22,9 +22,9 @@ import static org.mockito.Mockito.when;
 import java.util.Collections;
 
 import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.generator.helper.SARLHiddenTokenSequencer;
-import io.sarl.lang.generator.helper.SarlEcoreCode;
-import io.sarl.lang.generator.helper.ECoreGeneratorHelper;
+import io.sarl.lang.ecoregenerator.helper.ECoreGeneratorHelper;
+import io.sarl.lang.ecoregenerator.helper.SARLHiddenTokenSequencer;
+import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
@@ -51,7 +51,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-
 import com.google.inject.Inject;
 
 /** This class tests the functions of {@link SARLHiddenTokenSequencer}.

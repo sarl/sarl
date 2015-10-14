@@ -19,12 +19,14 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.generator.helper;
+package io.sarl.lang.ecoregenerator.helper;
 
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 
-/** Documentation at the beginning of an Ecore block.
+/** Postfix documentation for an Ecore element.
+ *
+ * <p>The prefix document is supported by {@link DocumentationAdapter}.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -32,7 +34,7 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
  * @mavenartifactid $ArtifactId$
  * @see DocumentationAdapter
  */
-public class BlockInnerDocumentationAdapter extends AdapterImpl {
+public class PostDocumentationAdapter extends AdapterImpl {
 
 	private String documentation;
 
@@ -54,7 +56,7 @@ public class BlockInnerDocumentationAdapter extends AdapterImpl {
 
 	@Override
 	public boolean isAdapterForType(Object type) {
-		return type == BlockInnerDocumentationAdapter.class;
+		return type == PostDocumentationAdapter.class;
 	}
 
 }

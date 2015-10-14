@@ -30,19 +30,23 @@
     <genClasses ecoreClass="SARL.ecore#//SarlAnnotationType"/>
     <genClasses ecoreClass="SARL.ecore#//SarlEvent">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlEvent/extends"/>
+      <genOperations ecoreOperation="SARL.ecore#//SarlEvent/isAbstract"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlAgent">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAgent/extends"/>
+      <genOperations ecoreOperation="SARL.ecore#//SarlAgent/isAbstract"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlCapacity">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlCapacity/extends"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlBehavior">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlBehavior/extends"/>
+      <genOperations ecoreOperation="SARL.ecore#//SarlBehavior/isAbstract"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlSkill">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlSkill/extends"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlSkill/implements"/>
+      <genOperations ecoreOperation="SARL.ecore#//SarlSkill/isAbstract"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlFormalParameter">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlFormalParameter/defaultValue"/>

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.generator.ecorefragments;
+package io.sarl.lang.ecoregenerator.fragments;
 
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.eclipse.emf.codegen.ecore.genmodel.GenClass;
 
 import org.eclipse.emf.codegen.ecore.genmodel.GenJDKLevel;
 import org.eclipse.emf.codegen.ecore.genmodel.GenModel;
@@ -50,7 +52,7 @@ import org.eclipse.xtext.generator.ecore.EMFGeneratorFragment;
  * a configuration suitable for SARL. Then it
  * runs the EMF generator to create the EMF classes for the generated Ecore models.
  *
- * <p>This implementation forces the Ecore factory to create instances of the custom Ecore elements that
+ * <p>This implementation forces the EMF factory to create instances of the custom EMF elements that
  * are defined in the package <code>io.sarl.lang.sarl.impl</code>.
  *
  * @author $Author: sgalland$
@@ -195,9 +197,16 @@ public class SARLEMFGeneratorFragment extends EMFGeneratorFragment {
 				}
 				return super.getImportedName(qn);
 			}
+			
+			@Override
+			public GenClass createGenClass() {
+				GenClass clazz = super.createGenClass();
+				return clazz;
+			}
+
 		};
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 *

@@ -18,13 +18,14 @@ package io.sarl.eclipse.tests.bugs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.spy;
+
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.bugfixes.SARLContextPDAProvider;
-import io.sarl.lang.generator.helper.ECoreGeneratorHelper;
-import io.sarl.lang.generator.helper.SarlEcoreCode;
+import io.sarl.lang.ecoregenerator.helper.ECoreGeneratorHelper;
+import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.tests.api.AbstractSarlUiTest;
@@ -40,7 +41,6 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.junit.Before;
 import org.junit.Test;
-
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 

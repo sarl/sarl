@@ -16,8 +16,10 @@
 package io.sarl.lang.tests.parsing.aop;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
@@ -39,7 +41,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 
@@ -53,7 +54,7 @@ import com.google.inject.Inject;
 @SuiteClasses({
 	BehaviorParsingTest.TopElementTest.class,
 	BehaviorParsingTest.ActionTest.class,
-	BehaviorParsingTest.AttributeTest.class,
+	BehaviorParsingTest.FieldTest.class,
 	BehaviorParsingTest.ConstructorTest.class,
 	BehaviorParsingTest.CapacityUsesTest.class,
 })
@@ -165,6 +166,265 @@ public class BehaviorParsingTest {
 				org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_TYPE_NAME,
 				62, 2,
 				"The type B1 is already defined");
+		}
+
+		@Test
+		public void behaviormodifier_public() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public behavior B1 {}"
+					), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, beh.getVisibility());
+			assertEquals(0, beh.getMembers().size());
+			assertFalse(beh.isAbstract());
+			assertFalse(beh.isFinal());
+		}
+
+		@Test
+		public void behaviormodifier_none() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {}"
+					), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, beh.getVisibility());
+			assertEquals(0, beh.getMembers().size());
+			assertFalse(beh.isAbstract());
+			assertFalse(beh.isFinal());
+		}
+
+		@Test
+		public void behaviormodifier_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"private behavior B1 {}"
+					), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(JvmVisibility.PRIVATE, beh.getVisibility());
+			assertEquals(0, beh.getMembers().size());
+			assertFalse(beh.isAbstract());
+			assertFalse(beh.isFinal());
+		}
+
+		@Test
+		public void behaviormodifier_protected() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"protected behavior B1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlBehavior(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 9,
+					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+		}
+
+		@Test
+		public void behaviormodifier_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"package behavior B1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlBehavior(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 7,
+					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+		}
+
+		@Test
+		public void behaviormodifier_abstract() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"abstract behavior B1 {}"
+					), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, beh.getVisibility());
+			assertEquals(0, beh.getMembers().size());
+			assertTrue(beh.isAbstract());
+			assertFalse(beh.isFinal());
+		}
+
+		@Test
+		public void behaviormodifier_static() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"static behavior B1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlBehavior(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 6,
+					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+		}
+
+		@Test
+		public void behaviormodifier_dispatch() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"dispatch behavior B1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlBehavior(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 8,
+					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+		}
+
+		@Test
+		public void behaviormodifier_final() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"final behavior B1 {}"
+					), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, beh.getVisibility());
+			assertEquals(0, beh.getMembers().size());
+			assertFalse(beh.isAbstract());
+			assertTrue(beh.isFinal());
+		}
+
+		@Test
+		public void behaviormodifier_strictfp() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"strictfp behavior B1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlBehavior(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 8,
+					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+		}
+
+		@Test
+		public void behaviormodifier_native() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"native behavior B1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlBehavior(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 6,
+					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+		}
+
+		@Test
+		public void behaviormodifier_volatile() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"volatile behavior B1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlBehavior(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 8,
+					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+		}
+
+		@Test
+		public void behaviormodifier_synchronized() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"synchronized behavior B1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlBehavior(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 12,
+					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+		}
+
+		@Test
+		public void behaviormodifier_transient() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"transient behavior B1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlBehavior(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 9,
+					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+		}
+
+		@Test
+		public void behaviormodifier_abstract_final() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"abstract final behavior B1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlBehavior(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					41, 5,
+					"The behavior B1 can either be abstract or final, not both");
+		}
+
+		@Test
+		public void modifier_abstract_action() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	def name",
+					"}"
+					), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, beh.getVisibility());
+			assertEquals(1, beh.getMembers().size());
+			assertFalse(beh.isAbstract());
+			assertFalse(beh.isFinal());
+		}
+
+		@Test
+		public void behaviormodifier_public_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public private behavior B1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlBehavior(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					39, 7,
+					"The behavior B1 can only set one of public / package / protected / private");
 		}
 
 	}
@@ -395,9 +655,378 @@ public class BehaviorParsingTest {
 				"Duplicate local variable b");
 		}
 
+		@Test
+		public void modifier_public() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	public def name { }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+		}
+
+		@Test
+		public void modifier_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	private def name { }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PRIVATE, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+		}
+
+		@Test
+		public void modifier_protected() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	protected def name { }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+		}
+
+		@Test
+		public void modifier_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	package def name { }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.DEFAULT, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+		}
+
+		@Test
+		public void modifier_none() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	def name { }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+		}
+
+		@Test
+		public void modifier_abstract() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	abstract def name",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 8,
+					"Illegal modifier for the definition of name in B1; only public, package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+		}
+
+		@Test
+		public void modifier_no_abstract() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	def name",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertTrue(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+		}
+
+		@Test
+		public void modifier_static() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	static def name { }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertTrue(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+		}
+
+		@Test
+		public void modifier_dispatch() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	dispatch def name { }",
+					"}"), false);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertTrue(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+		}
+
+		@Test
+		public void modifier_final_var() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	final def name { }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertTrue(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+		}
+
+		@Test
+		public void modifier_strictfp() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	strictfp def name { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 8,
+					"Illegal modifier for the definition of name in B1; only public, package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+		}
+
+		@Test
+		public void modifier_native() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	native def name { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 6,
+					"Illegal modifier for the definition of name in B1; only public, package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+		}
+
+		@Test
+		public void modifier_volatile() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	volatile def name { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 8,
+					"Illegal modifier for the definition of name in B1; only public, package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+		}
+
+		@Test
+		public void modifier_synchronized() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	synchronized def name { }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertTrue(act1.isSynchonized());
+		}
+
+		@Test
+		public void modifier_transient() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	transient def name { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 9,
+					"Illegal modifier for the definition of name in B1; only public, package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+		}
+
+		@Test
+		public void modifier_protected_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	protected private def name { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					57, 7,
+					"The definition of name in B1 can only set one of public / package / protected / private");
+		}
+
+		@Test
+		public void modifier_dispatch_final() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	dispatch final def name(a : Integer) { }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertTrue(act1.isDispatch());
+			assertTrue(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+		}
+
 	}
 
-	public static class AttributeTest extends AbstractSarlTest {
+	public static class FieldTest extends AbstractSarlTest {
 
 		@Test
 		public void multipleVariableDefinition() throws Exception {
@@ -573,125 +1202,253 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
-		public void variableModifier_public() throws Exception {
+		public void modifier_public() throws Exception {
 			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
-					"public var name : String = \"Hello\"",
-					"}"
-					), false);
-			//
-			validate(mas).assertNoErrors();
+					"	public var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 6,
+					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
 		}
 
 		@Test
-		public void variableModifier_protected() throws Exception {
+		public void modifier_private() throws Exception {
 			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
-					"protected var name : String = \"Hello\"",
-					"}"
-					), true);
+					"	private var field : int",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
 			//
-			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
-			SarlField attr1 = (SarlField) behavior.getMembers().get(0);
-			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
-		}
-
-		@Test
-		public void variableModifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
-					"behavior B1 {",
-					"package var name : String = \"Hello\"",
-					"}"
-					), false);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			//
-			validate(mas).assertNoErrors();
-		}
-
-		@Test
-		public void variableModifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
-					"behavior B1 {",
-					"private var name : String = \"Hello\"",
-					"}"
-					), true);
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
 			//
-			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
-			SarlField attr1 = (SarlField) behavior.getMembers().get(0);
+			SarlField attr1 = (SarlField) beh.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertFalse(attr1.isFinal());
 			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
 		}
 
 		@Test
-		public void variableModifier_default() throws Exception {
+		public void modifier_protected() throws Exception {
 			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
-					"var name : String = \"Hello\"",
-					"}"
-					), true);
+					"	protected var field : int",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
 			//
-			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
-			SarlField attr1 = (SarlField) behavior.getMembers().get(0);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) beh.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertFalse(attr1.isFinal());
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
 		}
 
 		@Test
-		public void valueModifier_public() throws Exception {
+		public void modifier_package() throws Exception {
 			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
-					"public val name : String = \"Hello\"",
-					"}"
-					), false);
+					"	package var field : int",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
 			//
-			validate(mas).assertNoErrors();
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) beh.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertFalse(attr1.isFinal());
+			assertEquals(JvmVisibility.DEFAULT, attr1.getVisibility());
 		}
 
 		@Test
-		public void valueModifier_protected() throws Exception {
+		public void modifier_none() throws Exception {
 			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
-					"protected val name : String = \"Hello\"",
-					"}"
-					), true);
+					"	var field : int",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
 			//
-			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
-			SarlField attr1 = (SarlField) behavior.getMembers().get(0);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) beh.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertFalse(attr1.isFinal());
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
 		}
 
 		@Test
-		public void valueModifier_package() throws Exception {
+		public void modifier_abstract() throws Exception {
 			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
-					"package val name : String = \"Hello\"",
-					"}"
-					), false);
-			//
-			validate(mas).assertNoErrors();
+					"	abstract var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 8,
+					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
 		}
 
 		@Test
-		public void valueModifier_private() throws Exception {
+		public void modifier_static() throws Exception {
 			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
-					"private val name : String = \"Hello\"",
-					"}"
-					), true);
-			//
-			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
-			SarlField attr1 = (SarlField) behavior.getMembers().get(0);
-			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
+					"	static var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 6,
+					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
 		}
 
 		@Test
-		public void valueModifier_default() throws Exception {
+		public void modifier_dispatch() throws Exception {
 			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
-					"val name : String = \"Hello\"",
-					"}"
-					), true);
-			//
-			SarlBehavior behavior = (SarlBehavior) mas.getXtendTypes().get(0);
-			SarlField attr1 = (SarlField) behavior.getMembers().get(0);
-			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+					"	dispatch var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 8,
+					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
+		}
+
+		@Test
+		public void modifier_final_var() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	final var field : int = 5",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					53, 3,
+					"The definition of field in B1 can either be var or val / final, not both");
+		}
+
+		@Test
+		public void modifier_strictfp() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	strictfp var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 8,
+					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
+		}
+
+		@Test
+		public void modifier_native() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	native var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 6,
+					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
+		}
+
+		@Test
+		public void modifier_volatile() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	volatile var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 8,
+					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
+		}
+
+		@Test
+		public void modifier_synchronized() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	synchronized var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 12,
+					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
+		}
+
+		@Test
+		public void modifier_transient() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	transient var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 9,
+					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
+		}
+
+		@Test
+		public void modifier_protected_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	protected private var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					57, 7,
+					"The definition of field in B1 can only set one of public / package / protected / private");
 		}
 
 	}
@@ -807,6 +1564,260 @@ public class BehaviorParsingTest {
 				XbasePackage.eINSTANCE.getXStringLiteral(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
 				"Type mismatch: cannot convert from String to int");
+		}
+
+		@Test
+		public void modifier_public() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	public new { super(null) }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlConstructor cons = (SarlConstructor) beh.getMembers().get(0);
+			assertEquals(JvmVisibility.PUBLIC, cons.getVisibility());
+			assertFalse(cons.isStatic());
+			assertFalse(cons.isFinal());
+		}
+
+		@Test
+		public void modifier_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	private new { super(null) }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlConstructor cons = (SarlConstructor) beh.getMembers().get(0);
+			assertEquals(JvmVisibility.PRIVATE, cons.getVisibility());
+			assertFalse(cons.isStatic());
+			assertFalse(cons.isFinal());
+		}
+
+		@Test
+		public void modifier_protected() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	protected new { super(null) }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlConstructor cons = (SarlConstructor) beh.getMembers().get(0);
+			assertEquals(JvmVisibility.PROTECTED, cons.getVisibility());
+			assertFalse(cons.isStatic());
+			assertFalse(cons.isFinal());
+		}
+
+		@Test
+		public void modifier_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	package new { super(null) }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlConstructor cons = (SarlConstructor) beh.getMembers().get(0);
+			assertEquals(JvmVisibility.DEFAULT, cons.getVisibility());
+			assertFalse(cons.isStatic());
+			assertFalse(cons.isFinal());
+		}
+
+		@Test
+		public void modifier_none() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	new { super(null) }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlConstructor cons = (SarlConstructor) beh.getMembers().get(0);
+			assertEquals(JvmVisibility.PUBLIC, cons.getVisibility());
+			assertFalse(cons.isStatic());
+			assertFalse(cons.isFinal());
+		}
+
+		@Test
+		public void modifier_abstract() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	abstract new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 8,
+					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_static() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	static new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 6,
+					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_dispatch() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	dispatch new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 8,
+					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_final() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	final new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 5,
+					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_strictfp() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	strictfp new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 8,
+					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_native() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	native new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 6,
+					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_volatile() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	volatile new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 8,
+					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_synchronized() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	synchronized new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 12,
+					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_transient() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	transient new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 9,
+					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_protected_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	protected private new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					57, 7,
+					"The definition of B1 can only set one of public / package / protected / private");
 		}
 
 	}

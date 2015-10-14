@@ -16,8 +16,12 @@
 package io.sarl.lang.tests.parsing.aop;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
@@ -34,7 +38,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-
 import com.google.common.base.Strings;
 
 /**
@@ -46,9 +49,8 @@ import com.google.common.base.Strings;
 @RunWith(Suite.class)
 @SuiteClasses({
 	EventParsingTest.TopElementTest.class,
-	EventParsingTest.SarlFieldTest.class,
+	EventParsingTest.FieldTest.class,
 	EventParsingTest.ConstructorTest.class,
-	EventParsingTest.AttributeTest.class,
 })
 @SuppressWarnings("all")
 public class EventParsingTest extends AbstractSarlTest {
@@ -130,9 +132,468 @@ public class EventParsingTest extends AbstractSarlTest {
 					"Supertype must be of type 'io.sarl.lang.core.Skill'.");
 		}
 
+		@Test
+		public void eventmodifier_public() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public event E1"
+					), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
+			assertEquals("E1", event.getName());
+			assertNull(event.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, event.getVisibility());
+			assertEquals(0, event.getMembers().size());
+			assertFalse(event.isAbstract());
+			assertFalse(event.isFinal());
+			assertFalse(event.isStatic());
+		}
+
+		@Test
+		public void eventmodifier_none() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1"
+					), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
+			assertEquals("E1", event.getName());
+			assertNull(event.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, event.getVisibility());
+			assertEquals(0, event.getMembers().size());
+			assertFalse(event.isAbstract());
+			assertFalse(event.isFinal());
+			assertFalse(event.isStatic());
+		}
+
+		@Test
+		public void eventmodifier_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"private event E1"
+					), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
+			assertEquals("E1", event.getName());
+			assertNull(event.getExtends());
+			assertEquals(JvmVisibility.PRIVATE, event.getVisibility());
+			assertEquals(0, event.getMembers().size());
+			assertFalse(event.isAbstract());
+			assertFalse(event.isFinal());
+			assertFalse(event.isStatic());
+		}
+
+		@Test
+		public void eventmodifier_protected() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"protected event E1"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 9,
+					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+		}
+
+		@Test
+		public void eventmodifier_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"package event E1"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 7,
+					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+		}
+
+		@Test
+		public void eventmodifier_abstract() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"abstract event E1"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 8,
+					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+		}
+
+		@Test
+		public void eventmodifier_static() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"static event E1"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 6,
+					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+		}
+
+		@Test
+		public void eventmodifier_dispatch() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"dispatch event E1"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 8,
+					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+		}
+
+		@Test
+		public void eventmodifier_final() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"final event E1"
+					), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
+			assertEquals("E1", event.getName());
+			assertNull(event.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, event.getVisibility());
+			assertEquals(0, event.getMembers().size());
+			assertFalse(event.isAbstract());
+			assertTrue(event.isFinal());
+			assertFalse(event.isStatic());
+		}
+
+		@Test
+		public void eventmodifier_strictfp() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"strictfp event E1"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 8,
+					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+		}
+
+		@Test
+		public void eventmodifier_native() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"native event E1"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 6,
+					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+		}
+
+		@Test
+		public void eventmodifier_volatile() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"volatile event E1"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 8,
+					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+		}
+
+		@Test
+		public void eventmodifier_synchronized() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"synchronized event E1"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 12,
+					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+		}
+
+		@Test
+		public void eventmodifier_transient() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"transient event E1"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 9,
+					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+		}
+
+		@Test
+		public void eventmodifier_public_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public private event E1"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					39, 7,
+					"The definition of E1 can only set one of public / package / protected / private");
+		}
+
 	}
 
-	public static class SarlFieldTest extends AbstractSarlTest {
+	public static class FieldTest extends AbstractSarlTest {
+
+		@Test
+		public void modifier_public() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	public var field : int",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
+			assertEquals("E1", event.getName());
+			assertNull(event.getExtends());
+			assertEquals(1, event.getMembers().size());
+			//
+			SarlField attr = (SarlField) event.getMembers().get(0);
+			assertEquals("field", attr.getName());
+			assertTypeReferenceIdentifier(attr.getType(), "int");
+			assertNull(attr.getInitialValue());
+			assertEquals(JvmVisibility.PUBLIC, attr.getVisibility());
+			assertFalse(attr.isFinal());
+			assertFalse(attr.isStatic());
+			assertFalse(attr.isTransient());
+			assertFalse(attr.isVolatile());
+		}
+
+		@Test
+		public void modifier_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	private var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 7,
+					"Illegal modifier for the definition of field in E1; only public, final, val & var are permitted");
+		}
+
+		@Test
+		public void modifier_protected() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	protected var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 9,
+					"Illegal modifier for the definition of field in E1; only public, final, val & var are permitted");
+		}
+
+		@Test
+		public void modifier_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	package var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 7,
+					"Illegal modifier for the definition of field in E1; only public, final, val & var are permitted");
+		}
+
+		@Test
+		public void modifier_none() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	var field : int",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
+			assertEquals("E1", event.getName());
+			assertNull(event.getExtends());
+			assertEquals(1, event.getMembers().size());
+			//
+			SarlField attr = (SarlField) event.getMembers().get(0);
+			assertEquals("field", attr.getName());
+			assertTypeReferenceIdentifier(attr.getType(), "int");
+			assertNull(attr.getInitialValue());
+			assertEquals(JvmVisibility.PUBLIC, attr.getVisibility());
+			assertFalse(attr.isFinal());
+			assertFalse(attr.isStatic());
+			assertFalse(attr.isTransient());
+			assertFalse(attr.isVolatile());
+		}
+
+		@Test
+		public void modifier_abstract() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	abstract var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 8,
+					"Illegal modifier for the definition of field in E1; only public, final, val & var are permitted");
+		}
+
+		@Test
+		public void modifier_static() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	static var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 6,
+					"Illegal modifier for the definition of field in E1; only public, final, val & var are permitted");
+		}
+
+		@Test
+		public void modifier_dispatch() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	dispatch var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 8,
+					"Illegal modifier for the definition of field in E1; only public, final, val & var are permitted");
+		}
+
+		@Test
+		public void modifier_final_var() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	final var field : int = 5",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					50, 3,
+					"The definition of field in E1 can either be var or val / final, not both");
+		}
+
+		@Test
+		public void modifier_strictfp() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	strictfp var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 8,
+					"Illegal modifier for the definition of field in E1; only public, final, val & var are permitted");
+		}
+
+		@Test
+		public void modifier_native() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	native var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 6,
+					"Illegal modifier for the definition of field in E1; only public, final, val & var are permitted");
+		}
+
+		@Test
+		public void modifier_volatile() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	volatile var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 8,
+					"Illegal modifier for the definition of field in E1; only public, final, val & var are permitted");
+		}
+
+		@Test
+		public void modifier_synchronized() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	synchronized var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 12,
+					"Illegal modifier for the definition of field in E1; only public, final, val & var are permitted");
+		}
+
+		@Test
+		public void modifier_transient() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	transient var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 9,
+					"Illegal modifier for the definition of field in E1; only public, final, val & var are permitted");
+		}
+
+		@Test
+		public void modifier_protected_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	protected private var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					54, 7,
+					"The definition of field in E1 can only set one of public / package / protected / private");
+		}
 
 		@Test
 		public void missedFinalFieldInitialization() throws Exception {
@@ -311,6 +772,256 @@ public class EventParsingTest extends AbstractSarlTest {
 	public static class ConstructorTest extends AbstractSarlTest {
 
 		@Test
+		public void modifier_public() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	public new { super(null) }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
+			assertEquals("E1", event.getName());
+			assertNull(event.getExtends());
+			assertEquals(1, event.getMembers().size());
+			//
+			SarlConstructor cons = (SarlConstructor) event.getMembers().get(0);
+			assertEquals(JvmVisibility.PUBLIC, cons.getVisibility());
+			assertFalse(cons.isStatic());
+			assertFalse(cons.isFinal());
+		}
+
+		@Test
+		public void modifier_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	private new { super(null) }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
+			assertEquals("E1", event.getName());
+			assertNull(event.getExtends());
+			assertEquals(1, event.getMembers().size());
+			//
+			SarlConstructor cons = (SarlConstructor) event.getMembers().get(0);
+			assertEquals(JvmVisibility.PRIVATE, cons.getVisibility());
+			assertFalse(cons.isStatic());
+			assertFalse(cons.isFinal());
+		}
+
+		@Test
+		public void modifier_protected() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	protected new { super(null) }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
+			assertEquals("E1", event.getName());
+			assertNull(event.getExtends());
+			assertEquals(1, event.getMembers().size());
+			//
+			SarlConstructor cons = (SarlConstructor) event.getMembers().get(0);
+			assertEquals(JvmVisibility.PROTECTED, cons.getVisibility());
+			assertFalse(cons.isStatic());
+			assertFalse(cons.isFinal());
+		}
+
+		@Test
+		public void modifier_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	package new { super(null) }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
+			assertEquals("E1", event.getName());
+			assertNull(event.getExtends());
+			assertEquals(1, event.getMembers().size());
+			//
+			SarlConstructor cons = (SarlConstructor) event.getMembers().get(0);
+			assertEquals(JvmVisibility.DEFAULT, cons.getVisibility());
+			assertFalse(cons.isStatic());
+			assertFalse(cons.isFinal());
+		}
+
+		@Test
+		public void modifier_none() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	new { super(null) }",
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
+			assertEquals("E1", event.getName());
+			assertNull(event.getExtends());
+			assertEquals(1, event.getMembers().size());
+			//
+			SarlConstructor cons = (SarlConstructor) event.getMembers().get(0);
+			assertEquals(JvmVisibility.PUBLIC, cons.getVisibility());
+			assertFalse(cons.isStatic());
+			assertFalse(cons.isFinal());
+		}
+
+		@Test
+		public void modifier_abstract() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	abstract new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 8,
+					"Illegal modifier for the definition of E1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_static() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	static new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 6,
+					"Illegal modifier for the definition of E1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_dispatch() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	dispatch new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 8,
+					"Illegal modifier for the definition of E1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_final() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	final new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 5,
+					"Illegal modifier for the definition of E1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_strictfp() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	strictfp new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 8,
+					"Illegal modifier for the definition of E1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_native() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	native new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 6,
+					"Illegal modifier for the definition of E1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_volatile() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	volatile new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 8,
+					"Illegal modifier for the definition of E1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_synchronized() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	synchronized new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 12,
+					"Illegal modifier for the definition of E1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_transient() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	transient new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 9,
+					"Illegal modifier for the definition of E1; only public, private, protected & package are permitted");
+		}
+
+		@Test
+		public void modifier_protected_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"event E1 {",
+					"	protected private new { super(null) }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlConstructor(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					54, 7,
+					"The definition of E1 can only set one of public / package / protected / private");
+		}
+
+		@Test
 		public void validImplicitSuperConstructor() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.test",
@@ -418,146 +1129,6 @@ public class EventParsingTest extends AbstractSarlTest {
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
 					96, 2,
 					"Type mismatch: cannot convert from String to int");
-		}
-
-	}
-
-	public static class AttributeTest extends AbstractSarlTest {
-
-		@Test
-		public void variableModifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
-					"event E1 {",
-					"public var name : String = \"Hello\"",
-					"}"
-					), true);
-			//
-			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
-			SarlField attr1 = (SarlField) event.getMembers().get(0);
-			assertEquals(JvmVisibility.PUBLIC, attr1.getVisibility());
-		}
-
-		@Test
-		public void variableModifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
-					"event E1 {",
-					"package var name : String = \"Hello\"",
-					"}"
-					), false);
-			//
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the definition of E1; only public, final, val & var are permitted");
-		}
-
-		@Test
-		public void variableModifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
-					"event E1 {",
-					"protected var name : String = \"Hello\"",
-					"}"
-					), false);
-			//
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the definition of E1; only public, final, val & var are permitted");
-		}
-
-		@Test
-		public void variableModifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
-					"event E1 {",
-					"private var name : String = \"Hello\"",
-					"}"
-					), false);
-			//
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the definition of E1; only public, final, val & var are permitted");
-		}
-
-		@Test
-		public void variableModifier_default() throws Exception {
-			SarlScript mas = file(multilineString(
-					"event E1 {",
-					"var name : String = \"Hello\"",
-					"}"
-					), true);
-			//
-			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
-			SarlField attr1 = (SarlField) event.getMembers().get(0);
-			assertEquals(JvmVisibility.PUBLIC, attr1.getVisibility());
-		}
-
-		@Test
-		public void valueModifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
-					"event E1 {",
-					"public val name : String = \"Hello\"",
-					"}"
-					), true);
-			//
-			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
-			SarlField attr1 = (SarlField) event.getMembers().get(0);
-			assertEquals(JvmVisibility.PUBLIC, attr1.getVisibility());
-		}
-
-		@Test
-		public void valueModifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
-					"event E1 {",
-					"package val name : String = \"Hello\"",
-					"}"
-					), false);
-			//
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the definition of E1; only public, final, val & var are permitted");
-		}
-
-		@Test
-		public void valueModifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
-					"event E1 {",
-					"protected val name : String = \"Hello\"",
-					"}"
-					), false);
-			//
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the definition of E1; only public, final, val & var are permitted");
-		}
-
-		@Test
-		public void valueModifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
-					"event E1 {",
-					"private val name : String = \"Hello\"",
-					"}"
-					), false);
-			//
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					"Illegal modifier for the definition of E1; only public, final, val & var are permitted");
-		}
-
-		@Test
-		public void valueModifier_default() throws Exception {
-			SarlScript mas = file(multilineString(
-					"event E1 {",
-					"val name : String = \"Hello\"",
-					"}"
-					), true);
-			//
-			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
-			SarlField attr1 = (SarlField) event.getMembers().get(0);
-			assertEquals(JvmVisibility.PUBLIC, attr1.getVisibility());
 		}
 
 	}

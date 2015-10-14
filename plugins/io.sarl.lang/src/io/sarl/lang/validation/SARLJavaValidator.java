@@ -198,57 +198,54 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator agentModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "package", "abstract")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			newArrayList("public", "private", "abstract", "final")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInAgentModifierValidator = new SARLModifierValidator(
 			newArrayList(
 			"package",  //$NON-NLS-1$
 			"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$
 			"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInAgentModifierValidator = new SARLModifierValidator(
 			newArrayList(
 			"package",  //$NON-NLS-1$
-			"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"final", "val", "var", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"volatile", "transient")); //$NON-NLS-1$//$NON-NLS-2$
+			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
+			"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator behaviorModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "package", "abstract")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			newArrayList("public", "private", "abstract", "final")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInBehaviorModifierValidator = new SARLModifierValidator(
 			newArrayList(
 			"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
 			"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$
 			"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInBehaviorModifierValidator = new SARLModifierValidator(
 			newArrayList(
-			"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
-			"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"final", "val", "var", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"volatile", "transient")); //$NON-NLS-1$//$NON-NLS-2$
+			"package",  //$NON-NLS-1$
+			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
+			"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator capacityModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "package")); //$NON-NLS-1$//$NON-NLS-2$
+			newArrayList("public", "private")); //$NON-NLS-1$//$NON-NLS-2$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInCapacityModifierValidator = new SARLModifierValidator(
 			newArrayList(
-			"public", "abstract", "dispatch", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"def", "override")); //$NON-NLS-1$//$NON-NLS-2$
+			"public", "def", "override")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator eventModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "package")); //$NON-NLS-1$//$NON-NLS-2$
+			newArrayList("public", "private", "final")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInEventModifierValidator = new SARLModifierValidator(
@@ -258,14 +255,14 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator skillModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "package", "abstract")); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+			newArrayList("public", "private", "abstract", "final")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInSkillModifierValidator = new SARLModifierValidator(
 			newArrayList(
 			"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
 			"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$
 			"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
@@ -375,7 +372,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 					|| declaringType instanceof SarlBehavior) {
 				String typeName = ((XtendTypeDeclaration) constructor.eContainer()).getName();
 				this.constructorModifierValidator.checkModifiers(constructor,
-						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+						MessageFormat.format(Messages.SARLJavaValidator_26, typeName));
 			} else {
 				super.checkModifiers(constructor);
 			}
@@ -390,19 +387,19 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 			if (declaringType instanceof SarlAgent) {
 				String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
 				this.methodInAgentModifierValidator.checkModifiers(function,
-						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+						MessageFormat.format(Messages.SARLJavaValidator_0, function.getName(), typeName));
 			} else if (declaringType instanceof SarlCapacity) {
 				String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
 				this.methodInCapacityModifierValidator.checkModifiers(function,
-						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+						MessageFormat.format(Messages.SARLJavaValidator_0, function.getName(), typeName));
 			} else if (declaringType instanceof SarlSkill) {
 				String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
 				this.methodInSkillModifierValidator.checkModifiers(function,
-						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+						MessageFormat.format(Messages.SARLJavaValidator_0, function.getName(), typeName));
 			} else if (declaringType instanceof SarlBehavior) {
 				String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
 				this.methodInBehaviorModifierValidator.checkModifiers(function,
-						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+						MessageFormat.format(Messages.SARLJavaValidator_0, function.getName(), typeName));
 			} else {
 				super.checkModifiers(function);
 			}
@@ -417,19 +414,19 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 			if (declaringType instanceof SarlEvent) {
 				String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
 				this.fieldInEventModifierValidator.checkModifiers(field,
-						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+						MessageFormat.format(Messages.SARLJavaValidator_0, field.getName(), typeName));
 			} else if (declaringType instanceof SarlAgent) {
 				String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
 				this.fieldInAgentModifierValidator.checkModifiers(field,
-						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+						MessageFormat.format(Messages.SARLJavaValidator_0, field.getName(), typeName));
 			} else if (declaringType instanceof SarlSkill) {
 				String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
 				this.fieldInSkillModifierValidator.checkModifiers(field,
-						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+						MessageFormat.format(Messages.SARLJavaValidator_0, field.getName(), typeName));
 			} else if (declaringType instanceof SarlBehavior) {
 				String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
 				this.fieldInBehaviorModifierValidator.checkModifiers(field,
-						MessageFormat.format(Messages.SARLJavaValidator_0, typeName));
+						MessageFormat.format(Messages.SARLJavaValidator_0, field.getName(), typeName));
 			} else {
 				super.checkModifiers(field);
 			}
@@ -445,7 +442,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 		EObject econtainer = event.eContainer();
 		if (econtainer instanceof SarlScript) {
 			this.eventModifierValidator.checkModifiers(event,
-					MessageFormat.format(Messages.SARLJavaValidator_0, event.getName()));
+					MessageFormat.format(Messages.SARLJavaValidator_26, event.getName()));
 		} else {
 			error(Messages.SARLJavaValidator_2,
 					event,

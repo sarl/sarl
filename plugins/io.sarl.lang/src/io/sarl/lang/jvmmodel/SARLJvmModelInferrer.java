@@ -39,6 +39,7 @@ import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
 import org.eclipse.xtend.core.jvmmodel.SyntheticNameClashResolver;
 import org.eclipse.xtend.core.jvmmodel.XtendJvmModelInferrer;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
@@ -115,6 +116,8 @@ import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.typing.SARLExpressionHelper;
+import io.sarl.lang.util.JvmVisibilityComparator;
 import io.sarl.lang.util.Utils;
 
 /** Infers a JVM model from the source model.
@@ -184,6 +187,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	@Inject
 	private IJvmModelAssociator associator;
+	
+	@Inject
+	private IXtendJvmAssociations xtendAssociations;
+
+	@Inject
+	private JvmVisibilityComparator visibilityComparator;
 
 	/** Generation contexts.
 	 */
@@ -295,20 +304,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			GenerationContext context = new GenerationContext() {
 				@Override
 				public boolean isSupportedMember(XtendMember member) {
-					if ((member instanceof SarlField)
+					return ((member instanceof SarlField)
 							|| (member instanceof SarlConstructor)
+							|| (member instanceof SarlAction)
 							|| (member instanceof SarlBehaviorUnit)
 							|| (member instanceof SarlCapacityUses)
-							|| (member instanceof SarlRequiredCapacity)) {
-						return true;
-					}
-					if (member instanceof SarlAction
-							&& ((SarlAction) member).getExpression() != null) {
-						return true;
-					}
-					return false;
+							|| (member instanceof SarlRequiredCapacity));
 				}
-
 			};
 			openContext(inferredJvmType, context);
 
@@ -316,13 +318,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			this.typeBuilder.copyDocumentationTo(source, inferredJvmType);
 
 			// Change the modifiers on the generated type.
-			inferredJvmType.setVisibility(source.getVisibility());
 			inferredJvmType.setStatic(false);
-			inferredJvmType.setAbstract(false);
 			inferredJvmType.setStrictFloatingPoint(false);
-			if (!inferredJvmType.isAbstract()) {
-				inferredJvmType.setFinal(source.isFinal());
-			}
+			inferredJvmType.setVisibility(source.getVisibility());
+			boolean isAbstract = source.isAbstract() || Utils.hasAbstractMember(source);
+			inferredJvmType.setAbstract(isAbstract);
+			inferredJvmType.setFinal(!isAbstract && source.isFinal());
 
 			// Generate the annotations.
 			translateAnnotationsTo(source.getAnnotations(), inferredJvmType);
@@ -399,18 +400,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			GenerationContext context = new GenerationContext() {
 				@Override
 				public boolean isSupportedMember(XtendMember member) {
-					if ((member instanceof SarlField)
+					return ((member instanceof SarlField)
 							|| (member instanceof SarlConstructor)
+							|| (member instanceof SarlAction)
 							|| (member instanceof SarlBehaviorUnit)
 							|| (member instanceof SarlCapacityUses)
-							|| (member instanceof SarlRequiredCapacity)) {
-						return true;
-					}
-					if (member instanceof SarlAction
-							&& ((SarlAction) member).getExpression() != null) {
-						return true;
-					}
-					return false;
+							|| (member instanceof SarlRequiredCapacity));
 				}
 			};
 			openContext(inferredJvmType, context);
@@ -421,11 +416,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Change the modifiers on the generated type.
 			inferredJvmType.setVisibility(source.getVisibility());
 			inferredJvmType.setStatic(false);
-			inferredJvmType.setAbstract(false);
+			boolean isAbstract = source.isAbstract() || Utils.hasAbstractMember(source);
+			inferredJvmType.setAbstract(isAbstract);
 			inferredJvmType.setStrictFloatingPoint(false);
-			if (!inferredJvmType.isAbstract()) {
-				inferredJvmType.setFinal(source.isFinal());
-			}
+			inferredJvmType.setFinal(!isAbstract && source.isFinal());
 
 			// Generate the annotations.
 			translateAnnotationsTo(source.getAnnotations(), inferredJvmType);
@@ -569,18 +563,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			GenerationContext context = new GenerationContext() {
 				@Override
 				public boolean isSupportedMember(XtendMember member) {
-					if ((member instanceof SarlField)
+					return ((member instanceof SarlField)
 							|| (member instanceof SarlConstructor)
+							|| (member instanceof SarlAction)
 							|| (member instanceof SarlBehaviorUnit)
 							|| (member instanceof SarlCapacityUses)
-							|| (member instanceof SarlRequiredCapacity)) {
-						return true;
-					}
-					if (member instanceof SarlAction
-							&& ((SarlAction) member).getExpression() != null) {
-						return true;
-					}
-					return false;
+							|| (member instanceof SarlRequiredCapacity));
 				}
 			};
 			openContext(inferredJvmType, context);
@@ -591,11 +579,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Change the modifiers on the generated type.
 			inferredJvmType.setVisibility(source.getVisibility());
 			inferredJvmType.setStatic(false);
-			inferredJvmType.setAbstract(false);
+			boolean isAbstract = source.isAbstract() || Utils.hasAbstractMember(source);
+			inferredJvmType.setAbstract(isAbstract);
 			inferredJvmType.setStrictFloatingPoint(false);
-			if (!inferredJvmType.isAbstract()) {
-				inferredJvmType.setFinal(source.isFinal());
-			}
+			inferredJvmType.setFinal(!isAbstract && source.isFinal());
 
 			// Generate the annotations.
 			translateAnnotationsTo(source.getAnnotations(), inferredJvmType);
@@ -660,8 +647,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			GenerationContext context = new GenerationContext() {
 				@Override
 				public boolean isSupportedMember(XtendMember member) {
-					return (member instanceof SarlAction
-							&& ((SarlAction) member).getExpression() == null);
+					return (member instanceof SarlAction);
 				}
 			};
 			openContext(inferredJvmType, context);
@@ -675,9 +661,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			inferredJvmType.setVisibility(source.getVisibility());
 			inferredJvmType.setStatic(false);
 			inferredJvmType.setStrictFloatingPoint(false);
-			if (!inferredJvmType.isAbstract()) {
-				inferredJvmType.setFinal(source.isFinal());
-			}
+			inferredJvmType.setFinal(false);
 
 			// Generate the annotations.
 			translateAnnotationsTo(source.getAnnotations(), inferredJvmType);
@@ -697,7 +681,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			closeContext(inferredJvmType);
 		}
 	}
-
+	
 	@Override
 	protected void transform(XtendMember sourceMember,
 			JvmGenericType container, boolean allowDispatch) {
@@ -859,10 +843,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		// Compute the operation name
 		StringBuilder sourceNameBuffer = new StringBuilder(source.getName());
 		JvmVisibility visibility = source.getVisibility();
+		if (visibility == null) {
+			visibility = JvmVisibility.DEFAULT;
+		}
 		if (allowDispatch && source.isDispatch()) {
-			if (source.getDeclaredVisibility() == null) {
-				visibility = JvmVisibility.PROTECTED;
-			}
 			sourceNameBuffer.insert(0, "_"); //$NON-NLS-1$
 		}
 		final String sourceName = sourceNameBuffer.toString();
@@ -884,11 +868,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		// Create the main function
 		final JvmOperation operation = this.typesFactory.createJvmOperation();
 		container.getMembers().add(operation);
-		operation.setAbstract(source.isAbstract() || container.isInterface());
+		operation.setAbstract(source.isAbstract() || container.isAbstract() || container.isInterface());
 		operation.setNative(source.isNative());
 		operation.setSynchronized(source.isSynchonized());
 		operation.setStrictFloatingPoint(source.isStrictFloatingPoint());
-		if (!source.isAbstract()) {
+		if (!operation.isAbstract()) {
 			operation.setFinal(source.isFinal());
 		}
 		this.associator.associatePrimary(source, operation);
@@ -957,7 +941,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				&& this.typeReferences.findDeclaredType(Override.class, source) != null) {
 			operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
 		}
-		if (!source.isAbstract() && (expression == null || !this.services.getExpressionHelper().hasSideEffects(expression))) {
+		if (!source.isAbstract() &&
+				(expression == null
+				|| !((SARLExpressionHelper) this.services.getExpressionHelper()).hasDeepSideEffects(expression))) {
 			// The function is pure
 			if (!Utils.hasAnnotation(operation, Pure.class)
 					&& this.typeReferences.findDeclaredType(Pure.class, source) != null) {
@@ -984,7 +970,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 
 		// Create extension / Body
-		if (!container.isInterface()) {
+		if (!operation.isAbstract() && !container.isInterface()) {
 			setBody(operation, expression);
 		}
 
@@ -1410,6 +1396,31 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				featureContainerType,
 				context);
 	}
+	
+	@Override
+	protected JvmOperation deriveGenericDispatchOperationSignature(
+			Iterable<JvmOperation> localOperations, JvmGenericType target) {
+		JvmOperation dispatcher = super.deriveGenericDispatchOperationSignature(localOperations, target);
+		//
+		// Fixing the behavior for determining the visibility of the dispatcher since
+		// it does not fit the SARL requirements.
+		//
+		JvmVisibility higherVisibility = JvmVisibility.PRIVATE;
+		for (JvmOperation jvmOperation : localOperations) {
+			Iterable<XtendFunction> xtendFunctions = Iterables.filter(this.xtendAssociations.getSourceElements(jvmOperation),
+					XtendFunction.class);
+			for (XtendFunction func : xtendFunctions) {
+				JvmVisibility visibility = func.getVisibility();
+				assert (visibility != null);
+				if (this.visibilityComparator.compare(visibility, higherVisibility) > 0) {
+					higherVisibility = visibility;
+				}
+			}
+		}
+		dispatcher.setVisibility(higherVisibility);
+		
+		return dispatcher;
+	}
 
 	/** Generate the missed operations that are the results from the generation of actions with default value parameters.
 	 *
@@ -1695,6 +1706,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					});
 			if (op != null) {
 				op.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Generated.class));
+				op.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Pure.class));
 				SARLJvmModelInferrer.this.typeExtensions.setSynthetic(op, true);
 				target.getMembers().add(op);
 			}
@@ -1886,6 +1898,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			return null;
 		}
 		result.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
+		result.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
 
 		JvmFormalParameter param = this.typesFactory.createJvmFormalParameter();
 		param.setName("obj"); //$NON-NLS-1$
@@ -1977,6 +1990,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			return null;
 		}
 		result.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
+		result.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
 		this.typeBuilder.setBody(result, new Procedures.Procedure1<ITreeAppendable>() {
 			@Override
 			public void apply(ITreeAppendable it) {

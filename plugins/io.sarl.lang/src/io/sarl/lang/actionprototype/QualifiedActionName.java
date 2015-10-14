@@ -23,6 +23,8 @@ package io.sarl.lang.actionprototype;
 
 import java.io.Serializable;
 
+import org.eclipse.xtext.util.Strings;
+
 import com.google.common.base.Objects;
 
 /**
@@ -49,9 +51,9 @@ public class QualifiedActionName implements Cloneable, Serializable, Comparable<
 	 * @param functionName - the name of the action.
 	 */
 	protected QualifiedActionName(String resourceID, String declaringType, String functionName) {
-		this.functionName = functionName;
-		this.resourceID = resourceID;
-		this.declaringType = declaringType;
+		this.functionName = Strings.emptyIfNull(functionName);
+		this.resourceID = Strings.emptyIfNull(resourceID);
+		this.declaringType = Strings.emptyIfNull(declaringType);
 	}
 
 	/** Replies the ID of the resource.

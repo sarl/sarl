@@ -17,6 +17,7 @@
 package io.sarl.lang.tests.compilation.aop;
 
 import static org.junit.Assert.assertEquals;
+
 import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -27,7 +28,6 @@ import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper.Result;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import com.google.inject.Inject;
 
 /**
@@ -43,8 +43,43 @@ public class EventCompilerTest extends AbstractSarlTest {
 	private CompilationTestHelper compiler;
 
 	@Test
-	public void basicCompile() throws Exception {
+	public void basicCompile_withBlock() throws Exception {
 		String source = "event E1 { }";
+		String expected = multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Address;",
+				"import io.sarl.lang.core.Event;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public class E1 extends Event {",
+				"  /**",
+				"   * Construct an event. The source of the event is unknown.",
+				"   */",
+				"  @Generated",
+				"  public E1() {",
+				"    super();",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an event.",
+				"   * @param source - address of the agent that is emitting this event.",
+				"   */",
+				"  @Generated",
+				"  public E1(final Address source) {",
+				"    super(source);",
+				"  }",
+				"  ",
+				"  @Generated",
+				"  private final static long serialVersionUID = 588368462L;",
+				"}",
+				""
+				);
+		this.compiler.assertCompilesTo(source, expected);
+	}
+
+	@Test
+	public void basicCompile_withoutBlock() throws Exception {
+		String source = "event E1";
 		String expected = multilineString(
 				"import io.sarl.lang.annotation.Generated;",
 				"import io.sarl.lang.core.Address;",
@@ -88,6 +123,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"import io.sarl.lang.annotation.Generated;",
 				"import io.sarl.lang.core.Address;",
 				"import io.sarl.lang.core.Event;",
+				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
@@ -111,6 +147,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @Override",
+				"  @Pure",
 				"  @Generated",
 				"  public boolean equals(final Object obj) {",
 				"    if (this == obj)",
@@ -129,6 +166,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @Override",
+				"  @Pure",
 				"  @Generated",
 				"  public int hashCode() {",
 				"    final int prime = 31;",
@@ -141,6 +179,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"   * Returns a String representation of the E1 event's attributes only.",
 				"   */",
 				"  @Generated",
+				"  @Pure",
 				"  protected String attributesToString() {",
 				"    StringBuilder result = new StringBuilder(super.attributesToString());",
 				"    result.append(\"name  = \").append(this.name);",
@@ -215,6 +254,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"import io.sarl.lang.annotation.Generated;",
 				"import io.sarl.lang.core.Event;",
+				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
@@ -227,6 +267,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @Override",
+				"  @Pure",
 				"  @Generated",
 				"  public boolean equals(final Object obj) {",
 				"    if (this == obj)",
@@ -244,6 +285,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @Override",
+				"  @Pure",
 				"  @Generated",
 				"  public int hashCode() {",
 				"    final int prime = 31;",
@@ -257,6 +299,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"   * Returns a String representation of the E1 event's attributes only.",
 				"   */",
 				"  @Generated",
+				"  @Pure",
 				"  protected String attributesToString() {",
 				"    StringBuilder result = new StringBuilder(super.attributesToString());",
 				"    result.append(\"titi  = \").append(this.titi);",
@@ -271,4 +314,425 @@ public class EventCompilerTest extends AbstractSarlTest {
 				);
 		this.compiler.assertCompilesTo(source, expected);
 	}
+
+	@Test
+	public void eventmodifier_none() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"event E1"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Address;",
+				"import io.sarl.lang.core.Event;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public class E1 extends Event {",
+				"  /**",
+				"   * Construct an event. The source of the event is unknown.",
+				"   */",
+				"  @Generated",
+				"  public E1() {",
+				"    super();",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an event.",
+				"   * @param source - address of the agent that is emitting this event.",
+				"   */",
+				"  @Generated",
+				"  public E1(final Address source) {",
+				"    super(source);",
+				"  }",
+				"  ",
+				"  @Generated",
+				"  private final static long serialVersionUID = 588368462L;",
+				"}",
+				""));
+	}
+
+	@Test
+	public void eventmodifier_public() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"public event E1"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Address;",
+				"import io.sarl.lang.core.Event;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public class E1 extends Event {",
+				"  /**",
+				"   * Construct an event. The source of the event is unknown.",
+				"   */",
+				"  @Generated",
+				"  public E1() {",
+				"    super();",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an event.",
+				"   * @param source - address of the agent that is emitting this event.",
+				"   */",
+				"  @Generated",
+				"  public E1(final Address source) {",
+				"    super(source);",
+				"  }",
+				"  ",
+				"  @Generated",
+				"  private final static long serialVersionUID = 588368462L;",
+				"}",
+				""));
+	}
+
+	@Test
+	public void eventmodifier_private() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"private event E1"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Address;",
+				"import io.sarl.lang.core.Event;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"class E1 extends Event {",
+				"  /**",
+				"   * Construct an event. The source of the event is unknown.",
+				"   */",
+				"  @Generated",
+				"  public E1() {",
+				"    super();",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an event.",
+				"   * @param source - address of the agent that is emitting this event.",
+				"   */",
+				"  @Generated",
+				"  public E1(final Address source) {",
+				"    super(source);",
+				"  }",
+				"  ",
+				"  @Generated",
+				"  private final static long serialVersionUID = 588368462L;",
+				"}",
+				""));
+	}
+
+	@Test
+	public void eventmodifier_final() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"final event E1"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Address;",
+				"import io.sarl.lang.core.Event;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public final class E1 extends Event {",
+				"  /**",
+				"   * Construct an event. The source of the event is unknown.",
+				"   */",
+				"  @Generated",
+				"  public E1() {",
+				"    super();",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an event.",
+				"   * @param source - address of the agent that is emitting this event.",
+				"   */",
+				"  @Generated",
+				"  public E1(final Address source) {",
+				"    super(source);",
+				"  }",
+				"  ",
+				"  @Generated",
+				"  private final static long serialVersionUID = 588368462L;",
+				"}",
+				""));
+	}
+
+	@Test
+	public void fieldmodifier_none() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"event E1 {",
+				"	var field : int",
+				"}"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Address;",
+				"import io.sarl.lang.core.Event;",
+				"import org.eclipse.xtext.xbase.lib.Pure;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public class E1 extends Event {",
+				"  public int field;",
+				"  ",
+				"  /**",
+				"   * Construct an event. The source of the event is unknown.",
+				"   */",
+				"  @Generated",
+				"  public E1() {",
+				"    super();",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an event.",
+				"   * @param source - address of the agent that is emitting this event.",
+				"   */",
+				"  @Generated",
+				"  public E1(final Address source) {",
+				"    super(source);",
+				"  }",
+				"  ",
+				"  @Override",
+				"  @Pure",
+				"  @Generated",
+				"  public boolean equals(final Object obj) {",
+				"    if (this == obj)",
+				"      return true;",
+				"    if (obj == null)",
+				"      return false;",
+				"    if (getClass() != obj.getClass())",
+				"      return false;",
+				"    E1 other = (E1) obj;",
+				"    if (other.field != this.field)",
+				"      return false;",
+				"    return super.equals(obj);",
+				"  }",
+				"  ",
+				"  @Override",
+				"  @Pure",
+				"  @Generated",
+				"  public int hashCode() {",
+				"    final int prime = 31;",
+				"    int result = super.hashCode();",
+				"    result = prime * result + this.field;",
+				"    return result;",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Returns a String representation of the E1 event's attributes only.",
+				"   */",
+				"  @Generated",
+				"  @Pure",
+				"  protected String attributesToString() {",
+				"    StringBuilder result = new StringBuilder(super.attributesToString());",
+				"    result.append(\"field  = \").append(this.field);",
+				"    return result.toString();",
+				"  }",
+				"  ",
+				"  @Generated",
+				"  private final static long serialVersionUID = 685900599L;",
+				"}",
+				""));
+	}
+
+	@Test
+	public void fieldmodifier_public() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"event E1 {",
+				"	public var field : int",
+				"}"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Address;",
+				"import io.sarl.lang.core.Event;",
+				"import org.eclipse.xtext.xbase.lib.Pure;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public class E1 extends Event {",
+				"  public int field;",
+				"  ",
+				"  /**",
+				"   * Construct an event. The source of the event is unknown.",
+				"   */",
+				"  @Generated",
+				"  public E1() {",
+				"    super();",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an event.",
+				"   * @param source - address of the agent that is emitting this event.",
+				"   */",
+				"  @Generated",
+				"  public E1(final Address source) {",
+				"    super(source);",
+				"  }",
+				"  ",
+				"  @Override",
+				"  @Pure",
+				"  @Generated",
+				"  public boolean equals(final Object obj) {",
+				"    if (this == obj)",
+				"      return true;",
+				"    if (obj == null)",
+				"      return false;",
+				"    if (getClass() != obj.getClass())",
+				"      return false;",
+				"    E1 other = (E1) obj;",
+				"    if (other.field != this.field)",
+				"      return false;",
+				"    return super.equals(obj);",
+				"  }",
+				"  ",
+				"  @Override",
+				"  @Pure",
+				"  @Generated",
+				"  public int hashCode() {",
+				"    final int prime = 31;",
+				"    int result = super.hashCode();",
+				"    result = prime * result + this.field;",
+				"    return result;",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Returns a String representation of the E1 event's attributes only.",
+				"   */",
+				"  @Generated",
+				"  @Pure",
+				"  protected String attributesToString() {",
+				"    StringBuilder result = new StringBuilder(super.attributesToString());",
+				"    result.append(\"field  = \").append(this.field);",
+				"    return result.toString();",
+				"  }",
+				"  ",
+				"  @Generated",
+				"  private final static long serialVersionUID = 685900599L;",
+				"}",
+				""));
+	}
+
+	@Test
+	public void constructormodifier_none() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"event E1 {",
+				"	new { super(null) }",
+				"}"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Event;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public class E1 extends Event {",
+				"  public E1() {",
+				"    super(null);",
+				"  }",
+				"  ",
+				"  @Generated",
+				"  private final static long serialVersionUID = 588370691L;",
+				"}",
+				""));
+	}
+
+	@Test
+	public void constructormodifier_public() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"event E1 {",
+				"	public new { super(null) }",
+				"}"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Event;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public class E1 extends Event {",
+				"  public E1() {",
+				"    super(null);",
+				"  }",
+				"  ",
+				"  @Generated",
+				"  private final static long serialVersionUID = 588370691L;",
+				"}",
+				""));
+	}
+
+	@Test
+	public void constructormodifier_private() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"event E1 {",
+				"	private new { super(null) }",
+				"}"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Event;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public class E1 extends Event {",
+				"  private E1() {",
+				"    super(null);",
+				"  }",
+				"  ",
+				"  @Generated",
+				"  private final static long serialVersionUID = 588370691L;",
+				"}",
+				""));
+	}
+
+	@Test
+	public void constructormodifier_package() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"event E1 {",
+				"	package new { super(null) }",
+				"}"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Event;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public class E1 extends Event {",
+				"  E1() {",
+				"    super(null);",
+				"  }",
+				"  ",
+				"  @Generated",
+				"  private final static long serialVersionUID = 588370691L;",
+				"}",
+				""));
+	}
+
+	@Test
+	public void constructormodifier_protected() throws Exception {
+		this.compiler.assertCompilesTo(
+			multilineString(
+				"event E1 {",
+				"	protected new { super(null) }",
+				"}"
+			),
+			multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Event;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public class E1 extends Event {",
+				"  protected E1() {",
+				"    super(null);",
+				"  }",
+				"  ",
+				"  @Generated",
+				"  private final static long serialVersionUID = 588370691L;",
+				"}",
+				""));
+	}
+
 }

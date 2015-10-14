@@ -19,44 +19,49 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.generator.helper;
+package io.sarl.lang.sarl.impl;
 
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
+import org.eclipse.xtext.util.Strings;
 
-/** Postfix documentation for an Ecore element.
- *
- * <p>The prefix document is supported by {@link DocumentationAdapter}.
+/**
+ * <!-- begin-user-doc -->
+ * Custom implementation of the SarlAgent grammar element for SARL.
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * <ul>
+ *   <li>{@link #isAbstract() <em>Replies if the "abstract" modifier is associated to the element</em>}</li>
+ * </ul>
+ * </p>
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see DocumentationAdapter
  */
-public class PostDocumentationAdapter extends AdapterImpl {
+public class SarlAgentImplCustom extends SarlAgentImpl {
 
-	private String documentation;
-
-	/** Replies the documentation.
-	 *
-	 * @return the documentation.
+	/**
+	 * <!-- begin-user-doc -->
+	 * Constructor.
+	 * <!-- end-user-doc -->
+	 * @generated
 	 */
-	public String getDocumentation() {
-		return this.documentation;
-	}
-
-	/** Change the documentation.
-	 *
-	 * @param documentation - the comment.
-	 */
-	public void setDocumentation(String documentation) {
-		this.documentation = documentation;
+	protected SarlAgentImplCustom() {
+		super();
 	}
 
 	@Override
-	public boolean isAdapterForType(Object type) {
-		return type == PostDocumentationAdapter.class;
+	public boolean isAbstract() {
+		for(String modifier: getModifiers()) { 
+			if(Strings.equal(modifier, "abstract")) {  //$NON-NLS-1$
+				return true;
+			}
+			if(Strings.equal(modifier, "final")) {  //$NON-NLS-1$
+				return false;
+			}
+		}
+		return false;
 	}
 
 }

@@ -69,4 +69,12 @@ public interface SarlSkill extends XtendTypeDeclaration
    */
   EList<JvmParameterizedTypeReference> getImplements();
 
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @model kind="operation"
+   * @generated
+   */
+  boolean isAbstract();
+
 } // SarlSkill

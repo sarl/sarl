@@ -77,7 +77,7 @@ import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.lang.generator.helper.ECoreGeneratorHelper;
+import io.sarl.lang.ecoregenerator.helper.ECoreGeneratorHelper;
 
 /**
  * Abstract implementation of a wizard page for creating new SARL elements.

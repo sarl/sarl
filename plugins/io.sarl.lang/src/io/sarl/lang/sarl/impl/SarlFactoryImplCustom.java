@@ -22,11 +22,15 @@
 package io.sarl.lang.sarl.impl;
 
 import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlAnnotationType;
+import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlEnumeration;
+import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlInterface;
+import io.sarl.lang.sarl.SarlSkill;
 
 /**
  * <!-- begin-user-doc -->
@@ -35,6 +39,12 @@ import io.sarl.lang.sarl.SarlInterface;
  * <p>
  * The following features are implemented:
  * <ul>
+ *   <li>{@link #createSarlAgent() <em>Custom SARL agent</em>}</li>
+ *   <li>{@link #createSarlAnnotationType() <em>Custom SARL annotation type</em>}</li>
+ *   <li>{@link #createSarlClass() <em>Custom SARL class</em>}</li>
+ *   <li>{@link #createSarlInterface() <em>Custom SARL interface</em>}</li>
+ *   <li>{@link #createSarlEnumeration() <em>Custom SARL enumeration</em>}</li>
+ *   <li>{@link #createSarlField() <em>Custom SARL field</em>}</li>
  *   <li>{@link #createSarlAction() <em>Custom SARL action</em>}</li>
  * </ul>
  * </p>
@@ -56,8 +66,23 @@ public class SarlFactoryImplCustom extends SarlFactoryImpl {
 	}
 
 	@Override
-	public SarlAction createSarlAction() {
-		return new SarlActionImplCustom();
+	public SarlAgent createSarlAgent() {
+		return new SarlAgentImplCustom();
+	}
+
+	@Override
+	public SarlBehavior createSarlBehavior() {
+		return new SarlBehaviorImplCustom();
+	}
+
+	@Override
+	public SarlEvent createSarlEvent() {
+		return new SarlEventImplCustom();
+	}
+
+	@Override
+	public SarlSkill createSarlSkill() {
+		return new SarlSkillImplCustom();
 	}
 
 	@Override
@@ -76,13 +101,18 @@ public class SarlFactoryImplCustom extends SarlFactoryImpl {
 	}
 
 	@Override
-	public SarlField createSarlField() {
-		return new SarlFieldImplCustom();
+	public SarlInterface createSarlInterface() {
+		return new SarlInterfaceImplCustom();
 	}
 
 	@Override
-	public SarlInterface createSarlInterface() {
-		return new SarlInterfaceImplCustom();
+	public SarlAction createSarlAction() {
+		return new SarlActionImplCustom();
+	}
+
+	@Override
+	public SarlField createSarlField() {
+		return new SarlFieldImplCustom();
 	}
 
 }

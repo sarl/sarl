@@ -50,4 +50,12 @@ public interface SarlBehavior extends XtendTypeDeclaration
    */
   void setExtends(JvmParameterizedTypeReference value);
 
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @model kind="operation"
+   * @generated
+   */
+  boolean isAbstract();
+
 } // SarlBehavior

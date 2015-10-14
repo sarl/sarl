@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.generator.helper;
+package io.sarl.lang.ecoregenerator.helper;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -31,7 +31,7 @@ import org.eclipse.osgi.util.NLS;
  */
 @SuppressWarnings("all")
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.lang.generator.helper.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "io.sarl.lang.ecoregenerator.helper.messages"; //$NON-NLS-1$
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

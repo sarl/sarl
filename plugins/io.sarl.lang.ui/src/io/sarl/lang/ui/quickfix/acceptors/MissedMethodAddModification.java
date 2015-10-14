@@ -347,7 +347,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 					appendable.append("// ") //$NON-NLS-1$
 						.append(taskTag)
 						.append(" ") //$NON-NLS-1$
-						.append(io.sarl.lang.generator.helper.Messages.SARLCodeGenerator_0);
+						.append(io.sarl.lang.ecoregenerator.helper.Messages.SARLCodeGenerator_0);
 
 					if (returnType != null && !returnType.isPrimitiveVoid()) {
 						appendable.newLine().append(Utils.getDefaultValueForType(returnType));

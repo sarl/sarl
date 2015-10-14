@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.generator.helper;
+package io.sarl.lang.ecoregenerator.helper;
 
 import java.lang.ref.WeakReference;
 
