@@ -50,7 +50,6 @@ import com.google.inject.Inject;
 @RunWith(Suite.class)
 @SuiteClasses({
 	PureFunctionTest.DefinitionTests.class,
-	PureFunctionTest.UseTests.class,
 })
 @SuppressWarnings("all")
 public class PureFunctionTest {
@@ -101,7 +100,7 @@ public class PureFunctionTest {
 		}
 
 		@Test
-		public void noPureParent_pureLocal() throws Exception {
+		public void noPureParent_pureLocal_tooComplexToBeDetected() throws Exception {
 			String source = multilineString(
 					"class C1 {",
 					"	def fct { return Math.random }",
@@ -120,12 +119,9 @@ public class PureFunctionTest {
 					""
 					);
 			final String expectedC2 = multilineString(
-					"import org.eclipse.xtext.xbase.lib.Pure;",
-					"",
 					"@SuppressWarnings(\"all\")",
 					"public class C2 extends C1 {",
 					"  @Override",
-					"  @Pure",
 					"  public double fct() {",
 					"    return 0;",
 					"  }",
@@ -142,7 +138,7 @@ public class PureFunctionTest {
 		}
 
 		@Test
-		public void pureParent_pureLocal() throws Exception {
+		public void pureParent_pureLocal_tooComplexToBeDetected() throws Exception {
 			String source = multilineString(
 					"class C1 {",
 					"	def fct { }",
@@ -152,23 +148,17 @@ public class PureFunctionTest {
 					"}",
 					"");
 			final String expectedC1 = multilineString(
-					"import org.eclipse.xtext.xbase.lib.Pure;",
-					"",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
-					"  @Pure",
 					"  public void fct() {",
 					"  }",
 					"}",
 					""
 					);
 			final String expectedC2 = multilineString(
-					"import org.eclipse.xtext.xbase.lib.Pure;",
-					"",
 					"@SuppressWarnings(\"all\")",
 					"public class C2 extends C1 {",
 					"  @Override",
-					"  @Pure",
 					"  public void fct() {",
 					"  }",
 					"}",
@@ -222,7 +212,7 @@ public class PureFunctionTest {
 		}
 
 		@Test
-		public void abstractParent_pureLocal() throws Exception {
+		public void abstractParent_pureLocal_tooComplexToBeDetected() throws Exception {
 			String source = multilineString(
 					"abstract class C1 {",
 					"	abstract def fct : double",
@@ -239,12 +229,9 @@ public class PureFunctionTest {
 					""
 					);
 			final String expectedC2 = multilineString(
-					"import org.eclipse.xtext.xbase.lib.Pure;",
-					"",
 					"@SuppressWarnings(\"all\")",
 					"public class C2 extends C1 {",
 					"  @Override",
-					"  @Pure",
 					"  public double fct() {",
 					"    return 0;",
 					"  }",
@@ -260,52 +247,136 @@ public class PureFunctionTest {
 			});
 		}
 
-	}
-
-	public static class UseTests extends AbstractSarlTest {
-
 		@Test
-		public void invalidUsageOfPureFunction() throws Exception {
-			SarlScript mas = file(multilineString(
-					"behavior B1 {",
-					"   var attr = 5",
-					"	def purefct : int { 5 }",
+		public void special_get() throws Exception {
+			String source = multilineString(
+					"class C1 {",
+					"	def getXXX : double { 9 }",
 					"}",
-					"behavior B2 {",
-					"   var inst = new B1",
-					"	def testfct {",
-					"      inst.purefct",
-					"   }",
+					"");
+			final String expectedC1 = multilineString(
+					"import org.eclipse.xtext.xbase.lib.Pure;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1 {",
+					"  @Pure",
+					"  public double getXXX() {",
+					"    return 9;",
+					"  }",
 					"}",
-					""));
-			validate(mas).assertError(
-				SarlPackage.eINSTANCE.getSarlBehavior(),
-				org.eclipse.xtend.core.validation.IssueCodes.CLASS_EXPECTED,
-				36, 2,
-				"Invalid supertype. Expecting a class");
+					""
+					);
+			this.compiler.assertCompilesTo(source, expectedC1);
 		}
 
 		@Test
-		public void validUsageOfPureFunction() throws Exception {
-			SarlScript mas = file(multilineString(
-					"behavior B1 {",
-					"   new () { super(null) }",
-					"   var attr = 5",
-					"	def purefct : int { 5 }",
+		public void special_is() throws Exception {
+			String source = multilineString(
+					"class C1 {",
+					"	def isXXX : boolean { false }",
 					"}",
-					"behavior B2 {",
-					"   new () { super(null) }",
-					"   var inst = new B1",
-					"	def testfct : int {",
-					"      inst.purefct",
-					"   }",
+					"");
+			final String expectedC1 = multilineString(
+					"import org.eclipse.xtext.xbase.lib.Pure;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1 {",
+					"  @Pure",
+					"  public boolean isXXX() {",
+					"    return false;",
+					"  }",
 					"}",
-					""));
-			validate(mas).assertError(
-				SarlPackage.eINSTANCE.getSarlBehavior(),
-				org.eclipse.xtend.core.validation.IssueCodes.CLASS_EXPECTED,
-				36, 2,
-				"Invalid supertype. Expecting a class");
+					""
+					);
+			this.compiler.assertCompilesTo(source, expectedC1);
+		}
+
+		@Test
+		public void special_has() throws Exception {
+			String source = multilineString(
+					"class C1 {",
+					"	def hasXXX : boolean { false }",
+					"}",
+					"");
+			final String expectedC1 = multilineString(
+					"import org.eclipse.xtext.xbase.lib.Pure;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1 {",
+					"  @Pure",
+					"  public boolean hasXXX() {",
+					"    return false;",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expectedC1);
+		}
+
+		@Test
+		public void special_toString() throws Exception {
+			String source = multilineString(
+					"class C1 {",
+					"	def toString : String { \"\" }",
+					"}",
+					"");
+			final String expectedC1 = multilineString(
+					"import org.eclipse.xtext.xbase.lib.Pure;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1 {",
+					"  @Pure",
+					"  public String toString() {",
+					"    return \"\";",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expectedC1);
+		}
+
+		@Test
+		public void special_hashCode() throws Exception {
+			String source = multilineString(
+					"class C1 {",
+					"	def hashCode : int { 0 }",
+					"}",
+					"");
+			final String expectedC1 = multilineString(
+					"import org.eclipse.xtext.xbase.lib.Pure;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1 {",
+					"  @Pure",
+					"  public int hashCode() {",
+					"    return 0;",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expectedC1);
+		}
+
+		@Test
+		public void special_equals() throws Exception {
+			String source = multilineString(
+					"class C1 {",
+					"	def equals(a : Object) : boolean { false }",
+					"}",
+					"");
+			final String expectedC1 = multilineString(
+					"import org.eclipse.xtext.xbase.lib.Pure;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1 {",
+					"  @Pure",
+					"  public boolean equals(final Object a) {",
+					"    return false;",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expectedC1);
 		}
 
 	}

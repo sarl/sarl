@@ -116,7 +116,7 @@ import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.typing.SARLExpressionHelper;
+import io.sarl.lang.typing.ExtendedXExpressionHelper;
 import io.sarl.lang.util.JvmVisibilityComparator;
 import io.sarl.lang.util.Utils;
 
@@ -160,6 +160,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	@Inject
 	private CommonTypeComputationServices services;
+	
+	/** Extended helper for using XExpressions.
+	 */
+	@Inject
+	private ExtendedXExpressionHelper extendedExpressionHelper;
 
 	/** JVM type services.
 	 */
@@ -934,6 +939,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			operation.getExceptions().add(this.typeBuilder.cloneWithProxies(exception));
 		}
 
+		// Create extension / Body
+		if (!operation.isAbstract() && !container.isInterface()) {
+			setBody(operation, expression);
+		}
+
 		// Annotations
 		translateAnnotationsTo(source.getAnnotations(), operation);
 		if (source.isOverride()
@@ -941,14 +951,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				&& this.typeReferences.findDeclaredType(Override.class, source) != null) {
 			operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
 		}
-		if (!source.isAbstract() &&
-				(expression == null
-				|| !((SARLExpressionHelper) this.services.getExpressionHelper()).hasDeepSideEffects(expression))) {
+		if ((this.extendedExpressionHelper.isPureOperation(operation, expression))
+			&& (!Utils.hasAnnotation(operation, Pure.class))
+			&& (this.typeReferences.findDeclaredType(Pure.class, source) != null)) {
 			// The function is pure
-			if (!Utils.hasAnnotation(operation, Pure.class)
-					&& this.typeReferences.findDeclaredType(Pure.class, source) != null) {
-				operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
-			}
+			operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
 		}
 
 		// Detecting if the action is an early-exit action.
@@ -967,11 +974,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		// Put the fired SARL events as Java annotations for beeing usable by the SARL validator.
 		if (!firedEvents.isEmpty()) {
 			operation.getAnnotations().add(annotationClassRef(FiredEvent.class, firedEvents));
-		}
-
-		// Create extension / Body
-		if (!operation.isAbstract() && !container.isInterface()) {
-			setBody(operation, expression);
 		}
 
 		// 1. Ensure that the Java annotations related to the default value are really present.

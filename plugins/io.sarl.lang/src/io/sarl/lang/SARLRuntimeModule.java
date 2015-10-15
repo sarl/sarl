@@ -124,7 +124,8 @@ import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.scoping.batch.SARLImplicitlyImportedFeatures;
-import io.sarl.lang.typing.SARLExpressionHelper;
+import io.sarl.lang.typing.ExtendedXExpressionHelper;
+import io.sarl.lang.typing.SARLXExpressionHelper;
 import io.sarl.lang.validation.DefaultFeatureCallValidator;
 import io.sarl.lang.validation.FeatureCallValidator;
 import io.sarl.lang.validation.SARLConfigurableIssueCodesProvider;
@@ -323,7 +324,14 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	 * @return the type of the XExpression helper.
 	 */
 	public Class<? extends XExpressionHelper> bindXExpressionHelper() {
-		return SARLExpressionHelper.class;
+		return SARLXExpressionHelper.class;
+	}
+
+	/** Replies the type of the extended elper for using XExpressions.
+	 * @return the type of the XExpression helper.
+	 */
+	public Class<? extends ExtendedXExpressionHelper> bindExtendedXExpressionHelper() {
+		return ExtendedXExpressionHelper.class;
 	}
 
 	@Override
