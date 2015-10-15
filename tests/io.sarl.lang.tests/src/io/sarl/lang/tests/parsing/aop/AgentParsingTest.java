@@ -453,6 +453,23 @@ public class AgentParsingTest {
 	public static class BehaviorUnitTest extends AbstractSarlTest {
 
 		@Test
+		public void synchronizedGuard() throws Exception {
+			SarlScript mas = file(multilineString(
+					"event E {}",
+					"agent A1 {",
+					"  var myfield = new Object",
+					"  on E [ synchronized(this.myfield) { this.myfield.hashCode != 0 } ] {",
+					"  }",
+					"}"
+					), false);
+			validate(mas).assertError(
+					XbasePackage.eINSTANCE.getXExpression(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRESSION,
+					58, 57,
+					"Expression with side effect is not allowed in guards");
+		}
+
+		@Test
 		public void declarationWithoutGuard() throws Exception {
 			SarlScript mas = file(multilineString(
 					"event E {}",
