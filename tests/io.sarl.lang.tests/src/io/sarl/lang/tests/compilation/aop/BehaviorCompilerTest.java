@@ -16,6 +16,7 @@
 package io.sarl.lang.tests.compilation.aop;
 
 import static org.junit.Assert.assertEquals;
+
 import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -26,7 +27,6 @@ import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper.Result;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import com.google.inject.Inject;
 
 /**
@@ -789,6 +789,66 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}",
 				""
 			));
+	}
+
+	@Test
+	public void actionmodifier_override() throws Exception {
+		String source = multilineString(
+				"behavior B1 {",
+				"	def name",
+				"}",
+				"behavior B2 extends B1 {",
+				"	override name {}",
+				"}"
+			);
+		final String expectedB1 = multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Agent;",
+				"import io.sarl.lang.core.Behavior;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public abstract class B1 extends Behavior {",
+				"  protected abstract void name();",
+				"  ",
+				"  /**",
+				"   * Construct a behavior.",
+				"   * @param owner - reference to the agent that is owning this behavior.",
+				"   */",
+				"  @Generated",
+				"  public B1(final Agent owner) {",
+				"    super(owner);",
+				"  }",
+				"}",
+				""
+			);
+		final String expectedB2 = multilineString(
+				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.core.Agent;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public class B2 extends B1 {",
+				"  @Override",
+				"  protected void name() {",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct a behavior.",
+				"   * @param owner - reference to the agent that is owning this behavior.",
+				"   */",
+				"  @Generated",
+				"  public B2(final Agent owner) {",
+				"    super(owner);",
+				"  }",
+				"}",
+				""
+			);
+		this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
+			@Override
+			public void accept(Result r) {
+				assertEquals(expectedB1, r.getGeneratedCode("B1"));
+				assertEquals(expectedB2, r.getGeneratedCode("B2"));
+			}
+		});
 	}
 
 	@Test

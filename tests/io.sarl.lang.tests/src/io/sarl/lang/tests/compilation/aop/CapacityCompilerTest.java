@@ -116,6 +116,42 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 	}
 
 	@Test
+	public void actionmodifier_override() throws Exception {
+		String source = multilineString(
+				"capacity C1 {",
+				"	def name",
+				"}",
+				"capacity C2 extends C1 {",
+				"	override name",
+				"}"
+			);
+		final String expectedC1 = multilineString(
+				"import io.sarl.lang.core.Capacity;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public interface C1 extends Capacity {",
+				"  public abstract void name();",
+				"}",
+				""
+			);
+		final String expectedC2 = multilineString(
+				"@SuppressWarnings(\"all\")",
+				"public interface C2 extends C1 {",
+				"  @Override",
+				"  public abstract void name();",
+				"}",
+				""
+			);
+		this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
+			@Override
+			public void accept(Result r) {
+				assertEquals(expectedC1, r.getGeneratedCode("C1"));
+				assertEquals(expectedC2, r.getGeneratedCode("C2"));
+			}
+		});
+	}
+
+	@Test
 	public void actionmodifier_none() throws Exception {
 		this.compiler.assertCompilesTo(
 			multilineString(

@@ -60,7 +60,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  var field : int",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -88,7 +88,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -104,7 +104,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  package var field : int",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -132,7 +132,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -148,7 +148,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  protected var field : int",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -176,7 +176,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -192,7 +192,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  private var field : int",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -220,7 +220,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -236,7 +236,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  public var field : int",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -264,7 +264,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -280,7 +280,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  val field : int = 5",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -308,7 +308,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -324,7 +324,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  static var field : int",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -352,7 +352,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -368,7 +368,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  transient var field : int",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -396,7 +396,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -412,7 +412,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  volatile var field : int",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -440,7 +440,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -513,13 +513,91 @@ public class SkillCompilerTest {
 		private CompilationTestHelper compiler;
 
 		@Test
+		public void actionmodifier_override() throws Exception {
+			String source = multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	def name",
+					"}",
+					"skill S2 extends S1 {",
+					"	override name {}",
+					"}"
+					);
+			final String expectedS1 = multilineString(
+					"import io.sarl.lang.annotation.Generated;",
+					"import io.sarl.lang.core.Agent;",
+					"import io.sarl.lang.core.Skill;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public abstract class S1 extends Skill implements C1 {",
+					"  public abstract void name();",
+					"  ",
+					"  /**",
+					"   * Construct a skill. The owning agent is unknown.",
+					"   */",
+					"  @Generated",
+					"  public S1() {",
+					"    super();",
+					"  }",
+					"  ",
+					"  /**",
+					"   * Construct a skill.",
+					"   * @param owner - agent that is owning this skill.",
+					"   */",
+					"  @Generated",
+					"  public S1(final Agent owner) {",
+					"    super(owner);",
+					"  }",
+					"}",
+					""
+					);
+			final String expectedS2 = multilineString(
+					"import io.sarl.lang.annotation.Generated;",
+					"import io.sarl.lang.core.Agent;",
+					"import io.sarl.lang.core.Capacity;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class S2 extends S1 implements Capacity {",
+					"  @Override",
+					"  public void name() {",
+					"  }",
+					"  ",
+					"  /**",
+					"   * Construct a skill. The owning agent is unknown.",
+					"   */",
+					"  @Generated",
+					"  public S2() {",
+					"    super();",
+					"  }",
+					"  ",
+					"  /**",
+					"   * Construct a skill.",
+					"   * @param owner - agent that is owning this skill.",
+					"   */",
+					"  @Generated",
+					"  public S2(final Agent owner) {",
+					"    super(owner);",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
+				@Override
+				public void accept(Result r) {
+					assertEquals(expectedS1, r.getGeneratedCode("S1"));
+					assertEquals(expectedS2, r.getGeneratedCode("S2"));
+				}
+			});
+		}
+
+		@Test
 		public void actionmodifier_none() throws Exception {
 			String source = multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"  def name {}",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -548,7 +626,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -564,7 +642,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  public def name {}",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -593,7 +671,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -609,7 +687,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  protected def name {}",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -638,7 +716,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -654,7 +732,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  package def name {}",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -683,7 +761,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -699,7 +777,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  private def name {}",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -728,7 +806,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -744,7 +822,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  abstract def name",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -772,7 +850,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -788,7 +866,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  def name",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -816,7 +894,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -832,7 +910,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  dispatch def name(a : Integer) { }",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -866,7 +944,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -882,7 +960,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  dispatch final def name(a : Integer) { }",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -916,7 +994,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -932,7 +1010,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  final def name { }",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -961,7 +1039,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -977,7 +1055,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  static def name { }",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -1006,7 +1084,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -1022,7 +1100,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  synchronized def name { }",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -1051,7 +1129,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -1474,7 +1552,7 @@ public class SkillCompilerTest {
 			String source = multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 { }"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -1500,7 +1578,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -1514,7 +1592,7 @@ public class SkillCompilerTest {
 			String source = multilineString(
 					"capacity C1 { }",
 					"public skill S1 implements C1 { }"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -1540,7 +1618,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -1554,7 +1632,7 @@ public class SkillCompilerTest {
 			String source = multilineString(
 					"capacity C1 { }",
 					"private skill S1 implements C1 { }"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -1580,7 +1658,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -1594,7 +1672,7 @@ public class SkillCompilerTest {
 			String source = multilineString(
 					"capacity C1 { }",
 					"abstract skill S1 implements C1 { }"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -1620,7 +1698,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -1636,7 +1714,7 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 {",
 					"  def name()",
 					"}"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -1664,7 +1742,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -1678,7 +1756,7 @@ public class SkillCompilerTest {
 			String source = multilineString(
 					"capacity C1 { }",
 					"final skill S1 implements C1 { }"
-				);
+					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
@@ -1704,7 +1782,7 @@ public class SkillCompilerTest {
 					"  }",
 					"}",
 					""
-				);
+					);
 			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {

@@ -705,6 +705,52 @@ public class CapacityParsingTest {
 	public static class ActionTest extends AbstractSarlTest {
 
 		@Test
+		public void modifier_override_recommended() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {",
+					"	def name",
+					"}",
+					"capacity C2 extends C1 {",
+					"	def name { }",
+					"}"), false);
+			validate(mas).assertWarning(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
+					88, 4,
+					"The method name() of type C2 must use override keyword since it actually overrides a supertype method");
+		}
+
+		@Test
+		public void modifier_override_invalid() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {",
+					"}",
+					"capacity C2 extends C1 {",
+					"	override name",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE,
+					74, 8,
+					"The method name() of type C2 must override a superclass method");
+		}
+
+		@Test
+		public void modifier_override_valid() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {",
+					"	def name",
+					"}",
+					"capacity C2 extends C1 {",
+					"	override name",
+					"}"), false);
+			validate(mas).assertNoIssues();
+		}
+
+		@Test
 		public void multipleActionDefinitionInCapacity() throws Exception {
 			SarlScript mas = file(multilineString(
 					"capacity C1 {",

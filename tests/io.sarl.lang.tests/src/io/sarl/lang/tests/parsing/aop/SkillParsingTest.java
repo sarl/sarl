@@ -745,6 +745,59 @@ public class SkillParsingTest {
 	public static class ActionTest extends AbstractSarlTest {
 
 		@Test
+		public void modifier_override_recommended() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { def fakefct() }",
+					"skill S1 implements C1 {",
+					"   override fakefct() { }",
+					"	def name",
+					"}",
+					"skill S2 extends S1 {",
+					"	def name { }",
+					"}"), false);
+			validate(mas).assertWarning(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
+					152, 4,
+					"The method name() of type S2 must use override keyword since it actually overrides a supertype method");
+		}
+
+		@Test
+		public void modifier_override_invalid() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { def fakefct() }",
+					"skill S1 implements C1 {",
+					"  override fakefct() { }",
+					"}",
+					"skill S2 extends S1 {",
+					"	override name { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE,
+					137, 8,
+					"The method name() of type S2 must override a superclass method");
+		}
+
+		@Test
+		public void modifier_override_valid() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { def fakefct() }",
+					"skill S1 implements C1 {",
+					"   override fakefct() { }",
+					"	def name()",
+					"}",
+					"skill S2 extends S1 {",
+					"   override fakefct() { }",
+					"	override name() { }",
+					"}"), false);
+			validate(mas).assertNoIssues();
+		}
+
+		@Test
 		public void modifier_public() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
