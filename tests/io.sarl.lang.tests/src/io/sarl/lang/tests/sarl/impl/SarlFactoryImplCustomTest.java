@@ -16,22 +16,18 @@
 package io.sarl.lang.tests.sarl.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import io.sarl.lang.sarl.SarlAction;
+
+import org.junit.Test;
+
 import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlBehaviorUnit;
-import io.sarl.lang.sarl.SarlCapacity;
-import io.sarl.lang.sarl.SarlCapacityUses;
-import io.sarl.lang.sarl.SarlEvent;
-import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.impl.SarlActionImplCustom;
 import io.sarl.lang.sarl.impl.SarlAgentImpl;
+import io.sarl.lang.sarl.impl.SarlAgentImplCustom;
 import io.sarl.lang.sarl.impl.SarlAnnotationTypeImplCustom;
 import io.sarl.lang.sarl.impl.SarlBehaviorImpl;
+import io.sarl.lang.sarl.impl.SarlBehaviorImplCustom;
 import io.sarl.lang.sarl.impl.SarlBehaviorUnitImpl;
 import io.sarl.lang.sarl.impl.SarlCapacityImpl;
 import io.sarl.lang.sarl.impl.SarlCapacityUsesImpl;
@@ -42,24 +38,8 @@ import io.sarl.lang.sarl.impl.SarlFieldImplCustom;
 import io.sarl.lang.sarl.impl.SarlInterfaceImplCustom;
 import io.sarl.lang.sarl.impl.SarlRequiredCapacityImpl;
 import io.sarl.lang.sarl.impl.SarlSkillImpl;
-import io.sarl.lang.validation.IssueCodes;
+import io.sarl.lang.sarl.impl.SarlSkillImplCustom;
 import io.sarl.tests.api.AbstractSarlTest;
-
-import org.eclipse.xtext.common.types.JvmVisibility;
-import org.eclipse.xtext.common.types.TypesPackage;
-import org.eclipse.xtext.diagnostics.Diagnostic;
-import org.eclipse.xtext.junit4.util.ParseHelper;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
-import org.eclipse.xtext.xbase.XNumberLiteral;
-import org.eclipse.xtext.xbase.XStringLiteral;
-import org.eclipse.xtext.xbase.XbasePackage;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
 
 /**
  * @author $Author: sgalland$
@@ -76,6 +56,7 @@ public class SarlFactoryImplCustomTest extends AbstractSarlTest {
 		validate(mas).assertNoErrors();
 		Object element = mas.getXtendTypes().get(0);
 		assertInstanceOf(SarlAgentImpl.class, element);
+		assertEquals(SarlAgentImplCustom.class, element.getClass());
 	}
 
 	@Test
@@ -84,6 +65,7 @@ public class SarlFactoryImplCustomTest extends AbstractSarlTest {
 		validate(mas).assertNoErrors();
 		Object element = mas.getXtendTypes().get(0);
 		assertInstanceOf(SarlBehaviorImpl.class, element);
+		assertEquals(SarlBehaviorImplCustom.class, element.getClass());
 	}
 
 	@Test
@@ -92,6 +74,7 @@ public class SarlFactoryImplCustomTest extends AbstractSarlTest {
 		validate(mas).assertNoErrors();
 		Object element = mas.getXtendTypes().get(0);
 		assertInstanceOf(SarlCapacityImpl.class, element);
+		assertEquals(SarlCapacityImpl.class, element.getClass());
 	}
 
 	@Test
@@ -102,6 +85,7 @@ public class SarlFactoryImplCustomTest extends AbstractSarlTest {
 		validate(mas).assertNoErrors();
 		Object element = mas.getXtendTypes().get(1);
 		assertInstanceOf(SarlSkillImpl.class, element);
+		assertEquals(SarlSkillImplCustom.class, element.getClass());
 	}
 
 	@Test
