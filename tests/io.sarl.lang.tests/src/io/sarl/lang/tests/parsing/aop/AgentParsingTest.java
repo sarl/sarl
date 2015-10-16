@@ -453,6 +453,19 @@ public class AgentParsingTest {
 	public static class BehaviorUnitTest extends AbstractSarlTest {
 
 		@Test
+		public void itInsideEventHandlerGuards_explicitIt() throws Exception {
+			SarlScript mas = file(multilineString(
+					"event E {",
+					"  var field : int",
+					"}",
+					"agent A1 {",
+					"  on E [ it.field == 4 ] {",
+					"  }",
+					"}"
+					), true);
+		}
+
+		@Test
 		public void synchronizedGuard() throws Exception {
 			SarlScript mas = file(multilineString(
 					"event E {}",

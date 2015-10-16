@@ -37,6 +37,10 @@ public final class SARLKeywords {
 	 */
 	public static final String OCCURRENCE = "occurrence"; //$NON-NLS-1$
 
+	/** Keyword: {@code it}.
+	 */
+	public static final String IT = "it"; //$NON-NLS-1$
+
 	private SARLKeywords() {
 		//
 	}
