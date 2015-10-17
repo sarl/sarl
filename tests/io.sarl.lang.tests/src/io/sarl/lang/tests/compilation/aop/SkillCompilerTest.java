@@ -1628,10 +1628,10 @@ public class SkillCompilerTest {
 		}
 
 		@Test
-		public void skillmodifier_private() throws Exception {
+		public void skillmodifier_package() throws Exception {
 			String source = multilineString(
 					"capacity C1 { }",
-					"private skill S1 implements C1 { }"
+					"package skill S1 implements C1 { }"
 					);
 			final String expectedS1 = multilineString(
 					"import io.sarl.lang.annotation.Generated;",

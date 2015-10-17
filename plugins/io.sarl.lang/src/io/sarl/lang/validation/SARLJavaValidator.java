@@ -198,7 +198,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator agentModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "private", "abstract", "final")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+			newArrayList("public", "package", "abstract", "final")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInAgentModifierValidator = new SARLModifierValidator(
@@ -217,7 +217,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator behaviorModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "private", "abstract", "final")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+			newArrayList("public", "package", "abstract", "final")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInBehaviorModifierValidator = new SARLModifierValidator(
@@ -236,7 +236,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator capacityModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "private")); //$NON-NLS-1$//$NON-NLS-2$
+			newArrayList("public", "package")); //$NON-NLS-1$//$NON-NLS-2$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInCapacityModifierValidator = new SARLModifierValidator(
@@ -245,7 +245,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator eventModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "private", "final")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			newArrayList("public", "package", "final")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInEventModifierValidator = new SARLModifierValidator(
@@ -255,7 +255,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator skillModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "private", "abstract", "final")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+			newArrayList("public", "package", "abstract", "final")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInSkillModifierValidator = new SARLModifierValidator(

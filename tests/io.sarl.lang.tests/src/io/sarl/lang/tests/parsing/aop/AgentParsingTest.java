@@ -240,16 +240,12 @@ public class AgentParsingTest {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"private agent A1 {}"
-					), true);
-			assertEquals(1, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
-			assertEquals("A1", agent1.getName());
-			assertNull(agent1.getExtends());
-			assertEquals(JvmVisibility.PRIVATE, agent1.getVisibility());
-			assertEquals(0, agent1.getMembers().size());
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAgent(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 7,
+					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -262,7 +258,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 9,
-					"Illegal modifier for the agent A1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -270,12 +266,16 @@ public class AgentParsingTest {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"package agent A1 {}"
-					), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlAgent(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 7,
-					"Illegal modifier for the agent A1; only public, private, abstract & final are permitted");
+					), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
+			assertEquals("A1", agent1.getName());
+			assertNull(agent1.getExtends());
+			assertEquals(JvmVisibility.DEFAULT, agent1.getVisibility());
+			assertEquals(0, agent1.getMembers().size());
 		}
 
 		@Test
@@ -306,7 +306,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 6,
-					"Illegal modifier for the agent A1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -319,7 +319,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the agent A1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -350,7 +350,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the agent A1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -363,7 +363,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 6,
-					"Illegal modifier for the agent A1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -376,7 +376,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the agent A1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -389,7 +389,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 12,
-					"Illegal modifier for the agent A1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -402,7 +402,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 9,
-					"Illegal modifier for the agent A1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -436,10 +436,10 @@ public class AgentParsingTest {
 		}
 
 		@Test
-		public void agentmodifier_public_private() throws Exception {
+		public void agentmodifier_public_package() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
-					"public private agent A1 {}"
+					"public package agent A1 {}"
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),

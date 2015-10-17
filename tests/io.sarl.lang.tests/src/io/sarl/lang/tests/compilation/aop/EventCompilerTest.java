@@ -388,10 +388,10 @@ public class EventCompilerTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void eventmodifier_private() throws Exception {
+	public void eventmodifier_package() throws Exception {
 		this.compiler.assertCompilesTo(
 			multilineString(
-				"private event E1"
+				"package event E1"
 			),
 			multilineString(
 				"import io.sarl.lang.annotation.Generated;",

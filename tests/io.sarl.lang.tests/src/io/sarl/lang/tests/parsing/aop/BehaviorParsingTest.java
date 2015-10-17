@@ -211,18 +211,12 @@ public class BehaviorParsingTest {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"private behavior B1 {}"
-					), true);
-			assertEquals(1, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
-			assertEquals("B1", beh.getName());
-			assertNull(beh.getExtends());
-			assertEquals(JvmVisibility.PRIVATE, beh.getVisibility());
-			assertEquals(0, beh.getMembers().size());
-			assertFalse(beh.isAbstract());
-			assertFalse(beh.isFinal());
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlBehavior(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 7,
+					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -235,7 +229,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 9,
-					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -243,12 +237,18 @@ public class BehaviorParsingTest {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"package behavior B1 {}"
-					), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlBehavior(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 7,
-					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+					), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(JvmVisibility.DEFAULT, beh.getVisibility());
+			assertEquals(0, beh.getMembers().size());
+			assertFalse(beh.isAbstract());
+			assertFalse(beh.isFinal());
 		}
 
 		@Test
@@ -280,7 +280,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 6,
-					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -293,7 +293,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -325,7 +325,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -338,7 +338,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 6,
-					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -351,7 +351,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -364,7 +364,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 12,
-					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -377,7 +377,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 9,
-					"Illegal modifier for the behavior B1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -415,10 +415,10 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
-		public void behaviormodifier_public_private() throws Exception {
+		public void behaviormodifier_public_package() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
-					"public private behavior B1 {}"
+					"public package behavior B1 {}"
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),

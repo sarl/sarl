@@ -564,10 +564,10 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void behaviormodifier_private() throws Exception {
+	public void behaviormodifier_package() throws Exception {
 		this.compiler.assertCompilesTo(
 			multilineString(
-				"private behavior B1 { }"
+				"package behavior B1 { }"
 			),
 			multilineString(
 				"import io.sarl.lang.annotation.Generated;",

@@ -543,19 +543,12 @@ public class SkillParsingTest {
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"private skill S1 implements C1 {}"
-					), true);
-			assertEquals(2, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
-			assertEquals("S1", skill.getName());
-			assertNull(skill.getExtends());
-			assertEquals(JvmVisibility.PRIVATE, skill.getVisibility());
-			assertEquals(0, skill.getMembers().size());
-			assertFalse(skill.isAbstract());
-			assertFalse(skill.isFinal());
-			assertFalse(skill.isStatic());
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 7,
+					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -569,7 +562,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 9,
-					"Illegal modifier for the skill S1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -578,12 +571,19 @@ public class SkillParsingTest {
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"package skill S1 implements C1 {}"
-					), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlSkill(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 7,
-					"Illegal modifier for the skill S1; only public, private, abstract & final are permitted");
+					), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(JvmVisibility.DEFAULT, skill.getVisibility());
+			assertEquals(0, skill.getMembers().size());
+			assertFalse(skill.isAbstract());
+			assertFalse(skill.isFinal());
+			assertFalse(skill.isStatic());
 		}
 
 		@Test
@@ -618,7 +618,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 6,
-					"Illegal modifier for the skill S1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -632,7 +632,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 8,
-					"Illegal modifier for the skill S1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -667,7 +667,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 8,
-					"Illegal modifier for the skill S1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -681,7 +681,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 6,
-					"Illegal modifier for the skill S1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -695,7 +695,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 8,
-					"Illegal modifier for the skill S1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -709,7 +709,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 12,
-					"Illegal modifier for the skill S1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -723,15 +723,15 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 9,
-					"Illegal modifier for the skill S1; only public, private, abstract & final are permitted");
+					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
-		public void skillmodifier_public_private() throws Exception {
+		public void skillmodifier_public_package() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
-					"public private skill S1 implements C1 {}"
+					"public package skill S1 implements C1 {}"
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),

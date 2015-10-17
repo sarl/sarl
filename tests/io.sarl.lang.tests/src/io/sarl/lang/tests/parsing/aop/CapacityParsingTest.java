@@ -531,17 +531,12 @@ public class CapacityParsingTest {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"private capacity C1 {}"
-					), true);
-			assertEquals(1, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlCapacity cap = (SarlCapacity) mas.getXtendTypes().get(0);
-			assertEquals("C1", cap.getName());
-			assertNullOrEmpty(cap.getExtends());
-			assertEquals(JvmVisibility.PRIVATE, cap.getVisibility());
-			assertEquals(0, cap.getMembers().size());
-			assertFalse(cap.isFinal());
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlCapacity(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 7,
+					"Illegal modifier for the capacity C1; only public & package are permitted");
 		}
 
 		@Test
@@ -554,7 +549,7 @@ public class CapacityParsingTest {
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 9,
-					"Illegal modifier for the capacity C1; only public & private are permitted");
+					"Illegal modifier for the capacity C1; only public & package are permitted");
 		}
 
 		@Test
@@ -562,12 +557,17 @@ public class CapacityParsingTest {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"package capacity C1 {}"
-					), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlCapacity(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 7,
-					"Illegal modifier for the capacity C1; only public & private are permitted");
+					), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlCapacity cap = (SarlCapacity) mas.getXtendTypes().get(0);
+			assertEquals("C1", cap.getName());
+			assertNullOrEmpty(cap.getExtends());
+			assertEquals(JvmVisibility.DEFAULT, cap.getVisibility());
+			assertEquals(0, cap.getMembers().size());
+			assertFalse(cap.isFinal());
 		}
 
 		@Test
@@ -580,7 +580,7 @@ public class CapacityParsingTest {
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the capacity C1; only public & private are permitted");
+					"Illegal modifier for the capacity C1; only public & package are permitted");
 		}
 
 		@Test
@@ -593,7 +593,7 @@ public class CapacityParsingTest {
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 6,
-					"Illegal modifier for the capacity C1; only public & private are permitted");
+					"Illegal modifier for the capacity C1; only public & package are permitted");
 		}
 
 		@Test
@@ -606,7 +606,7 @@ public class CapacityParsingTest {
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the capacity C1; only public & private are permitted");
+					"Illegal modifier for the capacity C1; only public & package are permitted");
 		}
 
 		@Test
@@ -619,7 +619,7 @@ public class CapacityParsingTest {
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 5,
-					"Illegal modifier for the capacity C1; only public & private are permitted");
+					"Illegal modifier for the capacity C1; only public & package are permitted");
 		}
 
 		@Test
@@ -632,7 +632,7 @@ public class CapacityParsingTest {
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the capacity C1; only public & private are permitted");
+					"Illegal modifier for the capacity C1; only public & package are permitted");
 		}
 
 		@Test
@@ -645,7 +645,7 @@ public class CapacityParsingTest {
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 6,
-					"Illegal modifier for the capacity C1; only public & private are permitted");
+					"Illegal modifier for the capacity C1; only public & package are permitted");
 		}
 
 		@Test
@@ -658,7 +658,7 @@ public class CapacityParsingTest {
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the capacity C1; only public & private are permitted");
+					"Illegal modifier for the capacity C1; only public & package are permitted");
 		}
 
 		@Test
@@ -671,7 +671,7 @@ public class CapacityParsingTest {
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 12,
-					"Illegal modifier for the capacity C1; only public & private are permitted");
+					"Illegal modifier for the capacity C1; only public & package are permitted");
 		}
 
 		@Test
@@ -684,14 +684,14 @@ public class CapacityParsingTest {
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 9,
-					"Illegal modifier for the capacity C1; only public & private are permitted");
+					"Illegal modifier for the capacity C1; only public & package are permitted");
 		}
 
 		@Test
-		public void capacitymodifier_public_private() throws Exception {
+		public void capacitymodifier_public_package() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
-					"public private capacity C1 {}"
+					"public package capacity C1 {}"
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),

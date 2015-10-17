@@ -177,19 +177,12 @@ public class EventParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"private event E1"
-					), true);
-			assertEquals(1, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
-			assertEquals("E1", event.getName());
-			assertNull(event.getExtends());
-			assertEquals(JvmVisibility.PRIVATE, event.getVisibility());
-			assertEquals(0, event.getMembers().size());
-			assertFalse(event.isAbstract());
-			assertFalse(event.isFinal());
-			assertFalse(event.isStatic());
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlEvent(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 7,
+					"Illegal modifier for the definition of E1; only public, package & final are permitted");
 		}
 
 		@Test
@@ -202,7 +195,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 9,
-					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+					"Illegal modifier for the definition of E1; only public, package & final are permitted");
 		}
 
 		@Test
@@ -210,12 +203,19 @@ public class EventParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"package event E1"
-					), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlEvent(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 7,
-					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+					), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlEvent event = (SarlEvent) mas.getXtendTypes().get(0);
+			assertEquals("E1", event.getName());
+			assertNull(event.getExtends());
+			assertEquals(JvmVisibility.DEFAULT, event.getVisibility());
+			assertEquals(0, event.getMembers().size());
+			assertFalse(event.isAbstract());
+			assertFalse(event.isFinal());
+			assertFalse(event.isStatic());
 		}
 
 		@Test
@@ -228,7 +228,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+					"Illegal modifier for the definition of E1; only public, package & final are permitted");
 		}
 
 		@Test
@@ -241,7 +241,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 6,
-					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+					"Illegal modifier for the definition of E1; only public, package & final are permitted");
 		}
 
 		@Test
@@ -254,7 +254,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+					"Illegal modifier for the definition of E1; only public, package & final are permitted");
 		}
 
 		@Test
@@ -287,7 +287,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+					"Illegal modifier for the definition of E1; only public, package & final are permitted");
 		}
 
 		@Test
@@ -300,7 +300,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 6,
-					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+					"Illegal modifier for the definition of E1; only public, package & final are permitted");
 		}
 
 		@Test
@@ -313,7 +313,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+					"Illegal modifier for the definition of E1; only public, package & final are permitted");
 		}
 
 		@Test
@@ -326,7 +326,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 12,
-					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+					"Illegal modifier for the definition of E1; only public, package & final are permitted");
 		}
 
 		@Test
@@ -339,14 +339,14 @@ public class EventParsingTest extends AbstractSarlTest {
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 9,
-					"Illegal modifier for the definition of E1; only public, private & final are permitted");
+					"Illegal modifier for the definition of E1; only public, package & final are permitted");
 		}
 
 		@Test
-		public void eventmodifier_public_private() throws Exception {
+		public void eventmodifier_public_package() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
-					"public private event E1"
+					"public package event E1"
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),

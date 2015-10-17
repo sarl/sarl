@@ -685,10 +685,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void agentmodifier_private() throws Exception {
+	public void agentmodifier_package() throws Exception {
 		this.compiler.assertCompilesTo(
 			multilineString(
-				"private agent A1 { }"
+				"package agent A1 { }"
 			),
 			multilineString(
 				"import io.sarl.lang.annotation.Generated;",
