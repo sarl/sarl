@@ -146,18 +146,17 @@ public class Agent implements Identifiable {
 	/**
 	 * Clears the Skill associated with the capacity.
 	 *
-	 * @param <S> - the type of the skill.
+	 * @param <S> - the type of the capacity.
 	 * @param capacity - the capacity for which the skill must be cleared.
 	 * @return the skill that was removed
 	 */
-	@SuppressWarnings("unchecked")
-	protected <S extends Skill & Capacity> S clearSkill(Class<? extends Capacity> capacity) {
+	protected <S extends Capacity> S clearSkill(Class<S> capacity) {
 		assert capacity != null;
 		Skill skill = this.capacities.remove(capacity);
 		if (skill != null) {
 			skill.uninstall();
 		}
-		return (S) skill;
+		return capacity.cast(skill);
 	}
 
 	/**
