@@ -23,9 +23,8 @@ package io.sarl.lang.actionprototype;
 
 import java.io.Serializable;
 
-import org.eclipse.xtext.util.Strings;
-
 import com.google.common.base.Objects;
+import org.eclipse.xtext.util.Strings;
 
 /**
  * The definition of an qualified action name.

@@ -67,5 +67,5 @@ public class SARLXExpressionHelper extends XtendExpressionHelper {
 		}
 		return false;
 	}
-	
+
 }

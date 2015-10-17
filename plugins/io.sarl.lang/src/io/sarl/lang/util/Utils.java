@@ -31,13 +31,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
-import org.eclipse.xtend.core.xtend.XtendFunction;
-
-import org.eclipse.xtend.core.xtend.XtendMember;
-import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import com.google.common.base.Strings;
 import com.ibm.icu.util.VersionInfo;
+import org.eclipse.xtend.core.xtend.XtendFunction;
+import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmAnnotationType;

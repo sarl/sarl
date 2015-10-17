@@ -35,8 +35,8 @@ import org.eclipse.xtext.common.types.JvmVisibility;
  */
 public class JvmVisibilityComparator implements Comparator<JvmVisibility> {
 
-	private static int getVisibilityLevel(JvmVisibility v) {
-		switch (v) {
+	private static int getVisibilityLevel(JvmVisibility visibility) {
+		switch (visibility) {
 		case PRIVATE:
 			return 0;
 		case DEFAULT:
@@ -49,7 +49,7 @@ public class JvmVisibilityComparator implements Comparator<JvmVisibility> {
 			return 1;
 		}
 	}
-	
+
 	@Override
 	public int compare(JvmVisibility o1, JvmVisibility o2) {
 		if (o1 == o2) {

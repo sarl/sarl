@@ -55,7 +55,7 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 
 	@Inject
 	private TypeReferences references;
-	
+
 	@Inject
 	private SARLGrammarAccess grammarAccess;
 

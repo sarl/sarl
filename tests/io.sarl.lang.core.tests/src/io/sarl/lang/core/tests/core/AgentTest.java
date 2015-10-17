@@ -369,7 +369,7 @@ public class AgentTest extends AbstractSarlTest {
 		/** {@inheritDoc}
 		 */
 		@Override
-		public <S extends Skill & Capacity> S clearSkill(Class<? extends Capacity> capacity) {
+		public <S extends Capacity> S clearSkill(Class<S> capacity) {
 			return super.clearSkill(capacity);
 		}
 

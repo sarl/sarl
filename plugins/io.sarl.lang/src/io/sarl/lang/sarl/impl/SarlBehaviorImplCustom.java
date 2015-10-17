@@ -53,11 +53,11 @@ public class SarlBehaviorImplCustom extends SarlBehaviorImpl {
 
 	@Override
 	public boolean isAbstract() {
-		for(String modifier: getModifiers()) { 
-			if(Strings.equal(modifier, "abstract")) {  //$NON-NLS-1$
+		for (String modifier: getModifiers()) {
+			if (Strings.equal(modifier, "abstract")) {  //$NON-NLS-1$
 				return true;
 			}
-			if(Strings.equal(modifier, "final")) {  //$NON-NLS-1$
+			if (Strings.equal(modifier, "final")) {  //$NON-NLS-1$
 				return false;
 			}
 		}

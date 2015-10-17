@@ -34,12 +34,13 @@ import com.google.inject.Singleton;
  */
 @Singleton
 public final class XExpressionConstants {
-	
+
 	/** Regular expression pattern that matches the names of functions usually
 	 * considered as pure.
 	 */
-	public static final String SPECIAL_PURE_FUNCTION_NAME_PATTERN = "^(((is)|(get)|(has))[A-Z].*)|(equals)|(hashCode)|(clone)|(toString)$"; //$NON-NLS-1$;
-	
+	public static final String SPECIAL_PURE_FUNCTION_NAME_PATTERN =
+			"^(((is)|(get)|(has))[A-Z].*)|(equals)|(hashCode)|(clone)|(toString)$"; //$NON-NLS-1$;
+
 	private XExpressionConstants() {
 		//
 	}

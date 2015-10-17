@@ -197,7 +197,7 @@ public class SARLEMFGeneratorFragment extends EMFGeneratorFragment {
 				}
 				return super.getImportedName(qn);
 			}
-			
+
 			@Override
 			public GenClass createGenClass() {
 				GenClass clazz = super.createGenClass();
@@ -206,7 +206,7 @@ public class SARLEMFGeneratorFragment extends EMFGeneratorFragment {
 
 		};
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 *

@@ -44,7 +44,7 @@ public class ExtendedXExpressionHelper {
 
 	@Inject
 	private XExpressionHelper expressionHelper;
-	
+
 	private final Pattern pattern;
 
 	/** Construct the helper.
@@ -52,13 +52,13 @@ public class ExtendedXExpressionHelper {
 	public ExtendedXExpressionHelper() {
 		this.pattern = Pattern.compile(XExpressionConstants.SPECIAL_PURE_FUNCTION_NAME_PATTERN);
 	}
-	
+
 	/** Check if the given operation could be annoted with "@Pure".
 	 *
 	 * @param operation - the operation to test.
 	 * @param body - the body of the operation.
 	 * @return <code>true</code> if one of the components of the given expression has a side effect;
-	 * otherwise <code>false</code>. 
+	 *     otherwise <code>false</code>.
 	 * @see Pure
 	 */
 	public boolean isPureOperation(JvmOperation operation, XExpression body) {

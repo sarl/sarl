@@ -46,16 +46,16 @@ import org.eclipse.xtext.util.Strings;
  */
 public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 
-	private static final Logger log = Logger.getLogger(SARLEcoreUpdaterFragment.class);
+	private static final Logger LOG = Logger.getLogger(SARLEcoreUpdaterFragment.class);
 
 	@Override
 	public void generate(Grammar grammar, XpandExecutionContext ctx) {
-		log.info("Updating SARL Ecore Package with additional elements."); //$NON-NLS-1$
-		
+		LOG.info("Updating SARL Ecore Package with additional elements."); //$NON-NLS-1$
+
 		if (grammar == null) {
 			throw new RuntimeException("No grammar defined"); //$NON-NLS-1$
 		}
-		
+
 		for (AbstractMetamodelDeclaration declaration : grammar.getMetamodelDeclarations()) {
 			EPackage epackage = declaration.getEPackage();
 			String name = epackage.getName();
@@ -93,7 +93,7 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 				"isAbstract", //$NON-NLS-1$
 				EcorePackage.eINSTANCE.getEBoolean());
 	}
-	
+
 	/** Add a method in the definition of the givne class.
 	 *
 	 * @param epackage - the containing package.
@@ -102,7 +102,7 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 	 * @param returnType - the return type.
 	 */
 	protected static void addMethodInClass(EPackage epackage, String classname, String functionName, EClassifier returnType) {
-		log.info("\tadding " + functionName + " into " + classname); //$NON-NLS-1$ //$NON-NLS-2$
+		LOG.info("\tadding " + functionName + " into " + classname); //$NON-NLS-1$ //$NON-NLS-2$
 		EClassifier eclassifier = epackage.getEClassifier(classname);
 		if (eclassifier == null || !(eclassifier instanceof EClass)) {
 			throw new RuntimeException("No a class with name: " + classname); //$NON-NLS-1$
@@ -115,6 +115,6 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 		}
 		eclass.getEOperations().add(eoperation);
 	}
-	
+
 }
 
