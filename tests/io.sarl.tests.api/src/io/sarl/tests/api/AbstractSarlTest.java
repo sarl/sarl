@@ -24,10 +24,12 @@ import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.isEmpty;
 import static com.google.common.collect.Lists.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
 import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
@@ -108,7 +110,6 @@ import org.junit.runners.model.Statement;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
@@ -222,6 +223,16 @@ public abstract class AbstractSarlTest {
 		}
 		
 	};
+
+	/** Check if the given value is <code>null</code> or empty.
+	 *
+	 * @param actual
+	 */
+	public static void assertNullOrEmpty(Iterable<?> actual) {
+		if (actual != null) {
+			assertFalse("Not null nor empty", actual.iterator().hasNext());
+		}
+	}
 
 	/** Test if the actual collection/iterable contains all the expected objects.
 	 *

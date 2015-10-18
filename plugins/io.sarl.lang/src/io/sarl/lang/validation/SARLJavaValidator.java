@@ -56,6 +56,7 @@ import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT_IN_ANONYMOUS;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_CONSTRUCTOR;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE;
+import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_STATIC_MODIFIER;
 import static org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR;
 import static org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE;
 import static org.eclipse.xtend.core.validation.IssueCodes.OVERRIDDEN_FINAL;
@@ -107,11 +108,14 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.typesystem.LocalClassAwareTypeNames;
 import org.eclipse.xtend.core.validation.IssueCodes;
 import org.eclipse.xtend.core.validation.ModifierValidator;
+import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
+import org.eclipse.xtend.core.xtend.XtendEnum;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendFunction;
+import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
@@ -272,6 +276,31 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 			"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 			"final", "val", "var", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 			"volatile", "transient")); //$NON-NLS-1$//$NON-NLS-2$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator nestedClassInAgentModifierValidator = new SARLModifierValidator(
+			newArrayList(
+			"package", "protected", //$NON-NLS-1$ //$NON-NLS-2$
+			"private", "static", "final", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			"abstract", "strictfp")); //$NON-NLS-1$ //$NON-NLS-2$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator nestedInterfaceInAgentModifierValidator = new SARLModifierValidator(
+			newArrayList(
+			"package", "protected", "private", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			"static", "abstract", "strictfp")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator nestedEnumerationInAgentModifierValidator = new SARLModifierValidator(
+			newArrayList(
+			"package", "protected", "private", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			"static")); //$NON-NLS-1$
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator nestedAnnotationTypeInAgentModifierValidator = new SARLModifierValidator(
+			newArrayList(
+			"package", "protected", "private", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			"static", "abstract")); //$NON-NLS-1$ //$NON-NLS-2$
 
 	@Inject
 	private SarlJvmModelAssociations associations;
@@ -520,6 +549,61 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 					skill,
 					null,
 					INVALID_NESTED_DEFINITION);
+		}
+	}
+
+	@Check
+	@Override
+	protected void checkModifiers(XtendClass oopClass) {
+		EObject econtainer = oopClass.eContainer();
+		if (econtainer instanceof SarlAgent) {
+			this.nestedClassInAgentModifierValidator.checkModifiers(oopClass,
+					MessageFormat.format(Messages.SARLJavaValidator_27, oopClass.getName()));
+		} else {
+			super.checkModifiers(oopClass);
+		}
+		// TODO remove this constraint when it is removed from the Xtend validator.
+		if (!oopClass.isStatic()
+				&& ((econtainer instanceof SarlAgent)
+				|| (econtainer instanceof SarlBehavior)
+				|| (econtainer instanceof SarlSkill))) {
+			error(Messages.SARLJavaValidator_31, XTEND_TYPE_DECLARATION__NAME, -1, MISSING_STATIC_MODIFIER);
+		}
+	}
+
+	@Check
+	@Override
+	protected void checkModifiers(XtendInterface oopInterface) {
+		EObject econtainer = oopInterface.eContainer();
+		if (econtainer instanceof SarlAgent) {
+			this.nestedInterfaceInAgentModifierValidator.checkModifiers(oopInterface,
+					MessageFormat.format(Messages.SARLJavaValidator_28, oopInterface.getName()));
+		} else {
+			super.checkModifiers(oopInterface);
+		}
+	}
+
+	@Check
+	@Override
+	protected void checkModifiers(XtendEnum oopEnum) {
+		EObject econtainer = oopEnum.eContainer();
+		if (econtainer instanceof SarlAgent) {
+			this.nestedEnumerationInAgentModifierValidator.checkModifiers(oopEnum,
+					MessageFormat.format(Messages.SARLJavaValidator_29, oopEnum.getName()));
+		} else {
+			super.checkModifiers(oopEnum);
+		}
+	}
+
+	@Check
+	@Override
+	protected void checkModifiers(XtendAnnotationType oopAnnotationType) {
+		EObject econtainer = oopAnnotationType.eContainer();
+		if (econtainer instanceof SarlAgent) {
+			this.nestedAnnotationTypeInAgentModifierValidator.checkModifiers(oopAnnotationType,
+					MessageFormat.format(Messages.SARLJavaValidator_30, oopAnnotationType.getName()));
+		} else {
+			super.checkModifiers(oopAnnotationType);
 		}
 	}
 
@@ -1693,8 +1777,13 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 			super(modifiers, SARLJavaValidator.this);
 		}
 
+		/** Make this function visible for the enclosing class.
+		 *
+		 * @param member - the member to check.
+		 * @param memberName - the name of the member, usually for the issue message.
+		 */
 		@Override
-		public void checkModifiers(XtendMember member, String memberName) {
+		protected void checkModifiers(XtendMember member, String memberName) {
 			super.checkModifiers(member, memberName);
 		}
 

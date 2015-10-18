@@ -156,16 +156,6 @@ public class CapacityParsingTest {
 		}
 	}
 	
-	/** Check if the given value is <code>null</code> or empty.
-	 *
-	 * @param actual
-	 */
-	public static void assertNullOrEmpty(Iterable<?> actual) {
-		if (actual != null) {
-			assertFalse("Not null nor empty", actual.iterator().hasNext());
-		}
-	}
-
 	public static class TopElementTest extends AbstractSarlTest {
 
 		@Test
