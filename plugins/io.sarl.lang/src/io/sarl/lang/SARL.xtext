@@ -95,6 +95,8 @@ Action returns xtend::XtendFunction:
 	(	('throws' exceptions+=JvmTypeReference (',' exceptions+=JvmTypeReference)*)?
 		&
 		('fires' firedEvents+=JvmTypeReference (',' firedEvents+=JvmTypeReference)*)?
+		&
+		('with' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)*)?
 	)
 	=> (expression=XBlockExpression | expression=RichString | ';')?
 ;
@@ -108,7 +110,10 @@ Constructor returns xtend::XtendConstructor:
 	(=> '(' (parameters+=Parameter (',' parameters+=Parameter)*)?
 	  ')'
 	)?
-	('throws' exceptions+=JvmTypeReference (',' exceptions+=JvmTypeReference)*)?
+	( ('throws' exceptions+=JvmTypeReference (',' exceptions+=JvmTypeReference)*)?
+	  &
+	  ('with' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)*)?
+	)
 	expression=XBlockExpression
 ;
 

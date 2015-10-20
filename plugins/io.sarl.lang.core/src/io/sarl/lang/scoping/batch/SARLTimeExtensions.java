@@ -43,12 +43,13 @@ public final class SARLTimeExtensions {
 
 	/** Convert milliseconds to milliseconds.
 	 *
+	 * @param <T> - type of the number.
 	 * @param milis - number of milliseconds to convert.
 	 * @return the number of milliseconds in <code>milis</code>.
 	 */
 	@Pure
 	@Inline(value = "$1")
-	public static long milliseconds(Integer milis) {
+	public static <T extends Number> T milliseconds(T milis) {
 		return milis;
 	}
 
