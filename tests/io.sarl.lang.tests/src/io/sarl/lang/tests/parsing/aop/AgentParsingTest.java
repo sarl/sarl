@@ -20,6 +20,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
@@ -29,6 +30,7 @@ import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -44,7 +46,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 
@@ -216,6 +217,12 @@ public class AgentParsingTest {
 			assertNull(agent1.getExtends());
 			assertEquals(JvmVisibility.PUBLIC, agent1.getVisibility());
 			assertEquals(0, agent1.getMembers().size());
+			assertFalse(agent1.isAbstract());
+			assertFalse(agent1.isAnonymous());
+			assertFalse(agent1.isFinal());
+			assertFalse(agent1.isLocal());
+			assertFalse(agent1.isStatic());
+			assertFalse(agent1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -233,6 +240,12 @@ public class AgentParsingTest {
 			assertNull(agent1.getExtends());
 			assertEquals(JvmVisibility.PUBLIC, agent1.getVisibility());
 			assertEquals(0, agent1.getMembers().size());
+			assertFalse(agent1.isAbstract());
+			assertFalse(agent1.isAnonymous());
+			assertFalse(agent1.isFinal());
+			assertFalse(agent1.isLocal());
+			assertFalse(agent1.isStatic());
+			assertFalse(agent1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -245,7 +258,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 7,
-					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -258,7 +271,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 9,
-					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -276,6 +289,12 @@ public class AgentParsingTest {
 			assertNull(agent1.getExtends());
 			assertEquals(JvmVisibility.DEFAULT, agent1.getVisibility());
 			assertEquals(0, agent1.getMembers().size());
+			assertFalse(agent1.isAbstract());
+			assertFalse(agent1.isAnonymous());
+			assertFalse(agent1.isFinal());
+			assertFalse(agent1.isLocal());
+			assertFalse(agent1.isStatic());
+			assertFalse(agent1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -292,8 +311,13 @@ public class AgentParsingTest {
 			assertEquals("A1", agent1.getName());
 			assertNull(agent1.getExtends());
 			assertEquals(JvmVisibility.PUBLIC, agent1.getVisibility());
-			assertTrue(agent1.isAbstract());
 			assertEquals(0, agent1.getMembers().size());
+			assertTrue(agent1.isAbstract());
+			assertFalse(agent1.isAnonymous());
+			assertFalse(agent1.isFinal());
+			assertFalse(agent1.isLocal());
+			assertFalse(agent1.isStatic());
+			assertFalse(agent1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -306,7 +330,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 6,
-					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -319,7 +343,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -336,8 +360,13 @@ public class AgentParsingTest {
 			assertEquals("A1", agent1.getName());
 			assertNull(agent1.getExtends());
 			assertEquals(JvmVisibility.PUBLIC, agent1.getVisibility());
-			assertTrue(agent1.isFinal());
 			assertEquals(0, agent1.getMembers().size());
+			assertFalse(agent1.isAbstract());
+			assertFalse(agent1.isAnonymous());
+			assertTrue(agent1.isFinal());
+			assertFalse(agent1.isLocal());
+			assertFalse(agent1.isStatic());
+			assertFalse(agent1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -345,12 +374,22 @@ public class AgentParsingTest {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"strictfp agent A1 {}"
-					), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlAgent(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 8,
-					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
+					), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
+			assertEquals("A1", agent1.getName());
+			assertNull(agent1.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, agent1.getVisibility());
+			assertEquals(0, agent1.getMembers().size());
+			assertFalse(agent1.isAbstract());
+			assertFalse(agent1.isAnonymous());
+			assertFalse(agent1.isFinal());
+			assertFalse(agent1.isLocal());
+			assertFalse(agent1.isStatic());
+			assertTrue(agent1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -363,7 +402,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 6,
-					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -376,7 +415,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -389,7 +428,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 12,
-					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -402,7 +441,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 9,
-					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -419,11 +458,39 @@ public class AgentParsingTest {
 		}
 
 		@Test
-		public void modifier_abstract_action() throws Exception {
+		public void modifier_abstract_action_0() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	def name",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
+					48, 4,
+					"The abstract method name in type A1 can only be defined by an abstract class");
+		}
+
+		@Test
+		public void modifier_abstract_action_1() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"agent A1 {",
+					"	abstract def name",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
+					57, 4,
+					"The abstract method name in type A1 can only be defined by an abstract class");
+		}
+
+		@Test
+		public void modifier_abstract_action_2() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"abstract agent A1 {",
+					"	abstract def name",
 					"}"), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -432,7 +499,40 @@ public class AgentParsingTest {
 			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
 			assertEquals("A1", agent1.getName());
 			assertNull(agent1.getExtends());
-			assertFalse(agent1.isAbstract());
+			assertTrue(agent1.isAbstract());
+			assertFalse(agent1.isAnonymous());
+			assertFalse(agent1.isFinal());
+			assertFalse(agent1.isLocal());
+			assertFalse(agent1.isStatic());
+			assertFalse(agent1.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void modifier_abstract_action_3() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"abstract agent A1 {",
+					"	def name",
+					"}"), true);
+			validate(mas).assertWarning(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
+					57, 4,
+					"The method name in type A1 should be declared abstract");
+			//
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
+			assertEquals("A1", agent1.getName());
+			assertNull(agent1.getExtends());
+			assertTrue(agent1.isAbstract());
+			assertFalse(agent1.isAnonymous());
+			assertFalse(agent1.isFinal());
+			assertFalse(agent1.isLocal());
+			assertFalse(agent1.isStatic());
+			assertFalse(agent1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -926,7 +1026,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					44, 6,
-					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val & var are permitted");
+					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val, var, transient & volatile are permitted");
 		}
 
 		@Test
@@ -949,8 +1049,12 @@ public class AgentParsingTest {
 			assertEquals("field", attr1.getName());
 			assertTypeReferenceIdentifier(attr1.getType(), "int");
 			assertNull(attr1.getInitialValue());
-			assertFalse(attr1.isFinal());
 			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
+			assertFalse(attr1.isExtension());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
 		}
 
 		@Test
@@ -973,8 +1077,12 @@ public class AgentParsingTest {
 			assertEquals("field", attr1.getName());
 			assertTypeReferenceIdentifier(attr1.getType(), "int");
 			assertNull(attr1.getInitialValue());
-			assertFalse(attr1.isFinal());
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+			assertFalse(attr1.isExtension());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
 		}
 
 		@Test
@@ -997,8 +1105,12 @@ public class AgentParsingTest {
 			assertEquals("field", attr1.getName());
 			assertTypeReferenceIdentifier(attr1.getType(), "int");
 			assertNull(attr1.getInitialValue());
-			assertFalse(attr1.isFinal());
 			assertEquals(JvmVisibility.DEFAULT, attr1.getVisibility());
+			assertFalse(attr1.isExtension());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
 		}
 
 		@Test
@@ -1021,8 +1133,12 @@ public class AgentParsingTest {
 			assertEquals("field", attr1.getName());
 			assertTypeReferenceIdentifier(attr1.getType(), "int");
 			assertNull(attr1.getInitialValue());
-			assertFalse(attr1.isFinal());
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+			assertFalse(attr1.isExtension());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
 		}
 
 		@Test
@@ -1036,7 +1152,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					44, 8,
-					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val & var are permitted");
+					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val, var, transient & volatile are permitted");
 		}
 
 		@Test
@@ -1050,7 +1166,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					44, 6,
-					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val & var are permitted");
+					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val, var, transient & volatile are permitted");
 		}
 
 		@Test
@@ -1064,7 +1180,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					44, 8,
-					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val & var are permitted");
+					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val, var, transient & volatile are permitted");
 		}
 
 		@Test
@@ -1092,7 +1208,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					44, 8,
-					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val & var are permitted");
+					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val, var, transient & volatile are permitted");
 		}
 
 		@Test
@@ -1106,7 +1222,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					44, 6,
-					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val & var are permitted");
+					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val, var, transient & volatile are permitted");
 		}
 
 		@Test
@@ -1115,12 +1231,26 @@ public class AgentParsingTest {
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	volatile var field : int",
-					"}"), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 8,
-					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val & var are permitted");
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
+			assertEquals("A1", agent1.getName());
+			assertNull(agent1.getExtends());
+			assertEquals(1, agent1.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) agent1.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+			assertFalse(attr1.isExtension());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertTrue(attr1.isVolatile());
 		}
 
 		@Test
@@ -1134,7 +1264,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					44, 12,
-					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val & var are permitted");
+					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val, var, transient & volatile are permitted");
 		}
 
 		@Test
@@ -1143,12 +1273,26 @@ public class AgentParsingTest {
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	transient var field : int",
-					"}"), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 9,
-					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val & var are permitted");
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
+			assertEquals("A1", agent1.getName());
+			assertNull(agent1.getExtends());
+			assertEquals(1, agent1.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) agent1.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+			assertFalse(attr1.isExtension());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertTrue(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
 		}
 
 		@Test
@@ -1491,7 +1635,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					44, 6,
-					"Illegal modifier for the definition of name in A1; only package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+					"Illegal modifier for the definition of name in A1; only package, protected, private, static, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
 		}
 
 		@Test
@@ -1518,6 +1662,7 @@ public class AgentParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -1544,6 +1689,7 @@ public class AgentParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -1569,14 +1715,16 @@ public class AgentParsingTest {
 			assertFalse(act1.isStatic());
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
 		public void modifier_override_recommended() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
-					"agent A1 {",
-					"	def name",
+					"abstract agent A1 {",
+					"	abstract def name",
 					"}",
 					"agent A2 extends A1 {",
 					"	def name { }",
@@ -1584,7 +1732,7 @@ public class AgentParsingTest {
 			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
-					82, 4,
+					100, 4,
 					"The method name() of type A2 must use override keyword since it actually overrides a supertype method");
 		}
 
@@ -1608,8 +1756,8 @@ public class AgentParsingTest {
 		public void modifier_override_valid() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
-					"agent A1 {",
-					"	def name",
+					"abstract agent A1 {",
+					"	abstract def name",
 					"}",
 					"agent A2 extends A1 {",
 					"	override name { }",
@@ -1641,28 +1789,15 @@ public class AgentParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
 		public void modifier_abstract() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
-					"agent A1 {",
+					"abstract agent A1 {",
 					"	abstract def name",
-					"}"), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 8,
-					"Illegal modifier for the definition of name in A1; only package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
-		}
-
-		@Test
-		public void modifier_no_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
-					"package io.sarl.lang.tests.test",
-					"agent A1 {",
-					"	def name",
 					"}"), true);
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1681,6 +1816,40 @@ public class AgentParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void modifier_no_abstract() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"abstract agent A1 {",
+					"	def name",
+					"}"), true);
+			validate(mas).assertWarning(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
+					57, 4,
+					"The method name in type A1 should be declared abstract");
+			//
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
+			assertEquals("A1", agent1.getName());
+			assertNull(agent1.getExtends());
+			assertEquals(1, agent1.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) agent1.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertTrue(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -1707,6 +1876,7 @@ public class AgentParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -1733,6 +1903,7 @@ public class AgentParsingTest {
 			assertTrue(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -1759,6 +1930,7 @@ public class AgentParsingTest {
 			assertFalse(act1.isDispatch());
 			assertTrue(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -1767,12 +1939,25 @@ public class AgentParsingTest {
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	strictfp def name { }",
-					"}"), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 8,
-					"Illegal modifier for the definition of name in A1; only package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
+			assertEquals("A1", agent1.getName());
+			assertNull(agent1.getExtends());
+			assertEquals(1, agent1.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) agent1.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertTrue(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -1786,7 +1971,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					44, 6,
-					"Illegal modifier for the definition of name in A1; only package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+					"Illegal modifier for the definition of name in A1; only package, protected, private, static, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
 		}
 
 		@Test
@@ -1800,7 +1985,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					44, 8,
-					"Illegal modifier for the definition of name in A1; only package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+					"Illegal modifier for the definition of name in A1; only package, protected, private, static, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
 		}
 
 		@Test
@@ -1827,6 +2012,7 @@ public class AgentParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertTrue(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -1840,7 +2026,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					44, 9,
-					"Illegal modifier for the definition of name in A1; only package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+					"Illegal modifier for the definition of name in A1; only package, protected, private, static, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
 		}
 
 		@Test
@@ -1881,6 +2067,7 @@ public class AgentParsingTest {
 			assertTrue(act1.isDispatch());
 			assertTrue(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 	}

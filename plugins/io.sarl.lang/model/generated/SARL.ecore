@@ -38,6 +38,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlAgent" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendTypeDeclaration">
     <eOperations name="isAbstract" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="isStrictFloatingPoint" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="extends" eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
         containment="true"/>
   </eClassifiers>
@@ -48,11 +49,13 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlBehavior" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendTypeDeclaration">
     <eOperations name="isAbstract" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="isStrictFloatingPoint" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="extends" eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SarlSkill" eSuperTypes="platform:/resource/org.eclipse.xtend.core/model/Xtend.ecore#//XtendTypeDeclaration">
     <eOperations name="isAbstract" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="isStrictFloatingPoint" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="extends" eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="implements" upperBound="-1"

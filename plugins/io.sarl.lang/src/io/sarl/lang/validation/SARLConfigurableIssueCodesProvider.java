@@ -61,6 +61,9 @@ public class SARLConfigurableIssueCodesProvider extends XtendConfigurableIssueCo
 		acceptor.accept(create(
 				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
 				SeverityConverter.SEVERITY_WARNING));
+		acceptor.accept(create(
+				org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
+				SeverityConverter.SEVERITY_WARNING));
 
 		// Add warnings from SARL
 		acceptor.accept(create(

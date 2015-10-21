@@ -277,7 +277,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 								}
 								if (!Strings.isNullOrEmpty(defaultValue)) {
 									appendable.append(" ").append(tools.getGrammarAccess().getParameterAccess() //$NON-NLS-1$
-											.getEqualsSignKeyword_5_1_0().getValue()).append(" "); //$NON-NLS-1$
+											.getEqualsSignKeyword_6_1_0().getValue()).append(" "); //$NON-NLS-1$
 									appendable.append(defaultValue);
 								}
 							}

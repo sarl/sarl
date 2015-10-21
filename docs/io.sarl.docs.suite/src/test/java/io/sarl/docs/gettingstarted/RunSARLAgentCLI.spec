@@ -30,7 +30,7 @@ import static extension io.sarl.docs.utils.SpecificationTools.*
 
 /* @outline
  * 
- * For running an agent, you must launch this agent on the runtime 
+ * <p>For running an agent, you must launch this agent on the runtime 
  * environment.
  * This document explains how to launch an agent on
  * the [Janus platform](http://www.janusproject.io) from the command line.
@@ -44,12 +44,12 @@ describe "Run SARL Agent from the Command Line" {
 	 * For launching the platform, you must execute this
 	 * boot class in a Java Virtual Machine.
 	 * 
-	 * The typical command line is:
+	 * <p>The typical command line is:
 	 * 
 	 *     java -cp app.jar io.janusproject.Boot
 	 * 
 	 * 
-	 * The option `-cp` specifies the Jar file that contains
+	 * <p>The option `-cp` specifies the Jar file that contains
 	 * the compiled classes. The given `app.jar`
 	 * file is a Jar file that is containing the Janus
 	 * platform, the SARL libraries, and the application classes.
@@ -166,7 +166,7 @@ describe "Run SARL Agent from the Command Line" {
 	 * In the next section, we will learn how to launch your SARL project from
 	 * a Java program.
 	 * 
-	 * [Next>](RunSARLAgentFromAJavaProgramSpec.html)
+	 * <p>[Next>](RunSARLAgentFromAJavaProgramSpec.html)
 	 * 
 	 * @filter(.*)
 	 */

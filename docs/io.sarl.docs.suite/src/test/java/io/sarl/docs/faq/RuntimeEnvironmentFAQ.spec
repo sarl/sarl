@@ -56,18 +56,18 @@ describe "Runtime Environment FAQ" {
 			 * in Java 1.7. Janus enables developers to quickly create 
 			 * web, enterprise and desktop agent-based applications.
 			 *  
-			 * __Janus is an agent execution platform not an agent-oriented language.__
+			 * <p>__Janus is an agent execution platform not an agent-oriented language.__
 			 * 
-			 * It provides a comprehensive set of features to develop, 
+			 * <p>It provides a comprehensive set of features to develop, 
 			 * run, display and monitor agent-based applications.
 			 *  
-			 * Janus-based applications can be distributed across a network. 
+			 * <p>Janus-based applications can be distributed across a network. 
 			 * Janus could be used as an agent-oriented platform, an 
 			 * organizational platform, and/or a holonic platform. It 
 			 * also natively manages the concept of recursive agents and 
 			 * holons.
 			 * 
-			 * Official website: [www.janusproject.io](http://www.janusproject.io)
+			 * <p>Official website: [www.janusproject.io](http://www.janusproject.io)
 			 * 
 			 * @filter(.*) 
 			 */
@@ -94,10 +94,10 @@ describe "Runtime Environment FAQ" {
 			 * [milestones' page](https://github.com/janus-project/janusproject/milestones) on
 			 * the Github web site.
 			 * 
-			 * The versions of the latest stable and development releases are displayed on
+			 * <p>The versions of the latest stable and development releases are displayed on
 			 * [this page](http://maven.janusproject.io/VERSION.txt).
 			 * 
-			 * The release planning of the Janus multi-agent platform is following
+			 * <p>The release planning of the Janus multi-agent platform is following
 			 * the [planning of SARL](https://github.com/sarl/sarl/milestones).
 			 * 
 			 * 
@@ -168,7 +168,7 @@ describe "Runtime Environment FAQ" {
 			 * Eclipse environment, OR when the installed SRE is not compatible with the installed
 			 * version of the SARL tools, which are embedded in Eclipse.
 			 *
-			 * For solving this problem, you must download the latest
+			 * <p>For solving this problem, you must download the latest
 			 * [Janus platform](http://www.janusproject.io), and install it in your Eclipse
 			 * (Menu <code>Window&gt; Preferences&gt; SARL&gt; Installed SREs</code>).
 			 * 
@@ -189,7 +189,7 @@ describe "Runtime Environment FAQ" {
 			 * This difference of version may cause problems during the execution of your agents, since
 			 * the capacities' definitions may not be the same.
 			 *
-			 * For solving this problem, you must download the version of the SARL Runtime Environment (SRE)
+			 * <p>For solving this problem, you must download the version of the SARL Runtime Environment (SRE)
 			 * that is implementing the version of the SARL specification that you're using on Eclipse IDE.
 			 * For the Janus platform, the versions of the latest stable and development releases are displayed on
 			 * [this page](http://maven.janusproject.io/VERSION.txt).
@@ -206,13 +206,13 @@ describe "Runtime Environment FAQ" {
 			/* When the Janus platform cannot find the class file for the start-up agent, it
 			 * displays the error message <code>"Agent class not found"</code>.
 			 *
-			 * For resolving this problem, you should check if: <ul>
+			 * <p>For resolving this problem, you should check if: <ul>
 			 * <li>the class with the given name exists in the application's class path.</li>
 			 * <li>the class name is given as the first command-line argument to your application.</li>
 			 * <li>the class with the given name is a subtype of <code>Agent</code>.</li>
 			 * </ul>
 			 * 
-			 * For showing the arguments given to Janus, you could launch Janus with the command line option:
+			 * <p>For showing the arguments given to Janus, you could launch Janus with the command line option:
 			 * <code>--cli</code>. This option stops Janus after displaying the command line arguments
 			 * (including the <code>--cli</code> option).
 			 * 

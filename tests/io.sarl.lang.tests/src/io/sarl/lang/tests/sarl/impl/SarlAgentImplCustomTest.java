@@ -51,4 +51,11 @@ public class SarlAgentImplCustomTest extends AbstractSarlTest {
 		assertTrue(this.agent.isAbstract());
 	}
 
+	@Test
+	public void modifier_strictfp() throws Exception {
+		assertFalse(this.agent.isStrictFloatingPoint());
+		this.agent.getModifiers().add("strictfp");
+		assertTrue(this.agent.isStrictFloatingPoint());
+	}
+
 }

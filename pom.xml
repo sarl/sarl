@@ -44,7 +44,7 @@
 		<!-- JRE Configuration -->
 		<compiler.level>1.7</compiler.level>
 		<!-- String to put after the copyright sign -->
-		<copyrighters>Sebastian RODRIGUEZ, Nicolas GAUD, Stephane GALLAND</copyrighters>
+		<copyrighters>the original authors or authors</copyrighters>
 		<!-- URL of the Maven repositories of SARL (use in POM and documentation) -->
 		<sarl.maven.repository.url>http://maven.sarl.io</sarl.maven.repository.url>
 		<!-- Local path to the Maven repository -->

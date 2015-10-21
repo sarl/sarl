@@ -52,4 +52,9 @@ public class Messages extends NLS {
 	public static String SARLValidatorConfigurationBlock_9;
 	public static String SARLValidatorConfigurationBlock_10;
 	public static String SARLValidatorConfigurationBlock_11;
+	public static String SARLValidatorConfigurationBlock_12;
+	public static String SARLValidatorConfigurationBlock_13;
+	public static String SARLValidatorConfigurationBlock_14;
+	public static String SARLValidatorConfigurationBlock_15;
+	public static String SARLValidatorConfigurationBlock_16;
 }

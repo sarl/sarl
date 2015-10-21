@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,23 +32,23 @@ import static extension org.junit.Assume.assumeFalse
 
 /* @outline
  *
- * This document describes how to define capacities in SARL.
+ * <p>This document describes how to define capacities in SARL.
  * Before reading this document, it is recommended reading
  * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html).
  * 
- * An Action is a specification of a transformation of a part of the 
+ * <p>An Action is a specification of a transformation of a part of the 
  * designed system or its environment. This transformation guarantees 
  * resulting properties if the system before the transformation satisfies 
  * a set of constraints. An action is defined in terms of pre- and post-conditions.
  * 
- * A *Capacity* is the specification of a collection of actions. This specification 
+ * <p>A *Capacity* is the specification of a collection of actions. This specification 
  * makes no assumptions about its implementation. It could be used to specify 
  * what an agent can do, what a behavior requires for its execution.
  * 
- * A *Skill* is a possible implementation of a capacity fulfilling all the 
+ * <p>A *Skill* is a possible implementation of a capacity fulfilling all the 
  * constraints of this specification.
  * 
- * An agent can dynamically evolve by learning/acquiring new Capacities, but it 
+ * <p>An agent can dynamically evolve by learning/acquiring new Capacities, but it 
  * can also dynamically change the Skill associated to a given capacity.
  * Acquiring new capacities also enables an agent to get access to new 
  * behaviors requiring these capacities. This provides agents with a self-adaptation 
@@ -67,7 +67,7 @@ describe "Capacity Reference"{
 			 * a capacity: no attribute nor field is allowed, and no body
 			 * for the actions.
 			 * 
-			 * The definition of a capacity is done with the `capacity`
+			 * <p>The definition of a capacity is done with the `capacity`
 			 * keyword. Below, a capacity that permits logging messages is defined.
 			 * This capacity enables to log information and debugging messages.
 			 * 
@@ -133,7 +133,7 @@ describe "Capacity Reference"{
 			 * feature of SARL, which has the same semantic as the inheritance
 			 * mechanism as the Java object-oriented language.
 			 * 
-			 * The extended capacity is specified just after the `extends`
+			 * <p>The extended capacity is specified just after the `extends`
 			 * keyword.
 			 * 
 			 * <veryimportantnote> A capacity 
@@ -141,7 +141,7 @@ describe "Capacity Reference"{
 			 * This is close to the constraint on the implementation of
 			 * interfaces in the Java language.</veryimportantnote>
 			 * 
-			 * In the following code, the `Logging` capacity (defined
+			 * <p>In the following code, the `Logging` capacity (defined
 			 * previously) is extended for enabling the output of error messages.
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
@@ -284,6 +284,62 @@ describe "Capacity Reference"{
 				]
 			}
 
+			/** Modifiers are used to modify declarations of types and type members.
+			 * This section introduces the modifiers for the capacity.
+			 * The modifiers are usually written before the keyword for defining the capacity.
+			 * 
+			 * <p>The complete description of the modifiers' semantic is available in
+			 * <a href="./BasicObjectOrientedProgrammingSupportModifiersSpec.html">this section</a>.
+			 */
+			describe "Modifiers" {
+				
+				/** A capacity may be declared with one or more modifiers, which affect its runtime behavior: <ul>
+				 * <li>Access modifiers: <ul>
+				 *     <li>`public`:  the capacity is accessible from any other type;</li>
+				 *     <li>`package`: the capacity is accessible from only the types in the same package.</li>
+				 *     </ul></li>
+				 * <li>
+				 *
+				 * @filter(.* = '''|'''|.parseSuccessfully.*)
+				 */
+				fact "Capacity Modifiers" {
+					// Test URL in the enclosing section text.
+					"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
+					//
+					'''
+						public capacity Example1 {
+						}
+						package capacity Example2 {
+						}
+					'''.parseSuccessfully(
+						"package io.sarl.docs.reference.cr",
+						// TEXT
+						""
+					)
+				}
+	
+				/** The modifiers for the methods in a capacity are: <ul>
+				 * <li>Access modifiers: <ul>
+				 *     <li>`public`:  the method is accessible within any type.</li>
+				 *     </ul></li>
+				 * </ul>
+				 *
+				 * @filter(.* = '''|'''|.parseSuccessfully.*)
+				 */
+				fact "Method Modifiers" {
+					'''
+						// Public access function
+						public def example1 { }
+					'''.parseSuccessfully(
+						"package io.sarl.docs.reference.cr
+						abstract behavior Behavior1 {",
+						// TEXT
+						"}"
+					)
+				}
+	
+			}
+
 		}
 		
 		/* Several capacities are defined and reserved by the SARL Core
@@ -295,7 +351,7 @@ describe "Capacity Reference"{
 		 * define a capacity with a fully qualified name equals to one
 		 * of the reserved capacities.</veryimportantnote>
 		 * 
-		 * The built-in capacities are defined in the 
+		 * <p>The built-in capacities are defined in the 
 		 * [Built-in Capacity Reference](BuiltInCapacityReferenceSpec.html).
 		 * 
 		 * @filter(.*)
@@ -308,14 +364,14 @@ describe "Capacity Reference"{
 		 * It means that a capacity cannot be called by itself since it is not providing
 		 * an implementation: this is the role of the skill.
 		 * 
-		 * When a function `fct` of the capacity `C` is called, 
+		 * <p>When a function `fct` of the capacity `C` is called, 
 		 * it means that the agent silently does:
 		 * 
 		 *  * Find the skill `S` associated to `C`; and
 		 *  * Call `fct` on the object `S`.
 		 *  
 		 * 
-		 * Details on the use of the capacities may be found in the references of
+		 * <p>Details on the use of the capacities may be found in the references of
 		 * the major behavior-based concepts of SARL:
 		 * 
 		 *  * [Agent](AgentReferenceSpec.html)
@@ -335,9 +391,9 @@ describe "Capacity Reference"{
 	 * Release: %sarlspecreleasedate%
 	 * 
 	 * 
-	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * <p>Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
 	 * 
-	 * Licensed under the Apache License, Version 2.0;
+	 * <p>Licensed under the Apache License, Version 2.0;
 	 * you may not use this file except in compliance with the License.
 	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
 	 *

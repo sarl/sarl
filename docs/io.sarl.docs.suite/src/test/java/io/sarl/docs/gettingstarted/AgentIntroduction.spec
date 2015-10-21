@@ -33,11 +33,11 @@ import static extension io.sarl.docs.utils.SpecificationTools.*
 /**
  * @outline
  * 
- * To create our first agent, right click on the project and follow 
+ * <p>To create our first agent, right click on the project and follow 
  * **New > File**.
  * Name the file `myproject.sarl`.
  * 
- * The SARL default editor will open.
+ * <p>The SARL default editor will open.
  */
 @CreateWith(SARLSpecCreator)
 describe "Agent Definition Introduction" {
@@ -76,7 +76,7 @@ describe "Agent Definition Introduction" {
 	 * SARL elements are organized in packages.
 	 * You can define the package using the `package` keyword.
 	 * 
-	 * The following code will define an agent with a fully qualified 
+	 * <p>The following code will define an agent with a fully qualified 
 	 * name of `io.sarl.docs.gettingstarted.agent.MyAgent`.
 	 * The character `^` in the package name permits to use a SARL
 	 * keyword into a package name.
@@ -164,7 +164,7 @@ describe "Agent Definition Introduction" {
 		 * Now, we will want our agent to react to `MyEvent` and 
 		 * print a message on the console.
 		 * 
-		 * To define this event handler, we must use the `on` keyword,
+		 * <p>To define this event handler, we must use the `on` keyword,
 		 * and provide the associated code block.
 		 * 
 		 * <note>The `println` function is provided by the `Logging` capacity.
@@ -222,11 +222,11 @@ describe "Agent Definition Introduction" {
 		 *  * `Destroy`: Notifies the destruction of the agent.
 		 *
 		 *  
-		 * This means that when agent has been spawned and it is ready to 
+		 * <p>This means that when agent has been spawned and it is ready to 
 		 * begin its execution, it will receive an `Initialize` event.
 		 * You can react to this event just like with any other event defined in SARL.
 		 * 
-		 * Likewise, when the agent is going to stop its execution 
+		 * <p>Likewise, when the agent is going to stop its execution 
 		 * (we will see how to stop an agent later on), it will 
 		 * receive a `Destroy` Event. The purpose of this event is to 
 		 * release any system resource properly.
@@ -287,9 +287,9 @@ describe "Agent Definition Introduction" {
 		 * Inside a behavior declaration you may need to access the event
 		 * instance the agent is reacting to.
 		 * 
-		 * This instance is called an `occurrence`.
+		 * <p>This instance is called an `occurrence`.
 		 * 
-		 * In the case of an Initialize events you can access the arguments 
+		 * <p>In the case of an Initialize events you can access the arguments 
 		 * for the agent spawn using `occurrence.parameters`
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
@@ -365,11 +365,11 @@ describe "Agent Definition Introduction" {
 		 * sending of the events in the default space of 
 		 * the default context of the agent.</note>
 		 * 
-		 * For sending an event in the default space, the
+		 * <p>For sending an event in the default space, the
 		 * `DefaultContextInteractions` built-in capacity
 		 * should be used.
 		 * 
-		 * Below, we define an agent that is using this
+		 * <p>Below, we define an agent that is using this
 		 * capacity.
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
@@ -411,7 +411,7 @@ describe "Agent Definition Introduction" {
 		 * provides functions for sending events in the
 		 * default space.
 		 * 
-		 * Below, we define an action in which an
+		 * <p>Below, we define an action in which an
 		 * instance of `MyEvent` is created, and then
 		 * sent into the default space with the function
 		 * `emit(Event)`.

@@ -58,6 +58,13 @@ public class Messages extends NLS {
 	public static String SARLJavaValidator_3;
 	public static String SARLJavaValidator_30;
 	public static String SARLJavaValidator_31;
+	public static String SARLJavaValidator_32;
+	public static String SARLJavaValidator_33;
+	public static String SARLJavaValidator_34;
+	public static String SARLJavaValidator_35;
+	public static String SARLJavaValidator_36;
+	public static String SARLJavaValidator_37;
+	public static String SARLJavaValidator_38;
 	public static String SARLJavaValidator_4;
 	public static String SARLJavaValidator_5;
 	public static String SARLJavaValidator_6;

@@ -31,16 +31,24 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
+import org.eclipse.xtend.core.xtend.XtendFunction;
+import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.JvmConstraintOwner;
+import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.junit4.util.ParseHelper;
@@ -87,7 +95,8 @@ import io.sarl.lang.sarl.SarlSkill;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({"static-method", "checkstyle:classfanoutcomplexity", "checkstyle:methodcount"})
+@SuppressWarnings({"static-method", "checkstyle:methodname", "checkstyle:classfanoutcomplexity",
+		"checkstyle:methodcount"})
 public class SARLParser {
 
 	@Inject
@@ -106,7 +115,7 @@ public class SARLParser {
 
 	/** Replies a list with the given element, if not <code>null</code>.
 	 *
-	 * @param <T> - the type of the singleton.
+	 * @param <T> the type of the elements in the list.
 	 * @param element the element.
 	 * @return the list with the element, or an empty list if the element is <code>null</code>.
 	 */
@@ -119,7 +128,7 @@ public class SARLParser {
 
 	/** Replies a list with the given element, if not <code>null</code>.
 	 *
-	 * @param <T> - the type of the list elements.
+	 * @param <T> the type of the elements in the list.
 	 * @param element the element.
 	 * @return the list with the element, or an empty list if the element is <code>null</code>.
 	 */
@@ -170,60 +179,22 @@ public class SARLParser {
 		return this.sarlParser.parse(text);
 	}
 
-	/** Expect a correct SARL code.
+	/** Expect an incorrect SARL code.
 	 *
-	 * @param text - the SARL code.
-	 * @return the SARL model.
-	 * @throws Exception - on parsing error.
-	 */
-	public SarlScript parseSuccessfully(CharSequence text) throws Exception {
-		SarlScript model = parse(text);
-		this.validationTestHelper.assertNoErrors(model);
-		return model;
-	}
-
-	/** Expect a correct SARL code.
-	 *
-	 * <p>Concatenation of the three parameters and parse the result
-	 * as a SARL code.
-	 *
-	 * @param outputText - main part of the code.
-	 * @param prefix - the prefix code.
-	 * @param postfix - the postfix code.
-	 * @return the SARL model.
-	 * @throws Exception - on parsing error.
-	 */
-	public SarlScript parseSuccessfully(CharSequence outputText, CharSequence prefix, CharSequence postfix) throws Exception {
-		StringBuilder b = new StringBuilder();
-		if (prefix != null && prefix.length() > 0) {
-			b.append(prefix);
-			b.append("\n"); //$NON-NLS-1$
-		}
-		b.append(outputText);
-		if (postfix != null && postfix.length() > 0) {
-			b.append("\n"); //$NON-NLS-1$
-			b.append(postfix);
-		}
-		return parseSuccessfully(b.toString());
-	}
-
-	/** Expect a correct SARL code.
-	 *
-	 * <p>Concatenation of the two parameters and parse the result
+	 * <p>Contatenation of the two parameters and parse the result
 	 * as a SARL code.
 	 *
 	 * @param outputText - main part of the code.
 	 * @param postfix - the postfix code.
-	 * @return the SARL model.
 	 * @throws Exception - on parsing error.
 	 */
-	public SarlScript parseSuccessfully(CharSequence outputText, CharSequence postfix) throws Exception {
-		StringBuilder b = new StringBuilder(outputText);
+	public void parseWithError(CharSequence outputText, CharSequence postfix) throws Exception {
+		StringBuilder buffer = new StringBuilder(outputText);
 		if (postfix != null && postfix.length() > 0) {
-			b.append("\n"); //$NON-NLS-1$
-			b.append(postfix);
+			buffer.append("\n"); //$NON-NLS-1$
+			buffer.append(postfix);
 		}
-		return parseSuccessfully(b.toString());
+		parseWithError(buffer.toString());
 	}
 
 	/** Expect an incorrect SARL code.
@@ -248,24 +219,6 @@ public class SARLParser {
 
 	/** Expect an incorrect SARL code.
 	 *
-	 * <p>Contatenation of the two parameters and parse the result
-	 * as a SARL code.
-	 *
-	 * @param outputText - main part of the code.
-	 * @param postfix - the postfix code.
-	 * @throws Exception - on parsing error.
-	 */
-	public void parseWithError(CharSequence outputText, CharSequence postfix) throws Exception {
-		StringBuilder b = new StringBuilder(outputText);
-		if (postfix != null && postfix.length() > 0) {
-			b.append("\n"); //$NON-NLS-1$
-			b.append(postfix);
-		}
-		parseWithError(b.toString());
-	}
-
-	/** Expect an incorrect SARL code.
-	 *
 	 * <p>Concatenation of the three parameters and parse the result
 	 * as a SARL code.
 	 *
@@ -275,17 +228,74 @@ public class SARLParser {
 	 * @throws Exception - on parsing error.
 	 */
 	public void parseWithError(CharSequence outputText, CharSequence prefix, CharSequence postfix) throws Exception {
-		StringBuilder b = new StringBuilder();
+		StringBuilder buffer = new StringBuilder();
 		if (prefix != null && prefix.length() > 0) {
-			b.append(prefix);
-			b.append("\n"); //$NON-NLS-1$
+			buffer.append(prefix);
+			buffer.append("\n"); //$NON-NLS-1$
 		}
-		b.append(outputText);
+		buffer.append(outputText);
 		if (postfix != null && postfix.length() > 0) {
-			b.append("\n"); //$NON-NLS-1$
-			b.append(postfix);
+			buffer.append("\n"); //$NON-NLS-1$
+			buffer.append(postfix);
 		}
-		parseWithError(b.toString());
+		parseWithError(buffer.toString());
+	}
+
+	/** Expect a correct SARL code.
+	 *
+	 * <p>Concatenation of the three parameters and parse the result
+	 * as a SARL code.
+	 *
+	 * @param outputText - main part of the code.
+	 * @param prefix - the prefix code.
+	 * @param postfix - the postfix code.
+	 * @return the SARL model.
+	 * @throws Exception - on parsing error.
+	 */
+	public SarlScript parseSuccessfully(CharSequence outputText, CharSequence prefix,
+			CharSequence postfix) throws Exception {
+		StringBuilder buffer = new StringBuilder();
+		if (prefix != null && prefix.length() > 0) {
+			buffer.append(prefix);
+			buffer.append("\n"); //$NON-NLS-1$
+		}
+		buffer.append(outputText);
+		if (postfix != null && postfix.length() > 0) {
+			buffer.append("\n"); //$NON-NLS-1$
+			buffer.append(postfix);
+		}
+		return parseSuccessfully(buffer.toString());
+	}
+
+	/** Expect a correct SARL code.
+	 *
+	 * @param text - the SARL code.
+	 * @return the SARL model.
+	 * @throws Exception - on parsing error.
+	 */
+	public SarlScript parseSuccessfully(CharSequence text) throws Exception {
+		SarlScript model = parse(text);
+		this.validationTestHelper.assertNoErrors(model);
+		return model;
+	}
+
+	/** Expect a correct SARL code.
+	 *
+	 * <p>Concatenation of the two parameters and parse the result
+	 * as a SARL code.
+	 *
+	 * @param outputText - main part of the code.
+	 * @param postfix - the postfix code.
+	 * @return the SARL model.
+	 * @throws Exception - on parsing error.
+	 */
+	public SarlScript parseSuccessfully(CharSequence outputText, CharSequence postfix) throws Exception {
+		StringBuilder buffer = new StringBuilder(outputText);
+		if (postfix != null && postfix.length() > 0) {
+			buffer.append("\n"); //$NON-NLS-1$
+			buffer.append(postfix);
+		}
+		return parseSuccessfully(buffer.toString());
 	}
 
 	private ResourceSet getResourceSetWithDefaultModels() {
@@ -303,59 +313,81 @@ public class SARLParser {
 	 * @param name - the name of the package.
 	 * @return validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public boolean should_havePackage(SarlScript script, String name) {
 		return Objects.equals(script.getPackage(), name);
 	}
 
 	/** Ensure that the given SARL script has number of import statements.
 	 *
-	 * @param script - the SARL script.
+	 * @param obj - the SARL script.
 	 * @param numberOfImports - the expected number of imports.
 	 * @return validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_haveNbImports(SarlScript script, int numberOfImports) {
+	public boolean should_haveNbImports(SarlScript obj, int numberOfImports) {
 		int nb = 0;
-		if (script != null
-				&& script.getImportSection() != null
-				&& script.getImportSection().getImportDeclarations() != null) {
-			nb = script.getImportSection().getImportDeclarations().size();
+		if (obj != null
+				&& obj.getImportSection() != null
+				&& obj.getImportSection().getImportDeclarations() != null) {
+			nb = obj.getImportSection().getImportDeclarations().size();
 		}
 		return numberOfImports == nb;
 	}
 
 	/** Ensure that the given object has number of elements defined inside.
 	 *
-	 * @param object - the object.
+	 * @param obj - the object.
 	 * @param numberOfElements - the number of top elements defined in the script.
 	 * @return the validation status.
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_haveNbElements(EObject object, int numberOfElements) {
-		if (object instanceof SarlScript) {
-			return numberOfElements == ((SarlScript) object).getXtendTypes().size();
+	public boolean should_haveNbElements(EObject obj, int numberOfElements) {
+		if (obj instanceof SarlScript) {
+			return numberOfElements == ((SarlScript) obj).getXtendTypes().size();
 		}
-		if (object instanceof XtendTypeDeclaration) {
-			return numberOfElements == ((XtendTypeDeclaration) object).getMembers().size();
+		if (obj instanceof XtendTypeDeclaration) {
+			return numberOfElements == ((XtendTypeDeclaration) obj).getMembers().size();
 		}
 		return false;
 	}
 
 	/** Ensure that the given object is an action with the given number of parameters.
 	 *
-	 * @param object - the object.
+	 * @param obj - the object.
 	 * @param numberOfParameters - the number of parameters defined for the action.
 	 * @return the validation status.
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_haveNbParameters(EObject object, int numberOfParameters) {
+	public boolean should_haveNbParameters(EObject obj, int numberOfParameters) {
 		int nb = 0;
-		EObject obj = object;
 		if (obj instanceof XtendExecutable) {
 			XtendExecutable executable = (XtendExecutable) obj;
 			if (executable.getParameters() != null) {
 				nb = executable.getParameters().size();
+			}
+		}
+		return nb == numberOfParameters;
+	}
+
+	/** Ensure that the given object is a type declaration or function with the given number of type parameters.
+	 *
+	 * @param obj - the object.
+	 * @param numberOfParameters - the number of type parameters defined for the type declaration or function.
+	 * @return the validation status.
+	 */
+	public boolean should_haveNbTypeParameters(EObject obj, int numberOfParameters) {
+		int nb = 0;
+		if (obj instanceof XtendClass) {
+			XtendClass clazz = (XtendClass) obj;
+			if (clazz.getTypeParameters() != null) {
+				nb = clazz.getTypeParameters().size();
+			}
+		} else if (obj instanceof XtendInterface) {
+			XtendInterface interf = (XtendInterface) obj;
+			if (interf.getTypeParameters() != null) {
+				nb = interf.getTypeParameters().size();
+			}
+		} else if (obj instanceof XtendFunction) {
+			XtendFunction function = (XtendFunction) obj;
+			if (function.getTypeParameters() != null) {
+				nb = function.getTypeParameters().size();
 			}
 		}
 		return nb == numberOfParameters;
@@ -367,16 +399,15 @@ public class SARLParser {
 	 * @param name - the name of the imported type.
 	 * @return model
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public boolean should_importClass(SarlScript model, String name) {
 		if (model == null
 				|| model.getImportSection() == null
 				|| model.getImportSection().getImportDeclarations() == null) {
 			return false;
 		}
-		for (XImportDeclaration d : model.getImportSection().getImportDeclarations()) {
-			if (d != null && Objects.equals(name, d.getImportedName())) {
-				return !d.isStatic() && !d.isWildcard() && !d.isExtension();
+		for (XImportDeclaration declaration : model.getImportSection().getImportDeclarations()) {
+			if (declaration != null && Objects.equals(name, declaration.getImportedName())) {
+				return !declaration.isStatic() && !declaration.isWildcard() && !declaration.isExtension();
 			}
 		}
 		return false;
@@ -389,16 +420,15 @@ public class SARLParser {
 	 * @param name - the name of the package.
 	 * @return model
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public boolean should_importClassesFrom(SarlScript model, String name) {
 		if (model == null
 				|| model.getImportSection() == null
 				|| model.getImportSection().getImportDeclarations() == null) {
 			return false;
 		}
-		for (XImportDeclaration d : model.getImportSection().getImportDeclarations()) {
-			if (d != null && Objects.equals(name, d.getImportedName())) {
-				return !d.isStatic() && d.isWildcard() && !d.isExtension();
+		for (XImportDeclaration declaration : model.getImportSection().getImportDeclarations()) {
+			if (declaration != null && Objects.equals(name, declaration.getImportedName())) {
+				return !declaration.isStatic() && declaration.isWildcard() && !declaration.isExtension();
 			}
 		}
 		return false;
@@ -411,16 +441,15 @@ public class SARLParser {
 	 * @param name - the name of the type.
 	 * @return model
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public boolean should_importMembers(SarlScript model, String name) {
 		if (model == null
 				|| model.getImportSection() == null
 				|| model.getImportSection().getImportDeclarations() == null) {
 			return false;
 		}
-		for (XImportDeclaration d : model.getImportSection().getImportDeclarations()) {
-			if (d != null && Objects.equals(name, d.getImportedName())) {
-				return d.isStatic() && d.isWildcard() && !d.isExtension();
+		for (XImportDeclaration declaration : model.getImportSection().getImportDeclarations()) {
+			if (declaration != null && Objects.equals(name, declaration.getImportedName())) {
+				return declaration.isStatic() && declaration.isWildcard() && !declaration.isExtension();
 			}
 		}
 		return false;
@@ -428,103 +457,97 @@ public class SARLParser {
 
 	/** Ensure that the given object is the SARL "event" top element.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param name - the expected name of the event.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beEvent(EObject object, String name) {
-		if (!(object instanceof SarlEvent)) {
+	public boolean should_beEvent(EObject obj, String name) {
+		if (!(obj instanceof SarlEvent)) {
 			return false;
 		}
-		SarlEvent event = (SarlEvent) object;
+		SarlEvent event = (SarlEvent) obj;
 		return Objects.equals(name, event.getName());
 	}
 
 	/** Ensure that the given object is the SARL "capacity" top element.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param name - the expected name of the capacity.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beCapacity(EObject object, String name) {
-		if (!(object instanceof SarlCapacity)) {
+	public boolean should_beCapacity(EObject obj, String name) {
+		if (!(obj instanceof SarlCapacity)) {
 			return false;
 		}
-		SarlCapacity c = (SarlCapacity) object;
-		return Objects.equals(name, c.getName());
+		SarlCapacity capacity = (SarlCapacity) obj;
+		return Objects.equals(name, capacity.getName());
 	}
 
 	/** Ensure that the given object is the SARL "skill" top element.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param name - the expected name of the skill.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beSkill(EObject object, String name) {
-		if (!(object instanceof SarlSkill)) {
+	public boolean should_beSkill(EObject obj, String name) {
+		if (!(obj instanceof SarlSkill)) {
 			return false;
 		}
-		SarlSkill skill = (SarlSkill) object;
+		SarlSkill skill = (SarlSkill) obj;
 		return Objects.equals(name, skill.getName());
 	}
 
 	/** Ensure that the given object is the SARL "behavior" top element.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param name - the expected name of the behavior.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beBehavior(EObject object, String name) {
-		if (!(object instanceof SarlBehavior)) {
+	public boolean should_beBehavior(EObject obj, String name) {
+		if (!(obj instanceof SarlBehavior)) {
 			return false;
 		}
-		SarlBehavior b = (SarlBehavior) object;
-		return Objects.equals(name, b.getName());
+		SarlBehavior behavior = (SarlBehavior) obj;
+		return Objects.equals(name, behavior.getName());
 	}
 
 	/** Ensure that the given object is the SARL "agent" top element.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param name - the expected name of the agent.
 	 * @return validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beAgent(EObject object, String name) {
-		if (!(object instanceof SarlAgent)) {
+	public boolean should_beAgent(EObject obj, String name) {
+		if (!(obj instanceof SarlAgent)) {
 			return false;
 		}
-		SarlAgent a = (SarlAgent) object;
+		SarlAgent a = (SarlAgent) obj;
 		return Objects.equals(name, a.getName());
 	}
 
 	/** Ensure that the given object is extending the given type.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param superTypes - the names of the expected super-types, or <code>null</code>
 	 *     if none.
 	 * @return o
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_extend(EObject object, Object superTypes) {
+	public boolean should_extend(EObject obj, Object superTypes) {
 		Iterator<? extends JvmTypeReference> it;
-		if (object instanceof SarlAgent) {
-			it = safeSingleton(((SarlAgent) object).getExtends()).iterator();
-		} else if (object instanceof SarlBehavior) {
-			it = safeSingleton(((SarlBehavior) object).getExtends()).iterator();
-		} else if (object instanceof SarlCapacity) {
-			it = safeList(((SarlCapacity) object).getExtends()).iterator();
-		} else if (object instanceof SarlEvent) {
-			it = safeSingleton(((SarlEvent) object).getExtends()).iterator();
-		} else if (object instanceof SarlSkill) {
-			it = safeSingleton(((SarlSkill) object).getExtends()).iterator();
-		} else if (object instanceof SarlClass) {
-			it = safeSingleton(((SarlClass) object).getExtends()).iterator();
-		} else if (object instanceof SarlInterface) {
-			it = safeList(((SarlInterface) object).getExtends()).iterator();
+		if (obj instanceof SarlAgent) {
+			it = safeSingleton(((SarlAgent) obj).getExtends()).iterator();
+		} else if (obj instanceof SarlBehavior) {
+			it = safeSingleton(((SarlBehavior) obj).getExtends()).iterator();
+		} else if (obj instanceof SarlCapacity) {
+			it = safeList(((SarlCapacity) obj).getExtends()).iterator();
+		} else if (obj instanceof SarlEvent) {
+			it = safeSingleton(((SarlEvent) obj).getExtends()).iterator();
+		} else if (obj instanceof SarlSkill) {
+			it = safeSingleton(((SarlSkill) obj).getExtends()).iterator();
+		} else if (obj instanceof SarlClass) {
+			it = safeSingleton(((SarlClass) obj).getExtends()).iterator();
+		} else if (obj instanceof SarlInterface) {
+			it = safeList(((SarlInterface) obj).getExtends()).iterator();
 		} else {
 			return false;
 		}
@@ -539,18 +562,17 @@ public class SARLParser {
 
 	/** Ensure that the given object is extending the given type.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param superTypes - the names of the expected super-types, or <code>null</code>
 	 *     if none.
 	 * @return o
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_implement(EObject object, Object superTypes) {
+	public boolean should_implement(EObject obj, Object superTypes) {
 		Iterator<? extends JvmTypeReference> it;
-		if (object instanceof SarlSkill) {
-			it = safeList(((SarlSkill) object).getImplements()).iterator();
-		} else if (object instanceof SarlClass) {
-			it = safeList(((SarlClass) object).getImplements()).iterator();
+		if (obj instanceof SarlSkill) {
+			it = safeList(((SarlSkill) obj).getImplements()).iterator();
+		} else if (obj instanceof SarlClass) {
+			it = safeList(((SarlClass) obj).getImplements()).iterator();
 		} else {
 			return false;
 		}
@@ -566,17 +588,16 @@ public class SARLParser {
 	/** Ensure that the given object is implementing the the given number
 	 * of types.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param numberOfImplements - the number of implemented types.
 	 * @return o
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_haveNbImplements(EObject object, int numberOfImplements) {
+	public boolean should_haveNbImplements(EObject obj, int numberOfImplements) {
 		int size;
-		if (object instanceof SarlSkill) {
-			size = safeList(((SarlSkill) object).getImplements()).size();
-		} else if (object instanceof SarlClass) {
-			size = safeList(((SarlClass) object).getImplements()).size();
+		if (obj instanceof SarlSkill) {
+			size = safeList(((SarlSkill) obj).getImplements()).size();
+		} else if (obj instanceof SarlClass) {
+			size = safeList(((SarlClass) obj).getImplements()).size();
 		} else {
 			return false;
 		}
@@ -585,32 +606,30 @@ public class SARLParser {
 
 	/** Ensure that the given object is the SARL "var" statement.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param name - the expected name of the attribute.
 	 * @return the validation status.
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beVariable(EObject object, String name) {
-		if (!(object instanceof SarlField)) {
+	public boolean should_beVariable(EObject obj, String name) {
+		if (!(obj instanceof SarlField)) {
 			return false;
 		}
-		SarlField attr = (SarlField) object;
+		SarlField attr = (SarlField) obj;
 		return Objects.equals(name, attr.getName())
 				&& !attr.isFinal();
 	}
 
 	/** Ensure that the given object is the SARL "val" statement.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param name - the expected name of the attribute.
 	 * @return the validation status.
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beValue(EObject object, String name) {
-		if (!(object instanceof SarlField)) {
+	public boolean should_beValue(EObject obj, String name) {
+		if (!(obj instanceof SarlField)) {
 			return false;
 		}
-		SarlField attr = (SarlField) object;
+		SarlField attr = (SarlField) obj;
 		return Objects.equals(name, attr.getName())
 				&& attr.isFinal();
 	}
@@ -618,21 +637,20 @@ public class SARLParser {
 	/** Ensure that the given object is the SARL "var" or "val" statement
 	 * with the given type.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param type - the expected type name of the attribute, or <code>null</code>.
 	 * @return the validation status.
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_haveType(EObject object, String type) {
-		if (object instanceof SarlField) {
-			SarlField attr = (SarlField) object;
+	public boolean should_haveType(EObject obj, String type) {
+		if (obj instanceof SarlField) {
+			SarlField attr = (SarlField) obj;
 			if (type == null) {
 				return attr.getType() == null;
 			}
 			return attr.getType() != null
 					&& Objects.equals(type, attr.getType().getQualifiedName());
-		} else if (object instanceof SarlFormalParameter) {
-			SarlFormalParameter param = (SarlFormalParameter) object;
+		} else if (obj instanceof SarlFormalParameter) {
+			SarlFormalParameter param = (SarlFormalParameter) obj;
 			if (type == null) {
 				return param.getParameterType() == null;
 			}
@@ -644,31 +662,30 @@ public class SARLParser {
 
 	/** Ensure that the given object is the SARL "def" statement (with body).
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param name - the expected name of the action.
 	 * @return validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beAction(EObject object, String name) {
-		if (!(object instanceof SarlAction)) {
+	public boolean should_beAction(EObject obj, String name) {
+		if (!(obj instanceof SarlAction)) {
 			return false;
 		}
-		SarlAction act = (SarlAction) object;
+		SarlAction act = (SarlAction) obj;
 		return Objects.equals(name, act.getName()) && act.getExpression() != null;
 	}
 
 	/** Ensure that the given object is the SARL "def" statement with the given modifiers.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param modifiers - the string that describes the modifier, or a collection of strings.
 	 * @return validation status
 	 */
-	@SuppressWarnings({"unchecked", "checkstyle:methodname"})
-	public boolean should_haveModifiers(EObject object, Object modifiers) {
-		if ((!(object instanceof XtendMember)) || modifiers == null) {
+	@SuppressWarnings("unchecked")
+	public boolean should_haveModifiers(EObject obj, Object modifiers) {
+		if ((!(obj instanceof XtendMember)) || modifiers == null) {
 			return false;
 		}
-		XtendMember member = (XtendMember) object;
+		XtendMember member = (XtendMember) obj;
 		EList<String> currentModifiers = member.getModifiers();
 		Iterable<String> it;
 		if (modifiers instanceof String[]) {
@@ -689,46 +706,43 @@ public class SARLParser {
 
 	/** Ensure that the given object is the SARL "def" statement (without body).
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param name - the expected name of the action.
 	 * @return validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beActionSignature(EObject object, String name) {
-		if (!(object instanceof SarlAction)) {
+	public boolean should_beActionSignature(EObject obj, String name) {
+		if (!(obj instanceof SarlAction)) {
 			return false;
 		}
-		SarlAction sig = (SarlAction) object;
+		SarlAction sig = (SarlAction) obj;
 		return Objects.equals(name, sig.getName()) && sig.getExpression() == null;
 	}
 
 	/** Ensure that the given object is the SARL "on" statement.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param event - the name of expected event.
 	 * @return validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beBehaviorUnit(EObject object, String event) {
-		if (!(object instanceof SarlBehaviorUnit)) {
+	public boolean should_beBehaviorUnit(EObject obj, String event) {
+		if (!(obj instanceof SarlBehaviorUnit)) {
 			return false;
 		}
-		SarlBehaviorUnit bu = (SarlBehaviorUnit) object;
+		SarlBehaviorUnit bu = (SarlBehaviorUnit) obj;
 		return Objects.equals(event, bu.getName().getQualifiedName());
 	}
 
 	/** Ensure that the given object is the SARL "uses" statement.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param capacities - the collection of the expected capacities.
 	 * @return validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beCapacityUse(EObject object, Object capacities) {
-		if (!(object instanceof SarlCapacityUses)) {
+	public boolean should_beCapacityUse(EObject obj, Object capacities) {
+		if (!(obj instanceof SarlCapacityUses)) {
 			return false;
 		}
-		SarlCapacityUses uses = (SarlCapacityUses) object;
+		SarlCapacityUses uses = (SarlCapacityUses) obj;
 		if (uses.getCapacities() != null) {
 			return SpecificationTools.should_iterate(
 					uses.getCapacities().iterator(),
@@ -740,16 +754,15 @@ public class SARLParser {
 
 	/** Ensure that the given object is the SARL "requires" statement.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param capacities - the collection of the expected capacities.
 	 * @return validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beCapacityRequirement(EObject object, Object capacities) {
-		if (!(object instanceof SarlRequiredCapacity)) {
+	public boolean should_beCapacityRequirement(EObject obj, Object capacities) {
+		if (!(obj instanceof SarlRequiredCapacity)) {
 			return false;
 		}
-		SarlRequiredCapacity reqs = (SarlRequiredCapacity) object;
+		SarlRequiredCapacity reqs = (SarlRequiredCapacity) obj;
 		if (reqs.getCapacities() != null) {
 			return SpecificationTools.should_iterate(
 					reqs.getCapacities().iterator(),
@@ -761,16 +774,15 @@ public class SARLParser {
 	/** Ensure that the given object is a behavior unit with or
 	 * with a guard.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param guard - the expected guard.
 	 * @return validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beGuardedWith(EObject object, String guard) {
-		if (!(object instanceof SarlBehaviorUnit)) {
+	public boolean should_beGuardedWith(EObject obj, String guard) {
+		if (!(obj instanceof SarlBehaviorUnit)) {
 			return false;
 		}
-		SarlBehaviorUnit bu = (SarlBehaviorUnit) object;
+		SarlBehaviorUnit bu = (SarlBehaviorUnit) obj;
 		XExpression actualGuard = bu.getGuard();
 		if (guard == null) {
 			return actualGuard == null;
@@ -794,13 +806,12 @@ public class SARLParser {
 
 	/** Ensure that the given object is the SARL "new" statement (with body).
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param something - not used.
 	 * @return validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beConstructor(EObject object, Object something) {
-		if (!(object instanceof SarlConstructor)) {
+	public boolean should_beConstructor(EObject obj, Object something) {
+		if (!(obj instanceof SarlConstructor)) {
 			return false;
 		}
 		return true;
@@ -809,15 +820,14 @@ public class SARLParser {
 	/** Ensure that the given object is the SARL "def" statement
 	 * that is variadic or not.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param isVariadic - the expected variadic flag
 	 * @return validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beVariadic(EObject object, boolean isVariadic) {
+	public boolean should_beVariadic(EObject obj, boolean isVariadic) {
 		XtendExecutable executable;
-		if (object instanceof XtendExecutable) {
-			executable = (XtendExecutable) object;
+		if (obj instanceof XtendExecutable) {
+			executable = (XtendExecutable) obj;
 		} else {
 			return false;
 		}
@@ -833,52 +843,164 @@ public class SARLParser {
 	/** Ensure that the given object is the SARL "def" statement (with body)
 	 * that is returning the given type.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param returnType - the name of the expected return type.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_reply(EObject object, String returnType) {
-		JvmTypeReference typeReference;
-		if (object instanceof SarlAction) {
-			typeReference = ((SarlAction) object).getReturnType();
+	public boolean should_reply(EObject obj, String returnType) {
+		JvmTypeReference rtype;
+		if (obj instanceof SarlAction) {
+			rtype = ((SarlAction) obj).getReturnType();
 		} else {
 			return false;
 		}
 		if (returnType == null) {
-			return typeReference == null;
+			return rtype == null;
 		}
-		return typeReference != null
-				&& Objects.equals(returnType, typeReference.getQualifiedName());
+		return rtype != null
+				&& Objects.equals(returnType, rtype.getQualifiedName());
+	}
+
+	/**  Ensure that the given object is the SARL "def" statement
+	 * that is throwing exceptions.
+	 *
+	 * @param object - the object to test.
+	 * @param exceptions - the list of exception, or the single exception.
+	 * @return the validation status.
+	 */
+	public boolean should_throwException(EObject object, Object exceptions) {
+		List<JvmTypeReference> list;
+		if (object instanceof SarlAction) {
+			list = ((SarlAction) object).getExceptions();
+		} else {
+			return false;
+		}
+		Set<String> expectedExceptions = new TreeSet<>();
+		if (exceptions instanceof Iterable<?>) {
+			for (Object obj : (Iterable<?>) exceptions) {
+				if (obj != null) {
+					String name = obj.toString();
+					if (!Strings.isNullOrEmpty(name)) {
+						expectedExceptions.add(name);
+					}
+				}
+			}
+		} else if (exceptions != null) {
+			String name = exceptions.toString();
+			if (!Strings.isNullOrEmpty(name)) {
+				expectedExceptions.add(name);
+			}
+		}
+		if (expectedExceptions.size() != list.size()) {
+			return false;
+		}
+		for (JvmTypeReference ref : list) {
+			if (!expectedExceptions.remove(ref.getQualifiedName())) {
+				return false;
+			}
+		}
+		return expectedExceptions.isEmpty();
+	}
+
+	/**  Ensure that the given object is the SARL "def" statement
+	 * that is firing events.
+	 *
+	 * @param object - the object to test.
+	 * @param events - the list of events, or the single event.
+	 * @return the validation status.
+	 */
+	public static boolean should_fireEvents(EObject object, Object events) {
+		List<JvmTypeReference> list;
+		if (object instanceof SarlAction) {
+			list = ((SarlAction) object).getFiredEvents();
+		} else {
+			return false;
+		}
+		Set<String> expectedEvents = new TreeSet<>();
+		if (events instanceof Iterable<?>) {
+			for (Object obj : (Iterable<?>) events) {
+				if (obj != null) {
+					String name = obj.toString();
+					if (!Strings.isNullOrEmpty(name)) {
+						expectedEvents.add(name);
+					}
+				}
+			}
+		} else if (events != null) {
+			String name = events.toString();
+			if (!Strings.isNullOrEmpty(name)) {
+				expectedEvents.add(name);
+			}
+		}
+		if (expectedEvents.size() != list.size()) {
+			return false;
+		}
+		for (JvmTypeReference ref : list) {
+			if (!expectedEvents.remove(ref.getQualifiedName())) {
+				return false;
+			}
+		}
+		return expectedEvents.isEmpty();
 	}
 
 	/** Ensure that the given feature has a formal parameter.
 	 *
-	 * @param object - the feature to test.
+	 * @param obj - the feature to test.
 	 * @param name - the expected name of the formal parameter.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beParameter(EObject object, String name) {
-		if (!(object instanceof SarlFormalParameter)) {
+	public boolean should_beParameter(EObject obj, String name) {
+		if (!(obj instanceof SarlFormalParameter)) {
 			return false;
 		}
-		SarlFormalParameter parameter = (SarlFormalParameter) object;
+		SarlFormalParameter parameter = (SarlFormalParameter) obj;
 		return Objects.equals(name, parameter.getName());
 	}
 
+	/** Ensure that the given feature has a type parameter.
+	 *
+	 * @param obj - the feature to test.
+	 * @param name - the expected name of the type parameter.
+	 * @return the validation status
+	 */
+	public boolean should_beTypeParameter(EObject obj, String name) {
+		if (!(obj instanceof JvmTypeParameter)) {
+			return false;
+		}
+		JvmTypeParameter parameter = (JvmTypeParameter) obj;
+		return Objects.equals(name, parameter.getName());
+	}
+
+	/** Ensure that the given feature has a constraint.
+	 *
+	 * @param obj - the feature to test.
+	 * @param constraint - the expected constraint.
+	 * @return the validation status
+	 */
+	public boolean should_beContrainedWith(EObject obj, String constraint) {
+		if (!(obj instanceof JvmConstraintOwner)) {
+			return false;
+		}
+		JvmConstraintOwner owner = (JvmConstraintOwner) obj;
+		if (Strings.isNullOrEmpty(constraint)) {
+			return owner.getConstraints().isEmpty();
+		} else if (owner.getConstraints().size() != 1) {
+			return false;
+		}
+		return Objects.equals(constraint, owner.getConstraints().get(0).getQualifiedName());
+	}
+
 	/** Ensure that the given feature has a formal parameter.
 	 *
-	 * @param object - the feature to test.
+	 * @param obj - the feature to test.
 	 * @param name - the expected name of the formal parameter.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_haveDefaultValue(EObject object, Object name) {
-		if (!(object instanceof SarlFormalParameter)) {
+	public boolean should_haveDefaultValue(EObject obj, Object name) {
+		if (!(obj instanceof SarlFormalParameter)) {
 			return false;
 		}
-		SarlFormalParameter parameter = (SarlFormalParameter) object;
+		SarlFormalParameter parameter = (SarlFormalParameter) obj;
 		if (name == null) {
 			return parameter.getDefaultValue() == null;
 		}
@@ -887,16 +1009,15 @@ public class SARLParser {
 
 	/** Ensure that the given feature is an attribute with an initial value.
 	 *
-	 * @param object - the feature to test.
+	 * @param obj - the feature to test.
 	 * @param initialValue - the expected literal for the initial value.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_haveInitialValue(EObject object, Object initialValue) {
-		if (!(object instanceof SarlField)) {
+	public boolean should_haveInitialValue(EObject obj, Object initialValue) {
+		if (!(obj instanceof SarlField)) {
 			return false;
 		}
-		SarlField field = (SarlField) object;
+		SarlField field = (SarlField) obj;
 		if (initialValue == null) {
 			return field.getInitialValue() == null;
 		}
@@ -906,13 +1027,13 @@ public class SARLParser {
 			return should_call(expr, initialValue.toString());
 		}
 		if (expr instanceof XCastedExpression) {
-			XCastedExpression castedExpression = (XCastedExpression) expr;
+			XCastedExpression castedExpr = (XCastedExpression) expr;
 			if (Objects.equals(
-					castedExpression.getType().getQualifiedName(),
+					castedExpr.getType().getQualifiedName(),
 					initialValue.toString())) {
 				return true;
 			}
-			return SpecificationTools.should_beLiteral(castedExpression.getTarget(), initialValue);
+			return SpecificationTools.should_beLiteral(castedExpr.getTarget(), initialValue);
 		}
 		return SpecificationTools.should_beLiteral(field.getInitialValue(), initialValue);
 	}
@@ -924,20 +1045,19 @@ public class SARLParser {
 	 * @param expected - the expected name of the feature.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public boolean should_call(EObject actual, String expected) {
 		if (actual instanceof XMemberFeatureCall) {
-			XMemberFeatureCall c = (XMemberFeatureCall) actual;
-			return Objects.equals(expected, c.getFeature().getQualifiedName());
+			XMemberFeatureCall call = (XMemberFeatureCall) actual;
+			return Objects.equals(expected, call.getFeature().getQualifiedName());
 		}
 		if (actual instanceof XFeatureCall) {
-			XFeatureCall c = (XFeatureCall) actual;
-			return Objects.equals(expected, c.getFeature().getQualifiedName());
+			XFeatureCall call = (XFeatureCall) actual;
+			return Objects.equals(expected, call.getFeature().getQualifiedName());
 		}
 		if (actual instanceof XConstructorCall) {
-			XConstructorCall consCall = (XConstructorCall) actual;
-			String consName = consCall.getConstructor().getQualifiedName()
-					+ "." + consCall.getConstructor().getSimpleName(); //$NON-NLS-1$
+			XConstructorCall c = (XConstructorCall) actual;
+			String consName = c.getConstructor().getQualifiedName()
+					+ "." + c.getConstructor().getSimpleName(); //$NON-NLS-1$
 			return Objects.equals(expected, consName);
 		}
 		return false;
@@ -1005,11 +1125,11 @@ public class SARLParser {
 	 */
 	public <T> T to(String expression, Class<T> resultType) throws Exception {
 		XExpression expr = expression(expression);
-		IEvaluationResult evalResult = this.interpreter.evaluate(expr);
-		if (evalResult == null) {
+		IEvaluationResult result = this.interpreter.evaluate(expr);
+		if (result == null) {
 			throw new RuntimeException("cannot evaluate"); //$NON-NLS-1$
 		}
-		Throwable exception = evalResult.getException();
+		Throwable exception = result.getException();
 		if (exception != null) {
 			if (exception instanceof Exception) {
 				throw (Exception) exception;
@@ -1018,16 +1138,16 @@ public class SARLParser {
 			}
 			throw new RuntimeException(exception);
 		}
-		Object v = evalResult.getResult();
-		if (v == null) {
+		Object value = result.getResult();
+		if (value == null) {
 			return null;
 		}
-		if (resultType.isInstance(v)) {
-			return resultType.cast(v);
+		if (resultType.isInstance(value)) {
+			return resultType.cast(value);
 		}
 		fail("Invalid type. Expected: " //$NON-NLS-1$
 				+ resultType.getName() + ", but was: " //$NON-NLS-1$
-				+ v.getClass().getName());
+				+ value.getClass().getName());
 		return null;
 	}
 
@@ -1038,9 +1158,9 @@ public class SARLParser {
 	 * @throws Exception if the expression cannot be parsed or is not a number.
 	 */
 	public byte toByte(String expression) throws Exception {
-		Number number = to(expression, Number.class);
-		if (number != null) {
-			return number.byteValue();
+		Number obj = to(expression, Number.class);
+		if (obj != null) {
+			return obj.byteValue();
 		}
 		fail("Illegal number"); //$NON-NLS-1$
 		return 0;
@@ -1053,9 +1173,9 @@ public class SARLParser {
 	 * @throws Exception if the expression cannot be parsed or is not a number.
 	 */
 	public short toShort(String expression) throws Exception {
-		Number number = to(expression, Number.class);
-		if (number != null) {
-			return number.shortValue();
+		Number obj = to(expression, Number.class);
+		if (obj != null) {
+			return obj.shortValue();
 		}
 		fail("Illegal number"); //$NON-NLS-1$
 		return 0;
@@ -1068,9 +1188,9 @@ public class SARLParser {
 	 * @throws Exception if the expression cannot be parsed or is not a number.
 	 */
 	public int toInt(String expression) throws Exception {
-		Number number = to(expression, Number.class);
-		if (number != null) {
-			return number.intValue();
+		Number obj = to(expression, Number.class);
+		if (obj != null) {
+			return obj.intValue();
 		}
 		fail("Illegal number"); //$NON-NLS-1$
 		return 0;
@@ -1083,9 +1203,9 @@ public class SARLParser {
 	 * @throws Exception if the expression cannot be parsed or is not a number.
 	 */
 	public long toLong(String expression) throws Exception {
-		Number number = to(expression, Number.class);
-		if (number != null) {
-			return number.longValue();
+		Number obj = to(expression, Number.class);
+		if (obj != null) {
+			return obj.longValue();
 		}
 		fail("Illegal number"); //$NON-NLS-1$
 		return 0;
@@ -1098,9 +1218,9 @@ public class SARLParser {
 	 * @throws Exception if the expression cannot be parsed or is not a number.
 	 */
 	public float toFloat(String expression) throws Exception {
-		Number number = to(expression, Number.class);
-		if (number != null) {
-			return number.floatValue();
+		Number obj = to(expression, Number.class);
+		if (obj != null) {
+			return obj.floatValue();
 		}
 		fail("Illegal number"); //$NON-NLS-1$
 		return 0;
@@ -1113,9 +1233,9 @@ public class SARLParser {
 	 * @throws Exception if the expression cannot be parsed or is not a number.
 	 */
 	public double toDouble(String expression) throws Exception {
-		Number number = to(expression, Number.class);
-		if (number != null) {
-			return number.doubleValue();
+		Number obj = to(expression, Number.class);
+		if (obj != null) {
+			return obj.doubleValue();
 		}
 		fail("Illegal number"); //$NON-NLS-1$
 		return 0;
@@ -1128,9 +1248,9 @@ public class SARLParser {
 	 * @throws Exception if the expression cannot be parsed or is not a character.
 	 */
 	public char toChar(String expression) throws Exception {
-		Character character = to(expression, Character.class);
-		if (character != null) {
-			return character.charValue();
+		Character obj = to(expression, Character.class);
+		if (obj != null) {
+			return obj.charValue();
 		}
 		fail("Illegal character"); //$NON-NLS-1$
 		return 0;
@@ -1143,9 +1263,9 @@ public class SARLParser {
 	 * @throws Exception if the expression cannot be parsed or is not a boolean.
 	 */
 	public boolean toBool(String expression) throws Exception {
-		Boolean bool = to(expression, Boolean.class);
-		if (bool != null) {
-			return bool.booleanValue();
+		Boolean obj = to(expression, Boolean.class);
+		if (obj != null) {
+			return obj.booleanValue();
 		}
 		fail("Illegal boolean value"); //$NON-NLS-1$
 		return false;
@@ -1158,70 +1278,66 @@ public class SARLParser {
 	 * @throws Exception if the expression cannot be parsed.
 	 */
 	public String toStr(String expression) throws Exception {
-		Object object = to(expression, Object.class);
-		if (object != null) {
-			return object.toString();
+		Object obj = to(expression, Object.class);
+		if (obj != null) {
+			return obj.toString();
 		}
 		return null;
 	}
 
 	/** Ensure that the given object is the SARL "class" top element.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param name - the expected name of the agent.
 	 * @return validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beClass(EObject object, String name) {
-		if (!(object instanceof SarlClass)) {
+	public boolean should_beClass(EObject obj, String name) {
+		if (!(obj instanceof SarlClass)) {
 			return false;
 		}
-		SarlClass a = (SarlClass) object;
+		SarlClass a = (SarlClass) obj;
 		return Objects.equals(name, a.getName());
 	}
 
 	/** Ensure that the given object is the SARL "interface" top element.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param name - the expected name of the agent.
 	 * @return validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beInterface(EObject object, String name) {
-		if (!(object instanceof SarlInterface)) {
+	public boolean should_beInterface(EObject obj, String name) {
+		if (!(obj instanceof SarlInterface)) {
 			return false;
 		}
-		SarlInterface a = (SarlInterface) object;
+		SarlInterface a = (SarlInterface) obj;
 		return Objects.equals(name, a.getName());
 	}
 
 	/** Ensure that the given object is the SARL "enumeration" top element.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param name - the expected name of the agent.
 	 * @return validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beEnumeration(EObject object, String name) {
-		if (!(object instanceof SarlEnumeration)) {
+	public boolean should_beEnumeration(EObject obj, String name) {
+		if (!(obj instanceof SarlEnumeration)) {
 			return false;
 		}
-		SarlEnumeration a = (SarlEnumeration) object;
+		SarlEnumeration a = (SarlEnumeration) obj;
 		return Objects.equals(name, a.getName());
 	}
 
 	/** Ensure that the given object is the SARL "enumeration" top element.
 	 *
-	 * @param object - the object to test.
+	 * @param obj - the object to test.
 	 * @param name - the expected name of the agent.
 	 * @return validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
-	public boolean should_beAnnotation(EObject object, String name) {
-		if (!(object instanceof SarlAnnotationType)) {
+	public boolean should_beAnnotation(EObject obj, String name) {
+		if (!(obj instanceof SarlAnnotationType)) {
 			return false;
 		}
-		SarlAnnotationType a = (SarlAnnotationType) object;
+		SarlAnnotationType a = (SarlAnnotationType) obj;
 		return Objects.equals(name, a.getName());
 	}
 

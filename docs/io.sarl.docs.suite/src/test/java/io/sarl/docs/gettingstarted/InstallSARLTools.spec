@@ -54,7 +54,7 @@ describe "Install SARL Tools" {
 	/*
 	 * In the next section, we will learn how to create a SARL project.
 	 * 
-	 * [Next>](CreateFirstProjectSpec.html)
+	 * <p>[Next>](CreateFirstProjectSpec.html)
 	 * 
 	 * @filter(.*) 
 	 */

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,16 +34,16 @@ import static extension org.junit.Assume.assumeFalse
 
 /* @outline
  *
- * This document describes how to define skills in SARL.
+ * <p>This document describes how to define skills in SARL.
  * Before reading this document, it is recommended reading
  * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
  * and the [Capacity Reference](CapacityReferenceSpec.html).
  * 
- * A *Capacity* is the specification of a collection of actions. This specification 
+ * <p>A *Capacity* is the specification of a collection of actions. This specification 
  * makes no assumptions about its implementation. It could be used to specify 
  * what an agent can do, what a behavior requires for its execution.
  * 
- * A *Skill* is a possible implementation of a capacity fulfilling all the 
+ * <p>A *Skill* is a possible implementation of a capacity fulfilling all the 
  * constraints of this specification.
  */
 @CreateWith(SARLSpecCreator)
@@ -57,7 +57,7 @@ describe "Skill Reference" {
 			 * keyword. A skill must always implement a capacity. This
 			 * relationship is specified with the `implements` keyword.
 			 * 
-			 * Below, a skill is defined for outputting the messages on the standard console
+			 * <p>Below, a skill is defined for outputting the messages on the standard console
 			 * (defined in the [Capacity Reference](CapacityReferenceSpec.html)).
 			 * Note that all the actions defined in the implemented capacity must
 			 * have a definition (with a body) in the skill.
@@ -157,7 +157,7 @@ describe "Skill Reference" {
 			/* In several cases, it is useful or mandatory to base the
 			 * capacity's implementation on attributes (fields).
 			 * 
-			 * The following example defines a skill that uses the standard
+			 * <p>The following example defines a skill that uses the standard
 			 * Java logging system.
 			 * For avoiding to create an instance of the Java logger each
 			 * time the capacity's actions are invoked, an instance
@@ -374,7 +374,7 @@ describe "Skill Reference" {
 			 * However, the definition of a constructor
 			 * is mandatory if a value must be initialized.
 			 *  
-			 * The constructors defined in the abstract `Skill` class
+			 * <p>The constructors defined in the abstract `Skill` class
 			 * are:
 			 * 
 			 *  * The default constructor: `def Skill()`
@@ -501,7 +501,7 @@ describe "Skill Reference" {
 			 * All the methods defined in the implemented interfaces must have
 			 * an implementation in the skill.
 			 * 
-			 * If two implemented capacities has the same action signature,
+			 * <p>If two implemented capacities has the same action signature,
 			 * it must be implemented only once time in the skill.
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
@@ -670,7 +670,7 @@ describe "Skill Reference" {
 			 * feature of SARL, which has the same semantic as the inheritance
 			 * mechanism as the Java object-oriented language.
 			 * 
-			 * The extended skill is specified just after the `extends`
+			 * <p>The extended skill is specified just after the `extends`
 			 * keyword.
 			 * 
 			 * <veryimportantnote> A skill type
@@ -678,7 +678,7 @@ describe "Skill Reference" {
 			 * to the constraint on the extension of classes in the Java
 			 * language.</veryimportantnote>
 			 * 
-			 * In the following code, the `StandardJavaLogging` skill (defined
+			 * <p>In the following code, the `StandardJavaLogging` skill (defined
 			 * previously) is extended for changing the output of the info.
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
@@ -792,6 +792,128 @@ describe "Skill Reference" {
 				]
 			}
 
+			/** Modifiers are used to modify declarations of types and type members.
+			 * This section introduces the modifiers for the skill.
+			 * The modifiers are usually written before the keyword for defining the skill.
+			 * 
+			 * <p>The complete description of the modifiers' semantic is available in
+			 * <a href="./BasicObjectOrientedProgrammingSupportModifiersSpec.html">this section</a>.
+			 */
+			describe "Modifiers" {
+				
+				/** A skill may be declared with one or more modifiers, which affect its runtime behavior: <ul>
+				 * <li>Access modifiers: <ul>
+				 *     <li>`public`:  the behavior is accessible from any other type;</li>
+				 *     <li>`package`: the behavior is accessible from only the types in the same package.</li>
+				 *     </ul></li>
+				 * <li>`abstract`: the behavior is abstract and cannot be instanced.</li>
+				 * <li>`final`: avoid to be derived.</li>
+			 	 * <li>`strictfp`: avoid the methods of the behavior to use intermediate floating number formats.</li>
+				 * <li>
+				 *
+				 * @filter(.* = '''|'''|.parseSuccessfully.*)
+				 */
+				fact "Behavior Modifiers" {
+					// Test URL in the enclosing section text.
+					"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
+					//
+					'''
+						public skill Example1 implements CapacityExample {
+						}
+						package skill Example2 implements CapacityExample {
+						}
+						abstract skill Example3 implements CapacityExample {
+						}
+						final skill Example4 implements CapacityExample {
+						}
+						strictfp skill Example5 implements CapacityExample {
+						}
+					'''.parseSuccessfully(
+						"package io.sarl.docs.reference.sr
+						capacity CapacityExample { }",
+						// TEXT
+						""
+					)
+				}
+	
+				/** The modifiers for the fields in a skill are: <ul>
+				 * <li>Access modifiers: <ul>
+				 *     <li>`public`:  the field is accessible from everywhere;</li>
+				 *     <li>`protected`:  the field is accessible within the same package, and derived agents;</li>
+				 *     <li>`package`: the field is accessible only within the same package of its agent;</li>
+				 *     <li>`private`: the field is accessible only within its agent.</li>
+				 *     </ul></li>
+				 * <li>`transient`: the field is never serialized.</li>
+				 * <li>`volatile`: the field is modified by different threads. It is never cached thread-locally, and synchronized.</li>
+				 * </ul>
+				 *
+				 * @filter(.* = '''|'''|.parseSuccessfully.*)
+				 */
+				fact "Field Modifiers" {
+					'''
+						public var example1 : Object;
+						protected var example2 : Object;
+						package var example3 : Object;
+						private var example4 : Object;
+						transient var example5 : Object;
+						volatile var example6 : Object;
+					'''.parseSuccessfully(
+						"package io.sarl.docs.reference.sr
+						capacity C1 { }
+						public skill Skill1 implements C1 {",
+						// TEXT
+						"}"
+					)
+				}
+	
+				/** The modifiers for the methods in a skill are: <ul>
+				 * <li>Access modifiers: <ul>
+				 *     <li>`public`:  there are no restrictions on accessing the method;</li>
+				 *     <li>`protected`:  the method is accessible within the same package, and derived classes;</li>
+				 *     <li>`package`: the method is accessible only within the same package as its class;</li>
+				 *     <li>`private`: the method is accessible only within its class.</li>
+				 *     </ul></li>
+				 * <li>`abstract`: the method has no implementation in the class.</li>
+				 * <li>`dispatch`: the method provides an implementation for the dispatch method mechanism.</li>
+				 * <li>`final`: the method cannot be overridden in derived classes.</li>
+				 * <li>`strictfp`: avoid the method to use intermediate floating number formats.</li>
+				 * <li>`synchronized`: the method is synchronized on the class instance.</li>
+				 * </ul>
+				 *
+				 * @filter(.* = '''|'''|.parseSuccessfully.*)
+				 */
+				fact "Method Modifiers" {
+					'''
+						// Public access function
+						public def example1 { }
+						// Protected access function
+						protected def example2 { }
+						// Package access function
+						package def example3 { }
+						// Private access function
+						private def example4 { }
+						// Abstract function
+						abstract def example5
+						// Not-overridable function
+						final def example6 { }
+						// Function with strict floating point management
+						strictfp def example8 { }
+						// Synchronized function
+						synchronized def example9 { }
+						// Dispatch functions
+						dispatch def example10(p : Integer) { }
+						dispatch def example10(p : Float) { }
+					'''.parseSuccessfully(
+						"package io.sarl.docs.reference.sr
+						capacity C1 { }
+						abstract skill Skill1 implements C1 {",
+						// TEXT
+						"}"
+					)
+				}
+	
+			}
+
 		}
 		
 		/* Several capacities are defined and reserved by the SARL Core
@@ -825,9 +947,9 @@ describe "Skill Reference" {
 	 * Release: %sarlspecreleasedate%
 	 * 
 	 * 
-	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * <p>Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
 	 * 
-	 * Licensed under the Apache License, Version 2.0;
+	 * <p>Licensed under the Apache License, Version 2.0;
 	 * you may not use this file except in compliance with the License.
 	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
 	 *

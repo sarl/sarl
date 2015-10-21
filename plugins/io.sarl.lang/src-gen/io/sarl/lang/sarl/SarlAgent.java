@@ -58,4 +58,12 @@ public interface SarlAgent extends XtendTypeDeclaration
    */
   boolean isAbstract();
 
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @model kind="operation"
+   * @generated
+   */
+  boolean isStrictFloatingPoint();
+
 } // SarlAgent

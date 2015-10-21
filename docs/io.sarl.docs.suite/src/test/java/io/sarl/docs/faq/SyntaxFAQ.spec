@@ -63,7 +63,7 @@ describe "SARL Syntax FAQ" {
 			/* It is not allowed to put a SARL keyword, such as
 			 * `agent`, in the name of a package.
 			 * 
-			 * But, if you prefix with the `^` character the string
+			 * <p>But, if you prefix with the `^` character the string
 			 * that corresponds to a keyword, then it is possible
 			 * to obtain a package name with one of its components
 			 * equals to a SARL keyword:
@@ -82,7 +82,7 @@ describe "SARL Syntax FAQ" {
 			 * It is similar to the `final` modifier of
 			 * the Java language.
 			 * 
-			 * Consider the example below: two values are
+			 * <p>Consider the example below: two values are
 			 * defined, `a` and `b`.
 			 * The `a` variable is a real constant because it
 			 * has a raw type and it is initialized.
@@ -111,7 +111,7 @@ describe "SARL Syntax FAQ" {
 			 * `int[]`, or the object-oriented syntax,
 			 * such as `List<Integer>`.
 			 * 
-			 * SARL considers that the
+			 * <p>SARL considers that the
 			 * each array is a list of something.
 			 * Consequently, retrieving the values of the array must
 			 * be done with `get(int)`.

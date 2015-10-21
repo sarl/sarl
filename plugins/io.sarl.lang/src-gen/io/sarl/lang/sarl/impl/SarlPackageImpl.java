@@ -696,6 +696,8 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
     addEOperation(sarlAgentEClass, ecorePackage.getEBoolean(), "isAbstract", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+    addEOperation(sarlAgentEClass, ecorePackage.getEBoolean(), "isStrictFloatingPoint", 0, 1, IS_UNIQUE, IS_ORDERED);
+
     initEClass(sarlCapacityEClass, SarlCapacity.class, "SarlCapacity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getSarlCapacity_Extends(), theTypesPackage.getJvmParameterizedTypeReference(), null, "extends", null, 0, -1, SarlCapacity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -704,11 +706,15 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
     addEOperation(sarlBehaviorEClass, ecorePackage.getEBoolean(), "isAbstract", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+    addEOperation(sarlBehaviorEClass, ecorePackage.getEBoolean(), "isStrictFloatingPoint", 0, 1, IS_UNIQUE, IS_ORDERED);
+
     initEClass(sarlSkillEClass, SarlSkill.class, "SarlSkill", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getSarlSkill_Extends(), theTypesPackage.getJvmParameterizedTypeReference(), null, "extends", null, 0, 1, SarlSkill.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getSarlSkill_Implements(), theTypesPackage.getJvmParameterizedTypeReference(), null, "implements", null, 0, -1, SarlSkill.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     addEOperation(sarlSkillEClass, ecorePackage.getEBoolean(), "isAbstract", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+    addEOperation(sarlSkillEClass, ecorePackage.getEBoolean(), "isStrictFloatingPoint", 0, 1, IS_UNIQUE, IS_ORDERED);
 
     initEClass(sarlFormalParameterEClass, SarlFormalParameter.class, "SarlFormalParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getSarlFormalParameter_DefaultValue(), theXbasePackage.getXExpression(), null, "defaultValue", null, 0, 1, SarlFormalParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -17,7 +17,6 @@ package io.sarl.lang.tests.sarl.impl;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
 import com.google.inject.Inject;
 import org.junit.Test;
 
@@ -41,6 +40,13 @@ public class SarlSkillImplCustomTest extends AbstractSarlTest {
 		assertFalse(this.skill.isAbstract());
 		this.skill.getModifiers().add("abstract");
 		assertTrue(this.skill.isAbstract());
+	}
+
+	@Test
+	public void modifier_strictfp() throws Exception {
+		assertFalse(this.skill.isStrictFloatingPoint());
+		this.skill.getModifiers().add("strictfp");
+		assertTrue(this.skill.isStrictFloatingPoint());
 	}
 
 }

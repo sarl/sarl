@@ -71,7 +71,7 @@ import org.osgi.framework.Version;
 
 /** Helper for tests.
  * This class should disappear when the Jnario API will provide
- * the similar features: <a href="https://github.com/sebastianbenz/Jnario/pull/142">pull request #142</a>.
+ * the similar features: <a href="https://github.com/sebastianbenz/Jnario/pull/142">issue #142</a>.
  *
  * <p>FIXME: https://github.com/sebastianbenz/Jnario/pull/142
  *
@@ -80,6 +80,7 @@ import org.osgi.framework.Version;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings({"checkstyle:methodname"})
 public final class SpecificationTools {
 
 	private static final int HEX_RADIX = 16;
@@ -114,7 +115,6 @@ public final class SpecificationTools {
 	 * @param source - the object that is containing the URL.
 	 * @return the validation result.
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static boolean should_beAccessibleFrom(String url, Object source) {
 		return isJnarioLink(url, source) || isResourceLink(url, source);
 	}
@@ -137,7 +137,7 @@ public final class SpecificationTools {
 	 * If this last is <code>null</code>, the class loader of
 	 * the Resources class is used.
 	 *
-	 * <p>Copied from https://github.com/gallandarakhneorg/afc/blob/master/core/vmutils/src/main/java/org/arakhne/afc/vmutil/Resources.java
+	 * <p>Copied from <a href="https://github.com/gallandarakhneorg/afc/blob/master/core/vmutils/src/main/java/org/arakhne/afc/vmutil/Resources.java">AFC</a>.
 	 *
 	 * @param classLoader is the research scope. If <code>null</code>,
 	 *     the class loader replied by {@link ClassLoaderFinder} is used.
@@ -150,19 +150,19 @@ public final class SpecificationTools {
 		if (packagename == null || path == null) {
 			return null;
 		}
-		StringBuilder b = new StringBuilder();
-		b.append(packagename.getName().replaceAll(
+		StringBuilder buffer = new StringBuilder();
+		buffer.append(packagename.getName().replaceAll(
 				Pattern.quote("."), //$NON-NLS-1$
 				java.util.regex.Matcher.quoteReplacement("/"))); //$NON-NLS-1$
 		if (!path.startsWith("/")) { //$NON-NLS-1$
-			b.append("/"); //$NON-NLS-1$
+			buffer.append("/"); //$NON-NLS-1$
 		}
-		b.append(path);
-		return getResource(packagename.getClass().getClassLoader(), b.toString());
+		buffer.append(path);
+		return getResource(packagename.getClass().getClassLoader(), buffer.toString());
 	}
 
 	/**
-	 * Copied from https://github.com/gallandarakhneorg/afc/blob/master/core/vmutils/src/main/java/org/arakhne/afc/vmutil/StandardJREResourceWrapper.java
+	 * Copied from <a href="https://github.com/gallandarakhneorg/afc/blob/master/core/vmutils/src/main/java/org/arakhne/afc/vmutil/StandardJREResourceWrapper.java">AFC</a>.
 	 */
 	private static URL getResource(ClassLoader classLoader, String path) {
 		if (path == null) {
@@ -213,7 +213,7 @@ public final class SpecificationTools {
 		return false;
 	}
 
-	@SuppressWarnings("checkstyle:npathcomplexity")
+	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:npathcomplexity"})
 	private static boolean isJnarioLink(String url, Object source) {
 		if (source == null || url == null) {
 			return false;
@@ -240,9 +240,8 @@ public final class SpecificationTools {
 						b.append(s.toUpperCase());
 					}
 				}
-				String specText = "Spec"; //$NON-NLS-1$
-				if (parts[0].endsWith(specText)) {
-					ref = parts[0].substring(0, parts[0].length() - specText.length())
+				if (parts[0].endsWith("Spec")) { //$NON-NLS-1$
+					ref = parts[0].substring(0, parts[0].length() - 4)
 							+ b.toString() + "Spec.html"; //$NON-NLS-1$
 				} else {
 					ref = parts[0] + b.toString() + "Spec.html"; //$NON-NLS-1$
@@ -278,16 +277,16 @@ public final class SpecificationTools {
 		}
 	}
 
+	@SuppressWarnings("checkstyle:magicnumber")
 	private static boolean isJnarioSpec(Class<?> callingSpecification, String reference) {
 		String url = reference;
 		//
-		String ext = ".html"; //$NON-NLS-1$
 		assertTrue(
-				String.format("\"%s\" must end with \"%s\".", //$NON-NLS-1$
-				url.toString(), ext),
-				url.endsWith(ext));
+				String.format("\"%s\" must end with \".html\".", //$NON-NLS-1$
+				url.toString(), ".html"), //$NON-NLS-1$
+				url.endsWith(".html")); //$NON-NLS-1$
 		//
-		url = url.substring(0, url.length() - ext.length());
+		url = url.substring(0, url.length() - 5);
 		File caller = new File(callingSpecification.getName().replaceAll(
 				"\\.", File.separator)).getParentFile(); //$NON-NLS-1$
 		File resolved = new File(caller, url.replaceAll("\\/", File.separator)); //$NON-NLS-1$
@@ -307,7 +306,6 @@ public final class SpecificationTools {
 	 * @param expected - the expected values.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static boolean should_iterate(Iterator<?> actual, Object expected) {
 		return should_iterate(actual, expected, true);
 	}
@@ -319,8 +317,7 @@ public final class SpecificationTools {
 	 * @param significantOrder - indicates if the order of the elements is significant.
 	 * @return the validation status
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
-			"checkstyle:methodname"})
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public static boolean should_iterate(Iterator<?> actual, Object expected, boolean significantOrder) {
 		Object obj;
 		Iterator<?> it;
@@ -400,7 +397,6 @@ public final class SpecificationTools {
 	 *     default date format is considered.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static boolean should_beDate(String actual, String dateFormat) {
 		if (actual == null || actual.isEmpty()) {
 			return false;
@@ -450,7 +446,6 @@ public final class SpecificationTools {
 	 *     If not given, all the schemes are allowed.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static boolean should_beURL(String actual, String requiredSchemes) {
 		if (actual == null || actual.isEmpty()) {
 			return false;
@@ -483,7 +478,6 @@ public final class SpecificationTools {
 	 *     default date format is considered.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static boolean should_beNumber(String actual, String numberFormat) {
 		if (actual == null || actual.isEmpty()) {
 			return false;
@@ -512,19 +506,30 @@ public final class SpecificationTools {
 		assertTrue(message, Objects.equals(expected, actual));
 	}
 
+	private static Number cleanNumber(String stringRepresentation) {
+		if (stringRepresentation == null) {
+			return null;
+		}
+		if (stringRepresentation.startsWith("0x") || stringRepresentation.startsWith("0X")) { //$NON-NLS-1$//$NON-NLS-2$
+			return new BigInteger(stringRepresentation.substring(2), HEX_RADIX);
+		}
+		String literal = stringRepresentation.replace("_", ""); //$NON-NLS-1$//$NON-NLS-2$
+		literal = literal.toLowerCase().replaceFirst("l|f|d|(bi)|(bd)$", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		return new BigDecimal(literal);
+	}
+
 	/** Ensure that the given string literal is equal to the given value.
 	 *
 	 * @param actual - the string literal to test.
 	 * @param expected - the expected value.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static boolean _should_be(XStringLiteral actual, Object expected) {
 		if (actual == null) {
 			return false;
 		}
-		String str = (expected == null) ? null : expected.toString();
-		return Objects.equals(str, actual.getValue());
+		String string = (expected == null) ? null : expected.toString();
+		return Objects.equals(string, actual.getValue());
 	}
 
 	/** Ensure that the given boolean literal is equal to the given value.
@@ -533,7 +538,6 @@ public final class SpecificationTools {
 	 * @param expected - the expected value.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static boolean _should_be(XBooleanLiteral actual, Object expected) {
 		if (actual == null) {
 			return false;
@@ -557,7 +561,6 @@ public final class SpecificationTools {
 	 * @param expected - the expected value.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static boolean _should_be(XNumberLiteral actual, Object expected) {
 		if (actual == null) {
 			return false;
@@ -572,8 +575,8 @@ public final class SpecificationTools {
 				return false;
 			}
 		}
-		Number number2 = cleanNumber(actual.getValue());
-		return number.doubleValue() == number2.doubleValue();
+		Number anumber = cleanNumber(actual.getValue());
+		return number.doubleValue() == anumber.doubleValue();
 	}
 
 	/** Ensure that the given type literal is equal to the given type.
@@ -582,7 +585,6 @@ public final class SpecificationTools {
 	 * @param expected - the name of the expected type.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static boolean _should_be(XTypeLiteral actual, Object expected) {
 		if (actual == null) {
 			return false;
@@ -603,7 +605,6 @@ public final class SpecificationTools {
 	 * @param expected - the name of the expected type.
 	 * @return the validation status
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static boolean _should_be(XCollectionLiteral actual, Object expected) {
 		if (actual == null || actual.getElements() == null) {
 			return false;
@@ -614,26 +615,13 @@ public final class SpecificationTools {
 				!(actual instanceof XSetLiteral));
 	}
 
-	private static Number cleanNumber(String str) {
-		if (str == null) {
-			return null;
-		}
-		if (str.startsWith("0x") || str.startsWith("0X")) { //$NON-NLS-1$//$NON-NLS-2$
-			return new BigInteger(str.substring(2), HEX_RADIX);
-		}
-		String literal = str.replace("_", ""); //$NON-NLS-1$//$NON-NLS-2$
-		literal = literal.toLowerCase().replaceFirst("l|f|d|(bi)|(bd)$", ""); //$NON-NLS-1$ //$NON-NLS-2$
-		return new BigDecimal(literal);
-	}
-
 	/** Ensure that the given type literal is equal to the given type.
 	 *
 	 * @param actual - the type literal to test.
 	 * @param expected - the name of the expected type.
 	 * @return the validation status
 	 */
-	@SuppressWarnings({"checkstyle:methodname", "checkstyle:returncount",
-			"checkstyle:npathcomplexity"})
+	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
 	public static boolean should_beLiteral(XExpression actual, Object expected) {
 		if (actual instanceof XNumberLiteral) {
 			return _should_be((XNumberLiteral) actual, expected);
@@ -686,7 +674,7 @@ public final class SpecificationTools {
 	 * @param name - the name and prototype, e.g. <code>fct(java.lang.String):int</code>.
 	 * @return the validation status.
 	 */
-	@SuppressWarnings({"rawtypes", "checkstyle:methodname"})
+	@SuppressWarnings("rawtypes")
 	public static boolean should_haveMethod(Class<?> type, String name) {
 		try {
 			Pattern pattern = Pattern.compile(
@@ -727,8 +715,8 @@ public final class SpecificationTools {
 					return void.class.equals(method.getReturnType())
 							|| Void.class.equals(method.getReturnType());
 				}
-				Class<?> reflectionType = ReflectionUtil.forName(returnText);
-				return reflectionType.equals(method.getReturnType());
+				Class<?> rtype = ReflectionUtil.forName(returnText);
+				return rtype.equals(method.getReturnType());
 			}
 		} catch (Throwable e) {
 			//
@@ -746,7 +734,6 @@ public final class SpecificationTools {
 	 * @param name - the name and prototype, e.g. <code>x:int</code>.
 	 * @return the validation status.
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static boolean should_haveField(Class<?> type, String name) {
 		try {
 			Pattern pattern = Pattern.compile(
@@ -766,8 +753,8 @@ public final class SpecificationTools {
 					return false;
 				}
 				if (fieldType != null && !fieldType.isEmpty()) {
-					Class<?> reflectionType = ReflectionUtil.forName(fieldType);
-					return reflectionType.equals(field.getType());
+					Class<?> rtype = ReflectionUtil.forName(fieldType);
+					return rtype.equals(field.getType());
 				}
 				return true;
 			}
@@ -783,7 +770,6 @@ public final class SpecificationTools {
 	 * @param expectedTypes - the qualified names of the expected types, separated by comas.
 	 * @return the validation status.
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static boolean should_extend(Class<?> type, String expectedTypes) {
 		if (type == null) {
 			return false;
@@ -822,7 +808,6 @@ public final class SpecificationTools {
 	 *     is considered as valid.
 	 * @return the validation status.
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static boolean should_beMavenVersion(String actual, boolean allowSnapshot) {
 		if (actual == null) {
 			return false;
@@ -885,7 +870,6 @@ public final class SpecificationTools {
 	 * @param maxVersion - the maximal version.
 	 * @return the validation status.
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static boolean should_beJavaRange(String minVersion, String maxVersion) {
 		Version jreV = parseJavaVersion(System.getProperty("java.version"), null); //$NON-NLS-1$
 		printDebug("Current Java version: ", jreV); //$NON-NLS-1$
@@ -916,7 +900,6 @@ public final class SpecificationTools {
 	 * @param expectedNbOfElements - the expected number of elements.
 	 * @return the validation status.
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static boolean should_haveNbMembers(Class<?> type, int expectedNbOfElements) {
 		if (type == null) {
 			return false;
@@ -936,13 +919,12 @@ public final class SpecificationTools {
 
 	/** Ensure that the given map contains the elements.
 	 *
-	 * @param <K> - the type of the keys in the map.
-	 * @param <V> - the type of the values in the map.
+	 * @param <K> type of the keys.
+	 * @param <V> type of the values.
 	 * @param map - the map to check.
 	 * @param reference - the expected elements in the map.
 	 * @return the validation status.
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static <K, V> boolean should_be(Map<K, V> map, Map<? super K, ? super V> reference) {
 		if (map == null) {
 			return false;
@@ -968,7 +950,6 @@ public final class SpecificationTools {
 	 * @param propertyName - the name of the property name.
 	 * @return the validation status.
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static boolean should_haveProperty(URL propertyFile, String propertyName) {
 		try {
 			Properties props = new Properties();
@@ -989,7 +970,6 @@ public final class SpecificationTools {
 	 * @param property - the property.
 	 * @return the validation status.
 	 */
-	@SuppressWarnings("checkstyle:methodname")
 	public static boolean should_haveProperty(URL propertyFile, Pair<String, String> property) {
 		if (propertyFile != null && property != null) {
 			try {
@@ -1029,7 +1009,7 @@ public final class SpecificationTools {
 		return null;
 	}
 
-	/** Iterator on an array object.
+	/** Iterator on array.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -1044,6 +1024,10 @@ public final class SpecificationTools {
 
 		private Object obj;
 
+		/** Construct the iterator on array.
+		 *
+		 * @param array - the array to iterate on.
+		 */
 		ArrayIterator(Array array) {
 			this.array = array;
 			searchNext();
@@ -1068,9 +1052,9 @@ public final class SpecificationTools {
 			if (this.obj == null) {
 				throw new NoSuchElementException();
 			}
-			Object nextObject = this.obj;
+			Object object = this.obj;
 			searchNext();
-			return nextObject;
+			return object;
 		}
 
 		@Override

@@ -514,6 +514,7 @@ public class SkillParsingTest {
 			assertFalse(skill.isAbstract());
 			assertFalse(skill.isFinal());
 			assertFalse(skill.isStatic());
+			assertFalse(skill.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -535,6 +536,7 @@ public class SkillParsingTest {
 			assertFalse(skill.isAbstract());
 			assertFalse(skill.isFinal());
 			assertFalse(skill.isStatic());
+			assertFalse(skill.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -548,7 +550,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 7,
-					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -562,7 +564,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 9,
-					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -584,6 +586,7 @@ public class SkillParsingTest {
 			assertFalse(skill.isAbstract());
 			assertFalse(skill.isFinal());
 			assertFalse(skill.isStatic());
+			assertFalse(skill.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -605,6 +608,7 @@ public class SkillParsingTest {
 			assertTrue(skill.isAbstract());
 			assertFalse(skill.isFinal());
 			assertFalse(skill.isStatic());
+			assertFalse(skill.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -618,7 +622,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 6,
-					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -632,7 +636,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 8,
-					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -654,6 +658,7 @@ public class SkillParsingTest {
 			assertFalse(skill.isAbstract());
 			assertTrue(skill.isFinal());
 			assertFalse(skill.isStatic());
+			assertFalse(skill.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -662,12 +667,20 @@ public class SkillParsingTest {
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"strictfp skill S1 implements C1 {}"
-					), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlSkill(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
+					), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, skill.getVisibility());
+			assertEquals(0, skill.getMembers().size());
+			assertFalse(skill.isAbstract());
+			assertFalse(skill.isFinal());
+			assertFalse(skill.isStatic());
+			assertTrue(skill.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -681,7 +694,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 6,
-					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -695,7 +708,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 8,
-					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -709,7 +722,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 12,
-					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -723,7 +736,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 9,
-					"Illegal modifier for the skill S1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -749,9 +762,9 @@ public class SkillParsingTest {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { def fakefct() }",
-					"skill S1 implements C1 {",
+					"abstract skill S1 implements C1 {",
 					"   override fakefct() { }",
-					"	def name",
+					"	abstract def name",
 					"}",
 					"skill S2 extends S1 {",
 					"	def name { }",
@@ -759,7 +772,7 @@ public class SkillParsingTest {
 			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
-					152, 4,
+					170, 4,
 					"The method name() of type S2 must use override keyword since it actually overrides a supertype method");
 		}
 
@@ -786,9 +799,9 @@ public class SkillParsingTest {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { def fakefct() }",
-					"skill S1 implements C1 {",
+					"abstract skill S1 implements C1 {",
 					"   override fakefct() { }",
-					"	def name()",
+					"	abstract def name()",
 					"}",
 					"skill S2 extends S1 {",
 					"   override fakefct() { }",
@@ -822,6 +835,7 @@ public class SkillParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -849,6 +863,7 @@ public class SkillParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -876,6 +891,7 @@ public class SkillParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -902,6 +918,8 @@ public class SkillParsingTest {
 			assertFalse(act1.isStatic());
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -929,6 +947,7 @@ public class SkillParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -936,23 +955,8 @@ public class SkillParsingTest {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
-					"skill S1 implements C1 {",
+					"abstract skill S1 implements C1 {",
 					"	abstract def name",
-					"}"), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 8,
-					"Illegal modifier for the definition of name in S1; only public, package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
-		}
-
-		@Test
-		public void modifier_no_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
-					"package io.sarl.lang.tests.test",
-					"capacity C1 { }",
-					"skill S1 implements C1 {",
-					"	def name",
 					"}"), true);
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -971,16 +975,23 @@ public class SkillParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
-		public void modifier_static() throws Exception {
+		public void modifier_no_abstract() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
-					"skill S1 implements C1 {",
-					"	static def name { }",
+					"abstract skill S1 implements C1 {",
+					"	def name",
 					"}"), true);
+			validate(mas).assertWarning(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
+					87, 4,
+					"The method name in type S1 should be declared abstract");
+			//
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -993,11 +1004,27 @@ public class SkillParsingTest {
 			SarlAction act1 = (SarlAction) skill.getMembers().get(0);
 			assertEquals("name", act1.getName());
 			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
-			assertFalse(act1.isAbstract());
-			assertTrue(act1.isStatic());
+			assertTrue(act1.isAbstract());
+			assertFalse(act1.isStatic());
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void modifier_static() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	static def name { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					74, 6,
+					"Illegal modifier for the definition of name in S1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
 		}
 
 		@Test
@@ -1025,6 +1052,7 @@ public class SkillParsingTest {
 			assertTrue(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -1052,6 +1080,7 @@ public class SkillParsingTest {
 			assertFalse(act1.isDispatch());
 			assertTrue(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -1061,12 +1090,25 @@ public class SkillParsingTest {
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	strictfp def name { }",
-					"}"), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 8,
-					"Illegal modifier for the definition of name in S1; only public, package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+					"}"), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) skill.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertTrue(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -1081,7 +1123,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					74, 6,
-					"Illegal modifier for the definition of name in S1; only public, package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+					"Illegal modifier for the definition of name in S1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
 		}
 
 		@Test
@@ -1096,7 +1138,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					74, 8,
-					"Illegal modifier for the definition of name in S1; only public, package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+					"Illegal modifier for the definition of name in S1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
 		}
 
 		@Test
@@ -1124,6 +1166,7 @@ public class SkillParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertTrue(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -1138,7 +1181,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					74, 9,
-					"Illegal modifier for the definition of name in S1; only public, package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+					"Illegal modifier for the definition of name in S1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
 		}
 
 		@Test
@@ -1181,6 +1224,7 @@ public class SkillParsingTest {
 			assertTrue(act1.isDispatch());
 			assertTrue(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -1917,7 +1961,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					74, 8,
-					"Illegal modifier for the definition of field in S1; only public, package, protected, private, static, final, val, var, volatile & transient are permitted");
+					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
 		}
 
 		@Test
@@ -1927,26 +1971,12 @@ public class SkillParsingTest {
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	static var field : int",
-					"}"), true);
-			assertEquals(2, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
-			assertEquals("S1", skill.getName());
-			assertNull(skill.getExtends());
-			assertEquals(1, skill.getMembers().size());
-			//
-			SarlField attr1 = (SarlField) skill.getMembers().get(0);
-			assertEquals("field", attr1.getName());
-			assertTypeReferenceIdentifier(attr1.getType(), "int");
-			assertNull(attr1.getInitialValue());
-			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
-			assertFalse(attr1.isFinal());
-			assertTrue(attr1.isStatic());
-			assertFalse(attr1.isTransient());
-			assertFalse(attr1.isVolatile());
-			assertFalse(attr1.isExtension());
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					74, 6,
+					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
 		}
 
 		@Test
@@ -1961,7 +1991,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					74, 8,
-					"Illegal modifier for the definition of field in S1; only public, package, protected, private, static, final, val, var, volatile & transient are permitted");
+					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
 		}
 
 		@Test
@@ -1991,7 +2021,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					74, 8,
-					"Illegal modifier for the definition of field in S1; only public, package, protected, private, static, final, val, var, volatile & transient are permitted");
+					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
 		}
 
 		@Test
@@ -2006,7 +2036,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					74, 6,
-					"Illegal modifier for the definition of field in S1; only public, package, protected, private, static, final, val, var, volatile & transient are permitted");
+					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
 		}
 
 		@Test
@@ -2050,7 +2080,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					74, 12,
-					"Illegal modifier for the definition of field in S1; only public, package, protected, private, static, final, val, var, volatile & transient are permitted");
+					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
 		}
 
 		@Test

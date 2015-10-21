@@ -96,14 +96,24 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 		builder.addComboBox(IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION, Messages.SARLValidatorConfigurationBlock_0);
 		builder.addComboBox(IssueCodes.REDUNDANT_CAPACITY_USE, Messages.SARLValidatorConfigurationBlock_10);
 		builder.addComboBox(IssueCodes.UNUSED_AGENT_CAPACITY, Messages.SARLValidatorConfigurationBlock_11);
+		builder.addComboBox(IssueCodes.DISCOURAGED_FUNCTION_NAME,
+				Messages.SARLValidatorConfigurationBlock_12);
 	}
 
 	@Override
 	protected void fillPotentialProgrammingProblemsSection(ComboBoxBuilder builder) {
 		super.fillPotentialProgrammingProblemsSection(builder);
 		builder.addComboBox(org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
+				Messages.SARLValidatorConfigurationBlock_13);
+		builder.addComboBox(org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
 				Messages.SARLValidatorConfigurationBlock_2);
 		builder.addComboBox(IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION, Messages.SARLValidatorConfigurationBlock_3);
+		builder.addComboBox(org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
+				Messages.SARLValidatorConfigurationBlock_14);
+		builder.addComboBox(org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
+				Messages.SARLValidatorConfigurationBlock_15);
+		builder.addComboBox(IssueCodes.RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED,
+				Messages.SARLValidatorConfigurationBlock_16);
 	}
 
 	@Override

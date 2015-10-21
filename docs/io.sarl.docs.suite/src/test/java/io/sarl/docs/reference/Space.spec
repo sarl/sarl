@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,12 +34,12 @@ import static extension org.junit.Assume.assumeFalse
 
 /* @outline
  *
- * This document describes the features related to the definition of a space in SARL.
+ * <p>This document describes the features related to the definition of a space in SARL.
  * Before reading this document, it is recommended reading
  * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
  * and the [Agent Reference](AgentReferenceSpec.html).
  * 
- * One of the key elements that characterize and differentiate the main 
+ * <p>One of the key elements that characterize and differentiate the main 
  * multi-agent approaches is how interactions between agents are described.
  * Some researchers focus on agent-to-agent interactions and corresponding 
  * protocols. Within organizational approaches, some consider the 
@@ -47,7 +47,7 @@ import static extension org.junit.Assume.assumeFalse
  * groups through the roles they play. Others focus on dynamic 
  * organizations and normative aspects. 
  * 
- * Another essential aspect of the interaction is the interaction 
+ * <p>Another essential aspect of the interaction is the interaction 
  * Agent-Environment, especially in agent-based simulations.
  * Each of these trends of multi-agent systems has led to numerous 
  * fruitful and innovative contributions.
@@ -55,17 +55,17 @@ import static extension org.junit.Assume.assumeFalse
  * describing the interaction among agents, but rather attempt to 
  * provide means to implement each of these approaches.
  * 
- * It is in this perspective that the concepts of `Space`
+ * <p>It is in this perspective that the concepts of `Space`
  * and `SpaceSpecification` were defined.
  * 
- * __A Space is the support of the interaction between agents respecting 
+ * <p>__A Space is the support of the interaction between agents respecting 
  * the rules defined in a Space Specification.__
  * 
- * __A Space Specification defines the rules (including action and
+ * <p>__A Space Specification defines the rules (including action and
  * perception) for interacting within a given set of spaces respecting 
  * this specification.__
  * 
- * SARL natively defines a particular type of `Space` called
+ * <p>SARL natively defines a particular type of `Space` called
  * *Event Space* to provide a support to event-driven interactions.
  * Within an event space, agents communicate using events, the 
  * [built-in capacity `DefaultContextInteractions`](BuiltInCapacityReferenceSpec.html)
@@ -74,7 +74,7 @@ import static extension org.junit.Assume.assumeFalse
  * in behavior definition.
  * A __Default Space__ is precisely an event space.
  * 
- * Within an event space, the notion of `Scope` enables to 
+ * <p>Within an event space, the notion of `Scope` enables to 
  * precisely control/filter the potential recipients of an event.
  * __A Scope is a predicate used to filter the potentially called 
  * listeners for a given event.__
@@ -99,7 +99,7 @@ describe "Space Reference" {
 			 *      }
 			 *
 			 * 
-			 * The `getID` function replies the identifier of the space.
+			 * <p>The `getID` function replies the identifier of the space.
 			 * The `getParticipants` function replies the identifiers
 			 * of the agents belonging to the space.
 			 *  
@@ -129,7 +129,7 @@ describe "Space Reference" {
 			 *      }
 			 *
 			 * 
-			 * The `getAddress` function replies the address in the space
+			 * <p>The `getAddress` function replies the address in the space
 			 * of the agent that has the given identifier.
 			 * The `emit` functions permits fire of an event in
 			 * the space.
@@ -155,7 +155,7 @@ describe "Space Reference" {
 			 *      }
 			 *
 			 * 
-			 * The functions `register` and `unregister`
+			 * <p>The functions `register` and `unregister`
 			 * permits an agent to be involved or not.
 			 *  
 			 * @filter(.*) 
@@ -179,7 +179,7 @@ describe "Space Reference" {
 			 *      }
 			 *
 			 * 
-			 * The functions given by this type of space permits implementing
+			 * <p>The functions given by this type of space permits implementing
 			 * a space with restricted access, based on the standard Java API.
 			 *  
 			 * @filter(.*) 
@@ -202,13 +202,13 @@ describe "Space Reference" {
 		 * It is an object-oriented language with a syntax close to the
 		 * one of SARL.
 		 * 
-		 * For defining a space, three steps must be followed:
+		 * <p>For defining a space, three steps must be followed:
 		 * 
 		 *  * Definition of the interface of the space;
 		 *  * Implementation of the space on a specific runtime environment;
 		 *  * Definition of the space specification.
 		 * 
-		 * In the rest of this section, we use the example of the definition
+		 * <p>In the rest of this section, we use the example of the definition
 		 * of a physic space: a space in which objects are located. 
 		 */
 		describe "Defining a Space" {
@@ -217,7 +217,7 @@ describe "Space Reference" {
 			 * the specification of the Java interface that is describing
 			 * the functions provided by the space.
 			 * 
-			 * The new space type must extend one of the predefined types.
+			 * <p>The new space type must extend one of the predefined types.
 			 * In the following example, the new space is related to
 			 * the physic environment in which the agents may evolve.
 			 * 
@@ -227,7 +227,7 @@ describe "Space Reference" {
 			 * 		    def unbindBody(EventListener agent)
 			 *      }
 			 *
-			 * This space permits to move an object (including the physical
+			 * <p>This space permits to move an object (including the physical
 			 * representation of the agent, its body).
 			 * Additionally, the space gives to the agent the ability to be binded
 			 * to its body, and to release the control of its body.
@@ -252,7 +252,7 @@ describe "Space Reference" {
 			 * that you will be notified about any major changes on this part of
 			 * the API.</caution>
 			 * 
-			 * Below, the implementation
+			 * <p>Below, the implementation
 			 * extends one of the abstract classes provided by the
 			 * [Janus Platform](http://www.janusproject.io).
 			 * 
@@ -281,7 +281,7 @@ describe "Space Reference" {
 			 * 			}
 			 *      }
 			 * 
-			 * The physic space contains a collection of objects, namely `entities`.
+			 * <p>The physic space contains a collection of objects, namely `entities`.
 			 * Each object is identified by an UUID.
 			 * It is assumed that the `PhysicObject` class provides a method for moving it:
 			 * `move(float, float, float)`.
@@ -310,7 +310,7 @@ describe "Space Reference" {
 			 * that you will be notified about any major changes on this part of
 			 * the API.</caution>
 			 * 
-			 * Below, the implementation
+			 * <p>Below, the implementation
 			 * extends one of the abstract classes provided by the
 			 * [Janus Platform](http://www.janusproject.io).
 			 * 
@@ -366,7 +366,7 @@ describe "Space Reference" {
 			 * 	       }
 			 *     }
 			 * 
-			 * The example above is the specification related to the first implementation
+			 * <p>The example above is the specification related to the first implementation
 			 * of the PhysicSpace.
 			 *
 			 *     class NetworkPhysicSpaceSpecification implements SpaceSpecification<PhysicSpace> {
@@ -378,7 +378,7 @@ describe "Space Reference" {
 			 * 	       }
 			 *     }
 			 * 
-			 * The example above is the specification that permits to create a physic space
+			 * <p>The example above is the specification that permits to create a physic space
 			 * with networking. It retrieves by injection the factory of distributed data structures
 			 * provided by the Janus platform.
 			 * 
@@ -396,9 +396,9 @@ describe "Space Reference" {
 	 * Release: %sarlspecreleasedate%
 	 * 
 	 * 
-	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * <p>Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
 	 * 
-	 * Licensed under the Apache License, Version 2.0;
+	 * <p>Licensed under the Apache License, Version 2.0;
 	 * you may not use this file except in compliance with the License.
 	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
 	 *

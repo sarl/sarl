@@ -64,4 +64,14 @@ public class SarlBehaviorImplCustom extends SarlBehaviorImpl {
 		return false;
 	}
 
+	@Override
+	public boolean isStrictFloatingPoint() {
+		for (String modifier : getModifiers()) {
+			if (Strings.equal(modifier, "strictfp")) {  //$NON-NLS-1$
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

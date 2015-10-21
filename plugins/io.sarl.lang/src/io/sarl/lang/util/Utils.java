@@ -833,7 +833,7 @@ public final class Utils {
 		ParameterElements elements = grammarAccess.getParameterAccess();
 		signature.append(parameter.getName());
 		signature.append(' ');
-		signature.append(elements.getColonKeyword_3().getValue());
+		signature.append(elements.getColonKeyword_4().getValue());
 		signature.append(' ');
 		signature.append(getSignatureType(parameter.getParameterType().getType(), importManager));
 		if (parameter.isVarArg()) {
@@ -842,7 +842,7 @@ public final class Utils {
 			SarlFormalParameter sarlParameter = (SarlFormalParameter) parameter;
 			if (sarlParameter.getDefaultValue() != null) {
 				signature.append(' ');
-				signature.append(elements.getEqualsSignKeyword_5_1_0().getValue());
+				signature.append(elements.getEqualsSignKeyword_6_1_0().getValue());
 				signature.append(' ');
 				signature.append(serializer.serialize(sarlParameter.getDefaultValue()).trim());
 			}

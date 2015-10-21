@@ -35,6 +35,7 @@
     <genClasses ecoreClass="SARL.ecore#//SarlAgent">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAgent/extends"/>
       <genOperations ecoreOperation="SARL.ecore#//SarlAgent/isAbstract"/>
+      <genOperations ecoreOperation="SARL.ecore#//SarlAgent/isStrictFloatingPoint"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlCapacity">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlCapacity/extends"/>
@@ -42,11 +43,13 @@
     <genClasses ecoreClass="SARL.ecore#//SarlBehavior">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlBehavior/extends"/>
       <genOperations ecoreOperation="SARL.ecore#//SarlBehavior/isAbstract"/>
+      <genOperations ecoreOperation="SARL.ecore#//SarlBehavior/isStrictFloatingPoint"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlSkill">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlSkill/extends"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlSkill/implements"/>
       <genOperations ecoreOperation="SARL.ecore#//SarlSkill/isAbstract"/>
+      <genOperations ecoreOperation="SARL.ecore#//SarlSkill/isStrictFloatingPoint"/>
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlFormalParameter">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlFormalParameter/defaultValue"/>

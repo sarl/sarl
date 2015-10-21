@@ -25,7 +25,7 @@ import org.eclipse.xtext.generator.*
 import org.eclipse.xtext.ui.generator.*
 import org.eclipse.xtend.core.*
 import org.eclipse.xtext.resource.XtextResourceSet 
-import io.sarl.lang.ecoregenerator.fragments.* 
+import io.sarl.lang.ecoregenerator.mwe2.* 
 
 var fileExtensions = "sarl"
 var projectName = "io.sarl.lang"

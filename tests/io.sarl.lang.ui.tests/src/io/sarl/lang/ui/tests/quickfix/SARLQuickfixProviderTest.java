@@ -41,7 +41,6 @@ import static org.junit.Assert.*;
 	SARLQuickfixProviderTest.SuperTypes.class,
 	SARLQuickfixProviderTest.Capacities.class,
 	SARLQuickfixProviderTest.ReturnTypes.class,
-	//	SARLQuickfixProviderTest.MissingMethodImplementation.class,
 })
 @SuppressWarnings("all")
 public class SARLQuickfixProviderTest {
@@ -2369,5 +2368,5 @@ public class SARLQuickfixProviderTest {
 		}
 
 	}
-
+	
 }

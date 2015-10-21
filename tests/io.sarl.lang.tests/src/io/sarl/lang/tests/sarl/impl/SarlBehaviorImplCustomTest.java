@@ -17,7 +17,6 @@ package io.sarl.lang.tests.sarl.impl;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
 import com.google.inject.Inject;
 import org.junit.Test;
 
@@ -41,6 +40,13 @@ public class SarlBehaviorImplCustomTest extends AbstractSarlTest {
 		assertFalse(this.behavior.isAbstract());
 		this.behavior.getModifiers().add("abstract");
 		assertTrue(this.behavior.isAbstract());
+	}
+
+	@Test
+	public void modifier_strictfp() throws Exception {
+		assertFalse(this.behavior.isStrictFloatingPoint());
+		this.behavior.getModifiers().add("strictfp");
+		assertTrue(this.behavior.isStrictFloatingPoint());
 	}
 
 }

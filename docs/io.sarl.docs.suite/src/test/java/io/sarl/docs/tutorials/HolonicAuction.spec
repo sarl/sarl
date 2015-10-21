@@ -28,9 +28,9 @@ import org.jnario.runner.CreateWith
 import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.*;
 
-/* <!-- OUTPUT OUTLINE -->
+/* @outline
  *
- * This document describes the basics of the creation
+ * <p>This document describes the basics of the creation
  * and design of holons in SARL. This tutorial is applied
  * on a simple English auction application.
  * Before reading this document, it is recommended reading
@@ -39,14 +39,14 @@ import static extension org.junit.Assume.*;
  * used for designing a system in which a decision must be
  * taken after arbitration among components. 
  * 
- * <div class="bt-download">
+ * <p><div class="bt-download">
  * <a href="%sarlmavenrepository%/last-demos-release.jar"><img alt="Download the Binary JAR file" src="%website%/images/download-icon.png"/></a>
  * </div>
  * According to the vocabulary used in the SARL project,
  * all the agents are holons. In the rest of this tutorial,
  * the terms "agent" and "holon" are synonymous. 
  * 
- * The elements that are explained in this tutorial are:
+ * <p>The elements that are explained in this tutorial are:
  * 
  *  * the definition of an event;
  *  * the definition of a super-agent;
@@ -59,7 +59,7 @@ import static extension org.junit.Assume.*;
  * readers, the [Agent Reference](../reference/AgentReferenceSpec.html)
  * may be read.</note>
  * 
- * The source code related to this tutorial may be found
+ * <p>The source code related to this tutorial may be found
  * in the [SARL demos](https://github.com/sarl/sarl-demos/tree/master/src/main/sarl/io/sarl/docs/tutorials/holonicauction).
  */
 @CreateWith(SARLSpecCreator)
@@ -83,7 +83,7 @@ describe "English Auction with Holons"{
 		 * potential bidders.
 		 * 
 		 * 
-		 * Source: [Wikipedia](http://en.wikipedia.org/wiki/Auction)
+		 * <p>Source: [Wikipedia](http://en.wikipedia.org/wiki/Auction)
 		 * 
 		 * @filter(.*)
 		 */
@@ -113,10 +113,10 @@ describe "English Auction with Holons"{
 		 *    the auction, and the winner is the bidder with the higher
 		 *    bid.
 		 *
-		 * __By a design choice, the bidders are sub-agents of
+		 * <p>__By a design choice, the bidders are sub-agents of
 		 * the auctioneer agent.__
 		 * 
-		 * ![Holonic Auction](./holonic_auction.png)
+		 * <p>![Holonic Auction](./holonic_auction.png)
 		 *
 		 * @filter(.*)
 		 */
@@ -331,7 +331,7 @@ describe "English Auction with Holons"{
 			 * The ID of the super-agent, and the ID of the inner
 			 * context of this super-agent are always the same.</note>
 			 * 
-			 * Below, we update the bidding behavior by creating
+			 * <p>Below, we update the bidding behavior by creating
 			 * a scope, and providing it to the `emit` function.
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*)
@@ -584,7 +584,7 @@ describe "English Auction with Holons"{
 			 * during the last 10 seconds. This periodic task
 			 * is started after the first 10 seconds.
 			 * 
-			 * Coding the periodic task in SARL is done with
+			 * <p>Coding the periodic task in SARL is done with
 			 * the `Schedules` capacity.
 			 * It provides the `every` function that is
 			 * executing at a fixed delay its second argument,
@@ -674,7 +674,7 @@ describe "English Auction with Holons"{
 			 * blocks of code are not executed at the same time for
 			 * avoiding any conflicting access on the same data.
 			 * 
-			 * It is recommended to "synchronize" the blocks of code.
+			 * <p>It is recommended to "synchronize" the blocks of code.
 			 * We use the `synchronize` operator (which has the same
 			 * meaning as in the Java language). This operator ensures
 			 * that two blocks of code, which are synchronized on the
@@ -767,7 +767,7 @@ describe "English Auction with Holons"{
 		 * cause all the agents waiting something that will
 		 * never append.
 		 * 
-		 * __We need to stop the agents.__
+		 * <p>__We need to stop the agents.__
 		 * 
 		 * <importantnote> In the
 		 * specification of SARL, a super-agent cannot be killed
@@ -971,7 +971,7 @@ describe "English Auction with Holons"{
 		 * for running the agents.
 		 *
 		 *
-		 * The Janus platform is designed to launch a single agent at start-up.
+		 * <p>The Janus platform is designed to launch a single agent at start-up.
 		 * Then, this launched agent must spawn the other agents in the system.
 		 * This is typically the case in the auction application.
 		 * 
@@ -987,11 +987,11 @@ describe "English Auction with Holons"{
 			 * the compiled files of the tutorial, the Janus platform,
 			 * and all the needed libraries by SARL and Janus.
 			 *
-			 * You could directly download this file by clicking on
+			 * <p>You could directly download this file by clicking on
 			 * the download icon at the top of this page; or by compiling
 			 * the source code yourself.
 			 *  
-			 * If you download the source code of the
+			 * <p>If you download the source code of the
 			 * [SARL demos](https://github.com/sarl/sarl-demos/), and
 			 * compile them with [Maven](http://maven.apache.org),
 			 * you will obtain a JAR file with all the mandatory elements
@@ -1018,7 +1018,7 @@ describe "English Auction with Holons"{
 			 *     java -jar sarl-demos-0.1.0-with-dependencies.jar
 			 *          io.sarl.docs.tutorials.holonicauction.Auctioneer
 			 *  
-			 * The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
+			 * <p>The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
 			 * The third argument is the qualified name of the agent to launch.
 			 *  
 			 * @filter(.*)
@@ -1036,7 +1036,7 @@ describe "English Auction with Holons"{
 			 *          io.janusproject.Boot
 			 *          io.sarl.docs.tutorials.holonicauction.Auctioneer
 			 *  
-			 * The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
+			 * <p>The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
 			 * The string `io.janusproject.Boot` specifies the Java class to launch: the Janus bootstrap.
 			 * The first argument after the bootstrap is the qualified name of the 
 			 * agent to launch.

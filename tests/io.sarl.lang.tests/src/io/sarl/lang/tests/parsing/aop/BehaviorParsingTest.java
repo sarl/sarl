@@ -185,6 +185,7 @@ public class BehaviorParsingTest {
 			assertEquals(0, beh.getMembers().size());
 			assertFalse(beh.isAbstract());
 			assertFalse(beh.isFinal());
+			assertFalse(beh.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -204,6 +205,7 @@ public class BehaviorParsingTest {
 			assertEquals(0, beh.getMembers().size());
 			assertFalse(beh.isAbstract());
 			assertFalse(beh.isFinal());
+			assertFalse(beh.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -216,7 +218,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 7,
-					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the behavior B1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -229,7 +231,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 9,
-					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the behavior B1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -249,6 +251,7 @@ public class BehaviorParsingTest {
 			assertEquals(0, beh.getMembers().size());
 			assertFalse(beh.isAbstract());
 			assertFalse(beh.isFinal());
+			assertFalse(beh.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -268,6 +271,7 @@ public class BehaviorParsingTest {
 			assertEquals(0, beh.getMembers().size());
 			assertTrue(beh.isAbstract());
 			assertFalse(beh.isFinal());
+			assertFalse(beh.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -280,7 +284,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 6,
-					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the behavior B1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -293,7 +297,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the behavior B1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -313,6 +317,7 @@ public class BehaviorParsingTest {
 			assertEquals(0, beh.getMembers().size());
 			assertFalse(beh.isAbstract());
 			assertTrue(beh.isFinal());
+			assertFalse(beh.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -320,12 +325,19 @@ public class BehaviorParsingTest {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"strictfp behavior B1 {}"
-					), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlBehavior(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 8,
-					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
+					), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, beh.getVisibility());
+			assertEquals(0, beh.getMembers().size());
+			assertFalse(beh.isAbstract());
+			assertFalse(beh.isFinal());
+			assertTrue(beh.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -338,7 +350,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 6,
-					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the behavior B1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -351,7 +363,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the behavior B1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -364,7 +376,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 12,
-					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the behavior B1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -377,7 +389,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 9,
-					"Illegal modifier for the behavior B1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the behavior B1; only public, package, abstract, final & strictfp are permitted");
 		}
 
 		@Test
@@ -394,13 +406,49 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
-		public void modifier_abstract_action() throws Exception {
+		public void modifier_abstract_action_error_0() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	def name",
 					"}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
+					51, 4,
+					"The abstract method name in type B1 can only be defined by an abstract class");
+		}
+
+		@Test
+		public void modifier_abstract_action_error_1() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"behavior B1 {",
+					"	abstract def name",
+					"}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
+					60, 4,
+					"The abstract method name in type B1 can only be defined by an abstract class");
+		}
+		
+		@Test
+		public void modifier_abstract_action_warning() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"abstract behavior B1 {",
+					"	def name",
+					"}"
 					), true);
+			validate(mas).assertWarning(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
+					60, 4,
+					"The method name in type B1 should be declared abstract");
+			//
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -410,8 +458,33 @@ public class BehaviorParsingTest {
 			assertNull(beh.getExtends());
 			assertEquals(JvmVisibility.PUBLIC, beh.getVisibility());
 			assertEquals(1, beh.getMembers().size());
-			assertFalse(beh.isAbstract());
+			assertTrue(beh.isAbstract());
 			assertFalse(beh.isFinal());
+			assertFalse(beh.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void modifier_abstract_action() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"abstract behavior B1 {",
+					"	abstract def name",
+					"}"
+					), true);
+			validate(mas).assertNoIssues();
+			//
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, beh.getVisibility());
+			assertEquals(1, beh.getMembers().size());
+			assertTrue(beh.isAbstract());
+			assertFalse(beh.isFinal());
+			assertFalse(beh.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -435,8 +508,8 @@ public class BehaviorParsingTest {
 		public void modifier_override_recommended() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
-					"behavior B1 {",
-					"	def name",
+					"abstract behavior B1 {",
+					"	abstract def name",
 					"}",
 					"behavior B2 extends B1 {",
 					"	def name { }",
@@ -444,7 +517,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
-					88, 4,
+					106, 4,
 					"The method name() of type B2 must use override keyword since it actually overrides a supertype method");
 		}
 
@@ -468,8 +541,8 @@ public class BehaviorParsingTest {
 		public void modifier_override_valid() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
-					"behavior B1 {",
-					"	def name",
+					"abstract behavior B1 {",
+					"	abstract def name",
 					"}",
 					"behavior B2 extends B1 {",
 					"	override name { }",
@@ -725,6 +798,7 @@ public class BehaviorParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -751,6 +825,7 @@ public class BehaviorParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -777,6 +852,7 @@ public class BehaviorParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -802,6 +878,8 @@ public class BehaviorParsingTest {
 			assertFalse(act1.isStatic());
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -828,27 +906,41 @@ public class BehaviorParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
 		public void modifier_abstract() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
-					"behavior B1 {",
+					"abstract behavior B1 {",
 					"	abstract def name",
-					"}"), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the definition of name in B1; only public, package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertTrue(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
 		public void modifier_no_abstract() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
-					"behavior B1 {",
+					"abstract behavior B1 {",
 					"	def name",
 					"}"), true);
 			assertEquals(1, mas.getXtendTypes().size());
@@ -868,6 +960,7 @@ public class BehaviorParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -876,24 +969,12 @@ public class BehaviorParsingTest {
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	static def name { }",
-					"}"), true);
-			assertEquals(1, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
-			assertEquals("B1", beh.getName());
-			assertNull(beh.getExtends());
-			assertEquals(1, beh.getMembers().size());
-			//
-			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
-			assertEquals("name", act1.getName());
-			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
-			assertFalse(act1.isAbstract());
-			assertTrue(act1.isStatic());
-			assertFalse(act1.isDispatch());
-			assertFalse(act1.isFinal());
-			assertFalse(act1.isSynchonized());
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 6,
+					"Illegal modifier for the definition of name in B1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
 		}
 
 		@Test
@@ -920,6 +1001,7 @@ public class BehaviorParsingTest {
 			assertTrue(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -946,6 +1028,7 @@ public class BehaviorParsingTest {
 			assertFalse(act1.isDispatch());
 			assertTrue(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -954,12 +1037,25 @@ public class BehaviorParsingTest {
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	strictfp def name { }",
-					"}"), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the definition of name in B1; only public, package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertTrue(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -973,7 +1069,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 6,
-					"Illegal modifier for the definition of name in B1; only public, package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+					"Illegal modifier for the definition of name in B1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
 		}
 
 		@Test
@@ -987,7 +1083,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 8,
-					"Illegal modifier for the definition of name in B1; only public, package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+					"Illegal modifier for the definition of name in B1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
 		}
 
 		@Test
@@ -1014,6 +1110,7 @@ public class BehaviorParsingTest {
 			assertFalse(act1.isDispatch());
 			assertFalse(act1.isFinal());
 			assertTrue(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 		@Test
@@ -1027,7 +1124,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 9,
-					"Illegal modifier for the definition of name in B1; only public, package, protected, private, static, dispatch, final, def, override & synchronized are permitted");
+					"Illegal modifier for the definition of name in B1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
 		}
 
 		@Test
@@ -1068,6 +1165,7 @@ public class BehaviorParsingTest {
 			assertTrue(act1.isDispatch());
 			assertTrue(act1.isFinal());
 			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
 		}
 
 	}
@@ -1258,7 +1356,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 6,
-					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
+					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val, var, transient & volatile are permitted");
 		}
 
 		@Test
@@ -1281,8 +1379,12 @@ public class BehaviorParsingTest {
 			assertEquals("field", attr1.getName());
 			assertTypeReferenceIdentifier(attr1.getType(), "int");
 			assertNull(attr1.getInitialValue());
-			assertFalse(attr1.isFinal());
 			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
+			assertFalse(attr1.isExtension());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
 		}
 
 		@Test
@@ -1305,8 +1407,12 @@ public class BehaviorParsingTest {
 			assertEquals("field", attr1.getName());
 			assertTypeReferenceIdentifier(attr1.getType(), "int");
 			assertNull(attr1.getInitialValue());
-			assertFalse(attr1.isFinal());
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+			assertFalse(attr1.isExtension());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
 		}
 
 		@Test
@@ -1329,8 +1435,12 @@ public class BehaviorParsingTest {
 			assertEquals("field", attr1.getName());
 			assertTypeReferenceIdentifier(attr1.getType(), "int");
 			assertNull(attr1.getInitialValue());
-			assertFalse(attr1.isFinal());
 			assertEquals(JvmVisibility.DEFAULT, attr1.getVisibility());
+			assertFalse(attr1.isExtension());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
 		}
 
 		@Test
@@ -1353,8 +1463,12 @@ public class BehaviorParsingTest {
 			assertEquals("field", attr1.getName());
 			assertTypeReferenceIdentifier(attr1.getType(), "int");
 			assertNull(attr1.getInitialValue());
-			assertFalse(attr1.isFinal());
 			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+			assertFalse(attr1.isExtension());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
 		}
 
 		@Test
@@ -1368,7 +1482,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 8,
-					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
+					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val, var, transient & volatile are permitted");
 		}
 
 		@Test
@@ -1382,7 +1496,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 6,
-					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
+					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val, var, transient & volatile are permitted");
 		}
 
 		@Test
@@ -1396,7 +1510,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 8,
-					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
+					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val, var, transient & volatile are permitted");
 		}
 
 		@Test
@@ -1424,7 +1538,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 8,
-					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
+					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val, var, transient & volatile are permitted");
 		}
 
 		@Test
@@ -1438,7 +1552,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 6,
-					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
+					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val, var, transient & volatile are permitted");
 		}
 
 		@Test
@@ -1447,12 +1561,26 @@ public class BehaviorParsingTest {
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	volatile var field : int",
-					"}"), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) beh.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+			assertFalse(attr1.isExtension());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertTrue(attr1.isVolatile());
 		}
 
 		@Test
@@ -1466,7 +1594,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					47, 12,
-					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
+					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val, var, transient & volatile are permitted");
 		}
 
 		@Test
@@ -1475,12 +1603,26 @@ public class BehaviorParsingTest {
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	transient var field : int",
-					"}"), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 9,
-					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val & var are permitted");
+					"}"), true);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) beh.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+			assertFalse(attr1.isExtension());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertTrue(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
 		}
 
 		@Test

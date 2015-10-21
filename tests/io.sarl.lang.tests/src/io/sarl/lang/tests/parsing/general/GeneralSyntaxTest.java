@@ -51,8 +51,8 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 	public void noParamNoReturnActionInClass() throws Exception {
 		SarlScript mas = file(multilineString(
 				"abstract class Light {",
-				"	def turnOn",
-				"	def turnOff",
+				"	abstract def turnOn",
+				"	abstract def turnOff",
 				"}",
 				""));
 		validate(mas).assertNoIssues();
@@ -62,11 +62,11 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 	public void noParamNoReturnActionInInterface() throws Exception {
 		SarlScript mas = file(multilineString(
 				"interface Light {",
-				"	def turnOn",
-				"	def turnOff",
+				"	abstract def turnOn",
+				"	abstract def turnOff",
 				"}",
 				""));
 		validate(mas).assertNoIssues();
 	}
-
+	
 }

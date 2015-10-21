@@ -202,41 +202,47 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator agentModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "package", "abstract", "final")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+			newArrayList("public", "package", "abstract", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"final", "strictfp")); //$NON-NLS-1$//$NON-NLS-2$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInAgentModifierValidator = new SARLModifierValidator(
 			newArrayList(
 			"package",  //$NON-NLS-1$
 			"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$
-			"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"def", "override", "synchronized", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"strictfp")); //$NON-NLS-1$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInAgentModifierValidator = new SARLModifierValidator(
 			newArrayList(
 			"package",  //$NON-NLS-1$
 			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
-			"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"final", "val", "var", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"transient", "volatile")); //$NON-NLS-1$//$NON-NLS-2$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator behaviorModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "package", "abstract", "final")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+			newArrayList("public", "package", "abstract", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"final", "strictfp")); //$NON-NLS-1$//$NON-NLS-2$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInBehaviorModifierValidator = new SARLModifierValidator(
 			newArrayList(
 			"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
-			"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$
-			"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"def", "override", "synchronized", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"strictfp")); //$NON-NLS-1$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInBehaviorModifierValidator = new SARLModifierValidator(
 			newArrayList(
 			"package",  //$NON-NLS-1$
 			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
-			"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"final", "val", "var", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"transient", "volatile")); //$NON-NLS-1$//$NON-NLS-2$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator capacityModifierValidator = new SARLModifierValidator(
@@ -259,21 +265,23 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator skillModifierValidator = new SARLModifierValidator(
-			newArrayList("public", "package", "abstract", "final")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+			newArrayList("public", "package", "abstract", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"final", "strictfp")); //$NON-NLS-1$//$NON-NLS-2$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInSkillModifierValidator = new SARLModifierValidator(
 			newArrayList(
 			"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
-			"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$
-			"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
+			"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"def", "override", "synchronized", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"strictfp")); //$NON-NLS-1$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInSkillModifierValidator = new SARLModifierValidator(
 			newArrayList(
 			"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
-			"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 			"final", "val", "var", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 			"volatile", "transient")); //$NON-NLS-1$//$NON-NLS-2$
 
@@ -1690,72 +1698,87 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 		}
 	}
 
-	/** Override the Xtend behavior for not generating an error when a return type is missed.
-	 * Indeed, the return type if "void" by default.
+	/** Check for abstract methods.
+	 *
+	 * <p>Override the Xtend behavior for: <ul>
+	 * <li>not generating an error when a return type is missed. Indeed, the return type if "void" by default.</li>
+	 * <li>generating a warning when "abstract" is missed.</li>
+	 * </ul>
+	 *
+	 * <p>XXX: Update this function with the code of the derived function.
 	 */
 	@Check
 	@Override
+	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public void checkAbstract(XtendFunction function) {
 		XtendTypeDeclaration declarator = function.getDeclaringType();
-		if (function.getExpression() == null) {
-			if (declarator instanceof SarlClass || declarator.isAnonymous()) {
+		if (function.getExpression() == null || function.isAbstract()) {
+			if (declarator instanceof XtendClass || declarator.isAnonymous()
+					|| declarator instanceof SarlAgent || declarator instanceof SarlBehavior
+					|| declarator instanceof SarlSkill) {
 				if (function.isDispatch()) {
 					error(MessageFormat.format(
-							Messages.SARLJavaValidator_1,
-							function.getName(),
-							this.localClassAwareTypeNames.getReadableName(declarator)),
+							Messages.SARLJavaValidator_32,
+							function.getName(), this.localClassAwareTypeNames.getReadableName(declarator)),
 							XTEND_FUNCTION__NAME, -1, DISPATCH_FUNCTIONS_MUST_NOT_BE_ABSTRACT);
 					return;
 				}
 				if (function.getCreateExtensionInfo() != null) {
 					error(MessageFormat.format(
-							Messages.SARLJavaValidator_21,
-							function.getName(),
-							this.localClassAwareTypeNames.getReadableName(declarator)),
+							Messages.SARLJavaValidator_33,
+							function.getName(), this.localClassAwareTypeNames.getReadableName(declarator)),
 							XTEND_FUNCTION__NAME, -1, CREATE_FUNCTIONS_MUST_NOT_BE_ABSTRACT);
 					return;
 				}
 				if (declarator.isAnonymous()) {
 					error(MessageFormat.format(
-							Messages.SARLJavaValidator_22,
-							function.getName(),
-							this.localClassAwareTypeNames.getReadableName(declarator)),
+							Messages.SARLJavaValidator_34,
+							function.getName(), this.localClassAwareTypeNames.getReadableName(declarator)),
 							XTEND_FUNCTION__NAME, -1, MISSING_ABSTRACT_IN_ANONYMOUS);
-				} else if (!((SarlClass) declarator).isAbstract() && !function.isNative()) {
-					error(MessageFormat.format(
-							Messages.SARLJavaValidator_23,
-							function.getName(),
-							this.localClassAwareTypeNames.getReadableName(declarator)),
-							XTEND_FUNCTION__NAME, -1, MISSING_ABSTRACT);
+				} else {
+					boolean isAbstract;
+					if (declarator instanceof XtendClass) {
+						isAbstract = ((XtendClass) declarator).isAbstract();
+					} else if (declarator instanceof SarlAgent) {
+						isAbstract = ((SarlAgent) declarator).isAbstract();
+					} else if (declarator instanceof SarlBehavior) {
+						isAbstract = ((SarlBehavior) declarator).isAbstract();
+					} else if (declarator instanceof SarlSkill) {
+						isAbstract = ((SarlSkill) declarator).isAbstract();
+					} else {
+						return;
+					}
+					if (!isAbstract && !function.isNative()) {
+						error(MessageFormat.format(
+								Messages.SARLJavaValidator_35,
+								function.getName(), this.localClassAwareTypeNames.getReadableName(declarator)),
+								XTEND_FUNCTION__NAME, -1, MISSING_ABSTRACT);
+						return;
+					}
 				}
-				//				if (function.getReturnType() == null && !function.isOverride()) {
-				//					error(MessageFormat.format(
-				//							"The {0} method {1} in type {2} must declare a return type",
-				//							(function.isNative() ? "native" : "abstract"),
-				//							function.getName(),
-				//							this.localClassAwareTypeNames.getReadableName(declarator)),
-				//						XTEND_FUNCTION__NAME, -1, ABSTRACT_METHOD_MISSING_RETURN_TYPE);
-				//				}
-			} else if (declarator instanceof SarlInterface) {
+
+				if (!function.getModifiers().contains("abstract")) { //$NON-NLS-1$
+					warning(MessageFormat.format(
+							Messages.SARLJavaValidator_36,
+							function.getName(), this.localClassAwareTypeNames.getReadableName(declarator)),
+							XTEND_FUNCTION__NAME, -1, MISSING_ABSTRACT,
+							function.getName(),
+							this.localClassAwareTypeNames.getReadableName(declarator));
+				}
+
+			} else if (declarator instanceof XtendInterface || declarator instanceof SarlCapacity) {
 				if (function.getCreateExtensionInfo() != null) {
 					error(MessageFormat.format(
-							Messages.SARLJavaValidator_24,
+							Messages.SARLJavaValidator_37,
 							function.getName()),
 							XTEND_FUNCTION__NAME, -1, CREATE_FUNCTIONS_MUST_NOT_BE_ABSTRACT);
 					return;
 				}
-				//				if (function.getReturnType() == null && !function.isOverride()) {
-				//					error(MessageFormat.format(
-				//							"The abstract method {0} in type {1} must declare a return type",
-				//							function.getName(),
-				//							this.localClassAwareTypeNames.getReadableName(declarator)),
-				//						XTEND_FUNCTION__NAME, -1, ABSTRACT_METHOD_MISSING_RETURN_TYPE);
-				//				}
 			}
-		} else if (declarator instanceof SarlInterface) {
+		} else if (declarator instanceof XtendInterface || declarator instanceof SarlCapacity) {
 			if (!getGeneratorConfig(function).getJavaSourceVersion().isAtLeast(JAVA8)) {
-				error(Messages.SARLJavaValidator_25,
-						XTEND_FUNCTION__NAME, -1, ABSTRACT_METHOD_WITH_BODY);
+				error(Messages.SARLJavaValidator_38, XTEND_FUNCTION__NAME, -1, ABSTRACT_METHOD_WITH_BODY);
+				return;
 			}
 		}
 	}

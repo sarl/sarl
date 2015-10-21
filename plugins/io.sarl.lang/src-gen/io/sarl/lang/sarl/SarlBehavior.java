@@ -58,4 +58,12 @@ public interface SarlBehavior extends XtendTypeDeclaration
    */
   boolean isAbstract();
 
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @model kind="operation"
+   * @generated
+   */
+  boolean isStrictFloatingPoint();
+
 } // SarlBehavior

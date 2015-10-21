@@ -44,15 +44,22 @@ Type returns xtend::XtendTypeDeclaration:
 
 Member returns xtend::XtendMember:
 	Field | Constructor | Action | Class | Interface | Enum | AnnotationType 
-; 
+;
 
+// Type is mandatory if "extension" modifier is given. See https://bugs.eclipse.org/bugs/show_bug.cgi?id=408323
 Field returns xtend::XtendField:
 	{SarlField}
 	annotations+=XAnnotation*
 	modifiers+=CommonModifier*
-	modifiers+=FieldModifier
-	modifiers+=CommonModifier*
-	(=>(name=ValidID ':' type=JvmTypeReference) | name=ValidID) 
+	((	modifiers += 'extension'
+		modifiers+=FieldModifier
+		modifiers+=CommonModifier*
+		(=>(name=ValidID ':' type=JvmTypeReference)) 
+	)|(
+		modifiers+=FieldModifier
+		modifiers+=CommonModifier*
+		(=>(name=ValidID ':' type=JvmTypeReference) | name=ValidID) 
+	))
 	('=' initialValue=XExpression)? ';'?
 ;
 
@@ -248,6 +255,7 @@ SkillMember returns xtend::XtendMember:
 Parameter returns xtend::XtendParameter:
 	{SarlFormalParameter}
 	annotations+=XAnnotation*
+	(extension?='extension' annotations+=XAnnotation*)?
 	name=InnerVarID ':' parameterType=JvmTypeReference 
 	(   (varArg?=VarArgToken)
 	  | ('=' defaultValue=DefaultParameterValue))?
@@ -263,6 +271,7 @@ DefaultParameterValue returns xbase::XExpression:
 // Variable declaration according to the SARL syntax (not the Xtext/Xtend)
 XVariableDeclaration returns xbase::XExpression:
 	=>({xtend::XtendVariableDeclaration}
+	extension?='extension'?
 	(writeable?='var'|'val') )
 	(=>name=InnerVarID)
 	(':' type=JvmTypeReference)?
@@ -271,12 +280,12 @@ XVariableDeclaration returns xbase::XExpression:
 
 // Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
 JvmFormalParameter returns xtend::XtendFormalParameter:
-	name=InnerVarID (=> ':' (parameterType=JvmTypeReference))?
+	extension?='extension'? name=InnerVarID (=> ':' (parameterType=JvmTypeReference))?
 ;
 	
 // Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
 FullJvmFormalParameter returns xtend::XtendFormalParameter:
-	name=InnerVarID ':' parameterType=JvmTypeReference
+	extension?='extension'? name=InnerVarID ':' parameterType=JvmTypeReference
 ;
 
 // The type of the for-loop's variable is following the SARL syntax (not the Xtext/Xtend)
@@ -287,9 +296,9 @@ XForLoopExpression returns xbase::XExpression:
 ;
 // The following rule is not provided by Xbase, but we use it
 // in the overloaded version of XForLoopExpression
-SarlXLoopFormalParameter returns jvm::JvmFormalParameter:
-	{jvm::JvmFormalParameter}
-	name=ValidID
+SarlXLoopFormalParameter returns xtend::XtendFormalParameter:
+	{xtend::XtendFormalParameter}
+	(extension?='extension'?) name=ValidID
 	( 'as' parameterType=JvmTypeReference )?
 ;
 

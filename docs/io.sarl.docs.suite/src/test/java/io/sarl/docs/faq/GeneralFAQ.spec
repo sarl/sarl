@@ -42,7 +42,7 @@ describe "General FAQ on SARL" {
 			
 			/* SARL is a general-purpose agent-oriented language.
 			 * 
-			 * SARL aims at providing the fundamental abstractions 
+			 * <p>SARL aims at providing the fundamental abstractions 
 			 * for dealing with concurrency, distribution, interaction, 
 			 * decentralization, reactivity, autonomy and dynamic 
 			 * reconfiguration. These high-level features are now 
@@ -51,13 +51,13 @@ describe "General FAQ on SARL" {
 			 * applications. We are convinced that the agent-oriented 
 			 * paradigm holds the keys to effectively meet this challenge.
 			 * 
-			 * Considering the variety of existing approaches and 
+			 * <p>Considering the variety of existing approaches and 
 			 * meta-models in the field of agent-oriented engineering 
 			 * and more generally multi-agent systems, our approach 
 			 * remains as generic as possible and highly extensible 
 			 * to easily integrate new concepts and features.
 			 * 
-			 * __The language is platform- and architecture-independent.__
+			 * <p>__The language is platform- and architecture-independent.__
 			 * 
 			 * @filter(.*) 
 			 */
@@ -66,7 +66,7 @@ describe "General FAQ on SARL" {
 			}
 
 			/* __Yes__. 
-			 * SARL may be used for agent based applications. 
+			 * <p>SARL may be used for agent based applications. 
 			 * Natively, SARL provides features for agent execution and 
 			 * direct communication. The agents may be deployed
 			 * on real computers and over a computer network.
@@ -113,7 +113,7 @@ describe "General FAQ on SARL" {
 			 * and provides embedded capacity implementations 
 			 * required by the played roles.
 			 * 
-			 * Other organizational may be used, if a dedicated space
+			 * <p>Other organizational may be used, if a dedicated space
 			 * is defined for.
 			 * 
 			 * @filter(.*) 
@@ -166,7 +166,7 @@ describe "General FAQ on SARL" {
 			 * Janus is a runtime environment (SRE) for multi-agent applications
 			 * that fully supports the concepts of SARL.
 			 * 
-			 * We can make a parallel with the Java universe:
+			 * <p>We can make a parallel with the Java universe:
 			 * <center>
 			 * <table>
 			 * <thead>
@@ -212,10 +212,10 @@ describe "General FAQ on SARL" {
 			/* A community driven list of useful SARL libraries, frameworks and software
 			 * is maintained on [Github](https://github.com/sarl/awesome-sarl).
 			 *
-			 * This is not a catalog of all the libraries, just a starting point for
+			 * <p>This is not a catalog of all the libraries, just a starting point for
 			 * your explorations.
 			 *
-			 * This list is be used by the SARL team for updating this official web site
+			 * <p>This list is be used by the SARL team for updating this official web site
 			 * of SARL.
 			 * 
 			 * @filter(.*) 
