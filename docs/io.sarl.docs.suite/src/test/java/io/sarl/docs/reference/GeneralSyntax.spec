@@ -2731,8 +2731,8 @@ To declare a bounded type parameter, list the type parameter's name, followed by
 	 * can either be passed in after opening the parentheses or before the 
 	 * method call. For example, given a method:
 	 *  
-	 *     def removeVowels (String s) {
-	 *         s.replaceAll("[aeiouAEIOU]", "")
+	 *     def removeVowels (s : String) {
+	 *         s.replaceAll("[aeiouyAEIOUY]", "")
 	 *     }
 	 *
 	 * 
@@ -2746,7 +2746,7 @@ To declare a bounded type parameter, list the type parameter's name, followed by
 	 *     "Hello".removeVowels
 	 */
 	describe "Extension Methods"{
- 
+		
 		/*
 		 * You can import static methods as extensions, directly call the 
 		 * imported static methods on our list objects:
@@ -2754,6 +2754,21 @@ To declare a bounded type parameter, list the type parameter's name, followed by
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Import static extension methods"{
+			parseSuccessfully("
+			package io.sarl.docs.reference.gsr
+			class C1 {
+				def removeVowels (s : String) {
+					s.replaceAll(\"[aziouyAEIOUY]+\", \"\")
+				}
+				def caller1 {
+					removeVowels(\"Hello\")
+				}
+				def caller2 {
+					\"Hello\".removeVowels
+				}
+			}
+			")
+			//
 			'''
 			import static extension java.util.Collections.*
 			agent A {
