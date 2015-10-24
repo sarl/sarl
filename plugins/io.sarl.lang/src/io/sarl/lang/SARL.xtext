@@ -46,7 +46,7 @@ Member returns xtend::XtendMember:
 	Field | Constructor | Action | Class | Interface | Enum | AnnotationType 
 ;
 
-// Type is mandatory if "extension" modifier is given. See https://bugs.eclipse.org/bugs/show_bug.cgi?id=408323
+// Type reference is mandatory if "extension" modifier is given. See https://bugs.eclipse.org/bugs/show_bug.cgi?id=408323
 Field returns xtend::XtendField:
 	{SarlField}
 	annotations+=XAnnotation*
@@ -66,7 +66,7 @@ Field returns xtend::XtendField:
 AnnotationField returns xtend::XtendMember:
 	(
 		{SarlField}
-		annotations+=XAnnotation* 
+		annotations+=XAnnotation*
 		modifiers+=CommonModifier*
 		modifiers+=FieldModifier
 		modifiers+=CommonModifier*
@@ -126,7 +126,7 @@ Constructor returns xtend::XtendConstructor:
 
 BehaviorUnit returns xtend::XtendMember:
 	{SarlBehaviorUnit}
-	annotations+=XAnnotation* 
+	annotations+=XAnnotation*
 	'on' name=JvmParameterizedTypeReference (=> '[' guard=XExpression ']')?
 	(expression=XBlockExpression | expression=RichString | ';')
 ;

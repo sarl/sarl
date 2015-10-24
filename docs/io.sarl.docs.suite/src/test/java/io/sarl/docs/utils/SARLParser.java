@@ -654,8 +654,10 @@ public class SARLParser {
 			if (type == null) {
 				return param.getParameterType() == null;
 			}
-			return param.getParameterType() != null
-					&& Objects.equals(type, param.getParameterType().getQualifiedName());
+			if (param.getParameterType() != null) {
+				String parameterType = param.getParameterType().getQualifiedName();
+				return Objects.equals(type, parameterType);
+			}
 		}
 		return false;
 	}
@@ -857,8 +859,11 @@ public class SARLParser {
 		if (returnType == null) {
 			return rtype == null;
 		}
-		return rtype != null
-				&& Objects.equals(returnType, rtype.getQualifiedName());
+		if (rtype != null) {
+			String name = rtype.getQualifiedName();
+			return Objects.equals(returnType, name);
+		}
+		return false;
 	}
 
 	/**  Ensure that the given object is the SARL "def" statement

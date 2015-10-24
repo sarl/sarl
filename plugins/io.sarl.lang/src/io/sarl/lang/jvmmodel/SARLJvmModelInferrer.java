@@ -837,13 +837,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	  "checkstyle:npathcomplexity"})
 	protected void transform(final XtendFunction source, final JvmGenericType container, boolean allowDispatch) {
 		final GenerationContext context = getContext(container);
-		final boolean isVarArgs = Utils.isVarArg(source.getParameters());
-		final List<JvmTypeReference> firedEvents;
-		if (source instanceof SarlAction) {
-			firedEvents = ((SarlAction) source).getFiredEvents();
-		} else {
-			firedEvents = Collections.emptyList();
-		}
 
 		// Compute the operation name
 		StringBuilder sourceNameBuffer = new StringBuilder(source.getName());
@@ -855,20 +848,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			sourceNameBuffer.insert(0, "_"); //$NON-NLS-1$
 		}
 		final String sourceName = sourceNameBuffer.toString();
-
-		// Compute the identifier of the action.
-		QualifiedActionName actionKey = this.sarlSignatureProvider.createQualifiedActionName(
-				container, sourceName);
-
-		// Compute the different action prototypes associated to the action to create.
-		final InferredPrototype actionSignatures = this.sarlSignatureProvider.createPrototypeFromSarlModel(
-				actionKey,
-				isVarArgs, source.getParameters());
-
-		// Compute the action prototype of the action without optional parameter
-		final ActionPrototype actSigKey = this.sarlSignatureProvider.createActionPrototype(
-				sourceName,
-				actionSignatures.getFormalParameterTypes());
 
 		// Create the main function
 		final JvmOperation operation = this.typesFactory.createJvmOperation();
@@ -888,6 +867,24 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			operation.setDefault(true);
 		}
 		this.typeBuilder.copyDocumentationTo(source, operation);
+
+		// Type parameters
+		copyAndFixTypeParameters(source.getTypeParameters(), operation);
+
+		// Compute the identifier of the action.
+		QualifiedActionName actionKey = this.sarlSignatureProvider.createQualifiedActionName(
+				container, sourceName);
+
+		// Compute the different action prototypes associated to the action to create.
+		final boolean isVarArgs = Utils.isVarArg(source.getParameters());
+		final InferredPrototype actionSignatures = this.sarlSignatureProvider.createPrototypeFromSarlModel(
+				actionKey,
+				isVarArgs, source.getParameters());
+
+		// Compute the action prototype of the action without optional parameter
+		final ActionPrototype actSigKey = this.sarlSignatureProvider.createActionPrototype(
+				sourceName,
+				actionSignatures.getFormalParameterTypes());
 
 		// Generate the parameters
 		List<InferredStandardParameter> paramList = actionSignatures.getOriginalParameterTypes();
@@ -931,9 +928,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 		operation.setReturnType(this.typeBuilder.cloneWithProxies(returnType));
 
-		// Type parameters
-		copyAndFixTypeParameters(source.getTypeParameters(), operation);
-
 		// Exceptions
 		for (JvmTypeReference exception : source.getExceptions()) {
 			operation.getExceptions().add(this.typeBuilder.cloneWithProxies(exception));
@@ -956,6 +950,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				&& (this.typeReferences.findDeclaredType(Pure.class, source) != null)) {
 			// The function is pure
 			operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
+		}
+
+		final List<JvmTypeReference> firedEvents;
+		if (source instanceof SarlAction) {
+			firedEvents = ((SarlAction) source).getFiredEvents();
+		} else {
+			firedEvents = Collections.emptyList();
 		}
 
 		// Detecting if the action is an early-exit action.

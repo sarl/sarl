@@ -24,8 +24,10 @@ import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import io.sarl.lang.sarl.SarlAction
+import org.eclipse.xtend.core.xtend.XtendClass
 import org.eclipse.xtend.core.xtend.XtendEnumLiteral
 import org.eclipse.xtend.core.xtend.XtendField
+import org.eclipse.xtend.core.xtend.XtendInterface
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
@@ -194,117 +196,116 @@ describe "Basic Object-Oriented Programming Support" {
 		 * by commas. These classes are known as parameterized classes or parameterized types
 		 * because they accept one or more parameters.
 		 *  
-		 * @filter(.* = '''|'''|.parseSuccessfully.*)
-		 * 
 		 * <p>There may be times when you'll want to restrict the kinds of types that are allowed to be passed
 		 * to a type parameter. For example, a method that operates on numbers might only want to
 		 * accept instances of Number or its subclasses. This is what bounded type parameters are for.
 		 * To declare a bounded type parameter, list the type parameter's name, followed by: <ul>
-		 * <li>the ```extends``` keyword, followed by its upper bound; or</li>
-		 * <li>the ```super`` keyword, followed by its lower bound.</li>
+		 * <li>the <code>extends</code> keyword, followed by its upper bound; or</li>
+		 * <li>the <code>super</code> keyword, followed by its lower bound.</li>
 		 * </ul>
+		 *
+		 * @filter(.* = '''|'''|.parseSuccessfully.*)
 		 */
 		fact "Define a Generic Class" {
-//			val model = '''
-//				class AType<T> {
-//				
-//					var t : T
-//				
-//					def add(t : T) {
-//						this.t = t
-//					}
-//				
-//					def get : T {
-//						return this.t
-//					}
-//				}
-//				
-//				class Vector<T extends Number> {
-//				
-//					var x : T
-//					var y : T
-//				
-//					def add(v : Vector<? extends Number>) {
-//						this.x = this.x + v.x
-//						this.y = this.y + v.y
-//					}
-//				}
-//			'''.parseSuccessfully(
-//				"package io.sarl.docs.reference.oop",
-//				// TEXT
-//				""
-//			)
-//			
-//			model => [
-//				it should havePackage "io.sarl.docs.reference.oop"
-//				it should haveNbImports 0
-//				it should haveNbElements 2
-//			]
-//			
-//			model.xtendTypes.get(0) => [
-//				it should beClass "AType"
-//				it should extend _
-//				it should implement _
-//				it should haveNbElements 3
-//				it should haveNbTypeParameters 1
-//				(it as XtendClass).typeParameters.get(0) => {
-//					it should beTypeParameter "T"
-//					it should beContrainedWith _
-//				}
-//				
-//				it.members.get(0) => [
-//					it should beVariable "t"
-//					it should haveType "T"
-//				]
-//
-//				it.members.get(1) => [
-//					it should beAction "add"
-//					it should haveNbParameters 1
-//					(it as SarlAction).parameters.get(0) => {
-//						it should beParameter "t"
-//						it should haveType "T" 
-//					}
-//					it should reply _
-//				]
-//
-//				it.members.get(2) => [
-//					it should beAction "get"
-//					it should haveNbParameters 0
-//					it should reply "T"
-//				]
-//			]
-//
-//			model.xtendTypes.get(1) => [
-//				it should beClass "Vector"
-//				it should extend _
-//				it should implement _
-//				it should haveNbElements 3
-//				it should haveNbTypeParameters 1
-//				(it as XtendClass).typeParameters.get(0) => {
-//					it should beTypeParameter "T"
-//					it should beContrainedWith "java.lang.Number"
-//				}
-//				
-//				it.members.get(0) => [
-//					it should beVariable "x"
-//					it should haveType "T"
-//				]
-//
-//				it.members.get(1) => [
-//					it should beVariable "y"
-//					it should haveType "T"
-//				]
-//
-//				it.members.get(2) => [
-//					it should beAction "add"
-//					it should haveNbParameters 1
-//					(it as SarlAction).parameters.get(0) => {
-//						it should beParameter "v"
-//						it should haveType "Vector"
-//					}
-//					it should reply _
-//				]
-//			]
+			val model = '''
+				class AType<T> {
+				
+					var t : T
+				
+					def add(t : T) {
+						this.t = t
+					}
+				
+					def get : T {
+						return this.t
+					}
+				}
+				
+				class Vector<T extends Number> {
+				
+					var x : T
+					var y : T
+				
+					def norm : Vector<? extends Number> {
+						var v = new Vector
+						var n = Math::sqrt(this.x.floatValue**2 + this.y.floatValue**2)
+						v.x = this.x.floatValue/n
+						v.y = this.y.floatValue/n
+						return v
+					}
+				}
+			'''.parseSuccessfully(
+				"package io.sarl.docs.reference.oop",
+				// TEXT
+				""
+			)
+			
+			model => [
+				it should havePackage "io.sarl.docs.reference.oop"
+				it should haveNbImports 0
+				it should haveNbElements 2
+			]
+			
+			model.xtendTypes.get(0) => [
+				it should beClass "AType"
+				it should extend _
+				it should implement _
+				it should haveNbElements 3
+				it should haveNbTypeParameters 1
+				(it as XtendClass).typeParameters.get(0) => [
+					it should beTypeParameter "T"
+					it should beContrainedWith _
+				]
+				
+				it.members.get(0) => [
+					it should beVariable "t"
+					it should haveType "T"
+				]
+
+				it.members.get(1) => [
+					it should beAction "add"
+					it should haveNbParameters 1
+					(it as SarlAction).parameters.get(0) =>[
+						it should beParameter "t"
+						it should haveType "T" 
+					]
+					it should reply _
+				]
+
+				it.members.get(2) => [
+					it should beAction "get"
+					it should haveNbParameters 0
+					it should reply "T"
+				]
+			]
+
+			model.xtendTypes.get(1) => [
+				it should beClass "Vector"
+				it should extend _
+				it should implement _
+				it should haveNbElements 3
+				it should haveNbTypeParameters 1
+				(it as XtendClass).typeParameters.get(0) => [
+					it should beTypeParameter "T"
+					it should beContrainedWith "extends java.lang.Number"
+				]
+				
+				it.members.get(0) => [
+					it should beVariable "x"
+					it should haveType "T"
+				]
+
+				it.members.get(1) => [
+					it should beVariable "y"
+					it should haveType "T"
+				]
+
+				it.members.get(2) => [
+					it should beAction "norm"
+					it should haveNbParameters 0
+					it should reply "io.sarl.docs.reference.oop.Vector<? extends java.lang.Number>"
+				]
+			]
 		}
 
 		/** An SARL class can define any number of constructors.
@@ -697,9 +698,6 @@ describe "Basic Object-Oriented Programming Support" {
 			]
 		}
 
-		describe "Define a Generic Interface" {
-		}
-
 		/*
 		 * It is possible to specialize the definition of an interface.
 		 * In the following example, the ```VariableIntensityLight```
@@ -749,6 +747,92 @@ describe "Basic Object-Oriented Programming Support" {
 					it should beActionSignature "getLightIntensity"
 					it should haveNbParameters 0
 					it should reply "float"
+				]
+			]
+		}
+
+		/*
+		 * A generic interface declaration looks like a non-generic interface declaration, except that the interface name
+		 * is followed by a type parameter section.
+		 * 
+		 * <p>The type parameter section of a generic interface can have one or more type parameters separated
+		 * by commas. These interfaces are known as parameterized interfaces or parameterized types
+		 * because they accept one or more parameters.
+		 *  
+		 * <p>There may be times when you'll want to restrict the kinds of types that are allowed to be passed
+		 * to a type parameter. For example, a method that operates on numbers might only want to
+		 * accept instances of Number or its subclasses. This is what bounded type parameters are for.
+		 * To declare a bounded type parameter, list the type parameter's name, followed by: <ul>
+		 * <li>the <code>extends</code> keyword, followed by its upper bound; or</li>
+		 * <li>the <code>super</code> keyword, followed by its lower bound.</li>
+		 * </ul>
+		 *
+		 * @filter(.* = '''|'''|.parseSuccessfully.*)
+		 */
+		fact "Define a Generic Interface" {
+			val model = '''
+				interface AnInterface<T> {
+					def add(t : T)
+				
+					def get : T
+				}
+				
+				interface Vector<T extends Number> {
+					def norm : Vector<? extends Number>
+				}
+			'''.parseSuccessfully(
+				"package io.sarl.docs.reference.oop",
+				// TEXT
+				""
+			)
+			
+			model => [
+				it should havePackage "io.sarl.docs.reference.oop"
+				it should haveNbImports 0
+				it should haveNbElements 2
+			]
+			
+			model.xtendTypes.get(0) => [
+				it should beInterface "AnInterface"
+				it should extend _
+				it should haveNbElements 2
+				it should haveNbTypeParameters 1
+				(it as XtendInterface).typeParameters.get(0) => [
+					it should beTypeParameter "T"
+					it should beContrainedWith _
+				]
+				
+				it.members.get(0) => [
+					it should beActionSignature "add"
+					it should haveNbParameters 1
+					(it as SarlAction).parameters.get(0) => [
+						it should beParameter "t"
+						it should haveType "T" 
+					]
+					it should reply _
+				]
+
+				it.members.get(1) => [
+					it should beActionSignature "get"
+					it should haveNbParameters 0
+					it should reply "T"
+				]
+			]
+
+			model.xtendTypes.get(1) => [
+				it should beInterface "Vector"
+				it should extend _
+				it should haveNbElements 1
+				it should haveNbTypeParameters 1
+				(it as XtendInterface).typeParameters.get(0) => [
+					it should beTypeParameter "T"
+					it should beContrainedWith "extends java.lang.Number"
+				]
+				
+				it.members.get(0) => [
+					it should beActionSignature "norm"
+					it should haveNbParameters 0
+					it should reply "io.sarl.docs.reference.oop.Vector<? extends java.lang.Number>"
 				]
 			]
 		}

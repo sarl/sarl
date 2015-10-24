@@ -21,6 +21,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.xtext.common.types.JvmTypeConstraint;
+import org.eclipse.xtext.common.types.JvmTypeParameter;
+
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
@@ -65,6 +68,7 @@ import com.google.inject.Inject;
 	InterfaceParsingTest.InsideAgentTest.class,
 	InterfaceParsingTest.InsideBehaviorTest.class,
 	InterfaceParsingTest.InsideSkillTest.class,
+	InterfaceParsingTest.GenericTest.class,
 })
 @SuppressWarnings("all")
 public class InterfaceParsingTest {
@@ -1501,6 +1505,344 @@ public class InterfaceParsingTest {
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				108, 7,
 				"The interface I1 can only set one of public / package / protected / private");
+		}
+
+	}
+
+	public static class GenericTest extends AbstractSarlTest {
+
+		@Test
+		public void interfaceGeneric_X() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1<X> {",
+					"	def setX(param : X)",
+					"	def getX : X",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
+			assertNotNull(interf);
+			//
+			assertEquals("I1", interf.getName());
+			//
+			assertEquals(1, interf.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter = interf.getTypeParameters().get(0);
+			assertEquals("X", parameter.getName());
+			assertNullOrEmpty(parameter.getConstraints());
+		}
+
+		@Test
+		public void interfaceGeneric_XextendsNumber() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1<X extends Number> {",
+					"	def setX(param : X)",
+					"	def getX : X",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
+			assertNotNull(interf);
+			//
+			assertEquals("I1", interf.getName());
+			//
+			assertEquals(1, interf.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter = interf.getTypeParameters().get(0);
+			assertEquals("X", parameter.getName());
+			assertEquals(1, parameter.getConstraints().size());
+			//
+			JvmTypeConstraint constraint = parameter.getConstraints().get(0);
+			assertEquals("java.lang.Number", constraint.getTypeReference().getIdentifier());
+			assertTrue(constraint.getIdentifier().startsWith("extends"));
+		}
+
+		@Test
+		public void interfaceGeneric_XY() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1<X,Y> {",
+					"	def getY : Y",
+					"	def setX(param : X)",
+					"	def getX : X",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
+			assertNotNull(interf);
+			//
+			assertEquals("I1", interf.getName());
+			//
+			assertEquals(2, interf.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter1 = interf.getTypeParameters().get(0);
+			assertEquals("X", parameter1.getName());
+			assertNullOrEmpty(parameter1.getConstraints());
+			//
+			JvmTypeParameter parameter2 = interf.getTypeParameters().get(1);
+			assertEquals("Y", parameter2.getName());
+			assertNullOrEmpty(parameter2.getConstraints());
+		}
+
+		@Test
+		public void interfaceGeneric_XYextendsX() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1<X,Y extends X> {",
+					"	def getY : Y",
+					"	def setX(param : X)",
+					"	def getX : X",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
+			assertNotNull(interf);
+			//
+			assertEquals("I1", interf.getName());
+			//
+			assertEquals(2, interf.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter1 = interf.getTypeParameters().get(0);
+			assertEquals("X", parameter1.getName());
+			assertNullOrEmpty(parameter1.getConstraints());
+			//
+			JvmTypeParameter parameter2 = interf.getTypeParameters().get(1);
+			assertEquals("Y", parameter2.getName());
+			assertEquals(1, parameter2.getConstraints().size());
+			//
+			JvmTypeConstraint constraint = parameter2.getConstraints().get(0);
+			assertEquals("X", constraint.getTypeReference().getIdentifier());
+			assertTrue(constraint.getIdentifier().startsWith("extends"));
+		}
+
+		@Test
+		public void interfaceGeneric_XextendsYY() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1<X extends Y,Y> {",
+					"	def getY : Y",
+					"	def setX(param : X)",
+					"	def getX : X",
+					"}"), false);
+			validate(mas).assertError(
+					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_PARAMETER_FORWARD_REFERENCE,
+					55, 1,
+					"Illegal forward reference to type parameter Y");
+		}
+
+		@Test
+		public void functionGeneric_X_sarlNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1 {",
+					"	def setX(param : X) : void with X",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
+			assertNotNull(interf);
+			//
+			assertEquals("I1", interf.getName());
+			assertEquals(1, interf.getMembers().size());
+			//
+			SarlAction action = (SarlAction) interf.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(1, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter = action.getTypeParameters().get(0);
+			assertEquals("X", parameter.getName());
+			assertNullOrEmpty(parameter.getConstraints());
+		}
+
+		@Test
+		public void functionGeneric_X_javaNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1 {",
+					"	def <X> setX(param : X) : void",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
+			assertNotNull(interf);
+			//
+			assertEquals("I1", interf.getName());
+			assertEquals(1, interf.getMembers().size());
+			//
+			SarlAction action = (SarlAction) interf.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(1, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter = action.getTypeParameters().get(0);
+			assertEquals("X", parameter.getName());
+			assertNullOrEmpty(parameter.getConstraints());
+		}
+
+		@Test
+		public void functionGeneric_XextendsNumber_sarlNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1 {",
+					"	def setX(param : X) : void with X extends Number",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
+			assertNotNull(interf);
+			//
+			assertEquals("I1", interf.getName());
+			assertEquals(1, interf.getMembers().size());
+			//
+			SarlAction action = (SarlAction) interf.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(1, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter = action.getTypeParameters().get(0);
+			assertEquals("X", parameter.getName());
+			assertEquals(1, parameter.getConstraints().size());
+			//
+			JvmTypeConstraint constraint = parameter.getConstraints().get(0);
+			assertEquals("java.lang.Number", constraint.getTypeReference().getIdentifier());
+			assertTrue(constraint.getIdentifier().startsWith("extends"));
+		}
+
+		@Test
+		public void functionGeneric_XextendsNumber_javaNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1 {",
+					"	def <X extends Number> setX(param : X) : void",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
+			assertNotNull(interf);
+			//
+			assertEquals("I1", interf.getName());
+			assertEquals(1, interf.getMembers().size());
+			//
+			SarlAction action = (SarlAction) interf.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(1, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter = action.getTypeParameters().get(0);
+			assertEquals("X", parameter.getName());
+			assertEquals(1, parameter.getConstraints().size());
+			//
+			JvmTypeConstraint constraint = parameter.getConstraints().get(0);
+			assertEquals("java.lang.Number", constraint.getTypeReference().getIdentifier());
+			assertTrue(constraint.getIdentifier().startsWith("extends"));
+		}
+
+		@Test
+		public void functionGeneric_XY_sarlNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1 {",
+					"	def setX(param : X) : void with X, Y",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
+			assertNotNull(interf);
+			//
+			assertEquals("I1", interf.getName());
+			assertEquals(1, interf.getMembers().size());
+			//
+			SarlAction action = (SarlAction) interf.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(2, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter1 = action.getTypeParameters().get(0);
+			assertEquals("X", parameter1.getName());
+			assertNullOrEmpty(parameter1.getConstraints());
+			//
+			JvmTypeParameter parameter2 = action.getTypeParameters().get(1);
+			assertEquals("Y", parameter2.getName());
+			assertNullOrEmpty(parameter2.getConstraints());
+		}
+
+		@Test
+		public void functionGeneric_XY_javaNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1 {",
+					"	def <X, Y> setX(param : X) : void",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
+			assertNotNull(interf);
+			//
+			assertEquals("I1", interf.getName());
+			assertEquals(1, interf.getMembers().size());
+			//
+			SarlAction action = (SarlAction) interf.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(2, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter1 = action.getTypeParameters().get(0);
+			assertEquals("X", parameter1.getName());
+			assertNullOrEmpty(parameter1.getConstraints());
+			//
+			JvmTypeParameter parameter2 = action.getTypeParameters().get(1);
+			assertEquals("Y", parameter2.getName());
+			assertNullOrEmpty(parameter2.getConstraints());
+		}
+
+		@Test
+		public void functionGeneric_XYextendsX_sarlNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1 {",
+					"	def setX(param : X) : void with X, Y extends X",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
+			assertNotNull(interf);
+			//
+			assertEquals("I1", interf.getName());
+			assertEquals(1, interf.getMembers().size());
+			//
+			SarlAction action = (SarlAction) interf.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(2, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter1 = action.getTypeParameters().get(0);
+			assertEquals("X", parameter1.getName());
+			assertNullOrEmpty(parameter1.getConstraints());
+			//
+			JvmTypeParameter parameter2 = action.getTypeParameters().get(1);
+			assertEquals("Y", parameter2.getName());
+			assertEquals(1, parameter2.getConstraints().size());
+			//
+			JvmTypeConstraint constraint = parameter2.getConstraints().get(0);
+			assertEquals("X", constraint.getTypeReference().getIdentifier());
+			assertTrue(constraint.getIdentifier().startsWith("extends"));
+		}
+
+		@Test
+		public void functionGeneric_XYextendsX_javaNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1 {",
+					"	def <X, Y extends X> setX(param : X) : void",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
+			assertNotNull(interf);
+			//
+			assertEquals("I1", interf.getName());
+			assertEquals(1, interf.getMembers().size());
+			//
+			SarlAction action = (SarlAction) interf.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(2, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter1 = action.getTypeParameters().get(0);
+			assertEquals("X", parameter1.getName());
+			assertNullOrEmpty(parameter1.getConstraints());
+			//
+			JvmTypeParameter parameter2 = action.getTypeParameters().get(1);
+			assertEquals("Y", parameter2.getName());
+			assertEquals(1, parameter2.getConstraints().size());
+			//
+			JvmTypeConstraint constraint = parameter2.getConstraints().get(0);
+			assertEquals("X", constraint.getTypeReference().getIdentifier());
+			assertTrue(constraint.getIdentifier().startsWith("extends"));
 		}
 
 	}

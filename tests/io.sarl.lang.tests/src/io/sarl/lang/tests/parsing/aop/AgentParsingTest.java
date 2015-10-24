@@ -21,11 +21,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.xtext.common.types.JvmTypeConstraint;
+import org.eclipse.xtext.common.types.JvmTypeParameter;
+
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlPackage;
@@ -63,6 +67,7 @@ import com.google.inject.Inject;
 	AgentParsingTest.FieldTest.class,
 	AgentParsingTest.CapacityUseTest.class,
 	AgentParsingTest.ActionTest.class,
+	AgentParsingTest.GenericTest.class,
 })
 @SuppressWarnings("all")
 public class AgentParsingTest {
@@ -2068,6 +2073,226 @@ public class AgentParsingTest {
 			assertTrue(act1.isFinal());
 			assertFalse(act1.isSynchonized());
 			assertFalse(act1.isStrictFloatingPoint());
+		}
+
+	}
+
+	public static class GenericTest extends AbstractSarlTest {
+
+		@Test
+		public void functionGeneric_X_sarlNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"agent A1 {",
+					"	def setX(param : X) : void with X { var xxx : X }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
+			assertNotNull(agent);
+			//
+			assertEquals("A1", agent.getName());
+			assertEquals(1, agent.getMembers().size());
+			//
+			SarlAction action = (SarlAction) agent.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(1, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter = action.getTypeParameters().get(0);
+			assertEquals("X", parameter.getName());
+			assertNullOrEmpty(parameter.getConstraints());
+		}
+
+		@Test
+		public void functionGeneric_X_javaNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"agent A1 {",
+					"	def <X> setX(param : X) : void { var xxx : X }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
+			assertNotNull(agent);
+			//
+			assertEquals("A1", agent.getName());
+			assertEquals(1, agent.getMembers().size());
+			//
+			SarlAction action = (SarlAction) agent.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(1, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter = action.getTypeParameters().get(0);
+			assertEquals("X", parameter.getName());
+			assertNullOrEmpty(parameter.getConstraints());
+		}
+
+		@Test
+		public void functionGeneric_XextendsNumber_sarlNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"agent A1 {",
+					"	def setX(param : X) : void with X extends Number { var xxx : X }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
+			assertNotNull(agent);
+			//
+			assertEquals("A1", agent.getName());
+			assertEquals(1, agent.getMembers().size());
+			//
+			SarlAction action = (SarlAction) agent.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(1, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter = action.getTypeParameters().get(0);
+			assertEquals("X", parameter.getName());
+			assertEquals(1, parameter.getConstraints().size());
+			//
+			JvmTypeConstraint constraint = parameter.getConstraints().get(0);
+			assertEquals("java.lang.Number", constraint.getTypeReference().getIdentifier());
+			assertTrue(constraint.getIdentifier().startsWith("extends"));
+		}
+
+		@Test
+		public void functionGeneric_XextendsNumber_javaNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"agent A1 {",
+					"	def <X extends Number> setX(param : X) : void { var xxx : X }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
+			assertNotNull(agent);
+			//
+			assertEquals("A1", agent.getName());
+			assertEquals(1, agent.getMembers().size());
+			//
+			SarlAction action = (SarlAction) agent.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(1, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter = action.getTypeParameters().get(0);
+			assertEquals("X", parameter.getName());
+			assertEquals(1, parameter.getConstraints().size());
+			//
+			JvmTypeConstraint constraint = parameter.getConstraints().get(0);
+			assertEquals("java.lang.Number", constraint.getTypeReference().getIdentifier());
+			assertTrue(constraint.getIdentifier().startsWith("extends"));
+		}
+
+		@Test
+		public void functionGeneric_XY_sarlNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"agent A1 {",
+					"	def setX(param : X) : void with X, Y { var xxx : X; var yyy : Y }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
+			assertNotNull(agent);
+			//
+			assertEquals("A1", agent.getName());
+			assertEquals(1, agent.getMembers().size());
+			//
+			SarlAction action = (SarlAction) agent.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(2, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter1 = action.getTypeParameters().get(0);
+			assertEquals("X", parameter1.getName());
+			assertNullOrEmpty(parameter1.getConstraints());
+			//
+			JvmTypeParameter parameter2 = action.getTypeParameters().get(1);
+			assertEquals("Y", parameter2.getName());
+			assertNullOrEmpty(parameter2.getConstraints());
+		}
+
+		@Test
+		public void functionGeneric_XY_javaNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"agent A1 {",
+					"	def <X, Y> setX(param : X) : void { var xxx : X; var yyy : Y }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
+			assertNotNull(agent);
+			//
+			assertEquals("A1", agent.getName());
+			assertEquals(1, agent.getMembers().size());
+			//
+			SarlAction action = (SarlAction) agent.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(2, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter1 = action.getTypeParameters().get(0);
+			assertEquals("X", parameter1.getName());
+			assertNullOrEmpty(parameter1.getConstraints());
+			//
+			JvmTypeParameter parameter2 = action.getTypeParameters().get(1);
+			assertEquals("Y", parameter2.getName());
+			assertNullOrEmpty(parameter2.getConstraints());
+		}
+
+		@Test
+		public void functionGeneric_XYextendsX_sarlNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"agent A1 {",
+					"	def setX(param : X) : void with X, Y extends X { var xxx : X; var yyy : Y }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
+			assertNotNull(agent);
+			//
+			assertEquals("A1", agent.getName());
+			assertEquals(1, agent.getMembers().size());
+			//
+			SarlAction action = (SarlAction) agent.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(2, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter1 = action.getTypeParameters().get(0);
+			assertEquals("X", parameter1.getName());
+			assertNullOrEmpty(parameter1.getConstraints());
+			//
+			JvmTypeParameter parameter2 = action.getTypeParameters().get(1);
+			assertEquals("Y", parameter2.getName());
+			assertEquals(1, parameter2.getConstraints().size());
+			//
+			JvmTypeConstraint constraint = parameter2.getConstraints().get(0);
+			assertEquals("X", constraint.getTypeReference().getIdentifier());
+			assertTrue(constraint.getIdentifier().startsWith("extends"));
+		}
+
+		@Test
+		public void functionGeneric_XYextendsX_javaNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"agent A1 {",
+					"	def <X, Y extends X> setX(param : X) : void { var xxx : X; var yyy : Y }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
+			assertNotNull(agent);
+			//
+			assertEquals("A1", agent.getName());
+			assertEquals(1, agent.getMembers().size());
+			//
+			SarlAction action = (SarlAction) agent.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(2, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter1 = action.getTypeParameters().get(0);
+			assertEquals("X", parameter1.getName());
+			assertNullOrEmpty(parameter1.getConstraints());
+			//
+			JvmTypeParameter parameter2 = action.getTypeParameters().get(1);
+			assertEquals("Y", parameter2.getName());
+			assertEquals(1, parameter2.getConstraints().size());
+			//
+			JvmTypeConstraint constraint = parameter2.getConstraints().get(0);
+			assertEquals("X", constraint.getTypeReference().getIdentifier());
+			assertTrue(constraint.getIdentifier().startsWith("extends"));
 		}
 
 	}

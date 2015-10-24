@@ -16,9 +16,19 @@
 package io.sarl.lang.tests.compilation.oop;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlClass;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
 import java.util.Map;
+
+import org.eclipse.xtext.common.types.JvmTypeConstraint;
+import org.eclipse.xtext.common.types.JvmTypeParameter;
+import org.eclipse.xtext.common.types.TypesPackage;
 
 import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
@@ -27,7 +37,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-
 import com.google.inject.Inject;
 
 /**
@@ -41,6 +50,7 @@ import com.google.inject.Inject;
 	ClassCompilerTest.TopLevelTest.class,
 	ClassCompilerTest.InClassTest.class,
 	ClassCompilerTest.InAgentTest.class,
+	ClassCompilerTest.GenericTest.class,
 })
 @SuppressWarnings("all")
 public class ClassCompilerTest {
@@ -710,6 +720,325 @@ public class ClassCompilerTest {
 					"  @Generated",
 					"  public Container(final UUID parentID, final UUID agentID) {",
 					"    super(parentID, agentID);",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+	}
+
+	public static class GenericTest extends AbstractSarlTest {
+
+		@Inject
+		private CompilationTestHelper compiler;
+
+		@Test
+		public void classGeneric_X() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"class C1<X> {",
+					"	var x : X",
+					"	def setX(param : X) { this.x = param }",
+					"	def getX : X { this.x }",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"import org.eclipse.xtext.xbase.lib.Pure;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1<X extends Object> {",
+					"  private X x;",
+					"  ",
+					"  public X setX(final X param) {",
+					"    return this.x = param;",
+					"  }",
+					"  ",
+					"  @Pure",
+					"  public X getX() {",
+					"    return this.x;",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void classGeneric_XextendsNumber() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"class C1<X extends Number> {",
+					"	var x : X",
+					"	def setX(param : X) { this.x = param }",
+					"	def getX : X { this.x }",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"import org.eclipse.xtext.xbase.lib.Pure;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1<X extends Number> {",
+					"  private X x;",
+					"  ",
+					"  public X setX(final X param) {",
+					"    return this.x = param;",
+					"  }",
+					"  ",
+					"  @Pure",
+					"  public X getX() {",
+					"    return this.x;",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void classGeneric_XY() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"class C1<X,Y> {",
+					"	var x : X",
+					"	def getY : Y { null }",
+					"	def setX(param : X) { this.x = param }",
+					"	def getX : X { this.x }",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"import org.eclipse.xtext.xbase.lib.Pure;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1<X extends Object, Y extends Object> {",
+					"  private X x;",
+					"  ",
+					"  @Pure",
+					"  public Y getY() {",
+					"    return null;",
+					"  }",
+					"  ",
+					"  public X setX(final X param) {",
+					"    return this.x = param;",
+					"  }",
+					"  ",
+					"  @Pure",
+					"  public X getX() {",
+					"    return this.x;",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void classGeneric_XYextendsX() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"class C1<X,Y extends X> {",
+					"	var x : X",
+					"	def getY : Y { null }",
+					"	def setX(param : X) { this.x = param }",
+					"	def getX : X { this.x }",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"import org.eclipse.xtext.xbase.lib.Pure;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1<X extends Object, Y extends X> {",
+					"  private X x;",
+					"  ",
+					"  @Pure",
+					"  public Y getY() {",
+					"    return null;",
+					"  }",
+					"  ",
+					"  public X setX(final X param) {",
+					"    return this.x = param;",
+					"  }",
+					"  ",
+					"  @Pure",
+					"  public X getX() {",
+					"    return this.x;",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void functionGeneric_X_sarlNotation() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"class C1 {",
+					"	def setX(param : X) : void with X { var xxx : X }",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1 {",
+					"  public <X extends Object> void setX(final X param) {",
+					"    X xxx = null;",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void functionGeneric_X_javaNotation() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"class C1 {",
+					"	def <X> setX(param : X) : void { var xxx : X }",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1 {",
+					"  public <X extends Object> void setX(final X param) {",
+					"    X xxx = null;",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void functionGeneric_XextendsNumber_sarlNotation() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"class C1 {",
+					"	def setX(param : X) : void with X extends Number { var xxx : X }",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1 {",
+					"  public <X extends Number> void setX(final X param) {",
+					"    X xxx = null;",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void functionGeneric_XextendsNumber_javaNotation() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"class C1 {",
+					"	def <X extends Number> setX(param : X) : void { var xxx : X }",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1 {",
+					"  public <X extends Number> void setX(final X param) {",
+					"    X xxx = null;",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void functionGeneric_XY_sarlNotation() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"class C1 {",
+					"	def setX(param : X) : void with X, Y { var xxx : X; var yyy : Y }",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1 {",
+					"  public <X extends Object, Y extends Object> void setX(final X param) {",
+					"    X xxx = null;",
+					"    Y yyy = null;",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void functionGeneric_XY_javaNotation() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"class C1 {",
+					"	def <X, Y> setX(param : X) : void { var xxx : X; var yyy : Y }",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1 {",
+					"  public <X extends Object, Y extends Object> void setX(final X param) {",
+					"    X xxx = null;",
+					"    Y yyy = null;",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void functionGeneric_XYextendsX_sarlNotation() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"class C1 {",
+					"	def setX(param : X) : void with X, Y extends X { var xxx : X; var yyy : Y }",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1 {",
+					"  public <X extends Object, Y extends X> void setX(final X param) {",
+					"    X xxx = null;",
+					"    Y yyy = null;",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void functionGeneric_XYextendsX_javaNotation() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"class C1 {",
+					"	def <X, Y extends X> setX(param : X) : void { var xxx : X; var yyy : Y }",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public class C1 {",
+					"  public <X extends Object, Y extends X> void setX(final X param) {",
+					"    X xxx = null;",
+					"    Y yyy = null;",
 					"  }",
 					"}",
 					""

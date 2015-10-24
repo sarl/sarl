@@ -106,6 +106,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.typesystem.LocalClassAwareTypeNames;
+import org.eclipse.xtend.core.validation.AnnotationValidation;
 import org.eclipse.xtend.core.validation.IssueCodes;
 import org.eclipse.xtend.core.validation.ModifierValidator;
 import org.eclipse.xtend.core.xtend.XtendAnnotationType;
@@ -134,6 +135,7 @@ import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
+import org.eclipse.xtext.validation.ComposedChecks;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XBlockExpression;
@@ -173,7 +175,6 @@ import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
-import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarAccess;
 import io.sarl.lang.util.Utils;
@@ -193,6 +194,7 @@ import io.sarl.lang.util.Utils;
  * @mavenartifactid $ArtifactId$
  * @see "http://www.eclipse.org/Xtext/documentation.html#validation"
  */
+@ComposedChecks(validators = { AnnotationValidation.class })
 @SuppressWarnings({"checkstyle:classfanoutcomplexity", "checkstyle:methodcount"})
 public class SARLJavaValidator extends AbstractSARLJavaValidator {
 
@@ -231,7 +233,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	private final SARLModifierValidator methodInBehaviorModifierValidator = new SARLModifierValidator(
 			newArrayList(
 			"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
-			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
 			"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 			"def", "override", "synchronized", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 			"strictfp")); //$NON-NLS-1$
@@ -281,7 +283,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	private final SARLModifierValidator fieldInSkillModifierValidator = new SARLModifierValidator(
 			newArrayList(
 			"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
-			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
 			"final", "val", "var", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 			"volatile", "transient")); //$NON-NLS-1$//$NON-NLS-2$
 
@@ -476,87 +478,59 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	 */
 	@Check
 	protected void checkModifiers(SarlEvent event) {
-		EObject econtainer = event.eContainer();
-		if (econtainer instanceof SarlScript) {
-			this.eventModifierValidator.checkModifiers(event,
-					MessageFormat.format(Messages.SARLJavaValidator_26, event.getName()));
-		} else {
-			error(Messages.SARLJavaValidator_2,
-					event,
-					null,
-					INVALID_NESTED_DEFINITION);
-		}
+		this.eventModifierValidator.checkModifiers(event,
+				MessageFormat.format(Messages.SARLJavaValidator_26, event.getName()));
 	}
 
-	/** Check if the modifiers for the SARL agents.
+	/** Check the modifiers for the SARL agents.
 	 *
 	 * @param agent the agent.
 	 */
 	@Check
 	protected void checkModifiers(SarlAgent agent) {
-		EObject econtainer = agent.eContainer();
-		if (econtainer instanceof SarlScript) {
-			this.agentModifierValidator.checkModifiers(agent,
-					MessageFormat.format(Messages.SARLJavaValidator_3, agent.getName()));
-		} else {
-			error(MessageFormat.format(Messages.SARLJavaValidator_4, canonicalName(econtainer)),
-					agent,
-					null,
-					INVALID_NESTED_DEFINITION);
-		}
+		this.agentModifierValidator.checkModifiers(agent,
+				MessageFormat.format(Messages.SARLJavaValidator_3, agent.getName()));
 	}
 
-	/** Check if the modifiers for the SARL behaviors.
+	/** Check the modifiers for the SARL behaviors.
 	 *
 	 * @param behavior the behavior.
 	 */
 	@Check
 	protected void checkModifiers(SarlBehavior behavior) {
-		EObject econtainer = behavior.eContainer();
-		if (econtainer instanceof SarlScript) {
-			this.behaviorModifierValidator.checkModifiers(behavior,
-					MessageFormat.format(Messages.SARLJavaValidator_5, behavior.getName()));
-		} else {
-			error(MessageFormat.format(Messages.SARLJavaValidator_6, canonicalName(econtainer)),
-					behavior,
-					null,
-					INVALID_NESTED_DEFINITION);
-		}
+		this.behaviorModifierValidator.checkModifiers(behavior,
+				MessageFormat.format(Messages.SARLJavaValidator_5, behavior.getName()));
 	}
 
-	/** Check if the modifiers for the SARL capacities.
+	/** Check the modifiers for the SARL capacities.
 	 *
 	 * @param capacity the capacity.
 	 */
 	@Check
 	protected void checkModifiers(SarlCapacity capacity) {
-		EObject econtainer = capacity.eContainer();
-		if (econtainer instanceof SarlScript) {
-			this.capacityModifierValidator.checkModifiers(capacity,
-					MessageFormat.format(Messages.SARLJavaValidator_7, capacity.getName()));
-		} else {
-			error(MessageFormat.format(Messages.SARLJavaValidator_8, canonicalName(econtainer)),
-					capacity,
-					null,
-					INVALID_NESTED_DEFINITION);
-		}
+		this.capacityModifierValidator.checkModifiers(capacity,
+				MessageFormat.format(Messages.SARLJavaValidator_7, capacity.getName()));
 	}
 
-	/** Check if the modifiers for the SARL skills.
+	/** Check the modifiers for the SARL skills.
 	 *
 	 * @param skill the skill.
 	 */
 	@Check
 	protected void checkModifiers(SarlSkill skill) {
-		EObject econtainer = skill.eContainer();
-		if (econtainer instanceof SarlScript) {
-			this.skillModifierValidator.checkModifiers(skill,
-					MessageFormat.format(Messages.SARLJavaValidator_9, skill.getName()));
+		this.skillModifierValidator.checkModifiers(skill,
+				MessageFormat.format(Messages.SARLJavaValidator_9, skill.getName()));
+	}
+
+	@Check
+	@Override
+	protected void checkModifiers(XtendInterface oopInterface) {
+		EObject econtainer = oopInterface.eContainer();
+		if (econtainer instanceof SarlAgent) {
+			this.nestedInterfaceInAgentModifierValidator.checkModifiers(oopInterface,
+					MessageFormat.format(Messages.SARLJavaValidator_28, oopInterface.getName()));
 		} else {
-			error(Messages.SARLJavaValidator_10,
-					skill,
-					null,
-					INVALID_NESTED_DEFINITION);
+			super.checkModifiers(oopInterface);
 		}
 	}
 
@@ -581,18 +555,6 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 
 	@Check
 	@Override
-	protected void checkModifiers(XtendInterface oopInterface) {
-		EObject econtainer = oopInterface.eContainer();
-		if (econtainer instanceof SarlAgent) {
-			this.nestedInterfaceInAgentModifierValidator.checkModifiers(oopInterface,
-					MessageFormat.format(Messages.SARLJavaValidator_28, oopInterface.getName()));
-		} else {
-			super.checkModifiers(oopInterface);
-		}
-	}
-
-	@Check
-	@Override
 	protected void checkModifiers(XtendEnum oopEnum) {
 		EObject econtainer = oopEnum.eContainer();
 		if (econtainer instanceof SarlAgent) {
@@ -612,6 +574,87 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 					MessageFormat.format(Messages.SARLJavaValidator_30, oopAnnotationType.getName()));
 		} else {
 			super.checkModifiers(oopAnnotationType);
+		}
+	}
+
+	/** Check the container for the SARL agents.
+	 *
+	 * @param agent the agent.
+	 */
+	@Check
+	public void checkContainerType(SarlAgent agent) {
+		XtendTypeDeclaration declaringType = agent.getDeclaringType();
+		if (declaringType != null) {
+			String name = canonicalName(declaringType);
+			assert (name != null);
+			error(MessageFormat.format(Messages.SARLJavaValidator_4, name),
+					agent,
+					null,
+					INVALID_NESTED_DEFINITION);
+		}
+	}
+
+	/** Check the container for the SARL behaviors.
+	 *
+	 * @param behavior the behavior.
+	 */
+	@Check
+	public void checkContainerType(SarlBehavior behavior) {
+		XtendTypeDeclaration declaringType = behavior.getDeclaringType();
+		if (declaringType != null) {
+			String name = canonicalName(declaringType);
+			assert (name != null);
+			error(MessageFormat.format(Messages.SARLJavaValidator_6, name),
+					behavior,
+					null,
+					INVALID_NESTED_DEFINITION);
+		}
+	}
+
+	/** Check the container for the SARL capacities.
+	 *
+	 * @param capacity the capacity.
+	 */
+	@Check
+	public void checkContainerType(SarlCapacity capacity) {
+		XtendTypeDeclaration declaringType = capacity.getDeclaringType();
+		if (declaringType != null) {
+			String name = canonicalName(declaringType);
+			assert (name != null);
+			error(MessageFormat.format(Messages.SARLJavaValidator_8, name),
+					capacity,
+					null,
+					INVALID_NESTED_DEFINITION);
+		}
+	}
+
+	/** Check the container for the SARL skills.
+	 *
+	 * @param skill the skill.
+	 */
+	@Check
+	public void checkContainerType(SarlSkill skill) {
+		XtendTypeDeclaration declaringType = skill.getDeclaringType();
+		if (declaringType != null) {
+			error(Messages.SARLJavaValidator_10,
+					skill,
+					null,
+					INVALID_NESTED_DEFINITION);
+		}
+	}
+
+	/** Check if the modifiers for the SARL events.
+	 *
+	 * @param event the event.
+	 */
+	@Check
+	public void checkContainerType(SarlEvent event) {
+		XtendTypeDeclaration declaringType = event.getDeclaringType();
+		if (declaringType != null) {
+			error(Messages.SARLJavaValidator_2,
+					event,
+					null,
+					INVALID_NESTED_DEFINITION);
 		}
 	}
 

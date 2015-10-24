@@ -16,6 +16,7 @@
 package io.sarl.lang.tests.compilation.oop;
 
 import static org.junit.Assert.assertEquals;
+
 import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.tests.parsing.aop.BehaviorParsingTest;
 import io.sarl.tests.api.AbstractSarlTest;
@@ -29,7 +30,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-
 import com.google.inject.Inject;
 
 /**
@@ -43,6 +43,7 @@ import com.google.inject.Inject;
 	InterfaceCompilerTest.TopLevelTest.class,
 	InterfaceCompilerTest.InClassTest.class,
 	InterfaceCompilerTest.InAgentTest.class,
+	InterfaceCompilerTest.GenericTest.class,
 })
 @SuppressWarnings("all")
 public class InterfaceCompilerTest {
@@ -565,6 +566,259 @@ public class InterfaceCompilerTest {
 					"  public Container(final UUID parentID, final UUID agentID) {",
 					"    super(parentID, agentID);",
 					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+	}
+
+	public static class GenericTest extends AbstractSarlTest {
+
+		@Inject
+		private CompilationTestHelper compiler;
+
+		@Test
+		public void interfaceGeneric_X() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1<X> {",
+					"	def setX(param : X)",
+					"	def getX : X",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public interface I1<X extends Object> {",
+					"  public abstract void setX(final X param);",
+					"  ",
+					"  public abstract X getX();",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void interfaceGeneric_XextendsNumber() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1<X extends Number> {",
+					"	def setX(param : X)",
+					"	def getX : X",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public interface I1<X extends Number> {",
+					"  public abstract void setX(final X param);",
+					"  ",
+					"  public abstract X getX();",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void interfaceGeneric_XY() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1<X,Y> {",
+					"	def getY : Y",
+					"	def setX(param : X)",
+					"	def getX : X",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public interface I1<X extends Object, Y extends Object> {",
+					"  public abstract Y getY();",
+					"  ",
+					"  public abstract void setX(final X param);",
+					"  ",
+					"  public abstract X getX();",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void interfaceGeneric_XYextendsX() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1<X,Y extends X> {",
+					"	def getY : Y",
+					"	def setX(param : X)",
+					"	def getX : X",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public interface I1<X extends Object, Y extends X> {",
+					"  public abstract Y getY();",
+					"  ",
+					"  public abstract void setX(final X param);",
+					"  ",
+					"  public abstract X getX();",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void functionGeneric_X_sarlNotation() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1 {",
+					"	def setX(param : X) : void with X",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public interface I1 {",
+					"  public abstract <X extends Object> void setX(final X param);",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void functionGeneric_X_javaNotation() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1 {",
+					"	def <X> setX(param : X) : void",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public interface I1 {",
+					"  public abstract <X extends Object> void setX(final X param);",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void functionGeneric_XextendsNumber_sarlNotation() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1 {",
+					"	def setX(param : X) : void with X extends Number",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public interface I1 {",
+					"  public abstract <X extends Number> void setX(final X param);",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void functionGeneric_XextendsNumber_javaNotation() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1 {",
+					"	def <X extends Number> setX(param : X) : void",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public interface I1 {",
+					"  public abstract <X extends Number> void setX(final X param);",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void functionGeneric_XY_sarlNotation() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1 {",
+					"	def setX(param : X) : void with X, Y",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public interface I1 {",
+					"  public abstract <X extends Object, Y extends Object> void setX(final X param);",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void functionGeneric_XY_javaNotation() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1 {",
+					"	def <X, Y> setX(param : X) : void",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public interface I1 {",
+					"  public abstract <X extends Object, Y extends Object> void setX(final X param);",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void functionGeneric_XYextendsX_sarlNotation() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1 {",
+					"	def setX(param : X) : void with X, Y extends X",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public interface I1 {",
+					"  public abstract <X extends Object, Y extends X> void setX(final X param);",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void functionGeneric_XYextendsX_javaNotation() throws Exception {
+			String source = multilineString(
+					"package io.sarl.lang.tests.test",
+					"interface I1 {",
+					"	def <X, Y extends X> setX(param : X) : void",
+					"}");
+			String expected = multilineString(
+					"package io.sarl.lang.tests.test;",
+					"",
+					"@SuppressWarnings(\"all\")",
+					"public interface I1 {",
+					"  public abstract <X extends Object, Y extends X> void setX(final X param);",
 					"}",
 					""
 					);

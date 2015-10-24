@@ -2056,88 +2056,190 @@ describe "General Syntax Reference" {
 		/* 
 		 * Generic functions are methods that introduce their own type parameters.
 		 * This is similar to declaring a
-		 * [generic type](./BasicObjectOrientedProgrammingSupportSpec.html#Generic_Class_and_Interface),
+		 * [generic type](./BasicObjectOrientedProgrammingSupportClassSpec.html#DefineAGenericClassSpec),
 		 * but the type parameter's scope
 		 * is limited to the function where it is declared. 
-		 * Static and non-static generic functions are allowed, as well as generic class constructors.
-		 *
-		 * <p>The syntax for a generic function includes a type parameter, inside angle brackets, and 
-		 * appears before the function's return type. For static generic functions, the type parameter
-		 * section must appear before the function's return type.
+		 * Static and non-static generic functions are allowed.
 		 * 
-		 * <p>For example: 
-		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
-
-		 * This function specifies a type <code>T</code>, which is used both as type for the element parameter
-		 * and the generic type of the Collection.
-
-You can write a single generic method declaration that can be called with arguments of different types. Based on the types of the arguments passed to the generic method, the compiler handles each method call appropriately. Following are the rules to define Generic Methods:
-
-All generic method declarations have a type parameter section delimited by angle brackets (< and >) that precedes the method's return type ( < E > in the next example).
-
-Each type parameter section contains one or more type parameters separated by commas. A type parameter, also known as a type variable, is an identifier that specifies a generic type name.
-
-The type parameters can be used to declare the return type and act as placeholders for the types of the arguments passed to the generic method, which are known as actual type arguments.
-
-A generic method's body is declared like that of any other method. Note that type parameters can represent only reference types, not primitive types (like int, double and char).
-
+		 * <p>You can write a single generic method declaration that can be called with arguments of
+		 * different types. Based on the types of the arguments passed to the generic method,
+		 * the compiler handles each method call appropriately. Following are the rules to define
+		 * generic functions: <ul>
+		 * <li>All generic method declarations have a type parameter section written with
+		 *     the "with" or the bracket syntax.</li>
+		 * <li>Each type parameter section contains one or more type parameters separated by commas. 
+		 *     A type parameter, also known as a type variable, is an identifier that specifies a generic
+		 *     type name.</li>
+		 * <li>The type parameters can be used to declare the return type and act as placeholders for
+		 *     the types of the arguments passed to the generic method, which are known as actual type
+		 *     arguments.</li>
+		 * </ul>
+		 * 
+		 * <p>A generic method's body is declared like that of any other method.
+		 * 
+		 * <note>Type parameters can represent only reference types, not primitive types
+		 * (like `int`, `double` and `char`).</note>
+		 
+		 * <p>Two syntaxes are allowed for defining the type parameters of the actions:
+		 * the "with" syntax, and the bracket syntax.
 		 */
 		describe "Generic Function"{
 			
-			describe "Definition of the Type Parameters" {
-//			"./BasicObjectOrientedProgrammingSupportSpec.html#Generic_Class_and_Interface" should beAccessibleFrom this
-//
-//			var model = '''
-//				def <T> addAndReturn(element : T, collection : Collection<T>) : T {
-//				    collection.add(element);
-//				    return element;
-//				}
-//			'''.parseSuccessfully(
-//				"package io.sarl.docs.reference.gsr
-//				import java.util.Collection
-//				agent A {",
-//				// TEXT
-//				"}"
-//			)
-//
-//			model => [
-//				it should havePackage "io.sarl.docs.reference.gsr"
-//				it should haveNbImports 0
-//				it should haveNbElements 1
-//			]
-//	
-//			var a = (model.xtendTypes.get(0) => [
-//				it should beAgent "A"
-//				it should extend _
-//				it should haveNbElements 1
-//			]) as SarlAgent
-//
-//			a.members.get(0) => [
-//				it should beAction "addAndReturn"
-//				it should reply "T"
-//				it should haveNbParameters 2
-//				it should beVariadic false
-//				(it as SarlAction).parameters.get(0) => [
-//					it should beParameter "element"
-//					it should haveType "T"
-//					it should haveDefaultValue _
-//				]
-//				(it as SarlAction).parameters.get(1) => [
-//					it should beParameter "collection"
-//					it should haveType "java.lang.Collection"
-//					it should haveDefaultValue _
-//				]
-//			]
+			/**  
+			 * The "with" syntax for a generic function includes a type parameter, after the `with`
+			 * keyword, between the function's return type and the function's body.
+			 *
+			 * <p>In the following example, the function specifies a type <code>T</code>, which is used both
+			 * as type for the element parameter and the generic type of the Collection.
+			 *
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+			 */
+			fact "Definition with \"with\"" {
+				// Verify the URL in the upper section text.
+				"./BasicObjectOrientedProgrammingSupportClassSpec.html" should beAccessibleFrom this
+				//	
+				var model = '''
+					def addAndReturn(element : T, collection : Collection<T>) : T with T {
+					    collection.add(element);
+					    return element;
+					}
+				'''.parseSuccessfully(
+					"package io.sarl.docs.reference.gsr
+					import java.util.Collection
+					agent A {",
+					// TEXT
+					"}"
+				)
+	
+				model => [
+					it should havePackage "io.sarl.docs.reference.gsr"
+					it should haveNbImports 1
+					it should haveNbElements 1
+				]
+		
+				var a = (model.xtendTypes.get(0) => [
+					it should beAgent "A"
+					it should extend _
+					it should haveNbElements 1
+				]) as SarlAgent
+	
+				a.members.get(0) => [
+					it should beAction "addAndReturn"
+					it should reply "T"
+					it should haveNbParameters 2
+					it should beVariadic false
+					(it as SarlAction).parameters.get(0) => [
+						it should beParameter "element"
+						it should haveType "T"
+						it should haveDefaultValue _
+					]
+					(it as SarlAction).parameters.get(1) => [
+						it should beParameter "collection"
+						it should haveType "java.util.Collection<T>"
+						it should haveDefaultValue _
+					]
+				]
+			}
+
+			/**  
+			 * The bracket syntax for a generic function includes a type parameter, inside angle brackets, and 
+			 * appears before the function's name.
+			 * 
+			 * <p>In the following example, the function specifies a type <code>T</code>, which is used both
+			 * as type for the element parameter and the generic type of the Collection.
+			 *
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+			 */
+			fact "Definition with Brackets" {
+				var model = '''
+					def <T> addAndReturn(element : T, collection : Collection<T>) : T {
+					    collection.add(element);
+					    return element;
+					}
+				'''.parseSuccessfully(
+					"package io.sarl.docs.reference.gsr
+					import java.util.Collection
+					agent A {",
+					// TEXT
+					"}"
+				)
+	
+				model => [
+					it should havePackage "io.sarl.docs.reference.gsr"
+					it should haveNbImports 1
+					it should haveNbElements 1
+				]
+		
+				var a = (model.xtendTypes.get(0) => [
+					it should beAgent "A"
+					it should extend _
+					it should haveNbElements 1
+				]) as SarlAgent
+	
+				a.members.get(0) => [
+					it should beAction "addAndReturn"
+					it should reply "T"
+					it should haveNbParameters 2
+					it should beVariadic false
+					(it as SarlAction).parameters.get(0) => [
+						it should beParameter "element"
+						it should haveType "T"
+						it should haveDefaultValue _
+					]
+					(it as SarlAction).parameters.get(1) => [
+						it should beParameter "collection"
+						it should haveType "java.util.Collection<T>"
+						it should haveDefaultValue _
+					]
+				]
 			}
 
 			/*
-			 *Bounded Type Parameters:
-There may be times when you'll want to restrict the kinds of types that are allowed to be passed to a type parameter. For example, a method that operates on numbers might only want to accept instances of Number or its subclasses. This is what bounded type parameters are for.
-
-To declare a bounded type parameter, list the type parameter's name, followed by the extends keyword, followed by its upper bound. 
+			 * There may be times when you'll want to restrict the kinds of types that are allowed to be
+			 * passed to a type parameter. For example, a method that operates on numbers might only want
+			 * to accept instances of Number or its subclasses. This is what bounded type parameters
+			 * are for.
+			 *
+			 * <p>To declare a bounded type parameter, list the type parameter's name, followed by the 
+			 * `extends` keyword, followed by its upper bound. 
 			 */
-			 describe "Bounded Type Parameters" {
-			 	
+			 fact "Bounded Type Parameters" {
+				var model = '''
+					def print(value : T) with T extends Number {
+					    System.out.println("Type = " + value.getClass)
+					    System.out.println("Value = " + value)
+					}
+				'''.parseSuccessfully(
+					"package io.sarl.docs.reference.gsr
+					import java.util.Collection
+					agent A {",
+					// TEXT
+					"}"
+				)
+	
+				model => [
+					it should havePackage "io.sarl.docs.reference.gsr"
+					it should haveNbImports 1
+					it should haveNbElements 1
+				]
+		
+				var a = (model.xtendTypes.get(0) => [
+					it should beAgent "A"
+					it should extend _
+					it should haveNbElements 1
+				]) as SarlAgent
+	
+				a.members.get(0) => [
+					it should beAction "print"
+					it should reply _
+					it should haveNbParameters 1
+					it should beVariadic false
+					(it as SarlAction).parameters.get(0) => [
+						it should beParameter "value"
+						it should haveType "T"
+						it should haveDefaultValue _
+					]
+				]
 			 }
 
 		}
